@@ -4141,6 +4141,23 @@
   }
   .share-toast.visible { opacity: 1; }
 
+  /* Phase 2 (Workshop) — Save-to-Workbench affordance.
+     Shows under the share-platforms row. The existing share-row
+     above mints a public unlisted permalink (anyone can open);
+     this saves a per-user snapshot only the signed-in operator
+     can see. Same payload shape — buildSnapshotPayload() does
+     double duty for both. */
+  .audit-save{margin-top:18px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .audit-save[hidden]{display:none}
+  .audit-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .audit-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .audit-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .audit-save-btn[disabled]{opacity:.6;cursor:wait}
+  .audit-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .audit-save-link:hover{border-color:var(--ink)}
+  .audit-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .audit-save-msg.error{color:var(--rust)}
+
   .share-platforms {
     display: flex;
     gap: 8px;
@@ -5294,6 +5311,20 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
           </div>
+
+          <!-- Phase 2 (Workshop) — Save-to-Workbench affordance.
+               Shown by the workbench-save helper after a fresh audit
+               completes. Distinct from the public share-link button
+               above (different storage, different access rules). -->
+          <div class="audit-save" id="auditSave" hidden>
+            <p class="audit-save-text" id="auditSaveText">Save this audit to your Workbench so it follows you across devices.</p>
+            <button type="button" class="audit-save-btn" id="auditSaveBtn" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Save to my Workbench
+            </button>
+            <a class="audit-save-link" id="auditSaveLink" href="/sign-in/?returnTo=%2Ftools%2Faudits%2Frestaurant%2F" hidden>Sign in to save</a>
+            <span class="audit-save-msg" id="auditSaveMsg" hidden role="status"></span>
+          </div>
         </div>
       </div>
 
@@ -5988,8 +6019,30 @@
      ./restaurant-checks.js and ./subtypes.js for the module contracts. -->
 <script src="./subtypes.js"></script>
 <script src="./restaurant-checks.js"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
+  // Phase 2 (Workshop) — Save-to-Workbench handle. Created here so
+  // every audit-result render path can call wbHandle.showAffordance()
+  // once a result is in window.__auditLastResult. The actual attach
+  // happens further down (after buildSnapshotPayload + renderSnapshotView
+  // are hoisted into scope) but we declare the holder up top so the
+  // result-set hooks can guard on it.
+  var wbHandle = null;
+  function maybeShowSaveAffordance() {
+    if (!wbHandle) return;
+    var last = window.__auditLastResult;
+    if (!last) return;
+    try {
+      var payload = (typeof buildSnapshotPayload === 'function')
+        ? buildSnapshotPayload(last)
+        : null;
+      if (payload) wbHandle.showAffordance(payload);
+    } catch (err) {
+      try { console.warn('[workbench] showAffordance failed', err); } catch (_) {}
+    }
+  }
+
   var form          = document.getElementById('auditForm');
   var input         = document.getElementById('auditUrl');
   var submitBtn     = document.getElementById('auditSubmit');
@@ -13592,6 +13645,10 @@
       unverifiedCount: priorityResult.unverifiedCount || 0,
       unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
     };
+    // Phase 2 (Workshop) — surface the Save-to-Workbench affordance.
+    // wbHandle was attached at the tail of the IIFE; the call no-ops
+    // if it isn't ready (e.g. pre-attach race, or helper unavailable).
+    maybeShowSaveAffordance();
 
     // Sprint H1: save a compact snapshot of this audit to
     // localStorage (per URL). The next time this URL is audited,
@@ -16024,6 +16081,44 @@
       }, 300);
     } catch (e) { /* no-op */ }
   })();
+
+  // Phase 2 (Workshop) — Save-to-Workbench wiring. Runs once at the
+  // tail of the IIFE so buildSnapshotPayload + renderSnapshotView are
+  // both hoisted/defined and reachable. Anonymous visitors see "Sign
+  // in to save"; signed-in operators get the Save button. Rehydrating
+  // from ?saved=<id> calls renderSnapshotView with the stored payload
+  // — the same entry point the public ?s=TOKEN share-link hydrate uses.
+  if (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function') {
+    wbHandle = MuntinWorkbench.attach({
+      elements: {
+        box:  '#auditSave',
+        btn:  '#auditSaveBtn',
+        link: '#auditSaveLink',
+        text: '#auditSaveText',
+        msg:  '#auditSaveMsg',
+      },
+      locale: 'en',
+      kind:   'audit',
+      titleFor: function (p) {
+        var u = String((p && p.auditedUrl) || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        return 'Audit — ' + (u || 'untitled');
+      },
+      onRehydrate: function (payload) {
+        // The saved payload IS the snapshot — the same shape the
+        // share-link path hydrates. Reuse renderSnapshotView so the
+        // visible result is identical between flows.
+        if (typeof renderSnapshotView === 'function' && payload) {
+          renderSnapshotView(payload);
+        }
+      },
+      workbenchUrl: '/workbench/',
+      signinUrl:    '/sign-in/?returnTo=%2Ftools%2Faudits%2Frestaurant%2F',
+    });
+    // If the audit already finished by the time we attached (rare,
+    // but possible during a fast cache-hit auto-run), surface the
+    // affordance now rather than waiting for the next render.
+    maybeShowSaveAffordance();
+  }
 })();
 </script>
 

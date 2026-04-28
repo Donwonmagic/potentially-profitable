@@ -237,6 +237,38 @@
   ]
 
   // ─────────────────────────────────────────────────────────────────
+  // Phase 3 (Workshop) — Watch list / scheduled re-audits.
+  //
+  // The /api/workbench/watch{,-list,-delete} endpoints are LIVE in
+  // src/worker.js — operators can attach watches, list them, and
+  // detach. Persistence happens in AUTH_SESSIONS under watch:<sub>:<id>
+  // keys. Until the Cron Trigger below is uncommented, those watches
+  // simply persist with lastCheckedAt = null forever; no upstream
+  // API quota burns and no emails go out.
+  //
+  // To turn on:
+  //   1. Uncomment the "triggers.crons" block below.
+  //   2. Implement src/lib/watch-checks.js with one function per
+  //      watchable kind (audit / seo / gbp / mobile / schema / speed)
+  //      that takes (env, savedItem) and returns a 0..100 number.
+  //   3. Wire those functions into the iterateAllWatches loop in
+  //      worker.js's scheduled() handler. Today the loop just counts
+  //      so the cron tick is observable in logs without doing work.
+  //   4. Add a watch-diff email template to src/lib/templates.js +
+  //      templates.es.js (locale-aware).
+  //   5. wrangler deploy. The cron fires on the configured cadence;
+  //      no API keys, no extra secrets, no DNS changes.
+  //
+  // Daily at 14:00 UTC (≈10am ET) keeps emails out of the late-night
+  // window most operators don't read. Switch to weekly with
+  // "0 14 * * 1" (Mondays only) if daily proves chatty.
+  //
+  // "triggers": {
+  //   "crons": ["0 14 * * *"]
+  // },
+  // ─────────────────────────────────────────────────────────────────
+
+  // ─────────────────────────────────────────────────────────────────
   // Optional bindings still staged, provisioned on demand:
   //
   // Sprint T3 — AUDIT_CACHE:

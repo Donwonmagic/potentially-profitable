@@ -55,12 +55,52 @@ const MAX_SAVES_PER_USER = 100;
 const MAX_TITLE_LENGTH   = 200;
 const MAX_PAYLOAD_BYTES  = 50 * 1024; // 50 KB serialized
 
+// Phase 3 (Workshop) — Watch list scaffolding.
+// A "watch" attaches a re-check schedule to an existing saved item.
+// The Cron Trigger (commented out in wrangler.jsonc until ops is
+// ready to flip it on) iterates `watch:` keys, re-runs the
+// underlying check, and emails the user when the score changes
+// past a threshold. Two-key model keeps the live data path on the
+// existing `save:` keys unchanged — a watch is purely additive.
+//
+//   watch:<sub>:<savedItemId>  → JSON {
+//     savedItemId,         — id of the existing save:<sub>:<id> row
+//     kind,                — copied from save row at attach time;
+//                            short-circuits a second KV read on cron
+//     schedule,            — 'daily' | 'weekly'
+//     lastCheckedAt,       — ms epoch; null until first cron run
+//     lastScore,           — 0..100 from most recent re-check, or null
+//     baselineScore,       — score at attach time (for total-drift)
+//     createdAt
+//   }
+//
+// Only API-driven kinds can be watched — calculator-only kinds
+// (margin, plate, photo, brand, etc.) have no automatic re-check
+// path. Adding a new watchable kind: include it in WATCHABLE_KINDS
+// AND wire a re-check function in src/lib/watch-checks.js (Phase 3
+// implementation; not in this sprint's scaffolding).
+const WATCH_KEY_PREFIX = 'watch:';
+const WATCHABLE_KINDS  = new Set([
+  'audit', 'seo', 'gbp', 'mobile', 'schema', 'speed',
+]);
+const ALLOWED_SCHEDULES = new Set(['daily', 'weekly']);
+
+// Defense-in-depth cap: a single user can't subscribe to more
+// re-checks than this. Past the cap, the API returns 409 with the
+// limit. Combined with Cron's small batch-per-tick, prevents one
+// over-eager operator from monopolising the cron's run budget.
+const MAX_WATCHES_PER_USER = 25;
+
 export {
   SAVE_KEY_PREFIX,
   ALLOWED_KINDS,
   MAX_SAVES_PER_USER,
   MAX_TITLE_LENGTH,
   MAX_PAYLOAD_BYTES,
+  WATCH_KEY_PREFIX,
+  WATCHABLE_KINDS,
+  ALLOWED_SCHEDULES,
+  MAX_WATCHES_PER_USER,
 };
 
 export function mintSaveItemId() {
@@ -192,4 +232,166 @@ function saveKey(sub, id) {
 async function listItemIdsForUser(env, sub) {
   const result = await env.AUTH_SESSIONS.list({ prefix: SAVE_KEY_PREFIX + sub + ':' });
   return result.keys.map((k) => k.name);
+}
+
+
+// ─────────────────────────────────────────────────────────────────
+// Phase 3 (Workshop) — Watch list helpers.
+//
+// Attach a re-check schedule to an existing saved item, list a
+// user's active watches, detach, and (Phase 3 cron implementation)
+// enumerate ALL watches across users for the scheduled job.
+
+function watchKey(sub, savedItemId) {
+  return WATCH_KEY_PREFIX + sub + ':' + savedItemId;
+}
+
+// Returns the count of watches a user currently has. Used by the
+// API endpoint to enforce MAX_WATCHES_PER_USER without an extra
+// list-then-count round-trip.
+export async function countWatchesForUser(env, sub) {
+  const result = await env.AUTH_SESSIONS.list({ prefix: WATCH_KEY_PREFIX + sub + ':' });
+  return result.keys.length;
+}
+
+// Attaches a schedule to an existing saved item. Validates the
+// underlying save exists and is a watchable kind. Returns
+// { ok, error?, watch? }.
+export async function attachWatch(env, sub, savedItemId, schedule) {
+  if (!isValidSaveItemIdShape(savedItemId)) {
+    return { ok: false, error: 'invalid-id' };
+  }
+  if (!ALLOWED_SCHEDULES.has(schedule)) {
+    return { ok: false, error: 'invalid-schedule' };
+  }
+  const saveRaw = await env.AUTH_SESSIONS.get(saveKey(sub, savedItemId));
+  if (!saveRaw) return { ok: false, error: 'save-not-found' };
+  let saveRow;
+  try { saveRow = JSON.parse(saveRaw); } catch { return { ok: false, error: 'save-corrupt' }; }
+  if (!saveRow || !WATCHABLE_KINDS.has(saveRow.kind)) {
+    return { ok: false, error: 'kind-not-watchable' };
+  }
+  const existing = await countWatchesForUser(env, sub);
+  // Allow update-in-place (re-attach to refresh schedule) without
+  // tripping the cap — only block when adding a NEW watch past the
+  // ceiling. Check existence before counting.
+  const already = await env.AUTH_SESSIONS.get(watchKey(sub, savedItemId));
+  if (!already && existing >= MAX_WATCHES_PER_USER) {
+    return { ok: false, error: 'limit-reached', max: MAX_WATCHES_PER_USER };
+  }
+  // Pull baseline score from the save's payload if present. Each
+  // watchable kind stores its score in a different field — Phase 3
+  // can refine this; the scaffolding extracts a number when obvious
+  // and falls back to null.
+  const baselineScore = extractScoreFromPayload(saveRow.kind, saveRow.payload);
+  const now = Date.now();
+  const watchRow = already
+    ? Object.assign(JSON.parse(already), { schedule })
+    : {
+        savedItemId,
+        kind: saveRow.kind,
+        schedule,
+        lastCheckedAt: null,
+        lastScore: null,
+        baselineScore,
+        createdAt: now,
+      };
+  await env.AUTH_SESSIONS.put(watchKey(sub, savedItemId), JSON.stringify(watchRow));
+  return { ok: true, watch: watchRow };
+}
+
+// Lists watches for one user (UI fetch).
+export async function listWatchesForUser(env, sub) {
+  const result = await env.AUTH_SESSIONS.list({ prefix: WATCH_KEY_PREFIX + sub + ':' });
+  const out = [];
+  for (const k of result.keys) {
+    const raw = await env.AUTH_SESSIONS.get(k.name);
+    if (!raw) continue;
+    try { out.push(JSON.parse(raw)); } catch (_) { /* skip */ }
+  }
+  out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  return out;
+}
+
+// Detach. Idempotent.
+export async function detachWatch(env, sub, savedItemId) {
+  if (!isValidSaveItemIdShape(savedItemId)) {
+    return { ok: false, error: 'invalid-id' };
+  }
+  const key = watchKey(sub, savedItemId);
+  const existing = await env.AUTH_SESSIONS.get(key);
+  if (!existing) return { ok: true, detached: false };
+  await env.AUTH_SESSIONS.delete(key);
+  return { ok: true, detached: true };
+}
+
+// Phase 3 cron entry point — enumerates EVERY watch in the
+// namespace, regardless of user. Called from worker.js's
+// scheduled() handler when the Cron Trigger fires. Cursor-paged
+// so a future at-scale watch volume doesn't blow the per-call
+// list budget. Yielded items pair the (sub, watch) so the caller
+// can re-look-up the underlying save and write back the result.
+//
+// Each yielded item: { sub, watch }
+export async function* iterateAllWatches(env) {
+  let cursor = null;
+  while (true) {
+    const opts = { prefix: WATCH_KEY_PREFIX };
+    if (cursor) opts.cursor = cursor;
+    const page = await env.AUTH_SESSIONS.list(opts);
+    for (const k of page.keys) {
+      const raw = await env.AUTH_SESSIONS.get(k.name);
+      if (!raw) continue;
+      let watch;
+      try { watch = JSON.parse(raw); } catch (_) { continue; }
+      // Key shape: watch:<sub>:<savedItemId>. Extract sub.
+      const parts = k.name.split(':');
+      if (parts.length < 3) continue;
+      const sub = parts.slice(1, -1).join(':');
+      yield { sub, watch };
+    }
+    if (page.list_complete) break;
+    if (!page.cursor) break;
+    cursor = page.cursor;
+  }
+}
+
+// After a Phase 3 cron re-check runs, the result is written back
+// to update lastCheckedAt + lastScore. Separate from attachWatch
+// so the re-check path doesn't touch the user-visible schedule
+// or baselineScore.
+export async function recordWatchCheck(env, sub, savedItemId, score) {
+  const key = watchKey(sub, savedItemId);
+  const raw = await env.AUTH_SESSIONS.get(key);
+  if (!raw) return { ok: false, error: 'not-found' };
+  let row;
+  try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt' }; }
+  row.lastCheckedAt = Date.now();
+  row.lastScore = (typeof score === 'number' && isFinite(score)) ? score : null;
+  await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
+  return { ok: true, watch: row };
+}
+
+// Best-effort score extractor. Each watchable kind stores its
+// score under a different field; this is the one place that maps
+// kind → field so the rest of the system stays generic. Phase 3's
+// re-check functions will write the new score the same way.
+function extractScoreFromPayload(kind, payload) {
+  if (!payload || typeof payload !== 'object') return null;
+  switch (kind) {
+    case 'audit': return numericOrNull(payload.score) || numericOrNull(payload.overall);
+    case 'seo':   return numericOrNull(payload.titleScore != null && payload.descScore != null
+                          ? Math.round((payload.titleScore + payload.descScore) / 2)
+                          : null);
+    case 'speed': return numericOrNull(payload.score);
+    case 'gbp':   return numericOrNull(payload.chosen && payload.chosen.scaledScore);
+    case 'mobile':return numericOrNull(payload.passCount != null && payload.failCount != null
+                          ? Math.round((payload.passCount / (payload.passCount + payload.failCount + (payload.unknownCount || 0))) * 100)
+                          : null);
+    case 'schema':return numericOrNull((payload.foundTypes && payload.foundTypes.length) ? 100 : 0);
+    default: return null;
+  }
+}
+function numericOrNull(v) {
+  return (typeof v === 'number' && isFinite(v)) ? v : null;
 }

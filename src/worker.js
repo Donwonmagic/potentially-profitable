@@ -73,6 +73,13 @@ import {
   deleteItem,
   isValidSaveItemIdShape,
   MAX_SAVES_PER_USER,
+  attachWatch,
+  listWatchesForUser,
+  detachWatch,
+  iterateAllWatches,
+  ALLOWED_SCHEDULES,
+  WATCHABLE_KINDS,
+  MAX_WATCHES_PER_USER,
 } from './lib/workbench.js';
 
 // Durable Object classes must be re-exported from the Worker entry
@@ -173,6 +180,15 @@ const API_ROUTES = {
   '/api/workbench/list':   handleWorkbenchList,
   '/api/workbench/get':    handleWorkbenchGet,
   '/api/workbench/delete': handleWorkbenchDelete,
+  // Phase 3 (Workshop) — Watch scaffolding. Endpoints are live now
+  // so the UI can let an operator opt in / out, but the cron that
+  // actually re-runs the underlying check is commented out in
+  // wrangler.jsonc until ops is ready to flip it on. Until then
+  // attaching a watch persists the intent without consuming any
+  // upstream API quota.
+  '/api/workbench/watch':         handleWorkbenchWatchAttach,
+  '/api/workbench/watch-list':    handleWorkbenchWatchList,
+  '/api/workbench/watch-delete':  handleWorkbenchWatchDelete,
 };
 
 
@@ -217,7 +233,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -411,6 +427,63 @@ export default {
 
     // Fall through to the static-asset server.
     return env.ASSETS.fetch(request);
+  },
+
+  // ============================================================
+  // Phase 3 (Workshop) — scheduled() Cron Trigger handler.
+  // ============================================================
+  //
+  // Wrangler.jsonc's `triggers.crons` stays commented out until
+  // ops is ready to flip on Watch. When that lands, this handler
+  // fires on the configured cadence (proposed: daily at 14:00 UTC).
+  //
+  // Today's behavior (cron disabled):
+  //   - The handler is exported but never invoked.
+  //   - Code below is the scaffold so a future flip-the-switch
+  //     change is one wrangler.jsonc edit, not a code release.
+  //
+  // Tomorrow's behavior (cron enabled):
+  //   1. iterateAllWatches(env) yields { sub, watch } for every
+  //      watch row in AUTH_SESSIONS.
+  //   2. For each, look up the underlying save:<sub>:<savedItemId>,
+  //      re-run the kind's check against the saved URL/query,
+  //      compare the new score to watch.lastScore + watch.baselineScore.
+  //   3. If the delta crosses a per-kind threshold, send a diff
+  //      email via Resend (the existing email.js pipeline).
+  //   4. recordWatchCheck(env, sub, savedItemId, newScore).
+  //
+  // Re-check functions live in src/lib/watch-checks.js (a Phase 3
+  // implementation file, not in this scaffolding sprint). Each
+  // function takes (env, savedItem) and returns a number 0..100.
+  //
+  // The handler is wrapped so a single watch's failure doesn't
+  // halt the run — log + continue.
+  async scheduled(controller, env, ctx) {
+    // Guard rails: refuse to run if the auth bindings aren't
+    // configured. The cron staying enabled with a missing namespace
+    // would otherwise log an error every tick.
+    if (!env || !env.AUTH_SESSIONS) {
+      console.warn('[cron] scheduled() invoked but AUTH_SESSIONS missing; skipping');
+      return;
+    }
+    // Phase 3 implementation hook lives here. For the scaffolding
+    // commit, just log the cron tick so ops can see it firing if
+    // they uncomment the trigger as a smoke test.
+    let count = 0;
+    try {
+      for await (const _entry of iterateAllWatches(env)) {
+        count++;
+        // Phase 3: dispatch to the per-kind re-check fn here.
+      }
+    } catch (err) {
+      console.warn('[cron] iterateAllWatches failed', err && err.message);
+    }
+    console.log(JSON.stringify({
+      event: 'cron.watch_tick',
+      cron: (controller && controller.cron) || null,
+      scheduledTime: (controller && controller.scheduledTime) || null,
+      watchCount: count,
+    }));
   },
 };
 
@@ -3998,6 +4071,79 @@ async function handleWorkbenchDelete(request, env, ctx) {
     return jsonResponse({ ok: false, error: result.error }, 400);
   }
   return jsonResponse({ ok: true, deleted: result.deleted }, 200);
+}
+
+
+// ============================================================
+// Phase 3 (Workshop) — /api/workbench/watch{-list,-delete}
+// ============================================================
+//
+// Attaches a re-check schedule to an existing saved item. The
+// underlying Cron Trigger that actually runs the re-checks is
+// commented out in wrangler.jsonc until ops is ready (see the
+// scheduled() export below — it ships as a no-op for now). So
+// these endpoints persist intent and let the UI render a Watch
+// list, but no upstream API quota burns until the cron flips on.
+
+// POST /api/workbench/watch
+//   body: { savedItemId, schedule }   schedule: 'daily' | 'weekly'
+// Returns: { ok: true, watch: {...} }
+async function handleWorkbenchWatchAttach(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const savedItemId = typeof body.savedItemId === 'string' ? body.savedItemId.trim() : '';
+  const schedule    = typeof body.schedule    === 'string' ? body.schedule.trim()    : '';
+  const result = await attachWatch(env, auth.sub, savedItemId, schedule);
+  if (!result.ok) {
+    if (result.error === 'limit-reached') {
+      return jsonResponse({ ok: false, error: 'limit-reached', max: result.max }, 409);
+    }
+    if (result.error === 'save-not-found') {
+      return jsonResponse({ ok: false, error: 'save-not-found' }, 404);
+    }
+    if (result.error === 'kind-not-watchable' || result.error === 'invalid-id' || result.error === 'invalid-schedule') {
+      return jsonResponse({ ok: false, error: result.error }, 400);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 500);
+  }
+  return jsonResponse({ ok: true, watch: result.watch }, 200);
+}
+
+// GET /api/workbench/watch-list
+// Returns: { ok: true, items: [...], max }
+async function handleWorkbenchWatchList(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = await listWatchesForUser(env, auth.sub);
+  return jsonResponse({ ok: true, items, max: MAX_WATCHES_PER_USER }, 200);
+}
+
+// POST /api/workbench/watch-delete
+//   body: { savedItemId }
+// Returns: { ok: true, detached: boolean }
+async function handleWorkbenchWatchDelete(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const savedItemId = typeof body.savedItemId === 'string' ? body.savedItemId.trim() : '';
+  const result = await detachWatch(env, auth.sub, savedItemId);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, detached: result.detached }, 200);
 }
 
 

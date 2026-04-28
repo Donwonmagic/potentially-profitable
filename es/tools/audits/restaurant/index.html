@@ -4142,6 +4142,18 @@
   }
   .share-toast.visible { opacity: 1; }
 
+  /* Phase 2 (Workshop) — Guardar en mi Taller. */
+  .audit-save{margin-top:18px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .audit-save[hidden]{display:none}
+  .audit-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .audit-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .audit-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .audit-save-btn[disabled]{opacity:.6;cursor:wait}
+  .audit-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .audit-save-link:hover{border-color:var(--ink)}
+  .audit-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .audit-save-msg.error{color:var(--rust)}
+
   .share-platforms {
     display: flex;
     gap: 8px;
@@ -5283,6 +5295,16 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
           </div>
+
+          <div class="audit-save" id="auditSave" hidden>
+            <p class="audit-save-text" id="auditSaveText">Guarda este diagnóstico en tu Taller para que te siga entre dispositivos.</p>
+            <button type="button" class="audit-save-btn" id="auditSaveBtn" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Guardar en mi Taller
+            </button>
+            <a class="audit-save-link" id="auditSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Faudits%2Frestaurant%2F" hidden>Acceder para guardar</a>
+            <span class="audit-save-msg" id="auditSaveMsg" hidden role="status"></span>
+          </div>
         </div>
       </div>
 
@@ -5978,8 +6000,25 @@
 <script>window.__muntinLang = "es";</script>
 <script src="/tools/audits/restaurant/subtypes.js"></script>
 <script src="/tools/audits/restaurant/restaurant-checks.js"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
+  // Phase 2 (Workshop) — Save-to-Workbench handle.
+  var wbHandle = null;
+  function maybeShowSaveAffordance() {
+    if (!wbHandle) return;
+    var last = window.__auditLastResult;
+    if (!last) return;
+    try {
+      var payload = (typeof buildSnapshotPayload === 'function')
+        ? buildSnapshotPayload(last)
+        : null;
+      if (payload) wbHandle.showAffordance(payload);
+    } catch (err) {
+      try { console.warn('[workbench] showAffordance failed', err); } catch (_) {}
+    }
+  }
+
   var form          = document.getElementById('auditForm');
   var input         = document.getElementById('auditUrl');
   var submitBtn     = document.getElementById('auditSubmit');
@@ -13582,6 +13621,8 @@
       unverifiedCount: priorityResult.unverifiedCount || 0,
       unverifiedPenaltyApplied: (priorityResult.unverifiedWeight || 0) > 0
     };
+    // Phase 2 (Workshop) — surface the Guardar-en-Taller affordance.
+    maybeShowSaveAffordance();
 
     // Sprint H1: save a compact snapshot of this audit to
     // localStorage (per URL). The next time this URL is audited,
@@ -16014,6 +16055,33 @@
       }, 300);
     } catch (e) { /* no-op */ }
   })();
+
+  // Phase 2 (Workshop) — Guardar-en-Taller wiring (ES locale).
+  if (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function') {
+    wbHandle = MuntinWorkbench.attach({
+      elements: {
+        box:  '#auditSave',
+        btn:  '#auditSaveBtn',
+        link: '#auditSaveLink',
+        text: '#auditSaveText',
+        msg:  '#auditSaveMsg',
+      },
+      locale: 'es',
+      kind:   'audit',
+      titleFor: function (p) {
+        var u = String((p && p.auditedUrl) || '').replace(/^https?:\/\//i, '').replace(/\/$/, '');
+        return 'Diagnóstico — ' + (u || 'sin título');
+      },
+      onRehydrate: function (payload) {
+        if (typeof renderSnapshotView === 'function' && payload) {
+          renderSnapshotView(payload);
+        }
+      },
+      workbenchUrl: '/es/workbench/',
+      signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Faudits%2Frestaurant%2F',
+    });
+    maybeShowSaveAffordance();
+  }
 })();
 </script>
 
