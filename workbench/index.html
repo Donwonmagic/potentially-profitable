@@ -205,7 +205,13 @@
 
       items.forEach(function (item) {
         var label = KIND_LABELS[item.kind] || item.kind;
-        var openUrl = KIND_URLS[item.kind] || '/tools/';
+        var openBase = KIND_URLS[item.kind] || '/tools/';
+        // Pass ?saved=<id> so the tool can rehydrate the saved
+        // result without re-running its API call. Tools that don't
+        // implement rehydration yet will silently ignore the param
+        // and just open at the form (still useful — user lands
+        // somewhere reasonable).
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
         var row = document.createElement('article');
         row.className = 'wb-item';
         row.setAttribute('data-id', item.id);

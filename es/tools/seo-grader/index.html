@@ -662,6 +662,47 @@
         btn.textContent = 'Calificar';
       });
   });
+
+  // Phase 2 (Workshop) — rehidratar desde un item guardado.
+  function rehydrateFromSaved(id) {
+    fetch('/api/workbench/get?id=' + encodeURIComponent(id), {
+      credentials: 'same-origin',
+    }).then(function (r) {
+      if (r.status === 401) {
+        window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+        throw new Error('redirect');
+      }
+      if (!r.ok) throw new Error('not-found');
+      return r.json();
+    }).then(function (data) {
+      if (!data || !data.ok || !data.item) return;
+      var p = data.item.payload || {};
+      var url = p.url || '';
+      if (input && url) input.value = url;
+      var titleResult = gradeTitle(p.title || '');
+      var descResult  = gradeDesc(p.description || '');
+      renderCard('title', titleResult, titleResult.title);
+      renderCard('desc',  descResult,  descResult.desc);
+      result.classList.add('visible');
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (saveBox) saveBox.hidden = false;
+      if (saveBtn) saveBtn.hidden = true;
+      if (saveLink) saveLink.hidden = true;
+      if (saveText) saveText.textContent = 'Cargado desde tu Taller. Vuelve a calificar arriba para actualizarlo.';
+      lastSavePayload = p;
+
+      try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+    }).catch(function (err) {
+      if (err && err.message === 'redirect') return;
+    });
+  }
+
+  try {
+    var __sp = new URLSearchParams(window.location.search);
+    var __sid = __sp.get('saved');
+    if (__sid) rehydrateFromSaved(__sid);
+  } catch (_) { /* navegador antiguo */ }
 })();
 </script>
 </body>

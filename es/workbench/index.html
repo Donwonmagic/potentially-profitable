@@ -196,7 +196,8 @@
 
       items.forEach(function (item) {
         var label = KIND_LABELS[item.kind] || item.kind;
-        var openUrl = KIND_URLS[item.kind] || '/es/tools/';
+        var openBase = KIND_URLS[item.kind] || '/es/tools/';
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
         var row = document.createElement('article');
         row.className = 'wb-item';
         row.setAttribute('data-id', item.id);
