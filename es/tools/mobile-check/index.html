@@ -298,6 +298,7 @@
   </div>
 </footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script>
 (function() {
   var form = document.getElementById('mobForm');
@@ -351,9 +352,29 @@
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=accessibility';
 
-    fetch(api)
-      .then(function(r) { return r.json(); })
+    var pendingResponse = null;
+    fetch(api, { signal: AbortSignal.timeout(8000) })
+      .then(function(r) {
+        pendingResponse = r;
+        return r.json().catch(function(){ return {}; });
+      })
       .then(function(data) {
+        if (pendingResponse && !pendingResponse.ok) {
+          var bodySnip = data && data.error && data.error.message ? data.error.message : '';
+          var classified = (typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.classifyFetchError(null, {
+                status: pendingResponse.status,
+                headers: pendingResponse.headers,
+                bodySnippet: bodySnip
+              })
+            : { messageEn: 'Could not check that URL. ' + bodySnip, messageEs: 'No se pudo revisar esa URL. ' + bodySnip };
+          var locale = document.documentElement.lang === 'en' ? 'en' : 'es';
+          throw Object.assign(new Error(
+            (typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.localizedMessage(classified, locale)
+              : classified.messageEs
+          ), { _classified: classified });
+        }
         if (data.error) throw new Error(data.error.message || 'Error de la API');
 
         var audits = data.lighthouseResult.audits || {};
@@ -415,7 +436,15 @@
         }
       })
       .catch(function(err) {
-        alert('No se pudo revisar esa URL. ' + (err.message || 'Revisa la dirección e intenta de nuevo.'));
+        var locale = document.documentElement.lang === 'en' ? 'en' : 'es';
+        var classified = err && err._classified
+          ? err._classified
+          : ((typeof MuntinFetchError !== 'undefined')
+              ? MuntinFetchError.classifyFetchError(err, null)
+              : { messageEn: err && err.message ? err.message : 'Could not check that URL.', messageEs: err && err.message ? err.message : 'No se pudo revisar esa URL.' });
+        alert((typeof MuntinFetchError !== 'undefined')
+          ? MuntinFetchError.localizedMessage(classified, locale)
+          : classified.messageEs);
       })
       .finally(function() {
         btn.disabled = false;
