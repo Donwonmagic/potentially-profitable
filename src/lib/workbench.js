@@ -40,7 +40,7 @@ const ITEM_ID_LENGTH   = 10;
 // surprising rows.
 const ALLOWED_KINDS = new Set([
   'audit', 'seo', 'gbp', 'mobile', 'schema', 'speed',
-  'margin', 'plate', 'photo', 'menu', 'brand',
+  'margin', 'plate', 'photo', 'menu', 'menu-copy', 'brand',
   'open-hours', 'compare', 'tech-stack', 'search-ideas',
 ]);
 
