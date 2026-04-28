@@ -84,6 +84,17 @@
   .gbp-check p{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:0}
   .gbp-cta{margin-top:28px;padding:28px 32px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
   .gbp-cta p{font-size:15px;color:var(--stone);margin:0 0 16px}
+  /* Phase 2 (Workshop) — Guardar en mi Taller. */
+  .gbp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .gbp-save[hidden]{display:none}
+  .gbp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .gbp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .gbp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .gbp-save-btn[disabled]{opacity:.6;cursor:wait}
+  .gbp-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .gbp-save-link:hover{border-color:var(--ink)}
+  .gbp-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .gbp-save-msg.error{color:var(--rust)}
   /* Gauge principal — aro SVG con la calificación agregada.
      Accesible: envuelto en <figure role="img" aria-label="…"> para
      que los lectores de pantalla anuncien el grado sin recorrer el
@@ -341,6 +352,15 @@
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <a class="btn btn-primary" id="gbpAuditLink" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a>
         </div>
+    </div>
+    <div class="gbp-save" id="gbpSave" hidden>
+      <p class="gbp-save-text" id="gbpSaveText">Guarda esta calificación en tu Taller para que te siga entre dispositivos.</p>
+      <button type="button" class="gbp-save-btn" id="gbpSaveBtn" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar en mi Taller
+      </button>
+      <a class="gbp-save-link" id="gbpSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fgbp-grader%2F" hidden>Acceder para guardar</a>
+      <span class="gbp-save-msg" id="gbpSaveMsg" hidden role="status"></span>
     </div>
   </div>
 </div></div></section>
@@ -1085,6 +1105,124 @@
       deepScanState.data=(resp.snapshot.results&&resp.snapshot.results.deepScan)||null;
       renderFor(chosen,peerMedians,resp.snapshot.meta&&resp.snapshot.meta.query||'',!!(resp.snapshot.meta&&resp.snapshot.meta.picked));
     }).catch(function(){});
+  })();
+
+  // ----- Phase 2 (Workshop) — Guardar en mi Taller + ?saved=<id>.
+  (function wireWorkshop(){
+    var saveBox  = document.getElementById('gbpSave');
+    var saveBtn  = document.getElementById('gbpSaveBtn');
+    var saveLink = document.getElementById('gbpSaveLink');
+    var saveText = document.getElementById('gbpSaveText');
+    var saveMsg  = document.getElementById('gbpSaveMsg');
+
+    var authState = { checked: false, signedIn: false };
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then(function (r) { authState = { checked: true, signedIn: r.status === 200 }; updateAffordance(); })
+      .catch(function ()  { authState = { checked: true, signedIn: false }; updateAffordance(); });
+
+    var resultEl = document.getElementById('gbpResult');
+    if (!resultEl || !saveBox) return;
+    var mo = new MutationObserver(function () {
+      if (resultEl.classList.contains('visible')) {
+        if (saveBox.hidden) saveBox.hidden = false;
+        updateAffordance();
+      } else {
+        saveBox.hidden = true;
+      }
+    });
+    mo.observe(resultEl, { attributes: true, attributeFilter: ['class'] });
+
+    function updateAffordance() {
+      if (saveMsg) { saveMsg.hidden = true; saveMsg.textContent = ''; saveMsg.classList.remove('error'); }
+      if (authState.signedIn) {
+        if (saveBtn)  saveBtn.hidden  = false;
+        if (saveLink) saveLink.hidden = true;
+        if (saveText) saveText.textContent = 'Guarda esta calificación en tu Taller para que te siga entre dispositivos.';
+      } else {
+        if (saveBtn)  saveBtn.hidden  = true;
+        if (saveLink) saveLink.hidden = false;
+        if (saveText) saveText.textContent = 'Accede para guardar esta calificación y que te siga entre dispositivos.';
+      }
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', function () {
+        var chosen = deepScanState.chosen;
+        if (!chosen) return;
+        saveBtn.disabled = true;
+        var pretty = chosen.displayName || chosen.title || (chosen.formattedAddress || 'Sin título');
+        var body = {
+          kind: 'gbp',
+          title: 'Calificación GBP — ' + pretty,
+          payload: {
+            chosen: chosen,
+            deepScan: deepScanState.data || null,
+            peerMedians: deepScanState.peerMedians || null,
+            query: deepScanState.query || '',
+            wasPicked: !!deepScanState.wasPicked,
+            savedAt: Date.now(),
+          },
+        };
+        fetch('/api/workbench/save', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(body),
+        }).then(function (r) {
+          if (r.ok) {
+            if (saveMsg) { saveMsg.textContent = '✓ Guardado en tu Taller.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
+            saveBtn.hidden = true;
+            if (saveText) saveText.textContent = 'Tus items guardados viven en /es/workbench/. Abre El Taller para gestionarlos.';
+          } else if (r.status === 401) {
+            authState.signedIn = false;
+            updateAffordance();
+            if (saveText) saveText.textContent = 'Tu sesión venció. Accede para guardar esta calificación.';
+          } else {
+            return r.json().catch(function () { return {}; }).then(function (data) {
+              var msg = data && data.error === 'limit-reached'
+                ? 'Llegaste al límite de items guardados. Elimina algunos en /es/workbench/ primero.'
+                : 'No se pudo guardar. Inténtalo de nuevo en un momento.';
+              if (saveMsg) { saveMsg.textContent = msg; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+              saveBtn.disabled = false;
+            });
+          }
+        }).catch(function () {
+          if (saveMsg) { saveMsg.textContent = 'No pudimos conectar con el servidor. Intenta de nuevo en un momento.'; saveMsg.classList.add('error'); saveMsg.hidden = false; }
+          saveBtn.disabled = false;
+        });
+      });
+    }
+
+    var __sp = null;
+    try { __sp = new URLSearchParams(window.location.search || ''); } catch (_) {}
+    var savedId = __sp ? __sp.get('saved') : null;
+    if (savedId) {
+      fetch('/api/workbench/get?id=' + encodeURIComponent(savedId), { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 401) {
+            window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
+            throw new Error('redirect');
+          }
+          if (!r.ok) throw new Error('not-found');
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data || !data.ok || !data.item) return;
+          var p = data.item.payload || {};
+          var chosen = p.chosen;
+          if (!chosen) return;
+          deepScanState.data        = p.deepScan || null;
+          deepScanState.peerMedians = p.peerMedians || null;
+          deepScanState.query       = p.query || '';
+          deepScanState.wasPicked   = !!p.wasPicked;
+          renderFor(chosen, p.peerMedians || null, p.query || '', !!p.wasPicked);
+          if (saveText) saveText.textContent = 'Cargado desde tu Taller. Vuelve a buscar arriba para actualizarlo.';
+          if (saveBtn)  saveBtn.hidden = true;
+          if (saveLink) saveLink.hidden = true;
+          try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
+        })
+        .catch(function (err) { if (err && err.message === 'redirect') return; });
+    }
   })();
 })();
 </script>
