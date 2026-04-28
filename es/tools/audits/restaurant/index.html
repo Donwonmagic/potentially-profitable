@@ -7880,6 +7880,24 @@
   var PROGRESS_TARGET_SECONDS = 28; // typical PSI call duration
   var loadingInterval = null; // kept for back-compat with older callers
 
+  // T5: rechazo explícito de localhost/red privada. El check de "hay
+  // un punto en el hostname" dejaba pasar `https://localhost:8080`.
+  // Ahora detectamos los rangos privados y devolvemos un marcador
+  // 'private' para que el llamador muestre el mensaje correcto.
+  function isPrivateOrLocalHost(host) {
+    if (!host) return true;
+    var h = String(host).toLowerCase();
+    if (h === 'localhost' || h.indexOf('localhost:') === 0) return true;
+    if (h === '0.0.0.0' || h.indexOf('0.0.0.0:') === 0) return true;
+    if (/^127\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^169\.254\./.test(h) || h === '::1' || h.indexOf('[::1]') === 0) return true;
+    if (/\.local(:\d+)?$/.test(h) || /\.internal(:\d+)?$/.test(h)) return true;
+    return false;
+  }
+
   function normalizeUrl(raw) {
     if (!raw) return null;
     raw = raw.trim();
@@ -7889,6 +7907,7 @@
       var u = new URL(raw);
       if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
       if (!u.hostname || u.hostname.indexOf('.') === -1) return null;
+      if (isPrivateOrLocalHost(u.host)) return 'private';
       return u.href;
     } catch (e) { return null; }
   }
@@ -14099,6 +14118,13 @@
       return;
     }
     var url = normalizeUrl(input.value);
+    if (url === 'private') {
+      showError(
+        "Sólo podemos auditar URLs accesibles públicamente.",
+        "Eso parece una dirección de localhost o de red privada (localhost, 127.x.x.x, 10.x.x.x, 192.168.x.x, .local, etc.). Lighthouse hace fetch desde la red de Google — no puede llegar a direcciones detrás de tu firewall. Despliega el sitio a una URL de staging en internet pública e inténtalo con esa."
+      );
+      return;
+    }
     if (!url) {
       showError(
         "That doesn't look like a valid URL.",
@@ -15555,7 +15581,7 @@
         var raw = inputs[i].value.trim();
         if (!raw) continue;
         var normalized = normalizeUrl(raw);
-        if (normalized) urls.push(normalized);
+        if (normalized && normalized !== 'private') urls.push(normalized);
       }
       if (!urls.length) {
         compareError.hidden = false;
@@ -15945,7 +15971,7 @@
       var preset = params.get('url');
       if (!preset) return;
       var normalized = normalizeUrl(preset);
-      if (!normalized) return;
+      if (!normalized || normalized === 'private') return;
       input.value = normalized;
       lastAuditUrl = normalized;
       // Hydrate any saved user overrides from the URL before the

@@ -839,6 +839,15 @@
     deepScanState.inFlight=true;
     var btn=document.getElementById('gbpDeepBtn');
     if(btn){btn.disabled=true;btn.textContent='Escaneando…'}
+    // T5: reclamar el lockout de 24h ANTES del fetch, no después.
+    // Antes de T5 el lockout sólo se ponía en la rama de éxito — un
+    // usuario que machacaba el botón durante los 5 segundos del fetch
+    // podía encolar 3-4 Deep Scans en paralelo contra la cuota.
+    // Reclamarlo arriba significa que un segundo clic ve el lockout
+    // de inmediato. Si el fetch falla, NO liberamos el lockout — un
+    // cooldown de 24h tras un fallo es correcto (el usuario no debe
+    // reintentar en bucle, p. ej. tras un 5xx).
+    gbpDeepLockSet(placeId);
 
     var site=deepScanState.chosen&&deepScanState.chosen.website;
     var detailsP=fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId)).then(function(r){return r.json()});
@@ -855,7 +864,6 @@
           ownerReplyRate:      (typeof details.ownerReplyRate==='number')?details.ownerReplyRate:null,
           nap:                 computeNap(deepScanState.chosen,schema)
         };
-        gbpDeepLockSet(placeId);
         renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
         if(window.plausible)window.plausible('GBP Deep Scan',{props:{
           owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',

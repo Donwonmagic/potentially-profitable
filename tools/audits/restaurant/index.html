@@ -7889,6 +7889,33 @@
   var PROGRESS_TARGET_SECONDS = 28; // typical PSI call duration
   var loadingInterval = null; // kept for back-compat with older callers
 
+  // T5: explicit private-network / localhost reject. The audit found
+  // that the dot-in-hostname check let `https://localhost:8080`
+  // through (it contains a `.`); the downstream PSI fetch then fails
+  // with a confusing "couldn't reach that site" instead of the right
+  // message ("the site has to be public-internet reachable").
+  // The patterns below cover localhost, IPv4 private blocks, link-
+  // local, and `.local` mDNS — every common "this won't reach
+  // outside my network" address. Returns a special marker `private`
+  // so the caller can show the right error.
+  function isPrivateOrLocalHost(host) {
+    if (!host) return true;
+    var h = String(host).toLowerCase();
+    if (h === 'localhost' || h.indexOf('localhost:') === 0) return true;
+    if (h === '0.0.0.0' || h.indexOf('0.0.0.0:') === 0) return true;
+    // IPv4 loopback 127.x.x.x
+    if (/^127\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    // RFC 1918 private blocks
+    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    if (/^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(h)) return true;
+    // Link-local IPv4 + IPv6
+    if (/^169\.254\./.test(h) || h === '::1' || h.indexOf('[::1]') === 0) return true;
+    // mDNS / Bonjour (.local) and .internal TLD reservation
+    if (/\.local(:\d+)?$/.test(h) || /\.internal(:\d+)?$/.test(h)) return true;
+    return false;
+  }
+
   function normalizeUrl(raw) {
     if (!raw) return null;
     raw = raw.trim();
@@ -7898,6 +7925,10 @@
       var u = new URL(raw);
       if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
       if (!u.hostname || u.hostname.indexOf('.') === -1) return null;
+      // T5: explicit reject for private-network / localhost. Returning
+      // a string marker keeps the existing "null = bad URL" sentinel
+      // intact while letting the caller distinguish the cases.
+      if (isPrivateOrLocalHost(u.host)) return 'private';
       return u.href;
     } catch (e) { return null; }
   }
@@ -14108,6 +14139,13 @@
       return;
     }
     var url = normalizeUrl(input.value);
+    if (url === 'private') {
+      showError(
+        "We can only audit publicly reachable URLs.",
+        "That looks like a localhost or private-network address (localhost, 127.x.x.x, 10.x.x.x, 192.168.x.x, .local, etc.). Lighthouse fetches from Google's network — it can't reach addresses behind your firewall. Deploy the site to a staging URL on the public internet and try that."
+      );
+      return;
+    }
     if (!url) {
       showError(
         "That doesn't look like a valid URL.",
@@ -15564,7 +15602,11 @@
         var raw = inputs[i].value.trim();
         if (!raw) continue;
         var normalized = normalizeUrl(raw);
-        if (normalized) urls.push(normalized);
+        // T5: skip private/localhost addresses silently in the
+        // multi-URL compare flow. The user gets an empty result if
+        // they pasted only private URLs — same as the existing
+        // "no valid URLs" branch already handles below.
+        if (normalized && normalized !== 'private') urls.push(normalized);
       }
       if (!urls.length) {
         compareError.hidden = false;
@@ -15954,7 +15996,10 @@
       var preset = params.get('url');
       if (!preset) return;
       var normalized = normalizeUrl(preset);
-      if (!normalized) return;
+      // T5: skip private/localhost preset URLs (shouldn't happen for a
+      // shared preset, but defensive — a private URL from the URL
+      // fragment would otherwise hydrate the input and fail downstream).
+      if (!normalized || normalized === 'private') return;
       input.value = normalized;
       lastAuditUrl = normalized;
       // Hydrate any saved user overrides from the URL before the

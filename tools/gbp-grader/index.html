@@ -894,6 +894,16 @@
     deepScanState.inFlight=true;
     var btn=document.getElementById('gbpDeepBtn');
     if(btn){btn.disabled=true;btn.textContent='Scanning…'}
+    // T5: claim the 24h lockout BEFORE the fetch, not after. The
+    // pre-T5 order set the lockout in the success branch only — a
+    // user who hammered the button during the 5-second fetch could
+    // queue 3-4 parallel Deep Scans against quota before any settled.
+    // Claiming up-front means a user clicking again sees the lockout
+    // surface immediately. If the fetch fails, we DON'T release the
+    // lockout — a 24h cooldown after a failure is correct (the user
+    // shouldn't retry in a tight loop on, say, a 5xx; same lockout
+    // pattern the backend uses).
+    gbpDeepLockSet(placeId);
 
     var site=deepScanState.chosen&&deepScanState.chosen.website;
     var detailsP=fetch('/api/gbp-details?placeId='+encodeURIComponent(placeId)).then(function(r){return r.json()});
@@ -912,7 +922,6 @@
           ownerReplyRate:      (typeof details.ownerReplyRate==='number')?details.ownerReplyRate:null,
           nap:                 computeNap(deepScanState.chosen,schema)
         };
-        gbpDeepLockSet(placeId);  // mirror the 24h backend cache
         renderFor(deepScanState.chosen,deepScanState.peerMedians,deepScanState.query,deepScanState.wasPicked);
         if(window.plausible)window.plausible('GBP Deep Scan',{props:{
           owner_reply_bucket: (deepScanState.data.ownerReplyRate==null)?'unknown':deepScanState.data.ownerReplyRate>=0.6?'60+':deepScanState.data.ownerReplyRate>=0.2?'20-59':'lt20',
