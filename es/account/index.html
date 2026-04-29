@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--
+  Phase 3 (Workshop) — página de cuenta del operador.
+
+  Servidor-gated en src/worker.js: un GET anónimo a /es/account/
+  devuelve 404 antes de que se sirva este HTML. /api/auth/me
+  provee email + createdAt + lastSeenAt; /api/workbench/{list,
+  watch-list} dan los conteos de items guardados y vigilados.
+
+  Acción destructiva: el operador escribe su email para confirmar
+  intención, luego un token delete: de un solo uso (TTL 15 min)
+  llega al inbox; el enlace abre la página de confirmación, y el
+  POST hace el wipe. La separación protege contra prefetchers de
+  enlaces en gateways de email.
+-->
+<meta name="robots" content="noindex, nofollow" />
+<title>Tu cuenta — Taller de Muntin</title>
+<meta name="theme-color" content="#1F4E5B" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
+
+<style>
+  body { background: var(--surface-0); }
+  .ac-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .ac-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
+  .ac-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
+  .ac-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
+  .ac-back { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; text-decoration: none; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .ac-back:hover { border-color: var(--ink); color: var(--ink); }
+
+  .ac-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
+  .ac-card { max-width: 640px; margin: 0 auto; }
+
+  .ac-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
+  .ac-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
+  .ac-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0 0 36px; }
+
+  .ac-fields { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); padding: 8px 0; margin: 0 0 32px; box-shadow: var(--elev-1); }
+  .ac-field { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 16px 24px; align-items: baseline; border-bottom: 1px solid var(--line); }
+  .ac-field:last-child { border-bottom: 0; }
+  .ac-field-label { font-size: 13px; font-weight: 500; color: var(--stone); }
+  .ac-field-value { font-size: 15px; color: var(--ink); word-break: break-all; }
+  .ac-field-value.num { font-variant-numeric: tabular-nums; }
+
+  .ac-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 36px; }
+  .ac-stat { padding: 18px 22px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .ac-stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1; font-variant-numeric: tabular-nums; }
+  .ac-stat-label { font-size: 13px; color: var(--stone); margin: 8px 0 0; }
+
+  .ac-danger { padding: 24px 28px; background: var(--surface-1); border: 1px solid var(--status-bad-tint); border-radius: var(--r-md); }
+  .ac-danger h2 { font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--rust); margin: 0 0 10px; }
+  .ac-danger p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0 0 18px; }
+  .ac-danger-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: 1px solid var(--rust); border-radius: 999px; background: transparent; color: var(--rust); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+  .ac-danger-btn:hover { background: var(--rust); color: var(--cream); }
+
+  .ac-confirm { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--line); display: none; }
+  .ac-confirm[data-open="true"] { display: block; }
+  .ac-confirm label { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin: 0 0 6px; }
+  .ac-confirm input { width: 100%; padding: 12px 14px; border: 1px solid var(--line-input); border-radius: var(--r-input); background: var(--surface-2); color: var(--ink); font: inherit; font-size: 15px; min-height: 44px; transition: border-color var(--t-fast) var(--ease); }
+  .ac-confirm input:focus { border-color: var(--rust); outline: none; }
+  .ac-confirm-actions { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .ac-confirm-submit { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--rust); border-radius: 999px; background: var(--rust); color: var(--cream); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .ac-confirm-submit[disabled] { opacity: 0.6; cursor: wait; }
+  .ac-confirm-cancel { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; }
+  .ac-confirm-error { margin-top: 12px; padding: 12px 16px; background: var(--status-bad-tint); border: 1px solid var(--rust); border-radius: var(--r-input); color: var(--rust); font-size: 14px; line-height: 1.5; }
+  .ac-confirm-success { margin-top: 18px; padding: 16px 20px; background: var(--status-good-tint); border: 1px solid var(--status-good); border-radius: var(--r-md); }
+  .ac-confirm-success h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--status-good); margin: 0 0 6px; }
+  .ac-confirm-success p { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  @media (max-width: 560px) {
+    .ac-field { grid-template-columns: 1fr; gap: 6px; }
+    .ac-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<div class="ac-shell">
+  <header class="ac-top">
+    <a href="/" class="ac-mark" aria-label="Inicio de Muntin Digital">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital
+    </a>
+    <a href="/es/workbench/" class="ac-back">&larr; Volver al Taller</a>
+  </header>
+
+  <main id="main" class="ac-main">
+    <div class="ac-card">
+      <p class="ac-eyebrow">Cuenta</p>
+      <h1 class="ac-h1">Tu cuenta del Taller.</h1>
+      <p class="ac-sub">Lo básico de tu acceso, lo que está guardado contra tu cuenta, y cómo eliminarlo todo si quieres.</p>
+
+      <dl class="ac-fields">
+        <div class="ac-field">
+          <dt class="ac-field-label">Email</dt>
+          <dd class="ac-field-value" id="acEmail">&nbsp;</dd>
+        </div>
+        <div class="ac-field">
+          <dt class="ac-field-label">Cuenta creada</dt>
+          <dd class="ac-field-value num" id="acCreatedAt">&mdash;</dd>
+        </div>
+        <div class="ac-field">
+          <dt class="ac-field-label">Última visita</dt>
+          <dd class="ac-field-value num" id="acLastSeenAt">&mdash;</dd>
+        </div>
+      </dl>
+
+      <div class="ac-stats">
+        <div class="ac-stat">
+          <p class="ac-stat-num" id="acSavedCount">&mdash;</p>
+          <p class="ac-stat-label">Items guardados</p>
+        </div>
+        <div class="ac-stat">
+          <p class="ac-stat-num" id="acWatchCount">&mdash;</p>
+          <p class="ac-stat-label">Items vigilados</p>
+        </div>
+      </div>
+
+      <section class="ac-danger" aria-labelledby="acDangerH">
+        <h2 id="acDangerH">Eliminar mi cuenta</h2>
+        <p>Esto borra el registro de tu cuenta y todos los items guardados y vigilancias asociados. Las herramientas gratuitas, la biblioteca y las listas de verificación nunca requirieron acceso &mdash; eliminar tu cuenta deja todo eso intacto. Te enviaremos un email de confirmación; el enlace funciona una sola vez y vence en 15 minutos.</p>
+        <button type="button" class="ac-danger-btn" id="acDangerOpenBtn">Eliminar mi cuenta&hellip;</button>
+
+        <div class="ac-confirm" id="acConfirm" aria-live="polite">
+          <form id="acConfirmForm" novalidate>
+            <label for="acConfirmEmail">Escribe tu email para confirmar</label>
+            <input type="email" id="acConfirmEmail" autocomplete="off" placeholder="tu@ejemplo.com" />
+            <div class="ac-confirm-actions">
+              <button type="submit" class="ac-confirm-submit" id="acConfirmSubmit">Enviar email de confirmación</button>
+              <button type="button" class="ac-confirm-cancel" id="acConfirmCancel">Cancelar</button>
+            </div>
+            <div class="ac-confirm-error" id="acConfirmError" hidden role="alert"></div>
+          </form>
+          <div class="ac-confirm-success" id="acConfirmSuccess" hidden>
+            <h3>Revisa tu inbox.</h3>
+            <p>Mandamos un enlace de confirmación. El enlace funciona una sola vez y vence en 15 minutos. Al hacer clic se abre una página final &ldquo;Sí, eliminar&rdquo; &mdash; el wipe no corre hasta que confirmes ahí.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  var emailEl     = document.getElementById('acEmail');
+  var createdEl   = document.getElementById('acCreatedAt');
+  var lastSeenEl  = document.getElementById('acLastSeenAt');
+  var savedEl     = document.getElementById('acSavedCount');
+  var watchEl     = document.getElementById('acWatchCount');
+
+  var openBtn     = document.getElementById('acDangerOpenBtn');
+  var confirmWrap = document.getElementById('acConfirm');
+  var confirmForm = document.getElementById('acConfirmForm');
+  var confirmIn   = document.getElementById('acConfirmEmail');
+  var confirmSub  = document.getElementById('acConfirmSubmit');
+  var confirmCnc  = document.getElementById('acConfirmCancel');
+  var confirmErr  = document.getElementById('acConfirmError');
+  var confirmSuc  = document.getElementById('acConfirmSuccess');
+
+  var sessionEmail = '';
+
+  function formatDate(ts) {
+    if (typeof ts !== 'number' || !isFinite(ts)) return '—';
+    try {
+      return new Intl.DateTimeFormat('es', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(ts));
+    } catch (_) { return new Date(ts).toISOString().slice(0, 10); }
+  }
+
+  Promise.all([
+    fetch('/api/auth/me',                { credentials: 'same-origin' }),
+    fetch('/api/workbench/list',         { credentials: 'same-origin' }),
+    fetch('/api/workbench/watch-list',   { credentials: 'same-origin' }),
+  ]).then(function (rs) {
+    if (rs[0].status === 401) {
+      window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/account/');
+      throw new Error('redirect');
+    }
+    return Promise.all([
+      rs[0].ok ? rs[0].json() : null,
+      rs[1].ok ? rs[1].json() : null,
+      rs[2].ok ? rs[2].json() : null,
+    ]);
+  }).then(function (data) {
+    var me = data[0] || {};
+    sessionEmail = String(me.email || '');
+    if (emailEl)    emailEl.textContent    = sessionEmail || '—';
+    if (createdEl)  createdEl.textContent  = formatDate(me.createdAt);
+    if (lastSeenEl) lastSeenEl.textContent = formatDate(me.lastSeenAt);
+    // Ambos /api/workbench/list y /api/workbench/watch-list devuelven
+    // { ok, items, max } — misma forma, distinto prefijo servidor.
+    var savedItems = (data[1] && Array.isArray(data[1].items)) ? data[1].items.length : null;
+    var watches    = (data[2] && Array.isArray(data[2].items)) ? data[2].items.length : null;
+    if (savedEl) savedEl.textContent = (savedItems == null) ? '—' : String(savedItems);
+    if (watchEl) watchEl.textContent = (watches    == null) ? '—' : String(watches);
+  }).catch(function (err) {
+    if (err && err.message === 'redirect') return;
+  });
+
+  if (openBtn) openBtn.addEventListener('click', function () {
+    confirmWrap.setAttribute('data-open', 'true');
+    openBtn.style.display = 'none';
+    if (confirmIn) confirmIn.focus();
+  });
+
+  if (confirmCnc) confirmCnc.addEventListener('click', function () {
+    confirmWrap.removeAttribute('data-open');
+    if (openBtn) openBtn.style.display = '';
+    if (confirmErr) { confirmErr.hidden = true; confirmErr.textContent = ''; }
+    if (confirmIn) confirmIn.value = '';
+  });
+
+  if (confirmForm) confirmForm.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (confirmErr) { confirmErr.hidden = true; confirmErr.textContent = ''; }
+    var typed = confirmIn && confirmIn.value ? confirmIn.value.trim() : '';
+    if (!typed) {
+      if (confirmIn) confirmIn.focus();
+      return;
+    }
+    if (sessionEmail && typed.toLowerCase() !== sessionEmail.toLowerCase()) {
+      if (confirmErr) {
+        confirmErr.textContent = 'Ese email no coincide con la cuenta de esta sesión. Escribe el email con el que accediste.';
+        confirmErr.hidden = false;
+      }
+      return;
+    }
+    if (confirmSub) confirmSub.disabled = true;
+    fetch('/api/auth/account-delete-request', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ email: typed, locale: 'es' }),
+    }).then(function (r) {
+      if (r.ok) {
+        confirmForm.hidden = true;
+        if (confirmSuc) confirmSuc.hidden = false;
+        try {
+          if (typeof window.plausible === 'function') {
+            window.plausible('Workbench Account Delete Request', { props: { locale: 'es' } });
+          }
+        } catch (_) { /* analytics is best-effort */ }
+        return;
+      }
+      if (r.status === 401) {
+        window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/account/');
+        return;
+      }
+      if (confirmErr) {
+        confirmErr.textContent = (r.status === 400)
+          ? 'Ese email no coincide con esta cuenta. Inténtalo de nuevo.'
+          : 'No se pudo enviar el email de confirmación. Inténtalo de nuevo en un momento.';
+        confirmErr.hidden = false;
+      }
+      if (confirmSub) confirmSub.disabled = false;
+    }).catch(function () {
+      if (confirmErr) {
+        confirmErr.textContent = 'No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.';
+        confirmErr.hidden = false;
+      }
+      if (confirmSub) confirmSub.disabled = false;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

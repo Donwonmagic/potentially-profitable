@@ -104,6 +104,7 @@
     </a>
     <div class="wb-account">
       <span class="wb-account-email" data-bind="email">&nbsp;</span>
+      <a href="/account/" class="wb-signout">Account</a>
       <form method="POST" action="/api/auth/signout" style="margin:0;">
         <button type="submit" class="wb-signout">Sign out</button>
       </form>
@@ -283,6 +284,13 @@
             var watch = (data && data.watch) || { schedule: schedule };
             watchIndex[itemId] = watch;
             replaceWatchSlot(itemId, watch);
+            try {
+              if (typeof window.plausible === 'function') {
+                var row = slot.closest('.wb-row');
+                var kind = row ? row.getAttribute('data-kind') : '';
+                window.plausible('Workbench Watch Attach', { props: { kind: kind || '?', schedule: schedule } });
+              }
+            } catch (_) { /* analytics is best-effort */ }
           });
         }
         if (r.status === 409) {
@@ -317,6 +325,13 @@
         if (r.ok) {
           delete watchIndex[itemId];
           replaceWatchSlot(itemId, null);
+          try {
+            if (typeof window.plausible === 'function') {
+              var row = slot.closest('.wb-row');
+              var kind = row ? row.getAttribute('data-kind') : '';
+              window.plausible('Workbench Watch Detach', { props: { kind: kind || '?' } });
+            }
+          } catch (_) { /* analytics is best-effort */ }
         } else if (r.status === 401) {
           window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
         } else {

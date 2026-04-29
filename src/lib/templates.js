@@ -791,3 +791,123 @@ export function magicLinkEmail(body) {
 
   return { subject, html, text: txt };
 }
+
+// ============================================================
+// Sprint 0 (Workshop) — account-delete confirmation email.
+// ============================================================
+//
+// Phase 3 destructive-action two-step. Operator types their email
+// on /account/, server mints a single-use `delete:<TOKEN10>` (15-min
+// TTL), this email arrives. Clicking the button finalizes the wipe.
+//
+// Tone: explicit and non-reversible. The user gets one chance to
+// back out by NOT clicking; the link itself does the work. Mirrors
+// the magic-link email's structure so the two feel like one system.
+export function accountDeleteEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.accountDeleteEmail === 'function') {
+    return ES.accountDeleteEmail(body);
+  }
+  const link = String(body.link || '').trim();
+  const email = String(body.email || '').trim();
+  const subject = 'Confirm: delete your Muntin Workshop account';
+
+  const html = htmlShell(
+    'Confirm account deletion',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">You asked to delete the Muntin Workshop account for <strong>' + escapeHtml(email) + '</strong>. Click the button below to finalize. The link works <strong>once</strong> and expires in <strong>15 minutes</strong>.</p>',
+      '<p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:#8A3E16;background:#F7E7DC;border:1px solid #C28B2E;border-radius:8px;padding:14px 18px;"><strong>This is permanent.</strong> Clicking will delete your account record and every saved item and watch attached to it. There is no undo and no recovery — re-signing-in afterwards starts a fresh, empty Workshop.</p>',
+      primaryCta(link, 'Yes, delete my account'),
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">If the button doesn\'t work, paste this link into your browser:</p>',
+      '<p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#1F4E5B;word-break:break-all;"><a href="' + escapeHtml(link) + '" style="color:#1F4E5B;text-decoration:underline;">' + escapeHtml(link) + '</a></p>',
+      '<p style="margin:24px 0 0;font-size:14px;line-height:1.55;color:#6B6B6B;"><strong>If you didn\'t request this</strong>, ignore the email — nothing happens until the link is clicked. The link expires on its own.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'You requested account deletion from muntin.digital.'
+  );
+
+  const txt = [
+    'Confirm: delete your Muntin Workshop account.',
+    '',
+    'You asked to delete the account for ' + email + '. Click the link to finalize. It works once and expires in 15 minutes.',
+    '',
+    'THIS IS PERMANENT. The wipe deletes your account record and every saved item and watch attached to it. No undo, no recovery.',
+    '',
+    link,
+    '',
+    "If you didn't request this, ignore the email — nothing happens until the link is clicked.",
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// ============================================================
+// Phase 4 (Workshop) — watch-list diff email.
+// ============================================================
+//
+// Sent by the cron-driven scheduled() handler when a saved item's
+// re-checked score crosses the per-kind threshold (≥3 delta or any
+// state change). Tone: factual, no exclamation points, no marketing.
+// The subject names the change so an inbox preview tells the
+// operator everything before they open.
+//
+// body fields:
+//   { kindLabel, title, oldScore, newScore, link, locale, watchUrl }
+export function watchDiffEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.watchDiffEmail === 'function') {
+    return ES.watchDiffEmail(body);
+  }
+  const kindLabel = String(body.kindLabel || 'Saved item');
+  const title     = String(body.title || 'untitled');
+  const oldScore  = (typeof body.oldScore === 'number') ? body.oldScore : null;
+  const newScore  = (typeof body.newScore === 'number') ? body.newScore : null;
+  const delta     = (oldScore !== null && newScore !== null) ? (newScore - oldScore) : null;
+  const link      = String(body.link || '').trim();
+  const watchUrl  = String(body.watchUrl || '/workbench/').trim();
+
+  const direction = delta === null ? 'changed' : (delta > 0 ? 'improved' : 'dropped');
+  const arrow     = delta === null ? '→' : (delta > 0 ? '↑' : '↓');
+  const subject   = (delta !== null)
+    ? `${kindLabel} ${direction} ${Math.abs(delta)} pts: ${title}`
+    : `${kindLabel} changed: ${title}`;
+
+  const scoreLine = (oldScore !== null && newScore !== null)
+    ? '<p style="margin:0 0 18px;font-size:18px;line-height:1.55;color:#2A2D33;font-variant-numeric:tabular-nums;"><strong>' + oldScore + '</strong> &nbsp;' + arrow + '&nbsp; <strong>' + newScore + '</strong> <span style="color:#6B6B6B;font-size:14px;">(' + (delta > 0 ? '+' : '') + delta + ' pts)</span></p>'
+    : '<p style="margin:0 0 18px;font-size:16px;line-height:1.55;color:#2A2D33;">The state of this check changed since you last saw it.</p>';
+
+  const html = htmlShell(
+    kindLabel + ' ' + direction,
+    [
+      '<p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:#1F4E5B;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">' + escapeHtml(kindLabel) + '</p>',
+      '<p style="margin:0 0 18px;font-size:20px;line-height:1.35;color:#14161A;font-family:Georgia,\'Times New Roman\',serif;">' + escapeHtml(title) + '</p>',
+      scoreLine,
+      link ? primaryCta(link, 'Open the saved item') : '',
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">You\'re receiving this because you have a daily watch on this item. <a href="' + escapeHtml(watchUrl) + '" style="color:#1F4E5B;text-decoration:underline;">Manage your watches</a> any time.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'You have a watch on this saved item.'
+  );
+
+  const txt = [
+    kindLabel + ' ' + direction + ': ' + title,
+    '',
+    (oldScore !== null && newScore !== null)
+      ? oldScore + ' ' + arrow + ' ' + newScore + '  (' + (delta > 0 ? '+' : '') + delta + ' pts)'
+      : 'The state of this check changed since you last saw it.',
+    '',
+    link ? 'Open the saved item: ' + link : '',
+    '',
+    'Manage your watches at ' + watchUrl + '.',
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html, text: txt };
+}

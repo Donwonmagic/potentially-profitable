@@ -603,17 +603,29 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
         <a class="btn btn-ghost" href="#services">Work with Don</a>
+        <!-- Phase 4 (Workshop) — Continue-your-work reveal. The
+             js-nav-workshop class is already toggled by the nav's
+             /api/auth/me lookup (lives in _includes/nav.html); a
+             logged-out visitor sees no change to the hero, a
+             logged-in operator sees a third soft CTA back to their
+             saved work. The only homepage change in the entire plan. -->
+        <a class="btn btn-ghost js-nav-workshop" href="/workbench/" hidden>Continue your work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
       </div>
       <p class="hero-note">
-        <strong>What&rsquo;s inside:</strong> five <a href="/blog/">articles</a>, five <a href="/learn/research/">research notes</a>, a <!-- count:glossary.terms -->130<!-- /count -->-term <a href="/glossary/">glossary</a>, and a restaurant-specific <a href="/tools/">audit</a>. All free, no signup &mdash; or take the <a href="/learn/start-here/">60-minute guided tour</a>.
+        <strong>What&rsquo;s inside:</strong> a library of <a href="/blog/">articles</a> and <a href="/learn/research/">research</a>, a <a href="/glossary/">glossary</a> in plain English, and a restaurant-specific <a href="/tools/">audit</a>. All free, no signup &mdash; or take the <a href="/learn/start-here/">60-minute guided tour</a>.
       </p>
-      <div class="hero-meta">
-        <div class="avatar" aria-hidden="true">D</div>
-        <div>
-          When the library gets you to the point of hiring, the <strong class="text-ink">same person</strong> who wrote it builds your site.<br>
-          <span class="hero-meta-sub">Typical reply time: under 4 hours, Mon&ndash;Fri &middot; Currently accepting 2 new projects per month.</span>
-        </div>
-      </div>
+      <!-- Phase 5 (Workshop) — Don's "same person" line repositioned
+           as a quieter italicized post-script. Specific counts moved
+           to the relevant shelf intros (/glossary/, /tools/) so the
+           hero meets visitors with a stance, not a feature list. The
+           D avatar lettermark retired from above-the-fold; About is
+           where Don's warmth belongs. -->
+      <p class="hero-meta-note">
+        <em>Same person who wrote the library builds your site, when you&rsquo;re ready.</em>
+        <span class="hero-meta-sub">Reply time: under 4 hours, Mon&ndash;Fri &middot; 2 projects open per month.</span>
+      </p>
     </div>
 
     <div>

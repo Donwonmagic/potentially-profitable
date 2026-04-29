@@ -138,6 +138,14 @@
       if (link) link.hidden = true;
       if (text) text.textContent = copy.postSavePtr;
       setMsg(copy.savedSuccess, false);
+      // Phase 3 (Workshop) — adoption analytics. Bucketed kind + locale,
+      // no PII. Fires once per successful save across every helper-using
+      // tool, so adoption per kind is observable without per-tool wiring.
+      try {
+        if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+          window.plausible('Workbench Save', { props: { kind: kind, locale: locale } });
+        }
+      } catch (_) { /* analytics is best-effort */ }
     }
 
     function markRehydrated() {
@@ -147,6 +155,11 @@
       if (link) link.hidden = true;
       if (text) text.textContent = copy.rehydrateNote;
       setMsg('', false);
+      try {
+        if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+          window.plausible('Workbench Open Saved', { props: { kind: kind, locale: locale } });
+        }
+      } catch (_) { /* analytics is best-effort */ }
     }
 
     function attemptSave() {

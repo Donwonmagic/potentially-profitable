@@ -369,17 +369,29 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
         <a class="btn btn-ghost" href="#services">Trabajar con Don</a>
+        <!-- Fase 4 (Taller) — Reveal "Continúa tu trabajo". La clase
+             js-nav-workshop ya la maneja el nav vía /api/auth/me; un
+             visitante anónimo no ve cambio en el hero, un operador
+             con sesión ve una tercera CTA suave hacia su trabajo
+             guardado. Único cambio del homepage en todo el plan. -->
+        <a class="btn btn-ghost js-nav-workshop" href="/es/workbench/" hidden>Continúa tu trabajo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
       </div>
       <p class="hero-note">
-        <strong>Qu&eacute; hay adentro:</strong> cinco <a href="/es/blog/">art&iacute;culos</a>, cinco <a href="/es/learn/research/">notas de investigaci&oacute;n</a>, un <a href="/es/glossary/">glosario</a> de <!-- count:glossary.terms -->130<!-- /count --> t&eacute;rminos y un <a href="/es/tools/">diagn&oacute;stico</a> espec&iacute;fico para restaurantes. Todo gratis, sin registro &mdash; o haz el <a href="/es/learn/start-here/">recorrido guiado de 60 minutos</a>.
+        <strong>Qu&eacute; hay adentro:</strong> una biblioteca de <a href="/es/blog/">art&iacute;culos</a> y <a href="/es/learn/research/">investigaci&oacute;n</a>, un <a href="/es/glossary/">glosario</a> en lenguaje claro, y un <a href="/es/tools/">diagn&oacute;stico</a> espec&iacute;fico para restaurantes. Todo gratis, sin registro &mdash; o haz el <a href="/es/learn/start-here/">recorrido guiado de 60 minutos</a>.
       </p>
-      <div class="hero-meta">
-        <div class="avatar" aria-hidden="true">D</div>
-        <div>
-          Cuando la biblioteca te lleve al punto de contratar, la <strong class="text-ink">misma persona</strong> que la escribi&oacute; construye tu sitio.<br>
-          <span class="hero-meta-sub">Tiempo de respuesta: menos de 4 horas, lun&ndash;vie &middot; Acepto 2 proyectos nuevos por mes &middot; Atenci&oacute;n en espa&ntilde;ol e ingl&eacute;s.</span>
-        </div>
-      </div>
+      <!-- Fase 5 (Taller) — La l&iacute;nea "misma persona" reposicionada
+           como una posdata it&aacute;lica m&aacute;s discreta. Las cifras
+           espec&iacute;ficas se mueven a las introducciones de cada
+           secci&oacute;n (/es/glossary/, /es/tools/) para que el hero
+           reciba al visitante con una postura, no una lista de funciones.
+           El lettermark D se retira de la mitad superior &mdash; la
+           calidez de Don vive en la p&aacute;gina /es/about/ ahora. -->
+      <p class="hero-meta-note">
+        <em>La misma persona que escribi&oacute; la biblioteca construye tu sitio, cuando est&eacute;s listo.</em>
+        <span class="hero-meta-sub">Respuesta: bajo 4 horas, lun&ndash;vie &middot; 2 proyectos abiertos por mes &middot; ES + EN.</span>
+      </p>
     </div>
 
     <div>

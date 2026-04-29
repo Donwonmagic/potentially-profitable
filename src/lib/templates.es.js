@@ -656,3 +656,98 @@ export function magicLinkEmail(body) {
   return { subject, html, text: txt };
 }
 
+// ============================================================
+// Sprint 0 (Workshop) \u2014 account-delete confirmation email (ES).
+// ============================================================
+export function accountDeleteEmail(body) {
+  const link = String(body.link || '').trim();
+  const email = String(body.email || '').trim();
+  const subject = 'Confirma: elimina tu cuenta del Taller de Muntin';
+
+  const html = htmlShell(
+    'Confirmar eliminaci\u00f3n de cuenta',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Pediste eliminar la cuenta del Taller de Muntin para <strong>' + escapeHtml(email) + '</strong>. Haz clic en el bot\u00f3n para finalizar. El enlace funciona <strong>una sola vez</strong> y vence en <strong>15 minutos</strong>.</p>',
+      '<p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:#8A3E16;background:#F7E7DC;border:1px solid #C28B2E;border-radius:8px;padding:14px 18px;"><strong>Esto es permanente.</strong> Al hacer clic se eliminar\u00e1 el registro de tu cuenta y todos los items guardados y vigilancias asociados. No hay deshacer ni recuperaci\u00f3n \u2014 si vuelves a acceder despu\u00e9s, empezar\u00e1s con un Taller vac\u00edo.</p>',
+      primaryCta(link, 'S\u00ed, eliminar mi cuenta'),
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Si el bot\u00f3n no funciona, pega este enlace en tu navegador:</p>',
+      '<p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#1F4E5B;word-break:break-all;"><a href="' + escapeHtml(link) + '" style="color:#1F4E5B;text-decoration:underline;">' + escapeHtml(link) + '</a></p>',
+      '<p style="margin:24px 0 0;font-size:14px;line-height:1.55;color:#6B6B6B;"><strong>Si no solicitaste esto</strong>, ignora el correo \u2014 no pasa nada hasta que se haga clic en el enlace, y vence solo.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'Solicitaste eliminar tu cuenta desde muntin.digital.'
+  );
+
+  const txt = [
+    'Confirma: elimina tu cuenta del Taller de Muntin.',
+    '',
+    'Pediste eliminar la cuenta para ' + email + '. Haz clic en el enlace para finalizar. Funciona una sola vez y vence en 15 minutos.',
+    '',
+    'ESTO ES PERMANENTE. La eliminaci\u00f3n borra el registro de tu cuenta y todos los items guardados y vigilancias asociados. No hay deshacer ni recuperaci\u00f3n.',
+    '',
+    link,
+    '',
+    'Si no solicitaste esto, ignora el correo \u2014 no pasa nada hasta que se haga clic en el enlace.',
+    '',
+    '\u2014 Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// ============================================================
+// Phase 4 (Workshop) \u2014 watch-list diff email (ES).
+// ============================================================
+export function watchDiffEmail(body) {
+  const kindLabel = String(body.kindLabel || 'Item guardado');
+  const title     = String(body.title || 'sin t\u00edtulo');
+  const oldScore  = (typeof body.oldScore === 'number') ? body.oldScore : null;
+  const newScore  = (typeof body.newScore === 'number') ? body.newScore : null;
+  const delta     = (oldScore !== null && newScore !== null) ? (newScore - oldScore) : null;
+  const link      = String(body.link || '').trim();
+  const watchUrl  = String(body.watchUrl || '/es/workbench/').trim();
+
+  const direction = delta === null ? 'cambi\u00f3' : (delta > 0 ? 'mejor\u00f3' : 'baj\u00f3');
+  const arrow     = delta === null ? '\u2192' : (delta > 0 ? '\u2191' : '\u2193');
+  const subject   = (delta !== null)
+    ? kindLabel + ' ' + direction + ' ' + Math.abs(delta) + ' pts: ' + title
+    : kindLabel + ' cambi\u00f3: ' + title;
+
+  const scoreLine = (oldScore !== null && newScore !== null)
+    ? '<p style="margin:0 0 18px;font-size:18px;line-height:1.55;color:#2A2D33;font-variant-numeric:tabular-nums;"><strong>' + oldScore + '</strong> &nbsp;' + arrow + '&nbsp; <strong>' + newScore + '</strong> <span style="color:#6B6B6B;font-size:14px;">(' + (delta > 0 ? '+' : '') + delta + ' pts)</span></p>'
+    : '<p style="margin:0 0 18px;font-size:16px;line-height:1.55;color:#2A2D33;">El estado de esta revisi\u00f3n cambi\u00f3 desde la \u00faltima vez que lo viste.</p>';
+
+  const html = htmlShell(
+    kindLabel + ' ' + direction,
+    [
+      '<p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:#1F4E5B;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">' + escapeHtml(kindLabel) + '</p>',
+      '<p style="margin:0 0 18px;font-size:20px;line-height:1.35;color:#14161A;font-family:Georgia,\'Times New Roman\',serif;">' + escapeHtml(title) + '</p>',
+      scoreLine,
+      link ? primaryCta(link, 'Abrir el item guardado') : '',
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Recibes esto porque tienes una vigilancia diaria sobre este item. <a href="' + escapeHtml(watchUrl) + '" style="color:#1F4E5B;text-decoration:underline;">Gestiona tus vigilancias</a> cuando quieras.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'Tienes una vigilancia activa sobre este item guardado.'
+  );
+
+  const txt = [
+    kindLabel + ' ' + direction + ': ' + title,
+    '',
+    (oldScore !== null && newScore !== null)
+      ? oldScore + ' ' + arrow + ' ' + newScore + '  (' + (delta > 0 ? '+' : '') + delta + ' pts)'
+      : 'El estado de esta revisi\u00f3n cambi\u00f3 desde la \u00faltima vez que lo viste.',
+    '',
+    link ? 'Abrir el item guardado: ' + link : '',
+    '',
+    'Gestiona tus vigilancias en ' + watchUrl + '.',
+    '',
+    '\u2014 Don',
+    'Muntin Digital',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html, text: txt };
+}
+

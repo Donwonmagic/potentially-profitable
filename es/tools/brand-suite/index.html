@@ -422,6 +422,21 @@
   .mm-tier-examples li{margin-bottom:4px}
   .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
   .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md.
+     Palette-only Save: payload is the URL fragment (already produced by
+     hydratePalette as #p=AABBCC,DDEEFF,...). The source logo is NEVER
+     persisted — operator returns to the saved palette and re-uploads
+     the logo if they want a fresh extraction. */
+  .bs-save{max-width:760px;margin:24px auto 0;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .bs-save[hidden]{display:none}
+  .bs-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .bs-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .bs-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .bs-save-btn[disabled]{opacity:.6;cursor:wait}
+  .bs-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .bs-save-link:hover{border-color:var(--ink)}
+  .bs-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .bs-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -866,6 +881,16 @@
       <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">El <strong>Panel Muntin</strong> es una imagen PNG de 1200&times;1260 que arma tu logo, paleta, muestra tipográfica y vista de menú en la misma cuadrícula 2&times;2 que nuestro distintivo de marca: un solo archivo que puedes mandar por correo a un diseñador, publicar en Instagram o imprimir. El ZIP incluye el Panel más <code>palette.css</code>, <code>tokens.json</code> y un <code>README.md</code> con los roles de cada color. Todo se arma en tu navegador — sin subida.</p>
       <pre class="bs-export-preview" id="bsExportPreview" aria-label="Vista previa de variables CSS"></pre>
     </div>
+
+    <div class="bs-save" id="bsSave" hidden>
+      <p class="bs-save-text" id="bsSaveText">Guarda esta paleta en tu Taller para que te siga entre dispositivos.</p>
+      <button type="button" class="bs-save-btn" id="bsSaveBtn" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar en mi Taller
+      </button>
+      <a class="bs-save-link" id="bsSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fbrand-suite%2F" hidden>Acceder para guardar</a>
+      <span class="bs-save-msg" id="bsSaveMsg" hidden role="status"></span>
+    </div>
   </div>
 </div></section>
 
@@ -1286,6 +1311,7 @@
 <script src="/tools/brand-suite/brand-suite.js?v=20260424-bs1"></script>
 <script src="/tools/brand-suite/pane-render.js?v=20260425-bs2"></script>
 <script src="/tools/brand-suite/palette-sheet-render.js?v=20260427-bs3"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Suite de Marca — cableado de subida + paleta.
  *
@@ -1700,6 +1726,8 @@
       var enc = latestPalette.map(function(e){ return e.hex.replace('#', '').toUpperCase(); }).join(',');
       history.replaceState(null, '', '#p=' + enc);
     } catch (_) {}
+    // Phase 2 (Workshop) — nudge the Save affordance after every paint.
+    if (typeof window.__bsNotifyWb === 'function') window.__bsNotifyWb();
   }
 
   function paletteFromHexList(hexList){
@@ -2918,6 +2946,47 @@
     requestAnimationFrame(watchMonoFlag);
   }
   if (workshopWrap) requestAnimationFrame(watchMonoFlag);
+})();
+
+/* Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+ * Palette-only: payload is the URL fragment that hydratePalette()
+ * already produces (#p=AABBCC,DDEEFF,...). Rehydration sets
+ * location.hash + reloads, replaying the existing rehydrateFromFragment
+ * IIFE — no source logo persisted, no internals exposed. */
+(function(){
+  var wb = (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function')
+    ? MuntinWorkbench.attach({
+        elements: { box:'#bsSave', btn:'#bsSaveBtn', link:'#bsSaveLink', text:'#bsSaveText', msg:'#bsSaveMsg' },
+        locale:   'es',
+        kind:     'brand',
+        titleFor: function (p) {
+          var frag = (p && typeof p.fragment === 'string') ? p.fragment : '';
+          var m = /(?:^|[#&])p=([0-9A-Fa-f,]+)/.exec(frag);
+          var n = m ? m[1].split(',').filter(function(s){ return /^[0-9a-f]{6}$/i.test(s); }).length : 0;
+          if (!n) return 'Paleta de marca — vacía';
+          return 'Paleta de marca — ' + n + ' color' + (n === 1 ? '' : 'es');
+        },
+        onRehydrate: function (p) {
+          if (!p || typeof p.fragment !== 'string') return;
+          if (location.hash !== p.fragment) {
+            try { location.hash = p.fragment; } catch (_) {}
+          }
+          location.reload();
+        },
+        workbenchUrl: '/es/workbench/',
+        signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Fbrand-suite%2F',
+      })
+    : null;
+
+  function getPayload(){ return { fragment: (location.hash || ''), savedAt: Date.now() }; }
+  function hasPalette(){
+    return /(?:^|[#&])p=[0-9A-Fa-f,]+/.test(location.hash || '');
+  }
+  window.__bsNotifyWb = function(){
+    if (!wb) return;
+    if (hasPalette()) wb.showAffordance(getPayload());
+  };
+  window.__bsNotifyWb();
 })();
 </script>
 </body>
