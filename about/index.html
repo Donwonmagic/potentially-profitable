@@ -372,6 +372,26 @@
   <span aria-current="page">About</span>
 </nav>
 
+<!-- ============ Phase 5 Move 4 — From the desk ============
+     Editorial lede, dated, monthly cadence. Italic body, single
+     hairline rule below. Sits above the masthead so the page
+     reads like a chapter opener, not a static About page. -->
+<section class="block" id="about-from-the-desk" aria-labelledby="from-the-desk-heading" style="padding-top:36px;padding-bottom:0;">
+  <div class="container">
+    <div style="max-width:62ch;margin:0 auto;border-bottom:1px solid var(--surface-2);padding-bottom:28px;">
+      <p style="font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;display:inline-flex;align-items:center;gap:10px;">
+        <span style="width:28px;height:1px;background:var(--teal);"></span>
+        From the desk
+        <span style="color:var(--stone);font-weight:500;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums;">&middot; <time datetime="2026-04-29">April 2026</time></span>
+      </p>
+      <h2 id="from-the-desk-heading" class="sr-only">From the desk &mdash; April 2026</h2>
+      <p style="font-family:var(--font-display);font-size:clamp(18px,1.6vw,22px);line-height:1.55;color:var(--ink);margin:0 0 14px;font-style:italic;font-weight:400;">A note for restaurant operators who keep finding the library at 11pm.</p>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0 0 12px;">The library got two things this month: the GBP playbook went up after a year of trying to write it, and the audit tool now scores Spanish-language sites with the same thresholds as English. If you ran the audit before April 12 and the Spanish pages graded weirdly, that&rsquo;s why &mdash; rerun it. Saved scenarios automatically use the new logic.</p>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0;">Workshop accounts opened quietly this month too &mdash; if you&rsquo;ve used the tools enough that bookmarking your own audits would be useful, click <a href="/sign-in/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">Sign in</a>. The free side stays free; the account is just for cross-device persistence.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ HERO ============ -->
 <section class="block" id="about-hero" aria-labelledby="about-heading" style="padding-top:40px;">
   <div class="container about-grid">
@@ -570,6 +590,23 @@
     </div>
 
     <p class="references-line reveal">Professional references available on request.</p>
+  </div>
+</section>
+
+<!-- ============ Phase 5 Move 4 — Sourcing & corrections ============
+     Factual not legal. Names where claims come from (the certifications
+     above, the dated benchmarks in tools, the cited research notes)
+     and how to file a correction. Sits above the global footer so it
+     reads like a colophon — not an afterthought, not a legal page. -->
+<section class="block" id="about-sourcing" aria-labelledby="sourcing-heading" style="padding-top:48px;padding-bottom:64px;background:var(--surface-inset);">
+  <div class="container">
+    <div style="max-width:64ch;margin:0 auto;">
+      <p style="font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px;">Sourcing &amp; corrections</p>
+      <h2 id="sourcing-heading" style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,30px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.25;">Where the library&rsquo;s claims come from, and how to flag one that&rsquo;s wrong.</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Operations claims (food cost ranges, prime cost bands, reply-time norms) are sourced from the <a href="https://restaurant.org/research-and-media/research/research-reports/" target="_blank" rel="noopener" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">National Restaurant Association</a> annual reports, my <a href="/about/#certifications" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">ServSafe / RAM / MC ABS coursework</a>, and 14 years of operating-floor experience listed in the timeline above. Web-engineering claims (page-speed thresholds, schema requirements, mobile usability rules) are sourced from <a href="/learn/research/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">Google Web.dev research</a>, Lighthouse documentation, and the schema.org spec; all benchmarks are dated in the tool footers and reviewed quarterly.</p>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink-soft);margin:0 0 14px;">Corrections are taken seriously. If you find a factual claim that&rsquo;s wrong, an outdated benchmark, or a tool result that doesn&rsquo;t match the citation, email <a href="mailto:don@muntin.digital?subject=Correction%20%E2%80%93%20" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">don@muntin.digital</a> with the URL and the specific line. I correct in-place with a dated note, not silently.</p>
+      <p style="font-size:13px;line-height:1.55;color:var(--stone);margin:0;font-variant-numeric:tabular-nums;">Sourcing standards last reviewed <time datetime="2026-04-29">April 29, 2026</time>.</p>
+    </div>
   </div>
 </section>
 
