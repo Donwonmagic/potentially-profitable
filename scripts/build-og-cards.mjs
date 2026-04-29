@@ -94,6 +94,61 @@ function xmlEscape(s) {
     .replace(/>/g, "&gt;");
 }
 
+/**
+ * Single source of truth for vertical layout slots. Renderers should
+ * route every y-coordinate through this helper. New slots get added
+ * here, not inlined in render*.
+ *
+ * Slot conventions — keep numbers in sync with the existing 8px grid:
+ *   eyebrow=96, title=232, subtitle=296, dek=456 (default glossary)
+ *   dek-tight=400 (lifted when subtitle row is empty)
+ */
+const GRID_ROWS = {
+  "eyebrow":  96,
+  "title":    232,
+  "subtitle": 296,
+  "dek":      456,
+  "dek-tight": 400,
+};
+function gridRow(slot) {
+  const y = GRID_ROWS[slot];
+  if (y === undefined) {
+    throw new Error("gridRow: unknown slot " + slot);
+  }
+  return snap(y);
+}
+
+/**
+ * Auto-fit a title within a maxWidth by stepping the font-size down
+ * in 4px increments until it fits. Returns { size, lines }. Never
+ * breaks single words. Heuristic width estimate: avg char-width
+ * ratio depends on font (Fraunces is wider than Inter at the same
+ * size).
+ *
+ * Defaults are intentionally generous so existing cards return the
+ * max size unchanged. Tighten maxWidth in callers that want
+ * shrinking to engage on long titles.
+ */
+function fitTitle(text, opts = {}) {
+  const {
+    font = "Fraunces",
+    maxSize = 64,
+    minSize = 48,
+    maxWidth = CANVAS_W - 2 * EDGE,
+    step = 4,
+  } = opts;
+  const len = String(text ?? "").length;
+  if (len === 0) return { size: maxSize, lines: 1 };
+  const ratio = font === "Fraunces" ? 0.46 : 0.52;
+  let size = maxSize;
+  while (size > minSize) {
+    const estW = size * ratio * len;
+    if (estW <= maxWidth) break;
+    size -= step;
+  }
+  return { size, lines: 1 };
+}
+
 // -------------------------------------------------------------
 // glyph registry — page-relevance cue
 // -------------------------------------------------------------
@@ -772,10 +827,20 @@ function renderGlossary(card) {
   const aka  = xmlEscape(card.title_italic ?? "");
   const dek  = xmlEscape(card.dek ?? "");
 
-  const yEyebrow = snap(96);
-  const yTerm    = snap(232);
-  const yAka     = snap(296);
-  const yDek     = snap(456);
+  // Phase A: route y-coords through gridRow + term size through fitTitle.
+  // Defaults are generous so output is byte-identical with the prior
+  // hard-coded constants. Phase D will tighten maxWidth and use
+  // 'dek-tight' when aka is empty.
+  const yEyebrow = gridRow("eyebrow");
+  const yTerm    = gridRow("title");
+  const yAka     = gridRow("subtitle");
+  const yDek     = gridRow("dek");
+  const termFit  = fitTitle(card.title_1 ?? "", {
+    font: "Fraunces",
+    maxSize: 64,
+    minSize: 64, // Phase A: clamp to single size so output unchanged
+    maxWidth: CANVAS_W - 2 * EDGE,
+  });
 
   const glyphSvg = card.glyph
     ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
@@ -793,7 +858,7 @@ function renderGlossary(card) {
         font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
 
   <text x="${EDGE}" y="${yTerm}"
-        font-family="Fraunces, Georgia, serif" font-size="64"
+        font-family="Fraunces, Georgia, serif" font-size="${termFit.size}"
         font-weight="500" letter-spacing="-2" fill="${fg}">${term}</text>
 
   ${aka ? `<text x="${EDGE}" y="${yAka}"

@@ -40,6 +40,7 @@ const CHECKS = [
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
   ['Glossary OG seed (idem)','seed-glossary-og.mjs',       '--check'],
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
+  ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
   ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
 ];
