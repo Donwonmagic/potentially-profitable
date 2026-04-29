@@ -159,6 +159,10 @@
       'Submission Rejected',
       'Submission Published',
     ],
+    // Phase G (Growth) — diagnostics + broken-link surfacing.
+    diagnostics: [
+      '404 view',
+    ],
   };
 
   // Flat allowlist used by the CI checker.
