@@ -618,6 +618,15 @@
 
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* The HTML `hidden` attribute should always hide. The user-agent
+   rule (`[hidden]{display:none}`) loses to author-stylesheet rules
+   of equal specificity that set a different `display` (e.g. `.btn
+   { display: inline-flex }`), so `<a class="btn" hidden>` would
+   stay visible. Force the semantic with `!important` site-wide;
+   defensive against this whole class of collisions, including the
+   homepage's `.btn .js-nav-workshop[hidden]` "Continue your work"
+   button revealed only after /api/auth/me confirms a session. */
+[hidden]{display:none !important}
 body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
