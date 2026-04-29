@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Window — Admin queue</title>
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+  <!-- Queue (list) view, default -->
+  <section class="admin-window" id="adminList">
+    <header class="admin-window__head">
+      <a class="admin-window__back" href="/workbench/">&larr; Workshop</a>
+      <h1 class="admin-window__title">The Window</h1>
+      <p class="admin-window__sub">Threads waiting on you, oldest unread first.</p>
+    </header>
+    <div class="admin-window__list" id="adminWindowList" aria-live="polite">
+      <p class="admin-window__empty" id="adminWindowEmpty" hidden>Nothing in the queue. Inbox zero — for now.</p>
+      <p class="admin-window__empty" id="adminWindowError" hidden>Couldn't load the queue. Refresh and try again.</p>
+      <p class="admin-window__empty" id="adminWindowPaused" hidden>The Window is paused (WINDOW_ENABLED is false). Flip the flag to reopen.</p>
+      <p class="admin-window__empty" id="adminWindowForbidden" hidden>This is the editor's queue. <a href="/workbench/">Back to Workshop</a>.</p>
+    </div>
+  </section>
+
+  <!-- Thread (detail) view, hidden by default; revealed when hash sets thread=<id>&sub=<sub> -->
+  <section class="admin-thread" id="adminThread" hidden>
+    <header class="admin-thread__head">
+      <a class="admin-thread__back" href="#">&larr; Queue</a>
+      <p class="admin-thread__email" id="adminThreadEmail">&nbsp;</p>
+    </header>
+    <div class="admin-thread__msgs" id="adminThreadMsgs"></div>
+    <form class="admin-thread__composer" id="adminThreadForm">
+      <div class="admin-thread__quick" id="adminThreadQuick" aria-label="Quick replies"></div>
+      <textarea class="admin-thread__field" id="adminThreadBody" name="body" rows="3" placeholder="Write back…" maxlength="4000" required></textarea>
+      <div class="admin-thread__row">
+        <div class="admin-thread__actions">
+          <button type="button" class="admin-thread__close" id="adminThreadClose">Set down</button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm" id="adminThreadSend">Send</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<script src="/assets/js/admin-window.js?v=20260429-batch3" defer></script>
+</body>
+</html>

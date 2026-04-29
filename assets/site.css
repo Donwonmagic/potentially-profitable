@@ -5168,3 +5168,152 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .workshop-rationale-cta .js-nav-signin,.workshop-rationale-cta .js-nav-workshop{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;transition:color var(--t-fast) var(--ease)}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
+/* ============ THE WINDOW (Phase W.3) ============
+   Full-page editorial canvas at /window/ and /es/window/. Suppresses
+   the standard nav via body.window-canvas. The muntin hairline at
+   the 38.2% golden split is the literal brand mullion separating
+   visitor messages from Don's. Mobile: hairline collapses to a
+   24px-from-left vertical line. Visual polish (animations, breathing
+   dot, day-break glyph) lands in W.4. */
+body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+.window-shell{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:1px solid var(--line)}
+.window-shell__lockup{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-family:var(--font-display);font-size:18px;font-weight:500}
+.window-shell__lockup .logo-mark{width:28px;height:28px;color:var(--teal)}
+.window-shell__back{font-size:13px;color:var(--ink-soft);text-decoration:none;letter-spacing:0.02em}
+.window-shell__back:hover{color:var(--teal)}
+.window-main{flex:1;max-width:1080px;margin:0 auto;padding:48px 24px 96px;width:100%;position:relative}
+
+.window-paused__inner{max-width:560px;margin:80px auto;text-align:center}
+.window-paused__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.window-paused__headline{font-family:var(--font-display);font-size:clamp(32px,4.5vw,52px);font-weight:500;color:var(--ink);margin:0 0 16px;line-height:1.1}
+.window-paused__sub{font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0}
+
+.window-hero{transition:max-height var(--t-med) var(--ease),margin var(--t-med) var(--ease)}
+.window-hero__inner{max-width:600px;margin:48px auto;text-align:center}
+.window-hero__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;opacity:0;animation:window-fade-up 320ms ease-out forwards}
+.window-hero__headline{font-family:var(--font-display);font-style:italic;font-size:clamp(36px,5vw,56px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.1;letter-spacing:-0.01em;opacity:0;animation:window-fade-up 320ms 60ms ease-out forwards}
+.window-hero__sub{font-family:var(--font-body);font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:520px;opacity:0;animation:window-fade-up 320ms 120ms ease-out forwards}
+@keyframes window-fade-up{
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-hero__eyebrow,.window-hero__headline,.window-hero__sub{animation:none;opacity:1;transform:none}
+}
+.window-hero--collapsed .window-hero__inner{margin:24px auto;padding:0}
+.window-hero--collapsed .window-hero__headline{font-size:20px;line-height:1.3}
+.window-hero--collapsed .window-hero__sub{display:none}
+
+/* The muntin line. Vertical hairline drawn in via clip-path on
+   first paint — the brand metaphor doing real work. */
+.window-muntin{position:absolute;top:0;bottom:0;left:38.2%;width:1px;background:var(--line-dark);opacity:0.4;pointer-events:none;clip-path:inset(0 0 100% 0);animation:window-muntin-draw 720ms 240ms cubic-bezier(.2,.7,.1,1) forwards}
+@keyframes window-muntin-draw{
+  to { clip-path: inset(0 0 0 0); }
+}
+/* Phase W.4 — "Don is at the window" pulse. Visible when his
+   lastSeen is <4h. Quiet 3.2s breathe. */
+.window-muntin__pulse{position:absolute;top:18px;left:-3px;width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:0.7;animation:window-pulse 3.2s ease-in-out infinite}
+@keyframes window-pulse{
+  0%,100% { opacity: 0.45; transform: scale(1); }
+  50%     { opacity: 1;    transform: scale(1.18); }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-muntin{clip-path:none;animation:none}
+  .window-muntin__pulse{animation:none;opacity:0.7}
+}
+
+@media (max-width:768px){
+  .window-muntin{left:24px}
+  .window-shell{padding:14px 18px}
+  .window-main{padding:24px 16px 96px}
+}
+
+.window-thread{display:flex;flex-direction:column;gap:32px;margin:24px 0;min-height:120px;max-height:60vh;overflow-y:auto;padding:8px 0}
+.window-thread__empty{text-align:center;padding:48px 16px;opacity:0.4}
+.window-thread__empty-mark{display:inline-block;width:48px;height:48px;color:var(--teal)}
+.window-thread__empty-mark svg{width:100%;height:100%}
+
+.window-msg{max-width:560px;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink)}
+.window-msg__stamp{font-family:var(--font-display);font-style:italic;font-size:13px;color:var(--ink-soft);margin:0 0 6px;letter-spacing:0.02em}
+.window-msg__body{margin:0;white-space:pre-wrap}
+.window-msg--you{margin-right:auto;padding-right:24px}
+.window-msg--don{margin-left:auto;padding-left:20px;border-left:2px solid var(--teal)}
+/* Phase W.4 — letter-laid-down reveal for fresh Don replies.
+   Left-to-right clip-path, 540ms ease, like ink drying across
+   paper. Stamp fades in slightly after. */
+.window-msg[data-fresh="true"]{clip-path:inset(0 100% 0 0);animation:window-letter-down 540ms cubic-bezier(.2,.7,.1,1) forwards}
+.window-msg[data-fresh="true"] .window-msg__stamp{opacity:0;animation:window-stamp-fade 200ms 80ms ease-out forwards}
+@keyframes window-letter-down{
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes window-stamp-fade{
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-msg[data-fresh="true"]{clip-path:none;animation:window-fade-only 200ms ease-out forwards}
+  .window-msg[data-fresh="true"] .window-msg__stamp{animation:none;opacity:1}
+}
+@keyframes window-fade-only{
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.window-daybreak{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0;color:var(--stone);position:relative}
+.window-daybreak::before,.window-daybreak::after{content:'';flex:1;height:1px;background:var(--line);max-width:120px}
+.window-daybreak__label{font-family:var(--font-display);font-style:italic;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone);display:inline-flex;align-items:center;gap:10px}
+.window-daybreak__label::before{content:'';display:inline-block;width:14px;height:14px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128' fill='none' stroke='%236B6B6B' stroke-width='8' stroke-linecap='square'%3E%3Crect x='20' y='20' width='88' height='88'/%3E%3Cline x1='64' y1='20' x2='64' y2='108'/%3E%3Cline x1='20' y1='51' x2='108' y2='51'/%3E%3C/svg%3E") center/contain no-repeat;opacity:0.6}
+
+.window-composer{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.window-composer__form{position:relative}
+.window-composer__caption{position:absolute;top:14px;left:14px;font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--ink-soft);pointer-events:none;opacity:0.7}
+.window-composer__field{width:100%;min-height:84px;padding:14px 14px 14px 60px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:16px;background:var(--white);color:var(--ink);resize:vertical;line-height:1.55}
+.window-composer__field:focus{outline:none;border-color:var(--teal)}
+.window-composer__row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:14px}
+.window-composer__counter{font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
+.window-composer__submit{align-self:flex-end}
+.window-composer__msg{font-size:13px;color:var(--status-good);margin:8px 0 0;padding:8px 12px;background:var(--surface-1);border-radius:var(--r-input)}
+.window-composer__msg.error{color:var(--rust);background:rgba(186,85,68,0.08)}
+.window-composer__onramps{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.window-onramp{padding:6px 14px;border:1px solid var(--line-dark);background:transparent;border-radius:999px;font-size:12px;color:var(--ink-soft);cursor:pointer;letter-spacing:0.04em;text-transform:uppercase;font-weight:500;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
+.window-onramp:hover{border-color:var(--teal);color:var(--teal)}
+.window-composer__reassurance{font-size:13px;color:var(--stone);margin:14px 0 0;text-align:center;font-style:italic}
+
+.window-signin{text-align:center;margin-top:24px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
+.window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
+
+/* ============ ADMIN /admin/window/ (Phase W.3) ============ */
+.admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
+.admin-window__head{margin-bottom:24px}
+.admin-window__back{font-size:13px;color:var(--ink-soft);text-decoration:none}
+.admin-window__title{font-family:var(--font-display);font-size:28px;font-weight:500;margin:8px 0 6px}
+.admin-window__sub{font-size:14px;color:var(--ink-soft);margin:0}
+.admin-window__list{display:flex;flex-direction:column;gap:8px;margin:24px 0}
+.admin-window__row{display:block;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);text-decoration:none;color:var(--ink);transition:border-color var(--t-fast) var(--ease)}
+.admin-window__row:hover{border-color:var(--teal)}
+.admin-window__row--unread{border-left:3px solid var(--teal)}
+.admin-window__row-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+.admin-window__row-id{font-family:var(--font-mono,Menlo,monospace);font-size:13px;color:var(--ink-soft)}
+.admin-window__row-time{font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
+.admin-window__row-status{font-size:12px;color:var(--stone);text-transform:uppercase;letter-spacing:0.08em;margin:0}
+.admin-window__empty{text-align:center;padding:48px 16px;color:var(--stone);font-style:italic}
+
+.admin-thread{max-width:680px;margin:0 auto;padding:24px 16px 120px}
+.admin-thread__head{padding:14px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--cream);z-index:10}
+.admin-thread__back{font-size:13px;color:var(--ink-soft);text-decoration:none;display:inline-block;margin-bottom:6px}
+.admin-thread__email{font-family:var(--font-mono,Menlo,monospace);font-size:14px;color:var(--ink)}
+.admin-thread__msgs{display:flex;flex-direction:column;gap:24px;padding:24px 0}
+.admin-msg{padding:14px 16px;border-radius:var(--r-input)}
+.admin-msg--user{background:var(--white);border:1px solid var(--line)}
+.admin-msg--don{background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal)}
+.admin-msg__stamp{font-size:12px;color:var(--ink-soft);margin:0 0 6px;font-style:italic}
+.admin-msg__body{margin:0;font-size:15px;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.admin-thread__composer{position:fixed;bottom:0;left:0;right:0;padding:14px 16px;background:var(--cream);border-top:1px solid var(--line);max-width:680px;margin:0 auto;box-shadow:0 -4px 12px rgba(0,0,0,0.04)}
+.admin-thread__quick{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.admin-thread__quick-btn{padding:6px 12px;border:1px solid var(--line-dark);background:var(--white);border-radius:999px;font-size:12px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.admin-thread__quick-btn:hover{border-color:var(--teal);color:var(--teal)}
+.admin-thread__field{width:100%;min-height:64px;padding:10px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:15px;resize:vertical;line-height:1.5;margin:8px 0}
+.admin-thread__row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.admin-thread__actions{display:flex;gap:8px;align-items:center}
+.admin-thread__close{font-size:12px;color:var(--stone);background:transparent;border:0;cursor:pointer;text-decoration:underline}
+.admin-thread__close:hover{color:var(--rust)}
+

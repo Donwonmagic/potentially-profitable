@@ -321,7 +321,7 @@ export function checklistAutoResponder(body) {
 
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.</p>',
       '<p style="margin:0 0 8px;font-size:15px;line-height:1.55;color:#2A2D33;">O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos:</p>',
-      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      secondaryCta('https://muntin.digital/es/window/', 'Escríbele a Don'),
       '<div style="height:12px;line-height:12px;">&nbsp;</div>',
 
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
@@ -338,7 +338,7 @@ export function checklistAutoResponder(body) {
     '¿Quieres un segundo par de ojos humanos después de correrlo? Responde a este correo con tu URL y le doy una mirada real — sin lista, sin goteo, sin newsletter, solo una respuesta de mi parte.',
     '',
     'O si prefieres que yo corra los chequeos por ti y te escriba la lista de arreglos, agenda una llamada de 20 min:',
-    'https://calendly.com/dongoldstein-accts/muntinconsult',
+    'https://muntin.digital/es/window/',
     '',
     '— Don',
     'Muntin Digital · Silver Spring, MD',
@@ -420,7 +420,7 @@ export function auditReportAutoResponder(body) {
       shareLink ? primaryCta(shareLink, 'Abrir el informe interactivo') : '',
       '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero (y qu\u00e9 ignorar), responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
-      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      secondaryCta('https://muntin.digital/es/window/', 'Escríbele a Don'),
       '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
@@ -437,7 +437,7 @@ export function auditReportAutoResponder(body) {
     '',
     'La herramienta de auditor\u00eda es un esc\u00e1ner \u2014 es buena, pero no soy yo. Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o agenda una llamada gratis de 20 minutos:',
     '',
-    'https://calendly.com/dongoldstein-accts/muntinconsult',
+    'https://muntin.digital/es/window/',
     '',
     'Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.',
     '',
@@ -540,7 +540,7 @@ export function auditDeepReportAutoResponder(body) {
       shareLink ? primaryCta(shareLink, 'Abrir el informe interactivo') : '',
       '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo con tus preguntas o agenda una llamada gratis de 20 minutos:</p>',
-      secondaryCta('https://calendly.com/dongoldstein-accts/muntinconsult', 'Agenda una llamada de 20 min'),
+      secondaryCta('https://muntin.digital/es/window/', 'Escríbele a Don'),
       '<div style="height:12px;line-height:12px;">&nbsp;</div>',
       '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.</p>',
       '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">\u2014 Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital \u00b7 Silver Spring, MD</span></p>',
@@ -558,7 +558,7 @@ export function auditDeepReportAutoResponder(body) {
     shareLink ? 'Abrir el informe interactivo: ' + shareLink : '',
     '',
     'Si quieres una segunda opini\u00f3n humana sobre qu\u00e9 arreglar primero, responde a este correo o agenda una llamada gratis de 20 minutos:',
-    'https://calendly.com/dongoldstein-accts/muntinconsult',
+    'https://muntin.digital/es/window/',
     '',
     'Sin lista de marketing, sin goteo, sin newsletter. Solo te escribo si respondes a este correo.',
     '',
@@ -814,6 +814,119 @@ export function submissionApprovedEmail(body) {
     '',
     '— Don',
     'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// Phase W.2 (La Ventana / ES) — notificación a Don cuando alguien
+// escribe. Coalesced en lotes de 2 minutos por el cron.
+export function windowNotifyDonEmail(body) {
+  const author       = String(body.author || body.email || '—').trim();
+  const authorEmail  = String(body.email || '—').trim();
+  const excerpts     = Array.isArray(body.excerpts) ? body.excerpts : [String(body.body || '').trim()];
+  const adminUrl     = String(body.adminUrl || 'https://muntin.digital/es/admin/window/').trim();
+  const sub          = String(body.sub || '').trim();
+  const threadId     = String(body.threadId || '').trim();
+
+  const firstExcerpt = (excerpts[0] || '').slice(0, 60);
+  const subject = excerpts.length > 1
+    ? 'Línea directa — ' + firstExcerpt + ' (+' + (excerpts.length - 1) + ' más)'
+    : 'Línea directa — ' + firstExcerpt;
+
+  const adminThreadUrl = sub && threadId
+    ? adminUrl + '#' + encodeURIComponent('thread=' + threadId + '&sub=' + sub)
+    : adminUrl;
+
+  const messagesHtml = excerpts.map((e) =>
+    '<div style="margin:0 0 12px;padding:12px 16px;background:#F8F4EA;border-left:3px solid #1F4E5B;font-style:italic;white-space:pre-wrap;">' +
+    escapeHtml(e) + '</div>'
+  ).join('');
+
+  const html = htmlShell(
+    'Nueva nota en La Ventana',
+    [
+      field('De',         escapeHtml(author) + ' &lt;' + escapeHtml(authorEmail) + '&gt;'),
+      field('Mensajes',   String(excerpts.length)),
+      '<p style="margin:18px 0 8px;font-size:13px;color:#6B6B6B;">Más recientes primero:</p>',
+      messagesHtml,
+      '<p style="margin:24px 0 0;">' + primaryCta(adminThreadUrl, 'Responder desde el teléfono') + '</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Nueva nota en La Ventana',
+    '',
+    'De: ' + author + ' <' + authorEmail + '>',
+    'Mensajes: ' + excerpts.length,
+    '',
+    excerpts.map((e, i) => (i + 1) + '. ' + e).join('\n\n'),
+    '',
+    'Responder desde el teléfono: ' + adminThreadUrl,
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// Phase W.2 (La Ventana / ES) — respuesta de Don al lector.
+export function windowReplyToUserEmail(body) {
+  const replyBody = String(body.body || '').trim();
+  const windowUrl = String(body.windowUrl || 'https://muntin.digital/es/window/').trim();
+
+  const subject = 'Don respondió';
+
+  const html = htmlShell(
+    'Don respondió',
+    [
+      '<div style="margin:0 0 18px;padding:18px 22px;background:#F8F4EA;border-left:3px solid #1F4E5B;font-family:Georgia,\'Times New Roman\',serif;font-style:italic;font-size:17px;line-height:1.55;color:#2A2D33;white-space:pre-wrap;">' +
+        escapeHtml(replyBody) +
+      '</div>',
+      '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Continuar la conversación') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">Leo cada mensaje.</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Don respondió',
+    '',
+    replyBody,
+    '',
+    'Continuar la conversación: ' + windowUrl,
+    '',
+    '— Don',
+    'Leo cada mensaje.',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// Phase W.2 (La Ventana / ES) — confirmación al lector tras su
+// primera nota.
+export function windowConfirmationEmail(body) {
+  const windowUrl = String(body.windowUrl || 'https://muntin.digital/es/window/').trim();
+
+  const subject = 'Lo tengo — Don';
+
+  const html = htmlShell(
+    'Lo tengo',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Lo recibí. Te respondo desde aquí, normalmente en uno o dos días — a veces antes, nunca al instante.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Cuando lo haga, recibirás un correo y la respuesta estará en La Ventana.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Abrir La Ventana') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don. Leo cada mensaje.</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Lo tengo',
+    '',
+    'Lo recibí. Te respondo desde aquí, normalmente en uno o dos días — a veces antes, nunca al instante.',
+    '',
+    'Cuando lo haga, recibirás un correo y la respuesta estará en La Ventana.',
+    '',
+    'Abrir La Ventana: ' + windowUrl,
+    '',
+    '— Don. Leo cada mensaje.',
   ].join('\n');
 
   return { subject, html, text: txt };

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>La Ventana — Cola de revisión</title>
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
+</head>
+<body data-locale="es">
+
+<a class="skip-link" href="#main">Ir al contenido</a>
+
+<main id="main">
+  <section class="admin-window" id="adminList">
+    <header class="admin-window__head">
+      <a class="admin-window__back" href="/es/workbench/">&larr; El Taller</a>
+      <h1 class="admin-window__title">La Ventana</h1>
+      <p class="admin-window__sub">Hilos esperándote, los no leídos más antiguos primero.</p>
+    </header>
+    <div class="admin-window__list" id="adminWindowList" aria-live="polite">
+      <p class="admin-window__empty" id="adminWindowEmpty" hidden>Nada en la cola. Buzón vacío — por ahora.</p>
+      <p class="admin-window__empty" id="adminWindowError" hidden>No pudimos cargar la cola. Recarga y vuelve a intentar.</p>
+      <p class="admin-window__empty" id="adminWindowPaused" hidden>La Ventana está en pausa (WINDOW_ENABLED es false). Cambia el flag para reabrir.</p>
+      <p class="admin-window__empty" id="adminWindowForbidden" hidden>Esta es la cola del editor. <a href="/es/workbench/">Volver a El Taller</a>.</p>
+    </div>
+  </section>
+
+  <section class="admin-thread" id="adminThread" hidden>
+    <header class="admin-thread__head">
+      <a class="admin-thread__back" href="#">&larr; Cola</a>
+      <p class="admin-thread__email" id="adminThreadEmail">&nbsp;</p>
+    </header>
+    <div class="admin-thread__msgs" id="adminThreadMsgs"></div>
+    <form class="admin-thread__composer" id="adminThreadForm">
+      <div class="admin-thread__quick" id="adminThreadQuick" aria-label="Respuestas rápidas"></div>
+      <textarea class="admin-thread__field" id="adminThreadBody" name="body" rows="3" placeholder="Responder…" maxlength="4000" required></textarea>
+      <div class="admin-thread__row">
+        <div class="admin-thread__actions">
+          <button type="button" class="admin-thread__close" id="adminThreadClose">Dejarlo</button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm" id="adminThreadSend">Enviar</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<script src="/assets/js/admin-window.js?v=20260429-batch3" defer></script>
+</body>
+</html>

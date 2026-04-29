@@ -49,6 +49,8 @@ const CHECKS = [
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],
   ['Contributor pages (idem)','build-people-pages.mjs','--check'],
   ['Homepage field-notes rail (idem)','inject-homepage-fieldnotes-rail.mjs','--check'],
+  ['No Calendly refs',    'check-no-calendly-references.mjs', '--check'],
+  ['Window locale parity', 'check-window-locale-parity.mjs',  '--check'],
   ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
 ];

@@ -70,6 +70,7 @@ const ALLOWED_EXCEPTIONS = new Map([
   ['score-pill-btn',     'Floating score pill on grader pages — fixed position, distinct shape.'],
   ['cmp-btn',            'Comparison-tool selector button — page-local rhythm.'],
   ['wsh-watch-btn',      'Workshop watch toggle — teal-on-hover marks the act of watching.'],
+  ['admin-thread__quick-btn', 'Window admin quick-reply chip — horizontal scroll row, page-local.'],
 ]);
 
 // Locate every class definition that looks button-shaped:
