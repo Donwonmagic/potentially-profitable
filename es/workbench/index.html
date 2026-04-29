@@ -4,21 +4,29 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
-  Phase 2 (Workshop) — biblioteca de elementos guardados.
+  Sprint 3 (cohesión) — la página de items guardados de El Taller
+  ahora comparte el sistema de diseño del sitio. El bloque <style>
+  inline, el prefijo .wb-* de clases y la barra superior a medida
+  desaparecieron; los estilos viven en assets/site.css bajo la
+  sección // §Workshop, las clases se renombraron a .wsh-*, y el
+  _includes/es/nav.html + _includes/es/footer.html compartidos los
+  estampa scripts/sync-includes.mjs (córrelo después de editar).
 
-  El worker (src/worker.js) sigue dando gate del lado servidor: un
-  GET a /es/workbench/ desde un visitante sin cookie de sesión
-  firmada y válida devuelve 404 antes de servir este HTML. Por eso
-  todo lo de abajo asume "logueado" — JS solo renderiza la lista de
-  items guardados y ofrece botones para eliminar. Si /api/auth/me
-  devuelve 401 inesperadamente (la cookie venció entre el gate y el
-  fetch), redirigimos a /es/sign-in/ en lugar de mostrar un estado
-  vacío confuso.
+  Nombres: el producto se llama "El Taller" en copy de usuario. La
+  URL se queda como /es/workbench/ (las URLs son para siempre).
+  Identificadores internos `wbList`, `wbLoading`, `wbEmpty`,
+  `wbError`, `js-wb-watch-*`, `js-wb-delete` mantienen sus nombres
+  porque son identificadores de código, no strings visibles.
 
-  Postura de privacidad: noindex, nofollow. La página sigue sin
-  estar en el sitemap o en ningún enlace público — los operadores
-  llegan vía el enlace "El Taller" del nav (solo visible para
-  visitantes autenticados).
+  Gate del servidor: el worker (src/worker.js) devuelve 404 a GETs
+  no autenticados a /es/workbench/, así que el JS de abajo asume
+  "logueado". Si /api/auth/me devuelve 401 inesperadamente (la
+  cookie venció entre el gate y el fetch), redirigimos a
+  /es/sign-in/ en lugar de mostrar un estado vacío confuso.
+
+  Privacidad: noindex, nofollow. No está en el sitemap; los
+  operadores llegan via el enlace "El Taller" del nav (solo visible
+  para visitantes autenticados).
 -->
 <meta name="robots" content="noindex, nofollow" />
 <title>El Taller — Muntin Digital</title>
@@ -29,65 +37,21 @@
 
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
-
-<style>
-  body { background: var(--surface-0); }
-  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
-  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
-  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-  .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
-  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
-  .wb-account-email { color: var(--ink); font-weight: 500; }
-  .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-  .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
-
-  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
-  .wb-header { max-width: 720px; margin: 0 auto 36px; }
-  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
-  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
-  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
-
-  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
-
-  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
-  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
-  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .wb-state .wb-state-cta { margin-top: 20px; }
-
-  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
-  .wb-item-body { min-width: 0; }
-  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
-  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
-  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
-  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
-  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
-  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
-  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
-
-  /* Phase 3 (Workshop) — toggle de Watch (Vigilar). */
-  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
-  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
-  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
-  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
-  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
-  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
-
-  @media (max-width: 640px) {
-    .wb-item { grid-template-columns: 1fr; }
-    .wb-item-actions { justify-content: flex-end; }
-  }
-</style>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-wsh" fetchpriority="high">
 </head>
 <body>
 
 <a class="skip-link" href="#main">Ir al contenido</a>
 
-<div class="wb-shell">
-  <header class="wb-top">
-    <a href="/es/" class="wb-mark" aria-label="Muntin Digital — inicio">
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -95,40 +59,210 @@
           <line x1="18" y1="49" x2="110" y2="49"/>
         </g>
       </svg>
-      Muntin Digital
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <div class="wb-account">
-      <span class="wb-account-email" data-bind="email">&nbsp;</span>
-      <a href="/es/account/" class="wb-signout">Cuenta</a>
-      <form method="POST" action="/api/auth/signout" style="margin:0;">
-        <button type="submit" class="wb-signout">Cerrar sesión</button>
-      </form>
-    </div>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->130<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/workbench/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
+    </details>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a href="/workbench/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
+
+<main id="main" class="container wsh-main">
+  <header class="wsh-header">
+    <span class="eyebrow">El Taller</span>
+    <h1 class="wsh-h1">Guardado de tu trabajo.</h1>
+    <p class="wsh-sub">Auditorías, escenarios e instantáneas que has guardado desde las herramientas gratis. Todo se queda aquí hasta que lo elimines.</p>
   </header>
 
-  <main id="main" class="wb-main">
-    <div class="wb-header">
-      <p class="wb-eyebrow">El Taller</p>
-      <h1 class="wb-h1">Guardado de tu trabajo.</h1>
-      <p class="wb-sub">Auditorías, escenarios e instantáneas que has guardado desde las herramientas gratis. Todo se queda aquí hasta que lo elimines.</p>
+  <p class="wsh-auth-strip">
+    Sesión iniciada como <span class="wsh-auth-strip-email" data-bind="email">&nbsp;</span>
+    <a class="btn btn-ghost btn-sm" href="/es/account/">Cuenta</a>
+    <form method="POST" action="/api/auth/signout">
+      <button type="submit" class="btn btn-ghost btn-sm">Cerrar sesión</button>
+    </form>
+  </p>
+
+  <div class="wsh-list" id="wbList" aria-live="polite">
+    <div class="wsh-state" id="wbLoading">
+      <p>Cargando tus items guardados&hellip;</p>
+    </div>
+    <div class="wsh-state" id="wbEmpty" hidden>
+      <h2>Aún no hay nada guardado.</h2>
+      <p>Ejecuta cualquier herramienta gratis y toca &ldquo;Guardar en mi Taller&rdquo; en un resultado. Aparecerá aquí, junto con todo lo demás.</p>
+      <p class="wsh-state-cta"><a class="btn btn-ghost" href="/es/tools/">Ver las herramientas</a></p>
+    </div>
+    <div class="wsh-state" id="wbError" hidden>
+      <h2>No pudimos cargar tus items guardados.</h2>
+      <p>Recarga la página o inténtalo de nuevo en un momento. Si esto sigue pasando, escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">¿Listo para construir algo que valga la pena?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
     </div>
 
-    <div class="wb-list" id="wbList" aria-live="polite">
-      <div class="wb-state" id="wbLoading">
-        <p>Cargando tus items guardados&hellip;</p>
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->130<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
-      <div class="wb-state" id="wbEmpty" hidden>
-        <h2>Aún no hay nada guardado.</h2>
-        <p>Ejecuta cualquier herramienta gratis y toca &ldquo;Guardar en mi Taller&rdquo; en un resultado. Aparecerá aquí, junto con todo lo demás.</p>
-        <p class="wb-state-cta"><a class="btn btn-ghost" href="/es/tools/">Ver las herramientas</a></p>
-      </div>
-      <div class="wb-state" id="wbError" hidden>
-        <h2>No pudimos cargar tus items guardados.</h2>
-        <p>Recarga la página o inténtalo de nuevo en un momento. Si esto sigue pasando, escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
-      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <ul class="foot-links">
+          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <ul class="foot-links">
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Agenda una llamada de 20 min<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
+      </nav>
     </div>
-  </main>
-</div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js?v=20260429-wsh" defer></script>
 
 <script>
   (function () {
@@ -177,7 +311,6 @@
       'search-ideas': '/es/tools/search-ideas/'
     };
 
-    // Phase 3 — kinds vigilables.
     var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
     var watchIndex = {};
 
@@ -207,7 +340,7 @@
       if (!watch) {
         return (
           '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
-            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Vigilar a diario</button>' +
+            '<button type="button" class="btn btn-ghost btn-sm wsh-watch-btn js-wb-watch-attach" data-schedule="daily">+ Vigilar a diario</button>' +
           '</span>'
         );
       }
@@ -215,18 +348,20 @@
       var label = schedule === 'weekly' ? 'Vigilando semanal' : 'Vigilando diario';
       return (
         '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
-          '<span class="wb-watch-pill">' +
+          '<span class="wsh-watch-pill">' +
             escapeHtml(label) +
             '<button type="button" class="js-wb-watch-detach" aria-label="Dejar de vigilar">×</button>' +
           '</span>' +
         '</span>'
       );
     }
+
     function cssEscape(s) {
       return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
         return '\\' + c.charCodeAt(0).toString(16) + ' ';
       });
     }
+
     function replaceWatchSlot(itemId, watch) {
       var slot = listEl.querySelector('.js-wb-watch-slot[data-id="' + cssEscape(itemId) + '"]');
       if (!slot) return;
@@ -239,6 +374,7 @@
       var detach = fresh.querySelector('.js-wb-watch-detach');
       if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
     }
+
     function onWatchAttach(btn) {
       var slot = btn.closest('.js-wb-watch-slot');
       if (!slot) return;
@@ -259,7 +395,7 @@
             replaceWatchSlot(itemId, watch);
             try {
               if (typeof window.plausible === 'function') {
-                var row = slot.closest('.wb-row');
+                var row = slot.closest('.wsh-item');
                 var kind = row ? row.getAttribute('data-kind') : '';
                 window.plausible('Workbench Watch Attach', { props: { kind: kind || '?', schedule: schedule } });
               }
@@ -282,6 +418,7 @@
         btn.disabled = false;
       });
     }
+
     function onWatchDetach(btn) {
       var slot = btn.closest('.js-wb-watch-slot');
       if (!slot) return;
@@ -299,7 +436,7 @@
           replaceWatchSlot(itemId, null);
           try {
             if (typeof window.plausible === 'function') {
-              var row = slot.closest('.wb-row');
+              var row = slot.closest('.wsh-item');
               var kind = row ? row.getAttribute('data-kind') : '';
               window.plausible('Workbench Watch Detach', { props: { kind: kind || '?' } });
             }
@@ -320,7 +457,7 @@
       [loadingEl, emptyEl, errorEl].forEach(function (n) {
         if (n && n.parentNode === listEl) listEl.removeChild(n);
       });
-      var existing = listEl.querySelectorAll('.wb-item');
+      var existing = listEl.querySelectorAll('.wsh-item');
       existing.forEach(function (n) { listEl.removeChild(n); });
 
       items.forEach(function (item) {
@@ -332,24 +469,25 @@
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
         }
         var row = document.createElement('article');
-        row.className = 'wb-item';
+        row.className = 'wsh-item';
         row.setAttribute('data-id', item.id);
         row.setAttribute('data-kind', item.kind);
         row.innerHTML =
-          '<div class="wb-item-body">' +
-            '<div class="wb-item-meta">' +
+          '<div class="wsh-item-body">' +
+            '<div class="wsh-item-meta">' +
               '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
             '</div>' +
-            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
-            '<p class="wb-item-date">Guardado ' + fmtDate(item.createdAt) + '</p>' +
+            '<h3 class="wsh-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wsh-item-date">Guardado ' + fmtDate(item.createdAt) + '</p>' +
           '</div>' +
-          '<div class="wb-item-actions">' +
+          '<div class="wsh-item-actions">' +
             watchSlot +
-            '<a class="wb-item-action" href="' + openUrl + '">Abrir</a>' +
-            '<button type="button" class="wb-item-action danger js-wb-delete">Eliminar</button>' +
+            '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Abrir</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm wsh-danger js-wb-delete">Eliminar</button>' +
           '</div>';
         listEl.appendChild(row);
       });
+
       listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
         btn.addEventListener('click', function () { onWatchAttach(btn); });
       });
@@ -359,7 +497,7 @@
 
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var row = btn.closest('.wb-item');
+          var row = btn.closest('.wsh-item');
           if (!row) return;
           var id = row.getAttribute('data-id');
           if (!id) return;
@@ -373,7 +511,7 @@
           }).then(function (r) {
             if (r.ok) {
               row.parentNode.removeChild(row);
-              if (!listEl.querySelector('.wb-item')) {
+              if (!listEl.querySelector('.wsh-item')) {
                 listEl.appendChild(emptyEl);
                 showState(emptyEl);
               }

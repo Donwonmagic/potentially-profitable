@@ -36,8 +36,8 @@ const SKIP_DIRS = new Set([
 const ALLOWED_PATTERNS = [
   /\/workbench[\/?#-]/,                         // URLs and paths: /workbench/, /workbench/?id=, /workbench-save
   /MuntinWorkbench/,                            // global JS identifier
-  /\bwb-[A-Za-z][A-Za-z0-9-]*/,                 // CSS class prefix wb-foo (Sprint 3 renames)
-  /\bwb(?:Handle|List|Save|Box|Btn|Link|Text|Msg|Watch)\b/, // common variable names
+  /\bjs-wb-[A-Za-z]/,                           // JS hook classes (js-wb-watch-attach, js-wb-delete, etc.)
+  /\bwb(?:Handle|List|Save|Box|Btn|Link|Text|Msg|Watch|Loading|Empty|Error)\b/, // variable / id names
   /'Workbench (?:Save|Open Saved|Watch Attach|Watch Detach|Account Delete Request)'/, // Plausible event names (Sprint 15)
   /workbench-save(?:-pattern)?/,                // file refs (.js / .md)
   /^\s*(?:\/\/|\/\*|\*|<!--)/,                  // line is a JS/CSS/HTML comment

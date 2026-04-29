@@ -4849,3 +4849,64 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
     margin-top:2pt;
   }
 }
+
+/* ============ Workshop (Sprint 3 — cohesion) ============
+   /workbench/ + /es/workbench/ saved-items page. Shares the
+   global frame (.nav + <footer>) with every other page so the
+   visual frame doesn't change when a user signs in. Page-specific
+   patterns are prefixed .wsh-; primitives reused inline:
+   .container .eyebrow .btn .btn-ghost .btn-sm .status-chip. */
+
+/* Small button size — Sprint 4 will formalize. Composes with
+   .btn-ghost for the Workshop's Account/Sign out/Open/Delete/
+   Watch controls. */
+.btn-sm{padding:8px 16px;font-size:13px;gap:6px}
+.btn-sm svg{width:14px;height:14px}
+
+.wsh-main{padding-top:clamp(40px,6vh,64px);padding-bottom:clamp(40px,6vh,64px)}
+.wsh-header{max-width:720px;margin:0 auto 22px}
+.wsh-h1{font-family:var(--font-display);font-size:clamp(32px,4.4vw,48px);font-weight:500;line-height:1.1;letter-spacing:-0.02em;color:var(--ink);margin:8px 0 14px}
+.wsh-sub{font-size:var(--fs-lead);line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* "Signed in as X · Account · Sign out" strip below the header.
+   Replaces the old in-nav account block; the auth context now lives
+   adjacent to where it's actionable. */
+.wsh-auth-strip{max-width:720px;margin:0 auto 36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--stone)}
+.wsh-auth-strip-email{color:var(--ink);font-weight:500}
+.wsh-auth-strip form{margin:0}
+
+.wsh-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+
+/* Loading / empty / error state cards (mutually exclusive). */
+.wsh-state{padding:40px 28px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
+.wsh-state h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 10px}
+.wsh-state p{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:480px}
+.wsh-state-cta{margin-top:20px}
+
+/* Saved-item row. */
+.wsh-item{padding:22px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1);display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start}
+.wsh-item-body{min-width:0}
+.wsh-item-meta{display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}
+.wsh-item-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0;line-height:1.35;word-break:break-word}
+.wsh-item-date{font-size:12.5px;color:var(--stone);margin:6px 0 0;font-variant-numeric:tabular-nums}
+.wsh-item-actions{display:inline-flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+/* Danger variant — small extension on .btn-ghost that swaps the
+   accent to rust. Sprint 4 will systematize into .btn-danger-ghost. */
+.btn-ghost.wsh-danger{color:var(--rust);border-color:var(--status-bad-tint)}
+.btn-ghost.wsh-danger:hover{background:var(--status-bad-tint);border-color:var(--rust);color:var(--rust)}
+
+/* Watch toggle: a teal-accenting button (not-watched) and a teal-tint
+   pill (watched) that sit in the same slot. */
+.btn-ghost.wsh-watch-btn:hover{background:var(--white);border-color:var(--teal);color:var(--teal)}
+.wsh-watch-btn[disabled]{opacity:0.6;cursor:wait}
+.wsh-watch-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 6px 8px 14px;border-radius:999px;background:var(--teal-tint);color:var(--teal);font:inherit;font-size:13px;font-weight:600}
+.wsh-watch-pill button{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--teal);font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0;transition:background var(--t-fast) var(--ease)}
+.wsh-watch-pill button:hover{background:rgba(31,78,91,0.12)}
+.wsh-watch-pill button[disabled]{opacity:0.6;cursor:wait}
+
+@media (max-width:640px){
+  .wsh-item{grid-template-columns:1fr}
+  .wsh-item-actions{justify-content:flex-end}
+}
+

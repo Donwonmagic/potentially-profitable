@@ -4,19 +4,28 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
-  Phase 2 (Workshop) — saved-items library.
+  Sprint 3 (cohesion) — Workshop saved-items page now shares the
+  site-wide design system. The page-local <style> block, .wb-* class
+  prefix, and bespoke top-bar are gone; styles live in assets/site.css
+  under the // §Workshop section, classes are renamed to .wsh-*, and
+  the shared _includes/nav.html + _includes/footer.html are stamped
+  in by scripts/sync-includes.mjs (run after edits).
 
-  The page is still gated server-side by the worker (src/worker.js):
-  a GET to /workbench/ from a visitor without a valid signed session
-  cookie returns 404 before this HTML is ever served. So everything
-  below assumes "logged-in" — JS only renders the saved items list
-  and provides delete affordances. If /api/auth/me unexpectedly 401s
-  (cookie expired between the worker gate and the JS fetch), we
-  redirect to /sign-in/ rather than show a confusing empty state.
+  Naming: the product is "the Workshop" in user copy. The URL stays
+  /workbench/ (URLs are forever; a redirect is worse than a slightly
+  archaic path). Internal hooks `wbList`, `wbLoading`, `wbEmpty`,
+  `wbError`, `js-wb-watch-*`, `js-wb-delete` keep their names since
+  they're code identifiers, not user-facing strings.
 
-  Privacy posture: noindex, nofollow. The page is still not in the
-  sitemap or any public link — operators arrive via the nav's
-  "Workshop" link (only visible to authenticated visitors).
+  Server gating: the worker (src/worker.js) returns 404 for
+  unauthenticated GETs to /workbench/, so JS below assumes
+  "logged-in." If /api/auth/me unexpectedly 401s (cookie expired
+  between gate and fetch), we redirect to /sign-in/ rather than
+  show a confusing empty state.
+
+  Privacy: noindex, nofollow. Not in the sitemap; operators arrive
+  via the nav's "Workshop" link (only visible to authenticated
+  visitors via the auth-state script in nav.html).
 -->
 <meta name="robots" content="noindex, nofollow" />
 <title>The Workshop — Muntin Digital</title>
@@ -27,72 +36,15 @@
 
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens" fetchpriority="high">
-
-<style>
-  /* Workshop layout — narrower than a full content page; the saved-
-     items list is the main affordance. */
-  body { background: var(--surface-0); }
-  .wb-shell { min-height: 100vh; display: flex; flex-direction: column; }
-  .wb-top { padding: 24px clamp(20px, 4vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); }
-  .wb-mark { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); text-decoration: none; }
-  .wb-mark svg { width: 28px; height: 28px; flex: 0 0 28px; }
-  .wb-account { display: inline-flex; align-items: center; gap: 14px; font-size: 13px; color: var(--stone); }
-  .wb-account-email { color: var(--ink); font-weight: 500; }
-  .wb-signout { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--stone); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-  .wb-signout:hover { border-color: var(--ink); color: var(--ink); }
-
-  .wb-main { flex: 1; padding: clamp(40px, 6vh, 64px) clamp(20px, 4vw, 64px); }
-  .wb-header { max-width: 720px; margin: 0 auto 36px; }
-  .wb-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 12px; }
-  .wb-h1 { font-family: var(--font-display); font-size: clamp(32px, 4.4vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 14px; }
-  .wb-sub { font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0; }
-
-  .wb-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
-
-  /* Loading + empty + error states are mutually exclusive; only one
-     is visible at a time, all start hidden until JS resolves. */
-  .wb-state { padding: 40px 28px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); text-align: center; }
-  .wb-state h2 { font-family: var(--font-display); font-size: 24px; font-weight: 500; color: var(--ink); margin: 0 0 10px; }
-  .wb-state p { font-size: 15px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .wb-state .wb-state-cta { margin-top: 20px; }
-
-  .wb-item { padding: 22px 24px; background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--elev-1); display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: start; }
-  .wb-item-body { min-width: 0; }
-  .wb-item-meta { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .wb-item-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); margin: 0; line-height: 1.35; word-break: break-word; }
-  .wb-item-date { font-size: 12.5px; color: var(--stone); margin: 6px 0 0; font-variant-numeric: tabular-nums; }
-  .wb-item-actions { display: inline-flex; gap: 8px; flex-shrink: 0; }
-  .wb-item-action { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); text-decoration: none; }
-  .wb-item-action:hover { border-color: var(--ink); color: var(--ink); }
-  .wb-item-action.danger { color: var(--rust); border-color: var(--status-bad-tint); }
-  .wb-item-action.danger:hover { background: var(--status-bad-tint); border-color: var(--rust); }
-
-  /* Phase 3 (Workshop) — Watch toggle. Two states for one slot:
-     not-watched → an "+ Watch daily" button; watched → a chip with
-     the schedule + an inline × to detach. Both compact enough to
-     sit in the .wb-item-actions row without crowding Open/Delete. */
-  .wb-watch-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-  .wb-watch-btn:hover { border-color: var(--teal); color: var(--teal); }
-  .wb-watch-btn[disabled] { opacity: 0.6; cursor: wait; }
-  .wb-watch-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 6px 8px 14px; border-radius: 999px; background: var(--teal-tint); color: var(--teal); font: inherit; font-size: 13px; font-weight: 600; }
-  .wb-watch-pill button { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--teal); font: inherit; font-size: 16px; line-height: 1; cursor: pointer; padding: 0; transition: background var(--t-fast) var(--ease); }
-  .wb-watch-pill button:hover { background: rgba(31,78,91,0.12); }
-  .wb-watch-pill button[disabled] { opacity: 0.6; cursor: wait; }
-
-  @media (max-width: 640px) {
-    .wb-item { grid-template-columns: 1fr; }
-    .wb-item-actions { justify-content: flex-end; }
-  }
-</style>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-wsh" fetchpriority="high">
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="wb-shell">
-  <header class="wb-top">
-    <a href="/" class="wb-mark" aria-label="Muntin Digital home">
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -100,40 +52,228 @@
           <line x1="18" y1="49" x2="110" y2="49"/>
         </g>
       </svg>
-      Muntin Digital
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <div class="wb-account">
-      <span class="wb-account-email" data-bind="email">&nbsp;</span>
-      <a href="/account/" class="wb-signout">Account</a>
-      <form method="POST" action="/api/auth/signout" style="margin:0;">
-        <button type="submit" class="wb-signout">Sign out</button>
-      </form>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+            <strong>Library home</strong>
+            <span>The hub of everything below &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Learn</h4>
+            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Read</h4>
+            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Do</h4>
+            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/workbench/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <p class="mobile-library__group">Learn</p>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/glossary/">Glossary</a>
+      <p class="mobile-library__group">Read</p>
+      <a href="/blog/">Articles</a>
+      <a href="/learn/research/">Research</a>
+      <p class="mobile-library__group">Do</p>
+      <a href="/tools/">Free tools</a>
+      <a href="/learn/checklists/">Checklists &amp; guides</a>
+    </details>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a href="/es/workbench/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/workbench/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
     </div>
+  </aside>
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) { show(workshop); return; }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
+
+<main id="main" class="container wsh-main">
+  <header class="wsh-header">
+    <span class="eyebrow">Workshop</span>
+    <h1 class="wsh-h1">Saved from your work.</h1>
+    <p class="wsh-sub">Audits, scenarios, and snapshots you&rsquo;ve saved across the free tools. Everything stays here until you delete it.</p>
   </header>
 
-  <main id="main" class="wb-main">
-    <div class="wb-header">
-      <p class="wb-eyebrow">The Workshop</p>
-      <h1 class="wb-h1">Saved from your work.</h1>
-      <p class="wb-sub">Audits, scenarios, and snapshots you&rsquo;ve saved across the free tools. Everything stays here until you delete it.</p>
+  <p class="wsh-auth-strip">
+    Signed in as <span class="wsh-auth-strip-email" data-bind="email">&nbsp;</span>
+    <a class="btn btn-ghost btn-sm" href="/account/">Account</a>
+    <form method="POST" action="/api/auth/signout">
+      <button type="submit" class="btn btn-ghost btn-sm">Sign out</button>
+    </form>
+  </p>
+
+  <div class="wsh-list" id="wbList" aria-live="polite">
+    <div class="wsh-state" id="wbLoading">
+      <p>Loading your saved items&hellip;</p>
+    </div>
+    <div class="wsh-state" id="wbEmpty" hidden>
+      <h2>Nothing saved yet.</h2>
+      <p>Run any of the free tools and tap &ldquo;Save to the Workshop&rdquo; on a result. It&rsquo;ll show up here, with everything else.</p>
+      <p class="wsh-state-cta"><a class="btn btn-ghost" href="/tools/">Browse the tools</a></p>
+    </div>
+    <div class="wsh-state" id="wbError" hidden>
+      <h2>Couldn&rsquo;t load your saved items.</h2>
+      <p>Refresh the page or try again in a moment. If this keeps happening, email <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Ready to build something worth the time?</div>
+      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
     </div>
 
-    <div class="wb-list" id="wbList" aria-live="polite">
-      <div class="wb-state" id="wbLoading">
-        <p>Loading your saved items&hellip;</p>
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->130<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
-      <div class="wb-state" id="wbEmpty" hidden>
-        <h2>Nothing saved yet.</h2>
-        <p>Run any of the free tools and tap &ldquo;Save to the Workshop&rdquo; on a result. It&rsquo;ll show up here, with everything else.</p>
-        <p class="wb-state-cta"><a class="btn btn-ghost" href="/tools/">Browse the tools</a></p>
-      </div>
-      <div class="wb-state" id="wbError" hidden>
-        <h2>Couldn&rsquo;t load your saved items.</h2>
-        <p>Refresh the page or try again in a moment. If this keeps happening, email <a href="mailto:don@muntin.digital">don@muntin.digital</a>.</p>
-      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explore</p>
+        <ul class="foot-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
+        <ul class="foot-links">
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contact</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+      </nav>
     </div>
-  </main>
-</div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js?v=20260429-wsh" defer></script>
 
 <script>
   (function () {
@@ -165,9 +305,9 @@
       'search-ideas': 'Search ideas'
     };
 
-    // Per-kind landing URLs. Phase 2 just sends the user back to the
-    // tool root; Phase 3 will pass ?saved=<id> so the tool can
-    // re-hydrate state from the saved payload via /api/workbench/get.
+    // Per-kind landing URLs. Sends the user back to the tool root
+    // with ?saved=<id> so the tool can rehydrate the saved result
+    // via /api/workbench/get.
     var KIND_URLS = {
       audit: '/tools/audits/restaurant/',
       seo: '/tools/seo-grader/',
@@ -187,10 +327,9 @@
       'search-ideas': '/tools/search-ideas/'
     };
 
-    // Phase 3 (Workshop) — kinds that can be watched. Mirrors
-    // WATCHABLE_KINDS in src/lib/workbench.js. A "watch" attaches a
-    // re-check schedule; calculator-only kinds (margin, plate, etc.)
-    // can't be watched because there's no upstream API to re-run.
+    // Watchable kinds — those with an upstream API that can be
+    // re-run on a schedule. Mirrors WATCHABLE_KINDS in
+    // src/lib/workbench.js.
     var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
 
     // Populated from /api/workbench/watch-list on load. Maps
@@ -219,16 +358,14 @@
       if (which) which.hidden = false;
     }
 
-    // Phase 3 (Workshop) — Watch-toggle helpers.
-
+    // Watch-toggle helpers: two states for one slot. Wrapped in
+    // .js-wb-watch-slot so onWatchAttach/Detach can replace just
+    // this slot in place when state flips.
     function renderWatchSlotHtml(itemId, watch) {
-      // Two states: not-watched (a button), watched (a chip with × inline).
-      // Wrapped in .js-wb-watch-slot so onWatchAttach/Detach can
-      // replace just this slot in place when state flips.
       if (!watch) {
         return (
           '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
-            '<button type="button" class="wb-watch-btn js-wb-watch-attach" data-schedule="daily">+ Watch daily</button>' +
+            '<button type="button" class="btn btn-ghost btn-sm wsh-watch-btn js-wb-watch-attach" data-schedule="daily">+ Watch daily</button>' +
           '</span>'
         );
       }
@@ -236,7 +373,7 @@
       var label = schedule === 'weekly' ? 'Watching weekly' : 'Watching daily';
       return (
         '<span class="js-wb-watch-slot" data-id="' + escapeHtml(itemId) + '">' +
-          '<span class="wb-watch-pill">' +
+          '<span class="wsh-watch-pill">' +
             escapeHtml(label) +
             '<button type="button" class="js-wb-watch-detach" aria-label="Stop watching">×</button>' +
           '</span>' +
@@ -251,15 +388,14 @@
       holder.innerHTML = renderWatchSlotHtml(itemId, watch);
       var fresh = holder.firstChild;
       slot.parentNode.replaceChild(fresh, slot);
-      // Re-wire the new button.
       var attach = fresh.querySelector('.js-wb-watch-attach');
       if (attach) attach.addEventListener('click', function () { onWatchAttach(attach); });
       var detach = fresh.querySelector('.js-wb-watch-detach');
       if (detach) detach.addEventListener('click', function () { onWatchDetach(detach); });
     }
 
-    // Tiny CSS.escape() polyfill for older browsers — only handles
-    // the subset of chars our token alphabet produces (A-Z, 2-9).
+    // Tiny CSS.escape() polyfill — only handles the subset our
+    // token alphabet produces (A-Z, 2-9).
     function cssEscape(s) {
       return String(s).replace(/[^A-Za-z0-9_-]/g, function (c) {
         return '\\' + c.charCodeAt(0).toString(16) + ' ';
@@ -286,7 +422,7 @@
             replaceWatchSlot(itemId, watch);
             try {
               if (typeof window.plausible === 'function') {
-                var row = slot.closest('.wb-row');
+                var row = slot.closest('.wsh-item');
                 var kind = row ? row.getAttribute('data-kind') : '';
                 window.plausible('Workbench Watch Attach', { props: { kind: kind || '?', schedule: schedule } });
               }
@@ -327,7 +463,7 @@
           replaceWatchSlot(itemId, null);
           try {
             if (typeof window.plausible === 'function') {
-              var row = slot.closest('.wb-row');
+              var row = slot.closest('.wsh-item');
               var kind = row ? row.getAttribute('data-kind') : '';
               window.plausible('Workbench Watch Detach', { props: { kind: kind || '?' } });
             }
@@ -345,50 +481,40 @@
     }
 
     function renderItems(items) {
-      // Remove any existing state cards before painting items.
       [loadingEl, emptyEl, errorEl].forEach(function (n) {
         if (n && n.parentNode === listEl) listEl.removeChild(n);
       });
-      // Clear any prior items (paranoid; we only call this once).
-      var existing = listEl.querySelectorAll('.wb-item');
+      var existing = listEl.querySelectorAll('.wsh-item');
       existing.forEach(function (n) { listEl.removeChild(n); });
 
       items.forEach(function (item) {
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/tools/';
-        // Pass ?saved=<id> so the tool can rehydrate the saved
-        // result without re-running its API call. Tools that don't
-        // implement rehydration yet will silently ignore the param
-        // and just open at the form (still useful — user lands
-        // somewhere reasonable).
         var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
         }
         var row = document.createElement('article');
-        row.className = 'wb-item';
+        row.className = 'wsh-item';
         row.setAttribute('data-id', item.id);
         row.setAttribute('data-kind', item.kind);
         row.innerHTML =
-          '<div class="wb-item-body">' +
-            '<div class="wb-item-meta">' +
+          '<div class="wsh-item-body">' +
+            '<div class="wsh-item-meta">' +
               '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
             '</div>' +
-            '<h3 class="wb-item-title">' + escapeHtml(item.title) + '</h3>' +
-            '<p class="wb-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
+            '<h3 class="wsh-item-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wsh-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
           '</div>' +
-          '<div class="wb-item-actions">' +
+          '<div class="wsh-item-actions">' +
             watchSlot +
-            '<a class="wb-item-action" href="' + openUrl + '">Open</a>' +
-            '<button type="button" class="wb-item-action danger js-wb-delete">Delete</button>' +
+            '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm wsh-danger js-wb-delete">Delete</button>' +
           '</div>';
         listEl.appendChild(row);
       });
 
-      // Wire watch toggle (attach + detach). Two click handlers
-      // share one container; the row is rebuilt in place when the
-      // state flips so we never accumulate stale listeners.
       listEl.querySelectorAll('.js-wb-watch-attach').forEach(function (btn) {
         btn.addEventListener('click', function () { onWatchAttach(btn); });
       });
@@ -396,10 +522,9 @@
         btn.addEventListener('click', function () { onWatchDetach(btn); });
       });
 
-      // Wire delete buttons.
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var row = btn.closest('.wb-item');
+          var row = btn.closest('.wsh-item');
           if (!row) return;
           var id = row.getAttribute('data-id');
           if (!id) return;
@@ -413,7 +538,7 @@
           }).then(function (r) {
             if (r.ok) {
               row.parentNode.removeChild(row);
-              if (!listEl.querySelector('.wb-item')) {
+              if (!listEl.querySelector('.wsh-item')) {
                 listEl.appendChild(emptyEl);
                 showState(emptyEl);
               }
@@ -433,8 +558,6 @@
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
           if (r.status === 401) {
-            // Cookie expired between the worker gate and this fetch.
-            // Redirect rather than show a confusing empty state.
             window.location.href = '/sign-in/?returnTo=' + encodeURIComponent('/workbench/');
             throw new Error('redirect');
           }
@@ -443,10 +566,6 @@
         })
         .then(function (me) {
           if (emailSlot && me && me.email) emailSlot.textContent = me.email;
-          // Saves and watches load in parallel; watches are
-          // small and cheap, and rendering needs both before it
-          // can decide between the "Watch" button and the
-          // "Watching daily" pill per row.
           return Promise.all([
             fetch('/api/workbench/list',       { credentials: 'same-origin' }),
             fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
@@ -456,16 +575,12 @@
           var listRes  = responses[0];
           var watchRes = responses[1];
           if (!listRes.ok) throw new Error('list-failed');
-          // Watch fetch failure is non-fatal: degrade to "no watches"
-          // rather than blocking the whole page. The user can still
-          // see and manage saved items.
           var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
           return Promise.all([listRes.json(), watchPromise]);
         })
         .then(function (parsed) {
           var listData  = parsed[0] || {};
           var watchData = parsed[1] || {};
-          // Build the savedItemId → watch index before rendering.
           watchIndex = {};
           (watchData.items || []).forEach(function (w) {
             if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
@@ -475,7 +590,7 @@
           renderItems(items);
         })
         .catch(function (err) {
-          if (err && err.message === 'redirect') return; // navigation in flight
+          if (err && err.message === 'redirect') return;
           showState(errorEl);
         });
     }
