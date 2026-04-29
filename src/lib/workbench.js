@@ -42,6 +42,10 @@ const ALLOWED_KINDS = new Set([
   'audit', 'seo', 'gbp', 'mobile', 'schema', 'speed',
   'margin', 'plate', 'photo', 'menu', 'menu-copy', 'brand',
   'open-hours', 'compare', 'tech-stack', 'search-ideas',
+  // Phase C.1 (Storefront Health) — composite kind whose payload
+  // is just { propertyId }; the Workshop list rehydrates by
+  // reading the underlying property:<sub>:<propertyId> row.
+  'storefront-health',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear
@@ -91,6 +95,12 @@ const ALLOWED_SCHEDULES = new Set(['daily', 'weekly']);
 // over-eager operator from monopolising the cron's run budget.
 const MAX_WATCHES_PER_USER = 25;
 
+// Bug B2.7 (proactive audit) — stalled-watch threshold. After this
+// many consecutive recheck failures (upstream 5xx, timeout, parse
+// error, etc.), the cron stops retrying that watch and emails the
+// user once. Prevents a doomed call from burning quota indefinitely.
+const STALL_THRESHOLD = 5;
+
 export {
   SAVE_KEY_PREFIX,
   ALLOWED_KINDS,
@@ -101,6 +111,7 @@ export {
   WATCHABLE_KINDS,
   ALLOWED_SCHEDULES,
   MAX_WATCHES_PER_USER,
+  STALL_THRESHOLD,
 };
 
 export function mintSaveItemId() {
@@ -275,6 +286,16 @@ export async function attachWatch(env, sub, savedItemId, schedule) {
   // Allow update-in-place (re-attach to refresh schedule) without
   // tripping the cap — only block when adding a NEW watch past the
   // ceiling. Check existence before counting.
+  //
+  // Bug B2.6 (proactive audit) — accepted TOCTOU tradeoff. KV has no
+  // transactional CAS, so two simultaneous attach POSTs can both
+  // pass this check before either writes. Worst case: a user with
+  // exactly MAX_WATCHES_PER_USER - 1 existing watches double-clicks
+  // and ends up with MAX + 1. The cap is a soft per-user-rate
+  // limit, not a security boundary; the next attach reverts to the
+  // hard rejection. If a future requirement makes this cap a real
+  // boundary, route the increment through a Durable Object (the
+  // RATE_LIMITER DO is already wired and supports CAS-style ops).
   const already = await env.AUTH_SESSIONS.get(watchKey(sub, savedItemId));
   if (!already && existing >= MAX_WATCHES_PER_USER) {
     return { ok: false, error: 'limit-reached', max: MAX_WATCHES_PER_USER };
@@ -360,7 +381,22 @@ export async function* iterateAllWatches(env) {
 // to update lastCheckedAt + lastScore. Separate from attachWatch
 // so the re-check path doesn't touch the user-visible schedule
 // or baselineScore.
-export async function recordWatchCheck(env, sub, savedItemId, score) {
+// Bug B2.7 (proactive audit) — mark a watch as stalled so the cron
+// skips it on subsequent ticks. Called by the cron when a watch
+// hits STALL_THRESHOLD consecutive failures. A successful recheck
+// (via recordWatchCheck with failed=false) clears the flag.
+export async function markWatchStalled(env, sub, savedItemId) {
+  const key = watchKey(sub, savedItemId);
+  const raw = await env.AUTH_SESSIONS.get(key);
+  if (!raw) return { ok: false, error: 'not-found' };
+  let row;
+  try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt' }; }
+  row.stalled = true;
+  await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
+  return { ok: true, watch: row };
+}
+
+export async function recordWatchCheck(env, sub, savedItemId, score, failed) {
   const key = watchKey(sub, savedItemId);
   const raw = await env.AUTH_SESSIONS.get(key);
   if (!raw) return { ok: false, error: 'not-found' };
@@ -368,6 +404,19 @@ export async function recordWatchCheck(env, sub, savedItemId, score) {
   try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt' }; }
   row.lastCheckedAt = Date.now();
   row.lastScore = (typeof score === 'number' && isFinite(score)) ? score : null;
+  // Bug B2.7 (proactive audit) — track consecutive failures so the
+  // cron can stop retrying a doomed watch (upstream permanently 5xx,
+  // a deleted page, etc.). Success resets the counter; the cron
+  // checks the post-call row.consecutiveFailures against
+  // STALL_THRESHOLD to decide whether to emit a one-time stalled
+  // notification (gated by row.stalled to avoid spamming).
+  if (failed === true) {
+    row.consecutiveFailures = (typeof row.consecutiveFailures === 'number' ? row.consecutiveFailures : 0) + 1;
+  } else {
+    row.consecutiveFailures = 0;
+    // A successful recheck un-stalls a previously-stalled watch.
+    if (row.stalled) row.stalled = false;
+  }
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
   return { ok: true, watch: row };
 }
@@ -394,4 +443,242 @@ function extractScoreFromPayload(kind, payload) {
 }
 function numericOrNull(v) {
   return (typeof v === 'number' && isFinite(v)) ? v : null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase C (Storefront Health) — Property model.
+//
+// A Property is a stable, user-owned reference to one URL plus
+// pointers to every check that has run against it. Stored alongside
+// existing save:/watch: keys in AUTH_SESSIONS:
+//
+//   property:<sub>:<propertyId>  → JSON {
+//     id, url, title,
+//     checks: { audit?: savedItemId, seo?: …, gbp?: …, mobile?: …,
+//               schema?: …, speed?: … },
+//     rollup: { score, grade, generatedAt, byCheck: {…} },
+//     createdAt, updatedAt
+//   }
+//
+// Invariants:
+// - propertyId minted via mintSaveItemId() — same alphabet/length
+//   as save ids for visual consistency in URLs.
+// - checks.<kind> is a POINTER to a save:<sub>:<id> row, not a
+//   copy. Properties are a thin index over existing saves.
+// - rollup is DERIVED, never authoritative. Rebuilt by
+//   rollupProperty(env, sub, propertyId) re-reading referenced
+//   saves and reusing extractScoreFromPayload(). No new score math.
+// - storefront-health is ALSO a save kind (payload = {propertyId})
+//   so the Workshop list, ?saved= rehydration, and watch path
+//   work without special-casing.
+// - Properties count against the existing 100-save cap, with a
+//   sub-cap of 10 properties per user.
+
+const PROPERTY_KEY_PREFIX    = 'property:';
+const MAX_PROPERTIES_PER_USER = 10;
+
+// Tools that contribute to a property's rollup. Subset of
+// WATCHABLE_KINDS — these are the kinds with deterministic
+// score extraction.
+const PROPERTY_CHECK_KINDS = ['audit', 'seo', 'gbp', 'mobile', 'schema', 'speed'];
+
+export {
+  PROPERTY_KEY_PREFIX,
+  MAX_PROPERTIES_PER_USER,
+  PROPERTY_CHECK_KINDS,
+};
+
+export const mintPropertyId = mintSaveItemId;
+
+function propertyKey(sub, id) {
+  return PROPERTY_KEY_PREFIX + sub + ':' + id;
+}
+
+// Normalize a URL's origin so "https://Foo.com/" and "https://foo.com"
+// hash to the same property fingerprint. Lowercases host, strips
+// trailing slash on bare-origin URLs, drops fragment + utm query.
+function normalizeOrigin(rawUrl) {
+  try {
+    const u = new URL(rawUrl);
+    u.hash = '';
+    // Strip tracking params; keep meaningful path/query.
+    const params = new URLSearchParams(u.search);
+    for (const k of Array.from(params.keys())) {
+      if (/^utm_/i.test(k) || k === 'fbclid' || k === 'gclid') params.delete(k);
+    }
+    u.search = params.toString();
+    u.hostname = u.hostname.toLowerCase();
+    let s = u.toString();
+    if (s.endsWith('/') && u.pathname === '/') s = s.slice(0, -1);
+    return s;
+  } catch {
+    return null;
+  }
+}
+
+export async function listPropertyIdsForUser(env, sub) {
+  const result = await env.AUTH_SESSIONS.list({ prefix: PROPERTY_KEY_PREFIX + sub + ':' });
+  return result.keys.map((k) => k.name);
+}
+
+export async function listPropertiesForUser(env, sub) {
+  const ids = await listPropertyIdsForUser(env, sub);
+  const out = [];
+  for (const k of ids) {
+    const raw = await env.AUTH_SESSIONS.get(k);
+    if (!raw) continue;
+    try {
+      const row = JSON.parse(raw);
+      out.push({
+        id: row.id,
+        url: row.url,
+        title: row.title,
+        rollup: row.rollup || null,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+      });
+    } catch (_) { /* skip corrupt rows */ }
+  }
+  out.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+  return out;
+}
+
+export async function getProperty(env, sub, id) {
+  if (!isValidSaveItemIdShape(id)) return null;
+  const raw = await env.AUTH_SESSIONS.get(propertyKey(sub, id));
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Idempotent on (sub, normalize(url)): returns existing property if
+// the user already created one for the same origin. Caller passes
+// title (typically the document title or hostname).
+export async function createProperty(env, sub, { url, title }) {
+  const normalized = normalizeOrigin(url);
+  if (!normalized) return { ok: false, error: 'invalid-url' };
+  // Check for existing property at same origin (idempotency).
+  const existing = await listPropertiesForUser(env, sub);
+  const dup = existing.find((p) => normalizeOrigin(p.url) === normalized);
+  if (dup) return { ok: true, id: dup.id, existing: true };
+  if (existing.length >= MAX_PROPERTIES_PER_USER) {
+    return { ok: false, error: 'limit-reached', max: MAX_PROPERTIES_PER_USER };
+  }
+  let id = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintPropertyId();
+    const probe = await env.AUTH_SESSIONS.get(propertyKey(sub, candidate));
+    if (!probe) { id = candidate; break; }
+  }
+  if (!id) return { ok: false, error: 'mint-collision' };
+  const now = Date.now();
+  const row = {
+    id,
+    url: normalized,
+    title: typeof title === 'string' && title.trim() ? title.trim().slice(0, MAX_TITLE_LENGTH) : normalized,
+    checks: {},
+    rollup: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+  await env.AUTH_SESSIONS.put(propertyKey(sub, id), JSON.stringify(row));
+  return { ok: true, id, createdAt: now, existing: false };
+}
+
+export async function deleteProperty(env, sub, id) {
+  if (!isValidSaveItemIdShape(id)) return { ok: false, error: 'invalid-id' };
+  const key = propertyKey(sub, id);
+  const existing = await env.AUTH_SESSIONS.get(key);
+  if (!existing) return { ok: true, deleted: false };
+  await env.AUTH_SESSIONS.delete(key);
+  return { ok: true, deleted: true };
+}
+
+// Attach a check (existing save:<sub>:<savedItemId>) to a property.
+// kind must be one of PROPERTY_CHECK_KINDS. Updates the property's
+// checks pointer map but does NOT recompute rollup — caller does
+// that explicitly via rollupProperty when ready.
+export async function attachCheckToProperty(env, sub, propertyId, kind, savedItemId) {
+  if (!PROPERTY_CHECK_KINDS.includes(kind)) {
+    return { ok: false, error: 'invalid-kind' };
+  }
+  if (!isValidSaveItemIdShape(savedItemId)) {
+    return { ok: false, error: 'invalid-saved-item-id' };
+  }
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  prop.checks = prop.checks || {};
+  prop.checks[kind] = savedItemId;
+  prop.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  return { ok: true };
+}
+
+export async function detachCheckFromProperty(env, sub, propertyId, kind) {
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  if (prop.checks && prop.checks[kind]) {
+    delete prop.checks[kind];
+    prop.updatedAt = Date.now();
+    await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  }
+  return { ok: true };
+}
+
+// Phase C.4 — iterate every property across all users, for the cron
+// rollup pass. Same shape as iterateAllWatches but for property:
+// keys. Each yielded item: { sub, property }.
+export async function* iterateAllProperties(env) {
+  let cursor = null;
+  while (true) {
+    const opts = { prefix: PROPERTY_KEY_PREFIX };
+    if (cursor) opts.cursor = cursor;
+    const page = await env.AUTH_SESSIONS.list(opts);
+    for (const k of page.keys) {
+      const raw = await env.AUTH_SESSIONS.get(k.name);
+      if (!raw) continue;
+      let property;
+      try { property = JSON.parse(raw); } catch (_) { continue; }
+      const parts = k.name.split(':');
+      if (parts.length < 3) continue;
+      const sub = parts.slice(1, -1).join(':');
+      yield { sub, property };
+    }
+    if (page.list_complete) break;
+    if (!page.cursor) break;
+    cursor = page.cursor;
+  }
+}
+
+// Recompute the property's rollup by walking referenced saves and
+// extracting per-kind scores. Tolerant of orphaned pointers (a
+// referenced save that's been deleted) — those kinds drop out of
+// rollup.byCheck and the overall score averages over what remains.
+export async function rollupProperty(env, sub, propertyId) {
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  const byCheck = {};
+  let total = 0;
+  let count = 0;
+  for (const kind of PROPERTY_CHECK_KINDS) {
+    const savedId = prop.checks && prop.checks[kind];
+    if (!savedId) continue;
+    const item = await getItem(env, sub, savedId);
+    if (!item) continue; // orphaned pointer; skip
+    const score = extractScoreFromPayload(kind, item.payload);
+    if (score == null) continue;
+    byCheck[kind] = { score, savedItemId: savedId, ts: item.createdAt };
+    total += score;
+    count += 1;
+  }
+  const overall = count > 0 ? Math.round(total / count) : null;
+  const rollup = {
+    score: overall,
+    grade: overall == null ? null : (overall >= 90 ? 'A' : overall >= 75 ? 'B' : overall >= 60 ? 'C' : overall >= 40 ? 'D' : 'F'),
+    generatedAt: Date.now(),
+    byCheck,
+  };
+  prop.rollup = rollup;
+  prop.updatedAt = rollup.generatedAt;
+  await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  return { ok: true, rollup };
 }

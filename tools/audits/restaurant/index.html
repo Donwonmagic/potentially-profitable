@@ -139,7 +139,7 @@
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 
 <style>
   /* ============ AUDIT TOOL STYLES ============ */
@@ -6159,7 +6159,7 @@
     if (window.__muntinLang === 'es') params.append('lang', 'es');
     return fetch('/api/gbp-lookup?' + params.toString(), {
       headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(5000)
+      signal: MuntinFetchError.safeAbortSignal(5000)
     })
       .then(function(res){ return res.ok ? res.json() : null; })
       .then(function(data){
@@ -6197,7 +6197,7 @@
     var params = new URLSearchParams();
     params.append('url', targetUrl);
     if (window.__muntinLang === 'es') params.append('lang', 'es');
-    return fetch('/api/observatory?' + params.toString(), { signal: AbortSignal.timeout(15000) })
+    return fetch('/api/observatory?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(15000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6205,7 +6205,7 @@
   function callWaybackFirstSeen(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/wayback-first-seen?' + params.toString(), { signal: AbortSignal.timeout(8000) })
+    return fetch('/api/wayback-first-seen?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6213,7 +6213,7 @@
   function callCruxHistory(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/crux-history?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/crux-history?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6222,7 +6222,7 @@
     if (!placeId) return Promise.resolve({ ok: false });
     var params = new URLSearchParams();
     params.append('placeId', placeId);
-    return fetch('/api/gbp-details?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/gbp-details?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6232,7 +6232,7 @@
   function callDnsEmailHealth(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/dns-email-health?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/dns-email-health?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6252,7 +6252,7 @@
     return fetch('/api/brand-dossier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(20000),
+      signal: MuntinFetchError.safeAbortSignal(20000),
       body: JSON.stringify({
         url: targetUrl,
         lang: window.__muntinLang === 'es' ? 'es' : 'en',
@@ -13812,18 +13812,11 @@
     }
 
     // Populate per-platform share links for the current result.
-    // D8: kick off eager-mint of the snapshot permalink so every
-    // downstream share surface (Copy link, social buttons, dev
-    // brief, email) lands on the same stable URL instead of the
-    // older ?url= re-run link. Fully non-blocking — fires in the
-    // background and updates the link hrefs + visible permalink
-    // display when it resolves.
-    ensureSharedSnapshot().then(function(mint){
-      if (mint) {
-        updateShareLinks();
-        revealPermalinkDisplay(mint);
-      }
-    });
+    // Phase B (proactive audit): snapshot is now lazy-minted on
+    // share-button click instead of eagerly on audit-complete.
+    // Downstream surfaces (Copy link, social buttons, dev brief,
+    // email) initialize against the ?url= fallback URL; clicking
+    // share triggers the mint and updates the surfaces in place.
     updateShareLinks();
 
     // Phase I7: reveal the download-share-card button once an
@@ -14021,7 +14014,7 @@
         (window.__muntinLang === 'es' ? '&lang=es' : '');
       return fetch('/api/did-you-mean' + qs, {
         headers: { 'Accept': 'application/json' },
-        signal: AbortSignal.timeout(3500)
+        signal: MuntinFetchError.safeAbortSignal(3500)
       }).then(function(r){ return r.ok ? r.json() : null; })
         .catch(function(){ return null; });
     } catch (_) { return Promise.resolve(null); }
@@ -14899,7 +14892,6 @@
       var originalAria = shareBtn.getAttribute('aria-label') || '';
       shareBtn.setAttribute('aria-label', 'Building share link…');
       var fallbackUrl = location.origin + location.pathname + '?url=' + encodeURIComponent(last.url);
-      var payload = buildSnapshotPayload(last);
       var showToast = function(){
         if (!shareToast) return;
         shareToast.classList.add('visible');
@@ -14918,48 +14910,24 @@
         if (originalAria) shareBtn.setAttribute('aria-label', originalAria);
         if (window.plausible) window.plausible('Audit Shared');
       };
-      if (!payload) { finish(fallbackUrl); return; }
-      // D7a: render a per-snapshot OG image before POSTing so social
-      // crawlers get a rich per-audit preview when the permalink is
-      // shared. Non-blocking: any Canvas failure falls through and the
-      // snapshot still saves without a custom OG (HTMLRewriter in D7b
-      // falls back to the static brand card).
-      (function buildAndPost(){
-        var postWithOg = function(ogBase64){
-          if (ogBase64) payload.og = { pngBase64: ogBase64 };
-          fetch('/api/audit-snapshot', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(payload),
-          }).then(function(r){ return r.ok ? r.json() : r.json().then(function(j){ return Promise.reject(j); }); })
-        .then(function(data){
-          if (data && data.ok && data.shareUrl) {
-            // Honor the current locale: /es/... permalink when the
-            // audit was running in Spanish.
-            var isEs = location.pathname.indexOf('/es/') === 0;
-            finish(isEs && data.shareUrlEs ? data.shareUrlEs : data.shareUrl);
-          } else {
-            finish(fallbackUrl);
-          }
-        })
-        .catch(function(err){
-          // 503 snapshot-storage-unavailable lands here; so do network
-          // errors. Either way, fall back to the ?url= share link so
-          // the button always does SOMETHING useful.
-          if (err && err.error && err.error !== 'snapshot-storage-unavailable') {
-            // Log unexpected errors to aid later diagnosis.
-            try { console.warn('[share] snapshot POST failed', err); } catch (_) {}
-          }
+      // Phase B (proactive audit): route through ensureSharedSnapshot
+      // so the eager and lazy paths share one fetch + one memoized
+      // promise. Repeated clicks of share before the first mint
+      // resolves dedupe via the cached promise inside
+      // ensureSharedSnapshot. On success, also reveal the permalink
+      // display surface so the user sees the stable URL.
+      ensureSharedSnapshot().then(function(mint){
+        if (mint && mint.token) {
+          updateShareLinks();
+          revealPermalinkDisplay(mint);
+          var isEs = location.pathname.indexOf('/es/') === 0;
+          finish(isEs && mint.shareUrlEs ? mint.shareUrlEs : mint.shareUrl);
+        } else {
           finish(fallbackUrl);
-        });
-        };
-        // Try to render the OG PNG. On any failure, continue without.
-        try {
-          renderSnapshotOgPngBase64(payload).then(postWithOg, function(){ postWithOg(null); });
-        } catch (_) {
-          postWithOg(null);
         }
-      })();
+      }, function(){
+        finish(fallbackUrl);
+      });
     });
   }
 

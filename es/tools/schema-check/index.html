@@ -54,7 +54,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 <style>
   .sch-hero{max-width:680px;margin:0 auto;text-align:center}
   .sch-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -317,6 +317,19 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks (ES).
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('schSave'),
+    text: document.getElementById('schSaveText'),
+    kind: 'schema',
+    locale: 'es',
+  });
+})();
+</script>
 <script>
 (function(){
   var form=document.getElementById('schForm');
@@ -429,7 +442,7 @@
     // This eliminates the false-negative where Lighthouse's
     // structured-data audit is absent from the response.
     var pendingResponse=null;
-    fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+    fetch(api,{signal:MuntinFetchError.safeAbortSignal(8000)}).then(function(r){
       pendingResponse=r;
       return r.json().catch(function(){return{}});
     }).then(function(data){

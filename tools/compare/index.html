@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
@@ -316,7 +316,7 @@
     // both halves of the comparison; classify non-OK responses with
     // host context so the error UI can name which URL failed.
     var pendingResponse=null;
-    return fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+    return fetch(api,{signal:MuntinFetchError.safeAbortSignal(8000)}).then(function(r){
       pendingResponse=r;
       return r.json().catch(function(){return{}});
     }).then(function(d){

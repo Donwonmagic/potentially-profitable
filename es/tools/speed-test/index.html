@@ -87,7 +87,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 
 <style>
   .speed-hero { max-width: 680px; margin: 0 auto; text-align: center; }
@@ -478,6 +478,19 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks (ES).
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('speedSave'),
+    text: document.getElementById('speedSaveText'),
+    kind: 'speed',
+    locale: 'es',
+  });
+})();
+</script>
 <script>
 (function() {
   var form = document.getElementById('speedForm');
@@ -637,7 +650,7 @@
 
     // T2 — timeout + clasificador compartido. Mismo flujo que el EN.
     var pendingResponse = null;
-    fetch(api, { signal: AbortSignal.timeout(8000) })
+    fetch(api, { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r) {
         pendingResponse = r;
         return r.json().catch(function(){ return {}; });

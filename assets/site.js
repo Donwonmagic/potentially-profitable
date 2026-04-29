@@ -2536,6 +2536,15 @@
         const target = el.getAttribute('data-share-to');
         if (target === 'copy') {
           el.addEventListener('click', async () => {
+            // Bug B3.2 (proactive audit) — Clipboard API requires a
+            // secure context. Fail fast (don't even try) when the
+            // API isn't available so the user sees the manual-select
+            // hint immediately. The existing catch covers async
+            // throws from .writeText() itself.
+            if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+              el.textContent = 'Copy failed — select the URL manually';
+              return;
+            }
             try {
               await navigator.clipboard.writeText(url);
               const original = el.textContent;

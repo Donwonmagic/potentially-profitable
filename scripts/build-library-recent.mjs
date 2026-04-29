@@ -174,6 +174,11 @@ ${SENTINEL_CLOSE}`;
 const TARGETS = [
   { file: 'learn/index.html',    locale: 'en' },
   { file: 'es/learn/index.html', locale: 'es' },
+  // Phase E (homepage refresh) — rail also surfaces on the homepage
+  // so visitors who land at root see the freshest articles, glossary
+  // terms, and tools without first clicking into the library.
+  { file: 'index.html',          locale: 'en' },
+  { file: 'es/index.html',       locale: 'es' },
 ];
 
 let changed = 0;

@@ -149,9 +149,30 @@
     return locale === 'es' ? classified.messageEs : classified.messageEn;
   }
 
+  // ----- AbortSignal timeout polyfill (Bug B1.2) -----
+  // AbortSignal.timeout(ms) is a 2022+ API. Safari < 16.4 (still
+  // ~3% of mobile traffic) throws TypeError when the call site uses
+  // it directly, hanging the URL-fetching tools. This helper returns
+  // a usable AbortSignal either way: native if supported, otherwise
+  // an AbortController with a manual setTimeout-driven abort.
+  function safeAbortSignal(ms) {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+      return AbortSignal.timeout(ms);
+    }
+    if (typeof AbortController !== 'undefined') {
+      var ctrl = new AbortController();
+      setTimeout(function () { try { ctrl.abort(); } catch (_) {} }, ms);
+      return ctrl.signal;
+    }
+    // No AbortController either — return undefined; fetch will run
+    // without a timeout. Better than throwing.
+    return undefined;
+  }
+
   return {
     classifyFetchError: classifyFetchError,
     localizedMessage:   localizedMessage,
+    safeAbortSignal:    safeAbortSignal,
     MESSAGES:           MESSAGES,
     DEFAULT_RETRY:      DEFAULT_RETRY
   };

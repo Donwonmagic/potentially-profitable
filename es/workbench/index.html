@@ -37,7 +37,7 @@
 
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=20260429-wsh" fetchpriority="high">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
 </head>
 <body>
 
@@ -273,45 +273,30 @@
     var emailSlot = document.querySelector('[data-bind="email"]');
     if (!listEl) return;
 
-    var KIND_LABELS = {
-      audit: 'Auditoría',
-      seo: 'Calificador SEO',
-      gbp: 'GBP grader',
-      mobile: 'Revisión móvil',
-      schema: 'Revisión schema',
-      speed: 'Prueba de velocidad',
-      margin: 'Margin math',
-      plate: 'Plate cost',
-      photo: 'Photo brief',
-      menu: 'Menú',
-      'menu-copy': 'Copy del menú',
-      brand: 'Brand suite',
-      'open-hours': 'Horarios',
-      compare: 'Comparar',
-      'tech-stack': 'Tech stack',
-      'search-ideas': 'Ideas de búsqueda'
+    // Phase C.1: single registry for kind metadata. ES locale.
+    var KIND_REGISTRY = {
+      audit:          { label: 'Auditoría',           url: '/es/tools/audits/restaurant/', watchable: true  },
+      seo:            { label: 'Calificador SEO',     url: '/es/tools/seo-grader/',        watchable: true  },
+      gbp:            { label: 'GBP grader',          url: '/es/tools/gbp-grader/',        watchable: true  },
+      mobile:         { label: 'Revisión móvil',      url: '/es/tools/mobile-check/',      watchable: true  },
+      schema:         { label: 'Revisión schema',     url: '/es/tools/schema-check/',      watchable: true  },
+      speed:          { label: 'Prueba de velocidad', url: '/es/tools/speed-test/',        watchable: true  },
+      margin:         { label: 'Margin math',         url: '/es/tools/margin-math/',       watchable: false },
+      plate:          { label: 'Plate cost',          url: '/es/tools/plate-cost/',        watchable: false },
+      photo:          { label: 'Photo brief',         url: '/es/tools/photo-brief/',       watchable: false },
+      menu:           { label: 'Menú',                url: '/es/tools/menu-engineering/',  watchable: false },
+      'menu-copy':    { label: 'Copy del menú',       url: '/es/tools/menu-copy/',         watchable: false },
+      brand:          { label: 'Brand suite',         url: '/es/tools/brand-suite/',       watchable: false },
+      'open-hours':   { label: 'Horarios',            url: '/es/tools/open-hours/',        watchable: false },
+      compare:        { label: 'Comparar',            url: '/es/tools/compare/',           watchable: false },
+      'tech-stack':   { label: 'Tech stack',          url: '/es/tools/tech-stack/',        watchable: false },
+      'search-ideas': { label: 'Ideas de búsqueda',   url: '/es/tools/search-ideas/',      watchable: false },
+      'storefront-health': { label: 'Storefront Health', url: '/es/tools/storefront-health/', watchable: false }
     };
 
-    var KIND_URLS = {
-      audit: '/es/tools/audits/restaurant/',
-      seo: '/es/tools/seo-grader/',
-      gbp: '/es/tools/gbp-grader/',
-      mobile: '/es/tools/mobile-check/',
-      schema: '/es/tools/schema-check/',
-      speed: '/es/tools/speed-test/',
-      margin: '/es/tools/margin-math/',
-      plate: '/es/tools/plate-cost/',
-      photo: '/es/tools/photo-brief/',
-      menu: '/es/tools/menu-engineering/',
-      'menu-copy': '/es/tools/menu-copy/',
-      brand: '/es/tools/brand-suite/',
-      'open-hours': '/es/tools/open-hours/',
-      compare: '/es/tools/compare/',
-      'tech-stack': '/es/tools/tech-stack/',
-      'search-ideas': '/es/tools/search-ideas/'
-    };
-
-    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+    var KIND_LABELS = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ acc[k] = KIND_REGISTRY[k].label; return acc; }, {});
+    var KIND_URLS   = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ acc[k] = KIND_REGISTRY[k].url;   return acc; }, {});
+    var WATCHABLE_KINDS = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ if (KIND_REGISTRY[k].watchable) acc[k] = 1; return acc; }, {});
     var watchIndex = {};
 
     function escapeHtml(s) {

@@ -81,6 +81,19 @@ import {
   WATCHABLE_KINDS,
   MAX_WATCHES_PER_USER,
   recordWatchCheck,
+  markWatchStalled,
+  STALL_THRESHOLD,
+  // Phase C.1 (Storefront Health) — property helpers.
+  createProperty,
+  getProperty,
+  listPropertiesForUser,
+  attachCheckToProperty,
+  detachCheckFromProperty,
+  rollupProperty,
+  deleteProperty,
+  iterateAllProperties,
+  MAX_PROPERTIES_PER_USER,
+  PROPERTY_CHECK_KINDS,
 } from './lib/workbench.js';
 import { RECHECK_BY_KIND, kindLabel, shouldNotify } from './lib/watch-checks.js';
 
@@ -120,13 +133,28 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/schedule-reaudit',
   // Sprint 0 (Workshop) — magic-link sign-in. Form-tier (10/IP/hour)
   // is the right gate: each POST triggers a Resend email and a KV
-  // write. Verify + me + signout stay on the lighter API tier.
+  // write.
   '/api/auth/magic-link',
+  // Bug B2.2 (proactive audit) — magic-link verify. Tokens are
+  // 10-character random strings (~49 bits entropy) with 15-min TTL
+  // and one-shot consumption, so brute-force is impractical at any
+  // tier. Form-tier (10/IP/hour) is defense-in-depth: caps how
+  // often a single IP can probe verify endpoints (e.g., to enumerate
+  // session token shapes against rate-limit logs).
+  '/api/auth/verify',
   '/api/auth/signout',
   // Phase 3 — destructive: form-tier rate-limit (10/IP/hour). Each
   // POST mints a delete: token + sends an email; confirm side stays
   // on the lighter tier since GETs are idempotent.
-  '/api/auth/account-delete-request'
+  '/api/auth/account-delete-request',
+  // Phase C.2 (Storefront Health) — property writes. Each create
+  // can synchronously fan out to up to 6 child tool runs, so a
+  // tighter cap than the api-tier (30/min) is appropriate. Reads
+  // (list/get/rollup) stay on api-tier.
+  '/api/workbench/property/create',
+  '/api/workbench/property/delete',
+  '/api/workbench/property/attach',
+  '/api/workbench/property/detach',
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -202,6 +230,16 @@ const API_ROUTES = {
   '/api/workbench/watch':         handleWorkbenchWatchAttach,
   '/api/workbench/watch-list':    handleWorkbenchWatchList,
   '/api/workbench/watch-delete':  handleWorkbenchWatchDelete,
+  // Phase C.2 (Storefront Health) — property endpoints. All flag-
+  // gated via env.STOREFRONT_HEALTH_ENABLED — return 404 when
+  // disabled so the surface is invisible until C.5 flips the flag.
+  '/api/workbench/property/create':  handleWorkbenchPropertyCreate,
+  '/api/workbench/property/list':    handleWorkbenchPropertyList,
+  '/api/workbench/property/get':     handleWorkbenchPropertyGet,
+  '/api/workbench/property/delete':  handleWorkbenchPropertyDelete,
+  '/api/workbench/property/attach':  handleWorkbenchPropertyAttach,
+  '/api/workbench/property/detach':  handleWorkbenchPropertyDetach,
+  '/api/workbench/property/rollup':  handleWorkbenchPropertyRollup,
 };
 
 
@@ -250,7 +288,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -489,6 +527,28 @@ export default {
       console.warn('[cron] scheduled() invoked but AUTH_SESSIONS missing; skipping');
       return;
     }
+
+    // Bug B3.4 (proactive audit) — single-flight tick lock. If a
+    // tick is still running when the next fires (slow KV reads,
+    // upstream timeouts), the second tick races against the first
+    // for the same watches. Defensive only: at today's PER_TICK_BUDGET
+    // (200) and BATCH_SIZE (5) the run finishes well inside the
+    // 30-second cron-worker budget. The lock TTL is 60s — KV's
+    // minimum — so a single missed tick re-acquires on the next.
+    const TICK_LOCK_KEY = 'cron:tick:lock';
+    try {
+      const held = await env.AUTH_SESSIONS.get(TICK_LOCK_KEY);
+      if (held) {
+        console.warn('[cron] tick lock held; skipping this tick');
+        return;
+      }
+      await env.AUTH_SESSIONS.put(TICK_LOCK_KEY, String(Date.now()), { expirationTtl: 60 });
+    } catch (err) {
+      // KV failure during lock acquire shouldn't block the tick
+      // entirely — let it run; the budget caps still apply.
+      console.warn('[cron] tick lock acquire failed; proceeding without lock', err && err.message);
+    }
+
     const t0 = Date.now();
     // Per-tick budget: bail at ~200 watches so a runaway namespace
     // can't blow the Cron Worker's 30s execution budget. At today's
@@ -512,6 +572,10 @@ export default {
       const recheck = RECHECK_BY_KIND[kind];
       if (!recheck) return;
       const itemId = watch.savedItemId;
+      // Bug B2.7 (proactive audit) — skip watches already marked
+      // stalled. A successful recheck (next time the user re-saves
+      // or re-attaches) clears the flag in recordWatchCheck.
+      if (watch.stalled) return;
       try {
         // Pull the underlying save row for the URL/payload context.
         const saved = await getItem(env, sub, itemId);
@@ -596,6 +660,29 @@ export default {
       } catch (err) {
         errors++;
         console.warn('[cron] watch processing failed', err && err.message);
+        // Bug B2.7 (proactive audit) — flag the failure on the watch
+        // row so consecutiveFailures can converge to STALL_THRESHOLD
+        // and the cron stops retrying a doomed call. Best-effort —
+        // if the failure-record itself fails (KV unavailable), let
+        // the next tick try again.
+        try {
+          const recorded = await recordWatchCheck(env, sub, itemId, null, true);
+          if (recorded && recorded.ok && recorded.watch) {
+            const row = recorded.watch;
+            const fails = row.consecutiveFailures || 0;
+            if (fails >= STALL_THRESHOLD && !row.stalled) {
+              // Mark stalled so subsequent ticks skip this watch and
+              // the user sees one notification, not ongoing spam.
+              await markWatchStalled(env, sub, itemId);
+              // TODO(B2.7): wire a stalled-watch email template into
+              // src/lib/templates.js and send via sendEmail here.
+              // Until that copy is authored, log so ops can flag the
+              // user manually. The skip-on-stalled guard at the top
+              // of processOne already prevents quota burn.
+              console.warn('[cron] watch stalled', { sub, itemId, kind, fails });
+            }
+          }
+        } catch (_) { /* swallow */ }
       }
     }
 
@@ -614,6 +701,30 @@ export default {
       console.warn('[cron] iterateAllWatches failed', err && err.message);
     }
 
+    // Phase C.4 (Storefront Health) — property rollup pass.
+    // Cheap: each rollup just re-reads the referenced save:<sub>:<id>
+    // rows and recomputes the average. No upstream API calls. Hard
+    // cap at PROPERTY_TICK_BUDGET=30 properties per tick to keep the
+    // total KV-read budget bounded. Skipped entirely when the flag
+    // is off.
+    let propertiesProcessed = 0;
+    if (_storefrontHealthGate(env)) {
+      const PROPERTY_TICK_BUDGET = 30;
+      try {
+        for await (const entry of iterateAllProperties(env)) {
+          if (propertiesProcessed >= PROPERTY_TICK_BUDGET) break;
+          try {
+            await rollupProperty(env, entry.sub, entry.property.id);
+            propertiesProcessed++;
+          } catch (e) {
+            console.warn('[cron] rollupProperty failed', { id: entry.property && entry.property.id, err: e && e.message });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] iterateAllProperties failed', err && err.message);
+      }
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -622,6 +733,7 @@ export default {
       rechecked,
       notified,
       errors,
+      propertiesProcessed,
       ms: Date.now() - t0,
     }));
   },
@@ -637,6 +749,14 @@ export default {
 // logic can be unit-tested without needing an HTMLRewriter instance.
 export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
   const score = (typeof snapshot.score === 'number') ? Math.round(snapshot.score) : null;
+  // Bug B3.5 (proactive audit) — host extraction. The URL constructor
+  // rejects any hostname with characters that could break out of an
+  // HTML attribute (quotes, angle brackets, etc.), and HTMLRewriter's
+  // setAttribute() auto-escapes the value when written. The catch
+  // branch's String().slice() is the only path that can carry a raw
+  // string with attribute-breaking characters; if you ever switch
+  // from setAttribute() to template-string injection downstream,
+  // this fallback needs an explicit attr-escape pass.
   const host = (function() {
     try { return new URL(snapshot.auditedUrl).host.replace(/^www\./i, ''); }
     catch (_) { return String(snapshot.auditedUrl || '').slice(0, 80); }
@@ -4529,6 +4649,161 @@ async function handleWorkbenchWatchDelete(request, env, ctx) {
     return jsonResponse({ ok: false, error: result.error }, 400);
   }
   return jsonResponse({ ok: true, detached: result.detached }, 200);
+}
+
+
+// ============================================================
+// Phase C.2 (Storefront Health) — /api/workbench/property/*
+// ============================================================
+//
+// Property endpoints. All gated on env.STOREFRONT_HEALTH_ENABLED:
+// when 'true' the surface is live; otherwise every endpoint
+// returns 404 (indistinguishable from a non-existent route, so
+// the surface is invisible until C.5 flips the flag).
+
+function _storefrontHealthGate(env) {
+  return env && (env.STOREFRONT_HEALTH_ENABLED === 'true' || env.STOREFRONT_HEALTH_ENABLED === true);
+}
+
+async function handleWorkbenchPropertyCreate(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const url = typeof body.url === 'string' ? body.url.trim() : '';
+  const title = typeof body.title === 'string' ? body.title.trim() : '';
+  const gate = assertSafeHttpUrl(url, pickLang(request));
+  if (!gate.ok) {
+    return jsonResponse({ ok: false, error: gate.error }, gate.status);
+  }
+  const result = await createProperty(env, auth.sub, { url: gate.url.toString(), title });
+  if (!result.ok) {
+    if (result.error === 'limit-reached') {
+      return jsonResponse({ ok: false, error: 'limit-reached', max: result.max }, 409);
+    }
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, id: result.id, existing: !!result.existing }, 200);
+}
+
+async function handleWorkbenchPropertyList(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = await listPropertiesForUser(env, auth.sub);
+  return jsonResponse({ ok: true, items, max: MAX_PROPERTIES_PER_USER }, 200);
+}
+
+async function handleWorkbenchPropertyGet(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const u = new URL(request.url);
+  const id = u.searchParams.get('id') || '';
+  if (!isValidSaveItemIdShape(id)) {
+    return jsonResponse({ ok: false, error: 'invalid-id' }, 400);
+  }
+  const item = await getProperty(env, auth.sub, id);
+  if (!item) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  return jsonResponse({ ok: true, item }, 200);
+}
+
+async function handleWorkbenchPropertyDelete(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const id = typeof body.id === 'string' ? body.id.trim() : '';
+  const result = await deleteProperty(env, auth.sub, id);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, 400);
+  }
+  return jsonResponse({ ok: true, deleted: result.deleted }, 200);
+}
+
+async function handleWorkbenchPropertyAttach(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const propertyId = typeof body.propertyId === 'string' ? body.propertyId.trim() : '';
+  const kind = typeof body.kind === 'string' ? body.kind.trim() : '';
+  const savedItemId = typeof body.savedItemId === 'string' ? body.savedItemId.trim() : '';
+  const result = await attachCheckToProperty(env, auth.sub, propertyId, kind, savedItemId);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, result.error === 'property-not-found' ? 404 : 400);
+  }
+  return jsonResponse({ ok: true }, 200);
+}
+
+async function handleWorkbenchPropertyDetach(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const propertyId = typeof body.propertyId === 'string' ? body.propertyId.trim() : '';
+  const kind = typeof body.kind === 'string' ? body.kind.trim() : '';
+  const result = await detachCheckFromProperty(env, auth.sub, propertyId, kind);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, result.error === 'property-not-found' ? 404 : 400);
+  }
+  return jsonResponse({ ok: true }, 200);
+}
+
+async function handleWorkbenchPropertyRollup(request, env, ctx) {
+  if (!_storefrontHealthGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const u = new URL(request.url);
+  const id = u.searchParams.get('id') || '';
+  if (!isValidSaveItemIdShape(id)) {
+    return jsonResponse({ ok: false, error: 'invalid-id' }, 400);
+  }
+  const result = await rollupProperty(env, auth.sub, id);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, error: result.error }, result.error === 'property-not-found' ? 404 : 500);
+  }
+  return jsonResponse({ ok: true, rollup: result.rollup }, 200);
 }
 
 

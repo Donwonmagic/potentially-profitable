@@ -94,6 +94,61 @@ function xmlEscape(s) {
     .replace(/>/g, "&gt;");
 }
 
+/**
+ * Single source of truth for vertical layout slots. Renderers should
+ * route every y-coordinate through this helper. New slots get added
+ * here, not inlined in render*.
+ *
+ * Slot conventions — keep numbers in sync with the existing 8px grid:
+ *   eyebrow=96, title=232, subtitle=296, dek=456 (default glossary)
+ *   dek-tight=400 (lifted when subtitle row is empty)
+ */
+const GRID_ROWS = {
+  "eyebrow":  96,
+  "title":    232,
+  "subtitle": 296,
+  "dek":      456,
+  "dek-tight": 400,
+};
+function gridRow(slot) {
+  const y = GRID_ROWS[slot];
+  if (y === undefined) {
+    throw new Error("gridRow: unknown slot " + slot);
+  }
+  return snap(y);
+}
+
+/**
+ * Auto-fit a title within a maxWidth by stepping the font-size down
+ * in 4px increments until it fits. Returns { size, lines }. Never
+ * breaks single words. Heuristic width estimate: avg char-width
+ * ratio depends on font (Fraunces is wider than Inter at the same
+ * size).
+ *
+ * Defaults are intentionally generous so existing cards return the
+ * max size unchanged. Tighten maxWidth in callers that want
+ * shrinking to engage on long titles.
+ */
+function fitTitle(text, opts = {}) {
+  const {
+    font = "Fraunces",
+    maxSize = 64,
+    minSize = 48,
+    maxWidth = CANVAS_W - 2 * EDGE,
+    step = 4,
+  } = opts;
+  const len = String(text ?? "").length;
+  if (len === 0) return { size: maxSize, lines: 1 };
+  const ratio = font === "Fraunces" ? 0.46 : 0.52;
+  let size = maxSize;
+  while (size > minSize) {
+    const estW = size * ratio * len;
+    if (estW <= maxWidth) break;
+    size -= step;
+  }
+  return { size, lines: 1 };
+}
+
 // -------------------------------------------------------------
 // glyph registry — page-relevance cue
 // -------------------------------------------------------------
@@ -749,6 +804,80 @@ function renderArticle(card) {
 }
 
 /**
+ * glossary — per-term cards for /glossary/<slug>/. Sprint 17.
+ *
+ * The same brand-recognition payoff as Articles, but laid out as a
+ * dictionary entry: a single big term name (Fraunces 64), an
+ * italic AKA subtitle (Fraunces 26), then the first sentence of
+ * the definition as the dek (Inter 22). Cream bg, topic-keyed
+ * accent. Eyebrow reads "GLOSSARY · <CATEGORY>".
+ *
+ * Different from `article` (which assumes a 3-line headline with
+ * an italic accent word) — glossary terms are short labels, not
+ * editorial questions, and need a layout that doesn't leave 200px
+ * of white space.
+ */
+function renderGlossary(card) {
+  const bg = PALETTE.cream;
+  const fg = PALETTE.ink;
+  const accentHex = PALETTE[card.accent ?? "teal"] ?? PALETTE.teal;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const term = xmlEscape(card.title_1 ?? "");
+  const aka  = xmlEscape(card.title_italic ?? "");
+  const dek  = xmlEscape(card.dek ?? "");
+
+  // Phase D — engage real shrinking + lift dek when AKA is empty.
+  // fitTitle: 64→56→52→48px steps for terms that overflow at 64px.
+  // gridRow: when there's no AKA, dek lifts to 'dek-tight' so a
+  // short term doesn't leave 200px of cream below the title.
+  const yEyebrow = gridRow("eyebrow");
+  const yTerm    = gridRow("title");
+  const yAka     = gridRow("subtitle");
+  const yDek     = aka ? gridRow("dek") : gridRow("dek-tight");
+  const termFit  = fitTitle(card.title_1 ?? "", {
+    font: "Fraunces",
+    maxSize: 64,
+    minSize: 48,
+    maxWidth: CANVAS_W - 2 * EDGE,
+    step: 4,
+  });
+
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: true })}
+  ${categoryStrip(accentHex)}
+
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yTerm}"
+        font-family="Fraunces, Georgia, serif" font-size="${termFit.size}"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${term}</text>
+
+  ${aka ? `<text x="${EDGE}" y="${yAka}"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="26" font-weight="400" letter-spacing="-0.5"
+        fill="${PALETTE.muted}">${aka}</text>` : ""}
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="22"
+        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+
+  ${ornament({ color: PALETTE.muted })}
+  ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
+</svg>
+`;
+}
+
+/**
  * tool — free tools under /audit/, /audit/restaurants/, and the
  * tool-* family. Saturated teal background (differentiates from
  * pages and articles), gold accent (per design brief: Tools →
@@ -824,6 +953,7 @@ const templates = {
   page: renderPage,
   research: renderResearch,
   article: renderArticle,
+  glossary: renderGlossary,
   tool: renderTool,
 };
 

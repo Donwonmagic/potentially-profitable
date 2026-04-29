@@ -618,6 +618,15 @@
 
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* The HTML `hidden` attribute should always hide. The user-agent
+   rule (`[hidden]{display:none}`) loses to author-stylesheet rules
+   of equal specificity that set a different `display` (e.g. `.btn
+   { display: inline-flex }`), so `<a class="btn" hidden>` would
+   stay visible. Force the semantic with `!important` site-wide;
+   defensive against this whole class of collisions, including the
+   homepage's `.btn .js-nav-workshop[hidden]` "Continue your work"
+   button revealed only after /api/auth/me confirms a session. */
+[hidden]{display:none !important}
 body{margin:0;font-family:var(--font-body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -1152,6 +1161,11 @@ section.block{padding:clamp(80px,10vw,140px) 0}
    accessibility tree. Previously `display:none` removed it from the tab
    order entirely — a WCAG 2.1.1 Keyboard failure. */
 .check-label input{position:absolute;width:1px;height:1px;opacity:0;clip:rect(0 0 0 0);overflow:hidden;white-space:nowrap;margin:0;pointer-events:none}
+/* :has() is progressive enhancement (Safari < 15.4 / Firefox < 121
+   silently ignore these rules). Without them the visually-hidden
+   checkbox still works — it just lacks a focus ring and the
+   "checked" pill state. The form is fully usable; the styling is
+   the upgrade. Verified at audit time (Bug B3.3). */
 .check-label:has(input:focus-visible){outline:2px solid var(--teal);outline-offset:3px}
 .check-label:has(input:checked){background:var(--teal);color:var(--cream);border-color:var(--teal)}
 .form-submit{width:100%;justify-content:center;padding:16px 28px;margin-top:4px;transition:background var(--t-med) var(--ease),color var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease),transform var(--t-fast) var(--ease)}
@@ -1205,7 +1219,10 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    its own designed closing CTA section (.block.final) — otherwise the
    "Book a 20-min call" button stacks right under the page's own
    closing CTA, which duplicates the ask. Legal and tool pages that
-   don't have a .block.final keep the strip as a fallback. */
+   don't have a .block.final keep the strip as a fallback. Browsers
+   without :has() support (Safari < 15.4 / Firefox < 121) ignore the
+   rule and render the foot-cta on every page — duplicates the final
+   block but doesn't break layout. Acceptable degradation (B3.3). */
 body:has(.block.final) .foot-cta{display:none}
 
 /* Main 3-column grid */
@@ -1310,8 +1327,14 @@ br.br-lg{display:none}
      this container scrolls itself. Cap height to the viewport minus
      the top nav-row, and let inner content scroll. -webkit-overflow-
      scrolling for older iOS Safari momentum. */
+  /* Bug B3.1 (proactive audit): the 100vh fallback clipped the
+     bottom of the mobile menu on iOS < 15 when the URL bar was
+     visible (vh includes that bar; the menu overflowed). 100svh
+     (small viewport height) — supported in iOS ≥ 15.4 — uses the
+     smallest stable height and clips correctly. dvh remains the
+     preferred unit; svh is the fallback used when dvh isn't. */
   max-height:calc(100dvh - 64px);
-  max-height:calc(100vh - 64px); /* fallback for browsers without dvh */
+  max-height:calc(100svh - 64px); /* fallback for browsers without dvh */
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
@@ -1319,9 +1342,9 @@ br.br-lg{display:none}
 .nav.scrolled .mobile-menu{
   /* When the nav has shrunk on scroll its row is shorter (12px+12px
      padding + ~40px controls ≈ 56px) — give the drawer those few px
-     back so the bottom isn't clipped. */
+     back so the bottom isn't clipped. svh fallback per B3.1. */
   max-height:calc(100dvh - 56px);
-  max-height:calc(100vh - 56px);
+  max-height:calc(100svh - 56px);
 }
 .mobile-menu a{padding:14px 2px;font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
 .mobile-menu a.btn-primary{margin-top:14px;border-bottom:0;justify-content:center;padding:15px 26px;font-family:var(--font-body);font-size:15px;background:var(--teal);color:var(--cream);border-radius:999px}

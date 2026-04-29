@@ -86,7 +86,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -411,6 +411,22 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks (e.g., from blog post-end
+// CTAs and Storefront Health scorecard rows). seo-grader uses inline
+// save logic (predates the shared attach helper), so we call the
+// stand-alone readIntent helper with this tool's save element refs.
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('seoSave'),
+    text: document.getElementById('seoSaveText'),
+    kind: 'seo',
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  });
+})();
+</script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
@@ -649,7 +665,7 @@
     var api = '/api/seo-check?url=' + encodeURIComponent(url);
 
     var pendingResponse = null;
-    fetch(api, { signal: AbortSignal.timeout(8000) })
+    fetch(api, { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r) {
         pendingResponse = r;
         return r.json().catch(function(){ return {}; });

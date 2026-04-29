@@ -53,7 +53,7 @@
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 <style>
   .gbp-hero{max-width:680px;margin:0 auto;text-align:center}
   .gbp-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
@@ -461,6 +461,19 @@
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks.
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('gbpSave'),
+    text: document.getElementById('gbpSaveText'),
+    kind: 'gbp',
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  });
+})();
+</script>
 <script>
 (function(){
   var form=document.getElementById('gbpForm');

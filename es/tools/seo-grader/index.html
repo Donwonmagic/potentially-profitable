@@ -87,7 +87,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 
 <style>
   .seo-hero { max-width: 680px; margin: 0 auto; text-align: center; }
@@ -408,6 +408,19 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks (ES).
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('seoSave'),
+    text: document.getElementById('seoSaveText'),
+    kind: 'seo',
+    locale: 'es',
+  });
+})();
+</script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
@@ -638,7 +651,7 @@
     var api = '/api/seo-check?url=' + encodeURIComponent(url);
 
     var pendingResponse = null;
-    fetch(api, { signal: AbortSignal.timeout(8000) })
+    fetch(api, { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r) {
         pendingResponse = r;
         return r.json().catch(function(){ return {}; });
