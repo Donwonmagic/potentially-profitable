@@ -1,28 +1,23 @@
 /**
  * Shared analytics helpers for the Muntin Digital toolkit.
  *
- * Today every URL/audit tool logs the audited URL UNREDACTED in
- * Plausible event properties:
- *   window.plausible('Speed Test', { props: { score: 65, url: url } })
+ * Two concerns live here:
  *
- * If a user audits `https://example.com/admin/secret`, the path
- * `/admin/secret` is sent to Plausible's collector. Sensitive admin
- * URLs leak into analytics. The bucket signal we actually want is
- * the host (so we can see which TLDs / hosts get audited most),
- * not the path.
+ *   1. URL redaction. Every URL/audit tool logs the audited URL in
+ *      Plausible event properties. If a user audits
+ *      `https://example.com/admin/secret`, the path `/admin/secret`
+ *      would leak into Plausible's collector. `redactUrlForAnalytics`
+ *      strips path / query / fragment / userinfo and returns
+ *      `protocol://host` only.
  *
- * `redactUrlForAnalytics(url)` strips:
- *   - path (replaced with `/`)
- *   - query string
- *   - fragment
- *   - port (kept; same-host logical entity)
- *   - userinfo (rare, always sensitive)
+ *   2. Event vocabulary lock (Sprint 15 — cohesion). EVENTS is the
+ *      canonical list of every Plausible event name in use across
+ *      the site. New event names must be added here first.
+ *      `scripts/check-analytics-vocabulary.mjs` greps the codebase
+ *      and fails when an event name is fired that isn't in this
+ *      registry — catches typos and silent vocabulary drift.
  *
- * Returns the redacted form `protocol://host` (no trailing slash so
- * it's compact in Plausible's UI). Returns the input unchanged when
- * URL parsing fails — at worst the leak is what you had before.
- *
- * Pure function; safe to import in Node tests.
+ * Both functions are pure; safe to import in Node tests.
  */
 
 (function (root, factory) {
@@ -52,7 +47,115 @@
     }
   }
 
+  // Canonical event vocabulary. Add new event names HERE FIRST,
+  // then fire them from a tool. scripts/check-analytics-vocabulary.mjs
+  // catches drift. Grouped by surface; alphabetical within group.
+  // Group order is stable so a diff over time tells the reader where
+  // new instrumentation landed.
+  var EVENTS = {
+    // Audits — restaurant audit tool's pipeline events.
+    audit: [
+      'Audit Auto-run',
+      'Audit Business Type Corrected',
+      'Audit Classification Overridden',
+      'Audit Comparison Error',
+      'Audit Comparison Run',
+      'Audit Completed',
+      'Audit Dev Brief Copied',
+      'Audit Dev Brief Printed',
+      'Audit Dev-Prompt Copy',
+      'Audit Error: Referrer Blocked',
+      'Audit Feedback',
+      'Audit PDF Email Failed',
+      'Audit PDF Emailed',
+      'Audit Permalink Copied',
+      'Audit Reminder Scheduled',
+      'Audit Retry',
+      'Audit Share Card Downloaded',
+      'Audit Shared',
+      'Audit Shared: Image',
+      'Audit Shared: Native',
+      'Audit Snapshot Rerun',
+      'Audit Started',
+    ],
+    // URL-fetching tool grades / scores.
+    graders: [
+      'Compare',
+      'GBP Deep Scan',
+      'GBP Grader',
+      'GBP Share Saved',
+      'Mobile Check',
+      'SEO Grader',
+      'Schema Check',
+      'Schema Check Validate',
+      'Search Ideas',
+      'Speed Test',
+      'Tech Stack',
+    ],
+    // Calculator tools — exports / runs / scenario pushes.
+    calculators: [
+      'Brand Suite Demo',
+      'Brand Suite Export',
+      'Brand Suite Extract',
+      'Brand Suite Manual Apply',
+      'Brand Suite Manual Open',
+      'Brand Suite Workshop Open',
+      'Brand Suite Workshop Pick',
+      'Margin Math BreakEvenCovers',
+      'Margin Math DeliveryBreakeven',
+      'Margin Math PriceRaise',
+      'Margin Math PrimeCost',
+      'Menu Copy Inspector Analysis',
+      'Menu Copy Inspector Export',
+      'Menu Engineering Analysis',
+      'Menu Engineering Export',
+      'Menu Engineering Whatif',
+      'Open Hours Export',
+      'Open Hours Render',
+      'Photo Brief Compute',
+      'Photo Brief Export',
+      'Photo Brief Push',
+      'Photo Brief Signature',
+      'Plate Cost Compute',
+      'Plate Cost Export',
+      'Plate Cost Push',
+      'Plate Cost Signature',
+    ],
+    // Library — content engagement events.
+    library: [
+      'Checklist Completed',
+      'Checklist Learn-more',
+      'Checklist Subtype',
+      'Glossary AZ',
+      'Glossary Explainer Auto-play',
+      'Glossary Filter',
+      'Glossary Popover',
+      'Glossary Search',
+      'Glossary Topic',
+      'Post Listened',
+      'Post Listened: Completed',
+      'Share',
+    ],
+    // Workshop / account — Sprint 15 will rename these in a future
+    // pass to drop "Workbench" from the Plausible namespace too.
+    // Until then they're registered as-is.
+    workshop: [
+      'Workbench Account Delete Request',
+      'Workbench Open Saved',
+      'Workbench Save',
+      'Workbench Watch Attach',
+      'Workbench Watch Detach',
+    ],
+  };
+
+  // Flat allowlist used by the CI checker.
+  var EVENT_NAMES = Object.values(EVENTS).reduce(function (acc, group) {
+    return acc.concat(group);
+  }, []);
+
   return {
-    redactUrlForAnalytics: redactUrlForAnalytics
+    redactUrlForAnalytics: redactUrlForAnalytics,
+    EVENTS:      EVENTS,
+    EVENT_NAMES: EVENT_NAMES,
   };
 }));
