@@ -431,6 +431,12 @@ export default {
     const workbenchPaths = [
       '/workbench/', '/workbench/index.html',
       '/es/workbench/', '/es/workbench/index.html',
+      // Phase 3 (Workshop) — /account/ joins the gated set with the
+      // same 404-for-anonymous posture. Operators only reach it from
+      // /workbench/'s "Account" link or from a deep-link they've
+      // bookmarked themselves; nothing crawlable points here.
+      '/account/', '/account/index.html',
+      '/es/account/', '/es/account/index.html',
     ];
     if (request.method === 'GET' && workbenchPaths.includes(pathname)) {
       const session = await getSessionFromRequest(request, env);
