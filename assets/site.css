@@ -5024,3 +5024,21 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .callout--field{transition:border-color var(--t-fast) var(--ease)}
 }
 
+/* ============ Learn-back (Sprint 12 — cohesion) ============
+   A thin, prose-shaped row that sits inside a tool's result region
+   to teach the concept behind the score. Distinct from the
+   tool-deep-links block at the bottom of the page (which is
+   marketing-context "why this tool exists"); learn-back is post-
+   result ("what this score means + read next").
+
+   Placement: between the result cards and the .{prefix}-cta block.
+   One short paragraph; one or two inline links. Avoid duplicating
+   the existing Save affordance — the link to glossary/article is
+   the value, the save framing already lives on .{prefix}-save. */
+
+.learn-back{margin:24px auto 0;max-width:640px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+.learn-back-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.learn-back-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0}
+.learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
+.learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
+

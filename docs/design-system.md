@@ -167,6 +167,44 @@ Components: `.article-body`, `.cite`, `.share-btn`, `.listen-card`,
 `.breadcrumb`. New articles must not introduce per-page CSS
 beyond what's already in `site.css`.
 
+## Learn-back row (Sprint 12 — locked)
+
+A thin, prose-shaped row inside the result region that teaches the
+concept behind the score. Different from — and complementary to —
+the `<!-- LIBRARY:tool-deep-links -->` block at the page bottom:
+
+| Block | Position | Function | Length |
+|---|---|---|---|
+| Learn-back row | Inside result region, between the result cards and the `.{prefix}-cta` block | Teach the concept the user just got scored on. One short paragraph naming 1–2 glossary terms + 1 article. | 1 paragraph, ≤ 50 words |
+| Tool deep-links block | Bottom of the page | "Why this tool exists" — marketing context that converts a casual visitor into someone who reads the Library. | A header + topic chip + 2 detailed cards |
+
+**Anatomy**:
+
+```html
+<aside class="learn-back" aria-label="What this score means">
+  <p class="learn-back-eyebrow">What this score means</p>
+  <p class="learn-back-body">
+    The <a href="/glossary/title-tag/">title tag</a> and
+    <a href="/glossary/meta-description/">meta description</a>
+    are the two lines Google decides to show… The
+    <a href="/blog/…/">playbook</a> walks through the rest.
+  </p>
+</aside>
+```
+
+**Rules**:
+
+- One short paragraph. Two underlined links max — one or two
+  glossary terms + one article.
+- No new save / watch CTA — the existing `.{prefix}-save` block
+  already handles that. Don't duplicate.
+- Localized: every learn-back has an EN + ES counterpart with
+  links pointing at the locale-correct page.
+- Pilot landed on `/tools/seo-grader/`. Sprint 12b rolls out to
+  the remaining URL-fetching tools (compare, mobile-check,
+  schema-check, speed-test, tech-stack) once the pattern is
+  reviewed.
+
 ## OG cards (Sprint 8 — locked)
 
 Every shared link should look like it came from one publication.
