@@ -109,7 +109,7 @@
   .seo-card .checks .mark { flex: 0 0 18px; font-weight: 700; }
   .seo-card .checks .mark.pass { color: var(--status-pass); }
   .seo-card .checks .mark.fail { color: var(--rust); }
-  /* Phase 2 (Workshop) — Save to my Workbench affordance.
+  /* Phase 2 (Workshop) — Save to the Workshop affordance.
      Hidden until the result renders. Two states inside, mutually
      exclusive: a "Save" button when authenticated, a "Sign in to
      save" link when anonymous. Toggled via /api/auth/me on page
@@ -157,7 +157,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -315,10 +315,10 @@
         </div>
 
         <div class="seo-save" id="seoSave" hidden>
-          <p class="seo-save-text" id="seoSaveText">Save this result to your Workbench so it follows you across devices.</p>
+          <p class="seo-save-text" id="seoSaveText">Save this result to the Workshop so it follows you across devices.</p>
           <button type="button" class="seo-save-btn" id="seoSaveBtn" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Save to my Workbench
+            Save to the Workshop
           </button>
           <a class="seo-save-link" id="seoSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fseo-grader%2F" hidden>Sign in to save</a>
           <span class="seo-save-msg" id="seoSaveMsg" hidden role="status"></span>
@@ -548,7 +548,7 @@
     if (authState.signedIn) {
       if (saveBtn)  saveBtn.hidden  = false;
       if (saveLink) saveLink.hidden = true;
-      if (saveText) saveText.textContent = 'Save this result to your Workbench so it follows you across devices.';
+      if (saveText) saveText.textContent = 'Save this result to the Workshop so it follows you across devices.';
     } else {
       if (saveBtn)  saveBtn.hidden  = true;
       if (saveLink) saveLink.hidden = false;
@@ -577,7 +577,7 @@
       }).then(function (r) {
         if (r.ok) {
           if (saveMsg) {
-            saveMsg.textContent = '✓ Saved to your Workbench.';
+            saveMsg.textContent = '✓ Saved to the Workshop.';
             saveMsg.classList.remove('error');
             saveMsg.hidden = false;
           }
@@ -737,7 +737,7 @@
       if (saveBox) saveBox.hidden = false;
       if (saveBtn) saveBtn.hidden = true;
       if (saveLink) saveLink.hidden = true;
-      if (saveText) saveText.textContent = 'Loaded from your Workbench. Run a fresh grade above to update it.';
+      if (saveText) saveText.textContent = 'Loaded from the Workshop. Run a fresh grade above to update it.';
       lastSavePayload = p;
 
       // Clean up the URL bar so a refresh re-runs the live grade.
