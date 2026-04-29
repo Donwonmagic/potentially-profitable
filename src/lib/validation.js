@@ -40,8 +40,13 @@ export function isValidEmail(value) {
  */
 export function isSpamHoneypot(body) {
   if (!body) return false;
-  const val = body._gotcha;
-  if (typeof val !== 'string') return false;
+  // Accept either field name. Formspree's convention is `_gotcha`;
+  // the magic-link sign-in form (and other in-house forms) uses the
+  // shorter `hp`. Either name is treated identically.
+  const val = (typeof body._gotcha === 'string') ? body._gotcha
+            : (typeof body.hp      === 'string') ? body.hp
+            : null;
+  if (val === null) return false;
   return val.trim().length > 0;
 }
 
@@ -221,7 +226,13 @@ const MIN_TS_AGE_MS = 1500;
 const MAX_TS_AGE_MS = 30 * 60 * 1000;
 export function isTimestampSane(body) {
   if (!body) return false;
-  const raw = parseInt(String(body._ts || ''), 10);
+  // Accept either field name. Legacy intake forms stamp `_ts`; the
+  // magic-link sign-in form (and other in-house forms) stamp the
+  // shorter `ts`. Either name is treated identically.
+  const rawValue = (body._ts != null) ? body._ts
+                 : (body.ts  != null) ? body.ts
+                 : '';
+  const raw = parseInt(String(rawValue || ''), 10);
   if (!raw || Number.isNaN(raw)) return false;
   const elapsed = Date.now() - raw;
   if (elapsed < MIN_TS_AGE_MS) return false;

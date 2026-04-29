@@ -70,6 +70,17 @@
   .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
   .cmp-winner h3{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink)}
   .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+  .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .cmp-save[hidden]{display:none}
+  .cmp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .cmp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .cmp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .cmp-save-btn[disabled]{opacity:.6;cursor:wait}
+  .cmp-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .cmp-save-link:hover{border-color:var(--ink)}
+  .cmp-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .cmp-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -224,6 +235,15 @@
   <p class="cmp-note">Runs two Google PageSpeed audits in parallel. Takes about 20–30 seconds.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
+  <div class="cmp-save" id="cmpSave" hidden>
+    <p class="cmp-save-text" id="cmpSaveText">Save this comparison to your Workbench so it follows you across devices.</p>
+    <button type="button" class="cmp-save-btn" id="cmpSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Save to my Workbench
+    </button>
+    <a class="cmp-save-link" id="cmpSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fcompare%2F" hidden>Sign in to save</a>
+    <span class="cmp-save-msg" id="cmpSaveMsg" hidden role="status"></span>
+  </div>
 </div></div></section>
 <!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -268,6 +288,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var btn=document.getElementById('cmpSubmit');
@@ -335,6 +356,60 @@
   url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
   url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
 
+  function renderResult(payload){
+    if(!payload||!payload.a||!payload.b)return;
+    var a=payload.a, b=payload.b;
+    var html='<table class="cmp-table"><thead><tr><th>Metric</th><th>'+a.host+'</th><th>'+b.host+'</th></tr></thead><tbody>';
+    html+=row('Performance',a.perf,b.perf,'/100');
+    html+=row('Accessibility',a.a11y,b.a11y,'/100');
+    html+=row('SEO',a.seo,b.seo,'/100');
+    html+=row('Best Practices',a.bp,b.bp,'/100');
+    html+=row('Load Time (LCP)',a.lcp,b.lcp,' ms',false);
+    html+='</tbody></table>';
+    var cats=['perf','a11y','seo','bp'];
+    var aTotal=0,bTotal=0,compared=0;
+    cats.forEach(function(k){
+      if(a[k]!=null&&b[k]!=null){aTotal+=a[k];bTotal+=b[k];compared++}
+    });
+    if(compared===0){
+      html+='<div class="cmp-winner"><h3>Not enough data to declare a winner.</h3><p>One or both sites didn\'t return enough scores for a fair comparison. Check the individual rows above.</p></div>';
+    }else if(aTotal>bTotal){
+      html+='<div class="cmp-winner"><h3>'+a.host+' wins overall</h3><p>Compared on '+compared+' categories: '+aTotal+' vs '+bTotal+'. But check the rows — you might be losing on the metric that matters most.</p></div>';
+    }else if(bTotal>aTotal){
+      html+='<div class="cmp-winner"><h3>'+b.host+' wins overall</h3><p>Compared on '+compared+' categories: '+bTotal+' vs '+aTotal+'. The gap might be in a category you can fix quickly.</p></div>';
+    }else{
+      html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Scores are equal across '+compared+' categories. Look at the individual rows to find where you can pull ahead.</p></div>';
+    }
+    html+='<div class="cmp-cta"><p>Want to go deeper? The industry-specific audits check 9+ additional items.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
+    result.innerHTML=html;
+    result.classList.add('visible');
+    if(status)status.hidden=true;
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  var wb=(typeof MuntinWorkbench==='object'&&MuntinWorkbench&&typeof MuntinWorkbench.attach==='function')
+    ?MuntinWorkbench.attach({
+        elements:{box:'#cmpSave',btn:'#cmpSaveBtn',link:'#cmpSaveLink',text:'#cmpSaveText',msg:'#cmpSaveMsg'},
+        locale:'en',
+        kind:'compare',
+        titleFor:function(p){
+          if(!p)return 'Compare — untitled';
+          var h1=(p.a&&p.a.host)||p.url1||'?';
+          var h2=(p.b&&p.b.host)||p.url2||'?';
+          return 'Compare — '+h1+' vs '+h2;
+        },
+        onRehydrate:function(p){
+          if(!p)return;
+          if(url1&&p.url1)url1.value=p.url1;
+          if(url2&&p.url2)url2.value=p.url2;
+          renderResult(p);
+        },
+        workbenchUrl:'/workbench/',
+        signinUrl:'/sign-in/?returnTo=%2Ftools%2Fcompare%2F',
+      })
+    :null;
+
   btn.addEventListener('click',function(){
     var u1=norm(url1.value),u2=norm(url2.value);
     if(!u1){url1.focus();return}
@@ -345,37 +420,9 @@
 
     Promise.all([fetchScores(u1),fetchScores(u2)]).then(function(r){
       var a=r[0],b=r[1];
-      var html='<table class="cmp-table"><thead><tr><th>Metric</th><th>'+a.host+'</th><th>'+b.host+'</th></tr></thead><tbody>';
-      html+=row('Performance',a.perf,b.perf,'/100');
-      html+=row('Accessibility',a.a11y,b.a11y,'/100');
-      html+=row('SEO',a.seo,b.seo,'/100');
-      html+=row('Best Practices',a.bp,b.bp,'/100');
-      html+=row('Load Time (LCP)',a.lcp,b.lcp,' ms',false);
-      html+='</tbody></table>';
-
-      // Overall winner — only compare categories where BOTH sites
-      // returned a score. Prevents a null category from being counted
-      // as 0 and unfairly penalizing one site.
-      var cats=['perf','a11y','seo','bp'];
-      var aTotal=0,bTotal=0,compared=0;
-      cats.forEach(function(k){
-        if(a[k]!=null&&b[k]!=null){aTotal+=a[k];bTotal+=b[k];compared++}
-      });
-      if(compared===0){
-        html+='<div class="cmp-winner"><h3>Not enough data to declare a winner.</h3><p>One or both sites didn\'t return enough scores for a fair comparison. Check the individual rows above.</p></div>';
-      }else if(aTotal>bTotal){
-        html+='<div class="cmp-winner"><h3>'+a.host+' wins overall</h3><p>Compared on '+compared+' categories: '+aTotal+' vs '+bTotal+'. But check the rows — you might be losing on the metric that matters most.</p></div>';
-      }else if(bTotal>aTotal){
-        html+='<div class="cmp-winner"><h3>'+b.host+' wins overall</h3><p>Compared on '+compared+' categories: '+bTotal+' vs '+aTotal+'. The gap might be in a category you can fix quickly.</p></div>';
-      }else{
-        html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Scores are equal across '+compared+' categories. Look at the individual rows to find where you can pull ahead.</p></div>';
-      }
-      html+='<div class="cmp-cta"><p>Want to go deeper? The industry-specific audits check 9+ additional items.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
-
-      result.innerHTML=html;
-      result.classList.add('visible');
-      status.hidden=true;
-      result.scrollIntoView({behavior:'smooth',block:'start'});
+      var payload={url1:u1,url2:u2,a:a,b:b,comparedAt:Date.now()};
+      renderResult(payload);
+      if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
       // The fetchScores helper throws errors with `_url` attached so

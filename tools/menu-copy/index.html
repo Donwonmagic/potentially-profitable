@@ -171,6 +171,17 @@
   .mc-annotated,.mc-verdict,.mc-axis,.mc-action{break-inside:avoid;page-break-inside:avoid}
   a[href]:after{content:'' !important}
 }
+/* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+.mc-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.mc-save[hidden]{display:none}
+.mc-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+.mc-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.mc-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+.mc-save-btn[disabled]{opacity:.6;cursor:wait}
+.mc-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+.mc-save-link:hover{border-color:var(--ink)}
+.mc-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+.mc-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -390,6 +401,15 @@
       <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
     </div>
   </div>
+  <div class="mc-save" id="mcSave" hidden>
+    <p class="mc-save-text" id="mcSaveText">Save this analysis to your Workbench so it follows you across devices.</p>
+    <button type="button" class="mc-save-btn" id="mcSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Save to my Workbench
+    </button>
+    <a class="mc-save-link" id="mcSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fmenu-copy%2F" hidden>Sign in to save</a>
+    <span class="mc-save-msg" id="mcSaveMsg" hidden role="status"></span>
+  </div>
 </div></section>
 
 <section class="block" id="mcWholeOutput" data-mode="whole" hidden><div class="container">
@@ -603,6 +623,7 @@
 <script src="/tools/menu-engineering/menu-engineering.js?v=20260425-me1"></script>
 <script src="./menu-copy.js?v=20260428-mc2"></script>
 <script src="./card-render.js?v=20260425-mc2"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Menu Copy Inspector — input wiring + live render.
  *
@@ -847,6 +868,36 @@
   }
 
   var rafQueued = false;
+
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  // Single-dish mode only for v1; whole-menu paste can exceed the
+  // 50 KB payload cap, so it's deferred to a follow-up that stores
+  // a parsed-but-summarized form. Payload here is just the input —
+  // re-running scoreItem() on rehydrate keeps the saved state honest
+  // if scoring rules evolve.
+  var wb = (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function')
+    ? MuntinWorkbench.attach({
+        elements: { box:'#mcSave', btn:'#mcSaveBtn', link:'#mcSaveLink', text:'#mcSaveText', msg:'#mcSaveMsg' },
+        locale:   'en',
+        kind:     'menu-copy',
+        titleFor: function (p) {
+          if (!p || !p.input) return 'Menu copy — untitled';
+          return 'Menu copy — ' + (p.input.name || (p.input.description || '').slice(0, 40) || 'untitled');
+        },
+        onRehydrate: function (p) {
+          if (!p || !p.input) return;
+          if (descEl)  descEl.value  = p.input.description || '';
+          if (nameEl)  nameEl.value  = p.input.name        || '';
+          if (priceEl) priceEl.value = p.input.price       || '';
+          if (tierEl)  tierEl.value  = p.input.tier        || 'casual';
+          rerender();
+          if (output) output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        },
+        workbenchUrl: '/workbench/',
+        signinUrl:    '/sign-in/?returnTo=%2Ftools%2Fmenu-copy%2F',
+      })
+    : null;
+
   function rerender(){
     if (rafQueued) return;
     rafQueued = true;
@@ -866,6 +917,7 @@
       paintAxes(scored);
       paintActions(scored);
       firePlausibleOnce(scored);
+      if (wb) wb.showAffordance({ input: input, savedAt: Date.now() });
     });
   }
 

@@ -66,6 +66,17 @@
   .ts-empty{font-size:15px;color:var(--stone);padding:20px;border:1px dashed var(--line-dark);border-radius:var(--r-sm);text-align:center}
   .ts-context{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:24px 0 0;padding:20px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
   .ts-context strong{color:var(--ink)}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
+  .ts-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .ts-save[hidden]{display:none}
+  .ts-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .ts-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .ts-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .ts-save-btn[disabled]{opacity:.6;cursor:wait}
+  .ts-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .ts-save-link:hover{border-color:var(--ink)}
+  .ts-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .ts-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -217,6 +228,15 @@
   </form>
   <p class="ts-note">Scans the URLs and scripts loaded during a mobile page load. Takes about thirty seconds. Note: this detects technologies loaded on the initial page — scripts that load lazily or after user interaction may not appear.</p>
   <div class="ts-result" id="tsResult" aria-live="polite"></div>
+  <div class="ts-save" id="tsSave" hidden>
+    <p class="ts-save-text" id="tsSaveText">Save this scan to your Workbench so it follows you across devices.</p>
+    <button type="button" class="ts-save-btn" id="tsSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Save to my Workbench
+    </button>
+    <a class="ts-save-link" id="tsSaveLink" href="/sign-in/?returnTo=%2Ftools%2Ftech-stack%2F" hidden>Sign in to save</a>
+    <span class="ts-save-msg" id="tsSaveMsg" hidden role="status"></span>
+  </div>
 </div></div></section>
 <!-- LIBRARY:tool-deep-links:start -->
 <section class="tool-deep-links" aria-labelledby="tool-deep-h">
@@ -261,6 +281,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
@@ -329,6 +350,51 @@
     'Vercel':'<strong>Vercel</strong> — modern hosting, often Next.js. Developer-built site.'
   };
 
+  function renderResult(payload){
+    var groups=(payload&&payload.groups)||[];
+    var html='';
+    if(groups.length===0){
+      html='<div class="ts-empty">We couldn\'t detect any known platforms. This might mean your site is custom-built — or the scan didn\'t pick up all resources. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
+    } else {
+      groups.forEach(function(g){
+        html+='<div class="ts-group"><p class="ts-group-label">'+g.cat+'</p><div class="ts-items">';
+        g.items.forEach(function(name){
+          html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+g.cat+'</span></div>';
+        });
+        html+='</div></div>';
+      });
+      var cmsGroup=groups.find(function(g){return g.cat==='CMS / Platform'});
+      if(cmsGroup&&cmsGroup.items.length){
+        var ctx=CMS_CONTEXT[cmsGroup.items[0]];
+        if(ctx)html+='<div class="ts-context">'+ctx+'</div>';
+      }
+    }
+    if(groups.length>0){
+      html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
+    }
+    html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
+    result.innerHTML=html;
+    result.classList.add('visible');
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+  var wb=(typeof MuntinWorkbench==='object'&&MuntinWorkbench&&typeof MuntinWorkbench.attach==='function')
+    ?MuntinWorkbench.attach({
+        elements:{box:'#tsSave',btn:'#tsSaveBtn',link:'#tsSaveLink',text:'#tsSaveText',msg:'#tsSaveMsg'},
+        locale:'en',
+        kind:'tech-stack',
+        titleFor:function(p){return 'Tech stack — '+(p&&p.url?p.url:'untitled');},
+        onRehydrate:function(p){
+          if(!p)return;
+          if(input&&p.url)input.value=p.url;
+          renderResult(p);
+        },
+        workbenchUrl:'/workbench/',
+        signinUrl:'/sign-in/?returnTo=%2Ftools%2Ftech-stack%2F',
+      })
+    :null;
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var url=norm(input.value);if(!url){input.focus();return}
@@ -382,32 +448,9 @@
       });
 
       // Render
-      var html='';
-      if(groups.length===0){
-        html='<div class="ts-empty">We couldn\'t detect any known platforms. This might mean your site is custom-built — or the scan didn\'t pick up all resources. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
-      } else {
-        groups.forEach(function(g){
-          html+='<div class="ts-group"><p class="ts-group-label">'+g.cat+'</p><div class="ts-items">';
-          g.items.forEach(function(name){
-            html+='<div class="ts-item"><span class="name">'+name+'</span><span class="cat">'+g.cat+'</span></div>';
-          });
-          html+='</div></div>';
-        });
-        // Add context for the CMS if detected
-        var cmsGroup=groups.find(function(g){return g.cat==='CMS / Platform'});
-        if(cmsGroup&&cmsGroup.items.length){
-          var ctx=CMS_CONTEXT[cmsGroup.items[0]];
-          if(ctx)html+='<div class="ts-context">'+ctx+'</div>';
-        }
-      }
-      if(groups.length>0){
-        html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
-      }
-      html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
-
-      result.innerHTML=html;
-      result.classList.add('visible');
-      result.scrollIntoView({behavior:'smooth',block:'start'});
+      var payload={url:url,groups:groups,scannedAt:Date.now()};
+      renderResult(payload);
+      if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
       var locale=document.documentElement.lang==='es'?'es':'en';
