@@ -2751,6 +2751,62 @@
       closeHint:   i18n('search.close_hint',  'to close'),
     };
 
+    // Curated fallback for queries Pagefind drops as too-common.
+    // Pagefind's v1.x index optimizer filters tokens that appear on
+    // >~80% of pages (a relevance heuristic — common terms can't
+    // discriminate between results). On a restaurant-website site,
+    // "web" / "website" / "menu" / "restaurant" all blow through that
+    // ceiling and get dropped from the index. Re-deriving the index
+    // is out of scope; instead, when one of these queries returns 0
+    // results, we render a "try our topic shelf for X" panel with
+    // hand-picked landings so the operator never sees a dead-end.
+    //
+    // Adding a term: append it to the right locale block. The label
+    // is what shows in the panel ("our SEO and discovery topic"),
+    // the href is the actual landing.
+    const COMMON_QUERY_REDIRECTS = {
+      en: {
+        'web':         { label: 'Speed & mobile',          href: '/learn/topics/speed-mobile/'   },
+        'website':     { label: 'Speed & mobile',          href: '/learn/topics/speed-mobile/'   },
+        'menu':        { label: 'Operations & margin',     href: '/learn/topics/operations-margin/' },
+        'menus':       { label: 'Operations & margin',     href: '/learn/topics/operations-margin/' },
+        'restaurant':  { label: 'For restaurants',         href: '/for/restaurants/'             },
+        'restaurants': { label: 'For restaurants',         href: '/for/restaurants/'             },
+        'tools':       { label: 'All free tools',          href: '/tools/'                       },
+        'tool':        { label: 'All free tools',          href: '/tools/'                       },
+        'library':     { label: 'Library home',            href: '/learn/'                       },
+        'glossary':    { label: 'Glossary',                href: '/glossary/'                    },
+      },
+      es: {
+        'web':            { label: 'Velocidad y móvil',           href: '/es/learn/topics/speed-mobile/'    },
+        'sitio':          { label: 'Velocidad y móvil',           href: '/es/learn/topics/speed-mobile/'    },
+        'sitio web':      { label: 'Velocidad y móvil',           href: '/es/learn/topics/speed-mobile/'    },
+        'menu':           { label: 'Operaciones y márgenes',      href: '/es/learn/topics/operations-margin/' },
+        'menú':           { label: 'Operaciones y márgenes',      href: '/es/learn/topics/operations-margin/' },
+        'menús':          { label: 'Operaciones y márgenes',      href: '/es/learn/topics/operations-margin/' },
+        'restaurante':    { label: 'Para restaurantes',           href: '/es/for/restaurants/'              },
+        'restaurantes':   { label: 'Para restaurantes',           href: '/es/for/restaurants/'              },
+        'herramientas':   { label: 'Todas las herramientas',      href: '/es/tools/'                        },
+        'herramienta':    { label: 'Todas las herramientas',      href: '/es/tools/'                        },
+        'biblioteca':     { label: 'Inicio de la biblioteca',     href: '/es/learn/'                        },
+        'glosario':       { label: 'Glosario',                    href: '/es/glossary/'                     },
+      },
+    };
+    const fallbackStrings = locale === 'es'
+      ? { lead: 'No encontramos coincidencias exactas para',
+          suggestion: 'Pero esa palabra aparece en casi todas las páginas, así que el buscador la ignora. Empieza por:',
+          ctaPrefix: 'Ir a' }
+      : { lead: 'No exact matches for',
+          suggestion: 'That word shows up on almost every page, so the search index drops it. Start here instead:',
+          ctaPrefix: 'Open' };
+
+    function commonQueryFallback(q) {
+      const key = String(q || '').trim().toLowerCase();
+      if (!key) return null;
+      const map = COMMON_QUERY_REDIRECTS[locale] || {};
+      return map[key] || null;
+    }
+
     // Classify a URL into a user-facing "kind" so the result meta row
     // can show something more useful than "/tools/seo-grader/" — e.g.
     // "TOOL · /tools/seo-grader/". Mapping lives here (JS side) rather
@@ -2864,7 +2920,22 @@
 
     function renderResults(q, data) {
       if (!data.length) {
-        results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+        // Try the curated common-query fallback first. If the query
+        // is one Pagefind drops as too-common (web/website/menu/etc.),
+        // surface a topical landing instead of the generic dead-end.
+        const fb = commonQueryFallback(q);
+        if (fb) {
+          results.innerHTML = `<div class="search-empty">
+            <strong>${fallbackStrings.lead}</strong> "${escapeHtml(q)}"<br>
+            <span class="search-empty-help">${fallbackStrings.suggestion}</span>
+            <a class="search-fallback-link" href="${escapeAttr(fb.href)}">
+              ${escapeHtml(fallbackStrings.ctaPrefix)} ${escapeHtml(fb.label)}
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>`;
+        } else {
+          results.innerHTML = `<div class="search-empty"><strong>${strings.empty}</strong> "${escapeHtml(q)}"<br>${strings.emptyHint}</div>`;
+        }
         activeIndex = -1;
         return;
       }
