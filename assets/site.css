@@ -5042,3 +5042,19 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
+/* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
+   The "Workshop next step" card at the close of every blog post.
+   Sits between .post-end-mark and the see-also block — the moment
+   of highest reader intent. Frames the most relevant tool as a
+   save-and-watch action, not a sales pitch. The Calendly inline-cta
+   blocks already in many posts stay where they are; this is
+   additive, not a replacement.
+   Authored content: data/post-end-cta.json. Stamped via
+   scripts/inject-post-end-cta.mjs. */
+
+.post-end-cta{max-width:680px;margin:48px auto 64px;padding:32px 36px;background:var(--teal-tint);border:1px solid transparent;border-radius:var(--r-md);text-align:center}
+.post-end-cta-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.25;letter-spacing:-0.005em}
+.post-end-cta-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 0 22px;max-width:560px;margin-left:auto;margin-right:auto}
+.post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
+.post-end-cta .btn-primary:hover{background:var(--teal-dark)}
+
