@@ -461,6 +461,19 @@
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks.
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('gbpSave'),
+    text: document.getElementById('gbpSaveText'),
+    kind: 'gbp',
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  });
+})();
+</script>
 <script>
 (function(){
   var form=document.getElementById('gbpForm');

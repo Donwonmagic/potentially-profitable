@@ -478,6 +478,19 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/assets/workbench-save.js?v=20260429-batch3"></script>
+<script>
+// Phase D — honor ?intent=watch deeplinks (ES).
+(function () {
+  if (typeof MuntinWorkbench !== 'object' || typeof MuntinWorkbench.readIntent !== 'function') return;
+  MuntinWorkbench.readIntent({
+    box: document.getElementById('speedSave'),
+    text: document.getElementById('speedSaveText'),
+    kind: 'speed',
+    locale: 'es',
+  });
+})();
+</script>
 <script>
 (function() {
   var form = document.getElementById('speedForm');

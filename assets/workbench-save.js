@@ -234,6 +234,10 @@
             }
             lastSavePayload = p;
             markRehydrated();
+            // Phase D — strip BOTH ?saved= and ?intent= / ?from= on
+            // rehydrate so a refresh doesn't re-trigger or re-fire
+            // analytics. handleIntent below also strips on its
+            // standalone path.
             try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
           }).catch(function (err) {
             if (err && err.message === 'redirect') return;
@@ -243,6 +247,13 @@
       } catch (_) { /* old browser */ }
     }
 
+    // Phase D — auto-honor intent= URL params via the shared
+    // readIntent() helper exposed on the global namespace. Tools
+    // that use attach() get this call for free; tools that ship
+    // their own inline save flow can call MuntinWorkbench.readIntent
+    // with their own element refs.
+    readIntent({ box: box, text: text, kind: kind, locale: locale });
+
     return {
       showAffordance: showAffordance,
       markSaved: markSaved,
@@ -250,8 +261,73 @@
     };
   }
 
+  // Phase D (intent= URL convention) — public helper that any
+  // tool can call to honor an intent= URL param after its result
+  // is rendered. Closed enum: watch | save | share | compare.
+  // Unknown values silently ignored (forward-compat).
+  //
+  // The "watch panel" is whatever box element the tool exposes —
+  // typically the same `box` it gates on signed-in. Making box
+  // visible signposts the Save → Watch path (Watch attaches to a
+  // save in the Workshop list).
+  //
+  //   MuntinWorkbench.readIntent({
+  //     box:    document.getElementById('seoSave'),
+  //     text:   document.getElementById('seoSaveText'),  // optional
+  //     kind:   'seo',
+  //     locale: 'en',
+  //   });
+  //
+  // Strips ?intent= and ?from= from the URL via history.replaceState
+  // after consumption so refreshes don't re-trigger and analytics
+  // dedupe.
+  function readIntent(opts) {
+    opts = opts || {};
+    var box    = (typeof opts.box  === 'string') ? document.querySelector(opts.box)  : opts.box;
+    var text   = (typeof opts.text === 'string') ? document.querySelector(opts.text) : opts.text;
+    var kind   = opts.kind   || 'unknown';
+    var locale = opts.locale || (document.documentElement.lang === 'es' ? 'es' : 'en');
+    var intent, from;
+    try {
+      var sp = new URLSearchParams(window.location.search || '');
+      intent = sp.get('intent');
+      from   = sp.get('from');
+    } catch (_) { return; }
+    if (!intent) return;
+    var INTENTS = ['watch', 'save', 'share', 'compare'];
+    if (INTENTS.indexOf(intent) === -1) return;
+    try {
+      var preserve = new URLSearchParams(window.location.search || '');
+      preserve.delete('intent');
+      preserve.delete('from');
+      var qs = preserve.toString();
+      history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
+    } catch (_) { /* ignore */ }
+    setTimeout(function () {
+      if (intent === 'watch') {
+        if (!box) return;
+        box.hidden = false;
+        var WATCHABLE = { audit:1, seo:1, gbp:1, mobile:1, schema:1, speed:1, 'storefront-health':1 };
+        if (!WATCHABLE[kind] && text) {
+          text.textContent = locale === 'es'
+            ? 'Esta herramienta no se puede vigilar en una agenda. Guárdala en su lugar.'
+            : "This tool can't be watched on a schedule. Save instead.";
+        }
+        try { box.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (_) {}
+        try {
+          if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
+            window.plausible('Workbench Watch Open', { props: { kind: kind, locale: locale, from: from || 'unknown' } });
+          }
+        } catch (_) { /* analytics best-effort */ }
+      }
+      // Other intents (save/share/compare) are reserved; tools may
+      // opt in by reading window.location.search themselves.
+    }, 0);
+  }
+
   global.MuntinWorkbench = {
     attach: attach,
+    readIntent: readIntent,
     // Expose for tests / future locales.
     _COPY: COPY,
   };

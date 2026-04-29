@@ -827,19 +827,20 @@ function renderGlossary(card) {
   const aka  = xmlEscape(card.title_italic ?? "");
   const dek  = xmlEscape(card.dek ?? "");
 
-  // Phase A: route y-coords through gridRow + term size through fitTitle.
-  // Defaults are generous so output is byte-identical with the prior
-  // hard-coded constants. Phase D will tighten maxWidth and use
-  // 'dek-tight' when aka is empty.
+  // Phase D — engage real shrinking + lift dek when AKA is empty.
+  // fitTitle: 64→56→52→48px steps for terms that overflow at 64px.
+  // gridRow: when there's no AKA, dek lifts to 'dek-tight' so a
+  // short term doesn't leave 200px of cream below the title.
   const yEyebrow = gridRow("eyebrow");
   const yTerm    = gridRow("title");
   const yAka     = gridRow("subtitle");
-  const yDek     = gridRow("dek");
+  const yDek     = aka ? gridRow("dek") : gridRow("dek-tight");
   const termFit  = fitTitle(card.title_1 ?? "", {
     font: "Fraunces",
     maxSize: 64,
-    minSize: 64, // Phase A: clamp to single size so output unchanged
+    minSize: 48,
     maxWidth: CANVAS_W - 2 * EDGE,
+    step: 4,
   });
 
   const glyphSvg = card.glyph
