@@ -241,12 +241,16 @@ kind-templates, `scripts/render-og-pngs.py` rasterises them at 2×.
 - Every research note: its own card
 - Every topic page: a topic-`{slug}`.png card
 - Catalog / hub pages: their own card
-- **Glossary terms (exception)**: all 130 EN + 131 ES term entries
-  share the single `glossary.png` / `glossary-es.png` card. The
-  brand-recognition payoff (every shared glossary link previews as
-  the canonical Glossary card) outweighs the lift of authoring 261
-  per-term cards. If per-term differentiation becomes a priority,
-  treat it as its own sprint with the necessary content authoring.
+- **Glossary terms** (Sprint 17): every term page has its own
+  `glossary-<slug>(-es).png` card auto-generated from the term's
+  HTML (name + AKA + first sentence of definition + topic accent).
+  Built via `scripts/seed-glossary-og.mjs` (manifest seed) +
+  `scripts/build-og-cards.mjs` (SVG + PNG render) +
+  `scripts/inject-glossary-og.mjs` (HTML meta update). Adding a
+  new term: write the page, run the three scripts in sequence.
+  The category index pages (`/glossary/basics/`, `/glossary/mobile/`,
+  etc.) still share `glossary.png` — they're catalog views, not
+  term entries.
 - All EN cards have an ES counterpart with the `-es` slug suffix.
 
 **Adding a new card**:

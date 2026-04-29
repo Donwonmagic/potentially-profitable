@@ -749,6 +749,69 @@ function renderArticle(card) {
 }
 
 /**
+ * glossary — per-term cards for /glossary/<slug>/. Sprint 17.
+ *
+ * The same brand-recognition payoff as Articles, but laid out as a
+ * dictionary entry: a single big term name (Fraunces 64), an
+ * italic AKA subtitle (Fraunces 26), then the first sentence of
+ * the definition as the dek (Inter 22). Cream bg, topic-keyed
+ * accent. Eyebrow reads "GLOSSARY · <CATEGORY>".
+ *
+ * Different from `article` (which assumes a 3-line headline with
+ * an italic accent word) — glossary terms are short labels, not
+ * editorial questions, and need a layout that doesn't leave 200px
+ * of white space.
+ */
+function renderGlossary(card) {
+  const bg = PALETTE.cream;
+  const fg = PALETTE.ink;
+  const accentHex = PALETTE[card.accent ?? "teal"] ?? PALETTE.teal;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const term = xmlEscape(card.title_1 ?? "");
+  const aka  = xmlEscape(card.title_italic ?? "");
+  const dek  = xmlEscape(card.dek ?? "");
+
+  const yEyebrow = snap(96);
+  const yTerm    = snap(232);
+  const yAka     = snap(296);
+  const yDek     = snap(456);
+
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: true })}
+  ${categoryStrip(accentHex)}
+
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yTerm}"
+        font-family="Fraunces, Georgia, serif" font-size="64"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${term}</text>
+
+  ${aka ? `<text x="${EDGE}" y="${yAka}"
+        font-family="Fraunces, Georgia, serif" font-style="italic"
+        font-size="26" font-weight="400" letter-spacing="-0.5"
+        fill="${PALETTE.muted}">${aka}</text>` : ""}
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="22"
+        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+
+  ${ornament({ color: PALETTE.muted })}
+  ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
+</svg>
+`;
+}
+
+/**
  * tool — free tools under /audit/, /audit/restaurants/, and the
  * tool-* family. Saturated teal background (differentiates from
  * pages and articles), gold accent (per design brief: Tools →
@@ -824,6 +887,7 @@ const templates = {
   page: renderPage,
   research: renderResearch,
   article: renderArticle,
+  glossary: renderGlossary,
   tool: renderTool,
 };
 
