@@ -2776,6 +2776,8 @@
         'tool':        { label: 'All free tools',          href: '/tools/'                       },
         'library':     { label: 'Library home',            href: '/learn/'                       },
         'glossary':    { label: 'Glossary',                href: '/glossary/'                    },
+        'system':      { label: 'The System (how this site is built)', href: '/system/'          },
+        'colophon':    { label: 'The System (how this site is built)', href: '/system/'          },
       },
       es: {
         'web':            { label: 'Velocidad y móvil',           href: '/es/learn/topics/speed-mobile/'    },
@@ -2790,6 +2792,7 @@
         'herramienta':    { label: 'Todas las herramientas',      href: '/es/tools/'                        },
         'biblioteca':     { label: 'Inicio de la biblioteca',     href: '/es/learn/'                        },
         'glosario':       { label: 'Glosario',                    href: '/es/glossary/'                     },
+        'sistema':        { label: 'El Sistema (cómo está construido el sitio)', href: '/es/system/'        },
       },
     };
     const fallbackStrings = locale === 'es'
