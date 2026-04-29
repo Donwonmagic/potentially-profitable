@@ -87,7 +87,6 @@ if (drift.length) {
 }
 
 if (checkMode && drift.length > 0) {
-  // Sprint 2: warn-only. Sprint 16 flips to exit(1).
-  console.log('\n(--check is in warn-only mode in Sprint 2)');
-  process.exit(0);
+  // Sprint 16 — promoted to fail-CI.
+  process.exit(1);
 }

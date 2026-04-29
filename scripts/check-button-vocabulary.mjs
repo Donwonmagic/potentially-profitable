@@ -139,7 +139,7 @@ if (drift.length === 0 && stale.length === 0) {
 }
 
 if (checkMode && (drift.length > 0 || stale.length > 0)) {
-  // Sprint 4: warn-only. Sprint 16 flips this to exit(1).
-  console.log('\n(--check is in warn-only mode in Sprint 4)');
-  process.exit(0);
+  // Sprint 16 — promoted to fail-CI. Drift = unregistered button
+  // class added; stale = registered class no longer in site.css.
+  process.exit(1);
 }

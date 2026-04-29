@@ -301,6 +301,41 @@ The guard intentionally allows `--r-input`-scoped inline radii
 that match the token value; it's only failing on raw 8/10/12/14/18px
 that don't match.
 
+## Cohesion checks (Sprint 16 — fail-CI)
+
+Sprints 1–15 each shipped one or more locks against drift, each
+expressed as a `scripts/check-*.mjs` script in warn-only mode.
+Sprint 16 promotes the full set to fail-CI under
+`scripts/check-all.mjs`:
+
+```bash
+node scripts/check-all.mjs
+```
+
+Returns 0 if every check passes; 1 otherwise. Wire this into the
+build pipeline as the cohesion gate.
+
+| Check | What it catches | Source of truth |
+|---|---|---|
+| `check-name-coherence` | User-visible "Workbench" strings (the product is "the Workshop"). | Allowlist of code-internal exceptions |
+| `check-counts-coherence` | Hard-coded counts that disagree with the canonical value. | `data/site-counts.json` |
+| `check-knit-coverage` | Tool↔glossary back-link drift between two declarations of the same relationship. | `data/tool-knit.json` ↔ `data/library-tags.json` |
+| `check-button-vocabulary` | New `*-btn` CSS classes outside the locked family. | Canonical set in the script + registered exceptions |
+| `check-tool-header` | Tool hero eyebrows that don't begin with `Free tool · ` (EN) or `Herramienta gratis · ` (ES). | The eyebrow rule in §Tool shell above |
+| `check-og-images` | Dangling `og:image` / `twitter:image` references that don't resolve. | The files in `brand/og/` |
+| `check-og-coverage` | Pages that fall back to a generic OG card when they should have their own. | Per-X rule in §OG cards |
+| `check-analytics-vocabulary` | New `window.plausible('…')` event names not in the registry. | `tools/_shared/analytics.js` `EVENTS` |
+| `wire-glossary-knit --check` | Glossary term knit asides stale vs source data. | `data/library-tags.json` |
+| `inject-glossary-fieldnotes --check` | Fieldnote sentinels stale vs `data/glossary-fieldnotes.json`. | The data file |
+| `inject-post-end-cta --check` | Post-end CTA sentinels stale vs `data/post-end-cta.json`. | The data file |
+| `inject-site-counts --check` | Count sentinels stale vs `data/site-counts.json`. | The data file |
+| `check-locale-parity` | Pages on EN that have no ES counterpart (or stale ES). | EN as authoritative source |
+
+To temporarily bypass a check during local iteration, run the
+script without `--check` (it's warn-only by default). To bypass
+in CI, the policy is: don't. Add a registered exception or fix
+the source.
+
 ## When you're tempted to inline CSS
 
 - "I need a quick custom radius" → add a token in `:root`, use

@@ -102,8 +102,7 @@ if (drift.length === 0 && stale.length === 0) {
 }
 
 if (checkMode && drift.length > 0) {
-  // Sprint 15: warn-only on drift. Stale entries are informational,
-  // never block CI. Sprint 16 flips drift to exit(1).
-  console.log('\n(--check is in warn-only mode in Sprint 15)');
-  process.exit(0);
+  // Sprint 16 — promoted to fail-CI on drift. Stale entries stay
+  // informational (never block CI; suggests trimming the registry).
+  process.exit(1);
 }
