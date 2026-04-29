@@ -81,6 +81,8 @@ import {
   WATCHABLE_KINDS,
   MAX_WATCHES_PER_USER,
   recordWatchCheck,
+  markWatchStalled,
+  STALL_THRESHOLD,
 } from './lib/workbench.js';
 import { RECHECK_BY_KIND, kindLabel, shouldNotify } from './lib/watch-checks.js';
 
@@ -120,8 +122,15 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/schedule-reaudit',
   // Sprint 0 (Workshop) — magic-link sign-in. Form-tier (10/IP/hour)
   // is the right gate: each POST triggers a Resend email and a KV
-  // write. Verify + me + signout stay on the lighter API tier.
+  // write.
   '/api/auth/magic-link',
+  // Bug B2.2 (proactive audit) — magic-link verify. Tokens are
+  // 10-character random strings (~49 bits entropy) with 15-min TTL
+  // and one-shot consumption, so brute-force is impractical at any
+  // tier. Form-tier (10/IP/hour) is defense-in-depth: caps how
+  // often a single IP can probe verify endpoints (e.g., to enumerate
+  // session token shapes against rate-limit logs).
+  '/api/auth/verify',
   '/api/auth/signout',
   // Phase 3 — destructive: form-tier rate-limit (10/IP/hour). Each
   // POST mints a delete: token + sends an email; confirm side stays
@@ -512,6 +521,10 @@ export default {
       const recheck = RECHECK_BY_KIND[kind];
       if (!recheck) return;
       const itemId = watch.savedItemId;
+      // Bug B2.7 (proactive audit) — skip watches already marked
+      // stalled. A successful recheck (next time the user re-saves
+      // or re-attaches) clears the flag in recordWatchCheck.
+      if (watch.stalled) return;
       try {
         // Pull the underlying save row for the URL/payload context.
         const saved = await getItem(env, sub, itemId);
@@ -596,6 +609,29 @@ export default {
       } catch (err) {
         errors++;
         console.warn('[cron] watch processing failed', err && err.message);
+        // Bug B2.7 (proactive audit) — flag the failure on the watch
+        // row so consecutiveFailures can converge to STALL_THRESHOLD
+        // and the cron stops retrying a doomed call. Best-effort —
+        // if the failure-record itself fails (KV unavailable), let
+        // the next tick try again.
+        try {
+          const recorded = await recordWatchCheck(env, sub, itemId, null, true);
+          if (recorded && recorded.ok && recorded.watch) {
+            const row = recorded.watch;
+            const fails = row.consecutiveFailures || 0;
+            if (fails >= STALL_THRESHOLD && !row.stalled) {
+              // Mark stalled so subsequent ticks skip this watch and
+              // the user sees one notification, not ongoing spam.
+              await markWatchStalled(env, sub, itemId);
+              // TODO(B2.7): wire a stalled-watch email template into
+              // src/lib/templates.js and send via sendEmail here.
+              // Until that copy is authored, log so ops can flag the
+              // user manually. The skip-on-stalled guard at the top
+              // of processOne already prevents quota burn.
+              console.warn('[cron] watch stalled', { sub, itemId, kind, fails });
+            }
+          }
+        } catch (_) { /* swallow */ }
       }
     }
 

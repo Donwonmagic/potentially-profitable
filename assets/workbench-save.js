@@ -68,7 +68,7 @@
       signinLabel:    'Acceder para guardar',
       savedSuccess:   '✓ Guardado en tu Taller.',
       sessionExpired: 'Tu sesión venció. Accede para guardar este resultado.',
-      limitReached:   'Llegaste al límite de items guardados. Elimina algunos en /es/workbench/ primero.',
+      limitReached:   'Llegaste al límite de items guardados. Elimina algunos en el Taller primero.',
       genericError:   'No se pudo guardar. Inténtalo de nuevo en un momento.',
       networkError:   'No pudimos conectar con el servidor. Intenta de nuevo en un momento.',
       postSavePtr:    'Tus items guardados viven en /es/workbench/. Abre El Taller para gestionarlos.',
@@ -183,11 +183,18 @@
           });
         }
         if (r.status === 401) {
+          // Bug B2.1 — fully re-render the affordance via
+          // showAffordance() so that subsequent renders (the user
+          // re-runs the tool) see the now-anonymous state instead
+          // of the stale signedIn=true cached at attach time. After
+          // showAffordance restores the idle layout, set the
+          // session-expired cue via setMsg so the user sees what
+          // happened — text on the affordance reverted to the
+          // generic "Sign in to save" line.
           authState.signedIn = false;
-          if (btn)  btn.hidden  = true;
-          if (link) link.hidden = false;
-          if (text) text.textContent = copy.sessionExpired;
-          if (btn)  btn.disabled = false;
+          if (btn) btn.disabled = false;
+          showAffordance(lastSavePayload);
+          setMsg(copy.sessionExpired, true);
           return;
         }
         return r.json().catch(function () { return {}; }).then(function (data) {

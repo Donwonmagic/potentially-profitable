@@ -91,6 +91,12 @@ const ALLOWED_SCHEDULES = new Set(['daily', 'weekly']);
 // over-eager operator from monopolising the cron's run budget.
 const MAX_WATCHES_PER_USER = 25;
 
+// Bug B2.7 (proactive audit) — stalled-watch threshold. After this
+// many consecutive recheck failures (upstream 5xx, timeout, parse
+// error, etc.), the cron stops retrying that watch and emails the
+// user once. Prevents a doomed call from burning quota indefinitely.
+const STALL_THRESHOLD = 5;
+
 export {
   SAVE_KEY_PREFIX,
   ALLOWED_KINDS,
@@ -101,6 +107,7 @@ export {
   WATCHABLE_KINDS,
   ALLOWED_SCHEDULES,
   MAX_WATCHES_PER_USER,
+  STALL_THRESHOLD,
 };
 
 export function mintSaveItemId() {
@@ -275,6 +282,16 @@ export async function attachWatch(env, sub, savedItemId, schedule) {
   // Allow update-in-place (re-attach to refresh schedule) without
   // tripping the cap — only block when adding a NEW watch past the
   // ceiling. Check existence before counting.
+  //
+  // Bug B2.6 (proactive audit) — accepted TOCTOU tradeoff. KV has no
+  // transactional CAS, so two simultaneous attach POSTs can both
+  // pass this check before either writes. Worst case: a user with
+  // exactly MAX_WATCHES_PER_USER - 1 existing watches double-clicks
+  // and ends up with MAX + 1. The cap is a soft per-user-rate
+  // limit, not a security boundary; the next attach reverts to the
+  // hard rejection. If a future requirement makes this cap a real
+  // boundary, route the increment through a Durable Object (the
+  // RATE_LIMITER DO is already wired and supports CAS-style ops).
   const already = await env.AUTH_SESSIONS.get(watchKey(sub, savedItemId));
   if (!already && existing >= MAX_WATCHES_PER_USER) {
     return { ok: false, error: 'limit-reached', max: MAX_WATCHES_PER_USER };
@@ -360,7 +377,22 @@ export async function* iterateAllWatches(env) {
 // to update lastCheckedAt + lastScore. Separate from attachWatch
 // so the re-check path doesn't touch the user-visible schedule
 // or baselineScore.
-export async function recordWatchCheck(env, sub, savedItemId, score) {
+// Bug B2.7 (proactive audit) — mark a watch as stalled so the cron
+// skips it on subsequent ticks. Called by the cron when a watch
+// hits STALL_THRESHOLD consecutive failures. A successful recheck
+// (via recordWatchCheck with failed=false) clears the flag.
+export async function markWatchStalled(env, sub, savedItemId) {
+  const key = watchKey(sub, savedItemId);
+  const raw = await env.AUTH_SESSIONS.get(key);
+  if (!raw) return { ok: false, error: 'not-found' };
+  let row;
+  try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt' }; }
+  row.stalled = true;
+  await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
+  return { ok: true, watch: row };
+}
+
+export async function recordWatchCheck(env, sub, savedItemId, score, failed) {
   const key = watchKey(sub, savedItemId);
   const raw = await env.AUTH_SESSIONS.get(key);
   if (!raw) return { ok: false, error: 'not-found' };
@@ -368,6 +400,19 @@ export async function recordWatchCheck(env, sub, savedItemId, score) {
   try { row = JSON.parse(raw); } catch { return { ok: false, error: 'corrupt' }; }
   row.lastCheckedAt = Date.now();
   row.lastScore = (typeof score === 'number' && isFinite(score)) ? score : null;
+  // Bug B2.7 (proactive audit) — track consecutive failures so the
+  // cron can stop retrying a doomed watch (upstream permanently 5xx,
+  // a deleted page, etc.). Success resets the counter; the cron
+  // checks the post-call row.consecutiveFailures against
+  // STALL_THRESHOLD to decide whether to emit a one-time stalled
+  // notification (gated by row.stalled to avoid spamming).
+  if (failed === true) {
+    row.consecutiveFailures = (typeof row.consecutiveFailures === 'number' ? row.consecutiveFailures : 0) + 1;
+  } else {
+    row.consecutiveFailures = 0;
+    // A successful recheck un-stalls a previously-stalled watch.
+    if (row.stalled) row.stalled = false;
+  }
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
   return { ok: true, watch: row };
 }
