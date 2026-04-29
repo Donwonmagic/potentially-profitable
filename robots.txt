@@ -7,5 +7,14 @@ Disallow: /blog/drafts/
 # stale link leaks somewhere.
 Disallow: /workbench/
 Disallow: /es/workbench/
+# Phase 3 (Workshop) — operator account page. Same posture as
+# /workbench/: 404-gated server-side, noindex in HTML, and disallowed
+# here. /account/ never appears in any sitemap.
+Disallow: /account/
+Disallow: /es/account/
+# Phase 3 — destructive-action confirmation surface. The token in
+# the URL is the only thing that makes the page renderable, but
+# there is no value to a crawler discovering the path.
+Disallow: /api/auth/account-delete-confirm
 
 Sitemap: https://muntin.digital/sitemap.xml

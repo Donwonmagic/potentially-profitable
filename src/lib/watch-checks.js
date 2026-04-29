@@ -115,12 +115,106 @@ export async function recheckMobile(env, savedItem) {
 
 export async function recheckSchema(env, savedItem) {
   const payload = savedItem && savedItem.payload;
-  // TODO(cron-flip): fetch payload.url and run JSON-LD discovery
-  // via /api/schema-check. Score is binary (100 if any structured
-  // data found, 0 if not) — drift here usually means the operator
-  // changed CMS or stripped tags, which is the most actionable
-  // signal of all six watchable kinds.
-  return { ok: true, score: scoreFromSavedPayload('schema', payload) };
+  // Real implementation. Fetches payload.url, scans for inline
+  // JSON-LD (`<script type="application/ld+json">`), parses each
+  // block defensively, and returns 100 if at least one block has a
+  // resolvable @type — 0 otherwise. Drift from 100 → 0 here is the
+  // most actionable signal in the watch system: it almost always
+  // means the operator changed CMS, edited a template, or stripped
+  // a third-party widget that was emitting schema.
+  //
+  // Why this one is implemented end-to-end (vs. the other five
+  // scaffolded TODOs): no API key, no quota, no PII to redact, and
+  // a binary outcome that's robust to small content changes.
+  const url = String((payload && (payload.url || payload.auditedUrl)) || '').trim();
+  if (!url || !/^https?:\/\//i.test(url)) {
+    return { ok: false, error: 'no-url' };
+  }
+  // Block private-network fetches at the SSRF boundary. A failed
+  // hostname lookup returns ok:false so the cron logs + skips
+  // rather than treating the failure as a "score went to 0" signal
+  // (which would spam an email to the operator).
+  let parsed;
+  try { parsed = new URL(url); } catch { return { ok: false, error: 'invalid-url' }; }
+  const host = parsed.hostname.toLowerCase();
+  if (host === 'localhost' ||
+      /^(127\.|10\.|192\.168\.)/.test(host) ||
+      /^169\.254\./.test(host) ||
+      /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(host) ||
+      host.endsWith('.local') ||
+      host === '0.0.0.0') {
+    return { ok: false, error: 'private-network' };
+  }
+  let res;
+  try {
+    res = await fetch(parsed.toString(), {
+      headers: { 'User-Agent': 'MuntinDigital-Watch-Schema/1.0' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch (err) {
+    return { ok: false, error: 'fetch-failed' };
+  }
+  if (!res.ok) {
+    return { ok: false, error: 'http-' + res.status };
+  }
+  // Cap the read at 1.5 MB. JSON-LD blocks live in <head> or early
+  // <body>; truncating past that is safe for this binary check.
+  const reader = res.body && res.body.getReader ? res.body.getReader() : null;
+  let html = '';
+  if (reader) {
+    const decoder = new TextDecoder('utf-8');
+    let total = 0;
+    const cap = 1_500_000;
+    while (total < cap) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      total += chunk.value.byteLength;
+      html += decoder.decode(chunk.value, { stream: true });
+      if (total >= cap) break;
+    }
+    try { reader.cancel(); } catch (_) {}
+  } else {
+    // Fallback for runtimes without ReadableStream.getReader().
+    html = await res.text();
+  }
+  const score = countResolvableJsonLdTypes(html) > 0 ? 100 : 0;
+  return { ok: true, score };
+}
+
+// Slim JSON-LD detector. NOT a full parser — the audit-tool's
+// schema-check endpoint owns that surface. Here we just need a
+// binary "does this page have any valid structured data?" answer.
+//
+// Returns the count of JSON-LD blocks where (a) the script tag
+// closed cleanly, (b) the inner text JSON-parsed without throwing,
+// and (c) the parsed value has a resolvable @type (string, array
+// of strings, or @graph entries with @type).
+export function countResolvableJsonLdTypes(html) {
+  if (typeof html !== 'string' || !html) return 0;
+  const re = /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  let count = 0;
+  while ((m = re.exec(html)) !== null) {
+    const raw = (m[1] || '').trim();
+    if (!raw) continue;
+    let parsedJson;
+    try { parsedJson = JSON.parse(raw); } catch { continue; }
+    if (hasResolvableType(parsedJson)) count++;
+  }
+  return count;
+}
+
+function hasResolvableType(node) {
+  if (!node || typeof node !== 'object') return false;
+  if (Array.isArray(node)) return node.some(hasResolvableType);
+  if (node['@graph'] && Array.isArray(node['@graph'])) {
+    if (node['@graph'].some(hasResolvableType)) return true;
+  }
+  const t = node['@type'];
+  if (typeof t === 'string' && t.length > 0) return true;
+  if (Array.isArray(t) && t.some(function (x) { return typeof x === 'string' && x.length > 0; })) return true;
+  return false;
 }
 
 export async function recheckSpeed(env, savedItem) {
