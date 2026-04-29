@@ -5190,16 +5190,37 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 .window-hero{transition:max-height var(--t-med) var(--ease),margin var(--t-med) var(--ease)}
 .window-hero__inner{max-width:600px;margin:48px auto;text-align:center}
-.window-hero__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 14px}
-.window-hero__headline{font-family:var(--font-display);font-style:italic;font-size:clamp(36px,5vw,56px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.1;letter-spacing:-0.01em}
-.window-hero__sub{font-family:var(--font-body);font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:520px}
+.window-hero__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;opacity:0;animation:window-fade-up 320ms ease-out forwards}
+.window-hero__headline{font-family:var(--font-display);font-style:italic;font-size:clamp(36px,5vw,56px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.1;letter-spacing:-0.01em;opacity:0;animation:window-fade-up 320ms 60ms ease-out forwards}
+.window-hero__sub{font-family:var(--font-body);font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:520px;opacity:0;animation:window-fade-up 320ms 120ms ease-out forwards}
+@keyframes window-fade-up{
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-hero__eyebrow,.window-hero__headline,.window-hero__sub{animation:none;opacity:1;transform:none}
+}
 .window-hero--collapsed .window-hero__inner{margin:24px auto;padding:0}
 .window-hero--collapsed .window-hero__headline{font-size:20px;line-height:1.3}
 .window-hero--collapsed .window-hero__sub{display:none}
 
-/* The muntin line. Vertical hairline. */
-.window-muntin{position:absolute;top:0;bottom:0;left:38.2%;width:1px;background:var(--line-dark);opacity:0.4;pointer-events:none}
-.window-muntin__pulse{position:absolute;top:18px;left:-3px;width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:0.7}
+/* The muntin line. Vertical hairline drawn in via clip-path on
+   first paint — the brand metaphor doing real work. */
+.window-muntin{position:absolute;top:0;bottom:0;left:38.2%;width:1px;background:var(--line-dark);opacity:0.4;pointer-events:none;clip-path:inset(0 0 100% 0);animation:window-muntin-draw 720ms 240ms cubic-bezier(.2,.7,.1,1) forwards}
+@keyframes window-muntin-draw{
+  to { clip-path: inset(0 0 0 0); }
+}
+/* Phase W.4 — "Don is at the window" pulse. Visible when his
+   lastSeen is <4h. Quiet 3.2s breathe. */
+.window-muntin__pulse{position:absolute;top:18px;left:-3px;width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:0.7;animation:window-pulse 3.2s ease-in-out infinite}
+@keyframes window-pulse{
+  0%,100% { opacity: 0.45; transform: scale(1); }
+  50%     { opacity: 1;    transform: scale(1.18); }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-muntin{clip-path:none;animation:none}
+  .window-muntin__pulse{animation:none;opacity:0.7}
+}
 
 @media (max-width:768px){
   .window-muntin{left:24px}
@@ -5217,9 +5238,30 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-msg__body{margin:0;white-space:pre-wrap}
 .window-msg--you{margin-right:auto;padding-right:24px}
 .window-msg--don{margin-left:auto;padding-left:20px;border-left:2px solid var(--teal)}
+/* Phase W.4 — letter-laid-down reveal for fresh Don replies.
+   Left-to-right clip-path, 540ms ease, like ink drying across
+   paper. Stamp fades in slightly after. */
+.window-msg[data-fresh="true"]{clip-path:inset(0 100% 0 0);animation:window-letter-down 540ms cubic-bezier(.2,.7,.1,1) forwards}
+.window-msg[data-fresh="true"] .window-msg__stamp{opacity:0;animation:window-stamp-fade 200ms 80ms ease-out forwards}
+@keyframes window-letter-down{
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes window-stamp-fade{
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .window-msg[data-fresh="true"]{clip-path:none;animation:window-fade-only 200ms ease-out forwards}
+  .window-msg[data-fresh="true"] .window-msg__stamp{animation:none;opacity:1}
+}
+@keyframes window-fade-only{
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
-.window-daybreak{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0;color:var(--stone)}
-.window-daybreak__label{font-family:var(--font-display);font-style:italic;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone)}
+.window-daybreak{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0;color:var(--stone);position:relative}
+.window-daybreak::before,.window-daybreak::after{content:'';flex:1;height:1px;background:var(--line);max-width:120px}
+.window-daybreak__label{font-family:var(--font-display);font-style:italic;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--stone);display:inline-flex;align-items:center;gap:10px}
+.window-daybreak__label::before{content:'';display:inline-block;width:14px;height:14px;background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128' fill='none' stroke='%236B6B6B' stroke-width='8' stroke-linecap='square'%3E%3Crect x='20' y='20' width='88' height='88'/%3E%3Cline x1='64' y1='20' x2='64' y2='108'/%3E%3Cline x1='20' y1='51' x2='108' y2='51'/%3E%3C/svg%3E") center/contain no-repeat;opacity:0.6}
 
 .window-composer{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
 .window-composer__form{position:relative}
