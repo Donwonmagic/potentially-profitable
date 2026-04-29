@@ -416,7 +416,7 @@
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance';
 
     var pendingResponse=null;
-    fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+    fetch(api,{signal:MuntinFetchError.safeAbortSignal(8000)}).then(function(r){
       pendingResponse=r;
       return r.json().catch(function(){return{}});
     }).then(function(data){

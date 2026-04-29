@@ -316,7 +316,7 @@
     // both halves of the comparison; classify non-OK responses with
     // host context so the error UI can name which URL failed.
     var pendingResponse=null;
-    return fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+    return fetch(api,{signal:MuntinFetchError.safeAbortSignal(8000)}).then(function(r){
       pendingResponse=r;
       return r.json().catch(function(){return{}});
     }).then(function(d){

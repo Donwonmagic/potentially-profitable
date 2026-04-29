@@ -637,7 +637,7 @@
 
     // T2 — timeout + clasificador compartido. Mismo flujo que el EN.
     var pendingResponse = null;
-    fetch(api, { signal: AbortSignal.timeout(8000) })
+    fetch(api, { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r) {
         pendingResponse = r;
         return r.json().catch(function(){ return {}; });

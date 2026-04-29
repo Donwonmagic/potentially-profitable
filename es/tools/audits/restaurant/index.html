@@ -6135,7 +6135,7 @@
     if (window.__muntinLang === 'es') params.append('lang', 'es');
     return fetch('/api/gbp-lookup?' + params.toString(), {
       headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(5000)
+      signal: MuntinFetchError.safeAbortSignal(5000)
     })
       .then(function(res){ return res.ok ? res.json() : null; })
       .then(function(data){
@@ -6173,7 +6173,7 @@
     var params = new URLSearchParams();
     params.append('url', targetUrl);
     if (window.__muntinLang === 'es') params.append('lang', 'es');
-    return fetch('/api/observatory?' + params.toString(), { signal: AbortSignal.timeout(15000) })
+    return fetch('/api/observatory?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(15000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6181,7 +6181,7 @@
   function callWaybackFirstSeen(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/wayback-first-seen?' + params.toString(), { signal: AbortSignal.timeout(8000) })
+    return fetch('/api/wayback-first-seen?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(8000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6189,7 +6189,7 @@
   function callCruxHistory(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/crux-history?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/crux-history?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6198,7 +6198,7 @@
     if (!placeId) return Promise.resolve({ ok: false });
     var params = new URLSearchParams();
     params.append('placeId', placeId);
-    return fetch('/api/gbp-details?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/gbp-details?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6208,7 +6208,7 @@
   function callDnsEmailHealth(targetUrl) {
     var params = new URLSearchParams();
     params.append('url', targetUrl);
-    return fetch('/api/dns-email-health?' + params.toString(), { signal: AbortSignal.timeout(10000) })
+    return fetch('/api/dns-email-health?' + params.toString(), { signal: MuntinFetchError.safeAbortSignal(10000) })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(d){ return d && d.ok ? d : { ok: false }; })
       .catch(function(){ return { ok: false }; });
@@ -6228,7 +6228,7 @@
     return fetch('/api/brand-dossier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(20000),
+      signal: MuntinFetchError.safeAbortSignal(20000),
       body: JSON.stringify({
         url: targetUrl,
         lang: window.__muntinLang === 'es' ? 'es' : 'en',
@@ -13983,7 +13983,7 @@
         (window.__muntinLang === 'es' ? '&lang=es' : '');
       return fetch('/api/did-you-mean' + qs, {
         headers: { 'Accept': 'application/json' },
-        signal: AbortSignal.timeout(3500)
+        signal: MuntinFetchError.safeAbortSignal(3500)
       }).then(function(r){ return r.ok ? r.json() : null; })
         .catch(function(){ return null; });
     } catch (_) { return Promise.resolve(null); }

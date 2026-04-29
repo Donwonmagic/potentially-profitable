@@ -31,6 +31,7 @@ const CHECKS = [
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   ['Tool header',         'check-tool-header.mjs',         '--check'],
+  ['Hidden attribute',    'check-hidden-attribute.mjs',    '--check'],
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
   ['Analytics vocab',     'check-analytics-vocabulary.mjs','--check'],

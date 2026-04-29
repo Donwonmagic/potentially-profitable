@@ -314,7 +314,7 @@
   function fetchScores(url){
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance&category=accessibility&category=seo&category=best-practices';
     var pendingResponse=null;
-    return fetch(api,{signal:AbortSignal.timeout(8000)}).then(function(r){
+    return fetch(api,{signal:MuntinFetchError.safeAbortSignal(8000)}).then(function(r){
       pendingResponse=r;
       return r.json().catch(function(){return{}});
     }).then(function(d){
