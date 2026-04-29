@@ -287,6 +287,11 @@
       </form>
       <p class="seo-note">Usa Google PageSpeed Insights. Toma unos treinta segundos.</p>
 
+      <!-- Sprint 5 (cohesión) — estados compartidos de loading + error.
+           El slot lo llena tools/_shared/states.js; los estilos viven
+           en assets/site.css bajo §Tool states. -->
+      <div class="tool-states-slot" id="seoStates" data-state="idle" aria-live="polite"></div>
+
       <div class="seo-result" id="seoResult" aria-live="polite">
         <!-- Title card -->
         <div class="seo-card" id="titleCard">
@@ -393,12 +398,18 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+  // Sprint 5 (cohesión) — estados compartidos.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('seoStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
 
   function normalizeUrl(raw) {
     var u = raw.trim();
@@ -610,6 +621,7 @@
     btn.disabled = true;
     btn.textContent = 'Calificando…';
     result.classList.remove('visible');
+    if (states) states.setLoading();
 
     // Fetch the actual page through our Worker proxy to extract
     // the real <title> and <meta description> — Lighthouse audits
@@ -654,6 +666,7 @@
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
 
+        if (states) states.setSuccess();
         result.classList.add('visible');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -677,10 +690,16 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo calificar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEs);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo calificar esa URL.', retryAfterSec: null });
+        // Sprint 5 (cohesión) — tarjeta de error inline. Cae a alert()
+        // si el módulo no cargó (sin JS, hipo del CDN).
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEs);
+        }
       })
       .finally(function() {
         btn.disabled = false;

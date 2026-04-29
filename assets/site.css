@@ -4958,3 +4958,48 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   .wsh-item-actions{justify-content:flex-end}
 }
 
+/* ============ Tool states (Sprint 5 — cohesion) ============
+   Shared loading + error patterns for tool result regions. Every
+   URL-fetching tool today ships its own bespoke loading/error UX
+   (button-label flicker, native alert() popups, "—" placeholders).
+   This cluster provides one shared shape every tool maps to via
+   tools/_shared/states.js.
+
+   Anatomy on a tool page:
+     <div class="tool-states-slot" id="seoStates"></div>
+     <div class="seo-result" id="seoResult">…</div>
+
+   The slot is a small container the JS fills with a skeleton on
+   loading or an inline error card on failure. The host page's own
+   result region is unaffected. */
+
+.tool-states-slot[data-state="idle"]{display:none}
+.tool-states-slot[data-state="loading"],
+.tool-states-slot[data-state="error"]{display:block}
+
+/* Loading skeleton — shimmer lines inside a card that matches the
+   visual weight of the eventual result. Honors reduced-motion. */
+.tool-skeleton{display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.tool-skeleton-card{padding:22px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.tool-skeleton-line{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--surface-inset) 0%,var(--cream-2) 50%,var(--surface-inset) 100%);background-size:200% 100%;animation:tool-shimmer 1.4s ease-in-out infinite}
+.tool-skeleton-line + .tool-skeleton-line{margin-top:10px}
+.tool-skeleton-line[data-w="40"]{width:40%}
+.tool-skeleton-line[data-w="60"]{width:60%}
+.tool-skeleton-line[data-w="80"]{width:80%}
+.tool-skeleton-line[data-w="100"]{width:100%}
+
+@keyframes tool-shimmer{
+  0%   { background-position: 100% 50% }
+  100% { background-position: -100% 50% }
+}
+@media (prefers-reduced-motion:reduce){
+  .tool-skeleton-line{animation:none;background:var(--surface-inset)}
+}
+
+/* Inline error card — replaces native alert() popups. One-line
+   headline + plain-language body + (optional) retry hint. */
+.tool-error{padding:24px;background:var(--surface-1);border:1px solid var(--status-bad-tint);border-left:3px solid var(--rust);border-radius:var(--r-md);margin-bottom:20px;box-shadow:var(--elev-1)}
+.tool-error-headline{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.35}
+.tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
+
