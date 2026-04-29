@@ -644,13 +644,69 @@ p{margin:0}
 .post-end-mark .post-end-glyph svg{width:100%;height:100%;display:block}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:-0.005em;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);white-space:nowrap}
+/* ============ Button vocabulary (Sprint 4 — locked) ============
+   The site has ONE button family. Every interactive control should
+   compose from these primitives unless it is a registered exception
+   (see scripts/check-button-vocabulary.mjs for the allowlist).
+
+   Anatomy:
+     .btn                       base (required) — shape + transition
+     .btn-primary               variant — filled ink/teal, the main CTA
+     .btn-ghost                 variant — outlined, secondary action
+     .btn-link                  variant — text-only with underline
+     .btn-danger                color modifier — composes with .btn-ghost
+                                or .btn-primary for destructive actions
+     .btn-sm / .btn-lg          size modifiers (default size is medium)
+
+   Legal compositions:
+     .btn .btn-primary                   — primary CTA (default size)
+     .btn .btn-primary .btn-lg           — hero CTA
+     .btn .btn-ghost                     — secondary action
+     .btn .btn-ghost .btn-sm             — tertiary / inline action
+     .btn .btn-ghost .btn-danger         — destructive secondary (Delete)
+     .btn .btn-ghost .btn-sm .btn-danger — destructive inline (Delete in a list row)
+     .btn .btn-link                      — text-only inline action
+
+   Registered exceptions (page-local; documented; not drift):
+     .nav-search-btn                     — nav search trigger with kbd hint
+     .nav-toggle                         — hamburger icon button
+     .lang-hint-accept / -dismiss        — language banner controls
+     .mobile-search                      — mobile menu search trigger
+     .share-btn                          — share-card button (post end)
+     .listen-btn / .listen-iconbtn       — audio narration controls
+     .score-pill-btn                     — floating score pill
+     .cmp-btn                            — comparison tool selector
+     .wsh-watch-btn                      — Workshop watch toggle (teal accent)
+     .form-submit                        — animated form submit state machine
+     .tool-cta-form button               — homepage tool-CTA inline button
+
+   New button-shaped class? Add it to the allowlist OR refactor to
+   compose primitives. scripts/check-button-vocabulary.mjs catches
+   ad-hoc *-btn additions in CI. */
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;letter-spacing:-0.005em;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease);white-space:nowrap;cursor:pointer}
 .btn svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease-out)}
 .btn:hover svg{transform:translateX(4px)}
+
+/* Variants */
 .btn-primary{background:var(--ink);color:var(--cream)}
 .btn-primary:hover{background:var(--teal);transform:translateY(-1px);box-shadow:0 12px 30px -12px rgba(20,22,26,0.35)}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-dark)}
 .btn-ghost:hover{background:var(--white);border-color:var(--ink)}
+.btn-link{background:transparent;color:var(--teal);padding:0;border:0;font-weight:600;text-decoration:underline;text-underline-offset:3px;border-radius:0}
+.btn-link:hover{color:var(--teal-dark);text-decoration:underline}
+
+/* Color modifiers (compose with a variant) */
+.btn-ghost.btn-danger{color:var(--rust);border-color:var(--status-bad-tint)}
+.btn-ghost.btn-danger:hover{background:var(--status-bad-tint);border-color:var(--rust);color:var(--rust)}
+.btn-primary.btn-danger{background:var(--rust);color:var(--cream)}
+.btn-primary.btn-danger:hover{background:var(--status-bad-tint);color:var(--rust)}
+
+/* Size modifiers (default size is medium — defined on .btn above) */
+.btn-sm{padding:8px 16px;font-size:13px;gap:6px}
+.btn-sm svg{width:14px;height:14px}
+.btn-lg{padding:18px 32px;font-size:17px;gap:12px}
+.btn-lg svg{width:18px;height:18px}
 .nav{position:fixed;inset:0 0 auto 0;z-index:50;padding:18px 0;transition:background var(--t-med) var(--ease),border-color var(--t-med) var(--ease),padding var(--t-med) var(--ease);border-bottom:1px solid transparent}
 .nav.scrolled{background:rgba(250,247,242,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line);padding:12px 0}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
@@ -4857,3 +4913,172 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
     margin-top:2pt;
   }
 }
+
+/* ============ Workshop (Sprint 3 — cohesion) ============
+   /workbench/ + /es/workbench/ saved-items page. Shares the
+   global frame (.nav + <footer>) with every other page so the
+   visual frame doesn't change when a user signs in. Page-specific
+   patterns are prefixed .wsh-; primitives reused inline:
+   .container .eyebrow .btn .btn-ghost .btn-sm .status-chip. */
+
+.wsh-main{padding-top:clamp(40px,6vh,64px);padding-bottom:clamp(40px,6vh,64px)}
+.wsh-header{max-width:720px;margin:0 auto 22px}
+.wsh-h1{font-family:var(--font-display);font-size:clamp(32px,4.4vw,48px);font-weight:500;line-height:1.1;letter-spacing:-0.02em;color:var(--ink);margin:8px 0 14px}
+.wsh-sub{font-size:var(--fs-lead);line-height:1.55;color:var(--ink-soft);margin:0}
+
+/* "Signed in as X · Account · Sign out" strip below the header.
+   Replaces the old in-nav account block; the auth context now lives
+   adjacent to where it's actionable. */
+.wsh-auth-strip{max-width:720px;margin:0 auto 36px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--stone)}
+.wsh-auth-strip-email{color:var(--ink);font-weight:500}
+.wsh-auth-strip form{margin:0}
+
+.wsh-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+
+/* Loading / empty / error state cards (mutually exclusive). */
+.wsh-state{padding:40px 28px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);text-align:center}
+.wsh-state h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 10px}
+.wsh-state p{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 auto;max-width:480px}
+.wsh-state-cta{margin-top:20px}
+
+/* Saved-item row. */
+.wsh-item{padding:22px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1);display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start}
+.wsh-item-body{min-width:0}
+.wsh-item-meta{display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}
+.wsh-item-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0;line-height:1.35;word-break:break-word}
+.wsh-item-date{font-size:12.5px;color:var(--stone);margin:6px 0 0;font-variant-numeric:tabular-nums}
+.wsh-item-actions{display:inline-flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+/* Watch toggle: a teal-accenting button (not-watched) and a teal-tint
+   pill (watched) that sit in the same slot. The .btn-danger color
+   modifier (rust accent for Delete) lives in the button vocabulary
+   block above; .wsh-watch-btn stays here because the teal-on-hover
+   intent is Workshop-specific. */
+.btn-ghost.wsh-watch-btn:hover{background:var(--white);border-color:var(--teal);color:var(--teal)}
+.wsh-watch-btn[disabled]{opacity:0.6;cursor:wait}
+.wsh-watch-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 6px 8px 14px;border-radius:999px;background:var(--teal-tint);color:var(--teal);font:inherit;font-size:13px;font-weight:600}
+.wsh-watch-pill button{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--teal);font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0;transition:background var(--t-fast) var(--ease)}
+.wsh-watch-pill button:hover{background:rgba(31,78,91,0.12)}
+.wsh-watch-pill button[disabled]{opacity:0.6;cursor:wait}
+
+@media (max-width:640px){
+  .wsh-item{grid-template-columns:1fr}
+  .wsh-item-actions{justify-content:flex-end}
+}
+
+/* ============ Tool states (Sprint 5 — cohesion) ============
+   Shared loading + error patterns for tool result regions. Every
+   URL-fetching tool today ships its own bespoke loading/error UX
+   (button-label flicker, native alert() popups, "—" placeholders).
+   This cluster provides one shared shape every tool maps to via
+   tools/_shared/states.js.
+
+   Anatomy on a tool page:
+     <div class="tool-states-slot" id="seoStates"></div>
+     <div class="seo-result" id="seoResult">…</div>
+
+   The slot is a small container the JS fills with a skeleton on
+   loading or an inline error card on failure. The host page's own
+   result region is unaffected. */
+
+.tool-states-slot[data-state="idle"]{display:none}
+.tool-states-slot[data-state="loading"],
+.tool-states-slot[data-state="error"]{display:block}
+
+/* Loading skeleton — shimmer lines inside a card that matches the
+   visual weight of the eventual result. Honors reduced-motion. */
+.tool-skeleton{display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.tool-skeleton-card{padding:22px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.tool-skeleton-line{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--surface-inset) 0%,var(--cream-2) 50%,var(--surface-inset) 100%);background-size:200% 100%;animation:tool-shimmer 1.4s ease-in-out infinite}
+.tool-skeleton-line + .tool-skeleton-line{margin-top:10px}
+.tool-skeleton-line[data-w="40"]{width:40%}
+.tool-skeleton-line[data-w="60"]{width:60%}
+.tool-skeleton-line[data-w="80"]{width:80%}
+.tool-skeleton-line[data-w="100"]{width:100%}
+
+@keyframes tool-shimmer{
+  0%   { background-position: 100% 50% }
+  100% { background-position: -100% 50% }
+}
+@media (prefers-reduced-motion:reduce){
+  .tool-skeleton-line{animation:none;background:var(--surface-inset)}
+}
+
+/* Inline error card — replaces native alert() popups. One-line
+   headline + plain-language body + (optional) retry hint. */
+.tool-error{padding:24px;background:var(--surface-1);border:1px solid var(--status-bad-tint);border-left:3px solid var(--rust);border-radius:var(--r-md);margin-bottom:20px;box-shadow:var(--elev-1)}
+.tool-error-headline{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.35}
+.tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
+.tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
+
+/* ============ Editorial callouts (Sprint 10 — cohesion) ============
+   .callout--field is the "Field note from the kitchen" — a per-
+   glossary-term italic aside that adds Don's operator anecdote
+   beside the dictionary-style definition. The teal hairline-left
+   matches the citation/aside pattern; the cream-2 background sets
+   the block apart from .term-def / .term-why prose without
+   reading as a warning. Authored content lives in
+   data/glossary-fieldnotes.json, stamped via
+   scripts/inject-glossary-fieldnotes.mjs. */
+
+.callout{margin:24px 0;padding:20px 24px;border-radius:var(--r-md);background:var(--surface-1);border:1px solid var(--line)}
+.callout-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.callout-body{font-size:15px;line-height:1.6;color:var(--ink);margin:0}
+
+.callout--field{background:var(--cream-2);border:1px solid transparent;border-left:3px solid var(--teal)}
+.callout--field .callout-body{font-style:italic;font-family:var(--font-display);font-size:17px;line-height:1.55;color:var(--ink-soft)}
+
+@media (prefers-reduced-motion:no-preference){
+  .callout--field{transition:border-color var(--t-fast) var(--ease)}
+}
+
+/* ============ Learn-back (Sprint 12 — cohesion) ============
+   A thin, prose-shaped row that sits inside a tool's result region
+   to teach the concept behind the score. Distinct from the
+   tool-deep-links block at the bottom of the page (which is
+   marketing-context "why this tool exists"); learn-back is post-
+   result ("what this score means + read next").
+
+   Placement: between the result cards and the .{prefix}-cta block.
+   One short paragraph; one or two inline links. Avoid duplicating
+   the existing Save affordance — the link to glossary/article is
+   the value, the save framing already lives on .{prefix}-save. */
+
+.learn-back{margin:24px auto 0;max-width:640px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+.learn-back-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+.learn-back-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0}
+.learn-back-body a{color:var(--teal);font-weight:500;border-bottom:1px solid currentColor;text-decoration:none;transition:color var(--t-fast) var(--ease)}
+.learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
+
+/* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
+   The "Workshop next step" card at the close of every blog post.
+   Sits between .post-end-mark and the see-also block — the moment
+   of highest reader intent. Frames the most relevant tool as a
+   save-and-watch action, not a sales pitch. The Calendly inline-cta
+   blocks already in many posts stay where they are; this is
+   additive, not a replacement.
+   Authored content: data/post-end-cta.json. Stamped via
+   scripts/inject-post-end-cta.mjs. */
+
+.post-end-cta{max-width:680px;margin:48px auto 64px;padding:32px 36px;background:var(--teal-tint);border:1px solid transparent;border-radius:var(--r-md);text-align:center}
+.post-end-cta-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.25;letter-spacing:-0.005em}
+.post-end-cta-body{font-size:15px;line-height:1.55;color:var(--ink-soft);margin:0 0 22px;max-width:560px;margin-left:auto;margin-right:auto}
+.post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
+.post-end-cta .btn-primary:hover{background:var(--teal-dark)}
+
+/* ============ Workshop rationale (Sprint 14 — cohesion) ============
+   A small editorial block on /tools/, /glossary/, and a few other
+   pages that explains the Workshop to anonymous visitors. The two
+   embedded auth links ride the existing .js-nav-signin /
+   .js-nav-workshop toggle in nav.html — both ship hidden, the
+   inline auth-state script reveals exactly one based on
+   /api/auth/me. */
+
+.workshop-rationale{max-width:760px;margin:64px auto;padding:28px 32px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+.workshop-rationale-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.workshop-rationale-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.25;letter-spacing:-0.005em}
+.workshop-rationale-body{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
+.workshop-rationale-cta{font-size:14px;font-weight:500}
+.workshop-rationale-cta .js-nav-signin,.workshop-rationale-cta .js-nav-workshop{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;transition:color var(--t-fast) var(--ease)}
+.workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
+

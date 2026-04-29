@@ -49,17 +49,17 @@
   // keys here and pass `locale` from the calling tool.
   var COPY = {
     en: {
-      idleSignedIn:   'Save this result to your Workbench so it follows you across devices.',
+      idleSignedIn:   'Save this result to the Workshop so it follows you across devices.',
       idleAnonymous:  'Sign in to save this result so it follows you across devices.',
-      saveLabel:      'Save to my Workbench',
+      saveLabel:      'Save to the Workshop',
       signinLabel:    'Sign in to save',
-      savedSuccess:   '✓ Saved to your Workbench.',
+      savedSuccess:   '✓ Saved to the Workshop.',
       sessionExpired: 'Your session expired. Sign in to save this result.',
-      limitReached:   'You’ve reached the saved-items limit. Delete some from /workbench/ first.',
+      limitReached:   'You’ve reached the saved-items limit. Delete some in the Workshop first.',
       genericError:   'Could not save. Try again in a moment.',
       networkError:   'Could not reach the server. Try again in a moment.',
-      postSavePtr:    'Your saved items live at /workbench/. Open the Workshop to manage them.',
-      rehydrateNote:  'Loaded from your Workbench. Run a fresh result above to update it.',
+      postSavePtr:    'Your saved items live in the Workshop. Open it to manage them.',
+      rehydrateNote:  'Loaded from the Workshop. Run a fresh result above to update it.',
     },
     es: {
       idleSignedIn:   'Guarda este resultado en tu Taller para que te siga entre dispositivos.',

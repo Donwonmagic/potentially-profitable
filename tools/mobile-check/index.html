@@ -147,7 +147,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -276,9 +276,19 @@
       </form>
       <p class="mob-note">Powered by Google Lighthouse. Takes about thirty seconds.</p>
 
+      <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+      <div class="tool-states-slot" id="mobStates" data-state="idle" aria-live="polite"></div>
+
       <div class="mob-result" id="mobResult" aria-live="polite">
         <div class="mob-verdict" id="mobVerdict"></div>
         <div class="mob-checks" id="mobChecks"></div>
+
+        <!-- Sprint 12b (cohesion) — Learn-back row. -->
+        <aside class="learn-back" aria-label="What this score means">
+          <p class="learn-back-eyebrow">What this score means</p>
+          <p class="learn-back-body">Mobile-friendliness mostly comes down to <a href="/glossary/tap-targets/">tap-target size</a> and a few render rules — small fixes, but the ones that decide whether a thumb hits "Reserve" or hits the wrong link. The <a href="/blog/why-your-restaurant-loses-reservations-every-night/">reservation-leak post</a> walks through the specific phone-side frictions that lose bookings.</p>
+        </aside>
+
         <div class="mob-cta">
           <p>Want the full picture? The industry audits check mobile plus speed, booking, schema, and more.</p>
           <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
@@ -287,10 +297,10 @@
         </div>
 
         <div class="mob-save" id="mobSave" hidden>
-          <p class="mob-save-text" id="mobSaveText">Save this result to your Workbench so it follows you across devices.</p>
+          <p class="mob-save-text" id="mobSaveText">Save this result to the Workshop so it follows you across devices.</p>
           <button type="button" class="mob-save-btn" id="mobSaveBtn" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Save to my Workbench
+            Save to the Workshop
           </button>
           <a class="mob-save-link" id="mobSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fmobile-check%2F" hidden>Sign in to save</a>
           <span class="mob-save-msg" id="mobSaveMsg" hidden role="status"></span>
@@ -344,6 +354,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('mobForm');
@@ -352,6 +363,11 @@
   var result = document.getElementById('mobResult');
   var verdict = document.getElementById('mobVerdict');
   var checksEl = document.getElementById('mobChecks');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('mobStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
 
   function normalizeUrl(raw) {
     var u = raw.trim();
@@ -439,7 +455,7 @@
     if (authState.signedIn) {
       if (saveBtn)  saveBtn.hidden  = false;
       if (saveLink) saveLink.hidden = true;
-      if (saveText) saveText.textContent = 'Save this result to your Workbench so it follows you across devices.';
+      if (saveText) saveText.textContent = 'Save this result to the Workshop so it follows you across devices.';
     } else {
       if (saveBtn)  saveBtn.hidden  = true;
       if (saveLink) saveLink.hidden = false;
@@ -460,7 +476,7 @@
         body: JSON.stringify(body),
       }).then(function (r) {
         if (r.ok) {
-          if (saveMsg) { saveMsg.textContent = '✓ Saved to your Workbench.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
+          if (saveMsg) { saveMsg.textContent = '✓ Saved to the Workshop.'; saveMsg.classList.remove('error'); saveMsg.hidden = false; }
           saveBtn.hidden = true;
           if (saveText) saveText.textContent = 'Your saved items live at /workbench/. Open the Workshop to manage them.';
         } else if (r.status === 401) {
@@ -491,6 +507,7 @@
     btn.disabled = true;
     btn.textContent = 'Checking…';
     result.classList.remove('visible');
+    if (states) states.setLoading();
 
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=accessibility';
@@ -544,6 +561,7 @@
 
         var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
         renderResult(payload);
+        if (states) states.setSuccess();
         showSaveAffordance(payload);
 
         if (window.plausible) {
@@ -556,10 +574,15 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { messageEn: err && err.message ? err.message : 'Could not check that URL.', messageEs: err && err.message ? err.message : 'No se pudo revisar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEn);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not check that URL.', messageEs: err && err.message ? err.message : 'No se pudo revisar esa URL.', retryAfterSec: null });
+        // Sprint 6 (cohesion) — inline error card via shared module.
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEn);
+        }
       })
       .finally(function() {
         btn.disabled = false;
@@ -586,7 +609,7 @@
         if (saveBox) saveBox.hidden = false;
         if (saveBtn) saveBtn.hidden = true;
         if (saveLink) saveLink.hidden = true;
-        if (saveText) saveText.textContent = 'Loaded from your Workbench. Run a fresh check above to update it.';
+        if (saveText) saveText.textContent = 'Loaded from the Workshop. Run a fresh check above to update it.';
         lastSavePayload = p;
         try { history.replaceState(null, '', window.location.pathname); } catch (_) {}
       })

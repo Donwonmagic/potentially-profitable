@@ -15,7 +15,11 @@ import { fileURLToPath } from "node:url";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OG_PREFIX = "https://muntin.digital/brand/og/";
-const META_RE = /<meta[^>]+(?:property|name)="(og:image|twitter:image)"[^>]+content="([^"]+)"/g;
+// Match both attribute orderings: property/name-then-content (EN
+// convention) and content-then-property/name (ES convention, post-
+// translation pipeline). Captured groups: 1 = either kind+href when
+// property-first, otherwise 3+4. Caller normalizes below.
+const META_RE = /<meta[^>]+(?:(?:(?:property|name)="(og:image|twitter:image)"[^>]+content="([^"]+)")|(?:content="([^"]+)"[^>]+(?:property|name)="(og:image|twitter:image)"))/g;
 
 const SKIP_DIRS = new Set(["node_modules", ".git", "dist", ".wrangler", "_includes"]);
 
@@ -38,8 +42,10 @@ for (const file of htmlFiles) {
   META_RE.lastIndex = 0;
   let m;
   while ((m = META_RE.exec(text))) {
-    const [, prop, href] = m;
-    if (!href.startsWith(OG_PREFIX)) continue;
+    // Normalize: groups 1+2 are property-first, 3+4 are content-first.
+    const prop = m[1] || m[4];
+    const href = m[2] || m[3];
+    if (!href || !href.startsWith(OG_PREFIX)) continue;
     const rel = href.slice(OG_PREFIX.length);
     const abs = path.join(REPO, "brand", "og", rel);
     const key = `${file}\t${rel}`;

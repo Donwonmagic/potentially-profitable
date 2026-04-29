@@ -107,7 +107,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -227,12 +227,14 @@
     <button type="submit" id="tsSubmit">Detect</button>
   </form>
   <p class="ts-note">Scans the URLs and scripts loaded during a mobile page load. Takes about thirty seconds. Note: this detects technologies loaded on the initial page — scripts that load lazily or after user interaction may not appear.</p>
+  <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+  <div class="tool-states-slot" id="tsStates" data-state="idle" aria-live="polite"></div>
   <div class="ts-result" id="tsResult" aria-live="polite"></div>
   <div class="ts-save" id="tsSave" hidden>
-    <p class="ts-save-text" id="tsSaveText">Save this scan to your Workbench so it follows you across devices.</p>
+    <p class="ts-save-text" id="tsSaveText">Save this scan to the Workshop so it follows you across devices.</p>
     <button type="button" class="ts-save-btn" id="tsSaveBtn" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-      Save to my Workbench
+      Save to the Workshop
     </button>
     <a class="ts-save-link" id="tsSaveLink" href="/sign-in/?returnTo=%2Ftools%2Ftech-stack%2F" hidden>Sign in to save</a>
     <span class="ts-save-msg" id="tsSaveMsg" hidden role="status"></span>
@@ -281,10 +283,16 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states=(typeof MuntinStates!=='undefined')?MuntinStates.attach({
+    slotEl:document.getElementById('tsStates'),
+    locale:document.documentElement.lang==='es'?'es':'en',
+  }):null;
   function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
 
   // Detection patterns grouped by category
@@ -372,6 +380,8 @@
     if(groups.length>0){
       html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
     }
+    // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
+    html+='<aside class="learn-back" aria-label="What this scan tells you"><p class="learn-back-eyebrow">What this scan tells you</p><p class="learn-back-body">Your <a href="/glossary/hosting/">hosting</a> setup decides what you can and can\'t do — speed, ordering integration, schema, even how the menu renders on a slow connection. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through where each option runs out of room.</p></aside>';
     html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');
@@ -400,6 +410,7 @@
     var url=norm(input.value);if(!url){input.focus();return}
     btn.disabled=true;btn.textContent='Detecting…';
     result.classList.remove('visible');result.innerHTML='';
+    if(states)states.setLoading();
 
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance';
 
@@ -450,6 +461,7 @@
       // Render
       var payload={url:url,groups:groups,scannedAt:Date.now()};
       renderResult(payload);
+      if(states)states.setSuccess();
       if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
@@ -458,8 +470,13 @@
         ?err._classified
         :((typeof MuntinFetchError!=='undefined')
             ?MuntinFetchError.classifyFetchError(err,null)
-            :{messageEn:err&&err.message?err.message:'Could not scan that URL.',messageEs:err&&err.message?err.message:'No se pudo escanear esa URL.'});
-      alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+            :{kind:'unknown',messageEn:err&&err.message?err.message:'Could not scan that URL.',messageEs:err&&err.message?err.message:'No se pudo escanear esa URL.',retryAfterSec:null});
+      // Sprint 6 (cohesion) — inline error card via shared module.
+      if(states){
+        states.setError(classified);
+      }else{
+        alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+      }
     }).finally(function(){btn.disabled=false;btn.textContent='Detect'});
   });
 })();

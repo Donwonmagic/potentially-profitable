@@ -167,7 +167,7 @@
             <h4>Aprende</h4>
             <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
             <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->130<!-- /count --> términos en lenguaje claro</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Lee</h4>
@@ -278,9 +278,19 @@
       </form>
       <p class="mob-note">Usa Google Lighthouse. Toma unos treinta segundos.</p>
 
+      <!-- Sprint 6 (cohesión) — estados compartidos. -->
+      <div class="tool-states-slot" id="mobStates" data-state="idle" aria-live="polite"></div>
+
       <div class="mob-result" id="mobResult" aria-live="polite">
         <div class="mob-verdict" id="mobVerdict"></div>
         <div class="mob-checks" id="mobChecks"></div>
+
+        <!-- Sprint 12b (cohesión) — Fila Learn-back. -->
+        <aside class="learn-back" aria-label="Qué significa este puntaje">
+          <p class="learn-back-eyebrow">Qué significa este puntaje</p>
+          <p class="learn-back-body">La compatibilidad móvil se reduce sobre todo al <a href="/es/glossary/tap-targets/">tamaño del objetivo de toque</a> y unas pocas reglas de render — arreglos pequeños, pero los que deciden si un pulgar acierta a "Reservar" o al enlace equivocado. La <a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">guía sobre fugas de reservas</a> recorre las fricciones específicas del lado del teléfono que cuestan reservas.</p>
+        </aside>
+
         <div class="mob-cta">
           <p>¿Quieres ver el panorama completo? Los diagnósticos por rubro revisan móvil más velocidad, reservas, schema y más.</p>
           <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
@@ -346,6 +356,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('mobForm');
@@ -354,6 +365,11 @@
   var result = document.getElementById('mobResult');
   var verdict = document.getElementById('mobVerdict');
   var checksEl = document.getElementById('mobChecks');
+  // Sprint 6 (cohesión) — estados compartidos.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('mobStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
 
   function normalizeUrl(raw) {
     var u = raw.trim();
@@ -492,6 +508,7 @@
     btn.disabled = true;
     btn.textContent = 'Revisando…';
     result.classList.remove('visible');
+    if (states) states.setLoading();
 
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=accessibility';
@@ -545,6 +562,7 @@
 
         var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
         renderResult(payload);
+        if (states) states.setSuccess();
         showSaveAffordance(payload);
 
         if (window.plausible) {
@@ -557,10 +575,15 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { messageEn: err && err.message ? err.message : 'Could not check that URL.', messageEs: err && err.message ? err.message : 'No se pudo revisar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEs);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not check that URL.', messageEs: err && err.message ? err.message : 'No se pudo revisar esa URL.', retryAfterSec: null });
+        // Sprint 6 (cohesión) — tarjeta de error inline.
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEs);
+        }
       })
       .finally(function() {
         btn.disabled = false;

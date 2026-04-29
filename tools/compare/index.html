@@ -111,7 +111,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -234,12 +234,14 @@
   <button class="cmp-btn" id="cmpSubmit">Compare</button>
   <p class="cmp-note">Runs two Google PageSpeed audits in parallel. Takes about 20–30 seconds.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
+  <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+  <div class="tool-states-slot" id="cmpStates" data-state="idle" aria-live="polite"></div>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
   <div class="cmp-save" id="cmpSave" hidden>
-    <p class="cmp-save-text" id="cmpSaveText">Save this comparison to your Workbench so it follows you across devices.</p>
+    <p class="cmp-save-text" id="cmpSaveText">Save this comparison to the Workshop so it follows you across devices.</p>
     <button type="button" class="cmp-save-btn" id="cmpSaveBtn" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-      Save to my Workbench
+      Save to the Workshop
     </button>
     <a class="cmp-save-link" id="cmpSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fcompare%2F" hidden>Sign in to save</a>
     <span class="cmp-save-msg" id="cmpSaveMsg" hidden role="status"></span>
@@ -288,6 +290,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -296,6 +299,12 @@
   var url2=document.getElementById('cmpUrl2');
   var status=document.getElementById('cmpStatus');
   var result=document.getElementById('cmpResult');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states=(typeof MuntinStates!=='undefined')?MuntinStates.attach({
+    slotEl:document.getElementById('cmpStates'),
+    locale:document.documentElement.lang==='es'?'es':'en',
+    skeletonShape:['80','80','60'],
+  }):null;
 
   function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
   function short(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
@@ -380,6 +389,8 @@
     }else{
       html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Scores are equal across '+compared+' categories. Look at the individual rows to find where you can pull ahead.</p></div>';
     }
+    // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
+    html+='<aside class="learn-back" aria-label="What this comparison means"><p class="learn-back-eyebrow">What this comparison means</p><p class="learn-back-body">Both URLs are scored by <a href="/glossary/lighthouse/">Lighthouse</a>, Google\'s open-source benchmarking engine. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through what these scores actually let your restaurant do on the diner\'s phone.</p></aside>';
     html+='<div class="cmp-cta"><p>Want to go deeper? The industry-specific audits check 9+ additional items.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');
@@ -417,24 +428,28 @@
     btn.disabled=true;btn.textContent='Comparing…';
     status.hidden=false;status.textContent='Running two audits in parallel — about thirty seconds…';
     result.classList.remove('visible');result.innerHTML='';
+    if(states)states.setLoading();
 
     Promise.all([fetchScores(u1),fetchScores(u2)]).then(function(r){
       var a=r[0],b=r[1];
       var payload={url1:u1,url2:u2,a:a,b:b,comparedAt:Date.now()};
       renderResult(payload);
+      if(states)states.setSuccess();
       if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
-      // The fetchScores helper throws errors with `_url` attached so
-      // the message names which URL failed (instead of the audit-
-      // found "Could not compare" generic that hid which side broke).
+      // The fetchScores helper throws errors with `_classified` attached
+      // so we can pipe the per-URL classification into the inline error
+      // card (replaced the alert() in Sprint 6).
       var locale=document.documentElement.lang==='es'?'es':'en';
-      if(err&&err._classified){
-        alert(err.message);
+      var classified=(err&&err._classified)
+        ? err._classified
+        : ((typeof MuntinFetchError!=='undefined')
+            ? MuntinFetchError.classifyFetchError(err,null)
+            : {kind:'unknown',messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.',retryAfterSec:null});
+      if(states){
+        states.setError(classified);
       }else{
-        var classified=(typeof MuntinFetchError!=='undefined')
-          ?MuntinFetchError.classifyFetchError(err,null)
-          :{messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.'};
         alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
       }
       status.hidden=true;

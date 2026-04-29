@@ -172,7 +172,7 @@
             <h4>Aprende</h4>
             <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
             <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->116<!-- /count --> términos en lenguaje claro</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->130<!-- /count --> términos en lenguaje claro</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Lee</h4>
@@ -287,6 +287,11 @@
       </form>
       <p class="seo-note">Usa Google PageSpeed Insights. Toma unos treinta segundos.</p>
 
+      <!-- Sprint 5 (cohesión) — estados compartidos de loading + error.
+           El slot lo llena tools/_shared/states.js; los estilos viven
+           en assets/site.css bajo §Tool states. -->
+      <div class="tool-states-slot" id="seoStates" data-state="idle" aria-live="polite"></div>
+
       <div class="seo-result" id="seoResult" aria-live="polite">
         <!-- Title card -->
         <div class="seo-card" id="titleCard">
@@ -303,6 +308,15 @@
           <div class="seo-bar"><div class="fill" id="descBar" style="width:0%"></div></div>
           <ul class="checks" id="descChecks"></ul>
         </div>
+
+        <!-- Sprint 12 (cohesión) — Fila Learn-back. Enseña el concepto
+             detrás del puntaje; complementa el bloque tool-deep-links
+             del pie de página sin duplicar la afordancia de guardado.
+             Patrón documentado en docs/design-system.md §Learn-back. -->
+        <aside class="learn-back" aria-label="Qué significa este puntaje">
+          <p class="learn-back-eyebrow">Qué significa este puntaje</p>
+          <p class="learn-back-body">La <a href="/es/glossary/title-tag/">etiqueta de título</a> y la <a href="/es/glossary/meta-description/">meta descripción</a> son las dos líneas que Google decide mostrar en los resultados de búsqueda — lo único que un cliente lee antes de hacer clic. La <a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">guía de Perfil de Empresa de Google</a> recorre el resto de lo que ven.</p>
+        </aside>
 
         <div class="seo-cta">
           <p>¿Quieres ver el panorama completo? Los diagnósticos por rubro revisan SEO más velocidad, flujo de reservas, schema y más.</p>
@@ -393,12 +407,18 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+  // Sprint 5 (cohesión) — estados compartidos.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('seoStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
 
   function normalizeUrl(raw) {
     var u = raw.trim();
@@ -610,6 +630,7 @@
     btn.disabled = true;
     btn.textContent = 'Calificando…';
     result.classList.remove('visible');
+    if (states) states.setLoading();
 
     // Fetch the actual page through our Worker proxy to extract
     // the real <title> and <meta description> — Lighthouse audits
@@ -654,6 +675,7 @@
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
 
+        if (states) states.setSuccess();
         result.classList.add('visible');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -677,10 +699,16 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo calificar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEs);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo calificar esa URL.', retryAfterSec: null });
+        // Sprint 5 (cohesión) — tarjeta de error inline. Cae a alert()
+        // si el módulo no cargó (sin JS, hipo del CDN).
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEs);
+        }
       })
       .finally(function() {
         btn.disabled = false;

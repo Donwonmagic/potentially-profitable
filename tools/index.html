@@ -125,7 +125,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -443,6 +443,19 @@
   </div>
 </section>
 <!-- /tools:auto -->
+
+<!-- Sprint 14 (cohesion) — Workshop rationale, anonymous-visible.
+     The two auth links ride the .js-nav-signin / .js-nav-workshop
+     toggle in nav.html so the right CTA shows for the right state. -->
+<aside class="workshop-rationale container" aria-label="About the Workshop">
+  <p class="workshop-rationale-eyebrow">About the Workshop</p>
+  <p class="workshop-rationale-headline">Save your work. Watch it weekly.</p>
+  <p class="workshop-rationale-body">Every tool above produces a saveable result — your audit score, your menu analysis, your delivery break-even. The Workshop is where those saves live. Free, no credit card. Your numbers compound week over week so you can see when the storefront actually moves.</p>
+  <p class="workshop-rationale-cta">
+    <a class="js-nav-signin" href="/sign-in/?returnTo=%2Fworkbench%2F" hidden>Sign in to start your Workshop &rarr;</a>
+    <a class="js-nav-workshop" href="/workbench/" hidden>Open your Workshop &rarr;</a>
+  </p>
+</aside>
 
 <section class="block final">
   <div class="container">

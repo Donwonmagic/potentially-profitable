@@ -1,12 +1,23 @@
-# Voice reference files (F5-TTS voice cloning)
+# Voice reference files (F5-TTS voice cloning) + voice rubric
 
-Used by `--engine f5` in `scripts/render-post-audio.mjs`. The cloned
-voice never leaves the build machine — only the rendered MP3s ship
-to browsers.
+Two related concerns live here:
+
+- **`don-rubric.md`** — a one-page rubric for *written* voice across
+  Muntin Digital. Read this before drafting a tool hero, a glossary
+  entry, or a blog post. Distilled from Don's existing flagship
+  long-form. Sprint 9 (cohesion).
+- **`don-reference.m4a`** + **`don-reference.txt`** — a reference
+  recording for *spoken* voice cloning via F5-TTS, used by the
+  audio narration pipeline below.
+
+The audio side (below) is used by `--engine f5` in
+`scripts/render-post-audio.mjs`. The cloned voice never leaves the
+build machine — only the rendered MP3s ship to browsers.
 
 ## Files
 
 ```
+don-rubric.md         written-voice rubric (Sprint 9 — cohesion)
 don-reference.m4a     ~21 s recording of Don reading the script below
 don-reference.txt     exact transcript (so F5-TTS can align voice
                       features to phonemes — must match the audio

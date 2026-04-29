@@ -109,7 +109,7 @@
   .seo-card .checks .mark { flex: 0 0 18px; font-weight: 700; }
   .seo-card .checks .mark.pass { color: var(--status-pass); }
   .seo-card .checks .mark.fail { color: var(--rust); }
-  /* Phase 2 (Workshop) — Save to my Workbench affordance.
+  /* Phase 2 (Workshop) — Save to the Workshop affordance.
      Hidden until the result renders. Two states inside, mutually
      exclusive: a "Save" button when authenticated, a "Sign in to
      save" link when anonymous. Toggled via /api/auth/me on page
@@ -157,7 +157,7 @@
             <h4>Learn</h4>
             <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
             <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->116<!-- /count --> terms in plain English</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->130<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
@@ -290,6 +290,11 @@
       </form>
       <p class="seo-note">Powered by Google PageSpeed Insights. Takes about thirty seconds.</p>
 
+      <!-- Sprint 5 (cohesion) — shared loading + error states. The
+           slot is filled by tools/_shared/states.js; markup +
+           classes live in assets/site.css under §Tool states. -->
+      <div class="tool-states-slot" id="seoStates" data-state="idle" aria-live="polite"></div>
+
       <div class="seo-result" id="seoResult" aria-live="polite">
         <!-- Title card -->
         <div class="seo-card" id="titleCard">
@@ -307,6 +312,15 @@
           <ul class="checks" id="descChecks"></ul>
         </div>
 
+        <!-- Sprint 12 (cohesion) — Learn-back row. Teaches the concept
+             behind the score; complements the tool-deep-links block
+             at the page bottom without duplicating the Save affordance.
+             Pattern documented in docs/design-system.md §Learn-back. -->
+        <aside class="learn-back" aria-label="What this score means">
+          <p class="learn-back-eyebrow">What this score means</p>
+          <p class="learn-back-body">The <a href="/glossary/title-tag/">title tag</a> and <a href="/glossary/meta-description/">meta description</a> are the two lines Google decides to show in search results — the only thing a customer reads before clicking. The <a href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Google Business Profile playbook</a> walks through the rest of what they see.</p>
+        </aside>
+
         <div class="seo-cta">
           <p>Want the full picture? The industry audits check SEO plus speed, booking flow, schema, and more.</p>
           <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
@@ -315,10 +329,10 @@
         </div>
 
         <div class="seo-save" id="seoSave" hidden>
-          <p class="seo-save-text" id="seoSaveText">Save this result to your Workbench so it follows you across devices.</p>
+          <p class="seo-save-text" id="seoSaveText">Save this result to the Workshop so it follows you across devices.</p>
           <button type="button" class="seo-save-btn" id="seoSaveBtn" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Save to my Workbench
+            Save to the Workshop
           </button>
           <a class="seo-save-link" id="seoSaveLink" href="/sign-in/?returnTo=%2Ftools%2Fseo-grader%2F" hidden>Sign in to save</a>
           <span class="seo-save-msg" id="seoSaveMsg" hidden role="status"></span>
@@ -396,12 +410,18 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('seoForm');
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+  // Sprint 5 (cohesion) — shared loading + error states.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('seoStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
 
   function normalizeUrl(raw) {
     var u = raw.trim();
@@ -548,7 +568,7 @@
     if (authState.signedIn) {
       if (saveBtn)  saveBtn.hidden  = false;
       if (saveLink) saveLink.hidden = true;
-      if (saveText) saveText.textContent = 'Save this result to your Workbench so it follows you across devices.';
+      if (saveText) saveText.textContent = 'Save this result to the Workshop so it follows you across devices.';
     } else {
       if (saveBtn)  saveBtn.hidden  = true;
       if (saveLink) saveLink.hidden = false;
@@ -577,7 +597,7 @@
       }).then(function (r) {
         if (r.ok) {
           if (saveMsg) {
-            saveMsg.textContent = '✓ Saved to your Workbench.';
+            saveMsg.textContent = '✓ Saved to the Workshop.';
             saveMsg.classList.remove('error');
             saveMsg.hidden = false;
           }
@@ -621,6 +641,7 @@
     btn.disabled = true;
     btn.textContent = 'Grading…';
     result.classList.remove('visible');
+    if (states) states.setLoading();
 
     // Fetch the actual page through our Worker proxy to extract
     // the real <title> and <meta description> — Lighthouse audits
@@ -665,6 +686,7 @@
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
 
+        if (states) states.setSuccess();
         result.classList.add('visible');
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -691,10 +713,17 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo evaluar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEn);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not grade that URL.', messageEs: err && err.message ? err.message : 'No se pudo evaluar esa URL.', retryAfterSec: null });
+        // Sprint 5 (cohesion) — inline error card via shared module.
+        // Falls back to alert() if the module didn't load (no-JS, CDN
+        // hiccup) so the user still sees the error.
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEn);
+        }
       })
       .finally(function() {
         btn.disabled = false;
@@ -737,7 +766,7 @@
       if (saveBox) saveBox.hidden = false;
       if (saveBtn) saveBtn.hidden = true;
       if (saveLink) saveLink.hidden = true;
-      if (saveText) saveText.textContent = 'Loaded from your Workbench. Run a fresh grade above to update it.';
+      if (saveText) saveText.textContent = 'Loaded from the Workshop. Run a fresh grade above to update it.';
       lastSavePayload = p;
 
       // Clean up the URL bar so a refresh re-runs the live grade.

@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+/**
+ * Sprint 16 (Cohesion) — aggregate cohesion-check runner.
+ *
+ * Runs every check-*.mjs and the inject-* / wire-* idempotency
+ * checks in --check mode, reports a one-line status per check, and
+ * exits with a non-zero code if any check fails.
+ *
+ * Wire this into the build pipeline — one entry point, one exit
+ * code. Individual checks remain runnable on their own for fast
+ * iteration during development.
+ *
+ *   node scripts/check-all.mjs
+ *
+ * Returns 0 if everything passes; 1 otherwise. Always prints a
+ * summary at the end so a passing run is informative too.
+ */
+
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const repoRoot   = path.resolve(path.dirname(__filename), '..');
+
+// Each entry: [label, script, ...args]. Order is stable so output
+// reads top-to-bottom in the same way each run.
+const CHECKS = [
+  ['Name coherence',      'check-name-coherence.mjs',      '--check'],
+  ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
+  ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
+  ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
+  ['Tool header',         'check-tool-header.mjs',         '--check'],
+  ['OG image refs',       'check-og-images.mjs'],
+  ['OG coverage',         'check-og-coverage.mjs',         '--check'],
+  ['Analytics vocab',     'check-analytics-vocabulary.mjs','--check'],
+  ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
+  ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
+  ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
+  ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
+  ['Locale parity',       'check-locale-parity.mjs',       '--check'],
+];
+
+const results = [];
+let failed = 0;
+
+for (const [label, script, ...args] of CHECKS) {
+  const r = spawnSync(process.execPath, [path.join(repoRoot, 'scripts', script), ...args], {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    encoding: 'utf8',
+  });
+  const status = r.status === 0 ? 'PASS' : 'FAIL';
+  if (r.status !== 0) failed++;
+  // Last meaningful line of stdout (or stderr if stdout empty).
+  const lines = (r.stdout || r.stderr || '').split(/\r?\n/).filter((l) => l.trim());
+  const lastLine = lines[lines.length - 1] || '(no output)';
+  results.push({ label, script, status, summary: lastLine.slice(0, 80) });
+}
+
+console.log('Cohesion checks');
+console.log('───────────────');
+for (const r of results) {
+  console.log(`  ${r.status === 'PASS' ? '✓' : '✗'} ${r.label.padEnd(22)}  ${r.summary}`);
+}
+console.log(`───────────────`);
+console.log(`${results.length - failed} of ${results.length} passed.`);
+
+process.exit(failed > 0 ? 1 : 0);
