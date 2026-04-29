@@ -255,7 +255,7 @@
     var successEmail = document.getElementById('signinSuccessEmail');
 
     // Stamp the timestamp at page load so the form passes
-    // isTimestampSane on the server (must be < 24h old).
+    // isTimestampSane on the server (gap must be 1.5s–30min).
     if (ts) ts.value = String(Date.now());
 
     // Honor a ?returnTo= query param so we can deep-link from a
