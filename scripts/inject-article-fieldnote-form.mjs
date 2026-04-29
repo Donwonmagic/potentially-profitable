@@ -58,7 +58,20 @@ const COPY = {
   },
 };
 
-const ENABLED = process.env.FIELD_NOTES_ENABLED === 'true';
+// Resolve the flag from process.env first; fall back to parsing
+// wrangler.jsonc's vars block so local --check matches the deploy
+// state without requiring the env var be exported.
+function resolveEnabled() {
+  if (process.env.FIELD_NOTES_ENABLED === 'true') return true;
+  if (process.env.FIELD_NOTES_ENABLED === 'false') return false;
+  try {
+    const raw = fs.readFileSync(path.join(repoRoot, 'wrangler.jsonc'), 'utf8');
+    const m = raw.match(/"FIELD_NOTES_ENABLED"\s*:\s*"(true|false)"/);
+    if (m) return m[1] === 'true';
+  } catch (_) { /* default to false */ }
+  return false;
+}
+const ENABLED = resolveEnabled();
 
 function articleSlugFromPath(file) {
   // file = .../blog/<slug>/index.html or .../es/blog/<slug>/index.html
