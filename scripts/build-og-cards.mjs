@@ -949,12 +949,72 @@ function renderTool(card) {
 `;
 }
 
+/**
+ * people — Phase F.9. Per-contributor OG card for /people/<slug>/.
+ * Cream background + teal accent (matches renderGlossary palette
+ * grammar so contributor archives feel editorial alongside the
+ * glossary). Title is the display name; dek is the short
+ * "N notes published" line; eyebrow is locale-aware.
+ *
+ * Reuses Phase A primitives (gridRow, fitTitle) so layout matches
+ * other cream-grounded card kinds.
+ */
+function renderPeople(card) {
+  const bg = PALETTE.cream;
+  const fg = PALETTE.ink;
+  const accentHex = PALETTE[card.accent ?? "teal"] ?? PALETTE.teal;
+  const eyebrow = (card.eyebrow ?? "").toUpperCase();
+
+  const author = xmlEscape(card.title_1 ?? "");
+  const dek    = xmlEscape(card.dek ?? "");
+
+  const yEyebrow = gridRow("eyebrow");
+  const yAuthor  = gridRow("title");
+  const yDek     = gridRow("dek-tight");
+  const authorFit = fitTitle(card.title_1 ?? "", {
+    font: "Fraunces",
+    maxSize: 64,
+    minSize: 48,
+    maxWidth: CANVAS_W - 2 * EDGE,
+    step: 4,
+  });
+
+  const glyphSvg = card.glyph
+    ? glyph({ id: card.glyph, x: EDGE, y: yEyebrow - 26, size: 36, color: accentHex, opacity: 0.85 })
+    : "";
+  const eyebrowX = EDGE + (card.glyph ? GLYPH_GUTTER : 0);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CANVAS_W} ${CANVAS_H}" width="${CANVAS_W}" height="${CANVAS_H}">
+  <rect width="${CANVAS_W}" height="${CANVAS_H}" fill="${bg}"/>
+  ${muntinField({ onLight: true })}
+  ${categoryStrip(accentHex)}
+
+  ${glyphSvg}
+  <text x="${eyebrowX}" y="${yEyebrow}"
+        font-family="Inter, Arial, sans-serif" font-size="13"
+        font-weight="700" letter-spacing="4" fill="${accentHex}">${xmlEscape(eyebrow)}</text>
+
+  <text x="${EDGE}" y="${yAuthor}"
+        font-family="Fraunces, Georgia, serif" font-size="${authorFit.size}"
+        font-weight="500" letter-spacing="-2" fill="${fg}">${author}</text>
+
+  <text x="${EDGE}" y="${yDek}"
+        font-family="Inter, Arial, sans-serif" font-size="22"
+        font-weight="400" fill="${PALETTE.muted}">${dek}</text>
+
+  ${ornament({ color: PALETTE.muted })}
+  ${footer({ color: PALETTE.muted, ruleColor: PALETTE.rule })}
+</svg>
+`;
+}
+
 const templates = {
   page: renderPage,
   research: renderResearch,
   article: renderArticle,
   glossary: renderGlossary,
   tool: renderTool,
+  people: renderPeople,
 };
 
 // -------------------------------------------------------------
@@ -1020,13 +1080,66 @@ async function renderPng(svgPath, pngPath) {
 // main
 // -------------------------------------------------------------
 
+// Phase F.9 — derive synthetic 'people' cards from approved field
+// notes. Each (locale, slugified author) gets one card. Slug
+// matches build-people-pages.mjs slugify() so the OG card path
+// (/brand/og/people-<slug>[-es].png) matches what the contributor
+// page references.
+function deriveContributorCards() {
+  const dataPath = path.join(REPO, "data", "article-fieldnotes.json");
+  if (!fs.existsSync(dataPath)) return [];
+  let data;
+  try { data = JSON.parse(fs.readFileSync(dataPath, "utf8")); } catch { return []; }
+  const fieldnotes = data.fieldnotes || {};
+  const groups = { en: {}, es: {} };
+  function slugify(s) {
+    return String(s).toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60);
+  }
+  for (const [, perLocale] of Object.entries(fieldnotes)) {
+    for (const locale of ["en", "es"]) {
+      const arr = perLocale[locale] || [];
+      for (const note of arr) {
+        if (!note || !note.author) continue;
+        const slug = slugify(note.author);
+        if (!slug) continue;
+        if (!groups[locale][slug]) groups[locale][slug] = { author: note.author, count: 0 };
+        groups[locale][slug].count++;
+      }
+    }
+  }
+  const out = [];
+  for (const locale of ["en", "es"]) {
+    for (const [slug, info] of Object.entries(groups[locale])) {
+      const isEs = locale === "es";
+      const dekFmt = isEs
+        ? `${info.count} apunte${info.count === 1 ? "" : "s"} publicado${info.count === 1 ? "" : "s"} en Muntin Digital.`
+        : `${info.count} field note${info.count === 1 ? "" : "s"} published on Muntin Digital.`;
+      out.push({
+        slug: `people-${slug}${isEs ? "-es" : ""}`,
+        kind: "people",
+        locale,
+        accent: "teal",
+        eyebrow: isEs ? "Desde la cocina" : "From the kitchen",
+        title_1: info.author,
+        dek: dekFmt,
+      });
+    }
+  }
+  return out;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes("--dry-run");
   const only = args.find((a) => !a.startsWith("--"));
 
   const manifest = JSON.parse(fs.readFileSync(CARDS_JSON, "utf8"));
-  const cards = manifest.cards.filter((c) => !only || c.slug === only);
+  const allCards = manifest.cards.concat(deriveContributorCards());
+  const cards = allCards.filter((c) => !only || c.slug === only);
 
   let wrote = 0;
   let skipped = 0;

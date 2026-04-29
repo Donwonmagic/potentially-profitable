@@ -29,7 +29,7 @@ const SOURCE = path.join(repoRoot, 'scripts', 'build-og-cards.mjs');
 // Renderers that MUST route layout through the primitives. Add new
 // kinds here when their render* lands (Storefront Health joins in
 // Phase C.4).
-const GUARDED = ['renderGlossary'];
+const GUARDED = ['renderGlossary', 'renderPeople'];
 
 function extractFunctionBody(src, name) {
   const re = new RegExp('function\\s+' + name + '\\s*\\(', 'm');
