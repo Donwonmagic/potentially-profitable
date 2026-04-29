@@ -162,6 +162,11 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/submission/withdraw',
   '/api/admin/submissions/decide',
   '/api/admin/submissions/publish-data',
+  // Phase W.1 (The Window) — write paths.
+  '/api/window/append',
+  '/api/admin/window/reply',
+  '/api/admin/window/close',
+  '/api/admin/window/archive',
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -204,6 +209,22 @@ import {
   SUBMISSION_KEY_PREFIX,
 } from './lib/submissions.js';
 import { ARTICLE_SLUGS } from './lib/article-slugs.generated.js';
+import {
+  // Phase W.1 (The Window) — direct-line correspondence storage.
+  validateMessageBody as validateWindowMessageBody,
+  getOpenThreadForUser,
+  getThreadById,
+  listThreadMessages,
+  createThread as createWindowThread,
+  appendMessageToThread,
+  iterateAdminQueue,
+  checkAndStampThrottle as checkAndStampWindowThrottle,
+  pushPendingDon,
+  setActiveMeta as setWindowActiveMeta,
+  getActiveMeta as getWindowActiveMeta,
+  threadKey as windowThreadKey,
+} from './lib/window.js';
+import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 
 
 // ------------------------------------------------------------
@@ -279,6 +300,19 @@ const API_ROUTES = {
   '/api/admin/submissions/list':     handleAdminSubmissionsList,
   '/api/admin/submissions/decide':   handleAdminSubmissionsDecide,
   '/api/admin/submissions/publish-data': handleAdminSubmissionsPublishData,
+  // Phase W.1 (The Window) — direct-line correspondence. All gated
+  // via env.WINDOW_ENABLED — return 404 when disabled.
+  '/api/window/start':               handleWindowStart,
+  '/api/window/append':              handleWindowAppend,
+  '/api/window/thread':              handleWindowThread,
+  '/api/window/poll':                handleWindowPoll,
+  '/api/window/active':              handleWindowActive,
+  '/api/window/me-unread':           handleWindowMeUnread,
+  '/api/admin/window/list':          handleAdminWindowList,
+  '/api/admin/window/thread':        handleAdminWindowThread,
+  '/api/admin/window/reply':         handleAdminWindowReply,
+  '/api/admin/window/close':         handleAdminWindowClose,
+  '/api/admin/window/archive':       handleAdminWindowArchive,
 };
 
 
@@ -327,7 +361,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list' || pathname === '/api/window/thread' || pathname === '/api/window/poll' || pathname === '/api/window/active' || pathname === '/api/window/me-unread' || pathname === '/api/admin/window/list' || pathname === '/api/admin/window/thread') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -5226,6 +5260,271 @@ async function handleAdminSubmissionsPublishData(request, env, ctx) {
       'content-disposition': 'attachment; filename="article-fieldnotes.json"',
     },
   });
+}
+
+
+// ============================================================
+// Phase W.1 (The Window) — direct-line endpoints
+// ============================================================
+//
+// All routes gated on env.WINDOW_ENABLED. Off (or unset) → 404
+// silently, indistinguishable from a typo'd path. The visitor
+// surface at /window/ shows pause copy; the admin surface at
+// /admin/window/ shows "Direct line is paused."
+
+function _windowGate(env) {
+  return env && (env.WINDOW_ENABLED === 'true' || env.WINDOW_ENABLED === true);
+}
+
+async function handleWindowStart(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  // Idempotent: returns existing open thread if present.
+  let thread = await getOpenThreadForUser(env, auth.sub);
+  if (!thread || (thread.msgCount || 0) >= 100) {
+    try { thread = await createWindowThread(env, auth.sub); }
+    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+  }
+  return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
+}
+
+async function handleWindowAppend(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const sanitized = sanitizeWindowBody(body && body.body);
+  const validated = validateWindowMessageBody({ body: sanitized });
+  if (!validated.ok) {
+    return jsonResponse({ ok: false, ...validated }, 400);
+  }
+
+  // Throttle: 60s back-pressure + 50/day cap.
+  const t = await checkAndStampWindowThrottle(env, auth.sub);
+  if (!t.ok) {
+    return jsonResponse({ ok: false, ...t }, t.error === 'rate-limited' ? 429 : 409);
+  }
+
+  // Get or create the open thread (auto-spawn new one when capped).
+  let thread = await getOpenThreadForUser(env, auth.sub);
+  if (!thread || (thread.msgCount || 0) >= 100) {
+    try { thread = await createWindowThread(env, auth.sub); }
+    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+  }
+
+  const result = await appendMessageToThread(env, auth.sub, thread, 'user', sanitized);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+  }
+
+  // Push to Don's pending email batch (cron flushes 2-min windows).
+  await pushPendingDon(env, auth.sub, result.msg.id);
+
+  console.log(JSON.stringify({ event: 'window.append', sub: auth.sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt }));
+  return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
+}
+
+async function handleWindowThread(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const thread = await getOpenThreadForUser(env, auth.sub);
+  if (!thread) {
+    return jsonResponse({ ok: true, thread: null, messages: [] }, 200);
+  }
+  const messages = await listThreadMessages(env, thread.id, 100);
+  // Mark unread-by-user clear when the user reads.
+  if (thread.unreadByUser) {
+    thread.unreadByUser = false;
+    await env.AUTH_SESSIONS.put(windowThreadKey(auth.sub, thread.id), JSON.stringify(thread));
+  }
+  return jsonResponse({ ok: true, thread, messages }, 200);
+}
+
+async function handleWindowPoll(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const thread = await getOpenThreadForUser(env, auth.sub);
+  if (!thread) {
+    return jsonResponse({ ok: true, hasThread: false }, 200);
+  }
+  return jsonResponse({
+    ok: true,
+    hasThread: true,
+    threadId: thread.id,
+    updatedAt: thread.updatedAt,
+    msgCount: thread.msgCount,
+    unreadByUser: !!thread.unreadByUser,
+  }, 200);
+}
+
+async function handleWindowActive(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  // Public; no auth required. The breathing-dot signal.
+  const meta = await getWindowActiveMeta(env);
+  return new Response(JSON.stringify({ ok: true, lastSeen: meta && meta.lastSeen ? meta.lastSeen : null }), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'public, max-age=60',
+    },
+  });
+}
+
+async function handleWindowMeUnread(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const thread = await getOpenThreadForUser(env, auth.sub);
+  return jsonResponse({ ok: true, unread: thread ? !!thread.unreadByUser : false }, 200);
+}
+
+async function handleAdminWindowList(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  const queue = await iterateAdminQueue(env, 30);
+  return jsonResponse({ ok: true, items: queue, count: queue.length }, 200);
+}
+
+async function handleAdminWindowThread(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  const u = new URL(request.url);
+  const sub = u.searchParams.get('sub') || '';
+  const threadId = u.searchParams.get('id') || '';
+  if (!sub || !threadId) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const thread = await getThreadById(env, sub, threadId);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const messages = await listThreadMessages(env, threadId, 100);
+  return jsonResponse({ ok: true, thread, messages }, 200);
+}
+
+async function handleAdminWindowReply(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
+  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
+  if (!sub || !threadId) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const sanitized = sanitizeWindowBody(body.body);
+  const validated = validateWindowMessageBody({ body: sanitized });
+  if (!validated.ok) {
+    return jsonResponse({ ok: false, ...validated }, 400);
+  }
+  const thread = await getThreadById(env, sub, threadId);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const result = await appendMessageToThread(env, sub, thread, 'don', sanitized);
+  if (!result.ok) {
+    return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+  }
+  // Update Don's "active" signal so the breathing dot lights up.
+  await setWindowActiveMeta(env, { replyingTo: threadId });
+  console.log(JSON.stringify({ event: 'window.reply', sub, threadId, msgId: result.msg.id, ts: result.msg.createdAt }));
+  // Phase W.2 will fire an email to the user here. Stub for now.
+  return jsonResponse({ ok: true, msgId: result.msg.id, createdAt: result.msg.createdAt }, 200);
+}
+
+async function handleAdminWindowClose(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
+  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
+  const thread = await getThreadById(env, sub, threadId);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  thread.status = 'closed';
+  thread.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
+  console.log(JSON.stringify({ event: 'window.close', sub, threadId, ts: thread.updatedAt }));
+  return jsonResponse({ ok: true, status: 'closed' }, 200);
+}
+
+async function handleAdminWindowArchive(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
+  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
+  const thread = await getThreadById(env, sub, threadId);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  thread.status = 'archived';
+  thread.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
+  // Note: thread stays in admin-index buckets but the iterator
+  // could filter status='archived' if needed. For now, archived
+  // threads still appear (visually deprioritized) so Don can
+  // un-archive if needed.
+  console.log(JSON.stringify({ event: 'window.archive', sub, threadId, ts: thread.updatedAt }));
+  return jsonResponse({ ok: true, status: 'archived' }, 200);
 }
 
 

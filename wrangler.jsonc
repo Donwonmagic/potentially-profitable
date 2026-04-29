@@ -203,7 +203,14 @@
     // rollback — already-rendered approved notes in committed
     // article HTML stay (they're public content, escaped at
     // write-time).
-    "FIELD_NOTES_ENABLED": "true"
+    "FIELD_NOTES_ENABLED": "true",
+    // Phase W.7 (The Window) — feature flag. When "true" the
+    // /api/window/* + /api/admin/window/* endpoints serve real
+    // responses; when absent or "false" they return 404. The
+    // visitor surface at /window/ shows pause copy, the admin
+    // surface shows "Direct line is paused." Flip back to
+    // "false" for an emergency rollback — KV state persists.
+    "WINDOW_ENABLED": "false"
   },
 
   // ─────────────────────────────────────────────────────────────────
