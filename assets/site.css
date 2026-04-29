@@ -5003,3 +5003,24 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .tool-error-body{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0}
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
+/* ============ Editorial callouts (Sprint 10 — cohesion) ============
+   .callout--field is the "Field note from the kitchen" — a per-
+   glossary-term italic aside that adds Don's operator anecdote
+   beside the dictionary-style definition. The teal hairline-left
+   matches the citation/aside pattern; the cream-2 background sets
+   the block apart from .term-def / .term-why prose without
+   reading as a warning. Authored content lives in
+   data/glossary-fieldnotes.json, stamped via
+   scripts/inject-glossary-fieldnotes.mjs. */
+
+.callout{margin:24px 0;padding:20px 24px;border-radius:var(--r-md);background:var(--surface-1);border:1px solid var(--line)}
+.callout-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.callout-body{font-size:15px;line-height:1.6;color:var(--ink);margin:0}
+
+.callout--field{background:var(--cream-2);border:1px solid transparent;border-left:3px solid var(--teal)}
+.callout--field .callout-body{font-style:italic;font-family:var(--font-display);font-size:17px;line-height:1.55;color:var(--ink-soft)}
+
+@media (prefers-reduced-motion:no-preference){
+  .callout--field{transition:border-color var(--t-fast) var(--ease)}
+}
+

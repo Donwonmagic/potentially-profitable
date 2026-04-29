@@ -1,0 +1,27 @@
+{
+  "_doc": "Per-term 'Field note from the kitchen' content. Sprint 10 (cohesion) — distilled into prose by scripts/inject-glossary-fieldnotes.mjs which stamps an italic .callout--field block between <!-- field-note:start -->...<!-- field-note:end --> sentinels inside each term page's .term-body. Authored against scripts/voice-refs/don-rubric.md — every fieldnote should pass the seven moves + the self-test. New terms: add an entry here and re-run the inject script. EN+ES strings shipped together; if ES is missing, the EN-only version still injects on the EN page and the ES page is left untouched until Sprint 11's ES voice pass authors the counterpart.",
+
+  "_status": {
+    "pilot_set": ["core-web-vitals", "prime-cost", "gbp", "real-photos", "nap-consistency"],
+    "review_required": "All Sprint 10 fieldnotes are drafted by Claude against the rubric and require review before going public. The inject script ships them under noindex if needed; or replace any draft body with Don's authored version and re-run.",
+    "es_status": "Sprint 11 (ES voice) authors the ES counterparts. Until then this file ships EN-only fieldnotes. ES glossary pages remain untouched."
+  },
+
+  "fieldnotes": {
+    "core-web-vitals": {
+      "en": "The Lighthouse score is one number. Your reservation funnel is six. I've watched a site with a 92 PSI score lose more bookings than a 67 — because the 92 site loaded fast and then stuck the reservation widget below three full screens of carousel. Speed buys you the right to ask for the booking. It doesn't make the asking land. Run the audit, fix what's red — but don't stop reading at the score."
+    },
+    "prime-cost": {
+      "en": "Prime cost is the line that quietly decides whether you're running a restaurant or a busy hobby. The industry rule of thumb is 60% — food + beverage + labor under 60% of sales, monthly. I've seen operators staring at a 67% number convince themselves it's a kitchen problem. Half the time it's a menu problem (your two cheapest dishes are also your two most-ordered) and half the time it's labor (one extra sous on a Tuesday no one asked for). Run both audits. Don't pick one."
+    },
+    "gbp": {
+      "en": "The two settings your Google Business Profile gets wrong every December: hours and category. Holiday hours nobody updated; \"Restaurant\" instead of \"Italian Restaurant\" because that's what the verifier picked four years ago. Both are five-minute fixes. Both move bookings before the homepage does. The grader catches them; the operator never does. If you're going to fix one thing on your storefront this month, fix the listing — the website is the second window, not the first."
+    },
+    "real-photos": {
+      "en": "A diner can tell within a second whether the photo on your menu page is a stock dish or your dish. Stock reads as \"this could be anywhere\" — and the booking goes to the place that read as \"this is here.\" One rule I keep with operators: if the photo isn't of food you've actually plated, it doesn't go on the menu page. Schedule one shoot, get a year of usable shots, retire every stock image the same week. Don't half-do it."
+    },
+    "nap-consistency": {
+      "en": "Your Name-Address-Phone is in eight places: Google, Yelp, Apple Maps, your website, your reservation widget, your menu PDF, your Instagram bio, the printed flyer at the front. Move once, and you've got eight inconsistencies until you remember to update each. The damage isn't visual — it's that Google quietly stops trusting which version is real. One operator I work with lost a phone-number digit on Yelp for six months and watched Friday booking calls slide about 11%. Run an audit twice a year."
+    }
+  }
+}
