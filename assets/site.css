@@ -5058,3 +5058,19 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary{background:var(--teal);color:var(--cream)}
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
+/* ============ Workshop rationale (Sprint 14 — cohesion) ============
+   A small editorial block on /tools/, /glossary/, and a few other
+   pages that explains the Workshop to anonymous visitors. The two
+   embedded auth links ride the existing .js-nav-signin /
+   .js-nav-workshop toggle in nav.html — both ship hidden, the
+   inline auth-state script reveals exactly one based on
+   /api/auth/me. */
+
+.workshop-rationale{max-width:760px;margin:64px auto;padding:28px 32px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+.workshop-rationale-eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.workshop-rationale-headline{font-family:var(--font-display);font-size:clamp(22px,2.4vw,26px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.25;letter-spacing:-0.005em}
+.workshop-rationale-body{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
+.workshop-rationale-cta{font-size:14px;font-weight:500}
+.workshop-rationale-cta .js-nav-signin,.workshop-rationale-cta .js-nav-workshop{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid currentColor;transition:color var(--t-fast) var(--ease)}
+.workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
+
