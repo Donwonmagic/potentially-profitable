@@ -167,6 +167,78 @@ Components: `.article-body`, `.cite`, `.share-btn`, `.listen-card`,
 `.breadcrumb`. New articles must not introduce per-page CSS
 beyond what's already in `site.css`.
 
+## OG cards (Sprint 8 — locked)
+
+Every shared link should look like it came from one publication.
+The OG card system is spec-driven: `brand/og/cards.json` is the
+manifest, `scripts/build-og-cards.mjs` renders SVGs from four
+kind-templates, `scripts/render-og-pngs.py` rasterises them at 2×.
+
+**The four kinds** — every card belongs to exactly one:
+
+| `kind` | Used for | Background | Accent rule |
+|---|---|---|---|
+| `page`     | Catalog / hub pages (homepage, /tools/, /learn/, /system/, /about/, /work/, glossary index, topic pages) | Cream `#FAF7F2` | Per-page choice (teal/rust/gold/ink) |
+| `article`  | Blog posts (`/blog/*`) | Cream `#FAF7F2` | Topic accent (typically teal or rust) |
+| `research` | Research notes (`/learn/research/*`) | Cream `#FAF7F2` | Rust |
+| `tool`     | Tool pages (`/tools/*`) | Teal `#1F4E5B` (dark) | Gold |
+
+**Shared chrome on every kind**:
+
+- 1200×630 viewBox, rendered at 2× (2400×1260 PNG)
+- Subtle muntin-pattern background field (3–5% opacity)
+- 12px-wide left accent rule (full-height, with a fade past the
+  midpoint)
+- Subject-cue glyph in the upper-left (single SVG, brand-styled)
+- Eyebrow line in tracked Inter 700 (uppercase, 13px, accent color)
+- Three-line headline in Fraunces — typically `title_1` / italic
+  `title_italic` / `title_2`
+- Inter 20px dek (1–2 lines)
+- "muntin.digital" wordmark in the lower-right corner
+
+**One-card-per-X coverage rule**:
+
+- Every blog post: its own per-post card (no fallback to blog.png)
+- Every tool page: its own per-tool card (no fallback to tool.png)
+- Every research note: its own card
+- Every topic page: a topic-`{slug}`.png card
+- Catalog / hub pages: their own card
+- **Glossary terms (exception)**: all 130 EN + 131 ES term entries
+  share the single `glossary.png` / `glossary-es.png` card. The
+  brand-recognition payoff (every shared glossary link previews as
+  the canonical Glossary card) outweighs the lift of authoring 261
+  per-term cards. If per-term differentiation becomes a priority,
+  treat it as its own sprint with the necessary content authoring.
+- All EN cards have an ES counterpart with the `-es` slug suffix.
+
+**Adding a new card**:
+
+1. Add an entry to `brand/og/cards.json` following the schema in
+   the file header (`slug` + `kind` + `locale` + `accent` + `glyph` +
+   `eyebrow` + `title_1` + `title_italic` + `title_2` + `dek` +
+   optional `focus` module).
+2. Pick the `kind` from the table above. Don't invent a new one —
+   if no kind fits, the page probably belongs in `page`.
+3. Pick the `accent` from the per-accent rule documented in the
+   manifest's `_comment` (speed/mobile=teal, conversions=rust,
+   margin/operations=gold, etc.).
+4. Run `node scripts/build-og-cards.mjs <slug>` to render one card
+   for review, or `node scripts/build-og-cards.mjs` to rebuild all.
+5. The HTML page's `og:image` and `twitter:image` meta tags must
+   point at `/brand/og/<slug>.png` (PNG, not SVG). The card's
+   1200×630 dimensions are declared in the meta tags — never
+   override them.
+
+**Two CI guards keep this honest**:
+
+- `scripts/check-og-images.mjs` — fails if any `og:image` /
+  `twitter:image` reference points at a file that doesn't exist
+  in `brand/og/`. Catches retired slugs and forgotten manifest
+  entries before they ship.
+- `scripts/check-og-coverage.mjs` (Sprint 8) — fails if a blog
+  post / tool / research note / topic falls back to a generic
+  card instead of having its own. Glossary terms are exempt.
+
 ## Drift guard
 
 `scripts/check-css-drift.mjs` runs in CI and fails the build if
