@@ -498,6 +498,28 @@ export default {
       console.warn('[cron] scheduled() invoked but AUTH_SESSIONS missing; skipping');
       return;
     }
+
+    // Bug B3.4 (proactive audit) — single-flight tick lock. If a
+    // tick is still running when the next fires (slow KV reads,
+    // upstream timeouts), the second tick races against the first
+    // for the same watches. Defensive only: at today's PER_TICK_BUDGET
+    // (200) and BATCH_SIZE (5) the run finishes well inside the
+    // 30-second cron-worker budget. The lock TTL is 60s — KV's
+    // minimum — so a single missed tick re-acquires on the next.
+    const TICK_LOCK_KEY = 'cron:tick:lock';
+    try {
+      const held = await env.AUTH_SESSIONS.get(TICK_LOCK_KEY);
+      if (held) {
+        console.warn('[cron] tick lock held; skipping this tick');
+        return;
+      }
+      await env.AUTH_SESSIONS.put(TICK_LOCK_KEY, String(Date.now()), { expirationTtl: 60 });
+    } catch (err) {
+      // KV failure during lock acquire shouldn't block the tick
+      // entirely — let it run; the budget caps still apply.
+      console.warn('[cron] tick lock acquire failed; proceeding without lock', err && err.message);
+    }
+
     const t0 = Date.now();
     // Per-tick budget: bail at ~200 watches so a runaway namespace
     // can't blow the Cron Worker's 30s execution budget. At today's
@@ -673,6 +695,14 @@ export default {
 // logic can be unit-tested without needing an HTMLRewriter instance.
 export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
   const score = (typeof snapshot.score === 'number') ? Math.round(snapshot.score) : null;
+  // Bug B3.5 (proactive audit) — host extraction. The URL constructor
+  // rejects any hostname with characters that could break out of an
+  // HTML attribute (quotes, angle brackets, etc.), and HTMLRewriter's
+  // setAttribute() auto-escapes the value when written. The catch
+  // branch's String().slice() is the only path that can carry a raw
+  // string with attribute-breaking characters; if you ever switch
+  // from setAttribute() to template-string injection downstream,
+  // this fallback needs an explicit attr-escape pass.
   const host = (function() {
     try { return new URL(snapshot.auditedUrl).host.replace(/^www\./i, ''); }
     catch (_) { return String(snapshot.auditedUrl || '').slice(0, 80); }
