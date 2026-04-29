@@ -490,7 +490,8 @@
 
     </article>
 
-    <!-- post-end-cta:start -->
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
     <aside class="post-end-cta" aria-label="Workshop next step">
       <p class="post-end-cta-headline">Audit what you've got.</p>
       <p class="post-end-cta-body">The Restaurant Website Audit checks every item this post says belongs on your site — about thirty seconds, no signup. Save the audit to the Workshop and you can pull the same checklist on demand the next time someone asks "is the site doing its job?"</p>
@@ -519,6 +520,33 @@
       </a>
     </aside>
     <!-- LIBRARY:see-also:end -->
+      <!-- field-notes-submit:start -->
+            <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
+                    data-article-slug="what-should-be-on-a-restaurant-website" data-locale="en" data-fnenabled="true">
+              <p class="field-notes-submit__eyebrow">Tell us</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Have you tried this in your kitchen?</h2>
+              <p class="field-notes-submit__subhead">100–400 words, your name on it, Don reads every one.</p>
+              <p class="field-notes-submit__signin js-field-notes-signin" hidden>
+                <a href="/sign-in/?return=%2Fblog%2Fwhat-should-be-on-a-restaurant-website%2F%23field-note-form">Sign in to share your experience →</a>
+              </p>
+              <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Your name</span>
+                  <input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="How you want to be credited" required>
+                </label>
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Your note</span>
+                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="What you tried, what happened, what you learned. Plain text — no links." required></textarea>
+                  <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
+                </label>
+                <input type="hidden" name="articleSlug" value="what-should-be-on-a-restaurant-website">
+                <input type="hidden" name="locale" value="en">
+                <button type="submit" class="field-notes-form__submit btn btn-primary">Send to Don</button>
+                <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
+              </form>
+              <script src="/assets/js/article-fieldnotes.js?v=20260429-batch3" defer></script>
+            </section>
+            <!-- field-notes-submit:end -->
   </div>
 </section>
 

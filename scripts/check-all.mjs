@@ -43,6 +43,12 @@ const CHECKS = [
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
   ['Kind registry',       'check-kind-registry.mjs',       '--check'],
   ['Intent param targets','check-intent-param-targets.mjs','--check'],
+  ['Article fieldnotes (idem)','inject-article-fieldnotes.mjs','--check'],
+  ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
+  ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
+  ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],
+  ['Contributor pages (idem)','build-people-pages.mjs','--check'],
+  ['Homepage field-notes rail (idem)','inject-homepage-fieldnotes-rail.mjs','--check'],
   ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
 ];

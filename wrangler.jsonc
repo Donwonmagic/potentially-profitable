@@ -143,7 +143,7 @@
     //                             outputs dist/pagefind/ which site.js
     //                             lazy-loads on first open of the
     //                             search modal. Config at pagefind.yml.
-    "command": "node scripts/seed-glossary-og.mjs && node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-library-recent.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/wire-glossary-topics.mjs && node scripts/wire-glossary-knit.mjs && node scripts/inject-glossary-fieldnotes.mjs && node scripts/inject-glossary-og.mjs && node scripts/inject-post-end-cta.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-all.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
+    "command": "node scripts/seed-glossary-og.mjs && node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-library-recent.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/wire-glossary-topics.mjs && node scripts/wire-glossary-knit.mjs && node scripts/inject-glossary-fieldnotes.mjs && node scripts/sync-approved-fieldnotes.mjs && node scripts/inject-article-fieldnotes.mjs && node scripts/inject-article-fieldnote-form.mjs && node scripts/build-people-pages.mjs && node scripts/inject-homepage-fieldnotes-rail.mjs && node scripts/inject-glossary-og.mjs && node scripts/inject-post-end-cta.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-all.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",
@@ -193,7 +193,17 @@
     // surface is invisible. Flip back to "false" for an emergency
     // rollback — existing property:<sub>:<id> KV entries persist
     // and resume working when the flag flips back.
-    "STOREFRONT_HEALTH_ENABLED": "true"
+    "STOREFRONT_HEALTH_ENABLED": "true",
+    // Phase F.6 (Field Notes) — feature flag. When "true" the
+    // /api/submission/* + /api/admin/submissions/* endpoints serve
+    // real responses; when absent or "false" they return 404. The
+    // article submission form also reads this at build time to
+    // render the live form vs. the "Field notes are paused this
+    // season." copy. Flip back to "false" for an emergency
+    // rollback — already-rendered approved notes in committed
+    // article HTML stay (they're public content, escaped at
+    // write-time).
+    "FIELD_NOTES_ENABLED": "true"
   },
 
   // ─────────────────────────────────────────────────────────────────

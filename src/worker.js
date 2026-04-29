@@ -155,6 +155,13 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   '/api/workbench/property/delete',
   '/api/workbench/property/attach',
   '/api/workbench/property/detach',
+  // Phase F.3 (Field Notes) — write paths. Each create triggers an
+  // email to NOTIFY_EMAIL; each decide triggers an email to the
+  // contributor on approve. Form-tier (10/IP/hour) caps abuse.
+  '/api/submission/create',
+  '/api/submission/withdraw',
+  '/api/admin/submissions/decide',
+  '/api/admin/submissions/publish-data',
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -173,7 +180,30 @@ import {
   magicLinkEmail,
   accountDeleteEmail,
   watchDiffEmail,
+  // Phase F.3 (Field Notes) — submission notification + approval emails.
+  submissionNotificationEmail,
+  submissionApprovedEmail,
 } from './lib/templates.js';
+import {
+  // Phase F.3 (Field Notes) — server-side submission storage + validation.
+  validateSubmissionBody,
+  mintSubmissionId,
+  submissionKey,
+  approvedFieldnoteKey,
+  decisionKey,
+  listSubmissionsForUser,
+  countSubmissionsForArticle,
+  getSubmission,
+  iterateAllSubmissions,
+  iterateAllApprovedFieldnotes,
+  ipHash as submissionIpHash,
+  MAX_SUBMISSIONS_PER_USER,
+  MAX_SUBMISSIONS_PER_USER_PER_ARTICLE,
+  REJECTED_TTL_SEC,
+  STALL_AGE_MS,
+  SUBMISSION_KEY_PREFIX,
+} from './lib/submissions.js';
+import { ARTICLE_SLUGS } from './lib/article-slugs.generated.js';
 
 
 // ------------------------------------------------------------
@@ -240,6 +270,15 @@ const API_ROUTES = {
   '/api/workbench/property/attach':  handleWorkbenchPropertyAttach,
   '/api/workbench/property/detach':  handleWorkbenchPropertyDetach,
   '/api/workbench/property/rollup':  handleWorkbenchPropertyRollup,
+  // Phase F.3 (Field Notes) — submission lifecycle. All flag-gated
+  // via env.FIELD_NOTES_ENABLED — return 404 when disabled so the
+  // surface is invisible until F.6 flips the flag.
+  '/api/submission/create':          handleSubmissionCreate,
+  '/api/submission/list-mine':       handleSubmissionListMine,
+  '/api/submission/withdraw':        handleSubmissionWithdraw,
+  '/api/admin/submissions/list':     handleAdminSubmissionsList,
+  '/api/admin/submissions/decide':   handleAdminSubmissionsDecide,
+  '/api/admin/submissions/publish-data': handleAdminSubmissionsPublishData,
 };
 
 
@@ -288,7 +327,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -725,6 +764,47 @@ export default {
       }
     }
 
+    // Phase F.3 (Field Notes) — stale sweep + orphan check.
+    // Cheap (KV reads only). Marks pending submissions older than
+    // STALL_AGE_MS (60d) as 'stalled' so the admin queue can filter
+    // them out. Logs orphans (approved fieldnotes whose articleSlug
+    // is no longer in the build-time allowlist) without auto-deleting
+    // — Don's call.
+    let submissionsStalled = 0;
+    let submissionOrphans = 0;
+    if (_fieldNotesGate(env)) {
+      const STALE_BUDGET = 50;
+      const now = Date.now();
+      try {
+        let scanned = 0;
+        for await (const { sub, submission } of iterateAllSubmissions(env)) {
+          if (scanned >= STALE_BUDGET) break;
+          scanned++;
+          if (submission.status !== 'pending') continue;
+          const age = now - (submission.createdAt || now);
+          if (age < STALL_AGE_MS) continue;
+          submission.status = 'stalled';
+          submission.decidedAt = now;
+          await env.AUTH_SESSIONS.put(submissionKey(sub, submission.id), JSON.stringify(submission));
+          submissionsStalled++;
+          console.log(JSON.stringify({ event: 'submission.stalled', sub, submissionId: submission.id, ts: now }));
+        }
+      } catch (err) {
+        console.warn('[cron] submission stale sweep failed', err && err.message);
+      }
+      try {
+        for await (const row of iterateAllApprovedFieldnotes(env)) {
+          if (!row || !row.articleSlug) continue;
+          if (!_ARTICLE_SLUGS_SET.has(row.articleSlug)) {
+            submissionOrphans++;
+            console.warn('[cron] submission.orphan-slug', { articleSlug: row.articleSlug, id: row.id });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] approved-fieldnote orphan check failed', err && err.message);
+      }
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -734,6 +814,8 @@ export default {
       notified,
       errors,
       propertiesProcessed,
+      submissionsStalled,
+      submissionOrphans,
       ms: Date.now() - t0,
     }));
   },
@@ -4804,6 +4886,346 @@ async function handleWorkbenchPropertyRollup(request, env, ctx) {
     return jsonResponse({ ok: false, error: result.error }, result.error === 'property-not-found' ? 404 : 500);
   }
   return jsonResponse({ ok: true, rollup: result.rollup }, 200);
+}
+
+
+// ============================================================
+// Phase F.3 (Field Notes) — submission endpoints + admin gate
+// ============================================================
+//
+// All routes are gated on env.FIELD_NOTES_ENABLED. When the flag is
+// off (or unset), every endpoint returns 404 — indistinguishable
+// from a typo'd path, so the surface stays invisible until F.6
+// flips the flag.
+
+function _fieldNotesGate(env) {
+  return env && (env.FIELD_NOTES_ENABLED === 'true' || env.FIELD_NOTES_ENABLED === true);
+}
+
+async function _requireAdminSession(request, env) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth;
+  const want = String(env.NOTIFY_EMAIL || '').toLowerCase();
+  const have = String(auth.email || '').toLowerCase();
+  if (!want || want !== have) {
+    return { error: jsonResponse({ ok: false, error: 'forbidden' }, 403) };
+  }
+  return auth;
+}
+
+const _ARTICLE_SLUGS_SET = new Set(ARTICLE_SLUGS);
+
+async function handleSubmissionCreate(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  const validated = validateSubmissionBody(body, _ARTICLE_SLUGS_SET);
+  if (!validated.ok) {
+    const status = validated.error === 'unknown-article' ? 400
+                 : validated.error === 'invalid-locale' ? 400
+                 : validated.error === 'word-count-out-of-range' ? 400
+                 : 400;
+    return jsonResponse({ ok: false, ...validated }, status);
+  }
+  const item = validated.item;
+
+  // Per-user lifetime cap (counts pending + approved together).
+  const existing = await listSubmissionsForUser(env, auth.sub);
+  const active = existing.filter((it) => it.status === 'pending' || it.status === 'approved');
+  if (active.length >= MAX_SUBMISSIONS_PER_USER) {
+    return jsonResponse({ ok: false, error: 'limit-reached', scope: 'user', max: MAX_SUBMISSIONS_PER_USER }, 409);
+  }
+  // Per-user, per-article cap.
+  const perArticle = await countSubmissionsForArticle(env, auth.sub, item.articleSlug);
+  if (perArticle >= MAX_SUBMISSIONS_PER_USER_PER_ARTICLE) {
+    return jsonResponse({ ok: false, error: 'limit-reached', scope: 'article', max: MAX_SUBMISSIONS_PER_USER_PER_ARTICLE }, 409);
+  }
+
+  // Mint a unique id (3 attempts to dodge the rare collision).
+  let id = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintSubmissionId();
+    const probe = await env.AUTH_SESSIONS.get(submissionKey(auth.sub, candidate));
+    if (!probe) { id = candidate; break; }
+  }
+  if (!id) return jsonResponse({ ok: false, error: 'mint-collision' }, 500);
+
+  const ip = request.headers.get('cf-connecting-ip') || '';
+  const ipHashHex = await submissionIpHash(ip, env.MAGIC_LINK_BASE_URL || 'muntin');
+
+  const now = Date.now();
+  const row = {
+    id,
+    kind: 'submission',
+    status: 'pending',
+    articleSlug: item.articleSlug,
+    locale: item.locale,
+    body: item.body,
+    authorDisplayName: item.authorDisplayName,
+    authorEmail: auth.email,
+    ipHash: ipHashHex,
+    createdAt: now,
+  };
+  await env.AUTH_SESSIONS.put(submissionKey(auth.sub, id), JSON.stringify(row));
+
+  // Best-effort: notify Don. On failure, the submission still exists;
+  // the admin queue will surface it on next visit.
+  let emailDelivered = true;
+  try {
+    if (env.RESEND_API_KEY && env.NOTIFY_EMAIL) {
+      const articleTitle = item.articleSlug; // F.4 will look up the title from page metadata
+      const adminBase = item.locale === 'es'
+        ? 'https://muntin.digital/es/admin/submissions/'
+        : 'https://muntin.digital/admin/submissions/';
+      const tmpl = submissionNotificationEmail({
+        locale: item.locale,
+        author: item.authorDisplayName,
+        authorEmail: auth.email,
+        articleTitle,
+        articleSlug: item.articleSlug,
+        body: item.body,
+        adminUrl: adminBase,
+      });
+      await sendEmail({
+        from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+        to: env.NOTIFY_EMAIL,
+        subject: tmpl.subject,
+        html: tmpl.html,
+        text: tmpl.text,
+      }, env.RESEND_API_KEY);
+    }
+  } catch (err) {
+    emailDelivered = false;
+    console.warn('[submission] notify email failed', { id, sub: auth.sub, err: err && err.message });
+  }
+
+  console.log(JSON.stringify({ event: 'submission.created', sub: auth.sub, submissionId: id, articleSlug: item.articleSlug, locale: item.locale, ts: now }));
+  return jsonResponse({ ok: true, id, status: 'pending', emailDelivered }, 200);
+}
+
+async function handleSubmissionListMine(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const items = (await listSubmissionsForUser(env, auth.sub)).map((it) => ({
+    id: it.id,
+    articleSlug: it.articleSlug,
+    locale: it.locale,
+    status: it.status,
+    createdAt: it.createdAt,
+    decidedAt: it.decidedAt || null,
+  }));
+  return jsonResponse({ ok: true, items, max: MAX_SUBMISSIONS_PER_USER }, 200);
+}
+
+async function handleSubmissionWithdraw(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const id = typeof body.id === 'string' ? body.id.trim() : '';
+  const row = await getSubmission(env, auth.sub, id);
+  if (!row) return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  if (row.status !== 'pending') {
+    return jsonResponse({ ok: false, error: 'already-decided', status: row.status }, 409);
+  }
+  row.status = 'withdrawn';
+  row.decidedAt = Date.now();
+  await env.AUTH_SESSIONS.put(submissionKey(auth.sub, id), JSON.stringify(row), { expirationTtl: REJECTED_TTL_SEC });
+  console.log(JSON.stringify({ event: 'submission.withdrawn', sub: auth.sub, submissionId: id, ts: row.decidedAt }));
+  return jsonResponse({ ok: true, status: 'withdrawn' }, 200);
+}
+
+async function handleAdminSubmissionsList(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  const items = [];
+  for await (const { sub, submission } of iterateAllSubmissions(env)) {
+    if (submission.status !== 'pending') continue;
+    items.push({
+      id: submission.id,
+      sub,
+      articleSlug: submission.articleSlug,
+      locale: submission.locale,
+      authorDisplayName: submission.authorDisplayName,
+      authorEmail: submission.authorEmail,
+      body: submission.body,
+      createdAt: submission.createdAt,
+    });
+  }
+  items.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  return jsonResponse({ ok: true, items, count: items.length }, 200);
+}
+
+async function handleAdminSubmissionsDecide(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const submissionId = typeof body.submissionId === 'string' ? body.submissionId.trim() : '';
+  const sub          = typeof body.sub === 'string' ? body.sub.trim() : '';
+  const decision     = body.decision === 'approve' ? 'approve' : (body.decision === 'reject' ? 'reject' : null);
+  const reviewerNote = typeof body.reviewerNote === 'string' ? body.reviewerNote.trim().slice(0, 500) : '';
+  const donsResponse = typeof body.donsResponse === 'string' ? body.donsResponse.trim().slice(0, 800) : '';
+  if (!submissionId || !sub || !decision) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // (a) idempotency: check decision: row first.
+  const existing = await env.AUTH_SESSIONS.get(decisionKey(submissionId));
+  if (existing) {
+    let prev;
+    try { prev = JSON.parse(existing); } catch (_) { prev = null; }
+    if (prev && prev.decision === decision) {
+      return jsonResponse({ ok: true, idempotent: true }, 200);
+    }
+    return jsonResponse({ ok: false, error: 'already-decided', priorDecision: prev && prev.decision }, 409);
+  }
+
+  const row = await getSubmission(env, sub, submissionId);
+  if (!row) return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  if (row.status !== 'pending') {
+    return jsonResponse({ ok: false, error: 'already-decided', status: row.status }, 409);
+  }
+
+  const now = Date.now();
+  // (b) write decision: row (audit trail + idempotency key).
+  const decisionPayload = {
+    decision,
+    reviewerNote,
+    donsResponse: decision === 'approve' && donsResponse ? donsResponse : '',
+    decidedAt: now,
+    reviewerEmail: auth.email,
+    submissionId,
+    sub,
+    articleSlug: row.articleSlug,
+    locale: row.locale,
+  };
+  await env.AUTH_SESSIONS.put(decisionKey(submissionId), JSON.stringify(decisionPayload));
+
+  // (c) update submission row.
+  row.status = decision === 'approve' ? 'approved' : 'rejected';
+  row.decidedAt = now;
+  if (decision === 'approve' && donsResponse) row.donsResponse = donsResponse;
+  if (decision === 'reject' && reviewerNote) row.reviewerNote = reviewerNote;
+  const subPutOpts = decision === 'reject' ? { expirationTtl: REJECTED_TTL_SEC } : undefined;
+  await env.AUTH_SESSIONS.put(submissionKey(sub, submissionId), JSON.stringify(row), subPutOpts);
+
+  // (d) on approve: write the public projection.
+  if (decision === 'approve') {
+    const publicRow = {
+      id: submissionId,
+      articleSlug: row.articleSlug,
+      locale: row.locale,
+      author: row.authorDisplayName,
+      body: row.body,
+      donsResponse: donsResponse || '',
+      approvedAt: now,
+    };
+    await env.AUTH_SESSIONS.put(approvedFieldnoteKey(row.articleSlug, submissionId), JSON.stringify(publicRow));
+
+    // (e) email the contributor (best-effort).
+    try {
+      if (env.RESEND_API_KEY && row.authorEmail) {
+        const articleUrl = (row.locale === 'es' ? 'https://muntin.digital/es/blog/' : 'https://muntin.digital/blog/') + row.articleSlug + '/';
+        const tmpl = submissionApprovedEmail({
+          locale: row.locale,
+          articleTitle: row.articleSlug,
+          articleUrl,
+        });
+        await sendEmail({
+          from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+          to: row.authorEmail,
+          subject: tmpl.subject,
+          html: tmpl.html,
+          text: tmpl.text,
+        }, env.RESEND_API_KEY);
+      }
+    } catch (err) {
+      console.warn('[submission] approval email failed', { submissionId, err: err && err.message });
+    }
+  }
+
+  console.log(JSON.stringify({ event: 'submission.' + (decision === 'approve' ? 'approved' : 'rejected'), sub, submissionId, articleSlug: row.articleSlug, locale: row.locale, ts: now }));
+  return jsonResponse({ ok: true, decision, decidedAt: now }, 200);
+}
+
+async function handleAdminSubmissionsPublishData(request, env, ctx) {
+  if (!_fieldNotesGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+
+  // Build the canonical data/article-fieldnotes.json shape from KV.
+  const fieldnotes = {};
+  for await (const row of iterateAllApprovedFieldnotes(env)) {
+    if (!row || !row.articleSlug || !row.locale) continue;
+    if (!fieldnotes[row.articleSlug]) fieldnotes[row.articleSlug] = { en: [], es: [] };
+    const arr = fieldnotes[row.articleSlug][row.locale];
+    if (!arr) continue;
+    const entry = {
+      author: row.author,
+      body: row.body,
+      approvedAt: row.approvedAt,
+    };
+    if (row.donsResponse) entry.donsResponse = row.donsResponse;
+    arr.push(entry);
+  }
+  // Sort each locale array by approvedAt asc (oldest first; latest at
+  // the bottom of the rendered stack so a returning author sees their
+  // newest note last).
+  for (const slug of Object.keys(fieldnotes)) {
+    for (const loc of ['en', 'es']) {
+      fieldnotes[slug][loc].sort((a, b) => (a.approvedAt || 0) - (b.approvedAt || 0));
+      if (!fieldnotes[slug][loc].length) delete fieldnotes[slug][loc];
+    }
+    if (!Object.keys(fieldnotes[slug]).length) delete fieldnotes[slug];
+  }
+
+  const payload = {
+    _doc: 'AUTO-GENERATED via /api/admin/submissions/publish-data. Source of truth: approved-fieldnote: KV rows. Commit this file to git to publish a batch.',
+    fieldnotes,
+  };
+  return new Response(JSON.stringify(payload, null, 2), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'content-disposition': 'attachment; filename="article-fieldnotes.json"',
+    },
+  });
 }
 
 

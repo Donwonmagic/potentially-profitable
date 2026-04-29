@@ -1,0 +1,4 @@
+{
+  "_doc": "Phase F.1 (Field Notes) — single source of truth for approved reader-submitted field notes per blog article. Schema: fieldnotes.<articleSlug>.<locale: 'en'|'es'>[].{author,body,donsResponse?,approvedAt}. Body must be already-escaped plaintext (validation-time at /api/admin/submissions/decide). scripts/inject-article-fieldnotes.mjs reads this and stamps blog/<slug>/index.html (and ES counterpart) between <!-- field-notes:start --> sentinels. To take a note down: edit this file, remove the entry, commit + redeploy.",
+  "fieldnotes": {}
+}

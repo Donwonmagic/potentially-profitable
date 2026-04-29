@@ -307,7 +307,8 @@
       compare:        { label: 'Compare',        url: '/tools/compare/',           watchable: false },
       'tech-stack':   { label: 'Tech stack',     url: '/tools/tech-stack/',        watchable: false },
       'search-ideas': { label: 'Search ideas',   url: '/tools/search-ideas/',      watchable: false },
-      'storefront-health': { label: 'Storefront Health', url: '/tools/storefront-health/', watchable: false }
+      'storefront-health': { label: 'Storefront Health', url: '/tools/storefront-health/', watchable: false },
+      submission:     { label: 'Field Note',     url: '/workbench/',               watchable: false }
     };
 
     // Back-compat aliases for the rest of the file. Future patches
@@ -479,6 +480,21 @@
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
         }
+        // Phase F.4 (Field Notes) — submission rows render with a
+        // status pill, no watch slot, no delete button. The "Open"
+        // link goes to the article's field-note section.
+        var isSubmission = item.kind === 'submission' && item._submission;
+        var statusPillHtml = '';
+        var actionsHtml = '';
+        if (isSubmission) {
+          statusPillHtml = ' <span class="wsh-item-status">· ' + escapeHtml(item._submission.statusLabel) + '</span>';
+          openUrl = '/blog/' + encodeURIComponent(item._submission.articleSlug) + '/#field-note-form';
+          actionsHtml = '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>';
+        } else {
+          actionsHtml = watchSlot +
+            '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm btn-danger js-wb-delete">Delete</button>';
+        }
         var row = document.createElement('article');
         row.className = 'wsh-item';
         row.setAttribute('data-id', item.id);
@@ -487,14 +503,13 @@
           '<div class="wsh-item-body">' +
             '<div class="wsh-item-meta">' +
               '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+              statusPillHtml +
             '</div>' +
             '<h3 class="wsh-item-title">' + escapeHtml(item.title) + '</h3>' +
-            '<p class="wsh-item-date">Saved ' + fmtDate(item.createdAt) + '</p>' +
+            '<p class="wsh-item-date">' + (isSubmission ? 'Submitted ' : 'Saved ') + fmtDate(item.createdAt) + '</p>' +
           '</div>' +
           '<div class="wsh-item-actions">' +
-            watchSlot +
-            '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>' +
-            '<button type="button" class="btn btn-ghost btn-sm btn-danger js-wb-delete">Delete</button>' +
+            actionsHtml +
           '</div>';
         listEl.appendChild(row);
       });
@@ -553,23 +568,44 @@
           return Promise.all([
             fetch('/api/workbench/list',       { credentials: 'same-origin' }),
             fetch('/api/workbench/watch-list', { credentials: 'same-origin' }),
+            // Phase F.4 (Field Notes): list-mine returns 404 when
+            // FIELD_NOTES_ENABLED is off, so we tolerate that result
+            // and just render zero submission rows.
+            fetch('/api/submission/list-mine', { credentials: 'same-origin' }),
           ]);
         })
         .then(function (responses) {
           var listRes  = responses[0];
           var watchRes = responses[1];
+          var subsRes  = responses[2];
           if (!listRes.ok) throw new Error('list-failed');
           var watchPromise = watchRes.ok ? watchRes.json() : Promise.resolve({ items: [] });
-          return Promise.all([listRes.json(), watchPromise]);
+          var subsPromise  = subsRes.ok  ? subsRes.json()  : Promise.resolve({ items: [] });
+          return Promise.all([listRes.json(), watchPromise, subsPromise]);
         })
         .then(function (parsed) {
           var listData  = parsed[0] || {};
           var watchData = parsed[1] || {};
+          var subsData  = parsed[2] || {};
           watchIndex = {};
           (watchData.items || []).forEach(function (w) {
             if (w && w.savedItemId) watchIndex[w.savedItemId] = w;
           });
           var items = listData.items || [];
+          // Map submissions into the item list so they share the chip
+          // chrome. Synthetic title: "Field note · <slug>". Status
+          // appended via authorDisplayName slot; we hide watch and
+          // delete actions for submissions in renderItems.
+          var STATUS_LABEL = { pending: 'pending', approved: 'approved', rejected: 'passed', withdrawn: 'withdrawn', stalled: 'stalled' };
+          (subsData.items || []).forEach(function (s) {
+            items.push({
+              id: s.id,
+              kind: 'submission',
+              title: 'Field note · ' + s.articleSlug,
+              createdAt: s.createdAt,
+              _submission: { status: s.status, articleSlug: s.articleSlug, locale: s.locale, statusLabel: STATUS_LABEL[s.status] || s.status },
+            });
+          });
           if (items.length === 0) { showState(emptyEl); return; }
           renderItems(items);
         })

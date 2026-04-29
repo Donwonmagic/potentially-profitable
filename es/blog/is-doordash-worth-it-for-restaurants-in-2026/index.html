@@ -515,7 +515,8 @@
   <p>Más desde la biblioteca.</p>
 </aside>
 
-    <!-- post-end-cta:start -->
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
     <aside class="post-end-cta" aria-label="Workshop next step">
       <p class="post-end-cta-headline">Mete tus números reales de DoorDash.</p>
       <p class="post-end-cta-body">La calculadora de punto de equilibrio con delivery toma tu ticket, comisión y costo de comida. Guarda el escenario en el Taller y vuélvelo a correr cuando DoorDash ajuste tu nivel — la comparación se queda en un solo lugar.</p>
@@ -551,6 +552,33 @@
     </ul>
 </aside>
 <!-- LIBRARY:see-also:end -->
+      <!-- field-notes-submit:start -->
+            <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
+                    data-article-slug="is-doordash-worth-it-for-restaurants-in-2026" data-locale="es" data-fnenabled="true">
+              <p class="field-notes-submit__eyebrow">Cuéntanos</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo has probado en tu cocina?</h2>
+              <p class="field-notes-submit__subhead">100–400 palabras, con tu nombre, Don lee cada una.</p>
+              <p class="field-notes-submit__signin js-field-notes-signin" hidden>
+                <a href="/es/sign-in/?return=%2Fes%2Fblog%2Fis-doordash-worth-it-for-restaurants-in-2026%2F%23field-note-form">Inicia sesión para compartir tu experiencia →</a>
+              </p>
+              <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Tu nombre</span>
+                  <input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="Cómo quieres aparecer" required>
+                </label>
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Tu apunte</span>
+                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="Qué probaste, qué pasó, qué aprendiste. Texto simple — sin enlaces." required></textarea>
+                  <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
+                </label>
+                <input type="hidden" name="articleSlug" value="is-doordash-worth-it-for-restaurants-in-2026">
+                <input type="hidden" name="locale" value="es">
+                <button type="submit" class="field-notes-form__submit btn btn-primary">Enviar a Don</button>
+                <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
+              </form>
+              <script src="/assets/js/article-fieldnotes.js?v=20260429-batch3" defer></script>
+            </section>
+            <!-- field-notes-submit:end -->
 
     <aside class="further-reading">
 <p class="label i18n">Sigue leyendo</p>

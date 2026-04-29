@@ -911,3 +911,81 @@ export function watchDiffEmail(body) {
 
   return { subject, html, text: txt };
 }
+
+// Phase F.3 (Field Notes) — sent to NOTIFY_EMAIL when a reader
+// submits a field note. Don opens the admin queue from the link.
+// Locale-aware via pickLocale (same dispatch pattern as intake).
+export function submissionNotificationEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.submissionNotificationEmail === 'function') {
+    return ES.submissionNotificationEmail(body);
+  }
+  const author       = String(body.author || '—').trim();
+  const authorEmail  = String(body.authorEmail || '—').trim();
+  const articleTitle = String(body.articleTitle || body.articleSlug || '—').trim();
+  const articleSlug  = String(body.articleSlug || '').trim();
+  const noteBody     = String(body.body || '').trim();
+  const adminUrl     = String(body.adminUrl || 'https://muntin.digital/admin/submissions/').trim();
+
+  const subject = 'Field note submitted: ' + articleTitle;
+
+  const html = htmlShell(
+    'Field note submitted',
+    [
+      field('Article', escapeHtml(articleTitle) + ' (<code>' + escapeHtml(articleSlug) + '</code>)'),
+      field('From',    escapeHtml(author) + ' &lt;' + escapeHtml(authorEmail) + '&gt;'),
+      field('Note',    '<div style="white-space:pre-wrap;font-style:italic;">' + escapeHtml(noteBody) + '</div>'),
+      '<p style="margin:24px 0 0;">' + primaryCta(adminUrl, 'Open the review queue') + '</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Field note submitted',
+    '',
+    'Article: ' + articleTitle + ' (' + articleSlug + ')',
+    'From: ' + author + ' <' + authorEmail + '>',
+    '',
+    'Note:',
+    noteBody,
+    '',
+    'Open the review queue: ' + adminUrl,
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// Phase F.3 (Field Notes) — sent to the contributor when their
+// submission is approved (NOT on reject — rejection stays silent on
+// the public surface; only the Workshop chip signals it).
+export function submissionApprovedEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.submissionApprovedEmail === 'function') {
+    return ES.submissionApprovedEmail(body);
+  }
+  const articleTitle = String(body.articleTitle || body.articleSlug || 'your note').trim();
+  const articleUrl   = String(body.articleUrl || 'https://muntin.digital/').trim();
+
+  const subject = 'Your field note is up on Muntin';
+
+  const html = htmlShell(
+    'Your field note is up on Muntin',
+    [
+      '<p style="margin:0 0 16px;">Thanks for contributing. Your note is now published on <strong>' + escapeHtml(articleTitle) + '</strong>.</p>',
+      '<p style="margin:0 0 16px;">A few readers a week land on these articles looking for a peer voice. Yours is now part of that.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(articleUrl, 'See it on the article') + '</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Your field note is up on Muntin',
+    '',
+    'Thanks for contributing. Your note is now published on ' + articleTitle + '.',
+    '',
+    'See it on the article: ' + articleUrl,
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}

@@ -5050,10 +5050,73 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 
 .callout--field{background:var(--cream-2);border:1px solid transparent;border-left:3px solid var(--teal)}
 .callout--field .callout-body{font-style:italic;font-family:var(--font-display);font-size:17px;line-height:1.55;color:var(--ink-soft)}
+.callout-eyebrow-inline{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-style:normal;margin-right:6px}
 
 @media (prefers-reduced-motion:no-preference){
   .callout--field{transition:border-color var(--t-fast) var(--ease)}
 }
+
+/* Phase F.1 (Field Notes) — multiple approved notes stack inside
+   .field-notes-container between the article's post-end-mark and
+   post-end-cta. Reuses .callout--field for each note; the wrapper
+   is the only new component. */
+.field-notes-container{display:flex;flex-direction:column;gap:16px;max-width:680px;margin:24px auto}
+
+/* Phase F.4 (Field Notes) — submission form below see-also.
+   Visually quiet: matches the editorial tone, NOT a giant comment
+   box. Hidden by default; client JS reveals form vs. signin
+   based on auth state. */
+.field-notes-submit{max-width:680px;margin:32px auto;padding:24px 28px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md)}
+.field-notes-submit__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.field-notes-submit__headline{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.2}
+.field-notes-submit__subhead{font-size:14px;color:var(--ink-soft);margin:0 0 16px;line-height:1.55}
+.field-notes-submit__paused{font-size:14px;color:var(--stone);font-style:italic;margin:0;text-align:center}
+.field-notes-submit--paused{padding:18px 24px}
+.field-notes-submit__signin{margin:0;font-size:14px}
+.field-notes-submit__signin a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal)}
+.field-notes-form{display:flex;flex-direction:column;gap:14px;margin:0}
+.field-notes-form__label{display:flex;flex-direction:column;gap:6px}
+.field-notes-form__label-text{font-size:13px;font-weight:600;color:var(--ink-soft);letter-spacing:0.02em}
+.field-notes-form__name,.field-notes-form__body{padding:10px 14px;border:1px solid var(--line-dark);border-radius:var(--r-input);background:var(--white);color:var(--ink);font:inherit;font-size:15px}
+.field-notes-form__name:focus,.field-notes-form__body:focus{outline:none;border-color:var(--teal)}
+.field-notes-form__body{resize:vertical;min-height:150px;line-height:1.55}
+.field-notes-form__counter{font-size:12px;color:var(--stone);font-variant-numeric:tabular-nums}
+.field-notes-form__counter.ok{color:var(--status-good)}
+.field-notes-form__submit{align-self:flex-start}
+.field-notes-form__msg{font-size:14px;color:var(--status-good);margin:0;padding:10px 14px;background:var(--surface-1);border-radius:var(--r-input)}
+.field-notes-form__msg.error{color:var(--rust);background:rgba(186,85,68,0.08)}
+
+/* Workshop submission status pill (pending/approved/passed). */
+.wsh-item-status{font-size:13px;color:var(--stone);margin-left:6px;font-style:italic}
+
+/* Phase F.7 (Field Notes) — contributor pages at /people/<slug>/.
+   The header reuses .hero / .hero-tight; the notes stack reuses
+   .callout--field. Below adds only the per-page chrome. */
+.people-hero{max-width:760px;margin:0 auto;text-align:center}
+.people-notes{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.people-note .callout-eyebrow a{color:inherit;border-bottom:1px solid currentColor}
+.people-note__date{font-size:12px;color:var(--stone);margin:8px 0 0;font-style:normal;letter-spacing:0.06em;text-transform:uppercase}
+.callout-author-link{color:inherit;border-bottom:1px solid currentColor;text-decoration:none}
+.callout-author-link:hover{color:var(--teal)}
+
+/* Phase F.8 (Field Notes) — homepage "From the kitchen" rail.
+   Surfaces 3 most recent approved field notes on /. Reuses the
+   .block / .container / .eyebrow pattern. The card visual is a
+   quieter cousin of .callout--field — same cream background and
+   teal accent, but laid out as a 3-up grid. */
+.field-notes-rail{padding-top:48px;padding-bottom:48px}
+.field-notes-rail__head{max-width:720px;margin:0 auto 28px;text-align:center}
+.field-notes-rail__head h2{font-family:var(--font-display);font-size:clamp(28px,3vw,36px);font-weight:500;color:var(--ink);margin:8px 0 6px;line-height:1.2}
+.field-notes-rail__sub{font-size:15px;color:var(--ink-soft);margin:0;line-height:1.55}
+.field-notes-rail__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;max-width:1100px;margin:0 auto}
+.field-notes-rail__card{padding:22px 24px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);display:flex;flex-direction:column;gap:10px}
+.field-notes-rail__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.field-notes-rail__eyebrow a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+.field-notes-rail__excerpt{font-family:var(--font-display);font-size:16px;line-height:1.55;color:var(--ink-soft);margin:0;font-style:italic}
+.field-notes-rail__article{font-size:13px;color:var(--ink);text-decoration:none;margin-top:auto;font-weight:500;border-bottom:1px solid var(--line-dark);padding-bottom:2px;align-self:flex-start}
+.field-notes-rail__article:hover{border-bottom-color:var(--teal);color:var(--teal)}
+.field-notes-rail__more{text-align:center;margin:28px 0 0}
+.field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region

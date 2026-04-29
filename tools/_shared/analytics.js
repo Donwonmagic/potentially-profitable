@@ -153,6 +153,11 @@
       'Property Verified',
       'Property Scorecard Refreshed',
       'Property Deleted',
+      // Phase F (Field Notes) — submission lifecycle.
+      'Submission Created',
+      'Submission Approved',
+      'Submission Rejected',
+      'Submission Published',
     ],
   };
 
