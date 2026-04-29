@@ -321,6 +321,9 @@
       </form>
       <p class="speed-note">Funciona con cualquier URL pública. Toma unos treinta segundos.</p>
 
+      <!-- Sprint 6 (cohesión) — estados compartidos. -->
+      <div class="tool-states-slot" id="speedStates" data-state="idle" aria-live="polite"></div>
+
       <!-- Result -->
       <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
         <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Resultados de la prueba de velocidad</h2>
@@ -468,6 +471,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('speedForm');
@@ -475,6 +479,11 @@
   var btn = document.getElementById('speedSubmit');
   var result = document.getElementById('speedResult');
   var dial = document.getElementById('speedDial');
+  // Sprint 6 (cohesión) — estados compartidos.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('speedStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
   var fillEl = document.getElementById('speedFill');
   var scoreNum = document.getElementById('speedScoreNum');
   var scoreLabel = document.getElementById('speedScoreLabel');
@@ -615,6 +624,7 @@
     btn.textContent = 'Probando…';
     result.classList.remove('visible');
     dial.className = 'speed-dial';
+    if (states) states.setLoading();
 
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=performance';
@@ -657,6 +667,7 @@
 
         var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now() };
         renderResult(payload);
+        if (states) states.setSuccess();
         showSaveAffordance(payload);
 
         var resultHeading = document.getElementById('speedResultHeading');
@@ -672,10 +683,15 @@
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not test that URL.', messageEs: err && err.message ? err.message : 'No se pudo probar esa URL.' });
-        alert((typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEs);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Could not test that URL.', messageEs: err && err.message ? err.message : 'No se pudo probar esa URL.', retryAfterSec: null });
+        // Sprint 6 (cohesión) — tarjeta de error inline.
+        if (states) {
+          states.setError(classified);
+        } else {
+          alert((typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEs);
+        }
       })
       .finally(function() {
         btn.disabled = false;

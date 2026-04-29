@@ -246,6 +246,8 @@
     </div>
   </details>
   <style>.sch-paste-wrap[open] .sch-paste-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.sch-paste-wrap summary::-webkit-details-marker{display:none}</style>
+  <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+  <div class="tool-states-slot" id="schStates" data-state="idle" aria-live="polite"></div>
   <div class="sch-result" id="schResult" aria-live="polite">
     <div class="sch-verdict" id="schVerdict"></div>
     <ul class="sch-types" id="schTypes"></ul>
@@ -308,6 +310,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function(){
   var form=document.getElementById('schForm');
@@ -316,6 +319,11 @@
   var result=document.getElementById('schResult');
   var verdict=document.getElementById('schVerdict');
   var typesList=document.getElementById('schTypes');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states=(typeof MuntinStates!=='undefined')?MuntinStates.attach({
+    slotEl:document.getElementById('schStates'),
+    locale:document.documentElement.lang==='es'?'es':'en',
+  }):null;
 
   // Fragment input (Phase C2). When the URL carries `#paste=<encoded
   // JSON-LD>` or `#url=<encoded URL>`, populate the relevant field.
@@ -413,6 +421,7 @@
     if(!url){input.focus();return}
     btn.disabled=true;btn.textContent='Checking…';
     result.classList.remove('visible');
+    if(states)states.setLoading();
 
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=seo';
 
@@ -480,6 +489,7 @@
     }).then(function(foundTypes){
       var payload = { url: url, foundTypes: foundTypes, checkedAt: Date.now() };
       renderResult(payload);
+      if(states)states.setSuccess();
       showSaveAffordance(payload);
       if(window.plausible)window.plausible('Schema Check',{props:{types:foundTypes.join(','),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
@@ -488,8 +498,13 @@
         ?err._classified
         :((typeof MuntinFetchError!=='undefined')
             ?MuntinFetchError.classifyFetchError(err,null)
-            :{messageEn:err&&err.message?err.message:'Could not check that URL.',messageEs:err&&err.message?err.message:'No se pudo revisar esa URL.'});
-      alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+            :{kind:'unknown',messageEn:err&&err.message?err.message:'Could not check that URL.',messageEs:err&&err.message?err.message:'No se pudo revisar esa URL.',retryAfterSec:null});
+      // Sprint 6 (cohesion) — inline error card via shared module.
+      if(states){
+        states.setError(classified);
+      }else{
+        alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+      }
     }).finally(function(){
       btn.disabled=false;btn.textContent='Check it';
     });

@@ -235,6 +235,8 @@
   <button class="cmp-btn" id="cmpSubmit">Comparar</button>
   <p class="cmp-note">Corre dos diagnósticos de Google PageSpeed en paralelo. Toma unos 20 a 30 segundos.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
+  <!-- Sprint 6 (cohesión) — estados compartidos. -->
+  <div class="tool-states-slot" id="cmpStates" data-state="idle" aria-live="polite"></div>
   <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
   <div class="cmp-save" id="cmpSave" hidden>
     <p class="cmp-save-text" id="cmpSaveText">Guarda esta comparación en tu Taller para que te siga entre dispositivos.</p>
@@ -289,6 +291,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -297,6 +300,12 @@
   var url2=document.getElementById('cmpUrl2');
   var status=document.getElementById('cmpStatus');
   var result=document.getElementById('cmpResult');
+  // Sprint 6 (cohesión) — estados compartidos.
+  var states=(typeof MuntinStates!=='undefined')?MuntinStates.attach({
+    slotEl:document.getElementById('cmpStates'),
+    locale:document.documentElement.lang==='es'?'es':'en',
+    skeletonShape:['80','80','60'],
+  }):null;
 
   function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
   function short(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
@@ -415,21 +424,25 @@
     btn.disabled=true;btn.textContent='Comparando…';
     status.hidden=false;status.textContent='Corriendo dos diagnósticos en paralelo — unos treinta segundos…';
     result.classList.remove('visible');result.innerHTML='';
+    if(states)states.setLoading();
 
     Promise.all([fetchScores(u1),fetchScores(u2)]).then(function(r){
       var a=r[0],b=r[1];
       var payload={url1:u1,url2:u2,a:a,b:b,comparedAt:Date.now()};
       renderResult(payload);
+      if(states)states.setSuccess();
       if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Compare',{props:{url1:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u1):u1,url2:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(u2):u2}});
     }).catch(function(err){
       var locale=document.documentElement.lang==='en'?'en':'es';
-      if(err&&err._classified){
-        alert(err.message);
+      var classified=(err&&err._classified)
+        ? err._classified
+        : ((typeof MuntinFetchError!=='undefined')
+            ? MuntinFetchError.classifyFetchError(err,null)
+            : {kind:'unknown',messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.',retryAfterSec:null});
+      if(states){
+        states.setError(classified);
       }else{
-        var classified=(typeof MuntinFetchError!=='undefined')
-          ?MuntinFetchError.classifyFetchError(err,null)
-          :{messageEn:err&&err.message?err.message:'Could not compare. Check both URLs.',messageEs:err&&err.message?err.message:'No se pudo comparar. Revisa ambas URLs.'};
         alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEs);
       }
       status.hidden=true;

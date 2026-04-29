@@ -227,6 +227,8 @@
     <button type="submit" id="tsSubmit">Detect</button>
   </form>
   <p class="ts-note">Scans the URLs and scripts loaded during a mobile page load. Takes about thirty seconds. Note: this detects technologies loaded on the initial page — scripts that load lazily or after user interaction may not appear.</p>
+  <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+  <div class="tool-states-slot" id="tsStates" data-state="idle" aria-live="polite"></div>
   <div class="ts-result" id="tsResult" aria-live="polite"></div>
   <div class="ts-save" id="tsSave" hidden>
     <p class="ts-save-text" id="tsSaveText">Save this scan to the Workshop so it follows you across devices.</p>
@@ -281,10 +283,16 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
   var form=document.getElementById('tsForm'),input=document.getElementById('tsUrl'),btn=document.getElementById('tsSubmit'),result=document.getElementById('tsResult');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states=(typeof MuntinStates!=='undefined')?MuntinStates.attach({
+    slotEl:document.getElementById('tsStates'),
+    locale:document.documentElement.lang==='es'?'es':'en',
+  }):null;
   function norm(u){u=u.trim();if(!u)return'';if(!/^https?:\/\//i.test(u))u='https://'+u;try{new URL(u)}catch(e){return''}return u}
 
   // Detection patterns grouped by category
@@ -400,6 +408,7 @@
     var url=norm(input.value);if(!url){input.focus();return}
     btn.disabled=true;btn.textContent='Detecting…';
     result.classList.remove('visible');result.innerHTML='';
+    if(states)states.setLoading();
 
     var api='https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='+encodeURIComponent(url)+'&strategy=mobile&category=performance';
 
@@ -450,6 +459,7 @@
       // Render
       var payload={url:url,groups:groups,scannedAt:Date.now()};
       renderResult(payload);
+      if(states)states.setSuccess();
       if(wb)wb.showAffordance(payload);
       if(window.plausible)window.plausible('Tech Stack',{props:{stack:groups.map(function(g){return g.items.join(',')}).join(';'),url:(typeof MuntinAnalytics!=='undefined')?MuntinAnalytics.redactUrlForAnalytics(url):url}});
     }).catch(function(err){
@@ -458,8 +468,13 @@
         ?err._classified
         :((typeof MuntinFetchError!=='undefined')
             ?MuntinFetchError.classifyFetchError(err,null)
-            :{messageEn:err&&err.message?err.message:'Could not scan that URL.',messageEs:err&&err.message?err.message:'No se pudo escanear esa URL.'});
-      alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+            :{kind:'unknown',messageEn:err&&err.message?err.message:'Could not scan that URL.',messageEs:err&&err.message?err.message:'No se pudo escanear esa URL.',retryAfterSec:null});
+      // Sprint 6 (cohesion) — inline error card via shared module.
+      if(states){
+        states.setError(classified);
+      }else{
+        alert((typeof MuntinFetchError!=='undefined')?MuntinFetchError.localizedMessage(classified,locale):classified.messageEn);
+      }
     }).finally(function(){btn.disabled=false;btn.textContent='Detect'});
   });
 })();

@@ -308,6 +308,9 @@
       </form>
       <p class="speed-note">Works on any publicly accessible URL. Takes about thirty seconds.</p>
 
+      <!-- Sprint 6 (cohesion) — shared loading + error states. -->
+      <div class="tool-states-slot" id="speedStates" data-state="idle" aria-live="polite"></div>
+
       <!-- Result -->
       <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
         <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Speed test results</h2>
@@ -455,6 +458,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script>
 (function() {
   var form = document.getElementById('speedForm');
@@ -462,6 +466,11 @@
   var btn = document.getElementById('speedSubmit');
   var result = document.getElementById('speedResult');
   var dial = document.getElementById('speedDial');
+  // Sprint 6 (cohesion) — shared loading + error states.
+  var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
+    slotEl: document.getElementById('speedStates'),
+    locale: document.documentElement.lang === 'es' ? 'es' : 'en',
+  }) : null;
   var fillEl = document.getElementById('speedFill');
   var scoreNum = document.getElementById('speedScoreNum');
   var scoreLabel = document.getElementById('speedScoreLabel');
@@ -603,6 +612,7 @@
     btn.textContent = 'Testing…';
     result.classList.remove('visible');
     dial.className = 'speed-dial';
+    if (states) states.setLoading();
 
     var api = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url='
       + encodeURIComponent(url) + '&strategy=mobile&category=performance';
@@ -650,6 +660,7 @@
 
         var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now() };
         renderResult(payload);
+        if (states) states.setSuccess();
         showSaveAffordance(payload);
 
         // Move focus to the results heading so keyboard + AT users land
@@ -664,17 +675,22 @@
       .catch(function(err) {
         // Route through the shared classifier when the throw didn't
         // already attach one (network-level failures, AbortSignal
-        // timeouts). Show the locale-correct actionable message.
+        // timeouts). Sprint 6 (cohesion) — show the locale-correct
+        // actionable message via the shared inline error card.
         var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
         var classified = err && err._classified
           ? err._classified
           : ((typeof MuntinFetchError !== 'undefined')
               ? MuntinFetchError.classifyFetchError(err, null)
-              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Please check the address and try again.', messageEs: 'Por favor verifica la dirección e inténtalo de nuevo.' });
-        var msg = (typeof MuntinFetchError !== 'undefined')
-          ? MuntinFetchError.localizedMessage(classified, locale)
-          : classified.messageEn;
-        alert(msg);
+              : { kind: 'unknown', messageEn: err && err.message ? err.message : 'Please check the address and try again.', messageEs: 'Por favor verifica la dirección e inténtalo de nuevo.', retryAfterSec: null });
+        if (states) {
+          states.setError(classified);
+        } else {
+          var msg = (typeof MuntinFetchError !== 'undefined')
+            ? MuntinFetchError.localizedMessage(classified, locale)
+            : classified.messageEn;
+          alert(msg);
+        }
       })
       .finally(function() {
         btn.disabled = false;
