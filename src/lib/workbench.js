@@ -46,6 +46,12 @@ const ALLOWED_KINDS = new Set([
   // is just { propertyId }; the Workshop list rehydrates by
   // reading the underlying property:<sub>:<propertyId> row.
   'storefront-health',
+  // Phase F.2 (Field Notes) — reader-submitted personal experience
+  // tied to one blog article. Surfaced in the Workshop list with
+  // a status pill (pending/approved/passed). Public render path:
+  // /api/admin/submissions/decide → approved-fieldnote: KV →
+  // data/article-fieldnotes.json → article HTML.
+  'submission',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear
