@@ -751,3 +751,70 @@ export function watchDiffEmail(body) {
   return { subject, html, text: txt };
 }
 
+// Phase F.3 (Field Notes / ES) — notification a Don cuando llega un
+// apunte. Se invoca desde la versión EN cuando body.locale === 'es'.
+export function submissionNotificationEmail(body) {
+  const author       = String(body.author || '—').trim();
+  const authorEmail  = String(body.authorEmail || '—').trim();
+  const articleTitle = String(body.articleTitle || body.articleSlug || '—').trim();
+  const articleSlug  = String(body.articleSlug || '').trim();
+  const noteBody     = String(body.body || '').trim();
+  const adminUrl     = String(body.adminUrl || 'https://muntin.digital/es/admin/submissions/').trim();
+
+  const subject = 'Apunte recibido: ' + articleTitle;
+
+  const html = htmlShell(
+    'Apunte recibido',
+    [
+      field('Artículo', escapeHtml(articleTitle) + ' (<code>' + escapeHtml(articleSlug) + '</code>)'),
+      field('De',       escapeHtml(author) + ' &lt;' + escapeHtml(authorEmail) + '&gt;'),
+      field('Apunte',   '<div style="white-space:pre-wrap;font-style:italic;">' + escapeHtml(noteBody) + '</div>'),
+      '<p style="margin:24px 0 0;">' + primaryCta(adminUrl, 'Abrir la cola de revisión') + '</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Apunte recibido',
+    '',
+    'Artículo: ' + articleTitle + ' (' + articleSlug + ')',
+    'De: ' + author + ' <' + authorEmail + '>',
+    '',
+    'Apunte:',
+    noteBody,
+    '',
+    'Abrir la cola de revisión: ' + adminUrl,
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
+
+// Phase F.3 (Field Notes / ES) — confirmación al contribuidor cuando
+// se aprueba su apunte. NO se envía nada al rechazar.
+export function submissionApprovedEmail(body) {
+  const articleTitle = String(body.articleTitle || body.articleSlug || 'tu apunte').trim();
+  const articleUrl   = String(body.articleUrl || 'https://muntin.digital/es/').trim();
+
+  const subject = 'Tu apunte ya está publicado en Muntin';
+
+  const html = htmlShell(
+    'Tu apunte ya está publicado en Muntin',
+    [
+      '<p style="margin:0 0 16px;">Gracias por contribuir. Tu apunte ya está publicado en <strong>' + escapeHtml(articleTitle) + '</strong>.</p>',
+      '<p style="margin:0 0 16px;">Cada semana llegan lectores buscando una voz de su mismo oficio. Ahora tu voz forma parte de eso.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(articleUrl, 'Verlo en el artículo') + '</p>',
+    ].join('\n')
+  );
+
+  const txt = [
+    'Tu apunte ya está publicado en Muntin',
+    '',
+    'Gracias por contribuir. Tu apunte ya está publicado en ' + articleTitle + '.',
+    '',
+    'Verlo en el artículo: ' + articleUrl,
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}
