@@ -3924,27 +3924,39 @@ async function handleAuthMe(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
   }
 
-  // Best-effort lastSeenAt refresh. Failures are silent — the
-  // session is still valid even if we can't update the row.
+  // Pull the user row so we can surface createdAt / lastSeenAt to
+  // the /account/ page (Phase 3). Best-effort: a missing or corrupt
+  // row downgrades to email-only, never 401s — the session is still
+  // valid. lastSeenAt refresh is throttled to once per hour.
+  let createdAt = null;
+  let lastSeenAt = null;
   if (env && env.AUTH_SESSIONS) {
     try {
       const userKey = 'user:' + session.payload.sub;
       const existing = await env.AUTH_SESSIONS.get(userKey);
       if (existing) {
         const row = JSON.parse(existing);
+        createdAt = (typeof row.createdAt === 'number') ? row.createdAt : null;
+        lastSeenAt = (typeof row.lastSeenAt === 'number') ? row.lastSeenAt : null;
         const now = Date.now();
         const ONE_HOUR_MS = 60 * 60 * 1000;
         if (!row.lastSeenAt || (now - row.lastSeenAt) > ONE_HOUR_MS) {
           row.lastSeenAt = now;
+          lastSeenAt = now;
           await env.AUTH_SESSIONS.put(userKey, JSON.stringify(row));
         }
       }
     } catch (err) {
-      console.warn('[auth/me] lastSeenAt refresh failed:', err && err.message);
+      console.warn('[auth/me] user-row read/refresh failed:', err && err.message);
     }
   }
 
-  return jsonResponse({ ok: true, email: session.email }, 200);
+  return jsonResponse({
+    ok: true,
+    email: session.email,
+    createdAt,
+    lastSeenAt,
+  }, 200);
 }
 
 

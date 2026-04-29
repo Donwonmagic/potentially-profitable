@@ -256,6 +256,13 @@
             var watch = (data && data.watch) || { schedule: schedule };
             watchIndex[itemId] = watch;
             replaceWatchSlot(itemId, watch);
+            try {
+              if (typeof window.plausible === 'function') {
+                var row = slot.closest('.wb-row');
+                var kind = row ? row.getAttribute('data-kind') : '';
+                window.plausible('Workbench Watch Attach', { props: { kind: kind || '?', schedule: schedule } });
+              }
+            } catch (_) { /* analytics is best-effort */ }
           });
         }
         if (r.status === 409) {
@@ -289,6 +296,13 @@
         if (r.ok) {
           delete watchIndex[itemId];
           replaceWatchSlot(itemId, null);
+          try {
+            if (typeof window.plausible === 'function') {
+              var row = slot.closest('.wb-row');
+              var kind = row ? row.getAttribute('data-kind') : '';
+              window.plausible('Workbench Watch Detach', { props: { kind: kind || '?' } });
+            }
+          } catch (_) { /* analytics is best-effort */ }
         } else if (r.status === 401) {
           window.location.href = '/es/sign-in/?returnTo=' + encodeURIComponent('/es/workbench/');
         } else {
