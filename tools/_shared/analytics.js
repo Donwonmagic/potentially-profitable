@@ -145,6 +145,14 @@
       'Workbench Save',
       'Workbench Watch Attach',
       'Workbench Watch Detach',
+      // Phase D (Storefront Health) — fired when intent=watch param
+      // auto-opens the watch panel on tool arrival.
+      'Workbench Watch Open',
+      // Phase C (Storefront Health) — property lifecycle.
+      'Property Created',
+      'Property Verified',
+      'Property Scorecard Refreshed',
+      'Property Deleted',
     ],
   };
 
