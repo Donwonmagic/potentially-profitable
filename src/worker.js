@@ -3692,11 +3692,27 @@ async function handleAuthMagicLink(request, env, ctx) {
   // network observer can't tell a real signin from spam.
   const SILENT_OK = jsonResponse({ ok: true }, 200);
 
-  if (isSpamHoneypot(body))     return SILENT_OK;
-  if (!isTimestampSane(body))   return SILENT_OK;
-  if (isHighThreatIP(request))  return SILENT_OK;
+  // TEMP DEBUG (remove after auth cutover): log which fields arrived
+  // and which silent-200 gate (if any) fires. Field names are logged
+  // as types/lengths only — no PII (email is reported as length).
+  const __dbgFields = {
+    hasEmail: typeof body.email === 'string' && body.email.length > 0,
+    emailLen: typeof body.email === 'string' ? body.email.length : 0,
+    hasTs: typeof body.ts !== 'undefined',
+    hasUnderscoreTs: typeof body._ts !== 'undefined',
+    hasHp: typeof body.hp !== 'undefined',
+    hasGotcha: typeof body._gotcha !== 'undefined',
+    hasReturnTo: typeof body.returnTo === 'string',
+    hasLocale: typeof body.locale === 'string',
+  };
+  console.log('[auth/magic-link debug] body shape:', JSON.stringify(__dbgFields));
+
+  if (isSpamHoneypot(body))     { console.log('[auth/magic-link debug] silent-200 via isSpamHoneypot'); return SILENT_OK; }
+  if (!isTimestampSane(body))   { console.log('[auth/magic-link debug] silent-200 via !isTimestampSane'); return SILENT_OK; }
+  if (isHighThreatIP(request))  { console.log('[auth/magic-link debug] silent-200 via isHighThreatIP'); return SILENT_OK; }
   const email = typeof body.email === 'string' ? body.email.trim() : '';
-  if (!isValidEmail(email))     return SILENT_OK;
+  if (!isValidEmail(email))     { console.log('[auth/magic-link debug] silent-200 via !isValidEmail'); return SILENT_OK; }
+  console.log('[auth/magic-link debug] all silent-200 gates passed; proceeding to sendEmail');
 
   // returnTo allowlist. Anything off-list collapses to the canonical
   // /workbench/. Belt and suspenders against open-redirect class bugs.
@@ -3761,6 +3777,7 @@ async function handleAuthMagicLink(request, env, ctx) {
   const tpl = magicLinkEmail({ email, link, returnTo, locale });
 
   const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  console.log('[auth/magic-link debug] calling sendEmail; from=', fromEmail, 'subject=', tpl.subject, 'apiKeyPresent=', !!env.RESEND_API_KEY);
   const sendRes = await sendEmail({
     from: fromEmail,
     to: email,
@@ -3769,6 +3786,7 @@ async function handleAuthMagicLink(request, env, ctx) {
     html: tpl.html,
     text: tpl.text,
   }, env.RESEND_API_KEY);
+  console.log('[auth/magic-link debug] sendEmail returned:', JSON.stringify({ ok: sendRes.ok, id: sendRes.id, error: sendRes.error, status: sendRes.status }));
 
   if (!sendRes.ok) {
     // Don't leak the failure to the caller — a Resend hiccup
