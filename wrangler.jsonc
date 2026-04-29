@@ -186,7 +186,14 @@
     // Public origin used to build absolute magic-link URLs in the
     // sign-in email. Same value across envs today; if a preview env
     // ever needs to diverge, override here per environment.
-    "MAGIC_LINK_BASE_URL": "https://muntin.digital"
+    "MAGIC_LINK_BASE_URL": "https://muntin.digital",
+    // Phase C.5 (Storefront Health) — feature flag. When "true"
+    // the /api/workbench/property/* endpoints serve real
+    // responses; when absent or "false" they return 404 so the
+    // surface is invisible. Flip back to "false" for an emergency
+    // rollback — existing property:<sub>:<id> KV entries persist
+    // and resume working when the flag flips back.
+    "STOREFRONT_HEALTH_ENABLED": "true"
   },
 
   // ─────────────────────────────────────────────────────────────────
