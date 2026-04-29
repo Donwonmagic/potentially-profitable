@@ -400,6 +400,20 @@
   .mm-tier-examples li{margin-bottom:4px}
   .mm-tier-share{font-size:13px;line-height:1.55;color:var(--ink);margin:auto 0 0;padding-top:8px;border-top:1px dashed var(--line)}
   .mm-tier-foot{max-width:760px;margin:20px auto 0;padding:14px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:13.5px;line-height:1.65;color:var(--ink-soft)}
+  /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md.
+     Payload is just the URL fragment (already what the Copy-scenario-link button
+     produces); rehydration sets location.hash + reload, replaying the existing
+     __mmHydratedState boot path. */
+  .mm-save{max-width:760px;margin:24px auto 0;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .mm-save[hidden]{display:none}
+  .mm-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .mm-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .mm-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
+  .mm-save-btn[disabled]{opacity:.6;cursor:wait}
+  .mm-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .mm-save-link:hover{border-color:var(--ink)}
+  .mm-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-save-msg.error{color:var(--rust)}
 </style>
 </head>
 <body>
@@ -839,6 +853,17 @@
       <a class="mm-blog-link" href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Lee la estrategia completa: Subir precios sin perder reservas &rarr;</a>
     </article>
   </div>
+
+  <div class="mm-save" id="mmSave" hidden>
+    <p class="mm-save-text" id="mmSaveText">Guarda este escenario en tu Taller para que te siga entre dispositivos.</p>
+    <button type="button" class="mm-save-btn" id="mmSaveBtn" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      Guardar en mi Taller
+    </button>
+    <a class="mm-save-link" id="mmSaveLink" href="/es/sign-in/?returnTo=%2Fes%2Ftools%2Fmargin-math%2F" hidden>Acceder para guardar</a>
+    <span class="mm-save-msg" id="mmSaveMsg" hidden role="status"></span>
+  </div>
+
   <p class="mm-benchmarks">
     Benchmarks revisados por última vez el <time datetime="2026-04-24">24 de abril de 2026</time> &middot;
     Niveles de comisión de DoorDash (15 / 25 / 30%), franja saludable de prime cost de la NRA
@@ -1173,6 +1198,7 @@
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="./margin-math.js?v=20260428-mm5"></script>
+<script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Sincronía de escenario compartida. Cada IIFE de calculadora
  * registra su propia función getState(); al interactuar, re-codifica
@@ -1202,7 +1228,59 @@
     try {
       history.replaceState(null, '', '#' + window.MM.encodeState(state));
     } catch (_e) { /* no fatal */ }
+    // Phase 2 (Workshop) — nudge the Save affordance after every fragment sync.
+    if (typeof window.__mmNotifyWb === 'function') window.__mmNotifyWb();
   };
+})();
+
+/* Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
+ * Payload is just the URL fragment (already produced by the Copy-
+ * scenario-link button). Rehydration sets location.hash + reloads,
+ * replaying the existing boot-time __mmHydratedState path naturally. */
+(function(){
+  var wb = (typeof MuntinWorkbench === 'object' && MuntinWorkbench && typeof MuntinWorkbench.attach === 'function')
+    ? MuntinWorkbench.attach({
+        elements: { box:'#mmSave', btn:'#mmSaveBtn', link:'#mmSaveLink', text:'#mmSaveText', msg:'#mmSaveMsg' },
+        locale:   'es',
+        kind:     'margin',
+        titleFor: function (p) {
+          var frag = (p && typeof p.fragment === 'string') ? p.fragment : '';
+          var nsHits = {};
+          frag.replace(/[#&]([a-z]+)\./g, function (_, ns) { nsHits[ns] = true; return ''; });
+          var n = Object.keys(nsHits).length;
+          if (!n) return 'Margin math — escenario vacío';
+          return 'Margin math — ' + n + ' calc' + (n === 1 ? '' : 's');
+        },
+        onRehydrate: function (p) {
+          if (!p || typeof p.fragment !== 'string') return;
+          if (location.hash !== p.fragment) {
+            try { location.hash = p.fragment; } catch (_) {}
+          }
+          location.reload();
+        },
+        workbenchUrl: '/es/workbench/',
+        signinUrl:    '/es/sign-in/?returnTo=%2Fes%2Ftools%2Fmargin-math%2F',
+      })
+    : null;
+
+  function getPayload(){ return { fragment: (location.hash || ''), savedAt: Date.now() }; }
+  function hasMeaningfulState(){
+    if (window.__mmUserInteracted) return true;
+    var hyd = window.__mmHydratedState || {};
+    for (var k in hyd) {
+      if (hyd.hasOwnProperty(k) && hyd[k] && typeof hyd[k] === 'object') {
+        for (var inner in hyd[k]) {
+          if (hyd[k].hasOwnProperty(inner)) return true;
+        }
+      }
+    }
+    return false;
+  }
+  window.__mmNotifyWb = function(){
+    if (!wb) return;
+    if (hasMeaningfulState()) wb.showAffordance(getPayload());
+  };
+  window.__mmNotifyWb();
 })();
 
 /* Popovers del glosario. Intercepta clic y hover en los enlaces del
