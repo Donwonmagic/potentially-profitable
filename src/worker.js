@@ -188,6 +188,10 @@ import {
   // Phase F.3 (Field Notes) — submission notification + approval emails.
   submissionNotificationEmail,
   submissionApprovedEmail,
+  // Phase W.2 (The Window) — notify-Don batch, reply-to-user, confirmation.
+  windowNotifyDonEmail,
+  windowReplyToUserEmail,
+  windowConfirmationEmail,
 } from './lib/templates.js';
 import {
   // Phase F.3 (Field Notes) — server-side submission storage + validation.
@@ -220,6 +224,8 @@ import {
   iterateAdminQueue,
   checkAndStampThrottle as checkAndStampWindowThrottle,
   pushPendingDon,
+  iteratePendingDonReady,
+  msgKey as windowMsgKey,
   setActiveMeta as setWindowActiveMeta,
   getActiveMeta as getWindowActiveMeta,
   threadKey as windowThreadKey,
@@ -839,6 +845,64 @@ export default {
       }
     }
 
+    // Phase W.2 (The Window) — flush pending-don email batches.
+    // Each pending row carries the firstAt timestamp; when older
+    // than PENDING_DON_BATCH_MS (2 min), we emit a single
+    // coalesced email to Don summarizing the batched messages,
+    // then delete the pending row. Capped per-tick to keep the
+    // existing PER_TICK_BUDGET healthy.
+    let windowBatchesFlushed = 0;
+    let windowBatchesFailed = 0;
+    if (_windowGate(env) && env.RESEND_API_KEY && env.NOTIFY_EMAIL) {
+      const WINDOW_BATCH_BUDGET = 20;
+      try {
+        let processed = 0;
+        for await (const { sub, row, key } of iteratePendingDonReady(env)) {
+          if (processed >= WINDOW_BATCH_BUDGET) break;
+          processed++;
+          try {
+            // Resolve the thread + recent excerpts for the email body.
+            const thread = await getOpenThreadForUser(env, sub);
+            if (!thread) {
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const allMsgs = await listThreadMessages(env, thread.id, 100);
+            const batch = allMsgs.filter((m) => (row.msgIds || []).includes(m.id) && m.from === 'user');
+            if (!batch.length) {
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const excerpts = batch.map((m) => String(m.body || '').slice(0, 240)).reverse();
+            const isEs = thread.locale === 'es';
+            const tmpl = windowNotifyDonEmail({
+              locale: isEs ? 'es' : 'en',
+              author: thread.email || sub.slice(0, 8),
+              email: thread.email || '',
+              excerpts,
+              adminUrl: isEs ? 'https://muntin.digital/es/admin/window/' : 'https://muntin.digital/admin/window/',
+              sub,
+              threadId: thread.id,
+            });
+            await sendEmail({
+              from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+              to: env.NOTIFY_EMAIL,
+              subject: tmpl.subject,
+              html: tmpl.html,
+              text: tmpl.text,
+            }, env.RESEND_API_KEY);
+            await env.AUTH_SESSIONS.delete(key);
+            windowBatchesFlushed++;
+          } catch (err) {
+            windowBatchesFailed++;
+            console.warn('[cron] window batch flush failed', { sub, err: err && err.message });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] iteratePendingDonReady failed', err && err.message);
+      }
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -850,6 +914,8 @@ export default {
       propertiesProcessed,
       submissionsStalled,
       submissionOrphans,
+      windowBatchesFlushed,
+      windowBatchesFailed,
       ms: Date.now() - t0,
     }));
   },
@@ -5288,7 +5354,7 @@ async function handleWindowStart(request, env, ctx) {
   // Idempotent: returns existing open thread if present.
   let thread = await getOpenThreadForUser(env, auth.sub);
   if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub); }
+    try { thread = await createWindowThread(env, auth.sub, auth.email); }
     catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
   }
   return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
@@ -5323,7 +5389,7 @@ async function handleWindowAppend(request, env, ctx) {
   // Get or create the open thread (auto-spawn new one when capped).
   let thread = await getOpenThreadForUser(env, auth.sub);
   if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub); }
+    try { thread = await createWindowThread(env, auth.sub, auth.email); }
     catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
   }
 
@@ -5335,7 +5401,32 @@ async function handleWindowAppend(request, env, ctx) {
   // Push to Don's pending email batch (cron flushes 2-min windows).
   await pushPendingDon(env, auth.sub, result.msg.id);
 
-  console.log(JSON.stringify({ event: 'window.append', sub: auth.sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt }));
+  // First-message-in-thread confirmation to the visitor (only fires
+  // when this is the first user message overall — not on every
+  // append). Best-effort.
+  const isFirstUserMessage = (result.thread.msgCount || 0) === 1;
+  if (isFirstUserMessage) {
+    try {
+      if (env.RESEND_API_KEY && auth.email) {
+        const isEs = (request.headers.get('accept-language') || '').toLowerCase().includes('es');
+        const tmpl = windowConfirmationEmail({
+          locale: isEs ? 'es' : 'en',
+          windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+        });
+        await sendEmail({
+          from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+          to: auth.email,
+          subject: tmpl.subject,
+          html: tmpl.html,
+          text: tmpl.text,
+        }, env.RESEND_API_KEY);
+      }
+    } catch (err) {
+      console.warn('[window] confirmation email failed', { msgId: result.msg.id, err: err && err.message });
+    }
+  }
+
+  console.log(JSON.stringify({ event: 'window.append', sub: auth.sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
   return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
 }
 
@@ -5466,8 +5557,36 @@ async function handleAdminWindowReply(request, env, ctx) {
   }
   // Update Don's "active" signal so the breathing dot lights up.
   await setWindowActiveMeta(env, { replyingTo: threadId });
+
+  // Email the visitor with Don's reply inline. Best-effort — the
+  // message is already persisted; visitor will see it on their
+  // next visit/poll regardless of email delivery.
+  const recipientEmail = thread.email || null;
+  if (recipientEmail) {
+    try {
+      if (env.RESEND_API_KEY) {
+        const isEs = String(body.locale || '').toLowerCase() === 'es';
+        const tmpl = windowReplyToUserEmail({
+          locale: isEs ? 'es' : 'en',
+          body: sanitized,
+          windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+        });
+        await sendEmail({
+          from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+          to: recipientEmail,
+          subject: tmpl.subject,
+          html: tmpl.html,
+          text: tmpl.text,
+        }, env.RESEND_API_KEY);
+      }
+    } catch (err) {
+      console.warn('[window] reply email failed', { msgId: result.msg.id, err: err && err.message });
+    }
+  } else {
+    console.log(JSON.stringify({ event: 'window.reply.no-email', sub, threadId, msgId: result.msg.id }));
+  }
+
   console.log(JSON.stringify({ event: 'window.reply', sub, threadId, msgId: result.msg.id, ts: result.msg.createdAt }));
-  // Phase W.2 will fire an email to the user here. Stub for now.
   return jsonResponse({ ok: true, msgId: result.msg.id, createdAt: result.msg.createdAt }, 200);
 }
 

@@ -148,7 +148,9 @@ export async function listThreadMessages(env, threadId, limit = 50) {
 }
 
 // Create a new thread for a user. Updates the per-user index.
-export async function createThread(env, sub) {
+// `email` is stored on the thread row so the admin reply path can
+// look up the recipient address without a separate KV scan.
+export async function createThread(env, sub, email = null) {
   let id = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     const candidate = mintThreadId();
@@ -160,6 +162,7 @@ export async function createThread(env, sub) {
   const thread = {
     id,
     sub,
+    email: email || null,
     status: 'open',
     createdAt: now,
     updatedAt: now,
