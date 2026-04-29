@@ -47,6 +47,7 @@ const CHECKS = [
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],
+  ['Contributor pages (idem)','build-people-pages.mjs','--check'],
   ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
 ];

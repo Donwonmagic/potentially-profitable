@@ -5089,6 +5089,16 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 /* Workshop submission status pill (pending/approved/passed). */
 .wsh-item-status{font-size:13px;color:var(--stone);margin-left:6px;font-style:italic}
 
+/* Phase F.7 (Field Notes) — contributor pages at /people/<slug>/.
+   The header reuses .hero / .hero-tight; the notes stack reuses
+   .callout--field. Below adds only the per-page chrome. */
+.people-hero{max-width:760px;margin:0 auto;text-align:center}
+.people-notes{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.people-note .callout-eyebrow a{color:inherit;border-bottom:1px solid currentColor}
+.people-note__date{font-size:12px;color:var(--stone);margin:8px 0 0;font-style:normal;letter-spacing:0.06em;text-transform:uppercase}
+.callout-author-link{color:inherit;border-bottom:1px solid currentColor;text-decoration:none}
+.callout-author-link:hover{color:var(--teal)}
+
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
    to teach the concept behind the score. Distinct from the
