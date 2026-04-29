@@ -106,13 +106,58 @@ seven prefixes (`.cmp-`, `.speed-`, `.mob-`, `.seo-`, `.sch-`,
 `.si-`, `.ts-`). When you add an 8th tool, add its prefix to those
 selector lists. Don't create a bespoke form pattern.
 
+#### Tool page header pattern (Sprint 7 — locked)
+
+Every tool page renders its hero in this order — no exceptions:
+
+```
+<eyebrow> →  <h1> →  <lede> →  <primary input form>
+```
+
+**Eyebrow rule** — the eyebrow is a tool-meta line, not a brand
+locator. Always begins with `Free tool · ` (EN) or
+`Herramienta gratis · ` (ES), followed by ONE qualifier:
+
+| Tool kind | Qualifier (EN / ES) | Examples |
+|---|---|---|
+| URL fetch — fast (~10s) | `10 seconds` / `10 segundos` | seo-grader, mobile-check, schema-check, speed-test, tech-stack, gbp-grader |
+| URL fetch — slow (~30s) | `30 seconds` / `30 segundos` | compare |
+| URL fetch — instant | `Instant` / `Al instante` | search-ideas |
+| In-browser only (calculator/parser) | `stays in your browser` / `se queda en tu navegador` | menu-engineering, menu-copy, plate-cost, photo-brief, open-hours |
+| Privacy-sensitive in-browser | `Your <noun> never leaves this page` / `Tu <sustantivo> nunca sale de esta página` | brand-suite (logo), margin-math (numbers) |
+
+Never lead the eyebrow with `Muntin Digital` or `A Muntin Digital tool` —
+the brand lives in the nav logo, not in the tool meta line.
+
+**Body order** — every tool page after the hero follows the same
+sequence:
+
+```
+<primary input form>
+<note>                          ← one-line caveat under the form
+<tool-states-slot>              ← shared loading/error states (Sprint 5/6)
+<{prefix}-result>               ← the actual result region
+<{prefix}-save>                 ← Save-to-Workshop affordance, INSIDE
+                                  or IMMEDIATELY AFTER the result
+<{prefix}-cta>                  ← related-tool CTA cards
+<!-- tool-deep-links -->        ← knit aside (one glossary + one article)
+```
+
+**Save affordance position** — the Save card lives inside the
+result region (or immediately after it), never below the
+deep-links block. The principle: a successful result should
+prompt the save in the same eyeful.
+
 A new tool checklist:
 
 - [ ] HTML uses the `.{prefix}-form`, `.{prefix}-note`, `.{prefix}-result`, `.{prefix}-cta` classes
+- [ ] Hero eyebrow uses the `Free tool · <qualifier>` pattern (and ES counterpart) — see table above
 - [ ] Inline `<style>` block contains only result-rendering rules
 - [ ] All radii use `--r-input`, `--r-sm`, or `--r-md`
 - [ ] All shadows use `--elev-1/2/3`
-- [ ] Tool registers two "Learn more" slots: at least one glossary term, at least one article (Phase 3 — coming)
+- [ ] If the tool fetches URLs: integrate `tools/_shared/states.js` (a `tool-states-slot` element + the four-states wiring)
+- [ ] Save affordance lives inside or directly under the result region — never below `<!-- tool-deep-links -->`
+- [ ] Tool registers a knit entry in `data/tool-knit.json` (one glossary term + one article)
 
 ### Article shell
 
