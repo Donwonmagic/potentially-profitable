@@ -71,7 +71,7 @@ for (const [slug, post] of Object.entries(tags.blog_posts || {})) {
 }
 
 candidates.sort((a, b) => b.date.localeCompare(a.date));
-const top = candidates.slice(0, 3);
+const top = candidates.slice(0, 8);
 
 if (top.length < 3) {
   console.error(`build-library-recent: only ${top.length} dated items found; expected at least 3.`);
@@ -79,34 +79,91 @@ if (top.length < 3) {
 }
 
 // --- render -----------------------------------------------------------
+//
+// Phase 5 Move 5 (Field Guide editorial): the strip is rendered as
+// a tabular index, not a card grid. Same data, different posture —
+// reads like the cover of a reference work, lets us show 8 entries
+// instead of 3, and the dedicated Contributor column is reserved
+// for the day a guest byline ships (no markup change required to
+// surface it).
+//
+// Section column is derived from the eyebrow string: "New tool" →
+// "Tools", "New article" → "Articles", "Nueva investigación" →
+// "Investigación", etc. Falls through to the eyebrow itself if the
+// short-form lookup misses (defensive: a future eyebrow value
+// without a mapped Section just reads as the eyebrow string).
+const SECTION_FROM_EYEBROW = {
+  // EN
+  'New tool':           'Tools',
+  'New article':        'Articles',
+  'New research':       'Research',
+  'New checklist':      'Checklists',
+  'New playbook':       'Articles',
+  'New term':           'Glossary',
+  // ES
+  'Nueva herramienta':  'Herramientas',
+  'Nuevo artículo':     'Artículos',
+  'Nueva investigación': 'Investigación',
+  'Nueva lista':        'Listas',
+  'Nuevo playbook':     'Artículos',
+  'Nuevo término':      'Glosario',
+};
 
-function renderCard(item, locale) {
+function sectionFor(eyebrow) {
+  return SECTION_FROM_EYEBROW[eyebrow] || eyebrow || '—';
+}
+
+function renderRow(item, locale) {
   const eyebrow = locale === 'en' ? item.eyebrow_en : item.eyebrow_es;
   const title   = locale === 'en' ? item.title_en   : item.title_es;
   const url     = locale === 'en' ? item.url_en     : item.url_es;
-  return `      <li>
-        <a class="recently-added__card" href="${escAttr(url)}">
-          <span class="recently-added__eyebrow">${escText(eyebrow)}</span>
-          <h3>${escText(title)}</h3>
-          <span class="recently-added__date" aria-label="${escAttr(item.date)}">${escText(item.date)}</span>
-        </a>
-      </li>`;
+  const section = sectionFor(eyebrow);
+  // Contributor stays as-is until a real byline ships. Hardcoded to
+  // "Don Goldstein" today; future entries can carry a `contributor`
+  // field on the source data and replace this fallback inline.
+  const contributor = item.contributor || 'Don Goldstein';
+  return `      <tr>
+        <td class="lib-idx-title"><a href="${escAttr(url)}">${escText(title)}</a></td>
+        <td class="lib-idx-section">${escText(section)}</td>
+        <td class="lib-idx-date" aria-label="${escAttr(item.date)}"><time datetime="${escAttr(item.date)}">${escText(item.date)}</time></td>
+        <td class="lib-idx-contributor">${escText(contributor)}</td>
+      </tr>`;
 }
 
 function renderBody(locale) {
-  const eyebrow = locale === 'en' ? 'Just shipped' : 'Recién publicado';
+  const eyebrow = locale === 'en' ? 'Library index' : 'Índice de la biblioteca';
   const heading = locale === 'en' ? 'Recently added.' : 'Añadido recientemente.';
-  const cards   = top.map((c) => renderCard(c, locale)).join('\n');
+  const subhead = locale === 'en'
+    ? 'The eight most recent entries across the library — articles, research, tools, and checklists. Older entries live in the topic shelves below.'
+    : 'Las ocho entradas más recientes de la biblioteca — artículos, investigación, herramientas y listas. Las entradas antiguas viven en las secciones por tema más abajo.';
+  const colTitle    = locale === 'en' ? 'Title'        : 'Título';
+  const colSection  = locale === 'en' ? 'Section'      : 'Sección';
+  const colDate     = locale === 'en' ? 'Last updated' : 'Última actualización';
+  const colContrib  = locale === 'en' ? 'Contributor'  : 'Autor';
+  const captionText = locale === 'en' ? 'Recently added across the library' : 'Añadidos recientes en toda la biblioteca';
+  const rows        = top.map((c) => renderRow(c, locale)).join('\n');
   return `${SENTINEL_OPEN}
 <section class="block recently-added" aria-labelledby="recently-added-heading">
   <div class="container">
     <header class="recently-added__head">
       <span class="eyebrow">${escText(eyebrow)}</span>
       <h2 id="recently-added-heading">${escText(heading)}</h2>
+      <p class="recently-added__sub">${escText(subhead)}</p>
     </header>
-    <ul class="recently-added__grid">
-${cards}
-    </ul>
+    <table class="lib-idx" role="table">
+      <caption class="sr-only">${escText(captionText)}</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="lib-idx-title">${escText(colTitle)}</th>
+          <th scope="col" class="lib-idx-section">${escText(colSection)}</th>
+          <th scope="col" class="lib-idx-date">${escText(colDate)}</th>
+          <th scope="col" class="lib-idx-contributor">${escText(colContrib)}</th>
+        </tr>
+      </thead>
+      <tbody>
+${rows}
+      </tbody>
+    </table>
   </div>
 </section>
 ${SENTINEL_CLOSE}`;
