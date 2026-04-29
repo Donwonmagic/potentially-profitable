@@ -75,6 +75,16 @@
      individual check marks on tools that don't grade. Distinct from
      --status-good (which is for primary grades). */
   --status-pass:        #1f9d55;
+
+  /* Phase 5 (Workshop) — Field Guide editorial tokens. The site is
+     accidentally a reference work for restaurant operators; these
+     tokens give prose surfaces a consistent reading posture without
+     touching tool surfaces. Apply via `.prose` wrapper class on
+     article bodies (/blog/, /learn/, /glossary/<term>/, About).
+     DO NOT apply to /tools/ result surfaces — utility stays utilitarian. */
+  --prose-measure:      64ch;             /* upgrades to 66ch on lg breakpoints */
+  --leading-prose:      1.6;
+  --rule:               1px solid var(--surface-2);  /* hairline rules vs cards on index pages */
 }
 
 /* ============ Status components (Sprint 0) ============
@@ -206,6 +216,64 @@
 
 @media (prefers-reduced-motion: reduce){
   .progress-ring-fill{transition:none}
+}
+
+/* ============ Phase 5 — Field Guide editorial surfaces ============
+   The .prose wrapper turns any container into a reading surface: a
+   64ch measure (66ch from md), generous leading, tabular figures by
+   default. Drop cap is opt-in via .prose--lede. Designed to be applied
+   to article bodies in /blog/, /learn/ articles, /glossary/<term>/,
+   and the About narrative — NEVER /tools/ result surfaces. */
+.prose{
+  max-width:var(--prose-measure);
+  margin-left:auto;
+  margin-right:auto;
+  line-height:var(--leading-prose);
+  font-variant-numeric:tabular-nums;
+}
+@media (min-width:760px){
+  .prose{max-width:66ch}
+}
+.prose p + p{margin-top:1.1em}
+.prose h2{margin-top:1.6em}
+.prose h3{margin-top:1.4em}
+/* Drop cap is opt-in: add `prose--lede` to the wrapper to enable on
+   the first paragraph only. Wrapped in @supports so older browsers
+   fall through to plain ::first-letter and never break layout. Disabled
+   under 420px because the cap eats too much measure on small screens. */
+@media (min-width:420px){
+  @supports (initial-letter: 2){
+    .prose--lede > p:first-of-type::first-letter{
+      initial-letter:2;
+      -webkit-initial-letter:2;
+      font-family:var(--font-display);
+      font-weight:500;
+      color:var(--ink);
+      margin-right:0.08em;
+    }
+  }
+}
+
+/* Hairline rules over cards on index pages. Applies to .learn-shelf
+   .shelf-item, .blog-index .post-card, .glossary-index .term-card —
+   if the existing markup uses different selectors the only thing
+   that changes is which cards get the strip; cards elsewhere on the
+   site (homepage teasers, tool result cards, /work/ tiles) keep
+   their boxes. */
+.learn-shelf .shelf-item,
+.blog-index .post-card,
+.glossary-index .term-card{
+  background:transparent;
+  box-shadow:none;
+  border:0;
+  border-top:var(--rule);
+  border-radius:0;
+  padding:18px 4px;
+}
+.learn-shelf .shelf-item:last-child,
+.blog-index .post-card:last-child,
+.glossary-index .term-card:last-child{
+  border-bottom:var(--rule);
 }
 
 /* ----- .score-card — wrapper composing existing pieces ----- */
@@ -722,6 +790,12 @@ p{margin:0}
 .hero-note strong{color:var(--ink-soft);font-weight:600;margin-right:2px}
 .hero-meta{margin-top:44px;display:flex;align-items:center;gap:16px;color:var(--ink-soft);font-size:14px}
 .hero-meta-sub{color:var(--stone)}
+/* Phase 5 (Workshop) — quieter post-script replacing .hero-meta on the
+   homepage. Italic, smaller, no avatar lettermark — Don's warmth lives
+   on About now, not above the fold. */
+.hero-meta-note{margin:36px 0 0;font-size:14px;line-height:1.55;color:var(--stone);max-width:46ch}
+.hero-meta-note em{font-style:italic;color:var(--ink-soft)}
+.hero-meta-note .hero-meta-sub{display:block;margin-top:6px;font-size:12.5px;font-variant-numeric:tabular-nums}
 .hero-meta .avatar{width:44px;height:44px;border-radius:999px;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);color:var(--cream);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;flex:0 0 44px;box-shadow:0 8px 20px -8px rgba(20,22,26,0.25)}
 .window{position:relative;width:100%;aspect-ratio:5 / 6;background:var(--cream);border:1px solid var(--line-dark);border-radius:6px;box-shadow:0 50px 90px -40px rgba(20,22,26,0.25),0 20px 40px -20px rgba(31,78,91,0.15);display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);overflow:hidden;transform-style:preserve-3d;perspective:1200px}
 .pane{position:relative;background:radial-gradient( 120% 120% at 20% 10%,rgba(255,255,255,0.9) 0%,rgba(232,241,243,0.85) 35%,rgba(201,102,45,0.12) 100% );overflow:hidden;transition:transform var(--t-med) var(--ease)}
