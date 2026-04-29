@@ -791,3 +791,56 @@ export function magicLinkEmail(body) {
 
   return { subject, html, text: txt };
 }
+
+// ============================================================
+// Sprint 0 (Workshop) — account-delete confirmation email.
+// ============================================================
+//
+// Phase 3 destructive-action two-step. Operator types their email
+// on /account/, server mints a single-use `delete:<TOKEN10>` (15-min
+// TTL), this email arrives. Clicking the button finalizes the wipe.
+//
+// Tone: explicit and non-reversible. The user gets one chance to
+// back out by NOT clicking; the link itself does the work. Mirrors
+// the magic-link email's structure so the two feel like one system.
+export function accountDeleteEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.accountDeleteEmail === 'function') {
+    return ES.accountDeleteEmail(body);
+  }
+  const link = String(body.link || '').trim();
+  const email = String(body.email || '').trim();
+  const subject = 'Confirm: delete your Muntin Workshop account';
+
+  const html = htmlShell(
+    'Confirm account deletion',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#2A2D33;">You asked to delete the Muntin Workshop account for <strong>' + escapeHtml(email) + '</strong>. Click the button below to finalize. The link works <strong>once</strong> and expires in <strong>15 minutes</strong>.</p>',
+      '<p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:#8A3E16;background:#F7E7DC;border:1px solid #C28B2E;border-radius:8px;padding:14px 18px;"><strong>This is permanent.</strong> Clicking will delete your account record and every saved item and watch attached to it. There is no undo and no recovery — re-signing-in afterwards starts a fresh, empty Workshop.</p>',
+      primaryCta(link, 'Yes, delete my account'),
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">If the button doesn\'t work, paste this link into your browser:</p>',
+      '<p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#1F4E5B;word-break:break-all;"><a href="' + escapeHtml(link) + '" style="color:#1F4E5B;text-decoration:underline;">' + escapeHtml(link) + '</a></p>',
+      '<p style="margin:24px 0 0;font-size:14px;line-height:1.55;color:#6B6B6B;"><strong>If you didn\'t request this</strong>, ignore the email — nothing happens until the link is clicked. The link expires on its own.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'You requested account deletion from muntin.digital.'
+  );
+
+  const txt = [
+    'Confirm: delete your Muntin Workshop account.',
+    '',
+    'You asked to delete the account for ' + email + '. Click the link to finalize. It works once and expires in 15 minutes.',
+    '',
+    'THIS IS PERMANENT. The wipe deletes your account record and every saved item and watch attached to it. No undo, no recovery.',
+    '',
+    link,
+    '',
+    "If you didn't request this, ignore the email — nothing happens until the link is clicked.",
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].join('\n');
+
+  return { subject, html, text: txt };
+}

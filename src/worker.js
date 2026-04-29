@@ -120,7 +120,11 @@ const FORM_RATE_LIMIT_PATHS = new Set([
   // is the right gate: each POST triggers a Resend email and a KV
   // write. Verify + me + signout stay on the lighter API tier.
   '/api/auth/magic-link',
-  '/api/auth/signout'
+  '/api/auth/signout',
+  // Phase 3 — destructive: form-tier rate-limit (10/IP/hour). Each
+  // POST mints a delete: token + sends an email; confirm side stays
+  // on the lighter tier since GETs are idempotent.
+  '/api/auth/account-delete-request'
 ]);
 // D1: /api/audit-snapshot intentionally stays on the lighter
 // api-tier (30/min/IP) — a legit shared link might be opened by
@@ -137,6 +141,7 @@ import {
   auditDeepReportAutoResponder,
   reauditReminder,
   magicLinkEmail,
+  accountDeleteEmail,
 } from './lib/templates.js';
 
 
@@ -172,6 +177,11 @@ const API_ROUTES = {
   '/api/auth/verify':     handleAuthVerify,
   '/api/auth/me':         handleAuthMe,
   '/api/auth/signout':    handleAuthSignout,
+  // Phase 3 (Workshop) — destructive-action two-step:
+  //   request: typed-email confirm → mint delete:<TOKEN10> → email
+  //   confirm: GET clicked from email → wipe user + saves + watches
+  '/api/auth/account-delete-request': handleAuthAccountDeleteRequest,
+  '/api/auth/account-delete-confirm': handleAuthAccountDeleteConfirm,
   // Phase 2 (Workshop) — saved-items library. All four require a
   // valid session; anonymous calls return 401. Per-user scoping at
   // the KV-key level (save:<sub>:...) means a missing IDOR check
@@ -229,9 +239,13 @@ export default {
       // snapshot, GET (?token=XXX) reads one. Branches via a third
       // arm so neither of the existing method-checks below rejects
       // a legitimate call.
-      if (pathname === '/api/audit-snapshot') {
+      if (pathname === '/api/audit-snapshot' || pathname === '/api/auth/account-delete-confirm') {
+        // Both endpoints branch on method internally:
+        //   - audit-snapshot: GET reads, POST creates
+        //   - account-delete-confirm: GET renders confirmation page,
+        //     POST does the wipe (split prevents email-prefetch wipes)
         if (request.method !== 'GET' && request.method !== 'POST') {
-          return jsonResponse({ ok: false, error: 'Method not allowed — audit-snapshot accepts GET or POST' }, 405);
+          return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
       } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list') {
         if (request.method !== 'GET') {
@@ -3979,6 +3993,239 @@ async function handleAuthSignout(request, env, ctx) {
   const headers = new Headers({ Location: '/' });
   clearSessionCookie(headers);
   return new Response(null, { status: 302, headers });
+}
+
+
+// ============================================================
+// Phase 3 (Workshop) — /api/auth/account-delete-request
+// ============================================================
+//
+// Two-step destructive flow, step 1: operator types their email on
+// /account/, this handler validates the typed email against the
+// session, mints a single-use `delete:<TOKEN10>` KV row (15-min TTL),
+// and emails a confirmation link that lands on
+// /api/auth/account-delete-confirm.
+//
+// The typed-email match is the real "are you sure" gate. We could
+// require a checkbox or a hold-to-delete instead, but typing your
+// own email is unambiguous, screen-reader-friendly, and standard.
+async function handleAuthAccountDeleteRequest(request, env, ctx) {
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    console.warn('[auth/account-delete-request] AUTH_SESSIONS missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  if (!env.RESEND_API_KEY) {
+    console.warn('[auth/account-delete-request] RESEND_API_KEY missing — 503');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  const session = await getSessionFromRequest(request, env);
+  if (!session) {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  const lenGate = enforceMaxLengths(body, { email: 254, locale: 8 });
+  if (!lenGate.ok) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+
+  // Typed email must match the session email (trimmed, case-insensitive).
+  const typed = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+  const sessionEmail = String(session.email || '').trim().toLowerCase();
+  if (!typed || typed !== sessionEmail) {
+    return jsonResponse({ ok: false, error: 'email-mismatch' }, 400);
+  }
+
+  // Mint delete: token (same alphabet/length as magic-link tokens).
+  let token = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintMagicLinkToken();
+    const existing = await env.AUTH_SESSIONS.get('delete:' + candidate);
+    if (!existing) { token = candidate; break; }
+  }
+  if (!token) {
+    console.warn('[auth/account-delete-request] token collision retry exhausted');
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  const now = Date.now();
+  const payload = {
+    sub: session.payload.sub,
+    email: session.email,
+    createdAt: now,
+  };
+  await env.AUTH_SESSIONS.put('delete:' + token, JSON.stringify(payload), {
+    expirationTtl: MAGIC_LINK_TTL_SECONDS,
+  });
+
+  const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL))
+    || new URL(request.url).origin;
+  const link = baseUrl + '/api/auth/account-delete-confirm?token=' + encodeURIComponent(token);
+
+  const bodyLang = typeof body.locale === 'string' ? body.locale.toLowerCase() : '';
+  const locale = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+
+  const tpl = accountDeleteEmail({ email: session.email, link, locale });
+  const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+  const sendRes = await sendEmail({
+    from: fromEmail,
+    to: session.email,
+    replyTo: 'don@muntin.digital',
+    subject: tpl.subject,
+    html: tpl.html,
+    text: tpl.text,
+  }, env.RESEND_API_KEY);
+
+  if (!sendRes.ok) {
+    console.warn('[auth/account-delete-request] resend failed:', sendRes.error);
+  }
+
+  return jsonResponse({ ok: true }, 200);
+}
+
+
+// ============================================================
+// Phase 3 (Workshop) — /api/auth/account-delete-confirm
+// ============================================================
+//
+// Two-step destructive flow, step 2. The email link is GET; clicking
+// renders a confirmation page with a POST form. The POST does the
+// actual wipe. This split exists because some email security gateways
+// pre-fetch every link in an inbound email to scan for malware — a
+// pure-GET wipe would let those scanners delete the account before
+// the operator ever opens the email.
+//
+// GET responsibilities: validate token shape, read the delete: row
+// (DO NOT delete it yet), render an HTML confirmation page.
+// POST responsibilities: validate origin (CSRF), validate token,
+// consume the row (one-shot), wipe save:<sub>:*, watch:<sub>:*,
+// user:<sub>, clear the session cookie, render success page.
+async function handleAuthAccountDeleteConfirm(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || '';
+  const method = request.method;
+  const lang = pickLang(request);
+
+  function htmlPage(title, body, status) {
+    return new Response(
+      '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<meta name="robots" content="noindex">' +
+      '<title>' + title + ' — Muntin Digital</title>' +
+      '<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">' +
+      '</head><body style="background:var(--cream);color:var(--ink);">' +
+      '<main style="max-width:560px;margin:80px auto;padding:0 20px;font-family:Inter,system-ui,sans-serif;">' +
+      '<p style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 16px;">Muntin Digital</p>' +
+      '<h1 style="font-family:Fraunces,Georgia,serif;font-size:32px;font-weight:500;margin:0 0 16px;line-height:1.2;">' + title + '</h1>' +
+      body +
+      '</main></body></html>',
+      { status: status || 200, headers: { 'content-type': 'text/html; charset=utf-8' } }
+    );
+  }
+
+  const goneTitle = lang === 'es' ? 'Este enlace ya no funciona' : 'This link no longer works';
+  const goneBody  = lang === 'es'
+    ? '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 24px;">El enlace de eliminación vence después de 15 minutos o de un solo uso. Pide uno nuevo desde tu página de cuenta.</p><p><a href="/es/account/" style="color:var(--teal);text-decoration:underline;">Volver a /es/account/</a></p>'
+    : '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 24px;">Account-delete links expire after 15 minutes or a single use. Request a new one from your account page.</p><p><a href="/account/" style="color:var(--teal);text-decoration:underline;">Return to /account/</a></p>';
+  function gonePage() { return htmlPage(goneTitle, goneBody, 410); }
+
+  if (!isValidMagicLinkTokenShape(token)) return gonePage();
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
+  // GET: render confirmation page (does NOT consume the token).
+  if (method === 'GET') {
+    const raw = await env.AUTH_SESSIONS.get('delete:' + token);
+    if (!raw) return gonePage();
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch { return gonePage(); }
+    const emailLabel = (parsed && parsed.email) ? String(parsed.email) : '';
+
+    const confirmTitle = lang === 'es' ? 'Confirma eliminación' : 'Confirm deletion';
+    const confirmBody = lang === 'es'
+      ? '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;">Estás a punto de eliminar <strong>' + emailLabel + '</strong>. Esta acción borra el registro de tu cuenta y todos los items guardados y vigilancias asociados. <strong>No hay deshacer.</strong></p>' +
+        '<form method="POST" action="/api/auth/account-delete-confirm?token=' + encodeURIComponent(token) + '" style="margin:24px 0;">' +
+        '<button type="submit" style="display:inline-block;background:var(--rust);color:#fff;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-size:15px;font-weight:500;cursor:pointer;">Sí, eliminar mi cuenta</button>' +
+        '</form>' +
+        '<p style="font-size:14px;line-height:1.55;color:var(--stone);margin:24px 0 0;">¿Cambiaste de opinión? <a href="/es/workbench/" style="color:var(--teal);text-decoration:underline;">Volver al Taller</a> sin eliminar.</p>'
+      : '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;">You\'re about to delete <strong>' + emailLabel + '</strong>. This wipes your account record and every saved item and watch attached to it. <strong>There is no undo.</strong></p>' +
+        '<form method="POST" action="/api/auth/account-delete-confirm?token=' + encodeURIComponent(token) + '" style="margin:24px 0;">' +
+        '<button type="submit" style="display:inline-block;background:var(--rust);color:#fff;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-size:15px;font-weight:500;cursor:pointer;">Yes, delete my account</button>' +
+        '</form>' +
+        '<p style="font-size:14px;line-height:1.55;color:var(--stone);margin:24px 0 0;">Changed your mind? <a href="/workbench/" style="color:var(--teal);text-decoration:underline;">Back to the Workshop</a> without deleting.</p>';
+    return htmlPage(confirmTitle, confirmBody, 200);
+  }
+
+  // POST: do the wipe. Origin allowlist + token consume + cascade delete.
+  if (method === 'POST') {
+    if (!isOriginAllowed(request)) {
+      return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+    }
+
+    const raw = await env.AUTH_SESSIONS.get('delete:' + token);
+    if (!raw) return gonePage();
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch { return gonePage(); }
+    if (!parsed || typeof parsed.sub !== 'string') return gonePage();
+
+    const sub = parsed.sub;
+    // Consume the token first so a partial-failure retry can't reuse it.
+    await env.AUTH_SESSIONS.delete('delete:' + token);
+
+    // Cascade-wipe save:<sub>:*  watch:<sub>:*  user:<sub>.
+    // Cursor-paged so a future at-scale account with hundreds of saves
+    // doesn't blow the per-call list budget.
+    async function wipePrefix(prefix) {
+      let cursor = null;
+      while (true) {
+        const opts = { prefix };
+        if (cursor) opts.cursor = cursor;
+        const page = await env.AUTH_SESSIONS.list(opts);
+        for (const k of page.keys) {
+          await env.AUTH_SESSIONS.delete(k.name);
+        }
+        if (page.list_complete || !page.cursor) break;
+        cursor = page.cursor;
+      }
+    }
+    try { await wipePrefix('save:' + sub + ':'); }
+    catch (err) { console.warn('[auth/account-delete-confirm] save wipe failed:', err && err.message); }
+    try { await wipePrefix('watch:' + sub + ':'); }
+    catch (err) { console.warn('[auth/account-delete-confirm] watch wipe failed:', err && err.message); }
+    try { await env.AUTH_SESSIONS.delete('user:' + sub); }
+    catch (err) { console.warn('[auth/account-delete-confirm] user-row delete failed:', err && err.message); }
+
+    const successTitle = lang === 'es' ? 'Cuenta eliminada' : 'Account deleted';
+    const successBody  = lang === 'es'
+      ? '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 24px;">Tu cuenta y todos los items guardados se han eliminado. Si vuelves a acceder, empezarás con un Taller vacío.</p><p><a href="/" style="color:var(--teal);text-decoration:underline;">Volver al inicio</a></p>'
+      : '<p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 24px;">Your account and every saved item have been deleted. If you sign in again, you\'ll start with a fresh, empty Workshop.</p><p><a href="/" style="color:var(--teal);text-decoration:underline;">Return to home</a></p>';
+
+    const headers = new Headers({ 'content-type': 'text/html; charset=utf-8' });
+    clearSessionCookie(headers);
+    const html = '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<meta name="robots" content="noindex">' +
+      '<title>' + successTitle + ' — Muntin Digital</title>' +
+      '<link rel="stylesheet" href="/assets/site.css?v=20260428-sprint0-tokens">' +
+      '</head><body style="background:var(--cream);color:var(--ink);">' +
+      '<main style="max-width:560px;margin:80px auto;padding:0 20px;font-family:Inter,system-ui,sans-serif;">' +
+      '<p style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 16px;">Muntin Digital</p>' +
+      '<h1 style="font-family:Fraunces,Georgia,serif;font-size:32px;font-weight:500;margin:0 0 16px;line-height:1.2;">' + successTitle + '</h1>' +
+      successBody +
+      '</main></body></html>';
+    return new Response(html, { status: 200, headers });
+  }
+
+  return new Response('Method not allowed', { status: 405 });
 }
 
 
