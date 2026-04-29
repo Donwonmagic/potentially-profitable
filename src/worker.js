@@ -80,7 +80,9 @@ import {
   ALLOWED_SCHEDULES,
   WATCHABLE_KINDS,
   MAX_WATCHES_PER_USER,
+  recordWatchCheck,
 } from './lib/workbench.js';
+import { RECHECK_BY_KIND, kindLabel, shouldNotify } from './lib/watch-checks.js';
 
 // Durable Object classes must be re-exported from the Worker entry
 // module so the runtime can instantiate them when the binding fires.
@@ -142,6 +144,7 @@ import {
   reauditReminder,
   magicLinkEmail,
   accountDeleteEmail,
+  watchDiffEmail,
 } from './lib/templates.js';
 
 
@@ -486,23 +489,140 @@ export default {
       console.warn('[cron] scheduled() invoked but AUTH_SESSIONS missing; skipping');
       return;
     }
-    // Phase 3 implementation hook lives here. For the scaffolding
-    // commit, just log the cron tick so ops can see it firing if
-    // they uncomment the trigger as a smoke test.
-    let count = 0;
-    try {
-      for await (const _entry of iterateAllWatches(env)) {
-        count++;
-        // Phase 3: dispatch to the per-kind re-check fn here.
+    const t0 = Date.now();
+    // Per-tick budget: bail at ~200 watches so a runaway namespace
+    // can't blow the Cron Worker's 30s execution budget. At today's
+    // scale this is hugely overkill; revisit once active accounts
+    // pass ~500.
+    const PER_TICK_BUDGET = 200;
+    // Concurrency: process up to BATCH_SIZE watches in parallel via
+    // Promise.allSettled so one slow upstream (PSI cold cache) can't
+    // serialize the others.
+    const BATCH_SIZE = 5;
+
+    let attempted = 0;
+    let rechecked = 0;
+    let notified  = 0;
+    let errors    = 0;
+    let batch     = [];
+
+    async function processOne(entry) {
+      const { sub, watch } = entry;
+      const kind = watch && watch.kind;
+      const recheck = RECHECK_BY_KIND[kind];
+      if (!recheck) return;
+      const itemId = watch.savedItemId;
+      try {
+        // Pull the underlying save row for the URL/payload context.
+        const saved = await getItem(env, sub, itemId);
+        if (!saved) {
+          // Save row was deleted but watch row survived — clean up.
+          // Phase 4 follow-up could detach the orphan watch here;
+          // for now just skip so the cron tick stays read-mostly.
+          return;
+        }
+        const result = await recheck(env, saved);
+        rechecked++;
+        const oldScore = (typeof watch.lastScore === 'number') ? watch.lastScore
+                       : (typeof watch.baselineScore === 'number') ? watch.baselineScore
+                       : null;
+        const newScore = (result && typeof result.score === 'number') ? result.score : null;
+        // Persist newScore even when null — recordWatchCheck handles
+        // the null case (preserves prior lastScore but updates lastCheckedAt).
+        await recordWatchCheck(env, sub, itemId, newScore);
+
+        if (!result || !result.ok) return;
+        if (!shouldNotify(oldScore, newScore, kind)) return;
+        if (!env.RESEND_API_KEY) {
+          console.warn('[cron] would notify but RESEND_API_KEY missing');
+          return;
+        }
+
+        // Look up the user's email from user:<sub> so we can address
+        // the email. A missing user row means the account was deleted
+        // but the watch row survived — same orphan case as above.
+        let email = null;
+        try {
+          const userRaw = await env.AUTH_SESSIONS.get('user:' + sub);
+          if (userRaw) {
+            const userRow = JSON.parse(userRaw);
+            if (userRow && typeof userRow.email === 'string') email = userRow.email;
+          }
+        } catch (_) { /* fall through to skip */ }
+        if (!email) return;
+
+        // Locale: derive from the saved item title (no per-user
+        // locale stored yet). ASCII-friendly fallback to 'en'.
+        const locale = (typeof saved.title === 'string' && /[áéíóúñ¿¡]/i.test(saved.title)) ? 'es' : 'en';
+        const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL)) || 'https://muntin.digital';
+        const watchUrl = baseUrl + (locale === 'es' ? '/es/workbench/' : '/workbench/');
+        // Best-effort deep-link back to the originating tool.
+        const toolPathFor = (k, lang) => {
+          const map = {
+            audit:  '/tools/audits/restaurant/',
+            seo:    '/tools/seo-grader/',
+            gbp:    '/tools/gbp-grader/',
+            mobile: '/tools/mobile-check/',
+            schema: '/tools/schema-check/',
+            speed:  '/tools/speed-test/',
+          };
+          const path = map[k] || '/tools/';
+          return baseUrl + (lang === 'es' ? '/es' : '') + path + '?saved=' + encodeURIComponent(itemId);
+        };
+
+        const tpl = watchDiffEmail({
+          locale,
+          kindLabel: kindLabel(kind, locale),
+          title: saved.title || '',
+          oldScore,
+          newScore,
+          link: toolPathFor(kind, locale),
+          watchUrl,
+        });
+        const fromEmail = (env.FROM_EMAIL && String(env.FROM_EMAIL)) || 'Don Goldstein <don@muntin.digital>';
+        const sendRes = await sendEmail({
+          from: fromEmail,
+          to: email,
+          replyTo: 'don@muntin.digital',
+          subject: tpl.subject,
+          html: tpl.html,
+          text: tpl.text,
+        }, env.RESEND_API_KEY);
+        if (sendRes && sendRes.ok) {
+          notified++;
+        } else {
+          console.warn('[cron] watchDiffEmail send failed:', sendRes && sendRes.error);
+        }
+      } catch (err) {
+        errors++;
+        console.warn('[cron] watch processing failed', err && err.message);
       }
+    }
+
+    try {
+      for await (const entry of iterateAllWatches(env)) {
+        attempted++;
+        if (attempted > PER_TICK_BUDGET) break;
+        batch.push(processOne(entry));
+        if (batch.length >= BATCH_SIZE) {
+          await Promise.allSettled(batch);
+          batch = [];
+        }
+      }
+      if (batch.length) await Promise.allSettled(batch);
     } catch (err) {
       console.warn('[cron] iterateAllWatches failed', err && err.message);
     }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
       scheduledTime: (controller && controller.scheduledTime) || null,
-      watchCount: count,
+      attempted,
+      rechecked,
+      notified,
+      errors,
+      ms: Date.now() - t0,
     }));
   },
 };

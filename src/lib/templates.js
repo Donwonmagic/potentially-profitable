@@ -844,3 +844,70 @@ export function accountDeleteEmail(body) {
 
   return { subject, html, text: txt };
 }
+
+// ============================================================
+// Phase 4 (Workshop) — watch-list diff email.
+// ============================================================
+//
+// Sent by the cron-driven scheduled() handler when a saved item's
+// re-checked score crosses the per-kind threshold (≥3 delta or any
+// state change). Tone: factual, no exclamation points, no marketing.
+// The subject names the change so an inbox preview tells the
+// operator everything before they open.
+//
+// body fields:
+//   { kindLabel, title, oldScore, newScore, link, locale, watchUrl }
+export function watchDiffEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.watchDiffEmail === 'function') {
+    return ES.watchDiffEmail(body);
+  }
+  const kindLabel = String(body.kindLabel || 'Saved item');
+  const title     = String(body.title || 'untitled');
+  const oldScore  = (typeof body.oldScore === 'number') ? body.oldScore : null;
+  const newScore  = (typeof body.newScore === 'number') ? body.newScore : null;
+  const delta     = (oldScore !== null && newScore !== null) ? (newScore - oldScore) : null;
+  const link      = String(body.link || '').trim();
+  const watchUrl  = String(body.watchUrl || '/workbench/').trim();
+
+  const direction = delta === null ? 'changed' : (delta > 0 ? 'improved' : 'dropped');
+  const arrow     = delta === null ? '→' : (delta > 0 ? '↑' : '↓');
+  const subject   = (delta !== null)
+    ? `${kindLabel} ${direction} ${Math.abs(delta)} pts: ${title}`
+    : `${kindLabel} changed: ${title}`;
+
+  const scoreLine = (oldScore !== null && newScore !== null)
+    ? '<p style="margin:0 0 18px;font-size:18px;line-height:1.55;color:#2A2D33;font-variant-numeric:tabular-nums;"><strong>' + oldScore + '</strong> &nbsp;' + arrow + '&nbsp; <strong>' + newScore + '</strong> <span style="color:#6B6B6B;font-size:14px;">(' + (delta > 0 ? '+' : '') + delta + ' pts)</span></p>'
+    : '<p style="margin:0 0 18px;font-size:16px;line-height:1.55;color:#2A2D33;">The state of this check changed since you last saw it.</p>';
+
+  const html = htmlShell(
+    kindLabel + ' ' + direction,
+    [
+      '<p style="margin:0 0 12px;font-size:13px;line-height:1.55;color:#1F4E5B;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">' + escapeHtml(kindLabel) + '</p>',
+      '<p style="margin:0 0 18px;font-size:20px;line-height:1.35;color:#14161A;font-family:Georgia,\'Times New Roman\',serif;">' + escapeHtml(title) + '</p>',
+      scoreLine,
+      link ? primaryCta(link, 'Open the saved item') : '',
+      '<div style="height:8px;line-height:8px;">&nbsp;</div>',
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.55;color:#6B6B6B;">You\'re receiving this because you have a daily watch on this item. <a href="' + escapeHtml(watchUrl) + '" style="color:#1F4E5B;text-decoration:underline;">Manage your watches</a> any time.</p>',
+      '<p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#2A2D33;">— Don<br><span style="color:#6B6B6B;font-size:13px;">Muntin Digital · Silver Spring, MD</span></p>',
+    ].join('\n'),
+    'You have a watch on this saved item.'
+  );
+
+  const txt = [
+    kindLabel + ' ' + direction + ': ' + title,
+    '',
+    (oldScore !== null && newScore !== null)
+      ? oldScore + ' ' + arrow + ' ' + newScore + '  (' + (delta > 0 ? '+' : '') + delta + ' pts)'
+      : 'The state of this check changed since you last saw it.',
+    '',
+    link ? 'Open the saved item: ' + link : '',
+    '',
+    'Manage your watches at ' + watchUrl + '.',
+    '',
+    '— Don',
+    'Muntin Digital',
+  ].filter(Boolean).join('\n');
+
+  return { subject, html, text: txt };
+}
