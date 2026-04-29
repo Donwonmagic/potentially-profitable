@@ -284,53 +284,37 @@
     var emailSlot = document.querySelector('[data-bind="email"]');
     if (!listEl) return;
 
-    // Per-kind labels for the chip. Mirrors the ALLOWED_KINDS set
-    // in src/lib/workbench.js. Adding a kind: also append it here.
-    var KIND_LABELS = {
-      audit: 'Audit',
-      seo: 'SEO grader',
-      gbp: 'GBP grader',
-      mobile: 'Mobile check',
-      schema: 'Schema check',
-      speed: 'Speed test',
-      margin: 'Margin math',
-      plate: 'Plate cost',
-      photo: 'Photo brief',
-      menu: 'Menu',
-      'menu-copy': 'Menu copy',
-      brand: 'Brand suite',
-      'open-hours': 'Open hours',
-      compare: 'Compare',
-      'tech-stack': 'Tech stack',
-      'search-ideas': 'Search ideas'
+    // Phase C.1: single registry for kind metadata. Mirrors
+    // ALLOWED_KINDS + WATCHABLE_KINDS in src/lib/workbench.js.
+    // Adding a kind: append one entry here. The aggregate
+    // check-kind-registry.mjs asserts this stays in sync with the
+    // server source of truth and the tools' MuntinWorkbench.attach
+    // call sites.
+    var KIND_REGISTRY = {
+      audit:          { label: 'Audit',          url: '/tools/audits/restaurant/', watchable: true  },
+      seo:            { label: 'SEO grader',     url: '/tools/seo-grader/',        watchable: true  },
+      gbp:            { label: 'GBP grader',     url: '/tools/gbp-grader/',        watchable: true  },
+      mobile:         { label: 'Mobile check',   url: '/tools/mobile-check/',      watchable: true  },
+      schema:         { label: 'Schema check',   url: '/tools/schema-check/',      watchable: true  },
+      speed:          { label: 'Speed test',     url: '/tools/speed-test/',        watchable: true  },
+      margin:         { label: 'Margin math',    url: '/tools/margin-math/',       watchable: false },
+      plate:          { label: 'Plate cost',     url: '/tools/plate-cost/',        watchable: false },
+      photo:          { label: 'Photo brief',    url: '/tools/photo-brief/',       watchable: false },
+      menu:           { label: 'Menu',           url: '/tools/menu-engineering/',  watchable: false },
+      'menu-copy':    { label: 'Menu copy',      url: '/tools/menu-copy/',         watchable: false },
+      brand:          { label: 'Brand suite',    url: '/tools/brand-suite/',       watchable: false },
+      'open-hours':   { label: 'Open hours',     url: '/tools/open-hours/',        watchable: false },
+      compare:        { label: 'Compare',        url: '/tools/compare/',           watchable: false },
+      'tech-stack':   { label: 'Tech stack',     url: '/tools/tech-stack/',        watchable: false },
+      'search-ideas': { label: 'Search ideas',   url: '/tools/search-ideas/',      watchable: false },
+      'storefront-health': { label: 'Storefront Health', url: '/tools/storefront-health/', watchable: false }
     };
 
-    // Per-kind landing URLs. Sends the user back to the tool root
-    // with ?saved=<id> so the tool can rehydrate the saved result
-    // via /api/workbench/get.
-    var KIND_URLS = {
-      audit: '/tools/audits/restaurant/',
-      seo: '/tools/seo-grader/',
-      gbp: '/tools/gbp-grader/',
-      mobile: '/tools/mobile-check/',
-      schema: '/tools/schema-check/',
-      speed: '/tools/speed-test/',
-      margin: '/tools/margin-math/',
-      plate: '/tools/plate-cost/',
-      photo: '/tools/photo-brief/',
-      menu: '/tools/menu-engineering/',
-      'menu-copy': '/tools/menu-copy/',
-      brand: '/tools/brand-suite/',
-      'open-hours': '/tools/open-hours/',
-      compare: '/tools/compare/',
-      'tech-stack': '/tools/tech-stack/',
-      'search-ideas': '/tools/search-ideas/'
-    };
-
-    // Watchable kinds — those with an upstream API that can be
-    // re-run on a schedule. Mirrors WATCHABLE_KINDS in
-    // src/lib/workbench.js.
-    var WATCHABLE_KINDS = { audit: 1, seo: 1, gbp: 1, mobile: 1, schema: 1, speed: 1 };
+    // Back-compat aliases for the rest of the file. Future patches
+    // should read KIND_REGISTRY directly.
+    var KIND_LABELS = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ acc[k] = KIND_REGISTRY[k].label; return acc; }, {});
+    var KIND_URLS   = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ acc[k] = KIND_REGISTRY[k].url;   return acc; }, {});
+    var WATCHABLE_KINDS = Object.keys(KIND_REGISTRY).reduce(function(acc, k){ if (KIND_REGISTRY[k].watchable) acc[k] = 1; return acc; }, {});
 
     // Populated from /api/workbench/watch-list on load. Maps
     // savedItemId → { schedule, lastCheckedAt, lastScore }.

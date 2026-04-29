@@ -42,6 +42,10 @@ const ALLOWED_KINDS = new Set([
   'audit', 'seo', 'gbp', 'mobile', 'schema', 'speed',
   'margin', 'plate', 'photo', 'menu', 'menu-copy', 'brand',
   'open-hours', 'compare', 'tech-stack', 'search-ideas',
+  // Phase C.1 (Storefront Health) — composite kind whose payload
+  // is just { propertyId }; the Workshop list rehydrates by
+  // reading the underlying property:<sub>:<propertyId> row.
+  'storefront-health',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear
@@ -439,4 +443,217 @@ function extractScoreFromPayload(kind, payload) {
 }
 function numericOrNull(v) {
   return (typeof v === 'number' && isFinite(v)) ? v : null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase C (Storefront Health) — Property model.
+//
+// A Property is a stable, user-owned reference to one URL plus
+// pointers to every check that has run against it. Stored alongside
+// existing save:/watch: keys in AUTH_SESSIONS:
+//
+//   property:<sub>:<propertyId>  → JSON {
+//     id, url, title,
+//     checks: { audit?: savedItemId, seo?: …, gbp?: …, mobile?: …,
+//               schema?: …, speed?: … },
+//     rollup: { score, grade, generatedAt, byCheck: {…} },
+//     createdAt, updatedAt
+//   }
+//
+// Invariants:
+// - propertyId minted via mintSaveItemId() — same alphabet/length
+//   as save ids for visual consistency in URLs.
+// - checks.<kind> is a POINTER to a save:<sub>:<id> row, not a
+//   copy. Properties are a thin index over existing saves.
+// - rollup is DERIVED, never authoritative. Rebuilt by
+//   rollupProperty(env, sub, propertyId) re-reading referenced
+//   saves and reusing extractScoreFromPayload(). No new score math.
+// - storefront-health is ALSO a save kind (payload = {propertyId})
+//   so the Workshop list, ?saved= rehydration, and watch path
+//   work without special-casing.
+// - Properties count against the existing 100-save cap, with a
+//   sub-cap of 10 properties per user.
+
+const PROPERTY_KEY_PREFIX    = 'property:';
+const MAX_PROPERTIES_PER_USER = 10;
+
+// Tools that contribute to a property's rollup. Subset of
+// WATCHABLE_KINDS — these are the kinds with deterministic
+// score extraction.
+const PROPERTY_CHECK_KINDS = ['audit', 'seo', 'gbp', 'mobile', 'schema', 'speed'];
+
+export {
+  PROPERTY_KEY_PREFIX,
+  MAX_PROPERTIES_PER_USER,
+  PROPERTY_CHECK_KINDS,
+};
+
+export const mintPropertyId = mintSaveItemId;
+
+function propertyKey(sub, id) {
+  return PROPERTY_KEY_PREFIX + sub + ':' + id;
+}
+
+// Normalize a URL's origin so "https://Foo.com/" and "https://foo.com"
+// hash to the same property fingerprint. Lowercases host, strips
+// trailing slash on bare-origin URLs, drops fragment + utm query.
+function normalizeOrigin(rawUrl) {
+  try {
+    const u = new URL(rawUrl);
+    u.hash = '';
+    // Strip tracking params; keep meaningful path/query.
+    const params = new URLSearchParams(u.search);
+    for (const k of Array.from(params.keys())) {
+      if (/^utm_/i.test(k) || k === 'fbclid' || k === 'gclid') params.delete(k);
+    }
+    u.search = params.toString();
+    u.hostname = u.hostname.toLowerCase();
+    let s = u.toString();
+    if (s.endsWith('/') && u.pathname === '/') s = s.slice(0, -1);
+    return s;
+  } catch {
+    return null;
+  }
+}
+
+export async function listPropertyIdsForUser(env, sub) {
+  const result = await env.AUTH_SESSIONS.list({ prefix: PROPERTY_KEY_PREFIX + sub + ':' });
+  return result.keys.map((k) => k.name);
+}
+
+export async function listPropertiesForUser(env, sub) {
+  const ids = await listPropertyIdsForUser(env, sub);
+  const out = [];
+  for (const k of ids) {
+    const raw = await env.AUTH_SESSIONS.get(k);
+    if (!raw) continue;
+    try {
+      const row = JSON.parse(raw);
+      out.push({
+        id: row.id,
+        url: row.url,
+        title: row.title,
+        rollup: row.rollup || null,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+      });
+    } catch (_) { /* skip corrupt rows */ }
+  }
+  out.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+  return out;
+}
+
+export async function getProperty(env, sub, id) {
+  if (!isValidSaveItemIdShape(id)) return null;
+  const raw = await env.AUTH_SESSIONS.get(propertyKey(sub, id));
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Idempotent on (sub, normalize(url)): returns existing property if
+// the user already created one for the same origin. Caller passes
+// title (typically the document title or hostname).
+export async function createProperty(env, sub, { url, title }) {
+  const normalized = normalizeOrigin(url);
+  if (!normalized) return { ok: false, error: 'invalid-url' };
+  // Check for existing property at same origin (idempotency).
+  const existing = await listPropertiesForUser(env, sub);
+  const dup = existing.find((p) => normalizeOrigin(p.url) === normalized);
+  if (dup) return { ok: true, id: dup.id, existing: true };
+  if (existing.length >= MAX_PROPERTIES_PER_USER) {
+    return { ok: false, error: 'limit-reached', max: MAX_PROPERTIES_PER_USER };
+  }
+  let id = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintPropertyId();
+    const probe = await env.AUTH_SESSIONS.get(propertyKey(sub, candidate));
+    if (!probe) { id = candidate; break; }
+  }
+  if (!id) return { ok: false, error: 'mint-collision' };
+  const now = Date.now();
+  const row = {
+    id,
+    url: normalized,
+    title: typeof title === 'string' && title.trim() ? title.trim().slice(0, MAX_TITLE_LENGTH) : normalized,
+    checks: {},
+    rollup: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+  await env.AUTH_SESSIONS.put(propertyKey(sub, id), JSON.stringify(row));
+  return { ok: true, id, createdAt: now, existing: false };
+}
+
+export async function deleteProperty(env, sub, id) {
+  if (!isValidSaveItemIdShape(id)) return { ok: false, error: 'invalid-id' };
+  const key = propertyKey(sub, id);
+  const existing = await env.AUTH_SESSIONS.get(key);
+  if (!existing) return { ok: true, deleted: false };
+  await env.AUTH_SESSIONS.delete(key);
+  return { ok: true, deleted: true };
+}
+
+// Attach a check (existing save:<sub>:<savedItemId>) to a property.
+// kind must be one of PROPERTY_CHECK_KINDS. Updates the property's
+// checks pointer map but does NOT recompute rollup — caller does
+// that explicitly via rollupProperty when ready.
+export async function attachCheckToProperty(env, sub, propertyId, kind, savedItemId) {
+  if (!PROPERTY_CHECK_KINDS.includes(kind)) {
+    return { ok: false, error: 'invalid-kind' };
+  }
+  if (!isValidSaveItemIdShape(savedItemId)) {
+    return { ok: false, error: 'invalid-saved-item-id' };
+  }
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  prop.checks = prop.checks || {};
+  prop.checks[kind] = savedItemId;
+  prop.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  return { ok: true };
+}
+
+export async function detachCheckFromProperty(env, sub, propertyId, kind) {
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  if (prop.checks && prop.checks[kind]) {
+    delete prop.checks[kind];
+    prop.updatedAt = Date.now();
+    await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  }
+  return { ok: true };
+}
+
+// Recompute the property's rollup by walking referenced saves and
+// extracting per-kind scores. Tolerant of orphaned pointers (a
+// referenced save that's been deleted) — those kinds drop out of
+// rollup.byCheck and the overall score averages over what remains.
+export async function rollupProperty(env, sub, propertyId) {
+  const prop = await getProperty(env, sub, propertyId);
+  if (!prop) return { ok: false, error: 'property-not-found' };
+  const byCheck = {};
+  let total = 0;
+  let count = 0;
+  for (const kind of PROPERTY_CHECK_KINDS) {
+    const savedId = prop.checks && prop.checks[kind];
+    if (!savedId) continue;
+    const item = await getItem(env, sub, savedId);
+    if (!item) continue; // orphaned pointer; skip
+    const score = extractScoreFromPayload(kind, item.payload);
+    if (score == null) continue;
+    byCheck[kind] = { score, savedItemId: savedId, ts: item.createdAt };
+    total += score;
+    count += 1;
+  }
+  const overall = count > 0 ? Math.round(total / count) : null;
+  const rollup = {
+    score: overall,
+    grade: overall == null ? null : (overall >= 90 ? 'A' : overall >= 75 ? 'B' : overall >= 60 ? 'C' : overall >= 40 ? 'D' : 'F'),
+    generatedAt: Date.now(),
+    byCheck,
+  };
+  prop.rollup = rollup;
+  prop.updatedAt = rollup.generatedAt;
+  await env.AUTH_SESSIONS.put(propertyKey(sub, propertyId), JSON.stringify(prop));
+  return { ok: true, rollup };
 }
