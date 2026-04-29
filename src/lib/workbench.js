@@ -624,6 +624,31 @@ export async function detachCheckFromProperty(env, sub, propertyId, kind) {
   return { ok: true };
 }
 
+// Phase C.4 — iterate every property across all users, for the cron
+// rollup pass. Same shape as iterateAllWatches but for property:
+// keys. Each yielded item: { sub, property }.
+export async function* iterateAllProperties(env) {
+  let cursor = null;
+  while (true) {
+    const opts = { prefix: PROPERTY_KEY_PREFIX };
+    if (cursor) opts.cursor = cursor;
+    const page = await env.AUTH_SESSIONS.list(opts);
+    for (const k of page.keys) {
+      const raw = await env.AUTH_SESSIONS.get(k.name);
+      if (!raw) continue;
+      let property;
+      try { property = JSON.parse(raw); } catch (_) { continue; }
+      const parts = k.name.split(':');
+      if (parts.length < 3) continue;
+      const sub = parts.slice(1, -1).join(':');
+      yield { sub, property };
+    }
+    if (page.list_complete) break;
+    if (!page.cursor) break;
+    cursor = page.cursor;
+  }
+}
+
 // Recompute the property's rollup by walking referenced saves and
 // extracting per-kind scores. Tolerant of orphaned pointers (a
 // referenced save that's been deleted) — those kinds drop out of

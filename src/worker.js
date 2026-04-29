@@ -91,6 +91,7 @@ import {
   detachCheckFromProperty,
   rollupProperty,
   deleteProperty,
+  iterateAllProperties,
   MAX_PROPERTIES_PER_USER,
   PROPERTY_CHECK_KINDS,
 } from './lib/workbench.js';
@@ -700,6 +701,30 @@ export default {
       console.warn('[cron] iterateAllWatches failed', err && err.message);
     }
 
+    // Phase C.4 (Storefront Health) — property rollup pass.
+    // Cheap: each rollup just re-reads the referenced save:<sub>:<id>
+    // rows and recomputes the average. No upstream API calls. Hard
+    // cap at PROPERTY_TICK_BUDGET=30 properties per tick to keep the
+    // total KV-read budget bounded. Skipped entirely when the flag
+    // is off.
+    let propertiesProcessed = 0;
+    if (_storefrontHealthGate(env)) {
+      const PROPERTY_TICK_BUDGET = 30;
+      try {
+        for await (const entry of iterateAllProperties(env)) {
+          if (propertiesProcessed >= PROPERTY_TICK_BUDGET) break;
+          try {
+            await rollupProperty(env, entry.sub, entry.property.id);
+            propertiesProcessed++;
+          } catch (e) {
+            console.warn('[cron] rollupProperty failed', { id: entry.property && entry.property.id, err: e && e.message });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] iterateAllProperties failed', err && err.message);
+      }
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -708,6 +733,7 @@ export default {
       rechecked,
       notified,
       errors,
+      propertiesProcessed,
       ms: Date.now() - t0,
     }));
   },
