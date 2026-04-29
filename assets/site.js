@@ -94,8 +94,9 @@
     window.scrollTo(0, 0);
   });
 
-  // Booking URL is now hard-coded on each .js-book anchor so that CTAs work
-  // even with JavaScript disabled. This block is intentionally small.
+  // The Window CTA (.js-window) is hard-coded to /window/ on each
+  // anchor so CTAs work even with JavaScript disabled. No JS hook
+  // needed beyond standard navigation.
   const EMAIL = 'don@muntin.digital';
   document.querySelectorAll('.js-email').forEach((el) => {
     el.setAttribute('href', 'mailto:' + EMAIL);

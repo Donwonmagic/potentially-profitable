@@ -500,7 +500,7 @@ function navHeader(altUrl, bodyClass) {
       <a href="${esc(altUrl)}" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -517,7 +517,7 @@ function navHeader(altUrl, bodyClass) {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
     <a href="${esc(altUrl)}" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -542,7 +542,7 @@ function siteFooter() {
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Ready to build something worth the time?</div>
-      <a class="btn btn-primary js-book" href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span>
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
@@ -586,7 +586,7 @@ function siteFooter() {
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="https://calendly.com/dongoldstein-accts/muntinconsult" target="_blank" rel="noopener">Book a 20-min call<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="/window/">Write to Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
