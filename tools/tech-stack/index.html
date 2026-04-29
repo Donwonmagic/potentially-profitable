@@ -380,6 +380,8 @@
     if(groups.length>0){
       html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
     }
+    // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
+    html+='<aside class="learn-back" aria-label="What this scan tells you"><p class="learn-back-eyebrow">What this scan tells you</p><p class="learn-back-body">Your <a href="/glossary/hosting/">hosting</a> setup decides what you can and can\'t do — speed, ordering integration, schema, even how the menu renders on a slow connection. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through where each option runs out of room.</p></aside>';
     html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');

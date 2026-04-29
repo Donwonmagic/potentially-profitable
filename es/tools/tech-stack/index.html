@@ -381,6 +381,8 @@
     if(groups.length>0){
       html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">Este escaneo detecta tecnologías cargadas durante la carga inicial móvil de la página. Algunas herramientas (widgets cargados de forma diferida, funciones detrás de login) pueden no aparecer.</p>';
     }
+    // Sprint 12b (cohesión) — Fila Learn-back, embebida en el resultado renderizado.
+    html+='<aside class="learn-back" aria-label="Qué te dice este escaneo"><p class="learn-back-eyebrow">Qué te dice este escaneo</p><p class="learn-back-body">Tu configuración de <a href="/es/glossary/hosting/">hosting</a> decide lo que puedes y no puedes hacer — velocidad, integración de pedidos, schema, incluso cómo se renderiza el menú en una conexión lenta. La <a href="/es/blog/wix-vs-custom-for-restaurants/">guía de Wix vs. sitio a la medida</a> recorre dónde cada opción se queda corta.</p></aside>';
     html+='<div class="ts-cta"><p>¿Quieres ver el panorama completo? Los diagnósticos por rubro van más a fondo.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');

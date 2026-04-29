@@ -389,6 +389,8 @@
     }else{
       html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Scores are equal across '+compared+' categories. Look at the individual rows to find where you can pull ahead.</p></div>';
     }
+    // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
+    html+='<aside class="learn-back" aria-label="What this comparison means"><p class="learn-back-eyebrow">What this comparison means</p><p class="learn-back-body">Both URLs are scored by <a href="/glossary/lighthouse/">Lighthouse</a>, Google\'s open-source benchmarking engine. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through what these scores actually let your restaurant do on the diner\'s phone.</p></aside>';
     html+='<div class="cmp-cta"><p>Want to go deeper? The industry-specific audits check 9+ additional items.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');
