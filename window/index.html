@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>The Window — Muntin Digital</title>
+<meta name="description" content="A direct line to Don. Tell me what's on your mind — I read every one." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/window/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/window/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/window/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/window/" />
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
+</head>
+<body class="window-canvas">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="window-shell">
+  <a class="window-shell__lockup" href="/" aria-label="Muntin Digital home">
+    <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+        <rect x="18" y="18" width="92" height="92"/>
+        <line x1="64" y1="18" x2="64" y2="110"/>
+        <line x1="18" y1="49" x2="110" y2="49"/>
+      </g>
+    </svg>
+    <span>Muntin Digital</span>
+  </a>
+  <a class="window-shell__back" href="/">&larr; muntin.digital</a>
+</header>
+
+<main id="main" class="window-main">
+
+  <!-- Paused state: rendered when WINDOW_ENABLED is false. Client
+       JS hides this and reveals the live canvas when /api/window/poll
+       returns anything other than 404. -->
+  <section class="window-paused" id="windowPaused" hidden>
+    <div class="window-paused__inner">
+      <p class="window-paused__eyebrow">The Window</p>
+      <h1 class="window-paused__headline">On a brief pause.</h1>
+      <p class="window-paused__sub">I'll be back the week of <span data-bind="next-return-date">soon</span>. In the meantime, the rest of the library is open — start at <a href="/learn/start-here/">the guided tour</a> or browse the <a href="/glossary/">glossary</a>.</p>
+    </div>
+  </section>
+
+  <!-- Hero: shown when no thread exists yet OR when arriving fresh. -->
+  <section class="window-hero" id="windowHero">
+    <div class="window-hero__inner">
+      <p class="window-hero__eyebrow">A direct line to Don</p>
+      <h1 class="window-hero__headline">Tell me what's on your mind.</h1>
+      <p class="window-hero__sub">I read every one. Usually back to you the same business day, always inside two.</p>
+    </div>
+  </section>
+
+  <!-- The muntin line: a 1px hairline at the 38.2% golden split.
+       The literal brand mullion. Drawn in via clip-path on first
+       paint (W.4 polish). -->
+  <div class="window-muntin" aria-hidden="true">
+    <span class="window-muntin__pulse" id="windowPulse" hidden title="Don is around"></span>
+  </div>
+
+  <!-- Thread scroll: empty until messages exist. -->
+  <section class="window-thread" id="windowThread" aria-live="polite">
+    <div class="window-thread__empty" id="windowThreadEmpty">
+      <div class="window-thread__empty-mark" aria-hidden="true">
+        <svg viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="20" y="20" width="88" height="88"/>
+          <line x1="64" y1="20" x2="64" y2="108"/>
+          <line x1="20" y1="51" x2="108" y2="51"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Composer -->
+  <section class="window-composer" id="windowComposer" aria-label="Write to Don">
+    <form class="window-composer__form" id="windowForm" autocomplete="off">
+      <span class="window-composer__caption" aria-hidden="true">Don —</span>
+      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere. A URL helps if you have one." maxlength="4000" required></textarea>
+      <div class="window-composer__row">
+        <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
+        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send it over</button>
+      </div>
+      <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
+    </form>
+    <div class="window-composer__onramps" id="windowOnramps" aria-label="On-ramps">
+      <button type="button" class="window-onramp" data-prepend="A new site — looking for help with: ">A new site</button>
+      <button type="button" class="window-onramp" data-prepend="A second look at mine — here's the URL: ">A second look at mine</button>
+      <button type="button" class="window-onramp" data-prepend="">Something else</button>
+    </div>
+    <p class="window-composer__reassurance">I reply within 2 business days. Usually the same day. No commitment, no pitch.</p>
+  </section>
+
+  <!-- Sign-in CTA: shown when /api/auth/me returns 401. -->
+  <section class="window-signin" id="windowSignin" hidden>
+    <p>To send a note and get my reply by email, sign in first. <a href="/sign-in/?return=%2Fwindow%2F">Sign in →</a></p>
+  </section>
+</main>
+
+<script src="/assets/site.js?v=20260429-batch3" defer></script>
+<script src="/assets/js/window.js?v=20260429-batch3" defer></script>
+</body>
+</html>
