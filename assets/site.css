@@ -645,6 +645,11 @@ p{margin:0}
 pre{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
 code{overflow-wrap:anywhere;word-break:break-word}
 pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
+/* Generic table scroll wrapper — used by article comparison tables,
+   library indexes, tool sub-tables. Lets phones scroll horizontally
+   inside the wrapper instead of pushing the article wide. */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.table-scroll>table{min-width:max-content}
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
