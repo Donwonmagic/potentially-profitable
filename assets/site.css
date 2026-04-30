@@ -1,4 +1,4 @@
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px}
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--teal-dark:#143640;--teal-tint:#E8F1F3;--rust:#B8541A;--stone:#6B6B6B;--stone-2:#9A958B;--line:#E8E2D6;--line-dark:#D4CCBC;--line-input:#8A8378;--white:#FFFFFF;--font-display:'Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;--font-body:'Inter','Inter Fallback',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--max:1200px;--pad-x:clamp(20px,4vw,64px);--ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:180ms;--t-med:420ms;--t-slow:900ms;--r-sm:8px;--r-md:14px;--r-lg:22px;--gold:#C5A059}
 
 /* ============ Modernization tokens (Sprint 1) ============
    Additive vocabulary that later modernization sprints consume. No
@@ -65,8 +65,8 @@
      three don't fit, the categorization is wrong, not the palette. */
   --status-good:        #1F6B3A;   /* pass band, deeper than #1f9d55 */
   --status-good-tint:   #E7F5EC;   /* good background chip */
-  --status-warn:        #8A6018;   /* warn text */
-  --status-warn-deep:   #8A3E16;   /* warn text, slightly redder */
+  --status-warn:        #8A6018;   /* warn — BACKGROUNDS / STROKES ONLY. Fails AA on cream below 16px. For text, use --status-warn-deep. */
+  --status-warn-deep:   #8A3E16;   /* warn TEXT — passes AA on cream at all sizes */
   --status-warn-fill:   #C28B2E;   /* warn fill (stars, bars) */
   --status-warn-tint:   #FDEFE3;   /* warn background chip */
   --status-bad-tint:    #F7E7DC;   /* bad background chip; pairs with --rust */
@@ -83,9 +83,39 @@
      article bodies (/blog/, /learn/, /glossary/<term>/, About).
      DO NOT apply to /tools/ result surfaces — utility stays utilitarian. */
   --prose-measure:      64ch;             /* upgrades to 66ch on lg breakpoints */
-  --leading-prose:      1.6;
+  --leading-prose:      1.6;             /* editorial body (.prose, .article-body) */
+  --leading-tool:       1.5;             /* tool internals: tables, helpers, badges */
+  --leading-card:       1.55;            /* cards, .edu-result__lede, mid-density UI */
   --rule:               1px solid var(--surface-2);  /* hairline rules vs cards on index pages */
 }
+
+/* ============ Line-height convention ============
+   Three tokens, three contexts. Use the token, not the literal:
+
+     1.5  → --leading-tool   table cells, button labels, eyebrow chips,
+                             dense tool grids, score-card check rows
+     1.55 → --leading-card   most card / panel body copy, .edu-result
+                             lede, dek, UI paragraphs
+     1.6  → --leading-prose  editorial / long-form body — anywhere
+                             .prose or .article-body wraps the content
+
+   Headings (h1–h4) use their own clamp-driven line-height (1.2–1.4)
+   and don't read from these tokens. Existing literals predate the
+   tokens and are not being mass-rewritten — adopt as you touch a
+   surface. */
+
+/* ============ Token usage notes ============
+   --stone-2 (#9A958B) — DECORATIVE ONLY. Used for icons, dividers,
+   idle band fills, and progress-ring tracks. Never apply to body text
+   on --cream / --surface-0: contrast hovers near the AA floor (~4.1:1)
+   and fails AAA. Use --stone (#6B6B6B) for any meaningful copy.
+
+   --status-warn (#8A6018) — BACKGROUNDS / STROKES ONLY. Below 16px on
+   --cream, contrast falls under AA. Any warn TEXT must use
+   --status-warn-deep (#8A3E16), which passes at all sizes.
+
+   --status-warn-fill (#C28B2E) — fill only (chart bars, star icons).
+   Never use as text color on light surfaces. */
 
 /* ============ Status components (Sprint 0) ============
    Three reusable components — `.status-chip`, `.progress-ring`,
@@ -1083,6 +1113,10 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 }
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary:hover{color:var(--teal)}
+/* h3 wrappers inside <summary> give screen-reader users heading-level
+   navigation through the FAQ. The summary itself carries the visual
+   styling; the inner h3 inherits everything. */
+.faq-item summary > h3{margin:0;display:inline;font:inherit;color:inherit;letter-spacing:inherit;line-height:inherit}
 .faq-item summary::after{
   content:'';
   position:absolute;
@@ -1137,6 +1171,10 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .contact-detail a{color:var(--cream)}
 .final .contact-detail a:hover{color:#E8A87C}
 .contact-form-wrap{position:relative}
+/* Orienting line that sits above the intake form. Calms cognitive
+   load on a long-feeling form by stating up front that only three
+   fields are required and the rest are help-Don-prep, not blockers. */
+.intake-orient{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:60ch}
 .intake-form{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(28px,4vw,44px);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:640px){.form-row{grid-template-columns:1fr}
@@ -5382,6 +5420,105 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links{margin:6px 0 0;font-size:12.5px}
 .tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
+
+/* ============ .edu-result — interpretation card under tool output ============
+   Every calculator emits a number; this block lives directly under
+   the result panel and answers the two questions a small-business
+   owner actually asks: "what does this mean for my business?" and
+   "what do I do next?".
+
+   Structure (all children optional except __lede):
+     .edu-result            — outer card, surface-1 / elev-1
+     .edu-result__lede      — plain-language sentence, founder voice
+     .edu-result__rule      — optional "if X, then Y" rule of thumb
+     .edu-result__next      — "Next step:" CTA row (a.btn.btn-ghost)
+     .edu-result__source    — "Sourced: …" chip with link + last-reviewed
+
+   .edu-result--mini drops padding and hides the source chip — use
+   on the dozen secondary tools where a one-line interpretation is
+   enough.
+
+   Excluded from print + PNG exports (rules at end of file). */
+.edu-result{margin:18px 0 0;padding:18px 22px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);box-shadow:var(--elev-1);max-width:760px;font-size:15px;line-height:1.55;color:var(--ink)}
+.edu-result__lede{margin:0;font-family:var(--font-display);font-size:clamp(17px,1.2vw,19px);line-height:1.4;color:var(--ink);letter-spacing:-0.005em}
+.edu-result__lede strong{font-weight:600;color:var(--teal-dark)}
+.edu-result__rule{margin:10px 0 0;color:var(--ink-soft);font-size:14.5px;line-height:1.55}
+.edu-result__next{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.edu-result__next-label{font-weight:700;letter-spacing:0.04em;text-transform:uppercase;font-size:12.5px;color:var(--stone)}
+.edu-result__next a{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);transition:border-color var(--t-fast) var(--ease)}
+.edu-result__next a:hover,.edu-result__next a:focus-visible{border-bottom-color:var(--teal)}
+.edu-result__source{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--stone);line-height:1.5}
+.edu-result__source-label{font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone)}
+.edu-result__source a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-dark)}
+.edu-result__source a:hover{text-decoration-color:var(--teal)}
+.edu-result--mini{padding:14px 18px;margin-top:14px;font-size:14.5px}
+.edu-result--mini .edu-result__lede{font-size:16px}
+.edu-result--mini .edu-result__source{display:none}
+@media (max-width:640px){
+  .edu-result{padding:16px 18px}
+  .edu-result__lede{font-size:16.5px}
+}
+@media print{.edu-result{display:none}}
+
+/* ============ Statistical disclosure components ============
+   Phase 3 — building on .edu-result so calculators can disclose
+   uncertainty bands, hard-coded assumptions, and the formula behind
+   the number. Each lives in its own surface so an owner can read the
+   result first and click into method only when they want to.
+
+     .edu-range    — "$X – $Y typical" pill for sensitivity ranges
+     .edu-source   — sourced-benchmark chip (org + report + percentile)
+     .edu-formula  — <details> disclosure with the live formula
+     .edu-caveat   — italic "this assumes…" block
+
+   Reuse: .edu-formula extends the <details class="pc-paste"> shape
+   already in tools/plate-cost/index.html. Don't introduce a separate
+   summary chevron pattern.
+
+   Print + PNG-export rules at end of file hide all four. */
+.edu-range{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:var(--surface-inset);border-radius:999px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;border:1px solid var(--line);letter-spacing:.01em}
+.edu-range strong{font-weight:700;color:var(--teal-dark)}
+.edu-range__label{font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-right:2px}
+
+.edu-source{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:6px 12px;background:transparent;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+.edu-source__org{font-weight:700;letter-spacing:.02em;color:var(--ink)}
+.edu-source__report{color:var(--ink-soft)}
+.edu-source__year{color:var(--stone);font-variant-numeric:tabular-nums}
+.edu-source__stat{color:var(--stone);font-style:italic}
+.edu-source a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-dark)}
+.edu-source a:hover{text-decoration-color:var(--teal)}
+
+.edu-formula{margin:14px 0 0;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface-1);overflow:hidden}
+.edu-formula > summary{list-style:none;cursor:pointer;padding:10px 14px;font-size:13px;font-weight:600;color:var(--teal);display:flex;align-items:center;gap:8px;user-select:none}
+.edu-formula > summary::-webkit-details-marker{display:none}
+.edu-formula > summary::after{content:'+';margin-left:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;color:var(--stone);transition:transform var(--t-fast) var(--ease)}
+.edu-formula[open] > summary::after{content:'\2212'}
+.edu-formula > summary:hover{color:var(--teal-dark)}
+.edu-formula > summary:focus-visible{outline:none;box-shadow:var(--ring-focus);border-radius:var(--r-sm)}
+.edu-formula__body{padding:12px 14px;border-top:1px solid var(--line);background:var(--cream-2);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.6;color:var(--ink);font-variant-numeric:tabular-nums;white-space:pre-wrap;word-break:break-word;margin:0}
+.edu-formula__caption{padding:8px 14px 12px;font-family:var(--font-body);font-size:12.5px;color:var(--ink-soft);background:var(--cream-2);line-height:1.5;border-top:1px dashed var(--line)}
+
+.edu-caveat{margin:12px 0 0;padding:10px 14px;background:var(--status-warn-tint);border-left:3px solid var(--status-warn-fill);border-radius:var(--r-sm);font-size:13px;line-height:1.55;color:var(--ink);font-style:italic}
+.edu-caveat strong{font-weight:700;font-style:normal;color:var(--status-warn-deep)}
+
+@media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
+
+/* ============ Tool-internal type minimums ============
+   Utility floor for text inside tool result panels, tables, and
+   helpers. Tools previously drifted to 10.5–12px in tight grids; the
+   accessibility audit flagged that as eye-strain for the target
+   audience (small-business owners, often 50+). Apply these classes
+   instead of writing inline font-size declarations.
+
+     .tool-text-min     — input text, table cells (14px floor)
+     .tool-text-h-min   — table headers, eyebrows  (13px floor)
+     .tool-text-helper  — helper / caption / meta (12.5px floor)
+
+   Never go below these in tool UIs. Editorial prose (.prose) follows
+   --fs-body and is unaffected. */
+.tool-text-min{font-size:14px;line-height:1.5}
+.tool-text-h-min{font-size:13px;line-height:1.4;letter-spacing:0.04em}
+.tool-text-helper{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
 
 /* Phase H (Information Security) — interactive 5-test audit checklist
    at /learn/checklists/audit-any-tool/. Pass/fail uses status-good /
