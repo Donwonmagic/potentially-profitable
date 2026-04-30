@@ -968,14 +968,17 @@
         <table class="bs-contrast-table" id="bsContrastTable" aria-label="Contrast ratios between every pair of palette colors"></table>
       </div>
       <p class="bs-contrast-hint">
-        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.
+        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Hover any cell for plain-English guidance — "Body text OK" means use it freely; "Headlines only" means use it for big type but not paragraphs; "Don't use" means readers will struggle.
         <br>
         <span class="bs-contrast-legend">
-          <span data-l="AAA">AAA &ge; 7</span>
-          <span data-l="AA">AA &ge; 4.5</span>
-          <span data-l="AA-large">AA-large &ge; 3</span>
-          <span data-l="fail">fail &lt; 3</span>
+          <span data-l="AAA">Body text OK</span>
+          <span data-l="AA-large">Headlines only</span>
+          <span data-l="fail">Don't use</span>
         </span>
+        <br>
+        <details style="display:inline-block;margin-top:6px;font-size:11.5px;color:var(--stone);"><summary style="cursor:pointer;">Show the WCAG technical thresholds</summary>
+          <span style="display:block;margin-top:6px;">Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.</span>
+        </details>
       </p>
     </div>
 
@@ -1436,6 +1439,7 @@
 <script src="./brand-suite.js?v=20260424-bs1"></script>
 <script src="./pane-render.js?v=20260425-bs2"></script>
 <script src="./palette-sheet-render.js?v=20260427-bs3"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Brand Suite — upload + palette wiring.
@@ -1948,7 +1952,15 @@
         } else {
           var ratio = window.BS.contrastRatio(rowColor.hex, colColor.hex);
           var grade = window.BS.gradeContrast(ratio);
-          body += '<td data-grade="' + grade + '" aria-label="' + rowColor.hex + ' on ' + colColor.hex + ', ' + grade + '">' +
+          // Plain-English label for the cell tooltip — owners read
+          // "Body text OK" faster than "AAA". The AAA/AA/AA-large/
+          // fail labels stay in data-grade for the CSS to colour and
+          // for the legend disclosure to expose to anyone curious.
+          var ownerLabel = grade === 'AAA' ? 'Body text OK'
+                         : grade === 'AA' ? 'Body text OK'
+                         : grade === 'AA-large' ? 'Headlines only'
+                         : 'Don\'t use';
+          body += '<td data-grade="' + grade + '" title="' + ownerLabel + ' (' + grade + ', ratio ' + ratio.toFixed(1) + ')" aria-label="' + rowColor.hex + ' on ' + colColor.hex + ': ' + ownerLabel + '">' +
                   ratio.toFixed(1) + '</td>';
         }
       });
@@ -2416,6 +2428,20 @@
 
   function renderPalette(palette){
     paletteEl.innerHTML = '';
+    // Persist the committed palette to the cross-tool context bus
+    // so photo-brief, open-hours' branded door card, and the schema-
+    // check generator can render in the restaurant's actual brand
+    // colors. Hex values normalized via shared MuntinFragment when
+    // available; fallback to uppercase '#xxxxxx'.
+    if (typeof MuntinContext !== 'undefined' && MuntinContext.merge && palette && palette.length) {
+      try {
+        var hexes = palette.slice(0, 5).map(function(e){
+          var h = String(e && e.hex || '').toUpperCase();
+          return h.charAt(0) === '#' ? h : '#' + h;
+        });
+        MuntinContext.merge({ palette: hexes });
+      } catch (_) {}
+    }
     palette.slice(0, 5).forEach(function(entry, i){
       var role = ROLE_NAMES[i] || ('Color ' + (i + 1));
       var btn = document.createElement('button');
