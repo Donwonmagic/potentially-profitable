@@ -2795,6 +2795,10 @@
   .top-fixes-item-chips .chip-effort-dev     { background: var(--teal-tint); color: var(--teal); }
   .top-fixes-item-chips .chip-effort-rebuild { background: var(--status-bad-tint); color: var(--rust); }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Differentiator chips: signal Restaurant-specific vs. Web
+     fundamentals so owners trained on PSI see what THIS tool adds. */
+  .top-fixes-item-chips .chip-source-rest { background: var(--teal-tint, #d8e8e9); color: var(--teal); border: 1px solid var(--teal); font-weight: 700; }
+  .top-fixes-item-chips .chip-source-fund { background: var(--cream-2, #faf6ee); color: var(--ink-soft); border: 1px solid var(--line, #E6DFCE); }
   /* Per-check platform recipe picker — collapsed by default; opens
      to a tab list of platforms with tailored steps. */
   .top-fixes-recipe { margin-top: 10px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
@@ -11838,6 +11842,17 @@
       if (def.effort || def.minutes) {
         var chips = document.createElement('div');
         chips.className = 'top-fixes-item-chips';
+        // Differentiator chip — surfaces whether this finding is
+        // restaurant-specific (Muntin-only) or a web fundamental
+        // (also flagged by PSI / Lighthouse). Helps owners trained
+        // on PSI see what THIS tool added on top.
+        var idStr = (def.id || '').toLowerCase();
+        var isLh = idStr.indexOf('audit.') === 0 || idStr.indexOf('lh.') === 0;
+        if (isLh) {
+          chips.innerHTML += '<span class="chip chip-source-fund" title="Also flagged by PSI / Lighthouse — a web fundamental.">Web fundamentals</span>';
+        } else {
+          chips.innerHTML += '<span class="chip chip-source-rest" title="Restaurant-specific finding — Lighthouse won\'t flag this on its own.">Restaurant-specific</span>';
+        }
         if (def.effort === 'self') {
           chips.innerHTML += '<span class="chip chip-effort-self">Fix yourself</span>';
         } else if (def.effort === 'dev') {
@@ -13890,7 +13905,15 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    // Audit P5: signpost the differentiator at the verdict level —
+    // owners trained on PSI need to be told this report is sorted by
+    // restaurant impact, not by Google audit IDs. Suffix is small;
+    // the existing verdict copy still leads.
+    var subtypeLabel = '';
+    try { subtypeLabel = (typeof currentSubtype === 'function' && currentSubtype() && currentSubtype().label) || ''; } catch (_) {}
+    var v = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    var diffSentence = ' Sorted by what will move ' + (subtypeLabel ? 'a ' + subtypeLabel.toLowerCase() : 'your restaurant') + "'s bookings — not by Google's audit IDs.";
+    document.getElementById('verdictCopy').textContent = v + diffSentence;
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
