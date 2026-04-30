@@ -39,6 +39,13 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
+.mc-inspiration{margin:0 0 16px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);background:var(--surface-1, var(--white))}
+.mc-inspiration[hidden]{display:none}
+.mc-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-inspiration-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mc-inspiration-chip{display:inline-block;padding:6px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+.mc-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+.mc-inspiration-note{margin:0;font-size:12.5px;color:var(--stone);line-height:1.45}
 .mc-form{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 @media(min-width:640px){.mc-form{grid-template-columns:1.6fr 1fr}}
 .mc-form-field{display:flex;flex-direction:column;gap:6px}
@@ -421,6 +428,13 @@
 </div></section>
 
 <section class="block"><div class="container">
+  <!-- Banner de inspiración — alimentado por handoff de Search Ideas. -->
+  <div class="mc-inspiration" id="mcInspiration" hidden>
+    <p class="mc-inspiration-eyebrow">Palabras de búsqueda que usan los clientes</p>
+    <ul class="mc-inspiration-chips" id="mcInspirationChips"></ul>
+    <p class="mc-inspiration-note">Vienen de Search Ideas. Toca un chip para usarlo como punto de partida en el nombre del plato.</p>
+  </div>
+
   <div class="mc-input">
     <div class="mc-modes" role="tablist" aria-label="Modo de entrada">
       <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Un plato</button>
@@ -1211,13 +1225,14 @@
     tierEl.addEventListener(ev, rerender);
   });
 
-  // Hidratación cross-tool desde el fragmento — pre-llena el formulario
-  // de un solo plato cuando llegamos por handoff de Menu Engineering /
-  // Search Ideas (#name=…&desc=…&price=…). Sólo siembra campos vacíos.
+  // Hidratación cross-tool desde el fragmento — dos formas:
+  //   #name=…&desc=…&price=…   (handoff de Menu Engineering)
+  //   #queries=q1%0Aq2          (handoff de Search Ideas)
   (function hydrateFromHash(){
     var raw = (window.location.hash || '').replace(/^#/, '');
     if (!raw) return;
     var seeded = false;
+    var queriesRaw = null;
     raw.split('&').forEach(function(pair){
       var eq = pair.indexOf('=');
       if (eq < 1) return;
@@ -1229,7 +1244,33 @@
       if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
       if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
       if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+      if (k === 'queries') queriesRaw = v;
     });
+    if (queriesRaw) {
+      var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+      var insp = document.getElementById('mcInspiration');
+      var chipsEl = document.getElementById('mcInspirationChips');
+      if (insp && chipsEl && queries.length) {
+        chipsEl.innerHTML = '';
+        queries.slice(0, 12).forEach(function(q){
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mc-inspiration-chip';
+          btn.textContent = q;
+          btn.addEventListener('click', function(){
+            if (nameEl) {
+              nameEl.value = q;
+              try { nameEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+              try { nameEl.focus(); } catch (_) {}
+            }
+          });
+          li.appendChild(btn);
+          chipsEl.appendChild(li);
+        });
+        insp.hidden = false;
+      }
+    }
     if (seeded) rerender();
   })();
 

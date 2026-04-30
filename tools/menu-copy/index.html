@@ -46,6 +46,14 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
+/* Inspiration banner — alimentado por handoff de Search Ideas. */
+.mc-inspiration{margin:0 0 16px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);background:var(--surface-1, var(--white))}
+.mc-inspiration[hidden]{display:none}
+.mc-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-inspiration-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mc-inspiration-chip{display:inline-block;padding:6px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+.mc-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+.mc-inspiration-note{margin:0;font-size:12.5px;color:var(--stone);line-height:1.45}
 .mc-form{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 @media(min-width:640px){.mc-form{grid-template-columns:1.6fr 1fr}}
 .mc-form-field{display:flex;flex-direction:column;gap:6px}
@@ -445,6 +453,18 @@
 </div></section>
 
 <section class="block"><div class="container">
+  <!-- Inspiration banner — populated when an inbound link from Search
+       Ideas carries a #queries= list. Hidden on first paint and on any
+       direct visit. The banner shows the queries the owner picked
+       upstream so they can write copy that uses the words customers
+       actually search. Pure read-only surface; clicking a chip drops
+       the term into the dish-name input as a starter. -->
+  <div class="mc-inspiration" id="mcInspiration" hidden>
+    <p class="mc-inspiration-eyebrow">Search words customers used</p>
+    <ul class="mc-inspiration-chips" id="mcInspirationChips"></ul>
+    <p class="mc-inspiration-note">From Search Ideas. Tap a chip to drop it into the dish name as a starting point.</p>
+  </div>
+
   <div class="mc-input">
     <div class="mc-modes" role="tablist" aria-label="Input mode">
       <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Single dish</button>
@@ -1266,18 +1286,20 @@
     tierEl.addEventListener(ev, rerender);
   });
 
-  // Cross-tool fragment hydration. A link of the form
-  //   /tools/menu-copy/#name=Tonnarelli&desc=Hand-rolled%20…&price=24
-  // pre-fills the single-dish form so an inbound handoff (Menu
-  // Engineering's Puzzle quadrant, Search Ideas' "send to menu-copy",
-  // a future blog example) lands on a populated input rather than
-  // an empty textarea. Decoder is lenient: any subset of the three
-  // keys works; unknown keys are ignored. A user-typed value already
-  // present in any field is preserved (we only seed empty inputs).
+  // Cross-tool fragment hydration. Two shapes:
+  //   /tools/menu-copy/#name=Tonnarelli&desc=…&price=24   (Menu Engineering Puzzle handoff)
+  //   /tools/menu-copy/#queries=pasta%20al%20pepe%0Avegan%20brunch  (Search Ideas multi-select)
+  //
+  // The name/desc/price keys pre-fill the single-dish form (only
+  // empty fields are seeded). The queries key opens an inspiration
+  // banner above the form with each query as a clickable chip; tapping
+  // a chip drops it into the dish-name input as a starter so the
+  // owner can begin re-describing with the words customers used.
   (function hydrateFromHash(){
     var raw = (window.location.hash || '').replace(/^#/, '');
     if (!raw) return;
     var seeded = false;
+    var queriesRaw = null;
     raw.split('&').forEach(function(pair){
       var eq = pair.indexOf('=');
       if (eq < 1) return;
@@ -1289,11 +1311,34 @@
       if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
       if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
       if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+      if (k === 'queries') queriesRaw = v;
     });
+    if (queriesRaw) {
+      var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+      var insp = document.getElementById('mcInspiration');
+      var chipsEl = document.getElementById('mcInspirationChips');
+      if (insp && chipsEl && queries.length) {
+        chipsEl.innerHTML = '';
+        queries.slice(0, 12).forEach(function(q){
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mc-inspiration-chip';
+          btn.textContent = q;
+          btn.addEventListener('click', function(){
+            if (nameEl) {
+              nameEl.value = q;
+              try { nameEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+              try { nameEl.focus(); } catch (_) {}
+            }
+          });
+          li.appendChild(btn);
+          chipsEl.appendChild(li);
+        });
+        insp.hidden = false;
+      }
+    }
     if (seeded) {
-      // Trigger the same rerender path keystrokes do, so the verdict
-      // + axes light up immediately on landing rather than waiting
-      // for the user to click into the field.
       rerender();
     }
   })();
