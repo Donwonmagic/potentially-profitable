@@ -52,6 +52,11 @@
 .me-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
 .me-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-units-mode{display:flex;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.me-units-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+.me-units-mode button strong{font-weight:700}
+.me-units-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-units-hint{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:10px 14px 0;padding:10px 12px;background:var(--cream-2);border-radius:8px;border:1px solid var(--line)}
 .me-grid{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.me-grid{min-width:560px}}
 .me-grid th,.me-grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
@@ -431,18 +436,28 @@
       </span>
     </div>
 
-    <div class="me-grid-wrap" data-mode="manual">
+    <!-- Units mode toggle. Most owners get revenue out of their POS,
+         not unit counts. Revenue mode divides by price client-side
+         to derive units, so the same downstream math runs without
+         re-typing. -->
+    <div class="me-units-mode" role="radiogroup" aria-label="What sales data do you have">
+      <button type="button" data-units-mode="units" aria-pressed="true" role="radio">I have <strong>units sold</strong></button>
+      <button type="button" data-units-mode="revenue" aria-pressed="false" role="radio">I have <strong>revenue ($)</strong></button>
+    </div>
+
+    <div class="me-grid-wrap" data-mode="manual" data-units-mode="units">
       <table class="me-grid" id="meGrid" aria-label="Menu items input grid">
         <thead><tr>
           <th scope="col" style="width:34%">Item</th>
           <th scope="col" style="width:14%">Price</th>
           <th scope="col" style="width:14%">Food cost</th>
-          <th scope="col" style="width:14%">Units sold</th>
+          <th scope="col" style="width:14%" id="meUnitsHeader">Units sold</th>
           <th scope="col" style="width:18%">Category (optional)</th>
           <th scope="col" aria-label="Remove"></th>
         </tr></thead>
         <tbody id="meGridBody"></tbody>
       </table>
+      <p class="me-units-hint" data-units-hint="revenue" hidden>Revenue mode: type the dollar revenue each item brought in last period. We compute units = revenue ÷ price client-side, so the matrix runs the same math.</p>
     </div>
 
     <div class="me-paste" data-mode="paste" hidden>
@@ -790,13 +805,30 @@
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
     var items = [];
+    var wrap = document.querySelector('.me-grid-wrap');
+    var mode = wrap ? wrap.getAttribute('data-units-mode') : 'units';
     for (var i = 0; i < rows.length; i++){
       var inputs = rows[i].querySelectorAll('input');
+      var price = inputs[1] ? inputs[1].value : '';
+      var unitsRaw = inputs[3] ? inputs[3].value : '';
+      var units;
+      if (mode === 'revenue') {
+        // The fourth column carries revenue in revenue mode.
+        var revenue = parseFloat(unitsRaw);
+        var p = parseFloat(price);
+        if (isFinite(revenue) && isFinite(p) && p > 0 && revenue >= 0) {
+          units = String(Math.round(revenue / p));
+        } else {
+          units = '';
+        }
+      } else {
+        units = unitsRaw;
+      }
       items.push({
         item:       inputs[0] ? inputs[0].value : '',
-        price:      inputs[1] ? inputs[1].value : '',
+        price:      price,
         food_cost:  inputs[2] ? inputs[2].value : '',
-        units_sold: inputs[3] ? inputs[3].value : '',
+        units_sold: units,
         category:   inputs[4] ? inputs[4].value : ''
       });
     }
@@ -1226,6 +1258,30 @@
   }
 
   // ----- Wire UI -----
+  // Units-mode toggle: swap column header label, placeholder, hint,
+  // and the wrap's data-units-mode attribute so readGrid() does the
+  // revenue-÷-price derivation. Re-render so the matrix updates
+  // immediately without requiring an extra row edit.
+  var meUnitsBtns = document.querySelectorAll('.me-units-mode button[data-units-mode]');
+  var meUnitsHeader = document.getElementById('meUnitsHeader');
+  var meUnitsHint = document.querySelector('.me-units-hint[data-units-hint="revenue"]');
+  var meGridWrap = document.querySelector('.me-grid-wrap');
+  function setUnitsMode(mode) {
+    if (mode !== 'units' && mode !== 'revenue') mode = 'units';
+    Array.prototype.forEach.call(meUnitsBtns, function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-units-mode') === mode ? 'true' : 'false'); });
+    if (meGridWrap) meGridWrap.setAttribute('data-units-mode', mode);
+    if (meUnitsHeader) meUnitsHeader.textContent = mode === 'revenue' ? 'Revenue ($)' : 'Units sold';
+    if (meUnitsHint) meUnitsHint.hidden = (mode !== 'revenue');
+    // Update placeholders on every existing row.
+    Array.prototype.forEach.call(gridBody.querySelectorAll('tr'), function(tr){
+      var inputs = tr.querySelectorAll('input');
+      if (inputs[3]) inputs[3].placeholder = (mode === 'revenue') ? '1920' : '80';
+    });
+    rerender();
+  }
+  Array.prototype.forEach.call(meUnitsBtns, function(b){
+    b.addEventListener('click', function(){ setUnitsMode(b.getAttribute('data-units-mode')); });
+  });
   addRowBtn.addEventListener('click', function(){ addRow(); rerender(); });
   loadSample.addEventListener('click', loadSampleData);
   if (loadSampleAlt) loadSampleAlt.addEventListener('click', loadSampleData);
