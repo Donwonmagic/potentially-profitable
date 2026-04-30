@@ -315,11 +315,77 @@
     <div class="container">
     <article class="article-body" id="post-body">
 
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="TL;DR">
+              <p class="tldr__eyebrow">TL;DR</p>
+              <ul class="tldr__list">
+              <li>Google reads six schema.org types first for restaurant pages — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, FAQ.</li>
+        <li>Most independent restaurant sites have two of the six. The other four are missing or malformed.</li>
+        <li>Each missing type is a different Google surface you're not eligible for: local-pack card, AI Overview citation, Reserve button, rich snippet, holiday-hours badge.</li>
+        <li>Schema rots quietly when CMS or template updates touch the templates. A monthly schema check catches the drift before the reviews do.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
       <p>If you opened a restaurant after 2018 and never touched the schema markup on your site, you have schema markup. Your CMS or template builder almost certainly stamped some — the question is whether it's the right schema, whether it's complete, and whether Google can actually use it.</p>
 
       <p>The pattern repeats: most sites have two of the six schema types Google reads first; the other four are missing or malformed. Each missing piece is a different surface in Google's results you're not eligible for. The compounding part is that the missing types unlock different surfaces — the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge — so the gap between &ldquo;some schema&rdquo; and &ldquo;all six&rdquo; isn't linear.</p>
 
       <p>This post is the honest version of restaurant schema markup in 2026. The six types Google actually uses, what each one does for you, the minimum viable JSON-LD for each, and the tools that validate it.</p>
+
+            <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="The 6 schema types Google reads first · what each unlocks">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">1</div>
+            <div>
+              <h4 class="i18n">Restaurant</h4>
+              <p class="recovery-sub i18n">Cuisine queries, local-pack eligibility, the basic identity card.</p>
+            </div>
+            <div class="recovery-val">foundational</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">2</div>
+            <div>
+              <h4 class="i18n">Menu</h4>
+              <p class="recovery-sub i18n">Dish-level ranking + AI Overview citations of dish descriptions.</p>
+            </div>
+            <div class="recovery-val">long-tail</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">3</div>
+            <div>
+              <h4 class="i18n">OpeningHoursSpecification</h4>
+              <p class="recovery-sub i18n">"Open now" badge + holiday-hours accuracy.</p>
+            </div>
+            <div class="recovery-val">walk-ins</div>
+          </div>
+          <div class="recovery-row recovery-4">
+            <div class="recovery-num">4</div>
+            <div>
+              <h4 class="i18n">AggregateRating</h4>
+              <p class="recovery-sub i18n">The star pattern in your snippet. CTR +8–15%.</p>
+            </div>
+            <div class="recovery-val">CTR lift</div>
+          </div>
+          <div class="recovery-row recovery-5">
+            <div class="recovery-num">5</div>
+            <div>
+              <h4 class="i18n">Reservation</h4>
+              <p class="recovery-sub i18n">The "Reserve a table" button in your panel.</p>
+            </div>
+            <div class="recovery-val">Find a Table</div>
+          </div>
+          <div class="recovery-row recovery-6">
+            <div class="recovery-num">6</div>
+            <div>
+              <h4 class="i18n">FAQ</h4>
+              <p class="recovery-sub i18n">The highest-leverage AI-citation surface in 2026.</p>
+            </div>
+            <div class="recovery-val">AI search</div>
+          </div>
+        </div>
+        <figcaption class="i18n">The 6 schema types Google reads first · what each unlocks</figcaption>
+      </figure>
 
       <h2>1. Restaurant — the foundational type</h2>
 
@@ -431,6 +497,36 @@
 
       <p>Six well-written FAQ entries — actually useful operational questions, not marketing copy — typically lift AI-search-driven traffic 20-40% within 60 days.</p>
 
+            <figure class="article-figure">
+        <div class="funnel" role="img" aria-label="Schema coverage on a typical SEO-sweep restaurant site · 6 types Google looks for">
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>Restaurant</strong> &middot; <span class="i18n">usually present, often incomplete</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:80%;">present</div><div class="lost" style="width:20%;">gaps</div></div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>Menu</strong> &middot; <span class="i18n">string blob or missing entirely</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:25%;">parses</div><div class="lost" style="width:75%;">broken</div></div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>OpeningHours</strong> &middot; <span class="i18n">present but stale</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:60%;">valid</div><div class="lost" style="width:40%;">stale</div></div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>AggregateRating</strong> &middot; <span class="i18n">often absent on restaurant sites</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:30%;">present</div><div class="lost" style="width:70%;">missing</div></div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>Reservation</strong> &middot; <span class="i18n">only auto-published by OpenTable etc.</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:40%;">present</div><div class="lost" style="width:60%;">missing</div></div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label"><strong>FAQ</strong> &middot; <span class="i18n">rarest of the six</span></div>
+            <div class="funnel-bar"><div class="kept" style="width:15%;">present</div><div class="lost" style="width:85%;">missing</div></div>
+          </div>
+        </div>
+        <figcaption class="i18n">Schema coverage on a typical SEO-sweep restaurant site · 6 types Google looks for</figcaption>
+      </figure>
+
       <h2>How to check what you have today</h2>
 
       <p>Run your homepage through <a href="/tools/schema-check/">Schema Checker</a>. It returns a present/valid/missing verdict for each of these six types and points at the broken pieces. Save the result to your <a href="/tools/audits/restaurant/">Restaurant Audit</a> and re-run monthly — schema rots when CMS updates touch templates.</p>
@@ -440,8 +536,31 @@
       <blockquote class="pullquote">
         <p>Schema isn't optional. Each missing type is a Google surface you've voluntarily disqualified yourself from.</p>
       </blockquote>
+    <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+              <li>Restaurant schema is foundational — without it you may not appear for cuisine queries at all.</li>
+        <li>Menu schema with structured MenuItem + description fields is what AI Overviews quote verbatim.</li>
+        <li>OpeningHoursSpecification + specialOpeningHoursSpecification together prevent the "closed even though Google said open" review.</li>
+        <li>AggregateRating with reviews from your own site lifts CTR by 8–15% on restaurant queries; aggregating Google's reviews violates policy.</li>
+        <li>FAQ schema is the highest-leverage AI-citation surface on a restaurant page in 2026.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+
 
     
+      
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">See which of the six types your site is missing.</p>
+      <p class="post-end-cta-body">Schema Checker runs your homepage through all six types and returns a present / valid / missing verdict for each. Save the result to your Workshop and re-run monthly — schema rots when CMS updates touch templates.</p>
+      <a class="btn btn-primary" href="/tools/schema-check/?from=blog%2Frestaurant-schema-markup-6-types-google-uses&intent=watch">Run Schema Checker<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>

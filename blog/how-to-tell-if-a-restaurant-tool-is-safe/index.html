@@ -283,6 +283,18 @@
     <div class="container">
     <article class="article-body" id="post-body">
 
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="TL;DR">
+              <p class="tldr__eyebrow">TL;DR</p>
+              <ul class="tldr__list">
+              <li>Most "free" tool categories — margin audits, schema checkers, "see what your site is missing" — keep your inputs. The price is paid in data, not dollars.</li>
+        <li>A 5-test browser audit takes under a minute and exposes the data flow before you type a single real number.</li>
+        <li>A 4-tier data model tells you what to share, where, and with whom: Public, Competitive-sensitive, Operational, Regulated.</li>
+        <li>Every tool on this site is held to a 9-claim standard, four of which are enforced as build invariants.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
       <p>Most &ldquo;free margin audit&rdquo; tools have a price tag. It's just paid in data. The pattern is well-worn: you type your real ticket, your real food cost, your real labor — and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the funnel. Your numbers were the qualifier.</p>
 
       <p>The pattern hides because nobody asks the obvious question: where do my inputs go the moment I type them? In a working browser, you can answer that question in under a minute. This article is the framework — five tests, four data tiers, one worked example — and at the end, a checklist you can run on any tool you encounter.</p>
@@ -301,6 +313,44 @@
 
       <p>Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either doesn't know or doesn't want you to know — both are reasons to leave.</p>
 
+            <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="4-tier data model · what flows where">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">1</div>
+            <div>
+              <h4 class="i18n">Public</h4>
+              <p class="recovery-sub i18n">Menu, hours, photos, address. Optimize aggressively.</p>
+            </div>
+            <div class="recovery-val">open</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">2</div>
+            <div>
+              <h4 class="i18n">Competitive-sensitive</h4>
+              <p class="recovery-sub i18n">Costs, suppliers, real commission tier. NDA only.</p>
+            </div>
+            <div class="recovery-val">NDA</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">3</div>
+            <div>
+              <h4 class="i18n">Operational-confidential</h4>
+              <p class="recovery-sub i18n">P&L, food cost, schedules. Inside the business.</p>
+            </div>
+            <div class="recovery-val">contract</div>
+          </div>
+          <div class="recovery-row recovery-4">
+            <div class="recovery-num">4</div>
+            <div>
+              <h4 class="i18n">Regulated</h4>
+              <p class="recovery-sub i18n">SSN, EIN, card data, I-9s. Encrypted only.</p>
+            </div>
+            <div class="recovery-val">locked</div>
+          </div>
+        </div>
+        <figcaption class="i18n">4-tier data model · what flows where</figcaption>
+      </figure>
+
       <h2>2. The four-tier model — what to share, where</h2>
 
       <p>Most small-business owners carry all their data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution:</p>
@@ -313,6 +363,52 @@
       </ul>
 
       <p>The principle: <strong>data never flows up a tier.</strong> A Tier 3 vendor doesn't get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site) doesn't get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that wasn't actually required.</p>
+
+            <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="5-test diagnostic · run before you type">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">1</div>
+            <div>
+              <h4 class="i18n">Network on keystroke</h4>
+              <p class="recovery-sub i18n">Open Network tab. If requests fire as you type — walk away.</p>
+            </div>
+            <div class="recovery-val">fail = leave</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">2</div>
+            <div>
+              <h4 class="i18n">Privacy at point of input</h4>
+              <p class="recovery-sub i18n">Trust requires transparency where you're typing.</p>
+            </div>
+            <div class="recovery-val">fail = leave</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">3</div>
+            <div>
+              <h4 class="i18n">Account / email gate</h4>
+              <p class="recovery-sub i18n">"Enter your email to see results" = your numbers are the price.</p>
+            </div>
+            <div class="recovery-val">fail = leave</div>
+          </div>
+          <div class="recovery-row recovery-4">
+            <div class="recovery-num">4</div>
+            <div>
+              <h4 class="i18n">Third-party scripts</h4>
+              <p class="recovery-sub i18n">GA, Pixel, FullStory, Hotjar — surveillance you didn't agree to.</p>
+            </div>
+            <div class="recovery-val">fail = leave</div>
+          </div>
+          <div class="recovery-row recovery-5">
+            <div class="recovery-num">5</div>
+            <div>
+              <h4 class="i18n">Source code readable</h4>
+              <p class="recovery-sub i18n">4MB minified bundle = you can't audit. Walk away.</p>
+            </div>
+            <div class="recovery-val">fail = leave</div>
+          </div>
+        </div>
+        <figcaption class="i18n">5-test diagnostic · run before you type</figcaption>
+      </figure>
 
       <h2>3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
 
@@ -341,8 +437,31 @@
       <p>The 5-test framework is also an interactive checklist at <a href="/learn/checklists/audit-any-tool/">/learn/checklists/audit-any-tool/</a> — walk through it with DevTools open on any tool you're evaluating. Save the result to your <a href="/tools/audits/restaurant/">Workshop</a> as a baseline; re-run it whenever a vendor pushes a &ldquo;new feature.&rdquo;</p>
 
       <p>And if you find a tool that fails the audit but you can't tell whether it's malicious or just sloppy, write through <a href="/window/?topic=security">The Window</a> and tell me about it. I read every one. The pattern of free tools that quietly turn operators into the product is worth naming — out loud, with the tool's name attached.</p>
+    <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+              <li>Open DevTools, type, watch the Network tab. If a request fires per keystroke, walk away.</li>
+        <li>Privacy claims belong at the point of input — not three clicks deep in a footer.</li>
+        <li>Account / email / cookie gates mean the tool is not free. Your inputs are the price.</li>
+        <li>Data never flows up a tier. Tier 1 audiences never get Tier 2 data without a contract.</li>
+        <li>"Verifiable" should be a build flag, not a marketing claim.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+
 
     
+      
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Run the audit on a tool you're evaluating right now.</p>
+      <p class="post-end-cta-body">Open the tool you're thinking about using. Open DevTools. Walk through the five tests with the interactive checklist. Save the result to your Workshop as a baseline you can re-run when the vendor pushes a "new feature."</p>
+      <a class="btn btn-primary" href="/learn/checklists/audit-any-tool/?from=blog%2Fhow-to-tell-if-a-restaurant-tool-is-safe&intent=watch">Open the audit checklist<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
