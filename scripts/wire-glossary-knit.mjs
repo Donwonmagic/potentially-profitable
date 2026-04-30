@@ -307,9 +307,13 @@ ${toolsList}
   //   3. Topic fallback: posts in library-tags.blog_posts whose
   //      topics[] overlaps any of this term's topics. Lets unreferenced
   //      terms still surface relevant reading.
+  // Phase G.8 — cap raised from 3 to 5. Multi-article cross-links
+  // are the highest-leverage internal-link expansion: a single
+  // glossary term page now sends PageRank to 5 articles instead of
+  // 3 (~67% lift in outbound link density across 130 terms).
   const directArticles = articleSlugsByTerm.get(slug) || [];
   const articleSlugs = [...directArticles];
-  if (articleSlugs.length < 3 && me && me.topics.length) {
+  if (articleSlugs.length < 5 && me && me.topics.length) {
     const myTopicSet = new Set(me.topics);
     for (const [postSlug, post] of Object.entries(tags.blog_posts || {})) {
       if (postSlug === '_doc') continue;
@@ -317,11 +321,11 @@ ${toolsList}
       const postTopics = post.topics || [];
       if (postTopics.some((t) => myTopicSet.has(t))) {
         articleSlugs.push(postSlug);
-        if (articleSlugs.length >= 3) break;
+        if (articleSlugs.length >= 5) break;
       }
     }
   }
-  articleSlugs.length = Math.min(articleSlugs.length, 3);
+  articleSlugs.length = Math.min(articleSlugs.length, 5);
   const articlesList = articleSlugs.length
     ? articleSlugs.map((as) => `          <li><a href="${escAttr(articleUrl(as, locale))}">${escText(articleLabel(as, locale))}</a></li>`).join('\n')
     : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;
