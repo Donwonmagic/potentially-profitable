@@ -1154,6 +1154,10 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .contact-detail a{color:var(--cream)}
 .final .contact-detail a:hover{color:#E8A87C}
 .contact-form-wrap{position:relative}
+/* Orienting line that sits above the intake form. Calms cognitive
+   load on a long-feeling form by stating up front that only three
+   fields are required and the rest are help-Don-prep, not blockers. */
+.intake-orient{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:60ch}
 .intake-form{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(28px,4vw,44px);box-shadow:0 30px 70px -30px rgba(20,22,26,0.12)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:640px){.form-row{grid-template-columns:1fr}
