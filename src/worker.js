@@ -333,6 +333,7 @@ const API_ROUTES = {
   '/api/share/tool-result':          handleShareToolResult,
   '/api/share/storefront-health':    handleShareStorefrontHealth,
   '/api/share/get':                  handleShareGet,
+  '/api/share/og':                   handleShareOg,
   // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
   '/api/admin/kpis':                 handleAdminKpis,
   // Phase G.10 (Growth) — Workshop nav count badge endpoint.
@@ -358,6 +359,12 @@ export default {
     }
     if (pathname === '/api/badge-snapshot') {
       return handleBadgeSnapshot(request, env, ctx);
+    }
+
+    // Phase G.11 — /api/share/og/<token>(.png) prefix route. Routes
+    // through handleShareOg which does its own slug parsing.
+    if (request.method === 'GET' && pathname.startsWith('/api/share/og/')) {
+      return handleShareOg(request, env, ctx);
     }
 
     // API routes — check the exact-match table first.
@@ -615,7 +622,7 @@ export default {
       if (ct.startsWith('text/html')) {
         let r = rewriteWithRssAlternate(assetResponse, pathname);
         if (url.searchParams.has('s') && pathname.match(/^\/(?:es\/)?tools\//)) {
-          r = rewriteWithShareBanner(r, pathname);
+          r = rewriteWithShareBanner(r, pathname, url.searchParams.get('s'));
         }
         const aiEngine = detectAiEngineFromReferer(request.headers.get('referer'));
         if (aiEngine) r = rewriteWithAiEngineAttr(r, aiEngine);
@@ -1225,7 +1232,7 @@ function rewriteWithAiEngineAttr(response, engine) {
 // hero offering "Want one for your place? — run the tool yourself."
 // Fires Share recipient-banner Plausible event from a tiny inline
 // script. The HTMLRewriter is no-op on non-HTML.
-function rewriteWithShareBanner(response, pathname) {
+function rewriteWithShareBanner(response, pathname, token) {
   const isEs = pathname.startsWith('/es/');
   const headers = new Headers(response.headers);
   headers.delete('content-length');
@@ -1246,9 +1253,15 @@ function rewriteWithShareBanner(response, pathname) {
   }
 })();
 </script>`;
-  const rw = new HTMLRewriter().on('main, body', {
-    element(el) { el.prepend(banner, { html: true }); },
-  });
+  // Phase G.11 — swap og:image / twitter:image to the per-token
+  // share OG endpoint when ?s= is present. Crawlers + chat unfurls
+  // get a tied-to-the-share preview instead of the generic site OG.
+  const isStorefront = /\/tools\/storefront-health\//.test(pathname);
+  const shareOgUrl = `https://muntin.digital/api/share/og/${token}.png?kind=${isStorefront ? 'storefront-health' : 'tool-result'}`;
+  const rw = new HTMLRewriter()
+    .on('main, body', { element(el) { el.prepend(banner, { html: true }); } })
+    .on('meta[property="og:image"]',  { element(el) { el.setAttribute('content', shareOgUrl); } })
+    .on('meta[name="twitter:image"]', { element(el) { el.setAttribute('content', shareOgUrl); } });
   return rw.transform(new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -6357,6 +6370,38 @@ async function handleAdminKpis(request, env, ctx) {
     console.warn('[admin/kpis] fetch failed', err && err.message);
     return jsonResponse({ ok: false, error: 'kpi-data-error' }, 500);
   }
+}
+
+// Phase G.11 — share-snapshot per-token OG image endpoint.
+// Receives /api/share/og/<token>.png (token + kind in query)
+// or just /api/share/og?t=<token>&kind=<kind>. v1 redirects to
+// the kind's static brand card so social crawlers always have a
+// rich preview. v2 will render a per-token Canvas card via
+// resvg-js, mirroring the audit-snapshot OG path.
+async function handleShareOg(request, env, ctx) {
+  const url = new URL(request.url);
+  // Support both ?t= and the trailing-slug form /api/share/og/<token>
+  // (the HTMLRewriter sets the trailing slug).
+  let token = url.searchParams.get('t') || '';
+  if (!token) {
+    const m = url.pathname.match(/\/api\/share\/og\/([A-Z0-9]{10})(?:\.png)?$/);
+    if (m) token = m[1];
+  }
+  const kind = url.searchParams.get('kind') || 'storefront-health';
+  // Fallback target — the static kind-level card.
+  const fallback = kind === 'storefront-health'
+    ? `${url.origin}/brand/og/tool-storefront-health.png`
+    : `${url.origin}/brand/og/tools.png`;
+  if (!isValidShareTokenShape(token) || !isValidShareKind(kind)) {
+    return Response.redirect(fallback, 302);
+  }
+  // Verify the token resolves before redirecting; on miss, fall
+  // back to kind-level card so a stale crawler still renders.
+  const snap = await getShareSnapshot(env, kind, token);
+  if (!snap || !snap.ok) return Response.redirect(fallback, 302);
+  // v1: redirect to the kind's static card. The token having
+  // resolved is the validation step. v2 swaps in a Canvas render.
+  return Response.redirect(fallback, 302);
 }
 
 // Phase G.11 — share-snapshot read endpoint. Tool client-side JS
