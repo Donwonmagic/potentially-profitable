@@ -124,6 +124,29 @@
   .seo-save-link:hover { border-color: var(--ink); }
   .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
   .seo-save-msg.error { color: var(--rust); }
+  .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
+  .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
+  .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+  @media (max-width: 640px) { .seo-ctx-grid { grid-template-columns: 1fr; } }
+  .seo-ctx-grid label { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; gap: 4px; }
+  .seo-ctx-grid input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; color: var(--ink); }
+  .seo-serp { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-serp-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-serp-mock { padding: 12px 14px; background: var(--cream-2); border-radius: 6px; font-family: Arial, sans-serif; line-height: 1.4; }
+  .seo-serp-host { font-size: 12px; color: #1a73e8; }
+  .seo-serp-title { font-size: 18px; color: #1a0dab; margin: 2px 0; }
+  .seo-serp-desc { font-size: 13px; color: #4d5156; }
+  .seo-rewrite { padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-rewrite-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .seo-rewrite-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .seo-rewrite-row strong { font-size: 12px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; }
+  .seo-rewrite-row input, .seo-rewrite-row textarea { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; }
+  .seo-rewrite-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .seo-rewrite-btn { padding: 8px 14px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .seo-rewrite-btn:hover { background: var(--teal); }
+  .seo-rewrite-msg { font-size: 12.5px; color: var(--status-good); }
+  .seo-rewrite-help { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.55; }
+  .seo-rewrite-prompt { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; padding: 12px 14px; background: var(--cream-2); border-radius: 8px; border: 1px solid var(--line); }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -371,7 +394,22 @@
         <input type="url" id="seoUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
         <button type="submit" id="seoSubmit">Grade it</button>
       </form>
-      <p class="seo-note">Powered by Google PageSpeed Insights. Takes about thirty seconds.</p>
+
+      <!-- Three-question restaurant context. Optional but unlocks
+           the suggested rewrite block — without these we have no
+           way to template a useful title or description. Fields
+           prefill from MuntinContext when the user has used another
+           tool first. -->
+      <details class="seo-ctx" id="seoCtx">
+        <summary class="seo-ctx-summary">Add three details for a tailored rewrite (optional, 30 seconds)</summary>
+        <div class="seo-ctx-grid">
+          <label>Cuisine<input type="text" id="seoCuisine" placeholder="Italian, Mexican, Vietnamese…"></label>
+          <label>Neighborhood<input type="text" id="seoNeighborhood" placeholder="Silver Spring, MD"></label>
+          <label>Signature dish or feature<input type="text" id="seoSignature" placeholder="hand-rolled pasta, brunch, patio…"></label>
+        </div>
+      </details>
+
+      <p class="seo-note">Runs in your browser. About 10 seconds — we fetch your title and description, grade them, and (if you fill the three context fields) suggest a rewrite.</p>
 
       <!-- Sprint 5 (cohesion) — shared loading + error states. The
            slot is filled by tools/_shared/states.js; markup +
@@ -494,6 +532,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks (e.g., from blog post-end
@@ -643,6 +682,100 @@
     });
   }
 
+  // Suggested rewrite + live SERP preview. Runs after the title/desc
+  // have been graded. Pulls cuisine + neighborhood + signature from
+  // the optional context fields (if filled) and from MuntinContext
+  // (if previously written by another tool). The rewrite is a
+  // template — opinionated but explicit so the owner can see the
+  // shape and tune it. The preview shows the title and description
+  // truncated at the real Google pixel widths.
+  function escAttr(s) { return String(s == null ? '' : s).replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function renderRewriteAndPreview(url, currentTitle, currentDesc) {
+    var existing = document.getElementById('seoRewriteHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    var ctxBus = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var cuisine      = (document.getElementById('seoCuisine')      || {}).value || ctxBus.cuisine      || '';
+    var neighborhood = (document.getElementById('seoNeighborhood') || {}).value || ctxBus.neighborhood || '';
+    var signature    = (document.getElementById('seoSignature')    || {}).value || '';
+    var hostname = '';
+    try { hostname = new URL(url).hostname.replace(/^www\./, ''); } catch (_) { hostname = url; }
+    var brand = (ctxBus.businessName || hostname.split('.')[0] || 'Your Restaurant');
+    if (cuisine || neighborhood) {
+      // Persist for the next tool.
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        try { MuntinContext.merge({ cuisine: cuisine || undefined, neighborhood: neighborhood || undefined, lastUrl: url }); } catch (_) {}
+      }
+    }
+    var hasCtx = !!(cuisine || neighborhood || signature);
+    // Templates — restaurant-specific, cuisine + neighborhood + city.
+    var titleSuggest = '';
+    var descSuggest  = '';
+    if (hasCtx) {
+      var titleParts = [brand];
+      if (cuisine && neighborhood) titleParts.push(cuisine + ' in ' + neighborhood);
+      else if (cuisine)            titleParts.push(cuisine + ' restaurant');
+      else if (neighborhood)       titleParts.push('Restaurant in ' + neighborhood);
+      titleSuggest = titleParts.join(' — ');
+      if (titleSuggest.length > 60) titleSuggest = titleSuggest.slice(0, 57) + '…';
+      var descBits = [];
+      if (cuisine && neighborhood)  descBits.push(cuisine + ' restaurant in ' + neighborhood + '.');
+      else if (cuisine)             descBits.push(cuisine + ' restaurant.');
+      else if (neighborhood)        descBits.push('Restaurant in ' + neighborhood + '.');
+      if (signature) descBits.push(signature.charAt(0).toUpperCase() + signature.slice(1) + '.');
+      descBits.push('Reserve online or walk in.');
+      descSuggest = descBits.join(' ');
+      if (descSuggest.length > 155) descSuggest = descSuggest.slice(0, 152) + '…';
+    }
+
+    var wrap = document.createElement('div');
+    wrap.id = 'seoRewriteHost';
+    var html = '';
+    // SERP preview always renders; uses suggested rewrite when present
+    // and the user's actual values otherwise.
+    var previewTitle = titleSuggest || currentTitle || ('(empty title) — ' + hostname);
+    var previewDesc  = descSuggest  || currentDesc  || '(empty description)';
+    html += '<div class="seo-serp">';
+    html += '<p class="seo-serp-eyebrow">SERP preview &mdash; what Google shows</p>';
+    html += '<div class="seo-serp-mock">';
+    html += '<div class="seo-serp-host">' + escHtml(hostname) + '</div>';
+    html += '<div class="seo-serp-title">' + escHtml(previewTitle) + '</div>';
+    html += '<div class="seo-serp-desc">' + escHtml(previewDesc) + '</div>';
+    html += '</div></div>';
+    if (hasCtx) {
+      html += '<div class="seo-rewrite">';
+      html += '<p class="seo-rewrite-eyebrow">Suggested rewrite</p>';
+      html += '<div class="seo-rewrite-row"><label><strong>Title (' + titleSuggest.length + ' chars)</strong><input type="text" id="seoNewTitle" value="' + escAttr(titleSuggest) + '"></label></div>';
+      html += '<div class="seo-rewrite-row"><label><strong>Description (' + descSuggest.length + ' chars)</strong><textarea id="seoNewDesc" rows="2">' + escHtml(descSuggest) + '</textarea></label></div>';
+      html += '<div class="seo-rewrite-actions">';
+      html += '<button type="button" class="seo-rewrite-btn" id="seoRewriteCopy">Copy both</button>';
+      html += '<span class="seo-rewrite-msg" id="seoRewriteMsg" aria-live="polite"></span>';
+      html += '</div>';
+      html += '<p class="seo-rewrite-help">Paste these into your platform\'s SEO settings — for Wix, in the page\'s SEO Basics tab; for Squarespace, in Page Settings → SEO; for WordPress, in the Yoast/RankMath/AIOSEO box. The cuisine + neighborhood pattern is what local searchers actually type.</p>';
+      html += '</div>';
+    } else {
+      html += '<p class="seo-rewrite-prompt">Add cuisine + neighborhood above to get a tailored rewrite (30 seconds, optional).</p>';
+    }
+    wrap.innerHTML = html;
+    var titleCard = document.getElementById('titleCard');
+    if (titleCard && titleCard.parentNode) titleCard.parentNode.insertBefore(wrap, titleCard);
+    // Wire copy.
+    var copyBtn = document.getElementById('seoRewriteCopy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var t = (document.getElementById('seoNewTitle') || {}).value || '';
+        var d = (document.getElementById('seoNewDesc')  || {}).value || '';
+        var text = 'Title: ' + t + '\nDescription: ' + d;
+        var msg = document.getElementById('seoRewriteMsg');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            if (msg) { msg.textContent = 'Copied. Paste into your platform\'s SEO settings.'; setTimeout(function(){ msg.textContent=''; }, 2400); }
+          });
+        }
+      });
+    }
+  }
+
   // Phase 2 (Workshop) — auth state + Save-to-Workbench wiring.
   // Cache /api/auth/me once on page load so the post-grade reveal
   // doesn't pay the round-trip on every result. anonymous = false
@@ -784,6 +917,7 @@
 
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
+        renderRewriteAndPreview(url, data.title || '', data.description || '');
 
         if (states) states.setSuccess();
         result.classList.add('visible');
