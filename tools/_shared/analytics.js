@@ -175,6 +175,11 @@
       'Tool First Result',
       'Tool Save Intent',
     ],
+    // Phase G.10 (Growth) — newsletter capture + double-opt confirm.
+    newsletter: [
+      'Newsletter Confirmed',
+      'Newsletter Signup',
+    ],
   };
 
   // Flat allowlist used by the CI checker.

@@ -175,3 +175,40 @@
   window.muntin.aiSearchEngine = function () { return detectAiEngine(refHost()); };
   window.muntin.session = function () { return safeRead(STORAGE_SESSION); };
 })();
+
+// Phase G.10 (Growth) — newsletter footer form submit. Async fetch
+// instead of full-page submit so the success state stays inline.
+// On send, the form swaps `data-state="ok"` and the CSS replaces the
+// pitch with the "got it. Check your inbox." postscript.
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  function init() {
+    var forms = document.querySelectorAll('.foot-newsletter-form');
+    Array.prototype.forEach.call(forms, function (form) {
+      // Stamp ts so the silent-200 server gate accepts the submit.
+      var tsField = form.querySelector('input[name="ts"]');
+      if (tsField) tsField.value = String(Date.now());
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var fd = new FormData(form);
+        // URL-encode for the form-body parser on the worker side.
+        var params = new URLSearchParams();
+        fd.forEach(function (v, k) { params.append(k, v); });
+        fetch(form.action, {
+          method: 'POST',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body: params.toString(),
+          credentials: 'same-origin',
+        }).then(function () {
+          form.dataset.state = 'ok';
+          if (typeof window.plausible === 'function') {
+            try { window.plausible('Newsletter Signup', { props: { surface: form.dataset.locale === 'es' ? 'footer-es' : 'footer-en' } }); } catch (_) {}
+          }
+        }).catch(function () { /* silent — error UI not needed for fire-and-forget */ });
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

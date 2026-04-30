@@ -931,3 +931,32 @@ export function windowConfirmationEmail(body) {
 
   return { subject, html, text: txt };
 }
+
+// Phase G.10 (Growth) — confirmación de suscripción al boletín.
+// Tono y promesa idénticos a la versión EN: corto, sin spam, con
+// el cap explícito de 4 notas por trimestre.
+export function subscriberConfirmEmail(body) {
+  const confirmUrl = String(body.confirmUrl || '').trim();
+  const subject = 'Confirma tu correo — Don';
+  const html = htmlShell(
+    'Un clic y entras a la lista',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Tengo tu correo. Haz clic una vez y solo escribiré cuando haya algo que valga la pena escribir.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(confirmUrl, 'Confirmar mi correo') + '</p>',
+      '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Tope estricto: cuatro notas por trimestre, siempre. Sin secuencias automatizadas. Cancela cuando quieras.</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n')
+  );
+  const text = [
+    'Un clic y entras a la lista',
+    '',
+    'Tengo tu correo. Haz clic una vez y solo escribiré cuando haya algo que valga la pena escribir.',
+    '',
+    'Confirmar: ' + confirmUrl,
+    '',
+    'Tope estricto: cuatro notas por trimestre, siempre. Cancela cuando quieras.',
+    '',
+    '— Don',
+  ].join('\n');
+  return { subject, html, text };
+}

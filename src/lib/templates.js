@@ -1089,6 +1089,41 @@ export function windowReplyToUserEmail(body) {
 // Phase W.2 (The Window) — sent to the visitor on their first
 // note (acknowledges receipt, sets expectation, closes with the
 // canonical "I read every one" line).
+// Phase G.10 (Growth) — newsletter subscriber double-opt confirmation
+// email. Voice mirrors windowConfirmationEmail: warm, brief, not
+// corporate-SaaS. The framing string "I'll only write when there's
+// something worth writing about" is enforced by
+// scripts/check-newsletter-copy.mjs and must not drift.
+export function subscriberConfirmEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.subscriberConfirmEmail === 'function') {
+    return ES.subscriberConfirmEmail(body);
+  }
+  const confirmUrl = String(body.confirmUrl || '').trim();
+  const subject = 'Confirm your email — Don';
+  const html = htmlShell(
+    'One click and you\'re on the list',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Got your address. Click once and I\'ll only write when there\'s something worth writing about.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(confirmUrl, 'Confirm my email') + '</p>',
+      '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Hard cap: four notes a quarter, ever. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n')
+  );
+  const text = [
+    'One click and you\'re on the list',
+    '',
+    'Got your address. Click once and I\'ll only write when there\'s something worth writing about.',
+    '',
+    'Confirm: ' + confirmUrl,
+    '',
+    'Hard cap: four notes a quarter, ever. No drip campaigns. Unsubscribe anytime.',
+    '',
+    '— Don',
+  ].join('\n');
+  return { subject, html, text };
+}
+
 export function windowConfirmationEmail(body) {
   const locale = pickLocale(body);
   if (locale === 'es' && typeof ES.windowConfirmationEmail === 'function') {

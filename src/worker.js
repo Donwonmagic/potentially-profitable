@@ -192,6 +192,8 @@ import {
   windowNotifyDonEmail,
   windowReplyToUserEmail,
   windowConfirmationEmail,
+  // Phase G.10 (Growth) — newsletter double-opt confirmation email.
+  subscriberConfirmEmail,
 } from './lib/templates.js';
 import {
   // Phase F.3 (Field Notes) — server-side submission storage + validation.
@@ -319,6 +321,10 @@ const API_ROUTES = {
   '/api/admin/window/reply':         handleAdminWindowReply,
   '/api/admin/window/close':         handleAdminWindowClose,
   '/api/admin/window/archive':       handleAdminWindowArchive,
+  // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
+  '/api/subscribe':                  handleSubscribe,
+  '/sub/confirm':                    handleSubscribeConfirm,
+  '/sub/unsubscribe':                handleSubscribeUnsubscribe,
 };
 
 
@@ -5840,4 +5846,135 @@ async function parseFormBody(request) {
     }
   }
   return obj;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase G.10 (Growth) — newsletter subscription endpoints.
+//
+// Storage in AUTH_SESSIONS KV:
+//   sub:<sha256(email)>      → { email, locale, status, source,
+//                                createdAt, confirmedAt? }
+//   sub-confirm:<token>      → { sub, email, locale }   TTL 24h
+//
+// Status enum: pending | active | unsubscribed.
+// Source enum: footer | article-end | workshop-empty-state | window.
+//
+// All endpoints are silent-200 on validation failure (mirrors
+// /api/auth/magic-link) — a network observer cannot tell a real
+// signup from spam. Hard-503 only when KV/Resend bindings missing.
+
+async function sha256Hex(s) {
+  const enc = new TextEncoder().encode(s);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
+
+async function handleSubscribe(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await parseFormBody(request); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  const lenGate = enforceMaxLengths(body, { email: 254, source: 32, locale: 8, hp: 100, ts: 30 });
+  if (!lenGate.ok) return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+
+  const SILENT_OK = jsonResponse({ ok: true }, 200);
+  if (isSpamHoneypot(body))    return SILENT_OK;
+  if (!isTimestampSane(body))  return SILENT_OK;
+  if (isHighThreatIP(request)) return SILENT_OK;
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  if (!isValidEmail(email))    return SILENT_OK;
+
+  const bodyLang = typeof body.locale === 'string' ? body.locale.toLowerCase() : '';
+  const locale = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+  const source = SUBSCRIBE_SOURCES.has(body.source) ? body.source : 'footer';
+
+  if (!env || !env.AUTH_SESSIONS) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  if (!env.RESEND_API_KEY)        return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+
+  const subKey = 'sub:' + (await sha256Hex(email.toLowerCase()));
+  const existingRaw = await env.AUTH_SESSIONS.get(subKey);
+  if (existingRaw) {
+    let existing; try { existing = JSON.parse(existingRaw); } catch (_) { existing = null; }
+    // Idempotency: if already active, silent-200 without re-emailing.
+    if (existing && existing.status === 'active') return SILENT_OK;
+  }
+
+  let token;
+  for (let i = 0; i < 5; i++) {
+    const candidate = mintMagicLinkToken();
+    const collision = await env.AUTH_SESSIONS.get('sub-confirm:' + candidate);
+    if (!collision) { token = candidate; break; }
+  }
+  if (!token) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+
+  const now = Date.now();
+  const subRecord = {
+    email, locale, source,
+    status: 'pending',
+    createdAt: now,
+  };
+  await env.AUTH_SESSIONS.put(subKey, JSON.stringify(subRecord));
+  await env.AUTH_SESSIONS.put('sub-confirm:' + token, JSON.stringify({ sub: subKey, email, locale }), {
+    expirationTtl: 24 * 60 * 60,
+  });
+
+  const baseUrl = String(env.MAGIC_LINK_BASE_URL || 'https://muntin.digital').replace(/\/$/, '');
+  const confirmUrl = `${baseUrl}/sub/confirm?t=${token}`;
+  const tmpl = subscriberConfirmEmail({ confirmUrl, locale });
+  ctx.waitUntil(sendEmail({ env, to: email, subject: tmpl.subject, html: tmpl.html, text: tmpl.text }));
+  return SILENT_OK;
+}
+
+async function handleSubscribeConfirm(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('t');
+  if (!token || !env || !env.AUTH_SESSIONS) {
+    return new Response('Invalid or expired link.', { status: 400, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  const ckey = 'sub-confirm:' + token;
+  const raw = await env.AUTH_SESSIONS.get(ckey);
+  if (!raw) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  let payload; try { payload = JSON.parse(raw); } catch (_) { payload = null; }
+  if (!payload || !payload.sub) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  const subRaw = await env.AUTH_SESSIONS.get(payload.sub);
+  let sub; try { sub = JSON.parse(subRaw || 'null'); } catch (_) { sub = null; }
+  if (!sub) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  sub.status = 'active';
+  sub.confirmedAt = Date.now();
+  await env.AUTH_SESSIONS.put(payload.sub, JSON.stringify(sub));
+  await env.AUTH_SESSIONS.delete(ckey);
+  const dest = sub.locale === 'es' ? '/es/?subscribed=1' : '/?subscribed=1';
+  return new Response(null, { status: 302, headers: { location: dest } });
+}
+
+async function handleSubscribeUnsubscribe(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('t');
+  if (!token || !env || !env.AUTH_SESSIONS) {
+    return new Response('Invalid link.', { status: 400, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  // Token form: sha256-hex of email — same key as sub:<hash>. Stable
+  // per-subscriber so unsubscribe links work indefinitely.
+  const subKey = 'sub:' + token.toLowerCase();
+  const raw = await env.AUTH_SESSIONS.get(subKey);
+  if (!raw) {
+    return new Response('Already unsubscribed.', { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  let sub; try { sub = JSON.parse(raw); } catch (_) { sub = null; }
+  if (sub) {
+    sub.status = 'unsubscribed';
+    sub.unsubscribedAt = Date.now();
+    await env.AUTH_SESSIONS.put(subKey, JSON.stringify(sub));
+  }
+  return new Response('Done. You will not receive further newsletter emails.', {
+    status: 200,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
 }

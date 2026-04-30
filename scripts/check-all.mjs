@@ -66,6 +66,7 @@ const CHECKS = [
   ['Image dimensions (warn)','check-image-dimensions.mjs',   '--check'],
   ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
   ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
+  ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
 ];
 
 const results = [];
