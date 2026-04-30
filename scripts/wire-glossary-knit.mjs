@@ -217,10 +217,20 @@ function toolLabel(slug, locale) {
   if (!t) return slug;
   return locale === 'en' ? t.title_en : t.title_es;
 }
-function toolUrl(slug, locale) {
+// Phase G.4 — per-(term, tool) deep-anchor overrides. When set,
+// the "Used in tools" link lands on a specific section of the tool
+// instead of its hero. Reads data/glossary-tool-anchors.json once.
+const __anchorsPath = path.join(REPO, 'data', 'glossary-tool-anchors.json');
+const __anchorsCfg  = fs.existsSync(__anchorsPath) ? (JSON.parse(fs.readFileSync(__anchorsPath, 'utf8')).anchors || {}) : {};
+
+function toolUrl(slug, locale, termSlug) {
   const t = toolsCfg.tools[slug];
   if (!t) return '#';
-  return locale === 'en' ? t.url_en : t.url_es;
+  const base = locale === 'en' ? t.url_en : t.url_es;
+  if (termSlug && __anchorsCfg[termSlug] && __anchorsCfg[termSlug][slug]) {
+    return base + '#' + __anchorsCfg[termSlug][slug];
+  }
+  return base;
 }
 
 function articleUrl(slug, locale) {
@@ -282,7 +292,7 @@ function renderKnit(slug, locale) {
     .filter((s) => toolsCfg.tools[s] && toolsCfg.tools[s].status === 'live')
     .slice(0, 3);
   const toolsList = toolSlugs.length
-    ? toolSlugs.map((ts) => `          <li><a href="${escAttr(toolUrl(ts, locale))}">${escText(toolLabel(ts, locale))}</a></li>`).join('\n')
+    ? toolSlugs.map((ts) => `          <li><a href="${escAttr(toolUrl(ts, locale, slug))}">${escText(toolLabel(ts, locale))}</a></li>`).join('\n')
     : `          <li class="glossary-knit__col-empty">${escText(headings.empty)}</li>`;
   const toolsCol = `<div class="glossary-knit__col">
         <h3>${escText(headings.tools)}</h3>
