@@ -5439,6 +5439,49 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 @media print{.edu-result{display:none}}
 
+/* ============ Statistical disclosure components ============
+   Phase 3 — building on .edu-result so calculators can disclose
+   uncertainty bands, hard-coded assumptions, and the formula behind
+   the number. Each lives in its own surface so an owner can read the
+   result first and click into method only when they want to.
+
+     .edu-range    — "$X – $Y typical" pill for sensitivity ranges
+     .edu-source   — sourced-benchmark chip (org + report + percentile)
+     .edu-formula  — <details> disclosure with the live formula
+     .edu-caveat   — italic "this assumes…" block
+
+   Reuse: .edu-formula extends the <details class="pc-paste"> shape
+   already in tools/plate-cost/index.html. Don't introduce a separate
+   summary chevron pattern.
+
+   Print + PNG-export rules at end of file hide all four. */
+.edu-range{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:var(--surface-inset);border-radius:999px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;border:1px solid var(--line);letter-spacing:.01em}
+.edu-range strong{font-weight:700;color:var(--teal-dark)}
+.edu-range__label{font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase;margin-right:2px}
+
+.edu-source{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:6px 12px;background:transparent;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+.edu-source__org{font-weight:700;letter-spacing:.02em;color:var(--ink)}
+.edu-source__report{color:var(--ink-soft)}
+.edu-source__year{color:var(--stone);font-variant-numeric:tabular-nums}
+.edu-source__stat{color:var(--stone);font-style:italic}
+.edu-source a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-dark)}
+.edu-source a:hover{text-decoration-color:var(--teal)}
+
+.edu-formula{margin:14px 0 0;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface-1);overflow:hidden}
+.edu-formula > summary{list-style:none;cursor:pointer;padding:10px 14px;font-size:13px;font-weight:600;color:var(--teal);display:flex;align-items:center;gap:8px;user-select:none}
+.edu-formula > summary::-webkit-details-marker{display:none}
+.edu-formula > summary::after{content:'+';margin-left:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;color:var(--stone);transition:transform var(--t-fast) var(--ease)}
+.edu-formula[open] > summary::after{content:'\2212'}
+.edu-formula > summary:hover{color:var(--teal-dark)}
+.edu-formula > summary:focus-visible{outline:none;box-shadow:var(--ring-focus);border-radius:var(--r-sm)}
+.edu-formula__body{padding:12px 14px;border-top:1px solid var(--line);background:var(--cream-2);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;line-height:1.6;color:var(--ink);font-variant-numeric:tabular-nums;white-space:pre-wrap;word-break:break-word;margin:0}
+.edu-formula__caption{padding:8px 14px 12px;font-family:var(--font-body);font-size:12.5px;color:var(--ink-soft);background:var(--cream-2);line-height:1.5;border-top:1px dashed var(--line)}
+
+.edu-caveat{margin:12px 0 0;padding:10px 14px;background:var(--status-warn-tint);border-left:3px solid var(--status-warn-fill);border-radius:var(--r-sm);font-size:13px;line-height:1.55;color:var(--ink);font-style:italic}
+.edu-caveat strong{font-weight:700;font-style:normal;color:var(--status-warn-deep)}
+
+@media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
+
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
