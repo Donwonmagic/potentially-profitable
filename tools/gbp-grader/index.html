@@ -162,6 +162,25 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Methodology disclosure — tucked at the bottom for credibility
      without cluttering the default view. */
+  .gbp-mirror{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-mirror-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+  .gbp-mirror-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .gbp-mirror-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .gbp-mirror-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .gbp-mirror-table tbody tr:last-child td{border-bottom:0}
+  .gbp-mirror-label{font-weight:600;color:var(--ink)}
+  .gbp-mirror-you{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gbp-mirror-peer{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta{font-weight:700;font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta.win{color:var(--status-good)}
+  .gbp-mirror-delta.lose{color:var(--rust)}
+  .gbp-mirror-delta.tie{color:var(--stone)}
+  .gbp-mirror-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+  .gbp-mirror-foot{font-size:12px;color:var(--stone);margin:10px 0 0;line-height:1.5}
+  .gbp-mirror-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  @media(max-width:560px){
+    .gbp-mirror-table th:nth-child(5),.gbp-mirror-table td:nth-child(5){display:none}
+  }
   .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2)}
   .gbp-methodology summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .gbp-methodology summary::-webkit-details-marker{display:none}
@@ -827,6 +846,51 @@
       +'</details>';
   }
 
+  // Competitor mirror: yours vs. category median. Uses the
+  // peer-medians.json data already loaded for this category. Not
+  // a "nearby search" (which would need a separate Places API
+  // call) — instead surfaces "what a typical {your category} looks
+  // like" so the owner has a felt sense of where they stand. Honest:
+  // labelled as median, not "average competitor."
+  function renderCompetitorMirror(chosen, peerMedians){
+    if (!chosen || !peerMedians) return '';
+    var primary = (chosen.primaryTypeDisplayName || chosen.types && chosen.types[0]) || '';
+    var familyKey = (peerMedians._familyMap && peerMedians._familyMap[primary]) || null;
+    var benchmark = peerMedians[primary] || (familyKey && peerMedians._families && peerMedians._families[familyKey]) || peerMedians._default || null;
+    if (!benchmark) return '';
+    var yourReviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    var yourPhotos  = (typeof chosen.photoCount === 'number') ? chosen.photoCount : null;
+    var yourRating  = (typeof chosen.rating === 'number') ? chosen.rating : null;
+    function row(label, your, peer, note) {
+      if (your == null && peer == null) return '';
+      var delta = (typeof your === 'number' && typeof peer === 'number') ? your - peer : null;
+      var deltaCls = delta == null ? 'tie' : (delta >= 0 ? 'win' : 'lose');
+      var deltaTxt = delta == null ? '—' : (delta > 0 ? '+' + Math.round(delta) : Math.round(delta));
+      var yourTxt  = (your == null ? '—' : (typeof your === 'number' ? Math.round(your * 10) / 10 : your));
+      var peerTxt  = (peer == null ? '—' : (typeof peer === 'number' ? Math.round(peer * 10) / 10 : peer));
+      return '<tr><td class="gbp-mirror-label">' + label + '</td>'
+        +    '<td class="gbp-mirror-you">' + yourTxt + '</td>'
+        +    '<td class="gbp-mirror-peer">' + peerTxt + '</td>'
+        +    '<td class="gbp-mirror-delta ' + deltaCls + '">' + deltaTxt + '</td>'
+        +    (note ? '<td class="gbp-mirror-note">' + note + '</td>' : '<td></td>')
+        +    '</tr>';
+    }
+    var rows = '';
+    rows += row('Reviews',  yourReviews, (benchmark.reviewCount || null), yourReviews != null && benchmark.reviewCount && yourReviews < benchmark.reviewCount ? 'Aim for the median first; ranking lift compounds past it.' : '');
+    rows += row('Photos',   yourPhotos,  (benchmark.photoCount || null),  yourPhotos != null && benchmark.photoCount && yourPhotos < benchmark.photoCount ? 'Photos are the cheapest single metric to move — upload weekly.' : '');
+    rows += row('Rating',   yourRating,  4.5, yourRating != null && yourRating < 4.5 ? 'Below the 4.5 threshold most diners filter to. Reply to recent reviews — public replies lift the visible mean.' : '');
+    if (!rows) return '';
+    var label = primary || (familyKey || 'restaurants');
+    return '<div class="gbp-mirror">'
+      + '<p class="gbp-mirror-eyebrow">How you compare to median ' + label + 's</p>'
+      + '<table class="gbp-mirror-table">'
+      +   '<thead><tr><th>Metric</th><th>You</th><th>Median peer</th><th>Δ</th><th></th></tr></thead>'
+      +   '<tbody>' + rows + '</tbody>'
+      + '</table>'
+      + '<p class="gbp-mirror-foot">Median is a directional benchmark from <a href="#" data-toggle-method>BrightLocal + Whitespark research</a>, not nearby competitors. To compare against three actual neighbors, run the <a href="/tools/compare/">Compare tool</a>.</p>'
+      + '</div>';
+  }
+
   function renderMethodology(peerMedians){
     var compiled=peerMedians&&peerMedians._compiled?peerMedians._compiled:'current release';
     var source=peerMedians&&peerMedians._source?peerMedians._source:'public local-SEO research';
@@ -1112,7 +1176,8 @@
 
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+    var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
+    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill the Restaurant Audit CTA with this
     // listing's website when available — that tool already fuses
