@@ -699,7 +699,17 @@
             '<span class="sch-gen-msg" id="schGenMsg" aria-live="polite"></span>' +
           '</div>' +
         '</div>' +
-        '<p class="sch-gen-help" style="margin-top:10px;">Already entered hours in <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a>? It generates a more complete schema block with structured opening hours — handier for an owner who runs split shifts or seasonal hours.</p>' +
+        '<p class="sch-gen-help" style="margin-top:10px;">' + (
+          (function(){
+            try {
+              var c = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : null;
+              if (c && c.hours && Array.isArray(c.hours.openingHoursSpecification) && c.hours.openingHoursSpecification.length) {
+                return '<strong>Hours pulled in from <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a></strong> — the snippet below already includes <code>openingHoursSpecification</code>. Update them in Open Hours and they\'ll refresh here next time you grade.';
+              }
+            } catch (_) {}
+            return 'Set your hours in <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a> first and they\'ll pre-fill here as <code>openingHoursSpecification</code> — handier for split shifts or seasonal hours.';
+          })()
+        ) + '</p>' +
       '</div>' +
     '</details>';
   }
@@ -729,6 +739,23 @@
         addressCountry: 'US'
       } : undefined
     };
+    // Pull structured opening hours from a prior Open Hours session
+    // (written to MuntinContext.hours by open-hours/index.html on
+    // each render). Owners who set hours upstream get a complete
+    // Restaurant block with openingHoursSpecification + any picked
+    // closures, without re-typing.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+        ? MuntinContext.read() : null;
+      if (ctx && ctx.hours) {
+        if (Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
+          obj.openingHoursSpecification = ctx.hours.openingHoursSpecification;
+        }
+        if (Array.isArray(ctx.hours.specialOpeningHoursSpecification) && ctx.hours.specialOpeningHoursSpecification.length) {
+          obj.specialOpeningHoursSpecification = ctx.hours.specialOpeningHoursSpecification;
+        }
+      }
+    } catch (_) {}
     // Strip undefined keys.
     Object.keys(obj).forEach(function(k){ if (obj[k] === undefined) delete obj[k]; });
     if (obj.address) Object.keys(obj.address).forEach(function(k){ if (obj.address[k] === undefined) delete obj.address[k]; });

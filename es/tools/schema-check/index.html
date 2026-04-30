@@ -681,7 +681,17 @@
             '<span class="sch-gen-msg" id="schGenMsg" aria-live="polite"></span>' +
           '</div>' +
         '</div>' +
-        '<p class="sch-gen-help" style="margin-top:10px;">¿Ya ingresaste tus horarios en <a href="/es/tools/open-hours/" style="color:var(--teal);">Horario de Atención</a>? Esa herramienta genera un bloque schema más completo con horarios estructurados — útil si tienes turnos partidos o de temporada.</p>' +
+        '<p class="sch-gen-help" style="margin-top:10px;">' + (
+          (function(){
+            try {
+              var c = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : null;
+              if (c && c.hours && Array.isArray(c.hours.openingHoursSpecification) && c.hours.openingHoursSpecification.length) {
+                return '<strong>Horarios traídos de <a href="/es/tools/open-hours/" style="color:var(--teal);">Horario de Atención</a></strong> — el bloque ya incluye <code>openingHoursSpecification</code>. Actualízalos allá y se refrescan aquí en la próxima visita.';
+              }
+            } catch (_) {}
+            return 'Configura tus horarios en <a href="/es/tools/open-hours/" style="color:var(--teal);">Horario de Atención</a> y se pre-llenan aquí como <code>openingHoursSpecification</code> — útil para turnos partidos o de temporada.';
+          })()
+        ) + '</p>' +
       '</div>' +
     '</details>';
   }
@@ -704,6 +714,20 @@
         addressCountry: 'US'
       } : undefined
     };
+    // Recoge horarios estructurados desde MuntinContext (escritos por
+    // open-hours en cada render) — el bloque sale completo sin retipear.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+        ? MuntinContext.read() : null;
+      if (ctx && ctx.hours) {
+        if (Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
+          obj.openingHoursSpecification = ctx.hours.openingHoursSpecification;
+        }
+        if (Array.isArray(ctx.hours.specialOpeningHoursSpecification) && ctx.hours.specialOpeningHoursSpecification.length) {
+          obj.specialOpeningHoursSpecification = ctx.hours.specialOpeningHoursSpecification;
+        }
+      }
+    } catch (_) {}
     Object.keys(obj).forEach(function(k){ if (obj[k] === undefined) delete obj[k]; });
     if (obj.address) Object.keys(obj.address).forEach(function(k){ if (obj.address[k] === undefined) delete obj.address[k]; });
     return '<script type="application/ld+json">\n' + JSON.stringify(obj, null, 2) + '\n<\/script>';

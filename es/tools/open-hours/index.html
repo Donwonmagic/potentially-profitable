@@ -1498,6 +1498,27 @@
       appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple', 'es');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
       emailBlock.textContent  = window.OH.generateBuilderEmail(input, 'es');
+      // Handoff cross-tool — escribe los horarios estructurados en
+      // MuntinContext para que schema-check los recoja sin retipear.
+      try {
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          var docObj = window.OH.generateJsonLd(input, { format: 'object' });
+          var hoursPayload = null;
+          if (docObj && Array.isArray(docObj.openingHoursSpecification)) {
+            hoursPayload = {
+              openingHoursSpecification: docObj.openingHoursSpecification,
+              specialOpeningHoursSpecification: docObj.specialOpeningHoursSpecification || []
+            };
+          }
+          MuntinContext.merge({
+            businessName: input.name || undefined,
+            address: [input.street, input.city, input.region, input.postalCode]
+              .filter(Boolean).join(', ') || undefined,
+            city: input.city || undefined,
+            hours: hoursPayload || undefined
+          });
+        }
+      } catch (_) {}
       var voicemailBlockEl    = document.getElementById('ohVoicemailBlock');
       if (voicemailBlockEl && window.OH.generateVoicemailScript) {
         voicemailBlockEl.textContent = window.OH.generateVoicemailScript(input, 'es');
