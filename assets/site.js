@@ -3335,11 +3335,17 @@
     p.querySelector('.glossary-popover__blurb').textContent = blurb;
     var more = p.querySelector('.glossary-popover__more');
     more.setAttribute('href', href);
+    // The full glossary entry opens in a new tab so the reader doesn't
+    // lose their place in the article. The popover already shows the
+    // first-sentence definition inline; the new tab is a deeper read,
+    // not a navigation away.
+    more.setAttribute('target', '_blank');
+    more.setAttribute('rel', 'noopener');
     // Localised "read the full definition" label. Read once from the
     // page's <html lang> attribute — no message bundle needed for one
     // string used by one component.
     var lang = (document.documentElement.getAttribute('lang') || 'en').slice(0, 2);
-    more.textContent = (lang === 'es' ? 'Leer la definición completa' : 'Read the full definition') + ' →';
+    more.textContent = (lang === 'es' ? 'Leer la definición completa ↗' : 'Read the full definition ↗');
 
     var rect = link.getBoundingClientRect();
     var popH = p.offsetHeight || 140;
