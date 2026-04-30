@@ -38,6 +38,32 @@
   var TEAL   = '#1F4E5B';
   var LINE   = '#E5E0D8';
 
+  // Pick a usable brand-accent color from a palette array. The card
+  // ground is cream; an accent color is only useful if it has enough
+  // contrast against cream to read. We compute relative luminance per
+  // hex (sRGB → linear → Y), keep the candidates with luminance under
+  // 0.45 (≈ 4.5:1 against #FAF7F2), and return the first one in the
+  // palette that qualifies. Falls through to Muntin teal when no
+  // palette is supplied or when every supplied color is too light.
+  function srgbLuminance(hex) {
+    var h = String(hex || '').replace('#', '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    if (!/^[0-9a-f]{6}$/i.test(h)) return 1; // unparseable → treat as too-light
+    var r = parseInt(h.slice(0, 2), 16) / 255;
+    var g = parseInt(h.slice(2, 4), 16) / 255;
+    var b = parseInt(h.slice(4, 6), 16) / 255;
+    var lin = function(v){ return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  function pickBrandAccent(palette, fallback) {
+    fallback = fallback || TEAL;
+    if (!Array.isArray(palette) || !palette.length) return fallback;
+    for (var i = 0; i < palette.length; i++) {
+      if (srgbLuminance(palette[i]) < 0.45) return palette[i];
+    }
+    return fallback;
+  }
+
   var FONT_DISPLAY = '"Fraunces", "Times New Roman", serif';
   var FONT_BODY    = '"Inter", -apple-system, "Segoe UI", sans-serif';
 
@@ -91,6 +117,10 @@
     var strings = opts.strings || DEFAULT_STRINGS_EN;
     var locale = opts.locale || 'en';
     var formatTime = opts.formatTime || function(t){ return t || ''; };
+    // Brand accent — pulled from a Brand-Suite palette handoff via
+    // the MuntinContext bus. Falls back to Muntin teal when absent
+    // or when every palette color is too light to read on cream.
+    var ACCENT = pickBrandAccent(opts.palette, TEAL);
 
     var canvas = document.createElement('canvas');
     canvas.width = SIGN_W;
@@ -118,8 +148,10 @@
       ctx.fillText(l, SIGN_W / 2, ny + i * 92);
     });
 
-    // Eyebrow under the name
-    ctx.fillStyle = STONE;
+    // Eyebrow under the name — repainted in the brand accent so the
+    // print door-card visibly carries the restaurant's color, not a
+    // generic gray.
+    ctx.fillStyle = ACCENT;
     ctx.font = '600 18px ' + FONT_BODY;
     ctx.textBaseline = 'alphabetic';
     var eyebrow = strings.signEyebrow.toUpperCase();
@@ -290,6 +322,7 @@
     var strings = opts.strings || DEFAULT_STRINGS_EN;
     var locale = opts.locale || 'en';
     var formatTime = opts.formatTime || function(t){ return t || ''; };
+    var ACCENT = pickBrandAccent(opts.palette, TEAL);
 
     var canvas = document.createElement('canvas');
     canvas.width = CARD_W;
@@ -375,14 +408,16 @@
 
     // Brand mark at the muntin intersection — cream halo so panel
     // content can't bleed through, then the window-and-muntin glyph
-    // in the brand teal. Same construction as Menu Engineering.
+    // painted in the restaurant's brand accent (or Muntin teal when
+    // no palette has been handed off from Brand Suite). Same
+    // construction as Menu Engineering.
     var markSize = 56;
     var haloR = markSize / 2 + 12;
     ctx.fillStyle = CREAM2;
     ctx.beginPath();
     ctx.arc(bodyMidX, bodyMidY, haloR, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = INK;
+    ctx.fillStyle = ACCENT;
     roundRect(ctx, bodyMidX - markSize / 2, bodyMidY - markSize / 2, markSize, markSize, 6);
     ctx.fill();
     ctx.strokeStyle = CREAM;

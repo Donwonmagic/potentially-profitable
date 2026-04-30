@@ -142,6 +142,60 @@
   .speed-metric .lbl { font-size: 12px; color: var(--stone); margin-top: 4px;
     font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
   @media (max-width: 420px) { .speed-metrics { grid-template-columns: 1fr; } }
+  .speed-shot { margin: 18px 0; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .speed-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .speed-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
+  .speed-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+  .speed-shot-caption { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin: 8px 0 0; }
+  .speed-biggest { margin: 18px 0; padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--rust); border-radius: var(--r-md); background: var(--surface-1); }
+  .speed-biggest-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); margin: 0 0 8px; }
+  .speed-biggest-headline { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); margin: 0 0 8px; }
+  .speed-biggest-why { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.55; }
+  .speed-biggest-snippet { background: var(--cream-2); padding: 10px 12px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; line-height: 1.5; overflow: auto; max-height: 200px; }
+  .speed-compress { margin-top: 10px; }
+  .speed-compress-summary { cursor: pointer; font-size: 13px; color: var(--teal); font-weight: 500; }
+  .speed-compress-body { margin-top: 10px; padding: 12px 14px; background: var(--cream-2); border-radius: 6px; }
+  .speed-compress-help { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; line-height: 1.5; }
+  .speed-compress-out { margin-top: 10px; }
+  .speed-compress-result { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
+  .speed-compress-download { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--cream); text-decoration: none; font-weight: 500; font-size: 13px; }
+  .speed-compress-download:hover { background: var(--teal); }
+  .speed-metric-link{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-dark);transition:border-color var(--t-fast) var(--ease)}
+  .speed-metric-link:hover{border-bottom-color:var(--teal);color:var(--teal)}
+  /* Shared MuntinHire disclosure. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
+  /* Recheck-over-time sparkline. Mirrors the audit tool's pattern:
+     a tiny SVG of overall scores from the last 6 runs, hidden until
+     3 snapshots exist. Owners running speed-tests after each fix get
+     proof that the work moved the needle. */
+  .speed-spark { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); text-align: left; }
+  .speed-spark[hidden] { display: none; }
+  .speed-spark-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 6px; }
+  .speed-spark-row { display: flex; align-items: center; gap: 14px; }
+  .speed-spark-svg { width: 240px; height: 60px; overflow: visible; flex: 0 0 auto; }
+  .speed-spark-svg .spark-line { stroke: var(--teal); }
+  .speed-spark-svg .spark-pt { fill: var(--cream, #FAF6EE); stroke: var(--teal); stroke-width: 2; }
+  .speed-spark-svg .spark-pt-current { fill: var(--teal); stroke: var(--teal); }
+  .speed-spark-svg .spark-label { font: 600 11px/1 var(--font-body, system-ui); fill: var(--ink); paint-order: stroke; stroke: var(--cream, #FAF6EE); stroke-width: 3px; stroke-linejoin: round; }
+  .speed-spark-prose { font-size: 13.5px; color: var(--ink-soft); line-height: 1.45; }
+  .speed-spark-prose strong { color: var(--ink); }
+  .speed-spark-axis { display: flex; justify-content: space-between; max-width: 240px; font-size: 10.5px; color: var(--stone); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  @media (max-width: 540px) {
+    .speed-spark-row { flex-direction: column; align-items: stretch; gap: 10px; }
+    .speed-spark-svg { width: 100%; max-width: 320px; align-self: center; }
+    .speed-spark-axis { max-width: 320px; align-self: center; width: 100%; }
+  }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -413,21 +467,37 @@
         <div class="speed-metrics">
           <div class="speed-metric">
             <div class="val" id="metricLCP">—</div>
-            <div class="lbl">Largest Contentful Paint</div>
+            <div class="lbl"><a href="/glossary/lcp/" class="speed-metric-link" title="What this is">Largest Contentful Paint</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricFCP">—</div>
-            <div class="lbl">First Contentful Paint</div>
+            <div class="lbl"><a href="/glossary/fcp/" class="speed-metric-link" title="What this is">First Contentful Paint</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricTBT">—</div>
-            <div class="lbl">Total Blocking Time</div>
+            <div class="lbl"><a href="/glossary/core-web-vitals/" class="speed-metric-link" title="What this is">Total Blocking Time</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricCLS">—</div>
-            <div class="lbl">Cumulative Layout Shift</div>
+            <div class="lbl"><a href="/glossary/cls/" class="speed-metric-link" title="What this is">Cumulative Layout Shift</a></div>
           </div>
         </div>
+
+        <!-- Recheck-over-time sparkline. Populated client-side from
+             a per-URL localStorage history (last 6 runs). Hidden when
+             fewer than 3 snapshots exist — a 2-point chart isn't a
+             trajectory, just a delta. -->
+        <figure class="speed-spark" id="speedSpark" hidden>
+          <p class="speed-spark-eyebrow">Your last speed tests</p>
+          <div class="speed-spark-row">
+            <svg class="speed-spark-svg" id="speedSparkSvg" viewBox="0 0 240 60" aria-hidden="true">
+              <polyline class="spark-line" id="speedSparkLine" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points=""/>
+              <g class="spark-points" id="speedSparkPoints"></g>
+            </svg>
+            <div class="speed-spark-prose" id="speedSparkProse"></div>
+          </div>
+          <div class="speed-spark-axis" id="speedSparkAxis"></div>
+        </figure>
 
         <!-- Sprint 12b (cohesion) — Learn-back row. -->
         <aside class="learn-back" aria-label="What this score means">
@@ -548,6 +618,9 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260430-cohesion"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -621,6 +694,94 @@
   // Phase 2 (Workshop) — render extracted from the submit handler
   // so both a fresh test AND a Workbench rehydrate use one path.
   // Payload shape: { url, score, lcp, fcp, tbt, cls, testedAt }.
+  function fmtBytes(b) {
+    if (!b || !isFinite(b)) return '';
+    if (b > 1048576) return (b / 1048576).toFixed(1) + ' MB';
+    if (b > 1024)    return Math.round(b / 1024) + ' KB';
+    return b + ' B';
+  }
+  function renderBiggestOffender(p) {
+    var host = document.getElementById('speedBiggestHost');
+    if (host) host.parentNode.removeChild(host);
+    if (!p.biggestItem) return;
+    var item = p.biggestItem;
+    var html = '<div class="speed-biggest" id="speedBiggestHost">';
+    html += '<p class="speed-biggest-eyebrow">Your slowest thing</p>';
+    if (p.biggestKind === 'opportunity' && item.url) {
+      var fileName = (item.url.split('/').pop() || item.url).split('?')[0];
+      html += '<p class="speed-biggest-headline"><strong>' + escHtml(fileName) + '</strong> &mdash; ' + (item.wastedBytes ? fmtBytes(item.wastedBytes) : 'too large') + '</p>';
+      html += '<p class="speed-biggest-why">Compressing or removing this single resource is the single biggest speed win on your site. ' + (item.saving ? 'Estimated savings: ' + fmtBytes(item.saving) + '.' : '') + '</p>';
+      // Image-shaped → offer the inline compressor.
+      if (/\.(jpe?g|png|webp|gif)$/i.test(fileName)) {
+        html += '<details class="speed-compress" id="speedCompress">';
+        html += '<summary class="speed-compress-summary">Compress an image right here &rarr;</summary>';
+        html += '<div class="speed-compress-body">';
+        html += '<p class="speed-compress-help">Drop a JPEG/PNG and we resize + recompress in your browser. No upload — the file never leaves your device.</p>';
+        html += '<input type="file" id="speedCompressInput" accept="image/jpeg,image/png" />';
+        html += '<div class="speed-compress-out" id="speedCompressOut"></div>';
+        html += '</div></details>';
+      }
+    } else if (item.snippet) {
+      html += '<p class="speed-biggest-headline">Your largest visible element</p>';
+      html += '<pre class="speed-biggest-snippet">' + escHtml(item.snippet) + '</pre>';
+      html += '<p class="speed-biggest-why">This is what Google measured for your LCP score. If it\'s an image, compress it; if it\'s a text block, check what loads above it.</p>';
+    }
+    // Hire-guide for owners whose slowest thing is a server-side fix
+    // (Cloudflare cache, image CDN, plugin removal) — beyond a
+    // browser compress + upload.
+    if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
+      html += MuntinHire.renderDisclosure({
+        scope: 'dev',
+        summary: "Need help shipping the fix? Here's who to find. →"
+      });
+    }
+    html += '</div>';
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    var anchor = document.querySelector('.speed-metrics, .speed-result-grid, .speed-result, #speedResult');
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(wrap.firstChild, anchor);
+    var input = document.getElementById('speedCompressInput');
+    var out = document.getElementById('speedCompressOut');
+    if (input) input.addEventListener('change', function (ev) {
+      var file = ev.target.files && ev.target.files[0]; if (!file) return;
+      var img = new Image();
+      var reader = new FileReader();
+      reader.onload = function (e) { img.src = e.target.result; };
+      img.onload = function () {
+        var maxW = 1600;
+        var ratio = img.width > maxW ? maxW / img.width : 1;
+        var w = Math.round(img.width * ratio), h = Math.round(img.height * ratio);
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function (blob) {
+          if (!blob) return;
+          var origSize = file.size;
+          var newSize = blob.size;
+          var url = URL.createObjectURL(blob);
+          out.innerHTML = '<p class="speed-compress-result"><strong>Compressed:</strong> ' + fmtBytes(origSize) + ' &rarr; ' + fmtBytes(newSize) + ' (' + Math.round((1 - newSize/origSize) * 100) + '% smaller)</p>' +
+                          '<a class="speed-compress-download" href="' + url + '" download="compressed-' + (file.name.replace(/\.[^.]+$/, '') || 'image') + '.webp">Download .webp</a>';
+        }, 'image/webp', 0.82);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function renderScreenshot(p) {
+    var existing = document.getElementById('speedShotHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    if (!p.screenshot) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'speedShotHost';
+    wrap.className = 'speed-shot';
+    wrap.innerHTML = '<p class="speed-shot-eyebrow">What your homepage looks like at the 3-second mark on a phone</p>' +
+                     '<div class="speed-shot-frame"><img src="' + p.screenshot + '" alt="Phone screenshot of your site at 3 seconds" loading="lazy"></div>' +
+                     '<p class="speed-shot-caption">When half your visitors decide whether to stay.</p>';
+    var dialEl = document.querySelector('.speed-dial');
+    if (dialEl && dialEl.parentNode) dialEl.parentNode.insertBefore(wrap, dialEl.nextSibling);
+  }
+  function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
   function renderResult(p) {
     var score = p.score;
     scoreNum.textContent = score;
@@ -632,8 +793,139 @@
     document.getElementById('metricFCP').textContent = formatMs(p.fcp != null ? Math.round(p.fcp) : null);
     document.getElementById('metricTBT').textContent = formatMs(p.tbt != null ? Math.round(p.tbt) : null);
     document.getElementById('metricCLS').textContent = p.cls != null ? p.cls.toFixed(3) : '—';
+    renderScreenshot(p);
+    renderBiggestOffender(p);
+    // Persist this run + paint the recheck-over-time sparkline. Done
+    // after the dial+metrics so the chart sits below the fold but
+    // above the learn-back — surfaces motivation without pushing the
+    // primary number down.
+    saveSpeedSnapshot(p.url, p);
+    renderSpeedSparkline(p.url);
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Recheck-over-time storage. Keyed per URL via the same djb2 hash
+  // pattern as the audit tool. We keep last 20 snapshots; with one
+  // re-run per fix sprint, that's ~5 months of history before the
+  // oldest drops. Quota-exceeded fails closed (the chart just won't
+  // render), never blocks the result paint.
+  var SPEED_HISTORY_PREFIX = 'muntin-speed-history:';
+  var SPEED_HISTORY_MAX = 20;
+  var SPEED_HISTORY_MIN_GAP_MS = 6 * 60 * 60 * 1000;
+  function speedHistoryKey(url) {
+    var s = String(url || '').trim().replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return SPEED_HISTORY_PREFIX + (h >>> 0).toString(16);
+  }
+  function readSpeedHistory(url) {
+    try {
+      var raw = window.localStorage.getItem(speedHistoryKey(url));
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) { return []; }
+  }
+  function saveSpeedSnapshot(url, snap) {
+    if (!url || !snap || typeof snap.score !== 'number') return;
+    var entry = {
+      ts: Date.now(),
+      score: snap.score,
+      lcp: typeof snap.lcp === 'number' ? snap.lcp : null,
+      fcp: typeof snap.fcp === 'number' ? snap.fcp : null,
+      tbt: typeof snap.tbt === 'number' ? snap.tbt : null,
+      cls: typeof snap.cls === 'number' ? snap.cls : null
+    };
+    var prev = readSpeedHistory(url);
+    if (prev.length && entry.ts - prev[prev.length - 1].ts < SPEED_HISTORY_MIN_GAP_MS) {
+      prev[prev.length - 1] = entry;
+    } else {
+      prev.push(entry);
+      while (prev.length > SPEED_HISTORY_MAX) prev.shift();
+    }
+    try { window.localStorage.setItem(speedHistoryKey(url), JSON.stringify(prev)); } catch (_) {}
+  }
+
+  function renderSpeedSparkline(url) {
+    var spark = document.getElementById('speedSpark');
+    var lineEl = document.getElementById('speedSparkLine');
+    var ptsEl  = document.getElementById('speedSparkPoints');
+    var axisEl = document.getElementById('speedSparkAxis');
+    var proseEl= document.getElementById('speedSparkProse');
+    if (!spark || !lineEl || !ptsEl || !axisEl || !proseEl) return;
+    var entries = readSpeedHistory(url)
+      .filter(function(e){ return e && typeof e.score === 'number'; })
+      .slice(-6);
+    if (entries.length < 3) { spark.hidden = true; return; }
+
+    var W = 240, H = 60, padX = 12, padY = 8;
+    var minScore = 100, maxScore = 0;
+    entries.forEach(function(e){
+      if (e.score < minScore) minScore = e.score;
+      if (e.score > maxScore) maxScore = e.score;
+    });
+    var range = Math.max(20, maxScore - minScore);
+    var midY = padY + (H - padY * 2) * 0.5;
+    var pts = entries.map(function(e, i){
+      var x = padX + (W - padX * 2) * (i / Math.max(1, entries.length - 1));
+      var rel = (e.score - minScore) / range;
+      var y = (H - padY) - rel * (H - padY * 2);
+      if (maxScore - minScore < 5) y = midY;
+      return { x: x, y: y, score: e.score, ts: e.ts };
+    });
+    lineEl.setAttribute('points', pts.map(function(p){ return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' '));
+    ptsEl.innerHTML = '';
+    pts.forEach(function(p, i){
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', p.x.toFixed(1));
+      c.setAttribute('cy', p.y.toFixed(1));
+      c.setAttribute('r', i === pts.length - 1 ? '4' : '3');
+      c.setAttribute('class', i === pts.length - 1 ? 'spark-pt spark-pt-current' : 'spark-pt');
+      ptsEl.appendChild(c);
+    });
+    var last = pts[pts.length - 1];
+    var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', Math.max(padX, Math.min(W - padX, last.x + 8)).toFixed(1));
+    label.setAttribute('y', Math.max(12, last.y - 8).toFixed(1));
+    label.setAttribute('text-anchor', last.x > W - 28 ? 'end' : 'start');
+    label.setAttribute('class', 'spark-label');
+    label.textContent = String(last.score);
+    ptsEl.appendChild(label);
+
+    // Prose summary — change since first run, change since prior run.
+    var first = entries[0], current = entries[entries.length - 1];
+    var prior = entries[entries.length - 2];
+    var deltaSince = current.score - first.score;
+    var deltaPrior = current.score - prior.score;
+    var dirSince = deltaSince > 0 ? 'up' : deltaSince < 0 ? 'down' : 'flat';
+    var dirPrior = deltaPrior > 0 ? 'up' : deltaPrior < 0 ? 'down' : 'flat';
+    var arrowSince = dirSince === 'up' ? '↑' : dirSince === 'down' ? '↓' : '→';
+    var arrowPrior = dirPrior === 'up' ? '↑' : dirPrior === 'down' ? '↓' : '→';
+    var p1 = '<strong>' + arrowSince + ' ' + (deltaSince > 0 ? '+' : '') + deltaSince + '</strong> from your first run';
+    var p2 = arrowPrior + ' ' + (deltaPrior > 0 ? '+' : '') + deltaPrior + ' from last run';
+    proseEl.innerHTML = entries.length < 4
+      ? p1
+      : p1 + ' &middot; ' + p2;
+
+    var fmtDate = function(ts){
+      try {
+        var d = new Date(ts);
+        var diffMs = Date.now() - ts;
+        var oneDay = 24 * 60 * 60 * 1000;
+        if (diffMs < oneDay && d.getDate() === new Date().getDate()) return 'today';
+        if (diffMs < 2 * oneDay) return 'yesterday';
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    };
+    axisEl.innerHTML = '';
+    var leftSpan  = document.createElement('span');
+    var rightSpan = document.createElement('span');
+    leftSpan.textContent  = fmtDate(entries[0].ts);
+    rightSpan.textContent = fmtDate(current.ts);
+    axisEl.appendChild(leftSpan);
+    axisEl.appendChild(rightSpan);
+    spark.hidden = false;
   }
 
   // Phase 2 (Workshop) — auth + Save-to-Workbench wiring.
@@ -760,8 +1052,55 @@
         var tbt = audits['total-blocking-time'] ? audits['total-blocking-time'].numericValue : null;
         var cls = audits['cumulative-layout-shift'] ? audits['cumulative-layout-shift'].numericValue : null;
 
-        var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now() };
+        // Pull biggest-offender signals from the Lighthouse payload.
+        // These are the audit details speed-test was previously
+        // discarding — they're the difference between "your score is
+        // 42" and "your hero.jpg is 3.8 MB."
+        var screenshot = null;
+        try {
+          var fs = audits['final-screenshot'];
+          if (fs && fs.details && fs.details.data) screenshot = fs.details.data;
+        } catch (_) {}
+        // The single largest unused-asset opportunity (image, JS, CSS).
+        var biggestItem = null, biggestKind = null;
+        try {
+          var lcpEl = audits['largest-contentful-paint-element'];
+          if (lcpEl && lcpEl.details && lcpEl.details.items && lcpEl.details.items[0]) {
+            var it = lcpEl.details.items[0];
+            if (it.node && it.node.snippet) { biggestItem = { snippet: it.node.snippet, type: 'lcp-element' }; biggestKind = 'lcp'; }
+          }
+        } catch (_) {}
+        try {
+          var oppOrder = ['unminified-javascript','unused-javascript','uses-optimized-images','uses-webp-images','offscreen-images','render-blocking-resources','unminified-css','unused-css-rules'];
+          var bestOpp = null;
+          oppOrder.forEach(function (id) {
+            var a = audits[id];
+            if (!a || !a.details || !a.details.items || !a.details.items.length) return;
+            var saving = a.details.overallSavingsBytes || a.numericValue || 0;
+            if (saving > 0 && (!bestOpp || saving > bestOpp.saving)) {
+              var first = a.details.items[0];
+              bestOpp = {
+                id: id,
+                title: a.title || id,
+                saving: saving,
+                url: first.url || (first.source && first.source.url) || null,
+                wastedBytes: first.wastedBytes || first.totalBytes || 0
+              };
+            }
+          });
+          if (bestOpp && (!biggestItem || bestOpp.saving > 50000)) {
+            biggestItem = bestOpp; biggestKind = 'opportunity';
+          }
+        } catch (_) {}
+        var ctxBus = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+        var platform = ctxBus.platform || null;
+
+        var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now(), screenshot: screenshot, biggestItem: biggestItem, biggestKind: biggestKind, platform: platform };
         renderResult(payload);
+        // Persist the URL so the next tool inherits it.
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
+        }
         if (states) states.setSuccess();
         showSaveAffordance(payload);
 

@@ -277,7 +277,230 @@
     'pecorino':             0.95,
     'feta':                 1.00,
     'mozzarella':           1.00,
-    'egg':                  1.00
+    'egg':                  1.00,
+
+    // ============================================================
+    // Spanish ingredient names — same yield numbers, Spanish keys.
+    // Lean Latin-American where regional terms diverge (Mexico-DMV
+    // restaurant context most relevant); add Iberian / Caribbean
+    // alternates where common. Spanish keys do not collide with
+    // English keys, so the existing resolver picks them up without
+    // logic changes.
+    // ============================================================
+
+    // Verduras de hoja
+    'lechuga romana':       0.75,
+    'romana':               0.75,
+    'lechuga iceberg':      0.74,
+    'lechuga mantequilla':  0.65,
+    'lechuga verde':        0.70,
+    'lechuga roja':         0.70,
+    'espinaca':             0.75,
+    'espinacas':            0.75,
+    'col rizada':           0.70,
+    'kale':                 0.70,
+    'arúgula':              0.85,
+    'rúcula':               0.85,
+    'acelga':               0.75,
+    'berza':                0.65,
+
+    // Crucíferas y tallos
+    'brócoli':              0.65,
+    'coliflor':             0.60,
+    'coles de bruselas':    0.80,
+    'repollo':              0.80,
+    'col':                  0.80,
+    'espárrago':            0.55,
+    'espárragos':           0.55,
+    'apio':                 0.75,
+    'hinojo':               0.65,
+    'puerro':               0.50,
+
+    // Aliáceas
+    'cebolla':              0.88,
+    'cebolla morada':       0.88,
+    'cebolla roja':         0.88,
+    'chalota':              0.85,
+    'echalote':             0.85,
+    'ajo':                  0.87,
+    'cebollín':             0.65,
+    'cebolla verde':        0.65,
+    'cebolleta':            0.65,
+
+    // Raíces
+    'zanahoria':            0.82,
+    'zanahorias':           0.82,
+    'chirivía':             0.85,
+    'remolacha':            0.75,
+    'betabel':              0.75,
+    'rábano':               0.85,
+    'nabo':                 0.78,
+
+    // Tubérculos
+    'papa':                 0.81,
+    'papas':                0.81,
+    'patata':               0.81,
+    'papa russet':          0.81,
+    'papa yukon':           0.85,
+    'papa roja':            0.85,
+    'camote':               0.75,
+    'batata':               0.75,
+    'boniato':              0.75,
+
+    // Hortalizas frutales
+    'tomate':               0.91,
+    'tomates':              0.91,
+    'jitomate':             0.91,
+    'tomate cherry':        1.00,
+    'pimiento':             0.82,
+    'pimentón':             0.82,
+    'pimiento morrón':      0.82,
+    'chile jalapeño':       0.85,
+    'chile serrano':        0.85,
+    'chile poblano':        0.80,
+    'chile habanero':       0.85,
+    'chipotle':             1.00,
+    'pepino':               0.95,
+    'berenjena':            0.81,
+    'calabacín':            0.95,
+    'calabacita':           0.95,
+    'calabaza':             0.55,
+    'calabaza butternut':   0.70,
+    'calabaza moscada':     0.70,
+    'maíz':                 0.28,
+    'elote':                0.28,
+    'nopal':                0.70,
+    'huitlacoche':          1.00,
+
+    // Hierbas
+    'albahaca':             0.50,
+    'perejil':              0.70,
+    'menta':                0.70,
+    'hierbabuena':          0.70,
+    'romero':               0.50,
+    'tomillo':              0.50,
+    'orégano':              0.55,
+    'estragón':             0.55,
+    'eneldo':               0.65,
+    'epazote':              0.55,
+
+    // Hongos
+    'champiñón':            0.90,
+    'champiñones':          0.90,
+    'hongo':                0.90,
+    'cremini':              0.90,
+    'portobello':           0.85,
+    'shiitake':             0.85,
+    'seta':                 0.90,
+    'setas':                0.90,
+
+    // Frutas
+    'aguacate':             0.75,
+    'palta':                0.75,
+    'limón':                0.45,           // jugo del entero
+    'lima':                 0.35,
+    'limón verde':          0.35,
+    'naranja':              0.55,
+    'toronja':              0.50,
+    'pomelo':               0.50,
+    'manzana':              0.78,
+    'pera':                 0.78,
+    'plátano':              0.65,
+    'banano':               0.65,
+    'mango':                0.65,
+    'piña':                 0.50,
+    'sandía':               0.50,
+    'melón':                0.50,
+    'fresa':                0.89,
+    'fresas':               0.89,
+    'frutilla':             0.89,
+    'arándano':             1.00,
+    'frambuesa':            1.00,
+
+    // Carne
+    'pollo entero':         0.60,
+    'pechuga de pollo':     0.95,
+    'pechuga':              0.95,
+    'muslo de pollo':       0.90,
+    'muslo':                0.90,
+    'pavo entero':          0.50,
+    'pato entero':          0.45,
+    'paleta de cerdo':      0.75,
+    'espaldilla de cerdo':  0.75,
+    'lomo de cerdo':        0.85,
+    'panceta':              0.90,
+    'tocino fresco':        0.90,
+    'tocino':               1.00,           // crudo por defecto
+    'tocineta':             1.00,
+    'costilla':             0.65,
+    'costilla corta':       0.65,
+    'paleta de cordero':    0.65,
+    'pierna de cordero':    0.70,
+    'carne molida':         1.00,
+    'carne picada':         1.00,
+    'cerdo molido':         1.00,
+    'pavo molido':          1.00,
+
+    // Mariscos
+    'salmón entero':        0.55,
+    'filete de salmón':     0.95,
+    'salmón':               0.95,
+    'fletán entero':        0.50,
+    'branzino entero':      0.55,
+    'lubina entera':        0.55,
+    'pargo entero':         0.50,
+    'trucha entera':        0.55,
+    'lomo de atún':         0.85,
+    'atún':                 0.85,
+    'langosta entera':      0.30,
+    'camarón':              0.85,           // con cáscara
+    'camarones':            0.85,
+    'gamba':                0.85,
+    'gambas':               0.85,
+    'mejillón':             0.35,
+    'mejillones':           0.35,
+    'almeja':               0.30,
+    'almejas':              0.30,
+    'cangrejo entero':      0.25,
+    'vieira':               1.00,
+    'vieiras':              1.00,
+    'pulpo':                0.45,
+    'calamar':              0.80,
+    'calamares':            0.80,
+
+    // Aromáticos
+    'jengibre':             0.85,
+    'limoncillo':           0.45,
+    'hierba limón':         0.45,
+    'col china':            0.80,
+
+    // Proteínas vegetales
+    'tofu':                 1.00,
+    'tofu firme':           1.00,
+    'queso panela':         1.00,           // 100% — sin merma
+    'frijoles':             1.00,
+    'frijol':               1.00,
+    'garbanzos':            1.00,
+
+    // Pasta y despensa
+    'mantequilla':          1.00,
+    'manteca':              1.00,
+    'aceite de oliva':      1.00,
+    'aceite':               1.00,
+    'harina':               1.00,
+    'azúcar':               1.00,
+    'sal':                  1.00,
+    'pimienta':             1.00,
+    'parmesano':            0.95,
+    'queso parmesano':      0.95,
+    'mozzarella':           1.00,
+    'queso mozzarella':     1.00,
+    'queso fresco':         1.00,
+    'queso oaxaca':         1.00,
+    'queso cotija':         1.00,
+    'queso manchego':       1.00,
+    'huevo':                1.00,
+    'huevos':               1.00
   };
 
   // ============================================================
@@ -302,6 +525,17 @@
     return canonical / t.canonical;
   }
 
+  // Detect the page locale once. Spanish-speaking owners pasting
+  // EU-shaped numbers like "1.234,56" previously round-tripped to
+  // 1234.56-as-USD because we never told the shared parser to assume
+  // the EU decimal convention. Reading document.documentElement.lang
+  // is zero-config and self-correcting if a tool hot-swaps locale.
+  function pcDefaultLocale() {
+    if (typeof document === 'undefined' || !document.documentElement) return 'us';
+    var lang = (document.documentElement.lang || '').toLowerCase();
+    return lang.indexOf('es') === 0 ? 'eu' : 'us';
+  }
+
   // Numeric coercion routed through the shared loose-number parser
   // when present. Handles EU decimals, currency symbols beyond $,
   // smart quotes from Word pastes, and NBSP whitespace — the audit-
@@ -312,7 +546,7 @@
     if (v == null || v === '') return NaN;
     if (typeof v === 'number') return isFinite(v) ? v : NaN;
     if (typeof MuntinParse !== 'undefined' && MuntinParse.parseLooseNumberValue) {
-      var parsed = MuntinParse.parseLooseNumberValue(v);
+      var parsed = MuntinParse.parseLooseNumberValue(v, { defaultLocale: pcDefaultLocale() });
       return parsed == null ? NaN : parsed;
     }
     var n = Number(v);
@@ -793,7 +1027,94 @@
     if (!top) return null;
     var share = top.usedCost / summary.batchCost;
     if (share < 0.30) return null;
-    return { name: top.ingredient || '', share: share, dollars: top.usedCost };
+    return {
+      name: top.ingredient || '',
+      share: share,
+      dollars: top.usedCost,
+      suggestions: bottleneckSuggestions(top.ingredient || '')
+    };
+  }
+
+  // Per-ingredient substitution + cost-trim suggestions. The chef-
+  // consultant move when an ingredient hits 30%+ of plate cost: name
+  // a cheaper variant, a yield-improvement, or a portion change. Map
+  // is sparse on purpose — only canonical bottleneck candidates get
+  // an entry. Unknown ingredients fall through to a generic prompt.
+  var BOTTLENECK_SUGGESTIONS = {
+    'romaine':           [{kind:'sourcing', text:'Buy whole heads instead of pre-cut bags. Yield jumps from 60% to ~78%; same total grams of trimmed leaves at a much lower per-pound spend.'}],
+    'iceberg':           [{kind:'sourcing', text:'Whole heads beat pre-shredded by 8-12 points of yield and significantly less moisture (which is what you\'re paying for in bagged).'}],
+    'tomato':            [{kind:'seasonal', text:'Off-season tomato cost spikes 40-80%. Roma or canned San Marzano absorbs to a sauce-bound dish without the customer noticing; signature plates that need a slice deserve in-season pricing.'}],
+    'cherry tomato':     [{kind:'seasonal', text:'Switch to cluster tomatoes off-season — same on the plate, ~30% cheaper through winter.'}],
+    'avocado':           [{kind:'sourcing', text:'Whole vs. pre-pulped: pulped is +20-30% per ounce. If you go through a case before they brown, whole is the cheaper play.'}, {kind:'portion', text:'Try 1/3 avocado instead of 1/2. The plate doesn\'t notice; the food cost percentage does.'}],
+    'salmon fillet':     [{kind:'sourcing', text:'Skin-on whole sides + in-house portioning vs. pre-cut center-cut: 18-25% savings per portion at scale.'}, {kind:'portion', text:'6 oz vs. 7 oz: most diners can\'t tell. The accountant can.'}],
+    'whole salmon':      [{kind:'portion', text:'Whole salmon yields ~55% to plated portions. Plan the trim — bones for stock, collar as a special, scrap for staff meal — to push effective yield past 70%.'}],
+    'chicken breast':    [{kind:'sourcing', text:'Bone-in skin-on whole breasts cost ~30% less per ounce than airline cuts. Worth it if your kitchen has 10 minutes to break them down.'}, {kind:'sub', text:'Boneless thigh delivers similar plate weight with deeper flavor at 40-60% of the breast\'s per-pound spend.'}],
+    'whole chicken':     [{kind:'portion', text:'Roast whole bird and split: the carcass becomes stock, bones become demi. A whole-chicken pricing model amortises waste better than parted.'}],
+    'beef tenderloin':   [{kind:'sub', text:'Hanger or flat iron at 40-50% of tenderloin\'s spend, with steak-knife-tender results when handled right. Worth pushing on a special.'}],
+    'tenderloin':        [{kind:'sub', text:'Hanger or flat iron at 40-50% of tenderloin\'s spend, with steak-knife-tender results when handled right.'}],
+    'ribeye':            [{kind:'sub', text:'Sirloin or culotte (top sirloin cap) for ~60% of the ribeye spend. Cap is famously underrated for steak-frites menus.'}],
+    'lobster (whole)':   [{kind:'portion', text:'Whole lobster yields just 30% to claw + tail meat. Lobster rolls split a single 1.25 lb across two rolls; a "lobster" plate built on a whole bird is a $40+ menu item by definition.'}],
+    'shrimp (head-on)':  [{kind:'sub', text:'Shell-on or P&D delivers more usable plate weight per dollar. Save head-on for crudo and presentations where the shell is the plating.'}],
+    'parmesan':          [{kind:'sourcing', text:'Wheel + house grate beats pre-shredded by ~25% per ounce on yield (less surface oxidation) and 10-20% per ounce on price. Storage discipline matters.'}],
+    'parmigiano-reggiano':[{kind:'sourcing', text:'Buy 24-month wheel; reserve the rinds for stock. The rind alone covers your scrap losses across the year.'}],
+    'butter':            [{kind:'sourcing', text:'Bulk unsalted from a dairy distributor vs. retail-pack: typically 30-40% per pound at the trade-off of a higher upfront commitment.'}],
+    'olive oil':         [{kind:'sourcing', text:'Two-tier strategy: cheaper bulk oil for cooking, finishing oil only at plating. A finishing oil costs 4-5× the cooking oil; using it for sauté is just expensive cooking.'}],
+    'truffle':           [{kind:'sub', text:'Truffle oil for finishing aroma, real shavings only on the table. The fresh-truffle line item is rarely defensible at the per-portion level.'}, {kind:'sub', text:'Mushroom-duxelles + a single shaved black-truffle slice carries 80% of the perceived luxury at 10% of the cost.'}],
+    'caviar':            [{kind:'sub', text:'American hackleback or paddlefish at 20-30% of imported osetra; pair on a tasting board where the substitution becomes a sourcing story.'}],
+    'foie gras':         [{kind:'portion', text:'A 1.5 oz portion plates the same as 2 oz; sear technique matters more than the slab thickness once you\'re past 1 oz.'}]
+  };
+  function bottleneckSuggestions(name) {
+    if (!name) return [];
+    var key = String(name).trim().toLowerCase();
+    if (BOTTLENECK_SUGGESTIONS[key]) return BOTTLENECK_SUGGESTIONS[key];
+    // Loose fallbacks: drop parens, then strip plural s.
+    var noParens = key.replace(/\s*\([^)]*\)\s*/g, '').trim();
+    if (BOTTLENECK_SUGGESTIONS[noParens]) return BOTTLENECK_SUGGESTIONS[noParens];
+    var singular = noParens.replace(/s$/, '');
+    if (BOTTLENECK_SUGGESTIONS[singular]) return BOTTLENECK_SUGGESTIONS[singular];
+    return [];
+  }
+
+  // Stress-test recompute: rebuild the recipe summary with the
+  // bottleneck ingredient bumped +15% in AP cost AND every protein-
+  // shaped ingredient nudged -5% on yield. Used to surface a "if
+  // costs spike, can the plate still hit your target margin?" view.
+  // Pure transform; doesn't mutate the input.
+  var PROTEIN_HINTS = ['chicken','beef','pork','lamb','fish','salmon','tuna','shrimp','duck','turkey','ribeye','tenderloin','sirloin','rib','breast','thigh','filet','fillet','steak','chop'];
+  function isProteinName(name) {
+    var n = String(name || '').toLowerCase();
+    for (var i = 0; i < PROTEIN_HINTS.length; i++) {
+      if (n.indexOf(PROTEIN_HINTS[i]) !== -1) return true;
+    }
+    return false;
+  }
+  function stressTestRecipe(recipe, bottleneckName) {
+    if (!recipe || !Array.isArray(recipe.rows)) return recipe;
+    var out = {};
+    for (var k in recipe) if (Object.prototype.hasOwnProperty.call(recipe, k)) out[k] = recipe[k];
+    var bottleneckLower = String(bottleneckName || '').toLowerCase();
+    out.rows = recipe.rows.map(function (r) {
+      if (!r) return r;
+      var clone = {};
+      for (var key in r) if (Object.prototype.hasOwnProperty.call(r, key)) clone[key] = r[key];
+      var nameLower = String(r.ingredient || '').toLowerCase();
+      // Bump bottleneck AP price +15%.
+      if (bottleneckLower && nameLower === bottleneckLower) {
+        var price = pcCoerceNumber(clone.apPrice);
+        if (isFinite(price) && price > 0) clone.apPrice = price * 1.15;
+      }
+      // Trim protein yield -5 percentage points (floor at 30%).
+      if (isProteinName(r.ingredient)) {
+        var y = pcResolveYield(clone.yield);
+        if (y == null) y = lookupYield(r.ingredient);
+        if (y != null && isFinite(y)) {
+          var stressed = Math.max(0.30, y - 0.05);
+          clone.yield = stressed;
+        }
+      }
+      return clone;
+    });
+    return out;
   }
 
   // ============================================================
@@ -1180,6 +1501,8 @@
     suggestMenuPrices:     suggestMenuPrices,
     formatRowMath:         formatRowMath,
     bottleneckLine:        bottleneckLine,
+    bottleneckSuggestions: bottleneckSuggestions,
+    stressTestRecipe:      stressTestRecipe,
     recommendedTier:       recommendedTier,
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,

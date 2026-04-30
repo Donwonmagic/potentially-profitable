@@ -92,6 +92,20 @@
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<style>
+  /* "We remember" pill — surfaced by MuntinContext on returning visits. */
+  .ctx-pill { display: block; padding: 12px 0; background: var(--cream-2, #F2EEE5); border-bottom: 1px solid var(--line); }
+  .ctx-pill[hidden] { display: none; }
+  .ctx-pill-inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .ctx-pill-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); }
+  .ctx-pill-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .ctx-pill-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--line-dark); border-radius: 999px; background: var(--white); font-size: 12.5px; color: var(--ink); }
+  .ctx-pill-chip-dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line); }
+  .ctx-pill-chip-swatches { display: inline-flex; gap: 2px; }
+  .ctx-pill-chip-swatch { width: 10px; height: 10px; border-radius: 2px; border: 1px solid rgba(0,0,0,0.15); }
+  .ctx-pill-forget { margin-left: auto; padding: 6px 12px; border: 1px dashed var(--line-dark); border-radius: 999px; background: transparent; font: inherit; font-size: 12px; font-weight: 600; color: var(--stone); cursor: pointer; }
+  .ctx-pill-forget:hover { border-color: var(--rust); color: var(--rust); border-style: solid; }
+</style>
 <!-- hub-collection:start -->
 <script type="application/ld+json">
 {
@@ -392,6 +406,20 @@
   <span class="breadcrumb-sep" aria-hidden="true">›</span>
   <span aria-current="page">Tools</span>
 </nav>
+
+<!-- "We remember" pill — populated by MuntinContext when prior tool
+     sessions wrote their context (cuisine, address, palette, hours,
+     platform). Hidden until something has been remembered. Gives
+     returning users a visible cue that their data is flowing across
+     tools — and a one-click Forget that nukes the entire namespace
+     so the privacy posture stays honest. Pure JS render; no fetch. -->
+<aside class="ctx-pill" id="ctxPill" hidden role="status" aria-live="polite">
+  <div class="container ctx-pill-inner">
+    <span class="ctx-pill-eyebrow">We remember from your last visit</span>
+    <ul class="ctx-pill-chips" id="ctxPillChips"></ul>
+    <button type="button" class="ctx-pill-forget" id="ctxPillForget" aria-label="Forget what we remember">Forget</button>
+  </div>
+</aside>
 
 <section class="hero hero-tight">
   <div class="container">
@@ -707,5 +735,62 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script>
+// "We remember" pill renderer. Read MuntinContext on load; if any
+// owner-shaped fields are present, build a chip strip + "Forget"
+// button. Honest privacy posture: every chip names exactly what's
+// stored, and Forget calls MuntinContext.clear() (full namespace
+// nuke) rather than scrubbing per-field.
+(function () {
+  if (typeof MuntinContext === 'undefined' || typeof MuntinContext.read !== 'function') return;
+  var pill    = document.getElementById('ctxPill');
+  var chipsEl = document.getElementById('ctxPillChips');
+  var forget  = document.getElementById('ctxPillForget');
+  if (!pill || !chipsEl) return;
+
+  function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function render() {
+    var ctx;
+    try { ctx = MuntinContext.read() || {}; } catch (_) { ctx = {}; }
+    var parts = [];
+    if (ctx.businessName) parts.push({ label: 'Name',         value: ctx.businessName });
+    if (ctx.cuisine)      parts.push({ label: 'Cuisine',      value: ctx.cuisine });
+    if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
+    if (ctx.platform)     parts.push({ label: 'Platform',     value: ctx.platform.charAt(0).toUpperCase() + ctx.platform.slice(1) });
+    if (ctx.lastUrl)      parts.push({ label: 'Site',         value: String(ctx.lastUrl).replace(/^https?:\/\//, '').replace(/\/$/, '') });
+    if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
+    if (ctx.hours && Array.isArray(ctx.hours.openingHoursSpecification) && ctx.hours.openingHoursSpecification.length) {
+      parts.push({ label: 'Hours', value: 'set in Open Hours' });
+    }
+    if (!parts.length) {
+      pill.hidden = true;
+      return;
+    }
+    chipsEl.innerHTML = parts.map(function (p) {
+      if (p.swatches) {
+        var dots = p.swatches.map(function (h) {
+          var hh = String(h || '').replace(/^#/, '');
+          if (!/^[0-9a-fA-F]{3,8}$/.test(hh)) return '';
+          return '<span class="ctx-pill-chip-swatch" style="background:#' + hh + '"></span>';
+        }).join('');
+        return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span>' +
+               '<span class="ctx-pill-chip-swatches">' + dots + '</span></li>';
+      }
+      return '<li class="ctx-pill-chip"><span style="font-weight:600;color:var(--stone)">' + escHtml(p.label) + ':</span> ' + escHtml(p.value) + '</li>';
+    }).join('');
+    pill.hidden = false;
+  }
+
+  render();
+  if (forget) {
+    forget.addEventListener('click', function () {
+      try { if (typeof MuntinContext.clear === 'function') MuntinContext.clear(); } catch (_) {}
+      render();
+    });
+  }
+})();
+</script>
 </body>
 </html>

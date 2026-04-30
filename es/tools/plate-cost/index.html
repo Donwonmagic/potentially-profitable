@@ -48,7 +48,27 @@
 .pc-meta input{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
 
-.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+@media(min-width:640px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+@media(max-width:639px){
+  .pc-grid{padding:8px;background:transparent;border:0}
+  .pc-grid table,.pc-grid thead,.pc-grid tbody,.pc-grid tr,.pc-grid td{display:block;width:100%}
+  .pc-grid thead{position:absolute;left:-9999px;top:auto}
+  .pc-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);margin-bottom:10px;position:relative}
+  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .pc-grid td:last-of-type{border-bottom:0}
+  .pc-grid td:not([data-label]){display:block}
+  .pc-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
+  .pc-grid td:not([data-label])::before{content:none}
+  .pc-grid td input[type="number"]{text-align:left}
+  .pc-grid td.pc-num{font-size:15px;font-weight:600;color:var(--ink)}
+  .pc-grid td.pc-row-actions{position:absolute;top:6px;right:6px;padding:0;border:0}
+  .pc-grid td.pc-row-actions::before{content:none}
+  .pc-grid .pc-remove{min-width:36px;min-height:36px;font-size:16px;color:var(--stone);background:var(--cream-2);border:0;border-radius:50%;cursor:pointer}
+  .pc-grid tr.pc-math-row{padding:8px 12px;background:var(--cream-2);margin-top:-6px;border-top:0}
+  .pc-grid tr.pc-math-row td{display:block;border:0;grid-template-columns:none;padding:0}
+  .pc-grid tr.pc-math-row td::before{content:none}
+}
 .pc-grid table{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.pc-grid table{min-width:780px}}
 .pc-grid th{padding:10px 8px;text-align:left;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
@@ -64,6 +84,26 @@
 .pc-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pc-add-row{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
 .pc-add-row:hover{border-color:var(--teal);color:var(--teal)}
+.pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pc-ocr[open]{padding-bottom:18px}
+.pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
+.pc-ocr-summary::-webkit-details-marker{display:none}
+.pc-ocr-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+.pc-ocr[open] .pc-ocr-summary::before{content:'− '}
+.pc-ocr-beta{display:inline-block;padding:1px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cream);background:var(--teal);border-radius:999px}
+.pc-ocr-body{margin-top:12px}
+.pc-ocr-help{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
+.pc-ocr-fileLabel{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.pc-ocr-fileLabel:hover{background:var(--ink);color:var(--cream)}
+.pc-ocr-fileLabel input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.pc-ocr-progress{margin-top:12px}
+.pc-ocr-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.pc-ocr-progress-fill{height:100%;background:var(--teal);width:0;transition:width 200ms ease}
+.pc-ocr-progress-msg{margin:6px 0 0;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.pc-ocr-status{margin-top:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:12.5px;color:var(--ink);line-height:1.5}
+.pc-ocr-status.error{border-color:var(--rust);color:var(--rust)}
+.pc-ocr-status.success{border-color:var(--teal);color:var(--teal)}
+.pc-ocr-disclaimer{margin-top:12px;font-size:11.5px;color:var(--stone);line-height:1.5;font-style:italic}
 .pc-sample-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-sample-btn:hover{background:var(--teal);color:var(--cream)}
 .pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
@@ -159,6 +199,25 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 
 .pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
 .pc-bottleneck strong{color:var(--ink);font-style:normal}
+.pc-bottleneck-subs{margin-top:8px;font-style:normal;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2);padding:0}
+.pc-bottleneck-subs summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.pc-bottleneck-subs summary::-webkit-details-marker{display:none}
+.pc-bottleneck-subs summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pc-bottleneck-subs[open] summary::before{content:'− '}
+.pc-bottleneck-subs ul{margin:0;padding:0 12px 12px 32px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:normal}
+.pc-bottleneck-subs li{margin-bottom:6px}
+.pc-bottleneck-kind{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);background:var(--white);padding:2px 6px;border-radius:4px;margin-right:8px;border:1px solid var(--line);vertical-align:1px}
+.pc-stress-toggle{display:flex;align-items:start;gap:8px;margin-top:14px;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;font-size:13px;color:var(--ink-soft);cursor:pointer}
+.pc-stress-toggle input{flex:0 0 auto;margin-top:2px;cursor:pointer;accent-color:var(--teal)}
+.pc-stress-toggle small{display:block;font-size:11.5px;color:var(--stone);margin-top:2px}
+.pc-stress-out{margin-top:10px;padding:14px 16px;border:1px solid var(--rust);border-radius:8px;background:color-mix(in srgb,var(--rust) 4%,var(--white))}
+.pc-stress-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin:0 0 10px}
+.pc-stress-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pc-stress-row:last-of-type{border-bottom:0}
+.pc-stress-label{color:var(--ink)}
+.pc-stress-value{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-stress-value small{font-size:12px;color:var(--rust);margin-left:4px;font-family:var(--font-body);font-weight:500}
+.pc-stress-foot{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
 
 .pc-grid .pc-math-toggle{display:inline-block;margin-top:4px;font-size:12.5px;color:var(--stone);cursor:pointer;border-bottom:1px dashed var(--line-dark);padding-bottom:1px;background:none;border-left:0;border-top:0;border-right:0;font-family:inherit;font-weight:500;letter-spacing:.02em;text-transform:lowercase}
 .pc-grid .pc-math-toggle:hover{color:var(--teal);border-bottom-color:var(--teal)}
@@ -498,6 +557,23 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         <button type="button" class="pc-sample-btn" id="pcSample">Cargar receta de muestra</button>
         <button type="button" class="pc-clear-btn" id="pcClear">Limpiar</button>
       </div>
+
+      <details class="pc-ocr">
+        <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
+        <div class="pc-ocr-body">
+          <p class="pc-ocr-help">Tómale una foto clara a tu factura del proveedor — la leemos en este dispositivo (la foto nunca sale del teléfono) y pre-llenamos las filas. Edita lo que se lea mal.</p>
+          <label class="pc-ocr-fileLabel" for="pcOcrFile">
+            <span>Elegir foto o tomar una nueva</span>
+            <input type="file" id="pcOcrFile" accept="image/*" capture="environment" />
+          </label>
+          <div class="pc-ocr-progress" id="pcOcrProgress" hidden>
+            <div class="pc-ocr-progress-bar"><div class="pc-ocr-progress-fill" id="pcOcrProgressFill"></div></div>
+            <p class="pc-ocr-progress-msg" id="pcOcrProgressMsg">Cargando el lector (~3 MB, una sola vez)…</p>
+          </div>
+          <p class="pc-ocr-status" id="pcOcrStatus" aria-live="polite" hidden></p>
+          <p class="pc-ocr-disclaimer">El OCR corre completo en tu navegador con Tesseract.js. Sin subida ni llamadas a APIs. La precisión depende de la luz y el contraste — funcionan mejor las fotos brillantes, planas y enfocadas.</p>
+        </div>
+      </details>
     </div>
 
     <ul class="pc-warnings" id="pcWarnings" aria-live="polite" style="display:none;"></ul>
@@ -517,6 +593,11 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         <h3>Tres precios de menú sugeridos</h3>
         <p class="pc-prices-dek">Cada fila trabaja hacia atrás desde un porcentaje meta de costo de alimento. Los dólares de la derecha son lo que te quedas por plato después de ingredientes.</p>
         <div id="pcPriceRows"></div>
+        <label class="pc-stress-toggle">
+          <input type="checkbox" id="pcStressTest" />
+          <span>Mostrar un precio bajo estrés <small>(ingrediente cuello de botella +15%, rendimiento de proteína −5 pp)</small></span>
+        </label>
+        <div class="pc-stress-out" id="pcStressOut" hidden></div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
@@ -765,15 +846,15 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="ej. Romaine" /></td>' +
-      '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
-      '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
-      '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
-      '<td><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
-      '<td><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
-      '<td>' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
-      '<td class="pc-num" data-cell="cost">&mdash;</td>' +
-      '<td><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
+      '<td data-label="Ingrediente"><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="ej. Romaine" /></td>' +
+      '<td data-label="Precio AP ($)"><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
+      '<td data-label="Cant. AP"><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
+      '<td data-label="Unidad AP">' + unitSelect('apUnit', row.apUnit) + '</td>' +
+      '<td data-label="Rendimiento %"><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
+      '<td data-label="Cant. usada"><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
+      '<td data-label="Unidad usada">' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
+      '<td class="pc-num" data-cell="cost" data-label="Costo en plato">&mdash;</td>' +
+      '<td class="pc-row-actions"><button type="button" class="pc-remove" aria-label="Eliminar ingrediente" title="Eliminar">&times;</button></td>' +
       '</tr>';
   }
   function esc(v) {
@@ -917,17 +998,59 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       '</div>';
     }).join('');
 
-    // Bottleneck callout
+    // Bottleneck callout + sugerencias de sustitución / sourcing.
     var bottleneckEl = document.getElementById('pcBottleneck');
     var bottleneck = PC.bottleneckLine(summary);
+    var ES_KIND_LABEL = { sourcing: 'sourcing', portion: 'porción', sub: 'sustituto', seasonal: 'temporada' };
     if (bottleneckEl) {
       if (bottleneck) {
-        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> es el ' +
+        var html = '<strong>' + esc(bottleneck.name) + '</strong> es el ' +
           Math.round(bottleneck.share * 100) + '% del costo de tu plato. Vigila su factura.';
+        if (bottleneck.suggestions && bottleneck.suggestions.length) {
+          html += '<details class="pc-bottleneck-subs"><summary>Maneras de reducirlo &rarr;</summary><ul>';
+          bottleneck.suggestions.forEach(function (s) {
+            html += '<li><span class="pc-bottleneck-kind">' + esc(ES_KIND_LABEL[s.kind] || s.kind) + '</span>' + esc(s.text) + '</li>';
+          });
+          html += '</ul></details>';
+        }
+        bottleneckEl.innerHTML = html;
         bottleneckEl.hidden = false;
       } else {
         bottleneckEl.hidden = true;
         bottleneckEl.textContent = '';
+      }
+    }
+
+    // Stress-test ES — recomputa con cuello de botella +15% y
+    // rendimiento de proteínas −5 pp; muestra el precio que
+    // mantiene el margen recomendado.
+    var stressToggleEl = document.getElementById('pcStressTest');
+    var stressShown = stressToggleEl && stressToggleEl.checked;
+    var stressOutEl = document.getElementById('pcStressOut');
+    if (stressOutEl) {
+      stressOutEl.hidden = true;
+      stressOutEl.innerHTML = '';
+      if (stressShown && summary.batchCost > 0) {
+        var stressed = PC.stressTestRecipe(recipe, bottleneck && bottleneck.name);
+        var stressedSummary = PC.computePlateCost(stressed);
+        if (stressedSummary && isFinite(stressedSummary.plateCost) && stressedSummary.plateCost > 0) {
+          var recTierEs = PC.recommendedTier(summary);
+          var stressedPrices = PC.suggestMenuPrices(stressedSummary.plateCost);
+          var matchingPrice = stressedPrices.find(function(p){ return p.label === recTierEs; }) || stressedPrices[1] || stressedPrices[0];
+          var deltaPct = Math.round(((stressedSummary.plateCost - summary.plateCost) / summary.plateCost) * 100);
+          stressOutEl.hidden = false;
+          stressOutEl.innerHTML =
+            '<p class="pc-stress-eyebrow">Si los costos suben (cuello de botella +15%, rendimiento de proteína −5pp)</p>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Costo del plato bajo estrés</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(stressedSummary.plateCost) + ' <small>(' + (deltaPct >= 0 ? '+' : '') + deltaPct + '%)</small></span>' +
+            '</div>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Precio para mantener margen ' + matchingPrice.label + '</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(matchingPrice.price) + '</span>' +
+            '</div>' +
+            '<p class="pc-stress-foot">Si puedes cobrar este precio sin perder cubiertos, el plato sobrevive un mes malo de facturas. Si no, el cuello de botella es un riesgo estructural que vale re-ingenierar.</p>';
+        }
       }
     }
 
@@ -1051,6 +1174,8 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   }
 
   rowsEl.addEventListener('input', renderResults);
+  var pcStressEl = document.getElementById('pcStressTest');
+  if (pcStressEl) pcStressEl.addEventListener('change', renderResults);
   rowsEl.addEventListener('change', renderResults);
   rowsEl.addEventListener('click', function(e){
     if (e.target.classList.contains('pc-remove')) {
@@ -1103,6 +1228,142 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- OCR de factura --------------------
+  var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  var tesseractLoadPromise = null;
+  function loadTesseract() {
+    if (tesseractLoadPromise) return tesseractLoadPromise;
+    tesseractLoadPromise = new Promise(function (resolve, reject) {
+      if (window.Tesseract) return resolve(window.Tesseract);
+      var s = document.createElement('script');
+      s.src = TESSERACT_CDN;
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.onload = function () {
+        if (window.Tesseract) resolve(window.Tesseract);
+        else reject(new Error('Tesseract loaded but global is missing'));
+      };
+      s.onerror = function () { reject(new Error('No se pudo cargar la biblioteca OCR')); };
+      document.head.appendChild(s);
+    });
+    return tesseractLoadPromise;
+  }
+
+  function parseInvoiceText(text) {
+    if (!text) return [];
+    var lines = String(text).split(/\r?\n/);
+    var UNITS = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box)$/i;
+    var rows = [];
+    lines.forEach(function (raw) {
+      var line = (raw || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').trim();
+      if (line.length < 6) return;
+      if (/^(factura|total|subtotal|impuesto|iva|adeudo|cliente|p[áa]gina|fecha|cuenta|t[ée]rminos)/i.test(line)) return;
+      var m = line.match(/^(\d+(?:[.,]\d+)?)\s+([a-zA-Z]+)\s+(.+?)\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
+      if (m && UNITS.test(m[2])) {
+        rows.push({
+          ingredient: m[3].replace(/\s{2,}/g, ' '),
+          apQty: m[1].replace(',', '.'),
+          apUnit: m[2].toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz').replace(/^each$/, 'ea'),
+          apPrice: m[4].replace(',', '.'),
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+      m = line.match(/^(.+?)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)?\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
+      if (m && (!m[3] || UNITS.test(m[3]))) {
+        rows.push({
+          ingredient: m[1].replace(/\s{2,}/g, ' '),
+          apQty: m[2].replace(',', '.'),
+          apUnit: (m[3] || 'lb').toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz'),
+          apPrice: m[4].replace(',', '.'),
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+      m = line.match(/^(.+?)\s+\$?(\d+\.\d{2})\s*$/);
+      if (m) {
+        rows.push({
+          ingredient: m[1].replace(/\s{2,}/g, ' '),
+          apQty: '1',
+          apUnit: 'lb',
+          apPrice: m[2],
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+    });
+    return rows.slice(0, 30);
+  }
+
+  (function setupInvoiceOcr() {
+    var fileInput  = document.getElementById('pcOcrFile');
+    var progress   = document.getElementById('pcOcrProgress');
+    var fill       = document.getElementById('pcOcrProgressFill');
+    var msg        = document.getElementById('pcOcrProgressMsg');
+    var status     = document.getElementById('pcOcrStatus');
+    if (!fileInput) return;
+
+    function setStatus(text, kind) {
+      if (!status) return;
+      status.textContent = text || '';
+      status.classList.remove('error', 'success');
+      if (kind) status.classList.add(kind);
+      status.hidden = !text;
+    }
+    function setProgress(pct, text) {
+      if (progress) progress.hidden = (pct == null);
+      if (fill && pct != null) fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+      if (msg && text) msg.textContent = text;
+    }
+
+    fileInput.addEventListener('change', function (ev) {
+      var file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      setStatus('');
+      setProgress(2, 'Cargando el lector (~3 MB, una sola vez)…');
+      // Tesseract con paquete de español + inglés (las facturas de
+      // distribuidores latinos suelen venir bilingües).
+      loadTesseract().then(function (T) {
+        setProgress(15, 'Leyendo la imagen…');
+        return T.recognize(file, 'spa+eng', {
+          logger: function (m) {
+            if (m && m.status === 'recognizing text' && typeof m.progress === 'number') {
+              setProgress(15 + Math.round(m.progress * 80), 'Leyendo la imagen — ' + Math.round(m.progress * 100) + '%');
+            }
+          }
+        });
+      }).then(function (result) {
+        var text = result && result.data && result.data.text || '';
+        var parsed = parseInvoiceText(text);
+        setProgress(null);
+        if (!parsed.length) {
+          setStatus('No se encontraron filas de ingredientes en esta foto. Prueba con una foto más brillante y plana — o teclea las filas abajo.', 'error');
+          return;
+        }
+        var current = readRows();
+        var nonEmpty = current.filter(function (r) {
+          return (r.ingredient || '').trim() || (r.apPrice || '').trim();
+        });
+        var merged = nonEmpty.length ? nonEmpty.concat(parsed) : parsed;
+        rerenderRows(merged);
+        renderResults();
+        setStatus('Se leyeron ' + parsed.length + ' fila' + (parsed.length === 1 ? '' : 's') + ' de tu foto. Edita lo que se haya leído mal abajo.', 'success');
+        if (window.plausible) window.plausible('Plate Cost OCR', { props: { rows: String(parsed.length), locale: 'es' } });
+      }).catch(function (err) {
+        setProgress(null);
+        setStatus('OCR falló: ' + (err && err.message || 'error desconocido') + '. Aún puedes teclear las filas abajo.', 'error');
+      }).finally(function () {
+        fileInput.value = '';
+      });
+    });
+  })();
 
   // -------------------- Exportaciones (CSV + JSON) --------------------
   function buildCsv() {

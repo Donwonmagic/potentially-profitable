@@ -60,6 +60,51 @@
 .pb-meta{display:grid;grid-template-columns:1fr;gap:14px;align-items:end}
 @media(min-width:480px){.pb-meta{grid-template-columns:1fr 1fr}}
 @media(min-width:640px){.pb-meta{grid-template-columns:1fr 1fr 1fr}}
+.pb-mode{display:flex;gap:0;margin:0 0 14px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.pb-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;font-weight:500;cursor:pointer;border-radius:999px}
+.pb-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.pb-self-hint{grid-column:1/-1;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
+.pb-shoot{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;padding:env(safe-area-inset-top,16px) 16px env(safe-area-inset-bottom,16px) 16px}
+.pb-shoot[hidden]{display:none}
+.pb-shoot-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px}
+.pb-shoot-counter{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.7);font-variant-numeric:tabular-nums}
+.pb-shoot-close{background:none;border:0;color:var(--cream);font-size:32px;line-height:1;cursor:pointer;padding:4px 12px}
+.pb-shoot-card{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 8px;overflow-y:auto;touch-action:pan-y}
+.pb-shoot-card[data-marked="true"]{opacity:0.55}
+.pb-shoot-dish{font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:500;line-height:1.1;margin:0 0 4px}
+.pb-shoot-cat{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 22px}
+.pb-shoot-spec{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0;font-size:18px;line-height:1.5}
+.pb-shoot-spec dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);align-self:start;padding-top:6px}
+.pb-shoot-spec dd{margin:0;color:var(--cream);font-weight:500}
+.pb-shoot-surfaces{margin:18px 0 0}
+.pb-shoot-surfaces-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 8px}
+.pb-shoot-surfaces-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.pb-shoot-surfaces-list li{padding:5px 12px;border:1px solid rgba(250,246,238,0.25);border-radius:999px;font-size:13px;color:var(--cream)}
+.pb-shoot-tip{margin:24px 0 0;padding:12px 14px;background:rgba(250,246,238,0.06);border-left:2px solid var(--teal);border-radius:6px;font-size:14px;line-height:1.5;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips{margin:18px 0 0;padding:14px 16px;background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.12);border-radius:8px}
+.pb-shoot-tips-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 10px}
+.pb-shoot-tips-list{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips-list li{margin-bottom:6px}
+.pb-shoot-tips-list li:last-child{margin-bottom:0}
+.pb-rules{padding:0;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--white)}
+.pb-rules-summary{cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+.pb-rules-summary::-webkit-details-marker{display:none}
+.pb-rules-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pb-rules[open] .pb-rules-summary::before{content:'− '}
+.pb-rules-body{padding:0 18px 18px}
+.pb-rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:0 0 14px}
+.pb-rules-card{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-2)}
+.pb-rules-card h4{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:.01em}
+.pb-rules-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.pb-rules-card li{margin-bottom:5px}
+.pb-rules-card strong{color:var(--ink);font-weight:600}
+.pb-rules-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
+.pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
+.pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
+.pb-shoot-nav:disabled{opacity:0.35;cursor:not-allowed}
+#pbShootMark{flex:0 0 auto;padding:14px 22px;background:var(--teal);border-color:var(--teal);color:var(--cream)}
+#pbShootMark[data-marked="true"]{background:rgba(250,246,238,0.10);border-color:rgba(250,246,238,0.25)}
 .pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -125,6 +170,16 @@
 .pb-coverage-ratio{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 .pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative;--pb-crop-w:100%;--pb-crop-h:100%;--pb-crop-x:0%;--pb-crop-y:0%}
 .pb-coverage-crop::after{content:"";position:absolute;background:rgba(31,78,91,0.10);border:2px solid var(--teal);box-sizing:border-box;top:var(--pb-crop-y);left:var(--pb-crop-x);width:var(--pb-crop-w);height:var(--pb-crop-h)}
+
+/* Palette handoff panel — chips + a single styling note. Sits in
+   the brief output between coverage and per-platform rules. */
+.pb-palette{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-palette-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.pb-palette-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.pb-palette-chip{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pb-palette-swatch{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18)}
+.pb-palette-hex{font:600 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.pb-palette-note{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0}
 
 .pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
 
@@ -439,7 +494,16 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">List the dishes you want shot and tick the destinations. The math figures out the minimum number of source frames that covers every destination via crop math &mdash; you walk in with the right brief, the photographer shoots half a day instead of three.</p>
 
   <div class="pb-form">
-    <div class="pb-meta">
+    <!-- Mode toggle. Default is "Hiring a photographer" — keeps the
+         existing photographer + day-rate fields visible. "Shooting it
+         myself" hides those fields, swaps the source-frame default
+         to 4:3 (most phones), and swaps the ROI-math card to a
+         time-budget framing on the brief. -->
+    <div class="pb-mode" role="radiogroup" aria-label="Who's shooting this">
+      <button type="button" data-mode="hire" aria-pressed="true" role="radio">Hiring a photographer</button>
+      <button type="button" data-mode="self" aria-pressed="false" role="radio">Shooting it myself (iPhone)</button>
+    </div>
+    <div class="pb-meta" data-mode-view="hire">
       <label>Restaurant name <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(prints on the brief)</small>
         <input type="text" id="pbName" placeholder="e.g. Osteria Giardino" autocomplete="organization" />
       </label>
@@ -447,8 +511,11 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         <input type="text" id="pbPhotographer" placeholder="e.g. Alex Reyes" autocomplete="off" />
       </label>
       <label>Photographer day rate ($) <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(used for the ROI math)</small>
-        <input type="number" id="pbDayRate" min="0" step="50" value="1800" />
+        <input type="number" id="pbDayRate" min="0" step="50" placeholder="e.g. 1800" />
       </label>
+    </div>
+    <div class="pb-meta" data-mode-view="self" hidden>
+      <p class="pb-self-hint">Shooting it on your phone? Plan ~8 minutes per dish, 90 minutes total before service. Bring: phone tripod, white foam-core bounce, neutral linen, lens wipe. Shoot near a north-facing window between 10am and 2pm.</p>
     </div>
 
     <fieldset class="pb-srcframe" id="pbSrcFrame" aria-describedby="pbSrcFrameNote">
@@ -526,18 +593,108 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <div class="pb-coverage" id="pbCoverage"></div>
     </div>
 
+    <!-- Palette panel — populated from a Brand-Suite handoff
+         (`#palette=hex1-hex2-…`). Gives the photographer an explicit
+         palette to style to and shows the owner the handoff actually
+         landed. Hidden until a palette is present. -->
+    <div id="pbPaletteWrap" class="pb-palette" style="display:none;margin-top:18px;">
+      <p class="pb-palette-eyebrow">Style to this palette</p>
+      <div class="pb-palette-chips" id="pbPaletteChips"></div>
+      <p class="pb-palette-note" id="pbPaletteNote"></p>
+    </div>
+
+    <!-- Per-platform publishing rules cheat-sheet. Surfaces the
+         actual platform constraints owners forget between shoots so
+         the photographer doesn't deliver assets that need a re-cut. -->
+    <details class="pb-rules" id="pbRules" style="display:none;margin-top:18px;">
+      <summary class="pb-rules-summary">Per-platform publishing rules &mdash; what each surface actually requires &rarr;</summary>
+      <div class="pb-rules-body">
+        <div class="pb-rules-grid">
+          <div class="pb-rules-card">
+            <h4>Google Business Profile</h4>
+            <ul>
+              <li><strong>Cover photo:</strong> 16:9 ratio, 1024×576 minimum, 5 MB max. The first photo a Maps user sees.</li>
+              <li><strong>Profile (logo):</strong> 1:1 square, 250×250 minimum.</li>
+              <li><strong>Additional photos:</strong> JPEG/PNG, 720p or higher resolution. Mix interior, exterior, food, team.</li>
+              <li><strong>What gets rejected:</strong> stock photos, heavily filtered images, photos with overlay text, duplicates.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Instagram</h4>
+            <ul>
+              <li><strong>Feed default:</strong> 4:5 portrait, 1080×1350. Square (1:1) and landscape (1.91:1) also accepted.</li>
+              <li><strong>Story / Reel:</strong> 9:16 vertical, 1080×1920. Keep critical content in the centered safe zone (140 px top + 250 px bottom for UI overlap).</li>
+              <li><strong>Carousel:</strong> all slides must share the same ratio.</li>
+              <li><strong>Profile:</strong> 320×320 minimum, displayed as a circle.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Yelp</h4>
+            <ul>
+              <li><strong>Featured photo:</strong> 1920×1280 (3:2), the first thing a Yelp searcher sees.</li>
+              <li><strong>Per-business cap:</strong> ~250 photos depending on plan tier.</li>
+              <li><strong>Don't:</strong> upload menu screenshots (Yelp parses menus separately) or photos with prices baked in.</li>
+              <li><strong>Owners can flag</strong> customer photos for removal if they're misleading or off-topic — flagging takes 1-3 weeks to clear.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Apple Maps</h4>
+            <ul>
+              <li><strong>Cover image:</strong> via Apple Business Connect, 5184×3456 (3:2) recommended.</li>
+              <li><strong>Photo gallery:</strong> JPEG, no Live Photos, no animated.</li>
+              <li><strong>Showcase photos</strong> appear in Place Cards on iPhone — pick the most "represents what walking in feels like" frame.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Open Graph (Facebook / LinkedIn / iMessage)</h4>
+            <ul>
+              <li><strong>OG image:</strong> 1200×630 (1.91:1). Below 600×315 won't preview at all.</li>
+              <li><strong>Don't put critical text within 100 px of any edge</strong> — different platforms crop differently.</li>
+              <li>Same image works across Facebook, LinkedIn, Slack, iMessage, Twitter/X — one shoot covers all four.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Your menu &amp; web hero</h4>
+            <ul>
+              <li><strong>Menu inline:</strong> 4:3 or 1:1 keeps the layout stable across phones; vertical (9:16) breaks rhythm.</li>
+              <li><strong>Web hero:</strong> 16:9 if responsive width, 21:9 for cinematic; under 800 KB compressed (the Speed Test will flag heavier).</li>
+              <li><strong>Alt text:</strong> describe the dish in one sentence — readable by screen readers + indexed by Google for image search.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pb-rules-foot">Specs reviewed quarterly; last verified April 2026. Hand this section to the photographer before the shoot — most can deliver every spec from one source frame if they know the constraints upfront.</p>
+      </div>
+    </details>
+
     <aside class="edu-result edu-result--mini" id="pbEduResult" aria-label="What this brief means" style="display:none;">
       <p class="edu-result__lede">A tighter shot list is <strong>not stinginess</strong> &mdash; it's the difference between a half-day shoot you'll re-use for a year and a marathon shoot half of which never reaches a wall, a feed, or a placemat. The dedup math here pays the photographer back for the same money.</p>
     </aside>
 
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Take this with you</span>
-      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Download Photo Brief <span class="pb-action-fmt">.png</span></button>
+      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbShootMode">Open Shoot Mode <span class="pb-action-fmt">phone</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadBrief">Photo Brief <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadCard">Brand Photo Card <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadZip">Bundle <span class="pb-action-fmt">.zip</span></button>
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copy shot list <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Download <span class="pb-action-fmt">.json</span></button>
       <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pbActionStatus"></span>
+    </div>
+
+    <!-- Shoot Mode overlay — full-screen card stack for use during
+         the actual photo shoot. One card per source frame (post-
+         dedup), tappable Prev / Next, swipe left/right, Esc closes. -->
+    <div class="pb-shoot" id="pbShoot" hidden role="dialog" aria-modal="true" aria-label="Shoot Mode">
+      <header class="pb-shoot-header">
+        <span class="pb-shoot-counter" id="pbShootCounter">Frame 1 of 1</span>
+        <button type="button" class="pb-shoot-close" id="pbShootClose" aria-label="Close Shoot Mode">×</button>
+      </header>
+      <div class="pb-shoot-card" id="pbShootCard" aria-live="polite"></div>
+      <footer class="pb-shoot-footer">
+        <button type="button" class="pb-shoot-nav" id="pbShootPrev" aria-label="Previous frame">&larr;</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootMark" aria-label="Mark this frame as shot">Mark shot</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootNext" aria-label="Next frame">&rarr;</button>
+      </footer>
     </div>
 
     <div class="pb-handoff" id="pbHandoff" style="display:none;">
@@ -569,6 +726,73 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     </div>
   </div>
 </div></section>
+
+<!-- BEFORE/AFTER PANEL — visible artifact (T10) for the photo brief.
+     We don't have rights to ship real before/after dish photos here,
+     so the panel is text-driven: each card describes the specific
+     styling moves that turn a flat menu photo into the kind of frame
+     that gets re-shared. Pure prose; no asset dependencies. -->
+<section class="block" id="pbBeforeAfter"><div class="container" style="max-width:920px;">
+  <span class="eyebrow">What good looks like</span>
+  <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Before &amp; after — three real-shape styling shifts</h2>
+  <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">No retouching tricks, no extra props you don't already have. Three styling moves the line cook can do at family-meal time, captured on the same iPhone you already shoot with.</p>
+  <div class="pb-ba-grid">
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Burger</span><span class="pb-ba-axis">Light + angle</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Top-down shot under warm in-house lighting. Cheese reads orange-brown, the lettuce shadows blow out the bun. Plate fills the frame edge-to-edge.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Three-quarter angle (45° down). Shot at the pass next to a window — the bun catches daylight from the side, the cheese pull is visible at the seam. The plate breathes — 30% empty around it.</p>
+      </div>
+      <p class="pb-ba-note">Two changes: <em>angle</em> (top-down → 3/4) and <em>light source</em> (overhead bulbs → side window). Same burger, same plate, same hour.</p>
+    </article>
+
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Salad</span><span class="pb-ba-axis">Build the height</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Tossed flat in a wide bowl. Looks like a bag of greens with the dressing already mixed in — green-on-green-on-green, no contrast points.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Greens stacked tall in the center, finishing produce (radish slices, citrus segments, herb tips) placed last on top. Dressing pooled to one side, not poured over. Cracked pepper finish that's visible.</p>
+      </div>
+      <p class="pb-ba-note">Build it tall, finish on top. The salad in the photo doesn't have to be the salad you serve — this version is for the camera, the kitchen sends out the eat-able one.</p>
+    </article>
+
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Roast chicken</span><span class="pb-ba-axis">Steam + sauce</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Plated and shot 90 seconds after it left the oven. Skin reads matte, the jus on the plate has already absorbed into the potatoes.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Shot inside 30 seconds. Faint steam catches the side light. Pan jus spooned over right before the shutter fires — surface is glossy and reflective.</p>
+      </div>
+      <p class="pb-ba-note">Hot food photographs as hot food only for the first minute. If you're shooting a service dish, plate one on the side ahead of family meal — the kitchen's already up.</p>
+    </article>
+  </div>
+  <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">These are direction notes, not shot lists. Add the specifics that match your kitchen — what's on the pass, where the daylight comes from, which finishing touches you actually have. The brief above is the structure; this is the texture.</p>
+</div></section>
+
+<style>
+  .pb-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+  .pb-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+  .pb-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .pb-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+  .pb-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+  .pb-ba-row{margin:0 0 10px}
+  .pb-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+  .pb-ba-text{font-size:14px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+  .pb-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+  .pb-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+  .pb-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+  .pb-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
+</style>
 
 <!-- WHAT THIS IS / ISN'T (honesty framing) -->
 <section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
@@ -709,6 +933,33 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   var photogEl     = document.getElementById('pbPhotographer');
   var dayRateEl    = document.getElementById('pbDayRate');
   var srcFrameEl   = document.getElementById('pbSrcFrame');
+
+  // Mode toggle: hire vs self-shoot. Self-shoot hides the
+  // photographer + day-rate fields and sets 4:3 (phone) as the
+  // default source-frame ratio. Re-running render after the swap
+  // ensures the live coverage strip + crop math redraws.
+  var modeBtns = document.querySelectorAll('.pb-mode button[data-mode]');
+  var modeViews = document.querySelectorAll('[data-mode-view]');
+  function setMode(mode) {
+    Array.prototype.forEach.call(modeBtns, function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Array.prototype.forEach.call(modeViews, function (v) {
+      v.hidden = (v.getAttribute('data-mode-view') !== mode);
+    });
+    if (mode === 'self') {
+      // Default to 4:3 (most phone cameras). Don't override an
+      // owner who already picked something else.
+      var any = srcFrameEl && srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+      if (any && any.value !== '4:3') {
+        var phone = srcFrameEl.querySelector('input[name="pbSrcRatio"][value="4:3"]');
+        if (phone) phone.checked = true;
+      }
+    }
+  }
+  Array.prototype.forEach.call(modeBtns, function (b) {
+    b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); });
+  });
   var rowsEl       = document.getElementById('pbRows');
   var addRowBtn    = document.getElementById('pbAddRow');
   var sampleBtn    = document.getElementById('pbSample');
@@ -902,6 +1153,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       '</div>';
     }).join('');
     coverageWrap.style.display = '';
+    var rulesEl = document.getElementById('pbRules');
+    if (rulesEl) rulesEl.style.display = checkedSurfaces.length ? '' : 'none';
   }
 
   // -------------------- Render --------------------
@@ -962,9 +1215,47 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     paybackNum.textContent= roi.paybackMonths ? roi.paybackMonths.toFixed(1) : '—';
 
     renderCoverage(surfaces);
+    renderPalettePanel(fragmentState.palette);
     mathEl.style.display = '';
     emptyEl.style.display = 'none';
     fireBucketEvent();
+  }
+
+  // Populate the "Style to this palette" panel from a Brand-Suite
+  // handoff. Hidden until a non-empty palette is present so default-
+  // load and brand-less briefs don't carry an empty card. The note
+  // names the first hex as the headline anchor — gives the
+  // photographer a place to start without freezing them on five
+  // colours weighted equally.
+  function renderPalettePanel(palette) {
+    var wrap   = document.getElementById('pbPaletteWrap');
+    var chips  = document.getElementById('pbPaletteChips');
+    var noteEl = document.getElementById('pbPaletteNote');
+    if (!wrap || !chips || !noteEl) return;
+    if (!palette || !palette.length) {
+      wrap.style.display = 'none';
+      return;
+    }
+    chips.innerHTML = '';
+    palette.forEach(function(hex){
+      var chip = document.createElement('div');
+      chip.className = 'pb-palette-chip';
+      var swatch = document.createElement('div');
+      swatch.className = 'pb-palette-swatch';
+      swatch.style.backgroundColor = hex;
+      var hexLabel = document.createElement('span');
+      hexLabel.className = 'pb-palette-hex';
+      hexLabel.textContent = hex;
+      chip.appendChild(swatch);
+      chip.appendChild(hexLabel);
+      chips.appendChild(chip);
+    });
+    var anchor = palette[0];
+    noteEl.textContent =
+      'Lean styling props (linens, plates, garnishes, surface) into these ' +
+      palette.length + ' tones. Anchor on ' + anchor + ' so the brand ' +
+      'reads in a thumbnail; let the food carry the rest of the frame.';
+    wrap.style.display = '';
   }
 
   // -------------------- Event handlers --------------------
@@ -1026,6 +1317,166 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Shoot Mode --------------------
+  // Full-screen one-card-per-frame view for use during the actual
+  // shoot. Walks the deduped source-frame list (dish × angle ×
+  // lighting), shows what to shoot + which surfaces it serves, and
+  // tracks which frames have been marked as shot. Touch swipe or
+  // arrow keys advance.
+  var shootEl       = document.getElementById('pbShoot');
+  var shootCardEl   = document.getElementById('pbShootCard');
+  var shootCounter  = document.getElementById('pbShootCounter');
+  var shootCloseBtn = document.getElementById('pbShootClose');
+  var shootPrevBtn  = document.getElementById('pbShootPrev');
+  var shootNextBtn  = document.getElementById('pbShootNext');
+  var shootMarkBtn  = document.getElementById('pbShootMark');
+  var shootBtn      = document.getElementById('pbShootMode');
+  var shootIndex    = 0;
+  var shootFrames   = [];
+  var shootMarked   = {};
+  function pbCap(s){ return String(s||'').replace(/^./, function(c){ return c.toUpperCase(); }); }
+  function pbNiceLighting(l) {
+    return ({
+      'warm-window':  'Warm window light (10am–2pm, north-facing if possible)',
+      'cool-window':  'Cool overcast window light',
+      'overhead':     'Overhead daylight or softbox',
+      'mood':         'Low / moody — single warm key light, dark ground',
+      'studio':       'Studio strobe — clean separation'
+    })[l] || pbCap(l) + ' light';
+  }
+  function pbNiceAngle(a) {
+    return ({
+      '45-degree':    '45° hero angle',
+      'overhead':     'Overhead (90° / flat-lay)',
+      'eye-level':    'Eye-level (15–20°)',
+      'tight-crop':   'Tight crop, ingredient-forward'
+    })[a] || pbCap(a) + ' angle';
+  }
+  function pbNiceNeg(n) {
+    if (!n || n === 'none') return 'No reservation';
+    return ({
+      'top':    'Reserve top third (for IG story / OG headline)',
+      'right':  'Reserve right side (for menu inline / hero text)',
+      'left':   'Reserve left side',
+      'bottom': 'Reserve bottom third'
+    })[n] || pbCap(n);
+  }
+  function pbBuildShootFrames() {
+    if (!latestSummary || !latestSummary.dedup || !latestSummary.dedup.perDish) return [];
+    var out = [];
+    latestSummary.dedup.perDish.forEach(function (d) {
+      (d.rows || []).forEach(function (row, i) {
+        out.push({
+          dish:     d.name || 'Dish',
+          category: d.category || 'main',
+          priority: d.priority || 'standard',
+          angle:    row.angle,
+          lighting: row.lighting,
+          negSpace: row.negSpace,
+          surfaces: row.surfaces || [],
+          rowIndex: i
+        });
+      });
+    });
+    return out;
+  }
+  function pbRenderShoot() {
+    if (!shootEl || !shootCardEl) return;
+    if (!shootFrames.length) {
+      shootCardEl.innerHTML = '<p style="opacity:0.7;text-align:center;">No frames yet — add at least one dish + one surface to the brief.</p>';
+      shootCounter.textContent = '0 of 0';
+      shootPrevBtn.disabled = true; shootNextBtn.disabled = true;
+      return;
+    }
+    if (shootIndex < 0) shootIndex = 0;
+    if (shootIndex > shootFrames.length - 1) shootIndex = shootFrames.length - 1;
+    var f = shootFrames[shootIndex];
+    var key = f.dish + '|' + f.rowIndex;
+    var marked = !!shootMarked[key];
+    shootCardEl.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootCounter.textContent = 'Frame ' + (shootIndex + 1) + ' of ' + shootFrames.length;
+    var surfacesLabels = f.surfaces.map(function (sk) {
+      return (window.PB && window.PB.SURFACES && window.PB.SURFACES[sk]) ? window.PB.SURFACES[sk].label : sk;
+    });
+    var tips = (window.PB && window.PB.stylingTipsFor) ? window.PB.stylingTipsFor(f.category) : [];
+    var tipsHtml = tips.length
+      ? '<div class="pb-shoot-tips"><p class="pb-shoot-tips-label">Styling notes for ' + pbCap(f.category) + '</p><ul class="pb-shoot-tips-list">' +
+          tips.map(function (t) { return '<li>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</li>'; }).join('') +
+        '</ul></div>'
+      : '';
+    shootCardEl.innerHTML =
+      '<p class="pb-shoot-cat">' + pbCap(f.category) + (f.priority === 'priority' ? ' · ★ priority' : '') + '</p>' +
+      '<h2 class="pb-shoot-dish">' + (f.dish.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</h2>' +
+      '<dl class="pb-shoot-spec">' +
+        '<dt>Angle</dt><dd>' + pbNiceAngle(f.angle) + '</dd>' +
+        '<dt>Light</dt><dd>' + pbNiceLighting(f.lighting) + '</dd>' +
+        '<dt>Composition</dt><dd>' + pbNiceNeg(f.negSpace) + '</dd>' +
+      '</dl>' +
+      tipsHtml +
+      '<div class="pb-shoot-surfaces">' +
+        '<p class="pb-shoot-surfaces-label">This source frame serves:</p>' +
+        '<ul class="pb-shoot-surfaces-list">' +
+          surfacesLabels.map(function (l) { return '<li>' + (l.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</li>'; }).join('') +
+        '</ul>' +
+      '</div>' +
+      '<p class="pb-shoot-tip">Shoot this once. The brief automatically maps it onto every surface above via crop math — you don\'t need separate frames per surface.</p>';
+    shootPrevBtn.disabled = (shootIndex === 0);
+    shootNextBtn.disabled = (shootIndex === shootFrames.length - 1);
+    shootMarkBtn.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootMarkBtn.textContent = marked ? 'Marked ✓' : 'Mark shot';
+  }
+  function pbOpenShoot() {
+    shootFrames = pbBuildShootFrames();
+    shootIndex = 0;
+    if (shootEl) shootEl.hidden = false;
+    document.body.style.overflow = 'hidden';
+    pbRenderShoot();
+    if (shootCloseBtn) shootCloseBtn.focus();
+  }
+  function pbCloseShoot() {
+    if (shootEl) shootEl.hidden = true;
+    document.body.style.overflow = '';
+    if (shootBtn) shootBtn.focus();
+  }
+  if (shootBtn) shootBtn.addEventListener('click', pbOpenShoot);
+  if (shootCloseBtn) shootCloseBtn.addEventListener('click', pbCloseShoot);
+  if (shootPrevBtn) shootPrevBtn.addEventListener('click', function () { shootIndex--; pbRenderShoot(); });
+  if (shootNextBtn) shootNextBtn.addEventListener('click', function () { shootIndex++; pbRenderShoot(); });
+  if (shootMarkBtn) shootMarkBtn.addEventListener('click', function () {
+    var f = shootFrames[shootIndex]; if (!f) return;
+    var key = f.dish + '|' + f.rowIndex;
+    shootMarked[key] = !shootMarked[key];
+    pbRenderShoot();
+    if (shootMarked[key] && shootIndex < shootFrames.length - 1) {
+      setTimeout(function(){ shootIndex++; pbRenderShoot(); }, 220);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!shootEl || shootEl.hidden) return;
+    if (e.key === 'Escape') { pbCloseShoot(); }
+    else if (e.key === 'ArrowLeft' && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    else if (e.key === 'ArrowRight' && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+  });
+  // Touch-swipe navigation. Detects horizontal swipes >40px on the
+  // card area; vertical scrolling stays unblocked via touch-action.
+  (function () {
+    if (!shootCardEl) return;
+    var startX = null, startY = null;
+    shootCardEl.addEventListener('touchstart', function (e) {
+      if (!e.touches || !e.touches[0]) return;
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    }, { passive: true });
+    shootCardEl.addEventListener('touchend', function (e) {
+      if (startX == null || !e.changedTouches || !e.changedTouches[0]) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null; startY = null;
+      if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+      if (dx < 0 && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+      else if (dx > 0 && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    }, { passive: true });
+  })();
 
   // -------------------- Exports (CSV + JSON) --------------------
   // CSV is the per-shot table — owner pastes into a Google Sheet for

@@ -1005,6 +1005,54 @@
     flex-wrap: wrap;
     gap: 6px 8px;
   }
+  /* Recheck-over-time sparkline. Painted in teal (current band) with
+     a subtle area-fill underneath. Axis row prints up to 6 dates so
+     phone readers can map a dot to "two weeks ago". */
+  .history-banner-spark {
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 4px;
+    color: var(--teal);
+  }
+  .history-banner-spark[hidden] { display: none; }
+  .history-banner-spark-caption {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft, var(--stone));
+  }
+  .history-banner-spark-svg {
+    width: 100%;
+    max-width: 320px;
+    height: 60px;
+    overflow: visible;
+  }
+  .history-banner-spark-svg .spark-line { stroke: var(--teal); }
+  .history-banner-spark-svg .spark-area { fill: rgba(31, 78, 91, 0.10); stroke: none; }
+  .history-banner-spark-svg .spark-pt   { fill: var(--cream, #FAF6EE); stroke: var(--teal); stroke-width: 2; }
+  .history-banner-spark-svg .spark-pt-current { fill: var(--teal); stroke: var(--teal); }
+  .history-banner-spark-svg .spark-label {
+    font: 600 11px/1 var(--font-body, system-ui);
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--cream, #FAF6EE);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+  .history-banner-spark-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    max-width: 320px;
+    font-size: 10.5px;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+  }
+  .history-banner-spark-axis span:first-child { text-align: left; }
+  .history-banner-spark-axis span:last-child  { text-align: right; }
   .history-banner-pillar {
     display: inline-flex;
     align-items: center;
@@ -1169,6 +1217,54 @@
     .audit-toc-fab:focus { outline: 2px solid var(--teal); outline-offset: 2px; }
     .audit-toc-fab-icon { font-size: 14px; line-height: 1; }
     .audit-toc-list a { padding: 10px 12px; font-size: 14.5px; }
+    /* First-run hint. The audit report is tall and the ToC FAB sits
+       in the corner — first-time owners on a phone routinely scroll
+       past it without realising it exists. The hint pulses the FAB
+       and pops a one-line tooltip the first time the report renders;
+       it disappears the moment the FAB is tapped (sheet opens) and
+       the seen-flag persists in localStorage so subsequent audits
+       don't re-show it. */
+    .audit-toc-fab[data-hint="1"]::before {
+      content: attr(data-hint-label);
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      background: var(--ink);
+      color: var(--cream);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      border-radius: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(20, 22, 26, 0.22);
+      pointer-events: none;
+      animation: auditTocHintFade 220ms ease-out 1;
+    }
+    .audit-toc-fab[data-hint="1"]::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      box-shadow: 0 0 0 0 rgba(31, 78, 91, 0.55);
+      animation: auditTocHintPulse 1700ms ease-out infinite;
+      pointer-events: none;
+    }
+    @keyframes auditTocHintPulse {
+      0%   { box-shadow: 0 0 0 0     rgba(31, 78, 91, 0.55); }
+      70%  { box-shadow: 0 0 0 14px  rgba(31, 78, 91, 0); }
+      100% { box-shadow: 0 0 0 0     rgba(31, 78, 91, 0); }
+    }
+    @keyframes auditTocHintFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audit-toc-fab[data-hint="1"]::after { animation: none; }
+    .audit-toc-fab[data-hint="1"]::before { animation: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .audit-toc-panel { transition: none; }
@@ -2176,6 +2272,45 @@
      teal + rust gradient tokens as the hero wash, so the score card
      visually rhymes with its landing page even though they sit
      thousands of pixels apart in the document flow. */
+  /* Sticky compact headline. Hidden by default (transform: -100%);
+     a JS IntersectionObserver toggles data-shown="true" once the
+     full audit-summary card scrolls out of the viewport. The bar
+     keeps the score + #1 fix anchored at the top of the screen
+     while the owner reads through dozens of priority items. */
+  .audit-sticky {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 90;
+    background: var(--ink);
+    color: var(--cream);
+    transform: translateY(-100%);
+    transition: transform 220ms var(--ease-out, cubic-bezier(0.2, 0, 0, 1));
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    padding: env(safe-area-inset-top, 0) 0 0;
+  }
+  .audit-sticky[data-shown="true"] { transform: translateY(0); }
+  .audit-sticky-inner {
+    max-width: 1080px; margin: 0 auto; padding: 10px 16px;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+  }
+  .audit-sticky-score { display: flex; align-items: baseline; gap: 6px; }
+  .audit-sticky-score-value { font-family: var(--font-display); font-size: 28px; font-weight: 500; line-height: 1; letter-spacing: -0.5px; color: var(--cream); font-variant-numeric: tabular-nums; }
+  .audit-sticky-score-grade { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,246,238,0.6); }
+  .audit-sticky-fix { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .audit-sticky-fix-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,246,238,0.6); }
+  .audit-sticky-fix-text { font-size: 13.5px; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .audit-sticky-cta { padding: 6px 12px; border: 1px solid rgba(250,246,238,0.4); border-radius: 999px; background: transparent; color: var(--cream); text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .audit-sticky-cta:hover { background: rgba(250,246,238,0.10); }
+  @media (max-width: 540px) {
+    .audit-sticky-inner { grid-template-columns: auto 1fr auto; gap: 10px; padding: 8px 12px; }
+    .audit-sticky-score-value { font-size: 24px; }
+    .audit-sticky-fix-label { display: none; }
+    .audit-sticky-cta { padding: 6px 10px; font-size: 11.5px; }
+  }
+  body.snapshot-view .audit-sticky,
+  body.print-worksheet .audit-sticky,
+  body.snapshot-error .audit-sticky { display: none; }
+
   .audit-summary {
     position: relative;
     display: grid;
@@ -2586,16 +2721,19 @@
     color: var(--teal);
   }
 
-  /* Four category gauges */
+  /* Five category gauges — Restaurant Fundamentals card is featured
+     (spans two columns + teal-accent border) so the differentiator
+     anchors the report instead of sitting in column 5 of 5. */
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 2fr repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 32px;
   }
-  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 640px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .category-card--featured { grid-column: 1 / -1; } }
+  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; }
+    .category-card--featured { grid-column: auto; } }
 
   .category-card {
     padding: 24px;
@@ -2604,6 +2742,12 @@
     border-radius: 16px;
     text-align: center;
   }
+  .category-card--featured {
+    border-color: var(--teal);
+    border-width: 2px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--teal) 4%, var(--white)) 0%, var(--white) 100%);
+  }
+  .category-card--featured .label { color: var(--teal); }
   .category-card .label {
     font-size: 11px;
     font-weight: 700;
@@ -2786,6 +2930,40 @@
   .top-fixes-item-chips .chip-effort-dev     { background: var(--teal-tint); color: var(--teal); }
   .top-fixes-item-chips .chip-effort-rebuild { background: var(--status-bad-tint); color: var(--rust); }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Differentiator chips: signal Restaurant-specific vs. Web
+     fundamentals so owners trained on PSI see what THIS tool adds. */
+  .top-fixes-item-chips .chip-source-rest { background: var(--teal-tint, #d8e8e9); color: var(--teal); border: 1px solid var(--teal); font-weight: 700; }
+  .top-fixes-item-chips .chip-source-fund { background: var(--cream-2, #faf6ee); color: var(--ink-soft); border: 1px solid var(--line, #E6DFCE); }
+  /* Per-check platform recipe picker — collapsed by default; opens
+     to a tab list of platforms with tailored steps. */
+  .top-fixes-recipe { margin-top: 10px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-recipe[open] { padding-bottom: 4px; }
+  .top-fixes-recipe-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--teal); list-style: none; }
+  .top-fixes-recipe-summary::-webkit-details-marker { display: none; }
+  .top-fixes-recipe-summary::before { content: '+ '; color: var(--teal); font-weight: 700; }
+  .top-fixes-recipe[open] .top-fixes-recipe-summary::before { content: '− '; }
+  .top-fixes-recipe-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 12px 8px; }
+  .top-fixes-recipe-tab { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; }
+  .top-fixes-recipe-tab[aria-selected="true"] { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .top-fixes-recipe-steps { padding: 0 12px 12px; }
+  .top-fixes-recipe-list { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.55; color: var(--ink); }
+  .top-fixes-recipe-list li { margin-bottom: 4px; }
+  .top-fixes-recipe-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.5; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
+  .top-fixes-recipe-eta { font-size: 11.5px; color: var(--stone); margin: 6px 0 0; letter-spacing: 0.04em; }
+  .top-fixes-recipe-fallback { font-size: 12px; color: var(--stone); margin: 0 0 8px; font-style: italic; }
+  /* "Don't have a developer?" hire disclosure on dev/rebuild checks. */
+  .top-fixes-hire { margin-top: 8px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-hire[open] { padding-bottom: 4px; }
+  .top-fixes-hire-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); list-style: none; }
+  .top-fixes-hire-summary::-webkit-details-marker { display: none; }
+  .top-fixes-hire-summary::before { content: '+ '; color: var(--ink-soft); font-weight: 700; }
+  .top-fixes-hire[open] .top-fixes-hire-summary::before { content: '− '; }
+  .top-fixes-hire-body { padding: 4px 12px 12px; }
+  .top-fixes-hire-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 8px; font-size: 13px; line-height: 1.5; }
+  .top-fixes-hire-grid dt { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--stone); align-self: start; padding-top: 2px; }
+  .top-fixes-hire-grid dd { margin: 0; color: var(--ink); }
+  .top-fixes-hire-grid a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  .top-fixes-hire-tip { font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin: 0; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -4130,6 +4308,53 @@
   }
   .share-btn:hover { background: var(--cream-2); border-color: var(--teal); color: var(--teal); }
   .share-btn svg { width: 15px; height: 15px; }
+  /* Mobile share-row collapse. The verdict tray hosts 5–6 actions
+     (copy link, share card, print-for-manager, copy-for-developer,
+     print brief, mailto-developer) — on a phone they wrap into 2–3
+     ragged rows that push the next section a screen-and-a-half down.
+     The collapse keeps the primary "copy link" button visible and
+     buries the rest behind a JS-injected "More actions" disclosure
+     toggled by data-expanded. The mobile-more-btn is rendered into
+     #shareRowMore at run time. */
+  .share-row .share-row-more-btn {
+    display: none;
+  }
+  @media (max-width: 540px) {
+    .share-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .share-row .share-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    /* When collapsed, hide every share-btn except the first one
+       (Copy link). Toast stays inline with the first row. */
+    .share-row:not([data-expanded="true"]) .share-btn:not(#shareBtn) {
+      display: none;
+    }
+    .share-row .share-row-more-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px dashed var(--line-dark);
+      border-radius: 999px;
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      cursor: pointer;
+    }
+    .share-row[data-expanded="true"] .share-row-more-btn {
+      border-style: solid;
+      color: var(--teal);
+      border-color: var(--teal);
+    }
+  }
   .share-toast {
     font-size: 12px;
     color: var(--status-pass);
@@ -5055,7 +5280,7 @@
 <section class="hero hero-medium">
   <div class="container">
     <div class="audit-hero">
-      <span class="eyebrow" data-tr="hero.eyebrow">Free tool · Powered by Google Lighthouse</span>
+      <span class="eyebrow" data-tr="hero.eyebrow">Free tool &middot; Restaurant-tuned mobile audit &middot; 30 seconds</span>
       <h1 class="mt-20" data-tr-html="hero.h1.full">
         How is your<br>
         <span class="serif-italic">restaurant website</span><br>
@@ -5219,6 +5444,24 @@
         </button>
       </aside>
 
+      <!-- Sticky compact headline — slides in from top once the
+           main score card scrolls out of view. Keeps the score +
+           #1 fix one tap away on phone reading sessions, where
+           audit reports are routinely 50+ screen-heights long. -->
+      <div class="audit-sticky" id="auditSticky" aria-hidden="true">
+        <div class="audit-sticky-inner">
+          <div class="audit-sticky-score">
+            <span class="audit-sticky-score-value" id="auditStickyScore">—</span>
+            <span class="audit-sticky-score-grade" id="auditStickyGrade"></span>
+          </div>
+          <div class="audit-sticky-fix">
+            <span class="audit-sticky-fix-label">Fix this first</span>
+            <span class="audit-sticky-fix-text" id="auditStickyFix">—</span>
+          </div>
+          <a class="audit-sticky-cta" href="#topFixes" id="auditStickyCta">Jump &darr;</a>
+        </div>
+      </div>
+
       <!-- Summary with overall score ring -->
       <div class="audit-summary" id="overallScoreSection">
         <div class="score-ring" id="scoreRing">
@@ -5366,6 +5609,15 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
               Open printable brief
             </button>
+            <!-- One-button mailto: that opens the user's mail client
+                 with the dev-brief Markdown as the body and a
+                 reasonable subject line. Closes the loop between
+                 "the tool found it" and "I just sent it to my web
+                 person" without making the owner copy/paste. -->
+            <a class="share-btn" id="emailDevBriefBtn" href="#" rel="noopener" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+              Email this to my developer
+            </a>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
 
@@ -5410,37 +5662,40 @@
         </div>
       </div>
 
-      <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
+      <!-- Five category gauges — Restaurant fundamentals leads (the
+           differentiator anchor; spans 2 columns on wide layouts), the
+           four Lighthouse pillars follow with owner-language labels.
+           Technical names retained in title attributes for the curious. -->
       <div class="category-grid" id="categoryGrid">
-        <div class="category-card" data-cat="performance">
-          <div class="label">Performance</div>
+        <div class="category-card category-card--featured" data-cat="restaurant" title="Restaurant-specific checks (Muntin's industry pillar)">
+          <div class="label">Restaurant fundamentals</div>
+          <div class="cat-value">—</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Restaurant-specific checks Lighthouse misses</div>
+        </div>
+        <div class="category-card" data-cat="performance" title="Performance (Lighthouse)">
+          <div class="label">Speed on a phone</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">How fast pages load on a phone</div>
         </div>
-        <div class="category-card" data-cat="accessibility">
-          <div class="label">Accessibility</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Usable for every visitor</div>
-        </div>
-        <div class="category-card" data-cat="best-practices">
-          <div class="label">Best Practices</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Modern, secure web standards</div>
-        </div>
-        <div class="category-card" data-cat="seo">
-          <div class="label">SEO</div>
+        <div class="category-card" data-cat="seo" title="SEO (Lighthouse)">
+          <div class="label">Findable on Google</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">Whether Google can find you</div>
         </div>
-        <div class="category-card" data-cat="restaurant">
-          <div class="label">Restaurant</div>
+        <div class="category-card" data-cat="accessibility" title="Accessibility (Lighthouse)">
+          <div class="label">Readable for everyone</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Restaurant-specific checks</div>
+          <div class="sublabel">Usable for every visitor</div>
+        </div>
+        <div class="category-card" data-cat="best-practices" title="Best Practices (Lighthouse)">
+          <div class="label">Modern &amp; secure</div>
+          <div class="cat-value">—</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Modern, secure web standards</div>
         </div>
       </div>
 
@@ -5462,6 +5717,23 @@
           <span class="history-banner-timing" id="historyBannerTiming"></span>
         </div>
         <div class="history-banner-delta" id="historyBannerDelta"></div>
+        <!-- Recheck-over-time sparkline. The history banner already
+             renders the most-recent vs. prior delta; the sparkline
+             extends that into a tiny progress chart over the last 6
+             snapshots. Owners running weekly audits see their own
+             trajectory at a glance — the single most motivating
+             artifact for sustaining ongoing site-care effort. Drawn
+             from the same readHistory(url) data; hidden when fewer
+             than 3 snapshots exist (a chart with 2 points is just a
+             line). -->
+        <figure class="history-banner-spark" id="historyBannerSpark" hidden>
+          <figcaption class="history-banner-spark-caption" data-tr="history.sparkCaption">Your last audits</figcaption>
+          <svg class="history-banner-spark-svg" id="historyBannerSparkSvg" viewBox="0 0 240 60" aria-hidden="true">
+            <polyline class="spark-line" id="historyBannerSparkLine" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points=""/>
+            <g class="spark-points" id="historyBannerSparkPoints"></g>
+          </svg>
+          <div class="history-banner-spark-axis" id="historyBannerSparkAxis"></div>
+        </figure>
         <ul class="history-banner-pillars" id="historyBannerPillars"></ul>
         <!-- Sprint H3: specific priority checks that flipped from
              failed / unverified to a pass between the prior snapshot
@@ -6101,6 +6373,8 @@
      ./restaurant-checks.js and ./subtypes.js for the module contracts. -->
 <script src="./subtypes.js"></script>
 <script src="./restaurant-checks.js"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -6652,7 +6926,7 @@
     'crumb.label':      'Ruta de navegaci\u00f3n',
     'crumb.skip':       'Saltar al contenido principal',
     // Hero
-    'hero.eyebrow':     'Herramienta gratuita \u00b7 Impulsada por Google Lighthouse',
+    'hero.eyebrow':     'Herramienta gratuita \u00b7 Diagn\u00f3stico m\u00f3vil ajustado a restaurantes \u00b7 30 segundos',
     'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
     'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. El informe completo aparece en esta p\u00e1gina \u2014 sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)',
     'form.placeholder': 'https://turestaurante.com',
@@ -8794,6 +9068,12 @@
         cancelAnimationFrame(window.__scoreRingCounter);
         window.__scoreRingCounter = null;
       }
+      // Sticky headline mirror — pin the final score immediately so
+      // the bar shows the right number whether or not the in-flight
+      // count-up animation has finished (the bar only appears after
+      // the user has scrolled past the score-card, by which point the
+      // count-up is long over anyway).
+      if (typeof setStickyScore === 'function') setStickyScore(score);
       if (prefersReduced) {
         value.textContent = score;
       } else {
@@ -10955,6 +11235,105 @@
     var showBanner = (typeof current.overall === 'number' && typeof previous.overall === 'number')
                      || changesCount > 0 || hasResolved;
     banner.hidden = !showBanner;
+
+    // Recheck-over-time sparkline. Only paints when 3+ snapshots
+    // have an overall score; with 2 snapshots the delta headline
+    // already tells the same story without a chart.
+    renderHistorySparkline(history);
+  }
+
+  // Draw the sparkline of overall scores across the last N snapshots.
+  // Inputs come straight from readHistory(); we only plot entries
+  // with a numeric overall (skipping any malformed older entries).
+  // The last point is the current run, drawn solid; prior points are
+  // hollow. Reduced-motion users still get the chart — it's static,
+  // no transitions involved.
+  function renderHistorySparkline(history) {
+    var spark    = document.getElementById('historyBannerSpark');
+    var svg      = document.getElementById('historyBannerSparkSvg');
+    var lineEl   = document.getElementById('historyBannerSparkLine');
+    var ptsEl    = document.getElementById('historyBannerSparkPoints');
+    var axisEl   = document.getElementById('historyBannerSparkAxis');
+    if (!spark || !svg || !lineEl || !ptsEl || !axisEl) return;
+    var entries = (Array.isArray(history) ? history : [])
+      .filter(function(e){ return e && typeof e.overall === 'number'; })
+      .slice(-6);
+    if (entries.length < 3) {
+      spark.hidden = true;
+      return;
+    }
+
+    // Plot canvas — 240×60 viewBox with 8px insets for stroke + dot
+    // radius. We map score 0..100 to y so the chart never clips even
+    // when the run scores 100 or 0 exactly.
+    var W = 240, H = 60, padX = 12, padY = 8;
+    var minScore = 100, maxScore = 0;
+    entries.forEach(function(e){
+      if (e.overall < minScore) minScore = e.overall;
+      if (e.overall > maxScore) maxScore = e.overall;
+    });
+    // Floor the range to at least 20 points so a flat run doesn't
+    // produce a hairline straight across the middle — gives the chart
+    // some headroom around the median.
+    var range = Math.max(20, maxScore - minScore);
+    var midY = padY + (H - padY * 2) * 0.5;
+
+    var pts = entries.map(function(e, i){
+      var x = padX + (W - padX * 2) * (i / Math.max(1, entries.length - 1));
+      var rel = (e.overall - minScore) / range;
+      var y = (H - padY) - rel * (H - padY * 2);
+      // If the chart is essentially flat (range floored), center the
+      // line vertically rather than pinning it to the bottom.
+      if (maxScore - minScore < 5) y = midY;
+      return { x: x, y: y, score: e.overall, ts: e.ts };
+    });
+
+    // Polyline points string.
+    lineEl.setAttribute('points', pts.map(function(p){ return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' '));
+
+    // Render dots — last one solid (current), others hollow. Last
+    // point also gets a small score label above it for at-a-glance
+    // confirmation of the current value.
+    ptsEl.innerHTML = '';
+    pts.forEach(function(p, i){
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', p.x.toFixed(1));
+      c.setAttribute('cy', p.y.toFixed(1));
+      c.setAttribute('r', i === pts.length - 1 ? '4' : '3');
+      c.setAttribute('class', i === pts.length - 1 ? 'spark-pt spark-pt-current' : 'spark-pt');
+      ptsEl.appendChild(c);
+    });
+    var last = pts[pts.length - 1];
+    var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', Math.max(padX, Math.min(W - padX, last.x + 8)).toFixed(1));
+    label.setAttribute('y', Math.max(12, last.y - 8).toFixed(1));
+    label.setAttribute('text-anchor', last.x > W - 28 ? 'end' : 'start');
+    label.setAttribute('class', 'spark-label');
+    label.textContent = String(last.score);
+    ptsEl.appendChild(label);
+
+    // Axis: first + last timestamps, formatted compact ("Mar 12" /
+    // "today"). Skip the middle entries — they'd only clutter the
+    // strip and the dots already give a sense of cadence.
+    var fmtDate = function(ts){
+      try {
+        var d = new Date(ts);
+        var diffMs = Date.now() - ts;
+        var oneDay = 24 * 60 * 60 * 1000;
+        if (diffMs < oneDay && d.getDate() === new Date().getDate()) return 'today';
+        if (diffMs < 2 * oneDay)  return 'yesterday';
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    };
+    axisEl.innerHTML = '';
+    var leftSpan  = document.createElement('span');
+    var rightSpan = document.createElement('span');
+    leftSpan.textContent  = fmtDate(entries[0].ts);
+    rightSpan.textContent = fmtDate(entries[entries.length - 1].ts);
+    axisEl.appendChild(leftSpan);
+    axisEl.appendChild(rightSpan);
+
+    spark.hidden = false;
   }
 
   // Sprint T2 + E4: the closed state of the footer now carries a
@@ -11402,6 +11781,59 @@
   // Values are % of annual revenue the owner is plausibly leaving on
   // the table by failing this check, based on observed funnel drop-
   // off in restaurant-tech case studies. Missing types → no chip.
+  // Map audit check IDs to MuntinPlatformFixes fix IDs. Drives the
+  // per-check "Show me how to fix this on my platform" disclosure
+  // in the Top Fixes list. Only "Fix yourself" checks need a
+  // mapping; dev/rebuild checks stay on the existing failNote path.
+  var AUDIT_CHECK_TO_FIX_ID = {
+    'audit.viewport':       'viewport-meta',
+    'audit.tap-targets':    'tap-target-padding',
+    'audit.image-alt':      'alt-text-bulk',
+    'audit.image-size':     'image-compress',
+    'audit.image-formats':  'image-compress',
+    'audit.optimized-images':'image-compress',
+    'audit.uses-webp-images':'image-compress',
+    'audit.uses-optimized-images':'image-compress',
+    'audit.modern-image-formats':'image-compress',
+    'audit.efficient-images':'image-compress',
+    'audit.title':          'title-meta-edit',
+    'audit.document-title': 'title-meta-edit',
+    'audit.meta-description':'title-meta-edit',
+    'audit.structured-data':'jsonld-inject',
+    'phone':                'tel-link',
+    'maps':                 'maps-link',
+    'address':              'maps-link',
+    'hours':                'hours-edit',
+    'restaurant-schema':    'jsonld-inject'
+  };
+  // Platform display names — used for picker tabs + the summary
+  // "Show me how to fix this on Squarespace →".
+  var AUDIT_PLATFORM_LABEL = {
+    wix:          'Wix',
+    squarespace:  'Squarespace',
+    wordpress:    'WordPress',
+    shopify:      'Shopify',
+    webflow:      'Webflow',
+    bentobox:     'BentoBox',
+    godaddy:      'GoDaddy',
+    custom:       'a custom site',
+    generic:      'Other / generic'
+  };
+  // "Who to hire" guidance per platform for effort:'rebuild' and
+  // effort:'dev' checks. Each entry: budget range, profile, public
+  // directory link the owner can search. Pre-filtered to "what to
+  // type" so the owner doesn't stare at a blank Upwork search.
+  var AUDIT_HIRE_BY_PLATFORM = {
+    wix:          { budgetUsd: '$300–$1,500',  profile: 'Wix Partner (certified freelancer)',                 directoryUrl: 'https://www.wix.com/marketplace/wix-partners',                directoryLabel: 'Wix Marketplace' },
+    squarespace:  { budgetUsd: '$300–$1,800',  profile: 'Squarespace Circle Member',                          directoryUrl: 'https://www.squarespace.com/circle/find-an-expert',          directoryLabel: 'Squarespace Circle directory' },
+    wordpress:    { budgetUsd: '$500–$3,500',  profile: 'WordPress freelancer (Codeable, Upwork, or local)',  directoryUrl: 'https://codeable.io/',                                       directoryLabel: 'Codeable (curated WP freelancers)' },
+    shopify:      { budgetUsd: '$500–$2,500',  profile: 'Shopify Expert',                                     directoryUrl: 'https://experts.shopify.com/',                               directoryLabel: 'Shopify Experts directory' },
+    webflow:      { budgetUsd: '$1,500–$5,000',profile: 'Webflow Expert',                                     directoryUrl: 'https://webflow.com/experts',                                directoryLabel: 'Webflow Experts directory' },
+    bentobox:     { budgetUsd: 'Included in plan', profile: 'BentoBox in-house support',                       directoryUrl: 'https://getbento.com/contact/',                              directoryLabel: 'BentoBox support' },
+    godaddy:      { budgetUsd: '$200–$800',    profile: 'GoDaddy Pro Marketplace freelancer',                 directoryUrl: 'https://www.godaddy.com/pro/marketplace',                    directoryLabel: 'GoDaddy Pro Marketplace' },
+    custom:       { budgetUsd: '$1,000–$8,000',profile: 'Restaurant-specialised web freelancer or studio',    directoryUrl: 'https://www.upwork.com/search/profiles/?q=restaurant%20website%20wordpress', directoryLabel: 'Upwork (restaurant + web)' },
+    generic:      { budgetUsd: 'Varies by platform', profile: 'Web freelancer familiar with your CMS',         directoryUrl: 'https://www.upwork.com/',                                    directoryLabel: 'Upwork' }
+  };
   var REVENUE_AT_RISK_PCT = {
     'audit.viewport':          [0.04, 0.09],  // mobile crash = big
     'audit.tap-targets':       [0.01, 0.04],
@@ -11708,8 +12140,20 @@
 
     if (!actionable.length) {
       el.hidden = true;
+      if (typeof setStickyTopFix === 'function') setStickyTopFix('');
       return;
     }
+
+    // Sticky headline mirror — feed the #1 fix title to the sticky
+    // bar so the on-scroll headline always names the same finding the
+    // Top 3 list leads with.
+    var stickyTopDef    = actionable[0].entry.def    || {};
+    var stickyTopResult = actionable[0].entry.result || {};
+    var stickyTopText = stickyTopResult.title
+      || stickyTopDef.unverified
+      || stickyTopDef.fail
+      || ('Check: ' + (stickyTopDef.audit || stickyTopDef.type || ''));
+    if (typeof setStickyTopFix === 'function') setStickyTopFix(stickyTopText);
 
     actionable.forEach(function(pick){
       var def = pick.entry.def;
@@ -11732,6 +12176,17 @@
       if (def.effort || def.minutes) {
         var chips = document.createElement('div');
         chips.className = 'top-fixes-item-chips';
+        // Differentiator chip — surfaces whether this finding is
+        // restaurant-specific (Muntin-only) or a web fundamental
+        // (also flagged by PSI / Lighthouse). Helps owners trained
+        // on PSI see what THIS tool added on top.
+        var idStr = (def.id || '').toLowerCase();
+        var isLh = idStr.indexOf('audit.') === 0 || idStr.indexOf('lh.') === 0;
+        if (isLh) {
+          chips.innerHTML += '<span class="chip chip-source-fund" title="Also flagged by PSI / Lighthouse — a web fundamental.">Web fundamentals</span>';
+        } else {
+          chips.innerHTML += '<span class="chip chip-source-rest" title="Restaurant-specific finding — Lighthouse won\'t flag this on its own.">Restaurant-specific</span>';
+        }
         if (def.effort === 'self') {
           chips.innerHTML += '<span class="chip chip-effort-self">Fix yourself</span>';
         } else if (def.effort === 'dev') {
@@ -11739,6 +12194,9 @@
         } else if (def.effort === 'rebuild') {
           chips.innerHTML += '<span class="chip chip-effort-rebuild">Rebuild needed</span>';
         }
+        // Stash the chip container for later — we'll insert a platform-
+        // recipe disclosure right after this body if we have one.
+        body.__chipsEl = chips;
         if (typeof def.minutes === 'number') {
           var timeLabel;
           if (def.minutes < 60)        timeLabel = '~' + def.minutes + ' min';
@@ -11762,6 +12220,117 @@
           chips.innerHTML += '<span class="chip chip-revenue" title="' + riskTitle + '">' + riskLabel + '</span>';
         }
         body.appendChild(chips);
+      }
+
+      // Per-check platform recipe picker. For "Fix yourself" checks
+      // that map to a known platform-fix ID, render a disclosure
+      // showing platform-aware steps from MuntinPlatformFixes. The
+      // picker auto-defaults to the platform recorded in
+      // mtn:context (written by tech-stack on detection); falls
+      // back to a generic recipe + a tab list of all platforms with
+      // tailored instructions.
+      if (def.effort === 'self' && typeof MuntinPlatformFixes !== 'undefined') {
+        var fixId = AUDIT_CHECK_TO_FIX_ID[def.id || ''] || null;
+        if (fixId) {
+          var detected = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+          var primary = detected || 'generic';
+          var recipe = MuntinPlatformFixes.get(fixId, primary);
+          if (recipe) {
+            var picker = document.createElement('details');
+            picker.className = 'top-fixes-recipe';
+            var platforms = MuntinPlatformFixes.platformsWithRecipe(fixId);
+            // Promote detected platform to first; ensure 'generic' is last.
+            var ordered = [];
+            if (detected && platforms.indexOf(detected) !== -1) ordered.push(detected);
+            platforms.forEach(function(p){ if (p !== detected) ordered.push(p); });
+            ordered.push('generic');
+            var summary = document.createElement('summary');
+            summary.className = 'top-fixes-recipe-summary';
+            summary.textContent = detected
+              ? ('Show me how to fix this on ' + AUDIT_PLATFORM_LABEL[detected] + ' →')
+              : 'Show me how to fix this on my platform →';
+            picker.appendChild(summary);
+            var tabs = document.createElement('div');
+            tabs.className = 'top-fixes-recipe-tabs';
+            tabs.setAttribute('role', 'tablist');
+            ordered.forEach(function(p){
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.setAttribute('role', 'tab');
+              btn.className = 'top-fixes-recipe-tab';
+              btn.textContent = AUDIT_PLATFORM_LABEL[p] || p;
+              btn.setAttribute('data-platform', p);
+              btn.setAttribute('aria-selected', p === primary ? 'true' : 'false');
+              tabs.appendChild(btn);
+            });
+            picker.appendChild(tabs);
+            var stepsBox = document.createElement('div');
+            stepsBox.className = 'top-fixes-recipe-steps';
+            picker.appendChild(stepsBox);
+            function paintRecipe(p) {
+              var r = MuntinPlatformFixes.get(fixId, p);
+              if (!r) { stepsBox.innerHTML = ''; return; }
+              var html = '';
+              if (r.fallback) {
+                html += '<p class="top-fixes-recipe-fallback">No tailored recipe yet for this platform — here\'s the generic version.</p>';
+              }
+              html += '<ol class="top-fixes-recipe-list">';
+              (r.steps || []).forEach(function(s){
+                html += '<li>' + String(s)
+                  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  + '</li>';
+              });
+              html += '</ol>';
+              if (r.note) html += '<p class="top-fixes-recipe-note">' + String(r.note).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</p>';
+              if (r.etaMinutes) html += '<p class="top-fixes-recipe-eta">Roughly ' + r.etaMinutes + ' minute' + (r.etaMinutes === 1 ? '' : 's') + '.</p>';
+              stepsBox.innerHTML = html;
+            }
+            paintRecipe(primary);
+            tabs.addEventListener('click', function(ev){
+              var tabBtn = ev.target && ev.target.closest && ev.target.closest('.top-fixes-recipe-tab');
+              if (!tabBtn) return;
+              var p = tabBtn.getAttribute('data-platform');
+              Array.prototype.forEach.call(tabs.children, function(b){
+                b.setAttribute('aria-selected', b === tabBtn ? 'true' : 'false');
+              });
+              paintRecipe(p);
+            });
+            body.appendChild(picker);
+          }
+        }
+      }
+
+      // "Don't have a developer?" disclosure — for any check whose
+      // effort is dev or rebuild, surface platform-aware hiring
+      // guidance: budget range, recommended profile, and a public
+      // directory link the owner can search. Bridges the gap between
+      // "the tool found it" and "it gets fixed" for owners who don't
+      // already have someone to hand the brief to.
+      if ((def.effort === 'dev' || def.effort === 'rebuild') && AUDIT_HIRE_BY_PLATFORM) {
+        var detectedHire = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+        var hire = AUDIT_HIRE_BY_PLATFORM[detectedHire || 'generic'] || AUDIT_HIRE_BY_PLATFORM.generic;
+        if (hire) {
+          var hireBox = document.createElement('details');
+          hireBox.className = 'top-fixes-hire';
+          var hireSummary = document.createElement('summary');
+          hireSummary.className = 'top-fixes-hire-summary';
+          hireSummary.textContent = def.effort === 'rebuild'
+            ? "Don't have a developer for the rebuild? →"
+            : "Don't have a developer? Here's who to find. →";
+          hireBox.appendChild(hireSummary);
+          var hireBody = document.createElement('div');
+          hireBody.className = 'top-fixes-hire-body';
+          var pretty = (detectedHire && AUDIT_PLATFORM_LABEL[detectedHire]) || 'your platform';
+          hireBody.innerHTML =
+            '<dl class="top-fixes-hire-grid">' +
+              '<dt>Budget</dt><dd>' + hire.budgetUsd + (def.effort === 'rebuild' && hire.budgetUsd.indexOf('$') === 0 ? ' (rebuild end of the range)' : '') + '</dd>' +
+              '<dt>Who to look for</dt><dd>' + hire.profile + '</dd>' +
+              '<dt>Where</dt><dd><a href="' + hire.directoryUrl + '" target="_blank" rel="noopener">' + hire.directoryLabel + ' &rarr;</a></dd>' +
+            '</dl>' +
+            '<p class="top-fixes-hire-tip">When you reach out, attach the dev brief from the share row above — it lists every check that failed, in plain English, with snippets your developer needs. Mention you\'re on <strong>' + pretty + '</strong> so they don\'t spend the first hour discovering it.</p>';
+          hireBox.appendChild(hireBody);
+          body.appendChild(hireBox);
+        }
       }
 
       li.appendChild(body);
@@ -12529,6 +13098,14 @@
         var open = toc.getAttribute('data-sheet') === 'open';
         toc.setAttribute('data-sheet', open ? 'closed' : 'open');
         fab.setAttribute('aria-expanded', open ? 'false' : 'true');
+        // First-run hint dismisses on first interaction. We persist
+        // the seen-flag so re-running the audit (or returning later)
+        // doesn't re-pulse a FAB the user has already discovered.
+        if (fab.getAttribute('data-hint') === '1') {
+          fab.removeAttribute('data-hint');
+          fab.removeAttribute('data-hint-label');
+          try { localStorage.setItem('mtn:audits:tocSeen', '1'); } catch (_) {}
+        }
       });
     }
 
@@ -12594,6 +13171,8 @@
     var report = document.getElementById('auditReport');
     if (!toc || !report) return;
     setupAuditToc();
+    // Same render lifecycle drives the sticky compact headline.
+    setupAuditStickyHeadline();
 
     // Hide the whole ToC until the report is visible.
     if (report.hidden) {
@@ -12619,6 +13198,94 @@
     // If fewer than 3 sections are visible, don't bother rendering
     // the ToC — saves layout cost on very short error states.
     toc.hidden = visibleCount < 3;
+
+    // First-run hint on the mobile FAB. Phones routinely scroll past
+    // the FAB without noticing it; a one-time pulse + label nudge
+    // surfaces the affordance without becoming nag-ware (cleared the
+    // moment the FAB is tapped, persisted in localStorage).
+    if (!toc.hidden) {
+      var fab = document.getElementById('auditTocFab');
+      if (fab) {
+        var seen = false;
+        try { seen = localStorage.getItem('mtn:audits:tocSeen') === '1'; } catch (_) {}
+        if (!seen && fab.getAttribute('data-hint') !== '1') {
+          var hintLabel = (typeof t === 'function')
+            ? t('toc.hintLabel')
+            : 'Tap to jump to a section';
+          if (!hintLabel || hintLabel === 'toc.hintLabel') {
+            hintLabel = 'Tap to jump to a section';
+          }
+          fab.setAttribute('data-hint', '1');
+          fab.setAttribute('data-hint-label', hintLabel);
+        }
+      }
+    }
+  }
+
+  // Sticky compact headline. The audit report runs 50+ screen-heights
+  // on most sites, and phone readers routinely lose the score + #1 fix
+  // off the top by the time they're partway down. The bar slides in
+  // from the top once #overallScoreSection scrolls out of view, and
+  // slides back out when it comes back. Score + fix copy is fed by
+  // setScoreRing() and renderTopFixes() so it always reflects the
+  // currently rendered values.
+  var _auditStickyObserver = null;
+  var _auditStickySetupDone = false;
+  function setupAuditStickyHeadline() {
+    if (_auditStickySetupDone) return;
+    var bar = document.getElementById('auditSticky');
+    var section = document.getElementById('overallScoreSection');
+    if (!bar || !section) return;
+    if (!('IntersectionObserver' in window)) {
+      _auditStickySetupDone = true;
+      return;
+    }
+    _auditStickyObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        // Only show the bar after a real audit has rendered (the
+        // score-section has been populated and is non-hidden).
+        if (section.hidden) {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+          return;
+        }
+        var hasScore = (document.getElementById('auditStickyScore') || {}).textContent;
+        if (!hasScore || hasScore === '—') {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+          return;
+        }
+        if (entry.isIntersecting) {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+        } else {
+          bar.setAttribute('data-shown', 'true');
+          bar.setAttribute('aria-hidden', 'false');
+        }
+      });
+    }, { rootMargin: '-1px 0px 0px 0px', threshold: [0, 1] });
+    _auditStickyObserver.observe(section);
+    _auditStickySetupDone = true;
+  }
+
+  function setStickyScore(score) {
+    var v = document.getElementById('auditStickyScore');
+    var g = document.getElementById('auditStickyGrade');
+    if (v) v.textContent = (typeof score === 'number') ? String(score) : '—';
+    if (g) {
+      var label = '';
+      if (typeof score === 'number') {
+        if (score >= 90)      label = 'Great';
+        else if (score >= 50) label = 'OK';
+        else                  label = 'Needs work';
+      }
+      g.textContent = label;
+    }
+  }
+  function setStickyTopFix(text) {
+    var t = document.getElementById('auditStickyFix');
+    if (!t) return;
+    t.textContent = text || '—';
   }
 
   // Phase L1: email gate retired. The deep tier always renders
@@ -13670,7 +14337,15 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    // Audit P5: signpost the differentiator at the verdict level —
+    // owners trained on PSI need to be told this report is sorted by
+    // restaurant impact, not by Google audit IDs. Suffix is small;
+    // the existing verdict copy still leads.
+    var subtypeLabel = '';
+    try { subtypeLabel = (typeof currentSubtype === 'function' && currentSubtype() && currentSubtype().label) || ''; } catch (_) {}
+    var v = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    var diffSentence = ' Sorted by what will move ' + (subtypeLabel ? 'a ' + subtypeLabel.toLowerCase() : 'your restaurant') + "'s bookings — not by Google's audit IDs.";
+    document.getElementById('verdictCopy').textContent = v + diffSentence;
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
@@ -14920,6 +15595,46 @@
     });
   }
 
+  /* -------- Email this to my developer -------- */
+  // Generates a mailto: with the dev-brief Markdown as the body so
+  // the owner's mail client opens pre-filled. Updated whenever the
+  // dev-brief data is ready (the audit completes). The button stays
+  // hidden until then to avoid a "broken link" first impression.
+  var emailDevBriefBtn = document.getElementById('emailDevBriefBtn');
+  function refreshEmailDevBriefBtn() {
+    if (!emailDevBriefBtn) return;
+    if (typeof gatherDevBriefPayload !== 'function' || typeof buildHandoffMarkdown !== 'function') return;
+    var payload = gatherDevBriefPayload();
+    if (!payload) { emailDevBriefBtn.hidden = true; return; }
+    var md = buildHandoffMarkdown(payload);
+    if (!md) { emailDevBriefBtn.hidden = true; return; }
+    var lastUrl = (window.__auditLastResult && window.__auditLastResult.url) || '';
+    var hostName = '';
+    try { hostName = lastUrl ? new URL(lastUrl).hostname.replace(/^www\./, '') : ''; } catch (_) {}
+    var subject = hostName ? ('Website fixes for ' + hostName) : 'Website fixes from the Restaurant Audit';
+    // mailto length safety: most clients cap around 2-8KB. Trim the
+    // brief if needed; the recipient still gets the link to the full
+    // audit at the top.
+    var maxBody = 7000;
+    var body = md.length > maxBody ? md.slice(0, maxBody) + '\n\n[Brief truncated for email length — open the full audit at: ' + (lastUrl || window.location.href) + ']' : md;
+    emailDevBriefBtn.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    emailDevBriefBtn.hidden = false;
+  }
+  if (emailDevBriefBtn) {
+    emailDevBriefBtn.addEventListener('click', function () {
+      // refresh href immediately before navigation in case audit data
+      // changed since last refresh (e.g., user re-ran on a new URL)
+      refreshEmailDevBriefBtn();
+      if (window.plausible) window.plausible('Audit Dev Brief Emailed');
+    });
+    // Refresh on a custom event the audit fires when results are
+    // ready; if that event isn't wired, fall back to a one-shot
+    // refresh after a short delay so the button appears once the
+    // dev-brief generator has populated.
+    window.addEventListener('audit:result-ready', refreshEmailDevBriefBtn);
+    setTimeout(refreshEmailDevBriefBtn, 1500);
+  }
+
   /* -------- Phase I7: Download share-card PNG -------- */
   var shareCardBtn = document.getElementById('shareCardBtn');
   if (shareCardBtn) {
@@ -15012,6 +15727,45 @@
       });
     });
   }
+
+  // Mobile share-row collapse toggle. The verdict tray hosts 5–6
+  // share-related actions which wrap raggedly on a phone. The CSS
+  // already collapses everything except #shareBtn under 540px; this
+  // injects the disclosure button that flips data-expanded so the
+  // rest fan out. Desktop never sees the button (CSS guard).
+  (function setupShareRowMore(){
+    var row = document.querySelector('.share-row');
+    if (!row) return;
+    if (row.querySelector('.share-row-more-btn')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'share-row-more-btn';
+    btn.setAttribute('aria-controls', 'shareRow');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<circle cx="12" cy="6"  r="1.4"/>' +
+        '<circle cx="12" cy="12" r="1.4"/>' +
+        '<circle cx="12" cy="18" r="1.4"/>' +
+      '</svg>' +
+      '<span class="share-row-more-label">More actions</span>';
+    // Insert directly after the primary copy-link button so the row
+    // reads: [Copy link] [More actions ▾] when collapsed, and any
+    // additional share buttons fan out below when expanded.
+    var primary = row.querySelector('#shareBtn');
+    if (primary && primary.parentNode === row) {
+      row.insertBefore(btn, primary.nextSibling);
+    } else {
+      row.appendChild(btn);
+    }
+    btn.addEventListener('click', function(){
+      var open = row.getAttribute('data-expanded') === 'true';
+      row.setAttribute('data-expanded', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      var label = btn.querySelector('.share-row-more-label');
+      if (label) label.textContent = open ? 'More actions' : 'Hide actions';
+    });
+  })();
 
   /* -------- D7a: per-snapshot OG image renderer -------- */
   // Draws a 1200×630 Canvas with the audit score, host, and capture

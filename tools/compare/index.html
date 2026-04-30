@@ -68,6 +68,42 @@
   .cmp-winner{text-align:center;margin:24px 0;padding:20px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
   .cmp-winner h3{font-family:var(--font-display);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink)}
   .cmp-winner p{font-size:14px;color:var(--stone);margin:0}
+  .cmp-shots{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+  @media(max-width:560px){.cmp-shots{grid-template-columns:1fr}}
+  .cmp-shot{padding:10px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);text-align:center}
+  .cmp-shot-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px}
+  .cmp-shot img{max-width:100%;max-height:340px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,0.10)}
+  .cmp-shot-empty{font-size:12px;color:var(--stone);margin:0;padding:14px}
+  .cmp-diff{margin:18px 0;padding:18px 22px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);background:var(--surface-1)}
+  .cmp-diff-title{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 8px;line-height:1.2}
+  .cmp-diff-help{font-size:13.5px;color:var(--ink-soft);margin:0 0 12px;line-height:1.55}
+  .cmp-diff-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .cmp-diff-list li{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white)}
+  .cmp-diff-list strong{font-size:14px;color:var(--ink)}
+  .cmp-diff-list span{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .cmp-helper{max-width:540px;margin:14px auto 0;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:12px 16px;background:var(--white)}
+  .cmp-helper-summary{cursor:pointer;font-size:13.5px;color:var(--ink);font-weight:500}
+  .cmp-helper-body{margin-top:12px}
+  .cmp-helper-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .cmp-helper-list li{padding:12px 14px;background:var(--cream-2);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .cmp-helper-list strong{display:block;font-weight:600;margin-bottom:4px;color:var(--ink)}
+  .cmp-helper-list em{font-style:italic;color:var(--teal)}
+  .cmp-helper-list code{background:var(--white);padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid var(--line);font-family:ui-monospace,SFMono-Regular,monospace;word-break:break-all}
+  .cmp-helper-link{display:inline-block;margin-top:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .cmp-helper-link:hover{border-color:var(--teal);color:var(--teal)}
+  .cmp-suggest-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .cmp-suggest-input{flex:1 1 96px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white)}
+  .cmp-suggest-btn{flex-basis:100%}
+  @media(min-width:520px){.cmp-suggest-btn{flex-basis:auto}}
+  .cmp-suggest-status{margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
+  .cmp-suggest-status.error{color:var(--rust)}
+  .cmp-suggest-results{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+  .cmp-suggest-result{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);flex-wrap:wrap}
+  .cmp-suggest-result-name{font-weight:600}
+  .cmp-suggest-result-meta{font-size:12px;color:var(--stone)}
+  .cmp-suggest-use{padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+  .cmp-suggest-use:hover{background:var(--teal)}
+  .cmp-suggest-use[disabled]{opacity:.55;cursor:not-allowed}
   /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
   .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .cmp-save[hidden]{display:none}
@@ -312,6 +348,36 @@
     <input type="url" id="cmpUrl2" placeholder="https://competitor.com" aria-label="Competitor URL" />
   </div>
   <button class="cmp-btn" id="cmpSubmit">Compare</button>
+
+  <details class="cmp-helper">
+    <summary class="cmp-helper-summary">Don't know who your competitor is? Three ways to find one in 30 seconds &rarr;</summary>
+    <div class="cmp-helper-body">
+      <ol class="cmp-helper-list">
+        <li>
+          <strong>Suggest three for me.</strong>
+          Tell us what kind of restaurant you run and where you are. We'll pull three nearby competitors with public websites and you pick.
+          <div class="cmp-suggest-row">
+            <input type="text" id="cmpSuggestCuisine"  class="cmp-suggest-input" placeholder="cuisine (e.g. Vietnamese)" aria-label="Your cuisine" />
+            <input type="text" id="cmpSuggestCity"     class="cmp-suggest-input" placeholder="neighborhood or city"     aria-label="Your city" />
+            <button type="button" class="cmp-helper-link cmp-suggest-btn" id="cmpSuggestBtn">Suggest 3 competitors &rarr;</button>
+          </div>
+          <div class="cmp-suggest-status" id="cmpSuggestStatus" aria-live="polite" hidden></div>
+          <ul class="cmp-suggest-results" id="cmpSuggestResults" hidden></ul>
+        </li>
+        <li>
+          <strong>Search what your customers search.</strong>
+          On Google Maps, type <em>"best [cuisine] in [your neighborhood]"</em> — the top three results are who you're actually competing with for the next reservation. Click their pin → tap "Website" → copy that URL into the right field.
+          <button type="button" class="cmp-helper-link" data-helper="maps">Open Google Maps in a new tab &rarr;</button>
+        </li>
+        <li>
+          <strong>Compare against your old self.</strong>
+          Wonder if last year's redesign actually helped? Paste your own URL into the second field with <code>https://web.archive.org/web/2024/</code> in front (e.g. <code>https://web.archive.org/web/2024/https://yoursite.com</code>). The Wayback Machine returns the version closest to that date.
+          <button type="button" class="cmp-helper-link" id="cmpWaybackFill">Fill the second field with my own Wayback URL &rarr;</button>
+        </li>
+      </ol>
+    </div>
+  </details>
+
   <p class="cmp-note">Runs two Google PageSpeed audits in parallel. Takes about 20–30 seconds.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
@@ -371,6 +437,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -415,13 +482,40 @@
       var c=d.lighthouseResult.categories;
       var a=d.lighthouseResult.audits||{};
       var lcp=a['largest-contentful-paint']?a['largest-contentful-paint'].numericValue:null;
+      // Pull specific audit signals so the comparison can surface
+      // "what they're doing that you're not" rather than five raw
+      // scores. These were previously discarded; they're the
+      // load-bearing diagnostic value.
+      function pass(id){ var ax=a[id]; return ax?ax.score===1:null; }
+      function altCoverage(){
+        var ax=a['image-alt']; if(!ax||!ax.details||!ax.details.items)return null;
+        // image-alt only fires when there are missing alts; a passing audit
+        // means full coverage. Use the score directly.
+        return ax.score===1;
+      }
+      var screenshot=null;
+      try{ var fs=a['final-screenshot']; if(fs&&fs.details&&fs.details.data) screenshot=fs.details.data; }catch(_){}
       return{
         url:url,host:short(url),
         perf:s(c.performance?c.performance.score:null),
         a11y:s(c.accessibility?c.accessibility.score:null),
         seo:s(c.seo?c.seo.score:null),
         bp:s(c['best-practices']?c['best-practices'].score:null),
-        lcp:lcp?Math.round(lcp):null
+        lcp:lcp?Math.round(lcp):null,
+        screenshot:screenshot,
+        signals:{
+          modernImages: pass('modern-image-formats'),
+          optimizedImages: pass('uses-optimized-images'),
+          renderBlocking: pass('render-blocking-resources'),
+          fontDisplay: pass('font-display'),
+          structuredData: pass('structured-data'),
+          viewport: pass('viewport'),
+          tapTargets: pass('tap-targets'),
+          metaDescription: pass('meta-description'),
+          documentTitle: pass('document-title'),
+          httpsRedirect: pass('is-on-https'),
+          altText: altCoverage()
+        }
       };
     });
   }
@@ -444,6 +538,146 @@
   // Enter key triggers compare from either input
   url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
   url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+
+  // Helper buttons under the form: Maps deep-link + Wayback prefill.
+  // Both write to url2 only; url1 is the user's site. Pure DOM; no
+  // server calls — the Wayback URL is constructed client-side and
+  // submits through the existing PSI fetch path (Wayback returns
+  // an HTTP 200 with the snapshotted HTML, which Lighthouse will
+  // happily score).
+  var mapsHelper = document.querySelector('.cmp-helper-link[data-helper="maps"]');
+  if (mapsHelper) {
+    mapsHelper.addEventListener('click', function () {
+      // Honor MuntinContext if cuisine + neighborhood are stored
+      // by an upstream tool (seo-grader / search-ideas write these).
+      var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      var query = '';
+      if (ctx.cuisine || ctx.neighborhood) {
+        query = 'best ' + (ctx.cuisine || 'restaurants') + (ctx.neighborhood ? ' in ' + ctx.neighborhood : '');
+      } else {
+        query = 'best restaurants near me';
+      }
+      var mapsUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(query);
+      window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+    });
+  }
+  var waybackBtn = document.getElementById('cmpWaybackFill');
+  if (waybackBtn) {
+    waybackBtn.addEventListener('click', function () {
+      var v = (url1.value || '').trim();
+      if (!v) {
+        url1.focus();
+        url1.placeholder = 'Type your URL here first';
+        return;
+      }
+      var clean = v.replace(/^https?:\/\//, '');
+      url2.value = 'https://web.archive.org/web/2024/' + 'https://' + clean;
+      url2.focus();
+    });
+  }
+
+  // Competitor suggester. Reuses /api/gbp-lookup (the same endpoint
+  // gbp-grader uses) with a "<cuisine> in <city>" query and renders
+  // up to 3 candidates that have a public website. Each "Use this →"
+  // button drops the chosen URL into #cmpUrl2 so the owner can submit
+  // the comparison without ever leaving the page.
+  (function () {
+    var btn       = document.getElementById('cmpSuggestBtn');
+    var inCuisine = document.getElementById('cmpSuggestCuisine');
+    var inCity    = document.getElementById('cmpSuggestCity');
+    var statusEl  = document.getElementById('cmpSuggestStatus');
+    var resultsEl = document.getElementById('cmpSuggestResults');
+    if (!btn || !inCuisine || !inCity || !statusEl || !resultsEl) return;
+
+    // Pre-fill from MuntinContext when prior tools wrote them.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      if (ctx.cuisine && !inCuisine.value)                          inCuisine.value = ctx.cuisine;
+      if ((ctx.neighborhood || ctx.city) && !inCity.value)          inCity.value = ctx.neighborhood || ctx.city;
+    } catch (_) {}
+
+    function setStatus(text, isError) {
+      statusEl.textContent = text || '';
+      statusEl.classList.toggle('error', !!isError);
+      statusEl.hidden = !text;
+    }
+    function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function host(u) {
+      try { return new URL(u).host.replace(/^www\./i, ''); } catch (_) { return String(u || ''); }
+    }
+    function ownDomain(u) {
+      var h = host(u).toLowerCase();
+      var mine = host((url1.value || '').trim()).toLowerCase();
+      return mine && h && (h === mine);
+    }
+
+    btn.addEventListener('click', function () {
+      var cuisine = (inCuisine.value || '').trim();
+      var city    = (inCity.value || '').trim();
+      if (!cuisine || !city) {
+        setStatus('Both fields needed — cuisine and city.', true);
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Looking…';
+      resultsEl.hidden = true;
+      resultsEl.innerHTML = '';
+      setStatus('Searching nearby ' + cuisine + ' in ' + city + '…', false);
+
+      var q = cuisine + ' restaurants in ' + city;
+      fetch('/api/gbp-lookup?q=' + encodeURIComponent(q))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          var candidates = (j && j.candidates) || (j && j.ok ? [j] : []);
+          // Filter to candidates with a usable website that isn't the
+          // owner's own. Cap at 3 — three is the magic Goldilocks
+          // number for "pick one" without paralysis.
+          var picks = candidates
+            .filter(function (c) { return c && c.website && !ownDomain(c.website); })
+            .slice(0, 3);
+          if (!picks.length) {
+            setStatus('No nearby ' + cuisine + ' with public websites found. Try the Google Maps option below.', true);
+            return;
+          }
+          setStatus('Tap "Use this" to drop a competitor into the second field.', false);
+          resultsEl.innerHTML = picks.map(function (c) {
+            var meta = host(c.website);
+            return '<li class="cmp-suggest-result">' +
+              '<div>' +
+                '<div class="cmp-suggest-result-name">' + escHtml(c.displayName || c.name || 'Unnamed') + '</div>' +
+                '<div class="cmp-suggest-result-meta">' + escHtml(meta) + '</div>' +
+              '</div>' +
+              '<button type="button" class="cmp-suggest-use" data-url="' + escHtml(c.website) + '">Use this &rarr;</button>' +
+            '</li>';
+          }).join('');
+          resultsEl.hidden = false;
+          var useBtns = resultsEl.querySelectorAll('.cmp-suggest-use');
+          for (var i = 0; i < useBtns.length; i++) {
+            useBtns[i].addEventListener('click', function (ev) {
+              var u = ev.currentTarget.getAttribute('data-url');
+              if (!u) return;
+              url2.value = u;
+              url2.focus();
+              setStatus('Filled in the second field. Hit Compare when both URLs look right.', false);
+              // Visually mark the selected one.
+              for (var k = 0; k < useBtns.length; k++) {
+                useBtns[k].textContent = 'Use this →';
+                useBtns[k].disabled = false;
+              }
+              ev.currentTarget.textContent = 'Selected ✓';
+              ev.currentTarget.disabled = true;
+            });
+          }
+        })
+        .catch(function () {
+          setStatus('Lookup failed. Try the Google Maps option below.', true);
+        })
+        .then(function () {
+          btn.disabled = false;
+          btn.textContent = 'Suggest 3 competitors →';
+        });
+    });
+  })();
 
   function renderResult(payload){
     if(!payload||!payload.a||!payload.b)return;
@@ -468,6 +702,45 @@
       html+='<div class="cmp-winner"><h3>'+b.host+' wins overall</h3><p>Compared on '+compared+' categories: '+bTotal+' vs '+aTotal+'. The gap might be in a category you can fix quickly.</p></div>';
     }else{
       html+='<div class="cmp-winner"><h3>It\'s a tie.</h3><p>Scores are equal across '+compared+' categories. Look at the individual rows to find where you can pull ahead.</p></div>';
+    }
+    // Side-by-side mobile screenshots — PSI returns these in every
+    // response, previously discarded. Owners recognize "their menu
+    // opens to a hero photo, mine opens to a hamburger menu" much
+    // faster than they parse a five-row table.
+    if (a.screenshot || b.screenshot) {
+      html += '<div class="cmp-shots">';
+      html += '<div class="cmp-shot"><p class="cmp-shot-label">' + a.host + '</p>' + (a.screenshot ? '<img src="' + a.screenshot + '" alt="Phone screenshot of ' + a.host + '" loading="lazy">' : '<p class="cmp-shot-empty">No screenshot returned</p>') + '</div>';
+      html += '<div class="cmp-shot"><p class="cmp-shot-label">' + b.host + '</p>' + (b.screenshot ? '<img src="' + b.screenshot + '" alt="Phone screenshot of ' + b.host + '" loading="lazy">' : '<p class="cmp-shot-empty">No screenshot returned</p>') + '</div>';
+      html += '</div>';
+    }
+    // Diff block: "What they're doing that you're not." Audits that
+    // a (your site) FAILS but b (competitor) PASSES are the
+    // actionable findings.
+    var SIGNALS = [
+      { k: 'modernImages',    label: 'Modern image formats (WebP/AVIF)', fix: 'Compress and re-export your hero images as WebP — the Speed Test has a built-in compressor.' },
+      { k: 'optimizedImages', label: 'Optimized image sizes',            fix: 'Resize images to ~1600px max width before upload; large source files force browsers to scale down.' },
+      { k: 'renderBlocking',  label: 'No render-blocking scripts',       fix: 'Defer non-critical JS — the audit dev brief lists which files.' },
+      { k: 'fontDisplay',     label: 'Font swap during load',            fix: 'Add font-display: swap to your @font-face rules; text reads instantly even before the font finishes loading.' },
+      { k: 'structuredData', label: 'Restaurant schema markup',          fix: 'Run Schema Check on your URL — it generates a copy-pasteable JSON-LD block.' },
+      { k: 'viewport',        label: 'Mobile viewport meta tag',         fix: 'A one-line fix: <meta name="viewport" content="width=device-width, initial-scale=1"> in your <head>.' },
+      { k: 'tapTargets',      label: 'Tap targets large enough',         fix: 'Increase button padding so each tap target is at least 44x44px on mobile.' },
+      { k: 'metaDescription', label: 'Meta description set',             fix: 'Run SEO Grader — it suggests a tailored rewrite for your category + neighborhood.' },
+      { k: 'documentTitle',   label: 'Page title set',                   fix: 'Set the <title> for each page — same path as the meta description.' },
+      { k: 'httpsRedirect',   label: 'HTTPS-only redirect',              fix: 'Force HTTPS in your hosting settings. Most platforms have a single toggle for this.' },
+      { k: 'altText',         label: 'Full image alt-text coverage',     fix: 'Add alt text to every image — the platform\'s media library has a field for this.' }
+    ];
+    var deltas = SIGNALS.filter(function (sig) {
+      return a.signals && b.signals && a.signals[sig.k] === false && b.signals[sig.k] === true;
+    });
+    if (deltas.length) {
+      html += '<div class="cmp-diff">';
+      html += '<h3 class="cmp-diff-title">What ' + b.host + ' is doing that you\'re not</h3>';
+      html += '<p class="cmp-diff-help">' + deltas.length + ' specific audit' + (deltas.length === 1 ? '' : 's') + ' your site fails but theirs passes — each one is a discrete fix.</p>';
+      html += '<ul class="cmp-diff-list">';
+      deltas.forEach(function (sig) {
+        html += '<li><strong>' + sig.label + '</strong><span>' + sig.fix + '</span></li>';
+      });
+      html += '</ul></div>';
     }
     // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
     html+='<aside class="learn-back" aria-label="What this comparison means"><p class="learn-back-eyebrow">What this comparison means</p><p class="learn-back-body">Both URLs are scored by <a href="/glossary/lighthouse/">Lighthouse</a>, Google\'s open-source benchmarking engine. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through what these scores actually let your restaurant do on the diner\'s phone.</p></aside>';

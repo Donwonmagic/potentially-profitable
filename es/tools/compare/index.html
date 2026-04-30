@@ -63,6 +63,30 @@
   .cmp-btn:disabled{opacity:.5;cursor:wait}
   @media(max-width:640px){.cmp-inputs{grid-template-columns:1fr;}.cmp-inputs .vs{display:none}}
   .cmp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  .cmp-helper{max-width:540px;margin:24px auto 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
+  .cmp-helper[open]{padding-bottom:18px}
+  .cmp-helper-summary{cursor:pointer;font-size:13.5px;color:var(--ink);font-weight:500}
+  .cmp-helper-body{margin-top:14px}
+  .cmp-helper-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .cmp-helper-list li{padding:12px 14px;background:var(--cream-2);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .cmp-helper-list strong{display:block;font-weight:600;margin-bottom:4px;color:var(--ink)}
+  .cmp-helper-list em{font-style:italic;color:var(--teal)}
+  .cmp-helper-list code{background:var(--white);padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid var(--line);font-family:ui-monospace,SFMono-Regular,monospace;word-break:break-all}
+  .cmp-helper-link{display:inline-block;margin-top:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .cmp-helper-link:hover{border-color:var(--teal);color:var(--teal)}
+  .cmp-suggest-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .cmp-suggest-input{flex:1 1 96px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white)}
+  .cmp-suggest-btn{flex-basis:100%}
+  @media(min-width:520px){.cmp-suggest-btn{flex-basis:auto}}
+  .cmp-suggest-status{margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
+  .cmp-suggest-status.error{color:var(--rust)}
+  .cmp-suggest-results{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+  .cmp-suggest-result{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);flex-wrap:wrap}
+  .cmp-suggest-result-name{font-weight:600}
+  .cmp-suggest-result-meta{font-size:12px;color:var(--stone)}
+  .cmp-suggest-use{padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+  .cmp-suggest-use:hover{background:var(--teal)}
+  .cmp-suggest-use[disabled]{opacity:.55;cursor:not-allowed}
   .cmp-status{text-align:center;margin-top:24px;font-size:14px;color:var(--stone)}
   .cmp-result{display:none;max-width:680px;margin:40px auto 0}
   .cmp-result.visible{display:block}
@@ -312,6 +336,36 @@
     <input type="url" id="cmpUrl2" placeholder="https://competidor.com" aria-label="URL del competidor" />
   </div>
   <button class="cmp-btn" id="cmpSubmit">Comparar</button>
+
+  <details class="cmp-helper">
+    <summary class="cmp-helper-summary">¿No sabes contra quién comparar? Tres formas de encontrar uno en 30 segundos &rarr;</summary>
+    <div class="cmp-helper-body">
+      <ol class="cmp-helper-list">
+        <li>
+          <strong>Sugiéreme tres.</strong>
+          Dinos qué tipo de restaurante tienes y dónde estás. Sacamos tres competidores cercanos con sitio web público y eliges.
+          <div class="cmp-suggest-row">
+            <input type="text" id="cmpSuggestCuisine" class="cmp-suggest-input" placeholder="cocina (p. ej. mexicana)" aria-label="Tu cocina" />
+            <input type="text" id="cmpSuggestCity"    class="cmp-suggest-input" placeholder="barrio o ciudad"           aria-label="Tu ciudad" />
+            <button type="button" class="cmp-helper-link cmp-suggest-btn" id="cmpSuggestBtn">Sugerir 3 competidores &rarr;</button>
+          </div>
+          <div class="cmp-suggest-status" id="cmpSuggestStatus" aria-live="polite" hidden></div>
+          <ul class="cmp-suggest-results" id="cmpSuggestResults" hidden></ul>
+        </li>
+        <li>
+          <strong>Busca lo que buscan tus clientes.</strong>
+          En Google Maps, escribe <em>"mejor [cocina] en [tu barrio]"</em> — los tres primeros resultados son contra quien compites por la próxima reserva. Toca el pin → "Sitio web" → copia esa URL al campo derecho.
+          <button type="button" class="cmp-helper-link" data-helper="maps">Abrir Google Maps en una pestaña nueva &rarr;</button>
+        </li>
+        <li>
+          <strong>Compárate contra tu propio pasado.</strong>
+          ¿El rediseño del año pasado realmente ayudó? Pega tu propia URL en el segundo campo con <code>https://web.archive.org/web/2024/</code> al frente. La Wayback Machine devuelve la versión más cercana a esa fecha.
+          <button type="button" class="cmp-helper-link" id="cmpWaybackFill">Llenar el segundo campo con mi URL en Wayback &rarr;</button>
+        </li>
+      </ol>
+    </div>
+  </details>
+
   <p class="cmp-note">Corre dos diagnósticos de Google PageSpeed en paralelo. Toma unos 20 a 30 segundos.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <!-- Sprint 6 (cohesión) — estados compartidos. -->
@@ -371,6 +425,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -441,6 +496,122 @@
   // Enter key triggers compare from either input
   url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
   url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+
+  // Helper buttons.
+  var mapsHelper = document.querySelector('.cmp-helper-link[data-helper="maps"]');
+  if (mapsHelper) {
+    mapsHelper.addEventListener('click', function () {
+      var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      var query = (ctx.cuisine || ctx.neighborhood)
+        ? 'mejor ' + (ctx.cuisine || 'restaurantes') + (ctx.neighborhood ? ' en ' + ctx.neighborhood : '')
+        : 'mejores restaurantes cerca de mí';
+      window.open('https://www.google.com/maps/search/' + encodeURIComponent(query), '_blank', 'noopener,noreferrer');
+    });
+  }
+  var waybackBtn = document.getElementById('cmpWaybackFill');
+  if (waybackBtn) {
+    waybackBtn.addEventListener('click', function () {
+      var v = (url1.value || '').trim();
+      if (!v) { url1.focus(); url1.placeholder = 'Pega tu URL aquí primero'; return; }
+      var clean = v.replace(/^https?:\/\//, '');
+      url2.value = 'https://web.archive.org/web/2024/' + 'https://' + clean;
+      url2.focus();
+    });
+  }
+
+  // Sugeridor de competidores — espejo del flujo EN.
+  (function () {
+    var sBtn       = document.getElementById('cmpSuggestBtn');
+    var inCuisine  = document.getElementById('cmpSuggestCuisine');
+    var inCity     = document.getElementById('cmpSuggestCity');
+    var statusEl   = document.getElementById('cmpSuggestStatus');
+    var resultsEl  = document.getElementById('cmpSuggestResults');
+    if (!sBtn || !inCuisine || !inCity || !statusEl || !resultsEl) return;
+
+    try {
+      var ctx2 = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      if (ctx2.cuisine && !inCuisine.value)                          inCuisine.value = ctx2.cuisine;
+      if ((ctx2.neighborhood || ctx2.city) && !inCity.value)         inCity.value = ctx2.neighborhood || ctx2.city;
+    } catch (_) {}
+
+    function setStatus(text, isError) {
+      statusEl.textContent = text || '';
+      statusEl.classList.toggle('error', !!isError);
+      statusEl.hidden = !text;
+    }
+    function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function host(u) {
+      try { return new URL(u).host.replace(/^www\./i, ''); } catch (_) { return String(u || ''); }
+    }
+    function ownDomain(u) {
+      var h = host(u).toLowerCase();
+      var mine = host((url1.value || '').trim()).toLowerCase();
+      return mine && h && (h === mine);
+    }
+
+    sBtn.addEventListener('click', function () {
+      var cuisine = (inCuisine.value || '').trim();
+      var city    = (inCity.value || '').trim();
+      if (!cuisine || !city) {
+        setStatus('Faltan datos — cocina y ciudad.', true);
+        return;
+      }
+      sBtn.disabled = true;
+      sBtn.textContent = 'Buscando…';
+      resultsEl.hidden = true;
+      resultsEl.innerHTML = '';
+      setStatus('Buscando ' + cuisine + ' cercana en ' + city + '…', false);
+
+      var q = cuisine + ' restaurantes en ' + city;
+      fetch('/api/gbp-lookup?q=' + encodeURIComponent(q))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          var candidates = (j && j.candidates) || (j && j.ok ? [j] : []);
+          var picks = candidates
+            .filter(function (c) { return c && c.website && !ownDomain(c.website); })
+            .slice(0, 3);
+          if (!picks.length) {
+            setStatus('No se encontró ' + cuisine + ' cercana con sitio público. Prueba la opción de Google Maps abajo.', true);
+            return;
+          }
+          setStatus('Toca "Usar este" para llenar el segundo campo.', false);
+          resultsEl.innerHTML = picks.map(function (c) {
+            var meta = host(c.website);
+            return '<li class="cmp-suggest-result">' +
+              '<div>' +
+                '<div class="cmp-suggest-result-name">' + escHtml(c.displayName || c.name || 'Sin nombre') + '</div>' +
+                '<div class="cmp-suggest-result-meta">' + escHtml(meta) + '</div>' +
+              '</div>' +
+              '<button type="button" class="cmp-suggest-use" data-url="' + escHtml(c.website) + '">Usar este &rarr;</button>' +
+            '</li>';
+          }).join('');
+          resultsEl.hidden = false;
+          var useBtns = resultsEl.querySelectorAll('.cmp-suggest-use');
+          for (var i = 0; i < useBtns.length; i++) {
+            useBtns[i].addEventListener('click', function (ev) {
+              var u = ev.currentTarget.getAttribute('data-url');
+              if (!u) return;
+              url2.value = u;
+              url2.focus();
+              setStatus('Segundo campo lleno. Toca Comparar cuando ambas URLs se vean bien.', false);
+              for (var k = 0; k < useBtns.length; k++) {
+                useBtns[k].textContent = 'Usar este →';
+                useBtns[k].disabled = false;
+              }
+              ev.currentTarget.textContent = 'Seleccionado ✓';
+              ev.currentTarget.disabled = true;
+            });
+          }
+        })
+        .catch(function () {
+          setStatus('La búsqueda falló. Prueba la opción de Google Maps abajo.', true);
+        })
+        .then(function () {
+          sBtn.disabled = false;
+          sBtn.textContent = 'Sugerir 3 competidores →';
+        });
+    });
+  })();
 
   function renderResult(payload){
     if(!payload||!payload.a||!payload.b)return;
