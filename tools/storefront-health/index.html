@@ -85,6 +85,8 @@
   .sh-row[data-band="red"]{border-left:3px solid var(--rust)}
   .sh-row[data-band="amber"]{border-left:3px solid #c89a3c}
   .sh-row[data-band="green"]{border-left:3px solid var(--teal)}
+  .sh-fanout-status{margin:0 0 14px;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);font-size:13px;color:var(--ink-soft)}
+  .sh-fanout-status em{font-style:normal}
   .sh-share{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .sh-share__btn{padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;font:inherit}
   .sh-share__btn:hover{border-color:var(--teal);color:var(--teal)}
@@ -631,7 +633,7 @@
         : '<span class="sh-row__score sh-row__score--missing">Not yet run</span>';
       var fixHref = meta.url + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
       var fixLabel = entry ? 'Re-run &amp; watch &rarr;' : 'Run this check &rarr;';
-      html += '<div class="sh-row"' + (band ? ' data-band="' + band + '"' : '') + '>';
+      html += '<div class="sh-row" data-kind="' + kind + '"' + (band ? ' data-band="' + band + '"' : '') + '>';
       html += '<div class="sh-row__head"><span class="sh-row__kind">' + meta.label + '</span>' + scoreHtml + '</div>';
       html += '<a class="sh-row__fix" href="' + fixHref + '">' + fixLabel + '</a>';
       html += '</div>';
@@ -687,6 +689,199 @@
     });
 
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Eager fan-out — kick off speed/mobile/audit (PSI), schema, and
+    // SEO scoring in parallel from this same page so the first
+    // scorecard contains real numbers instead of six "Not yet run"
+    // tiles. These computed scores are *display-only* — the user
+    // still has to open each sub-tool to persist a deep run that
+    // pushes through the workbench. The "Re-run & watch →" links
+    // below each row are unchanged.
+    eagerFanOut(prop);
+  }
+
+  // Inline scoring helpers. Deliberately simple — they exist to seed
+  // the rollup with a real number on first paint, not to replace the
+  // sub-tools' deep scoring logic. The matching sub-tool is one tap
+  // away on the same row.
+  function scorePsiCategory(json, key) {
+    try {
+      var c = json && json.lighthouseResult && json.lighthouseResult.categories;
+      var n = c && c[key] && c[key].score;
+      return (typeof n === 'number') ? Math.round(n * 100) : null;
+    } catch (_) { return null; }
+  }
+  function scorePsiMobile(json) {
+    // Mobile-friendliness rolls up viewport + tap-targets + font-size
+    // audits — three Lighthouse audits the mobile-check tool also
+    // surfaces. Score = % passing of the three.
+    try {
+      var a = json && json.lighthouseResult && json.lighthouseResult.audits;
+      if (!a) return null;
+      var keys = ['viewport', 'tap-targets', 'font-size'];
+      var passed = 0, total = 0;
+      keys.forEach(function (k) {
+        if (a[k] && typeof a[k].score === 'number') {
+          total++;
+          if (a[k].score >= 0.9) passed++;
+        }
+      });
+      if (!total) return null;
+      return Math.round((passed / total) * 100);
+    } catch (_) { return null; }
+  }
+  function scoreSchema(json) {
+    try {
+      // Light scoring rule that mirrors the schema-check verdict:
+      // present + Restaurant + valid → 90; present but no Restaurant
+      // → 60; nothing → 25.
+      if (!json) return null;
+      if (json.types && json.types.length) {
+        var hasRestaurant = json.types.some(function (t) {
+          return /Restaurant|FoodEstablishment|LocalBusiness/i.test(t.type || '');
+        });
+        if (hasRestaurant && (!json.errors || !json.errors.length)) return 90;
+        if (hasRestaurant) return 70;
+        return 60;
+      }
+      return 25;
+    } catch (_) { return null; }
+  }
+  function scoreSeo(json) {
+    try {
+      // /api/seo-check returns { title, description, h1, ... } and
+      // a "score" if upstream provides one; fall back to a coarse
+      // pass rate over title/description/h1 presence.
+      if (!json) return null;
+      if (typeof json.score === 'number') return Math.round(json.score);
+      var keys = ['title', 'description', 'h1'];
+      var passed = 0;
+      keys.forEach(function (k) {
+        var v = json[k] && (json[k].text || json[k].value || json[k]);
+        if (typeof v === 'string' && v.trim().length >= 10) passed++;
+      });
+      return Math.round((passed / keys.length) * 100);
+    } catch (_) { return null; }
+  }
+
+  function eagerFanOut(prop) {
+    if (!prop || !prop.url) return;
+    var u = prop.url;
+    var rows = {
+      speed:  document.querySelector('.sh-row[data-kind="speed"]'),
+      mobile: document.querySelector('.sh-row[data-kind="mobile"]'),
+      audit:  document.querySelector('.sh-row[data-kind="audit"]'),
+      seo:    document.querySelector('.sh-row[data-kind="seo"]'),
+      schema: document.querySelector('.sh-row[data-kind="schema"]'),
+      gbp:    document.querySelector('.sh-row[data-kind="gbp"]')
+    };
+    var scores = { speed: null, mobile: null, audit: null, seo: null, schema: null, gbp: null };
+
+    function applyScore(kind, score) {
+      scores[kind] = score;
+      var row = rows[kind];
+      if (!row) return;
+      var s = row.querySelector('.sh-row__score');
+      if (!s) return;
+      if (typeof score === 'number') {
+        s.classList.remove('sh-row__score--missing');
+        s.textContent = score;
+        var b = (score < 50) ? 'red' : (score < 70) ? 'amber' : 'green';
+        row.setAttribute('data-band', b);
+      }
+      recomputeRollup();
+    }
+    function applyMissing(kind, label) {
+      var row = rows[kind];
+      if (!row) return;
+      var s = row.querySelector('.sh-row__score');
+      if (!s) return;
+      if (s.textContent === 'Not yet run') s.textContent = label || 'Open this check';
+    }
+    function recomputeRollup() {
+      var nums = Object.keys(scores)
+        .map(function (k) { return scores[k]; })
+        .filter(function (n) { return typeof n === 'number'; });
+      if (!nums.length) return;
+      var avg = Math.round(nums.reduce(function (a, b) { return a + b; }, 0) / nums.length);
+      var overallEl = document.querySelector('.sh-overall__score');
+      if (overallEl) overallEl.textContent = avg;
+      var gradeEl = document.querySelector('.sh-overall__grade');
+      if (gradeEl) {
+        gradeEl.textContent = avg >= 85 ? 'Strong'
+                            : avg >= 70 ? 'Solid'
+                            : avg >= 50 ? 'Needs work'
+                            : 'Critical gaps';
+      }
+    }
+
+    // Status banner so the user understands what's happening on the
+    // 20-30 second wait while PSI returns.
+    var banner = document.createElement('div');
+    banner.className = 'sh-fanout-status';
+    banner.setAttribute('role', 'status');
+    banner.setAttribute('aria-live', 'polite');
+    banner.innerHTML = '<em>Running checks now — speed, mobile, schema, SEO. Real numbers in 20–30 seconds.</em>';
+    var resultEl = document.getElementById('shResult');
+    if (resultEl) resultEl.insertBefore(banner, resultEl.firstChild);
+    var pending = 0, settled = 0;
+
+    function start(promiseFactory) {
+      pending++;
+      promiseFactory().catch(function () {}).finally(function () {
+        settled++;
+        if (settled >= pending && banner && banner.parentNode) {
+          banner.parentNode.removeChild(banner);
+        }
+      });
+    }
+
+    // PSI feeds three rows: speed, mobile-fundamentals, audit
+    // (overall avg of perf+a11y+bp+seo). Single PSI call, three
+    // derived scores.
+    start(function () {
+      var p = new URLSearchParams();
+      p.append('url', u);
+      p.append('strategy', 'mobile');
+      p.append('category', 'performance');
+      p.append('category', 'accessibility');
+      p.append('category', 'best-practices');
+      p.append('category', 'seo');
+      return fetch('/api/psi?' + p.toString()).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        if (!j) { applyMissing('speed'); applyMissing('mobile'); applyMissing('audit'); return; }
+        var perf = scorePsiCategory(j, 'performance');
+        var a11y = scorePsiCategory(j, 'accessibility');
+        var bp   = scorePsiCategory(j, 'best-practices');
+        var seoL = scorePsiCategory(j, 'seo');
+        var mob  = scorePsiMobile(j);
+        if (perf != null) applyScore('speed', perf);
+        if (mob != null)  applyScore('mobile', mob);
+        // Audit row uses 2× perf weight (matches audits/restaurant).
+        var pillars = [perf, perf, a11y, bp, seoL].filter(function (n) { return typeof n === 'number'; });
+        if (pillars.length) applyScore('audit', Math.round(pillars.reduce(function (a, b) { return a + b; }, 0) / pillars.length));
+      });
+    });
+    start(function () {
+      return fetch('/api/schema-check?url=' + encodeURIComponent(u)).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        var s = scoreSchema(j);
+        if (s != null) applyScore('schema', s);
+      });
+    });
+    start(function () {
+      return fetch('/api/seo-check?url=' + encodeURIComponent(u)).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        var s = scoreSeo(j);
+        if (s != null) applyScore('seo', s);
+      });
+    });
+    // GBP intentionally not fanned out — it requires a search query
+    // (name + city) we don't have from a URL alone. The row stays
+    // "Not yet run" until the owner taps through to gbp-grader.
   }
 
   // Save-to-Workshop via shared helper.

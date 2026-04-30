@@ -61,6 +61,8 @@
   .sh-row__kind{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
   .sh-row__score{font-family:var(--font-display);font-size:28px;font-weight:500;color:var(--ink);line-height:1}
   .sh-row__score--missing{color:var(--stone);font-size:16px;font-weight:400;font-family:inherit}
+  .sh-fanout-status{margin:0 0 14px;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);font-size:13px;color:var(--ink-soft)}
+  .sh-fanout-status em{font-style:normal}
   .sh-row__label{font-size:14px;color:var(--ink-soft);margin:0}
   .sh-row__fix{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--teal);text-decoration:none;margin-top:4px}
   .sh-row__fix:hover{text-decoration:underline}
@@ -607,7 +609,7 @@
         : '<span class="sh-row__score sh-row__score--missing">Sin correr aún</span>';
       var fixHref = meta.url + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
       var fixLabel = entry ? 'Volver a correr y vigilar &rarr;' : 'Correr este chequeo &rarr;';
-      html += '<div class="sh-row"' + (band ? ' data-band="' + band + '"' : '') + '>';
+      html += '<div class="sh-row" data-kind="' + kind + '"' + (band ? ' data-band="' + band + '"' : '') + '>';
       html += '<div class="sh-row__head"><span class="sh-row__kind">' + meta.label + '</span>' + scoreHtml + '</div>';
       html += '<a class="sh-row__fix" href="' + fixHref + '">' + fixLabel + '</a>';
       html += '</div>';
@@ -660,6 +662,164 @@
     });
 
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Eager fan-out — chequeos en paralelo desde la misma página.
+    eagerFanOut(prop);
+  }
+
+  function scorePsiCategory(json, key) {
+    try {
+      var c = json && json.lighthouseResult && json.lighthouseResult.categories;
+      var n = c && c[key] && c[key].score;
+      return (typeof n === 'number') ? Math.round(n * 100) : null;
+    } catch (_) { return null; }
+  }
+  function scorePsiMobile(json) {
+    try {
+      var a = json && json.lighthouseResult && json.lighthouseResult.audits;
+      if (!a) return null;
+      var keys = ['viewport', 'tap-targets', 'font-size'];
+      var passed = 0, total = 0;
+      keys.forEach(function (k) {
+        if (a[k] && typeof a[k].score === 'number') {
+          total++;
+          if (a[k].score >= 0.9) passed++;
+        }
+      });
+      if (!total) return null;
+      return Math.round((passed / total) * 100);
+    } catch (_) { return null; }
+  }
+  function scoreSchema(json) {
+    try {
+      if (!json) return null;
+      if (json.types && json.types.length) {
+        var hasRestaurant = json.types.some(function (t) {
+          return /Restaurant|FoodEstablishment|LocalBusiness/i.test(t.type || '');
+        });
+        if (hasRestaurant && (!json.errors || !json.errors.length)) return 90;
+        if (hasRestaurant) return 70;
+        return 60;
+      }
+      return 25;
+    } catch (_) { return null; }
+  }
+  function scoreSeo(json) {
+    try {
+      if (!json) return null;
+      if (typeof json.score === 'number') return Math.round(json.score);
+      var keys = ['title', 'description', 'h1'];
+      var passed = 0;
+      keys.forEach(function (k) {
+        var v = json[k] && (json[k].text || json[k].value || json[k]);
+        if (typeof v === 'string' && v.trim().length >= 10) passed++;
+      });
+      return Math.round((passed / keys.length) * 100);
+    } catch (_) { return null; }
+  }
+
+  function eagerFanOut(prop) {
+    if (!prop || !prop.url) return;
+    var u = prop.url;
+    var rows = {
+      speed:  document.querySelector('.sh-row[data-kind="speed"]'),
+      mobile: document.querySelector('.sh-row[data-kind="mobile"]'),
+      audit:  document.querySelector('.sh-row[data-kind="audit"]'),
+      seo:    document.querySelector('.sh-row[data-kind="seo"]'),
+      schema: document.querySelector('.sh-row[data-kind="schema"]'),
+      gbp:    document.querySelector('.sh-row[data-kind="gbp"]')
+    };
+    var scores = { speed: null, mobile: null, audit: null, seo: null, schema: null, gbp: null };
+
+    function applyScore(kind, score) {
+      scores[kind] = score;
+      var row = rows[kind];
+      if (!row) return;
+      var s = row.querySelector('.sh-row__score');
+      if (!s) return;
+      if (typeof score === 'number') {
+        s.classList.remove('sh-row__score--missing');
+        s.textContent = score;
+        var b = (score < 50) ? 'red' : (score < 70) ? 'amber' : 'green';
+        row.setAttribute('data-band', b);
+      }
+      recomputeRollup();
+    }
+    function recomputeRollup() {
+      var nums = Object.keys(scores)
+        .map(function (k) { return scores[k]; })
+        .filter(function (n) { return typeof n === 'number'; });
+      if (!nums.length) return;
+      var avg = Math.round(nums.reduce(function (a, b) { return a + b; }, 0) / nums.length);
+      var overallEl = document.querySelector('.sh-overall__score');
+      if (overallEl) overallEl.textContent = avg;
+      var gradeEl = document.querySelector('.sh-overall__grade');
+      if (gradeEl) {
+        gradeEl.textContent = avg >= 85 ? 'Sólido'
+                            : avg >= 70 ? 'Aceptable'
+                            : avg >= 50 ? 'Por mejorar'
+                            : 'Vacíos críticos';
+      }
+    }
+
+    var banner = document.createElement('div');
+    banner.className = 'sh-fanout-status';
+    banner.setAttribute('role', 'status');
+    banner.setAttribute('aria-live', 'polite');
+    banner.innerHTML = '<em>Corriendo chequeos ahora — velocidad, móvil, schema, SEO. Números reales en 20–30 segundos.</em>';
+    var resultEl = document.getElementById('shResult');
+    if (resultEl) resultEl.insertBefore(banner, resultEl.firstChild);
+    var pending = 0, settled = 0;
+
+    function start(promiseFactory) {
+      pending++;
+      promiseFactory().catch(function () {}).finally(function () {
+        settled++;
+        if (settled >= pending && banner && banner.parentNode) {
+          banner.parentNode.removeChild(banner);
+        }
+      });
+    }
+
+    start(function () {
+      var p = new URLSearchParams();
+      p.append('url', u);
+      p.append('strategy', 'mobile');
+      p.append('category', 'performance');
+      p.append('category', 'accessibility');
+      p.append('category', 'best-practices');
+      p.append('category', 'seo');
+      return fetch('/api/psi?' + p.toString()).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        if (!j) return;
+        var perf = scorePsiCategory(j, 'performance');
+        var a11y = scorePsiCategory(j, 'accessibility');
+        var bp   = scorePsiCategory(j, 'best-practices');
+        var seoL = scorePsiCategory(j, 'seo');
+        var mob  = scorePsiMobile(j);
+        if (perf != null) applyScore('speed', perf);
+        if (mob != null)  applyScore('mobile', mob);
+        var pillars = [perf, perf, a11y, bp, seoL].filter(function (n) { return typeof n === 'number'; });
+        if (pillars.length) applyScore('audit', Math.round(pillars.reduce(function (a, b) { return a + b; }, 0) / pillars.length));
+      });
+    });
+    start(function () {
+      return fetch('/api/schema-check?url=' + encodeURIComponent(u)).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        var s = scoreSchema(j);
+        if (s != null) applyScore('schema', s);
+      });
+    });
+    start(function () {
+      return fetch('/api/seo-check?url=' + encodeURIComponent(u)).then(function (r) {
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        var s = scoreSeo(j);
+        if (s != null) applyScore('seo', s);
+      });
+    });
   }
 
   // Save-to-Workshop via shared helper.
