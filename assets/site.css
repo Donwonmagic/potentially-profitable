@@ -5336,6 +5336,19 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-verified{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0;letter-spacing:0.02em}
 .tool-verified time{color:var(--ink);font-style:normal;font-variant-numeric:tabular-nums}
 
+/* Phase G.4 (Growth) — topic pillar essay block. Sits between
+   the hero and the cluster's article cards. Editorial register —
+   serif-italic title, generous reading column, no decorative ink. */
+.topic-essay{padding:48px 0 32px;background:var(--surface-1);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.topic-essay__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.topic-essay__title{font-family:var(--font-display);font-size:28px;line-height:1.2;margin:0 0 24px;max-width:760px;color:var(--ink)}
+.topic-essay__body{max-width:680px;font-size:16px;line-height:1.65;color:var(--ink)}
+.topic-essay__body p{margin:0 0 16px}
+.topic-essay__body ul{padding-left:20px;margin:16px 0 24px}
+.topic-essay__body li{margin:6px 0;line-height:1.6}
+.topic-essay__body a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.topic-essay__body a:hover{border-bottom-color:var(--teal)}
+
 /* Phase G.4 (Growth) — concrete-example sentence on glossary term
    pages. Quiet inline emphasis: italic for the leading "Example:",
    tabular figures so dollar amounts align cleanly. */
