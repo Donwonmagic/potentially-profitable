@@ -585,7 +585,23 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });

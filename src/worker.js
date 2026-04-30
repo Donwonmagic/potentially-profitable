@@ -334,6 +334,8 @@ const API_ROUTES = {
   '/api/share/storefront-health':    handleShareStorefrontHealth,
   // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
   '/api/admin/kpis':                 handleAdminKpis,
+  // Phase G.10 (Growth) — Workshop nav count badge endpoint.
+  '/api/workbench/count':            handleWorkbenchCount,
 };
 
 
@@ -6134,6 +6136,31 @@ async function handleSubscribeConfirm(request, env, ctx) {
 // Each kind has a dedicated handler so we can validate kind-specific
 // payload shape without a giant switch — a new kind = a new handler.
 // Both endpoints write to AUTH_SESSIONS KV via saveShareSnapshot.
+
+// Phase G.10 (Growth) — Workshop nav count badge data endpoint.
+const _wbCountCache = new Map();
+async function handleWorkbenchCount(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const sub = auth.sub;
+  const now = Date.now();
+  const cached = _wbCountCache.get(sub);
+  if (cached && cached.expiresAt > now) {
+    return jsonResponse({ ok: true, count: cached.count }, 200);
+  }
+  let count = 0;
+  let cursor = null;
+  for (let page = 0; page < 5; page++) {
+    const opts = { prefix: `save:${sub}:` };
+    if (cursor) opts.cursor = cursor;
+    const r = await env.AUTH_SESSIONS.list(opts);
+    count += r.keys.length;
+    if (r.list_complete || !r.cursor) break;
+    cursor = r.cursor;
+  }
+  _wbCountCache.set(sub, { count, expiresAt: now + 60_000 });
+  return jsonResponse({ ok: true, count }, 200);
+}
 
 // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
 // Reads data/kpis.json via env.ASSETS so the JSON file is the
