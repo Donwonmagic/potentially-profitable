@@ -5359,6 +5359,17 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
 .comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
 
+/* Phase G.9 (Growth) — Smart-next per-article CTA. Three options
+   (Read / Try / Or send Don a note) directly under the post-end
+   CTA. Each line is a single short link. */
+.smart-next{max-width:680px;margin:24px 0 32px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md)}
+.smart-next__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 12px}
+.smart-next__list{list-style:decimal;padding-left:24px;margin:0;display:flex;flex-direction:column;gap:8px}
+.smart-next__item{font-size:14.5px;line-height:1.55;color:var(--ink)}
+.smart-next__item a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.smart-next__item a:hover{border-bottom-color:var(--teal)}
+.smart-next__verb{color:var(--ink-soft);font-weight:600;letter-spacing:0.02em}
+
 /* Phase G.12 (Growth) — Window thread resolved bar. Five outcome
    buttons that stamp the Plausible event for the lead-to-call KPI. */
 .admin-thread__resolved{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--line);background:var(--cream-2);font-size:13px}
