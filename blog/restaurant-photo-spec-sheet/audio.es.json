@@ -1,0 +1,427 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:06:54.279Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 489.73,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "TL;DR",
+      "start": 0,
+      "end": 0.94
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Cada restaurante termina necesitando la misma docena de tamaños de imagen en G B P, Yelp, su sitio, redes sociales, OG y miniaturas de menú.",
+      "start": 1.29,
+      "end": 9.67
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Dispare una vez con un 30 % por encima de la resolución recomendada. Puedes recortar; no puedes surgir.",
+      "start": 9.99,
+      "end": 16.56
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Un ángulo constante en las miniaturas del menú es más importante que la calidad de la cámara. Los ángulos mixtos hacen que la página del menú se vea rota.",
+      "start": 16.88,
+      "end": 25.53
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Vuelva a disparar dos veces al año. La cadencia de las fotografías es uno de los pocos ciclos de mantenimiento que afecta visiblemente la calificación promedio de las reseñas.",
+      "start": 25.85,
+      "end": 36.19
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Todos los restaurantes acaban necesitando la misma docena de tamaños de imágenes, pero casi nadie las toma a la vez. El resultado: una portada de Google Business Profile que tiene una relación de aspecto incorrecta y se recortó de manera extraña, una foto de Yelp que es vertical cuando Yelp quiere horizontal, una página de menú donde cada foto de plato tiene una forma diferente y el diseño se rompe.",
+      "start": 36.71,
+      "end": 58.39
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Esta es la hoja de especificaciones que envío a cada cliente de estudio y a cada fotógrafo con el que trabajo. Una sesión, las especificaciones correctas de antemano y el resultado cae limpiamente en cada superficie.",
+      "start": 58.91,
+      "end": 71.78
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Los 10 tamaños de imagen que realmente necesitas.",
+      "start": 72.88,
+      "end": 75.9
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Una toma, diez resultados · la regla de la resolución. Dispara una vez, al 30% por encima del máximo: siempre puedes recortar. Nunca podrás surgir. (fuente). Superficies del sitio: Hero, banners interiores, miniaturas de menú, tarjeta OG/Twitter. (derivados). Superficies G B P: foto de portada, perfil, galería: tres aspectos diferentes. (derivados). Social + Yelp: portada Yelp, cuadrado Instagram, retrato Instagram. (derivados). Una toma, diez resultados · la regla de la resolución.",
+      "start": 76.7,
+      "end": 105.69
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Reglas de resolución.",
+      "start": 106.79,
+      "end": 108.05
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Dispare siempre con la resolución recomendada anteriormente MÁS aproximadamente un 30 % adicional. Siempre puedes recortar; nunca podrás surgir. Un héroe disparado a 2400 x 1024 también te permite producir la tarjeta OG de 1200 x 630 desde el mismo archivo; un héroe disparado a 1200 x 630 te deja estancado.",
+      "start": 108.75,
+      "end": 131.75
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Para las imágenes que se envían a su sitio, expórtelas como WebP compatible con C D N con una calidad del 80 %; normalmente es entre un 60 % y un 70 % más pequeño que JPG sin pérdida visible.",
+      "start": 132.27,
+      "end": 146.25
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Texto alternativo: la parte más omitida de la hoja de especificaciones.",
+      "start": 147.35,
+      "end": 151.47
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Cada imagen necesita texto alternativo. Ni \"IMG_4521.jpg\", ni el nombre del menú, ni \"comida deliciosa\". Una frase descriptiva específica: \"Plato de carnitas con cilantro, cebolla blanca y limón sobre una tabla de madera\". Cuesta 5 segundos por foto y le otorga S E O + accesibilidad + citas de búsqueda de IA.",
+      "start": 152.17,
+      "end": 171.88
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Para una sesión de 30 fotografías en un restaurante, son 150 segundos (o dos minutos) de escritura. Sáltelo y dejará el valor S E O de cada foto en el suelo.",
+      "start": 172.4,
+      "end": 182.61
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "La lista de tomas para entregar a un fotógrafo.",
+      "start": 183.71,
+      "end": 186.3
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Ejecutar resumen fotográfico. Genera una lista de tomas por superficie con la hoja de especificaciones adjunta: exactamente el documento que le entregaría a un fotógrafo la mañana de la sesión. Guarde el resumen en su taller para poder volver a ejecutarlo en la próxima sesión fotográfica de temporada.",
+      "start": 187,
+      "end": 204.35
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La sesión en sí suele durar de 2 a 3 horas para un resultado de 30 fotografías: el héroe, de 10 a 15 platos, de 4 a 6 tomas de habitaciones, de 2 a 3 tomas de detalles (una mano sirviendo vino, el humo de una parrilla, el chef sirviendo). Hecho de una sola vez, tendrás material para cada superficie durante los próximos 12 meses.",
+      "start": 204.87,
+      "end": 224.18
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "La versión \"dispáralo tú mismo con un teléfono\".",
+      "start": 225.28,
+      "end": 227.87
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Si contratar a un fotógrafo no está dentro del presupuesto, la versión para teléfono aún funciona. Los teléfonos modernos con buena luz suelen superar al trabajo DSLR de bajo esfuerzo: la variable que más importa no es el sensor, es la hora del día y el ángulo de la ventana. Tres reglas:",
+      "start": 228.57,
+      "end": 245.36
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Sólo luz del día. Dispare de 11 a. m. a 2 p. m. cerca de una ventana. La iluminación del techo del restaurante indica color naranja y sucia en el sensor del teléfono.",
+      "start": 245.71,
+      "end": 255.87
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Un ángulo por plato, repetido. Elija de arriba hacia abajo O 3/4 del frente y use el mismo ángulo para cada plato para que la página del menú se lea como un solo conjunto.",
+      "start": 256.19,
+      "end": 266.8
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Edite a la ligera. Aumenta la exposición +0,3, aumenta las sombras. Saltar filtros.",
+      "start": 267.12,
+      "end": 272.51
+    },
+    {
+      "id": 23,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Cadencia de rodaje · dos veces al año + cambios de menú. Sesión previa al verano: preparación para el Día de los Caídos: patio, platos más ligeros, cócteles a la luz del día. (conjunto básico). Sesión fotográfica previa a las vacaciones: preparación para mediados de octubre: menú de otoño, tonos cálidos, tomas de habitaciones. (conjunto básico). Sesión dinámica del menú: cualquier cambio importante en el menú: platos nuevos, platos eliminados, cambios de temporada. (según sea necesario). Cadencia de rodaje · dos veces al año + cambios de menú.",
+      "start": 273.31,
+      "end": 304.33
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Con qué frecuencia volver a disparar.",
+      "start": 305.43,
+      "end": 307.48
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Dos veces al año. Una vez antes de la temporada alta (Día de los Caídos en verano, mediados de octubre para las vacaciones); una vez cuando el menú cambia sustancialmente. Si vuelves a tomar menos de una vez al año, las fotos empiezan a parecer anticuadas para los clientes habituales, incluso si siguen siendo técnicamente precisas.",
+      "start": 308.18,
+      "end": 326.77
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Guarde las fechas en su taller junto con sus escenarios de Margin Math y Restaurant Audit. El argumento agravante: la cadencia de las fotografías es uno de los pocos ciclos de mantenimiento que afecta visiblemente la calificación promedio de las reseñas, porque la portada de G B P y las miniaturas del menú establecen las expectativas que los invitados traen al entrar, y las reseñas se escriben en contra de esa expectativa, no solo en contra de la comida.",
+      "start": 327.29,
+      "end": 352.03
+    },
+    {
+      "id": 27,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "Las malas fotos no sólo dejan de ayudar. Arrastran activamente el promedio hacia abajo al establecer expectativas equivocadas antes de que alguien entre por la puerta.",
+      "start": 352.78,
+      "end": 362.52
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Conclusiones clave",
+      "start": 363.27,
+      "end": 364.43
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "10 tamaños cubren todas las superficies que realmente necesitas. Entregue la hoja de especificaciones a su fotógrafo junto con el informe.",
+      "start": 364.78,
+      "end": 373.2
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "WebP con un 80% de calidad reduce el tamaño del archivo entre un 60% y un 70% en comparación con JPG, sin pérdida visible.",
+      "start": 373.52,
+      "end": 383.56
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "El texto alternativo son los 5 segundos que más se saltan por foto y el de mayor aprovechamiento para la búsqueda S E O + AI.",
+      "start": 383.88,
+      "end": 391.45
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La versión del teléfono funciona con buena luz: la variable que más importa es la hora del día, no el sensor.",
+      "start": 391.77,
+      "end": 397.89
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Fechas de nueva filmación: preparación para el Día de los Caídos, preparación para mediados de octubre y cualquier cambio importante en el menú.",
+      "start": 398.21,
+      "end": 405.87
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Genera la lista de tomas antes de que llegue el fotógrafo.",
+      "start": 406.39,
+      "end": 409.51
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Photo Brief genera una lista de tomas por superficie con la hoja de especificaciones adjunta, exactamente lo que le entregaría a un fotógrafo la mañana de la sesión. Se guarda en tu taller para que puedas volver a ejecutarlo en la siguiente sesión de temporada.",
+      "start": 410.03,
+      "end": 424.82
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "¿Qué hacer a continuación?",
+      "start": 425.34,
+      "end": 426.73
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Leer: el término relacionado del glosario →",
+      "start": 427.25,
+      "end": 429.48
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Pruebe: la herramienta que combina con este artículo →",
+      "start": 429.8,
+      "end": 432.44
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O envíale una nota a Don: La Ventana →",
+      "start": 432.76,
+      "end": 434.84
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Ver también",
+      "start": 435.19,
+      "end": 435.99
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Artículo Configuración de G B P para restaurantes Dónde terminan la portada de G B P y las fotos de la galería en esta hoja de especificaciones.",
+      "start": 436.34,
+      "end": 444.88
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Herramienta Resumen fotográfico Genera la lista de tomas por superficie con esta hoja de especificaciones adjunta.",
+      "start": 445.2,
+      "end": 451.81
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Artículo Cómo obtener más reseñas de Google El otro lado de G B P: lo que tus fotos hacen que el huésped escriba.",
+      "start": 452.13,
+      "end": 458.6
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Cuéntanos",
+      "start": 459.12,
+      "end": 459.72
+    },
+    {
+      "id": 45,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "¿Has probado esto en tu cocina?",
+      "start": 460.82,
+      "end": 462.54
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Entre 100 y 400 palabras, con su nombre escrito, Don las lee todas.",
+      "start": 463.24,
+      "end": 467.38
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Inicia sesión para compartir tu experiencia →",
+      "start": 467.9,
+      "end": 470.39
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Sigue leyendo",
+      "start": 470.74,
+      "end": 471.64
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "La superficie donde aterrizan los tamaños de cubierta, perfil y galería de G B P de la hoja de especificaciones.",
+      "start": 471.99,
+      "end": 478.51
+    },
+    {
+      "id": 50,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Las fotos marcan la expectativa. Las reseñas están escritas en contra de las expectativas.",
+      "start": 479.03,
+      "end": 484.47
+    },
+    {
+      "id": 51,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "El problema de la \"forma incorrecta\" del que trata toda esta publicación, en un párrafo.",
+      "start": 484.99,
+      "end": 489.73
+    }
+  ]
+}

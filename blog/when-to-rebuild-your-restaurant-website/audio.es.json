@@ -1,0 +1,491 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:10:54.732Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 639.91,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "TL;DR",
+      "start": 0,
+      "end": 0.94
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La mayoría de los restaurantes independientes reconstruyen su sitio web entre 12 y 24 meses más tarde de lo que deberían, cuando el costo es mayor y el embudo ya tiene fugas.",
+      "start": 1.29,
+      "end": 11.75
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Un diagnóstico de siete preguntas separa \"reconstruir\" de \"reparar las fugas por un año más\" sin un consultor al tanto.",
+      "start": 12.07,
+      "end": 18.58
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tres patrones de casos: un sitio con puntuación alta que sólo necesita correcciones específicas; un sitio sub-60 donde la propia plataforma es el techo; un sitio de rango medio donde una reconstrucción parcial es la relación costo-beneficio adecuada.",
+      "start": 18.9,
+      "end": 34.08
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "La decisión rara vez es \"reconstruir o no\". Se trata de \"qué nivel de reconstrucción y cómo será el caso de 18 meses sin hacer nada\".",
+      "start": 34.4,
+      "end": 42.45
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La conversación casi siempre comienza de la misma manera: un operador tiene dos cotizaciones para una reconstrucción que difieren entre 3 y 4 veces, ninguno de los desarrolladores ha preguntado qué está realmente roto y el operador en realidad no pregunta qué cotización aceptar. Se preguntan si es necesario reconstruir. Ésa es la pregunta más difícil y casi nadie ayuda a los operadores a responderla.",
+      "start": 42.97,
+      "end": 65.35
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La respuesta honesta es que la mayoría de los restaurantes independientes se reconstruyen entre 12 y 24 meses más tarde de lo que deberían; momento en el que la reconstrucción cuesta más (porque hay más que migrar), lleva más tiempo (porque el embudo de reservas ha empeorado) y el operador está tomando la decisión bajo estrés en lugar de bajo planificación.",
+      "start": 65.87,
+      "end": 84.85
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Este es el diagnóstico de siete preguntas que realizo antes de recomendar una reconstrucción o, con la misma frecuencia, recomendar una y señalar tres pequeños cambios que permiten ganar un año más.",
+      "start": 85.37,
+      "end": 96.97
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Puntuación de Storefront Health · qué le dice sobre la preparación para la reconstrucción. No reconstruir: corrija la subpuntuación más baja. A veces, un pase de imagen C D N + gana un año más. (arreglar fugas). Tal vez reconstruir: repase las siete preguntas: tres o más \"sí\" = reconstruir. (diagnosticar). Reconstrucción: cada trimestre de espera cuesta más que la reconstrucción misma. (reconstruir ahora). Puntuación de Storefront Health · qué le dice sobre la preparación para la reconstrucción.",
+      "start": 97.77,
+      "end": 126.11
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Pregunta 1: ¿Cómo obtiene su puntuación en Storefront Health?",
+      "start": 127.21,
+      "end": 130.66
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Ejecute Storefront Health en su sitio. El cuadro de mando compuesto agrupa la velocidad, S E O, móvil, esquema, G B P y la auditoría del restaurante en un número, 0-100.",
+      "start": 131.36,
+      "end": 141.38
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "80+: No reconstruir. Corrige la subpuntuación más baja.",
+      "start": 141.9,
+      "end": 145.71
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "60-79: Quizás reconstruir. Lea las siguientes seis preguntas.",
+      "start": 146.03,
+      "end": 150.47
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Por debajo de 60: reconstrucción: cada trimestre de espera cuesta más que la reconstrucción.",
+      "start": 150.79,
+      "end": 156.36
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Pregunta 2: ¿Puede su C M S actualizarse sin dañar el sitio?",
+      "start": 157.46,
+      "end": 161.24
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Las instalaciones antiguas de C M S acumulan deuda técnica de la misma manera que los conductos acumulan polvo. La prueba: ¿cuándo fue la última vez que alguien intentó actualizar la plataforma? Si la respuesta es \"no, porque se rompió la última vez\", es una señal de reconstrucción.",
+      "start": 161.94,
+      "end": 177.76
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Pregunta 3: ¿El menú está en H T M L?",
+      "start": 178.86,
+      "end": 181.58
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Si su menú es un P D F, una imagen o \"administrado por el widget de menú de Wix\", será invisible para las consultas a nivel de plato de Google y para la búsqueda de IA. Cambiar a un menú H T M L real por sí solo a veces es suficiente para posponer una reconstrucción; a veces es necesaria.",
+      "start": 182.28,
+      "end": 198.82
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Pregunta 4: ¿Cómo califica el sitio en Core Web Vitals?",
+      "start": 199.92,
+      "end": 203.34
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Si LCP es superior a 4 segundos en dispositivos móviles, o CLS es superior a 0,25, se le penalizará en la búsqueda Y los visitantes rebotarán antes de que se cargue el menú. A veces una compresión de imagen C D N+ lo soluciona; A veces la plataforma es el problema y sólo bastará con una reconstrucción.",
+      "start": 204.04,
+      "end": 222.83
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Ejecute la prueba de velocidad en la página de inicio y en la página interior más concurrida. Si la página de inicio es rápida pero la página del menú es lenta, la plataforma no es el problema, sino la página. Si ambos son lentos, la plataforma suele serlo.",
+      "start": 223.35,
+      "end": 237.88
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Pregunta 5: ¿Pueden enviar un pequeño cambio en menos de una hora?",
+      "start": 238.98,
+      "end": 242.49
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Prueba: intenta actualizar el horario de vacaciones en tu página de inicio en los próximos 60 minutos. Si no puede (no tiene acceso, CMS complejo, requiere un desarrollador), eso es una señal de reconstrucción, no porque la limitación técnica sea fatal, sino porque la carga operativa se agrava silenciosamente. Cada cambio que retrasas es una pequeña fuga.",
+      "start": 243.19,
+      "end": 263.44
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Pregunta 6: ¿La marca coincide con la habitación?",
+      "start": 264.54,
+      "end": 267.51
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Abra su página de inicio en el teléfono que lleva. Luego entra a tu comedor. ¿Se sienten como el mismo lugar? De lo contrario, si la habitación es cálida, considerada, intencional y el sitio tiene una plantilla genérica, \"elegimos la plantilla Squarespace más limpia\", esa es una señal de reconstrucción del diseño de la marca, separada de las técnicas.",
+      "start": 268.21,
+      "end": 287.4
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Pregunta 7: ¿Qué pasa con las reservas si no haces nada durante 18 meses?",
+      "start": 288.5,
+      "end": 293.24
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Mire su tendencia de reservas mensuales. Si está estable o está disminuyendo y su sitio ha estado igual durante más de 24 meses, no hacer nada no es realmente neutral: la brecha con sus competidores locales se está ampliando incluso cuando sus números parecen estables. La proyección de \"no hacer nada\" a 18 meses casi siempre es negativa para un sitio de restaurante obsoleto.",
+      "start": 293.94,
+      "end": 315.39
+    },
+    {
+      "id": 27,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Tres patrones de reconstrucción: banda de puntuación, alcance y recuperación típica. Sitio con puntuación alta, correcciones específicas: puntuación de 75 a 85. C D N, comprimir, arreglar esquema. ~5–10% del costo de reconstrucción. (aplazar). Sitio Sub-60, reconstrucción completa: la plataforma en sí cubre el techo. Menú H T M L real, esquema completo, embudo rápido. (Recuperación de la inversión de 9 a 14 meses). Reconstrucción parcial de rango medio: Front-end + fotografías, mantenga C M S. ~40 % del costo de reconstrucción total. Mira el techo. (compensación). Tres patrones de reconstrucción: banda de puntuación, alcance y recuperación típica.",
+      "start": 316.19,
+      "end": 358.12
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Tres hilos de caja.",
+      "start": 359.22,
+      "end": 360.41
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Caso 1: Bistro con una puntuación de 75, no se reconstruye: un bistró francés de seis años de antigüedad con una puntuación de 75 en Storefront Health. La velocidad del móvil arrastra la puntuación hacia abajo. Agregamos un C D N, recomprimimos cada imagen, arreglamos el esquema del menú. La puntuación pasó a 88; aplazaron la reconstrucción por dos años más y ahorraron aproximadamente 11 mil dólares.",
+      "start": 361.11,
+      "end": 384.66
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Caso 2: Sitio con menos de 60 años, reconstrucciones: interfaz antigua, lento en dispositivos móviles, esquema de menú con formato incorrecto, embudo de reserva oculto. La plataforma en sí es el techo. La reconstrucción aquí es totalmente personalizada: menú H T M L real, datos estructurados a nivel de plato, embudo de reservas limpio. La puntuación ronda los 80 o 90 grados. Las reservas basadas en búsquedas aproximadamente se triplican en 90 días porque el esquema faltante comienza a activarse en consultas de paquetes locales para las que el sitio nunca antes había aparecido. Las ventanas de recuperación de la inversión en reconstrucciones en este rango suelen ser de 9 a 14 meses, pero el apalancamiento se agrava a medida que se actualiza el índice de Google.",
+      "start": 385.18,
+      "end": 429.87
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Caso 3: Sitio en 65-70, reconstrucción parcial: plataforma bien, completamente desgastada. Conserve el C M S, reemplace la parte frontal y las fotografías por aproximadamente el 40 % del costo total de reconstrucción. La puntuación se mueve entre los 80 y los 80 bajos. Las reservas aumentan, pero no tan abruptamente como en el Caso 2. La compensación honesta que vale la pena señalar: una reconstrucción parcial limita su techo a lo que la plataforma subyacente permita en cuanto a esquema, velocidad e indexación. A veces la decisión correcta; A veces vale la pena revisarlo dentro de 18 meses, cuando el techo de la plataforma se convierta en la siguiente limitación.",
+      "start": 430.39,
+      "end": 470.98
+    },
+    {
+      "id": 32,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "No hacer nada no es neutral. La brecha con sus competidores locales se amplía cada trimestre que su sitio no lo hace.",
+      "start": 471.73,
+      "end": 478.39
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Cómo utilizar este marco.",
+      "start": 479.49,
+      "end": 481.09
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Ejecute Storefront Health primero. Guarda la partitura en tu taller. Repase las siete preguntas, escriba la respuesta honesta a cada una y observe el patrón. Si tres o más apuntan a \"reconstruir\", usted está atrasado. Si uno o dos lo son, se encuentra en territorio de reparación de fugas: lea Cinco cambios en el sitio web que recuperan el 1% de margen para conocer el enfoque de reparación específica.",
+      "start": 481.79,
+      "end": 504.39
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Si desea un segundo par de ojos sobre el marco que se aplica a su sitio, escriba a través de The Window. Leo todos.",
+      "start": 504.91,
+      "end": 511.28
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Conclusiones clave",
+      "start": 511.8,
+      "end": 512.96
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Ejecute Storefront Health primero. Sub-60 = reconstruir ahora. 60–79 = repasar las siete preguntas. 80+ = fija la subpuntuación más baja.",
+      "start": 513.31,
+      "end": 524.05
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Los C M S que no pueden actualizarse sin romperse son una señal de reconstrucción: acumulación de compuestos de deuda.",
+      "start": 524.37,
+      "end": 531.41
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "P D F o los menús bloqueados por widgets limitan su indexabilidad. A veces, la simple reescritura del menú pospone la reconstrucción por un año.",
+      "start": 531.73,
+      "end": 540.63
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Si no puede enviar un pequeño cambio en menos de una hora, la carga operativa ya es una fuga.",
+      "start": 540.95,
+      "end": 545.97
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "No hacer nada no es neutral. La brecha con los competidores locales se amplía cada trimestre que su sitio no lo hace.",
+      "start": 546.29,
+      "end": 552.9
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Obtenga la puntuación antes de realizar la llamada.",
+      "start": 553.42,
+      "end": 556.44
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Storefront Health es un cuadro de mando compuesto gratuito que reúne velocidad, S E O, dispositivos móviles, esquema y G B P en un número del 0 al 100. El marco de decisión anterior sólo funciona una vez que tienes la puntuación. Ejecútelo ahora y guárdelo en su Taller.",
+      "start": 556.96,
+      "end": 572.43
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "¿Qué hacer a continuación?",
+      "start": 572.95,
+      "end": 574.34
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Leer: el término relacionado del glosario →",
+      "start": 574.86,
+      "end": 577.09
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Pruebe: la herramienta que combina con este artículo →",
+      "start": 577.41,
+      "end": 580.05
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "O envíale una nota a Don: La Ventana →",
+      "start": 580.37,
+      "end": 582.45
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Ver también",
+      "start": 582.8,
+      "end": 583.6
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Artículo Cinco cambios en el sitio web que recuperan el 1% del margen El enfoque de corrección dirigida para sitios con una puntuación superior a 80: qué enviar en lugar de reconstruir.",
+      "start": 583.95,
+      "end": 595.27
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Tool Storefront Health La puntuación compuesta que este marco utiliza como primera entrada.",
+      "start": 595.59,
+      "end": 600.76
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Artículo ¿Cuánto cuesta un sitio web de restaurante personalizado en veinte veintiséis? El lado del costo de la cuestión de la reconstrucción, una vez que haya decidido reconstruir.",
+      "start": 601.08,
+      "end": 611.2
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Cuéntanos",
+      "start": 611.72,
+      "end": 612.32
+    },
+    {
+      "id": 53,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "¿Has probado esto en tu cocina?",
+      "start": 613.42,
+      "end": 615.14
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Entre 100 y 400 palabras, con su nombre escrito, Don las lee todas.",
+      "start": 615.84,
+      "end": 619.98
+    },
+    {
+      "id": 55,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Inicia sesión para compartir tu experiencia →",
+      "start": 620.5,
+      "end": 622.99
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Sigue leyendo",
+      "start": 623.34,
+      "end": 624.24
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Cuando la respuesta a la pregunta sobre reconstrucción es \"no, mejor arregle las fugas\".",
+      "start": 624.59,
+      "end": 629.21
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "La conversación honesta sobre el presupuesto cuando la respuesta es reconstruir.",
+      "start": 629.73,
+      "end": 634.17
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "La decisión a nivel de plataforma a menudo se oculta dentro de la decisión de reconstrucción.",
+      "start": 634.69,
+      "end": 639.91
+    }
+  ]
+}
