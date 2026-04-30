@@ -77,7 +77,7 @@ function parseDefinedTerm(src) {
   return null;
 }
 
-function buildBlock({ slug, locale, term }) {
+function buildBlock({ slug, locale, term, sameAs }) {
   const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/glossary/${slug}/`;
   const ogSuffix = locale === 'es' ? '-es' : '';
   const ogUrl = `${SITE}/brand/og/glossary-${slug}${ogSuffix}.png`;
@@ -86,32 +86,40 @@ function buildBlock({ slug, locale, term }) {
   // commit invalidates the next --check.
   const datePublished = gitFirstSeen(path.join(repoRoot, locale === 'es' ? 'es/glossary' : 'glossary', slug));
 
-  const obj = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Article',
-        '@id': `${baseUrl}#article`,
-        headline: term.name,
-        abstract: term.description,
-        description: term.description,
-        url: baseUrl,
-        mainEntityOfPage: { '@id': `${baseUrl}#term` },
-        about: { '@id': `${baseUrl}#term` },
-        inLanguage: locale === 'es' ? 'es-US' : 'en-US',
-        author: {
-          '@type': 'Person',
-          '@id': `${SITE}/#don-goldstein`,
-          name: 'Don Goldstein',
-          url: `${SITE}/about/`,
-        },
-        publisher: { '@id': `${SITE}/#business` },
-        image: ogUrl,
-        datePublished,
-        isPartOf: { '@id': `${SITE}/glossary/#muntin-glossary` },
+  const graph = [
+    {
+      '@type': 'Article',
+      '@id': `${baseUrl}#article`,
+      headline: term.name,
+      abstract: term.description,
+      description: term.description,
+      url: baseUrl,
+      mainEntityOfPage: { '@id': `${baseUrl}#term` },
+      about: { '@id': `${baseUrl}#term` },
+      inLanguage: locale === 'es' ? 'es-US' : 'en-US',
+      author: {
+        '@type': 'Person',
+        '@id': `${SITE}/#don-goldstein`,
+        name: 'Don Goldstein',
+        url: `${SITE}/about/`,
       },
-    ],
-  };
+      publisher: { '@id': `${SITE}/#business` },
+      image: ogUrl,
+      datePublished,
+      isPartOf: { '@id': `${SITE}/glossary/#muntin-glossary` },
+    },
+  ];
+  // Phase G.4 — sameAs entity-resolution merge. Re-references the
+  // existing DefinedTerm @id so search engines (Google + LLMs) merge
+  // the sameAs property onto the canonical term node.
+  if (sameAs && sameAs.length) {
+    graph.push({
+      '@type': 'DefinedTerm',
+      '@id': `${baseUrl}#term`,
+      sameAs,
+    });
+  }
+  const obj = { '@context': 'https://schema.org', '@graph': graph };
 
   const json = JSON.stringify(obj, null, 2);
   return [
@@ -140,6 +148,11 @@ const LOCALES = [
   { code: 'es', dir: path.join(repoRoot, 'es/glossary') },
 ];
 
+const sameAsPath = path.join(repoRoot, 'data/glossary-sameas.json');
+const sameAsMap = fs.existsSync(sameAsPath)
+  ? (JSON.parse(fs.readFileSync(sameAsPath, 'utf8')).terms || {})
+  : {};
+
 let changed = 0;
 let skipped = 0;
 const missing = [];
@@ -152,7 +165,8 @@ for (const { code, dir } of LOCALES) {
       missing.push(`${code}/${slug}: no DefinedTerm JSON-LD found`);
       continue;
     }
-    const block = buildBlock({ slug, locale: code, term });
+    const sameAs = sameAsMap[slug] || [];
+    const block = buildBlock({ slug, locale: code, term, sameAs });
 
     let next;
     if (SENTINEL_RE.test(src)) {
