@@ -1,0 +1,179 @@
+{
+  "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post. scripts/inject-article-tldr.mjs reads this file and stamps two sentinel-bracketed <aside> blocks into each article: a TL;DR within the first 800 chars of #post-body, and a Key Takeaways block before the article-foot CTA. AI search engines (ChatGPT, Perplexity, Google AI Overviews, Claude) lift these blocks nearly verbatim — keeping the language tight and operator-specific is the work. Slug must match a directory under blog/. ES counterparts go in article-content.es.json (translated, not regenerated, so the editorial voice carries). When an article is added to data/post-end-cta.json + data/library-tags.json + data/tool-knit.json, ALSO add a TL;DR + key_takeaways here.",
+
+  "_status": {
+    "review_required": "First-draft content, written from each article's H2 outline + first paragraph. Don should review for voice + accuracy before promoting.",
+    "voice_check": "Each TL;DR uses 3-5 imperative-or-indicative bullets, no hedging language. Key Takeaways use declarative one-liners — never starting with 'You should' or 'Always' (corporate-rubric register)."
+  },
+
+  "articles": {
+    "wix-vs-custom-for-restaurants": {
+      "tldr": [
+        "Wix is fine for first-day, placeholder, pop-up sites — but it hits walls fast for any restaurant past its first year.",
+        "Six places it breaks: closed-system menu, slow mobile, hostage reservations, template-good SEO, no real customization, exit costs.",
+        "The math: a custom site usually pays back in 12-18 months for any restaurant doing $40K+/month."
+      ],
+      "key_takeaways": [
+        "Your menu inside Wix isn't crawlable as Restaurant schema — Google can't rank individual dishes.",
+        "Wix mobile speed scores typically land in the 40s-50s out of 100; that's the platform, not your settings.",
+        "If your reservation system isn't on Wix's partner list, you're stuck with what they offer.",
+        "Exit costs (export, redirect, recreate) are real and invisible until you try to leave.",
+        "Wix is the right call when the site is genuinely disposable — pop-ups, ghost kitchens, season tests."
+      ]
+    },
+    "is-doordash-worth-it-for-restaurants-in-2026": {
+      "tldr": [
+        "$100 of DoorDash revenue typically becomes $40-50 in your account after commission, packaging, and prep time.",
+        "The honest question is whether the order would exist without DoorDash — for most operators, less than half do.",
+        "The 2026 recommendation depends on your volume, your prime cost, and whether your own ordering page actually works."
+      ],
+      "key_takeaways": [
+        "Run the math on YOUR ticket, not the average — commission tier moves with volume.",
+        "Direct ordering through your own site keeps the full margin AND keeps the customer relationship.",
+        "The break-even on a delivery-only ghost kitchen is different from a dine-in restaurant testing delivery.",
+        "DoorDash is still the right answer when you have no time to run direct + your kitchen has spare capacity.",
+        "Save your DoorDash scenario in Margin Math and re-run it whenever your tier moves."
+      ]
+    },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
+      "tldr": [
+        "Most price-raise anxiety comes from running the math on the wrong number — total revenue instead of contribution margin.",
+        "A 4-7% across-the-board raise typically loses fewer than 2% of reservations when paired with menu re-staging.",
+        "The website moves matter as much as the price itself: better descriptions, photos on the top-margin items, and clean reservation flow."
+      ],
+      "key_takeaways": [
+        "Charm pricing ($X.95) still works for casual; round pricing ($X) reads upscale — the choice depends on your room.",
+        "Raise the prices on items where the description is best, not where the margin is worst.",
+        "Re-photograph the items you raise — the perceived value moves more than the actual change.",
+        "Put the reservation CTA above the fold the same week you raise prices; the site has to feel current.",
+        "Save the price-raise scenario in Margin Math; re-run when food cost moves more than 1.5%."
+      ]
+    },
+    "how-to-set-up-google-business-profile-for-your-restaurant": {
+      "tldr": [
+        "Claim, verify, then complete every field — most restaurants leave 30%+ of the profile blank.",
+        "Categories matter more than anything else: pick the most specific primary category your restaurant qualifies for.",
+        "Photos and Posts both decay — without a 15-minute weekly habit, the profile stops working within a quarter."
+      ],
+      "key_takeaways": [
+        "Primary category controls which queries Google shows you for — change it carefully.",
+        "Add at least 10 real photos at setup; aim for 30 within the first 90 days.",
+        "Respond to every review within 48 hours — Google reads response rate as an active-business signal.",
+        "Google Posts expire after 7 days; a quiet profile slips down the local-pack ranking.",
+        "The 15-minute weekly habit (1 photo, 1 post, all reviews replied) compounds harder than any one-time fix."
+      ]
+    },
+    "how-to-get-more-google-reviews-for-your-restaurant": {
+      "tldr": [
+        "Reviews compound — a restaurant going from 50 to 200 reviews typically sees a 15-25% lift in pack-card click-through.",
+        "Five-piece system: a printed QR card, a check-message line, a follow-up text, a website CTA, and a manager who actually reads them.",
+        "Don't buy reviews, don't gate, don't filter — Google's spam detection has gotten dramatically better."
+      ],
+      "key_takeaways": [
+        "The QR card on the check beats every other ask method 4-to-1 in field tests.",
+        "A short text-after-meal — \"hope you enjoyed dinner; we read every review\" — converts when sent within 12 hours.",
+        "Five-star reviews matter less than the 4-and-3 stars you respond well to (Google reads responsiveness).",
+        "Negative reviews aren't fatal; ignored negative reviews are.",
+        "The compounding window is 90 days — the system that's been running 90+ days outperforms the one that's been running 30."
+      ]
+    },
+    "how-to-recover-reservations-from-googles-find-a-table": {
+      "tldr": [
+        "Find a Table changed how Google handles restaurant queries — the booking happens in Google before the visitor ever reaches your site.",
+        "If your reservation system isn't on Find a Table, you're losing 8-15% of search-driven reservations to competitors who are.",
+        "Three concrete moves recover most of the lost flow without giving up your owned booking surface."
+      ],
+      "key_takeaways": [
+        "OpenTable, Resy, Tock, and SevenRooms are all currently wired into Find a Table — pick one if you're on none.",
+        "Don't disable reservations in GBP — that costs you the call-and-walk-in queries too.",
+        "Add reservation schema to your site so Google can verify the integration is real.",
+        "Restaurant Audit's GBP section flags Find a Table eligibility as a separate score.",
+        "The wider pattern: every Google surface that takes the booking before your site does costs you the relationship — get the booking, then get the email."
+      ]
+    },
+    "how-much-does-a-custom-restaurant-website-cost-in-2026": {
+      "tldr": [
+        "Independent-restaurant custom-website pricing in 2026 ranges from $2,500 to $25,000+, with most landing $6,000-$12,000.",
+        "Four real options: DIY platform ($25-50/mo), template-driven studio ($2.5-6K), full custom ($6-20K), agency-of-record ($25K+).",
+        "What actually drives the price: menu complexity, reservation integration, ordering integration, and how many languages."
+      ],
+      "key_takeaways": [
+        "Pure design polish doesn't move bookings — load speed, mobile UX, and SEO foundation do.",
+        "A real custom site usually pays back in 12-18 months at any volume above $40K/month.",
+        "Red flags on the cheap end: no contract, no Lighthouse score guarantee, no source-code handover.",
+        "Red flags on the expensive end: \"discovery phases\" before mockups, retainer for content updates you should do yourself.",
+        "Run Tech Stack Detector on your current site before any quote — the baseline matters."
+      ]
+    },
+    "what-should-be-on-a-restaurant-website": {
+      "tldr": [
+        "Seven pages do almost all the work: home, menu, hours-and-location, reservations, story, contact, and one current promotion.",
+        "Pages you probably don't need: separate \"events\" page, blog, gallery (the site itself is the gallery).",
+        "Structure that earns its keep: every page answers a hungry-at-11pm question in under 3 taps."
+      ],
+      "key_takeaways": [
+        "The home page exists to answer one question: \"is this what I want tonight?\"",
+        "The menu page must be HTML, not a PDF — PDFs are dead in mobile + AI search.",
+        "Reservations belong above the fold on every page, not buried in a contact form.",
+        "Story page is the second most important after menu — it's what guests share to convince a friend.",
+        "Delete the \"events\" page; weave events into the home page as a current-promotion strip."
+      ]
+    },
+    "why-your-restaurant-loses-reservations-every-night": {
+      "tldr": [
+        "The reservation funnel is the most honest marketing stat in restaurant ops — and most operators have never measured it.",
+        "Six leaks, in order: hours unclear, reservation-CTA buried, mobile slow, menu missing, photos cold, schema absent.",
+        "Fixing the first three leaks alone typically recovers 8-15% of lost bookings."
+      ],
+      "key_takeaways": [
+        "Hours visible above the fold has the highest single-fix impact in field tests.",
+        "If reservations require more than two taps from any page, the funnel is leaking.",
+        "Mobile load above 3 seconds correlates with a 30%+ bounce on the reservation page.",
+        "Menu absent or PDF-only is the second-largest leak — Google can't help you rank without it.",
+        "Run Restaurant Audit, save the score, fix the top two flags, re-run in 30 days."
+      ]
+    },
+    "five-restaurant-website-changes-recover-one-percent-margin": {
+      "tldr": [
+        "Five small website moves, none of which require a redesign, compound to roughly 1% margin recovery for a typical mid-volume restaurant.",
+        "Each move is independent — pick the one that's easiest in your context and ship it this week.",
+        "The compounding argument is honest math, not a marketing pitch: each percentage point is worth $X annual at your volume."
+      ],
+      "key_takeaways": [
+        "Hours above the fold: +0.20% margin, 30 minutes of work.",
+        "One primary reservation CTA: +0.25%, replaces every other booking link.",
+        "Direct own-ordering link up top: +0.30%, beats every third-party platform on margin.",
+        "Better descriptions on top-margin items: +0.15%, requires Menu Copy Inspector.",
+        "Delete every stale promo and old PDF: +0.10%, the cleanup nobody schedules but everybody needs."
+      ]
+    },
+    "can-chatgpt-write-your-restaurant-website": {
+      "tldr": [
+        "ChatGPT is genuinely good at first-draft body copy, alt-text, and structured FAQ generation for restaurant sites.",
+        "Where it gets you quietly wrong: room-specific details, hyperlocal language, the menu's actual voice.",
+        "The one-page briefing that fixes it: 12 prompts that pin the model to your restaurant's specifics, not the model's averages."
+      ],
+      "key_takeaways": [
+        "AI-generated copy ranks fine for SEO; it just sounds generic, which kills bookings.",
+        "Feed the model your printed menu PDF, not just dish names — the descriptions carry the voice.",
+        "Have a human re-write every \"approximately\" / \"roughly\" / \"various\" — those are AI tells.",
+        "FAQ schema is one of the highest-leverage AI uses; let the model write 12 questions and prune to 6.",
+        "Run Menu Copy Inspector on the AI output before publishing; it catches the dead-language patterns."
+      ]
+    },
+    "does-my-restaurant-need-a-website": {
+      "tldr": [
+        "If you have a Google Business Profile and you're satisfied with it doing all the work, the answer might genuinely be no.",
+        "Where GBP falls short: it can't carry your story, your real menu copy, or any direct-relationship channel.",
+        "The five-minute test that tells you whether you need one — and what it would actually cost if you do."
+      ],
+      "key_takeaways": [
+        "GBP gives you discoverability and basic info; a website gives you the relationship.",
+        "Without a website, you're renting your audience from Google — fine until Google's algorithm changes.",
+        "The five-minute test: if every regular found you a different way, you don't need a site yet.",
+        "If you genuinely don't need one, do the 30-minute GBP audit and walk away.",
+        "When you do need one, a $2,500 template site is enough to start; full custom comes when the room demands it."
+      ]
+    }
+  }
+}
