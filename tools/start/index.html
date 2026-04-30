@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Start Here — Pick the right tool first | Muntin Digital</title>
+<meta name="description" content="Five quick questions, then we point you at the right tool first. The library has seventeen calculators; you don't need to read all of them to fix what's leaking." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/start/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/start/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/start/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/start/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Start Here — Pick the right tool first | Muntin Digital" />
+<meta property="og:description" content="Five quick questions. Then we point you at the right tool first." />
+<meta property="og:url" content="https://muntin.digital/tools/start/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tools.png" />
+
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://muntin.digital/tools/start/#webpage",
+      "name": "Start here — pick the right tool first",
+      "description": "Five-question decision tree that routes restaurant operators to the calculators most likely to move their next decision. No login, no save, runs in the browser.",
+      "url": "https://muntin.digital/tools/start/",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://muntin.digital/#website" },
+      "publisher": { "@id": "https://muntin.digital/#business" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://muntin.digital/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Start here", "item": "https://muntin.digital/tools/start/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="preload" as="style" href="/assets/site.css?v=20260429-batch3">
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
+
+<style>
+  /* /tools/start/ — five-question decision tree.
+     Pure HTML radios. JS only reveals the result panel and
+     reorders the tool list; no router, no state library. */
+  .ts-main { padding: clamp(64px, 10vh, 120px) clamp(20px, 4vw, 64px) clamp(56px, 9vh, 100px); }
+  .ts-shell { max-width: 760px; margin: 0 auto; }
+  .ts-eyebrow { font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; display: inline-flex; align-items: center; gap: 10px; }
+  .ts-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--teal); }
+  .ts-h1 { font-family: var(--font-display); font-size: clamp(34px, 5vw, 48px); font-weight: 500; line-height: 1.08; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 18px; }
+  .ts-sub { font-size: var(--fs-lead); line-height: var(--leading-card); color: var(--ink-soft); margin: 0 0 28px; max-width: 60ch; }
+  .ts-form { display: flex; flex-direction: column; gap: 22px; margin: 0 0 28px; }
+  .ts-q { padding: 18px 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .ts-q legend { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink); padding: 0; margin: 0 0 6px; line-height: 1.35; }
+  .ts-q-help { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 14px; line-height: var(--leading-card); }
+  .ts-options { display: flex; flex-direction: column; gap: 8px; }
+  .ts-option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface-2); cursor: pointer; font-size: 14px; line-height: var(--leading-card); color: var(--ink); transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); }
+  .ts-option:hover { border-color: var(--teal); }
+  .ts-option input { flex: 0 0 auto; margin: 3px 0 0; cursor: pointer; }
+  .ts-option:has(input:checked) { border-color: var(--teal); background: var(--teal-tint); }
+  .ts-option-text strong { display: block; font-weight: 600; color: var(--ink); }
+  .ts-option-text span { display: block; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .ts-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin: 6px 0 0; }
+  .ts-actions .ts-progress { font-size: 12.5px; color: var(--stone); margin-left: auto; font-variant-numeric: tabular-nums; }
+  .ts-result { display: none; padding: 22px 24px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); box-shadow: var(--elev-1); margin-top: 8px; }
+  .ts-result[data-shown="true"] { display: block; }
+  .ts-result h2 { font-family: var(--font-display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 500; line-height: 1.25; color: var(--ink); margin: 0 0 8px; letter-spacing: -0.01em; }
+  .ts-result-lede { font-size: 15.5px; line-height: var(--leading-card); color: var(--ink-soft); margin: 0 0 16px; }
+  .ts-rec-list { list-style: none; padding: 0; margin: 0; counter-reset: rec; display: flex; flex-direction: column; gap: 12px; }
+  .ts-rec-list li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface-2); }
+  .ts-rec-list li::before { counter-increment: rec; content: counter(rec); display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 999px; background: var(--teal); color: var(--cream); font-weight: 700; font-size: 13px; }
+  .ts-rec-name { font-weight: 600; color: var(--ink); font-size: 15px; }
+  .ts-rec-name a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent); }
+  .ts-rec-name a:hover, .ts-rec-name a:focus-visible { border-bottom-color: var(--teal); }
+  .ts-rec-why { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-top: 2px; }
+  .ts-skip { font-size: 13px; color: var(--stone); margin: 16px 0 0; line-height: var(--leading-card); }
+  .ts-fallback { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-fallback a { color: var(--teal); font-weight: 600; text-decoration: none; }
+  .ts-fallback a:hover { text-decoration: underline; }
+  @media (max-width: 540px) {
+    .ts-q { padding: 16px 18px; }
+    .ts-result { padding: 18px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/tools/start/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <a href="/learn/">Library</a>
+    <a href="/tools/">Tools</a>
+    <a href="/about/">About</a>
+    <a class="btn btn-primary js-window" href="/window/">Write to Don</a>
+    <a href="/es/tools/start/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+</header>
+
+<main id="main" class="ts-main">
+  <div class="ts-shell">
+    <p class="ts-eyebrow">Start here</p>
+    <h1 class="ts-h1">Pick the right tool first.</h1>
+    <p class="ts-sub">Seventeen calculators is too many for a first visit. Five questions, thirty seconds, then we point you at the two or three that match what&rsquo;s actually leaking. Nothing leaves your browser &mdash; this is just routing.</p>
+
+    <form id="tsForm" class="ts-form" novalidate>
+      <fieldset class="ts-q" data-q="leak">
+        <legend>1. What&rsquo;s leaking?</legend>
+        <p class="ts-q-help">The thing keeping you up. Pick the closest one.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="leak" value="margin"><span class="ts-option-text"><strong>Margin / cash flow</strong><span>Sales are fine but the bank account isn&rsquo;t.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="covers"><span class="ts-option-text"><strong>Covers / volume</strong><span>The room isn&rsquo;t full enough.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="discovery"><span class="ts-option-text"><strong>Online discovery</strong><span>Google / Maps / mobile aren&rsquo;t doing their job.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="kitchen"><span class="ts-option-text"><strong>Kitchen / menu</strong><span>Plate cost, recipe drift, photo brand.</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="pnl">
+        <legend>2. Do you have last month&rsquo;s P&amp;L numbers handy?</legend>
+        <p class="ts-q-help">Sales, food cost, labor cost &mdash; even rough percentages.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="pnl" value="yes"><span class="ts-option-text"><strong>Yes &mdash; I can pull them</strong></span></label>
+          <label class="ts-option"><input type="radio" name="pnl" value="approx"><span class="ts-option-text"><strong>Approximately</strong><span>I know the percentages within a few points.</span></span></label>
+          <label class="ts-option"><input type="radio" name="pnl" value="no"><span class="ts-option-text"><strong>No</strong><span>That&rsquo;s the gap I&rsquo;m trying to close.</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="recipe">
+        <legend>3. Do you have a written recipe for your top sellers?</legend>
+        <p class="ts-q-help">Ingredients, weights, portion sizes. Standardized or not.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="recipe" value="yes"><span class="ts-option-text"><strong>Yes</strong></span></label>
+          <label class="ts-option"><input type="radio" name="recipe" value="partial"><span class="ts-option-text"><strong>For some dishes</strong></span></label>
+          <label class="ts-option"><input type="radio" name="recipe" value="no"><span class="ts-option-text"><strong>No</strong></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="raise">
+        <legend>4. Have you raised menu prices in the last 12 months?</legend>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="raise" value="recent"><span class="ts-option-text"><strong>Yes &mdash; in the last 6 months</strong></span></label>
+          <label class="ts-option"><input type="radio" name="raise" value="old"><span class="ts-option-text"><strong>Yes &mdash; 6&ndash;12 months ago</strong></span></label>
+          <label class="ts-option"><input type="radio" name="raise" value="no"><span class="ts-option-text"><strong>No</strong></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="agg">
+        <legend>5. On DoorDash, Uber Eats, or Grubhub?</legend>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="agg" value="heavy"><span class="ts-option-text"><strong>Yes &mdash; significant share</strong><span>20% or more of revenue.</span></span></label>
+          <label class="ts-option"><input type="radio" name="agg" value="some"><span class="ts-option-text"><strong>Yes &mdash; small share</strong></span></label>
+          <label class="ts-option"><input type="radio" name="agg" value="none"><span class="ts-option-text"><strong>No</strong><span>Direct only or pickup-only.</span></span></label>
+        </div>
+      </fieldset>
+
+      <div class="ts-actions">
+        <button type="submit" class="btn btn-primary">Show my path</button>
+        <button type="button" class="btn btn-ghost" id="tsReset">Reset</button>
+        <span class="ts-progress" id="tsProgress" aria-live="polite">0 of 5 answered</span>
+      </div>
+    </form>
+
+    <section class="ts-result" id="tsResult" aria-live="polite" aria-labelledby="tsResultHeading">
+      <h2 id="tsResultHeading">Your path through the library.</h2>
+      <p class="ts-result-lede" id="tsResultLede"></p>
+      <ol class="ts-rec-list" id="tsRecList"></ol>
+      <p class="ts-skip" id="tsResultSkip"></p>
+      <p class="ts-fallback">Already know the catalog? <a href="/tools/">Browse all 17 tools &rarr;</a> &middot; New to all of this? <a href="/learn/start-here/">Take the 60-minute guided tour &rarr;</a></p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid"></div>
+  </div>
+</footer>
+
+<script>
+  // Decision-tree routing for /tools/start/. Plain JS, no router.
+  // Tool catalog with one-line descriptions; each rule below picks
+  // an ordered subset and writes a "why" reason per tool.
+  (function () {
+    var TOOLS = {
+      'plate-cost':       { name: 'Plate Cost Calculator',     url: '/tools/plate-cost/' },
+      'menu-engineering': { name: 'Menu Engineering Matrix',   url: '/tools/menu-engineering/' },
+      'margin-math':      { name: 'Margin Math',               url: '/tools/margin-math/' },
+      'menu-copy':        { name: 'Menu Copy Inspector',       url: '/tools/menu-copy/' },
+      'photo-brief':      { name: 'Photo Brief Builder',       url: '/tools/photo-brief/' },
+      'seo-grader':       { name: 'SEO Grader',                url: '/tools/seo-grader/' },
+      'mobile-check':     { name: 'Mobile-Friendly Check',     url: '/tools/mobile-check/' },
+      'speed-test':       { name: 'Speed Test',                url: '/tools/speed-test/' },
+      'gbp-grader':       { name: 'Google Business Profile Grader', url: '/tools/gbp-grader/' },
+      'audit':            { name: 'Restaurant Audit',          url: '/tools/audits/restaurant/' }
+    };
+
+    function build(answers) {
+      var path = [];
+      var skipped = [];
+      var lede = '';
+
+      // Q1 — primary leak determines the spine.
+      if (answers.leak === 'margin') {
+        lede = 'Margin work always pays back twice — once for the operator and again for the team. The order below moves from inputs you control daily to the structural levers underneath.';
+        if (answers.recipe === 'yes' || answers.recipe === 'partial') {
+          path.push({ k: 'plate-cost', why: 'Start here. Recipe-level cost per plate is the input every other margin tool needs.' });
+        }
+        path.push({ k: 'margin-math', why: 'Run the prime-cost band first; that tells you whether the leak is food, labor, or both.' });
+        if (answers.pnl === 'yes' || answers.pnl === 'approx') {
+          path.push({ k: 'menu-engineering', why: 'Once costs are known, Menu Engineering shows which dishes are the actual leverage point.' });
+        }
+        if (answers.agg === 'heavy' || answers.agg === 'some') {
+          path.push({ k: 'margin-math', why: 'Specifically the Delivery Break-Even card — heavy aggregator share usually carries hidden fee margin.' });
+        }
+        if (answers.raise === 'no') {
+          path.push({ k: 'margin-math', why: 'Then the Price-Raise Simulator. Restaurants that haven\'t raised in 12 months usually leave 2–4 points on the table.' });
+        }
+      } else if (answers.leak === 'covers') {
+        lede = 'Covers usually leak from one of three places: the menu doesn\'t convert, the website doesn\'t rank, or the door isn\'t findable on Google. Test in that order.';
+        path.push({ k: 'menu-copy', why: 'A 3-second sales pitch. If your descriptions hedge or skip sensory cues, the menu itself is shedding orders.' });
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile is the single highest-leverage local SEO surface. Test it before any on-site SEO work.' });
+        path.push({ k: 'seo-grader', why: 'Title tag and meta description — the two lines a Google searcher reads before clicking. Cheap to fix, big effect.' });
+        if (answers.raise === 'no' && (answers.pnl === 'yes' || answers.pnl === 'approx')) {
+          path.push({ k: 'margin-math', why: 'Sometimes "more covers" is the wrong goal — a 5% raise on existing covers can beat a 10% volume push on tighter margins.' });
+        }
+      } else if (answers.leak === 'discovery') {
+        lede = 'Discovery is sequenced: GBP first (it dominates local intent), then mobile + speed (which gate every Google rank), then schema and titles.';
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile is the storefront on Google Maps and Search. It outweighs the website for "near me" queries.' });
+        path.push({ k: 'mobile-check', why: 'Mobile usability is the floor — fail this and the rest of SEO doesn\'t matter.' });
+        path.push({ k: 'speed-test', why: 'Page speed is a confirmed ranking factor and a measurable conversion factor on mobile.' });
+        path.push({ k: 'seo-grader', why: 'Title and meta description — the readable layer of every search result.' });
+      } else if (answers.leak === 'kitchen') {
+        lede = 'Kitchen-side fixes pay back in margin AND brand. Start with the dish, then how it photographs, then how the menu reads.';
+        path.push({ k: 'plate-cost', why: 'Plate-level cost first. Without it, every other kitchen-side decision is a guess.' });
+        if (answers.pnl === 'yes' || answers.pnl === 'approx') {
+          path.push({ k: 'menu-engineering', why: 'Per-dish profitability + popularity. Tells you which Stars to protect and which Dogs to retire.' });
+        }
+        path.push({ k: 'photo-brief', why: 'A tight shot list reuses for a year. The dedup math here pays the photographer back.' });
+        path.push({ k: 'menu-copy', why: 'How the dish reads on the menu. Sensory and provenance cues lift order rates without changing the food.' });
+      }
+
+      // Always end with a fallback to the comprehensive audit if the
+      // leak is structural and the operator wants one pass that
+      // covers everything.
+      if (answers.pnl === 'no') {
+        path.push({ k: 'audit', why: 'No P&L numbers means we lack the inputs for the per-card calculators. The Restaurant Audit infers what it can and gives you a ranked list of structural fixes.' });
+      }
+
+      // Skip rules — explicitly tell the user what NOT to focus on
+      // first, so they don't get distracted.
+      if (answers.leak !== 'discovery') skipped.push('GBP / SEO / Speed grader (queue these later)');
+      if (answers.leak !== 'kitchen' && !path.find(function(p){return p.k==='photo-brief';})) skipped.push('Photo Brief (after the cost work)');
+
+      // Dedup by tool key — same tool referenced twice keeps only the
+      // first reason (it ran first for a reason).
+      var seen = {};
+      var deduped = [];
+      path.forEach(function(p){ if (!seen[p.k]) { seen[p.k] = true; deduped.push(p); } });
+      return { path: deduped, skipped: skipped, lede: lede };
+    }
+
+    var form = document.getElementById('tsForm');
+    var resultBox = document.getElementById('tsResult');
+    var ledeEl = document.getElementById('tsResultLede');
+    var listEl = document.getElementById('tsRecList');
+    var skipEl = document.getElementById('tsResultSkip');
+    var progressEl = document.getElementById('tsProgress');
+    var resetBtn = document.getElementById('tsReset');
+
+    var QUESTIONS = ['leak','pnl','recipe','raise','agg'];
+    function getAnswers() {
+      var a = {};
+      QUESTIONS.forEach(function(q){
+        var sel = form.querySelector('input[name="' + q + '"]:checked');
+        if (sel) a[q] = sel.value;
+      });
+      return a;
+    }
+    function updateProgress() {
+      var n = Object.keys(getAnswers()).length;
+      progressEl.textContent = n + ' of ' + QUESTIONS.length + ' answered';
+    }
+
+    form.addEventListener('change', updateProgress);
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var answers = getAnswers();
+      // Require Q1 (the leak) — every other question is helpful but
+      // the spine of the recommendation depends on Q1.
+      if (!answers.leak) {
+        var firstQ = form.querySelector('[data-q="leak"] input');
+        if (firstQ) firstQ.focus();
+        progressEl.textContent = 'Pick a leak in question 1 to start.';
+        return;
+      }
+      var built = build(answers);
+      ledeEl.textContent = built.lede;
+      listEl.innerHTML = built.path.map(function(p){
+        var t = TOOLS[p.k];
+        if (!t) return '';
+        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span></div></li>';
+      }).join('');
+      skipEl.textContent = built.skipped.length
+        ? 'Skip for now: ' + built.skipped.join(' · ')
+        : '';
+      resultBox.setAttribute('data-shown', 'true');
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (window.plausible) window.plausible('Start Here Path', { props: { leak: answers.leak } });
+    });
+
+    resetBtn.addEventListener('click', function(){
+      form.reset();
+      resultBox.removeAttribute('data-shown');
+      updateProgress();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    updateProgress();
+  })();
+</script>
+
+<script src="/assets/site.js?v=20260429-batch3" defer></script>
+</body>
+</html>
