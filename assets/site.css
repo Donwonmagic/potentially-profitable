@@ -83,9 +83,26 @@
      article bodies (/blog/, /learn/, /glossary/<term>/, About).
      DO NOT apply to /tools/ result surfaces — utility stays utilitarian. */
   --prose-measure:      64ch;             /* upgrades to 66ch on lg breakpoints */
-  --leading-prose:      1.6;
+  --leading-prose:      1.6;             /* editorial body (.prose, .article-body) */
+  --leading-tool:       1.5;             /* tool internals: tables, helpers, badges */
+  --leading-card:       1.55;            /* cards, .edu-result__lede, mid-density UI */
   --rule:               1px solid var(--surface-2);  /* hairline rules vs cards on index pages */
 }
+
+/* ============ Line-height convention ============
+   Three tokens, three contexts. Use the token, not the literal:
+
+     1.5  → --leading-tool   table cells, button labels, eyebrow chips,
+                             dense tool grids, score-card check rows
+     1.55 → --leading-card   most card / panel body copy, .edu-result
+                             lede, dek, UI paragraphs
+     1.6  → --leading-prose  editorial / long-form body — anywhere
+                             .prose or .article-body wraps the content
+
+   Headings (h1–h4) use their own clamp-driven line-height (1.2–1.4)
+   and don't read from these tokens. Existing literals predate the
+   tokens and are not being mass-rewritten — adopt as you touch a
+   surface. */
 
 /* ============ Token usage notes ============
    --stone-2 (#9A958B) — DECORATIVE ONLY. Used for icons, dividers,
