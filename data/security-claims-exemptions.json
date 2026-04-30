@@ -1,0 +1,66 @@
+{
+  "_doc": "Phase H.8 — per-tool exemption registry for check-tool-no-fetch.mjs. The 9 claims in data/security-claims.json apply most cleanly to calculator-style tools (operator types financial numbers, math runs in browser). Audit/grader-style tools (audits/restaurant, gbp-grader, schema-check, seo-grader, speed-test, mobile-check, compare, tech-stack) take a URL and make one explicit, user-initiated fetch to grade it. Different category, different posture. Claim 1 ('Your numbers never leave the page') applies to financial inputs, not a URL the operator typed in deliberately to get audited. Claim 4 ('No localStorage for inputs') applies to financial values, not audit history (which is a feature, opt-in, locally-only). This file names which tools are exempt from which claims and the documented reason.",
+
+  "exemptions": {
+    "audits/restaurant": {
+      "claims": [1, 2, 4],
+      "reason": "Audit-style tool: takes a URL the operator typed in, fetches /api/audit-snapshot when the operator clicks Share, persists audit history to localStorage as a feature. No financial inputs. Storage is locally-only and can be cleared by the operator from the tool itself."
+    },
+    "gbp-grader": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches /api/gbp-lookup with the GBP listing the operator named. Single explicit user-initiated request. No financial inputs."
+    },
+    "schema-check": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches the URL the operator typed in to validate its schema. Single explicit user-initiated request. No financial inputs."
+    },
+    "seo-grader": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches the URL the operator typed in to grade its SEO. Single explicit user-initiated request. No financial inputs."
+    },
+    "speed-test": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches /api/psi with the URL the operator typed in. Single explicit user-initiated request. No financial inputs."
+    },
+    "mobile-check": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches /api/page-crawl with the URL the operator typed in. Single explicit user-initiated request. No financial inputs."
+    },
+    "compare": {
+      "claims": [1, 4],
+      "reason": "Audit-style tool: fetches multiple URLs side-by-side. localStorage holds compare-history (URLs only, no financial data)."
+    },
+    "tech-stack": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches the URL the operator typed in to detect tech stack. Single explicit user-initiated request."
+    },
+    "search-ideas": {
+      "claims": [1],
+      "reason": "Audit-style tool: fetches /api/did-you-mean for keyword expansions on the operator's input."
+    },
+    "storefront-health": {
+      "claims": [1, 4],
+      "reason": "Composite of 6 audit tools — inherits their fetch posture. Saves storefront-property KV state when the operator opts in via Save."
+    },
+    "brand-suite": {
+      "claims": [1, 4],
+      "reason": "Saves color palettes to localStorage as a feature when the operator clicks Save. Vendored heic-decoder.js (libheif WASM) contains a fetch() in its WASM loader for the .wasm binary — the fetch is to a same-origin asset, not operator data."
+    },
+    "menu-copy": {
+      "claims": [4],
+      "reason": "Saves menu-copy drafts to localStorage as a feature when the operator clicks Save. Drafts are menu text (Tier 1 / Tier 2 in the data-tiering model), not financial data."
+    },
+    "menu-engineering": {
+      "claims": [4],
+      "reason": "Saves menu-engineering matrix to localStorage when the operator clicks Save. Mix data, not raw P&L numbers."
+    },
+    "open-hours": {
+      "claims": [4],
+      "reason": "Saves hours schema to localStorage when the operator clicks Export. Hours are Tier 1 (Public) data."
+    },
+    "photo-brief": {
+      "claims": [4],
+      "reason": "Saves photo brief drafts to localStorage when the operator clicks Save."
+    }
+  }
+}
