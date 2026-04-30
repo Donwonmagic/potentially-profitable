@@ -158,6 +158,79 @@
   </nav>
 </header>
 
-<!-- Stub: main, JS, footer appended in follow-up commits -->
+<main id="main" class="ts-main">
+  <div class="ts-shell">
+    <p class="ts-eyebrow">Empieza aquí</p>
+    <h1 class="ts-h1">Elige primero la herramienta correcta.</h1>
+    <p class="ts-sub">Diecisiete calculadoras es demasiado para una primera visita. Cinco preguntas, treinta segundos, y te apuntamos a las dos o tres que coinciden con lo que de verdad está goteando. Nada sale de tu navegador &mdash; esto es solo enrutamiento.</p>
+
+    <form id="tsForm" class="ts-form" novalidate>
+      <fieldset class="ts-q" data-q="leak">
+        <legend>1. ¿Qué está goteando?</legend>
+        <p class="ts-q-help">Lo que te quita el sueño. Elige lo más cercano.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="leak" value="margin"><span class="ts-option-text"><strong>Margen / flujo de caja</strong><span>Las ventas están bien pero la cuenta del banco no.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="covers"><span class="ts-option-text"><strong>Cubiertos / volumen</strong><span>El comedor no se llena lo suficiente.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="discovery"><span class="ts-option-text"><strong>Descubrimiento online</strong><span>Google / Maps / móvil no están haciendo su trabajo.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="kitchen"><span class="ts-option-text"><strong>Cocina / menú</strong><span>Costo del plato, deriva de receta, marca fotográfica.</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="pnl">
+        <legend>2. ¿Tienes a la mano los números del P&amp;L del mes pasado?</legend>
+        <p class="ts-q-help">Ventas, food cost, labor cost &mdash; aunque sean porcentajes aproximados.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="pnl" value="yes"><span class="ts-option-text"><strong>Sí &mdash; los puedo sacar</strong></span></label>
+          <label class="ts-option"><input type="radio" name="pnl" value="approx"><span class="ts-option-text"><strong>Aproximadamente</strong><span>Sé los porcentajes con un margen de unos puntos.</span></span></label>
+          <label class="ts-option"><input type="radio" name="pnl" value="no"><span class="ts-option-text"><strong>No</strong><span>Esa es la brecha que estoy tratando de cerrar.</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="recipe">
+        <legend>3. ¿Tienes receta escrita para tus platos top?</legend>
+        <p class="ts-q-help">Ingredientes, pesos, tamaños de porción. Estandarizada o no.</p>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="recipe" value="yes"><span class="ts-option-text"><strong>Sí</strong></span></label>
+          <label class="ts-option"><input type="radio" name="recipe" value="partial"><span class="ts-option-text"><strong>Para algunos platos</strong></span></label>
+          <label class="ts-option"><input type="radio" name="recipe" value="no"><span class="ts-option-text"><strong>No</strong></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="raise">
+        <legend>4. ¿Has subido precios en los últimos 12 meses?</legend>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="raise" value="recent"><span class="ts-option-text"><strong>Sí &mdash; en los últimos 6 meses</strong></span></label>
+          <label class="ts-option"><input type="radio" name="raise" value="old"><span class="ts-option-text"><strong>Sí &mdash; hace 6&ndash;12 meses</strong></span></label>
+          <label class="ts-option"><input type="radio" name="raise" value="no"><span class="ts-option-text"><strong>No</strong></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ts-q" data-q="agg">
+        <legend>5. ¿En DoorDash, Uber Eats, o Grubhub?</legend>
+        <div class="ts-options">
+          <label class="ts-option"><input type="radio" name="agg" value="heavy"><span class="ts-option-text"><strong>Sí &mdash; participación grande</strong><span>20% o más de los ingresos.</span></span></label>
+          <label class="ts-option"><input type="radio" name="agg" value="some"><span class="ts-option-text"><strong>Sí &mdash; participación pequeña</strong></span></label>
+          <label class="ts-option"><input type="radio" name="agg" value="none"><span class="ts-option-text"><strong>No</strong><span>Solo directo o solo pickup.</span></span></label>
+        </div>
+      </fieldset>
+
+      <div class="ts-actions">
+        <button type="submit" class="btn btn-primary">Mostrar mi ruta</button>
+        <button type="button" class="btn btn-ghost" id="tsReset">Reiniciar</button>
+        <span class="ts-progress" id="tsProgress" aria-live="polite">0 de 5 contestadas</span>
+      </div>
+    </form>
+
+    <section class="ts-result" id="tsResult" aria-live="polite" aria-labelledby="tsResultHeading">
+      <h2 id="tsResultHeading">Tu ruta por la biblioteca.</h2>
+      <p class="ts-result-lede" id="tsResultLede"></p>
+      <ol class="ts-rec-list" id="tsRecList"></ol>
+      <p class="ts-skip" id="tsResultSkip"></p>
+      <p class="ts-fallback">¿Ya conoces el catálogo? <a href="/es/tools/">Ver las 17 herramientas &rarr;</a> &middot; ¿Nuevo en todo esto? <a href="/es/learn/start-here/">Toma el tour guiado de 60 minutos &rarr;</a></p>
+    </section>
+  </div>
+</main>
+
+<!-- Stub: footer + JS appended in follow-up commits -->
 </body>
 </html>
