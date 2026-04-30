@@ -2587,16 +2587,18 @@
     color: var(--teal);
   }
 
-  /* Four category gauges */
+  /* Cinco indicadores — Fundamentos de Restaurante destaca: ocupa
+     dos columnas y lleva borde + gradient de acento teal. */
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 2fr repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 32px;
   }
-  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 640px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .category-card--featured { grid-column: 1 / -1; } }
+  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; }
+    .category-card--featured { grid-column: auto; } }
 
   .category-card {
     padding: 24px;
@@ -2605,6 +2607,12 @@
     border-radius: 16px;
     text-align: center;
   }
+  .category-card--featured {
+    border-color: var(--teal);
+    border-width: 2px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--teal) 4%, var(--white)) 0%, var(--white) 100%);
+  }
+  .category-card--featured .label { color: var(--teal); }
   .category-card .label {
     font-size: 11px;
     font-weight: 700;
@@ -2787,6 +2795,34 @@
   .top-fixes-item-chips .chip-effort-dev     { background: var(--teal-tint); color: var(--teal); }
   .top-fixes-item-chips .chip-effort-rebuild { background: var(--status-bad-tint); color: var(--rust); }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Selector de receta por plataforma — mismo estilo que la versión EN. */
+  .top-fixes-recipe { margin-top: 10px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-recipe[open] { padding-bottom: 4px; }
+  .top-fixes-recipe-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--teal); list-style: none; }
+  .top-fixes-recipe-summary::-webkit-details-marker { display: none; }
+  .top-fixes-recipe-summary::before { content: '+ '; color: var(--teal); font-weight: 700; }
+  .top-fixes-recipe[open] .top-fixes-recipe-summary::before { content: '− '; }
+  .top-fixes-recipe-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 12px 8px; }
+  .top-fixes-recipe-tab { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; }
+  .top-fixes-recipe-tab[aria-selected="true"] { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .top-fixes-recipe-steps { padding: 0 12px 12px; }
+  .top-fixes-recipe-list { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.55; color: var(--ink); }
+  .top-fixes-recipe-list li { margin-bottom: 4px; }
+  .top-fixes-recipe-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.5; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
+  .top-fixes-recipe-eta { font-size: 11.5px; color: var(--stone); margin: 6px 0 0; letter-spacing: 0.04em; }
+  .top-fixes-recipe-fallback { font-size: 12px; color: var(--stone); margin: 0 0 8px; font-style: italic; }
+  .top-fixes-hire { margin-top: 8px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-hire[open] { padding-bottom: 4px; }
+  .top-fixes-hire-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); list-style: none; }
+  .top-fixes-hire-summary::-webkit-details-marker { display: none; }
+  .top-fixes-hire-summary::before { content: '+ '; color: var(--ink-soft); font-weight: 700; }
+  .top-fixes-hire[open] .top-fixes-hire-summary::before { content: '− '; }
+  .top-fixes-hire-body { padding: 4px 12px 12px; }
+  .top-fixes-hire-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 8px; font-size: 13px; line-height: 1.5; }
+  .top-fixes-hire-grid dt { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--stone); align-self: start; padding-top: 2px; }
+  .top-fixes-hire-grid dd { margin: 0; color: var(--ink); }
+  .top-fixes-hire-grid a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  .top-fixes-hire-tip { font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin: 0; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -5402,37 +5438,41 @@
         </div>
       </div>
 
-      <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
+      <!-- Cinco indicadores de categoría — Fundamentos de Restaurante
+           lidera (el ancla diferenciadora; ocupa 2 columnas en
+           pantallas anchas) y los cuatro pilares Lighthouse siguen
+           con etiquetas en lenguaje del operador. Los nombres
+           técnicos quedan en title="…" para los curiosos. -->
       <div class="category-grid" id="categoryGrid">
-        <div class="category-card" data-cat="performance">
-          <div class="label">Rendimiento</div>
+        <div class="category-card category-card--featured" data-cat="restaurant" title="Chequeos específicos para restaurantes (pilar Muntin)">
+          <div class="label">Fundamentos de restaurante</div>
+          <div class="cat-value">—</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Chequeos para restaurantes que Lighthouse no hace</div>
+        </div>
+        <div class="category-card" data-cat="performance" title="Performance (Lighthouse)">
+          <div class="label">Velocidad en el móvil</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">Qué tan rápido carga en móvil</div>
         </div>
-        <div class="category-card" data-cat="accessibility">
-          <div class="label">Accesibilidad</div>
+        <div class="category-card" data-cat="seo" title="SEO (Lighthouse)">
+          <div class="label">Encontrable en Google</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Usable for every visitor</div>
+          <div class="sublabel">Si Google te puede encontrar</div>
         </div>
-        <div class="category-card" data-cat="best-practices">
-          <div class="label">Buenas prácticas</div>
+        <div class="category-card" data-cat="accessibility" title="Accessibility (Lighthouse)">
+          <div class="label">Legible para todos</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Modern, secure web standards</div>
+          <div class="sublabel">Usable para cada visitante</div>
         </div>
-        <div class="category-card" data-cat="seo">
-          <div class="label">SEO</div>
+        <div class="category-card" data-cat="best-practices" title="Best Practices (Lighthouse)">
+          <div class="label">Moderno y seguro</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Whether Google can find you</div>
-        </div>
-        <div class="category-card" data-cat="restaurant">
-          <div class="label">Restaurante</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Restaurant-specific checks</div>
+          <div class="sublabel">Estándares web modernos y seguros</div>
         </div>
       </div>
 
@@ -11397,6 +11437,51 @@
   // Values are % of annual revenue the owner is plausibly leaving on
   // the table by failing this check, based on observed funnel drop-
   // off in restaurant-tech case studies. Missing types → no chip.
+  // Mapeo audit-check ID → MuntinPlatformFixes fix ID.
+  var AUDIT_CHECK_TO_FIX_ID = {
+    'audit.viewport':       'viewport-meta',
+    'audit.tap-targets':    'tap-target-padding',
+    'audit.image-alt':      'alt-text-bulk',
+    'audit.image-size':     'image-compress',
+    'audit.image-formats':  'image-compress',
+    'audit.optimized-images':'image-compress',
+    'audit.uses-webp-images':'image-compress',
+    'audit.uses-optimized-images':'image-compress',
+    'audit.modern-image-formats':'image-compress',
+    'audit.efficient-images':'image-compress',
+    'audit.title':          'title-meta-edit',
+    'audit.document-title': 'title-meta-edit',
+    'audit.meta-description':'title-meta-edit',
+    'audit.structured-data':'jsonld-inject',
+    'phone':                'tel-link',
+    'maps':                 'maps-link',
+    'address':              'maps-link',
+    'hours':                'hours-edit',
+    'restaurant-schema':    'jsonld-inject'
+  };
+  var AUDIT_PLATFORM_LABEL = {
+    wix:          'Wix',
+    squarespace:  'Squarespace',
+    wordpress:    'WordPress',
+    shopify:      'Shopify',
+    webflow:      'Webflow',
+    bentobox:     'BentoBox',
+    godaddy:      'GoDaddy',
+    custom:       'un sitio a la medida',
+    generic:      'Otro / genérico'
+  };
+  // "¿No tienes desarrollador?" guía de contratación por plataforma.
+  var AUDIT_HIRE_BY_PLATFORM = {
+    wix:          { budgetUsd: '$300–$1,500',  profile: 'Wix Partner (freelancer certificado)',                   directoryUrl: 'https://www.wix.com/marketplace/wix-partners',                directoryLabel: 'Wix Marketplace' },
+    squarespace:  { budgetUsd: '$300–$1,800',  profile: 'Miembro de Squarespace Circle',                          directoryUrl: 'https://www.squarespace.com/circle/find-an-expert',          directoryLabel: 'Directorio Squarespace Circle' },
+    wordpress:    { budgetUsd: '$500–$3,500',  profile: 'Freelancer de WordPress (Codeable, Upwork o local)',     directoryUrl: 'https://codeable.io/',                                       directoryLabel: 'Codeable (freelancers WP curados)' },
+    shopify:      { budgetUsd: '$500–$2,500',  profile: 'Shopify Expert',                                         directoryUrl: 'https://experts.shopify.com/',                               directoryLabel: 'Directorio Shopify Experts' },
+    webflow:      { budgetUsd: '$1,500–$5,000',profile: 'Webflow Expert',                                         directoryUrl: 'https://webflow.com/experts',                                directoryLabel: 'Directorio Webflow Experts' },
+    bentobox:     { budgetUsd: 'Incluido en el plan', profile: 'Soporte interno BentoBox',                         directoryUrl: 'https://getbento.com/contact/',                              directoryLabel: 'Soporte BentoBox' },
+    godaddy:      { budgetUsd: '$200–$800',    profile: 'Freelancer del Marketplace GoDaddy Pro',                 directoryUrl: 'https://www.godaddy.com/pro/marketplace',                    directoryLabel: 'GoDaddy Pro Marketplace' },
+    custom:       { budgetUsd: '$1,000–$8,000',profile: 'Freelancer o estudio especializado en restaurantes',     directoryUrl: 'https://www.upwork.com/search/profiles/?q=restaurant%20website%20wordpress', directoryLabel: 'Upwork (restaurante + web)' },
+    generic:      { budgetUsd: 'Varía por plataforma', profile: 'Freelancer web familiarizado con tu CMS',         directoryUrl: 'https://www.upwork.com/',                                    directoryLabel: 'Upwork' }
+  };
   var REVENUE_AT_RISK_PCT = {
     'audit.viewport':          [0.04, 0.09],  // mobile crash = big
     'audit.tap-targets':       [0.01, 0.04],
@@ -11757,6 +11842,103 @@
           chips.innerHTML += '<span class="chip chip-revenue" title="' + riskTitle + '">' + riskLabel + '</span>';
         }
         body.appendChild(chips);
+      }
+
+      // Selector de receta por plataforma para checks "Fix yourself".
+      if (def.effort === 'self' && typeof MuntinPlatformFixes !== 'undefined') {
+        var fixId = AUDIT_CHECK_TO_FIX_ID[def.id || ''] || null;
+        if (fixId) {
+          var detected = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+          var primary = detected || 'generic';
+          var recipe = MuntinPlatformFixes.get(fixId, primary);
+          if (recipe) {
+            var picker = document.createElement('details');
+            picker.className = 'top-fixes-recipe';
+            var platforms = MuntinPlatformFixes.platformsWithRecipe(fixId);
+            var ordered = [];
+            if (detected && platforms.indexOf(detected) !== -1) ordered.push(detected);
+            platforms.forEach(function(p){ if (p !== detected) ordered.push(p); });
+            ordered.push('generic');
+            var summary = document.createElement('summary');
+            summary.className = 'top-fixes-recipe-summary';
+            summary.textContent = detected
+              ? ('Cómo arreglarlo en ' + AUDIT_PLATFORM_LABEL[detected] + ' →')
+              : 'Cómo arreglarlo en mi plataforma →';
+            picker.appendChild(summary);
+            var tabs = document.createElement('div');
+            tabs.className = 'top-fixes-recipe-tabs';
+            tabs.setAttribute('role', 'tablist');
+            ordered.forEach(function(p){
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.setAttribute('role', 'tab');
+              btn.className = 'top-fixes-recipe-tab';
+              btn.textContent = AUDIT_PLATFORM_LABEL[p] || p;
+              btn.setAttribute('data-platform', p);
+              btn.setAttribute('aria-selected', p === primary ? 'true' : 'false');
+              tabs.appendChild(btn);
+            });
+            picker.appendChild(tabs);
+            var stepsBox = document.createElement('div');
+            stepsBox.className = 'top-fixes-recipe-steps';
+            picker.appendChild(stepsBox);
+            function paintRecipe(p) {
+              var r = MuntinPlatformFixes.get(fixId, p);
+              if (!r) { stepsBox.innerHTML = ''; return; }
+              var html = '';
+              if (r.fallback) {
+                html += '<p class="top-fixes-recipe-fallback">Aún no hay receta específica para esta plataforma — aquí va la versión genérica.</p>';
+              }
+              html += '<ol class="top-fixes-recipe-list">';
+              (r.steps || []).forEach(function(s){
+                html += '<li>' + String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</li>';
+              });
+              html += '</ol>';
+              if (r.note) html += '<p class="top-fixes-recipe-note">' + String(r.note).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</p>';
+              if (r.etaMinutes) html += '<p class="top-fixes-recipe-eta">Aproximadamente ' + r.etaMinutes + ' minuto' + (r.etaMinutes === 1 ? '' : 's') + '.</p>';
+              stepsBox.innerHTML = html;
+            }
+            paintRecipe(primary);
+            tabs.addEventListener('click', function(ev){
+              var tabBtn = ev.target && ev.target.closest && ev.target.closest('.top-fixes-recipe-tab');
+              if (!tabBtn) return;
+              var p = tabBtn.getAttribute('data-platform');
+              Array.prototype.forEach.call(tabs.children, function(b){
+                b.setAttribute('aria-selected', b === tabBtn ? 'true' : 'false');
+              });
+              paintRecipe(p);
+            });
+            body.appendChild(picker);
+          }
+        }
+      }
+
+      // "¿No tienes desarrollador?" para checks de dev / rebuild.
+      if ((def.effort === 'dev' || def.effort === 'rebuild') && AUDIT_HIRE_BY_PLATFORM) {
+        var detectedHire = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+        var hire = AUDIT_HIRE_BY_PLATFORM[detectedHire || 'generic'] || AUDIT_HIRE_BY_PLATFORM.generic;
+        if (hire) {
+          var hireBox = document.createElement('details');
+          hireBox.className = 'top-fixes-hire';
+          var hireSummary = document.createElement('summary');
+          hireSummary.className = 'top-fixes-hire-summary';
+          hireSummary.textContent = def.effort === 'rebuild'
+            ? '¿No tienes desarrollador para el rebuild? →'
+            : '¿No tienes desarrollador? Aquí va a quién buscar. →';
+          hireBox.appendChild(hireSummary);
+          var hireBody = document.createElement('div');
+          hireBody.className = 'top-fixes-hire-body';
+          var pretty = (detectedHire && AUDIT_PLATFORM_LABEL[detectedHire]) || 'tu plataforma';
+          hireBody.innerHTML =
+            '<dl class="top-fixes-hire-grid">' +
+              '<dt>Presupuesto</dt><dd>' + hire.budgetUsd + (def.effort === 'rebuild' && hire.budgetUsd.indexOf('$') === 0 ? ' (extremo alto del rango para rebuild)' : '') + '</dd>' +
+              '<dt>A quién buscar</dt><dd>' + hire.profile + '</dd>' +
+              '<dt>Dónde</dt><dd><a href="' + hire.directoryUrl + '" target="_blank" rel="noopener">' + hire.directoryLabel + ' &rarr;</a></dd>' +
+            '</dl>' +
+            '<p class="top-fixes-hire-tip">Cuando contactes, adjunta el dev brief de la fila de compartir arriba — lista cada check fallido en lenguaje claro, con los snippets que tu desarrollador necesita. Menciona que estás en <strong>' + pretty + '</strong> para que no gaste la primera hora descubriéndolo.</p>';
+          hireBox.appendChild(hireBody);
+          body.appendChild(hireBox);
+        }
       }
 
       li.appendChild(body);
