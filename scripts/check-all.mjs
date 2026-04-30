@@ -67,6 +67,8 @@ const CHECKS = [
   ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
   ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
+  ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
+  ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
 ];
 
 const results = [];

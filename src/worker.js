@@ -53,6 +53,8 @@ import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
+// Phase G.11 (Growth) — generalized share-snapshot store.
+import { SHARE_KINDS, saveShareSnapshot, getShareSnapshot, isValidShareKind, isValidShareTokenShape } from './lib/share-snapshots.js';
 import {
   mintMagicLinkToken,
   mintSessionToken,
@@ -325,6 +327,9 @@ const API_ROUTES = {
   '/api/subscribe':                  handleSubscribe,
   '/sub/confirm':                    handleSubscribeConfirm,
   '/sub/unsubscribe':                handleSubscribeUnsubscribe,
+  // Phase G.11 (Growth) — generalized share-snapshot endpoints.
+  '/api/share/tool-result':          handleShareToolResult,
+  '/api/share/storefront-health':    handleShareStorefrontHealth,
 };
 
 
@@ -5952,6 +5957,62 @@ async function handleSubscribeConfirm(request, env, ctx) {
   await env.AUTH_SESSIONS.delete(ckey);
   const dest = sub.locale === 'es' ? '/es/?subscribed=1' : '/?subscribed=1';
   return new Response(null, { status: 302, headers: { location: dest } });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase G.11 (Growth) — generalized share-snapshot endpoints.
+//
+// Mirror of the audit-snapshot pattern, generalized via kind tag.
+// Each kind has a dedicated handler so we can validate kind-specific
+// payload shape without a giant switch — a new kind = a new handler.
+// Both endpoints write to AUTH_SESSIONS KV via saveShareSnapshot.
+
+async function handleShareToolResult(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await request.json(); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  if (!body || typeof body.tool !== 'string' || !body.payload) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Sanitize: tool slug must match /^[a-z0-9-/]+$/, payload size cap
+  // is enforced inside saveShareSnapshot.
+  if (!/^[a-z0-9/-]+$/.test(body.tool) || body.tool.length > 60) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Strip any obvious PII at validation time — share-snapshot payloads
+  // must NEVER contain emails, sub IDs, or auth tokens. Reject if found.
+  const flat = JSON.stringify(body.payload).toLowerCase();
+  if (/\bemail\b/.test(flat) || /\bsub:[a-f0-9]/.test(flat)) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const result = await saveShareSnapshot(env, SHARE_KINDS.TOOL_RESULT, { tool: body.tool, payload: body.payload });
+  if (!result.ok) return jsonResponse({ ok: false, error: result.error }, 503);
+  const url = `/tools/${body.tool}/?s=${result.token}`;
+  return jsonResponse({ ok: true, token: result.token, url, expiresAt: result.expiresAt }, 200);
+}
+
+async function handleShareStorefrontHealth(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await request.json(); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  if (!body || typeof body.propertyName !== 'string' || !body.scores) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  if (body.propertyName.length > 200) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const flat = JSON.stringify(body.scores).toLowerCase();
+  if (/\bemail\b/.test(flat) || /\bsub:[a-f0-9]/.test(flat)) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const result = await saveShareSnapshot(env, SHARE_KINDS.STOREFRONT_HEALTH, {
+    propertyName: body.propertyName,
+    scores: body.scores,
+    payload: body.payload || null,
+  });
+  if (!result.ok) return jsonResponse({ ok: false, error: result.error }, 503);
+  const url = `/health/${result.token}/`;
+  return jsonResponse({ ok: true, token: result.token, url, expiresAt: result.expiresAt }, 200);
 }
 
 async function handleSubscribeUnsubscribe(request, env, ctx) {
