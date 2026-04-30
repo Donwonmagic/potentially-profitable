@@ -64,6 +64,29 @@
 .pb-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;font-weight:500;cursor:pointer;border-radius:999px}
 .pb-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
 .pb-self-hint{grid-column:1/-1;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
+.pb-shoot{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;padding:env(safe-area-inset-top,16px) 16px env(safe-area-inset-bottom,16px) 16px}
+.pb-shoot[hidden]{display:none}
+.pb-shoot-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px}
+.pb-shoot-counter{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.7);font-variant-numeric:tabular-nums}
+.pb-shoot-close{background:none;border:0;color:var(--cream);font-size:32px;line-height:1;cursor:pointer;padding:4px 12px}
+.pb-shoot-card{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 8px;overflow-y:auto;touch-action:pan-y}
+.pb-shoot-card[data-marked="true"]{opacity:0.55}
+.pb-shoot-dish{font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:500;line-height:1.1;margin:0 0 4px}
+.pb-shoot-cat{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 22px}
+.pb-shoot-spec{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0;font-size:18px;line-height:1.5}
+.pb-shoot-spec dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);align-self:start;padding-top:6px}
+.pb-shoot-spec dd{margin:0;color:var(--cream);font-weight:500}
+.pb-shoot-surfaces{margin:18px 0 0}
+.pb-shoot-surfaces-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 8px}
+.pb-shoot-surfaces-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.pb-shoot-surfaces-list li{padding:5px 12px;border:1px solid rgba(250,246,238,0.25);border-radius:999px;font-size:13px;color:var(--cream)}
+.pb-shoot-tip{margin:24px 0 0;padding:12px 14px;background:rgba(250,246,238,0.06);border-left:2px solid var(--teal);border-radius:6px;font-size:14px;line-height:1.5;color:rgba(250,246,238,0.85)}
+.pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
+.pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
+.pb-shoot-nav:disabled{opacity:0.35;cursor:not-allowed}
+#pbShootMark{flex:0 0 auto;padding:14px 22px;background:var(--teal);border-color:var(--teal);color:var(--cream)}
+#pbShootMark[data-marked="true"]{background:rgba(250,246,238,0.10);border-color:rgba(250,246,238,0.25)}
 .pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -548,12 +571,29 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
 
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Take this with you</span>
-      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Download Photo Brief <span class="pb-action-fmt">.png</span></button>
+      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbShootMode">Open Shoot Mode <span class="pb-action-fmt">phone</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadBrief">Photo Brief <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadCard">Brand Photo Card <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadZip">Bundle <span class="pb-action-fmt">.zip</span></button>
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copy shot list <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Download <span class="pb-action-fmt">.json</span></button>
       <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pbActionStatus"></span>
+    </div>
+
+    <!-- Shoot Mode overlay — full-screen card stack for use during
+         the actual photo shoot. One card per source frame (post-
+         dedup), tappable Prev / Next, swipe left/right, Esc closes. -->
+    <div class="pb-shoot" id="pbShoot" hidden role="dialog" aria-modal="true" aria-label="Shoot Mode">
+      <header class="pb-shoot-header">
+        <span class="pb-shoot-counter" id="pbShootCounter">Frame 1 of 1</span>
+        <button type="button" class="pb-shoot-close" id="pbShootClose" aria-label="Close Shoot Mode">×</button>
+      </header>
+      <div class="pb-shoot-card" id="pbShootCard" aria-live="polite"></div>
+      <footer class="pb-shoot-footer">
+        <button type="button" class="pb-shoot-nav" id="pbShootPrev" aria-label="Previous frame">&larr;</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootMark" aria-label="Mark this frame as shot">Mark shot</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootNext" aria-label="Next frame">&rarr;</button>
+      </footer>
     </div>
 
     <div class="pb-handoff" id="pbHandoff" style="display:none;">
@@ -1069,6 +1109,159 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Shoot Mode --------------------
+  // Full-screen one-card-per-frame view for use during the actual
+  // shoot. Walks the deduped source-frame list (dish × angle ×
+  // lighting), shows what to shoot + which surfaces it serves, and
+  // tracks which frames have been marked as shot. Touch swipe or
+  // arrow keys advance.
+  var shootEl       = document.getElementById('pbShoot');
+  var shootCardEl   = document.getElementById('pbShootCard');
+  var shootCounter  = document.getElementById('pbShootCounter');
+  var shootCloseBtn = document.getElementById('pbShootClose');
+  var shootPrevBtn  = document.getElementById('pbShootPrev');
+  var shootNextBtn  = document.getElementById('pbShootNext');
+  var shootMarkBtn  = document.getElementById('pbShootMark');
+  var shootBtn      = document.getElementById('pbShootMode');
+  var shootIndex    = 0;
+  var shootFrames   = [];
+  var shootMarked   = {};
+  function pbCap(s){ return String(s||'').replace(/^./, function(c){ return c.toUpperCase(); }); }
+  function pbNiceLighting(l) {
+    return ({
+      'warm-window':  'Warm window light (10am–2pm, north-facing if possible)',
+      'cool-window':  'Cool overcast window light',
+      'overhead':     'Overhead daylight or softbox',
+      'mood':         'Low / moody — single warm key light, dark ground',
+      'studio':       'Studio strobe — clean separation'
+    })[l] || pbCap(l) + ' light';
+  }
+  function pbNiceAngle(a) {
+    return ({
+      '45-degree':    '45° hero angle',
+      'overhead':     'Overhead (90° / flat-lay)',
+      'eye-level':    'Eye-level (15–20°)',
+      'tight-crop':   'Tight crop, ingredient-forward'
+    })[a] || pbCap(a) + ' angle';
+  }
+  function pbNiceNeg(n) {
+    if (!n || n === 'none') return 'No reservation';
+    return ({
+      'top':    'Reserve top third (for IG story / OG headline)',
+      'right':  'Reserve right side (for menu inline / hero text)',
+      'left':   'Reserve left side',
+      'bottom': 'Reserve bottom third'
+    })[n] || pbCap(n);
+  }
+  function pbBuildShootFrames() {
+    if (!latestSummary || !latestSummary.dedup || !latestSummary.dedup.perDish) return [];
+    var out = [];
+    latestSummary.dedup.perDish.forEach(function (d) {
+      (d.rows || []).forEach(function (row, i) {
+        out.push({
+          dish:     d.name || 'Dish',
+          category: d.category || 'main',
+          priority: d.priority || 'standard',
+          angle:    row.angle,
+          lighting: row.lighting,
+          negSpace: row.negSpace,
+          surfaces: row.surfaces || [],
+          rowIndex: i
+        });
+      });
+    });
+    return out;
+  }
+  function pbRenderShoot() {
+    if (!shootEl || !shootCardEl) return;
+    if (!shootFrames.length) {
+      shootCardEl.innerHTML = '<p style="opacity:0.7;text-align:center;">No frames yet — add at least one dish + one surface to the brief.</p>';
+      shootCounter.textContent = '0 of 0';
+      shootPrevBtn.disabled = true; shootNextBtn.disabled = true;
+      return;
+    }
+    if (shootIndex < 0) shootIndex = 0;
+    if (shootIndex > shootFrames.length - 1) shootIndex = shootFrames.length - 1;
+    var f = shootFrames[shootIndex];
+    var key = f.dish + '|' + f.rowIndex;
+    var marked = !!shootMarked[key];
+    shootCardEl.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootCounter.textContent = 'Frame ' + (shootIndex + 1) + ' of ' + shootFrames.length;
+    var surfacesLabels = f.surfaces.map(function (sk) {
+      return (window.PB && window.PB.SURFACES && window.PB.SURFACES[sk]) ? window.PB.SURFACES[sk].label : sk;
+    });
+    shootCardEl.innerHTML =
+      '<p class="pb-shoot-cat">' + pbCap(f.category) + (f.priority === 'priority' ? ' · ★ priority' : '') + '</p>' +
+      '<h2 class="pb-shoot-dish">' + (f.dish.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</h2>' +
+      '<dl class="pb-shoot-spec">' +
+        '<dt>Angle</dt><dd>' + pbNiceAngle(f.angle) + '</dd>' +
+        '<dt>Light</dt><dd>' + pbNiceLighting(f.lighting) + '</dd>' +
+        '<dt>Composition</dt><dd>' + pbNiceNeg(f.negSpace) + '</dd>' +
+      '</dl>' +
+      '<div class="pb-shoot-surfaces">' +
+        '<p class="pb-shoot-surfaces-label">This source frame serves:</p>' +
+        '<ul class="pb-shoot-surfaces-list">' +
+          surfacesLabels.map(function (l) { return '<li>' + (l.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</li>'; }).join('') +
+        '</ul>' +
+      '</div>' +
+      '<p class="pb-shoot-tip">Shoot this once. The brief automatically maps it onto every surface above via crop math — you don\'t need separate frames per surface.</p>';
+    shootPrevBtn.disabled = (shootIndex === 0);
+    shootNextBtn.disabled = (shootIndex === shootFrames.length - 1);
+    shootMarkBtn.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootMarkBtn.textContent = marked ? 'Marked ✓' : 'Mark shot';
+  }
+  function pbOpenShoot() {
+    shootFrames = pbBuildShootFrames();
+    shootIndex = 0;
+    if (shootEl) shootEl.hidden = false;
+    document.body.style.overflow = 'hidden';
+    pbRenderShoot();
+    if (shootCloseBtn) shootCloseBtn.focus();
+  }
+  function pbCloseShoot() {
+    if (shootEl) shootEl.hidden = true;
+    document.body.style.overflow = '';
+    if (shootBtn) shootBtn.focus();
+  }
+  if (shootBtn) shootBtn.addEventListener('click', pbOpenShoot);
+  if (shootCloseBtn) shootCloseBtn.addEventListener('click', pbCloseShoot);
+  if (shootPrevBtn) shootPrevBtn.addEventListener('click', function () { shootIndex--; pbRenderShoot(); });
+  if (shootNextBtn) shootNextBtn.addEventListener('click', function () { shootIndex++; pbRenderShoot(); });
+  if (shootMarkBtn) shootMarkBtn.addEventListener('click', function () {
+    var f = shootFrames[shootIndex]; if (!f) return;
+    var key = f.dish + '|' + f.rowIndex;
+    shootMarked[key] = !shootMarked[key];
+    pbRenderShoot();
+    if (shootMarked[key] && shootIndex < shootFrames.length - 1) {
+      setTimeout(function(){ shootIndex++; pbRenderShoot(); }, 220);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!shootEl || shootEl.hidden) return;
+    if (e.key === 'Escape') { pbCloseShoot(); }
+    else if (e.key === 'ArrowLeft' && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    else if (e.key === 'ArrowRight' && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+  });
+  // Touch-swipe navigation. Detects horizontal swipes >40px on the
+  // card area; vertical scrolling stays unblocked via touch-action.
+  (function () {
+    if (!shootCardEl) return;
+    var startX = null, startY = null;
+    shootCardEl.addEventListener('touchstart', function (e) {
+      if (!e.touches || !e.touches[0]) return;
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    }, { passive: true });
+    shootCardEl.addEventListener('touchend', function (e) {
+      if (startX == null || !e.changedTouches || !e.changedTouches[0]) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null; startY = null;
+      if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+      if (dx < 0 && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+      else if (dx > 0 && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    }, { passive: true });
+  })();
 
   // -------------------- Exports (CSV + JSON) --------------------
   // CSV is the per-shot table — owner pastes into a Google Sheet for
