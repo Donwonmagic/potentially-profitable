@@ -186,6 +186,25 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 
 .pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
 .pc-bottleneck strong{color:var(--ink);font-style:normal}
+.pc-bottleneck-subs{margin-top:8px;font-style:normal;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2);padding:0}
+.pc-bottleneck-subs summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.pc-bottleneck-subs summary::-webkit-details-marker{display:none}
+.pc-bottleneck-subs summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pc-bottleneck-subs[open] summary::before{content:'− '}
+.pc-bottleneck-subs ul{margin:0;padding:0 12px 12px 32px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:normal}
+.pc-bottleneck-subs li{margin-bottom:6px}
+.pc-bottleneck-kind{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);background:var(--white);padding:2px 6px;border-radius:4px;margin-right:8px;border:1px solid var(--line);vertical-align:1px}
+.pc-stress-toggle{display:flex;align-items:start;gap:8px;margin-top:14px;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;font-size:13px;color:var(--ink-soft);cursor:pointer}
+.pc-stress-toggle input{flex:0 0 auto;margin-top:2px;cursor:pointer;accent-color:var(--teal)}
+.pc-stress-toggle small{display:block;font-size:11.5px;color:var(--stone);margin-top:2px}
+.pc-stress-out{margin-top:10px;padding:14px 16px;border:1px solid var(--rust);border-radius:8px;background:color-mix(in srgb,var(--rust) 4%,var(--white))}
+.pc-stress-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin:0 0 10px}
+.pc-stress-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pc-stress-row:last-of-type{border-bottom:0}
+.pc-stress-label{color:var(--ink)}
+.pc-stress-value{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-stress-value small{font-size:12px;color:var(--rust);margin-left:4px;font-family:var(--font-body);font-weight:500}
+.pc-stress-foot{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
 
 .pc-price-row{position:relative}
 .pc-price-row[data-recommended="true"]{background:var(--cream-2);margin:0 -22px;padding-left:22px;padding-right:22px}
@@ -559,6 +578,11 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <h3>Three suggested menu prices</h3>
         <p class="pc-prices-dek">Each row works backwards from a target food-cost percent. The dollars on the right are what you keep per plate after ingredients.</p>
         <div id="pcPriceRows"></div>
+        <label class="pc-stress-toggle">
+          <input type="checkbox" id="pcStressTest" />
+          <span>Show me a stress-tested price <small>(bottleneck +15%, protein yield −5 pp)</small></span>
+        </label>
+        <div class="pc-stress-out" id="pcStressOut" hidden></div>
       </div>
 
       <!-- Year-value panel. Translates "you keep $X per plate" into
@@ -1031,12 +1055,55 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
     var bottleneck = PC.bottleneckLine(summary);
     if (bottleneckEl) {
       if (bottleneck) {
-        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
+        var html = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
           Math.round(bottleneck.share * 100) + '% of your plate cost. Watch its invoice.';
+        if (bottleneck.suggestions && bottleneck.suggestions.length) {
+          html += '<details class="pc-bottleneck-subs"><summary>Show me ways to trim it &rarr;</summary><ul>';
+          bottleneck.suggestions.forEach(function (s) {
+            html += '<li><span class="pc-bottleneck-kind">' + esc(s.kind) + '</span>' + esc(s.text) + '</li>';
+          });
+          html += '</ul></details>';
+        }
+        bottleneckEl.innerHTML = html;
         bottleneckEl.hidden = false;
       } else {
         bottleneckEl.hidden = true;
         bottleneckEl.textContent = '';
+      }
+    }
+
+    // Stress-test: render a "Recession price" row alongside the
+    // three suggested prices when the user has flipped the toggle.
+    // Recomputes plate cost with bottleneck +15% and proteins -5%
+    // yield, then shows the price needed to hit the recommended
+    // food-cost target under those harder conditions.
+    var stressToggleEl = document.getElementById('pcStressTest');
+    var stressShown = stressToggleEl && stressToggleEl.checked;
+    var stressOutEl = document.getElementById('pcStressOut');
+    if (stressOutEl) {
+      stressOutEl.hidden = true;
+      stressOutEl.innerHTML = '';
+      if (stressShown && summary.batchCost > 0) {
+        var stressed = PC.stressTestRecipe(recipe, bottleneck && bottleneck.name);
+        var stressedSummary = PC.computePlateCost(stressed);
+        if (stressedSummary && isFinite(stressedSummary.plateCost) && stressedSummary.plateCost > 0) {
+          var recTier = PC.recommendedTier(summary);
+          var stressedPrices = PC.suggestMenuPrices(stressedSummary.plateCost);
+          var matchingPrice = stressedPrices.find(function(p){ return p.label === recTier; }) || stressedPrices[1] || stressedPrices[0];
+          var deltaPct = Math.round(((stressedSummary.plateCost - summary.plateCost) / summary.plateCost) * 100);
+          stressOutEl.hidden = false;
+          stressOutEl.innerHTML =
+            '<p class="pc-stress-eyebrow">If costs spike (bottleneck +15%, protein yield −5pp)</p>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Stressed plate cost</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(stressedSummary.plateCost) + ' <small>(' + (deltaPct >= 0 ? '+' : '') + deltaPct + '%)</small></span>' +
+            '</div>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Price to hold ' + matchingPrice.label + ' margin</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(matchingPrice.price) + '</span>' +
+            '</div>' +
+            '<p class="pc-stress-foot">If you can charge this without losing covers, the dish survives a bad invoice month. If not, the bottleneck is a structural risk worth re-engineering.</p>';
+        }
       }
     }
 
@@ -1182,6 +1249,8 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
   rowsEl.addEventListener('input', renderResults);
   rowsEl.addEventListener('change', renderResults);
+  var pcStressEl = document.getElementById('pcStressTest');
+  if (pcStressEl) pcStressEl.addEventListener('change', renderResults);
   rowsEl.addEventListener('click', function(e){
     if (e.target.classList.contains('pc-remove')) {
       var tr = e.target.closest('tr');

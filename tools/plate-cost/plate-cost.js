@@ -1027,7 +1027,94 @@
     if (!top) return null;
     var share = top.usedCost / summary.batchCost;
     if (share < 0.30) return null;
-    return { name: top.ingredient || '', share: share, dollars: top.usedCost };
+    return {
+      name: top.ingredient || '',
+      share: share,
+      dollars: top.usedCost,
+      suggestions: bottleneckSuggestions(top.ingredient || '')
+    };
+  }
+
+  // Per-ingredient substitution + cost-trim suggestions. The chef-
+  // consultant move when an ingredient hits 30%+ of plate cost: name
+  // a cheaper variant, a yield-improvement, or a portion change. Map
+  // is sparse on purpose — only canonical bottleneck candidates get
+  // an entry. Unknown ingredients fall through to a generic prompt.
+  var BOTTLENECK_SUGGESTIONS = {
+    'romaine':           [{kind:'sourcing', text:'Buy whole heads instead of pre-cut bags. Yield jumps from 60% to ~78%; same total grams of trimmed leaves at a much lower per-pound spend.'}],
+    'iceberg':           [{kind:'sourcing', text:'Whole heads beat pre-shredded by 8-12 points of yield and significantly less moisture (which is what you\'re paying for in bagged).'}],
+    'tomato':            [{kind:'seasonal', text:'Off-season tomato cost spikes 40-80%. Roma or canned San Marzano absorbs to a sauce-bound dish without the customer noticing; signature plates that need a slice deserve in-season pricing.'}],
+    'cherry tomato':     [{kind:'seasonal', text:'Switch to cluster tomatoes off-season — same on the plate, ~30% cheaper through winter.'}],
+    'avocado':           [{kind:'sourcing', text:'Whole vs. pre-pulped: pulped is +20-30% per ounce. If you go through a case before they brown, whole is the cheaper play.'}, {kind:'portion', text:'Try 1/3 avocado instead of 1/2. The plate doesn\'t notice; the food cost percentage does.'}],
+    'salmon fillet':     [{kind:'sourcing', text:'Skin-on whole sides + in-house portioning vs. pre-cut center-cut: 18-25% savings per portion at scale.'}, {kind:'portion', text:'6 oz vs. 7 oz: most diners can\'t tell. The accountant can.'}],
+    'whole salmon':      [{kind:'portion', text:'Whole salmon yields ~55% to plated portions. Plan the trim — bones for stock, collar as a special, scrap for staff meal — to push effective yield past 70%.'}],
+    'chicken breast':    [{kind:'sourcing', text:'Bone-in skin-on whole breasts cost ~30% less per ounce than airline cuts. Worth it if your kitchen has 10 minutes to break them down.'}, {kind:'sub', text:'Boneless thigh delivers similar plate weight with deeper flavor at 40-60% of the breast\'s per-pound spend.'}],
+    'whole chicken':     [{kind:'portion', text:'Roast whole bird and split: the carcass becomes stock, bones become demi. A whole-chicken pricing model amortises waste better than parted.'}],
+    'beef tenderloin':   [{kind:'sub', text:'Hanger or flat iron at 40-50% of tenderloin\'s spend, with steak-knife-tender results when handled right. Worth pushing on a special.'}],
+    'tenderloin':        [{kind:'sub', text:'Hanger or flat iron at 40-50% of tenderloin\'s spend, with steak-knife-tender results when handled right.'}],
+    'ribeye':            [{kind:'sub', text:'Sirloin or culotte (top sirloin cap) for ~60% of the ribeye spend. Cap is famously underrated for steak-frites menus.'}],
+    'lobster (whole)':   [{kind:'portion', text:'Whole lobster yields just 30% to claw + tail meat. Lobster rolls split a single 1.25 lb across two rolls; a "lobster" plate built on a whole bird is a $40+ menu item by definition.'}],
+    'shrimp (head-on)':  [{kind:'sub', text:'Shell-on or P&D delivers more usable plate weight per dollar. Save head-on for crudo and presentations where the shell is the plating.'}],
+    'parmesan':          [{kind:'sourcing', text:'Wheel + house grate beats pre-shredded by ~25% per ounce on yield (less surface oxidation) and 10-20% per ounce on price. Storage discipline matters.'}],
+    'parmigiano-reggiano':[{kind:'sourcing', text:'Buy 24-month wheel; reserve the rinds for stock. The rind alone covers your scrap losses across the year.'}],
+    'butter':            [{kind:'sourcing', text:'Bulk unsalted from a dairy distributor vs. retail-pack: typically 30-40% per pound at the trade-off of a higher upfront commitment.'}],
+    'olive oil':         [{kind:'sourcing', text:'Two-tier strategy: cheaper bulk oil for cooking, finishing oil only at plating. A finishing oil costs 4-5× the cooking oil; using it for sauté is just expensive cooking.'}],
+    'truffle':           [{kind:'sub', text:'Truffle oil for finishing aroma, real shavings only on the table. The fresh-truffle line item is rarely defensible at the per-portion level.'}, {kind:'sub', text:'Mushroom-duxelles + a single shaved black-truffle slice carries 80% of the perceived luxury at 10% of the cost.'}],
+    'caviar':            [{kind:'sub', text:'American hackleback or paddlefish at 20-30% of imported osetra; pair on a tasting board where the substitution becomes a sourcing story.'}],
+    'foie gras':         [{kind:'portion', text:'A 1.5 oz portion plates the same as 2 oz; sear technique matters more than the slab thickness once you\'re past 1 oz.'}]
+  };
+  function bottleneckSuggestions(name) {
+    if (!name) return [];
+    var key = String(name).trim().toLowerCase();
+    if (BOTTLENECK_SUGGESTIONS[key]) return BOTTLENECK_SUGGESTIONS[key];
+    // Loose fallbacks: drop parens, then strip plural s.
+    var noParens = key.replace(/\s*\([^)]*\)\s*/g, '').trim();
+    if (BOTTLENECK_SUGGESTIONS[noParens]) return BOTTLENECK_SUGGESTIONS[noParens];
+    var singular = noParens.replace(/s$/, '');
+    if (BOTTLENECK_SUGGESTIONS[singular]) return BOTTLENECK_SUGGESTIONS[singular];
+    return [];
+  }
+
+  // Stress-test recompute: rebuild the recipe summary with the
+  // bottleneck ingredient bumped +15% in AP cost AND every protein-
+  // shaped ingredient nudged -5% on yield. Used to surface a "if
+  // costs spike, can the plate still hit your target margin?" view.
+  // Pure transform; doesn't mutate the input.
+  var PROTEIN_HINTS = ['chicken','beef','pork','lamb','fish','salmon','tuna','shrimp','duck','turkey','ribeye','tenderloin','sirloin','rib','breast','thigh','filet','fillet','steak','chop'];
+  function isProteinName(name) {
+    var n = String(name || '').toLowerCase();
+    for (var i = 0; i < PROTEIN_HINTS.length; i++) {
+      if (n.indexOf(PROTEIN_HINTS[i]) !== -1) return true;
+    }
+    return false;
+  }
+  function stressTestRecipe(recipe, bottleneckName) {
+    if (!recipe || !Array.isArray(recipe.rows)) return recipe;
+    var out = {};
+    for (var k in recipe) if (Object.prototype.hasOwnProperty.call(recipe, k)) out[k] = recipe[k];
+    var bottleneckLower = String(bottleneckName || '').toLowerCase();
+    out.rows = recipe.rows.map(function (r) {
+      if (!r) return r;
+      var clone = {};
+      for (var key in r) if (Object.prototype.hasOwnProperty.call(r, key)) clone[key] = r[key];
+      var nameLower = String(r.ingredient || '').toLowerCase();
+      // Bump bottleneck AP price +15%.
+      if (bottleneckLower && nameLower === bottleneckLower) {
+        var price = pcCoerceNumber(clone.apPrice);
+        if (isFinite(price) && price > 0) clone.apPrice = price * 1.15;
+      }
+      // Trim protein yield -5 percentage points (floor at 30%).
+      if (isProteinName(r.ingredient)) {
+        var y = pcResolveYield(clone.yield);
+        if (y == null) y = lookupYield(r.ingredient);
+        if (y != null && isFinite(y)) {
+          var stressed = Math.max(0.30, y - 0.05);
+          clone.yield = stressed;
+        }
+      }
+      return clone;
+    });
+    return out;
   }
 
   // ============================================================
@@ -1414,6 +1501,8 @@
     suggestMenuPrices:     suggestMenuPrices,
     formatRowMath:         formatRowMath,
     bottleneckLine:        bottleneckLine,
+    bottleneckSuggestions: bottleneckSuggestions,
+    stressTestRecipe:      stressTestRecipe,
     recommendedTier:       recommendedTier,
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,
