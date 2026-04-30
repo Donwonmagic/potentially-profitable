@@ -120,7 +120,12 @@
   .mm-wf-label{font-size:12.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
   .mm-wf-bar{display:flex;height:14px;border-radius:999px;overflow:hidden;border:1px solid var(--line);background:var(--white)}
   .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
-  .mm-wf-food{background:#B89A6E}
+  /* Triad chosen for deuteranopia safety: neutral stone (cost, just
+     baseline), rust (fee, alarming), and green (keep, good). Distinct
+     hues AND distinct luminance — the bar reads correctly even in
+     red-green color-deficient simulation. The legend dots and legend
+     text remain as redundant non-color encoding. */
+  .mm-wf-food{background:var(--stone)}
   .mm-wf-fee{background:var(--rust)}
   .mm-wf-margin{background:var(--status-good)}
   .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12.5px;color:var(--stone);justify-content:center}

@@ -116,7 +116,13 @@
   .mm-wf-label{font-size:12.5px;color:var(--stone);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
   .mm-wf-bar{display:flex;height:14px;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--line);background:var(--white)}
   .mm-wf-seg{display:block;height:100%;transition:width 220ms var(--ease-out);min-width:0}
-  .mm-wf-food{background:#B89A6E}
+  /* Tríada elegida para seguridad ante deuteranopia: piedra neutra
+     (costo, línea base), rust (comisión, alarmante) y verde (te lo
+     quedas, bueno). Tonos y luminancias distintas — la barra se
+     entiende correcto incluso en simulación de daltonismo rojo-verde.
+     Los puntos y texto de la leyenda quedan como codificación
+     redundante no cromática. */
+  .mm-wf-food{background:var(--stone)}
   .mm-wf-fee{background:var(--rust)}
   .mm-wf-margin{background:var(--status-good)}
   .mm-wf-legend{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px 14px;font-size:12.5px;color:var(--stone);justify-content:center}
