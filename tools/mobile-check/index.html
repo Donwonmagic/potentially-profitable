@@ -115,6 +115,10 @@
   .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
   .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
   .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .mob-shot { margin: 14px 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .mob-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
+  .mob-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -438,6 +442,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -520,6 +525,19 @@
       verdictIcon = 'fail'; verdictMark = '?';
     }
     verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    // Phone-frame screenshot under the verdict — owners viscerally
+    // understand a picture more than three pass/fail badges.
+    var shotHost = document.getElementById('mobShotHost');
+    if (shotHost) shotHost.parentNode.removeChild(shotHost);
+    if (p.screenshot) {
+      var wrap = document.createElement('div');
+      wrap.id = 'mobShotHost';
+      wrap.className = 'mob-shot';
+      wrap.innerHTML =
+        '<p class="mob-shot-eyebrow">What your homepage looks like on a phone</p>' +
+        '<div class="mob-shot-frame"><img src="' + p.screenshot + '" alt="Phone screenshot of your site" loading="lazy"></div>';
+      verdict.parentNode.insertBefore(wrap, verdict.nextSibling);
+    }
     checksEl.innerHTML = '';
     (p.results || []).forEach(function(r) {
       var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
@@ -655,8 +673,21 @@
           });
         });
 
-        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
+        // Phone-frame screenshot from PSI's final-screenshot — already
+        // in the response, previously discarded. Closes the gap
+        // between the schema's "compare snapshots" promise and the
+        // empty UI.
+        var screenshot = null;
+        try {
+          var fs = audits['final-screenshot'];
+          if (fs && fs.details && fs.details.data) screenshot = fs.details.data;
+        } catch (_) {}
+
+        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now(), screenshot: screenshot };
         renderResult(payload);
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
+        }
         if (states) states.setSuccess();
         showSaveAffordance(payload);
 
