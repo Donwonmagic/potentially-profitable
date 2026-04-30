@@ -102,6 +102,16 @@
   .ts-rec-name a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent); }
   .ts-rec-name a:hover, .ts-rec-name a:focus-visible { border-bottom-color: var(--teal); }
   .ts-rec-why { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-top: 2px; }
+  .ts-rec-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--stone); margin-top: 8px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .ts-rec-meta span { display: inline-flex; align-items: baseline; gap: 4px; }
+  .ts-rec-meta strong { font-weight: 600; color: var(--ink-soft); letter-spacing: 0.02em; text-transform: uppercase; font-size: 10.5px; }
+  .ts-restore { display: none; align-items: center; gap: 8px; padding: 10px 14px; margin: -10px 0 18px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-sm); background: var(--surface-1); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-restore[data-shown="true"] { display: flex; }
+  .ts-restore-fresh { background: none; border: 0; color: var(--teal); font: inherit; padding: 0; cursor: pointer; text-decoration: underline; }
+  .ts-noticed { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--amber-border, #d9c179); border-radius: var(--r-sm); background: var(--amber-tint, #fbf3d8); }
+  .ts-noticed-head { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; line-height: var(--leading-card); }
+  .ts-noticed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-noticed-list li::before { content: '\2192'; color: var(--teal); font-weight: 700; margin-right: 6px; }
   .ts-skip { font-size: 13px; color: var(--stone); margin: 16px 0 0; line-height: var(--leading-card); }
   .ts-fallback { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
   .ts-fallback a { color: var(--teal); font-weight: 600; text-decoration: none; }
@@ -173,12 +183,13 @@
           <label class="ts-option"><input type="radio" name="leak" value="covers"><span class="ts-option-text"><strong>Cubiertos / volumen</strong><span>El comedor no se llena lo suficiente.</span></span></label>
           <label class="ts-option"><input type="radio" name="leak" value="discovery"><span class="ts-option-text"><strong>Descubrimiento online</strong><span>Google / Maps / móvil no están haciendo su trabajo.</span></span></label>
           <label class="ts-option"><input type="radio" name="leak" value="kitchen"><span class="ts-option-text"><strong>Cocina / menú</strong><span>Costo del plato, deriva de receta, marca fotográfica.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="unsure"><span class="ts-option-text"><strong>No sé todavía &mdash; dame un solo número</strong><span>Corre un chequeo compuesto y lee el puntaje.</span></span></label>
         </div>
       </fieldset>
 
       <fieldset class="ts-q" data-q="pnl">
         <legend>2. ¿Tienes a la mano los números del P&amp;L del mes pasado?</legend>
-        <p class="ts-q-help">Ventas, food cost, labor cost &mdash; aunque sean porcentajes aproximados.</p>
+        <p class="ts-q-help">Ventas, costo de alimentos, costo de mano de obra &mdash; aunque sean porcentajes aproximados.</p>
         <div class="ts-options">
           <label class="ts-option"><input type="radio" name="pnl" value="yes"><span class="ts-option-text"><strong>Sí &mdash; los puedo sacar</strong></span></label>
           <label class="ts-option"><input type="radio" name="pnl" value="approx"><span class="ts-option-text"><strong>Aproximadamente</strong><span>Sé los porcentajes con un margen de unos puntos.</span></span></label>
@@ -221,10 +232,19 @@
       </div>
     </form>
 
+    <p class="ts-restore" id="tsRestore" hidden>
+      <strong>Bienvenido de vuelta.</strong> Tus últimas respuestas están listas &mdash; actualiza lo que cambió, o
+      <button type="button" class="ts-restore-fresh" id="tsRestoreFresh">empieza de nuevo</button>.
+    </p>
+
     <section class="ts-result" id="tsResult" aria-live="polite" aria-labelledby="tsResultHeading">
       <h2 id="tsResultHeading">Tu ruta por la biblioteca.</h2>
       <p class="ts-result-lede" id="tsResultLede"></p>
       <ol class="ts-rec-list" id="tsRecList"></ol>
+      <aside class="ts-noticed" id="tsNoticed" hidden aria-label="También notamos">
+        <p class="ts-noticed-head"><strong>También notamos&hellip;</strong></p>
+        <ul class="ts-noticed-list" id="tsNoticedList"></ul>
+      </aside>
       <p class="ts-skip" id="tsResultSkip"></p>
       <p class="ts-fallback">¿Ya conoces el catálogo? <a href="/es/tools/">Ver las 17 herramientas &rarr;</a> &middot; ¿Nuevo en todo esto? <a href="/es/learn/start-here/">Toma el tour guiado de 60 minutos &rarr;</a></p>
     </section>
@@ -238,89 +258,167 @@
 </footer>
 
 <script>
-  // Enrutamiento del árbol de decisión para /es/tools/start/. JS plano,
-  // sin router. Catálogo de herramientas + reglas que arman una ruta
-  // ordenada con un "porqué" por herramienta.
+  // Enrutamiento de triaje para /es/tools/start/. JS plano, sin router.
+  // Las 17 herramientas están enlazadas (versiones anteriores omitían
+  // 7 — entre ellas Storefront Health, la respuesta natural a "no sé
+  // todavía").
   (function () {
     var TOOLS = {
-      'plate-cost':       { name: 'Calculadora de Costo del Plato', url: '/es/tools/plate-cost/' },
-      'menu-engineering': { name: 'Matriz de Ingeniería de Menú',  url: '/es/tools/menu-engineering/' },
-      'margin-math':      { name: 'Margen Math',                    url: '/es/tools/margin-math/' },
-      'menu-copy':        { name: 'Inspector de Copy del Menú',     url: '/es/tools/menu-copy/' },
-      'photo-brief':      { name: 'Constructor de Brief de Fotos',  url: '/es/tools/photo-brief/' },
-      'seo-grader':       { name: 'Calificador de SEO',             url: '/es/tools/seo-grader/' },
-      'mobile-check':     { name: 'Chequeo Mobile-Friendly',        url: '/es/tools/mobile-check/' },
-      'speed-test':       { name: 'Test de Velocidad',              url: '/es/tools/speed-test/' },
-      'gbp-grader':       { name: 'Calificador de Google Business Profile', url: '/es/tools/gbp-grader/' },
-      'audit':            { name: 'Diagnóstico de Restaurante',     url: '/es/tools/audits/restaurant/' }
+      'plate-cost':        { name: 'Calculadora de Costo del Plato',         url: '/es/tools/plate-cost/' },
+      'menu-engineering':  { name: 'Matriz de Ingeniería de Menú',           url: '/es/tools/menu-engineering/' },
+      'margin-math':       { name: 'Margen Math',                            url: '/es/tools/margin-math/' },
+      'menu-copy':         { name: 'Inspector de Copy del Menú',             url: '/es/tools/menu-copy/' },
+      'photo-brief':       { name: 'Constructor de Brief de Fotos',          url: '/es/tools/photo-brief/' },
+      'seo-grader':        { name: 'Calificador de SEO',                     url: '/es/tools/seo-grader/' },
+      'mobile-check':      { name: 'Chequeo Mobile-Friendly',                url: '/es/tools/mobile-check/' },
+      'speed-test':        { name: 'Test de Velocidad',                      url: '/es/tools/speed-test/' },
+      'gbp-grader':        { name: 'Calificador de Google Business Profile', url: '/es/tools/gbp-grader/' },
+      'audit':             { name: 'Diagnóstico de Restaurante',             url: '/es/tools/audits/restaurant/' },
+      'storefront-health': { name: 'Salud de Fachada',                       url: '/es/tools/storefront-health/' },
+      'brand-suite':       { name: 'Suite de Marca',                         url: '/es/tools/brand-suite/' },
+      'open-hours':        { name: 'Horario de Atención',                    url: '/es/tools/open-hours/' },
+      'schema-check':      { name: 'Chequeo de Schema',                      url: '/es/tools/schema-check/' },
+      'search-ideas':      { name: 'Ideas de Búsqueda',                      url: '/es/tools/search-ideas/' },
+      'tech-stack':        { name: 'Detector de Stack Técnico',              url: '/es/tools/tech-stack/' },
+      'compare':           { name: 'Comparar',                               url: '/es/tools/compare/' }
     };
+
+    var META = {
+      'plate-cost':        { leaveWith: 'Un precio defendible para cada plato',                          time: '15 min/plato', needs: 'una receta + tu última factura' },
+      'menu-engineering':  { leaveWith: 'Una matriz 2x2 de qué platos empujar, ajustar o retirar',       time: '20 min',       needs: 'precio + costo + unidades vendidas por ítem' },
+      'margin-math':       { leaveWith: 'Si tu franja de costo primario está saludable + el siguiente paso', time: '5 min',  needs: 'ventas, alimentos y mano de obra del mes pasado' },
+      'menu-copy':         { leaveWith: 'Una descripción diagnosticada con ejes + veredicto',            time: '5 min/plato',  needs: 'una descripción escrita' },
+      'photo-brief':       { leaveWith: 'Una lista de tomas que un fotógrafo lee en 5 minutos',          time: '10 min',       needs: 'lista de platos + plataformas donde publicas' },
+      'seo-grader':        { leaveWith: 'Un title + meta description calificados con un arreglo',        time: '10 seg',       needs: 'tu URL' },
+      'mobile-check':      { leaveWith: 'Pasa/falla en los 3 chequeos móviles que Google puntúa',        time: '10 seg',       needs: 'tu URL' },
+      'speed-test':        { leaveWith: 'Una calificación de velocidad con explicación en lenguaje claro', time: '10 seg',     needs: 'tu URL' },
+      'gbp-grader':        { leaveWith: 'Un Google Business Profile calificado + tu fix prioritario',    time: '30 seg',       needs: 'tu nombre de negocio + ciudad' },
+      'audit':             { leaveWith: 'Una lista priorizada de hallazgos específicos para restaurantes', time: '30 seg',     needs: 'tu URL' },
+      'storefront-health': { leaveWith: 'Un puntaje único sobre seis chequeos de fachada',               time: '60 seg',       needs: 'tu URL' },
+      'brand-suite':       { leaveWith: 'Una paleta + pares accesibles de color desde tu logo',          time: '5 min',        needs: 'tu archivo de logo (o un color de marca)' },
+      'open-hours':        { leaveWith: 'Horarios consistentes en Google, Apple, Yelp + cartel de puerta', time: '10 min',     needs: 'tu horario semanal' },
+      'schema-check':      { leaveWith: 'Lo que Google ve vs. lo que deberías agregar',                  time: '10 seg',       needs: 'tu URL' },
+      'search-ideas':      { leaveWith: 'Las frases reales que tus clientes usan para tu rubro + ciudad', time: '30 seg',      needs: 'tu tipo de negocio + ciudad' },
+      'tech-stack':        { leaveWith: 'En qué está construido tu sitio + qué significa para los arreglos', time: '10 seg',  needs: 'tu URL' },
+      'compare':           { leaveWith: 'Una tarjeta de puntaje lado a lado contra un competidor',       time: '60 seg',       needs: 'dos URLs' }
+    };
+
+    var ECHO = {
+      leak: {
+        margin:    'el margen',
+        covers:    'los cubiertos / volumen',
+        discovery: 'el descubrimiento online',
+        kitchen:   'la cocina / el menú',
+        unsure:    'algo — no sé exactamente qué'
+      },
+      raise: { recent: 'en los últimos 6 meses', old: 'hace 6–12 meses', no: 'no en los últimos 12 meses' },
+      agg:   { heavy: 'una participación grande de tus ingresos viene de apps de delivery', some: 'algo de tus ingresos viene de apps de delivery', none: 'sin delivery de terceros' }
+    };
+
+    function buildLede(a) {
+      var leakLabel = ECHO.leak[a.leak] || 'una fuga';
+      var bits = ['Dijiste que la fuga es **' + leakLabel + '**'];
+      if (a.raise) bits.push('subiste precios **' + ECHO.raise[a.raise] + '**');
+      if (a.agg)   bits.push(ECHO.agg[a.agg]);
+      var head = bits.join(', ') + '. Este es el orden en que las correría.';
+      var tail = '';
+      if (a.leak === 'margin')    tail = ' El trabajo de margen paga doble — una vez para el operador, otra para el equipo. Insumos que controlas a diario primero; palancas estructurales después.';
+      if (a.leak === 'covers')    tail = ' Los cubiertos suelen gotear de tres lugares: el menú no convierte, el sitio no rankea, o la puerta no es encontrable en Google. Prueba en ese orden.';
+      if (a.leak === 'discovery') tail = ' El descubrimiento se secuencia: GBP primero (domina la intención local), después móvil + velocidad, después títulos + schema.';
+      if (a.leak === 'kitchen')   tail = ' Los arreglos de cocina pagan en margen Y en marca. Empieza por el plato, después por cómo se fotografía, después por cómo se lee.';
+      if (a.leak === 'unsure')    tail = ' Corre primero un chequeo compuesto — tendrás un número en 60 segundos y un siguiente paso claro.';
+      return (head + tail).replace(/\*\*(.+?)\*\*/g, function (_, w) { return w; });
+    }
 
     function build(answers) {
       var path = [];
       var skipped = [];
-      var lede = '';
 
       if (answers.leak === 'margin') {
-        lede = 'El trabajo de margen siempre paga doble — una vez para el operador y otra para el equipo. El orden de abajo va de los insumos que controlas a diario hacia las palancas estructurales.';
         if (answers.recipe === 'yes' || answers.recipe === 'partial') {
-          path.push({ k: 'plate-cost', why: 'Empieza aquí. El costo a nivel de receta es el insumo que toda otra herramienta de margen necesita.' });
+          path.push({ k: 'plate-cost', why: 'El costo por plato es el insumo que toda otra herramienta de margen necesita.' });
         }
-        path.push({ k: 'margin-math', why: 'Corre primero la franja de prime cost — eso te dice si la fuga es food, labor o ambos.' });
+        path.push({ k: 'margin-math', why: 'Corre primero la franja de costo primario — eso te dice si la fuga es alimentos, mano de obra o ambos.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Una vez que conoces los costos, Ingeniería de Menú te muestra qué platos son la palanca real.' });
         }
-        if (answers.agg === 'heavy' || answers.agg === 'some') {
-          path.push({ k: 'margin-math', why: 'Específicamente la tarjeta de Punto de Equilibrio en Delivery — una participación grande de agregadores suele esconder margen oculto.' });
+        if (answers.agg === 'heavy') {
+          path.push({ k: 'margin-math', why: 'Participación grande de agregadores — usa la tarjeta de Punto de Equilibrio en Delivery; la matemática esconde 4–6 puntos de margen que la mayoría no rastrea.' });
         }
         if (answers.raise === 'no') {
-          path.push({ k: 'margin-math', why: 'Después el Simulador de Alza de Precios. Restaurantes que no han subido en 12 meses suelen dejar 2–4 puntos sobre la mesa.' });
+          path.push({ k: 'margin-math', why: 'Sin alza reciente — el Simulador de Alza de Precios suele encontrar 2–4 puntos sobre la mesa.' });
         }
       } else if (answers.leak === 'covers') {
-        lede = 'Los cubiertos suelen gotear de tres lugares: el menú no convierte, el sitio no rankea, o la puerta no es encontrable en Google. Prueba en ese orden.';
         path.push({ k: 'menu-copy', why: 'Un argumento de venta de 3 segundos. Si tus descripciones titubean o saltan señales sensoriales, el menú mismo está perdiendo pedidos.' });
         path.push({ k: 'gbp-grader', why: 'Google Business Profile es la superficie de SEO local con más palanca. Pruébalo antes de cualquier trabajo de SEO en sitio.' });
-        path.push({ k: 'seo-grader', why: 'Title tag y meta description — las dos líneas que un buscador lee antes de hacer clic. Baratas de arreglar, gran efecto.' });
+        path.push({ k: 'seo-grader', why: 'Title y meta description — las dos líneas que un buscador lee antes de hacer clic. Baratas de arreglar, gran efecto.' });
         if (answers.raise === 'no' && (answers.pnl === 'yes' || answers.pnl === 'approx')) {
           path.push({ k: 'margin-math', why: 'A veces "más cubiertos" es la meta equivocada — un alza del 5% sobre los cubiertos actuales puede ganarle a un empuje del 10% en volumen con márgenes más apretados.' });
         }
       } else if (answers.leak === 'discovery') {
-        lede = 'El descubrimiento se secuencia: GBP primero (domina la intención local), luego mobile + velocidad (que filtran cada ranking de Google), después schema y títulos.';
-        path.push({ k: 'gbp-grader', why: 'Google Business Profile es la fachada en Maps y Search. Pesa más que el sitio web para consultas "cerca de mí".' });
+        path.push({ k: 'storefront-health', why: 'Una URL, seis chequeos, un puntaje — léelo primero para saber qué capa de descubrimiento está arrastrando al resto.' });
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile es la fachada en Maps. Pesa más que el sitio web para consultas "cerca de mí".' });
         path.push({ k: 'mobile-check', why: 'La usabilidad móvil es el piso — si fallas aquí, el resto del SEO no importa.' });
         path.push({ k: 'speed-test', why: 'La velocidad de página es un factor de ranking confirmado y un factor de conversión medible en móvil.' });
+        path.push({ k: 'schema-check', why: 'Lo que Google ve vs. lo que tu sitio emite — si falta el schema de Restaurant pierdes elegibilidad para resultados enriquecidos.' });
         path.push({ k: 'seo-grader', why: 'Title y meta description — la capa legible de cada resultado de búsqueda.' });
       } else if (answers.leak === 'kitchen') {
-        lede = 'Los arreglos de cocina pagan en margen Y en marca. Empieza por el plato, después por cómo se fotografía, después por cómo se lee en el menú.';
         path.push({ k: 'plate-cost', why: 'Costo a nivel de plato primero. Sin esto, toda otra decisión de cocina es una adivinanza.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Rentabilidad por plato + popularidad. Te dice qué Estrellas proteger y qué Perros retirar.' });
         }
         path.push({ k: 'photo-brief', why: 'Una lista de tomas apretada se reusa todo el año. La matemática de dedup le devuelve al fotógrafo el dinero.' });
         path.push({ k: 'menu-copy', why: 'Cómo se lee el plato en el menú. Las señales sensoriales y de procedencia suben la tasa de pedido sin cambiar la comida.' });
+        path.push({ k: 'brand-suite', why: 'Saca una paleta desde tu logo — todo menú, brief de fotos y cartel de puerta usa estos colores.' });
+      } else if (answers.leak === 'unsure') {
+        path.push({ k: 'storefront-health', why: 'Una URL, seis chequeos, un puntaje — la forma más rápida de encontrar tu capa más débil.' });
+        path.push({ k: 'audit', why: 'Después del compuesto, corre el Diagnóstico de Restaurante sobre la misma URL para una lista priorizada y específica para restaurantes.' });
+        path.push({ k: 'margin-math', why: 'Cinco números en lenguaje claro de tu último estado de cuenta — la franja de costo primario te dice si la fuga es el modelo mismo.' });
       }
 
-      if (answers.pnl === 'no') {
-        path.push({ k: 'audit', why: 'Sin números de P&L no tenemos los insumos para las calculadoras por tarjeta. El Diagnóstico de Restaurante infiere lo que puede y te da una lista priorizada de arreglos estructurales.' });
+      if (answers.pnl === 'no' && answers.leak !== 'unsure') {
+        path.push({ k: 'audit', why: 'Sin números de P&L las calculadoras por tarjeta no pueden funcionar a fondo. El Diagnóstico de Restaurante infiere lo que puede y te da una lista priorizada de arreglos estructurales.' });
       }
 
-      if (answers.leak !== 'discovery') skipped.push('GBP / SEO / velocidad (déjalas para después)');
+      if (answers.leak !== 'discovery' && answers.leak !== 'unsure') skipped.push('GBP / SEO / velocidad (déjalas para después)');
       if (answers.leak !== 'kitchen' && !path.find(function(p){return p.k==='photo-brief';})) skipped.push('Brief de Fotos (después del trabajo de costo)');
 
-      var seen = {};
-      var deduped = [];
+      var seen = {}, deduped = [];
       path.forEach(function(p){ if (!seen[p.k]) { seen[p.k] = true; deduped.push(p); } });
-      return { path: deduped, skipped: skipped, lede: lede };
+
+      // Banderas "también notamos" — solo cuando 3+ señales coinciden.
+      var noticed = [];
+      if (answers.agg === 'heavy' && answers.raise === 'no' && (answers.leak === 'covers' || answers.leak === 'unsure')) {
+        noticed.push('Participación grande de agregadores + sin alza reciente + preocupación por cubiertos: tu problema de cubiertos quizás es un problema de margen disfrazado. La tarjeta de Punto de Equilibrio en Delivery es un desvío de 5 minutos que vale la pena antes de perseguir volumen.');
+      }
+      if (answers.leak === 'margin' && answers.pnl === 'no' && answers.recipe === 'no') {
+        noticed.push('Fuga de margen sin P&L y sin recetas: tanto Costo del Plato como Margen Math necesitan al menos uno de esos insumos para dar señal. Saca el último estado de cuenta para los totales de ventas, alimentos y mano de obra — eso te desbloquea.');
+      }
+      if (answers.leak === 'discovery' && answers.pnl === 'no' && answers.recipe === 'no') {
+        noticed.push('Trabajo de descubrimiento sin base de margen: optimizar la fachada solo es palanca cuando el modelo detrás de la puerta es sólido. Corre la franja de costo primario en Margen Math con números aproximados en paralelo — 5 minutos, posiblemente lo más importante.');
+      }
+      if (answers.leak === 'kitchen' && answers.agg === 'heavy' && answers.pnl !== 'yes') {
+        noticed.push('Fuga en cocina + participación grande de agregadores sin visibilidad completa de P&L: los problemas de costo y canal suelen componerse. Costo del Plato primero, después la tarjeta de Punto de Equilibrio en Delivery antes de cualquier re-ingeniería de menú.');
+      }
+
+      return { path: deduped, skipped: skipped, noticed: noticed };
     }
 
-    var form = document.getElementById('tsForm');
-    var resultBox = document.getElementById('tsResult');
-    var ledeEl = document.getElementById('tsResultLede');
-    var listEl = document.getElementById('tsRecList');
-    var skipEl = document.getElementById('tsResultSkip');
-    var progressEl = document.getElementById('tsProgress');
-    var resetBtn = document.getElementById('tsReset');
+    var form        = document.getElementById('tsForm');
+    var resultBox   = document.getElementById('tsResult');
+    var ledeEl      = document.getElementById('tsResultLede');
+    var listEl      = document.getElementById('tsRecList');
+    var skipEl      = document.getElementById('tsResultSkip');
+    var progressEl  = document.getElementById('tsProgress');
+    var resetBtn    = document.getElementById('tsReset');
+    var noticedBox  = document.getElementById('tsNoticed');
+    var noticedList = document.getElementById('tsNoticedList');
+    var restoreBox  = document.getElementById('tsRestore');
+    var restoreFresh= document.getElementById('tsRestoreFresh');
 
     var QUESTIONS = ['leak','pnl','recipe','raise','agg'];
+    var STORAGE_KEY = 'mtn:start:answers';
+
     function getAnswers() {
       var a = {};
       QUESTIONS.forEach(function(q){
@@ -329,9 +427,45 @@
       });
       return a;
     }
+    function setAnswers(a) {
+      if (!a || typeof a !== 'object') return;
+      QUESTIONS.forEach(function(q){
+        if (!a[q]) return;
+        var input = form.querySelector('input[name="' + q + '"][value="' + a[q] + '"]');
+        if (input) input.checked = true;
+      });
+    }
     function updateProgress() {
       var n = Object.keys(getAnswers()).length;
       progressEl.textContent = n + ' de ' + QUESTIONS.length + ' contestadas';
+    }
+
+    function safeStorage() {
+      try {
+        if (typeof localStorage === 'undefined') return null;
+        var probe = '__ts_probe__';
+        localStorage.setItem(probe, probe);
+        localStorage.removeItem(probe);
+        return localStorage;
+      } catch (e) { return null; }
+    }
+    function persist(answers) {
+      var ls = safeStorage(); if (!ls) return;
+      try { ls.setItem(STORAGE_KEY, JSON.stringify({ a: answers, t: Date.now() })); } catch (e) {}
+    }
+    function restore() {
+      var ls = safeStorage(); if (!ls) return null;
+      try {
+        var raw = ls.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        if (!parsed || !parsed.a || (Date.now() - (parsed.t || 0)) > 60 * 24 * 3600 * 1000) return null;
+        return parsed.a;
+      } catch (e) { return null; }
+    }
+    function clearStored() {
+      var ls = safeStorage(); if (!ls) return;
+      try { ls.removeItem(STORAGE_KEY); } catch (e) {}
     }
 
     form.addEventListener('change', updateProgress);
@@ -346,26 +480,58 @@
         return;
       }
       var built = build(answers);
-      ledeEl.textContent = built.lede;
+      ledeEl.textContent = buildLede(answers);
       listEl.innerHTML = built.path.map(function(p){
-        var t = TOOLS[p.k];
-        if (!t) return '';
-        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span></div></li>';
+        var t = TOOLS[p.k]; if (!t) return '';
+        var m = META[p.k] || {};
+        var meta = '';
+        if (m.leaveWith || m.time || m.needs) {
+          meta = '<div class="ts-rec-meta">' +
+            (m.leaveWith ? '<span><strong>Te llevas</strong> ' + m.leaveWith + '</span>' : '') +
+            (m.time      ? '<span><strong>Tiempo</strong> ' + m.time + '</span>' : '') +
+            (m.needs     ? '<span><strong>Necesitas</strong> ' + m.needs + '</span>' : '') +
+          '</div>';
+        }
+        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span>' + meta + '</div></li>';
       }).join('');
-      skipEl.textContent = built.skipped.length
-        ? 'Saltar por ahora: ' + built.skipped.join(' · ')
-        : '';
+      if (built.noticed.length) {
+        noticedList.innerHTML = built.noticed.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+        noticedBox.hidden = false;
+      } else {
+        noticedBox.hidden = true;
+        noticedList.innerHTML = '';
+      }
+      skipEl.textContent = built.skipped.length ? 'Saltar por ahora: ' + built.skipped.join(' · ') : '';
       resultBox.setAttribute('data-shown', 'true');
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      persist(answers);
       if (window.plausible) window.plausible('Start Here Path', { props: { leak: answers.leak, locale: 'es' } });
     });
 
     resetBtn.addEventListener('click', function(){
       form.reset();
       resultBox.removeAttribute('data-shown');
+      noticedBox.hidden = true;
+      restoreBox.removeAttribute('data-shown');
+      clearStored();
       updateProgress();
       form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    if (restoreFresh) {
+      restoreFresh.addEventListener('click', function(){
+        form.reset();
+        clearStored();
+        restoreBox.removeAttribute('data-shown');
+        updateProgress();
+      });
+    }
+
+    var stored = restore();
+    if (stored) {
+      setAnswers(stored);
+      restoreBox.setAttribute('data-shown', 'true');
+    }
 
     updateProgress();
   })();
