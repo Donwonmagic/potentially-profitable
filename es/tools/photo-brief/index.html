@@ -53,6 +53,51 @@
 .pb-meta{display:grid;grid-template-columns:1fr;gap:14px;align-items:end}
 @media(min-width:480px){.pb-meta{grid-template-columns:1fr 1fr}}
 @media(min-width:640px){.pb-meta{grid-template-columns:1fr 1fr 1fr}}
+.pb-mode{display:flex;gap:0;margin:0 0 14px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.pb-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;font-weight:500;cursor:pointer;border-radius:999px}
+.pb-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.pb-self-hint{grid-column:1/-1;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
+.pb-shoot{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;padding:env(safe-area-inset-top,16px) 16px env(safe-area-inset-bottom,16px) 16px}
+.pb-shoot[hidden]{display:none}
+.pb-shoot-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px}
+.pb-shoot-counter{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.7);font-variant-numeric:tabular-nums}
+.pb-shoot-close{background:none;border:0;color:var(--cream);font-size:32px;line-height:1;cursor:pointer;padding:4px 12px}
+.pb-shoot-card{flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 8px;overflow-y:auto;touch-action:pan-y}
+.pb-shoot-card[data-marked="true"]{opacity:0.55}
+.pb-shoot-dish{font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:500;line-height:1.1;margin:0 0 4px}
+.pb-shoot-cat{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 22px}
+.pb-shoot-spec{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0;font-size:18px;line-height:1.5}
+.pb-shoot-spec dt{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);align-self:start;padding-top:6px}
+.pb-shoot-spec dd{margin:0;color:var(--cream);font-weight:500}
+.pb-shoot-surfaces{margin:18px 0 0}
+.pb-shoot-surfaces-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 8px}
+.pb-shoot-surfaces-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.pb-shoot-surfaces-list li{padding:5px 12px;border:1px solid rgba(250,246,238,0.25);border-radius:999px;font-size:13px;color:var(--cream)}
+.pb-shoot-tip{margin:24px 0 0;padding:12px 14px;background:rgba(250,246,238,0.06);border-left:2px solid var(--teal);border-radius:6px;font-size:14px;line-height:1.5;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips{margin:18px 0 0;padding:14px 16px;background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.12);border-radius:8px}
+.pb-shoot-tips-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 10px}
+.pb-shoot-tips-list{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips-list li{margin-bottom:6px}
+.pb-shoot-tips-list li:last-child{margin-bottom:0}
+.pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
+.pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
+.pb-shoot-nav:disabled{opacity:0.35;cursor:not-allowed}
+#pbShootMark{flex:0 0 auto;padding:14px 22px;background:var(--teal);border-color:var(--teal);color:var(--cream)}
+#pbShootMark[data-marked="true"]{background:rgba(250,246,238,0.10);border-color:rgba(250,246,238,0.25)}
+.pb-rules{padding:0;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--white)}
+.pb-rules-summary{cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+.pb-rules-summary::-webkit-details-marker{display:none}
+.pb-rules-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pb-rules[open] .pb-rules-summary::before{content:'− '}
+.pb-rules-body{padding:0 18px 18px}
+.pb-rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:0 0 14px}
+.pb-rules-card{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-2)}
+.pb-rules-card h4{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:.01em}
+.pb-rules-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.pb-rules-card li{margin-bottom:5px}
+.pb-rules-card strong{color:var(--ink);font-weight:600}
+.pb-rules-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
 .pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -419,7 +464,11 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">Lista los platos que quieres fotografiar y marca los destinos. La matemática calcula el número mínimo de tomas que cubre cada destino con corte de aspecto &mdash; tú entras con el brief correcto, el fotógrafo trabaja medio día en lugar de tres.</p>
 
   <div class="pb-form">
-    <div class="pb-meta">
+    <div class="pb-mode" role="radiogroup" aria-label="Quién va a tomar las fotos">
+      <button type="button" data-mode="hire" aria-pressed="true" role="radio">Contrato un fotógrafo</button>
+      <button type="button" data-mode="self" aria-pressed="false" role="radio">Yo mismo (con iPhone)</button>
+    </div>
+    <div class="pb-meta" data-mode-view="hire">
       <label>Nombre del restaurante <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(va en el brief)</small>
         <input type="text" id="pbName" placeholder="ej. Osteria Giardino" autocomplete="organization" />
       </label>
@@ -427,8 +476,11 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         <input type="text" id="pbPhotographer" placeholder="ej. Alex Reyes" autocomplete="off" />
       </label>
       <label>Tarifa diaria del fotógrafo ($) <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(usada en la matemática de ROI)</small>
-        <input type="number" id="pbDayRate" min="0" step="50" value="1800" />
+        <input type="number" id="pbDayRate" min="0" step="50" placeholder="ej. 1800" />
       </label>
+    </div>
+    <div class="pb-meta" data-mode-view="self" hidden>
+      <p class="pb-self-hint">¿Lo vas a tomar con el celular? Plan ~8 minutos por plato, 90 minutos en total antes del servicio. Lleva: tripode para celular, fomi blanco como rebote, lino neutro, pañuelo de lente. Toma cerca de una ventana orientada al norte entre 10am y 2pm.</p>
     </div>
 
     <fieldset class="pb-srcframe" id="pbSrcFrame" aria-describedby="pbSrcFrameNote">
@@ -506,18 +558,96 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <div class="pb-coverage" id="pbCoverage"></div>
     </div>
 
+    <!-- Reglas de publicación por plataforma — cheat sheet de los
+         requisitos reales de cada destino. -->
+    <details class="pb-rules" id="pbRules" style="display:none;margin-top:18px;">
+      <summary class="pb-rules-summary">Reglas de publicación por plataforma &mdash; lo que cada superficie realmente requiere &rarr;</summary>
+      <div class="pb-rules-body">
+        <div class="pb-rules-grid">
+          <div class="pb-rules-card">
+            <h4>Google Business Profile</h4>
+            <ul>
+              <li><strong>Foto de portada:</strong> proporción 16:9, mínimo 1024×576, máximo 5 MB. La primera foto que ve un usuario en Maps.</li>
+              <li><strong>Perfil (logo):</strong> cuadrado 1:1, mínimo 250×250.</li>
+              <li><strong>Fotos adicionales:</strong> JPEG/PNG, 720p o más. Mezcla interior, exterior, comida, equipo.</li>
+              <li><strong>Lo que rechaza:</strong> fotos de stock, imágenes muy filtradas, fotos con texto sobrepuesto, duplicados.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Instagram</h4>
+            <ul>
+              <li><strong>Feed por defecto:</strong> retrato 4:5, 1080×1350. Cuadrado (1:1) y panorámico (1.91:1) también válidos.</li>
+              <li><strong>Story / Reel:</strong> vertical 9:16, 1080×1920. Mantén el contenido crítico en la zona segura central (140 px arriba + 250 px abajo para la UI).</li>
+              <li><strong>Carrusel:</strong> todas las diapositivas deben compartir la misma proporción.</li>
+              <li><strong>Perfil:</strong> mínimo 320×320, se muestra como círculo.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Yelp</h4>
+            <ul>
+              <li><strong>Foto destacada:</strong> 1920×1280 (3:2), lo primero que ve un buscador en Yelp.</li>
+              <li><strong>Tope por negocio:</strong> ~250 fotos según el plan.</li>
+              <li><strong>No subas:</strong> capturas de menú (Yelp procesa los menús aparte) ni fotos con precios estampados.</li>
+              <li><strong>El dueño puede reportar</strong> fotos del cliente para que las quiten si están engañosas o fuera de tema — toma 1-3 semanas.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Apple Maps</h4>
+            <ul>
+              <li><strong>Imagen de portada:</strong> vía Apple Business Connect, 5184×3456 (3:2) recomendado.</li>
+              <li><strong>Galería:</strong> JPEG, sin Live Photos, sin animadas.</li>
+              <li><strong>Las fotos showcase</strong> aparecen en las Place Cards del iPhone — elige el frame que mejor "represente cómo se siente entrar".</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Open Graph (Facebook / LinkedIn / iMessage)</h4>
+            <ul>
+              <li><strong>Imagen OG:</strong> 1200×630 (1.91:1). Por debajo de 600×315 no se mostrará el preview.</li>
+              <li><strong>No pongas texto crítico a menos de 100 px de los bordes</strong> — cada plataforma corta diferente.</li>
+              <li>La misma imagen funciona en Facebook, LinkedIn, Slack, iMessage, Twitter/X — una toma cubre las cuatro.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Tu menú &amp; web hero</h4>
+            <ul>
+              <li><strong>Menú inline:</strong> 4:3 o 1:1 mantiene la maquetación estable en celulares; vertical (9:16) rompe el ritmo.</li>
+              <li><strong>Web hero:</strong> 16:9 si el ancho es responsive, 21:9 para cinemático; bajo 800 KB comprimido (el Test de Velocidad lo flaggeará si pesa más).</li>
+              <li><strong>Texto alternativo:</strong> describe el plato en una oración — leíble por lectores de pantalla + indexable por Google para búsqueda de imágenes.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pb-rules-foot">Especificaciones revisadas trimestralmente; última verificación abril 2026. Pasa esta sección al fotógrafo antes de la sesión — la mayoría puede entregar cada spec desde una toma fuente si conoce las restricciones de antemano.</p>
+      </div>
+    </details>
+
     <aside class="edu-result edu-result--mini" id="pbEduResult" aria-label="Qué significa este brief" style="display:none;">
       <p class="edu-result__lede">Una lista de tomas más apretada <strong>no es tacañería</strong> &mdash; es la diferencia entre una sesión de medio día que reúsas todo el año y un maratón del cual la mitad nunca llega a una pared, un feed o un mantel. La matemática de dedup de aquí le devuelve al fotógrafo el mismo dinero, mejor invertido.</p>
     </aside>
 
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Llévatelo</span>
-      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Descargar Brief de Fotos <span class="pb-action-fmt">.png</span></button>
+      <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbShootMode">Modo Toma <span class="pb-action-fmt">en el celular</span></button>
+      <button type="button" class="pb-action-btn" id="pbDownloadBrief">Brief de Fotos <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadCard">Tarjeta de Fotos de Marca <span class="pb-action-fmt">.png</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadZip">Paquete <span class="pb-action-fmt">.zip</span></button>
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copiar lista de tomas <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Descargar <span class="pb-action-fmt">.json</span></button>
       <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pbActionStatus"></span>
+    </div>
+
+    <!-- Modo Toma — pantalla completa, una tarjeta por toma fuente
+         para usar durante la sesión de fotos misma. -->
+    <div class="pb-shoot" id="pbShoot" hidden role="dialog" aria-modal="true" aria-label="Modo Toma">
+      <header class="pb-shoot-header">
+        <span class="pb-shoot-counter" id="pbShootCounter">Toma 1 de 1</span>
+        <button type="button" class="pb-shoot-close" id="pbShootClose" aria-label="Cerrar Modo Toma">×</button>
+      </header>
+      <div class="pb-shoot-card" id="pbShootCard" aria-live="polite"></div>
+      <footer class="pb-shoot-footer">
+        <button type="button" class="pb-shoot-nav" id="pbShootPrev" aria-label="Toma anterior">&larr;</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootMark" aria-label="Marcar esta toma como hecha">Marcar tomada</button>
+        <button type="button" class="pb-shoot-nav" id="pbShootNext" aria-label="Toma siguiente">&rarr;</button>
+      </footer>
     </div>
 
     <div class="pb-handoff" id="pbHandoff" style="display:none;">
@@ -689,6 +819,28 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   var photogEl     = document.getElementById('pbPhotographer');
   var dayRateEl    = document.getElementById('pbDayRate');
   var srcFrameEl   = document.getElementById('pbSrcFrame');
+
+  // Toggle de modo: contratar vs. yo mismo (iPhone).
+  var modeBtns = document.querySelectorAll('.pb-mode button[data-mode]');
+  var modeViews = document.querySelectorAll('[data-mode-view]');
+  function setMode(mode) {
+    Array.prototype.forEach.call(modeBtns, function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Array.prototype.forEach.call(modeViews, function (v) {
+      v.hidden = (v.getAttribute('data-mode-view') !== mode);
+    });
+    if (mode === 'self') {
+      var any = srcFrameEl && srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+      if (any && any.value !== '4:3') {
+        var phone = srcFrameEl.querySelector('input[name="pbSrcRatio"][value="4:3"]');
+        if (phone) phone.checked = true;
+      }
+    }
+  }
+  Array.prototype.forEach.call(modeBtns, function (b) {
+    b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); });
+  });
   var rowsEl       = document.getElementById('pbRows');
   var addRowBtn    = document.getElementById('pbAddRow');
   var sampleBtn    = document.getElementById('pbSample');
@@ -879,6 +1031,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       '</div>';
     }).join('');
     coverageWrap.style.display = '';
+    var rulesEl = document.getElementById('pbRules');
+    if (rulesEl) rulesEl.style.display = checkedSurfaces.length ? '' : 'none';
   }
 
   // -------------------- Render --------------------
@@ -1000,6 +1154,164 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Modo Toma --------------------
+  var shootEl       = document.getElementById('pbShoot');
+  var shootCardEl   = document.getElementById('pbShootCard');
+  var shootCounter  = document.getElementById('pbShootCounter');
+  var shootCloseBtn = document.getElementById('pbShootClose');
+  var shootPrevBtn  = document.getElementById('pbShootPrev');
+  var shootNextBtn  = document.getElementById('pbShootNext');
+  var shootMarkBtn  = document.getElementById('pbShootMark');
+  var shootBtn      = document.getElementById('pbShootMode');
+  var shootIndex    = 0;
+  var shootFrames   = [];
+  var shootMarked   = {};
+  function pbCap(s){ return String(s||'').replace(/^./, function(c){ return c.toUpperCase(); }); }
+  function pbNiceLighting(l) {
+    return ({
+      'warm-window':  'Luz cálida de ventana (10am–2pm, orientada al norte si es posible)',
+      'cool-window':  'Luz fría de ventana en día nublado',
+      'overhead':     'Luz cenital — luz natural o softbox',
+      'mood':         'Baja / atmosférica — una sola luz cálida, fondo oscuro',
+      'studio':       'Flash de estudio — separación limpia',
+      'bright-table': 'Mesa con luz brillante — luz uniforme',
+      'ambient':      'Luz ambiente del local'
+    })[l] || pbCap(l);
+  }
+  function pbNiceAngle(a) {
+    return ({
+      '45-degree':    'Ángulo héroe a 45°',
+      '45deg':        'Ángulo héroe a 45°',
+      'overhead':     'Cenital (90° / flat-lay)',
+      'eye-level':    'Nivel de ojo (15–20°)',
+      'tight-crop':   'Crop apretado, ingrediente al frente',
+      'plate-level':  'Nivel del plato',
+      'room':         'Plano de salón'
+    })[a] || pbCap(a);
+  }
+  function pbNiceNeg(n) {
+    if (!n || n === 'none') return 'Sin reserva';
+    return ({
+      'top':    'Reservar el tercio superior (para IG story / titular OG)',
+      'right':  'Reservar el lado derecho (para menú inline / texto hero)',
+      'left':   'Reservar el lado izquierdo',
+      'bottom': 'Reservar el tercio inferior'
+    })[n] || pbCap(n);
+  }
+  function pbBuildShootFrames() {
+    if (!latestSummary || !latestSummary.dedup || !latestSummary.dedup.perDish) return [];
+    var out = [];
+    latestSummary.dedup.perDish.forEach(function (d) {
+      (d.rows || []).forEach(function (row, i) {
+        out.push({
+          dish:     d.name || 'Plato',
+          category: d.category || 'main',
+          priority: d.priority || 'standard',
+          angle:    row.angle,
+          lighting: row.lighting,
+          negSpace: row.negSpace,
+          surfaces: row.surfaces || [],
+          rowIndex: i
+        });
+      });
+    });
+    return out;
+  }
+  function pbRenderShoot() {
+    if (!shootEl || !shootCardEl) return;
+    if (!shootFrames.length) {
+      shootCardEl.innerHTML = '<p style="opacity:0.7;text-align:center;">Aún no hay tomas — agrega al menos un plato + una superficie al brief.</p>';
+      shootCounter.textContent = '0 de 0';
+      shootPrevBtn.disabled = true; shootNextBtn.disabled = true;
+      return;
+    }
+    if (shootIndex < 0) shootIndex = 0;
+    if (shootIndex > shootFrames.length - 1) shootIndex = shootFrames.length - 1;
+    var f = shootFrames[shootIndex];
+    var key = f.dish + '|' + f.rowIndex;
+    var marked = !!shootMarked[key];
+    shootCardEl.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootCounter.textContent = 'Toma ' + (shootIndex + 1) + ' de ' + shootFrames.length;
+    var surfacesLabels = f.surfaces.map(function (sk) {
+      return (window.PB && window.PB.SURFACES && window.PB.SURFACES[sk]) ? window.PB.SURFACES[sk].label : sk;
+    });
+    var tips = (window.PB && window.PB.stylingTipsFor) ? window.PB.stylingTipsFor(f.category) : [];
+    var tipsHtml = tips.length
+      ? '<div class="pb-shoot-tips"><p class="pb-shoot-tips-label">Notas de estilo para ' + pbCap(f.category) + '</p><ul class="pb-shoot-tips-list">' +
+          tips.map(function (t) { return '<li>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</li>'; }).join('') +
+        '</ul></div>'
+      : '';
+    shootCardEl.innerHTML =
+      '<p class="pb-shoot-cat">' + pbCap(f.category) + (f.priority === 'priority' ? ' · ★ prioridad' : '') + '</p>' +
+      '<h2 class="pb-shoot-dish">' + (f.dish.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</h2>' +
+      '<dl class="pb-shoot-spec">' +
+        '<dt>Ángulo</dt><dd>' + pbNiceAngle(f.angle) + '</dd>' +
+        '<dt>Luz</dt><dd>' + pbNiceLighting(f.lighting) + '</dd>' +
+        '<dt>Composición</dt><dd>' + pbNiceNeg(f.negSpace) + '</dd>' +
+      '</dl>' +
+      tipsHtml +
+      '<div class="pb-shoot-surfaces">' +
+        '<p class="pb-shoot-surfaces-label">Esta toma fuente sirve a:</p>' +
+        '<ul class="pb-shoot-surfaces-list">' +
+          surfacesLabels.map(function (l) { return '<li>' + (l.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</li>'; }).join('') +
+        '</ul>' +
+      '</div>' +
+      '<p class="pb-shoot-tip">Tómala una vez. El brief la mapea automáticamente a cada superficie de arriba con matemática de crop — no necesitas tomas separadas por superficie.</p>';
+    shootPrevBtn.disabled = (shootIndex === 0);
+    shootNextBtn.disabled = (shootIndex === shootFrames.length - 1);
+    shootMarkBtn.setAttribute('data-marked', marked ? 'true' : 'false');
+    shootMarkBtn.textContent = marked ? 'Tomada ✓' : 'Marcar tomada';
+  }
+  function pbOpenShoot() {
+    shootFrames = pbBuildShootFrames();
+    shootIndex = 0;
+    if (shootEl) shootEl.hidden = false;
+    document.body.style.overflow = 'hidden';
+    pbRenderShoot();
+    if (shootCloseBtn) shootCloseBtn.focus();
+  }
+  function pbCloseShoot() {
+    if (shootEl) shootEl.hidden = true;
+    document.body.style.overflow = '';
+    if (shootBtn) shootBtn.focus();
+  }
+  if (shootBtn) shootBtn.addEventListener('click', pbOpenShoot);
+  if (shootCloseBtn) shootCloseBtn.addEventListener('click', pbCloseShoot);
+  if (shootPrevBtn) shootPrevBtn.addEventListener('click', function () { shootIndex--; pbRenderShoot(); });
+  if (shootNextBtn) shootNextBtn.addEventListener('click', function () { shootIndex++; pbRenderShoot(); });
+  if (shootMarkBtn) shootMarkBtn.addEventListener('click', function () {
+    var f = shootFrames[shootIndex]; if (!f) return;
+    var key = f.dish + '|' + f.rowIndex;
+    shootMarked[key] = !shootMarked[key];
+    pbRenderShoot();
+    if (shootMarked[key] && shootIndex < shootFrames.length - 1) {
+      setTimeout(function(){ shootIndex++; pbRenderShoot(); }, 220);
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!shootEl || shootEl.hidden) return;
+    if (e.key === 'Escape') { pbCloseShoot(); }
+    else if (e.key === 'ArrowLeft' && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    else if (e.key === 'ArrowRight' && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+  });
+  (function () {
+    if (!shootCardEl) return;
+    var startX = null, startY = null;
+    shootCardEl.addEventListener('touchstart', function (e) {
+      if (!e.touches || !e.touches[0]) return;
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    }, { passive: true });
+    shootCardEl.addEventListener('touchend', function (e) {
+      if (startX == null || !e.changedTouches || !e.changedTouches[0]) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      startX = null; startY = null;
+      if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+      if (dx < 0 && !shootNextBtn.disabled) { shootIndex++; pbRenderShoot(); }
+      else if (dx > 0 && !shootPrevBtn.disabled) { shootIndex--; pbRenderShoot(); }
+    }, { passive: true });
+  })();
 
   // -------------------- Exportaciones (CSV + JSON) --------------------
   function buildCsv() {
