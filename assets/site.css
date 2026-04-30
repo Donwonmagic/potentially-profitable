@@ -5359,6 +5359,20 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
 .comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
 
+/* Phase H (Information Security) — interactive 5-test audit checklist
+   at /learn/checklists/audit-any-tool/. Pass/fail uses status-good /
+   rust accents already in the system. */
+.audit-checklist{display:flex;flex-direction:column;gap:18px;margin-top:8px}
+.audit-step{padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-1)}
+.audit-step h3{font-family:var(--font-display);font-size:18px;line-height:1.3;margin:0 0 8px;color:var(--ink)}
+.audit-step h3 input[type="checkbox"]{margin-right:10px;transform:scale(1.2);vertical-align:-2px}
+.audit-step__hint{font-size:14px;line-height:1.55;color:var(--ink);margin:8px 0 6px}
+.audit-step__pass{font-size:13.5px;line-height:1.55;color:#2A6B3D;margin:4px 0}
+.audit-step__fail{font-size:13.5px;line-height:1.55;color:#8B3838;margin:4px 0}
+.audit-summary{margin-top:24px;padding:18px 20px;background:var(--cream-2);border-radius:var(--r-md);text-align:center}
+.audit-summary p{margin:4px 0;font-size:15px}
+.audit-summary__advice{color:var(--ink-soft);font-style:italic}
+
 /* Phase H (Information Security) — /security/ shelf page styles.
    Three structural blocks: claims list, audit table, tier grid.
    All scoped to .security-* so they don't leak into other surfaces. */
