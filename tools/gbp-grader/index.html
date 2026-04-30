@@ -162,6 +162,13 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Methodology disclosure — tucked at the bottom for credibility
      without cluttering the default view. */
+  .gbp-preflight{margin:0 0 22px;padding:16px 20px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-input)}
+  .gbp-preflight-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 10px}
+  .gbp-preflight-body{font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+  .gbp-preflight-list{margin:0 0 12px;padding-left:20px;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .gbp-preflight-cta{display:inline-block;padding:9px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px;margin:0 0 10px}
+  .gbp-preflight-cta:hover{filter:brightness(0.92)}
+  .gbp-preflight-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
   .gbp-mirror{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
   .gbp-mirror-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
   .gbp-mirror-table{width:100%;border-collapse:collapse;font-size:13.5px}
@@ -846,6 +853,49 @@
       +'</details>';
   }
 
+  // Pre-flight unclaimed-listing detector. No single Places API
+  // field reliably says "this is unclaimed" without a server-side
+  // owner-status check, so we infer from observable signals that
+  // co-occur on auto-generated / abandoned listings:
+  //
+  //   - no website on the listing
+  //   - no photos at all
+  //   - no opening hours set
+  //   - no phone number
+  //   - very low review count (<5) AND missing primaryTypeDisplayName
+  //
+  // Three or more co-occurring signals flips the heuristic. Returns
+  // { likely, signals[], reason }. Conservative — false negatives
+  // are fine (the user proceeds to the regular grade); false
+  // positives risk distracting an active operator from fixing
+  // actual problems, so we skew the threshold high.
+  function pbDetectUnclaimed(chosen) {
+    if (!chosen) return { likely: false, signals: [] };
+    var sigs = [];
+    if (!chosen.website && !chosen.googleMapsUri) sigs.push('no website on the listing');
+    else if (!chosen.website) sigs.push('no website link on the listing');
+    if (!chosen.photoCount && chosen.photoCount !== 0) {} // photoCount missing entirely is normal in some response shapes
+    else if (chosen.photoCount === 0) sigs.push('zero photos');
+    var hasHours = !!(chosen.regularOpeningHours || chosen.openingHours || (chosen.currentOpeningHours && chosen.currentOpeningHours.weekdayDescriptions));
+    if (!hasHours) sigs.push('no hours set');
+    if (!chosen.nationalPhoneNumber && !chosen.internationalPhoneNumber && !chosen.formattedPhoneNumber) sigs.push('no phone number');
+    var reviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    if (reviews != null && reviews < 5 && !chosen.primaryTypeDisplayName) sigs.push('under 5 reviews and no business category');
+    return { likely: sigs.length >= 3, signals: sigs };
+  }
+  function renderPreflightBanner(pre) {
+    if (!pre || !pre.likely) return '';
+    var listHtml = pre.signals.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    return '<div class="gbp-preflight">'
+      + '<p class="gbp-preflight-eyebrow">Heads up — this listing might be unclaimed</p>'
+      + '<p class="gbp-preflight-body">Several signals look like Google-auto-generated rather than owner-managed:</p>'
+      + '<ul class="gbp-preflight-list">' + listHtml + '</ul>'
+      + '<p class="gbp-preflight-body">Claiming the listing is the highest-leverage GBP move there is — it unlocks every other fix and tells Google you\'re actively running this business.</p>'
+      + '<a class="gbp-preflight-cta" href="https://business.google.com/create" target="_blank" rel="noopener">Open Google Business Profile to claim &rarr;</a>'
+      + '<p class="gbp-preflight-foot">If you\'ve already claimed it and these signals are wrong, the score below still reflects what Google\'s public data shows — which is what new customers see.</p>'
+      + '</div>';
+  }
+
   // Competitor mirror: yours vs. category median. Uses the
   // peer-medians.json data already loaded for this category. Not
   // a "nearby search" (which would need a separate Places API
@@ -1160,6 +1210,16 @@
 
     bizEl.innerHTML=renderBusinessCard(chosen);
 
+    // Pre-flight claim check. Detects signals consistent with an
+    // unclaimed listing — listings Google auto-generated for the
+    // owner that have never been claimed/managed. Surfaces a warm
+    // amber banner ABOVE the score so the owner addresses claiming
+    // first (claiming a listing is what unlocks every other fix
+    // and is itself a high-leverage move). Pure client-side
+    // heuristic from data already in chosen — no extra fetch.
+    var preflight = pbDetectUnclaimed(chosen);
+    var preflightHtml = preflight.likely ? renderPreflightBanner(preflight) : '';
+
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'en');
     // Read the prior snapshot BEFORE saving the new one, so the
     // delta strip compares current vs. last, not current vs. current.
@@ -1177,7 +1237,7 @@
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
     var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
-    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+competitorHtml+deepHtml+methodHtml;
+    checksEl.innerHTML=preflightHtml+deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill the Restaurant Audit CTA with this
     // listing's website when available — that tool already fuses
