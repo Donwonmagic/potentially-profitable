@@ -234,7 +234,23 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -302,7 +318,7 @@
       <p class="final-sub">Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
-      <a class="btn btn-primary" href="/es/tools/photo-brief/">Abrir Constructor de Brief de Fotos</a>
+      <a class="btn btn-primary" href="/es/tools/photo-brief/#result">Abrir Constructor de Brief de Fotos</a>
       <a class="btn btn-ghost" href="/es/glossary/">Abrir el glosario completo</a>
     </div>
   </div>
@@ -320,14 +336,14 @@
       <div class="glossary-knit__col">
         <h3>Aparece en</h3>
         <ul>
-          <li><a href="/es/tools/photo-brief/">Constructor de Brief de Fotos</a></li>
+          <li><a href="/es/tools/photo-brief/#result">Constructor de Brief de Fotos</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
         <h3>Lee</h3>
         <ul>
           <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qué pierdes reservas cada noche</a></li>
-          <li><a href="/es/blog/restaurant-photo-spec-sheet/">restaurant-photo-spec-sheet</a></li>
+          <li><a href="/es/blog/restaurant-photo-spec-sheet/">Hoja de especificaciones de fotos</a></li>
           <li><a href="/es/blog/how-to-get-more-google-reviews-for-your-restaurant/">Conseguir más reseñas de Google</a></li>
         </ul>
       </div>

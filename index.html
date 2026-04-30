@@ -571,7 +571,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -744,6 +761,30 @@
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google uses</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/how-to-read-restaurant-google-search-console/">Reading Google Search Console</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/tools/storefront-health/">Storefront Health</a></td>
         <td class="lib-idx-section">Tools</td>
         <td class="lib-idx-date" aria-label="2026-04-29"><time datetime="2026-04-29">2026-04-29</time></td>
@@ -765,30 +806,6 @@
         <td class="lib-idx-title"><a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">Five website changes that recover 1% margin</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-04-26"><time datetime="2026-04-26">2026-04-26</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/tools/open-hours/">Open Hours</a></td>
-        <td class="lib-idx-section">Tools</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/tools/menu-engineering/">Menu Engineering Matrix</a></td>
-        <td class="lib-idx-section">Tools</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/tools/menu-copy/">Menu Copy Inspector</a></td>
-        <td class="lib-idx-section">Tools</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/blog/how-to-recover-reservations-from-googles-find-a-table/">Recovering reservations from Google's Find a Table</a></td>
-        <td class="lib-idx-section">Articles</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       </tbody>

@@ -62,8 +62,8 @@ const POST_END_MARK_RE = /<aside class="post-end-mark">[\s\S]*?<\/aside>/;
 const POST_END_CTA_START = '<!-- post-end-cta:start -->';
 
 const LOCALES = [
-  { code: 'en', dir: 'blog',    peopleBase: '/people/',    eyebrowPrefix: 'Field note from', donsLeadin: 'Don adds —' },
-  { code: 'es', dir: 'es/blog', peopleBase: '/es/people/', eyebrowPrefix: 'Apunte de',       donsLeadin: 'Don añade —' },
+  { code: 'en', dir: 'blog',    peopleBase: '/people/',    blogBase: '/blog/',    siteOrigin: 'https://muntin.digital', eyebrowPrefix: 'Field note from', donsLeadin: 'Don adds —' },
+  { code: 'es', dir: 'es/blog', peopleBase: '/es/people/', blogBase: '/es/blog/', siteOrigin: 'https://muntin.digital', eyebrowPrefix: 'Apunte de',       donsLeadin: 'Don añade —' },
 ];
 
 function escapeHtml(s) {
@@ -80,7 +80,7 @@ function slugifyAuthor(s) {
     .slice(0, 60);
 }
 
-function renderOneNote(note, locale) {
+function renderOneNote(note, locale, articleSlug) {
   const author = note.author || 'a reader';
   const slug = slugifyAuthor(author);
   // Phase F.7: wrap author name in a link to their contributor page
@@ -90,23 +90,39 @@ function renderOneNote(note, locale) {
     ? `<a class="callout-author-link" href="${locale.peopleBase}${slug}/">${escapeHtml(author)}</a>`
     : escapeHtml(author);
   const eyebrow = `${locale.eyebrowPrefix} ${authorHtml}`;
+  // Phase G.5 — inline Comment schema fragment per approved note.
+  // Search engines stitch these into the article's @graph and read
+  // them as authored attribution. <cite> in the visible markup
+  // gives screen readers the same signal.
+  const personId = slug ? `${locale.siteOrigin}${locale.peopleBase}${slug}/#person` : null;
+  const articleId = `${locale.siteOrigin}${locale.blogBase}${articleSlug}/#article`;
+  const commentObj = {
+    '@context': 'https://schema.org',
+    '@type': 'Comment',
+    author: personId ? { '@id': personId, '@type': 'Person', name: author } : { '@type': 'Person', name: author },
+    text: note.body,
+    about: { '@id': articleId },
+    dateCreated: note.approvedAt ? new Date(note.approvedAt).toISOString() : undefined,
+  };
+  const commentLd = `        <script type="application/ld+json">${JSON.stringify(commentObj)}</script>`;
   const lines = [
     '      <aside class="callout callout--field">',
     `        <p class="callout-eyebrow">${eyebrow}</p>`,
-    `        <p class="callout-body">${escapeHtml(note.body)}</p>`,
+    `        <p class="callout-body"><cite>${escapeHtml(note.body)}</cite></p>`,
   ];
   if (note.donsResponse && String(note.donsResponse).trim()) {
     lines.push(
       `        <p class="callout-body"><span class="callout-eyebrow-inline">${escapeHtml(locale.donsLeadin)}</span> ${escapeHtml(note.donsResponse)}</p>`
     );
   }
+  lines.push(commentLd);
   lines.push('      </aside>');
   return lines.join('\n');
 }
 
-function renderBlock(notes, locale) {
+function renderBlock(notes, locale, articleSlug) {
   if (!notes || !notes.length) return null;
-  const inner = notes.map((n) => renderOneNote(n, locale)).join('\n');
+  const inner = notes.map((n) => renderOneNote(n, locale, articleSlug)).join('\n');
   return [
     '<!-- field-notes:start -->',
     '      <div class="field-notes-container">',
@@ -116,9 +132,9 @@ function renderBlock(notes, locale) {
   ].join('\n      ');
 }
 
-function injectArticleFieldnotes(file, notes, locale) {
+function injectArticleFieldnotes(file, notes, locale, articleSlug) {
   const src = fs.readFileSync(file, 'utf8');
-  const block = renderBlock(notes, locale);
+  const block = renderBlock(notes, locale, articleSlug);
   if (!block) return false; // no notes this locale; nothing to do
 
   let next;
@@ -181,7 +197,7 @@ for (const [slug, perLocale] of Object.entries(fieldnotes)) {
       missing.push(`${locale.dir}/${slug}/index.html`);
       continue;
     }
-    if (injectArticleFieldnotes(file, notes, locale)) changed++;
+    if (injectArticleFieldnotes(file, notes, locale, slug)) changed++;
     else skipped++;
   }
 }

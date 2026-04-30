@@ -1,0 +1,69 @@
+{
+  "_doc": "Phase G.5 (Growth) — HowTo schema + step content for the three how-to-titled articles. inject-article-howto-schema.mjs reads this file and stamps a sentinel-bracketed <script type=application/ld+json> with HowTo + HowToStep nodes alongside the existing Article schema. Steps map to the article's existing H2 sections. Bilingual (EN+ES handled by the same data with parallel _en/_es fields).",
+
+  "articles": {
+    "how-to-set-up-google-business-profile-for-your-restaurant": {
+      "name_en": "How to Set Up Google Business Profile for Your Restaurant",
+      "name_es": "Cómo configurar Google Business Profile para tu restaurante",
+      "totalTime": "PT45M",
+      "steps_en": [
+        { "name": "Claim or create your listing",       "text": "Search Google Maps for your restaurant. If a panel appears, click 'Own this business?' If none, create one at business.google.com." },
+        { "name": "Verify ownership",                    "text": "Most restaurants verify by postcard (5-14 days). Some qualify for video verification. Don't list business hours until verified." },
+        { "name": "Choose the right primary category",   "text": "Pick the most specific category your restaurant qualifies for. 'Mexican Restaurant' beats 'Restaurant' every time for ranking." },
+        { "name": "Complete every field",                "text": "Hours, attributes, services, payment methods, accessibility, reservations URL — every blank field is a missed query." },
+        { "name": "Add at least 10 real photos",         "text": "Cover photo (16:9), profile photo (1:1), and 8+ gallery shots covering exterior, dining room, signature dishes." },
+        { "name": "Set up Google Posts",                 "text": "Publish a Post weekly. Hours updates, new menu items, events. Posts decay after 7 days; missing weeks hurt rank." },
+        { "name": "Respond to every review within 48h",  "text": "Google reads response rate as an active-business signal. Auto-flag every review for a same-week reply." }
+      ],
+      "steps_es": [
+        { "name": "Reclama o crea tu listing",            "text": "Busca tu restaurante en Google Maps. Si ves un panel, clic en '¿Eres dueño de este negocio?' Si no, créalo en business.google.com." },
+        { "name": "Verifica la propiedad",                "text": "La mayoría de restaurantes verifican por postal (5-14 días). Algunos califican para verificación por video." },
+        { "name": "Elige la categoría primaria correcta", "text": "La categoría más específica que califique. 'Mexican Restaurant' le gana a 'Restaurant' en ranking." },
+        { "name": "Completa cada campo",                  "text": "Horarios, atributos, servicios, pagos, accesibilidad, URL de reservas — cada campo en blanco es una búsqueda perdida." },
+        { "name": "Sube al menos 10 fotos reales",        "text": "Portada (16:9), perfil (1:1), y 8+ de galería cubriendo fachada, salón, platos firma." },
+        { "name": "Configura Google Posts",               "text": "Publica un Post semanal. Horarios, platos nuevos, eventos. Los Posts caducan en 7 días." },
+        { "name": "Responde cada reseña en 48 horas",     "text": "Google lee la tasa de respuesta como señal de negocio activo." }
+      ]
+    },
+    "how-to-get-more-google-reviews-for-your-restaurant": {
+      "name_en": "How to Get More Google Reviews for Your Restaurant",
+      "name_es": "Cómo conseguir más reseñas en Google para tu restaurante",
+      "totalTime": "PT30M",
+      "steps_en": [
+        { "name": "Print a QR card for the check",        "text": "4×6 card with your QR pointing at https://g.page/r/<YOUR_ID>/review. Drop one in every check." },
+        { "name": "Add a one-line check message",         "text": "Print 'We read every review — thank you for sharing yours' below the QR." },
+        { "name": "Send a follow-up text within 12 hours","text": "If your POS captures phone numbers, automate a 'hope you enjoyed dinner; we read every review' text." },
+        { "name": "Add a website CTA",                    "text": "On your homepage and Thank-You-after-Reservation page, add a button to leave a review." },
+        { "name": "Reply to every review within 48 hours","text": "Five-star reviews get a brief thanks. 4-and-3-star get a thoughtful, public reply naming what you'll improve." }
+      ],
+      "steps_es": [
+        { "name": "Imprime una tarjeta QR para la cuenta","text": "Tarjeta 4×6 con tu QR apuntando a https://g.page/r/<TU_ID>/review. Una en cada cuenta." },
+        { "name": "Añade una línea en la cuenta",         "text": "Imprime 'Leemos cada reseña — gracias por compartir la tuya' debajo del QR." },
+        { "name": "Envía un texto de seguimiento en 12h", "text": "Si tu POS captura teléfonos, automatiza un 'esperamos que disfrutaras la cena; leemos cada reseña'." },
+        { "name": "Añade un CTA en el sitio",             "text": "En tu home y página de Gracias-por-Reservar, añade un botón para dejar reseña." },
+        { "name": "Responde cada reseña en 48 horas",     "text": "Las de 5 estrellas con gracias breves. Las de 4-y-3 con una respuesta pública nombrando qué vas a mejorar." }
+      ]
+    },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
+      "name_en": "How to Raise Restaurant Menu Prices Without Losing Reservations",
+      "name_es": "Cómo subir precios del menú sin perder reservas",
+      "totalTime": "PT2H",
+      "steps_en": [
+        { "name": "Run Margin Math on your current state","text": "Open Margin Math, enter food cost %, labor %, fixed overhead. Save the baseline scenario to your Workshop." },
+        { "name": "Identify the high-margin items",       "text": "Tag the 4-6 dishes that already sell well AND have above-average contribution margin. Those are your candidates." },
+        { "name": "Raise prices on items with the best descriptions, not the worst margin","text": "Counter-intuitive: a well-described $24 dish raised to $26 outperforms a poorly-described $14 dish raised to $16." },
+        { "name": "Re-photograph the items you raise",    "text": "Perceived value moves more than the actual change. New photo on the same week as the new price." },
+        { "name": "Update menu schema + reservations CTA","text": "Make sure Menu schema reflects new prices. Move the reservation CTA above the fold the same week." },
+        { "name": "Watch the reservations funnel for 30 days","text": "Less than 2% drop in bookings is normal. More than 5% means you raised on the wrong items — revert and re-pick." }
+      ],
+      "steps_es": [
+        { "name": "Corre Margin Math con tu estado actual","text": "Abre Margin Math, mete % de comida, % de mano de obra, gastos fijos. Guarda el escenario base en tu Taller." },
+        { "name": "Identifica los platos de mayor margen","text": "Marca los 4-6 platos que YA venden bien Y tienen margen sobre el promedio. Esos son tus candidatos." },
+        { "name": "Sube precios donde la descripción es mejor, no donde el margen es peor","text": "Contraintuitivo: un plato de $24 bien descrito subido a $26 le gana a uno de $14 mal descrito subido a $16." },
+        { "name": "Re-fotografía los platos que subes",   "text": "El valor percibido se mueve más que el cambio real. Foto nueva la misma semana del precio nuevo." },
+        { "name": "Actualiza Menu schema + CTA de reservas","text": "Asegúrate de que Menu schema refleje los precios nuevos. CTA de reserva sobre la línea de pliegue esa semana." },
+        { "name": "Vigila el embudo de reservas 30 días","text": "Menos del 2% de bajada es normal. Más del 5% significa que subiste los platos equivocados — revierte y re-elige." }
+      ]
+    }
+  }
+}

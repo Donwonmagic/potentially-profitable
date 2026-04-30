@@ -253,7 +253,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -345,9 +362,11 @@
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
+          <li><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></li>
           <li><a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">What a custom restaurant site costs in 2026</a></li>
           <li><a href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Raising prices without losing reservations</a></li>
           <li><a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Is DoorDash worth it in 2026?</a></li>
+          <li><a href="/blog/wix-vs-custom-for-restaurants/">Wix vs. custom for restaurants</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

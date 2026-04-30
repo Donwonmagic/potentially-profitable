@@ -261,7 +261,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -287,6 +304,9 @@
       <!-- term-example:start -->
             <p class="term-example">Example: A bistro's LCP at 4.2s and CLS at 0.18 — both 'poor' — costs the page about 30% of its mobile bookings before any other factor matters.</p>
             <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Last verified: <time datetime="2026-04-24">April 24, 2026</time></p>
+            <!-- glossary-verified:end -->
       <p class="term-aka">CWV</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -368,6 +388,7 @@
         <ul>
           <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why your restaurant loses reservations every night</a></li>
           <li><a href="/blog/what-should-be-on-a-restaurant-website/">What should be on a restaurant website</a></li>
+          <li><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

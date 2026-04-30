@@ -90,6 +90,60 @@
      'Home > Page' links at the top-left of the viewport. -->
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
+<!-- hub-collection:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/es/learn/#collection",
+      "name": "Biblioteca",
+      "description": "Clusters por tema, investigación, listas — la manera estructurada de recorrer todo lo que enseña Muntin Digital.",
+      "url": "https://muntin.digital/es/learn/",
+      "inLanguage": "es-US",
+      "mainEntity": {
+        "@id": "https://muntin.digital/es/learn/#items"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://muntin.digital/es/learn/#items",
+      "numberOfItems": 4,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/es/learn/checklists/",
+          "name": "Listas y guías"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/es/learn/research/",
+          "name": "Investigación"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/es/learn/start-here/",
+          "name": "Empieza aquí"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://muntin.digital/es/learn/topics/",
+          "name": "Temas"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- hub-collection:end -->
 </head>
 <body>
 
@@ -208,7 +262,23 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -277,6 +347,30 @@
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">Los 6 tipos de schema que Google usa</a></td>
+        <td class="lib-idx-section">Artículos</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></td>
+        <td class="lib-idx-section">Artículos</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/es/blog/restaurant-photo-spec-sheet/">Hoja de especificaciones de fotos</a></td>
+        <td class="lib-idx-section">Artículos</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/es/blog/how-to-read-restaurant-google-search-console/">Cómo leer Google Search Console</a></td>
+        <td class="lib-idx-section">Artículos</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/es/tools/storefront-health/">Salud del Storefront</a></td>
         <td class="lib-idx-section">Herramientas</td>
         <td class="lib-idx-date" aria-label="2026-04-29"><time datetime="2026-04-29">2026-04-29</time></td>
@@ -298,30 +392,6 @@
         <td class="lib-idx-title"><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-04-26"><time datetime="2026-04-26">2026-04-26</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/tools/open-hours/">Horario Abierto</a></td>
-        <td class="lib-idx-section">Herramientas</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/tools/menu-engineering/">Matriz de Ingeniería de Menú</a></td>
-        <td class="lib-idx-section">Herramientas</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/tools/menu-copy/">Inspector de Copy de Menú</a></td>
-        <td class="lib-idx-section">Herramientas</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table de Google</a></td>
-        <td class="lib-idx-section">Artículos</td>
-        <td class="lib-idx-date" aria-label="2026-04-25"><time datetime="2026-04-25">2026-04-25</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       </tbody>

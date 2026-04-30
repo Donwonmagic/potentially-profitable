@@ -241,7 +241,23 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -267,6 +283,9 @@
       <!-- term-example:start -->
             <p class="term-example">Ejemplo: Un LCP sobre 2.5s pierde un estimado 12% de conversiones móviles de reserva; sobre 4.0s la pérdida compone hasta cerca del 30%.</p>
             <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Última revisión: <time datetime="2026-04-24">24 de abril de 2026</time></p>
+            <!-- glossary-verified:end -->
       <p class="term-aka">LCP</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurantes</span></div>
@@ -340,7 +359,7 @@
         <h3>Lee</h3>
         <ul>
           <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qué pierdes reservas cada noche</a></li>
-          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">when-to-rebuild-your-restaurant-website</a></li>
+          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

@@ -39,6 +39,17 @@
       <p class="admin-thread__email" id="adminThreadEmail">&nbsp;</p>
     </header>
     <div class="admin-thread__msgs" id="adminThreadMsgs"></div>
+    <!-- Phase G.12 — Resolved-with-outcome bar. Stamps Window Thread
+         Resolved Plausible event with outcome ∈ {call, contract, nurture,
+         noreply, notfit} so the lead-to-call KPI can read it. -->
+    <div class="admin-thread__resolved" aria-label="Mark resolved">
+      <span class="admin-thread__resolved-label">Resolve as:</span>
+      <button type="button" data-outcome="call"     class="admin-thread__outcome">Call</button>
+      <button type="button" data-outcome="contract" class="admin-thread__outcome">Contract</button>
+      <button type="button" data-outcome="nurture"  class="admin-thread__outcome">Nurture</button>
+      <button type="button" data-outcome="noreply"  class="admin-thread__outcome">No reply</button>
+      <button type="button" data-outcome="notfit"   class="admin-thread__outcome">Not a fit</button>
+    </div>
     <form class="admin-thread__composer" id="adminThreadForm">
       <div class="admin-thread__quick" id="adminThreadQuick" aria-label="Quick replies"></div>
       <textarea class="admin-thread__field" id="adminThreadBody" name="body" rows="3" placeholder="Write back…" maxlength="4000" required></textarea>
@@ -49,6 +60,22 @@
         <button type="submit" class="btn btn-primary btn-sm" id="adminThreadSend">Send</button>
       </div>
     </form>
+    <script>
+      (function () {
+        var btns = document.querySelectorAll('.admin-thread__outcome');
+        btns.forEach(function (b) {
+          b.addEventListener('click', function () {
+            var outcome = b.getAttribute('data-outcome');
+            if (!outcome) return;
+            if (typeof window.plausible === 'function') {
+              try { window.plausible('Window Thread Resolved', { props: { outcome: outcome } }); } catch (_) {}
+            }
+            b.classList.add('is-active');
+            setTimeout(function () { b.classList.remove('is-active'); }, 1200);
+          });
+        });
+      })();
+    </script>
   </section>
 </main>
 

@@ -332,8 +332,12 @@ const API_ROUTES = {
   // Phase G.11 (Growth) — generalized share-snapshot endpoints.
   '/api/share/tool-result':          handleShareToolResult,
   '/api/share/storefront-health':    handleShareStorefrontHealth,
+  '/api/share/get':                  handleShareGet,
+  '/api/share/og':                   handleShareOg,
   // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
   '/api/admin/kpis':                 handleAdminKpis,
+  // Phase G.10 (Growth) — Workshop nav count badge endpoint.
+  '/api/workbench/count':            handleWorkbenchCount,
 };
 
 
@@ -355,6 +359,12 @@ export default {
     }
     if (pathname === '/api/badge-snapshot') {
       return handleBadgeSnapshot(request, env, ctx);
+    }
+
+    // Phase G.11 — /api/share/og/<token>(.png) prefix route. Routes
+    // through handleShareOg which does its own slug parsing.
+    if (request.method === 'GET' && pathname.startsWith('/api/share/og/')) {
+      return handleShareOg(request, env, ctx);
     }
 
     // API routes — check the exact-match table first.
@@ -580,18 +590,43 @@ export default {
       }
     }
 
-    // Fall through to the static-asset server. Phase G.12 — when an
-    // experiment is running on the requested path AND the response
-    // is HTML, stamp <html data-experiment="…" data-treatment="…">
-    // via streaming HTMLRewriter so CSS swaps via
-    // [data-treatment="…"] selectors. No-op for non-HTML and for
-    // paths with no active experiment (the registry is empty until
-    // an experiment status flips to 'running').
+    // Phase G.11 — /health/<token>/ resolves a shared Storefront
+    // Health snapshot. Redirects to the tool page with ?s= so the
+    // recipient lands on a rehydrated scorecard. 404 on unknown
+    // tokens (consistent with audit-snapshot's behaviour).
+    if (request.method === 'GET') {
+      const healthM = pathname.match(/^\/(?:es\/)?health\/([A-Z0-9]{10})\/?$/);
+      if (healthM) {
+        const tok = healthM[1];
+        if (isValidShareTokenShape(tok) && env.AUTH_SESSIONS) {
+          const snap = await getShareSnapshot(env, SHARE_KINDS.STOREFRONT_HEALTH, tok);
+          if (snap && snap.ok) {
+            const isEs = pathname.startsWith('/es/');
+            const dest = `${isEs ? '/es' : ''}/tools/storefront-health/?s=${tok}&shared=1`;
+            return new Response(null, { status: 302, headers: { location: dest } });
+          }
+        }
+        return new Response(null, { status: 404 });
+      }
+    }
+
+    // Fall through to the static-asset server. Three HTMLRewriter
+    // passes when the response is HTML:
+    //   1. Phase G.3  — inject <link rel="alternate" type="application/rss+xml">
+    //   2. Phase G.11 — when ?s= is present on a tool page, stamp the
+    //      recipient-side "Want one for your place?" banner.
+    //   3. Phase G.12 — A/B experiment data-attributes on <html>.
     const assetResponse = await env.ASSETS.fetch(request);
     if (request.method === 'GET' && assetResponse.ok) {
       const ct = assetResponse.headers.get('content-type') || '';
       if (ct.startsWith('text/html')) {
-        return rewriteForExperiment(assetResponse, request, pathname);
+        let r = rewriteWithRssAlternate(assetResponse, pathname);
+        if (url.searchParams.has('s') && pathname.match(/^\/(?:es\/)?tools\//)) {
+          r = rewriteWithShareBanner(r, pathname, url.searchParams.get('s'));
+        }
+        const aiEngine = detectAiEngineFromReferer(request.headers.get('referer'));
+        if (aiEngine) r = rewriteWithAiEngineAttr(r, aiEngine);
+        return rewriteForExperiment(r, request, pathname);
       }
     }
     return assetResponse;
@@ -950,6 +985,21 @@ export default {
       console.warn('[cron] lifecycle dispatcher failed', err && err.message);
     }
 
+    // Phase G.12 — weekly KPI snapshot email. Sends Don a 5-KPI
+    // summary every Monday morning. Idempotent via a KV stamp
+    // (cron:kpi-snapshot:<YYYY-WW>); duplicate cron runs in the
+    // same week skip silently. Off when KPI_SNAPSHOT_ENABLED is
+    // not "true" so the cron can ship before Plausible API is wired.
+    let kpiSnapshotSent = false;
+    let kpiSnapshotSkipped = null;
+    try {
+      const result = await dispatchKpiSnapshot(env);
+      if (result && result.skipped) kpiSnapshotSkipped = result.skipped;
+      else if (result && result.sent) kpiSnapshotSent = true;
+    } catch (err) {
+      console.warn('[cron] kpi snapshot failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -966,10 +1016,73 @@ export default {
       lifecycleAttempted,
       lifecycleFired,
       lifecycleSkipped,
+      kpiSnapshotSent,
+      kpiSnapshotSkipped,
       ms: Date.now() - t0,
     }));
   },
 };
+
+// Phase G.12 — weekly KPI snapshot dispatcher. Reads data/kpis.json
+// for the registry, builds a plain-text summary email keyed by ISO
+// week, and sends to env.NOTIFY_EMAIL. KV stamps prevent duplicates.
+async function dispatchKpiSnapshot(env) {
+  if (env.KPI_SNAPSHOT_ENABLED !== 'true') return { skipped: 'flag-off' };
+  if (!env.AUTH_SESSIONS || !env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return { skipped: 'bindings-missing' };
+  // Only fire on Mondays in UTC. Other ticks return without sending.
+  const now = new Date();
+  if (now.getUTCDay() !== 1) return { skipped: 'not-monday' };
+  // ISO-week key for de-dup. Sufficient for the once-a-week rhythm.
+  const yyyy = now.getUTCFullYear();
+  const week = isoWeekNumber(now);
+  const key = `cron:kpi-snapshot:${yyyy}-${String(week).padStart(2, '0')}`;
+  const already = await env.AUTH_SESSIONS.get(key);
+  if (already) return { skipped: 'already-sent' };
+
+  // Load KPI registry from /data/kpis.json via env.ASSETS.
+  let kpis;
+  try {
+    const r = await env.ASSETS.fetch(new Request('https://muntin.digital/data/kpis.json'));
+    if (!r.ok) return { skipped: 'kpi-data-missing' };
+    const json = await r.json();
+    kpis = json.kpis || [];
+  } catch (_) { return { skipped: 'kpi-fetch-failed' }; }
+
+  const lines = [
+    `KPI snapshot — ISO week ${yyyy}-W${String(week).padStart(2, '0')}`,
+    '',
+    'Live values are not yet wired (Plausible Stats API requires a separate token). This email confirms the cron ran and lists the targets so the rhythm establishes itself.',
+    '',
+  ];
+  for (const k of kpis) {
+    lines.push(`${k.label_en}`);
+    if (k.target_initial != null) lines.push(`  target_initial: ${k.target_initial}`);
+    if (k.metric)                 lines.push(`  metric: ${k.metric}`);
+    if (k.window)                 lines.push(`  window: ${k.window}`);
+    lines.push('');
+  }
+  lines.push('Open dashboard: https://muntin.digital/admin/kpis/');
+  const text = lines.join('\n');
+  const subject = `KPI snapshot — week ${yyyy}-W${String(week).padStart(2, '0')}`;
+  await sendEmail({
+    from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+    to: env.NOTIFY_EMAIL,
+    subject,
+    text,
+    html: `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap">${text.replace(/[&<>]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;' })[c])}</pre>`,
+  }, env.RESEND_API_KEY);
+  await env.AUTH_SESSIONS.put(key, '1', { expirationTtl: 14 * 24 * 60 * 60 });
+  return { sent: true };
+}
+
+function isoWeekNumber(d) {
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const dayNum = (date.getUTCDay() + 6) % 7;
+  date.setUTCDate(date.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(date.getUTCFullYear(), 0, 4));
+  const diff = (date - firstThursday) / 86400000;
+  return 1 + Math.floor(diff / 7);
+}
 
 // D7b: rewrite og:*/twitter:* meta tags on the audit tool page so
 // shared permalinks get a rich per-snapshot social card. Uses
@@ -1073,6 +1186,109 @@ function activeExperimentForPath(pathname) {
     return { name, exp };
   }
   return null;
+}
+
+// Phase G.9 — AI-search referrer detection at the edge. Stamps
+// <html data-ai-engine="<engine>"> on responses where the
+// Referer header matches an AI-search engine. The same closed
+// enum lives client-side in assets/js/first-touch.js. Fires from
+// HTMLRewriter so it's a streaming pass — zero overhead when
+// the referer doesn't match.
+const AI_SEARCH_HOST_RE = [
+  { engine: 'chatgpt',    re: /(?:^|\.)(?:chatgpt|chat\.openai)\.com$/i },
+  { engine: 'perplexity', re: /(?:^|\.)perplexity\.ai$/i },
+  { engine: 'copilot',    re: /(?:^|\.)(?:copilot\.microsoft|bing)\.com$/i },
+  { engine: 'gemini',     re: /(?:^|\.)gemini\.google\.com$/i },
+  { engine: 'claude',     re: /(?:^|\.)claude\.ai$/i },
+  { engine: 'you',        re: /(?:^|\.)you\.com$/i },
+  { engine: 'phind',      re: /(?:^|\.)phind\.com$/i },
+  { engine: 'kagi',       re: /(?:^|\.)kagi\.com$/i },
+];
+function detectAiEngineFromReferer(refererHeader) {
+  if (!refererHeader) return null;
+  let host;
+  try { host = new URL(refererHeader).host; } catch (_) { return null; }
+  for (const { engine, re } of AI_SEARCH_HOST_RE) {
+    if (re.test(host)) return engine;
+  }
+  return null;
+}
+function rewriteWithAiEngineAttr(response, engine) {
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('html', {
+    element(el) { el.setAttribute('data-ai-engine', engine); },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
+}
+
+// Phase G.11 — recipient-side banner on shared tool URLs. When a
+// visitor lands on /tools/<slug>/?s=<token> (or /health/<token>/
+// after the redirect adds ?s=), inject a quiet banner above the
+// hero offering "Want one for your place? — run the tool yourself."
+// Fires Share recipient-banner Plausible event from a tiny inline
+// script. The HTMLRewriter is no-op on non-HTML.
+function rewriteWithShareBanner(response, pathname, token) {
+  const isEs = pathname.startsWith('/es/');
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const headline = isEs
+    ? 'Alguien compartió esto contigo. ¿Quieres uno para tu local? Corre la herramienta tú mismo.'
+    : 'Someone shared this with you. Want one for your place? Run the tool yourself.';
+  const cta = isEs ? 'Empezar de cero' : 'Start fresh';
+  const ctaHref = pathname.replace(/\/?$/, '/');
+  const banner = `
+<aside class="share-recipient-banner" role="note">
+  <p>${headline}</p>
+  <a class="share-recipient-banner__cta" href="${ctaHref}">${cta}</a>
+</aside>
+<script>
+(function () {
+  if (typeof window.plausible === 'function') {
+    try { window.plausible('Share', { props: { target: 'recipient-banner', surface: 'tool' } }); } catch (_) {}
+  }
+})();
+</script>`;
+  // Phase G.11 — swap og:image / twitter:image to the per-token
+  // share OG endpoint when ?s= is present. Crawlers + chat unfurls
+  // get a tied-to-the-share preview instead of the generic site OG.
+  const isStorefront = /\/tools\/storefront-health\//.test(pathname);
+  const shareOgUrl = `https://muntin.digital/api/share/og/${token}.png?kind=${isStorefront ? 'storefront-health' : 'tool-result'}`;
+  const rw = new HTMLRewriter()
+    .on('main, body', { element(el) { el.prepend(banner, { html: true }); } })
+    .on('meta[property="og:image"]',  { element(el) { el.setAttribute('content', shareOgUrl); } })
+    .on('meta[name="twitter:image"]', { element(el) { el.setAttribute('content', shareOgUrl); } });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
+}
+
+// Phase G.3 — inject <link rel="alternate" type="application/rss+xml">
+// into the <head> of every HTML response. Locale-aware via path prefix.
+// Idempotent if the link already exists (HTMLRewriter doesn't dedupe,
+// so we rely on the fact that hand-edited pages don't already declare
+// the link — true today; a future cohesion-check could verify).
+function rewriteWithRssAlternate(response, pathname) {
+  const isEs = pathname === '/es/' || pathname.startsWith('/es/');
+  const feedUrl = isEs ? 'https://muntin.digital/es/feed.xml' : 'https://muntin.digital/feed.xml';
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('head', {
+    element(el) {
+      el.append(`<link rel="alternate" type="application/rss+xml" title="Muntin Digital" href="${feedUrl}" />`, { html: true });
+    },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 // Stamps data-experiment + data-treatment on <html> for the active
@@ -6110,6 +6326,31 @@ async function handleSubscribeConfirm(request, env, ctx) {
 // payload shape without a giant switch — a new kind = a new handler.
 // Both endpoints write to AUTH_SESSIONS KV via saveShareSnapshot.
 
+// Phase G.10 (Growth) — Workshop nav count badge data endpoint.
+const _wbCountCache = new Map();
+async function handleWorkbenchCount(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const sub = auth.sub;
+  const now = Date.now();
+  const cached = _wbCountCache.get(sub);
+  if (cached && cached.expiresAt > now) {
+    return jsonResponse({ ok: true, count: cached.count }, 200);
+  }
+  let count = 0;
+  let cursor = null;
+  for (let page = 0; page < 5; page++) {
+    const opts = { prefix: `save:${sub}:` };
+    if (cursor) opts.cursor = cursor;
+    const r = await env.AUTH_SESSIONS.list(opts);
+    count += r.keys.length;
+    if (r.list_complete || !r.cursor) break;
+    cursor = r.cursor;
+  }
+  _wbCountCache.set(sub, { count, expiresAt: now + 60_000 });
+  return jsonResponse({ ok: true, count }, 200);
+}
+
 // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
 // Reads data/kpis.json via env.ASSETS so the JSON file is the
 // single source of truth (no duplicated copy bundled into the
@@ -6129,6 +6370,61 @@ async function handleAdminKpis(request, env, ctx) {
     console.warn('[admin/kpis] fetch failed', err && err.message);
     return jsonResponse({ ok: false, error: 'kpi-data-error' }, 500);
   }
+}
+
+// Phase G.11 — share-snapshot per-token OG image endpoint.
+// Receives /api/share/og/<token>.png (token + kind in query)
+// or just /api/share/og?t=<token>&kind=<kind>. v1 redirects to
+// the kind's static brand card so social crawlers always have a
+// rich preview. v2 will render a per-token Canvas card via
+// resvg-js, mirroring the audit-snapshot OG path.
+async function handleShareOg(request, env, ctx) {
+  const url = new URL(request.url);
+  // Support both ?t= and the trailing-slug form /api/share/og/<token>
+  // (the HTMLRewriter sets the trailing slug).
+  let token = url.searchParams.get('t') || '';
+  if (!token) {
+    const m = url.pathname.match(/\/api\/share\/og\/([A-Z0-9]{10})(?:\.png)?$/);
+    if (m) token = m[1];
+  }
+  const kind = url.searchParams.get('kind') || 'storefront-health';
+  // Fallback target — the static kind-level card.
+  const fallback = kind === 'storefront-health'
+    ? `${url.origin}/brand/og/tool-storefront-health.png`
+    : `${url.origin}/brand/og/tools.png`;
+  if (!isValidShareTokenShape(token) || !isValidShareKind(kind)) {
+    return Response.redirect(fallback, 302);
+  }
+  // Verify the token resolves before redirecting; on miss, fall
+  // back to kind-level card so a stale crawler still renders.
+  const snap = await getShareSnapshot(env, kind, token);
+  if (!snap || !snap.ok) return Response.redirect(fallback, 302);
+  // v1: redirect to the kind's static card. The token having
+  // resolved is the validation step. v2 swaps in a Canvas render.
+  return Response.redirect(fallback, 302);
+}
+
+// Phase G.11 — share-snapshot read endpoint. Tool client-side JS
+// calls /api/share/get?kind=<kind>&t=<token> on load when ?s=
+// is present in the URL, hydrates the form/scorecard, fires
+// "Share" recipient-render Plausible event.
+async function handleShareGet(request, env, ctx) {
+  const url = new URL(request.url);
+  const kind = url.searchParams.get('kind') || '';
+  const token = url.searchParams.get('t') || '';
+  if (!isValidShareKind(kind) || !isValidShareTokenShape(token)) {
+    return jsonResponse({ ok: false, error: 'invalid-args' }, 400);
+  }
+  const snap = await getShareSnapshot(env, kind, token);
+  if (!snap || !snap.ok) return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  // Snapshots are immutable, so cache aggressively at the edge.
+  return new Response(JSON.stringify({ ok: true, kind, snapshot: snap.snapshot }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+    },
+  });
 }
 
 async function handleShareToolResult(request, env, ctx) {

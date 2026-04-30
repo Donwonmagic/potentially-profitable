@@ -5349,6 +5349,92 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .topic-essay__body a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .topic-essay__body a:hover{border-bottom-color:var(--teal)}
 
+/* Phase G.5 (Growth) — formalized article comparison table.
+   Used in wix-vs-custom, doordash-worth-it, chatgpt-write — three
+   articles where the comparison is the load-bearing claim. */
+.comparison-table{width:100%;border-collapse:collapse;margin:24px 0 32px;font-size:14.5px;line-height:1.55}
+.comparison-table caption{text-align:left;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);padding:0 0 8px;caption-side:top}
+.comparison-table th,.comparison-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.comparison-table thead th{background:var(--cream-2);font-weight:600;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft)}
+.comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
+.comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
+
+/* Phase G.11 (Growth) — recipient-side banner on shared tool URLs.
+   Quiet single-line banner with a "Start fresh" link. */
+.share-recipient-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;background:var(--cream-2);border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink)}
+.share-recipient-banner p{margin:0;line-height:1.5}
+.share-recipient-banner__cta{padding:6px 14px;border-radius:6px;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;font-size:13.5px}
+.share-recipient-banner__cta:hover{filter:brightness(1.08)}
+
+/* Phase G.9 (Growth) — Smart-next per-article CTA. Three options
+   (Read / Try / Or send Don a note) directly under the post-end
+   CTA. Each line is a single short link. */
+.smart-next{max-width:680px;margin:24px 0 32px;padding:18px 24px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md)}
+.smart-next__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 12px}
+.smart-next__list{list-style:decimal;padding-left:24px;margin:0;display:flex;flex-direction:column;gap:8px}
+.smart-next__item{font-size:14.5px;line-height:1.55;color:var(--ink)}
+.smart-next__item a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.smart-next__item a:hover{border-bottom-color:var(--teal)}
+.smart-next__verb{color:var(--ink-soft);font-weight:600;letter-spacing:0.02em}
+
+/* Phase G.12 (Growth) — Window thread resolved bar. Five outcome
+   buttons that stamp the Plausible event for the lead-to-call KPI. */
+.admin-thread__resolved{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--line);background:var(--cream-2);font-size:13px}
+.admin-thread__resolved-label{color:var(--ink-soft);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;font-size:11px;margin-right:4px}
+.admin-thread__outcome{padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);font-size:12.5px;cursor:pointer;font-family:inherit}
+.admin-thread__outcome:hover{border-color:var(--teal);color:var(--teal)}
+.admin-thread__outcome.is-active{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* Phase G.10 (Growth) — "Save next time" prompt on tool pages.
+   Shown on a return visit when a previous run wasn't saved. */
+.tool-save-prompt{margin:12px 0 24px;padding:14px 18px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;max-width:680px;font-size:14.5px;line-height:1.55}
+.tool-save-prompt p{margin:0 0 6px;color:var(--ink)}
+.tool-save-prompt p:last-child{margin-bottom:0}
+.tool-save-prompt__cta{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.tool-save-prompt__cta:hover{border-bottom-color:var(--teal)}
+
+/* Phase G.10 (Growth) — Workshop empty-state starter cards. */
+.wsh-starter-cards{list-style:none;padding:0;margin:24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.wsh-starter-card{padding:18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-1);box-shadow:var(--elev-1)}
+.wsh-starter-card h3{font-family:var(--font-display);font-size:18px;line-height:1.3;margin:0 0 6px}
+.wsh-starter-card h3 a{color:var(--ink);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.wsh-starter-card h3 a:hover{border-bottom-color:var(--teal)}
+.wsh-starter-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:0}
+
+/* Phase G.10 (Growth) — small (N) count badge after the Workshop
+   nav link for signed-in users. Quiet, tabular figures. */
+.nav-workshop-count{font-variant-numeric:tabular-nums;font-size:0.85em;color:var(--ink-soft);font-weight:500;letter-spacing:0.01em}
+
+/* Phase G.8 (Growth) — Field Notes rail on /window/. Sits before
+   </main>. Quiet editorial register; placeholder when there are
+   no approved notes yet. */
+.window-fieldnotes-rail{padding:48px 0;background:var(--surface-1);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.window-fieldnotes-rail h2{font-family:var(--font-display);font-size:24px;line-height:1.25;margin:0 0 8px;color:var(--ink)}
+.window-fieldnotes-rail__lead{font-size:14.5px;color:var(--ink-soft);max-width:680px;line-height:1.55;margin:0 0 20px}
+.window-fieldnotes-rail__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:18px}
+.window-fieldnotes-rail__item{padding-left:18px;border-left:2px solid var(--teal)}
+.window-fieldnotes-rail__quote{font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+.window-fieldnotes-rail__cite{font-size:13px;color:var(--ink-soft);margin:0}
+.window-fieldnotes-rail__cite a{color:var(--teal);text-decoration:none}
+.window-fieldnotes-rail__empty{font-style:italic;color:var(--ink-soft);font-size:14.5px}
+
+/* Phase G.8 (Growth) — glossary-index "Tools that use these terms"
+   sidecar. Sits below the recently-added rail. Quiet two-column
+   list on wide screens, one-column on phones. */
+.gloss-tool-sidecar{padding:32px 0 16px;border-top:1px solid var(--line);max-width:1080px}
+.gloss-tool-sidecar__h{font-family:var(--font-display);font-size:22px;line-height:1.25;margin:0 0 8px;color:var(--ink)}
+.gloss-tool-sidecar__lead{font-size:14.5px;color:var(--ink-soft);max-width:680px;line-height:1.55;margin:0 0 16px}
+.gloss-tool-sidecar__list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px 24px}
+.gloss-tool-sidecar__list li{font-size:14.5px;line-height:1.55;padding:6px 0;border-bottom:1px dashed color-mix(in srgb, var(--line) 70%, transparent)}
+.gloss-tool-sidecar__list li a{color:var(--teal);text-decoration:none}
+.gloss-tool-sidecar__list li a:hover{text-decoration:underline}
+.gloss-tool-sidecar__list li span{color:var(--ink-soft);display:block;font-size:13.5px}
+
+/* Phase G.4 (Growth) — Last-verified stamp on volatile glossary
+   terms (GBP, Find a Table, Web Vitals, third-party platforms). */
+.glossary-verified{font-size:12px;color:var(--ink-soft);font-style:italic;margin:6px 0 16px;letter-spacing:0.02em}
+.glossary-verified time{font-style:normal;font-variant-numeric:tabular-nums;color:var(--ink)}
+
 /* Phase G.4 (Growth) — concrete-example sentence on glossary term
    pages. Quiet inline emphasis: italic for the leading "Example:",
    tabular figures so dollar amounts align cleanly. */

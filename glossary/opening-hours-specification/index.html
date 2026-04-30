@@ -260,7 +260,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -286,6 +303,9 @@
       <!-- term-example:start -->
             <p class="term-example">Example: A diner with valid OpeningHoursSpecification + holiday overrides shows the correct 'Closed Christmas Day' notice in Google's panel — without it, hungry holiday-eve searches see stale hours.</p>
             <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Last verified: <time datetime="2026-04-26">April 26, 2026</time></p>
+            <!-- glossary-verified:end -->
       <p class="term-aka">the Schema.org type Google reads to render your hours in search results</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -296,7 +316,7 @@
     <div class="term-body">
       <p class="term-def">A specific Schema.org structured-data type for representing when a place is open. Lives inside a <a href="/glossary/schema/"><code>Restaurant</code></a> JSON-LD block as one or more entries with <code>dayOfWeek</code>, <code>opens</code>, and <code>closes</code> fields. Holiday overrides use the same type via the parallel <code>specialOpeningHoursSpecification</code> property. The format Google's Rich Results parser actually consumes — the difference between "hours vary" and a full weekly grid in your search snippet.</p>
       <h2 class="term-why-h">Why it matters</h2>
-      <p class="term-why">The customer searching "is [restaurant] open right now?" doesn't open your website — they glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to "hours vary" or to whatever your Google Business Profile says, and when those two sources disagree your listing inherits the lower confidence. <a href="/tools/open-hours/">Open Hours</a> generates a complete block (with the cross-midnight defensive pattern handled correctly) for any week + closure schedule you enter.</p>
+      <p class="term-why">The customer searching "is [restaurant] open right now?" doesn't open your website — they glance at the rich snippet and decide. Without an <code>OpeningHoursSpecification</code> block on every page, Google falls back to "hours vary" or to whatever your Google Business Profile says, and when those two sources disagree your listing inherits the lower confidence. <a href="/tools/open-hours/#result">Open Hours</a> generates a complete block (with the cross-midnight defensive pattern handled correctly) for any week + closure schedule you enter.</p>
       <aside class="term-research">
       <p class="term-research-label">See the research</p>
       <p><a href="/learn/research/local-business-websites/">Usability of local business websites <span aria-hidden="true">↗</span></a></p>
@@ -352,15 +372,17 @@
       <div class="glossary-knit__col">
         <h3>Used in</h3>
         <ul>
-          <li><a href="/tools/open-hours/">Open Hours</a></li>
+          <li><a href="/tools/open-hours/#result">Open Hours</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
           <li><a href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Setting up Google Business Profile</a></li>
-          <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">restaurant-schema-markup-6-types-google-uses</a></li>
+          <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google uses</a></li>
+          <li><a href="/blog/how-to-read-restaurant-google-search-console/">Reading Google Search Console</a></li>
           <li><a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">Getting more Google reviews</a></li>
+          <li><a href="/blog/how-to-recover-reservations-from-googles-find-a-table/">Recovering reservations from Google's Find a Table</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

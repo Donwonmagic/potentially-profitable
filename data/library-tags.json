@@ -40,6 +40,34 @@
   },
 
   "blog_posts": {
+    "restaurant-schema-markup-6-types-google-uses": {
+      "topics": ["local-seo"],
+      "title": "Restaurant Schema Markup: The 6 Types Google Actually Uses",
+      "dek": "The six schema.org types that move the needle for restaurant search results in 2026, with copy-paste JSON-LD examples for each.",
+      "date": "2026-04-30",
+      "read_min": 9
+    },
+    "when-to-rebuild-your-restaurant-website": {
+      "topics": ["operations-margin", "speed-mobile"],
+      "title": "When to Rebuild Your Restaurant Website: A Decision Framework",
+      "dek": "A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.",
+      "date": "2026-04-30",
+      "read_min": 8
+    },
+    "restaurant-photo-spec-sheet": {
+      "topics": ["conversions", "brand-design"],
+      "title": "The Restaurant Photo Spec Sheet: Every Image Size for Every Surface",
+      "dek": "Every image size, aspect ratio, and resolution your restaurant actually needs across GBP, Yelp, OG, and menu thumbnails — in one spec sheet.",
+      "date": "2026-04-30",
+      "read_min": 6
+    },
+    "how-to-read-restaurant-google-search-console": {
+      "topics": ["local-seo"],
+      "title": "How to Read Your Restaurant's Google Search Console (in Plain English)",
+      "dek": "The four reports that matter, what each number means, and the three weekly habits that actually move bookings.",
+      "date": "2026-04-30",
+      "read_min": 7
+    },
     "why-your-restaurant-loses-reservations-every-night": {
       "topics": ["conversions", "speed-mobile"],
       "title": "Why Your Restaurant Loses Reservations Every Night",
@@ -143,14 +171,14 @@
       "topics": ["conversions", "speed-mobile", "local-seo", "trust-reviews"],
       "title": "Restaurant Website Audit",
       "dek": "Full-stack mobile audit: performance, SEO, accessibility, and 9 restaurant-specific checks. Side-by-side competitor mode.",
-      "glossary_terms": ["core-web-vitals", "lighthouse", "lcp"],
+      "glossary_terms": ["core-web-vitals", "lighthouse", "lcp", "cls", "cdn", "alt-text", "canonical-url", "search-console"],
       "article": "why-your-restaurant-loses-reservations-every-night"
     },
     "speed-test": {
       "topics": ["speed-mobile"],
       "title": "Speed Test",
       "dek": "PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.",
-      "glossary_terms": ["core-web-vitals"],
+      "glossary_terms": ["core-web-vitals", "lcp", "cls", "cdn"],
       "article": "why-your-restaurant-loses-reservations-every-night"
     },
     "mobile-check": {
@@ -164,7 +192,7 @@
       "topics": ["local-seo"],
       "title": "SEO Grader",
       "dek": "Title, description, headings, schema — the on-site SEO basics scored in plain English.",
-      "glossary_terms": ["title-tag"],
+      "glossary_terms": ["title-tag", "alt-text", "canonical-url", "search-console"],
       "article": "how-to-set-up-google-business-profile-for-your-restaurant"
     },
     "schema-check": {

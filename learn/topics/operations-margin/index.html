@@ -46,6 +46,92 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 
+<!-- topic-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/learn/topics/operations-margin/#article",
+      "headline": "Operations & Margin",
+      "url": "https://muntin.digital/learn/topics/operations-margin/",
+      "inLanguage": "en-US",
+      "author": {
+        "@id": "https://muntin.digital/#don-goldstein"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "isPartOf": {
+        "@id": "https://muntin.digital/learn/#collection"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://muntin.digital/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Library",
+          "item": "https://muntin.digital/learn/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Topics",
+          "item": "https://muntin.digital/learn/topics/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Operations & Margin",
+          "item": "https://muntin.digital/learn/topics/operations-margin/"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://muntin.digital/learn/topics/operations-margin/#articles",
+      "numberOfItems": 5,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/blog/is-doordash-worth-it-for-restaurants-in-2026/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "url": "https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- topic-schema:end -->
 </head>
 <body>
 
@@ -176,7 +262,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });

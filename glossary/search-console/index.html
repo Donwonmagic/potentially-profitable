@@ -260,7 +260,24 @@
       var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
       fetch('/api/auth/me', { credentials: 'same-origin' })
         .then(function (r) {
-          if (r.status === 200) { show(workshop); return; }
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
           show(signin);
         })
         .catch(function () { show(signin); });
@@ -286,6 +303,9 @@
       <!-- term-example:start -->
             <p class="term-example">Example: A pizzeria's Search Console shows 12,400 impressions/month for 'pizza near me' but a 0.4% CTR — the meta description is the leverage, not the rank.</p>
             <!-- term-example:end -->
+      <!-- glossary-verified:start -->
+            <p class="glossary-verified">Last verified: <time datetime="2026-04-24">April 24, 2026</time></p>
+            <!-- glossary-verified:end -->
       <p class="term-aka">GSC</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -352,15 +372,17 @@
       <div class="glossary-knit__col">
         <h3>Used in</h3>
         <ul>
-          <li class="glossary-knit__col-empty">Nothing yet</li>
+          <li><a href="/tools/audits/restaurant/">Restaurant Website Audit</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
-          <li><a href="/blog/how-to-read-restaurant-google-search-console/">how-to-read-restaurant-google-search-console</a></li>
-          <li><a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">Getting more Google reviews</a></li>
+          <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why your restaurant loses reservations every night</a></li>
           <li><a href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Setting up Google Business Profile</a></li>
+          <li><a href="/blog/how-to-read-restaurant-google-search-console/">Reading Google Search Console</a></li>
+          <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google uses</a></li>
+          <li><a href="/blog/how-to-get-more-google-reviews-for-your-restaurant/">Getting more Google reviews</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
