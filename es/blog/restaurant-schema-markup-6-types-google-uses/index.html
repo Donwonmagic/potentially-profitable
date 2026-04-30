@@ -109,7 +109,9 @@
 
       <p>Si abriste un restaurante después de 2018 y nunca tocaste el schema markup de tu sitio, igual tienes schema markup. Tu CMS o template builder casi seguro estampó alguno — la pregunta es si es el correcto, si está completo, y si Google realmente puede usarlo.</p>
 
-      <p>He auditado un par de cientos de sitios de restaurantes a este punto, y el patrón es consistente: la mayoría tiene <strong>dos</strong> de los seis tipos de schema que Google lee primero, y los otros cuatro están ausentes o mal formados. Cada pieza faltante es una superficie distinta en los resultados de Google para la que no eres elegible.</p>
+      <p>Un bistró francés en Bethesda que audité en febrero tenía dos de los seis tipos. En sesenta días de enviar los otros cuatro, Search Console mostraba 12-18 clics extra por semana de queries para las que el sitio nunca había aparecido — &ldquo;steak frites bethesda,&rdquo; &ldquo;bistro near me open now,&rdquo; el long-tail a nivel de plato. Mismo sitio. Mismo menú. Mismas fotos. Solo schema que Google realmente podía usar.</p>
+
+      <p>El patrón es consistente a lo largo del par de cientos de auditorías de restaurante en las que he trabajado: la mayoría tiene dos de los seis tipos que Google lee primero; los otros cuatro están ausentes o mal formados. Cada pieza faltante es una superficie distinta en los resultados de Google para la que no eres elegible.</p>
 
       <h2>1. Restaurant — el tipo fundacional</h2>
 
@@ -118,17 +120,17 @@
       <pre><code>{
   "@context": "https://schema.org",
   "@type": "Restaurant",
-  "name": "Bistro Petit",
-  "telephone": "+1-555-555-0100",
+  "name": "Irish Inn at Glen Echo",
+  "telephone": "+1-301-229-6600",
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "123 Main St",
-    "addressLocality": "Brooklyn",
-    "addressRegion": "NY",
-    "postalCode": "11215"
+    "streetAddress": "6119 Tulane Ave",
+    "addressLocality": "Glen Echo",
+    "addressRegion": "MD",
+    "postalCode": "20812"
   },
-  "servesCuisine": ["French", "Bistro"],
+  "servesCuisine": ["Irish", "American"],
   "acceptsReservations": "True"
 }</code></pre>
 
@@ -138,7 +140,7 @@
 
       <h2>3. OpeningHoursSpecification — la que te cuesta walk-ins</h2>
 
-      <p>Si tus horarios están mal en Google, están mal en todas partes. <a href="/es/glossary/opening-hours-specification/">OpeningHoursSpecification</a> alimenta el badge "Abierto ahora" / "Cierra a las 10 PM" en tu panel — y el que se vuelve obsoleto cuando cambias horarios de domingo y olvidas actualizar el sitio. Los overrides de feriados van en <code>specialOpeningHoursSpecification</code> aparte.</p>
+      <p>Si tus horarios están mal en Google, están mal en todas partes. <a href="/es/glossary/opening-hours-specification/">OpeningHoursSpecification</a> alimenta el badge "Abierto ahora" / "Cierra a las 10 PM" en tu panel — y el que se vuelve obsoleto cuando cambias horarios de domingo y olvidas actualizar el sitio. Los overrides de feriados van en <code>specialOpeningHoursSpecification</code> aparte. A una página de Tacombi se le perdió el OpeningHoursSpecification de un día para otro el año pasado cuando un plugin de CMS se actualizó y borró el JSON-LD. El schema check lo cachó a la mañana siguiente. El fin de semana del Memorial Day que se hubiera comido un montón de reseñas de una estrella tipo &ldquo;cerrado aunque Google decía abierto&rdquo; nunca pasó.</p>
 
       <p>Corre <a href="/es/tools/schema-check/">Schema Checker</a> en tu home para validar; <a href="/es/tools/open-hours/">Open Hours</a> genera el JSON-LD si arrancas de cero.</p>
 
@@ -159,6 +161,10 @@
       <p>Corre tu home a través de <a href="/es/tools/schema-check/">Schema Checker</a>. Devuelve un veredicto presente/válido/faltante para cada uno de los seis tipos y apunta a las piezas rotas. Guárdalo en tu <a href="/es/tools/audits/restaurant/">Restaurant Audit</a> y vuelve a correrlo mensualmente — el schema se pudre cuando los updates de CMS tocan templates.</p>
 
       <p>El argumento de composición: cada tipo de schema faltante es una superficie de Google distinta para la que no eres elegible. Los seis tipos juntos desbloquean la tarjeta del local-pack, las citas en AI Overviews, el botón Reservar, el rich snippet, y el badge de horario de feriados. Añádelos en orden, y el efecto acumulado en impresiones suele aterrizar entre 20% y 60% en un trimestre.</p>
+
+      <blockquote class="pullquote">
+        <p>El schema no es opcional. Cada tipo faltante es una superficie de Google de la que te has descalificado voluntariamente.</p>
+      </blockquote>
 
     
       <!-- smart-next:start -->

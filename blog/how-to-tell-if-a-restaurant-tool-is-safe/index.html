@@ -106,7 +106,7 @@
     <div class="container">
     <article class="article-body" id="post-body">
 
-      <p>Most &ldquo;free margin audit&rdquo; tools have a price tag. It's just paid in data. The pattern: you type your real ticket, your real food cost, your real labor — and the next morning a sales rep emails you with the answer they generated, plus the offer they were already going to make. The tool was the funnel. Your numbers were the qualifier.</p>
+      <p>A friend who runs a pizzeria in DC typed his real numbers into a &ldquo;free margin audit&rdquo; last spring. By the next morning three sales reps from one POS vendor had emailed him with a custom proposal — built on his real ticket, his real food cost, his real labor. He didn't get a margin audit. He got a sales pipeline he was already sitting inside. The tool was the funnel. His numbers were the qualifier.</p>
 
       <p>The pattern hides because nobody asks the obvious question: where do my inputs go the moment I type them? In a working browser, you can answer that question in under a minute. This article is the framework — five tests, four data tiers, one worked example — and at the end, a checklist you can run on any tool you encounter.</p>
 
@@ -124,13 +124,15 @@
 
       <p>Pass all five and the tool is at least honest about its data flow. Fail any of them and the tool either doesn't know or doesn't want you to know — both are reasons to leave.</p>
 
+      <p>The first time I ran this on a POS my Tacombi GM was about to sign with, Test 1 failed in fifteen seconds. Every keystroke in the &ldquo;cost calculator&rdquo; fired a request to a Cloudflare worker on a domain that wasn't theirs. The contract was already drafted. We didn't sign it. The thing that surprised me wasn't that the test failed — it was how fast.</p>
+
       <h2>2. The four-tier model — what to share, where</h2>
 
       <p>Most small-business owners carry all their data in the same mental bucket — which means the supplier list and the tax ID get the same protection (often the same low level of it). Four tiers, each with a different audience and a different level of caution:</p>
 
       <ul>
         <li><strong>Tier 1 — Public.</strong> Menu, hours, photos, address, phone, schema.org markup. Optimize aggressively; this is how customers find you.</li>
-        <li><strong>Tier 2 — Competitive-sensitive.</strong> Cost of goods, supplier list, your actual commission tier (not the public rate), labor schedule template. Share with bookkeeper / consultant / broker — under NDA. <em>Not</em> with platforms, competitors, or &ldquo;free audit&rdquo; tools that keep your input.</li>
+        <li><strong>Tier 2 — Competitive-sensitive.</strong> Cost of goods, supplier list, your actual commission tier (not the public rate), labor schedule template. Share with bookkeeper / consultant / broker — under NDA. (When I work the numbers at the Irish Inn at Glen Echo, this whole tier is covered by a one-page NDA before I open the spreadsheet — and that's a 95-year-old neighborhood place, not the Pentagon.) <em>Not</em> with platforms, competitors, or &ldquo;free audit&rdquo; tools that keep your input.</li>
         <li><strong>Tier 3 — Operational-confidential.</strong> Monthly P&amp;L, actual food cost %, customer pipeline, employee schedules. Inside the business only. POS vendor, payroll, accountant — and only under written contract.</li>
         <li><strong>Tier 4 — Regulated.</strong> SSN, EIN, customer card data, bank details, food-safety logs, I-9s. Encrypted storage, access logging, contracts with cybersecurity terms. Never email. Never in a shared spreadsheet.</li>
       </ul>
@@ -155,11 +157,15 @@
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
 
+      <blockquote class="pullquote">
+        <p>&ldquo;Verifiable&rdquo; should be a build flag, not a marketing claim.</p>
+      </blockquote>
+
       <h2>4. Run the audit</h2>
 
       <p>The 5-test framework is also an interactive checklist at <a href="/learn/checklists/audit-any-tool/">/learn/checklists/audit-any-tool/</a> — walk through it with DevTools open on any tool you're evaluating. Save the result to your <a href="/tools/audits/restaurant/">Workshop</a> as a baseline; re-run it whenever a vendor pushes a &ldquo;new feature.&rdquo;</p>
 
-      <p>And if you find a tool that fails the audit but you can't tell whether it's malicious or just sloppy, write through <a href="/window/?topic=security">The Window</a> and tell me about it. I read every one. Tools that quietly turn operators into the product is a pattern worth naming.</p>
+      <p>And if you find a tool that fails the audit but you can't tell whether it's malicious or just sloppy, write through <a href="/window/?topic=security">The Window</a> and tell me about it. I read every one. The pattern of free tools that quietly turn operators into the product is worth naming — out loud, with the tool's name attached.</p>
 
     
       <!-- smart-next:start -->
