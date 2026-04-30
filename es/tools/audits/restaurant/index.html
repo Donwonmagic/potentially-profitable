@@ -1170,6 +1170,48 @@
     .audit-toc-fab:focus { outline: 2px solid var(--teal); outline-offset: 2px; }
     .audit-toc-fab-icon { font-size: 14px; line-height: 1; }
     .audit-toc-list a { padding: 10px 12px; font-size: 14.5px; }
+    /* Pista de primera ejecución para el FAB de la tabla de contenidos. */
+    .audit-toc-fab[data-hint="1"]::before {
+      content: attr(data-hint-label);
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      background: var(--ink);
+      color: var(--cream);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      border-radius: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(20, 22, 26, 0.22);
+      pointer-events: none;
+      animation: auditTocHintFade 220ms ease-out 1;
+    }
+    .audit-toc-fab[data-hint="1"]::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      box-shadow: 0 0 0 0 rgba(31, 78, 91, 0.55);
+      animation: auditTocHintPulse 1700ms ease-out infinite;
+      pointer-events: none;
+    }
+    @keyframes auditTocHintPulse {
+      0%   { box-shadow: 0 0 0 0     rgba(31, 78, 91, 0.55); }
+      70%  { box-shadow: 0 0 0 14px  rgba(31, 78, 91, 0); }
+      100% { box-shadow: 0 0 0 0     rgba(31, 78, 91, 0); }
+    }
+    @keyframes auditTocHintFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audit-toc-fab[data-hint="1"]::after { animation: none; }
+    .audit-toc-fab[data-hint="1"]::before { animation: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .audit-toc-panel { transition: none; }
@@ -2177,6 +2219,43 @@
      teal + rust gradient tokens as the hero wash, so the score card
      visually rhymes with its landing page even though they sit
      thousands of pixels apart in the document flow. */
+  /* Sticky compact headline. Hidden by default (transform: -100%);
+     a JS IntersectionObserver toggles data-shown="true" once the
+     full audit-summary card scrolls out of the viewport. */
+  .audit-sticky {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 90;
+    background: var(--ink);
+    color: var(--cream);
+    transform: translateY(-100%);
+    transition: transform 220ms var(--ease-out, cubic-bezier(0.2, 0, 0, 1));
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    padding: env(safe-area-inset-top, 0) 0 0;
+  }
+  .audit-sticky[data-shown="true"] { transform: translateY(0); }
+  .audit-sticky-inner {
+    max-width: 1080px; margin: 0 auto; padding: 10px 16px;
+    display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+  }
+  .audit-sticky-score { display: flex; align-items: baseline; gap: 6px; }
+  .audit-sticky-score-value { font-family: var(--font-display); font-size: 28px; font-weight: 500; line-height: 1; letter-spacing: -0.5px; color: var(--cream); font-variant-numeric: tabular-nums; }
+  .audit-sticky-score-grade { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,246,238,0.6); }
+  .audit-sticky-fix { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+  .audit-sticky-fix-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,246,238,0.6); }
+  .audit-sticky-fix-text { font-size: 13.5px; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .audit-sticky-cta { padding: 6px 12px; border: 1px solid rgba(250,246,238,0.4); border-radius: 999px; background: transparent; color: var(--cream); text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .audit-sticky-cta:hover { background: rgba(250,246,238,0.10); }
+  @media (max-width: 540px) {
+    .audit-sticky-inner { grid-template-columns: auto 1fr auto; gap: 10px; padding: 8px 12px; }
+    .audit-sticky-score-value { font-size: 24px; }
+    .audit-sticky-fix-label { display: none; }
+    .audit-sticky-cta { padding: 6px 10px; font-size: 11.5px; }
+  }
+  body.snapshot-view .audit-sticky,
+  body.print-worksheet .audit-sticky,
+  body.snapshot-error .audit-sticky { display: none; }
+
   .audit-summary {
     position: relative;
     display: grid;
@@ -4169,6 +4248,42 @@
   }
   .share-btn:hover { background: var(--cream-2); border-color: var(--teal); color: var(--teal); }
   .share-btn svg { width: 15px; height: 15px; }
+  /* Colapso móvil de la fila de compartir. */
+  .share-row .share-row-more-btn { display: none; }
+  @media (max-width: 540px) {
+    .share-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .share-row .share-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .share-row:not([data-expanded="true"]) .share-btn:not(#shareBtn) {
+      display: none;
+    }
+    .share-row .share-row-more-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px dashed var(--line-dark);
+      border-radius: 999px;
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      cursor: pointer;
+    }
+    .share-row[data-expanded="true"] .share-row-more-btn {
+      border-style: solid;
+      color: var(--teal);
+      border-color: var(--teal);
+    }
+  }
   .share-toast {
     font-size: 12px;
     color: var(--status-pass);
@@ -5244,6 +5359,23 @@
           <span id="snapshotRerunLabel">Ejecutar auditoría ahora</span>
         </button>
       </aside>
+
+      <!-- Sticky compact headline — slides in from top once the
+           main score card scrolls out of view. Keeps the score +
+           #1 fix one tap away on phone reading sessions. -->
+      <div class="audit-sticky" id="auditSticky" aria-hidden="true">
+        <div class="audit-sticky-inner">
+          <div class="audit-sticky-score">
+            <span class="audit-sticky-score-value" id="auditStickyScore">—</span>
+            <span class="audit-sticky-score-grade" id="auditStickyGrade"></span>
+          </div>
+          <div class="audit-sticky-fix">
+            <span class="audit-sticky-fix-label">Arregla esto primero</span>
+            <span class="audit-sticky-fix-text" id="auditStickyFix">—</span>
+          </div>
+          <a class="audit-sticky-cta" href="#topFixes" id="auditStickyCta">Saltar &darr;</a>
+        </div>
+      </div>
 
       <!-- Summary with overall score ring -->
       <div class="audit-summary" id="overallScoreSection">
@@ -8831,6 +8963,8 @@
         cancelAnimationFrame(window.__scoreRingCounter);
         window.__scoreRingCounter = null;
       }
+      // Espejo de la cabecera fija — fija el valor final inmediatamente.
+      if (typeof setStickyScore === 'function') setStickyScore(score);
       if (prefersReduced) {
         value.textContent = score;
       } else {
@@ -11790,8 +11924,17 @@
 
     if (!actionable.length) {
       el.hidden = true;
+      if (typeof setStickyTopFix === 'function') setStickyTopFix('');
       return;
     }
+
+    var stickyTopDef    = actionable[0].entry.def    || {};
+    var stickyTopResult = actionable[0].entry.result || {};
+    var stickyTopText = stickyTopResult.title
+      || stickyTopDef.unverified
+      || stickyTopDef.fail
+      || ('Check: ' + (stickyTopDef.audit || stickyTopDef.type || ''));
+    if (typeof setStickyTopFix === 'function') setStickyTopFix(stickyTopText);
 
     actionable.forEach(function(pick){
       var def = pick.entry.def;
@@ -12717,6 +12860,12 @@
         var open = toc.getAttribute('data-sheet') === 'open';
         toc.setAttribute('data-sheet', open ? 'closed' : 'open');
         fab.setAttribute('aria-expanded', open ? 'false' : 'true');
+        // Pista de primera ejecución se descarta al primer toque.
+        if (fab.getAttribute('data-hint') === '1') {
+          fab.removeAttribute('data-hint');
+          fab.removeAttribute('data-hint-label');
+          try { localStorage.setItem('mtn:audits:tocSeen', '1'); } catch (_) {}
+        }
       });
     }
 
@@ -12782,6 +12931,7 @@
     var report = document.getElementById('auditReport');
     if (!toc || !report) return;
     setupAuditToc();
+    setupAuditStickyHeadline();
 
     // Hide the whole ToC until the report is visible.
     if (report.hidden) {
@@ -12807,6 +12957,79 @@
     // If fewer than 3 sections are visible, don't bother rendering
     // the ToC — saves layout cost on very short error states.
     toc.hidden = visibleCount < 3;
+
+    // Pista de primera ejecución para el FAB móvil.
+    if (!toc.hidden) {
+      var fab = document.getElementById('auditTocFab');
+      if (fab) {
+        var seen = false;
+        try { seen = localStorage.getItem('mtn:audits:tocSeen') === '1'; } catch (_) {}
+        if (!seen && fab.getAttribute('data-hint') !== '1') {
+          fab.setAttribute('data-hint', '1');
+          fab.setAttribute('data-hint-label', 'Toca para ir a una sección');
+        }
+      }
+    }
+  }
+
+  // Cabecera fija compacta. Se desliza desde arriba cuando #overall-
+  // ScoreSection sale de la vista, manteniendo la puntuación + el #1
+  // arreglo a un toque de distancia en lecturas largas en móvil.
+  var _auditStickyObserver = null;
+  var _auditStickySetupDone = false;
+  function setupAuditStickyHeadline() {
+    if (_auditStickySetupDone) return;
+    var bar = document.getElementById('auditSticky');
+    var section = document.getElementById('overallScoreSection');
+    if (!bar || !section) return;
+    if (!('IntersectionObserver' in window)) {
+      _auditStickySetupDone = true;
+      return;
+    }
+    _auditStickyObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (section.hidden) {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+          return;
+        }
+        var hasScore = (document.getElementById('auditStickyScore') || {}).textContent;
+        if (!hasScore || hasScore === '—') {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+          return;
+        }
+        if (entry.isIntersecting) {
+          bar.setAttribute('data-shown', 'false');
+          bar.setAttribute('aria-hidden', 'true');
+        } else {
+          bar.setAttribute('data-shown', 'true');
+          bar.setAttribute('aria-hidden', 'false');
+        }
+      });
+    }, { rootMargin: '-1px 0px 0px 0px', threshold: [0, 1] });
+    _auditStickyObserver.observe(section);
+    _auditStickySetupDone = true;
+  }
+
+  function setStickyScore(score) {
+    var v = document.getElementById('auditStickyScore');
+    var g = document.getElementById('auditStickyGrade');
+    if (v) v.textContent = (typeof score === 'number') ? String(score) : '—';
+    if (g) {
+      var label = '';
+      if (typeof score === 'number') {
+        if (score >= 90)      label = 'Excelente';
+        else if (score >= 50) label = 'Aceptable';
+        else                  label = 'Por mejorar';
+      }
+      g.textContent = label;
+    }
+  }
+  function setStickyTopFix(text) {
+    var t = document.getElementById('auditStickyFix');
+    if (!t) return;
+    t.textContent = text || '—';
   }
 
   // Phase L1: email gate retired. The deep tier always renders
@@ -15231,6 +15454,38 @@
       });
     });
   }
+
+  // Colapso móvil de la fila de compartir.
+  (function setupShareRowMore(){
+    var row = document.querySelector('.share-row');
+    if (!row) return;
+    if (row.querySelector('.share-row-more-btn')) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'share-row-more-btn';
+    btn.setAttribute('aria-controls', 'shareRow');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<circle cx="12" cy="6"  r="1.4"/>' +
+        '<circle cx="12" cy="12" r="1.4"/>' +
+        '<circle cx="12" cy="18" r="1.4"/>' +
+      '</svg>' +
+      '<span class="share-row-more-label">Más acciones</span>';
+    var primary = row.querySelector('#shareBtn');
+    if (primary && primary.parentNode === row) {
+      row.insertBefore(btn, primary.nextSibling);
+    } else {
+      row.appendChild(btn);
+    }
+    btn.addEventListener('click', function(){
+      var open = row.getAttribute('data-expanded') === 'true';
+      row.setAttribute('data-expanded', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      var label = btn.querySelector('.share-row-more-label');
+      if (label) label.textContent = open ? 'Más acciones' : 'Ocultar acciones';
+    });
+  })();
 
   /* -------- D7a: per-snapshot OG image renderer -------- */
   // Draws a 1200×630 Canvas with the audit score, host, and capture
