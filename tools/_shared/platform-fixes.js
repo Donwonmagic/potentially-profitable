@@ -256,12 +256,226 @@
         'Update.'
       ]
     },
+    'tel-link|webflow': {
+      etaMinutes: 3,
+      steps: [
+        'Open the page in Webflow Designer.',
+        'Click the phone-number text element, then click the link icon in the right-side panel.',
+        'Set Type to "URL" and the URL field to tel:+13015551234.',
+        'Publish.'
+      ]
+    },
+    'tel-link|shopify': {
+      etaMinutes: 3,
+      steps: [
+        'In Shopify admin, edit the page or theme block where the number appears.',
+        'Highlight the phone number, click the link icon, paste tel:+13015551234.',
+        'Save.'
+      ]
+    },
+    'tel-link|godaddy': {
+      etaMinutes: 3,
+      steps: [
+        'In the GoDaddy Website Builder, click the section with the phone number.',
+        'Highlight the number, click Link in the toolbar, choose "Phone" and enter your number.',
+        'Publish.'
+      ]
+    },
+    'tel-link|bentobox': {
+      etaMinutes: 3,
+      steps: [
+        'In the BentoBox CMS, edit the location/contact block.',
+        'Update the phone field — BentoBox auto-wraps it as a tel: link in the rendered template.',
+        'Save and publish.'
+      ]
+    },
     'tel-link|generic': {
       etaMinutes: 3,
       steps: [
         'Highlight the phone number in your site editor.',
         'Add a link with the URL tel:+1XXXXXXXXXX (your number, with country code, no spaces).',
         'Save.'
+      ]
+    },
+
+    // --------- maps-link ----------
+    'maps-link|wix': {
+      etaMinutes: 4,
+      steps: [
+        'Open Google Maps, find your restaurant, click Share, then Embed a map.',
+        'In Wix Editor, click + Add Elements → Embed → Embed HTML, paste the iframe code.',
+        'Or simpler: replace the address text with a hyperlink to https://www.google.com/maps/search/?api=1&query=YOUR+ADDRESS.',
+        'Publish.'
+      ]
+    },
+    'maps-link|squarespace': {
+      etaMinutes: 4,
+      steps: [
+        'Squarespace has a built-in Map block: click + → Map and enter your address.',
+        'For tappable address text: highlight the address, click the link icon, paste a Google Maps URL pointing at your address.',
+        'Save.'
+      ]
+    },
+    'maps-link|wordpress': {
+      etaMinutes: 4,
+      steps: [
+        'Most themes ship a Map block; check Block Editor → Inserter → Map.',
+        'For tappable text: highlight the address, click the link icon, paste https://www.google.com/maps/search/?api=1&query=YOUR+ADDRESS.',
+        'Update.'
+      ]
+    },
+    'maps-link|generic': {
+      etaMinutes: 4,
+      steps: [
+        'Build a Google Maps URL: https://www.google.com/maps/search/?api=1&query=YOUR+FULL+ADDRESS (replace spaces with +).',
+        'Highlight the address text on your site and add a link with that URL.',
+        'Save.'
+      ]
+    },
+
+    // --------- hours-edit ----------
+    // For "where do I update my hours" — note: Open Hours tool emits
+    // platform-specific code blocks. These recipes describe where to
+    // PASTE that block on each platform.
+    'hours-edit|wix': {
+      etaMinutes: 5,
+      steps: [
+        'In the Wix Dashboard, go to Manage Apps → Hours of Operation (install if missing).',
+        'For website display, edit the Hours element directly in the Editor — click and update each day.',
+        'For Google parity, use the Open Hours tool to generate a JSON-LD block, then paste it via Settings → Marketing & SEO → SEO Tools → Custom Code → Head.',
+        'Publish.'
+      ]
+    },
+    'hours-edit|squarespace': {
+      etaMinutes: 5,
+      steps: [
+        'For visible hours, edit the Hours block on your contact/home page directly.',
+        'For schema (the version Google reads), go to Settings → Advanced → Code Injection → Header and paste the JSON-LD block from the Open Hours tool.',
+        'Save.'
+      ]
+    },
+    'hours-edit|wordpress': {
+      etaMinutes: 8,
+      steps: [
+        'For visible hours, edit the page or widget where they appear.',
+        'For schema, install a header/footer plugin (WPCode or Insert Headers and Footers) and paste the JSON-LD block from the Open Hours tool into Header.',
+        'Update.'
+      ],
+      note: 'Restaurant-themed WordPress themes often have a built-in hours field — check Customizer → Site Identity or theme options before adding manually.'
+    },
+    'hours-edit|shopify': {
+      etaMinutes: 6,
+      steps: [
+        'Edit the contact/locations page directly for visible hours.',
+        'For schema, paste the Open Hours JSON-LD block into theme.liquid (Online Store → Themes → Edit code → layout/theme.liquid) just before </head>.',
+        'Save.'
+      ]
+    },
+    'hours-edit|bentobox': {
+      etaMinutes: 5,
+      steps: [
+        'In the BentoBox CMS, go to Locations → edit each location and update Hours.',
+        'BentoBox emits the schema automatically once hours are set in the location panel.',
+        'Save and publish.'
+      ]
+    },
+    'hours-edit|generic': {
+      etaMinutes: 8,
+      steps: [
+        'Update visible hours on your site (usually a Contact or Home page).',
+        'For schema, paste the JSON-LD block from the Open Hours tool into your <head> via your platform\'s code-injection or theme-header path.',
+        'Save and verify with Google\'s Rich Results Test.'
+      ]
+    },
+
+    // --------- tap-target-padding ----------
+    // "Make tap targets larger" — typically buttons and link blocks
+    // smaller than ~44x44px on mobile.
+    'tap-target-padding|wix': {
+      etaMinutes: 5,
+      steps: [
+        'In the Wix Editor, switch to Mobile view (phone icon at top).',
+        'Click the small button or link, then click Settings → Design → Layout.',
+        'Increase Padding (top/bottom and left/right) until the target feels thumb-sized; aim for 44px minimum.',
+        'Publish.'
+      ]
+    },
+    'tap-target-padding|squarespace': {
+      etaMinutes: 5,
+      steps: [
+        'Site Styles (paintbrush icon) → Buttons → Increase Padding.',
+        'Or for a one-off button, click the button → Design → Padding.',
+        'Save.'
+      ]
+    },
+    'tap-target-padding|wordpress': {
+      etaMinutes: 6,
+      steps: [
+        'In the Block Editor, click the button → Block panel → Dimensions → Padding.',
+        'Increase top/bottom to at least 14px and left/right to 24px.',
+        'For a site-wide change, edit theme.json or the theme\'s style.css.',
+        'Update.'
+      ]
+    },
+    'tap-target-padding|webflow': {
+      etaMinutes: 4,
+      steps: [
+        'Select the button class in Designer.',
+        'In the Style panel, set Padding to a minimum of 14px top/bottom, 24px left/right.',
+        'Switch to Mobile breakpoint and verify the button hits ~44x44px.',
+        'Publish.'
+      ]
+    },
+    'tap-target-padding|generic': {
+      etaMinutes: 5,
+      steps: [
+        'In your platform\'s style or theme settings, find Buttons or Links.',
+        'Set padding to a minimum of 14px top/bottom and 24px left/right.',
+        'Verify on a phone — the button should easily fit a thumb.'
+      ]
+    },
+
+    // --------- alt-text-bulk ----------
+    'alt-text-bulk|wix': {
+      etaMinutes: 15,
+      steps: [
+        'In Wix Media Manager, click each image and add a description.',
+        'For images already on a page, click the image in the Editor → Settings → "What\'s in the image?" and write a one-sentence description.',
+        'Wix uses these as alt text automatically.',
+        'Publish.'
+      ]
+    },
+    'alt-text-bulk|squarespace': {
+      etaMinutes: 15,
+      steps: [
+        'Open the page, double-click an image, click Design → and type the description in "Caption" or use the Image Title field.',
+        'For a media library bulk edit: Settings → Media doesn\'t support batch alt-text on Squarespace 7.1; you have to touch each image.',
+        'Save.'
+      ],
+      note: 'Squarespace uses the file name as a fallback alt-text. Renaming files before upload (e.g. "carbonara-bowl.jpg" instead of "IMG_4823.jpg") is the cheapest improvement.'
+    },
+    'alt-text-bulk|wordpress': {
+      etaMinutes: 10,
+      steps: [
+        'Media → Library → click each image → fill the Alt Text field.',
+        'For bulk: install "Bulk Auto-fill Alt Text" or "Image SEO" plugin; or use the Quick Edit row action to add alt text without opening each image.',
+        'Update.'
+      ]
+    },
+    'alt-text-bulk|shopify': {
+      etaMinutes: 12,
+      steps: [
+        'Online Store → Files → click each image → click Edit alt text.',
+        'For product images: Products → product → click the image thumbnail → Edit alt text.',
+        'Save.'
+      ]
+    },
+    'alt-text-bulk|generic': {
+      etaMinutes: 15,
+      steps: [
+        'Open your media library or page editor.',
+        'For each image, add an alt-text description — one sentence describing what the image shows.',
+        'Save and verify with the Mobile-Friendly Check.'
       ]
     }
   };
