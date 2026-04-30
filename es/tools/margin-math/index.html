@@ -503,7 +503,7 @@
             <h4>Aprende</h4>
             <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
             <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->130<!-- /count --> términos en lenguaje claro</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->135<!-- /count --> términos en lenguaje claro</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Lee</h4>
@@ -618,6 +618,13 @@
       <!-- tool-verified:start -->
             <p class="tool-verified">Última revisión: <time datetime="2026-04-30">30 de abril de 2026</time></p>
             <!-- tool-verified:end -->
+      <!-- data-promise:start -->
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            </aside>
+            <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:580px;">Cuatro calculadoras para las decisiones que los dueños de verdad enfrentan — punto de equilibrio con delivery, simulación de alza de precios, prime cost, cubiertos necesarios por noche. Tú escribes tus números; la matemática corre en tu navegador. Sin registro, sin subir nada, ningún servidor ve lo que escribes.</p>
   <a href="#how-we-protect" class="mm-pledge">Se queda en tu navegador. <a href="#how-we-protect">Mira cómo lo verificamos</a></a>
   <div class="mm-actions" role="group" aria-label="Acciones del reporte mensual de margen">
@@ -945,239 +952,12 @@
 </div></section>
 
 <section class="block" id="how-we-protect"><div class="container">
-  <div style="max-width:760px;margin:0 auto;">
-    <span class="eyebrow">Predicar con el ejemplo</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo protegemos los números que escribes</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Nueve afirmaciones. Cada una se puede verificar en tu propio navegador en menos de un minuto. Si alguna resulta falsa, queremos que lo encuentres tú primero — abre cada "Inspecciona esto" y compruébanos.</p>
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+    <span class="eyebrow">La promesa de datos</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,30px);font-weight:500;color:var(--ink);margin:12px 0 12px;">Los números que tecleas se quedan en tu navegador.</h2>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0 0 12px;">Sin fetch, sin guardado, sin telemetría de valores crudos. Eso aplica a cada herramienta de Muntin, no solo a esta.</p>
+    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Sostenemos cada herramienta a nueve afirmaciones verificables y una auditoría de cinco pruebas. Léelas, después revísanos. <a href="/es/security/" style="color:var(--teal);font-weight:600;">La promesa completa</a> &middot; <a href="/es/learn/checklists/audit-any-tool/" style="color:var(--teal);font-weight:600;">Audita cualquier herramienta</a></p>
   </div>
-
-  <div class="mm-steps" aria-label="Pasos de protección de privacidad">
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">1</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">Tus números nunca salen de esta página.</h3>
-          <p class="mm-step-claim">Ninguna llamada a <a href="/es/glossary/#fetch-request" style="color:inherit;border-bottom:1px dashed var(--teal);"><code>fetch()</code></a>, <code>XMLHttpRequest</code>, o envío de formulario se dispara cuando escribes un número financiero. La matemática corre entera <a href="/es/glossary/#client-side" style="color:inherit;border-bottom:1px dashed var(--teal);">en tu navegador</a>.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Abre DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>) &rarr; pestaña <strong>Network</strong>. Escribe un número en la calculadora. La lista de solicitudes no debe crecer. Si crece, es un bug — avísanos.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">2</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">No hay servidor donde guardarlos.</h3>
-          <p class="mm-step-claim">El único endpoint que usa esta página es <code>GET /tools/margin-math/</code>. Ni <code>/api/margin-math-save</code>, ni <code>/api/calculate</code>, ni logger. El Worker no te escucha.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Desde un terminal: <code>curl -X POST https://muntin.digital/tools/margin-math/</code>. Respuesta: <code>405 Method Not Allowed</code> (o similar) — nada está escuchando POSTs.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">3</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">La analítica ve sólo buckets, nunca números.</h3>
-          <p class="mm-step-claim">Plausible recibe propiedades de una lista corta y fija de valores enumerados. Un ticket de \$25 se convierte en <code>25-39</code>. Un food cost de 30% se convierte en <code>28-32</code>. Tus números crudos nunca son un valor en ningún evento.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <code>plausible</code>. Interactúa con la calculadora. Cuando se dispare el evento, mira el payload. Valores como <code>ticket_bucket: "25-39"</code> — nunca <code>ticket: 25.00</code>.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">4</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">Sin cookies, sin localStorage, sin sessionStorage — para tus entradas.</h3>
-          <p class="mm-step-claim">Tus números escritos viven sólo en variables de JavaScript, que desaparecen al cerrar la pestaña. No hay estado persistente para la calculadora.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; <strong>Application</strong> &rarr; <strong>Storage</strong>. Usa la calculadora. Revisa Cookies, Local Storage, Session Storage, IndexedDB para este origen — los paneles siguen vacíos de cualquier valor financiero.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">5</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">Ningún script de terceros toca las entradas.</h3>
-          <p class="mm-step-claim">Esta página carga exactamente tres archivos JavaScript: el <code>site.js</code> del sitio (nav + switch de idioma), el compartido <code>_shared/parse-number.js</code> (parser de números laxo del toolkit, cubre decimales europeos + símbolos de moneda + variantes de espacio), y <code>margin-math.js</code> específico de la herramienta (la matemática). Más un script de analítica (Plausible) que recibe los valores bucket. Los popovers del glosario leen las definiciones de atributos <code>data-def</code> en el HTML — no se dispara ningún fetch adicional al pasar el cursor.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network &rarr; filtra <strong>JS</strong>. Recarga. Deberías ver <code>plausible.io/js/…</code>, <code>site.js</code>, <code>parse-number.js</code>, y <code>margin-math.js</code>. Pasa el cursor sobre cualquier término subrayado dentro de una calculadora — la lista de solicitudes no crece. Sin Google Tag Manager, sin Meta Pixel, sin widget de chat, sin session replay.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">6</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">Los enlaces de escenario mantienen los números fuera de los logs del servidor.</h3>
-          <p class="mm-step-claim">Tus entradas viven en el <a href="/es/glossary/#url-fragment" style="color:inherit;border-bottom:1px dashed var(--teal);"><strong>fragmento</strong> de la URL</a> — la parte después del <code>#</code>. Según la especificación HTTP, los navegadores nunca envían el fragmento al servidor. Pulsa <strong>Copiar enlace del escenario</strong> en cualquier calculadora: el enlace que pegas es un rastro auditable que tú controlas — nada sale de tu navegador cuando mueves un deslizador, y nada sale del nuestro cuando compartes el enlace.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Mueve cualquier deslizador y mira la barra de direcciones. Se actualiza a algo como <code>&hellip;/margin-math/#v=1&amp;dbe.t=25&amp;dbe.f=30&amp;pc.f=32&amp;pc.l=34</code>. Ese fragmento nunca viaja en una solicitud HTTP. También ponemos <code>&lt;meta name="referrer" content="no-referrer"&gt;</code> en esta página para que clics salientes no lo filtren a terceros vía el encabezado Referer.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">7</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">El código fuente es legible.</h3>
-          <p class="mm-step-claim">Sin paso de build, sin minificación, sin framework. El módulo de matemáticas es JavaScript plano — puedes leer cada línea.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Click derecho en esta página &rarr; <em>Ver código fuente</em>. O abre <code>/tools/margin-math/margin-math.js</code> directo. Busca <code>function mmCalcDeliveryBreakeven</code> — esa es toda la matemática, a la vista.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">8</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">Nada persiste más allá de esta pestaña.</h3>
-          <p class="mm-step-claim">Cierra la pestaña, reabre la herramienta: cada calculadora vuelve a sus valores por defecto. No hay cuenta, ni historial guardado, ni "bienvenido de vuelta."</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">Cambia cada deslizador y campo. Cierra la pestaña. Reabre <code>/tools/margin-math/</code>. Todo volvió a su valor inicial.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-
-    <article class="mm-step">
-      <div class="mm-step-head">
-        <span class="mm-step-num" aria-hidden="true">9</span>
-        <div class="mm-step-body">
-          <h3 class="mm-step-title">El Reporte Mensual y el recordatorio al calendario son 100% del lado cliente.</h3>
-          <p class="mm-step-claim">"Imprime el reporte de este mes" abre el diálogo de impresión nativo del navegador — nunca vemos el resultado. "Agrega un chequeo mensual" genera un archivo <code>.ics</code> en tu navegador y lo descarga localmente. El evento del calendario incluye sólo la URL del fragmento visible en tu barra de direcciones.</p>
-          <details class="mm-step-inspect"><summary>Inspecciona esto</summary>
-            <div class="mm-step-verify">DevTools &rarr; Network. Pulsa <strong>Imprime el reporte de este mes</strong> — sin solicitudes nuevas. Pulsa <strong>Agrega un chequeo mensual</strong> — sigue sin solicitudes; aparece la descarga <code>margin-math-mensual.ics</code>. Ábrelo con un editor de texto: cada campo del evento es copia en texto plano de valores que ya ves tú.</div>
-          </details>
-        </div>
-      </div>
-    </article>
-  </div>
-</div></section>
-
-<section class="block" id="how-to-check"><div class="container">
-  <div style="max-width:760px;margin:0 auto;">
-    <span class="eyebrow">Aplica esto en cualquier parte</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cómo comprobar si cualquier herramienta es segura</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">Cinco pruebas que puedes correr en cualquier herramienta financiera gratuita antes de escribir un solo número real. Nos calificamos nosotros al lado de una herramienta gratuita de captación típica para que la diferencia sea concreta, no retórica.</p>
-  </div>
-
-  <div class="mm-safety-wrap">
-    <table class="mm-safety">
-      <thead>
-        <tr>
-          <th scope="col">La prueba</th>
-          <th scope="col">Cálculo de Margen</th>
-          <th scope="col">Herramienta típica</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>1. ¿Al escribir un número se dispara una solicitud de red?</strong><span class="mm-safety-hint">Abre DevTools &rarr; Network. Escribe.</span></td>
-          <td class="mm-safety-pass">Ninguna solicitud se dispara.</td>
-          <td class="mm-safety-fail">Cada tecla hace POST al servidor.</td>
-        </tr>
-        <tr>
-          <td><strong>2. ¿La afirmación de privacidad está junto a la entrada?</strong><span class="mm-safety-hint">No enterrada en una política.</span></td>
-          <td class="mm-safety-pass">Insignia "Se queda en tu navegador" en cada tarjeta, panel de 8 pasos en la página.</td>
-          <td class="mm-safety-fail">Enlace a Política de Privacidad solo en el pie; consentimiento implícito al enviar.</td>
-        </tr>
-        <tr>
-          <td><strong>3. ¿Hay un gate de cuenta / newsletter / cookies?</strong><span class="mm-safety-hint">Cualquier cosa que exija "aceptar todo" antes de poder usar la herramienta.</span></td>
-          <td class="mm-safety-pass">Nada — sin gate, sin popup, sin banner de cookies.</td>
-          <td class="mm-safety-fail">"Deja tu email para ver tus resultados."</td>
-        </tr>
-        <tr>
-          <td><strong>4. ¿Analítica de terceros, session replay, scripts de marketing?</strong><span class="mm-safety-hint">DevTools &rarr; Network &rarr; filtra JS.</span></td>
-          <td class="mm-safety-pass">Solo Plausible (privacidad primero); props con buckets (nunca valores crudos).</td>
-          <td class="mm-safety-fail">Google Analytics, Meta Pixel, HubSpot, session replay — apilados.</td>
-        </tr>
-        <tr>
-          <td><strong>5. ¿El código fuente es legible?</strong><span class="mm-safety-hint">Click derecho &rarr; Ver código fuente.</span></td>
-          <td class="mm-safety-pass">Sin minificar, bajo ~500 líneas, cada función matemática con nombre.</td>
-          <td class="mm-safety-fail">Bundle minificado de SaaS; matemática escondida en un dashboard.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <p style="max-width:760px;margin:16px auto 0;font-size:13px;line-height:1.6;color:var(--stone);">
-    Aplica estas cinco pruebas a cualquier calculadora, estimador o "auditoría gratis" que encuentres — sobre todo la que te pida ingresos, margen, food cost o costo de mano de obra. Una herramienta que silenciosamente hace POST con tus entradas las está guardando. Una herramienta sin afirmación de privacidad en la página está esquivando la pregunta. Tienes permiso de irte.
-  </p>
-</div></section>
-
-<section class="block" id="data-sharing"><div class="container">
-  <div style="max-width:760px;margin:0 auto;">
-    <span class="eyebrow">Qué compartir, dónde</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.2vw,36px);font-weight:500;color:var(--ink);margin:12px 0 10px;">Cuatro niveles de los datos de tu negocio</h2>
-    <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);margin:0;">No todo número pertenece a toda conversación. La mayoría de los dueños cargan todos sus datos en el mismo balde mental — lo que significa que la lista de proveedores y el número de identificación fiscal reciben la misma protección (a menudo el mismo nivel bajo). Cuatro niveles, cada uno con distinta audiencia y distinto nivel de cuidado.</p>
-  </div>
-
-  <div class="mm-tiers">
-    <article class="mm-tier" data-tier="public">
-      <header><span class="mm-tier-label">Nivel 1</span><h3>Público</h3></header>
-      <p class="mm-tier-desc">Todo lo que cualquiera puede encontrar en tu sitio, tu ficha o caminando por delante.</p>
-      <ul class="mm-tier-examples">
-        <li>Menú, horarios, fotos</li>
-        <li>Dirección, teléfono, URL del sitio</li>
-        <li>Marcado schema.org, etiquetas de cocina, atributos de servicio</li>
-      </ul>
-      <p class="mm-tier-share"><strong>Compartir con:</strong> Cualquiera. Optimiza agresivamente — así es como los clientes te encuentran.</p>
-    </article>
-
-    <article class="mm-tier" data-tier="competitive">
-      <header><span class="mm-tier-label">Nivel 2</span><h3>Sensible a la competencia</h3></header>
-      <p class="mm-tier-desc">Legal compartirlo, pero útil para un rival — o palanca para una plataforma.</p>
-      <ul class="mm-tier-examples">
-        <li>Costo de bienes, lista de proveedores, precios negociados</li>
-        <li>El nivel de comisión que de verdad pagas (no la tarifa pública)</li>
-        <li>Plantilla de horarios, mezcla de dayparts, matriz de ingeniería del menú</li>
-      </ul>
-      <p class="mm-tier-share"><strong>Compartir con:</strong> Contador, consultor, broker — bajo NDA. No plataformas, no competidores, no "auditorías gratis" que guarden tu entrada.</p>
-    </article>
-
-    <article class="mm-tier" data-tier="operational">
-      <header><span class="mm-tier-label">Nivel 3</span><h3>Confidencial operativo</h3></header>
-      <p class="mm-tier-desc">Tus números operativos reales, pipeline de clientes, detalles de empleados.</p>
-      <ul class="mm-tier-examples">
-        <li>P&amp;L mensual, food cost real, márgenes reales</li>
-        <li>Pipeline de reservas, base de clientes, datos de lealtad</li>
-        <li>Nombres de empleados, horarios, distribución de propinas</li>
-      </ul>
-      <p class="mm-tier-share"><strong>Compartir con:</strong> Solo dentro del negocio. Proveedor de POS, procesador de nómina, contador — y sólo bajo un contrato escrito que especifique qué pueden y no pueden hacer con los datos.</p>
-    </article>
-
-    <article class="mm-tier" data-tier="regulated">
-      <header><span class="mm-tier-label">Nivel 4</span><h3>Regulado</h3></header>
-      <p class="mm-tier-desc">Protegido por ley. Perderlo tiene multas, demandas o exposición criminal atadas.</p>
-      <ul class="mm-tier-examples">
-        <li>SSN, EIN, otros identificadores fiscales</li>
-        <li>Datos de tarjeta del cliente (alcance PCI), datos bancarios de empleados</li>
-        <li>Logs de seguridad alimentaria, correspondencia con el departamento de salud, estatus de licencia de licor, I-9</li>
-      </ul>
-      <p class="mm-tier-share"><strong>Manejar con:</strong> Almacenamiento encriptado, logging de acceso, contratos con cláusulas de ciberseguridad. Nunca por correo. Nunca en una hoja compartida. Si un proveedor lo pide de forma casual, eso solo es una señal de alerta.</p>
-    </article>
-  </div>
-
-  <p class="mm-tier-foot">
-    Aplica esto en cualquier momento que te pidan entregar datos — evaluaciones de proveedores, contratos, solicitudes de crédito, formularios de "auditoría gratis". El patrón: <strong>los datos nunca suben de nivel.</strong> Un proveedor de Nivel 3 no recibe acceso a Nivel 4 solo porque lo pidió. Una audiencia de Nivel 1 (plataforma, listado, competidor) no recibe Nivel 2. La forma más fácil de reducir tu superficie de ataque es dejar de ofrecer datos que nadie en realidad te exigía.
-  </p>
 </div></section>
 
 <section class="block"><div class="container">

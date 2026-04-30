@@ -1,5 +1,5 @@
 {
-  "_doc": "The six topics that organize the Library. Each topic has an EN and an ES variant (the ES build reads .es). Slugs are stable URL identifiers — never rename without redirects.",
+  "_doc": "The seven topics that organize the Library. Each topic has an EN and an ES variant (the ES build reads .es). Slugs are stable URL identifiers — never rename without redirects.",
   "topics": [
     {
       "slug": "speed-mobile",
@@ -48,6 +48,14 @@
       "blurb": "Why the website's tone, type, and palette decide whether a guest believes the food before they taste it.",
       "blurb_es": "Por qué el tono, la tipografía y la paleta del sitio deciden si un huésped cree en la comida antes de probarla.",
       "intent": "A reader landing here is making brand or visual decisions — Wix vs custom, colors, photography, voice."
+    },
+    {
+      "slug": "information-security",
+      "name": "Information Security",
+      "name_es": "Seguridad informática",
+      "blurb": "How to tell if a free restaurant tool is safe — and how to handle the four tiers of your business data so the supplier list and the tax ID don't sit in the same mental bucket.",
+      "blurb_es": "Cómo saber si una herramienta gratis para restaurante es segura — y cómo manejar los cuatro niveles de datos del negocio para que la lista de proveedores y el tax ID no estén en la misma cubeta mental.",
+      "intent": "A reader landing here is evaluating whether to type real numbers into a free tool, or trying to understand what data they should and shouldn't be sharing with vendors, platforms, and intake forms."
     }
   ]
 }

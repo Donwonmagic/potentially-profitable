@@ -2,6 +2,10 @@
   "_doc": "Per-tool 'Keep going' footer module — links each of the 9 live tools to its topic, related tools, articles, and glossary terms. Drives scripts/inject-tool-knit.mjs, which stamps a 4-column block between <!-- tool-knit -->...<!-- /tool-knit --> sentinels at the bottom of each tool page (EN + ES). Labels: tools come from data/tools.json (title_*), topics from data/topics.json (name + name_es), glossary terms are extracted at render time from <h1 class='term-h1'> in glossary/<slug>/index.html — only article labels live here because article <h1>s are too long to use as scannable link text.",
 
   "articles": {
+    "/blog/how-to-tell-if-a-restaurant-tool-is-safe/": {
+      "label_en": "How to tell if a tool is safe",
+      "label_es": "Cómo saber si una herramienta es segura"
+    },
     "/blog/restaurant-schema-markup-6-types-google-uses/": {
       "label_en": "The 6 schema types Google uses",
       "label_es": "Los 6 tipos de schema que Google usa"
