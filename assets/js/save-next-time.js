@@ -143,6 +143,39 @@
     'Open Hours Export': 1,
   };
   var FIRED_RUN_THIS_LOAD = {};
+
+  // Phase G.9 — props auto-injection. Existing Workbench Save +
+  // Window Sent events get firstSource + daysSinceFirstVisit
+  // bucket props joined in from localStorage at fire time. Bounded:
+  // firstSource is a 6-value enum, daysSinceFirstVisit is a 7-bucket
+  // enum (matches the bucketing in first-touch.js).
+  var PROP_AUGMENT_EVENTS = { 'Workbench Save': 1, 'Window Sent': 1 };
+  function bucketDays(days) {
+    if (days < 1) return '0';
+    if (days <= 3) return '1-3';
+    if (days <= 7) return '4-7';
+    if (days <= 30) return '8-30';
+    if (days <= 90) return '31-90';
+    if (days <= 365) return '91-365';
+    return '365+';
+  }
+  function readFirstTouch() {
+    try { return JSON.parse(localStorage.getItem('muntin_first') || 'null'); }
+    catch (_) { return null; }
+  }
+  function maybeAugmentProps(name, opts) {
+    if (!PROP_AUGMENT_EVENTS[name]) return opts;
+    var ft = readFirstTouch();
+    if (!ft) return opts;
+    var newProps = Object.assign({}, (opts && opts.props) || {});
+    if (!newProps.firstSource && ft.firstSource) newProps.firstSource = ft.firstSource;
+    if (!newProps.daysSinceFirstVisit && ft.firstTimestamp) {
+      var days = Math.floor((Date.now() - ft.firstTimestamp) / 86400000);
+      newProps.daysSinceFirstVisit = bucketDays(days);
+    }
+    return Object.assign({}, opts || {}, { props: newProps });
+  }
+
   function bridge(name, opts) {
     var slug = TOOL_RUN_NAME_TO_SLUG[name];
     if (slug) {
@@ -168,7 +201,8 @@
   if (typeof origPlausible === 'function') {
     window.plausible = function (name, opts) {
       try { bridge(name, opts); } catch (_) {}
-      return origPlausible.apply(this, arguments);
+      var augmented = maybeAugmentProps(name, opts);
+      return origPlausible.call(this, name, augmented);
     };
     // Preserve queue compatibility shim.
     window.plausible.q = origPlausible.q || [];
@@ -180,7 +214,8 @@
         var orig = window.plausible;
         window.plausible = function (name, opts) {
           try { bridge(name, opts); } catch (_) {}
-          return orig.apply(this, arguments);
+          var augmented = maybeAugmentProps(name, opts);
+          return orig.call(this, name, augmented);
         };
         window.plausible.q = orig.q || [];
         clearInterval(deferId);
