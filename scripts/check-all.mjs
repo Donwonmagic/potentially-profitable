@@ -57,6 +57,7 @@ const CHECKS = [
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
+  ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
   ['Hub collection schema (idem)','inject-hub-collection-schema.mjs','--check'],
   ['Author chip (idem)',  'inject-article-author-chip.mjs', '--check'],
