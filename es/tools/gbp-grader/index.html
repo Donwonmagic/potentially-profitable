@@ -157,6 +157,44 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Metodología — <details> al final para credibilidad sin ensuciar
      la vista por defecto. */
+  .gbp-preflight{margin:0 0 22px;padding:16px 20px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-input)}
+  .gbp-preflight-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 10px}
+  .gbp-preflight-body{font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+  .gbp-preflight-list{margin:0 0 12px;padding-left:20px;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .gbp-preflight-cta{display:inline-block;padding:9px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px;margin:0 0 10px}
+  .gbp-preflight-cta:hover{filter:brightness(0.92)}
+  .gbp-preflight-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .gbp-mirror{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-mirror-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+  .gbp-mirror-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .gbp-mirror-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .gbp-mirror-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .gbp-mirror-table tbody tr:last-child td{border-bottom:0}
+  .gbp-mirror-label{font-weight:600;color:var(--ink)}
+  .gbp-mirror-you{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gbp-mirror-peer{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta{font-weight:700;font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta.win{color:var(--status-good)}
+  .gbp-mirror-delta.lose{color:var(--rust)}
+  .gbp-mirror-delta.tie{color:var(--stone)}
+  .gbp-mirror-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+  .gbp-mirror-foot{font-size:12px;color:var(--stone);margin:10px 0 0;line-height:1.5}
+  .gbp-mirror-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  @media(max-width:560px){.gbp-mirror-table th:nth-child(5),.gbp-mirror-table td:nth-child(5){display:none}}
+  .gbp-roadmap{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-roadmap-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-roadmap-body{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 14px}
+  .gbp-roadmap-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .gbp-roadmap-day{display:grid;grid-template-columns:120px 1fr;gap:10px 14px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1)}
+  .gbp-roadmap-day[data-empty="true"]{opacity:0.5;background:var(--cream-2)}
+  .gbp-roadmap-name{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);letter-spacing:0.02em;align-self:center}
+  .gbp-roadmap-action{display:flex;align-items:start;gap:8px;font-size:13.5px;line-height:1.55;color:var(--ink);grid-column:2}
+  .gbp-roadmap-day[data-empty="true"] .gbp-roadmap-action{grid-column:2;color:var(--stone);font-style:italic}
+  .gbp-roadmap-state{flex:0 0 18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700;margin-top:1px}
+  .gbp-roadmap-state.state-fail{background:#fde9e0;color:var(--rust)}
+  .gbp-roadmap-state.state-warn{background:#fbf3d8;color:#9c7416}
+  .gbp-roadmap-foot{font-size:12px;color:var(--stone);margin:12px 0 0;line-height:1.5}
+  @media(max-width:560px){.gbp-roadmap-day{grid-template-columns:1fr}.gbp-roadmap-name{align-self:auto}.gbp-roadmap-action{grid-column:1}}
   .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2)}
   .gbp-methodology summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .gbp-methodology summary::-webkit-details-marker{display:none}
@@ -776,6 +814,134 @@
       +'</details>';
   }
 
+  // Pre-flight: detector de listado no reclamado.
+  function pbDetectUnclaimed(chosen) {
+    if (!chosen) return { likely: false, signals: [] };
+    var sigs = [];
+    if (!chosen.website && !chosen.googleMapsUri) sigs.push('sin sitio web en el listado');
+    else if (!chosen.website) sigs.push('sin enlace al sitio web en el listado');
+    if (chosen.photoCount === 0) sigs.push('cero fotos');
+    var hasHours = !!(chosen.regularOpeningHours || chosen.openingHours || (chosen.currentOpeningHours && chosen.currentOpeningHours.weekdayDescriptions));
+    if (!hasHours) sigs.push('sin horarios definidos');
+    if (!chosen.nationalPhoneNumber && !chosen.internationalPhoneNumber && !chosen.formattedPhoneNumber) sigs.push('sin número de teléfono');
+    var reviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    if (reviews != null && reviews < 5 && !chosen.primaryTypeDisplayName) sigs.push('menos de 5 reseñas y sin categoría de negocio');
+    return { likely: sigs.length >= 3, signals: sigs };
+  }
+  function renderPreflightBanner(pre) {
+    if (!pre || !pre.likely) return '';
+    var listHtml = pre.signals.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    return '<div class="gbp-preflight">'
+      + '<p class="gbp-preflight-eyebrow">Atención — este listado podría estar sin reclamar</p>'
+      + '<p class="gbp-preflight-body">Varias señales se ven como auto-generadas por Google en lugar de gestionadas por el dueño:</p>'
+      + '<ul class="gbp-preflight-list">' + listHtml + '</ul>'
+      + '<p class="gbp-preflight-body">Reclamar el listado es la jugada de mayor palanca en GBP — desbloquea cualquier otro arreglo y le dice a Google que estás operando este negocio activamente.</p>'
+      + '<a class="gbp-preflight-cta" href="https://business.google.com/create" target="_blank" rel="noopener">Abrir Google Business Profile para reclamar &rarr;</a>'
+      + '<p class="gbp-preflight-foot">Si ya lo reclamaste y estas señales están equivocadas, el puntaje de abajo aún refleja lo que muestran los datos públicos de Google — que es lo que ven los nuevos clientes.</p>'
+      + '</div>';
+  }
+
+  // Espejo de competidores — el tuyo vs. la mediana de tu categoría.
+  function renderCompetitorMirror(chosen, peerMedians){
+    if (!chosen || !peerMedians) return '';
+    var primary = (chosen.primaryTypeDisplayName || chosen.types && chosen.types[0]) || '';
+    var familyKey = (peerMedians._familyMap && peerMedians._familyMap[primary]) || null;
+    var benchmark = peerMedians[primary] || (familyKey && peerMedians._families && peerMedians._families[familyKey]) || peerMedians._default || null;
+    if (!benchmark) return '';
+    var yourReviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    var yourPhotos  = (typeof chosen.photoCount === 'number') ? chosen.photoCount : null;
+    var yourRating  = (typeof chosen.rating === 'number') ? chosen.rating : null;
+    function row(label, your, peer, note) {
+      if (your == null && peer == null) return '';
+      var delta = (typeof your === 'number' && typeof peer === 'number') ? your - peer : null;
+      var deltaCls = delta == null ? 'tie' : (delta >= 0 ? 'win' : 'lose');
+      var deltaTxt = delta == null ? '—' : (delta > 0 ? '+' + Math.round(delta) : Math.round(delta));
+      var yourTxt  = (your == null ? '—' : (typeof your === 'number' ? Math.round(your * 10) / 10 : your));
+      var peerTxt  = (peer == null ? '—' : (typeof peer === 'number' ? Math.round(peer * 10) / 10 : peer));
+      return '<tr><td class="gbp-mirror-label">' + label + '</td>'
+        +    '<td class="gbp-mirror-you">' + yourTxt + '</td>'
+        +    '<td class="gbp-mirror-peer">' + peerTxt + '</td>'
+        +    '<td class="gbp-mirror-delta ' + deltaCls + '">' + deltaTxt + '</td>'
+        +    (note ? '<td class="gbp-mirror-note">' + note + '</td>' : '<td></td>')
+        +    '</tr>';
+    }
+    var rows = '';
+    rows += row('Reseñas',     yourReviews, (benchmark.reviewCount || null), yourReviews != null && benchmark.reviewCount && yourReviews < benchmark.reviewCount ? 'Apunta primero a la mediana; el lift de ranking compone después.' : '');
+    rows += row('Fotos',       yourPhotos,  (benchmark.photoCount || null),  yourPhotos != null && benchmark.photoCount && yourPhotos < benchmark.photoCount ? 'Las fotos son la métrica más barata de mover — sube semanalmente.' : '');
+    rows += row('Calificación', yourRating, 4.5, yourRating != null && yourRating < 4.5 ? 'Bajo el umbral de 4.5 que la mayoría filtra. Responde a las reseñas recientes — las respuestas públicas suben la media visible.' : '');
+    if (!rows) return '';
+    var label = primary || (familyKey || 'restaurantes');
+    return '<div class="gbp-mirror">'
+      + '<p class="gbp-mirror-eyebrow">Cómo te comparas con la mediana de ' + label + 's</p>'
+      + '<table class="gbp-mirror-table">'
+      +   '<thead><tr><th>Métrica</th><th>Tú</th><th>Mediana</th><th>Δ</th><th></th></tr></thead>'
+      +   '<tbody>' + rows + '</tbody>'
+      + '</table>'
+      + '<p class="gbp-mirror-foot">La mediana es un benchmark direccional de <a href="#">investigación BrightLocal + Whitespark</a>, no de competidores cercanos. Para comparar con tres vecinos reales, corre la herramienta <a href="/es/tools/compare/">Comparar</a>.</p>'
+      + '</div>';
+  }
+
+  // 7-day roadmap ES.
+  var ROADMAP_HINTS = {
+    primary_category:  { day: 'Lunes',     action: 'Elige la categoría más específica de tu negocio en el dashboard de GBP.' },
+    hours:             { day: 'Lunes',     action: 'Define horarios regulares para cada día abierto. Genéralos en Horario de Atención y pégalos.' },
+    phone:             { day: 'Lunes',     action: 'Agrega (o corrige) el número de teléfono tap-to-call. Iguálalo con tu sitio.' },
+    website:           { day: 'Lunes',     action: 'Enlaza tu sitio web. Una página simple supera no tener nada — Google manda los clics de "saber más" ahí.' },
+    service_attrs:     { day: 'Martes',    action: 'Activa cada atributo de servicio que aplique (mesa, para llevar, delivery, reservaciones, banderas de cocina).' },
+    hours_fresh:       { day: 'Martes',    action: 'Verifica la cobertura de feriados y horarios especiales — los huecos bajan la frescura.' },
+    nap:               { day: 'Martes',    action: 'Reconcilia nombre/dirección/teléfono entre Google y el schema de tu sitio. Texto idéntico en ambos.' },
+    photos:            { day: 'Miércoles', action: 'Sube 4-6 fotos: exterior, interior, plato firma, equipo. Reúsalas el resto de la semana.' },
+    editorial_summary: { day: 'Miércoles', action: 'Escribe la descripción del negocio (250 caracteres). Lidera con cocina + barrio + lo que te distingue.' },
+    rating:            { day: 'Jueves',    action: 'Lee todas las reseñas de 1-3 estrellas. Identifica el patrón recurrente y atáquelo operativamente.' },
+    owner_reply:       { day: 'Jueves',    action: 'Responde públicamente a las 5-10 reseñas más recientes. Incluye las elogiosas y las críticas.' },
+    review_volume:     { day: 'Viernes',   action: 'Imprime una tarjeta QR con tu enlace de reseñas de Google. Repártela a las mesas satisfechas este fin de semana.' },
+    review_recency:    { day: 'Sábado',    action: 'Pide a 3-5 clientes regulares una reseña por su nombre. Las peticiones directas convierten ~10x más que los prompts en frío.' },
+    operational:       { day: 'Domingo',   action: 'Confirma que el listado no aparezca como cerrado/mudado si sigues abierto. Estado equivocado = invisible.' }
+  };
+  var ROADMAP_DAY_ORDER = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  function renderRoadmap(scored) {
+    if (!scored || !scored.groups) return '';
+    var actionable = [];
+    scored.groups.forEach(function (g) {
+      (g.checks || []).forEach(function (c) {
+        if (c.state === 'fail' || c.state === 'warn') {
+          if (ROADMAP_HINTS[c.id]) actionable.push({ id: c.id, weight: c.weight, state: c.state });
+        }
+      });
+    });
+    actionable.sort(function (a, b) { return b.weight - a.weight; });
+    if (!actionable.length) return '';
+    var byDay = {};
+    ROADMAP_DAY_ORDER.forEach(function (d) { byDay[d] = []; });
+    actionable.forEach(function (a) {
+      var hint = ROADMAP_HINTS[a.id];
+      if (!hint) return;
+      var idx = ROADMAP_DAY_ORDER.indexOf(hint.day);
+      var attempts = 0;
+      while (byDay[ROADMAP_DAY_ORDER[idx]].length >= 2 && attempts < 7) {
+        idx = (idx + 1) % 7; attempts++;
+      }
+      byDay[ROADMAP_DAY_ORDER[idx]].push({ id: a.id, hint: hint, state: a.state });
+    });
+    var dayHtml = ROADMAP_DAY_ORDER.map(function (d) {
+      var actions = byDay[d];
+      if (!actions.length) {
+        return '<li class="gbp-roadmap-day" data-empty="true"><span class="gbp-roadmap-name">' + d + '</span><span class="gbp-roadmap-action">— día de descanso —</span></li>';
+      }
+      var lines = actions.map(function (a) {
+        var stateBadge = a.state === 'fail' ? '<span class="gbp-roadmap-state state-fail">!</span>' : '<span class="gbp-roadmap-state state-warn">·</span>';
+        return '<span class="gbp-roadmap-action">' + stateBadge + a.hint.action + '</span>';
+      }).join('');
+      return '<li class="gbp-roadmap-day"><span class="gbp-roadmap-name">' + d + '</span>' + lines + '</li>';
+    }).join('');
+    return '<div class="gbp-roadmap">'
+      + '<p class="gbp-roadmap-eyebrow">Tu hoja de ruta de 7 días</p>'
+      + '<p class="gbp-roadmap-body">Una versión secuenciada de los chequeos fallidos y de advertencia de arriba. Una o dos acciones por día, ordenadas por palanca. Trata los días como una guía — si las acciones del lunes te toman 20 minutos, sentirás que estás corriendo.</p>'
+      + '<ul class="gbp-roadmap-list">' + dayHtml + '</ul>'
+      + '<p class="gbp-roadmap-foot">La hoja de ruta se genera de los chequeos de arriba; si arreglas uno y vuelves a correr el calificador, la próxima corrida lo descarta.</p>'
+      + '</div>';
+  }
+
   function renderMethodology(peerMedians){
     var compiled=peerMedians&&peerMedians._compiled?peerMedians._compiled:'versión actual';
     var source=peerMedians&&peerMedians._source?peerMedians._source:'investigación pública de SEO local';
@@ -1026,6 +1192,9 @@
 
     bizEl.innerHTML=renderBusinessCard(chosen);
 
+    var preflight = pbDetectUnclaimed(chosen);
+    var preflightHtml = preflight.likely ? renderPreflightBanner(preflight) : '';
+
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'es');
     var deltaHtml=renderDelta(chosen,scored);
     gbpSnapshotSave(chosen.placeId,chosen,scored);
@@ -1040,7 +1209,9 @@
 
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+    var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
+    var roadmapHtml=renderRoadmap(scored);
+    checksEl.innerHTML=preflightHtml+deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill el CTA del Diagnóstico con el
     // sitio de esta ficha — esa herramienta ya fusiona /api/gbp-details
