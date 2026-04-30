@@ -506,6 +506,10 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <div class="pb-coverage" id="pbCoverage"></div>
     </div>
 
+    <aside class="edu-result edu-result--mini" id="pbEduResult" aria-label="Qué significa este brief" style="display:none;">
+      <p class="edu-result__lede">Una lista de tomas más apretada <strong>no es tacañería</strong> &mdash; es la diferencia entre una sesión de medio día que reúsas todo el año y un maratón del cual la mitad nunca llega a una pared, un feed o un mantel. La matemática de dedup de aquí le devuelve al fotógrafo el mismo dinero, mejor invertido.</p>
+    </aside>
+
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Llévatelo</span>
       <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Descargar Brief de Fotos <span class="pb-action-fmt">.png</span></button>
@@ -894,6 +898,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       if (actionsEl)   actionsEl.style.display = 'none';
       if (handoffEl)   handoffEl.style.display = 'none';
       if (signatureEl) signatureEl.style.display = 'none';
+      var eduEl0 = document.getElementById('pbEduResult');
+      if (eduEl0) eduEl0.style.display = 'none';
       latestSummary = null;
       return;
     }
@@ -916,6 +922,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     if (actionsEl)   actionsEl.style.display = 'flex';
     if (handoffEl)   handoffEl.style.display = 'flex';
     if (signatureEl) signatureEl.style.display = 'block';
+    var eduEl1 = document.getElementById('pbEduResult');
+    if (eduEl1) eduEl1.style.display = 'block';
     if (toMenuEngEl) {
       var stars = PB.encodeStarsFragment(dishes);
       toMenuEngEl.href = '/es/tools/menu-engineering/' + (stars ? '#stars=' + stars : '');

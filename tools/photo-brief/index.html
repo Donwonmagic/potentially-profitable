@@ -526,6 +526,10 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <div class="pb-coverage" id="pbCoverage"></div>
     </div>
 
+    <aside class="edu-result edu-result--mini" id="pbEduResult" aria-label="What this brief means" style="display:none;">
+      <p class="edu-result__lede">A tighter shot list is <strong>not stinginess</strong> &mdash; it's the difference between a half-day shoot you'll re-use for a year and a marathon shoot half of which never reaches a wall, a feed, or a placemat. The dedup math here pays the photographer back for the same money.</p>
+    </aside>
+
     <div class="pb-actions" id="pbActions" style="display:none;">
       <span class="pb-actions-label">Take this with you</span>
       <button type="button" class="pb-action-btn pb-action-btn-primary" id="pbDownloadBrief">Download Photo Brief <span class="pb-action-fmt">.png</span></button>
@@ -917,6 +921,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       if (actionsEl)   actionsEl.style.display = 'none';
       if (handoffEl)   handoffEl.style.display = 'none';
       if (signatureEl) signatureEl.style.display = 'none';
+      var eduEl0 = document.getElementById('pbEduResult');
+      if (eduEl0) eduEl0.style.display = 'none';
       latestSummary = null;
       return;
     }
@@ -939,6 +945,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     if (actionsEl)   actionsEl.style.display = 'flex';
     if (handoffEl)   handoffEl.style.display = 'flex';
     if (signatureEl) signatureEl.style.display = 'block';
+    var eduEl1 = document.getElementById('pbEduResult');
+    if (eduEl1) eduEl1.style.display = 'block';
     if (toMenuEngEl) {
       var stars = PB.encodeStarsFragment(dishes);
       toMenuEngEl.href = '/tools/menu-engineering/' + (stars ? '#stars=' + stars : '');
