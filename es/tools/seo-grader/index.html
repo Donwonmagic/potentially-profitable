@@ -133,6 +133,29 @@
   .seo-save-link:hover { border-color: var(--ink); }
   .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
   .seo-save-msg.error { color: var(--rust); }
+  .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
+  .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
+  .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+  @media (max-width: 640px) { .seo-ctx-grid { grid-template-columns: 1fr; } }
+  .seo-ctx-grid label { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; gap: 4px; }
+  .seo-ctx-grid input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; color: var(--ink); }
+  .seo-serp { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-serp-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-serp-mock { padding: 12px 14px; background: var(--cream-2); border-radius: 6px; font-family: Arial, sans-serif; line-height: 1.4; }
+  .seo-serp-host { font-size: 12px; color: #1a73e8; }
+  .seo-serp-title { font-size: 18px; color: #1a0dab; margin: 2px 0; }
+  .seo-serp-desc { font-size: 13px; color: #4d5156; }
+  .seo-rewrite { padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-rewrite-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .seo-rewrite-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .seo-rewrite-row strong { font-size: 12px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; }
+  .seo-rewrite-row input, .seo-rewrite-row textarea { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; }
+  .seo-rewrite-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .seo-rewrite-btn { padding: 8px 14px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .seo-rewrite-btn:hover { background: var(--teal); }
+  .seo-rewrite-msg { font-size: 12.5px; color: var(--status-good); }
+  .seo-rewrite-help { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.55; }
+  .seo-rewrite-prompt { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; padding: 12px 14px; background: var(--cream-2); border-radius: 8px; border: 1px solid var(--line); }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -367,7 +390,17 @@
         <input type="url" id="seoUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
         <button type="submit" id="seoSubmit">Calificar</button>
       </form>
-      <p class="seo-note">Usa Google PageSpeed Insights. Toma unos treinta segundos.</p>
+
+      <details class="seo-ctx" id="seoCtx">
+        <summary class="seo-ctx-summary">Agrega tres detalles para una reescritura a tu medida (opcional, 30 segundos)</summary>
+        <div class="seo-ctx-grid">
+          <label>Cocina<input type="text" id="seoCuisine" placeholder="Italiana, mexicana, vietnamita…"></label>
+          <label>Barrio<input type="text" id="seoNeighborhood" placeholder="Silver Spring, MD"></label>
+          <label>Plato firma o característica<input type="text" id="seoSignature" placeholder="pasta hecha a mano, brunch, terraza…"></label>
+        </div>
+      </details>
+
+      <p class="seo-note">Corre en tu navegador. Unos 10 segundos — traemos tu título y descripción, los calificamos, y (si llenas los tres campos de contexto) sugerimos una reescritura.</p>
 
       <!-- Sprint 5 (cohesión) — estados compartidos de loading + error.
            El slot lo llena tools/_shared/states.js; los estilos viven
@@ -621,6 +654,85 @@
     return { desc: desc || '(falta)', checks: checks, pct: pct, grade: grade, gradeText: gradeText };
   }
 
+  function escAttrEs(s) { return String(s == null ? '' : s).replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function escHtmlEs(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function renderRewriteAndPreview(url, currentTitle, currentDesc) {
+    var existing = document.getElementById('seoRewriteHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    var ctxBus = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var cuisine      = (document.getElementById('seoCuisine')      || {}).value || ctxBus.cuisine      || '';
+    var neighborhood = (document.getElementById('seoNeighborhood') || {}).value || ctxBus.neighborhood || '';
+    var signature    = (document.getElementById('seoSignature')    || {}).value || '';
+    var hostname = ''; try { hostname = new URL(url).hostname.replace(/^www\./, ''); } catch (_) { hostname = url; }
+    var brand = (ctxBus.businessName || hostname.split('.')[0] || 'Tu Restaurante');
+    if (cuisine || neighborhood) {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        try { MuntinContext.merge({ cuisine: cuisine || undefined, neighborhood: neighborhood || undefined, lastUrl: url }); } catch (_) {}
+      }
+    }
+    var hasCtx = !!(cuisine || neighborhood || signature);
+    var titleSuggest = '', descSuggest = '';
+    if (hasCtx) {
+      var titleParts = [brand];
+      if (cuisine && neighborhood) titleParts.push(cuisine + ' en ' + neighborhood);
+      else if (cuisine)            titleParts.push('Restaurante ' + cuisine);
+      else if (neighborhood)       titleParts.push('Restaurante en ' + neighborhood);
+      titleSuggest = titleParts.join(' — ');
+      if (titleSuggest.length > 60) titleSuggest = titleSuggest.slice(0, 57) + '…';
+      var descBits = [];
+      if (cuisine && neighborhood)  descBits.push('Restaurante ' + cuisine.toLowerCase() + ' en ' + neighborhood + '.');
+      else if (cuisine)             descBits.push('Restaurante ' + cuisine.toLowerCase() + '.');
+      else if (neighborhood)        descBits.push('Restaurante en ' + neighborhood + '.');
+      if (signature) descBits.push(signature.charAt(0).toUpperCase() + signature.slice(1) + '.');
+      descBits.push('Reserva online o pasa sin cita.');
+      descSuggest = descBits.join(' ');
+      if (descSuggest.length > 155) descSuggest = descSuggest.slice(0, 152) + '…';
+    }
+    var wrap = document.createElement('div');
+    wrap.id = 'seoRewriteHost';
+    var html = '';
+    var previewTitle = titleSuggest || currentTitle || ('(sin título) — ' + hostname);
+    var previewDesc  = descSuggest  || currentDesc  || '(sin descripción)';
+    html += '<div class="seo-serp">';
+    html += '<p class="seo-serp-eyebrow">Vista previa SERP &mdash; lo que muestra Google</p>';
+    html += '<div class="seo-serp-mock">';
+    html += '<div class="seo-serp-host">' + escHtmlEs(hostname) + '</div>';
+    html += '<div class="seo-serp-title">' + escHtmlEs(previewTitle) + '</div>';
+    html += '<div class="seo-serp-desc">' + escHtmlEs(previewDesc) + '</div>';
+    html += '</div></div>';
+    if (hasCtx) {
+      html += '<div class="seo-rewrite">';
+      html += '<p class="seo-rewrite-eyebrow">Reescritura sugerida</p>';
+      html += '<div class="seo-rewrite-row"><label><strong>Title (' + titleSuggest.length + ' chars)</strong><input type="text" id="seoNewTitle" value="' + escAttrEs(titleSuggest) + '"></label></div>';
+      html += '<div class="seo-rewrite-row"><label><strong>Descripción (' + descSuggest.length + ' chars)</strong><textarea id="seoNewDesc" rows="2">' + escHtmlEs(descSuggest) + '</textarea></label></div>';
+      html += '<div class="seo-rewrite-actions">';
+      html += '<button type="button" class="seo-rewrite-btn" id="seoRewriteCopy">Copiar ambos</button>';
+      html += '<span class="seo-rewrite-msg" id="seoRewriteMsg" aria-live="polite"></span>';
+      html += '</div>';
+      html += '<p class="seo-rewrite-help">Pégalos en la configuración SEO de tu plataforma — para Wix, en la pestaña SEO Basics de la página; para Squarespace, en Page Settings → SEO; para WordPress, en la caja de Yoast/RankMath/AIOSEO. El patrón cocina + barrio es lo que la gente realmente teclea.</p>';
+      html += '</div>';
+    } else {
+      html += '<p class="seo-rewrite-prompt">Agrega cocina + barrio arriba para una reescritura a tu medida (30 segundos, opcional).</p>';
+    }
+    wrap.innerHTML = html;
+    var titleCard = document.getElementById('titleCard');
+    if (titleCard && titleCard.parentNode) titleCard.parentNode.insertBefore(wrap, titleCard);
+    var copyBtn = document.getElementById('seoRewriteCopy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var t = (document.getElementById('seoNewTitle') || {}).value || '';
+        var d = (document.getElementById('seoNewDesc')  || {}).value || '';
+        var text = 'Title: ' + t + '\nDescripción: ' + d;
+        var msg = document.getElementById('seoRewriteMsg');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            if (msg) { msg.textContent = 'Copiado. Pega en la configuración SEO de tu plataforma.'; setTimeout(function(){ msg.textContent=''; }, 2400); }
+          });
+        }
+      });
+    }
+  }
+
   function renderCard(id, data, valueText) {
     document.getElementById(id + 'Grade').textContent = data.gradeText;
     document.getElementById(id + 'Grade').className = 'card-label ' + data.grade;
@@ -770,6 +882,7 @@
 
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
+        renderRewriteAndPreview(url, data.title || '', data.description || '');
 
         if (states) states.setSuccess();
         result.classList.add('visible');
