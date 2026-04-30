@@ -98,6 +98,18 @@
   .mm-num-prefix{font-size:18px;color:var(--stone);font-weight:600}
   .mm-pc-dol{display:flex;flex-direction:column;gap:14px}
   .mm-pc-dol-hint{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
+  .mm-pnl{padding:22px 24px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--surface-1);margin:0 0 24px;display:flex;flex-direction:column;gap:14px}
+  .mm-pnl h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .mm-pnl p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .mm-pnl-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0}
+  .mm-pnl-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-pnl-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mm-pnl-btn{padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .mm-pnl-btn:hover{background:var(--teal);border-color:var(--teal)}
+  .mm-pnl-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-pnl-msg.error{color:var(--rust)}
+  .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
@@ -692,6 +704,40 @@
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
     </button>
   </div>
+  <!-- "Got a P&L? Start here" — five plain-dollar inputs from last
+       month seed every calculator so the owner doesn't compute four
+       percentages by hand before they can use the tool. Audit P0. -->
+  <article class="mm-pnl" id="mmPnl">
+    <div class="mm-card-header">
+      <span class="mm-card-eyebrow">Optional shortcut</span>
+      <span class="mm-badge-safe" title="Stays in your browser. Same privacy promise as the calculators.">Stays in your browser</span>
+    </div>
+    <h3>Got a P&amp;L? Start here.</h3>
+    <p>Five numbers from last month — the lines on a bank statement or P&amp;L. We'll compute every percentage and pre-fill all four calculators. Saves you the back-of-envelope math.</p>
+    <form class="mm-pnl-form" onsubmit="return false;" aria-label="P&amp;L shortcut">
+      <label for="pnl-sales"><span>Monthly sales</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-sales" min="0" step="100" placeholder="24000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-food"><span>Monthly food cost</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-food" min="0" step="100" placeholder="7200" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-labor"><span>Monthly labor cost</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-labor" min="0" step="100" placeholder="7680" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-fixed"><span>Monthly fixed costs <small style="color:var(--stone);font-weight:400;">rent + insurance + loan + SaaS</small></span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-fixed" min="0" step="100" placeholder="6000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-check"><span>Average check size</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-check" min="0" step="0.5" placeholder="35" inputmode="decimal" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+    </form>
+    <div class="mm-pnl-actions">
+      <button type="button" class="mm-pnl-btn" id="mmPnlApply">Pre-fill all four calculators &rarr;</button>
+      <span class="mm-pnl-msg" id="mmPnlMsg" aria-live="polite"></span>
+    </div>
+    <p class="mm-pnl-foot">Contribution margin defaults to <code>(sales − food − labor × 0.4) ÷ sales</code> — labor's variable share is roughly 40%, the rest is salaried/fixed. Adjust the slider on Calc 3 or 4 if your mix is different.</p>
+  </article>
+
   <div class="mm-grid" aria-label="Calculators">
     <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
@@ -2211,6 +2257,86 @@
   });
 
   render();
+})();
+
+/* "Got a P&L? Start here" shortcut. Reads five plain-dollar inputs,
+ * derives every percentage all four calculators want, writes them
+ * to each calculator's slider/number inputs, and dispatches input
+ * events so the existing renderers run. No backend, no math
+ * duplication — the shortcut is a write into the same UI the
+ * calculators already react to. */
+(function(){
+  var btn = document.getElementById('mmPnlApply');
+  if (!btn) return;
+  var msgEl = document.getElementById('mmPnlMsg');
+  function pnum(id){ var el = document.getElementById(id); var v = parseFloat(el && el.value); return isFinite(v) ? v : null; }
+  function setSlider(id, value, fireUserEvent){
+    var el = document.getElementById(id); if (!el) return;
+    var min = parseFloat(el.min); var max = parseFloat(el.max);
+    if (isFinite(min) && value < min) value = min;
+    if (isFinite(max) && value > max) value = max;
+    el.value = String(value);
+    var paired = document.getElementById(id + '-num');
+    if (paired) paired.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  function setNumber(id, value){
+    var el = document.getElementById(id); if (!el) return;
+    el.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  btn.addEventListener('click', function(){
+    var sales = pnum('pnl-sales'), food = pnum('pnl-food'), labor = pnum('pnl-labor');
+    var fixed = pnum('pnl-fixed'), check = pnum('pnl-check');
+    if (msgEl) { msgEl.textContent = ''; msgEl.classList.remove('error'); }
+    if (!sales || sales <= 0) {
+      if (msgEl) { msgEl.textContent = 'Type your monthly sales first.'; msgEl.classList.add('error'); }
+      var f = document.getElementById('pnl-sales'); if (f) f.focus();
+      return;
+    }
+    var foodPct = food != null ? Math.round((food / sales) * 100) : null;
+    var laborPct = labor != null ? Math.round((labor / sales) * 100) : null;
+    // Contribution margin = (1 − food/sales − labor*0.4/sales). Labor's
+    // variable share is roughly 40% in independents; the rest is fixed.
+    var marginPct = null;
+    if (food != null && labor != null) {
+      marginPct = Math.round((1 - food / sales - (labor * 0.4) / sales) * 100);
+    }
+    var applied = [];
+    if (foodPct != null) {
+      setSlider('dbe-foodcost', foodPct);
+      setSlider('pc-food', foodPct);
+      applied.push('food cost ' + foodPct + '%');
+    }
+    if (laborPct != null) {
+      setSlider('pc-labor', laborPct);
+      applied.push('labor ' + laborPct + '%');
+    }
+    if (check != null && check > 0) {
+      setSlider('dbe-ticket', check);
+      setSlider('bec-check', check);
+      applied.push('average check $' + check);
+    }
+    if (fixed != null && fixed > 0) {
+      setNumber('bec-fixed', fixed);
+      applied.push('fixed costs $' + fixed);
+    }
+    if (marginPct != null && isFinite(marginPct)) {
+      // Clamp to slider bounds.
+      var mp = Math.max(5, Math.min(50, marginPct));
+      setSlider('bec-margin', mp);
+      setSlider('pr-margin', mp);
+      applied.push('contribution margin ' + mp + '%');
+    }
+    if (msgEl) {
+      msgEl.textContent = 'Pre-filled: ' + applied.join(', ') + '. Scroll down to see each calculator.';
+      msgEl.classList.remove('error');
+    }
+    // Smooth-scroll to the first calculator so the pre-fill is visible.
+    var firstCalc = document.getElementById('calc-delivery');
+    if (firstCalc) firstCalc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Margin Math PnL Shortcut', { props: { applied: applied.length } });
+  });
 })();
 
 /* Monthly Margin Report — print. Stamps date + scenario URL onto
