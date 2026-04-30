@@ -103,6 +103,7 @@
   .bs-chip-sublabel{font-size:10.5px;line-height:1.35;color:var(--ink-soft);font-style:italic}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip-print{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;color:var(--stone);font-variant-numeric:tabular-nums;line-height:1.4}
   .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
   .bs-chip-warn::before{content:"⚠";font-size:11px}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
@@ -2751,6 +2752,77 @@
     return -1;
   }
 
+  // CMYK conversion + nearest-Pantone bridge for the print-vendor
+  // workflow. Audit P4: owners hand a palette to a print shop and
+  // get asked "what's the CMYK?" or "what Pantone?" — we surface
+  // both inline so the answer ships with the palette.
+  //
+  // CMYK conversion is a textbook RGB→CMYK formula. It's not color-
+  // managed (no ICC profile) and won't match a calibrated press
+  // exactly — flagged in the README. The Pantone bridge is a small
+  // embedded LUT (~70 PMS Solid-Coated entries spanning the gamut)
+  // that nearest-matches via straight RGB Euclidean distance.
+  function bsRgbToCmyk(rgb) {
+    if (!rgb) return '— — — —';
+    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+    var k = 1 - Math.max(r, g, b);
+    if (k >= 0.999) return '0 0 0 100';
+    var c = (1 - r - k) / (1 - k);
+    var m = (1 - g - k) / (1 - k);
+    var y = (1 - b - k) / (1 - k);
+    return Math.round(c * 100) + ' ' + Math.round(m * 100) + ' ' + Math.round(y * 100) + ' ' + Math.round(k * 100);
+  }
+  // Compact PMS-Coated LUT — covers common brand-color clusters.
+  // Format: [name, R, G, B]. Sourced from publicly published PMS
+  // hex equivalents (Pantone has never published an ICC table; these
+  // are the widely-used screen approximations from Pantone Connect /
+  // common open references).
+  var BS_PANTONE_LUT = [
+    ['PMS Black 6',     0,33,71],     ['PMS White',           255,255,255],
+    ['PMS Red 032',     239,51,64],   ['PMS Red 1788',        212,0,40],
+    ['PMS Red 1797',    175,30,45],   ['PMS Warm Red',        249,79,55],
+    ['PMS Pink 2375',   223,82,170],  ['PMS Magenta 219',     206,0,124],
+    ['PMS Orange 165',  255,121,0],   ['PMS Orange 1505',     255,138,0],
+    ['PMS Yellow 012',  255,217,0],   ['PMS Yellow 116',      255,205,0],
+    ['PMS Yellow 7406', 233,177,0],   ['PMS Olive 5763',      90,87,55],
+    ['PMS Green 354',   0,178,89],    ['PMS Green 7740',      63,140,52],
+    ['PMS Green 348',   0,127,73],    ['PMS Green 343',       0,107,68],
+    ['PMS Teal 320',    0,156,166],   ['PMS Teal 326',        0,176,168],
+    ['PMS Teal 3155',   0,114,124],   ['PMS Teal 3165',       0,86,92],
+    ['PMS Blue 2925',   0,154,222],   ['PMS Blue 285',        0,116,200],
+    ['PMS Blue 286',    0,57,166],    ['PMS Blue 7686',       30,72,143],
+    ['PMS Navy 281',    0,32,91],     ['PMS Navy 295',        0,42,84],
+    ['PMS Purple 2685', 56,0,150],    ['PMS Purple 268',      82,35,152],
+    ['PMS Violet',      66,0,170],    ['PMS Violet 2587',     130,76,182],
+    ['PMS Brown 4625',  79,46,28],    ['PMS Brown 478',       117,56,32],
+    ['PMS Brown 1685',  148,79,29],   ['PMS Brown 1545',      90,57,38],
+    ['PMS Tan 472',     223,178,131], ['PMS Tan 7501',        217,201,168],
+    ['PMS Cream 7527',  216,209,189], ['PMS Cream 7401',      243,231,206],
+    ['PMS Beige 4685',  201,165,116], ['PMS Beige 4685 C',    191,160,128],
+    ['PMS Cool Gray 1', 217,217,214], ['PMS Cool Gray 2',     208,208,206],
+    ['PMS Cool Gray 4', 187,187,186], ['PMS Cool Gray 6',     168,168,167],
+    ['PMS Cool Gray 8', 136,139,141], ['PMS Cool Gray 11',    83,86,90],
+    ['PMS Warm Gray 4', 184,176,165], ['PMS Warm Gray 8',     140,130,121],
+    ['PMS Black',       45,41,38],    ['PMS Process Black',   27,27,27],
+    ['PMS Rust 7589',   170,90,55],   ['PMS Rust 167',        190,86,38],
+    ['PMS Coral 1645',  255,121,79],  ['PMS Coral 178',       248,131,121],
+    ['PMS Sand 7501',   217,201,168], ['PMS Forest 357',      33,87,50],
+    ['PMS Mint 339',    0,166,118],   ['PMS Mint 7479',       62,212,150],
+    ['PMS Sky 305',     89,203,232],  ['PMS Sky 297',         113,197,232]
+  ];
+  function bsNearestPantone(hex) {
+    var rgb = bsParseHexToRgb(hex);
+    if (!rgb) return { name: 'unmatched', dist: Infinity };
+    var best = null;
+    for (var i = 0; i < BS_PANTONE_LUT.length; i++) {
+      var p = BS_PANTONE_LUT[i];
+      var dr = rgb[0] - p[1], dg = rgb[1] - p[2], db = rgb[2] - p[3];
+      var d = dr*dr + dg*dg + db*db;
+      if (!best || d < best.dist) best = { name: p[0], dist: d };
+    }
+    return best;
+  }
+
   function renderPalette(palette){
     paletteEl.innerHTML = '';
     // Persist the committed palette to the cross-tool context bus
@@ -2781,12 +2853,15 @@
         simHtml = '<span class="bs-chip-warn">visually similar to ' + simRole + '</span>';
       }
       var sublabel = ROLE_SUBLABELS[i] || '';
+      var cmyk = bsRgbToCmyk(bsParseHexToRgb(entry.hex));
+      var pantone = bsNearestPantone(entry.hex);
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
           (sublabel ? '<span class="bs-chip-sublabel">' + sublabel + '</span>' : '') +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
+          '<span class="bs-chip-print">CMYK ' + cmyk + ' &middot; ≈ ' + pantone.name + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% share</span>' +
           simHtml +
         '</span>';
