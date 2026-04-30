@@ -1,0 +1,491 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:49:13.636Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 571.65,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "长话短说",
+      "start": 0,
+      "end": 1.21
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "大多数独立餐厅重建网站的时间都比应有的时间晚了 12 至 24 个月——此时成本更高，而且漏斗已经漏水。",
+      "start": 1.56,
+      "end": 11.07
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "七个问题的诊断将“重建”与“再用一年修复泄漏”分开，而无需顾问参与。",
+      "start": 11.39,
+      "end": 17.51
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "三种情况模式：高分网站只需要有针对性的修复；低于 60 的站点，平台本身就是天花板；中档站点，部分重建是正确的成本效益交易。",
+      "start": 17.83,
+      "end": 29.48
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "决策很少是“重建与否”。问题是“重建达到什么程度，以及 18 个月无所作为的情况是什么样的。”",
+      "start": 29.8,
+      "end": 38.15
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "对话几乎总是以相同的方式开始：操作员有两个相差 3-4 倍的重建报价，两个开发人员都没有询问实际损坏的是什么，操作员也没有真正询问采用哪个报价。他们询问是否要重建。这是一个更难的问题，几乎没有人帮助运营商回答这个问题。",
+      "start": 38.5,
+      "end": 56.98
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "诚实的答案是，大多数独立餐厅的重建时间比应有的时间晚了 12-24 个月，届时重建成本会更高（因为有更多的内容需要迁移），需要更长的时间（因为预订渠道变得更糟），而且经营者是在压力下而不是在计划下做出决定。",
+      "start": 57.33,
+      "end": 74.05
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "这是我在建议重建之前进行的七个问题诊断——或者，就像经常建议反对一个并指出三个小改变一样，可以再延长一年。",
+      "start": 74.4,
+      "end": 85.15
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "店面运行状况评分 · 它告诉您有关重建准备情况的信息。不重建：修复最低分。有时 CD N + 图像通行证可以再赚一年。 （修复泄漏）。也许重建：回答七个问题——三个或更多“是”=重建。 （诊断）。重建：您等待的每个季度的成本都比重建本身还要高。 （现在重建）。店面运行状况评分 · 它告诉您有关重建准备情况的信息。",
+      "start": 85.95,
+      "end": 111.9
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "问题 1：店面健康状况得分如何？",
+      "start": 113,
+      "end": 116.23
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "在您的网站上运行 Storefront Health。综合记分卡将速度、SEO、移动、模式、G B P 和餐厅审核汇总为一个数字（0-100）。",
+      "start": 116.93,
+      "end": 126.97
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "80+：不要重建。修复最低分。",
+      "start": 127.32,
+      "end": 130.3
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "60-79：也许重建。阅读接下来的六个问题。",
+      "start": 130.62,
+      "end": 135
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "低于 60：重建 - 您等待的每个季度的成本都高于重建。",
+      "start": 135.32,
+      "end": 139.93
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "问题2：你们的CMS可以在不破坏网站的情况下更新吗？",
+      "start": 141.03,
+      "end": 146.45
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "旧的 CMS 安装会像管道系统积聚灰尘一样积累技术债务。测试：最后一次有人尝试更新平台是什么时候？如果答案是“我们不这样做，因为它上次坏了”，那就是一个重建信号。",
+      "start": 147.15,
+      "end": 161.13
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "问题 3：菜单存在于 H T M L 中吗？",
+      "start": 162.23,
+      "end": 165.81
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "如果您的菜单是 PDF、图像或“由 Wix 的菜单小部件管理”，则您对于 Google 的菜肴级查询和 AI 搜索是不可见的。有时，仅切换到真正的 HTML 菜单就足以推迟重建——有时则需要重建。",
+      "start": 166.51,
+      "end": 181.8
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "问题 4：该网站在 Core Web Vitals 上的得分如何？",
+      "start": 182.9,
+      "end": 187.15
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "如果移动设备上的 LCP 超过 4 秒，或者 CLS 超过 0.25，您将在搜索中受到惩罚，并在菜单加载之前跳出访问者。有时 CD N + 图像压缩可以解决这个问题；有时平台是问题所在，只有重建才能解决。",
+      "start": 187.85,
+      "end": 205.3
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "在主页和最繁忙的内部页面上运行速度测试。如果主页速度很快但菜单页面很慢，那么问题不是平台，而是页面。如果两者都很慢，则平台通常很慢。",
+      "start": 205.65,
+      "end": 217.59
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "问题 5：您可以在一小时内运送小额零钱吗？",
+      "start": 218.69,
+      "end": 222.35
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "测试：尝试在接下来的 60 分钟内更新主页上的假期时间。如果你不能（无法访问，复杂的 CMS，需要开发人员），那就是一个重建信号 - 不是因为技术限制是致命的，而是因为操作负担悄然加剧。你延迟的每一次改变都是一个小泄漏。",
+      "start": 223.05,
+      "end": 240.47
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "问题六：品牌与房间匹配吗？",
+      "start": 241.57,
+      "end": 243.75
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "在您携带的手机上打开您的主页。然后走进你的餐厅。他们感觉像同一个地方吗？如果不是——如果房间是温暖的、深思熟虑的、有意的，并且网站是模板化的、通用的，“我们选择了最干净的Squarespace模板”——这是一个品牌设计重建信号，与技术信号分开。",
+      "start": 244.45,
+      "end": 261.82
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "问题 7：如果您 18 个月内不采取任何行动，预订会怎样？",
+      "start": 262.92,
+      "end": 267.75
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "查看您每月的预订趋势。如果它持平或下降，并且您的网站在 24 个多月内一直保持不变，那么什么都不做实际上并不是中立的 - 即使您的数字看起来稳定，与当地竞争对手的差距仍在扩大。对于陈旧的餐厅网站来说，18 个月的“无所作为”预测几乎总是负面的。",
+      "start": 268.45,
+      "end": 288.08
+    },
+    {
+      "id": 27,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "三种重建模式·得分范围、范围、典型回报。高分网站，有针对性的修复：得分 75-85。 CDN、压缩、模式修复。重建成本的约 5–10%。 （推迟）。 Sub-60 站点，全面重建：平台本身已达到上限。真实的 H T M L 菜单，完整的架构，快速的漏斗。 （9-14 个月投资回收期）。中档，部分重建：前端+照片，保留C M S。〜完全重建成本的40％。观察天花板。 （权衡）。三种重建模式·得分范围、范围、典型回报。",
+      "start": 288.88,
+      "end": 321.9
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "三个案例线程。",
+      "start": 323,
+      "end": 324.2
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "案例 1 — 小酒馆得分为 75，未重建：一家拥有六年历史的法国小酒馆在 Storefront Health 上得分为 75。移动速度拖累分数。我们添加了 CDN，重新压缩了每个图像，修复了菜单架构。分数升至88；他们将重建推迟了两年，节省了大约 11 美元K。",
+      "start": 324.9,
+      "end": 344.36
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "案例 2 — 站点低于 60，重建：前端旧、移动速度慢、菜单架构格式错误、预订渠道隐藏。平台本身就是天花板。这里的重建是完全定制的：真正的 H T M L 菜单、菜肴级结构化数据、清理的预订渠道。分数在 80 或 90 左右。搜索驱动的预订量在 90 天内大约增加了两倍，因为缺少的架构开始在该网站以前从未出现过的本地包查询中触发。此范围内重建的投资回收期通常为 9-14 个月，但随着 Google 指数的更新，杠杆率会复合。",
+      "start": 344.71,
+      "end": 377.57
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "案例 3 — 站点位于 65-70，部分重建：平台良好，品牌疲倦。保留 CMS，更换前端和照片，费用约为完全重建成本的 40%。分数进入 80 年代中低段。预订量有所增加，但不像案例 2 那样急剧。诚实的权衡值得标记：部分重建限制了底层平台允许的模式、速度和索引的上限。有时是正确的选择；有时值得在 18 个月后重新审视，此时平台的上限将成为下一个限制。",
+      "start": 377.92,
+      "end": 407.48
+    },
+    {
+      "id": 32,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "什么都不做并不是中立的。您的网站与当地竞争对手的差距每季度都会扩大，但并非如此。",
+      "start": 408.23,
+      "end": 415.53
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "如何使用这个框架。",
+      "start": 416.63,
+      "end": 418.24
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "首先运行 Storefront Health。将乐谱保存到您的创意工坊中。浏览七个问题，写下每个问题的诚实答案，然后查看模式。如果三个或三个以上指向“重建”，则说明您已逾期。如果一两个是，那么您就处于修复泄漏区域 - 请阅读“恢复 1% 利润的五项网站更改”以了解有针对性的修复方法。",
+      "start": 418.94,
+      "end": 441.4
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "如果您希望第二双眼睛了解该框架适用于您的站点的情况，请通过 The Window 进行撰写。我读了每一本。",
+      "start": 441.75,
+      "end": 450.28
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "要点",
+      "start": 450.63,
+      "end": 451.12
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "首先运行 Storefront Health。 Sub-60 = 现在重建。 60–79 = 演练七个问题。 80+ = 固定最低分。",
+      "start": 451.47,
+      "end": 463.02
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "无法在不破坏的情况下更新的 C M S 是一个重建信号——债务复合不断累积。",
+      "start": 463.34,
+      "end": 470.45
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "P D F 或小部件锁定菜单限制了您的可索引性。有时，仅重写菜单就会将重建推迟一年。",
+      "start": 470.77,
+      "end": 479.3
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "如果你不能在一个小时内运送一个小的变化，那么运营负担就已经是泄漏了。",
+      "start": 479.62,
+      "end": 485.54
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "什么都不做并不是中立的。您的网站与本地竞争对手的差距每季度都会扩大，但并非如此。",
+      "start": 485.86,
+      "end": 493.16
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "在拨打电话之前获取分数。",
+      "start": 493.51,
+      "end": 495.98
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Storefront Health 是一款免费的综合记分卡，它将速度、SEO、移动、模式和 GBP 汇总为 0-100 之间的一个数字。上面的决策框架只有在获得分数后才起作用。现在运行它并将其保存到您的创意工坊中。",
+      "start": 496.33,
+      "end": 511.67
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "接下来做什么",
+      "start": 512.02,
+      "end": 513.17
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "阅读：相关术语表 →",
+      "start": 513.52,
+      "end": 514.76
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "尝试：与本文配对的工具 →",
+      "start": 515.08,
+      "end": 517.37
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "或者给 Don 发送一条信息：The Window →",
+      "start": 517.69,
+      "end": 520.8
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "另请参阅",
+      "start": 521.15,
+      "end": 522.16
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "第五条 网站变更可恢复 1% 的利润 针对得分超过 80 的网站进行有针对性的修复方法 — 交付内容而不是重建。",
+      "start": 522.51,
+      "end": 532.73
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "工具店面健康状况 该框架用作其第一个输入的综合分数。",
+      "start": 533.05,
+      "end": 538.27
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "文章 二十六分之二定制餐厅网站要多少钱？一旦您决定重建，重建问题的成本方面。",
+      "start": 538.59,
+      "end": 546.83
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "告诉我们",
+      "start": 547.18,
+      "end": 547.89
+    },
+    {
+      "id": 53,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(10)",
+      "text": "你在厨房试过这个吗？",
+      "start": 548.99,
+      "end": 550.84
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "100-400 个字，上面写着你的名字，Don 逐字逐句地读。",
+      "start": 551.54,
+      "end": 556.02
+    },
+    {
+      "id": 55,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "登录并分享您的经验 →",
+      "start": 556.37,
+      "end": 557.94
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "继续阅读",
+      "start": 558.29,
+      "end": 559.12
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "当重建问题的答案是“不，而是修复泄漏”时。",
+      "start": 559.47,
+      "end": 563.46
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "重建答案时诚实的预算对话。",
+      "start": 563.81,
+      "end": 567.01
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "平台级决策通常隐藏在重建决策中。",
+      "start": 567.36,
+      "end": 571.65
+    }
+  ]
+}

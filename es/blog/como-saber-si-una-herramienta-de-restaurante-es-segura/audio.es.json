@@ -1,0 +1,515 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:29:50.619Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 556.21,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "En resumen",
+      "start": 0,
+      "end": 0.72
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La mayoría de las “auditorías gratis” – de margen, de esquema, de “qué le falta a tu sitio” – se quedan con tus datos. El precio se paga en información, no en dólares.",
+      "start": 1.07,
+      "end": 10.16
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Una auditoría de 5 pruebas en el navegador toma menos de un minuto y exponen el flujo de datos antes de que teclees un solo número real.",
+      "start": 10.48,
+      "end": 18.54
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Un modelo de 4 niveles de datos te dice qué compartir, dónde, y con quién: Público, Competitivamente sensible, Operacional, Regulado.",
+      "start": 18.86,
+      "end": 26.55
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Cada herramienta de este sitio se sostiene a un estándar de 9 afirmaciones, cuatro de las cuales se aplican como invariantes de construcción.",
+      "start": 26.87,
+      "end": 34.79
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La mayoría de las “auditorías de margen gratis” tienen un precio. Solo se paga con datos. El patrón se repite: tecleas tu ticket real, tu food cost real, tu mano de obra real — y la herramienta te devuelve un número. También tiende a devolverte vendedores en el inbox a la mañana siguiente, cada uno con una propuesta armada sobre números que nunca debían salir de tu oficina. La herramienta era el embudo. Tus números eran el calificador.",
+      "start": 35.31,
+      "end": 57.87
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder eso en menos de un minuto. Este artículo es el marco — cinco pruebas, cuatro niveles de datos, un ejemplo trabajado — y al final, una lista de verificación que puedes correr en cualquier herramienta.",
+      "start": 58.39,
+      "end": 77.07
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1. Las cinco pruebas — corre antes de teclear.",
+      "start": 78.17,
+      "end": 80.77
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Abra DevTools en cualquier herramienta que esté evaluando (Cmd+Opt+I en Mac, Ctrl+Shift+I en Windows). Cinco preguntas:",
+      "start": 81.47,
+      "end": 89.69
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "¿Teclear un número dispara un request de red? Abre la pestaña Red. Teclea. Si la lista de solicitudes crece con cada tecla, la herramienta está mandando tus entradas al servidor en silencio. Vete.",
+      "start": 90.04,
+      "end": 101.3
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "¿Está la promesa de privacidad en el punto de entrada? Una herramienta confiable te dice qué hace con tus datos donde estás tecleando — no en un enlace al pie tres clics más adentro.",
+      "start": 101.62,
+      "end": 111.53
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "¿Hay una puerta de cuenta / newsletter / cookies? “Ingresa tu correo para ver tus resultados” significa que tus números son el precio de entrada. La herramienta no es gratuita.",
+      "start": 111.85,
+      "end": 121.76
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "¿Hay análisis de terceros, repetición de sesiones, guiones de marketing? Filtra la pestaña Network por JS. Si ves Google Analytics, Meta Pixel, HubSpot, FullStory, Hotjar — tus inputs los están grabando vendedores de vigilancia que ni siquiera eran parte del trato que creías estar haciendo.",
+      "start": 122.08,
+      "end": 138.77
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "¿Es legible el código fuente? Haga clic derecho → Ver código fuente. Un script chico, legible, sin minificar es una herramienta que puedes auditar. Un paquete minificado de 4 megabytes desde un framework SaaS es una que no.",
+      "start": 139.09,
+      "end": 151.82
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Pasa las cinco y la herramienta es al menos honesta sobre su flujo de datos. Falla cualquiera y la herramienta o no sabe o no quiere que sepas — ambas son razones para irte.",
+      "start": 152.34,
+      "end": 161.97
+    },
+    {
+      "id": 15,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Modelo de 4 niveles de datos: qué fluye dónde. Público: Menú, horarios, fotos, dirección. Optimice agresivamente. (abierto). Competitivamente sensato: Costos, proveedores, comisión real. Solo bajo NDA. (NDA). Operacional confidencial: P L, costo de comida, horarios. Solo dentro del negocio. (contrato). Regulado: SSN, EIN, datos de tarjeta, I-9s. Cifrado siempre. (bloqueado). Modelo de 4 niveles de datos · qué fluye dónde.",
+      "start": 162.77,
+      "end": 187.98
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. El modelo de cuatro niveles — qué compartir, dónde.",
+      "start": 189.08,
+      "end": 191.92
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "La mayoría de los dueños cargan todos sus datos en la misma cubeta mental — lo cual significa que la lista de proveedores y el tax ID reciben la misma protección (frecuentemente, el mismo bajo nivel). Cuatro niveles, cada uno con audiencia distinta y nivel de cautela distinta:",
+      "start": 192.62,
+      "end": 207.98
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Nivel 1: Público. Menú, horarios, fotos, dirección, teléfono, esquema.org. Optimiza agresivamente; así te encuentran.",
+      "start": 208.33,
+      "end": 215.32
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Nivel 2: Competitivamente sensato. Costo de bienes, lista de proveedores, tu nivel real de comisión. Comparte con contador / consultor / broker — bajo NDA. No con plataformas, competidores o herramientas de “auditoría gratuita”.",
+      "start": 215.64,
+      "end": 229.63
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Nivel 3: Operacionalmente confidencial. P&L mensual, costo de alimentos % real, pipeline de clientes, horarios de empleados. Solo dentro del negocio. P O S, nómina, contador — solo bajo contrato escrito.",
+      "start": 229.95,
+      "end": 243.31
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Nivel 4 - Regulado. SSN, EIN, datos de tarjeta del cliente, datos bancarios, registros de seguridad alimentaria, I-9s. Almacenamiento cifrado, logging de acceso, contratos con cláusulas de ciberseguridad. Nunca por correo. Nunca en hoja de cálculo compartida.",
+      "start": 243.63,
+      "end": 259.46
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "El principio: los datos nunca fluyen hacia arriba. Un proveedor de Tier 3 no recibe acceso de Tier 4 solo porque preguntó. Un público de Nivel 1 (una plataforma, un sitio de listados) no recibe Nivel 2. La forma más fácil de reducir tu superficie de ataque es dejar de ofrecer datos que no se requerían.",
+      "start": 259.98,
+      "end": 278.04
+    },
+    {
+      "id": 23,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Diagnóstico de 5 pruebas: corre antes de teclear. Red al teclear: Red Abre. Si las solicitudes crecen con cada tecla — vete. (falla = vete). Privacidad en el punto de entrada: Confianza requiere transparencia donde tecleas. (falla = vete). Gate de cuenta / correo: Ingresa tu email para ver resultados = tus números son el precio. (falla = vete). Scripts de terceros: GA, Pixel, FullStory, Hotjar — vigilancia a la que no aceptaste. (falla = vete). Código fuente legible: Bundle minificado de 4MB = no lo puedes auditar. Vete. (falla = vete). Diagnóstico de 5 pruebas · corre antes de teclear.",
+      "start": 278.84,
+      "end": 313.97
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. Cómo se ve “seguro” — el ejemplo trabajado.",
+      "start": 315.07,
+      "end": 317.67
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Este es el estándar al que se sostiene cada herramienta en este sitio. Nueve afirmaciones sobre cómo cada herramienta de Muntin maneja tus entradas, cada una verificable en tu propio navegador:",
+      "start": 318.37,
+      "end": 329.19
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Tus números no salen de la página. Sin fetch() , sin XMLHttpRequest , sin envío de formulario.",
+      "start": 329.54,
+      "end": 335.7
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "No hay servidor donde guardarlos. El único punto final es GET /tools/<slug>/ .",
+      "start": 336.02,
+      "end": 341.46
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Analytics ve solo cubetas, nunca números. Un billete de 25 dólares se vuelve 25-39.",
+      "start": 341.78,
+      "end": 348.22
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Ni cookies, ni localStorage, ni sessionStorage: para tus entradas.",
+      "start": 348.54,
+      "end": 352.51
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Ningún script de terceros toca las entradas.",
+      "start": 352.83,
+      "end": 355.5
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "Los enlaces compartibles usan el fragmento de U R L (después del # ) — los navegadores nunca lo mandan al servidor.",
+      "start": 355.82,
+      "end": 362.96
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(7)",
+      "text": "El código fuente es legible: sin build step, sin minificar, cada función con nombre.",
+      "start": 363.28,
+      "end": 368.05
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(8)",
+      "text": "Nada persiste más allá de la pestaña.",
+      "start": 368.37,
+      "end": 370.68
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(9)",
+      "text": "Las exportaciones a impresión y calendario son 100% del lado del cliente.",
+      "start": 371,
+      "end": 375.67
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La versión completa con la verificación específica de DevTools de cada afirmación vive en /es/security/. Cuatro de ellas (1, 2, 4, 5) son invariantes de build — el pase de cohesión que corre en cada despliegue falla CI si una herramienta futura envía un patrón prohibido. Así que “verificable” no es copia de marketing; es un contrato aplicado por la compilación, con un hash público del paquete de producción publicado en /security/integrity.txt.",
+      "start": 376.19,
+      "end": 401.87
+    },
+    {
+      "id": 36,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "“Verificable” debería ser una bandera del edificio, no una promesa de marketing.",
+      "start": 402.62,
+      "end": 406.86
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. Corre la auditoría.",
+      "start": 407.96,
+      "end": 409.49
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "El framework de 5 pruebas también es una checklist interactiva en /es/learn/checklists/audit-any-tool/ — recórrela con DevTools abierto sobre cualquier herramienta que estés evaluando. Guarda el resultado en tu Taller como base; Vuelve a correrla cuando un vendedor empuja un “feature nuevo”.",
+      "start": 410.19,
+      "end": 427.4
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Y si encuentras una herramienta que falla la auditoría pero no sabes si es maliciosa o solo descuidada, escríbeme por La Ventana y cuéntame. Leo cada mensaje. El patrón de las herramientas gratis que silenciosamente se convierte en operador en el producto vale la pena nombrar — en voz alta, con el nombre de la herramienta puesto.",
+      "start": 427.92,
+      "end": 446.05
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Puntos clave",
+      "start": 446.57,
+      "end": 447.37
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Abre DevTools, teclea, mira la pestaña Network. Si un request se dispara por cada tecla, vete.",
+      "start": 447.72,
+      "end": 453.26
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Las promesas de privacidad pertenecen al punto de entrada: no tres clics dentro de un pie de página.",
+      "start": 453.58,
+      "end": 459.18
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Gates de cuenta / correo / cookies significan que la herramienta no es gratuita. Tus entradas son el precio.",
+      "start": 459.5,
+      "end": 465.87
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Los datos nunca fluyen hacia arriba de un nivel. Audiencias de Tier 1 nunca obtienen datos de Tier 2 sin contrato.",
+      "start": 466.19,
+      "end": 472.75
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "“Verificable” debería ser una bandera del edificio, no una promesa de marketing.",
+      "start": 473.07,
+      "end": 477.31
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Corre la auditoría sobre una herramienta que estés evaluando ahora mismo.",
+      "start": 477.83,
+      "end": 481.72
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Abre la herramienta que estás considerando. Abre DevTools. Recorre las cinco pruebas con la lista de verificación interactiva. Guarda el resultado en tu Taller como base para volver a correrla cuando un vendedor empuje un “feature nuevo”.",
+      "start": 482.24,
+      "end": 495.75
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "¿Qué hacer ahora?",
+      "start": 496.27,
+      "end": 497.16
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Lee: el término relacionado del glosario →",
+      "start": 497.68,
+      "end": 499.99
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que va con este artículo →",
+      "start": 500.31,
+      "end": 502.63
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 502.95,
+      "end": 504.61
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Ver también",
+      "start": 504.96,
+      "end": 505.76
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Artículo ¿Puede ChatGPT escribir tu sitio de restaurante? El otro lado del mismo problema — qué pasa cuando le delega el juicio a una herramienta, con los inputs que esa herramienta llega a ver.",
+      "start": 506.11,
+      "end": 516.8
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Herramienta Restaurant Audit Corre una auditoría que respeta tu privacidad sobre tu propio sitio — al mismo estándar al que se sostiene cada herramienta de Muntin.",
+      "start": 517.12,
+      "end": 526.21
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Biblioteca El estándar de herramientas verificables Las 9 afirmaciones a las que se sostiene cada herramienta de este sitio, con el paso de DevTools para verificar cada una.",
+      "start": 526.53,
+      "end": 536.27
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Cuéntanos",
+      "start": 536.79,
+      "end": 537.39
+    },
+    {
+      "id": 57,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "¿Lo intentaste en tu cocina?",
+      "start": 538.49,
+      "end": 540.11
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "100–400 palabras, con tu nombre, Don las lee todas.",
+      "start": 540.81,
+      "end": 543.98
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Inicia sesión para compartir tu experiencia →",
+      "start": 544.5,
+      "end": 546.99
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Sigue leyendo",
+      "start": 547.34,
+      "end": 548.24
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Cuando la herramienta es la misma es la pregunta.",
+      "start": 548.59,
+      "end": 551.39
+    },
+    {
+      "id": 62,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "La característica del navegador donde corren las cinco pruebas de este artículo.",
+      "start": 551.91,
+      "end": 556.21
+    }
+  ]
+}

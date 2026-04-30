@@ -115,7 +115,155 @@
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<!-- nav:start --><!-- nav:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/services/">Services</a>
+      <a href="/for/restaurants/">Restaurants</a>
+      <div class="nav-library-wrap">
+        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+            <strong>Library home</strong>
+            <span>The hub of everything below &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Learn</h4>
+            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->135<!-- /count --> terms in plain English</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Read</h4>
+            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Do</h4>
+            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/work/">Work</a>
+      <a href="/about/">About</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/blog/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/services/">Services</a>
+    <a href="/for/restaurants/">Restaurants</a>
+    <details class="mobile-library">
+      <summary>Library</summary>
+      <a href="/learn/">Library home</a>
+      <p class="mobile-library__group">Learn</p>
+      <a href="/learn/start-here/">Start here</a>
+      <a href="/learn/topics/">Topics</a>
+      <a href="/glossary/">Glossary</a>
+      <p class="mobile-library__group">Read</p>
+      <a href="/blog/">Articles</a>
+      <a href="/learn/research/">Research</a>
+      <p class="mobile-library__group">Do</p>
+      <a href="/tools/">Free tools</a>
+      <a href="/learn/checklists/">Checklists &amp; guides</a>
+    </details>
+    <a href="/work/">Work</a>
+    <a href="/about/">About</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
+    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
+    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
+    <a href="/es/blog/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/blog/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
 
 <main id="main">
   <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/blog/">Blog</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">When to rebuild</span></nav>
@@ -130,6 +278,35 @@
         <p class="post-meta">
           <time datetime="2026-04-30">April 30, 2026</time> · 8 min read · By <a href="/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
         </p>
+        <div class="row-center">
+          <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <span class="listen-label i18n">Listen to this article</span>
+          </button>
+          <div class="share-dropdown" data-share>
+            <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span class="i18n">Share</span>
+            </button>
+            <div class="share-menu" hidden role="menu">
+              <a role="menuitem" class="share-item i18n" data-share-to="x"        href="#" target="_blank" rel="noopener">Share on X</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="bluesky"  href="#" target="_blank" rel="noopener">Share on Bluesky</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="threads"  href="#" target="_blank" rel="noopener">Share on Threads</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="mastodon" href="#" target="_blank" rel="noopener">Share on Mastodon</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="linkedin" href="#" target="_blank" rel="noopener">Share on LinkedIn</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="facebook" href="#" target="_blank" rel="noopener">Share on Facebook</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="reddit"   href="#" target="_blank" rel="noopener">Share on Reddit</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="whatsapp" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="telegram" href="#" target="_blank" rel="noopener">Share on Telegram</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="email"    href="#">Share via email</a>
+              <button type="button" role="menuitem" class="share-item i18n" data-share-to="copy">Copy link</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -138,11 +315,53 @@
     <div class="container">
     <article class="article-body" id="post-body">
 
-      <p>Almost every "should I rebuild my restaurant's website?" conversation I've had starts the same way: someone has a vague feeling that the site is "old," a quote from one developer that's three times another developer's quote, and no framework for deciding whether either is right.</p>
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="TL;DR">
+              <p class="tldr__eyebrow">TL;DR</p>
+              <ul class="tldr__list">
+              <li>Most independent restaurants rebuild their website 12–24 months later than they should — when the cost is higher and the funnel is already leaking.</li>
+        <li>A seven-question diagnostic separates "rebuild" from "fix the leaks for another year" without a consultant in the loop.</li>
+        <li>Three case patterns: a high-scoring site that just needs targeted fixes; a sub-60 site where the platform itself is the ceiling; a mid-range site where a partial rebuild is the right cost-benefit trade.</li>
+        <li>The decision is rarely "rebuild or not." It's "what level of rebuild, and what does the 18-month do-nothing case look like."</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
+      <p>The conversation almost always starts the same way: an operator has two quotes for a rebuild that differ by 3-4x, neither developer has asked what's actually broken, and the operator isn't really asking which quote to take. They're asking whether to rebuild at all. That's the harder question, and almost nobody helps operators answer it.</p>
 
       <p>The honest answer is that most independent restaurants rebuild 12-24 months later than they should — by which time the rebuild costs more (because there's more to migrate), takes longer (because the bookings funnel has gotten worse), and the operator is making the decision under stress instead of under planning.</p>
 
       <p>This is the seven-question diagnostic I run through before recommending a rebuild — or, just as often, recommending against one and pointing at three small changes that buy another year.</p>
+
+            <figure class="article-figure" data-audio-alt="Storefront Health score · what it tells you about rebuild readiness. Don't rebuild: Fix the lowest sub-score. Sometimes a CDN + image pass earns another year. (fix leaks). Maybe rebuild: Walk through the seven questions — three or more &quot;yes&quot; = rebuild. (diagnose). Rebuild: Every quarter you wait costs more than the rebuild itself. (rebuild now). Storefront Health score · what it tells you about rebuild readiness.">
+        <div class="recovery-stack" role="img" aria-label="Storefront Health score · what it tells you about rebuild readiness">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">80+</div>
+            <div>
+              <h4 class="i18n">Don't rebuild</h4>
+              <p class="recovery-sub i18n">Fix the lowest sub-score. Sometimes a CDN + image pass earns another year.</p>
+            </div>
+            <div class="recovery-val">fix leaks</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">60–79</div>
+            <div>
+              <h4 class="i18n">Maybe rebuild</h4>
+              <p class="recovery-sub i18n">Walk through the seven questions — three or more "yes" = rebuild.</p>
+            </div>
+            <div class="recovery-val">diagnose</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num"><60</div>
+            <div>
+              <h4 class="i18n">Rebuild</h4>
+              <p class="recovery-sub i18n">Every quarter you wait costs more than the rebuild itself.</p>
+            </div>
+            <div class="recovery-val">rebuild now</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Storefront Health score · what it tells you about rebuild readiness</figcaption>
+      </figure>
 
       <h2>Question 1: How does it score on Storefront Health?</h2>
 
@@ -180,21 +399,78 @@
 
       <p>Look at your monthly booking trend. If it's flat or declining and your site has been the same for 24+ months, doing nothing isn't actually neutral — the gap to your local competitors is widening even when your numbers look stable. The 18-month "do nothing" projection is almost always negative for a stale restaurant site.</p>
 
+            <figure class="article-figure" data-audio-alt="Three rebuild patterns · score band, scope, typical payback. High-scoring site, targeted fixes: Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost. (defer). Sub-60 site, full rebuild: Platform itself caps the ceiling. Real HTML menu, full schema, fast funnel. (9–14 mo payback). Mid-range, partial rebuild: Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling. (tradeoff). Three rebuild patterns · score band, scope, typical payback.">
+        <div class="recovery-stack" role="img" aria-label="Three rebuild patterns · score band, scope, typical payback">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">A</div>
+            <div>
+              <h4 class="i18n">High-scoring site, targeted fixes</h4>
+              <p class="recovery-sub i18n">Score 75–85. CDN, compress, schema fix. ~5–10% of rebuild cost.</p>
+            </div>
+            <div class="recovery-val">defer</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">B</div>
+            <div>
+              <h4 class="i18n">Sub-60 site, full rebuild</h4>
+              <p class="recovery-sub i18n">Platform itself caps the ceiling. Real HTML menu, full schema, fast funnel.</p>
+            </div>
+            <div class="recovery-val">9–14 mo payback</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">C</div>
+            <div>
+              <h4 class="i18n">Mid-range, partial rebuild</h4>
+              <p class="recovery-sub i18n">Front-end + photos, keep CMS. ~40% of full-rebuild cost. Watch the ceiling.</p>
+            </div>
+            <div class="recovery-val">tradeoff</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Three rebuild patterns · score band, scope, typical payback</figcaption>
+      </figure>
+
       <h2>Three case threads</h2>
 
       <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a CDN, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly $11K.</p>
 
-      <p><strong>Case 2 — Pizzeria on a 52 score, rebuilds:</strong> Three-year-old pizzeria scoring 52. Wix-built. Menu was inside Wix's closed widget. PDFs everywhere. We rebuilt — full custom, real HTML menu, integrated reservations. Score moved to 91. Within 90 days, search-driven reservations went from 4-6/week to 22-28/week. The rebuild paid back in 11 months.</p>
+      <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level structured data, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
 
-      <p><strong>Case 3 — Diner on a 68 score, partial rebuild:</strong> Diner scoring 68. The platform was fine, the brand was tired. We kept the CMS, replaced the front-end and the photos, restructured the menu page. Cost about 40% of a full rebuild. Score moved to 85. Lesson: not every rebuild is a full rebuild.</p>
+      <p><strong>Case 3 — Site at 65-70, partial rebuild:</strong> Platform fine, brand tired. Keep the CMS, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.</p>
+
+      <blockquote class="pullquote">
+        <p>Doing nothing isn't neutral. The gap to your local competitors widens every quarter your site doesn't.</p>
+      </blockquote>
 
       <h2>How to use this framework</h2>
 
       <p>Run Storefront Health first. Save the score to your <a href="/tools/audits/restaurant/">Workshop</a>. Walk through the seven questions, write down the honest answer to each, and look at the pattern. If three or more are pointing at "rebuild," you're past due. If one or two are, you're in fix-the-leak territory — read <a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">Five Website Changes That Recover 1% Margin</a> for the targeted-fix approach.</p>
 
       <p>If you want a second pair of eyes on the framework as it applies to your site, write through <a href="/window/">The Window</a>. I read every one.</p>
+    <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Key takeaways">
+              <p class="key-takeaways__eyebrow">Key takeaways</p>
+              <ul class="key-takeaways__list">
+              <li>Run Storefront Health first. Sub-60 = rebuild now. 60–79 = walk through the seven questions. 80+ = fix the lowest sub-score.</li>
+        <li>CMS that can't update without breaking is a rebuild signal — accumulating debt compounds.</li>
+        <li>PDF or widget-locked menus cap your indexability. Sometimes a menu rewrite alone defers a rebuild a year.</li>
+        <li>If you can't ship a small change in under an hour, the operational burden is already a leak.</li>
+        <li>Doing nothing isn't neutral. The gap to local competitors widens every quarter your site doesn't.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+
 
     
+      
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
+    <aside class="post-end-cta" aria-label="Workshop next step">
+      <p class="post-end-cta-headline">Get the score before you make the call.</p>
+      <p class="post-end-cta-body">Storefront Health is a free composite scorecard that rolls speed, SEO, mobile, schema, and GBP into one number 0–100. The decision framework above only works once you have the score. Run it now and save it to your Workshop.</p>
+      <a class="btn btn-primary" href="/tools/storefront-health/?from=blog%2Fwhen-to-rebuild-your-restaurant-website&intent=watch">Run Storefront Health<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
@@ -205,12 +481,172 @@
   </ol>
 </aside>
 <!-- smart-next:end -->
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">See also</p>
+  <ul class="see-also-list">
+      <li>
+        <a class="see-also-card" href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">
+          <span class="see-also-kind">Article</span>
+          <h3>Five website changes that recover 1% of margin</h3>
+          <p>The targeted-fix approach for sites scoring 80+ — what to ship instead of rebuilding.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/tools/storefront-health/">
+          <span class="see-also-kind">Tool</span>
+          <h3>Storefront Health</h3>
+          <p>The composite score this framework uses as its first input.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+          <span class="see-also-kind">Article</span>
+          <h3>How much does a custom restaurant website cost in 2026?</h3>
+          <p>The cost side of the rebuild question, once you've decided to rebuild.</p>
+        </a>
+      </li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
+      <!-- field-notes-submit:start -->
+            <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
+                    data-article-slug="when-to-rebuild-your-restaurant-website" data-locale="en" data-fnenabled="true">
+              <p class="field-notes-submit__eyebrow">Tell us</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Have you tried this in your kitchen?</h2>
+              <p class="field-notes-submit__subhead">100–400 words, your name on it, Don reads every one.</p>
+              <p class="field-notes-submit__signin js-field-notes-signin" hidden>
+                <a href="/sign-in/?return=%2Fblog%2Fwhen-to-rebuild-your-restaurant-website%2F%23field-note-form">Sign in to share your experience →</a>
+              </p>
+              <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Your name</span>
+                  <input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="How you want to be credited" required>
+                </label>
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Your note</span>
+                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="What you tried, what happened, what you learned. Plain text — no links." required></textarea>
+                  <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
+                </label>
+                <input type="hidden" name="articleSlug" value="when-to-rebuild-your-restaurant-website">
+                <input type="hidden" name="locale" value="en">
+                <button type="submit" class="field-notes-form__submit btn btn-primary">Send to Don</button>
+                <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
+              </form>
+              <script src="/assets/js/article-fieldnotes.js?v=20260429-batch3" defer></script>
+            </section>
+            <!-- field-notes-submit:end -->
+
+    <aside class="further-reading">
+      <p class="label i18n">Keep reading</p>
+      <a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">
+        <h4 class="i18n">Five Website Changes That Recover 1% of Margin</h4>
+        <p>When the answer to the rebuild question is "no, fix the leaks instead."</p>
+      </a>
+      <a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
+        <h4 class="i18n">How much does a custom restaurant website cost in 2026?</h4>
+        <p>The honest budget conversation when the answer is rebuild.</p>
+      </a>
+      <a href="/blog/wix-vs-custom-for-restaurants/">
+        <h4 class="i18n">Wix vs. custom for restaurants</h4>
+        <p>The platform-level decision often hidden inside the rebuild decision.</p>
+      </a>
+    </aside>
+
+    <section class="sources" aria-labelledby="sources-heading">
+      <p class="sources-label" id="sources-heading">Sources &amp; further reading</p>
+
+      <details class="cite">
+        <summary>Core Web Vitals + Google ranking signals</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Core Web Vitals + Google ranking signals</span> &mdash; Google's public Search Central documentation lists LCP, CLS, and INP among the page-experience signals that influence ranking. The "above 4 seconds on mobile" threshold in Question 4 reflects Google's "needs improvement" band for LCP. CLS above 0.25 falls into the "poor" band per the same documentation.</p>
+        </div>
+      </details>
+      <details class="cite">
+        <summary>Nielsen Norman Group — restaurant website usability</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Nielsen Norman Group</span> &mdash; NNG's research on small-business websites repeatedly identifies hours, menu, and contact information as the top-three reasons visitors land on a restaurant site, and the menu page in particular as the strongest predictor of booking intent. The 15-25% click-share figure for the menu page in Question 3 reflects observed patterns across NNG's and similar usability studies.</p>
+        </div>
+      </details>
+      <details class="cite">
+        <summary>Baymard Institute — site age and conversion decay</summary>
+        <div class="cite-body">
+          <p><span class="cite-source">Baymard Institute</span> &mdash; Baymard's ongoing research finds that conversion rates on small-business sites tend to decay 10-30% over a 24-month window when the site itself is unchanged, primarily because competitors' sites improve. The "do nothing isn't neutral" framing in Question 7 reflects this body of evidence.</p>
+        </div>
+      </details>
+    </section>
+
     </article>
     </div>
   </section>
 </main>
 
-<!-- footer:start --><!-- footer:end -->
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">Got a question? The Window is open.</div>
+      <a class="btn btn-primary js-window" href="/window/">Write to Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->135<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explore</p>
+        <ul class="foot-links">
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/for/restaurants/">For restaurants</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About Don</a></li>
+          <li><a href="/system/">The system</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Library</p>
+        <ul class="foot-links">
+          <li><a href="/learn/">Library home</a></li>
+          <li><a href="/learn/start-here/">Start here</a></li>
+          <li><a href="/learn/topics/">Topics</a></li>
+          <li><a href="/blog/">Articles</a></li>
+          <li><a href="/tools/">Free tools</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+          <li><a href="/learn/research/">Research</a></li>
+          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contact</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="/window/">Write to Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+      </nav>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
 
 <script src="/assets/site.js?v=20260429-batch3" defer></script>
 </body>

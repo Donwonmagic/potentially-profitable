@@ -1,0 +1,483 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:42:38.332Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 584.92,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "TL;DR",
+      "start": 0,
+      "end": 0.88
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Google lit d'abord six types schema.org pour les pages de restaurant : Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, F A Q.",
+      "start": 1.23,
+      "end": 11.88
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La plupart des sites de restaurants indépendants en proposent deux sur six. Les quatre autres sont manquants ou mal formés.",
+      "start": 12.2,
+      "end": 18.64
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Chaque type manquant est une surface Google différente à laquelle vous n'êtes pas éligible : carte de pack local, citation de présentation de l'IA, bouton Réserver, extrait enrichi, badge d'heures de vacances.",
+      "start": 18.96,
+      "end": 30.83
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Le schéma pourrit tranquillement lorsque les mises à jour de C M S ou de modèles touchent les modèles. Une vérification mensuelle du schéma détecte la dérive avant les examens.",
+      "start": 31.15,
+      "end": 41.02
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Si vous avez ouvert un restaurant après vingt-huit ans et que vous n'avez jamais touché au balisage de schéma sur votre site, vous disposez d'un balisage de schéma. Votre C M S ou votre constructeur de modèles en a presque certainement tamponné - la question est de savoir s'il s'agit du bon schéma, s'il est complet et si Google peut réellement l'utiliser.",
+      "start": 41.54,
+      "end": 59.74
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Le modèle se répète : la plupart des sites ont deux des six types de schéma que Google lit en premier ; les quatre autres sont manquants ou mal formés. Chaque pièce manquante correspond à une surface différente dans les résultats de Google pour laquelle vous n'êtes pas éligible. Le problème est que les types manquants débloquent différentes surfaces – la carte du pack local, les citations de l’IA Overview, le bouton Réserver, l’extrait enrichi, le badge des heures de vacances – de sorte que l’écart entre « certains schémas » et « les six » n’est pas linéaire.",
+      "start": 60.26,
+      "end": 86.39
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Cet article est la version honnête du balisage du schéma de restaurant en vingt-six. Les six types que Google utilise réellement, ce que chacun fait pour vous, le JSON-LD minimum viable pour chacun et les outils qui le valident.",
+      "start": 86.91,
+      "end": 100
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Les 6 types de schémas Google lisent en premier · ce que chacun déverrouille. Restaurant : Questions culinaires, éligibilité au pack local, carte d'identité de base. (fondamental). Menu : classement au niveau du plat + aperçu des citations des descriptions de plats par l'IA. (longue queue). OpeningHoursSpecification : badge \"Ouvrir maintenant\" + précision des heures de vacances. (sans rendez-vous). AggregateRating : le motif en étoile dans votre extrait. CTR +8 à 15 %. (ascenseur CTR). Réservation : Le bouton « Réserver une table » dans votre panel. (Trouver une table). F A Q : La surface de citation IA la plus efficace en vingt-six. (Recherche IA). Les 6 types de schémas Google lisent en premier · ce que chacun déverrouille.",
+      "start": 100.8,
+      "end": 140.02
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1. Restaurant – le type fondamental.",
+      "start": 141.12,
+      "end": 142.99
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "C’est celui que vous ne pouvez pas ignorer. Le schéma du restaurant indique à Google quel type d'entreprise vous êtes, votre adresse, votre téléphone, votre fourchette de prix et une poignée d'autres faits qui déterminent si vous apparaissez dans des requêtes telles que \"Restaurants italiens à proximité de chez moi\".",
+      "start": 143.69,
+      "end": 160.29
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "JSON-LD viable minimum :",
+      "start": 160.81,
+      "end": 162.37
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Le tableau serveCuisine fait plus de travail que les gens ne le pensent – c'est ainsi que Google sait vous montrer pour les requêtes spécifiques à la cuisine. Ne mettez pas plus de deux cuisines à moins que vous ne les serviez réellement ; l'ambiguïté vous rétrograde dans les requêtes que vous devriez gagner.",
+      "start": 162.72,
+      "end": 178.32
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. Menu – le type que la plupart des restaurants falsifient.",
+      "start": 179.42,
+      "end": 182.28
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Presque tous les sites de restaurants que j'audit n'ont aucun schéma de menu ou la plate-forme l'a marqué comme un blob à chaîne unique. Quoi qu'il en soit, Google ne peut pas analyser les plats individuels et vous n'êtes pas classé pour les « tacos al pastor près de chez moi » au niveau du plat.",
+      "start": 182.98,
+      "end": 198.07
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "La structure qui fonctionne :",
+      "start": 198.59,
+      "end": 200.11
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La description compte plus que le nom - c'est le champ que les aperçus AI de Google soulèvent textuellement lorsque quelqu'un demande \"à quoi ressemblent les tacos al pastor au Bistro Petit\". Descriptions vides = pas de citation AI.",
+      "start": 200.46,
+      "end": 213.03
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. OpeningHoursSpecification – celui qui vous coûte des visites sans rendez-vous.",
+      "start": 214.13,
+      "end": 218.88
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si vos horaires sont erronés sur Google, vos horaires sont erronés partout. OpeningHoursSpecification est le schéma qui alimente le badge « Ouvrir maintenant » / « Ferme à 22 h » sur votre panneau de recherche – et celui qui devient obsolète lorsque vous modifiez les heures du dimanche et oubliez de mettre à jour le site.",
+      "start": 219.58,
+      "end": 237.2
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Les remplacements de vacances sont placés dans un bloc spécialOpeningHoursSpecification distinct - Google et Apple Maps le lisent, et une fermeture de vacances manquante est la raison la plus courante pour laquelle un avis en colère la veille de Noël arrive. Le mode de défaillance qui mérite d'être nommé : les mises à jour de C M S ou de modèles peuvent supprimer discrètement JSON-LD du jour au lendemain. Si vous n'avez pas de vérification mensuelle du schéma sur votre calendrier, la première fois que vous saurez que votre bloc d'heures a disparu, c'est lorsque les avis d'une étoile commencent à arriver.",
+      "start": 237.72,
+      "end": 266.01
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Exécutez Schema Checker sur votre page d'accueil pour voir si votre schéma horaire actuel est valide ; Open Hours génère le JSON-LD si vous avez besoin d'un nouveau départ.",
+      "start": 266.53,
+      "end": 276.75
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. AggregateRating – celui qui augmente le CTR à deux chiffres.",
+      "start": 277.85,
+      "end": 282.02
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Si vous avez des avis sur votre propre site, AggregateRating apparaît sous la forme d'un motif en étoile d'or dans votre extrait de recherche. L'augmentation du CTR est réelle : généralement de 8 à 15 % pour les requêtes relatives aux restaurants.",
+      "start": 282.72,
+      "end": 297.23
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "La contrainte : les avis doivent être sur votre site. Vous ne pouvez pas regrouper les avis de Google dans votre propre AggregateRating, ce qui viole les politiques de données structurées de Google et peut entraîner une action manuelle dont la levée prend des semaines.",
+      "start": 297.75,
+      "end": 313.48
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "5. Réservation – celle qui déverrouille Trouver une table.",
+      "start": 314.58,
+      "end": 317.39
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Si vous êtes sur OpenTable, Resy, Tock ou SevenRooms, votre système de réservation publie déjà le bon schéma. Mais si votre réservation est un formulaire personnalisé sur votre propre site, vous devez publier vous-même le schéma de réservation, sinon Google ne pourra pas afficher le bouton « Réserver une table » dans votre panneau.",
+      "start": 318.09,
+      "end": 336.97
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "L'intégration avec Find a Table nécessite que ce schéma soit valide ET que votre point de terminaison de réservation soit accessible publiquement. Vérifiez les deux avec Schema Checker .",
+      "start": 337.49,
+      "end": 348.76
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "6. F A Q — l'aimant de citation d'IA.",
+      "start": 349.86,
+      "end": 352.04
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Le schéma F A Q n'est pas spécifique au restaurant, mais il s'agit de la surface de citation IA la plus efficace pour les pages de restaurant sur vingt-six. Les aperçus de l'IA de ChatGPT, Perplexity et Google lisent d'abord les blocs F A Q lorsque vous répondez à des questions opérationnelles.",
+      "start": 352.74,
+      "end": 369.87
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Six entrées de F A Q bien rédigées – des questions opérationnelles réellement utiles, et non des textes marketing – augmentent généralement le trafic généré par la recherche IA de 20 à 40 % en 60 jours.",
+      "start": 370.39,
+      "end": 382.87
+    },
+    {
+      "id": 30,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Couverture de schéma sur un site de restaurant S E O-sweep typique · 6 types recherchés par Google. Restaurant : généralement présent, souvent incomplet. Menu : chaîne blob ou entièrement manquante. Horaires d'ouverture : présents mais obsolètes. AggregateRating : souvent absent sur les sites de restaurants. Réservation : publication automatique uniquement par OpenTable etc. F A Q : le plus rare des six. Couverture de schéma sur un site de restaurant S E O-sweep typique · 6 types recherchés par Google.",
+      "start": 383.67,
+      "end": 411.59
+    },
+    {
+      "id": 31,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Comment vérifier ce que vous avez aujourd'hui.",
+      "start": 412.69,
+      "end": 414.88
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Exécutez votre page d’accueil via Schema Checker . Il renvoie un verdict présent/valide/manquant pour chacun de ces six types et pointe les pièces cassées. Enregistrez le résultat dans votre audit de restaurant et réexécutez-le mensuellement : le schéma pourrit lorsque C M S met à jour les modèles tactiles.",
+      "start": 415.58,
+      "end": 431.84
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "L'argument composé : chaque type de schéma manquant est une surface Google différente pour laquelle vous n'êtes pas éligible. Ensemble, les six types débloquent la carte du pack local, les citations AI Overview, le bouton Réserver, l'extrait enrichi et le badge des heures de vacances. Ajoutez-les dans l'ordre et l'effet cumulé sur les impressions se situe généralement entre 20 % et 60 % au cours d'un trimestre.",
+      "start": 432.36,
+      "end": 452.96
+    },
+    {
+      "id": 34,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "Le schéma n'est pas facultatif. Chaque type manquant est une surface Google pour laquelle vous vous êtes volontairement disqualifié.",
+      "start": 453.71,
+      "end": 461.23
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Points clés à retenir",
+      "start": 461.98,
+      "end": 462.99
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Le schéma du restaurant est fondamental : sans lui, vous ne pourrez peut-être pas apparaître du tout pour les requêtes culinaires.",
+      "start": 463.34,
+      "end": 469.92
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Le schéma de menu avec les champs MenuItem + description structurés est ce que les aperçus d'IA citent textuellement.",
+      "start": 470.24,
+      "end": 476.91
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "OpeningHoursSpecification + specialOpeningHoursSpecification empêchent ensemble l'examen \"fermé même si Google a déclaré ouvert\".",
+      "start": 477.23,
+      "end": 487.16
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "AggregateRating avec les avis de votre propre site augmente le CTR de 8 à 15 % sur les requêtes des restaurants ; le regroupement des avis de Google enfreint le règlement.",
+      "start": 487.48,
+      "end": 498.55
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Le schéma F A Q est la surface de citation IA la plus efficace sur une page de restaurant sur vingt-six.",
+      "start": 498.87,
+      "end": 505.1
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Découvrez lequel des six types manque à votre site.",
+      "start": 505.62,
+      "end": 508.19
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Schema Checker exécute votre page d'accueil à travers les six types et renvoie un verdict présent/valide/manquant pour chacun. Enregistrez le résultat dans votre atelier et réexécutez-le mensuellement : le schéma pourrit lorsque C M S met à jour les modèles tactiles.",
+      "start": 508.71,
+      "end": 523.49
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Que faire ensuite",
+      "start": 524.01,
+      "end": 524.97
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lire : le terme du glossaire associé →",
+      "start": 525.32,
+      "end": 527.19
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Essayez : l'outil qui s'associe à cet article →",
+      "start": 527.51,
+      "end": 529.84
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Ou envoyez un message à Don : La fenêtre →",
+      "start": 530.16,
+      "end": 532.26
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Voir aussi",
+      "start": 532.61,
+      "end": 533.34
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Article Récupération des réservations à partir de Trouver une table de Google Comment le schéma de réservation de cet article se connecte à la surface de réservation dans le panneau de Google.",
+      "start": 533.69,
+      "end": 545.72
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Outil Schema Checker Valide les six types sur la page d'accueil de n'importe quel restaurant et pointe les morceaux cassés.",
+      "start": 546.04,
+      "end": 552.04
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Recherche Impact des données structurées sur la recherche locale Les preuves derrière l'affirmation d'impressions cumulées dans cet article.",
+      "start": 552.36,
+      "end": 559.83
+    },
+    {
+      "id": 51,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Dites-nous",
+      "start": 560.35,
+      "end": 560.92
+    },
+    {
+      "id": 52,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Avez-vous essayé cela dans votre cuisine ?",
+      "start": 562.02,
+      "end": 564.1
+    },
+    {
+      "id": 53,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "100 à 400 mots, votre nom dessus, Don lit chacun d'entre eux.",
+      "start": 564.8,
+      "end": 568.04
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Connectez-vous pour partager votre expérience →",
+      "start": 568.56,
+      "end": 570.81
+    },
+    {
+      "id": 55,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "Continuez à lire",
+      "start": 571.16,
+      "end": 572.1
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "La connexion schéma-surface du côté de la réservation.",
+      "start": 572.45,
+      "end": 575.59
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "L’autre côté des données structurées : le schéma de surface alimente.",
+      "start": 576.11,
+      "end": 579.58
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "La définition en anglais simple de ce qu'est JSON-LD et pourquoi Google le lit.",
+      "start": 580.1,
+      "end": 584.92
+    }
+  ]
+}

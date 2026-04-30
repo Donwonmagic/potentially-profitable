@@ -124,6 +124,7 @@
     // Library — content engagement events.
     library: [
       'Checklist Completed',
+      'Start Here Path',
       'Checklist Learn-more',
       'Checklist Subtype',
       'Glossary AZ',

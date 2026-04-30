@@ -1,0 +1,523 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:30:07.025Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 560.86,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "长话短说",
+      "start": 0,
+      "end": 1.21
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "大多数“免费”工具类别——利润审计、模式检查器、“看看你的网站缺少什么”——保留你的输入。代价是数据，而不是美元。",
+      "start": 1.56,
+      "end": 10.78
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "5 项测试的浏览器审核只需不到一分钟，即可在您键入单个实数之前公开数据流。",
+      "start": 11.1,
+      "end": 18.82
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "4 层数据模型告诉您要共享什么、在哪里以及与谁共享：公共、竞争敏感、运营、受监管。",
+      "start": 19.14,
+      "end": 26.28
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "该网站上的每个工具都遵守 9 项声明标准，其中四个作为构建不变量强制执行。",
+      "start": 26.6,
+      "end": 34.6
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "大多数“免费保证金审计”工具都有价格标签。它只是以数据形式付费。这种模式很常见：你输入真实的票据、真实的食品成本、真实的劳动力——然后该工具就会返回一个数字。它还往往会在早上将销售代表回复到您的收件箱中，每个销售代表都会根据不应该离开办公室的数字提出建议。这个工具就是漏斗。你的数字就是预选赛。",
+      "start": 34.95,
+      "end": 60.19
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "这种模式之所以被隐藏，是因为没有人问一个显而易见的问题：当我输入内容时，我的输入会去哪里？在运行的浏览器中，您可以在一分钟内回答该问题。本文是一个框架——五个测试、四个数据层、一个工作示例——最后是一个可以在遇到的任何工具上运行的清单。",
+      "start": 60.54,
+      "end": 78.87
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1. 五个测试 — 在键入之前运行。",
+      "start": 79.97,
+      "end": 82.59
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "在您正在评估的任何工具上打开 DevTools（在 Mac 上为 Cmd+Opt+I，在 Windows 上为 Ctrl+Shift+I）。五个问题：",
+      "start": 83.29,
+      "end": 94.01
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "输入数字是否会触发网络请求？打开网络选项卡。类型。如果请求列表随着每次击键而增长，该工具会默默地将您的输入发送到服务器。走开。",
+      "start": 94.36,
+      "end": 106.18
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "隐私声明是否在输入时？一个值得信赖的工具会告诉您它如何处理您输入的数据，而不是在点击三下的页脚链接中。",
+      "start": 106.5,
+      "end": 116.08
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "有帐户/时事通讯/cookie gateway 吗？ “输入您的电子邮件以查看您的结果”意味着您的数字就是入场费。该工具不是免费的。",
+      "start": 116.4,
+      "end": 127.13
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "是否有第三方分析、会话重播或营销脚本？通过 JS 过滤网络选项卡。如果您看到 Google Analytics、Meta Pixel、HubSpot、FullStory、Hotjar — 您的输入正在被监控供应商记录，而这些供应商甚至不属于您认为自己正在进行的交易的一部分。",
+      "start": 127.45,
+      "end": 144.31
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "源代码可读吗？右键单击 → 查看源代码。一个小的、可读的、未缩小的脚本是一个可以审计的工具。来自 SaaS 框架的 4MB 压缩包是您无法使用的工具。",
+      "start": 144.63,
+      "end": 156.11
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "通过所有五项，该工具至少对其数据流是诚实的。如果其中任何一个失败，该工具要么不知道，要么不想让你知道——这两者都是离开的理由。",
+      "start": 156.46,
+      "end": 168.08
+    },
+    {
+      "id": 15,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "4 层数据模型·什么流向哪里。公开：菜单、营业时间、照片、地址。积极优化。 （打开）。竞争敏感：成本、供应商、实际佣金等级。仅保密协议。 （保密协议）。运营机密：损益表、食品成本、时间表。企业内部。 （合同）。监管：SSN、EIN、卡数据、I-9。仅加密。 （锁定）。 4 层数据模型·什么流向哪里。",
+      "start": 168.88,
+      "end": 189.4
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. 四层模型——分享什么、在哪里分享。",
+      "start": 190.5,
+      "end": 193.21
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "大多数小企业主将所有数据保存在同一个存储桶中，这意味着供应商列表和税号得到相同的保护（通常是相同的低级别保护）。四个级别，每个级别都有不同的受众和不同的谨慎程度：",
+      "start": 193.91,
+      "end": 208.5
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "第一级——公共。菜单、营业时间、照片、地址、电话、schema.org 标记。积极优化；这就是客户找到您的方式。",
+      "start": 208.85,
+      "end": 218.06
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "第 2 层——竞争敏感。商品成本、供应商列表、您的实际佣金等级（非公开费率）、人工计划模板。与簿记员/顾问/经纪人分享——根据保密协议。平台、竞争对手或“免费审核”工具不会保留您的意见。",
+      "start": 218.38,
+      "end": 232.57
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "第 3 层 — 操作机密。每月损益、实际食品成本百分比、客户渠道、员工时间表。仅限企业内部。 POS 供应商、工资单、会计师——并且仅限于书面合同。",
+      "start": 232.89,
+      "end": 244.23
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "第 4 级——受监管。 SSN、EIN、客户卡数据、银行详细信息、食品安全日志、I-9。加密存储、访问日志、带有网络安全条款的合同。从来不发电子邮件。永远不要在共享电子表格中。",
+      "start": 244.55,
+      "end": 258.84
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "原则：数据永远不会向上流动。第 3 层供应商不会仅仅因为他们提出要求就获得第 4 层访问权限。第 1 层受众（平台、列表网站）不会获得第 2 层。减少攻击面的最简单方法是停止自愿提供实际不需要的数据。",
+      "start": 259.19,
+      "end": 274.88
+    },
+    {
+      "id": 23,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "5 测试诊断 · 在键入之前运行。按键时网络：打开网络选项卡。如果您在打字时请求开火，请走开。 （失败=离开）。输入点的隐私：信任需要您输入时的透明度。 （失败=离开）。帐户/电子邮件门：“输入您的电子邮件以查看结果”=您的数字就是价格。 （失败=离开）。第三方脚本：GA、Pixel、FullStory、Hotjar — 您不同意的监视。 （失败=离开）。源代码可读：4MB 压缩包 = 您无法审核。走开。 （失败=离开）。 5 测试诊断 · 在键入之前运行。",
+      "start": 275.68,
+      "end": 310.44
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3.“安全”是什么样子——实际例子。",
+      "start": 311.54,
+      "end": 314.69
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "这是该网站上的每个工具都遵循的标准。关于每个 Muntin 工具如何处理您的输入的九项声明，每一项都可以在您自己的浏览器中验证：",
+      "start": 315.39,
+      "end": 326.12
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "您的号码永远不会离开页面。当您输入财务数字时，不会触发 fetch() 、 XMLHttpRequest 、表单提交。",
+      "start": 326.47,
+      "end": 335.15
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "没有服务器可以存储它们。工具页面使用的唯一端点是 GET /tools/<slug>/ 。",
+      "start": 335.47,
+      "end": 343.26
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "分析只能看到桶，看不到数字。 25块钱的票变成了25-39；原始值从来都不是属性。",
+      "start": 343.58,
+      "end": 352.03
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "没有 cookie、没有 localStorage、没有 sessionStorage — 用于您的输入。",
+      "start": 352.35,
+      "end": 358
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "没有第三方脚本接触输入。",
+      "start": 358.32,
+      "end": 361
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "可共享场景链接使用 URL 片段（# 后面的部分）——浏览器从不将片段发送到服务器。",
+      "start": 361.32,
+      "end": 369.47
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(7)",
+      "text": "源代码是可读的：没有构建步骤，没有缩小，每个数学函数都被命名。",
+      "start": 369.79,
+      "end": 374.82
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(8)",
+      "text": "在此选项卡之外，没有任何内容会持续存在。",
+      "start": 375.14,
+      "end": 379.47
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(9)",
+      "text": "打印 + 日历导出 100% 客户端。",
+      "start": 379.79,
+      "end": 383.34
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "包含每个声明的特定 DevTools 验证步骤的完整版本位于 /security/ 。其中四个（1、2、4、5）是构建不变式——如果未来的工具发布了禁止的模式，则每次部署时运行的内聚检查都会导致 CI​​ 失败。因此，“可验证”并不是营销文案，而是营销文案。它是由构建强制执行的合同，并在 /security/integrity.txt 上发布了生产包的公共哈希值。",
+      "start": 383.69,
+      "end": 410.54
+    },
+    {
+      "id": 36,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "“可验证”应该是一个构建标志，而不是一个营销主张。",
+      "start": 411.29,
+      "end": 415.64
+    },
+    {
+      "id": 37,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. 运行审核。",
+      "start": 416.74,
+      "end": 417.89
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "5 项测试框架也是一个交互式清单，位于 /learn/checklists/audit-any-tool/ - 在您正在评估的任何工具上打开 DevTools 来浏览它。将结果保存到您的创意工坊中作为基线；每当供应商推出“新功能”时就重新运行它。",
+      "start": 418.59,
+      "end": 434.77
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "如果您发现某个工具未能通过审核，但又无法判断它是恶意的还是草率的，请通过 The Window 写信告诉我。我读了每一本。悄悄地将操作员变成产品的免费工具的模式值得命名——大声说出，并附上工具的名称。",
+      "start": 435.12,
+      "end": 449.67
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "要点",
+      "start": 450.02,
+      "end": 450.51
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "打开 DevTools，键入并观察 Network 选项卡。如果每次击键都会触发请求，请走开。",
+      "start": 450.86,
+      "end": 458.15
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "隐私声明属于输入点——而不是在页脚深处点击三下。",
+      "start": 458.47,
+      "end": 463.35
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "帐户/电子邮件/cookie 门意味着该工具不是免费的。您的输入就是价格。",
+      "start": 463.67,
+      "end": 470.93
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "数据永远不会向上流动。如果没有合同，一级受众永远无法获得二级数据。",
+      "start": 471.25,
+      "end": 477.91
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "“可验证”应该是一个构建标志，而不是一个营销声明。",
+      "start": 478.23,
+      "end": 482.55
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "对您现在正在评估的工具进行审核。",
+      "start": 482.9,
+      "end": 486.14
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "打开您正在考虑使用的工具。打开开发工具。使用交互式清单完成五项测试。将结果保存到您的创意工坊中作为基线，您可以在供应商推出“新功能”时重新运行。",
+      "start": 486.49,
+      "end": 499.15
+    },
+    {
+      "id": 48,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "接下来做什么",
+      "start": 499.5,
+      "end": 500.65
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "阅读：相关术语表 →",
+      "start": 501,
+      "end": 502.24
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "尝试：与本文配对的工具 →",
+      "start": 502.56,
+      "end": 504.85
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "或者给 Don 发送一条信息：The Window →",
+      "start": 505.17,
+      "end": 508.28
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "另请参阅",
+      "start": 508.63,
+      "end": 509.64
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "文章 ChatGPT 可以编写您的餐厅网站吗？同一问题的另一面——当您将判断外包给工具并使用工具看到的输入时会发生什么。",
+      "start": 509.99,
+      "end": 520.34
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "工具餐厅审核 在您自己的网站上进行尊重隐私的审核 - 本文对每个 Muntin 工具都遵循相同的标准。",
+      "start": 520.66,
+      "end": 529.54
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "库 可验证工具标准 9 声称该网站上的每个工具都遵守，每个工具都有 DevTools 验证步骤。",
+      "start": 529.86,
+      "end": 537.87
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "告诉我们",
+      "start": 538.22,
+      "end": 538.93
+    },
+    {
+      "id": 57,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "你在厨房试过这个吗？",
+      "start": 540.03,
+      "end": 541.88
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "100-400 个字，上面写着你的名字，Don 逐字逐句地读。",
+      "start": 542.58,
+      "end": 547.06
+    },
+    {
+      "id": 59,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "登录并分享您的经验 →",
+      "start": 547.41,
+      "end": 548.98
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "继续阅读",
+      "start": 549.33,
+      "end": 550.16
+    },
+    {
+      "id": 61,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "当工具本身就是问题时。",
+      "start": 550.51,
+      "end": 552.97
+    },
+    {
+      "id": 62,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "同样的审计，但指向你自己的系统。",
+      "start": 553.32,
+      "end": 556.48
+    },
+    {
+      "id": 63,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "本文的浏览器功能运行了所有五个测试。",
+      "start": 556.83,
+      "end": 560.86
+    }
+  ]
+}
