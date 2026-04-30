@@ -1136,12 +1136,32 @@
       }).join('~');
       return '/tools/photo-brief/#stars=' + encodeURIComponent(lines);
     }
+    // Margin Math handoff for Plowhorses — pre-fill the Price Raise
+    // calculator's contribution-margin slider with the average CM%
+    // across the Plowhorse items so the simulator opens at a number
+    // tied to this menu, not the global 20% default. Slider is
+    // clamped 5–50; we round to the nearest integer the input
+    // accepts. Encoded with the existing margin-math fragment
+    // schema (v=1&pr.m=XX). Owner can override on arrival.
+    function plowhorseMarginMathHref(items){
+      if (!items || !items.length) return '/tools/margin-math/#calc-priceraise';
+      var sum = 0, n = 0;
+      items.forEach(function(it){
+        if (typeof it.cm_percent === 'number' && isFinite(it.cm_percent)) {
+          sum += it.cm_percent; n++;
+        }
+      });
+      if (!n) return '/tools/margin-math/#calc-priceraise';
+      var avgPct = Math.round((sum / n) * 100);
+      avgPct = Math.max(5, Math.min(50, avgPct));
+      return '/tools/margin-math/#v=1&pr.m=' + avgPct;
+    }
     var toolLinks = {
       Star: function(items){ return [
         { href: briefLinkFor('Star', items), label: 'Brief these for your photographer &rarr;' }
       ]; },
       Plowhorse: function(items){ return [
-        { href: '/tools/margin-math/#calc-priceraise', label: 'Re-cost in Margin Math &rarr;' },
+        { href: plowhorseMarginMathHref(items),        label: 'Re-cost in Margin Math &rarr;' },
         { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' },
         { href: briefLinkFor('Plowhorse', items),      label: 'Brief these for your photographer &rarr;' }
       ]; },

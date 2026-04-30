@@ -1228,6 +1228,33 @@
   // shared concepts (food cost, average check, contribution margin)
   // across calculators where one set the value and another didn't.
   window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  // When the page boots with a pre-filled namespace, scroll the
+  // matching calculator into view so the owner lands on the calc
+  // their inbound link was about — not at the top of the page.
+  // Triggered only when at least one of the four namespaces was
+  // hydrated from the URL; default-load (no fragment) keeps the
+  // existing top-of-page scroll. Non-namespaced anchors like
+  // "#calc-priceraise" still work via the browser's native jump.
+  (function(){
+    var hyd = window.__mmHydratedState || {};
+    var nsToCalc = { dbe: 'calc-delivery', pc: 'calc-primecost', bec: 'calc-breakeven', pr: 'calc-priceraise' };
+    var firstNs = null;
+    ['dbe','pc','bec','pr'].forEach(function(ns){
+      if (firstNs) return;
+      if (hyd[ns] && Object.keys(hyd[ns]).length) firstNs = ns;
+    });
+    if (!firstNs) return;
+    var targetId = nsToCalc[firstNs];
+    if (!targetId) return;
+    // Defer to the next tick so the calc-card IIFEs have wired their
+    // state from __mmHydratedState before we scroll the user there.
+    setTimeout(function(){
+      var el = document.getElementById(targetId);
+      if (!el) return;
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch (_) { el.scrollIntoView(); }
+    }, 80);
+  })();
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;  // don't trample URL until user acts

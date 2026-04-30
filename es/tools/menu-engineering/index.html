@@ -1084,12 +1084,28 @@
       }).join('~');
       return '/es/tools/photo-brief/#stars=' + encodeURIComponent(lines);
     }
+    // Pre-llena el slider de margen del simulador con el promedio de
+    // CM% de los Caballos de tiro para que el simulador abra con un
+    // número atado a este menú, no con el 20 % global por defecto.
+    function plowhorseMarginMathHref(items){
+      if (!items || !items.length) return '/es/tools/margin-math/#calc-priceraise';
+      var sum = 0, n = 0;
+      items.forEach(function(it){
+        if (typeof it.cm_percent === 'number' && isFinite(it.cm_percent)) {
+          sum += it.cm_percent; n++;
+        }
+      });
+      if (!n) return '/es/tools/margin-math/#calc-priceraise';
+      var avgPct = Math.round((sum / n) * 100);
+      avgPct = Math.max(5, Math.min(50, avgPct));
+      return '/es/tools/margin-math/#v=1&pr.m=' + avgPct;
+    }
     var toolLinks = {
       Star: function(items){ return [
         { href: briefLinkFor('Star', items), label: 'Crear brief para tu fotógrafo &rarr;' }
       ]; },
       Plowhorse: function(items){ return [
-        { href: '/es/tools/margin-math/#calc-priceraise', label: 'Re-costear en Margin Math &rarr;' },
+        { href: plowhorseMarginMathHref(items),           label: 'Re-costear en Margin Math &rarr;' },
         { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' },
         { href: briefLinkFor('Plowhorse', items),         label: 'Crear brief para tu fotógrafo &rarr;' }
       ]; },

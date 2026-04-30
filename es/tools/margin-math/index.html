@@ -1152,6 +1152,27 @@
   // compartidos (food cost, ticket promedio, margen de contribución)
   // entre calculadoras cuando una tiene el valor y otra no.
   window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  // Si el fragmento llega con datos para una calculadora específica,
+  // hace scroll a esa tarjeta para que el dueño aterrice donde lo
+  // mandó el enlace, no al inicio de la página.
+  (function(){
+    var hyd = window.__mmHydratedState || {};
+    var nsToCalc = { dbe: 'calc-delivery', pc: 'calc-primecost', bec: 'calc-breakeven', pr: 'calc-priceraise' };
+    var firstNs = null;
+    ['dbe','pc','bec','pr'].forEach(function(ns){
+      if (firstNs) return;
+      if (hyd[ns] && Object.keys(hyd[ns]).length) firstNs = ns;
+    });
+    if (!firstNs) return;
+    var targetId = nsToCalc[firstNs];
+    if (!targetId) return;
+    setTimeout(function(){
+      var el = document.getElementById(targetId);
+      if (!el) return;
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch (_) { el.scrollIntoView(); }
+    }, 80);
+  })();
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;
