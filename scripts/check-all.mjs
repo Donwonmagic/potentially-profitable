@@ -69,6 +69,8 @@ const CHECKS = [
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
+  ['Storefront rail (idem)','inject-tool-storefront-rail.mjs','--check'],
+  ['KPI doc freshness',    'check-kpi-doc.mjs',              '--check'],
 ];
 
 const results = [];

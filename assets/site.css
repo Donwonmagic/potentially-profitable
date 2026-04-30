@@ -5336,6 +5336,12 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-verified{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0;letter-spacing:0.02em}
 .tool-verified time{color:var(--ink);font-style:normal;font-variant-numeric:tabular-nums}
 
+/* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
+   Quiet single line; the bold tool name carries the click weight. */
+.tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}
+.tool-storefront-rail a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.tool-storefront-rail a:hover{border-bottom-color:var(--teal)}
+
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
    "join our community" CTA. Mirrors the Window's "I read every one"

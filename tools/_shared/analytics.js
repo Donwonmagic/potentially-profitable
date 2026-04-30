@@ -177,8 +177,20 @@
     ],
     // Phase G.10 (Growth) — newsletter capture + double-opt confirm.
     newsletter: [
+      'Lifecycle Email Click',
+      'Lifecycle Email Opened',
       'Newsletter Confirmed',
       'Newsletter Signup',
+    ],
+    // Phase G.11 (Growth) — share-snapshot recipient banner click.
+    share: [
+      // 'Share' already registered under library; keeping recipient
+      // events here for clarity. Plausible filters on props, not group.
+    ],
+    // Phase G.12 (Growth) — A/B framework + KPI dashboard events.
+    experiments: [
+      'Experiment Exposure',
+      'Window Thread Resolved',
     ],
   };
 
