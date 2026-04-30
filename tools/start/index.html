@@ -102,6 +102,16 @@
   .ts-rec-name a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent); }
   .ts-rec-name a:hover, .ts-rec-name a:focus-visible { border-bottom-color: var(--teal); }
   .ts-rec-why { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.5; margin-top: 2px; }
+  .ts-rec-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--stone); margin-top: 8px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .ts-rec-meta span { display: inline-flex; align-items: baseline; gap: 4px; }
+  .ts-rec-meta strong { font-weight: 600; color: var(--ink-soft); letter-spacing: 0.02em; text-transform: uppercase; font-size: 10.5px; }
+  .ts-restore { display: none; align-items: center; gap: 8px; padding: 10px 14px; margin: -10px 0 18px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-sm); background: var(--surface-1); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-restore[data-shown="true"] { display: flex; }
+  .ts-restore-fresh { background: none; border: 0; color: var(--teal); font: inherit; padding: 0; cursor: pointer; text-decoration: underline; }
+  .ts-noticed { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--amber-border, #d9c179); border-radius: var(--r-sm); background: var(--amber-tint, #fbf3d8); }
+  .ts-noticed-head { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; line-height: var(--leading-card); }
+  .ts-noticed-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: var(--leading-card); color: var(--ink-soft); }
+  .ts-noticed-list li::before { content: '\2192'; color: var(--teal); font-weight: 700; margin-right: 6px; }
   .ts-skip { font-size: 13px; color: var(--stone); margin: 16px 0 0; line-height: var(--leading-card); }
   .ts-fallback { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: var(--leading-card); color: var(--ink-soft); }
   .ts-fallback a { color: var(--teal); font-weight: 600; text-decoration: none; }
@@ -159,6 +169,21 @@
   </nav>
 </header>
 
+<!-- Opt-in Spanish banner, mirrored from /tools/index.html. site.js
+     reveals it only when (a) the reader's browser lists Spanish in
+     navigator.languages, (b) no md_locale cookie is set, and (c) the
+     banner hasn't been dismissed. The start tool is the front door —
+     it is the worst page on the site to be missing this hint. -->
+<aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+  <div class="container lang-hint-inner">
+    <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+    <a href="/es/tools/start/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+    <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+  </div>
+</aside>
+
 <main id="main" class="ts-main">
   <div class="ts-shell">
     <p class="ts-eyebrow">Start here</p>
@@ -174,6 +199,7 @@
           <label class="ts-option"><input type="radio" name="leak" value="covers"><span class="ts-option-text"><strong>Covers / volume</strong><span>The room isn&rsquo;t full enough.</span></span></label>
           <label class="ts-option"><input type="radio" name="leak" value="discovery"><span class="ts-option-text"><strong>Online discovery</strong><span>Google / Maps / mobile aren&rsquo;t doing their job.</span></span></label>
           <label class="ts-option"><input type="radio" name="leak" value="kitchen"><span class="ts-option-text"><strong>Kitchen / menu</strong><span>Plate cost, recipe drift, photo brand.</span></span></label>
+          <label class="ts-option"><input type="radio" name="leak" value="unsure"><span class="ts-option-text"><strong>I don&rsquo;t know yet &mdash; give me one number</strong><span>Run a single composite check and read the score.</span></span></label>
         </div>
       </fieldset>
 
@@ -222,10 +248,19 @@
       </div>
     </form>
 
+    <p class="ts-restore" id="tsRestore" hidden>
+      <strong>Welcome back.</strong> Your last answers are filled in &mdash; update what&rsquo;s changed, or
+      <button type="button" class="ts-restore-fresh" id="tsRestoreFresh">start fresh</button>.
+    </p>
+
     <section class="ts-result" id="tsResult" aria-live="polite" aria-labelledby="tsResultHeading">
       <h2 id="tsResultHeading">Your path through the library.</h2>
       <p class="ts-result-lede" id="tsResultLede"></p>
       <ol class="ts-rec-list" id="tsRecList"></ol>
+      <aside class="ts-noticed" id="tsNoticed" hidden aria-label="We also noticed">
+        <p class="ts-noticed-head"><strong>We also noticed&hellip;</strong></p>
+        <ul class="ts-noticed-list" id="tsNoticedList"></ul>
+      </aside>
       <p class="ts-skip" id="tsResultSkip"></p>
       <p class="ts-fallback">Already know the catalog? <a href="/tools/">Browse all 17 tools &rarr;</a> &middot; New to all of this? <a href="/learn/start-here/">Take the 60-minute guided tour &rarr;</a></p>
     </section>
@@ -240,96 +275,179 @@
 
 <script>
   // Decision-tree routing for /tools/start/. Plain JS, no router.
-  // Tool catalog with one-line descriptions; each rule below picks
-  // an ordered subset and writes a "why" reason per tool.
+  // The catalog now reaches all 17 tools — earlier versions silently
+  // omitted 7 (brand-suite, compare, open-hours, schema-check,
+  // search-ideas, storefront-health, tech-stack), most importantly
+  // Storefront Health, the natural answer to "I don't know yet."
   (function () {
     var TOOLS = {
-      'plate-cost':       { name: 'Plate Cost Calculator',     url: '/tools/plate-cost/' },
-      'menu-engineering': { name: 'Menu Engineering Matrix',   url: '/tools/menu-engineering/' },
-      'margin-math':      { name: 'Margin Math',               url: '/tools/margin-math/' },
-      'menu-copy':        { name: 'Menu Copy Inspector',       url: '/tools/menu-copy/' },
-      'photo-brief':      { name: 'Photo Brief Builder',       url: '/tools/photo-brief/' },
-      'seo-grader':       { name: 'SEO Grader',                url: '/tools/seo-grader/' },
-      'mobile-check':     { name: 'Mobile-Friendly Check',     url: '/tools/mobile-check/' },
-      'speed-test':       { name: 'Speed Test',                url: '/tools/speed-test/' },
-      'gbp-grader':       { name: 'Google Business Profile Grader', url: '/tools/gbp-grader/' },
-      'audit':            { name: 'Restaurant Audit',          url: '/tools/audits/restaurant/' }
+      'plate-cost':        { name: 'Plate Cost Calculator',          url: '/tools/plate-cost/' },
+      'menu-engineering':  { name: 'Menu Engineering Matrix',        url: '/tools/menu-engineering/' },
+      'margin-math':       { name: 'Margin Math',                    url: '/tools/margin-math/' },
+      'menu-copy':         { name: 'Menu Copy Inspector',            url: '/tools/menu-copy/' },
+      'photo-brief':       { name: 'Photo Brief Builder',            url: '/tools/photo-brief/' },
+      'seo-grader':        { name: 'SEO Grader',                     url: '/tools/seo-grader/' },
+      'mobile-check':      { name: 'Mobile-Friendly Check',          url: '/tools/mobile-check/' },
+      'speed-test':        { name: 'Speed Test',                     url: '/tools/speed-test/' },
+      'gbp-grader':        { name: 'Google Business Profile Grader', url: '/tools/gbp-grader/' },
+      'audit':             { name: 'Restaurant Audit',               url: '/tools/audits/restaurant/' },
+      'storefront-health': { name: 'Storefront Health',              url: '/tools/storefront-health/' },
+      'brand-suite':       { name: 'Brand Suite',                    url: '/tools/brand-suite/' },
+      'open-hours':        { name: 'Open Hours',                     url: '/tools/open-hours/' },
+      'schema-check':      { name: 'Schema Check',                   url: '/tools/schema-check/' },
+      'search-ideas':      { name: 'Search Ideas',                   url: '/tools/search-ideas/' },
+      'tech-stack':        { name: 'Tech Stack Detector',            url: '/tools/tech-stack/' },
+      'compare':           { name: 'Compare',                        url: '/tools/compare/' }
     };
+
+    // Per-tool meta — the consultant-style framing the hub already
+    // uses ("You leave with…"). Keeps recommendations actionable
+    // instead of abstract: the owner sees up front what the next
+    // 5-30 minutes will cost them and what artifact they'll have.
+    var META = {
+      'plate-cost':        { leaveWith: 'A defendable price for every dish',                       time: '15 min/dish', needs: 'a recipe + last invoice' },
+      'menu-engineering':  { leaveWith: 'A 2x2 matrix of which dishes to push, fix, or retire',    time: '20 min',      needs: 'price + cost + units sold per item' },
+      'margin-math':       { leaveWith: 'Whether your prime cost band is healthy + the next move', time: '5 min',       needs: 'last month’s sales, food, and labor numbers' },
+      'menu-copy':         { leaveWith: 'A diagnosed dish description with axes + a verdict',      time: '5 min/dish',  needs: 'a written description' },
+      'photo-brief':       { leaveWith: 'A printable shoot list a photographer can read in 5 min', time: '10 min',      needs: 'a list of dishes + the platforms you publish to' },
+      'seo-grader':        { leaveWith: 'A graded title + meta description with a fix',            time: '10 sec',      needs: 'your URL' },
+      'mobile-check':      { leaveWith: 'Pass/fail on the 3 mobile-usability checks Google scores',time: '10 sec',      needs: 'your URL' },
+      'speed-test':        { leaveWith: 'A speed grade with a plain-English explanation',          time: '10 sec',      needs: 'your URL' },
+      'gbp-grader':        { leaveWith: 'A graded Google Business Profile + your top fix',         time: '30 sec',      needs: 'your business name + city' },
+      'audit':             { leaveWith: 'A ranked punch-list of restaurant-specific findings',     time: '30 sec',      needs: 'your URL' },
+      'storefront-health': { leaveWith: 'One score across six storefront checks',                  time: '60 sec',      needs: 'your URL' },
+      'brand-suite':       { leaveWith: 'A palette + accessible color pairs from your logo',       time: '5 min',       needs: 'your logo file (or a brand color)' },
+      'open-hours':        { leaveWith: 'Hours consistent across Google, Apple, Yelp + a door card',time: '10 min',     needs: 'your weekly schedule' },
+      'schema-check':      { leaveWith: 'What Google sees vs. what you should add',                time: '10 sec',      needs: 'your URL' },
+      'search-ideas':      { leaveWith: 'The phrases real customers use for your category + city', time: '30 sec',      needs: 'your business type + city' },
+      'tech-stack':        { leaveWith: 'What your site is built on + what that means for fixes',  time: '10 sec',      needs: 'your URL' },
+      'compare':           { leaveWith: 'A side-by-side scorecard vs. a competitor',               time: '60 sec',      needs: 'two URLs' }
+    };
+
+    // Phrasing helpers: echo the user's answers back in plain English.
+    var ECHO = {
+      leak: {
+        margin:    'margin',
+        covers:    'covers / volume',
+        discovery: 'online discovery',
+        kitchen:   'the kitchen / menu',
+        unsure:    'something — not sure exactly what'
+      },
+      raise: { recent: 'in the last 6 months', old: '6–12 months ago', no: 'not in the last 12 months' },
+      agg:   { heavy: 'a significant share of revenue runs through delivery apps', some: 'some of your revenue runs through delivery apps', none: 'no third-party delivery' }
+    };
+
+    function buildLede(a) {
+      var leakLabel = ECHO.leak[a.leak] || 'a leak';
+      var bits = ['You said the leak is **' + leakLabel + '**'];
+      if (a.raise) bits.push('you raised prices **' + ECHO.raise[a.raise] + '**');
+      if (a.agg)   bits.push(ECHO.agg[a.agg]);
+      var head = bits.join(', ') + '. Here’s the order I’d run them in.';
+      // Per-leak tail.
+      var tail = '';
+      if (a.leak === 'margin')    tail = ' Margin work pays back twice — once for the operator, once for the team. Inputs you control daily first; structural levers underneath.';
+      if (a.leak === 'covers')    tail = ' Covers usually leak from one of three places: the menu doesn’t convert, the website doesn’t rank, or the door isn’t findable on Google. Test in that order.';
+      if (a.leak === 'discovery') tail = ' Discovery is sequenced: GBP first (it dominates local intent), then mobile + speed, then titles + schema.';
+      if (a.leak === 'kitchen')   tail = ' Kitchen-side fixes pay back in margin AND brand. Start with the dish, then how it photographs, then how it reads.';
+      if (a.leak === 'unsure')    tail = ' Run a single composite check first — you’ll have a number in 60 seconds and a clear next step.';
+      return (head + tail).replace(/\*\*(.+?)\*\*/g, function (_, w) { return w; });
+    }
 
     function build(answers) {
       var path = [];
       var skipped = [];
-      var lede = '';
 
-      // Q1 — primary leak determines the spine.
       if (answers.leak === 'margin') {
-        lede = 'Margin work always pays back twice — once for the operator and again for the team. The order below moves from inputs you control daily to the structural levers underneath.';
         if (answers.recipe === 'yes' || answers.recipe === 'partial') {
-          path.push({ k: 'plate-cost', why: 'Start here. Recipe-level cost per plate is the input every other margin tool needs.' });
+          path.push({ k: 'plate-cost', why: 'Recipe-level cost per plate is the input every other margin tool needs.' });
         }
         path.push({ k: 'margin-math', why: 'Run the prime-cost band first; that tells you whether the leak is food, labor, or both.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Once costs are known, Menu Engineering shows which dishes are the actual leverage point.' });
         }
-        if (answers.agg === 'heavy' || answers.agg === 'some') {
-          path.push({ k: 'margin-math', why: 'Specifically the Delivery Break-Even card — heavy aggregator share usually carries hidden fee margin.' });
+        if (answers.agg === 'heavy') {
+          path.push({ k: 'margin-math', why: 'Heavy aggregator share — use the Delivery Break-Even card; the math hides 4–6 points of margin most operators don’t track.' });
         }
         if (answers.raise === 'no') {
-          path.push({ k: 'margin-math', why: 'Then the Price-Raise Simulator. Restaurants that haven\'t raised in 12 months usually leave 2–4 points on the table.' });
+          path.push({ k: 'margin-math', why: 'No recent raise — the Price-Raise Simulator usually finds 2–4 points left on the table.' });
         }
       } else if (answers.leak === 'covers') {
-        lede = 'Covers usually leak from one of three places: the menu doesn\'t convert, the website doesn\'t rank, or the door isn\'t findable on Google. Test in that order.';
         path.push({ k: 'menu-copy', why: 'A 3-second sales pitch. If your descriptions hedge or skip sensory cues, the menu itself is shedding orders.' });
         path.push({ k: 'gbp-grader', why: 'Google Business Profile is the single highest-leverage local SEO surface. Test it before any on-site SEO work.' });
         path.push({ k: 'seo-grader', why: 'Title tag and meta description — the two lines a Google searcher reads before clicking. Cheap to fix, big effect.' });
         if (answers.raise === 'no' && (answers.pnl === 'yes' || answers.pnl === 'approx')) {
-          path.push({ k: 'margin-math', why: 'Sometimes "more covers" is the wrong goal — a 5% raise on existing covers can beat a 10% volume push on tighter margins.' });
+          path.push({ k: 'margin-math', why: 'Sometimes “more covers” is the wrong goal — a 5% raise on existing covers can beat a 10% volume push on tighter margins.' });
         }
       } else if (answers.leak === 'discovery') {
-        lede = 'Discovery is sequenced: GBP first (it dominates local intent), then mobile + speed (which gate every Google rank), then schema and titles.';
-        path.push({ k: 'gbp-grader', why: 'Google Business Profile is the storefront on Google Maps and Search. It outweighs the website for "near me" queries.' });
-        path.push({ k: 'mobile-check', why: 'Mobile usability is the floor — fail this and the rest of SEO doesn\'t matter.' });
+        path.push({ k: 'storefront-health', why: 'One URL, six checks, one score — read this first to know which discovery layer is dragging the rest.' });
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile is the storefront on Google Maps. It outweighs the website for “near me” queries.' });
+        path.push({ k: 'mobile-check', why: 'Mobile usability is the floor — fail this and the rest of SEO doesn’t matter.' });
         path.push({ k: 'speed-test', why: 'Page speed is a confirmed ranking factor and a measurable conversion factor on mobile.' });
+        path.push({ k: 'schema-check', why: 'What Google sees vs. what your site emits — missing Restaurant schema costs rich-result eligibility.' });
         path.push({ k: 'seo-grader', why: 'Title and meta description — the readable layer of every search result.' });
       } else if (answers.leak === 'kitchen') {
-        lede = 'Kitchen-side fixes pay back in margin AND brand. Start with the dish, then how it photographs, then how the menu reads.';
         path.push({ k: 'plate-cost', why: 'Plate-level cost first. Without it, every other kitchen-side decision is a guess.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Per-dish profitability + popularity. Tells you which Stars to protect and which Dogs to retire.' });
         }
         path.push({ k: 'photo-brief', why: 'A tight shot list reuses for a year. The dedup math here pays the photographer back.' });
         path.push({ k: 'menu-copy', why: 'How the dish reads on the menu. Sensory and provenance cues lift order rates without changing the food.' });
+        path.push({ k: 'brand-suite', why: 'Pull a palette from your logo — every menu, photo brief, and door card downstream uses these colors.' });
+      } else if (answers.leak === 'unsure') {
+        path.push({ k: 'storefront-health', why: 'One URL, six checks, one score — the fastest way to find your weakest layer.' });
+        path.push({ k: 'audit', why: 'After the composite, run the Restaurant Audit on the same URL for a ranked, restaurant-specific punch-list.' });
+        path.push({ k: 'margin-math', why: 'Five plain-English numbers from your last bank statement — the prime-cost band tells you if the leak is the model itself.' });
       }
 
-      // Always end with a fallback to the comprehensive audit if the
-      // leak is structural and the operator wants one pass that
-      // covers everything.
-      if (answers.pnl === 'no') {
-        path.push({ k: 'audit', why: 'No P&L numbers means we lack the inputs for the per-card calculators. The Restaurant Audit infers what it can and gives you a ranked list of structural fixes.' });
+      // Pnl=no fallback: the full audit is the cheapest source of
+      // structural signal when the calculators can’t fire.
+      if (answers.pnl === 'no' && answers.leak !== 'unsure') {
+        path.push({ k: 'audit', why: 'No P&L numbers means the per-card calculators can’t fire fully. The Restaurant Audit infers what it can and gives a ranked list of structural fixes.' });
       }
 
-      // Skip rules — explicitly tell the user what NOT to focus on
-      // first, so they don't get distracted.
-      if (answers.leak !== 'discovery') skipped.push('GBP / SEO / Speed grader (queue these later)');
+      // Skip-for-now hints — keep the owner from getting distracted.
+      if (answers.leak !== 'discovery' && answers.leak !== 'unsure') skipped.push('GBP / SEO / Speed grader (queue these later)');
       if (answers.leak !== 'kitchen' && !path.find(function(p){return p.k==='photo-brief';})) skipped.push('Photo Brief (after the cost work)');
 
-      // Dedup by tool key — same tool referenced twice keeps only the
-      // first reason (it ran first for a reason).
-      var seen = {};
-      var deduped = [];
+      // Dedup by tool key, keep first occurrence.
+      var seen = {}, deduped = [];
       path.forEach(function(p){ if (!seen[p.k]) { seen[p.k] = true; deduped.push(p); } });
-      return { path: deduped, skipped: skipped, lede: lede };
+
+      // Cross-cutting "we also noticed" flags. Fire only when 3+
+      // corroborating signals co-occur — a consultant’s minute-three
+      // observation, not a spammy alert.
+      var noticed = [];
+      if (answers.agg === 'heavy' && answers.raise === 'no' && (answers.leak === 'covers' || answers.leak === 'unsure')) {
+        noticed.push('Heavy aggregator share + no recent raise + a covers worry: your covers problem may actually be a margin problem in disguise. The Delivery Break-Even card in Margin Math is a 5-minute detour worth taking before chasing volume.');
+      }
+      if (answers.leak === 'margin' && answers.pnl === 'no' && answers.recipe === 'no') {
+        noticed.push('Margin leak with no P&L and no recipes: both Plate Cost and Margin Math need at least one of those inputs to give signal. Pull last month’s bank statement for sales, food, and labor totals — that’s the unblock.');
+      }
+      if (answers.leak === 'discovery' && answers.pnl === 'no' && answers.recipe === 'no') {
+        noticed.push('Discovery work without margin foundation: optimizing the storefront is leverage only when the model behind the door is sound. Run Margin Math’s prime-cost band on rough numbers in parallel — 5 minutes, possibly the most important.');
+      }
+      if (answers.leak === 'kitchen' && answers.agg === 'heavy' && answers.pnl !== 'yes') {
+        noticed.push('Kitchen-side leak + heavy aggregator share without full P&L visibility: the cost and channel problems usually compound. Plate Cost first, then the Delivery Break-Even card before any menu re-engineering.');
+      }
+
+      return { path: deduped, skipped: skipped, noticed: noticed };
     }
 
-    var form = document.getElementById('tsForm');
-    var resultBox = document.getElementById('tsResult');
-    var ledeEl = document.getElementById('tsResultLede');
-    var listEl = document.getElementById('tsRecList');
-    var skipEl = document.getElementById('tsResultSkip');
-    var progressEl = document.getElementById('tsProgress');
-    var resetBtn = document.getElementById('tsReset');
+    var form        = document.getElementById('tsForm');
+    var resultBox   = document.getElementById('tsResult');
+    var ledeEl      = document.getElementById('tsResultLede');
+    var listEl      = document.getElementById('tsRecList');
+    var skipEl      = document.getElementById('tsResultSkip');
+    var progressEl  = document.getElementById('tsProgress');
+    var resetBtn    = document.getElementById('tsReset');
+    var noticedBox  = document.getElementById('tsNoticed');
+    var noticedList = document.getElementById('tsNoticedList');
+    var restoreBox  = document.getElementById('tsRestore');
+    var restoreFresh= document.getElementById('tsRestoreFresh');
 
     var QUESTIONS = ['leak','pnl','recipe','raise','agg'];
+    var STORAGE_KEY = 'mtn:start:answers';
+
     function getAnswers() {
       var a = {};
       QUESTIONS.forEach(function(q){
@@ -338,9 +456,47 @@
       });
       return a;
     }
+    function setAnswers(a) {
+      if (!a || typeof a !== 'object') return;
+      QUESTIONS.forEach(function(q){
+        if (!a[q]) return;
+        var input = form.querySelector('input[name="' + q + '"][value="' + a[q] + '"]');
+        if (input) input.checked = true;
+      });
+    }
     function updateProgress() {
       var n = Object.keys(getAnswers()).length;
       progressEl.textContent = n + ' of ' + QUESTIONS.length + ' answered';
+    }
+
+    function safeStorage() {
+      try {
+        if (typeof localStorage === 'undefined') return null;
+        var probe = '__ts_probe__';
+        localStorage.setItem(probe, probe);
+        localStorage.removeItem(probe);
+        return localStorage;
+      } catch (e) { return null; }
+    }
+    function persist(answers) {
+      var ls = safeStorage(); if (!ls) return;
+      try { ls.setItem(STORAGE_KEY, JSON.stringify({ a: answers, t: Date.now() })); } catch (e) {}
+    }
+    function restore() {
+      var ls = safeStorage(); if (!ls) return null;
+      try {
+        var raw = ls.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        var parsed = JSON.parse(raw);
+        // Expire after 60 days — stale answers usually mislead more
+        // than they help once a season has passed.
+        if (!parsed || !parsed.a || (Date.now() - (parsed.t || 0)) > 60 * 24 * 3600 * 1000) return null;
+        return parsed.a;
+      } catch (e) { return null; }
+    }
+    function clearStored() {
+      var ls = safeStorage(); if (!ls) return;
+      try { ls.removeItem(STORAGE_KEY); } catch (e) {}
     }
 
     form.addEventListener('change', updateProgress);
@@ -348,8 +504,6 @@
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
       var answers = getAnswers();
-      // Require Q1 (the leak) — every other question is helpful but
-      // the spine of the recommendation depends on Q1.
       if (!answers.leak) {
         var firstQ = form.querySelector('[data-q="leak"] input');
         if (firstQ) firstQ.focus();
@@ -357,26 +511,60 @@
         return;
       }
       var built = build(answers);
-      ledeEl.textContent = built.lede;
+      ledeEl.textContent = buildLede(answers);
       listEl.innerHTML = built.path.map(function(p){
-        var t = TOOLS[p.k];
-        if (!t) return '';
-        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span></div></li>';
+        var t = TOOLS[p.k]; if (!t) return '';
+        var m = META[p.k] || {};
+        var meta = '';
+        if (m.leaveWith || m.time || m.needs) {
+          meta = '<div class="ts-rec-meta">' +
+            (m.leaveWith ? '<span><strong>You leave with</strong> ' + m.leaveWith + '</span>' : '') +
+            (m.time      ? '<span><strong>Time</strong> ' + m.time + '</span>' : '') +
+            (m.needs     ? '<span><strong>You’ll need</strong> ' + m.needs + '</span>' : '') +
+          '</div>';
+        }
+        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span>' + meta + '</div></li>';
       }).join('');
-      skipEl.textContent = built.skipped.length
-        ? 'Skip for now: ' + built.skipped.join(' · ')
-        : '';
+      if (built.noticed.length) {
+        noticedList.innerHTML = built.noticed.map(function(n){ return '<li>' + n + '</li>'; }).join('');
+        noticedBox.hidden = false;
+      } else {
+        noticedBox.hidden = true;
+        noticedList.innerHTML = '';
+      }
+      skipEl.textContent = built.skipped.length ? 'Skip for now: ' + built.skipped.join(' · ') : '';
       resultBox.setAttribute('data-shown', 'true');
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      persist(answers);
       if (window.plausible) window.plausible('Start Here Path', { props: { leak: answers.leak } });
     });
 
     resetBtn.addEventListener('click', function(){
       form.reset();
       resultBox.removeAttribute('data-shown');
+      noticedBox.hidden = true;
+      restoreBox.removeAttribute('data-shown');
+      clearStored();
       updateProgress();
       form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    if (restoreFresh) {
+      restoreFresh.addEventListener('click', function(){
+        form.reset();
+        clearStored();
+        restoreBox.removeAttribute('data-shown');
+        updateProgress();
+      });
+    }
+
+    // Hydrate from localStorage on load — returning users see their
+    // last answers filled in with a small "start fresh" affordance.
+    var stored = restore();
+    if (stored) {
+      setAnswers(stored);
+      restoreBox.setAttribute('data-shown', 'true');
+    }
 
     updateProgress();
   })();
