@@ -119,6 +119,11 @@
   .mob-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
   .mob-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
   .mob-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+  .mob-essentials { margin: 14px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-essentials-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .mob-essentials-list { display: flex; flex-direction: column; gap: 10px; }
+  .mob-essentials-foot { font-size: 12px; color: var(--stone); margin: 12px 0 0; line-height: 1.5; }
+  .mob-essentials-foot a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -544,6 +549,44 @@
       var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
       checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
     });
+
+    // Restaurant-essentials block — surfaced under the three core
+    // mobile checks. Detected via PSI's link-text / tap-targets
+    // audit details (no new fetch). Each row is pass/fail with a
+    // restaurant-specific consequence in plain English.
+    var essHost = document.getElementById('mobEssentialsHost');
+    if (essHost) essHost.parentNode.removeChild(essHost);
+    if (p.essentials) {
+      var e = p.essentials;
+      var rows = [
+        { ok: !!e.tel.present,  label: 'Phone number is tappable',
+          good: 'You have a tel: link — a thumb tap places the call. The #1 mobile-restaurant action.',
+          bad:  'No tel: link found. On a phone, your number reads as text — guests have to copy/paste or retype. Wrap the number in a tel: link and you\'ll lose fewer reservations to that one frustration.' },
+        { ok: !!e.maps.present, label: 'Address opens in Maps',
+          good: 'Your address links to Google or Apple Maps. Tap → directions, no copy/paste.',
+          bad:  'Your address isn\'t linked to a maps app. On phones, guests expect to tap "1234 Main St" and have it open in Maps. A Google Maps URL takes 30 seconds to add.' },
+        { ok: !!e.cta.present,  label: 'Above-fold action button',
+          good: 'Found a clear action: ' + (e.cta.label ? '"' + e.cta.label + '"' : 'an Order / Reserve / Menu link') + '.',
+          bad:  'No clear "Order", "Reserve", or "Menu" link in the visible scan. The first thing a phone visitor needs is a single primary action — make it loud and above the fold.' },
+        { ok: !!e.menu.present, label: 'Menu is one tap away',
+          good: 'You link to your menu by name. Phone-first visitors decide on the menu before the address.',
+          bad:  'No "menu" link detected in the scan. Most diners decide based on the menu first — make it visible and titled "Menu", not buried as "Our Food" or hidden in a drop-down.' }
+      ];
+      var html = '<div class="mob-essentials" id="mobEssentialsHost">';
+      html += '<p class="mob-essentials-eyebrow">Restaurant essentials on mobile</p>';
+      html += '<div class="mob-essentials-list">';
+      rows.forEach(function(r){
+        var cls = r.ok ? 'pass' : 'fail';
+        var mark = r.ok ? '&#10003;' : '&#10005;';
+        html += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.label + '</h3><p>' + (r.ok ? r.good : r.bad) + '</p></div></div>';
+      });
+      html += '</div>';
+      html += '<p class="mob-essentials-foot"><em>Detection scans the links and tap targets PSI returns from the rendered page. Some lazy-loaded affordances (chat widget, sticky CTA loaded after first paint) won\'t appear; if you know the link exists, the deeper <a href="/tools/audits/restaurant/">Restaurant Audit</a> covers it.</em></p>';
+      html += '</div>';
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      checksEl.parentNode.insertBefore(wrap.firstChild, checksEl.nextSibling);
+    }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -683,7 +726,45 @@
           if (fs && fs.details && fs.details.data) screenshot = fs.details.data;
         } catch (_) {}
 
-        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now(), screenshot: screenshot };
+        // Restaurant-essentials block: scan PSI's link-text audit
+        // (which surfaces every anchor on the page with its href +
+        // text) for restaurant-specific signals owners care about.
+        // No new fetch; pure post-processing of data already in the
+        // response. Each signal is a one-line consequence statement
+        // for a non-developer.
+        function essentialsScan() {
+          var out = {
+            tel: { present: false, count: 0 },
+            maps: { present: false, count: 0 },
+            cta: { present: false, label: null },
+            menu: { present: false }
+          };
+          var linkAudit = audits['link-text'] || audits['crawlable-anchors'] || null;
+          var items = (linkAudit && linkAudit.details && linkAudit.details.items) || [];
+          // Some PSI responses don't expose link-text item detail
+          // (varies by category requested). Fall back to scanning
+          // 'tap-targets' element snippets which always include
+          // href attributes for anchor tap targets.
+          if (!items.length) {
+            var tt = audits['tap-targets'];
+            if (tt && tt.details && tt.details.items) items = tt.details.items;
+          }
+          var ctaWords = /\b(order|reserve|book|menu|reservation|catering|delivery|pick.?up|takeout)\b/i;
+          items.forEach(function(it){
+            var href = (it.href || (it.node && it.node.snippet) || '') + '';
+            var text = (it.text || it.linkText || (it.node && (it.node.nodeLabel || it.node.snippet)) || '') + '';
+            var blob = href + ' ' + text;
+            if (/\btel:/i.test(blob))         { out.tel.present = true; out.tel.count++; }
+            if (/\bmaps?\.(google|apple)\.com|maps\.app\.goo\.gl|google\.com\/maps/i.test(blob)) { out.maps.present = true; out.maps.count++; }
+            var ctaMatch = text.match(ctaWords);
+            if (ctaMatch) { out.cta.present = true; if (!out.cta.label) out.cta.label = (text.length > 40 ? text.slice(0,40) + '…' : text).trim(); }
+            if (/\b(menu|carte)\b/i.test(text)) out.menu.present = true;
+          });
+          return out;
+        }
+        var essentials = essentialsScan();
+
+        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now(), screenshot: screenshot, essentials: essentials };
         renderResult(payload);
         if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
           try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
