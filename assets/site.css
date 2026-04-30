@@ -5359,6 +5359,19 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
 .comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
 
+/* Phase G.8 (Growth) — Field Notes rail on /window/. Sits before
+   </main>. Quiet editorial register; placeholder when there are
+   no approved notes yet. */
+.window-fieldnotes-rail{padding:48px 0;background:var(--surface-1);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.window-fieldnotes-rail h2{font-family:var(--font-display);font-size:24px;line-height:1.25;margin:0 0 8px;color:var(--ink)}
+.window-fieldnotes-rail__lead{font-size:14.5px;color:var(--ink-soft);max-width:680px;line-height:1.55;margin:0 0 20px}
+.window-fieldnotes-rail__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:18px}
+.window-fieldnotes-rail__item{padding-left:18px;border-left:2px solid var(--teal)}
+.window-fieldnotes-rail__quote{font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+.window-fieldnotes-rail__cite{font-size:13px;color:var(--ink-soft);margin:0}
+.window-fieldnotes-rail__cite a{color:var(--teal);text-decoration:none}
+.window-fieldnotes-rail__empty{font-style:italic;color:var(--ink-soft);font-size:14.5px}
+
 /* Phase G.8 (Growth) — glossary-index "Tools that use these terms"
    sidecar. Sits below the recently-added rail. Quiet two-column
    list on wide screens, one-column on phones. */
