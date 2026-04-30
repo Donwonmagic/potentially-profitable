@@ -5868,11 +5868,7 @@ async function parseFormBody(request) {
 // /api/auth/magic-link) — a network observer cannot tell a real
 // signup from spam. Hard-503 only when KV/Resend bindings missing.
 
-async function sha256Hex(s) {
-  const enc = new TextEncoder().encode(s);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
-}
+// sha256Hex is already imported from ./lib/auth.js — reuse it.
 
 const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
 

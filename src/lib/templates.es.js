@@ -932,7 +932,111 @@ export function windowConfirmationEmail(body) {
   return { subject, html, text: txt };
 }
 
-// Phase G.10 (Growth) — confirmación de suscripción al boletín.
+// Phase G.11 (Growth) — programa de correos de ciclo de vida.
+// Mismas tres plantillas que en EN (ver templates.js para la lógica
+// completa): bienvenida, recordatorio-no-volvió, resumen mensual.
+// El cap de 4 correos por trimestre se aplica en lifecycle-emails.js.
+export function lifecycleWelcomeEmail(body) {
+  const workshopUrl = String(body.workshopUrl || 'https://muntin.digital/es/workbench/').trim();
+  const unsubUrl    = String(body.unsubUrl    || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Guardaste tu primera cosa.';
+  const html = htmlShell(
+    'Bienvenido al Taller',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Guardado. Lo que guardes vive en el Taller hasta que lo borres. No lo uso para nada — es tuyo.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Si configuras una Vigilancia, reviso el puntaje cada semana y te aviso cuando se mueva más de cinco puntos. Si no, el Taller queda en silencio.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(workshopUrl, 'Abrir el Taller') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Guardaste algo en tu Taller de Muntin. Cancelar suscripción: ${unsubUrl}`
+  );
+  const text = [
+    'Guardaste tu primera cosa',
+    '',
+    'Guardado. Lo que guardes vive en el Taller hasta que lo borres. No lo uso para nada — es tuyo.',
+    '',
+    'Si configuras una Vigilancia, reviso el puntaje cada semana y te aviso cuando se mueva más de cinco puntos. Si no, el Taller queda en silencio.',
+    '',
+    'Abrir el Taller: ' + workshopUrl,
+    '',
+    '— Don',
+    '',
+    'Cancelar suscripción: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+export function lifecycleSavedNoReturnEmail(body) {
+  const windowUrl = String(body.windowUrl || 'https://muntin.digital/es/window/').trim();
+  const unsubUrl  = String(body.unsubUrl  || 'https://muntin.digital/sub/unsubscribe').trim();
+  const savedKind = String(body.savedKind || 'auditoría').trim();
+  const subject = `Vi que guardaste una ${savedKind}.`;
+  const html = htmlShell(
+    `Sobre esa ${savedKind}`,
+    [
+      `<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Guardaste una ${savedKind} hace una semana y no volviste. ¿Quieres que le eche un ojo? Sin presión — una lectura honesta y nada más.</p>`,
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Responde o escríbeme por La Ventana. Leo cada mensaje.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Abrir La Ventana') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Te escribo porque guardaste algo hace una semana. Cancelar suscripción: ${unsubUrl}`
+  );
+  const text = [
+    `Sobre esa ${savedKind}`,
+    '',
+    `Guardaste una ${savedKind} hace una semana y no volviste. ¿Quieres que le eche un ojo? Sin presión — una lectura honesta y nada más.`,
+    '',
+    'Responde o escríbeme por La Ventana. Leo cada mensaje.',
+    '',
+    'Abrir La Ventana: ' + windowUrl,
+    '',
+    '— Don',
+    '',
+    'Cancelar suscripción: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+export function lifecycleMonthlyDigestEmail(body) {
+  const items   = Array.isArray(body.items) ? body.items.slice(0, 3) : [];
+  const unsubUrl = String(body.unsubUrl || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Tres cosas que añadí desde que te suscribiste.';
+  const itemBlocks = items.map((it) => {
+    const kindLabel = it.kind === 'tool' ? 'Herramienta' : it.kind === 'glossary' ? 'Glosario' : 'Artículo';
+    const url = String(it.url || '').trim();
+    const title = String(it.title || '').trim();
+    const blurb = String(it.blurb || '').trim();
+    return [
+      `<p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7A7A7A;">${kindLabel}</p>`,
+      `<p style="margin:0 0 8px;font-size:17px;line-height:1.4;color:#2A2D33;"><a href="${url}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);">${title}</a></p>`,
+      blurb ? `<p style="margin:0 0 24px;font-size:14px;line-height:1.55;color:#5B5B5B;">${blurb}</p>` : '',
+    ].filter(Boolean).join('\n');
+  }).join('\n');
+  const html = htmlShell(
+    'Tres cosas desde que te suscribiste',
+    [
+      '<p style="margin:0 0 24px;font-size:16px;line-height:1.55;color:#2A2D33;">Mes tranquilo. Tres cosas que añadí que vale la pena que veas:</p>',
+      itemBlocks,
+      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Nota trimestral de Don Goldstein. Cancelar suscripción: ${unsubUrl}`
+  );
+  const textItems = items.map((it) => `${(it.kind || 'article').toUpperCase()}: ${it.title}\n${it.url}${it.blurb ? '\n' + it.blurb : ''}`).join('\n\n');
+  const text = [
+    'Tres cosas desde que te suscribiste',
+    '',
+    'Mes tranquilo. Tres cosas que añadí que vale la pena que veas:',
+    '',
+    textItems,
+    '',
+    '— Don',
+    '',
+    'Cancelar suscripción: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+// Phase G.10 — confirmación de suscripción al boletín.
 // Tono y promesa idénticos a la versión EN: corto, sin spam, con
 // el cap explícito de 4 notas por trimestre.
 export function subscriberConfirmEmail(body) {
