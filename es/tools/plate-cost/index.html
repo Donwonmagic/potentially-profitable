@@ -529,6 +529,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       <button type="button" class="pc-action-btn" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Usar en Margen Math &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushPb">Brief para tu fotógrafo &rarr;</button>
+      <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pcActionStatus"></span>
     </div>
 
     <article class="pc-signature" id="pcSignature" style="display:none;">
@@ -1298,6 +1299,14 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'zip' } });
       };
       reader.readAsArrayBuffer(pngBlob);
+    }).catch(function(err){
+      var status = document.getElementById('pcActionStatus');
+      if (status) {
+        status.textContent = 'Falló el paquete ZIP. Usa las descargas individuales arriba.';
+        setTimeout(function(){ status.textContent = ''; }, 4000);
+      }
+      if (window.plausible) window.plausible('Plate Cost Export', { props: { format: 'zip-error' } });
+      throw err;
     });
   });
 
