@@ -63,6 +63,9 @@ const CHECKS = [
   ['RSS coverage',        'check-rss-coverage.mjs',        '--check'],
   ['Content guardrails',  'check-content-guardrails.mjs',  '--check'],
   ['Event prop cardinality','check-event-prop-cardinality.mjs','--check'],
+  ['Image dimensions (warn)','check-image-dimensions.mjs',   '--check'],
+  ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
+  ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
 ];
 
 const results = [];
