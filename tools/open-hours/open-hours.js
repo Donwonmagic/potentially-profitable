@@ -667,6 +667,10 @@ function ohHolidaysForYear(year, locale) {
   var blackFriday = new Date(thanksgiving); blackFriday.setUTCDate(blackFriday.getUTCDate() + 1);
   // MLK Jr. Day = 3rd Monday of January.
   var mlk = ohNthWeekdayOfMonth(year, 1, 1, 3);
+  // Super Bowl Sunday = 2nd Sunday of February (NFL's 17-game era,
+  // 2022 onward). One of the highest takeout/wings days of the year
+  // for casual independents — owners regularly forget to plan for it.
+  var superBowl = ohNthWeekdayOfMonth(year, 2, 0, 2);
 
   if (locale === 'es') {
     // Spanish-language slate. Latin-American observances added,
@@ -675,6 +679,7 @@ function ohHolidaysForYear(year, locale) {
       { id: 'new-years',     name: 'Año Nuevo',           date: year + '-01-01', note: 'La mayoría cierra o abre tarde.' },
       { id: 'reyes',         name: 'Día de Reyes',        date: year + '-01-06', note: 'Tradición en muchas familias latinas; algunos cierran o tienen menú especial.' },
       { id: 'mlk',           name: 'Día de MLK Jr.',      date: ohFmtDate(mlk),  note: 'Feriado federal; depende de ti.' },
+      { id: 'super-bowl',    name: 'Super Bowl',          date: ohFmtDate(superBowl), note: 'Uno de los días más fuertes de takeout y delivery del año — alitas, pizza, parrillada para llevar.' },
       { id: 'valentines',    name: 'Día de San Valentín', date: year + '-02-14', note: 'Una de las noches más reservadas del año — usualmente abierto con reservas y menú especial.' },
       { id: 'mardi-gras',    name: 'Martes de Carnaval',  date: ohFmtDate(mardiGras), note: 'Algunos restaurantes corren un menú especial en vez de cerrar.' },
       { id: 'st-patricks',   name: 'Día de San Patricio', date: year + '-03-17', note: 'Noche fuerte para bares y pubs; la mayoría abre con horario extendido.' },
@@ -704,6 +709,7 @@ function ohHolidaysForYear(year, locale) {
   return [
     { id: 'new-years',     name: "New Year's Day",     date: year + '-01-01', note: 'Most restaurants close or open late.' },
     { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(mlk), note: 'Federal holiday; up to you.' },
+    { id: 'super-bowl',    name: 'Super Bowl Sunday',  date: ohFmtDate(superBowl),                          note: 'One of the biggest takeout/delivery days of the year — wings, pizza, BBQ-to-go.' },
     { id: 'valentines',    name: "Valentine's Day",    date: year + '-02-14', note: 'One of the most-reserved nights of the year — usually open with reservations and a fixed menu.' },
     { id: 'mardi-gras',    name: 'Mardi Gras',         date: ohFmtDate(mardiGras),                          note: 'Some restaurants run a special menu instead of closing.' },
     { id: 'st-patricks',   name: "St. Patrick's Day",  date: year + '-03-17', note: 'Big night for bars and pubs; most open with extended hours.' },
