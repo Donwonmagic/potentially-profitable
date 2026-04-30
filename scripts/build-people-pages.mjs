@@ -82,6 +82,63 @@ function articleTitle(slug, locale) {
   return slug.replace(/-/g, ' ');
 }
 
+// Phase G.2c — Person + ItemList JSON-LD per contributor page.
+// Each approved field note becomes a Comment that the Person
+// `subjectOf` lists. Google + LLM search engines treat this as
+// authoritative attribution: the contributor is the subject;
+// the article is what they're commenting on; the body is the
+// citation-quotable substance.
+function renderPersonSchema({ locale, slug, author, notes }) {
+  const SITE = 'https://muntin.digital';
+  const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/people/${slug}/`;
+  const personId = `${baseUrl}#person`;
+  const ogImg = `${SITE}/brand/og/people-${slug}${locale === 'es' ? '-es' : ''}.png`;
+
+  const comments = notes.map((n, i) => {
+    const articleUrl = `${SITE}${locale === 'es' ? '/es' : ''}/blog/${n.articleSlug}/`;
+    return {
+      '@type': 'Comment',
+      '@id': `${baseUrl}#note-${i + 1}`,
+      author: { '@id': personId },
+      about: { '@type': 'Article', url: articleUrl, headline: articleTitle(n.articleSlug, locale) },
+      text: n.body,
+      dateCreated: n.approvedAt ? new Date(n.approvedAt).toISOString() : undefined,
+      url: `${articleUrl}#field-notes`,
+    };
+  });
+
+  const itemList = {
+    '@type': 'ItemList',
+    '@id': `${baseUrl}#notes`,
+    numberOfItems: notes.length,
+    itemListElement: notes.map((n, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: { '@id': `${baseUrl}#note-${i + 1}` },
+    })),
+  };
+
+  const obj = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': personId,
+        name: author,
+        jobTitle: locale === 'es' ? 'Operador de restaurante' : 'Restaurant Operator',
+        url: baseUrl,
+        image: ogImg,
+        subjectOf: { '@id': `${baseUrl}#notes` },
+        publishingPrinciples: `${SITE}/about/`,
+      },
+      itemList,
+      ...comments,
+    ],
+  };
+  const json = JSON.stringify(obj, null, 2);
+  return `<script type="application/ld+json">\n${json}\n</script>`;
+}
+
 function renderPage({ locale, slug, author, notes }) {
   const isEs = locale === 'es';
   const nav = isEs ? NAV_ES : NAV_EN;
@@ -169,6 +226,7 @@ ${AUTO_MARKER}
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
+${renderPersonSchema({ locale, slug, author, notes: sorted })}
 </head>
 <body>
 <a class="skip-link" href="#main">${isEs ? 'Ir al contenido' : 'Skip to main content'}</a>

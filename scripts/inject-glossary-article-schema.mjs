@@ -54,6 +54,17 @@ function gitMtime(dir) {
   return new Date().toISOString();
 }
 
+// First-commit timestamp for the term — stable across subsequent
+// rewrites (avoids the feedback loop where each commit bumps git
+// mtime and the next --check finds the schema "stale").
+function gitFirstSeen(dir) {
+  try {
+    const out = execSync(`git log --reverse --format=%cI -- "${dir}"`, { cwd: repoRoot, encoding: 'utf8' }).split('\n')[0].trim();
+    if (out) return out;
+  } catch (_) { /* fall through */ }
+  return new Date().toISOString();
+}
+
 function parseDefinedTerm(src) {
   const m = src.match(/<script type="application\/ld\+json">\s*([\s\S]*?)<\/script>/);
   if (!m) return null;
@@ -70,7 +81,10 @@ function buildBlock({ slug, locale, term }) {
   const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/glossary/${slug}/`;
   const ogSuffix = locale === 'es' ? '-es' : '';
   const ogUrl = `${SITE}/brand/og/glossary-${slug}${ogSuffix}.png`;
-  const dateModified = gitMtime(path.join(repoRoot, locale === 'es' ? 'es/glossary' : 'glossary', slug));
+  // datePublished uses first-commit timestamp (stable). dateModified
+  // omitted: it would create a self-bumping feedback loop where each
+  // commit invalidates the next --check.
+  const datePublished = gitFirstSeen(path.join(repoRoot, locale === 'es' ? 'es/glossary' : 'glossary', slug));
 
   const obj = {
     '@context': 'https://schema.org',
@@ -93,7 +107,7 @@ function buildBlock({ slug, locale, term }) {
         },
         publisher: { '@id': `${SITE}/#business` },
         image: ogUrl,
-        dateModified,
+        datePublished,
         isPartOf: { '@id': `${SITE}/glossary/#muntin-glossary` },
       },
     ],
