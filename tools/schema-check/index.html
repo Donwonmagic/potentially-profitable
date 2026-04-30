@@ -328,7 +328,35 @@
       <span id="schPasteHint" style="font-size:12px;color:var(--stone);"></span>
     </div>
   </details>
-  <style>.sch-paste-wrap[open] .sch-paste-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.sch-paste-wrap summary::-webkit-details-marker{display:none}</style>
+  <style>
+    .sch-paste-wrap[open] .sch-paste-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.sch-paste-wrap summary::-webkit-details-marker{display:none}
+    .sch-serp-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+    @media(max-width:640px){.sch-serp-pair{grid-template-columns:1fr}}
+    .sch-serp-card{padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+    .sch-serp-after{border-color:var(--teal)}
+    .sch-serp-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px}
+    .sch-serp-after .sch-serp-eyebrow{color:var(--teal)}
+    .sch-serp-mock{padding:10px 12px;background:var(--cream-2);border-radius:6px;font-family:Arial,sans-serif;line-height:1.4}
+    .sch-serp-host{font-size:12px;color:#1a73e8}
+    .sch-serp-title{font-size:18px;color:#1a0dab;margin:2px 0}
+    .sch-serp-rating{font-size:13px;color:#202124;margin:2px 0}
+    .sch-serp-status{color:#0d8a4f;font-weight:600}
+    .sch-serp-desc{font-size:13px;color:#4d5156}
+    .sch-gen{margin:18px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--surface-1);padding:12px 16px}
+    .sch-gen-summary{cursor:pointer;font-size:14px;color:var(--ink)}
+    .sch-gen-body{margin-top:12px}
+    .sch-gen-help{font-size:13px;color:var(--ink-soft);margin:0 0 12px;line-height:1.5}
+    .sch-gen-help code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:12px}
+    .sch-gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
+    @media(max-width:560px){.sch-gen-grid{grid-template-columns:1fr}}
+    .sch-gen-grid label{display:flex;flex-direction:column;font-size:12px;font-weight:600;color:var(--ink-soft);gap:4px}
+    .sch-gen-grid input{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px}
+    .sch-gen-snippet{background:var(--cream-2);padding:12px;border-radius:6px;font-family:ui-monospace,SFMono-Regular,monospace;font-size:12px;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:280px;overflow:auto;margin:0}
+    .sch-gen-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+    .sch-gen-btn{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
+    .sch-gen-btn:hover{border-color:var(--teal);color:var(--teal)}
+    .sch-gen-msg{font-size:12px;color:var(--stone)}
+  </style>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
   <div class="tool-states-slot" id="schStates" data-state="idle" aria-live="polite"></div>
   <div class="sch-result" id="schResult" aria-live="polite">
@@ -401,6 +429,8 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -614,20 +644,155 @@
   });
 
   // Phase 2 (Workshop) — render extracted so submit + rehydrate share it.
+  // Render a mock Google SERP card showing what Google CAN show
+  // ("today") vs. what it COULD show with full Restaurant schema
+  // ("after fix"). Owners think in pictures; this turns the abstract
+  // "@type: Restaurant" into the visible rich card they're missing.
+  function renderSerpPreview(p, hasSpecific) {
+    var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var name = ctx.businessName || 'Your Restaurant';
+    var hostname = '';
+    try { hostname = new URL(p.url).hostname.replace(/^www\./, ''); } catch (_) { hostname = 'yoursite.com'; }
+    var todayHtml = '<div class="sch-serp-card sch-serp-today">' +
+      '<p class="sch-serp-eyebrow">Today &mdash; how Google shows you now</p>' +
+      '<div class="sch-serp-mock">' +
+        '<div class="sch-serp-host">' + hostname + '</div>' +
+        '<div class="sch-serp-title">' + name + '</div>' +
+        '<div class="sch-serp-desc">' + (hasSpecific
+          ? 'Google has enough info for a normal listing.'
+          : 'A plain text snippet. No hours, no rating, no menu link.') + '</div>' +
+      '</div></div>';
+    var afterHtml = '<div class="sch-serp-card sch-serp-after">' +
+      '<p class="sch-serp-eyebrow">After the fix &mdash; what Google could show</p>' +
+      '<div class="sch-serp-mock sch-serp-mock--rich">' +
+        '<div class="sch-serp-host">' + hostname + '</div>' +
+        '<div class="sch-serp-title">' + name + '</div>' +
+        '<div class="sch-serp-rating">★★★★☆ 4.6 &middot; <span class="sch-serp-status">Open now</span> &middot; Closes 10 PM</div>' +
+        '<div class="sch-serp-desc">Hours, phone, menu link, and rating &mdash; pulled directly from your site\'s schema.</div>' +
+      '</div></div>';
+    return '<div class="sch-serp-pair">' + todayHtml + afterHtml + '</div>';
+  }
+
+  // Inline JSON-LD Restaurant generator. Pre-fills from the cross-tool
+  // context bus when present (mtn:context — written by Open Hours,
+  // GBP Grader, etc.). Owner enters 4 fields → gets a copy-pasteable
+  // <script type="application/ld+json"> block + a one-click validate
+  // link to validator.schema.org via the existing #paste= mechanism.
+  function renderJsonLdGenerator(p) {
+    var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    function attr(v) { return String(v == null ? '' : v).replace(/"/g, '&quot;'); }
+    return '<details class="sch-gen" id="schGen">' +
+      '<summary class="sch-gen-summary"><strong>Generate a Restaurant schema block</strong> &mdash; copy and paste into your site</summary>' +
+      '<div class="sch-gen-body">' +
+        '<p class="sch-gen-help">Fill these four fields. We assemble a valid JSON-LD <code>Restaurant</code> block — copy it and paste into your site\'s <code>&lt;head&gt;</code> via the path your platform uses (Custom Code on Wix, Code Injection on Squarespace, Insert Headers and Footers on WordPress).</p>' +
+        '<div class="sch-gen-grid">' +
+          '<label>Restaurant name<input type="text" id="schGenName" value="' + attr(ctx.businessName) + '" placeholder="Joe\'s Taqueria"></label>' +
+          '<label>Address (one line)<input type="text" id="schGenAddr" value="' + attr(ctx.address) + '" placeholder="1234 Main St, Silver Spring, MD 20910"></label>' +
+          '<label>Phone (with country code)<input type="text" id="schGenPhone" value="' + attr(ctx.phone) + '" placeholder="+1-301-555-1234"></label>' +
+          '<label>Website URL<input type="text" id="schGenUrl" value="' + attr(p.url) + '" placeholder="https://yoursite.com"></label>' +
+        '</div>' +
+        '<div class="sch-gen-out">' +
+          '<pre id="schGenSnippet" class="sch-gen-snippet"></pre>' +
+          '<div class="sch-gen-actions">' +
+            '<button type="button" class="sch-gen-btn" id="schGenCopy">Copy snippet</button>' +
+            '<a href="#" class="sch-gen-btn" id="schGenValidate" target="_blank" rel="noopener">Validate at Google &rarr;</a>' +
+            '<span class="sch-gen-msg" id="schGenMsg" aria-live="polite"></span>' +
+          '</div>' +
+        '</div>' +
+        '<p class="sch-gen-help" style="margin-top:10px;">Already entered hours in <a href="/tools/open-hours/" style="color:var(--teal);">Open Hours</a>? It generates a more complete schema block with structured opening hours — handier for an owner who runs split shifts or seasonal hours.</p>' +
+      '</div>' +
+    '</details>';
+  }
+
+  function buildJsonLdSnippet() {
+    var name  = (document.getElementById('schGenName')  || {}).value || '';
+    var addr  = (document.getElementById('schGenAddr')  || {}).value || '';
+    var phone = (document.getElementById('schGenPhone') || {}).value || '';
+    var urlV  = (document.getElementById('schGenUrl')   || {}).value || '';
+    if (!name && !addr && !phone) return '';
+    // Best-effort address split: last city/state/zip block on the right.
+    var streetAddress = addr, addressLocality = '', addressRegion = '', postalCode = '';
+    var m = addr.match(/^(.*?),\s*([^,]+),\s*([A-Z]{2})\s*(\d{5}(?:-\d{4})?)?\s*$/);
+    if (m) { streetAddress = m[1].trim(); addressLocality = m[2].trim(); addressRegion = m[3]; postalCode = m[4] || ''; }
+    var obj = {
+      '@context': 'https://schema.org',
+      '@type': 'Restaurant',
+      name: name || undefined,
+      url: urlV || undefined,
+      telephone: phone || undefined,
+      address: addr ? {
+        '@type': 'PostalAddress',
+        streetAddress: streetAddress || undefined,
+        addressLocality: addressLocality || undefined,
+        addressRegion: addressRegion || undefined,
+        postalCode: postalCode || undefined,
+        addressCountry: 'US'
+      } : undefined
+    };
+    // Strip undefined keys.
+    Object.keys(obj).forEach(function(k){ if (obj[k] === undefined) delete obj[k]; });
+    if (obj.address) Object.keys(obj.address).forEach(function(k){ if (obj.address[k] === undefined) delete obj.address[k]; });
+    return '<script type="application/ld+json">\n' + JSON.stringify(obj, null, 2) + '\n<\/script>';
+  }
+
+  function wireJsonLdGenerator() {
+    var snippetEl = document.getElementById('schGenSnippet');
+    var copyBtn   = document.getElementById('schGenCopy');
+    var validate  = document.getElementById('schGenValidate');
+    var msgEl     = document.getElementById('schGenMsg');
+    var inputs    = ['schGenName','schGenAddr','schGenPhone','schGenUrl'].map(function(id){return document.getElementById(id);}).filter(Boolean);
+    if (!snippetEl) return;
+    function refresh() {
+      var snip = buildJsonLdSnippet();
+      snippetEl.textContent = snip || '(fill the four fields above to see a Restaurant schema block)';
+      if (validate && snip) {
+        // Strip the <script> wrapper for the validator's #code= param.
+        var code = snip.replace(/^<script type="application\/ld\+json">\n?/, '').replace(/\n?<\/script>$/, '');
+        validate.href = 'https://validator.schema.org/#code=' + encodeURIComponent(code);
+      }
+    }
+    inputs.forEach(function(el){ el.addEventListener('input', refresh); });
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var snip = buildJsonLdSnippet();
+        if (!snip) { if (msgEl) { msgEl.textContent = 'Fill the four fields first.'; setTimeout(function(){msgEl.textContent='';},2200); } return; }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(snip).then(function () {
+            if (msgEl) { msgEl.textContent = 'Copied — paste into your <head>.'; setTimeout(function(){msgEl.textContent='';},2400); }
+          });
+        }
+        // Persist what the owner just typed for the next tool to read.
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          try {
+            MuntinContext.merge({
+              businessName: (document.getElementById('schGenName') || {}).value || undefined,
+              address:      (document.getElementById('schGenAddr') || {}).value || undefined,
+              phone:        (document.getElementById('schGenPhone') || {}).value || undefined
+            });
+          } catch (_) {}
+        }
+      });
+    }
+    refresh();
+  }
+
   function renderResult(p) {
     var foundTypes = p.foundTypes || [];
     var hasSpecific = foundTypes.some(function(t){return classify(t)==='specific'});
     var hasAny = foundTypes.length > 0;
     if (hasSpecific) {
-      verdict.innerHTML = '<div class="icon found">&#10003;</div><h2>Yes — Google understands your business.</h2><p>Your site has specific structured data telling Google what kind of business you are.</p>';
+      verdict.innerHTML = '<div class="icon found">&#10003;</div><h2>Yes &mdash; Google understands your business.</h2><p>Your site has specific structured data telling Google what kind of business you are.</p>';
     } else if (hasAny) {
-      verdict.innerHTML = '<div class="icon missing">~</div><h2>Partially — Google sees your site, but not what you DO.</h2><p>You have some structured data, but it\'s too generic. Google knows you exist but can\'t match you to specific searches like "yoga near me" or "best salon in Bethesda."</p>';
+      verdict.innerHTML = '<div class="icon missing">~</div><h2>Partially &mdash; Google sees your site, but not what you DO.</h2><p>You have some structured data, but it\'s too generic. Google knows you exist but can\'t match you to specific searches like "best Italian near me" or "tacos in Silver Spring."</p>';
     } else {
-      verdict.innerHTML = '<div class="icon missing">&#10005;</div><h2>No — Google doesn\'t know what your business is.</h2><p>Your site has no structured data. Google can\'t tell if you\'re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.</p>';
+      verdict.innerHTML = '<div class="icon missing">&#10005;</div><h2>No &mdash; Google doesn\'t know what your business is.</h2><p>Your site has no structured data. Google can\'t tell if you\'re a restaurant, a yoga studio, a salon, or a law firm. Adding schema markup is a 10-line code change with real SEO impact.</p>';
     }
+    // Insert the SERP preview above the types list — owners read
+    // pictures faster than @type names.
+    var serpHtml = renderSerpPreview(p, hasSpecific);
     typesList.innerHTML = '';
     if (foundTypes.length === 0) {
-      typesList.innerHTML = '<li><span class="tag none">Missing</span><span class="detail"><strong>No schema found.</strong> Ask your developer to add a JSON-LD block with your business type, address, hours, and phone. This is a 10-minute fix that directly improves your local search visibility.</span></li>';
+      typesList.innerHTML = '<li><span class="tag none">Missing</span><span class="detail"><strong>No schema found.</strong> Use the generator below to build a JSON-LD block — you don\'t need a developer for this. Pasting it into your site\'s &lt;head&gt; is a 5-minute fix with real local-search impact.</span></li>';
     } else {
       foundTypes.forEach(function(t){
         var c = classify(t);
@@ -636,8 +801,29 @@
         typesList.innerHTML += '<li><span class="tag '+tagCls+'">'+tagText+'</span><span class="detail"><strong>@type: '+friendlyName(t)+'</strong><br>'+advice(t)+'</span></li>';
       });
     }
+    // Insert SERP preview before types list, generator after.
+    var existing = document.getElementById('schSerpHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    var serpHost = document.createElement('div');
+    serpHost.id = 'schSerpHost';
+    serpHost.innerHTML = serpHtml;
+    typesList.parentNode.insertBefore(serpHost, typesList);
+    var existingGen = document.getElementById('schGenHost');
+    if (existingGen) existingGen.parentNode.removeChild(existingGen);
+    if (!hasSpecific) {
+      var genHost = document.createElement('div');
+      genHost.id = 'schGenHost';
+      genHost.innerHTML = renderJsonLdGenerator(p);
+      typesList.parentNode.insertBefore(genHost, typesList.nextSibling);
+      // Wire up after insert.
+      setTimeout(wireJsonLdGenerator, 0);
+    }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Persist the audited URL for the next tool.
+    if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+      try { MuntinContext.merge({ lastUrl: p.url }); } catch (_) {}
+    }
   }
 
   // Phase 2 (Workshop) — auth + Save-to-Workbench wiring.
