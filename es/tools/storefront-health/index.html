@@ -64,9 +64,31 @@
   .sh-row__label{font-size:14px;color:var(--ink-soft);margin:0}
   .sh-row__fix{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--teal);text-decoration:none;margin-top:4px}
   .sh-row__fix:hover{text-decoration:underline}
-  .sh-overall{text-align:center;margin:24px 0;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
+  .sh-overall{margin:24px 0;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .sh-overall__num{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:96px}
   .sh-overall__score{font-family:var(--font-display);font-size:64px;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-2px}
-  .sh-overall__grade{font-size:14px;color:var(--stone);margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
+  .sh-overall__grade{font-size:13px;color:var(--stone);letter-spacing:.1em;text-transform:uppercase}
+  .sh-overall__narrative{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+  .sh-fix-first{margin:18px 0 12px;padding:18px 22px;border:1px solid var(--line);border-left:4px solid var(--rust);border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:6px}
+  .sh-fix-first[data-band="amber"]{border-left-color:#c89a3c}
+  .sh-fix-first__eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust)}
+  .sh-fix-first[data-band="amber"] .sh-fix-first__eyebrow{color:#9c7416}
+  .sh-fix-first__title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .sh-fix-first__why{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5}
+  .sh-fix-first__cta{margin-top:6px;align-self:flex-start;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px}
+  .sh-fix-first__cta:hover{filter:brightness(0.92)}
+  .sh-row[data-band="red"]{border-left:3px solid var(--rust)}
+  .sh-row[data-band="amber"]{border-left:3px solid #c89a3c}
+  .sh-row[data-band="green"]{border-left:3px solid var(--teal)}
+  .sh-share{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .sh-share__btn{padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;font:inherit}
+  .sh-share__btn:hover{border-color:var(--teal);color:var(--teal)}
+  .sh-share__msg{font-size:12.5px;color:var(--stone)}
+  @media (max-width:560px){
+    .sh-overall{grid-template-columns:1fr;text-align:left}
+    .sh-overall__num{flex-direction:row;align-items:baseline;gap:10px}
+    .sh-overall__score{font-size:48px}
+  }
   /* Save affordance follows the canonical workbench-save pattern. */
   .sh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .sh-save[hidden]{display:none}
@@ -510,34 +532,133 @@
   // (the registry is locale-agnostic). Translation only applies to
   // user-facing copy.
 
+  var KIND_NARRATIVE = {
+    speed:  { owner: 'Velocidad en el móvil',    leak: 'Carga lenta = visitantes que se van antes de ver el menú.' },
+    mobile: { owner: 'Usabilidad en el móvil',   leak: 'Botones pequeños, fuera de pantalla — una reserva perdida por cada cliente que tiene que pellizcar la pantalla.' },
+    seo:    { owner: 'Encontrable en Google',    leak: 'Title y descripción son las dos líneas que un buscador lee antes de hacer clic.' },
+    schema: { owner: 'Lo que Google ve',         leak: 'Sin schema de Restaurant, Google no muestra tus horarios, menú o calificación en la tarjeta enriquecida.' },
+    gbp:    { owner: 'Tu listado en Google',     leak: 'GBP pesa más que tu sitio para búsquedas "cerca de mí" — arréglalo primero.' },
+    audit:  { owner: 'Fundamentos de restaurante',leak: 'La revisión más profunda — chequeos específicos para restaurantes que Lighthouse no hace.' }
+  };
+
+  function bandFor(score){
+    if (score == null) return null;
+    if (score < 50) return 'red';
+    if (score < 70) return 'amber';
+    return 'green';
+  }
+
+  function overallNarrative(rollup, lowest){
+    if (rollup.score == null) return 'Corre cualquier chequeo abajo para empezar tu boleta. Tu puntaje promediará cada fila con datos.';
+    if (rollup.score >= 85) return 'Fachada sólida. Schema, velocidad y Google están funcionando. La hoja de ruta desde aquí es incremental.';
+    if (rollup.score >= 70 && lowest)  return 'Base sólida con un punto débil. ' + (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' está arrastrando el promedio — ahí está la palanca.';
+    if (rollup.score >= 50 && lowest)  return (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' es la capa más débil ahora mismo. Arregla eso primero; las demás suben con él.';
+    if (lowest)                        return 'Hay trabajo estructural pendiente en toda la fachada. ' + (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' es lo más urgente — un Diagnóstico de Restaurante te dará la lista priorizada completa.';
+    return '';
+  }
+
   function renderScorecard(prop){
     if (!prop) return;
     var rollup = prop.rollup || { score: null, byCheck: {} };
     var byCheck = rollup.byCheck || {};
+
+    var populated = [], unpopulated = [];
+    KIND_ORDER.forEach(function(kind){
+      if (byCheck[kind] && typeof byCheck[kind].score === 'number') {
+        populated.push({ kind: kind, score: byCheck[kind].score });
+      } else {
+        unpopulated.push({ kind: kind });
+      }
+    });
+    populated.sort(function(a, b){ return a.score - b.score; });
+    var ordered = populated.concat(unpopulated);
+    var lowest = populated[0] || null;
+
     var html = '';
     var overallScore = (rollup.score == null) ? '—' : rollup.score;
     var overallGrade = rollup.grade || (rollup.score == null ? 'Sin chequeos aún' : '');
-    html += '<div class="sh-overall"><div class="sh-overall__score">' + overallScore + '</div>';
-    html += '<div class="sh-overall__grade">' + overallGrade + '</div></div>';
+    var narrative = overallNarrative(rollup, lowest);
+    html += '<div class="sh-overall">';
+    html += '<div class="sh-overall__num"><div class="sh-overall__score">' + overallScore + '</div><div class="sh-overall__grade">' + overallGrade + '</div></div>';
+    if (narrative) html += '<p class="sh-overall__narrative">' + narrative + '</p>';
+    html += '</div>';
+
+    if (lowest && lowest.score < 70) {
+      var lmeta = KIND_META[lowest.kind] || {};
+      var lnarr = KIND_NARRATIVE[lowest.kind] || {};
+      var lband = bandFor(lowest.score);
+      var lhref = (lmeta.url || '#') + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
+      html += '<div class="sh-fix-first" data-band="' + lband + '">';
+      html += '<span class="sh-fix-first__eyebrow">Arregla esto primero</span>';
+      html += '<h3 class="sh-fix-first__title">' + (lnarr.owner || lmeta.label) + ' &mdash; ' + lowest.score + '/100</h3>';
+      if (lnarr.leak) html += '<p class="sh-fix-first__why">' + lnarr.leak + '</p>';
+      html += '<a class="sh-fix-first__cta" href="' + lhref + '">Abrir el chequeo de ' + (lmeta.label || lowest.kind) + ' &rarr;</a>';
+      html += '</div>';
+    }
+
     html += '<div class="sh-grid">';
-    KIND_ORDER.forEach(function(kind){
-      var meta = KIND_META[kind];
+    ordered.forEach(function(item){
+      var kind = item.kind;
+      var meta = KIND_META[kind] || { label: kind, url: '#' };
       var entry = byCheck[kind];
+      var band = entry ? bandFor(entry.score) : null;
       var scoreHtml = entry
         ? '<span class="sh-row__score">' + entry.score + '</span>'
-        : '<span class="sh-row__score sh-row__score--missing">Not yet run</span>';
+        : '<span class="sh-row__score sh-row__score--missing">Sin correr aún</span>';
       var fixHref = meta.url + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
       var fixLabel = entry ? 'Volver a correr y vigilar &rarr;' : 'Correr este chequeo &rarr;';
-      html += '<div class="sh-row">';
+      html += '<div class="sh-row"' + (band ? ' data-band="' + band + '"' : '') + '>';
       html += '<div class="sh-row__head"><span class="sh-row__kind">' + meta.label + '</span>' + scoreHtml + '</div>';
       html += '<a class="sh-row__fix" href="' + fixHref + '">' + fixLabel + '</a>';
       html += '</div>';
     });
     html += '</div>';
-    html += '<aside class="learn-back" aria-label="Qué significa esta boleta"><p class="learn-back-eyebrow">Qué significa esta boleta</p><p class="learn-back-body">Cada fila corre el mismo chequeo que la herramienta individual y lo refleja aquí. La calificación general promedia cada fila con datos. <a href="/es/learn/topics/">Explora los temas</a> para entender qué revisa cada uno.</p></aside>';
+
+    html += '<div class="sh-share">';
+    html += '<button type="button" class="sh-share__btn" data-share-link>Copiar enlace para tu encargado web</button>';
+    html += '<button type="button" class="sh-share__btn" data-share-summary>Copiar resumen como texto</button>';
+    html += '<span class="sh-share__msg" data-share-msg aria-live="polite"></span>';
+    html += '</div>';
+
+    html += '<aside class="learn-back" aria-label="Qué significa esta boleta"><p class="learn-back-eyebrow">Qué significa esta boleta</p><p class="learn-back-body">Cada fila corre el mismo chequeo que la herramienta individual y lo refleja aquí. La calificación general promedia cada fila con datos. Las filas de menor puntaje aparecen primero — eso es tu Arregla esto primero. <a href="/es/learn/topics/">Explora los temas</a> para entender qué revisa cada uno.</p></aside>';
     result.innerHTML = html;
     result.classList.add('visible');
     if (status) status.hidden = true;
+
+    var msgEl = result.querySelector('[data-share-msg]');
+    var linkBtn = result.querySelector('[data-share-link]');
+    var summaryBtn = result.querySelector('[data-share-summary]');
+    function flash(text){ if (msgEl) { msgEl.textContent = text; setTimeout(function(){ if (msgEl) msgEl.textContent = ''; }, 2200); } }
+    if (linkBtn) linkBtn.addEventListener('click', function(){
+      try {
+        var href = window.location.origin + window.location.pathname + '?url=' + encodeURIComponent(prop.url || '');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(href).then(function(){ flash('Enlace copiado — pégalo en un correo o mensaje.'); });
+        } else { flash('Copiar no disponible — mantén pulsada la barra de direcciones.'); }
+      } catch (e) { flash('No se pudo copiar.'); }
+    });
+    if (summaryBtn) summaryBtn.addEventListener('click', function(){
+      var lines = [];
+      lines.push('Salud de Fachada — ' + (prop.url || '(sin url)'));
+      if (rollup.score != null) lines.push('General: ' + rollup.score + '/100' + (overallGrade ? ' (' + overallGrade + ')' : ''));
+      ordered.forEach(function(item){
+        var meta = KIND_META[item.kind] || { label: item.kind };
+        var entry = byCheck[item.kind];
+        lines.push('- ' + meta.label + ': ' + (entry ? entry.score : 'sin correr aún'));
+      });
+      if (lowest && lowest.score < 70) {
+        var lmeta = KIND_META[lowest.kind] || {};
+        var lnarr = KIND_NARRATIVE[lowest.kind] || {};
+        lines.push('');
+        lines.push('Arregla esto primero: ' + (lnarr.owner || lmeta.label));
+        if (lnarr.leak) lines.push(lnarr.leak);
+      }
+      var text = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ flash('Resumen copiado al portapapeles.'); });
+      } else { flash('Copiar no disponible — selecciona el texto manualmente.'); }
+    });
+
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 

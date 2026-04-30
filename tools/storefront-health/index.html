@@ -64,9 +64,36 @@
   .sh-row__label{font-size:14px;color:var(--ink-soft);margin:0}
   .sh-row__fix{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--teal);text-decoration:none;margin-top:4px}
   .sh-row__fix:hover{text-decoration:underline}
-  .sh-overall{text-align:center;margin:24px 0;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
+  .sh-overall{margin:24px 0;padding:24px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .sh-overall__num{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:96px}
   .sh-overall__score{font-family:var(--font-display);font-size:64px;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-2px}
-  .sh-overall__grade{font-size:14px;color:var(--stone);margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
+  .sh-overall__grade{font-size:13px;color:var(--stone);letter-spacing:.1em;text-transform:uppercase}
+  .sh-overall__narrative{font-size:15px;line-height:1.55;color:var(--ink);margin:0}
+  /* Fix-this-first card sits above the grid. Its job is to convert
+     six numbers into one verb. Color/band reflects severity: red for
+     <50, amber 50-69, otherwise we don't render this card at all
+     (no grid rows are urgent enough to single out). */
+  .sh-fix-first{margin:18px 0 12px;padding:18px 22px;border:1px solid var(--line);border-left:4px solid var(--rust);border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:6px}
+  .sh-fix-first[data-band="amber"]{border-left-color:#c89a3c}
+  .sh-fix-first__eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust)}
+  .sh-fix-first[data-band="amber"] .sh-fix-first__eyebrow{color:#9c7416}
+  .sh-fix-first__title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .sh-fix-first__why{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5}
+  .sh-fix-first__cta{margin-top:6px;align-self:flex-start;padding:10px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px}
+  .sh-fix-first__cta:hover{filter:brightness(0.92)}
+  /* Per-row band stripe — replaces the cool-uniform look with severity. */
+  .sh-row[data-band="red"]{border-left:3px solid var(--rust)}
+  .sh-row[data-band="amber"]{border-left:3px solid #c89a3c}
+  .sh-row[data-band="green"]{border-left:3px solid var(--teal)}
+  .sh-share{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .sh-share__btn{padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;font:inherit}
+  .sh-share__btn:hover{border-color:var(--teal);color:var(--teal)}
+  .sh-share__msg{font-size:12.5px;color:var(--stone)}
+  @media (max-width:560px){
+    .sh-overall{grid-template-columns:1fr;text-align:left}
+    .sh-overall__num{flex-direction:row;align-items:baseline;gap:10px}
+    .sh-overall__score{font-size:48px}
+  }
   /* Save affordance follows the canonical workbench-save pattern. */
   .sh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .sh-save[hidden]{display:none}
@@ -519,34 +546,146 @@
     try { return new URL(u).hostname.replace(/^www\./, ''); } catch (_) { return u; }
   }
 
+  // Owner-language label + plain-English consequence per check kind.
+  // Replaces "fix this check →" with the actual verb the operator
+  // takes once they tap the row.
+  var KIND_NARRATIVE = {
+    speed:  { owner: 'Speed on a phone',         leak: 'Slow load = bounced visitors before they see the menu.' },
+    mobile: { owner: 'Phone usability',          leak: 'Tiny tap targets, off-screen buttons — a lost reservation per customer who pinches.' },
+    seo:    { owner: 'Findable on Google',       leak: 'Title and description are the two lines a searcher reads before clicking.' },
+    schema: { owner: 'What Google sees',         leak: 'Without restaurant schema, Google can\'t show your hours, menu, or rating in the rich card.' },
+    gbp:    { owner: 'Your Google listing',      leak: 'GBP outweighs your website for "near me" searches — fix it first.' },
+    audit:  { owner: 'Restaurant fundamentals',  leak: 'The deepest dive — restaurant-tuned checks Lighthouse misses.' }
+  };
+
+  function bandFor(score){
+    if (score == null) return null;
+    if (score < 50) return 'red';
+    if (score < 70) return 'amber';
+    return 'green';
+  }
+
+  // Plain-English narrative for the overall score. Owners read
+  // sentences, not letters.
+  function overallNarrative(rollup, lowest){
+    if (rollup.score == null) return 'Run any check below to start your scorecard. Your score will average every populated row.';
+    if (rollup.score >= 85) return 'Strong storefront. Schema, speed, and Google are all pulling weight. The roadmap from here is incremental.';
+    if (rollup.score >= 70 && lowest)  return 'Solid foundation, with one drag. ' + (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' is pulling the average down — that\'s where the leverage is.';
+    if (rollup.score >= 50 && lowest)  return (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' is the weakest layer right now. Fix that first; the others will lift with it.';
+    if (lowest)                        return 'There\'s structural work needed across the storefront. ' + (KIND_NARRATIVE[lowest.kind] && KIND_NARRATIVE[lowest.kind].owner) + ' is the most urgent — a Restaurant Audit will give you the full punch list.';
+    return '';
+  }
+
   function renderScorecard(prop){
     if (!prop) return;
     var rollup = prop.rollup || { score: null, byCheck: {} };
     var byCheck = rollup.byCheck || {};
+
+    // Sort kinds: populated rows by score ascending (worst first),
+    // then unpopulated rows in canonical order.
+    var populated = [], unpopulated = [];
+    KIND_ORDER.forEach(function(kind){
+      if (byCheck[kind] && typeof byCheck[kind].score === 'number') {
+        populated.push({ kind: kind, score: byCheck[kind].score });
+      } else {
+        unpopulated.push({ kind: kind });
+      }
+    });
+    populated.sort(function(a, b){ return a.score - b.score; });
+    var ordered = populated.concat(unpopulated);
+    var lowest = populated[0] || null;
+
     var html = '';
     var overallScore = (rollup.score == null) ? '—' : rollup.score;
     var overallGrade = rollup.grade || (rollup.score == null ? 'No checks yet' : '');
-    html += '<div class="sh-overall"><div class="sh-overall__score">' + overallScore + '</div>';
-    html += '<div class="sh-overall__grade">' + overallGrade + '</div></div>';
+    var narrative = overallNarrative(rollup, lowest);
+    html += '<div class="sh-overall">';
+    html += '<div class="sh-overall__num"><div class="sh-overall__score">' + overallScore + '</div><div class="sh-overall__grade">' + overallGrade + '</div></div>';
+    if (narrative) html += '<p class="sh-overall__narrative">' + narrative + '</p>';
+    html += '</div>';
+
+    // Fix-this-first hero — only when there's a populated row scoring
+    // <70. We don't render this when the storefront is healthy (no
+    // urgent fix to single out) or when nothing has been measured yet.
+    if (lowest && lowest.score < 70) {
+      var lmeta = KIND_META[lowest.kind] || {};
+      var lnarr = KIND_NARRATIVE[lowest.kind] || {};
+      var lband = bandFor(lowest.score);
+      var lhref = (lmeta.url || '#') + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
+      html += '<div class="sh-fix-first" data-band="' + lband + '">';
+      html += '<span class="sh-fix-first__eyebrow">Fix this first</span>';
+      html += '<h3 class="sh-fix-first__title">' + (lnarr.owner || lmeta.label) + ' &mdash; ' + lowest.score + '/100</h3>';
+      if (lnarr.leak) html += '<p class="sh-fix-first__why">' + lnarr.leak + '</p>';
+      html += '<a class="sh-fix-first__cta" href="' + lhref + '">Open the ' + (lmeta.label || lowest.kind) + ' check &rarr;</a>';
+      html += '</div>';
+    }
+
     html += '<div class="sh-grid">';
-    KIND_ORDER.forEach(function(kind){
-      var meta = KIND_META[kind];
+    ordered.forEach(function(item){
+      var kind = item.kind;
+      var meta = KIND_META[kind] || { label: kind, url: '#' };
       var entry = byCheck[kind];
+      var band = entry ? bandFor(entry.score) : null;
       var scoreHtml = entry
         ? '<span class="sh-row__score">' + entry.score + '</span>'
         : '<span class="sh-row__score sh-row__score--missing">Not yet run</span>';
       var fixHref = meta.url + '?from=storefront-health/' + encodeURIComponent(prop.id) + '&intent=watch';
       var fixLabel = entry ? 'Re-run &amp; watch &rarr;' : 'Run this check &rarr;';
-      html += '<div class="sh-row">';
+      html += '<div class="sh-row"' + (band ? ' data-band="' + band + '"' : '') + '>';
       html += '<div class="sh-row__head"><span class="sh-row__kind">' + meta.label + '</span>' + scoreHtml + '</div>';
       html += '<a class="sh-row__fix" href="' + fixHref + '">' + fixLabel + '</a>';
       html += '</div>';
     });
     html += '</div>';
-    html += '<aside class="learn-back" aria-label="What this scorecard means"><p class="learn-back-eyebrow">What this scorecard means</p><p class="learn-back-body">Each row runs the same check the standalone tool runs, then plays it back here. The overall score averages every populated row. <a href="/learn/topics/">Browse topics</a> to learn what each one is checking.</p></aside>';
+
+    // Share-with-developer: the owner rarely fixes; their nephew /
+    // freelancer / agency does. Make the handoff one click.
+    html += '<div class="sh-share">';
+    html += '<button type="button" class="sh-share__btn" data-share-link>Copy link to send to your web person</button>';
+    html += '<button type="button" class="sh-share__btn" data-share-summary>Copy summary as text</button>';
+    html += '<span class="sh-share__msg" data-share-msg aria-live="polite"></span>';
+    html += '</div>';
+
+    html += '<aside class="learn-back" aria-label="What this scorecard means"><p class="learn-back-eyebrow">What this scorecard means</p><p class="learn-back-body">Each row runs the same check the standalone tool runs, then plays it back here. The overall score averages every populated row. Worst-scoring rows are listed first — that\'s your Fix this first. <a href="/learn/topics/">Browse topics</a> to learn what each one is checking.</p></aside>';
     result.innerHTML = html;
     result.classList.add('visible');
     if (status) status.hidden = true;
+
+    // Wire the share buttons. Pure DOM + clipboard; no fetch.
+    var msgEl = result.querySelector('[data-share-msg]');
+    var linkBtn = result.querySelector('[data-share-link]');
+    var summaryBtn = result.querySelector('[data-share-summary]');
+    function flash(text){ if (msgEl) { msgEl.textContent = text; setTimeout(function(){ if (msgEl) msgEl.textContent = ''; }, 2200); } }
+    if (linkBtn) linkBtn.addEventListener('click', function(){
+      try {
+        var href = window.location.origin + window.location.pathname + '?url=' + encodeURIComponent(prop.url || '');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(href).then(function(){ flash('Link copied — paste it in an email or text.'); });
+        } else { flash('Copy not supported — long-press the URL bar.'); }
+      } catch (e) { flash('Could not copy.'); }
+    });
+    if (summaryBtn) summaryBtn.addEventListener('click', function(){
+      var lines = [];
+      lines.push('Storefront Health — ' + (prop.url || '(no url)'));
+      if (rollup.score != null) lines.push('Overall: ' + rollup.score + '/100' + (overallGrade ? ' (' + overallGrade + ')' : ''));
+      ordered.forEach(function(item){
+        var meta = KIND_META[item.kind] || { label: item.kind };
+        var entry = byCheck[item.kind];
+        lines.push('- ' + meta.label + ': ' + (entry ? entry.score : 'not yet run'));
+      });
+      if (lowest && lowest.score < 70) {
+        var lmeta = KIND_META[lowest.kind] || {};
+        var lnarr = KIND_NARRATIVE[lowest.kind] || {};
+        lines.push('');
+        lines.push('Fix this first: ' + (lnarr.owner || lmeta.label));
+        if (lnarr.leak) lines.push(lnarr.leak);
+      }
+      var text = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ flash('Summary copied to clipboard.'); });
+      } else { flash('Copy not supported — select the text manually.'); }
+    });
+
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
