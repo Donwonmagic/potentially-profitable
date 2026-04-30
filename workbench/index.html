@@ -214,7 +214,24 @@
     <div class="wsh-state" id="wbEmpty" hidden>
       <h2>Nothing saved yet.</h2>
       <p>Run any of the free tools and tap &ldquo;Save to the Workshop&rdquo; on a result. It&rsquo;ll show up here, with everything else.</p>
-      <p class="wsh-state-cta"><a class="btn btn-ghost" href="/tools/">Browse the tools</a></p>
+      <!-- Phase G.10 — three starter cards: high-value tools with
+           a one-line "use when" so a brand-new operator knows
+           where to start. -->
+      <ul class="wsh-starter-cards" aria-label="Suggested tools to start with">
+        <li class="wsh-starter-card">
+          <h3><a href="/tools/audits/restaurant/?from=workbench-empty">Restaurant Audit</a></h3>
+          <p>Use when you want a single composite score across speed, SEO, mobile, schema, and GBP.</p>
+        </li>
+        <li class="wsh-starter-card">
+          <h3><a href="/tools/margin-math/?from=workbench-empty">Margin Math</a></h3>
+          <p>Use when food costs moved and you need to model a price raise before publishing.</p>
+        </li>
+        <li class="wsh-starter-card">
+          <h3><a href="/tools/gbp-grader/?from=workbench-empty">GBP Grader</a></h3>
+          <p>Use when your local-pack ranking has slipped and you don&rsquo;t know what&rsquo;s missing on the profile.</p>
+        </li>
+      </ul>
+      <p class="wsh-state-cta"><a class="btn btn-ghost" href="/tools/">Browse all tools</a></p>
     </div>
     <div class="wsh-state" id="wbError" hidden>
       <h2>Couldn&rsquo;t load your saved items.</h2>
