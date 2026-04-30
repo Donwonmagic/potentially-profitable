@@ -55,6 +55,7 @@ const CHECKS = [
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
+  ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],
