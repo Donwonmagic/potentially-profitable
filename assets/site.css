@@ -5359,6 +5359,13 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
 .comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
 
+/* Phase G.11 (Growth) — recipient-side banner on shared tool URLs.
+   Quiet single-line banner with a "Start fresh" link. */
+.share-recipient-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;background:var(--cream-2);border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink)}
+.share-recipient-banner p{margin:0;line-height:1.5}
+.share-recipient-banner__cta{padding:6px 14px;border-radius:6px;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;font-size:13.5px}
+.share-recipient-banner__cta:hover{filter:brightness(1.08)}
+
 /* Phase G.9 (Growth) — Smart-next per-article CTA. Three options
    (Read / Try / Or send Don a note) directly under the post-end
    CTA. Each line is a single short link. */

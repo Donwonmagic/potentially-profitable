@@ -582,21 +582,41 @@ export default {
       }
     }
 
-    // Fall through to the static-asset server. Two HTMLRewriter
+    // Phase G.11 — /health/<token>/ resolves a shared Storefront
+    // Health snapshot. Redirects to the tool page with ?s= so the
+    // recipient lands on a rehydrated scorecard. 404 on unknown
+    // tokens (consistent with audit-snapshot's behaviour).
+    if (request.method === 'GET') {
+      const healthM = pathname.match(/^\/(?:es\/)?health\/([A-Z0-9]{10})\/?$/);
+      if (healthM) {
+        const tok = healthM[1];
+        if (isValidShareTokenShape(tok) && env.AUTH_SESSIONS) {
+          const snap = await getShareSnapshot(env, SHARE_KINDS.STOREFRONT_HEALTH, tok);
+          if (snap && snap.ok) {
+            const isEs = pathname.startsWith('/es/');
+            const dest = `${isEs ? '/es' : ''}/tools/storefront-health/?s=${tok}&shared=1`;
+            return new Response(null, { status: 302, headers: { location: dest } });
+          }
+        }
+        return new Response(null, { status: 404 });
+      }
+    }
+
+    // Fall through to the static-asset server. Three HTMLRewriter
     // passes when the response is HTML:
-    //   1. Phase G.3 — inject <link rel="alternate" type="application/rss+xml">
-    //      into <head> so feed readers + LLM crawlers auto-discover the feed.
-    //      Locale-aware: ES paths point at /es/feed.xml, everything else
-    //      at /feed.xml.
-    //   2. Phase G.12 — when an experiment is running on the requested
-    //      path, stamp <html data-experiment="…" data-treatment="…">
-    //      so CSS swaps via [data-treatment="…"] selectors.
+    //   1. Phase G.3  — inject <link rel="alternate" type="application/rss+xml">
+    //   2. Phase G.11 — when ?s= is present on a tool page, stamp the
+    //      recipient-side "Want one for your place?" banner.
+    //   3. Phase G.12 — A/B experiment data-attributes on <html>.
     const assetResponse = await env.ASSETS.fetch(request);
     if (request.method === 'GET' && assetResponse.ok) {
       const ct = assetResponse.headers.get('content-type') || '';
       if (ct.startsWith('text/html')) {
-        const withRss = rewriteWithRssAlternate(assetResponse, pathname);
-        return rewriteForExperiment(withRss, request, pathname);
+        let r = rewriteWithRssAlternate(assetResponse, pathname);
+        if (url.searchParams.has('s') && pathname.match(/^\/(?:es\/)?tools\//)) {
+          r = rewriteWithShareBanner(r, pathname);
+        }
+        return rewriteForExperiment(r, request, pathname);
       }
     }
     return assetResponse;
@@ -1156,6 +1176,43 @@ function activeExperimentForPath(pathname) {
     return { name, exp };
   }
   return null;
+}
+
+// Phase G.11 — recipient-side banner on shared tool URLs. When a
+// visitor lands on /tools/<slug>/?s=<token> (or /health/<token>/
+// after the redirect adds ?s=), inject a quiet banner above the
+// hero offering "Want one for your place? — run the tool yourself."
+// Fires Share recipient-banner Plausible event from a tiny inline
+// script. The HTMLRewriter is no-op on non-HTML.
+function rewriteWithShareBanner(response, pathname) {
+  const isEs = pathname.startsWith('/es/');
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const headline = isEs
+    ? 'Alguien compartió esto contigo. ¿Quieres uno para tu local? Corre la herramienta tú mismo.'
+    : 'Someone shared this with you. Want one for your place? Run the tool yourself.';
+  const cta = isEs ? 'Empezar de cero' : 'Start fresh';
+  const ctaHref = pathname.replace(/\/?$/, '/');
+  const banner = `
+<aside class="share-recipient-banner" role="note">
+  <p>${headline}</p>
+  <a class="share-recipient-banner__cta" href="${ctaHref}">${cta}</a>
+</aside>
+<script>
+(function () {
+  if (typeof window.plausible === 'function') {
+    try { window.plausible('Share', { props: { target: 'recipient-banner', surface: 'tool' } }); } catch (_) {}
+  }
+})();
+</script>`;
+  const rw = new HTMLRewriter().on('main, body', {
+    element(el) { el.prepend(banner, { html: true }); },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 // Phase G.3 — inject <link rel="alternate" type="application/rss+xml">
