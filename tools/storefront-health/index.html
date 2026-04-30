@@ -133,6 +133,77 @@
 }
 </script>
 <!-- tool-schema:end -->
+<!-- storefront-health-graph:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://muntin.digital/tools/storefront-health/#service",
+      "name": "Storefront Health audit",
+      "provider": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "serviceType": "RestaurantSEOAudit",
+      "areaServed": "United States",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://muntin.digital/tools/storefront-health/",
+      "about": {
+        "@id": "https://muntin.digital/tools/storefront-health/#tool"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://muntin.digital/tools/storefront-health/#sub-tools",
+      "numberOfItems": 6,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "url": "https://muntin.digital/tools/seo-grader/",
+          "name": "SEO Grader"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "url": "https://muntin.digital/tools/speed-test/",
+          "name": "Speed Test"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "url": "https://muntin.digital/tools/mobile-check/",
+          "name": "Mobile Check"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "url": "https://muntin.digital/tools/schema-check/",
+          "name": "Schema Check"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "url": "https://muntin.digital/tools/gbp-grader/",
+          "name": "GBP Grader"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "url": "https://muntin.digital/tools/audits/restaurant/",
+          "name": "Restaurant Audit"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- storefront-health-graph:end -->
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
