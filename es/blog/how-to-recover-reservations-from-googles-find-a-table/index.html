@@ -220,7 +220,7 @@
 <link rel="preload" as="audio" type="audio/mpeg" href="audio.mp3" fetchpriority="high" />
 <!-- i18n:audio-preload END -->
 </head>
-<body data-content-pending="2026-04-29">
+<body>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -398,6 +398,17 @@
 <section class="block">
 <div class="container">
 <article class="article-body" id="post-body">
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="Resumen">
+              <p class="tldr__eyebrow">Resumen</p>
+              <ul class="tldr__list">
+              <li>Find a Table cambió cómo Google maneja las búsquedas de restaurantes — la reserva ocurre en Google antes de que el visitante llegue a tu sitio.</li>
+        <li>Si tu sistema de reservas no está en Find a Table, pierdes 8-15% de las reservas que vienen de búsqueda hacia competidores que sí están.</li>
+        <li>Tres movimientos concretos recuperan la mayoría del flujo perdido sin renunciar a tu propia superficie de reserva.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
 <p>Si vio su Google Analytics durante el &uacute;ltimo a&ntilde;o y sinti&oacute; vagamente que algo andaba mal (las mismas impresiones Google Business Profile, pero notablemente menos clics en tu sitio web), no se lo estaba imaginando. Algo cambi&oacute;. Google comenz&oacute; a hacer algo con los listados de restaurantes que los operadores de restaurantes pasaron por alto, porque se implement&oacute; silenciosamente y porque parece una caracter&iacute;stica en lugar de una toma.</p>
 <p>En el &uacute;ltimo a&ntilde;o, Google Maps comenz&oacute; a mostrar widgets de reserva <em>directamente dentro del listado</em> para la mayor&iacute;a de los restaurantes que utilizan OpenTable, Resy, SevenRooms o Tock. Un cliente ahora puede buscar "Italiano cerca de m&iacute;", tocar tu restaurante, elegir el número de comensales y la hora y completar la reserva sin tener que salir de Google. Su sitio web nunca es visitado. La imagen principal de tu página, las descripciones de tu menú, la historia de tu marca, todo ello omitido. El cliente reserva, la reserva ingresa a tu sistema de reservas y Google mantiene la sesi&oacute;n silenciosamente.</p>
 <p>Si est&aacute;s pensando "bueno, al menos obtuve la reserva", s&iacute;, esta vez la obtuviste. Pero tambi&eacute;n sucedi&oacute; algo importante: Google ense&ntilde;&oacute; a ese cliente que tu restaurante es una fila en un resultado de b&uacute;squeda, no un destino. La pr&oacute;xima vez que quieran salir a comer, primero volver&aacute;n a Google, tocar&aacute;n la tarjeta de Mapas y reservar&aacute;n nuevamente sin saber nada sobre su lugar. Con el tiempo, esa relaci&oacute;n con tu restaurante es muy diferente a la que se supon&iacute;a que deb&iacute;a construir tu sitio web.</p>
@@ -464,7 +475,19 @@
 <p>La opci&oacute;n "buscar una mesa" de Google no es &uacute;nica. Es una versi&oacute;n temprana y leve de un patr&oacute;n que Google se aplica cada pocos a&ntilde;os: tome un comportamiento que sol&iacute;a canalizar el tr&aacute;fico a sitios web de peque&ntilde;as empresas, introd&uacute;zcalo en el ecosistema Google, ll&aacute;melo caracter&iacute;stica y observe c&oacute;mo disminuyen las tasas de clics. Las revisiones ocurrieron primero. Las horas sucedieron a continuaci&oacute;n. Los men&uacute;s sucedieron parcialmente. Las reservas se est&aacute;n realizando ahora. Lo siguiente es realizar pedidos en l&iacute;nea.</p>
 <p>La jugada defensiva no es para luchar contra Google; nadie gana eso. La jugada es asegurarse de que cuando el invitado <em>elige</em> al hacer clic en su sitio, son recompensados con algo mejor que el acceso directo. Buen dise&ntilde;o, carga r&aacute;pida, una ruta de reserva clara, un peque&ntilde;o momento de marca que les haga recordar tu nombre. Google mantiene el flujo mercantilizado. Mantienes a los clientes que se preocupan por la diferencia, y esos son los clientes que realmente sostienen un restaurante a lo largo del tiempo.</p>
 <p>Construye el <code>/reserve</code> p&aacute;gina. Inserta el widget. Capture el correo electr&oacute;nico. Tres mudanzas, menos de un d&iacute;a de trabajo en total. Mantendr&aacute;s la relaci&oacute;n de marca que, de otro modo, Google habr&iacute;a dejado tranquilamente.</p>
-</article>
+<!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Lo que importa">
+              <p class="key-takeaways__eyebrow">Lo que importa</p>
+              <ul class="key-takeaways__list">
+              <li>OpenTable, Resy, Tock y SevenRooms están actualmente conectados a Find a Table — elige uno si no tienes ninguno.</li>
+        <li>No deshabilites las reservas en GBP — eso te cuesta también las búsquedas de llamada-y-walk-in.</li>
+        <li>Añade reservation schema a tu sitio para que Google verifique que la integración es real.</li>
+        <li>La sección GBP del Restaurant Audit marca la elegibilidad de Find a Table como puntaje aparte.</li>
+        <li>El patrón más amplio: cada superficie de Google que toma la reserva antes que tu sitio te cuesta la relación — toma la reserva, después toma el correo.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+    </article>
 <!-- field-notes:start --><!-- field-notes:end -->
       <!-- post-end-cta:start -->
     <aside class="post-end-cta" aria-label="Workshop next step">
