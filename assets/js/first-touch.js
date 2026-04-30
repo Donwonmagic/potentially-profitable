@@ -160,10 +160,12 @@
     });
   }
 
-  // AI Search Landing — fires once per session if the current referrer
-  // is an AI engine, regardless of first-touch.
+  // AI Search Landing — Worker HTMLRewriter stamps
+  // <html data-ai-engine="<engine>"> on referer match. Prefer that
+  // signal (canonical, edge-side) over client referrer parsing
+  // (which drops on cross-origin no-referer cases).
   var rhNow = refHost();
-  var aiEngine = detectAiEngine(rhNow);
+  var aiEngine = (document.documentElement && document.documentElement.getAttribute('data-ai-engine')) || detectAiEngine(rhNow);
   if (aiEngine) {
     fireOnce('AI Search Landing', function () {
       return { engine: aiEngine, landingKind: detectLandingKind(location.pathname) };

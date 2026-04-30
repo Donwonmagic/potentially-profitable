@@ -616,6 +616,8 @@ export default {
         if (url.searchParams.has('s') && pathname.match(/^\/(?:es\/)?tools\//)) {
           r = rewriteWithShareBanner(r, pathname);
         }
+        const aiEngine = detectAiEngineFromReferer(request.headers.get('referer'));
+        if (aiEngine) r = rewriteWithAiEngineAttr(r, aiEngine);
         return rewriteForExperiment(r, request, pathname);
       }
     }
@@ -1176,6 +1178,44 @@ function activeExperimentForPath(pathname) {
     return { name, exp };
   }
   return null;
+}
+
+// Phase G.9 — AI-search referrer detection at the edge. Stamps
+// <html data-ai-engine="<engine>"> on responses where the
+// Referer header matches an AI-search engine. The same closed
+// enum lives client-side in assets/js/first-touch.js. Fires from
+// HTMLRewriter so it's a streaming pass — zero overhead when
+// the referer doesn't match.
+const AI_SEARCH_HOST_RE = [
+  { engine: 'chatgpt',    re: /(?:^|\.)(?:chatgpt|chat\.openai)\.com$/i },
+  { engine: 'perplexity', re: /(?:^|\.)perplexity\.ai$/i },
+  { engine: 'copilot',    re: /(?:^|\.)(?:copilot\.microsoft|bing)\.com$/i },
+  { engine: 'gemini',     re: /(?:^|\.)gemini\.google\.com$/i },
+  { engine: 'claude',     re: /(?:^|\.)claude\.ai$/i },
+  { engine: 'you',        re: /(?:^|\.)you\.com$/i },
+  { engine: 'phind',      re: /(?:^|\.)phind\.com$/i },
+  { engine: 'kagi',       re: /(?:^|\.)kagi\.com$/i },
+];
+function detectAiEngineFromReferer(refererHeader) {
+  if (!refererHeader) return null;
+  let host;
+  try { host = new URL(refererHeader).host; } catch (_) { return null; }
+  for (const { engine, re } of AI_SEARCH_HOST_RE) {
+    if (re.test(host)) return engine;
+  }
+  return null;
+}
+function rewriteWithAiEngineAttr(response, engine) {
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('html', {
+    element(el) { el.setAttribute('data-ai-engine', engine); },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 // Phase G.11 — recipient-side banner on shared tool URLs. When a
