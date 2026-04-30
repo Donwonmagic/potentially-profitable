@@ -162,6 +162,20 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Methodology disclosure — tucked at the bottom for credibility
      without cluttering the default view. */
+  .gbp-roadmap{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-roadmap-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-roadmap-body{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 14px}
+  .gbp-roadmap-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .gbp-roadmap-day{display:grid;grid-template-columns:120px 1fr;gap:10px 14px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1)}
+  .gbp-roadmap-day[data-empty="true"]{opacity:0.5;background:var(--cream-2)}
+  .gbp-roadmap-name{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);letter-spacing:0.02em;align-self:center}
+  .gbp-roadmap-action{display:flex;align-items:start;gap:8px;font-size:13.5px;line-height:1.55;color:var(--ink);grid-column:2}
+  .gbp-roadmap-day[data-empty="true"] .gbp-roadmap-action{grid-column:2;color:var(--stone);font-style:italic}
+  .gbp-roadmap-state{flex:0 0 18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700;margin-top:1px}
+  .gbp-roadmap-state.state-fail{background:#fde9e0;color:var(--rust)}
+  .gbp-roadmap-state.state-warn{background:#fbf3d8;color:#9c7416}
+  .gbp-roadmap-foot{font-size:12px;color:var(--stone);margin:12px 0 0;line-height:1.5}
+  @media(max-width:560px){.gbp-roadmap-day{grid-template-columns:1fr}.gbp-roadmap-name{align-self:auto}.gbp-roadmap-action{grid-column:1}}
   .gbp-preflight{margin:0 0 22px;padding:16px 20px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-input)}
   .gbp-preflight-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 10px}
   .gbp-preflight-body{font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 8px}
@@ -853,6 +867,78 @@
       +'</details>';
   }
 
+  // 7-day roadmap. Walks the scored groups, collects checks in fail
+  // or warn state, ranks by check weight (highest = most leverage),
+  // assigns 1-2 actions per day across 7 days. Day-named slots map
+  // to the kind of action (Mon = high-leverage edits in the GBP
+  // dashboard, mid-week = photo uploads, weekend = review-asking
+  // pushes). The map is just heuristic — all actions get scheduled
+  // even if the heuristic is wrong, because what matters is having
+  // a sequence rather than a list.
+  var ROADMAP_HINTS = {
+    primary_category:  { day: 'Monday',   action: 'Pick the most specific business category in your GBP dashboard.' },
+    hours:             { day: 'Monday',   action: 'Set regular hours for every day you\'re open. Generate them in Open Hours and paste in.' },
+    phone:             { day: 'Monday',   action: 'Add (or correct) the tap-to-call phone number. Match what\'s on your website.' },
+    website:           { day: 'Monday',   action: 'Link your website. Even one page beats none — Google sends learn-more clicks here.' },
+    service_attrs:     { day: 'Tuesday',  action: 'Toggle every service attribute that applies (dine-in, takeout, delivery, reservations, cuisine flags).' },
+    hours_fresh:       { day: 'Tuesday',  action: 'Verify the holiday and special-hours coverage — gaps lower freshness signals.' },
+    nap:               { day: 'Tuesday',  action: 'Reconcile your name / address / phone between Google + your website schema. Same exact text on both.' },
+    photos:            { day: 'Wednesday',action: 'Upload 4-6 photos: exterior, interior, signature dish, team. Reuse for the rest of the week.' },
+    editorial_summary: { day: 'Wednesday',action: 'Write the 250-character business description. Lead with cuisine + neighborhood + what makes you distinct.' },
+    rating:            { day: 'Thursday', action: 'Read all 1-3 star reviews. Pattern-match the recurring complaint and address it operationally.' },
+    owner_reply:       { day: 'Thursday', action: 'Reply publicly to the most recent 5-10 reviews. Include both glowing and critical ones.' },
+    review_volume:     { day: 'Friday',   action: 'Print a QR card with your Google review link. Hand it to satisfied tables this weekend.' },
+    review_recency:    { day: 'Saturday', action: 'Ask 3-5 regulars for a review by name. Direct asks convert ~10x cold prompts.' },
+    operational:       { day: 'Sunday',   action: 'Confirm the listing isn\'t marked closed/moved if you\'re still open. Wrong status = invisible.' }
+  };
+  var ROADMAP_DAY_ORDER = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  function renderRoadmap(scored) {
+    if (!scored || !scored.groups) return '';
+    // Collect failed/warn checks, dedup by id, ranked by weight desc.
+    var actionable = [];
+    scored.groups.forEach(function (g) {
+      (g.checks || []).forEach(function (c) {
+        if (c.state === 'fail' || c.state === 'warn') {
+          if (ROADMAP_HINTS[c.id]) actionable.push({ id: c.id, weight: c.weight, state: c.state });
+        }
+      });
+    });
+    actionable.sort(function (a, b) { return b.weight - a.weight; });
+    if (!actionable.length) return '';
+    // Bucket by day.
+    var byDay = {};
+    ROADMAP_DAY_ORDER.forEach(function (d) { byDay[d] = []; });
+    actionable.forEach(function (a) {
+      var hint = ROADMAP_HINTS[a.id];
+      if (!hint) return;
+      // Cap each day at 2 actions; overflow rolls forward by one day
+      // (mod 7) until a day has space. Keeps the plan executable.
+      var idx = ROADMAP_DAY_ORDER.indexOf(hint.day);
+      var attempts = 0;
+      while (byDay[ROADMAP_DAY_ORDER[idx]].length >= 2 && attempts < 7) {
+        idx = (idx + 1) % 7; attempts++;
+      }
+      byDay[ROADMAP_DAY_ORDER[idx]].push({ id: a.id, hint: hint, state: a.state });
+    });
+    var dayHtml = ROADMAP_DAY_ORDER.map(function (d) {
+      var actions = byDay[d];
+      if (!actions.length) {
+        return '<li class="gbp-roadmap-day" data-empty="true"><span class="gbp-roadmap-name">' + d + '</span><span class="gbp-roadmap-action">— rest day —</span></li>';
+      }
+      var lines = actions.map(function (a) {
+        var stateBadge = a.state === 'fail' ? '<span class="gbp-roadmap-state state-fail">!</span>' : '<span class="gbp-roadmap-state state-warn">·</span>';
+        return '<span class="gbp-roadmap-action">' + stateBadge + a.hint.action + '</span>';
+      }).join('');
+      return '<li class="gbp-roadmap-day"><span class="gbp-roadmap-name">' + d + '</span>' + lines + '</li>';
+    }).join('');
+    return '<div class="gbp-roadmap">'
+      + '<p class="gbp-roadmap-eyebrow">Your 7-day roadmap</p>'
+      + '<p class="gbp-roadmap-body">A sequenced version of the failed and warning checks above. One or two actions per day, ordered by leverage. Treat the days as a prompt — if Monday\'s actions take 20 minutes you\'ll feel like you\'re running.</p>'
+      + '<ul class="gbp-roadmap-list">' + dayHtml + '</ul>'
+      + '<p class="gbp-roadmap-foot">Roadmap is generated from the checks above; if you fix one and re-run the grader, the next run drops it.</p>'
+      + '</div>';
+  }
+
   // Pre-flight unclaimed-listing detector. No single Places API
   // field reliably says "this is unclaimed" without a server-side
   // owner-status check, so we infer from observable signals that
@@ -1237,7 +1323,8 @@
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
     var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
-    checksEl.innerHTML=preflightHtml+deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+competitorHtml+deepHtml+methodHtml;
+    var roadmapHtml=renderRoadmap(scored);
+    checksEl.innerHTML=preflightHtml+deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill the Restaurant Audit CTA with this
     // listing's website when available — that tool already fuses
