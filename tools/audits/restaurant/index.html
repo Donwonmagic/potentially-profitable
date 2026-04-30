@@ -5055,7 +5055,7 @@
 <section class="hero hero-medium">
   <div class="container">
     <div class="audit-hero">
-      <span class="eyebrow" data-tr="hero.eyebrow">Free tool · Powered by Google Lighthouse</span>
+      <span class="eyebrow" data-tr="hero.eyebrow">Free tool &middot; Restaurant-tuned mobile audit &middot; 30 seconds</span>
       <h1 class="mt-20" data-tr-html="hero.h1.full">
         How is your<br>
         <span class="serif-italic">restaurant website</span><br>
@@ -5366,6 +5366,15 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
               Open printable brief
             </button>
+            <!-- One-button mailto: that opens the user's mail client
+                 with the dev-brief Markdown as the body and a
+                 reasonable subject line. Closes the loop between
+                 "the tool found it" and "I just sent it to my web
+                 person" without making the owner copy/paste. -->
+            <a class="share-btn" id="emailDevBriefBtn" href="#" rel="noopener" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+              Email this to my developer
+            </a>
             <span class="share-toast" id="shareToast" aria-live="polite">Link copied!</span>
           </div>
 
@@ -6101,6 +6110,8 @@
      ./restaurant-checks.js and ./subtypes.js for the module contracts. -->
 <script src="./subtypes.js"></script>
 <script src="./restaurant-checks.js"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -6652,7 +6663,7 @@
     'crumb.label':      'Ruta de navegaci\u00f3n',
     'crumb.skip':       'Saltar al contenido principal',
     // Hero
-    'hero.eyebrow':     'Herramienta gratuita \u00b7 Impulsada por Google Lighthouse',
+    'hero.eyebrow':     'Herramienta gratuita \u00b7 Diagn\u00f3stico m\u00f3vil ajustado a restaurantes \u00b7 30 segundos',
     'hero.h1.full':     '\u00bfC\u00f3mo est\u00e1 realmente<br><span class="serif-italic">el sitio web de tu restaurante</span><br>funcionando?',
     'hero.sub':         'Pega tu URL abajo y har\u00e9 una auditor\u00eda m\u00f3vil real en unos treinta segundos: rendimiento, SEO, accesibilidad y las verificaciones espec\u00edficas que importan para un restaurante. El informe completo aparece en esta p\u00e1gina \u2014 sin registro, sin email, sin rastreo. (Hay un formulario opcional al final si quieres recibir una copia en PDF.)',
     'form.placeholder': 'https://turestaurante.com',
@@ -14918,6 +14929,46 @@
       }
       if (window.plausible) window.plausible('Audit Dev Brief Printed');
     });
+  }
+
+  /* -------- Email this to my developer -------- */
+  // Generates a mailto: with the dev-brief Markdown as the body so
+  // the owner's mail client opens pre-filled. Updated whenever the
+  // dev-brief data is ready (the audit completes). The button stays
+  // hidden until then to avoid a "broken link" first impression.
+  var emailDevBriefBtn = document.getElementById('emailDevBriefBtn');
+  function refreshEmailDevBriefBtn() {
+    if (!emailDevBriefBtn) return;
+    if (typeof gatherDevBriefPayload !== 'function' || typeof buildHandoffMarkdown !== 'function') return;
+    var payload = gatherDevBriefPayload();
+    if (!payload) { emailDevBriefBtn.hidden = true; return; }
+    var md = buildHandoffMarkdown(payload);
+    if (!md) { emailDevBriefBtn.hidden = true; return; }
+    var lastUrl = (window.__auditLastResult && window.__auditLastResult.url) || '';
+    var hostName = '';
+    try { hostName = lastUrl ? new URL(lastUrl).hostname.replace(/^www\./, '') : ''; } catch (_) {}
+    var subject = hostName ? ('Website fixes for ' + hostName) : 'Website fixes from the Restaurant Audit';
+    // mailto length safety: most clients cap around 2-8KB. Trim the
+    // brief if needed; the recipient still gets the link to the full
+    // audit at the top.
+    var maxBody = 7000;
+    var body = md.length > maxBody ? md.slice(0, maxBody) + '\n\n[Brief truncated for email length — open the full audit at: ' + (lastUrl || window.location.href) + ']' : md;
+    emailDevBriefBtn.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    emailDevBriefBtn.hidden = false;
+  }
+  if (emailDevBriefBtn) {
+    emailDevBriefBtn.addEventListener('click', function () {
+      // refresh href immediately before navigation in case audit data
+      // changed since last refresh (e.g., user re-ran on a new URL)
+      refreshEmailDevBriefBtn();
+      if (window.plausible) window.plausible('Audit Dev Brief Emailed');
+    });
+    // Refresh on a custom event the audit fires when results are
+    // ready; if that event isn't wired, fall back to a one-shot
+    // refresh after a short delay so the button appears once the
+    // dev-brief generator has populated.
+    window.addEventListener('audit:result-ready', refreshEmailDevBriefBtn);
+    setTimeout(refreshEmailDevBriefBtn, 1500);
   }
 
   /* -------- Phase I7: Download share-card PNG -------- */
