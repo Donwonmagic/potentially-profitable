@@ -1,0 +1,221 @@
+{
+  "_doc": "Phase H (Information Security) — single source of truth for the 9 verifiable data-handling claims, the 5-test audit framework, and the 4-tier data classification model. Consumed by: scripts/inject-security-page-schema.mjs (stamps Claim[] JSON-LD on /security/), scripts/inject-tool-data-promise.mjs (stamps the 3-line rail at the top of every tool page), scripts/check-tool-no-fetch.mjs (build-time enforcement: greps every tool's JS for forbidden patterns, fails CI when claim #1/#2/#4 would be violated). Every claim is generalized from Margin-Math-specific phrasing → 'every Muntin tool'. EN + ES.",
+
+  "_status": {
+    "review_required": "Lifted + generalized from tools/margin-math/index.html lines 968-1202. Don should review the generalized phrasing before promoting.",
+    "voice_check": "Each claim is one sentence + one inspect-this verification. No hedging. The verification is a concrete DevTools step, not an abstraction."
+  },
+
+  "claims": [
+    {
+      "id": 1,
+      "headline_en": "Your numbers never leave the page.",
+      "headline_es": "Tus números no salen de la página.",
+      "claim_en": "No fetch(), XMLHttpRequest, or form submission fires when you type a financial number. Every Muntin tool runs entirely in your browser.",
+      "claim_es": "No se dispara ningún fetch(), XMLHttpRequest, ni envío de formulario cuando tecleas un número financiero. Cada herramienta de Muntin corre por completo en tu navegador.",
+      "verify_en": "Open DevTools (Cmd+Opt+I / Ctrl+Shift+I) → Network tab. Type a number into any tool. The request list should not grow.",
+      "verify_es": "Abre DevTools (Cmd+Opt+I / Ctrl+Shift+I) → pestaña Network. Teclea un número en cualquier herramienta. La lista de requests no debe crecer.",
+      "build_invariant": "no-tool-fetch-on-input"
+    },
+    {
+      "id": 2,
+      "headline_en": "There's no server to store them on.",
+      "headline_es": "No hay servidor donde guardarlos.",
+      "claim_en": "The only endpoint a tool page uses is GET /tools/<slug>/. No /api/save, no /api/calculate, no logger. The Worker can't hear you.",
+      "claim_es": "El único endpoint que una página de herramienta usa es GET /tools/<slug>/. Ni /api/save, ni /api/calculate, ni logger. El Worker no te escucha.",
+      "verify_en": "From a terminal: curl -X POST https://muntin.digital/tools/margin-math/. Response: 405 Method Not Allowed — there's nothing listening for POSTs.",
+      "verify_es": "Desde una terminal: curl -X POST https://muntin.digital/tools/margin-math/. Respuesta: 405 Method Not Allowed — no hay nada escuchando POSTs.",
+      "build_invariant": "no-tool-post-endpoint"
+    },
+    {
+      "id": 3,
+      "headline_en": "Analytics sees only buckets, never numbers.",
+      "headline_es": "Analytics ve solo cubetas, nunca números.",
+      "claim_en": "Plausible receives properties from a short, fixed list of enumerated values. A $25 ticket becomes 25-39. A 30% food cost becomes 28-32. Your raw numbers are never a value on any event.",
+      "claim_es": "Plausible recibe propiedades desde una lista corta y cerrada de valores enumerados. Un ticket de $25 se vuelve 25-39. Un food cost de 30% se vuelve 28-32. Tus números crudos nunca son un valor en ningún evento.",
+      "verify_en": "DevTools → Network → filter plausible. Interact with any tool. When the event fires, look at its payload. Values like ticket_bucket: \"25-39\" — never ticket: 25.00.",
+      "verify_es": "DevTools → Network → filtra plausible. Interactúa con cualquier herramienta. Cuando se dispare el evento, revisa el payload. Valores como ticket_bucket: \"25-39\" — nunca ticket: 25.00.",
+      "build_invariant": "bounded-event-prop-cardinality"
+    },
+    {
+      "id": 4,
+      "headline_en": "No cookies, no localStorage, no sessionStorage — for your inputs.",
+      "headline_es": "Ni cookies, ni localStorage, ni sessionStorage — para tus inputs.",
+      "claim_en": "Your typed numbers live only in JavaScript variables, which disappear when you close the tab. There's no persistent state for any tool's financial inputs.",
+      "claim_es": "Tus números tecleados viven solo en variables de JavaScript que desaparecen cuando cierras la pestaña. No hay estado persistente para los inputs financieros de ninguna herramienta.",
+      "verify_en": "DevTools → Application → Storage. Use any tool. Check Cookies, Local Storage, Session Storage, IndexedDB for this origin — the panels stay empty of any financial value.",
+      "verify_es": "DevTools → Application → Storage. Usa cualquier herramienta. Revisa Cookies, Local Storage, Session Storage, IndexedDB para este origen — los paneles permanecen vacíos de cualquier valor financiero.",
+      "build_invariant": "no-localStorage-on-input-fields"
+    },
+    {
+      "id": 5,
+      "headline_en": "No third-party scripts touch the inputs.",
+      "headline_es": "Ningún script de terceros toca los inputs.",
+      "claim_en": "Every tool page loads only first-party JS plus one privacy-first analytics script (Plausible). No Google Tag Manager, no Meta Pixel, no chat widget, no session replay.",
+      "claim_es": "Cada página de herramienta solo carga JS propio más un único script de analítica privacy-first (Plausible). Sin Google Tag Manager, sin Meta Pixel, sin chat widget, sin session replay.",
+      "verify_en": "DevTools → Network → filter JS. Reload. Every script should be plausible.io or muntin.digital — nothing else.",
+      "verify_es": "DevTools → Network → filtra JS. Recarga. Cada script debe ser de plausible.io o muntin.digital — nada más.",
+      "build_invariant": "no-third-party-scripts"
+    },
+    {
+      "id": 6,
+      "headline_en": "Shareable scenario links keep numbers out of server logs.",
+      "headline_es": "Los links de escenario mantienen los números fuera de los logs del servidor.",
+      "claim_en": "Shareable links carry inputs in the URL fragment — the part after the #. Per HTTP spec, browsers never send fragments to servers. The link you paste is an audit trail you control.",
+      "claim_es": "Los links compartibles llevan los inputs en el fragmento de la URL — la parte después del #. Por especificación HTTP, los navegadores nunca mandan fragmentos al servidor. El link que pegas es un audit trail que tú controlas.",
+      "verify_en": "Move any slider on a tool. Watch the URL bar. It updates to something like …#v=1&t=25&f=30. That fragment is never in an HTTP request.",
+      "verify_es": "Mueve cualquier slider en una herramienta. Observa la barra de URL. Se actualiza a algo como …#v=1&t=25&f=30. Ese fragmento nunca está en un HTTP request.",
+      "build_invariant": "fragment-only-share-links"
+    },
+    {
+      "id": 7,
+      "headline_en": "The source is readable.",
+      "headline_es": "El código fuente es legible.",
+      "claim_en": "No build step, no minification, no framework. Every tool's math module is plain JavaScript — you can read every line.",
+      "claim_es": "Sin build step, sin minificación, sin framework. Cada módulo de matemáticas es JavaScript plano — puedes leer cada línea.",
+      "verify_en": "Right-click any tool page → View Page Source. Or open the tool's .js file directly. Every function name is human-readable; every comment is in the source.",
+      "verify_es": "Haz clic derecho en cualquier página de herramienta → Ver código fuente. O abre el archivo .js de la herramienta directo. Cada nombre de función es legible; cada comentario está en el fuente.",
+      "build_invariant": "unminified-tool-js"
+    },
+    {
+      "id": 8,
+      "headline_en": "Nothing persists beyond this tab.",
+      "headline_es": "Nada persiste más allá de esta pestaña.",
+      "claim_en": "Close the tab, reopen the tool: every input resets to default. There's no account, no saved history, no \"welcome back\" — unless you sign in to the optional Workshop, in which case you control what gets saved and you can delete it.",
+      "claim_es": "Cierra la pestaña, abre la herramienta de nuevo: cada input se resetea al default. Sin cuenta, sin historial, sin \"bienvenido de vuelta\" — a menos que inicies sesión en el Taller opcional, en cuyo caso tú controlas qué se guarda y puedes borrarlo.",
+      "verify_en": "Change every slider and input on any tool. Close the tab. Reopen the tool. Everything is back to its starting value.",
+      "verify_es": "Cambia todos los sliders e inputs en cualquier herramienta. Cierra la pestaña. Abre la herramienta de nuevo. Todo regresa a su valor inicial.",
+      "build_invariant": "no-default-persistence"
+    },
+    {
+      "id": 9,
+      "headline_en": "Print + calendar exports are 100% client-side.",
+      "headline_es": "Las exportaciones a impresión + calendario son 100% client-side.",
+      "claim_en": "\"Print this report\" opens your browser's native print dialog — we never see the output. \"Add to calendar\" generates an .ics file in your browser and downloads it locally. The calendar event includes only values already visible to you.",
+      "claim_es": "\"Imprimir este reporte\" abre el diálogo de impresión nativo del navegador — nunca vemos la salida. \"Añadir al calendario\" genera un archivo .ics en tu navegador y se descarga localmente. El evento de calendario incluye solo valores ya visibles para ti.",
+      "verify_en": "DevTools → Network. Click Print this report — no new requests. Click Add to calendar — still no new requests; a .ics download appears. Open it with a text editor: every field in the event is plain text.",
+      "verify_es": "DevTools → Network. Haz clic en Imprimir reporte — no hay nuevos requests. Haz clic en Añadir al calendario — siguen sin nuevos requests; aparece una descarga .ics. Ábrelo con un editor de texto: cada campo del evento es texto plano.",
+      "build_invariant": "client-side-exports"
+    }
+  ],
+
+  "audit_tests": [
+    {
+      "id": 1,
+      "test_en": "Does typing a number trigger a network request?",
+      "test_es": "¿Teclear un número dispara un request de red?",
+      "hint_en": "Open DevTools → Network. Type.",
+      "hint_es": "Abre DevTools → Network. Teclea.",
+      "muntin_pass_en": "No requests fire.",
+      "muntin_pass_es": "No se dispara ningún request.",
+      "typical_fail_en": "Every keystroke POSTs to a server.",
+      "typical_fail_es": "Cada tecla POSTea al servidor."
+    },
+    {
+      "id": 2,
+      "test_en": "Is the privacy claim at the point of input?",
+      "test_es": "¿Está la promesa de privacidad en el punto de entrada de datos?",
+      "hint_en": "Not buried in a policy page.",
+      "hint_es": "No enterrada en una política.",
+      "muntin_pass_en": "\"Stays in your browser\" rail on every tool, full claims page in-line.",
+      "muntin_pass_es": "Rail \"Se queda en tu navegador\" en cada herramienta, página de claims completa en línea.",
+      "typical_fail_en": "Privacy Policy link in footer only; implicit consent on submit.",
+      "typical_fail_es": "Link a Política de Privacidad solo en el footer; consentimiento implícito al enviar."
+    },
+    {
+      "id": 3,
+      "test_en": "Is there an account / newsletter / cookie gate?",
+      "test_es": "¿Hay un gate de cuenta / newsletter / cookies?",
+      "hint_en": "Anything demanding \"accept all\" before you can use the tool.",
+      "hint_es": "Cualquier cosa que exija \"aceptar todo\" antes de usar la herramienta.",
+      "muntin_pass_en": "Nothing — no gate, no popup, no cookie banner.",
+      "muntin_pass_es": "Nada — sin gate, sin popup, sin banner de cookies.",
+      "typical_fail_en": "\"Enter your email to see your results.\"",
+      "typical_fail_es": "\"Ingresa tu correo para ver tus resultados.\""
+    },
+    {
+      "id": 4,
+      "test_en": "Any third-party analytics, session replay, marketing scripts?",
+      "test_es": "¿Hay analítica de terceros, session replay, scripts de marketing?",
+      "hint_en": "DevTools → Network → filter JS.",
+      "hint_es": "DevTools → Network → filtra JS.",
+      "muntin_pass_en": "Privacy-first Plausible only; bucket props (never raw values).",
+      "muntin_pass_es": "Plausible privacy-first únicamente; props en cubetas (nunca valores crudos).",
+      "typical_fail_en": "Google Analytics, Meta Pixel, HubSpot, session replay — stacked.",
+      "typical_fail_es": "Google Analytics, Meta Pixel, HubSpot, session replay — apilados."
+    },
+    {
+      "id": 5,
+      "test_en": "Is the source code readable?",
+      "test_es": "¿Es legible el código fuente?",
+      "hint_en": "Right-click → View Source.",
+      "hint_es": "Clic derecho → Ver código fuente.",
+      "muntin_pass_en": "Unminified, every math function named.",
+      "muntin_pass_es": "Sin minificar, cada función con nombre.",
+      "typical_fail_en": "Minified SaaS bundle; math hidden inside a framework dashboard.",
+      "typical_fail_es": "Bundle SaaS minificado; las matemáticas escondidas dentro de un dashboard de framework."
+    }
+  ],
+
+  "data_tiers": [
+    {
+      "id": 1,
+      "name_en": "Public",
+      "name_es": "Público",
+      "desc_en": "Everything anyone can find on your site, your listing, or a walk-by.",
+      "desc_es": "Todo lo que cualquiera puede encontrar en tu sitio, tu listing, o caminando frente al local.",
+      "examples_en": ["Menu, hours, photos", "Address, phone, website URL", "Schema.org markup, cuisine tags, service attributes"],
+      "examples_es": ["Menú, horarios, fotos", "Dirección, teléfono, URL del sitio", "Schema.org markup, etiquetas de cocina, atributos de servicio"],
+      "share_en": "Anyone. Optimize aggressively — this is how customers find you.",
+      "share_es": "Cualquiera. Optimiza agresivamente — así te encuentran tus clientes."
+    },
+    {
+      "id": 2,
+      "name_en": "Competitive-sensitive",
+      "name_es": "Competitivamente sensible",
+      "desc_en": "Legal to share, but useful to a rival — or leverage for a platform.",
+      "desc_es": "Legal compartirlo, pero útil para un rival — o palanca para una plataforma.",
+      "examples_en": ["Cost of goods, supplier list, negotiated pricing", "Commission tier you actually pay (not the public rate)", "Labor schedule template, daypart mix, menu-engineering matrix"],
+      "examples_es": ["Costo de bienes, lista de proveedores, precios negociados", "Nivel de comisión que realmente pagas (no la tarifa pública)", "Plantilla de horarios, mix de daypart, matriz de menu-engineering"],
+      "share_en": "Bookkeeper, consultant, broker — under NDA. Not platforms, not competitors, not \"free audit\" tools that keep your input.",
+      "share_es": "Contador, consultor, broker — bajo NDA. No plataformas, no competidores, no herramientas de \"auditoría gratis\" que se quedan con tu input."
+    },
+    {
+      "id": 3,
+      "name_en": "Operational-confidential",
+      "name_es": "Operacionalmente confidencial",
+      "desc_en": "Your actual operating numbers, customer pipeline, employee details.",
+      "desc_es": "Tus números reales de operación, pipeline de clientes, detalles de empleados.",
+      "examples_en": ["Monthly P&L, actual food cost %, actual margins", "Reservations pipeline, customer database, loyalty data", "Employee names, schedules, tipped-employee distributions"],
+      "examples_es": ["P&L mensual, % real de food cost, márgenes reales", "Pipeline de reservas, base de clientes, datos de loyalty", "Nombres de empleados, horarios, distribuciones de propinas"],
+      "share_en": "Inside the business only. POS vendor, payroll processor, accountant — and only under a written contract that specifies what they can and can't do with it.",
+      "share_es": "Solo dentro del negocio. Proveedor de POS, procesador de nómina, contador — y solo bajo contrato escrito que especifique qué pueden y no pueden hacer con ellos."
+    },
+    {
+      "id": 4,
+      "name_en": "Regulated",
+      "name_es": "Regulado",
+      "desc_en": "Legally protected. Losing this has fines, lawsuits, or criminal exposure attached.",
+      "desc_es": "Legalmente protegido. Perder esto trae multas, demandas, o exposición criminal.",
+      "examples_en": ["SSN, EIN, other tax identifiers", "Customer card data (PCI scope), employee bank details", "Food-safety logs, health-department correspondence, liquor-license status, I-9s"],
+      "examples_es": ["SSN, EIN, otros identificadores fiscales", "Datos de tarjeta del cliente (alcance PCI), datos bancarios de empleados", "Logs de food safety, correspondencia con el departamento de salud, estatus de liquor license, I-9s"],
+      "share_en": "Encrypted storage, access logging, contracts with cybersecurity terms. Never email. Never in a shared spreadsheet. If a vendor asks for this casually, that alone is a flag.",
+      "share_es": "Almacenamiento cifrado, logging de accesos, contratos con cláusulas de cybersecurity. Nunca por correo. Nunca en una hoja de cálculo compartida. Si un proveedor te pide esto casualmente, eso solo ya es una bandera."
+    }
+  ],
+
+  "data_promise_rail_3line": {
+    "line1_en": "Runs in your browser. No accounts, no fetches, no tracking.",
+    "line1_es": "Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.",
+    "line2_en": "Verify it: open DevTools → Network → run the tool. The Network tab stays empty.",
+    "line2_es": "Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.",
+    "line3_link_en": "/security/",
+    "line3_label_en": "Read the full data promise",
+    "line3_link_es": "/es/security/",
+    "line3_label_es": "Lee la promesa completa",
+    "line4_link_en": "/learn/checklists/audit-any-tool/",
+    "line4_label_en": "Audit any tool",
+    "line4_link_es": "/es/learn/checklists/audit-any-tool/",
+    "line4_label_es": "Audita cualquier herramienta"
+  }
+}
