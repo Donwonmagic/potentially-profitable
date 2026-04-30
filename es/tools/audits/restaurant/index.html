@@ -2795,6 +2795,8 @@
   .top-fixes-item-chips .chip-effort-dev     { background: var(--teal-tint); color: var(--teal); }
   .top-fixes-item-chips .chip-effort-rebuild { background: var(--status-bad-tint); color: var(--rust); }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  .top-fixes-item-chips .chip-source-rest { background: var(--teal-tint, #d8e8e9); color: var(--teal); border: 1px solid var(--teal); font-weight: 700; }
+  .top-fixes-item-chips .chip-source-fund { background: var(--cream-2, #faf6ee); color: var(--ink-soft); border: 1px solid var(--line, #E6DFCE); }
   /* Selector de receta por plataforma — mismo estilo que la versión EN. */
   .top-fixes-recipe { margin-top: 10px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
   .top-fixes-recipe[open] { padding-bottom: 4px; }
@@ -11812,6 +11814,15 @@
       if (def.effort || def.minutes) {
         var chips = document.createElement('div');
         chips.className = 'top-fixes-item-chips';
+        // Chip diferenciador — señala si es específico de
+        // restaurantes o un fundamento web que PSI también flaggea.
+        var idStr = (def.id || '').toLowerCase();
+        var isLh = idStr.indexOf('audit.') === 0 || idStr.indexOf('lh.') === 0;
+        if (isLh) {
+          chips.innerHTML += '<span class="chip chip-source-fund" title="También lo flaggea PSI / Lighthouse — un fundamento web.">Fundamentos web</span>';
+        } else {
+          chips.innerHTML += '<span class="chip chip-source-rest" title="Hallazgo específico de restaurantes — Lighthouse no lo flaggea por sí solo.">Específico de restaurantes</span>';
+        }
         if (def.effort === 'self') {
           chips.innerHTML += '<span class="chip chip-effort-self">Fix yourself</span>';
         } else if (def.effort === 'dev') {
@@ -13847,7 +13858,11 @@
     // Strip protocol from displayed URL for readability
     var displayUrl = auditedUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
     document.getElementById('auditedUrl').textContent = displayUrl;
-    document.getElementById('verdictCopy').textContent = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    var subtypeLabel = '';
+    try { subtypeLabel = (typeof currentSubtype === 'function' && currentSubtype() && currentSubtype().label) || ''; } catch (_) {}
+    var v = verdictFor(overall, { unverifiedCount: priorityResult.unverifiedCount, totalCount: priorityResult.totalCount });
+    var diffSentence = ' Ordenado por lo que mueve las reservas de ' + (subtypeLabel ? 'un ' + subtypeLabel.toLowerCase() : 'tu restaurante') + " — no por los IDs de auditoría de Google.";
+    document.getElementById('verdictCopy').textContent = v + diffSentence;
 
     // Phase I1: render the narrative executive-summary block
     // below the category cards. Feeds in all the pillar scores
