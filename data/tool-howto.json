@@ -1,0 +1,414 @@
+{
+  "_doc": "Phase G.2 (Growth) — schema depth for tool pages. Each entry maps a tool slug (relative to /tools/ or /es/tools/) to a featureList + HowTo curation. inject-tool-howto.mjs reads this file and stamps a sentinel-bracketed second <script type='application/ld+json'> block onto each tool page that re-references the existing tool @id and adds: screenshot (per-tool OG card), featureList (3 short capability bullets), applicationSubCategory ('RestaurantOps'), and a sibling HowTo node with 3 short steps mapped to common section anchors (#tool-form, #result, #cta). LLM search engines lift HowTo steps + featureList nearly verbatim. Locale-aware via name_en/name_es and steps_en/steps_es.",
+
+  "tools": {
+    "seo-grader": {
+      "name_en": "How to read your SEO Grader result",
+      "name_es": "Cómo leer tu resultado del Calificador de SEO",
+      "featureList_en": [
+        "Title tag length + keyword scoring",
+        "Meta description quality grading",
+        "On-page schema + content depth checks"
+      ],
+      "featureList_es": [
+        "Calificación de longitud y palabras clave del título",
+        "Evaluación de la meta description",
+        "Revisión de schema y profundidad de contenido"
+      ],
+      "steps_en": [
+        { "name": "Drop your URL", "text": "Paste your homepage or any restaurant page URL into the input." },
+        { "name": "Read your score", "text": "Each on-page section gets a 0-100 grade with the failing checks called out." },
+        { "name": "Fix the highest-impact issue first", "text": "Start with title + meta if either is failing — they move rankings the fastest." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "Ingresa tu página principal o cualquier página de restaurante." },
+        { "name": "Lee tu calificación", "text": "Cada sección recibe un puntaje 0-100 con los problemas señalados." },
+        { "name": "Arregla lo de mayor impacto primero", "text": "Empieza por el título y la meta si fallan — mueven el ranking más rápido." }
+      ]
+    },
+    "speed-test": {
+      "name_en": "How to read your Speed Test result",
+      "name_es": "Cómo leer tu resultado de Prueba de Velocidad",
+      "featureList_en": [
+        "Lighthouse-backed performance score",
+        "Render-blocking script + image weight call-outs",
+        "Mobile + desktop scoring side-by-side"
+      ],
+      "featureList_es": [
+        "Puntaje de rendimiento respaldado por Lighthouse",
+        "Detección de scripts bloqueantes y peso de imágenes",
+        "Calificación móvil y de escritorio lado a lado"
+      ],
+      "steps_en": [
+        { "name": "Drop your URL", "text": "Paste any page URL — homepage, menu, reservation page." },
+        { "name": "Read your performance score", "text": "Mobile + desktop scores load with the slowest assets called out." },
+        { "name": "Fix the heaviest file first", "text": "Image bloat + render-blocking JS are the two highest-leverage fixes for restaurants." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "Ingresa cualquier página — principal, menú o reservas." },
+        { "name": "Lee tu puntaje", "text": "Cargan los puntajes móvil y de escritorio con los archivos más lentos resaltados." },
+        { "name": "Arregla primero lo más pesado", "text": "Imágenes pesadas y JS bloqueante son los dos mayores arreglos para restaurantes." }
+      ]
+    },
+    "mobile-check": {
+      "name_en": "How to read your Mobile Check result",
+      "name_es": "Cómo leer tu resultado del Revisor Móvil",
+      "featureList_en": [
+        "Real-device snapshots across iPhone + Android",
+        "Tap-target size + viewport check",
+        "Above-the-fold content audit"
+      ],
+      "featureList_es": [
+        "Capturas en dispositivos reales (iPhone + Android)",
+        "Revisión de tamaño de botones y viewport",
+        "Auditoría del contenido sobre la línea de pliegue"
+      ],
+      "steps_en": [
+        { "name": "Drop your URL", "text": "Paste your page — usually the homepage or menu." },
+        { "name": "Compare the snapshots", "text": "Real-device renders show what guests see on the phones they actually use." },
+        { "name": "Fix the tap-target failures first", "text": "Tiny buttons and overflowing menus cost reservations more than design polish does." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "Ingresa tu página — normalmente la principal o el menú." },
+        { "name": "Compara las capturas", "text": "Las vistas en dispositivos reales muestran lo que ven tus comensales." },
+        { "name": "Arregla los botones pequeños primero", "text": "Botones diminutos y menús que se desbordan cuestan reservas más que el diseño." }
+      ]
+    },
+    "schema-check": {
+      "name_en": "How to read your Schema Checker result",
+      "name_es": "Cómo leer tu resultado del Revisor de Schema",
+      "featureList_en": [
+        "Restaurant + Menu + Review schema validation",
+        "OpeningHoursSpecification depth check",
+        "Aggregate rating + price-range review"
+      ],
+      "featureList_es": [
+        "Validación de schema Restaurant, Menu y Review",
+        "Revisión de OpeningHoursSpecification",
+        "Verificación de aggregate rating y price-range"
+      ],
+      "steps_en": [
+        { "name": "Drop your URL", "text": "Paste your homepage URL — schema usually lives there." },
+        { "name": "Read the validation report", "text": "Each schema type gets a present / valid / missing verdict with line-level detail." },
+        { "name": "Add what's missing", "text": "Restaurant + OpeningHoursSpecification + Menu are the three Google reads first." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "Ingresa tu página principal — el schema vive allí." },
+        { "name": "Lee el reporte", "text": "Cada tipo de schema obtiene un veredicto: presente / válido / faltante." },
+        { "name": "Añade lo que falta", "text": "Restaurant, OpeningHoursSpecification y Menu son los tres que Google lee primero." }
+      ]
+    },
+    "gbp-grader": {
+      "name_en": "How to read your GBP Grader result",
+      "name_es": "Cómo leer tu resultado del Calificador GBP",
+      "featureList_en": [
+        "Google Business Profile completeness scoring",
+        "Categories + attributes audit",
+        "Photo coverage + review velocity check"
+      ],
+      "featureList_es": [
+        "Calificación de completitud del perfil de Google",
+        "Auditoría de categorías y atributos",
+        "Cobertura de fotos y velocidad de reseñas"
+      ],
+      "steps_en": [
+        { "name": "Search for your restaurant", "text": "Type your restaurant name + city; pick the right listing." },
+        { "name": "Read the completeness score", "text": "Each section (categories, hours, photos, reviews) scores separately." },
+        { "name": "Fix the lowest-scoring section first", "text": "Categories + attributes drive what queries Google shows you for." }
+      ],
+      "steps_es": [
+        { "name": "Busca tu restaurante", "text": "Escribe el nombre + ciudad; elige la ficha correcta." },
+        { "name": "Lee el puntaje de completitud", "text": "Cada sección (categorías, horarios, fotos, reseñas) se califica por separado." },
+        { "name": "Arregla la sección más baja primero", "text": "Categorías y atributos deciden para qué búsquedas te muestra Google." }
+      ]
+    },
+    "margin-math": {
+      "name_en": "How to read your Margin Math result",
+      "name_es": "Cómo leer tu resultado de Margin Math",
+      "featureList_en": [
+        "Prime cost calculator (food + labor)",
+        "Break-even pricing model",
+        "Price-raise scenario simulation"
+      ],
+      "featureList_es": [
+        "Calculadora de costo primario (comida + mano de obra)",
+        "Modelo de precio de equilibrio",
+        "Simulación de escenarios de aumento de precio"
+      ],
+      "steps_en": [
+        { "name": "Enter your costs", "text": "Food cost %, labor cost %, fixed overhead — the three honest numbers." },
+        { "name": "Read your margin", "text": "Prime cost vs target gets a green / yellow / red read." },
+        { "name": "Model the price raise", "text": "Adjust target margin; the tool tells you the exact menu-price change." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa tus costos", "text": "% de comida, % de mano de obra, gastos fijos — los tres números honestos." },
+        { "name": "Lee tu margen", "text": "Costo primario vs meta obtiene una lectura verde / amarilla / roja." },
+        { "name": "Modela el aumento", "text": "Ajusta la meta de margen; la herramienta calcula el cambio de precio exacto." }
+      ]
+    },
+    "menu-engineering": {
+      "name_en": "How to read your Menu Engineering result",
+      "name_es": "Cómo leer tu resultado de Ingeniería de Menú",
+      "featureList_en": [
+        "Star / dog / puzzle / plowhorse classification",
+        "Per-item contribution margin",
+        "Menu-mix optimization suggestions"
+      ],
+      "featureList_es": [
+        "Clasificación estrella / perro / acertijo / caballo de tiro",
+        "Margen de contribución por plato",
+        "Sugerencias de optimización del mix"
+      ],
+      "steps_en": [
+        { "name": "Enter your menu mix", "text": "Item name, food cost, sale price, units sold last period." },
+        { "name": "Read the matrix", "text": "Each item lands in a quadrant — stars sell well + earn well; dogs do neither." },
+        { "name": "Decide what to push, fix, or cut", "text": "Promote stars; reprice puzzles; demote or remove dogs." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa tu mix", "text": "Plato, costo, precio de venta, unidades vendidas en el periodo." },
+        { "name": "Lee la matriz", "text": "Cada plato cae en un cuadrante — las estrellas venden bien y ganan bien." },
+        { "name": "Decide qué empujar, arreglar o cortar", "text": "Promueve estrellas; reprecia acertijos; baja o elimina perros." }
+      ]
+    },
+    "plate-cost": {
+      "name_en": "How to read your Plate Cost result",
+      "name_es": "Cómo leer tu resultado de Costo de Plato",
+      "featureList_en": [
+        "Ingredient-level food cost calculator",
+        "Yield + waste % adjustments",
+        "Target food-cost % comparison"
+      ],
+      "featureList_es": [
+        "Calculadora de costo a nivel de ingrediente",
+        "Ajustes de rendimiento y desperdicio",
+        "Comparación con % objetivo de food cost"
+      ],
+      "steps_en": [
+        { "name": "List your ingredients", "text": "For one plate: each ingredient, weight, unit cost." },
+        { "name": "Set yield + waste", "text": "Realistic yield % and waste % matter more than people think." },
+        { "name": "Read the food-cost ratio", "text": "Compare against your target — adjust portion or price if it's red." }
+      ],
+      "steps_es": [
+        { "name": "Lista los ingredientes", "text": "Para un plato: cada ingrediente, peso, costo unitario." },
+        { "name": "Define rendimiento y desperdicio", "text": "El rendimiento y desperdicio realistas importan más de lo que crees." },
+        { "name": "Lee la razón de costo", "text": "Compara contra tu objetivo — ajusta porción o precio si está rojo." }
+      ]
+    },
+    "open-hours": {
+      "name_en": "How to read your Open Hours result",
+      "name_es": "Cómo leer tu resultado de Horarios",
+      "featureList_en": [
+        "OpeningHoursSpecification schema generator",
+        "Holiday + special-hours coverage",
+        "Day-of-week consistency check"
+      ],
+      "featureList_es": [
+        "Generador de schema OpeningHoursSpecification",
+        "Cobertura de feriados y horarios especiales",
+        "Revisión de consistencia día por día"
+      ],
+      "steps_en": [
+        { "name": "Enter your hours", "text": "Day-of-week regular hours, plus any holiday or special closures." },
+        { "name": "Get your schema", "text": "Tool emits valid OpeningHoursSpecification JSON-LD ready to paste." },
+        { "name": "Add it to your site head", "text": "Drop it into <head> on the homepage; Google + Apple Maps both read it." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa tus horarios", "text": "Horarios regulares por día, más feriados o cierres especiales." },
+        { "name": "Obtén tu schema", "text": "La herramienta genera JSON-LD OpeningHoursSpecification listo para pegar." },
+        { "name": "Añádelo a tu sitio", "text": "Pégalo en <head> de la página principal; lo leen Google y Apple Maps." }
+      ]
+    },
+    "photo-brief": {
+      "name_en": "How to read your Photo Brief result",
+      "name_es": "Cómo leer tu resultado del Brief de Fotos",
+      "featureList_en": [
+        "Surface-by-surface image spec sheet",
+        "Aspect-ratio + resolution guidance",
+        "Photographer-ready brief export"
+      ],
+      "featureList_es": [
+        "Hoja de especificaciones por superficie",
+        "Guía de aspect-ratio y resolución",
+        "Exportación de brief listo para fotógrafo"
+      ],
+      "steps_en": [
+        { "name": "Pick the surfaces you need photos for", "text": "GBP, Yelp, your homepage hero, menu cards, social — any combination." },
+        { "name": "Read the per-surface specs", "text": "Each surface gets aspect ratio, resolution, and content guidance." },
+        { "name": "Export the brief", "text": "Hand the brief to your photographer or shoot it yourself with a phone." }
+      ],
+      "steps_es": [
+        { "name": "Elige las superficies", "text": "GBP, Yelp, hero de tu página, cards de menú, social — cualquier combinación." },
+        { "name": "Lee las especificaciones", "text": "Cada superficie tiene aspect-ratio, resolución y guía de contenido." },
+        { "name": "Exporta el brief", "text": "Pásalo al fotógrafo o tómalas tú mismo con el teléfono." }
+      ]
+    },
+    "menu-copy": {
+      "name_en": "How to read your Menu Copy result",
+      "name_es": "Cómo leer tu resultado de Copy de Menú",
+      "featureList_en": [
+        "Item-by-item description grading",
+        "Sensory + provenance language detection",
+        "Concise rewrite suggestions"
+      ],
+      "featureList_es": [
+        "Calificación de descripción plato por plato",
+        "Detección de lenguaje sensorial y de origen",
+        "Sugerencias de reescritura concisas"
+      ],
+      "steps_en": [
+        { "name": "Paste your menu", "text": "Item names + descriptions — copy straight from your printed menu." },
+        { "name": "Read the per-item grades", "text": "Each description gets a clarity + sensory-language score with rewrite suggestions." },
+        { "name": "Edit + reprint", "text": "Pick the lowest-scoring items; rewrite using the suggestions." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu menú", "text": "Nombres y descripciones — copia directo de tu menú impreso." },
+        { "name": "Lee las calificaciones", "text": "Cada descripción recibe puntaje de claridad y lenguaje sensorial." },
+        { "name": "Edita y reimprime", "text": "Elige los platos más bajos; reescribe con las sugerencias." }
+      ]
+    },
+    "tech-stack": {
+      "name_en": "How to read your Tech Stack Detector result",
+      "name_es": "Cómo leer tu resultado del Detector de Stack",
+      "featureList_en": [
+        "CMS + hosting + CDN detection",
+        "Tracker + tag inventory",
+        "Build-tool + framework fingerprinting"
+      ],
+      "featureList_es": [
+        "Detección de CMS, hosting y CDN",
+        "Inventario de trackers y tags",
+        "Identificación de build-tool y framework"
+      ],
+      "steps_en": [
+        { "name": "Drop your URL", "text": "Paste any page URL." },
+        { "name": "Read the stack inventory", "text": "Tool lists CMS, hosting, CDN, scripts, trackers — what your site is actually running." },
+        { "name": "Decide what to keep", "text": "Trackers you don't need slow the site and create privacy debt." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "Ingresa cualquier página." },
+        { "name": "Lee el inventario", "text": "La herramienta lista CMS, hosting, CDN, scripts, trackers." },
+        { "name": "Decide qué mantener", "text": "Trackers que no necesitas frenan el sitio y crean deuda de privacidad." }
+      ]
+    },
+    "search-ideas": {
+      "name_en": "How to read your Search Ideas result",
+      "name_es": "Cómo leer tu resultado de Ideas de Búsqueda",
+      "featureList_en": [
+        "Long-tail keyword discovery",
+        "Local-intent query suggestions",
+        "Competitor query overlap"
+      ],
+      "featureList_es": [
+        "Descubrimiento de keywords de cola larga",
+        "Sugerencias de búsquedas con intención local",
+        "Solapamiento con consultas de competidores"
+      ],
+      "steps_en": [
+        { "name": "Enter your concept + city", "text": "Restaurant style + city — enough for Google to see local intent." },
+        { "name": "Read the query list", "text": "Long-tail queries with intent appear, sorted by likely volume." },
+        { "name": "Pick 3 to target", "text": "Add them to your menu copy, GBP categories, or a new content page." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa concepto + ciudad", "text": "Estilo de restaurante + ciudad — suficiente para intención local." },
+        { "name": "Lee la lista", "text": "Aparecen búsquedas de cola larga con intención, ordenadas por volumen probable." },
+        { "name": "Elige 3 objetivos", "text": "Añádelas al copy del menú, categorías de GBP, o una nueva página." }
+      ]
+    },
+    "compare": {
+      "name_en": "How to read your Competitor Comparison result",
+      "name_es": "Cómo leer tu resultado del Comparador",
+      "featureList_en": [
+        "Side-by-side speed + SEO scoring",
+        "Photo + review-velocity comparison",
+        "Schema + on-page parity check"
+      ],
+      "featureList_es": [
+        "Puntaje lado a lado de velocidad y SEO",
+        "Comparación de fotos y velocidad de reseñas",
+        "Revisión de paridad de schema y on-page"
+      ],
+      "steps_en": [
+        { "name": "Enter both URLs", "text": "Yours + the restaurant down the street you're benchmarking." },
+        { "name": "Read the side-by-side", "text": "Each metric scores both — green where you're ahead, red where you're behind." },
+        { "name": "Pick the gap to close first", "text": "Focus on the metric where you're farthest behind that also moves bookings." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa ambas URLs", "text": "La tuya + el restaurante de la cuadra que estás midiendo." },
+        { "name": "Lee la comparación", "text": "Cada métrica se califica para ambos — verde donde vas delante, rojo donde detrás." },
+        { "name": "Elige la brecha a cerrar", "text": "Empieza por la métrica donde estás más atrás que también mueve reservas." }
+      ]
+    },
+    "brand-suite": {
+      "name_en": "How to read your Brand Suite result",
+      "name_es": "Cómo leer tu resultado de Brand Suite",
+      "featureList_en": [
+        "Accessible color-pair generator",
+        "Token export (CSS variables, JSON)",
+        "WCAG contrast verification"
+      ],
+      "featureList_es": [
+        "Generador de pares de color accesibles",
+        "Exportación de tokens (variables CSS, JSON)",
+        "Verificación de contraste WCAG"
+      ],
+      "steps_en": [
+        { "name": "Enter your brand colors", "text": "Drop in 2-4 brand hex codes." },
+        { "name": "Read the accessible pairs", "text": "Tool surfaces every WCAG-passing combination across your palette." },
+        { "name": "Export the tokens", "text": "Hand the CSS variables file to any builder or developer." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa tus colores", "text": "Pega 2-4 hex de marca." },
+        { "name": "Lee los pares accesibles", "text": "La herramienta muestra cada combinación que pasa WCAG." },
+        { "name": "Exporta los tokens", "text": "Pásale el archivo de variables CSS a cualquier developer." }
+      ]
+    },
+    "audits/restaurant": {
+      "name_en": "How to read your Restaurant Audit result",
+      "name_es": "Cómo leer tu auditoría de restaurante",
+      "featureList_en": [
+        "Composite restaurant SEO + UX scoring",
+        "Per-section diagnostic with quick-win flags",
+        "Save-to-Workshop for tracking over time"
+      ],
+      "featureList_es": [
+        "Puntaje compuesto de SEO + UX de restaurante",
+        "Diagnóstico por sección con quick-wins",
+        "Guardado al Workshop para seguimiento"
+      ],
+      "steps_en": [
+        { "name": "Drop your restaurant URL", "text": "Homepage works best — the audit checks every reachable surface." },
+        { "name": "Read the composite score", "text": "Each section (speed, SEO, schema, GBP, photos) scores separately + rolls up." },
+        { "name": "Save it + come back", "text": "Save to your Workshop; rerun monthly to watch the score move." }
+      ],
+      "steps_es": [
+        { "name": "Pega tu URL", "text": "La página principal funciona mejor — la auditoría revisa todas las superficies." },
+        { "name": "Lee el puntaje compuesto", "text": "Cada sección (velocidad, SEO, schema, GBP, fotos) se califica por separado y se suma." },
+        { "name": "Guárdalo y vuelve", "text": "Guárdalo en tu Workshop; vuelve a correrlo mensualmente." }
+      ]
+    },
+    "storefront-health": {
+      "name_en": "How to read your Storefront Health result",
+      "name_es": "Cómo leer tu resultado de Salud del Escaparate",
+      "featureList_en": [
+        "6-tool composite scorecard",
+        "Speed + SEO + mobile + schema + GBP + audit roll-up",
+        "Shareable scorecard permalink"
+      ],
+      "featureList_es": [
+        "Tarjeta compuesta de 6 herramientas",
+        "Resumen de velocidad, SEO, móvil, schema, GBP y auditoría",
+        "Permalink compartible de la tarjeta"
+      ],
+      "steps_en": [
+        { "name": "Enter your property", "text": "Restaurant URL + GBP listing — both feed the composite." },
+        { "name": "Read the scorecard", "text": "6 sub-scores roll up to one Storefront Health number 0-100." },
+        { "name": "Share or save it", "text": "Permalink the scorecard for a peer or save it to track over time." }
+      ],
+      "steps_es": [
+        { "name": "Ingresa tu propiedad", "text": "URL del restaurante + ficha GBP — ambos alimentan el compuesto." },
+        { "name": "Lee la tarjeta", "text": "6 sub-puntajes se suman a un solo número de Salud del Escaparate 0-100." },
+        { "name": "Compártela o guárdala", "text": "Genera permalink para un colega o guárdala para hacer seguimiento." }
+      ]
+    }
+  }
+}

@@ -57,6 +57,7 @@ const CHECKS = [
   ['Tool verified stamp (idem)','inject-tool-verified-stamp.mjs','--check'],
   ['Tool verified stamp', 'check-tool-verified-stamp.mjs', '--check'],
   ['llms.txt (idem)',     'build-llms-txt.mjs',            '--check'],
+  ['Tool HowTo schema (idem)','inject-tool-howto.mjs',     '--check'],
 ];
 
 const results = [];
