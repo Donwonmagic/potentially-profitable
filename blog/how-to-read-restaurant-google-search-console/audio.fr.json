@@ -1,0 +1,571 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:21:52.557Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 589.4,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "TL;DR",
+      "start": 0,
+      "end": 0.88
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La console Google Search est l'outil gratuit le plus utile pour le référencement des restaurants – et le plus ignoré.",
+      "start": 1.23,
+      "end": 8
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Quatre rapports font le travail : Performances (les numéros des titres), Requêtes (ce que les gens ont tapé pour vous trouver), Pages (quelles pages fonctionnent), Couverture (quelles pages Google peuvent indexer).",
+      "start": 8.32,
+      "end": 19.21
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "L'effet de levier est presque toujours en CTR, pas en position. Une réécriture d'extrait génère plus de clics qu'une montée de position sur la plupart des requêtes.",
+      "start": 19.53,
+      "end": 28.79
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Trois habitudes hebdomadaires (durée totale inférieure à 20 minutes par mois) vous indiquent que vous ne pouvez acheter auprès d'aucune agence.",
+      "start": 29.11,
+      "end": 36.75
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La console Google Search est gratuite, officielle et vous indique exactement pour quelles requêtes Google affiche votre restaurant, à quelle fréquence les visiteurs cliquent et quelles pages fonctionnent. L'interface est le problème. Il est conçu pour les professionnels du référencement ; les étiquettes supposent une terminologie qu’un restaurateur ne possède pas.",
+      "start": 37.27,
+      "end": 56.06
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Il s'agit de la version en anglais simple. Quatre rapports font le travail. Évitez le reste.",
+      "start": 56.58,
+      "end": 61.64
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Configurez-le d’abord (10 minutes, une fois).",
+      "start": 62.74,
+      "end": 64.9
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Accédez à search.google.com/search-console, connectez-vous, ajoutez votre domaine. Vérifiez la propriété via D N S ou via une balise méta que votre développeur peut ajouter (la plupart des hébergeurs modernes ont une vérification en un clic). Attendez 24 à 48 heures pour que les données soient remplies.",
+      "start": 65.6,
+      "end": 83.65
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Si vous avez déjà été vérifié depuis un an et que vous ne vous êtes jamais reconnecté, votre compte contient déjà des mois de données – elles sont collectées en arrière-plan.",
+      "start": 84.17,
+      "end": 93.47
+    },
+    {
+      "id": 10,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Les 4 rapports qui font bouger les réservations · votre balayage hebdomadaire. Performance : chiffres de titres : clics, impressions, CTR, position. (hebdomadaire). Requêtes : ce que les gens ont tapé pour vous trouver. Le rapport sur l'or. (mensuel). Pages : quelles pages font le travail. La page de menu doit représenter 15 à 25 % des clics. (trimestriel). Couverture / Pages indexées : combien de pages possède réellement Google. En dessous de 50 % = problème fondamental. (en alerte). Les 4 rapports qui font bouger les réservations · votre balayage hebdomadaire.",
+      "start": 94.27,
+      "end": 122.68
+    },
+    {
+      "id": 11,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Rapport 1 : Performance – les grands chiffres.",
+      "start": 123.78,
+      "end": 125.82
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "C'est le seul écran dont la plupart des opérateurs ont besoin. Quatre chiffres en haut :",
+      "start": 126.52,
+      "end": 130.92
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Nombre total de clics : combien de personnes ont réellement cliqué sur votre site à partir de la recherche Google.",
+      "start": 131.27,
+      "end": 138.02
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Nombre total d'impressions : combien de fois votre site est apparu dans un résultat de recherche, que quelqu'un ait cliqué ou non.",
+      "start": 138.34,
+      "end": 145.27
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "CTR moyen – clics ÷ impressions. Le pourcentage de fois où votre extrait a remporté le clic.",
+      "start": 145.59,
+      "end": 152.03
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Position moyenne : votre classement moyen sur toutes les requêtes qui ont affiché votre site.",
+      "start": 152.35,
+      "end": 157.26
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "L'effet de levier est presque toujours en CTR, pas en position. Un restaurant classé numéro 4 avec un titre fort + méta description surpasse un restaurant classé numéro 2 avec une méta description générique. Si votre CTR pour les requêtes de marque (le nom de votre restaurant) est inférieur à 40 %, l'extrait est cassé – presque toujours la méta description. Le modèle apparaît plus clairement lorsque le CTR des requêtes de marque est sain (un client qui vous recherche par votre nom vous trouve et clique), mais que le CTR des requêtes de cuisine est inférieur à un chiffre. Même site. Même autorité de domaine. Deux extraits différents : l'un écrit par un humain connaissant la pièce, l'autre généré automatiquement à partir du titre de la page.",
+      "start": 157.78,
+      "end": 195.92
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Rapport 2 : Requêtes – ce que les gens ont tapé pour vous trouver.",
+      "start": 197.02,
+      "end": 199.91
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Sous les numéros de titre, cliquez sur « Requêtes ». C'est l'or. Trier par impressions décroissantes. Les 20 à 30 premières lignes vous indiquent exactement à quoi Google pense que votre restaurant est destiné.",
+      "start": 200.61,
+      "end": 212.72
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Que rechercher :",
+      "start": 213.24,
+      "end": 214.04
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Requêtes à forte impression/faible CTR. Ce sont des requêtes pour lesquelles Google pense que vous devriez être classé, mais les visiteurs ne cliquent pas. Presque toujours un problème d'extrait de code : le titre ou la méta ne correspond pas à ce à quoi ils s'attendaient.",
+      "start": 214.39,
+      "end": 229.1
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Requêtes surprises. Des expressions telles que « meilleur happy hour brookline » que vous n'avez pas délibérément ciblées – ce sont des indices sur le contenu que vous devriez ajouter.",
+      "start": 229.42,
+      "end": 239.82
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Requêtes manquantes. Si « tacos al pastor près de chez moi » n'apparaît pas du tout, votre schéma de menu est manquant ou cassé.",
+      "start": 240.14,
+      "end": 246.69
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "La catégorie des requêtes surprises à surveiller de près : les expressions Google ont décidé que vous pourriez être pertinent, pour lesquelles vous êtes déjà à la page deux sans avoir essayé. L'ajout d'une petite section à la page (et non d'un pivot complet, juste assez pour reconnaître l'intention de la requête) déplace fréquemment la position vers un territoire cliquable en quelques semaines. La plupart du temps, l’or ne vient pas des requêtes pour lesquelles vous essayez de vous classer ; ce sont les requêtes pour lesquelles Google a décidé que vous pourriez être et que vous n'avez pas rencontré à mi-chemin.",
+      "start": 247.21,
+      "end": 275.27
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Exécutez le S E O Grader sur la page qui obtient les impressions mais aucun clic – il fera directement apparaître les problèmes de titre + méta.",
+      "start": 275.79,
+      "end": 284.61
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Rapport 3 : Pages – quelles pages effectuent le travail.",
+      "start": 285.71,
+      "end": 288.36
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Basculez l'onglet \"Requêtes\" vers \"Pages\". Trier par clics décroissants. Le modèle que la plupart des restaurants voient :",
+      "start": 289.06,
+      "end": 295.31
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "La page d'accueil génère 60 à 70 % des clics.",
+      "start": 295.66,
+      "end": 299.18
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "La page de menu devrait atteindre 15 à 25 %.",
+      "start": 299.5,
+      "end": 302.64
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "La page de réservation obtient généralement 3 à 8 %.",
+      "start": 302.96,
+      "end": 306.57
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Tout le reste est une erreur d’arrondi.",
+      "start": 306.89,
+      "end": 308.52
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Si votre page de menu représente moins de 10 % du total des clics, vous avez un problème de page de menu : il s'agit généralement de P D F (invisible pour Google) ou caché derrière un sous-répertoire mal classé. Le correctif est en train de se convertir en un véritable menu H T M L.",
+      "start": 309.04,
+      "end": 326.02
+    },
+    {
+      "id": 33,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Rapport 4 : Couverture / Pages indexées — le tueur silencieux.",
+      "start": 327.12,
+      "end": 330.6
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Dans la barre latérale gauche, sous « Indexation », cliquez sur « Pages ». Cela vous indique combien de vos pages Google ont réellement ajoutées à son index. Si 50 % de vos pages sont « Excluées » ou « Découvertes – non indexées », vous rencontrez un problème fondamental : généralement un chargement lent, des balises canoniques brisées ou un contenu léger.",
+      "start": 331.3,
+      "end": 349.62
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Exécutez un audit de restaurant si ce numéro semble mauvais. La section technique-S E O de l'audit diagnostique les bloqueurs d'indexation les plus courants.",
+      "start": 350.14,
+      "end": 359.11
+    },
+    {
+      "id": 36,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Les trois habitudes hebdomadaires.",
+      "start": 360.21,
+      "end": 361.82
+    },
+    {
+      "id": 37,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Cadence de la Search Console · moins de 20 minutes par mois",
+      "start": 362.62,
+      "end": 366.21
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lundi – ouvrez Performance, regardez semaine après semaine. Deux minutes. Si les clics ont chuté de plus de 20 % d'une semaine à l'autre, quelque chose s'est cassé (mise à jour Google, changement de site, bizarrerie des vacances). Enquêter. Sinon, fermez l'onglet.",
+      "start": 366.96,
+      "end": 381.86
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Premier du mois : triez les requêtes par impressions. Cinq minutes. Notez toutes les nouvelles requêtes apparaissant dans le top 30. Décidez si vous souhaitez leur ajouter du contenu.",
+      "start": 382.18,
+      "end": 391.69
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Trimestriel : rapport sur les pages, trié par clics. Dix minutes. La distribution des pages doit correspondre au chemin de conversion réel de votre entreprise. Si ce n’est pas le cas, vous avez un travail d’architecture de contenu à faire.",
+      "start": 392.01,
+      "end": 405.38
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Charge hebdomadaire totale : moins de 20 minutes par mois. Résultat : un signal exploitable que vous ne pouvez obtenir nulle part ailleurs, y compris auprès d'une agence qui \"gère votre référencement\".",
+      "start": 405.9,
+      "end": 417.02
+    },
+    {
+      "id": 42,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Ce que la Search Console ne vous dit pas.",
+      "start": 418.12,
+      "end": 420.4
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "La Search Console ne couvre que les clics de recherche Google. Il ne vous informe pas des clics Google Maps, des réservations Find a Table ou des citations de recherche AI ​​de ChatGPT et Perplexity (ceux-ci ne transmettent pas les en-têtes de référence). Pour le côté recherche IA, configurez le schéma F A Q mentionné dans l'article sur l'IA et surveillez votre attribution au premier contact dans Plausible - c'est là que les visites basées sur l'IA apparaissent.",
+      "start": 421.1,
+      "end": 443.12
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Enregistrez mensuellement la capture d'écran à quatre chiffres dans votre atelier. La tendance sur six mois est révélatrice ; le contrôle hebdomadaire unique vous indique quand enquêter.",
+      "start": 443.64,
+      "end": 453.65
+    },
+    {
+      "id": 45,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "La position est ce que vous ne pouvez pas déplacer facilement. CTR est ce que vous pouvez déplacer un mardi après-midi.",
+      "start": 454.4,
+      "end": 461.21
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Points clés à retenir",
+      "start": 461.96,
+      "end": 462.97
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "Un CTR des requêtes de marque inférieur à 40 % signifie que votre méta-description est brisée.",
+      "start": 463.32,
+      "end": 469.38
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Les requêtes à forte impression/à faible CTR sont des problèmes d'extraits de code, pas des problèmes de classement.",
+      "start": 469.7,
+      "end": 475.71
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Les requêtes surprises dans votre top 30 (expressions que vous n'avez jamais ciblées) sont des opportunités de contenu que Google vous offre.",
+      "start": 476.03,
+      "end": 484.12
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "Si la page de menu ne représente pas 15 à 25 % du total des clics, la page de menu elle-même est le problème (P D F, widget ou enterré).",
+      "start": 484.44,
+      "end": 493.97
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "Hebdomadaire : vérification des performances de 2 minutes. Mensuel : analyse des requêtes de 5 minutes. Trimestriel : examen des pages de 10 minutes.",
+      "start": 494.29,
+      "end": 503.19
+    },
+    {
+      "id": 52,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Trouvez les pages à forte impression/à faible CTR en deux minutes.",
+      "start": 503.71,
+      "end": 507.32
+    },
+    {
+      "id": 53,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "S E O Grader pointe vers les problèmes de titre + méta directement sur toute page qui génère des impressions mais aucun clic. Exécutez-le sur la page que la Search Console indique comme étant votre plus faible et vous saurez quel extrait réécrire en premier.",
+      "start": 507.84,
+      "end": 522.37
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "Que faire ensuite",
+      "start": 522.89,
+      "end": 523.85
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Lire : le terme du glossaire associé →",
+      "start": 524.2,
+      "end": 526.07
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Essayez : l'outil qui s'associe à cet article →",
+      "start": 526.39,
+      "end": 528.72
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Ou envoyez un message à Don : La fenêtre →",
+      "start": 529.04,
+      "end": 531.14
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Voir aussi",
+      "start": 531.49,
+      "end": 532.22
+    },
+    {
+      "id": 59,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "Article Les 6 types de schémas utilisés par Google La couche de données structurées qui détermine si les requêtes dans votre Search Console apparaissent.",
+      "start": 532.57,
+      "end": 542.11
+    },
+    {
+      "id": 60,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "L'outil S E O Grader fait apparaître les problèmes de titre et de méta sur n'importe quelle page que la Search Console juge sous-performante.",
+      "start": 542.43,
+      "end": 550.97
+    },
+    {
+      "id": 61,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "Article Pourquoi votre restaurant perd des réservations tous les soirs La contrepartie côté conversion : que se passe-t-il après les mesures de clic de la Search Console.",
+      "start": 551.29,
+      "end": 561.1
+    },
+    {
+      "id": 62,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Dites-nous",
+      "start": 561.62,
+      "end": 562.19
+    },
+    {
+      "id": 63,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Avez-vous essayé cela dans votre cuisine ?",
+      "start": 563.29,
+      "end": 565.37
+    },
+    {
+      "id": 64,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "100 à 400 mots, votre nom dessus, Don lit chacun d'entre eux.",
+      "start": 566.07,
+      "end": 569.31
+    },
+    {
+      "id": 65,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Connectez-vous pour partager votre expérience →",
+      "start": 569.83,
+      "end": 572.08
+    },
+    {
+      "id": 66,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Continuez à lire",
+      "start": 572.43,
+      "end": 573.37
+    },
+    {
+      "id": 67,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "Couche de schéma qui contrôle les requêtes de la Search Console pour lesquelles vous apparaissez.",
+      "start": 573.72,
+      "end": 578.95
+    },
+    {
+      "id": 68,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "L'angle mort de la Search Console : que configurer à côté.",
+      "start": 579.47,
+      "end": 582.99
+    },
+    {
+      "id": 69,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "La mesure dans laquelle cet article fait valoir que la majeure partie de votre effet de levier réside dans.",
+      "start": 583.51,
+      "end": 589.4
+    }
+  ]
+}
