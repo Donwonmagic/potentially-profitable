@@ -72,7 +72,142 @@
 
 <a class="skip-link" href="#main">Ir al contenido</a>
 
-<!-- nav:start --><!-- nav:end -->
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->135<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
+    </details>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
 
 <main id="main">
   <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/blog/">Blog</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Auditoría de herramienta</span></nav>
@@ -87,6 +222,35 @@
         <p class="post-meta">
           <time datetime="2026-04-30">30 de abril, 2026</time> · 9 min de lectura · Por <a href="/es/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
         </p>
+        <div class="row-center">
+          <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-src="audio.mp3" data-audio-languages="en,es,fr,it,pt,zh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <span class="listen-label i18n">Escuchar este artículo</span>
+          </button>
+          <div class="share-dropdown" data-share>
+            <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span class="i18n">Compartir</span>
+            </button>
+            <div class="share-menu" hidden role="menu">
+              <a role="menuitem" class="share-item i18n" data-share-to="x"        href="#" target="_blank" rel="noopener">Compartir en X</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="bluesky"  href="#" target="_blank" rel="noopener">Compartir en Bluesky</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="threads"  href="#" target="_blank" rel="noopener">Compartir en Threads</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="mastodon" href="#" target="_blank" rel="noopener">Compartir en Mastodon</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="linkedin" href="#" target="_blank" rel="noopener">Compartir en LinkedIn</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="facebook" href="#" target="_blank" rel="noopener">Compartir en Facebook</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="reddit"   href="#" target="_blank" rel="noopener">Compartir en Reddit</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="whatsapp" href="#" target="_blank" rel="noopener">Compartir en WhatsApp</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="telegram" href="#" target="_blank" rel="noopener">Compartir en Telegram</a>
+              <a role="menuitem" class="share-item i18n" data-share-to="email"    href="#">Compartir por correo</a>
+              <button type="button" role="menuitem" class="share-item i18n" data-share-to="copy">Copiar enlace</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -95,7 +259,7 @@
     <div class="container">
     <article class="article-body" id="post-body">
 
-      <p>Un amigo mío que tiene una pizzería en DC tecleó sus números reales en una &ldquo;auditoría de margen gratis&rdquo; la primavera pasada. A la mañana siguiente, tres vendedores del mismo POS le mandaban una propuesta personalizada — armada sobre su ticket real, su food cost real, su mano de obra real. No recibió una auditoría de margen. Recibió un pipeline de ventas en el que ya estaba sentado. La herramienta era el embudo. Sus números eran el calificador.</p>
+      <p>La mayoría de las &ldquo;auditorías de margen gratis&rdquo; tienen un precio. Solo se paga con datos. El patrón se repite: tecleas tu ticket real, tu food cost real, tu mano de obra real — y la herramienta te devuelve un número. También tiende a devolverte vendedores en el inbox a la mañana siguiente, cada uno con una propuesta armada sobre números que nunca debían salir de tu oficina. La herramienta era el embudo. Tus números eran el calificador.</p>
 
       <p>El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder eso en menos de un minuto. Este artículo es el framework — cinco pruebas, cuatro niveles de datos, un ejemplo trabajado — y al final, una checklist que puedes correr en cualquier herramienta.</p>
 
@@ -113,15 +277,13 @@
 
       <p>Pasa las cinco y la herramienta es al menos honesta sobre su flujo de datos. Falla cualquiera y la herramienta o no sabe o no quiere que sepas — ambas son razones para irte.</p>
 
-      <p>La primera vez que corrí esto en un POS que mi GM en Tacombi estaba a punto de firmar, la Prueba 1 falló en quince segundos. Cada tecla disparaba un request a un Cloudflare worker en un dominio que no era de ellos. El contrato ya estaba redactado. No firmamos. Lo que me sorprendió no fue que la prueba fallara — fue qué tan rápido.</p>
-
       <h2>2. El modelo de cuatro niveles — qué compartir, dónde</h2>
 
       <p>La mayoría de los dueños cargan todos sus datos en la misma cubeta mental — lo cual significa que la lista de proveedores y el tax ID reciben la misma protección (frecuentemente, el mismo bajo nivel). Cuatro niveles, cada uno con audiencia distinta y nivel de cautela distinto:</p>
 
       <ul>
         <li><strong>Tier 1 — Público.</strong> Menú, horarios, fotos, dirección, teléfono, schema.org. Optimiza agresivamente; así te encuentran.</li>
-        <li><strong>Tier 2 — Competitivamente sensible.</strong> Costo de bienes, lista de proveedores, tu nivel real de comisión. Comparte con contador / consultor / broker — bajo NDA. (Cuando trabajo los números del Irish Inn at Glen Echo, este nivel completo está cubierto por un NDA de una página antes de que abra la hoja de cálculo — y ese es un lugar de barrio de 95 años, no el Pentágono.) <em>No</em> con plataformas, competidores, o herramientas de &ldquo;auditoría gratis.&rdquo;</li>
+        <li><strong>Tier 2 — Competitivamente sensible.</strong> Costo de bienes, lista de proveedores, tu nivel real de comisión. Comparte con contador / consultor / broker — bajo NDA. <em>No</em> con plataformas, competidores, o herramientas de &ldquo;auditoría gratis.&rdquo;</li>
         <li><strong>Tier 3 — Operacionalmente confidencial.</strong> P&amp;L mensual, food cost % real, pipeline de clientes, horarios de empleados. Solo dentro del negocio. POS, nómina, contador — solo bajo contrato escrito.</li>
         <li><strong>Tier 4 — Regulado.</strong> SSN, EIN, datos de tarjeta del cliente, datos bancarios, logs de food safety, I-9s. Almacenamiento cifrado, logging de acceso, contratos con cláusulas de cybersecurity. Nunca por correo. Nunca en hoja de cálculo compartida.</li>
       </ul>
@@ -172,7 +334,72 @@
   </section>
 </main>
 
-<!-- footer:start --><!-- footer:end -->
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
+      <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->135<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <ul class="foot-links">
+          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <ul class="foot-links">
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="/es/window/">Escríbele a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+        <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
+      </nav>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+      </nav>
+    </div>
+  </div>
+</footer>
 
 <script src="/assets/site.js?v=20260429-batch3" defer></script>
 </body>
