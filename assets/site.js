@@ -2521,9 +2521,18 @@
       email:    'mailto:?subject=' + enc(title) + '&body=' + enc(url),
     };
 
+    function shareLandingKind(p) {
+      // Phase G.9: bound Share-event cardinality to the same closed
+      // enum used by first-touch.js so dashboard groupings line up.
+      if (/^\/(?:es\/)?blog\//.test(p))     return 'article';
+      if (/^\/(?:es\/)?tools\//.test(p))    return 'tool';
+      if (/^\/(?:es\/)?glossary\//.test(p)) return 'glossary';
+      if (p === '/' || p === '/es/')        return 'home';
+      return 'other';
+    }
     function track(target){
       if (typeof window.plausible === 'function') {
-        window.plausible('Share', { props: { target: target, page: window.location.pathname } });
+        window.plausible('Share', { props: { target: target, surface: shareLandingKind(window.location.pathname) } });
       }
     }
 

@@ -163,6 +163,18 @@
     diagnostics: [
       '404 view',
     ],
+    // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
+    // detection + tool-funnel + article-scroll instrumentation. Bounded
+    // cardinality enforced by check-event-prop-cardinality.mjs.
+    attribution: [
+      'AI Search Landing',
+      'Article Scroll',
+      'Post-End CTA Click',
+      'Returning Visitor',
+      'Tool First Input',
+      'Tool First Result',
+      'Tool Save Intent',
+    ],
   };
 
   // Flat allowlist used by the CI checker.

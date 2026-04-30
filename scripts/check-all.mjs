@@ -62,6 +62,7 @@ const CHECKS = [
   ['RSS feeds (idem)',    'build-rss.mjs',                 '--check'],
   ['RSS coverage',        'check-rss-coverage.mjs',        '--check'],
   ['Content guardrails',  'check-content-guardrails.mjs',  '--check'],
+  ['Event prop cardinality','check-event-prop-cardinality.mjs','--check'],
 ];
 
 const results = [];
