@@ -1,0 +1,28 @@
+{
+  "_doc": "Phase G.4 (Growth) — per-(term, tool) deep-anchor overrides. inject-glossary-deep-anchors.mjs reads this and rewrites the wire-glossary-knit-injected `Used in tools` link from /tools/<slug>/ to /tools/<slug>/#<anchor> for the listed term/tool pairs. Drives operators directly to the relevant section of the tool, not the tool's hero.",
+
+  "anchors": {
+    "google-business-profile": { "gbp-grader": "categories" },
+    "schema-markup":            { "schema-check": "result" },
+    "menu-schema":              { "schema-check": "menu" },
+    "opening-hours-specification": { "schema-check": "hours", "open-hours": "result" },
+    "aggregaterating":          { "schema-check": "aggregate-rating" },
+    "lcp":                      { "speed-test": "result" },
+    "cls":                      { "speed-test": "result" },
+    "core-web-vitals":          { "speed-test": "result" },
+    "ttfb":                     { "speed-test": "result" },
+    "alt-text":                 { "seo-grader": "result" },
+    "canonical-url":            { "seo-grader": "result" },
+    "html-menu":                { "schema-check": "menu" },
+    "search-console":           { "seo-grader": "result" },
+    "prime-cost":               { "margin-math": "prime-cost" },
+    "menu-engineering":         { "menu-engineering": "matrix" },
+    "break-even":               { "margin-math": "break-even" },
+    "yield-percent":            { "plate-cost": "result" },
+    "edible-portion":           { "plate-cost": "result" },
+    "find-a-table":             { "gbp-grader": "reservations" },
+    "hero-shot":                { "photo-brief": "result" },
+    "aspect-ratio":             { "photo-brief": "result" },
+    "image-cdn":                { "speed-test": "result" }
+  }
+}
