@@ -81,6 +81,11 @@
 .pb-shoot-surfaces-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
 .pb-shoot-surfaces-list li{padding:5px 12px;border:1px solid rgba(250,246,238,0.25);border-radius:999px;font-size:13px;color:var(--cream)}
 .pb-shoot-tip{margin:24px 0 0;padding:12px 14px;background:rgba(250,246,238,0.06);border-left:2px solid var(--teal);border-radius:6px;font-size:14px;line-height:1.5;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips{margin:18px 0 0;padding:14px 16px;background:rgba(250,246,238,0.05);border:1px solid rgba(250,246,238,0.12);border-radius:8px}
+.pb-shoot-tips-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,246,238,0.6);margin:0 0 10px}
+.pb-shoot-tips-list{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:rgba(250,246,238,0.85)}
+.pb-shoot-tips-list li{margin-bottom:6px}
+.pb-shoot-tips-list li:last-child{margin-bottom:0}
 .pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
 .pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
 .pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
@@ -1191,6 +1196,12 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     var surfacesLabels = f.surfaces.map(function (sk) {
       return (window.PB && window.PB.SURFACES && window.PB.SURFACES[sk]) ? window.PB.SURFACES[sk].label : sk;
     });
+    var tips = (window.PB && window.PB.stylingTipsFor) ? window.PB.stylingTipsFor(f.category) : [];
+    var tipsHtml = tips.length
+      ? '<div class="pb-shoot-tips"><p class="pb-shoot-tips-label">Styling notes for ' + pbCap(f.category) + '</p><ul class="pb-shoot-tips-list">' +
+          tips.map(function (t) { return '<li>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</li>'; }).join('') +
+        '</ul></div>'
+      : '';
     shootCardEl.innerHTML =
       '<p class="pb-shoot-cat">' + pbCap(f.category) + (f.priority === 'priority' ? ' · ★ priority' : '') + '</p>' +
       '<h2 class="pb-shoot-dish">' + (f.dish.replace(/&/g,'&amp;').replace(/</g,'&lt;')) + '</h2>' +
@@ -1199,6 +1210,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         '<dt>Light</dt><dd>' + pbNiceLighting(f.lighting) + '</dd>' +
         '<dt>Composition</dt><dd>' + pbNiceNeg(f.negSpace) + '</dd>' +
       '</dl>' +
+      tipsHtml +
       '<div class="pb-shoot-surfaces">' +
         '<p class="pb-shoot-surfaces-label">This source frame serves:</p>' +
         '<ul class="pb-shoot-surfaces-list">' +
