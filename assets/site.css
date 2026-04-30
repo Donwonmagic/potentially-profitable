@@ -2843,11 +2843,13 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
    collapsed vertically. Lives in _includes/nav.html so a single
    sync-includes propagates it everywhere. */
 .nav-library-menu--mega{
-  display:grid;
+  display:none;
   grid-template-columns:repeat(3, minmax(180px, 1fr));
   gap:16px 28px;
-  min-width:680px;
   padding:24px 28px 22px;
+}
+@media (min-width:1100px){
+  .nav-library-menu--mega{display:grid;min-width:680px}
 }
 .nav-library-menu--mega .nav-library-menu__home{
   grid-column:1 / -1;
@@ -5503,11 +5505,12 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    sentinels in _includes/footer.html so it cascades to all 400 pages. */
 .foot-newsletter{margin:32px 0 24px;padding:24px 0 0;border-top:1px solid color-mix(in srgb, currentColor 12%, transparent)}
 .foot-newsletter-pitch{margin:0 0 12px;font-size:14px;line-height:1.55;color:inherit;opacity:0.85}
-.foot-newsletter-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center;max-width:520px}
-.foot-newsletter-form input[type="email"]{flex:1 1 240px;min-width:0;padding:10px 14px;border:1px solid color-mix(in srgb, currentColor 24%, transparent);border-radius:8px;background:rgba(255,255,255,0.04);color:inherit;font:inherit}
+.foot-newsletter-form{display:flex;flex-direction:column;gap:10px;align-items:stretch;max-width:520px}
+@media (min-width:480px){.foot-newsletter-form{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px}}
+.foot-newsletter-form input[type="email"]{flex:1 1 auto;min-width:0;padding:11px 14px;min-height:44px;border:1px solid color-mix(in srgb, currentColor 24%, transparent);border-radius:8px;background:rgba(255,255,255,0.04);color:inherit;font:inherit}
 .foot-newsletter-form input[type="email"]::placeholder{color:inherit;opacity:0.5}
 .foot-newsletter-form input[type="email"]:focus-visible{outline:2px solid var(--teal);outline-offset:1px;background:rgba(255,255,255,0.08)}
-.foot-newsletter-form button{padding:10px 18px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-weight:600;cursor:pointer;letter-spacing:0.02em}
+.foot-newsletter-form button{flex:0 0 auto;padding:11px 18px;min-height:44px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-weight:600;cursor:pointer;letter-spacing:0.02em}
 .foot-newsletter-form button:hover{filter:brightness(1.08)}
 .foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
 .foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
