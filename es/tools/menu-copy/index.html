@@ -399,7 +399,7 @@
     <div class="mc-form" data-mode="single">
       <div class="mc-form-field">
         <label for="mcDesc">Descripción del plato</label>
-        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Pega una descripción aquí, por ejemplo: &#10;Tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil."></textarea>
+        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Pega una descripción aquí, por ejemplo: &#10;Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana."></textarea>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="mc-form-field">
@@ -428,7 +428,7 @@
 
     <div class="mc-paste" data-mode="whole" hidden>
       <p class="mc-paste-hint">Pega un CSV o TSV con una fila por plato. La primera fila debería ser un encabezado — los nombres típicos (<code>Plato</code>, <code>Descripción</code>, <code>Precio</code>) se mapean automáticamente. Funciona con tabs y comas; CSV con comillas también. <strong>Tip:</strong> si solo tienes nombre + descripción en una pegada, el parser lo descifra.</p>
-      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Descripción,Precio&#10;Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino and cracked pepper.,$24&#10;House salad,Our nice fresh house salad — just simply our best.,$12.99"></textarea>
+      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Descripción,Precio&#10;Tonnarelli al pepe,Tonnarelli hechos a mano con pecorino ahumado y pimienta negra recién molida.,$24&#10;Ensalada de la casa,Nuestra rica ensalada fresca — simplemente la mejor de todas.,$12.99"></textarea>
       <div class="mc-paste-actions">
         <button type="button" class="mc-btn" id="mcParse">Analizar menú pegado</button>
         <button type="button" class="mc-btn mc-btn-ghost" id="mcPasteSample">Pegar un CSV de ejemplo</button>
@@ -695,19 +695,19 @@
     {
       name: 'Tonnarelli al pepe',
       price: '$24',
-      description: 'Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.',
+      description: 'Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana.',
       tier: 'casual'
     },
     {
-      name: 'House salad',
+      name: 'Ensalada de la casa',
       price: '$12.99',
-      description: 'Our nice fresh house salad — just simply our best.',
+      description: 'Nuestra rica ensalada fresca — simplemente la mejor de todas.',
       tier: 'casual'
     },
     {
       name: 'Branzino',
       price: '$38',
-      description: 'Whole Adriatic branzino salt-baked tableside, finished with charred Meyer lemon and Sicilian olive oil from Frantoio Galantino.',
+      description: 'Branzino entero asado a la sal en mesa, terminado con limón Meyer caramelizado y aceite de oliva andaluz de prensado en frío.',
       tier: 'fineDining'
     },
     {
@@ -717,27 +717,27 @@
       tier: 'casual'
     },
     {
-      name: 'Bolognese',
+      name: 'Boloñesa',
       price: '$26',
-      description: 'Slow-simmered Bolognese over hand-cut pappardelle with Parmigiano-Reggiano aged 24 months.',
+      description: 'Boloñesa de cocción lenta sobre pappardelle hechos a mano con Parmigiano-Reggiano añejado 24 meses.',
       tier: 'casual'
     },
     {
-      name: 'Tomato toast',
+      name: 'Tostada de jitomate',
       price: '$14',
-      description: 'Heirloom tomatoes from Whitmore Farm on toasted country bread with sea salt, basil, and house-pressed olive oil.',
+      description: 'Jitomates patrimoniales de la granja Whitmore sobre pan rústico tostado con sal de mar, albahaca y aceite de oliva prensado en casa.',
       tier: 'casual'
     },
     {
-      name: 'Pork chop',
+      name: 'Chuleta de cerdo',
       price: '$32',
-      description: 'A really nice pork chop with roasted vegetables and a delicious sauce — our chef’s favorite!',
+      description: 'Una chuleta de cerdo realmente rica con verduras asadas y una salsa deliciosa — ¡la favorita de nuestro chef!',
       tier: 'casual'
     },
     {
       name: 'Carbonara',
       price: '$23',
-      description: 'House-made guanciale, slow-braised eggs from Cream Line Dairy, pecorino di fossa.',
+      description: 'Guanciale curado en casa, huevos braseados a fuego lento de la lechería Cream Line, pecorino di fossa.',
       tier: 'casual'
     }
   ];
@@ -1202,9 +1202,9 @@
   pasteSampleBtn.addEventListener('click', function(){
     pasteArea.value =
       'Plato,Descripción,Precio\n' +
-      'Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.,$24\n' +
-      'House salad,Our nice fresh house salad — just simply our best.,$12.99\n' +
-      'Branzino,Whole Adriatic branzino salt-baked tableside with charred Meyer lemon.,$38';
+      'Tonnarelli al pepe,Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana.,$24\n' +
+      'Ensalada de la casa,Nuestra rica ensalada fresca — simplemente la mejor de todas.,$12.99\n' +
+      'Branzino,Branzino entero asado a la sal en mesa con limón Meyer caramelizado.,$38';
     rerunBulk();
   });
 
