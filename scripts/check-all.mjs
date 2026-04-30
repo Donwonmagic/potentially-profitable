@@ -59,6 +59,7 @@ const CHECKS = [
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],
+  ['Glossary tool sidecar (idem)','inject-glossary-tool-sidecar.mjs','--check'],
   ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
   ['Topic page schema (idem)','inject-topic-page-schema.mjs','--check'],
