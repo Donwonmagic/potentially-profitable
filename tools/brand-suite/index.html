@@ -306,6 +306,16 @@
   .bs-variant-bg:hover{color:var(--teal)}
   .bs-variant-dl{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none}
   .bs-variant-dl:hover{border-color:var(--teal);color:var(--teal)}
+  .bs-mockups{display:flex;flex-direction:column;gap:14px}
+  .bs-mockups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .bs-mockup{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:10px;background:var(--white)}
+  .bs-mockup-frame{width:100%;aspect-ratio:1;border-radius:var(--r-sm);background:var(--cream-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .bs-mockup-frame svg{max-width:100%;max-height:100%;display:block}
+  .bs-mockup-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .bs-mockup-name{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .bs-mockup-spec{font-size:10.5px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .bs-mockup-dl{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none}
+  .bs-mockup-dl:hover{border-color:var(--teal);color:var(--teal)}
 
   /* Print stylesheet — collapses the page into a one-page starter sheet
      a restaurant owner can hand to a designer or a printer. Hides the
@@ -1034,6 +1044,16 @@
       <p style="margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);">Five color-shifted versions of your uploaded logo. Each is a transparent PNG at 2&times; your source resolution — drop them on light or dark backgrounds, print them at any size. Generated in your browser; the logo never leaves the device.</p>
       <div class="bs-variants-grid" id="bsVariantsGrid" aria-label="Logo color variants"></div>
       <p style="margin:0;font-size:12px;line-height:1.55;color:var(--stone);">Best results with PNG or SVG logos that already have a transparent background. JPEG logos will render with their original background pixels intact (the recolor only touches non-transparent pixels).</p>
+    </div>
+
+    <!-- Mockup pack — four parameterized SVG canvases dressed in
+         the user's palette + logo. The "shoebox of ready-to-print
+         assets" the audit asked for. SVG so they scale crisply at
+         any size; rendered to PNG for download via canvas. -->
+    <div class="bs-mockups" id="bsMockups" hidden>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;">Mockup pack</h2>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);">Four ready-to-use canvases dressed in your palette. Drop your logo on, hand to a printer, post to Instagram, or staple to the door. Generated in your browser at print-grade resolution.</p>
+      <div class="bs-mockups-grid" id="bsMockupsGrid" aria-label="Mockup canvases"></div>
     </div>
 
     <div class="bs-save" id="bsSave" hidden>
@@ -1903,6 +1923,7 @@
         renderExports(latestPalette);
         exportWrap.hidden = false;
         renderLogoVariants(latestPalette);
+        renderMockupPack(latestPalette);
         if (opts.source === 'extract') firePlausible(latestPalette, opts.file);
       });
     });
@@ -2207,6 +2228,169 @@
     ctx.putImageData(img, 0, 0);
     return c;
   }
+  // ----------------------------------------------------------------
+  // Mockup pack — four parameterized SVG canvases dressed in the
+  // owner's palette + logo. Concrete artifacts the owner can post,
+  // print, or hand off without opening Photoshop:
+  //
+  //   IG avatar (1080×1080, circular)  — round logo on brand-tint
+  //   IG post   (1080×1080, square)    — logo + brand band, social-shape
+  //   Business card front (1050×600)   — 3.5×2" @ 300 DPI
+  //   Menu header wide (2400×800)      — 3:1 banner for menu top
+  //
+  // Each SVG is rendered to PNG via a Blob → Image → canvas pipeline
+  // (the only browser path that produces a downloadable raster from
+  // SVG that includes embedded images). The logo is converted to a
+  // data: URL once and reused across all four mockups.
+  //
+  // Output is a card-per-mockup grid; each card preview-renders the
+  // SVG inline (cheap, stays sharp at preview size) and a download
+  // button rasterizes to PNG on demand.
+  // ----------------------------------------------------------------
+  var bsMockupsEl     = document.getElementById('bsMockups');
+  var bsMockupsGridEl = document.getElementById('bsMockupsGrid');
+
+  function bsLogoToDataUrl(img) {
+    if (!img) return null;
+    try {
+      var c = document.createElement('canvas');
+      c.width = img.naturalWidth || img.width || 0;
+      c.height = img.naturalHeight || img.height || 0;
+      if (!c.width || !c.height) return null;
+      c.getContext('2d').drawImage(img, 0, 0);
+      return c.toDataURL('image/png');
+    } catch (e) { return null; }
+  }
+  function bsContrastTextOn(hex) {
+    var rgb = bsParseHexToRgb(hex);
+    var lum = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
+    return lum > 0.55 ? '#14161A' : '#FAF6EE';
+  }
+  function bsEscXml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+  function bsMockupSvgIgAvatar(palette, logoUrl) {
+    var brand = (palette[0] && palette[0].hex) || '#21565F';
+    var w = 1080;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + w + '" width="' + w + '" height="' + w + '">' +
+      '<rect width="' + w + '" height="' + w + '" fill="' + brand + '"/>' +
+      '<circle cx="' + (w/2) + '" cy="' + (w/2) + '" r="' + (w/2 - 60) + '" fill="' + bsContrastTextOn(brand) + '" opacity="0.06"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.18) + '" y="' + (w*0.18) + '" width="' + (w*0.64) + '" height="' + (w*0.64) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '<text x="' + (w/2) + '" y="' + (w/2 + 20) + '" font-family="Georgia, serif" font-size="80" fill="' + bsContrastTextOn(brand) + '" text-anchor="middle">Your logo</text>') +
+      '</svg>';
+  }
+  function bsMockupSvgIgPost(palette, logoUrl, brandName) {
+    var w = 1080;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var accentInk = bsContrastTextOn(ground);
+    var label     = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + w + '" width="' + w + '" height="' + w + '">' +
+      '<rect width="' + w + '" height="' + w + '" fill="' + ground + '"/>' +
+      '<rect x="0" y="' + (w*0.78) + '" width="' + w + '" height="' + (w*0.22) + '" fill="' + brand + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.22) + '" y="' + (w*0.18) + '" width="' + (w*0.56) + '" height="' + (w*0.46) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '') +
+      '<text x="' + (w/2) + '" y="' + (w*0.89) + '" font-family="Georgia, serif" font-size="56" font-weight="500" fill="' + bsContrastTextOn(brand) + '" text-anchor="middle">' + bsEscXml(label) + '</text>' +
+      '<text x="' + (w/2) + '" y="' + (w*0.945) + '" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="' + bsContrastTextOn(brand) + '" opacity="0.8" text-anchor="middle">@' + bsEscXml(label.toLowerCase().replace(/[^a-z0-9]+/g, '')) + '</text>' +
+      '</svg>';
+  }
+  function bsMockupSvgBusinessCard(palette, logoUrl, brandName) {
+    // 3.5" × 2" @ 300dpi = 1050 × 600
+    var w = 1050, h = 600;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var name      = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">' +
+      '<rect width="' + w + '" height="' + h + '" fill="' + ground + '"/>' +
+      '<rect x="0" y="0" width="' + (w*0.06) + '" height="' + h + '" fill="' + brand + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.10) + '" y="' + (h*0.18) + '" width="' + (w*0.30) + '" height="' + (h*0.34) + '" preserveAspectRatio="xMinYMid meet"/>'
+        : '') +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.78) + '" font-family="Georgia, serif" font-size="44" font-weight="500" fill="' + bsContrastTextOn(ground) + '">' + bsEscXml(name) + '</text>' +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.88) + '" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="' + bsContrastTextOn(ground) + '" opacity="0.7">123 Main Street · City, ST</text>' +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.95) + '" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="' + bsContrastTextOn(ground) + '" opacity="0.7">(555) 555-1234 · yourrestaurant.com</text>' +
+      '</svg>';
+  }
+  function bsMockupSvgMenuHeader(palette, logoUrl, brandName) {
+    var w = 2400, h = 800;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var name      = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">' +
+      '<rect width="' + w + '" height="' + h + '" fill="' + ground + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.06) + '" y="' + (h*0.20) + '" width="' + (h*0.60) + '" height="' + (h*0.60) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '') +
+      '<text x="' + (w*0.30) + '" y="' + (h*0.55) + '" font-family="Georgia, serif" font-size="120" font-weight="500" fill="' + bsContrastTextOn(ground) + '">' + bsEscXml(name) + '</text>' +
+      '<text x="' + (w*0.30) + '" y="' + (h*0.72) + '" font-family="Helvetica, Arial, sans-serif" font-size="40" fill="' + brand + '" letter-spacing="6">DINNER · BRUNCH · TAKEOUT</text>' +
+      '<rect x="' + (w*0.30) + '" y="' + (h*0.78) + '" width="' + (w*0.50) + '" height="6" fill="' + brand + '"/>' +
+      '</svg>';
+  }
+  function bsSvgToPngBlob(svg, width, height, onReady, onFail) {
+    var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function () {
+      var c = document.createElement('canvas');
+      c.width = width; c.height = height;
+      c.getContext('2d').drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+      c.toBlob(function (b) { if (b) onReady(b); else onFail && onFail(); }, 'image/png');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); onFail && onFail(); };
+    img.src = url;
+  }
+
+  function renderMockupPack(palette) {
+    if (!bsMockupsEl || !bsMockupsGridEl) return;
+    var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var brandName = ctx.businessName || '';
+    var logoUrl = bsLogoToDataUrl(latestLogoImage);
+    // Don't show without a palette (fixture takes care of palette
+    // presence). Logo is optional — the SVGs render typographic
+    // versions when there's no logo.
+    if (!palette || !palette.length) { bsMockupsEl.hidden = true; return; }
+    var mockups = [
+      { id: 'ig-avatar',     name: 'Instagram avatar',  spec: '1080×1080',   w: 1080, h: 1080, svg: bsMockupSvgIgAvatar(palette, logoUrl) },
+      { id: 'ig-post',       name: 'Instagram post',    spec: '1080×1080',   w: 1080, h: 1080, svg: bsMockupSvgIgPost(palette, logoUrl, brandName) },
+      { id: 'business-card', name: 'Business card front', spec: '3.5×2 in @ 300dpi', w: 1050, h: 600, svg: bsMockupSvgBusinessCard(palette, logoUrl, brandName) },
+      { id: 'menu-header',   name: 'Menu header',       spec: '2400×800 (3:1)', w: 2400, h: 800, svg: bsMockupSvgMenuHeader(palette, logoUrl, brandName) }
+    ];
+    bsMockupsGridEl.innerHTML = '';
+    mockups.forEach(function (m) {
+      var card = document.createElement('div');
+      card.className = 'bs-mockup';
+      card.innerHTML =
+        '<div class="bs-mockup-frame">' + m.svg + '</div>' +
+        '<div class="bs-mockup-meta">' +
+          '<span class="bs-mockup-name">' + m.name + '</span>' +
+          '<span class="bs-mockup-spec">' + m.spec + '</span>' +
+        '</div>' +
+        '<button type="button" class="bs-mockup-dl" data-mockup-dl="' + m.id + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+          'Download PNG' +
+        '</button>';
+      var btn = card.querySelector('[data-mockup-dl]');
+      btn.addEventListener('click', function () {
+        var orig = btn.innerHTML;
+        btn.disabled = true; btn.textContent = 'Rendering…';
+        bsSvgToPngBlob(m.svg, m.w, m.h, function (blob) {
+          var u = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = u; a.download = 'mockup-' + m.id + '.png';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(u); }, 5000);
+          btn.disabled = false; btn.innerHTML = orig;
+        }, function () {
+          btn.disabled = false; btn.innerHTML = orig + ' (failed)';
+        });
+      });
+      bsMockupsGridEl.appendChild(card);
+    });
+    bsMockupsEl.hidden = false;
+  }
+
   function renderLogoVariants(palette){
     if (!bsVariantsEl || !bsVariantsGridEl) return;
     if (!latestLogoImage) { bsVariantsEl.hidden = true; return; }
