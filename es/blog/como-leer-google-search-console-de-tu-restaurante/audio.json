@@ -1,0 +1,371 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:54:59.807Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 479.05,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "En resumen",
+      "start": 0,
+      "end": 0.77
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Google Search Console es la herramienta gratis más útil para S E O de restaurantes — y la más ignorada.",
+      "start": 1.12,
+      "end": 9.22
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Cuatro reportes hacen el trabajo: Performance, Queries, Pages, Coverage.",
+      "start": 9.54,
+      "end": 14.92
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "El leverage casi siempre está en CTR, no en posición. Reescribir un snippet mueve más clics que subir un puesto.",
+      "start": 15.24,
+      "end": 24.35
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Tres hábitos semanales — total bajo 20 minutos al mes — te dan señal que no compras de ninguna agencia.",
+      "start": 24.67,
+      "end": 32.84
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Google Search Console es gratis, oficial, y te dice exactamente para qué queries Google muestra tu restaurante, con qué frecuencia los visitantes hacen clic, y qué páginas están funcionando. La interfaz es el problema. Está construida para profesionales de S E O; las etiquetas asumen terminología que un operador de restaurante no tiene.",
+      "start": 33.36,
+      "end": 58.48
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Esta es la versión en español plano. Cuatro reportes hacen el trabajo. Salta el resto.",
+      "start": 59,
+      "end": 66.28
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Configúralo primero (10 minutos, una vez).",
+      "start": 67.38,
+      "end": 70.53
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Ve a search.google.com/search-console , inicia sesión, agrega tu dominio. Verifica propiedad por D N S o por una meta etiqueta. Espera 24-48 horas para que los datos se poblen.",
+      "start": 71.23,
+      "end": 87.8
+    },
+    {
+      "id": 9,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Los 4 reportes que mueven reservas · tu sweep semanal. Performance: Números de cabecera: clics, impresiones, CTR, posición. (semanal). Queries: Lo que la gente tecleó para encontrarte. El reporte de oro. (mensual). Pages: Qué páginas hacen el trabajo. La página de menú debería ser 15–25% de los clics. (trimestral). Coverage / Pages indexed: Cuántas páginas tiene Google realmente. Bajo 50% = problema fundacional. (en alerta). Los 4 reportes que mueven reservas · tu sweep semanal.",
+      "start": 88.6,
+      "end": 125.98
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Reporte 1: Performance — los números de cabecera.",
+      "start": 127.08,
+      "end": 130.4
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Esta es la única pantalla que la mayoría de los operadores necesita. Cuatro números arriba:",
+      "start": 131.1,
+      "end": 138.29
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Total de clics — cuántas personas hicieron clic a tu sitio desde la búsqueda de Google.",
+      "start": 138.64,
+      "end": 144.95
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Total de impresiones — cuántas veces tu sitio apareció en algún resultado.",
+      "start": 145.27,
+      "end": 150.82
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "CTR promedio — clics ÷ impresiones. El porcentaje de veces que tu snippet ganó el clic.",
+      "start": 151.14,
+      "end": 158.98
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Posición promedio — tu rango promedio.",
+      "start": 159.3,
+      "end": 162.14
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "El leverage casi siempre está en CTR, no en posición. Un restaurante en number 4 con un título + meta description fuertes supera a uno en number 2 con uno genérico. Si tu CTR para queries de marca está bajo 40%, el snippet está roto — casi siempre la meta description.",
+      "start": 162.66,
+      "end": 185.3
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Reporte 2: Queries — lo que la gente tecleó.",
+      "start": 186.4,
+      "end": 189.44
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Bajo los números de cabecera, haz clic en &ldquo;Queries.&rdquo; Esto es oro. Ordena por impresiones descendente. Las primeras 20-30 filas te dicen exactamente para qué cree Google que es tu restaurante.",
+      "start": 190.14,
+      "end": 208.52
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Queries de altas-impresiones / bajo-CTR. Casi siempre un problema de snippet — el título o meta no coincide con lo que esperaban.",
+      "start": 209.04,
+      "end": 219.82
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Queries sorpresa. Frases que no apuntaste deliberadamente — pistas para contenido que deberías agregar.",
+      "start": 220.14,
+      "end": 227.54
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Queries faltantes. Si &ldquo;tacos al pastor cerca de mí&rdquo; no aparece, tu schema de menú está roto o ausente.",
+      "start": 227.86,
+      "end": 238.06
+    },
+    {
+      "id": 22,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Reporte 3: Pages — qué páginas hacen el trabajo.",
+      "start": 239.16,
+      "end": 243.06
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Cambia la pestaña a &ldquo;Pages.&rdquo; Ordena por clics descendente. El patrón típico:",
+      "start": 243.76,
+      "end": 251.98
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "La home recibe 60-70% de los clics.",
+      "start": 252.33,
+      "end": 256.05
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "La página de menú debería recibir 15-25%.",
+      "start": 256.37,
+      "end": 260.97
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "La página de reservas típicamente 3-8%.",
+      "start": 261.29,
+      "end": 264.75
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Si tu página de menú está bajo 10% del total de clics, tienes un problema de página de menú — usualmente P D F (invisible para Google) o escondida en un subdirectorio que rankea mal.",
+      "start": 265.27,
+      "end": 280.31
+    },
+    {
+      "id": 28,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Reporte 4: Coverage / Pages indexed — el asesino silencioso.",
+      "start": 281.41,
+      "end": 286.67
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "En la barra lateral izquierda, bajo &ldquo;Indexing,&rdquo; haz clic en &ldquo;Pages.&rdquo; Esto te dice cuántas de tus páginas Google ha agregado realmente a su índice. Si 50% de tus páginas están &ldquo;Excluded&rdquo; o &ldquo;Discovered — not indexed,&rdquo; tienes un problema fundacional — usualmente carga lenta, canonical roto, o contenido pobre.",
+      "start": 287.37,
+      "end": 318.11
+    },
+    {
+      "id": 30,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Los tres hábitos semanales.",
+      "start": 319.21,
+      "end": 320.99
+    },
+    {
+      "id": 31,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Cadencia de Search Console · bajo 20 minutos al mes. Check de Performance de 2 min: Clics semana-vs-semana. Caída 20% = investiga. Si no, cierra la pestaña. (semanal). Scan de Queries de 5 min: Queries nuevas en top 30. Decide si agregar contenido. (mensual). Revisión de Pages de 10 min: La distribución de clics debería coincidir con tu embudo. Investiga huecos. (trimestral). Cadencia de Search Console · bajo 20 minutos al mes.",
+      "start": 321.79,
+      "end": 354.42
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lunes — abre Performance, mira semana-vs-semana. Dos minutos. Si los clics cayeron 20%+ semana-vs-semana, algo se rompió. Investiga. Si no, cierra la pestaña.",
+      "start": 355.17,
+      "end": 369.14
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Primero del mes — ordena Queries por impresiones. Cinco minutos. Nota cualquier query nueva en el top 30. Decide si agregar contenido.",
+      "start": 369.46,
+      "end": 380.41
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Trimestral — reporte de Pages, ordenado por clics. Diez minutos. La distribución de páginas debería coincidir con la ruta de conversión real de tu negocio.",
+      "start": 380.73,
+      "end": 393.85
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Carga semanal total: bajo 20 minutos al mes. Resultado: señal accionable que no consigues de ninguna agencia que &ldquo;maneja tu S E O.&rdquo;",
+      "start": 394.37,
+      "end": 407.86
+    },
+    {
+      "id": 36,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Lo que Search Console no te dice.",
+      "start": 408.96,
+      "end": 411.21
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Search Console solo cubre clics de búsqueda de Google. No te dice de clics de Google Maps, reservas de Find a Table, ni citas de IA-search de ChatGPT y Perplexity. Para el lado de IA-search, configura el F A Q schema y mira tu first-touch attribution en Plausible.",
+      "start": 411.91,
+      "end": 432.41
+    },
+    {
+      "id": 38,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "La posición es lo que no puedes mover fácil. El CTR es lo que puedes mover un martes en la tarde.",
+      "start": 433.16,
+      "end": 441.25
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Puntos clave",
+      "start": 442,
+      "end": 442.99
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "CTR de queries de marca bajo 40% significa que tu meta description está rota.",
+      "start": 443.34,
+      "end": 450.33
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Queries de altas-impresiones / bajo-CTR son problemas de snippet, no de ranking.",
+      "start": 450.65,
+      "end": 456.97
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Queries sorpresa en tu top 30 son oportunidades de contenido que Google te está dando.",
+      "start": 457.29,
+      "end": 464.07
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "Si la página de menú no es 15–25% del total de clics, la página misma es el problema.",
+      "start": 464.39,
+      "end": 472.57
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "Semanal: 2 min Performance. Mensual: 5 min Queries. Trimestral: 10 min Pages.",
+      "start": 472.89,
+      "end": 479.05
+    }
+  ]
+}

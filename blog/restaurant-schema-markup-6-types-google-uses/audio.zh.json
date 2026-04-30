@@ -1,0 +1,483 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:43:04.611Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 550.59,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "长话短说",
+      "start": 0,
+      "end": 1.21
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Google 首先读取餐厅页面的六种 schema.org 类型 — Restaurant、Menu、OpeningHoursSpecification、AggregateRating、Reservation、F A Q。",
+      "start": 1.56,
+      "end": 13.42
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "大多数独立餐厅网站都有这六个中的两个。其他四个缺失或畸形。",
+      "start": 13.74,
+      "end": 19.4
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "每个缺失的类型都是您不符合资格的不同 Google 表面：本地包卡、AI 概述引用、保留按钮、丰富摘要、假日时间徽章。",
+      "start": 19.72,
+      "end": 29.17
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "当 CMS 或模板更新触及模板时，架构会悄悄地腐烂。每月一次的模式检查可以在审查之前发现偏差。",
+      "start": 29.49,
+      "end": 38.76
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "如果您在二十十八岁之后开了一家餐馆并且从未接触过您网站上的模式标记，那么您就有模式标记。您的 CMS 或模板构建器几乎肯定会标记一些 — 问题是它是否是正确的模式、是否完整以及 Google 是否可以实际使用它。",
+      "start": 39.11,
+      "end": 55.48
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "该模式重复：大多数站点都有 Google 首先读取的六种模式类型中的两种；其他四个缺失或畸形。在 Google 的结果中，每个缺失的部分都是不同的表面，您不符合资格。复合部分是，缺失的类型解锁了不同的表面——本地包卡、AI概述引用、保留按钮、丰富的片段、假期时间徽章——因此“某些模式”和“所有六个”之间的差距不是线性的。",
+      "start": 55.83,
+      "end": 81.91
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "这篇文章是二十二十六年餐厅模式标记的诚实版本。 Google 实际使用的六种类型、每种类型的作用、每种类型的最小可行 JSON-LD 以及验证它的工具。",
+      "start": 82.26,
+      "end": 94.53
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "首先读取 6 种模式类型 Google · 每种模式解锁的内容。餐厅：菜品查询、本地包资格、基本身份证。 （基础）。菜单：菜品等级排名+菜品描述的AI概览引用。 （长尾）。开放时间规范：“立即开放”徽章 + 节假日时间准确度。 （步入式）。 AggregateRating：代码片段中的星形模式。点击率 +8–15%。 （CTR 提升）。预订：面板中的“预订餐桌”按钮。 （找一张桌子）。常见问题解答：二二十六中杠杆率最高的人工智能引用面。 （人工智能搜索）。首先读取 6 种模式类型 Google · 每种模式解锁的内容。",
+      "start": 95.33,
+      "end": 132.87
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "1.餐厅——基础类型。",
+      "start": 133.97,
+      "end": 135.47
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "这是你不能跳过的。餐厅模式告诉 Google 您的业务类型、您的地址、您的电话、您的价格范围以及一些其他事实，这些事实决定您是否出现在“我附近的意大利餐馆”等查询中。",
+      "start": 136.17,
+      "end": 148.72
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "最小可行 JSON-LD：",
+      "start": 149.07,
+      "end": 151
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "serveCuisine 数组所做的工作比人们意识到的要多 — 这就是 Google 知道如何向您显示特定于美食的查询的方式。不要放两种以上的菜品，除非你真的上菜；模糊性会让你在本应获胜的查询中降级。",
+      "start": 151.35,
+      "end": 165.31
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "2. 菜单——大多数餐馆都是假的。",
+      "start": 166.41,
+      "end": 168.92
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "我审核的几乎每个餐厅网站要么根本没有菜单架构，要么平台将其标记为单个字符串 blob。无论哪种方式，Google 都无法解析单个菜肴，并且您不会在菜肴级别上排名为“我附近的玉米饼牧师”。",
+      "start": 169.62,
+      "end": 183.91
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "有效的结构：",
+      "start": 184.26,
+      "end": 185.37
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "描述比名称更重要——当有人问“Bistro Petit 的 Tacos al Pastor 是什么样的”时，Google 的 AI Overviews 字段会逐字提升。空描述=没有人工智能引用。",
+      "start": 185.72,
+      "end": 198.12
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "3. OpeningHoursSpecification（开放时间规范）——需要您直接入场的规范。",
+      "start": 199.22,
+      "end": 205.62
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "如果您在 Google 上的工作时间有误，那么您在任何地方的工作时间都是错误的。 OpeningHoursSpecification 是为搜索面板上的“立即开放”/“晚上 10 点关闭”徽章提供支持的模式，当您更改周日营业时间并忘记更新网站时，该模式就会变得过时。",
+      "start": 206.32,
+      "end": 224.84
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "假期覆盖位于一个单独的特殊 OpeningHoursSpecification 块中 - Google 和 Apple Maps 都会读取它，而缺少假期关闭是圣诞节前夕愤怒评论落地的最常见原因。值得一提的失败模式：CMS 或模板更新可以在一夜之间悄然剥离 JSON-LD。如果您的日历上没有每月模式检查，那么当一星评论开始到达时，您就会第一次知道您的时间块丢失了。",
+      "start": 225.19,
+      "end": 251.51
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "在主页上运行架构检查器以查看当前时间架构是否有效；如果您需要重新开始，Open Hours 会生成 JSON-LD。",
+      "start": 251.86,
+      "end": 262.32
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "4. AggregateRating——将点击率提高两位数的方法。",
+      "start": 263.42,
+      "end": 267.25
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "如果您在自己的网站上有评论，AggregateRating 将在您的搜索片段中显示为金星图案。点击率的提升是真实的——餐厅查询的点击率通常为 8-15%。",
+      "start": 267.95,
+      "end": 280.13
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "限制：评论必须在您的网站上。您无法将 Google 的评论聚合到您自己的 AggregateRating 中，这违反了 Google 的结构化数据政策，并且可能会导致需要数周时间才能解除的手动操作。",
+      "start": 280.48,
+      "end": 294.23
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "5. 预订——解锁“查找餐桌”功能。",
+      "start": 295.33,
+      "end": 297.84
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "如果您使用的是 OpenTable、Resy、Tock 或 SevenRooms，您的预订系统已经发布了正确的架构。但是，如果您的预订是您自己网站上的自定义表单，则您需要自己发布预订架构 - 否则 Google 无法在面板中显示“预订餐桌”按钮。",
+      "start": 298.54,
+      "end": 314.36
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "与查找表的集成要求此架构有效并且您的预订端点可公开访问。使用架构检查器检查两者。",
+      "start": 314.71,
+      "end": 323.19
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "6. F A Q — AI 引文磁铁。",
+      "start": 324.29,
+      "end": 326.91
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "F A Q 模式并非特定于餐厅，但它是 226 年来餐厅页面中杠杆率最高的 AI 引用表面。 ChatGPT、Perplexity 和 Google 的 AI 概述在回答操作问题时首先阅读 F A Q 块。",
+      "start": 327.61,
+      "end": 341.79
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "六个写得很好的常见问题解答条目——实际上是有用的操作问题，而不是营销文案——通常会在 60 天内将人工智能搜索驱动的流量提升 20-40%。",
+      "start": 342.14,
+      "end": 355.8
+    },
+    {
+      "id": 30,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "典型 SE O-sweep 餐厅网站的模式覆盖范围 · Google 寻找的 6 种类型。餐厅：通常存在，但通常不完整。菜单：字符串斑点或完全丢失。开放时间：存在但陈旧。 AggregateRating：餐馆网站上经常不存在。预订：仅由 OpenTable 等自动发布。 常见问题解答：六个中最稀有的。典型 SE O-sweep 餐厅网站的模式覆盖范围 · Google 寻找的 6 种类型。",
+      "start": 356.6,
+      "end": 383.9
+    },
+    {
+      "id": 31,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "如何检查您今天拥有什么。",
+      "start": 385,
+      "end": 387.29
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "通过架构检查器运行您的主页。它为这六种类型中的每一种返回存在/有效/缺失的判决，并指向破碎的部分。将结果保存到您的餐厅审核中并每月重新运行 — 当 CMS 更新触摸模板时，架构会发生变化。",
+      "start": 387.99,
+      "end": 405.49
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "复合参数：每个缺失的模式类型都是您不符合资格的不同 Google 表面。这六种类型一起解锁本地包卡、AI 概述引文、保留按钮、丰富摘要和假日时间徽章。按顺序添加，一个季度内对展示次数的累积影响通常会达到 20% 到 60% 之间。",
+      "start": 405.84,
+      "end": 424.73
+    },
+    {
+      "id": 34,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "架构不是可选的。每个缺失的类型都是您自愿取消资格的 Google 表面。",
+      "start": 425.48,
+      "end": 431.19
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "要点",
+      "start": 431.94,
+      "end": 432.43
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "餐厅模式是基础——没有它，您可能根本不会出现美食查询。",
+      "start": 432.78,
+      "end": 437.63
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "具有结构化 MenuItem + 描述字段的菜单架构是 AI Overviews 逐字引用的内容。",
+      "start": 437.95,
+      "end": 445.25
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "OpeningHoursSpecification +specialOpeningHoursSpecification 一起防止“即使 Google 表示开放也已关闭”审核。",
+      "start": 445.57,
+      "end": 454.41
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "使用您自己网站上的评论进行 AggregateRating 可以将餐厅查询的点击率提高 8-15%；聚合 Google 的评论违反了政策。",
+      "start": 454.73,
+      "end": 465.71
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "F A Q 模式是 226 年来餐厅页面上影响力最高的人工智能引用界面。",
+      "start": 466.03,
+      "end": 472.97
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "查看您的网站缺少六种类型中的哪一种。",
+      "start": 473.32,
+      "end": 477.59
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "模式检查器通过所有六种类型运行您的主页，并为每种类型返回存在/有效/缺失的判断。将结果保存到您的 Workshop 并每月重新运行 — 当 CMS 更新触摸模板时，架构会发生变化。",
+      "start": 477.94,
+      "end": 493.43
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "接下来做什么",
+      "start": 493.78,
+      "end": 494.93
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "阅读：相关术语表 →",
+      "start": 495.28,
+      "end": 496.52
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "尝试：与本文配对的工具 →",
+      "start": 496.84,
+      "end": 499.13
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "或者给 Don 发送一条信息：The Window →",
+      "start": 499.45,
+      "end": 502.56
+    },
+    {
+      "id": 47,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "另请参阅",
+      "start": 502.91,
+      "end": 503.92
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "文章从 Google 的查找表中恢复预订 本文中的预订模式如何连接到 Google 面板中的预订界面。",
+      "start": 504.27,
+      "end": 512.82
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "工具架构检查器验证任何餐厅主页上的六种类型并指出损坏的部分。",
+      "start": 513.14,
+      "end": 519.74
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "研究结构化数据对本地搜索的影响本文中声称的累积印象背后的证据。",
+      "start": 520.06,
+      "end": 526.58
+    },
+    {
+      "id": 51,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "告诉我们",
+      "start": 526.93,
+      "end": 527.64
+    },
+    {
+      "id": 52,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "你在厨房试过这个吗？",
+      "start": 528.74,
+      "end": 530.59
+    },
+    {
+      "id": 53,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "100-400 个字，上面写着你的名字，Don 逐字逐句地读。",
+      "start": 531.29,
+      "end": 535.77
+    },
+    {
+      "id": 54,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "登录并分享您的经验 →",
+      "start": 536.12,
+      "end": 537.69
+    },
+    {
+      "id": 55,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "继续阅读",
+      "start": 538.04,
+      "end": 538.87
+    },
+    {
+      "id": 56,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "预订端的模式到表面的连接。",
+      "start": 539.22,
+      "end": 541.7
+    },
+    {
+      "id": 57,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "结构化数据的另一面——表面模式提要。",
+      "start": 542.05,
+      "end": 545.11
+    },
+    {
+      "id": 58,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "JSON-LD 是什么以及为什么 Google 读取它的简单英语定义。",
+      "start": 545.46,
+      "end": 550.59
+    }
+  ]
+}

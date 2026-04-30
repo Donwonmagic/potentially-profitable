@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-30T19:49:01.516Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "am_michael",
+  "language": "en",
+  "total": 674.62,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "En resumen",
+      "start": 0,
+      "end": 0.77
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "La mayoría de los restaurantes independientes rehace su sitio web 12–24 meses después de cuando deberían — cuando el costo es mayor y el embudo ya está perdiendo reservas.",
+      "start": 1.12,
+      "end": 15.79
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Un diagnóstico de siete preguntas separa &ldquo;rehacer&rdquo; de &ldquo;arreglar las fugas un año más&rdquo; sin un consultor en el medio.",
+      "start": 16.11,
+      "end": 29.9
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Tres patrones de caso: un sitio con buena puntuación que solo necesita arreglos puntuales; un sitio bajo 60 donde la plataforma misma es el techo; un sitio en rango medio donde una reconstrucción parcial es el trade-off correcto.",
+      "start": 30.22,
+      "end": 49.44
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "La decisión rara vez es &ldquo;rehacer o no.&rdquo; Es &ldquo;qué nivel de reconstrucción y cómo se ve el caso de no-hacer-nada a 18 meses.&rdquo;",
+      "start": 49.76,
+      "end": 64.89
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "El operador con dos cotizaciones para el mismo rebuild — una por 24,000 dollars y otra por 7,000 dollars, ninguno de los dos desarrolladores le preguntó qué estaba realmente roto — no está realmente preguntando cuál cotización tomar. Está preguntando si rehacer del todo. Esa es la pregunta más difícil, y casi nadie ayuda a los operadores a responderla.",
+      "start": 65.24,
+      "end": 93.94
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "La respuesta honesta es que la mayoría de los restaurantes independientes rehace su sitio 12–24 meses tarde — para cuando el rebuild cuesta más (porque hay más que migrar), toma más tiempo (porque el embudo de reservas ya empeoró), y el operador toma la decisión bajo presión en lugar de bajo planeación.",
+      "start": 94.46,
+      "end": 117.96
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Este es el diagnóstico de siete preguntas que recorro antes de recomendar un rebuild — o, igual de seguido, recomendar contra uno y apuntar a tres cambios chicos que compran otro año.",
+      "start": 118.48,
+      "end": 133.6
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Storefront Health: qué te dice sobre estar listo para rehacer. No rehagas: Arregla la sub-puntuación más baja. A veces un C D N + pase de imágenes gana otro año. (arregla fugas). Tal vez rehaz: Recorre las siete preguntas — tres o más sí = rehacer. (diagnostica). Rehaz: Cada trimestre que esperas cuesta más que el rebuild mismo. (ahora). Puntuación de Storefront Health · qué te dice sobre estar listo para rehacer.",
+      "start": 134.4,
+      "end": 166.61
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Pregunta 1: ¿Cómo puntúa en Storefront Health?",
+      "start": 167.71,
+      "end": 170.88
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Corre Storefront Health sobre tu sitio. La calificación compuesta enrolla velocidad, S E O, mobile, schema, G B P, y la Restaurant Audit en un solo número, 0–100.",
+      "start": 171.58,
+      "end": 185.73
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "80+: No rehagas. Arregla la sub-puntuación más baja.",
+      "start": 186.25,
+      "end": 191.07
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "60–79: Tal vez rehaz. Lee las siguientes seis preguntas.",
+      "start": 191.39,
+      "end": 196.35
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Bajo 60: Rehaz — cada trimestre que esperas cuesta más que el rebuild.",
+      "start": 196.67,
+      "end": 202.1
+    },
+    {
+      "id": 14,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Pregunta 2: ¿Tu C M S puede actualizarse sin romper el sitio?",
+      "start": 203.2,
+      "end": 207.85
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Las instalaciones viejas de C M S acumulan deuda técnica como los ductos acumulan polvo. La prueba: ¿cuándo fue la última vez que alguien intentó actualizar la plataforma? Si la respuesta es &ldquo;no lo hacemos, porque la última vez se rompió,&rdquo; eso es señal de rehacer.",
+      "start": 208.55,
+      "end": 231.15
+    },
+    {
+      "id": 16,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Pregunta 3: ¿El menú vive en H T M L?",
+      "start": 232.25,
+      "end": 235.45
+    },
+    {
+      "id": 17,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Si tu menú es un P D F, una imagen, o &ldquo;manejado por el widget de menú de Wix,&rdquo; eres invisible para las queries a nivel de plato de Google y para la búsqueda con IA. Cambiar a un menú H T M L real a veces basta para postergar un rebuild — a veces requiere uno.",
+      "start": 236.15,
+      "end": 259.56
+    },
+    {
+      "id": 18,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Pregunta 4: ¿Cómo puntúa el sitio en Core Web Vitals?",
+      "start": 260.66,
+      "end": 264.88
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Si LCP está arriba de 4 segundos en mobile, o CLS está arriba de 0.25, te están penalizando en búsqueda Y rebotando visitantes antes de que cargue el menú. A veces un C D N + compresión de imágenes lo arregla; a veces la plataforma es el problema y solo un rebuild lo resuelve.",
+      "start": 265.58,
+      "end": 289.62
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Corre Speed Test sobre la home y la página interior más visitada. Si la home es rápida pero la página de menú es lenta, la plataforma no es el problema — la página sí. Si ambas son lentas, la plataforma usualmente sí.",
+      "start": 290.14,
+      "end": 307.17
+    },
+    {
+      "id": 21,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Pregunta 5: ¿Puedes enviar un cambio chico en menos de una hora?",
+      "start": 308.27,
+      "end": 313.27
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Prueba: intenta actualizar el horario de feriado en tu home en los próximos 60 minutos. Si no puedes (sin acceso, C M S complejo, requiere developer), eso es señal de rehacer — no porque la limitación técnica sea fatal, sino porque la carga operativa compone silenciosamente. Cada cambio que postergas es una pequeña fuga.",
+      "start": 313.97,
+      "end": 338.85
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Pregunta 6: ¿La marca coincide con el salón?",
+      "start": 339.95,
+      "end": 343.47
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Abre tu home en el teléfono que cargas. Luego entra a tu comedor. ¿Se sienten como el mismo lugar? Si no — si el salón es cálido, considerado, intencional, y el sitio es plantillado, genérico, &ldquo;elegimos la plantilla más limpia de Squarespace&rdquo; — eso es señal de rehacer por marca, separado de las técnicas.",
+      "start": 344.17,
+      "end": 369.12
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Pregunta 7: ¿Qué pasa con las reservas si no haces nada por 18 meses?",
+      "start": 370.22,
+      "end": 376.03
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Mira tu tendencia mensual de reservas. Si está plana o cayendo y tu sitio ha sido el mismo por 24+ meses, no hacer nada no es realmente neutral — la brecha con tus competidores locales se está abriendo aunque tus números se vean estables. La proyección de &ldquo;no hacer nada&rdquo; a 18 meses casi siempre es negativa para un sitio de restaurante estancado.",
+      "start": 376.73,
+      "end": 404.48
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "Tres patrones de caso.",
+      "start": 405.58,
+      "end": 407.13
+    },
+    {
+      "id": 28,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Tres patrones de rehacer · banda de puntuación, alcance, payback típico. Sitio con buena puntuación, arreglos puntuales: Puntuación 75–85. C D N, comprimir, fix de schema. ~5–10% del costo de rebuild. (posterga). Sitio bajo 60, rebuild completo: La plataforma misma es el techo. Menú H T M L real, schema completo, embudo rápido. (payback 9–14 meses). Rango medio, rebuild parcial: Front-end + fotos, mantener C M S. ~40% del costo de rebuild completo. (trade-off). Tres patrones de rehacer · banda de puntuación, alcance, payback típico.",
+      "start": 407.93,
+      "end": 453.03
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Caso 1 — Sitio con buena puntuación, arreglos puntuales: Un bistró francés de seis años puntuando 75 en Storefront Health. La velocidad mobile arrastraba la puntuación. Agregar un C D N, recomprimir cada imagen, arreglar el schema del menú. La puntuación se mueve a 88; el rebuild se posterga dos años más.",
+      "start": 453.78,
+      "end": 479.53
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Caso 2 — Sitio bajo 60, rehace: Front-end viejo, lento en mobile, schema de menú malformado, embudo de reservas escondido. La plataforma misma es el techo. El rebuild aquí es full custom: menú H T M L real, datos estructurados a nivel de plato, embudo de reservas limpio. La puntuación aterriza en 80s altos o 90s. Las reservas vía búsqueda aproximadamente se triplican en 90 días porque el schema faltante empieza a aparecer en queries del local-pack para las que el sitio nunca apareció antes. Las ventanas de payback en rebuilds de este rango son típicamente 9–14 meses — pero el leverage compone conforme el índice de Google se actualiza.",
+      "start": 480.05,
+      "end": 530.57
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Caso 3 — Sitio en 65–70, rebuild parcial: Plataforma bien, marca cansada. Mantén el C M S, reemplaza el front-end y las fotos a aproximadamente 40% del costo de rebuild completo. La puntuación se mueve a 80s bajos-medios. Las reservas suben — pero no tan pronunciadamente como el Caso 2. El trade-off honesto que vale señalar: un rebuild parcial mantiene tu techo en lo que la plataforma subyacente permita para schema, velocidad e indexación. A veces es la decisión correcta; a veces vale revisitar en 18 meses cuando el techo de la plataforma se vuelve la siguiente restricción.",
+      "start": 531.09,
+      "end": 578.45
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "Cómo usar este framework.",
+      "start": 579.55,
+      "end": 581.13
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Corre Storefront Health primero. Guarda la puntuación en tu Taller . Recorre las siete preguntas, escribe la respuesta honesta a cada una, y mira el patrón. Si tres o más apuntan a &ldquo;rehacer,&rdquo; estás atrasado. Si una o dos lo hacen, estás en territorio de arreglar-las-fugas.",
+      "start": 581.83,
+      "end": 604.93
+    },
+    {
+      "id": 34,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Si quieres un segundo par de ojos sobre cómo aplica el framework a tu sitio, escríbeme por La Ventana . Leo cada uno.",
+      "start": 605.45,
+      "end": 614.71
+    },
+    {
+      "id": 35,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "No hacer nada no es neutral. La brecha con tus competidores locales se abre cada trimestre que tu sitio no.",
+      "start": 615.46,
+      "end": 623.97
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Puntos clave",
+      "start": 624.72,
+      "end": 625.71
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Corre Storefront Health primero. Bajo 60 = rehacer ahora. 60–79 = recorre las siete preguntas. 80+ = arregla la sub-puntuación más baja.",
+      "start": 626.06,
+      "end": 639.62
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Un C M S que no se puede actualizar sin romperse es señal de rehacer — la deuda acumulada compone.",
+      "start": 639.94,
+      "end": 647.42
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "PDFs o menús encerrados en widgets limitan tu indexabilidad. A veces solo reescribir el menú posterga un rebuild un año.",
+      "start": 647.74,
+      "end": 658.42
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Si no puedes enviar un cambio chico en menos de una hora, la carga operativa ya es una fuga.",
+      "start": 658.74,
+      "end": 666.09
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "No hacer nada no es neutral. La brecha con competidores locales se abre cada trimestre que tu sitio no.",
+      "start": 666.41,
+      "end": 674.62
+    }
+  ]
+}
