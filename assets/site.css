@@ -633,7 +633,7 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 ::selection{background:var(--teal);color:var(--cream)}
 h1,h2,h3,h4{font-family:var(--font-display);font-weight:500;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);margin:0}
-h1{font-size:clamp(42px,6.4vw,84px);font-weight:500}
+h1{font-size:clamp(34px,6.4vw,84px);font-weight:500;overflow-wrap:break-word}
 h2{font-size:clamp(32px,4.2vw,54px)}
 h3{font-size:clamp(22px,2.2vw,30px)}
 p{margin:0}
@@ -761,7 +761,7 @@ p{margin:0}
   vertical-align:baseline;
 }
 .nav-links{display:flex;gap:36px;font-size:15px;color:var(--ink-soft)}
-.nav-links a{position:relative;transition:color var(--t-fast) var(--ease);white-space:nowrap;flex-shrink:0}
+.nav-links a{position:relative;min-width:0;transition:color var(--t-fast) var(--ease);white-space:nowrap;flex-shrink:0}
 .nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .nav-links a:hover{color:var(--teal)}
 .nav-links a:hover::after{transform:scaleX(1)}
@@ -1921,7 +1921,7 @@ br.br-lg{display:none}
 .breadcrumb{visibility:visible;padding:100px 0 16px;font-size:13px;color:var(--stone);letter-spacing:0.01em;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .breadcrumb a{color:var(--stone);transition:color var(--t-fast) var(--ease);white-space:nowrap}
 .breadcrumb a:hover{color:var(--teal)}
-.breadcrumb-sep{display:inline-block;margin:0 6px;color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
+.breadcrumb-sep{display:inline-block;margin:0 clamp(6px,1vw,8px);color:var(--stone-2);font-size:15px;line-height:1;user-select:none}
 .breadcrumb [aria-current="page"]{color:var(--ink)}
 /* When a hero directly follows a breadcrumb, the breadcrumb has
    already cleared the fixed nav with 100px of top padding, so the
@@ -1929,7 +1929,7 @@ br.br-lg{display:none}
    before content. Reset the hero top padding to a comfortable
    residual (40px) when preceded by a breadcrumb. */
 .breadcrumb + .hero{padding-top:40px}
-@media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb-sep{margin:0 4px}.breadcrumb + .hero{padding-top:24px}}
+@media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
