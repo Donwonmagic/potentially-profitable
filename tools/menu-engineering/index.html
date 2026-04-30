@@ -51,7 +51,27 @@
 .me-btn:hover{background:var(--teal);color:var(--cream)}
 .me-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
 .me-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
-.me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-grid-wrap{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+@media(min-width:640px){.me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+/* Mobile card-stack — under 640px every row reads as a labeled
+   card so phone owners can fill the form without horizontal scroll.
+   The audit's #1 abandonment risk for this tool. CSS-only —
+   addRow's data-label attributes drive the per-cell labels. */
+@media(max-width:639px){
+  .me-grid-wrap{padding:8px;background:transparent;border:0}
+  .me-grid,.me-grid thead,.me-grid tbody,.me-grid tr,.me-grid td{display:block;width:100%}
+  .me-grid thead{position:absolute;left:-9999px;top:auto}
+  .me-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);margin-bottom:10px;position:relative}
+  .me-grid td{padding:8px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .me-grid td:last-of-type{border-bottom:0}
+  .me-grid td:not([data-label]){display:block}
+  .me-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
+  .me-grid td:not([data-label])::before{content:none}
+  .me-grid td.me-num input{text-align:left}
+  .me-grid td.me-row-actions{position:absolute;top:6px;right:6px;padding:0;border:0}
+  .me-grid td.me-row-actions::before{content:none}
+  .me-grid .me-remove-row{min-width:36px;min-height:36px;font-size:16px;color:var(--stone);background:var(--cream-2);border-radius:50%}
+}
 .me-units-mode{display:flex;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
 .me-units-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
 .me-units-mode button strong{font-weight:700}
@@ -838,12 +858,18 @@
   function addRow(item){
     item = item || { item: '', price: '', food_cost: '', units_sold: '', category: '' };
     var tr = document.createElement('tr');
+    // Read units header dynamically — switches between "Units sold"
+    // and "Revenue ($)" depending on the units-mode toggle.
+    var unitsLabel = (function () {
+      var h = document.getElementById('meUnitsHeader');
+      return h ? h.textContent : 'Units sold';
+    })();
     tr.innerHTML =
-      '<td><input type="text" placeholder="e.g. Cacio e pepe" value="' + escAttr(item.item) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="24" value="' + escAttr(item.price) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="6" value="' + escAttr(item.food_cost) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="numeric" step="1" min="0" placeholder="80" value="' + escAttr(item.units_sold) + '" /></td>' +
-      '<td><input type="text" placeholder="(Pasta, Mains…)" value="' + escAttr(item.category) + '" /></td>' +
+      '<td data-label="Item"><input type="text" placeholder="e.g. Cacio e pepe" value="' + escAttr(item.item) + '" /></td>' +
+      '<td class="me-num" data-label="Price"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="24" value="' + escAttr(item.price) + '" /></td>' +
+      '<td class="me-num" data-label="Food cost"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="6" value="' + escAttr(item.food_cost) + '" /></td>' +
+      '<td class="me-num" data-label="' + escAttr(unitsLabel) + '"><input type="number" inputmode="numeric" step="1" min="0" placeholder="80" value="' + escAttr(item.units_sold) + '" /></td>' +
+      '<td data-label="Category"><input type="text" placeholder="(Pasta, Mains…)" value="' + escAttr(item.category) + '" /></td>' +
       '<td class="me-row-actions"><button type="button" class="me-remove-row" aria-label="Remove row">×</button></td>';
     gridBody.appendChild(tr);
     return tr;
@@ -1272,10 +1298,14 @@
     if (meGridWrap) meGridWrap.setAttribute('data-units-mode', mode);
     if (meUnitsHeader) meUnitsHeader.textContent = mode === 'revenue' ? 'Revenue ($)' : 'Units sold';
     if (meUnitsHint) meUnitsHint.hidden = (mode !== 'revenue');
-    // Update placeholders on every existing row.
+    // Update placeholders + per-row data-label (drives mobile
+    // card-stack header text) on every existing row.
+    var newLabel = (mode === 'revenue') ? 'Revenue ($)' : 'Units sold';
     Array.prototype.forEach.call(gridBody.querySelectorAll('tr'), function(tr){
       var inputs = tr.querySelectorAll('input');
+      var cells  = tr.querySelectorAll('td');
       if (inputs[3]) inputs[3].placeholder = (mode === 'revenue') ? '1920' : '80';
+      if (cells[3]) cells[3].setAttribute('data-label', newLabel);
     });
     rerender();
   }
