@@ -56,8 +56,8 @@
   .mm-pledge{display:inline-flex;align-items:center;gap:8px;margin:22px auto 0;padding:8px 16px;border:1px solid var(--status-good);background:var(--status-good-tint);color:var(--status-good);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.02em}
   .mm-pledge::before{content:'\2713';font-weight:700}
   .mm-pledge a{color:inherit;text-decoration:underline;text-underline-offset:2px}
-  .mm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;margin:0 auto}
-  @media (max-width:720px){.mm-grid{grid-template-columns:1fr}}
+  .mm-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin:0 auto}
+  @media (min-width:640px){.mm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mm-card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);gap:12px;position:relative}
   .mm-card.mm-coming{background:var(--cream-2);border-style:dashed;opacity:.85}
   .mm-card-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
@@ -140,7 +140,8 @@
      the band-colored .mm-recommendation so the two don't compete. */
   .mm-escalate{margin:10px 0 0;padding:12px 14px;border-radius:var(--r-input);background:var(--cream-2);border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink-soft);display:none;gap:12px;align-items:center;flex-wrap:wrap}
   .mm-escalate[data-visible="true"]{display:flex}
-  .mm-escalate p{margin:0;flex:1;min-width:180px}
+  .mm-escalate p{margin:0;flex:1 1 100%}
+  @media (min-width:480px){.mm-escalate p{flex:1 1 200px}}
   .mm-escalate a{color:var(--rust);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
   .mm-escalate a:hover{color:var(--status-warn-deep)}
   /* Cross-calculator suggestion — appears on mid-severity bands
@@ -150,7 +151,8 @@
      only), so the user sees at most one "where next" row at a time. */
   .mm-cross-suggest{margin:8px 0 0;padding:10px 14px;border-radius:var(--r-sm);background:var(--teal-tint);color:var(--teal-dark);font-size:12.5px;line-height:1.5;display:none;gap:10px;align-items:center;flex-wrap:wrap}
   .mm-cross-suggest[data-visible="true"]{display:flex}
-  .mm-cross-suggest span{flex:1;min-width:180px}
+  .mm-cross-suggest span{flex:1 1 100%}
+  @media (min-width:480px){.mm-cross-suggest span{flex:1 1 200px}}
   .mm-cross-suggest a{color:var(--teal);font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
   .mm-cross-suggest a:hover{color:var(--teal-dark)}
   @media print { .mm-cross-suggest { display: none !important; } }
@@ -178,7 +180,7 @@
      downloaded locally. Sits in the hero so the month-end rhythm
      is the first thing an owner sees on a return visit. */
   .mm-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 0}
-  .mm-action{font-family:inherit;font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:999px;cursor:pointer;border:1px solid var(--line-dark);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;gap:8px;transition:border-color 140ms,color 140ms,background 140ms,transform 140ms;line-height:1.2}
+  .mm-action{font-family:inherit;font-size:13.5px;font-weight:600;padding:11px 18px;min-height:44px;border-radius:999px;cursor:pointer;border:1px solid var(--line-dark);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:border-color 140ms,color 140ms,background 140ms,transform 140ms;line-height:1.2}
   .mm-action:hover{border-color:var(--teal);color:var(--teal)}
   .mm-action:active{transform:translateY(1px)}
   .mm-action:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
@@ -380,7 +382,7 @@
   .mm-safety-pass::before{content:'\2713  ';font-weight:800}
   .mm-safety-fail{color:var(--rust);font-weight:600}
   .mm-safety-fail::before{content:'\2715  ';font-weight:800}
-  @media (max-width:720px){
+  @media (max-width:639px){
     .mm-safety,.mm-safety thead,.mm-safety tbody,.mm-safety tr,.mm-safety td,.mm-safety th{display:block}
     .mm-safety thead{display:none}
     .mm-safety tr{border-bottom:1px solid var(--line);padding:14px 16px}
@@ -393,7 +395,7 @@
      color-coded to its sensitivity. Escalates green → teal →
      amber → rust from Public through Regulated. */
   .mm-tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:960px;margin:24px auto 0}
-  @media (max-width:740px){.mm-tiers{grid-template-columns:1fr}}
+  @media (max-width:639px){.mm-tiers{grid-template-columns:1fr}}
   .mm-tier{padding:18px 20px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:10px}
   .mm-tier[data-tier="public"]     {border-left-color:var(--status-good);background:#FAFBF9}
   .mm-tier[data-tier="competitive"]{border-left-color:var(--teal);background:#F8FBFB}
@@ -413,11 +415,12 @@
      __mmHydratedState boot path. */
   .mm-save{max-width:760px;margin:24px auto 0;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .mm-save[hidden]{display:none}
-  .mm-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
-  .mm-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+  .mm-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.mm-save-text{flex:1 1 220px}}
+  .mm-save-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;min-height:44px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
   .mm-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
   .mm-save-btn[disabled]{opacity:.6;cursor:wait}
-  .mm-save-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
+  .mm-save-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;min-height:44px;border:1px solid var(--line-dark);border-radius:999px;color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:border-color var(--t-fast) var(--ease)}
   .mm-save-link:hover{border-color:var(--ink)}
   .mm-save-msg{font-size:13px;color:var(--status-good);font-weight:500}
   .mm-save-msg.error{color:var(--rust)}

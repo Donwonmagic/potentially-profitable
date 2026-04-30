@@ -150,6 +150,7 @@ function renderBody(locale) {
       <h2 id="recently-added-heading">${escText(heading)}</h2>
       <p class="recently-added__sub">${escText(subhead)}</p>
     </header>
+    <div class="table-scroll">
     <table class="lib-idx" role="table">
       <caption class="sr-only">${escText(captionText)}</caption>
       <thead>
@@ -164,6 +165,7 @@ function renderBody(locale) {
 ${rows}
       </tbody>
     </table>
+    </div>
   </div>
 </section>
 ${SENTINEL_CLOSE}`;

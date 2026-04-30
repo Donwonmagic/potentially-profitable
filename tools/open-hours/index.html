@@ -136,7 +136,8 @@
 
 .oh-custom{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-input);font-size:13px}
 .oh-custom input[type="date"], .oh-custom input[type="text"]{padding:6px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink)}
-.oh-custom input[type="text"]{flex:1;min-width:160px}
+.oh-custom input[type="text"]{flex:1 1 100%}
+@media(min-width:480px){.oh-custom input[type="text"]{flex:1 1 160px}}
 
 .oh-compare{margin-top:18px;padding:16px;border:1px dashed var(--line-dark);border-radius:var(--r-input);background:var(--white)}
 .oh-compare summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -239,7 +240,8 @@
 /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
 .oh-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 .oh-save[hidden]{display:none}
-.oh-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+.oh-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.oh-save-text{flex:1 1 220px}}
 .oh-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
 .oh-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
 .oh-save-btn[disabled]{opacity:.6;cursor:wait}
@@ -589,7 +591,8 @@
           <span>Where this goes on common site builders</span>
           <span style="font-size:16px;color:var(--stone);" class="oh-cms-toggle">+</span>
         </summary>
-        <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;line-height:1.55;">
+        <div class="table-scroll" style="margin-top:10px">
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.55;">
           <thead><tr style="text-align:left;border-bottom:1px solid var(--line);"><th style="padding:6px 8px;font-weight:600;color:var(--stone);font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Site builder</th><th style="padding:6px 8px;font-weight:600;color:var(--stone);font-size:11px;letter-spacing:.04em;text-transform:uppercase;">Where to paste</th></tr></thead>
           <tbody style="font-size:13px;">
             <tr><td style="padding:6px 8px;font-weight:600;border-bottom:1px solid var(--line);">Squarespace</td><td style="padding:6px 8px;color:var(--ink-soft);border-bottom:1px solid var(--line);">Settings &rarr; Advanced &rarr; Code Injection &rarr; <strong>Header</strong></td></tr>
@@ -598,6 +601,7 @@
             <tr><td style="padding:6px 8px;font-weight:600;">Webflow</td><td style="padding:6px 8px;color:var(--ink-soft);">Project Settings &rarr; Custom Code &rarr; <strong>Head Code</strong></td></tr>
           </tbody>
         </table>
+        </div>
       </details>
       <style>.oh-cms-hints[open] .oh-cms-toggle{transform:rotate(45deg);transition:transform 140ms var(--ease-out)}.oh-cms-hints summary::-webkit-details-marker{display:none}</style>
       <div class="oh-task-actions">

@@ -95,6 +95,8 @@ const CHECKS = [
   ['Security locale parity','check-security-locale-parity.mjs'],
   ['KPI doc freshness',    'check-kpi-doc.mjs',              '--check'],
   ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
+  ['No fixed min-width',   'check-no-fixed-min-width.mjs'],
+  ['Table scroll wrap',    'check-table-scroll-wrap.mjs'],
 ];
 
 const results = [];
