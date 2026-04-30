@@ -294,6 +294,18 @@
   .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
   .bs-export-btn-primary{background:var(--teal);color:var(--cream)}
   .bs-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .bs-variants{display:flex;flex-direction:column;gap:14px}
+  .bs-variants-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+  .bs-variant{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:10px;background:var(--white)}
+  .bs-variant-swatch{width:100%;aspect-ratio:1;border-radius:var(--r-sm);background:var(--cream-2);background-image:linear-gradient(45deg,#e8e6e1 25%,transparent 25%),linear-gradient(-45deg,#e8e6e1 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e8e6e1 75%),linear-gradient(-45deg,transparent 75%,#e8e6e1 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .bs-variant-swatch[data-bg="dark"]{background:var(--ink);background-image:none}
+  .bs-variant-swatch img{max-width:84%;max-height:84%;object-fit:contain}
+  .bs-variant-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .bs-variant-name{font-size:12px;font-weight:600;color:var(--ink)}
+  .bs-variant-bg{font-size:10.5px;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:0;font:inherit}
+  .bs-variant-bg:hover{color:var(--teal)}
+  .bs-variant-dl{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none}
+  .bs-variant-dl:hover{border-color:var(--teal);color:var(--teal)}
 
   /* Print stylesheet — collapses the page into a one-page starter sheet
      a restaurant owner can hand to a designer or a printer. Hides the
@@ -1008,6 +1020,20 @@
       </div>
       <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Muntin Pane</strong> is a 1200&times;1260 PNG arranging your logo, palette, type sample, and menu preview into the same 2&times;2 grid as our brand mark — one shareable file you can email to a designer, post to Instagram, or print. The ZIP includes the Pane plus <code>palette.css</code>, <code>tokens.json</code>, and a <code>README.md</code> naming each color's role. Everything is composed and packaged in your browser — no upload.</p>
       <pre class="bs-export-preview" id="bsExportPreview" aria-label="CSS variables preview"></pre>
+    </div>
+
+    <!-- Logo variant generator. The Photoshop replacement: takes the
+         uploaded logo and produces five color-shifted PNGs at 2x
+         the source resolution. Pure canvas, no upload, no third-
+         party libraries. The use cases are concrete: a white logo
+         for dark menus, a black logo for receipts and napkins, a
+         single-color teal for awnings, an inverted version for
+         photography watermarks. -->
+    <div class="bs-variants" id="bsVariants" hidden>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;">Logo variants</h2>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);">Five color-shifted versions of your uploaded logo. Each is a transparent PNG at 2&times; your source resolution — drop them on light or dark backgrounds, print them at any size. Generated in your browser; the logo never leaves the device.</p>
+      <div class="bs-variants-grid" id="bsVariantsGrid" aria-label="Logo color variants"></div>
+      <p style="margin:0;font-size:12px;line-height:1.55;color:var(--stone);">Best results with PNG or SVG logos that already have a transparent background. JPEG logos will render with their original background pixels intact (the recolor only touches non-transparent pixels).</p>
     </div>
 
     <div class="bs-save" id="bsSave" hidden>
@@ -1876,6 +1902,7 @@
         contrastWrap.hidden = false;
         renderExports(latestPalette);
         exportWrap.hidden = false;
+        renderLogoVariants(latestPalette);
         if (opts.source === 'extract') firePlausible(latestPalette, opts.file);
       });
     });
@@ -2104,6 +2131,120 @@
 
   function renderExports(palette){
     exportPreview.textContent = buildCssBlock(palette);
+  }
+
+  // ----------------------------------------------------------------
+  // Logo variant generator. Recolors the source logo's opaque pixels
+  // into five concrete variants the owner can drop on light/dark
+  // backgrounds, print on signage, or hand to a vendor.
+  //
+  // Algorithm: source logo → 2x canvas → per-pixel recolor based on
+  // the variant rule, preserving alpha. The result is always a
+  // transparent-ground PNG.
+  //
+  // Variants:
+  //   White        — every opaque pixel becomes white (R=G=B=255)
+  //   Black        — every opaque pixel becomes black (R=G=B=0)
+  //   Brand color  — every opaque pixel becomes the primary palette
+  //                  color (slot 0 — typically the most-saturated)
+  //   Inverted     — channel-flip every opaque pixel (255 - R, 255 - G, 255 - B)
+  //   Monochrome   — convert opaque pixels to greyscale (Rec. 709 luma)
+  //
+  // Best results: PNG/SVG with already-transparent ground. JPEGs
+  // get their full canvas recolored — explicit caveat in the UI.
+  // ----------------------------------------------------------------
+  var bsVariantsEl       = document.getElementById('bsVariants');
+  var bsVariantsGridEl   = document.getElementById('bsVariantsGrid');
+  function bsParseHexToRgb(hex){
+    var s = String(hex || '').replace(/^#/, '');
+    if (s.length === 3) s = s.charAt(0) + s.charAt(0) + s.charAt(1) + s.charAt(1) + s.charAt(2) + s.charAt(2);
+    if (s.length !== 6 || /[^0-9a-f]/i.test(s)) return [33, 86, 95]; // teal fallback
+    return [parseInt(s.slice(0,2),16), parseInt(s.slice(2,4),16), parseInt(s.slice(4,6),16)];
+  }
+  function bsRecolorCanvas(srcImg, variant, brandRgb){
+    var w = (srcImg.naturalWidth  || srcImg.width  || 0) * 2;
+    var h = (srcImg.naturalHeight || srcImg.height || 0) * 2;
+    if (w <= 0 || h <= 0) return null;
+    // Soft cap so we don't OOM on a 6000px logo.
+    var maxDim = 4096;
+    if (w > maxDim || h > maxDim) {
+      var scale = Math.min(maxDim / w, maxDim / h);
+      w = Math.round(w * scale); h = Math.round(h * scale);
+    }
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(srcImg, 0, 0, w, h);
+    var img = ctx.getImageData(0, 0, w, h);
+    var d = img.data;
+    var br = brandRgb[0], bg = brandRgb[1], bb = brandRgb[2];
+    for (var i = 0; i < d.length; i += 4) {
+      var a = d[i + 3];
+      if (a === 0) continue; // fully transparent — skip
+      var r = d[i], g = d[i+1], b = d[i+2];
+      switch (variant) {
+        case 'white':
+          d[i] = 255; d[i+1] = 255; d[i+2] = 255;
+          break;
+        case 'black':
+          d[i] = 0; d[i+1] = 0; d[i+2] = 0;
+          break;
+        case 'brand':
+          d[i] = br; d[i+1] = bg; d[i+2] = bb;
+          break;
+        case 'inverted':
+          d[i] = 255 - r; d[i+1] = 255 - g; d[i+2] = 255 - b;
+          break;
+        case 'mono':
+          // Rec. 709 luma — preserves perceived brightness.
+          var y = Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
+          d[i] = y; d[i+1] = y; d[i+2] = y;
+          break;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return c;
+  }
+  function renderLogoVariants(palette){
+    if (!bsVariantsEl || !bsVariantsGridEl) return;
+    if (!latestLogoImage) { bsVariantsEl.hidden = true; return; }
+    var brandHex = (palette && palette[0] && palette[0].hex) || '#21565F';
+    var brandRgb = bsParseHexToRgb(brandHex);
+    var brandLabel = brandHex.toUpperCase();
+    var variants = [
+      { id: 'white',    name: 'White',         bg: 'dark'  },
+      { id: 'black',    name: 'Black',         bg: 'light' },
+      { id: 'brand',    name: 'Brand (' + brandLabel + ')', bg: 'light' },
+      { id: 'inverted', name: 'Inverted',      bg: 'light' },
+      { id: 'mono',     name: 'Monochrome',    bg: 'light' }
+    ];
+    bsVariantsGridEl.innerHTML = '';
+    variants.forEach(function(v){
+      var canvas = bsRecolorCanvas(latestLogoImage, v.id, brandRgb);
+      if (!canvas) return;
+      var dataUrl = canvas.toDataURL('image/png');
+      var card = document.createElement('div');
+      card.className = 'bs-variant';
+      card.innerHTML =
+        '<div class="bs-variant-swatch" data-bg="' + v.bg + '"><img alt="' + v.name + ' logo variant" src="' + dataUrl + '"></div>' +
+        '<div class="bs-variant-meta">' +
+          '<span class="bs-variant-name">' + v.name + '</span>' +
+          '<button type="button" class="bs-variant-bg" aria-label="Toggle preview background">flip bg</button>' +
+        '</div>' +
+        '<a class="bs-variant-dl" download="logo-' + v.id + '.png" href="' + dataUrl + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+          'PNG' +
+        '</a>';
+      var swatch = card.querySelector('.bs-variant-swatch');
+      var bgBtn  = card.querySelector('.bs-variant-bg');
+      bgBtn.addEventListener('click', function(){
+        swatch.setAttribute('data-bg', swatch.getAttribute('data-bg') === 'dark' ? 'light' : 'dark');
+      });
+      bsVariantsGridEl.appendChild(card);
+    });
+    bsVariantsEl.hidden = false;
   }
 
   copyCssBtn.addEventListener('click', function(){
