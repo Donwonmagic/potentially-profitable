@@ -77,7 +77,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -365,13 +365,7 @@
 
       <h2>Question 1: How does it score on Storefront Health?</h2>
 
-      <p>Run <a href="/tools/storefront-health/">Storefront Health</a> on your site. The composite scorecard rolls speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number, 0-100.</p>
-
-      <ul>
-        <li><strong>80+:</strong> Don't rebuild. Fix the lowest sub-score.</li>
-        <li><strong>60-79:</strong> Maybe rebuild. Read the next six questions.</li>
-        <li><strong>Below 60:</strong> Rebuild — every quarter you wait costs more than the rebuild.</li>
-      </ul>
+      <p>Run <a href="/tools/storefront-health/">Storefront Health</a> on your site. The composite scorecard rolls speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number, 0-100. The chart above maps the bands. The cheap path: a sub-score below the rest is usually one targeted fix away from pulling the composite back into the green.</p>
 
       <h2>Question 2: Can your CMS update without breaking the site?</h2>
 
@@ -379,11 +373,11 @@
 
       <h2>Question 3: Does the menu live in HTML?</h2>
 
-      <p>If your menu is a PDF, an image, or "managed by Wix's menu widget," you're invisible to Google's dish-level queries and to AI search. Switching to a real <a href="/glossary/html-menu/">HTML menu</a> alone is sometimes enough to defer a rebuild — sometimes it requires one.</p>
+      <p>If your menu is a PDF, an image, or "managed by Wix's menu widget," you're invisible to Google's dish-level queries and to AI search. Switching to a real <a href="/glossary/html-menu/" data-glossary-head="HTML menu" data-glossary-blurb="A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card." target="_blank" rel="noopener">HTML menu</a> alone is sometimes enough to defer a rebuild — sometimes it requires one.</p>
 
       <h2>Question 4: How does the site score on Core Web Vitals?</h2>
 
-      <p>If <a href="/glossary/lcp/">LCP</a> is above 4 seconds on mobile, or <a href="/glossary/cls/">CLS</a> is above 0.25, you're being penalized in search AND bouncing visitors before the menu loads. Sometimes a CDN + image compression fixes it; sometimes the platform is the problem and only a rebuild will do.</p>
+      <p>If <a href="/glossary/lcp/" data-glossary-head="Largest Contentful Paint" data-glossary-blurb="How long it takes for the biggest visible chunk of your homepage — usually the hero image or the headline — to finish drawing on a phone." target="_blank" rel="noopener">LCP</a> is above 4 seconds on mobile, or <a href="/glossary/cls/" data-glossary-head="Cumulative Layout Shift" data-glossary-blurb="A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down…" target="_blank" rel="noopener">CLS</a> is above 0.25, you're being penalized in search AND bouncing visitors before the menu loads. Sometimes a CDN + image compression fixes it; sometimes the platform is the problem and only a rebuild will do.</p>
 
       <p>Run <a href="/tools/speed-test/">Speed Test</a> on the homepage and the busiest interior page. If the homepage is fast but the menu page is slow, the platform isn't the issue — the page is. If both are slow, the platform usually is.</p>
 
@@ -648,6 +642,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260429-batch3" defer></script>
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
 </body>
 </html>

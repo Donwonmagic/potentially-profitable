@@ -55,7 +55,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -297,7 +297,7 @@
 
       <p>Este es el diagnóstico de siete preguntas que recorro antes de recomendar un rebuild — o, igual de seguido, recomendar contra uno y apuntar a tres cambios chicos que compran otro año.</p>
 
-      <figure class="article-figure" data-audio-alt="Storefront Health: qué te dice sobre estar listo para rehacer. No rehagas: Arregla la sub-puntuación más baja. A veces un CDN + pase de imágenes gana otro año. (arregla fugas). Tal vez rehaz: Recorre las siete preguntas — tres o más sí = rehacer. (diagnostica). Rehaz: Cada trimestre que esperas cuesta más que el rebuild mismo. (ahora). Puntuación de Storefront Health · qué te dice sobre estar listo para rehacer.">
+      <figure class="article-figure" data-audio-alt="Storefront Health: qué te dice sobre estar listo para rehacer.">
         <div class="recovery-stack" role="img" aria-label="Storefront Health: qué te dice sobre estar listo para rehacer">
           <div class="recovery-row recovery-1"><div class="recovery-num">80+</div><div><h4 class="i18n">No rehagas</h4><p class="recovery-sub i18n">Arregla la sub-puntuación más baja. A veces un CDN + pase de imágenes gana otro año.</p></div><div class="recovery-val">arregla fugas</div></div>
           <div class="recovery-row recovery-2"><div class="recovery-num">60–79</div><div><h4 class="i18n">Tal vez rehaz</h4><p class="recovery-sub i18n">Recorre las siete preguntas — tres o más &ldquo;sí&rdquo; = rehacer.</p></div><div class="recovery-val">diagnostica</div></div>
@@ -308,13 +308,7 @@
 
       <h2>Pregunta 1: ¿Cómo puntúa en Storefront Health?</h2>
 
-      <p>Corre <a href="/es/tools/storefront-health/">Storefront Health</a> sobre tu sitio. La calificación compuesta enrolla velocidad, SEO, mobile, schema, GBP, y la Restaurant Audit en un solo número, 0–100.</p>
-
-      <ul>
-        <li><strong>80+:</strong> No rehagas. Arregla la sub-puntuación más baja.</li>
-        <li><strong>60–79:</strong> Tal vez rehaz. Lee las siguientes seis preguntas.</li>
-        <li><strong>Bajo 60:</strong> Rehaz — cada trimestre que esperas cuesta más que el rebuild.</li>
-      </ul>
+      <p>Corre <a href="/es/tools/storefront-health/">Storefront Health</a> sobre tu sitio. La calificación compuesta enrolla velocidad, SEO, mobile, schema, GBP, y la Restaurant Audit en un solo número, 0–100. El gráfico de arriba mapea las bandas. El camino barato: una sub-puntuación por debajo del resto suele estar a un arreglo puntual de devolver el compuesto al verde.</p>
 
       <h2>Pregunta 2: ¿Tu CMS puede actualizarse sin romper el sitio?</h2>
 
@@ -322,11 +316,11 @@
 
       <h2>Pregunta 3: ¿El menú vive en HTML?</h2>
 
-      <p>Si tu menú es un PDF, una imagen, o &ldquo;manejado por el widget de menú de Wix,&rdquo; eres invisible para las queries a nivel de plato de Google y para la búsqueda con IA. Cambiar a un <a href="/es/glossary/html-menu/">menú HTML</a> real a veces basta para postergar un rebuild — a veces requiere uno.</p>
+      <p>Si tu menú es un PDF, una imagen, o &ldquo;manejado por el widget de menú de Wix,&rdquo; eres invisible para las queries a nivel de plato de Google y para la búsqueda con IA. Cambiar a un <a href="/es/glossary/html-menu/" data-glossary-head="Menú en HTML" data-glossary-blurb="Un menú construido como texto real en una página web, en vez de como un archivo PDF o una foto de una carta impresa." target="_blank" rel="noopener">menú HTML</a> real a veces basta para postergar un rebuild — a veces requiere uno.</p>
 
       <h2>Pregunta 4: ¿Cómo puntúa el sitio en Core Web Vitals?</h2>
 
-      <p>Si <a href="/es/glossary/lcp/">LCP</a> está arriba de 4 segundos en mobile, o <a href="/es/glossary/cls/">CLS</a> está arriba de 0.25, te están penalizando en búsqueda Y rebotando visitantes antes de que cargue el menú. A veces un CDN + compresión de imágenes lo arregla; a veces la plataforma es el problema y solo un rebuild lo resuelve.</p>
+      <p>Si <a href="/es/glossary/lcp/" data-glossary-head="Largest Contentful Paint" data-glossary-blurb="Cuánto tarda en terminarse de dibujar la pieza visible más grande de tu portada — normalmente la foto del hero o el titular — en un celular." target="_blank" rel="noopener">LCP</a> está arriba de 4 segundos en mobile, o <a href="/es/glossary/cls/" data-glossary-head="Cumulative Layout Shift" data-glossary-blurb="Una calificación que mide cuánto salta tu página mientras carga — cuando entra un banner, llega tarde una imagen, o una fuente que carga tarde empuja el te…" target="_blank" rel="noopener">CLS</a> está arriba de 0.25, te están penalizando en búsqueda Y rebotando visitantes antes de que cargue el menú. A veces un CDN + compresión de imágenes lo arregla; a veces la plataforma es el problema y solo un rebuild lo resuelve.</p>
 
       <p>Corre <a href="/es/tools/speed-test/">Speed Test</a> sobre la home y la página interior más visitada. Si la home es rápida pero la página de menú es lenta, la plataforma no es el problema — la página sí. Si ambas son lentas, la plataforma usualmente sí.</p>
 
@@ -344,7 +338,7 @@
 
       <h2>Tres patrones de caso</h2>
 
-      <figure class="article-figure" data-audio-alt="Tres patrones de rehacer · banda de puntuación, alcance, payback típico. Sitio con buena puntuación, arreglos puntuales: Puntuación 75–85. CDN, comprimir, fix de schema. ~5–10% del costo de rebuild. (posterga). Sitio bajo 60, rebuild completo: La plataforma misma es el techo. Menú HTML real, schema completo, embudo rápido. (payback 9–14 meses). Rango medio, rebuild parcial: Front-end + fotos, mantener CMS. ~40% del costo de rebuild completo. (trade-off). Tres patrones de rehacer · banda de puntuación, alcance, payback típico.">
+      <figure class="article-figure" data-audio-alt="Tres patrones de rehacer · banda de puntuación, alcance, payback típico.">
         <div class="recovery-stack" role="img" aria-label="Tres patrones de rehacer · banda de puntuación, alcance, payback típico">
           <div class="recovery-row recovery-1"><div class="recovery-num">A</div><div><h4 class="i18n">Sitio con buena puntuación, arreglos puntuales</h4><p class="recovery-sub i18n">Puntuación 75–85. CDN, comprimir, fix de schema. ~5–10% del costo de rebuild.</p></div><div class="recovery-val">posterga</div></div>
           <div class="recovery-row recovery-2"><div class="recovery-num">B</div><div><h4 class="i18n">Sitio bajo 60, rebuild completo</h4><p class="recovery-sub i18n">La plataforma misma es el techo. Menú HTML real, schema completo, embudo rápido.</p></div><div class="recovery-val">payback 9–14 meses</div></div>
@@ -524,6 +518,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260429-batch3" defer></script>
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
 </body>
 </html>
