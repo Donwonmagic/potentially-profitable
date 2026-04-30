@@ -443,7 +443,7 @@
     <div>
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">La matriz <span id="meMatrixBadge" hidden class="me-matrix-badge">Por categoría</span></h2>
       <div class="me-matrix-wrap">
-        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-label="Matriz de ingeniería de menú" aria-describedby="meMatrixA11yList"></svg>
+        <svg class="me-matrix-svg" id="meMatrix" viewBox="0 0 720 540" role="img" aria-labelledby="meMatrixTitle" aria-describedby="meMatrixDesc meMatrixA11yList"></svg>
         <ul id="meMatrixA11yList" class="me-sr-only"></ul>
         <div class="me-matrix-legend" aria-hidden="true">
           <span><i class="me-q-Star"></i> Estrella ★</span>
@@ -926,6 +926,12 @@
     var byCategory = summary.group_by === 'category';
 
     var svg = '';
+    // Nombre + descripción accesibles del SVG. Siempre presentes; los
+    // lectores de pantalla los toman vía aria-labelledby/describedby
+    // en el elemento <svg>. La lista oculta meMatrixA11yList sigue
+    // sirviendo el detalle por plato debajo.
+    svg += '<title id="meMatrixTitle">Matriz de ingeniería de menú — platos graficados por margen de contribución (x) y cuota de cubiertos (y), con tamaño del punto proporcional al ingreso.</title>';
+    svg += '<desc id="meMatrixDesc">Las líneas de mediana dividen la cuadrícula en cuatro cuadrantes: Estrellas (alto MC, alta cuota), Caballos (bajo MC, alta cuota), Acertijos (alto MC, baja cuota), Perros (bajo MC, baja cuota). Cada cuadrante usa un color y un glifo distintos (estrella, triángulo, diamante, círculo) para que la matriz sea legible sin color. El detalle por plato sigue debajo.</desc>';
     // Background frame
     svg += '<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" fill="#FAF7F2" stroke="#E5E0D8" />';
     if (!byCategory) {
@@ -953,19 +959,30 @@
     var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
     var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
     var Q_ES = { Star: 'Estrella', Plowhorse: 'Caballo', Puzzle: 'Acertijo', Dog: 'Perro' };
+    // Radio ponderado por ingresos — una Estrella de $50k y otra de $500
+    // no son la misma intervención. Escala con sqrt para mantener los
+    // puntos pequeños clicables (r=5) y los grandes dentro de la cuadrícula.
+    var maxRevenue = 0;
+    items.forEach(function(it){ if (it.revenue > maxRevenue) maxRevenue = it.revenue; });
+    function dotRadius(it){
+      if (!maxRevenue || !(it.revenue > 0)) return 5;
+      return 5 + 8 * Math.sqrt(it.revenue / maxRevenue);
+    }
     items.forEach(function(it){
       var cx = sx(it.cm_dollars);
       var cy = sy(it.share);
       var color = QC[it.quadrant] || '#14161A';
       var glyph = QGLYPH[it.quadrant] || '';
+      var r = dotRadius(it);
       svg += '<g>';
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
-      svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' cuota · ' + (Q_ES[it.quadrant] || it.quadrant) + '</title>';
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r.toFixed(1) + '" fill="' + color + '" stroke="#FAF7F2" stroke-width="1.5">';
+      svg += '<title>' + escHtml(it.item) + ' · CM ' + fmtMoney(it.cm_dollars) + ' · ' + fmtPct(it.share) + ' cuota · ingreso ' + fmtMoney(it.revenue) + ' · ' + (Q_ES[it.quadrant] || it.quadrant) + '</title>';
       svg += '</circle>';
-      svg += '<text x="' + cx + '" y="' + (cy + 3) + '" font-size="9" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
+      var glyphSize = Math.max(8, Math.round(r * 0.95));
+      svg += '<text x="' + cx + '" y="' + (cy + glyphSize * 0.34) + '" font-size="' + glyphSize + '" fill="#FAF7F2" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle" pointer-events="none" aria-hidden="true">' + glyph + '</text>';
       svg += '</g>';
       if (it.item) {
-        svg += '<text x="' + (cx + 11) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
+        svg += '<text x="' + (cx + r + 4) + '" y="' + (cy + 4) + '" font-size="10" fill="#14161A" font-family="Inter,sans-serif" aria-hidden="true">' + escHtml(it.item.length > 18 ? it.item.slice(0, 17) + '…' : it.item) + '</text>';
       }
     });
 
