@@ -5396,6 +5396,23 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
+/* ============ Tool-internal type minimums ============
+   Utility floor for text inside tool result panels, tables, and
+   helpers. Tools previously drifted to 10.5–12px in tight grids; the
+   accessibility audit flagged that as eye-strain for the target
+   audience (small-business owners, often 50+). Apply these classes
+   instead of writing inline font-size declarations.
+
+     .tool-text-min     — input text, table cells (14px floor)
+     .tool-text-h-min   — table headers, eyebrows  (13px floor)
+     .tool-text-helper  — helper / caption / meta (12.5px floor)
+
+   Never go below these in tool UIs. Editorial prose (.prose) follows
+   --fs-body and is unaffected. */
+.tool-text-min{font-size:14px;line-height:1.5}
+.tool-text-h-min{font-size:13px;line-height:1.4;letter-spacing:0.04em}
+.tool-text-helper{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+
 /* Phase H (Information Security) — interactive 5-test audit checklist
    at /learn/checklists/audit-any-tool/. Pass/fail uses status-good /
    rust accents already in the system. */
