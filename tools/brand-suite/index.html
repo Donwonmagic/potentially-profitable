@@ -265,7 +265,8 @@
   .bs-contrast-table thead th, .bs-contrast-table tbody th{position:relative}
   .bs-contrast-table td[data-grade="empty"]{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.03) 6px 12px);color:transparent}
   .bs-contrast-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
-  .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:420px}
+  .bs-contrast-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+  @media(min-width:640px){.bs-contrast-table{min-width:420px}}
   .bs-contrast-table th,.bs-contrast-table td{border:1px solid var(--line);padding:0;text-align:center;vertical-align:middle;height:56px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:500}
   .bs-contrast-table thead th:first-child,.bs-contrast-table tbody th{width:56px;min-width:56px}
   .bs-contrast-table thead th{background:var(--cream-2)}
@@ -450,7 +451,8 @@
      the logo if they want a fresh extraction. */
   .bs-save{max-width:760px;margin:24px auto 0;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .bs-save[hidden]{display:none}
-  .bs-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .bs-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.bs-save-text{flex:1 1 220px}}
   .bs-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
   .bs-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
   .bs-save-btn[disabled]{opacity:.6;cursor:wait}

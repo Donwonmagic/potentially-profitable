@@ -71,7 +71,8 @@
   /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
   .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .cmp-save[hidden]{display:none}
-  .cmp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1;min-width:200px}
+  .cmp-save-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;flex:1 1 100%}
+  @media (min-width:480px){.cmp-save-text{flex:1 1 220px}}
   .cmp-save-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
   .cmp-save-btn:hover{background:var(--teal);transform:translateY(-1px)}
   .cmp-save-btn[disabled]{opacity:.6;cursor:wait}
