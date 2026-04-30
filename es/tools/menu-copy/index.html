@@ -97,6 +97,31 @@
 .mc-action-tpl-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
 .mc-action-tpl-summary::-webkit-details-marker{display:none}
 .mc-action-tpl-body{margin:0;padding:6px 12px 10px;font-size:13px;line-height:1.55;color:var(--ink-soft);white-space:pre-line}
+.mc-interview{margin-top:14px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1)}
+.mc-interview[hidden]{display:none}
+.mc-interview-summary{cursor:pointer;padding:12px 16px;font-size:13.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-interview-summary::-webkit-details-marker{display:none}
+.mc-interview-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.mc-interview[open] .mc-interview-summary::before{content:'− '}
+.mc-interview-body{padding:0 16px 16px}
+.mc-interview-help{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+.mc-interview-row{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+.mc-interview-row span{color:var(--ink)}
+.mc-interview-row small{color:var(--stone);font-weight:400;letter-spacing:0;font-size:11.5px;display:block;margin-top:2px;text-transform:none}
+.mc-interview-row input{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink)}
+.mc-interview-row input:focus{outline:none;border-color:var(--teal)}
+.mc-interview-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mc-interview-build{padding:9px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.mc-interview-build:hover{background:var(--teal);border-color:var(--teal)}
+.mc-interview-msg{font-size:12.5px;color:var(--rust);font-weight:500}
+.mc-interview-out{margin-top:14px;padding:12px 14px;border:1px solid var(--teal);border-radius:6px;background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+.mc-interview-out-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-interview-out-text{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0 0 12px;font-style:italic}
+.mc-interview-out-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mc-interview-use{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.mc-interview-use:hover{background:var(--ink);border-color:var(--ink)}
+.mc-interview-dismiss{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+.mc-interview-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
 
 .mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
@@ -468,6 +493,36 @@
     <div class="mc-scorecard">
       <div class="mc-verdict" id="mcVerdict"></div>
       <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
+      <details class="mc-interview" id="mcInterview" hidden>
+        <summary class="mc-interview-summary">¿Atascado? Entrevístate en 30 segundos &rarr;</summary>
+        <div class="mc-interview-body">
+          <p class="mc-interview-help">Tres preguntas. Responde en lenguaje sencillo — sintetizamos un borrador inicial al que puedes reaccionar (cortar, ajustar, reemplazar).</p>
+          <label class="mc-interview-row">
+            <span>¿Cuál es el ingrediente protagonista?</span>
+            <input type="text" id="mcIvHero" placeholder="ej. salmón, ricotta, costilla" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>¿De dónde viene? <small>(una granja, una región, un origen específico — opcional)</small></span>
+            <input type="text" id="mcIvSource" placeholder="ej. Whitmore Farm / Atlántico Norte / nuestra huerta" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>¿Qué técnica o tratamiento cuenta la historia de la cocina?</span>
+            <input type="text" id="mcIvTech" placeholder="ej. amasada a mano, asada a la sal, añejada 30 días, ahumada con leña de manzano" autocomplete="off" />
+          </label>
+          <div class="mc-interview-actions">
+            <button type="button" class="mc-interview-build" id="mcIvBuild">Constrúyeme un borrador &rarr;</button>
+            <span class="mc-interview-msg" id="mcIvMsg" aria-live="polite"></span>
+          </div>
+          <div class="mc-interview-out" id="mcIvOut" hidden>
+            <p class="mc-interview-out-eyebrow">Borrador (tuyo para editar)</p>
+            <p class="mc-interview-out-text" id="mcIvOutText"></p>
+            <div class="mc-interview-out-actions">
+              <button type="button" class="mc-interview-use" id="mcIvUse">Usar esto &rarr;</button>
+              <button type="button" class="mc-interview-dismiss" id="mcIvDismiss">Descartar</button>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
   <div class="mc-save" id="mcSave" hidden>
@@ -762,6 +817,55 @@
   var axesEl    = document.getElementById('mcAxes');
   var actionsEl = document.getElementById('mcActions');
 
+  // "Entrevístate" — sintetiza un borrador a partir de tres
+  // entradas (héroe / origen / técnica). Mismo patrón que EN.
+  var ivBuildBtn = document.getElementById('mcIvBuild');
+  var ivOutEl    = document.getElementById('mcIvOut');
+  var ivOutText  = document.getElementById('mcIvOutText');
+  var ivUseBtn   = document.getElementById('mcIvUse');
+  var ivDismiss  = document.getElementById('mcIvDismiss');
+  var ivMsg      = document.getElementById('mcIvMsg');
+  function buildInterviewStarter() {
+    var hero   = (document.getElementById('mcIvHero')   || {}).value || '';
+    var source = (document.getElementById('mcIvSource') || {}).value || '';
+    var tech   = (document.getElementById('mcIvTech')   || {}).value || '';
+    hero = hero.trim(); source = source.trim(); tech = tech.trim();
+    if (!hero) return '';
+    var lead = tech ? (tech.charAt(0).toUpperCase() + tech.slice(1) + ' ' + hero) : (hero.charAt(0).toUpperCase() + hero.slice(1));
+    var body = source ? ' de ' + source : '';
+    var sentence1 = lead + body + '.';
+    var sensory = ' Vivo con un toque final — hierba fresca, aceite cítrico o una hojuela de sal de acabado.';
+    return sentence1 + sensory;
+  }
+  if (ivBuildBtn) {
+    ivBuildBtn.addEventListener('click', function () {
+      var hero = (document.getElementById('mcIvHero') || {}).value || '';
+      if (!hero.trim()) {
+        if (ivMsg) { ivMsg.textContent = 'Dame al menos el ingrediente protagonista.'; setTimeout(function(){ ivMsg.textContent=''; }, 2400); }
+        var f = document.getElementById('mcIvHero'); if (f) f.focus();
+        return;
+      }
+      var starter = buildInterviewStarter();
+      if (!starter) return;
+      if (ivOutText) ivOutText.textContent = starter;
+      if (ivOutEl) ivOutEl.hidden = false;
+    });
+  }
+  if (ivUseBtn) {
+    ivUseBtn.addEventListener('click', function () {
+      var t = ivOutText && ivOutText.textContent;
+      if (!t || !descEl) return;
+      descEl.value = t;
+      descEl.dispatchEvent(new Event('input', { bubbles: true }));
+      descEl.focus();
+      descEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (ivMsg) { ivMsg.textContent = 'Cargado en la descripción de arriba. Edítalo hasta que suene como tú.'; setTimeout(function(){ ivMsg.textContent=''; }, 3200); }
+    });
+  }
+  if (ivDismiss) {
+    ivDismiss.addEventListener('click', function () { if (ivOutEl) ivOutEl.hidden = true; });
+  }
+
   var sampleCursor = 0;
   var firstAnalysisFired = false;
 
@@ -842,14 +946,25 @@
   function paintVerdict(scored){
     var v = scored.verdict;
     var cmt = ({
-      polish:  'Most signals are present. One or two small moves and this description is doing its job.',
-      edit:    'Some pieces are working; one or two are missing. The action ladder shows the highest-leverage moves.',
-      rewrite: 'Multiple signal families are empty or the length / hedge load is dragging hard. Worth rewriting from a fresh angle rather than polishing the current draft.'
+      polish:  'La mayoría de las señales están presentes. Uno o dos cambios pequeños y la descripción está haciendo su trabajo.',
+      edit:    'Algunas piezas funcionan; una o dos faltan. La escalera de acciones muestra los movimientos de mayor palanca.',
+      rewrite: 'Varias familias de señales están vacías o la longitud / carga de muletillas pesa demasiado. Vale más reescribir desde un ángulo fresco que pulir el borrador actual.'
     })[v] || '';
     verdictEl.innerHTML =
       '<span class="mc-verdict-pill" data-v="' + v + '">' + v + '</span>' +
       '<span class="mc-verdict-score">' + scored.score + '<span style="font-size:13px;color:var(--stone);font-weight:400;">/100</span></span>' +
       '<span class="mc-verdict-text">' + escHtml(cmt) + '</span>';
+    var iv = document.getElementById('mcInterview');
+    if (iv) {
+      if (v === 'rewrite') {
+        iv.hidden = false;
+        if (!iv.__autoOpened) { iv.setAttribute('open', ''); iv.__autoOpened = true; }
+      } else {
+        iv.hidden = true;
+        iv.removeAttribute('open');
+        iv.__autoOpened = false;
+      }
+    }
   }
 
   function paintAxes(scored){

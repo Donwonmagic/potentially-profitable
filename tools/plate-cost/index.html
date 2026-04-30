@@ -55,9 +55,34 @@
 .pc-meta input{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
 
-.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+@media(min-width:640px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
 .pc-grid table{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.pc-grid table{min-width:780px}}
+/* Mobile card-stack for the 9-column ingredient grid — the audit's
+   biggest abandonment risk in the suite. Phone owners couldn't
+   complete the form via horizontal scroll. Under 640px every row
+   reads as a card with each field labeled inline. */
+@media(max-width:639px){
+  .pc-grid{padding:8px;background:transparent;border:0}
+  .pc-grid table,.pc-grid thead,.pc-grid tbody,.pc-grid tr,.pc-grid td{display:block;width:100%}
+  .pc-grid thead{position:absolute;left:-9999px;top:auto}
+  .pc-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);margin-bottom:10px;position:relative}
+  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .pc-grid td:last-of-type{border-bottom:0}
+  .pc-grid td:not([data-label]){display:block}
+  .pc-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
+  .pc-grid td:not([data-label])::before{content:none}
+  .pc-grid td input[type="number"]{text-align:left}
+  .pc-grid td.pc-num{font-size:15px;font-weight:600;color:var(--ink)}
+  .pc-grid td.pc-row-actions{position:absolute;top:6px;right:6px;padding:0;border:0}
+  .pc-grid td.pc-row-actions::before{content:none}
+  .pc-grid .pc-remove{min-width:36px;min-height:36px;font-size:16px;color:var(--stone);background:var(--cream-2);border:0;border-radius:50%;cursor:pointer}
+  /* "Show math" expanded row spans full width on mobile. */
+  .pc-grid tr.pc-math-row{padding:8px 12px;background:var(--cream-2);margin-top:-6px;border-top:0}
+  .pc-grid tr.pc-math-row td{display:block;border:0;grid-template-columns:none;padding:0}
+  .pc-grid tr.pc-math-row td::before{content:none}
+}
 .pc-grid th{padding:10px 8px;text-align:left;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
 .pc-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
 .pc-grid tr:last-child td{border-bottom:0}
@@ -866,15 +891,15 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
-      '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
-      '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
-      '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
-      '<td><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
-      '<td><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
-      '<td>' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
-      '<td class="pc-num" data-cell="cost">&mdash;</td>' +
-      '<td><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
+      '<td data-label="Ingredient"><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td data-label="AP price ($)"><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
+      '<td data-label="AP qty"><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
+      '<td data-label="AP unit">' + unitSelect('apUnit', row.apUnit) + '</td>' +
+      '<td data-label="Yield %"><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
+      '<td data-label="Used qty"><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
+      '<td data-label="Used unit">' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
+      '<td class="pc-num" data-cell="cost" data-label="Cost on plate">&mdash;</td>' +
+      '<td class="pc-row-actions"><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
       '</tr>';
   }
   function esc(v) {
