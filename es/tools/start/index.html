@@ -231,6 +231,146 @@
   </div>
 </main>
 
-<!-- Stub: footer + JS appended in follow-up commits -->
+<footer>
+  <div class="container">
+    <div class="foot-grid"></div>
+  </div>
+</footer>
+
+<script>
+  // Enrutamiento del árbol de decisión para /es/tools/start/. JS plano,
+  // sin router. Catálogo de herramientas + reglas que arman una ruta
+  // ordenada con un "porqué" por herramienta.
+  (function () {
+    var TOOLS = {
+      'plate-cost':       { name: 'Calculadora de Costo del Plato', url: '/es/tools/plate-cost/' },
+      'menu-engineering': { name: 'Matriz de Ingeniería de Menú',  url: '/es/tools/menu-engineering/' },
+      'margin-math':      { name: 'Margen Math',                    url: '/es/tools/margin-math/' },
+      'menu-copy':        { name: 'Inspector de Copy del Menú',     url: '/es/tools/menu-copy/' },
+      'photo-brief':      { name: 'Constructor de Brief de Fotos',  url: '/es/tools/photo-brief/' },
+      'seo-grader':       { name: 'Calificador de SEO',             url: '/es/tools/seo-grader/' },
+      'mobile-check':     { name: 'Chequeo Mobile-Friendly',        url: '/es/tools/mobile-check/' },
+      'speed-test':       { name: 'Test de Velocidad',              url: '/es/tools/speed-test/' },
+      'gbp-grader':       { name: 'Calificador de Google Business Profile', url: '/es/tools/gbp-grader/' },
+      'audit':            { name: 'Diagnóstico de Restaurante',     url: '/es/tools/audits/restaurant/' }
+    };
+
+    function build(answers) {
+      var path = [];
+      var skipped = [];
+      var lede = '';
+
+      if (answers.leak === 'margin') {
+        lede = 'El trabajo de margen siempre paga doble — una vez para el operador y otra para el equipo. El orden de abajo va de los insumos que controlas a diario hacia las palancas estructurales.';
+        if (answers.recipe === 'yes' || answers.recipe === 'partial') {
+          path.push({ k: 'plate-cost', why: 'Empieza aquí. El costo a nivel de receta es el insumo que toda otra herramienta de margen necesita.' });
+        }
+        path.push({ k: 'margin-math', why: 'Corre primero la franja de prime cost — eso te dice si la fuga es food, labor o ambos.' });
+        if (answers.pnl === 'yes' || answers.pnl === 'approx') {
+          path.push({ k: 'menu-engineering', why: 'Una vez que conoces los costos, Ingeniería de Menú te muestra qué platos son la palanca real.' });
+        }
+        if (answers.agg === 'heavy' || answers.agg === 'some') {
+          path.push({ k: 'margin-math', why: 'Específicamente la tarjeta de Punto de Equilibrio en Delivery — una participación grande de agregadores suele esconder margen oculto.' });
+        }
+        if (answers.raise === 'no') {
+          path.push({ k: 'margin-math', why: 'Después el Simulador de Alza de Precios. Restaurantes que no han subido en 12 meses suelen dejar 2–4 puntos sobre la mesa.' });
+        }
+      } else if (answers.leak === 'covers') {
+        lede = 'Los cubiertos suelen gotear de tres lugares: el menú no convierte, el sitio no rankea, o la puerta no es encontrable en Google. Prueba en ese orden.';
+        path.push({ k: 'menu-copy', why: 'Un argumento de venta de 3 segundos. Si tus descripciones titubean o saltan señales sensoriales, el menú mismo está perdiendo pedidos.' });
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile es la superficie de SEO local con más palanca. Pruébalo antes de cualquier trabajo de SEO en sitio.' });
+        path.push({ k: 'seo-grader', why: 'Title tag y meta description — las dos líneas que un buscador lee antes de hacer clic. Baratas de arreglar, gran efecto.' });
+        if (answers.raise === 'no' && (answers.pnl === 'yes' || answers.pnl === 'approx')) {
+          path.push({ k: 'margin-math', why: 'A veces "más cubiertos" es la meta equivocada — un alza del 5% sobre los cubiertos actuales puede ganarle a un empuje del 10% en volumen con márgenes más apretados.' });
+        }
+      } else if (answers.leak === 'discovery') {
+        lede = 'El descubrimiento se secuencia: GBP primero (domina la intención local), luego mobile + velocidad (que filtran cada ranking de Google), después schema y títulos.';
+        path.push({ k: 'gbp-grader', why: 'Google Business Profile es la fachada en Maps y Search. Pesa más que el sitio web para consultas "cerca de mí".' });
+        path.push({ k: 'mobile-check', why: 'La usabilidad móvil es el piso — si fallas aquí, el resto del SEO no importa.' });
+        path.push({ k: 'speed-test', why: 'La velocidad de página es un factor de ranking confirmado y un factor de conversión medible en móvil.' });
+        path.push({ k: 'seo-grader', why: 'Title y meta description — la capa legible de cada resultado de búsqueda.' });
+      } else if (answers.leak === 'kitchen') {
+        lede = 'Los arreglos de cocina pagan en margen Y en marca. Empieza por el plato, después por cómo se fotografía, después por cómo se lee en el menú.';
+        path.push({ k: 'plate-cost', why: 'Costo a nivel de plato primero. Sin esto, toda otra decisión de cocina es una adivinanza.' });
+        if (answers.pnl === 'yes' || answers.pnl === 'approx') {
+          path.push({ k: 'menu-engineering', why: 'Rentabilidad por plato + popularidad. Te dice qué Estrellas proteger y qué Perros retirar.' });
+        }
+        path.push({ k: 'photo-brief', why: 'Una lista de tomas apretada se reusa todo el año. La matemática de dedup le devuelve al fotógrafo el dinero.' });
+        path.push({ k: 'menu-copy', why: 'Cómo se lee el plato en el menú. Las señales sensoriales y de procedencia suben la tasa de pedido sin cambiar la comida.' });
+      }
+
+      if (answers.pnl === 'no') {
+        path.push({ k: 'audit', why: 'Sin números de P&L no tenemos los insumos para las calculadoras por tarjeta. El Diagnóstico de Restaurante infiere lo que puede y te da una lista priorizada de arreglos estructurales.' });
+      }
+
+      if (answers.leak !== 'discovery') skipped.push('GBP / SEO / velocidad (déjalas para después)');
+      if (answers.leak !== 'kitchen' && !path.find(function(p){return p.k==='photo-brief';})) skipped.push('Brief de Fotos (después del trabajo de costo)');
+
+      var seen = {};
+      var deduped = [];
+      path.forEach(function(p){ if (!seen[p.k]) { seen[p.k] = true; deduped.push(p); } });
+      return { path: deduped, skipped: skipped, lede: lede };
+    }
+
+    var form = document.getElementById('tsForm');
+    var resultBox = document.getElementById('tsResult');
+    var ledeEl = document.getElementById('tsResultLede');
+    var listEl = document.getElementById('tsRecList');
+    var skipEl = document.getElementById('tsResultSkip');
+    var progressEl = document.getElementById('tsProgress');
+    var resetBtn = document.getElementById('tsReset');
+
+    var QUESTIONS = ['leak','pnl','recipe','raise','agg'];
+    function getAnswers() {
+      var a = {};
+      QUESTIONS.forEach(function(q){
+        var sel = form.querySelector('input[name="' + q + '"]:checked');
+        if (sel) a[q] = sel.value;
+      });
+      return a;
+    }
+    function updateProgress() {
+      var n = Object.keys(getAnswers()).length;
+      progressEl.textContent = n + ' de ' + QUESTIONS.length + ' contestadas';
+    }
+
+    form.addEventListener('change', updateProgress);
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var answers = getAnswers();
+      if (!answers.leak) {
+        var firstQ = form.querySelector('[data-q="leak"] input');
+        if (firstQ) firstQ.focus();
+        progressEl.textContent = 'Elige una fuga en la pregunta 1 para empezar.';
+        return;
+      }
+      var built = build(answers);
+      ledeEl.textContent = built.lede;
+      listEl.innerHTML = built.path.map(function(p){
+        var t = TOOLS[p.k];
+        if (!t) return '';
+        return '<li><div><span class="ts-rec-name"><a href="' + t.url + '">' + t.name + '</a></span><span class="ts-rec-why">' + p.why + '</span></div></li>';
+      }).join('');
+      skipEl.textContent = built.skipped.length
+        ? 'Saltar por ahora: ' + built.skipped.join(' · ')
+        : '';
+      resultBox.setAttribute('data-shown', 'true');
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (window.plausible) window.plausible('Start Here Path', { props: { leak: answers.leak, locale: 'es' } });
+    });
+
+    resetBtn.addEventListener('click', function(){
+      form.reset();
+      resultBox.removeAttribute('data-shown');
+      updateProgress();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    updateProgress();
+  })();
+</script>
+
+<script src="/assets/site.js?v=20260429-batch3" defer></script>
 </body>
 </html>
