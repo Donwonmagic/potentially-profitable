@@ -1165,10 +1165,26 @@
         { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' },
         { href: briefLinkFor('Plowhorse', items),      label: 'Brief these for your photographer &rarr;' }
       ]; },
-      Puzzle: function(items){ return [
-        { href: '/tools/menu-copy/',                   label: 'Re-describe in Menu Copy Inspector &rarr;' },
-        { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
-      ]; }
+      Puzzle: function(items){
+        // Handoff to Menu Copy: pre-fill the single-dish form with
+        // the first Puzzle item's name + price (we don't carry a
+        // description because the whole point is the description
+        // needs rewriting). The single-dish flow accepts a
+        // #name=…&price=… fragment.
+        var first = items && items[0];
+        var mcHref = '/tools/menu-copy/';
+        if (first && first.item) {
+          var bits = ['name=' + encodeURIComponent(first.item)];
+          if (typeof first.price === 'number' && isFinite(first.price)) {
+            bits.push('price=' + encodeURIComponent('$' + first.price));
+          }
+          mcHref += '#' + bits.join('&');
+        }
+        return [
+          { href: mcHref,                                label: 'Re-describe in Menu Copy Inspector &rarr;' },
+          { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
+        ];
+      }
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){

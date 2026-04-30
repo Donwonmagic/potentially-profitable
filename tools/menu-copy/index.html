@@ -1266,6 +1266,38 @@
     tierEl.addEventListener(ev, rerender);
   });
 
+  // Cross-tool fragment hydration. A link of the form
+  //   /tools/menu-copy/#name=Tonnarelli&desc=Hand-rolled%20…&price=24
+  // pre-fills the single-dish form so an inbound handoff (Menu
+  // Engineering's Puzzle quadrant, Search Ideas' "send to menu-copy",
+  // a future blog example) lands on a populated input rather than
+  // an empty textarea. Decoder is lenient: any subset of the three
+  // keys works; unknown keys are ignored. A user-typed value already
+  // present in any field is preserved (we only seed empty inputs).
+  (function hydrateFromHash(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var seeded = false;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      var k = pair.slice(0, eq);
+      var v;
+      try { v = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { v = pair.slice(eq + 1); }
+      if (!v) return;
+      if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
+      if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
+      if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+    });
+    if (seeded) {
+      // Trigger the same rerender path keystrokes do, so the verdict
+      // + axes light up immediately on landing rather than waiting
+      // for the user to click into the field.
+      rerender();
+    }
+  })();
+
   // ----- Mode switching (Single / Whole menu) -----
   var modeBtns = document.querySelectorAll('.mc-mode-btn');
   var modePanels = {

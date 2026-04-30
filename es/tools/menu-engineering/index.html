@@ -1109,10 +1109,23 @@
         { href: '/es/tools/plate-cost/',                  label: 'Auditar costo de ingredientes en Costo del Plato &rarr;' },
         { href: briefLinkFor('Plowhorse', items),         label: 'Crear brief para tu fotógrafo &rarr;' }
       ]; },
-      Puzzle: function(items){ return [
-        { href: '/es/tools/menu-copy/',                   label: 'Re-describir en Inspector de Copy &rarr;' },
-        { href: '/es/tools/plate-cost/',                  label: 'Re-costear la receta en Costo del Plato &rarr;' }
-      ]; }
+      Puzzle: function(items){
+        // Handoff a Menu Copy — pre-llena el formulario con el primer
+        // Puzzle. Sin descripción (precisamente lo que falta reescribir).
+        var first = items && items[0];
+        var mcHref = '/es/tools/menu-copy/';
+        if (first && first.item) {
+          var bits = ['name=' + encodeURIComponent(first.item)];
+          if (typeof first.price === 'number' && isFinite(first.price)) {
+            bits.push('price=' + encodeURIComponent('$' + first.price));
+          }
+          mcHref += '#' + bits.join('&');
+        }
+        return [
+          { href: mcHref,                                   label: 'Re-describir en Inspector de Copy &rarr;' },
+          { href: '/es/tools/plate-cost/',                  label: 'Re-costear la receta en Costo del Plato &rarr;' }
+        ];
+      }
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){

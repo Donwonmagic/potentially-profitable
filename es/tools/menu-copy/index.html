@@ -1211,6 +1211,28 @@
     tierEl.addEventListener(ev, rerender);
   });
 
+  // Hidratación cross-tool desde el fragmento — pre-llena el formulario
+  // de un solo plato cuando llegamos por handoff de Menu Engineering /
+  // Search Ideas (#name=…&desc=…&price=…). Sólo siembra campos vacíos.
+  (function hydrateFromHash(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var seeded = false;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      var k = pair.slice(0, eq);
+      var v;
+      try { v = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { v = pair.slice(eq + 1); }
+      if (!v) return;
+      if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
+      if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
+      if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+    });
+    if (seeded) rerender();
+  })();
+
   var modeBtns = document.querySelectorAll('.mc-mode-btn');
   var modePanels = {
     single: document.querySelectorAll('[data-mode="single"]'),
