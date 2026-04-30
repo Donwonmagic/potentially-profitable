@@ -124,6 +124,17 @@
   .seo-save-link:hover { border-color: var(--ink); }
   .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
   .seo-save-msg.error { color: var(--rust); }
+  /* Inspiration banner — Search Ideas handoff. Chips are clickable
+     and drop into seoSignature so the rewrite template uses the
+     queries the owner just picked upstream. */
+  .seo-inspiration { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-input); padding: 12px 14px; background: var(--white); }
+  .seo-inspiration[hidden] { display: none; }
+  .seo-inspiration-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-inspiration-chips { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .seo-inspiration-chip { display: inline-block; padding: 5px 11px; border: 1px solid var(--line-dark); border-radius: 999px; background: var(--white); font: inherit; font-size: 12.5px; color: var(--ink); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .seo-inspiration-chip:hover { border-color: var(--teal); background: var(--cream-2); }
+  .seo-inspiration-note { margin: 0; font-size: 12px; color: var(--stone); line-height: 1.45; }
+
   .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
   .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
   .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -390,6 +401,17 @@
         Your title tag and meta description are the first thing people see in search results. Paste your URL and I'll grade both — length, readability, and what to fix.
       </p>
 
+      <!-- Inspiration banner — populated when an inbound link from
+           Search Ideas carries a #queries= list. Shows the picked
+           queries as chips; tapping one drops it into the signature/
+           feature field below so the rewrite template uses the
+           words customers actually search. -->
+      <div class="seo-inspiration" id="seoInspiration" hidden>
+        <p class="seo-inspiration-eyebrow">Search words customers used</p>
+        <ul class="seo-inspiration-chips" id="seoInspirationChips"></ul>
+        <p class="seo-inspiration-note">From Search Ideas. Tap a chip to use it as your "signature dish or feature".</p>
+      </div>
+
       <form class="seo-form" id="seoForm" novalidate>
         <input type="url" id="seoUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
         <button type="submit" id="seoSubmit">Grade it</button>
@@ -555,6 +577,51 @@
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+
+  // Search Ideas handoff: a #queries=q1%0Aq2 fragment opens an
+  // inspiration banner of clickable chips. Tapping a chip drops it
+  // into the signature/feature field so the suggested-rewrite
+  // template uses the words customers actually search.
+  (function hydrateInspiration(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var queriesRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      if (pair.slice(0, eq) !== 'queries') return;
+      try { queriesRaw = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { queriesRaw = pair.slice(eq + 1); }
+    });
+    if (!queriesRaw) return;
+    var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!queries.length) return;
+    var insp = document.getElementById('seoInspiration');
+    var chipsEl = document.getElementById('seoInspirationChips');
+    if (!insp || !chipsEl) return;
+    var sigEl = document.getElementById('seoSignature');
+    chipsEl.innerHTML = '';
+    queries.slice(0, 12).forEach(function(q){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'seo-inspiration-chip';
+      btn.textContent = q;
+      btn.addEventListener('click', function(){
+        if (!sigEl) return;
+        sigEl.value = q;
+        try { sigEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        // The signature field lives inside a <details> — open it
+        // automatically so the user sees the field they just filled.
+        var ctx = document.getElementById('seoCtx');
+        if (ctx && !ctx.open) ctx.open = true;
+        try { sigEl.focus(); } catch (_) {}
+      });
+      li.appendChild(btn);
+      chipsEl.appendChild(li);
+    });
+    insp.hidden = false;
+  })();
   // Sprint 5 (cohesion) — shared loading + error states.
   var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
     slotEl: document.getElementById('seoStates'),

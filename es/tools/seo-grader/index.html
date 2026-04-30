@@ -133,6 +133,15 @@
   .seo-save-link:hover { border-color: var(--ink); }
   .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
   .seo-save-msg.error { color: var(--rust); }
+  /* Banner de inspiración — handoff de Search Ideas. */
+  .seo-inspiration { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-input); padding: 12px 14px; background: var(--white); }
+  .seo-inspiration[hidden] { display: none; }
+  .seo-inspiration-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-inspiration-chips { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .seo-inspiration-chip { display: inline-block; padding: 5px 11px; border: 1px solid var(--line-dark); border-radius: 999px; background: var(--white); font: inherit; font-size: 12.5px; color: var(--ink); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .seo-inspiration-chip:hover { border-color: var(--teal); background: var(--cream-2); }
+  .seo-inspiration-note { margin: 0; font-size: 12px; color: var(--stone); line-height: 1.45; }
+
   .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
   .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
   .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -386,6 +395,13 @@
         Tu etiqueta de título y tu meta descripción son lo primero que la gente ve en los resultados de búsqueda. Pega tu URL y te califico las dos — longitud, legibilidad y qué arreglar.
       </p>
 
+      <!-- Banner de inspiración — handoff de Search Ideas. -->
+      <div class="seo-inspiration" id="seoInspiration" hidden>
+        <p class="seo-inspiration-eyebrow">Palabras de búsqueda que usan los clientes</p>
+        <ul class="seo-inspiration-chips" id="seoInspirationChips"></ul>
+        <p class="seo-inspiration-note">Vienen de Search Ideas. Toca un chip para usarlo como tu "plato firma o atributo".</p>
+      </div>
+
       <form class="seo-form" id="seoForm" novalidate>
         <input type="url" id="seoUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
         <button type="submit" id="seoSubmit">Calificar</button>
@@ -543,6 +559,46 @@
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+
+  // Handoff de Search Ideas (#queries=…).
+  (function hydrateInspiration(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var queriesRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      if (pair.slice(0, eq) !== 'queries') return;
+      try { queriesRaw = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { queriesRaw = pair.slice(eq + 1); }
+    });
+    if (!queriesRaw) return;
+    var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!queries.length) return;
+    var insp = document.getElementById('seoInspiration');
+    var chipsEl = document.getElementById('seoInspirationChips');
+    if (!insp || !chipsEl) return;
+    var sigEl = document.getElementById('seoSignature');
+    chipsEl.innerHTML = '';
+    queries.slice(0, 12).forEach(function(q){
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'seo-inspiration-chip';
+      b.textContent = q;
+      b.addEventListener('click', function(){
+        if (!sigEl) return;
+        sigEl.value = q;
+        try { sigEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        var ctx = document.getElementById('seoCtx');
+        if (ctx && !ctx.open) ctx.open = true;
+        try { sigEl.focus(); } catch (_) {}
+      });
+      li.appendChild(b);
+      chipsEl.appendChild(li);
+    });
+    insp.hidden = false;
+  })();
   // Sprint 5 (cohesión) — estados compartidos.
   var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
     slotEl: document.getElementById('seoStates'),
