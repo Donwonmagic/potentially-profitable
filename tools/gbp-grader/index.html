@@ -435,11 +435,16 @@
             <!-- storefront-rail:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Search for your business name and see how your profile stacks up — rating, review count, photos, hours, categories — with specific fixes for what's missing.</p>
 
+  <details class="gbp-primer" style="margin:14px auto 0;max-width:560px;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:10px 14px;background:var(--white);">
+    <summary style="cursor:pointer;font-size:13.5px;color:var(--ink);"><strong>What's a Google Business Profile (GBP)?</strong></summary>
+    <p style="margin:8px 0 0;font-size:13px;line-height:1.55;color:var(--ink-soft);">It's the panel that shows up on Google when someone searches your name — the box on the right with your rating, hours, photos, and "Order online" / "Reserve" buttons. It's free, you control it, and on mobile it usually decides whether someone walks in. If you've never seen yours, search "[your restaurant name] [your city]" on Google right now.</p>
+  </details>
+
   <form class="gbp-form" id="gbpForm" novalidate>
-    <input type="text" id="gbpQuery" placeholder="Your Business Name, City" autocomplete="off" required aria-label="Your business name and city" />
+    <input type="text" id="gbpQuery" placeholder="Your Business Name, City — or paste a Google Maps link" autocomplete="off" required aria-label="Your business name and city, or Google Maps link" />
     <button type="submit" id="gbpSubmit">Grade it</button>
   </form>
-  <p class="gbp-note">Powered by Google Places API. Type your business name + city for best results.</p>
+  <p class="gbp-note">Type your business name + city, or paste a Google Maps share link (maps.app.goo.gl, maps.google.com, or g.co/kgs).</p>
 
   <div class="gbp-result" id="gbpResult" aria-live="polite">
     <div class="gbp-biz" id="gbpBiz"></div>
@@ -1215,7 +1220,26 @@
         renderFor(candidates[0],peerMedians,q,false);
       }
     }).catch(function(err){
-      alert(err.message||'Could not look up that business. Try adding your city name.');
+      // Inline error instead of alert(). The hero form has a
+      // states slot already wired by MuntinStates; if not, fall
+      // back to a small inline error message under the form.
+      var msg = err && err.message ? err.message : 'Could not look up that business.';
+      var hint = /city/i.test(msg) ? '' : ' Try adding your city name (e.g. "Joe\'s Taqueria, Silver Spring") or pasting a Google Maps link.';
+      var states = document.getElementById('gbpStates');
+      if (states && typeof MuntinStates !== 'undefined') {
+        try { MuntinStates.attach({ slotEl: states }).setError({ kind: 'unknown', messageEn: msg + hint, messageEs: msg + hint }); } catch (_) {}
+      } else {
+        var box = document.getElementById('gbpInlineError');
+        if (!box) {
+          box = document.createElement('p');
+          box.id = 'gbpInlineError';
+          box.setAttribute('role', 'alert');
+          box.style.cssText = 'margin:10px auto 0;max-width:540px;padding:10px 14px;background:#fbf3d8;border:1px solid #d9c179;border-radius:8px;font-size:13.5px;color:#1a0d05;line-height:1.5;';
+          var formEl = document.getElementById('gbpForm');
+          if (formEl && formEl.parentNode) formEl.parentNode.insertBefore(box, formEl.nextSibling);
+        }
+        box.textContent = msg + hint;
+      }
     }).finally(function(){btn.disabled=false;btn.textContent='Grade it'});
   });
 
