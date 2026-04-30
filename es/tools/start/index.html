@@ -114,6 +114,50 @@
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<!-- Stub: nav, main content, JS, footer appended in follow-up commits -->
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <a href="/es/work/">Trabajo</a>
+      <a href="/es/about/">Sobre</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/start/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa a Don. Leo cada una.">Escribirle a Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <a href="/es/learn/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/about/">Sobre</a>
+    <a class="btn btn-primary js-window" href="/es/window/">Escribirle a Don</a>
+    <a href="/tools/start/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+</header>
+
+<!-- Stub: main, JS, footer appended in follow-up commits -->
 </body>
 </html>
