@@ -28,6 +28,7 @@ const TOPIC_LABELS = {
   'speed-mobile':      { en: 'Speed & Mobile',      es: 'Velocidad y móvil' },
   'trust-reviews':     { en: 'Trust & Reviews',     es: 'Confianza y reseñas' },
   'brand-design':      { en: 'Brand & Design',      es: 'Marca y diseño' },
+  'information-security': { en: 'Information Security', es: 'Seguridad informática' },
 };
 
 function listTopicArticles(slug, locale) {
