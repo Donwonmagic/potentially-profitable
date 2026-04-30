@@ -1096,6 +1096,10 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 }
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary:hover{color:var(--teal)}
+/* h3 wrappers inside <summary> give screen-reader users heading-level
+   navigation through the FAQ. The summary itself carries the visual
+   styling; the inner h3 inherits everything. */
+.faq-item summary > h3{margin:0;display:inline;font:inherit;color:inherit;letter-spacing:inherit;line-height:inherit}
 .faq-item summary::after{
   content:'';
   position:absolute;
