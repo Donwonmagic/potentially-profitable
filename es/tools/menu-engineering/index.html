@@ -45,6 +45,11 @@
 .me-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
 .me-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-units-mode{display:flex;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.me-units-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+.me-units-mode button strong{font-weight:700}
+.me-units-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-units-hint{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:10px 14px 0;padding:10px 12px;background:var(--cream-2);border-radius:8px;border:1px solid var(--line)}
 .me-grid{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.me-grid{min-width:560px}}
 .me-grid th,.me-grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
@@ -407,18 +412,28 @@
       </span>
     </div>
 
-    <div class="me-grid-wrap" data-mode="manual">
+    <!-- Toggle de modo de unidades. La mayoría de los operadores
+         tienen ingresos por plato del POS, no conteo de unidades.
+         El modo de ingresos divide entre el precio en cliente para
+         derivar unidades, y la matemática siguiente corre igual. -->
+    <div class="me-units-mode" role="radiogroup" aria-label="Qué datos de venta tienes">
+      <button type="button" data-units-mode="units" aria-pressed="true" role="radio">Tengo <strong>unidades vendidas</strong></button>
+      <button type="button" data-units-mode="revenue" aria-pressed="false" role="radio">Tengo <strong>ingresos ($)</strong></button>
+    </div>
+
+    <div class="me-grid-wrap" data-mode="manual" data-units-mode="units">
       <table class="me-grid" id="meGrid" aria-label="Cuadrícula de entrada de platos">
         <thead><tr>
           <th scope="col" style="width:34%">Plato</th>
           <th scope="col" style="width:14%">Precio</th>
           <th scope="col" style="width:14%">Costo de comida</th>
-          <th scope="col" style="width:14%">Unidades</th>
+          <th scope="col" style="width:14%" id="meUnitsHeader">Unidades</th>
           <th scope="col" style="width:18%">Categoría (opcional)</th>
           <th scope="col" aria-label="Eliminar"></th>
         </tr></thead>
         <tbody id="meGridBody"></tbody>
       </table>
+      <p class="me-units-hint" data-units-hint="revenue" hidden>Modo de ingresos: escribe los ingresos en dólares que cada plato generó el período pasado. Calculamos unidades = ingresos ÷ precio en el cliente, y la matriz corre la misma matemática.</p>
     </div>
 
     <div class="me-paste" data-mode="paste" hidden>
@@ -764,13 +779,25 @@
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
     var items = [];
+    var wrap = document.querySelector('.me-grid-wrap');
+    var mode = wrap ? wrap.getAttribute('data-units-mode') : 'units';
     for (var i = 0; i < rows.length; i++){
       var inputs = rows[i].querySelectorAll('input');
+      var price = inputs[1] ? inputs[1].value : '';
+      var unitsRaw = inputs[3] ? inputs[3].value : '';
+      var units;
+      if (mode === 'revenue') {
+        var revenue = parseFloat(unitsRaw);
+        var p = parseFloat(price);
+        units = (isFinite(revenue) && isFinite(p) && p > 0 && revenue >= 0) ? String(Math.round(revenue / p)) : '';
+      } else {
+        units = unitsRaw;
+      }
       items.push({
         item:       inputs[0] ? inputs[0].value : '',
-        price:      inputs[1] ? inputs[1].value : '',
+        price:      price,
         food_cost:  inputs[2] ? inputs[2].value : '',
-        units_sold: inputs[3] ? inputs[3].value : '',
+        units_sold: units,
         category:   inputs[4] ? inputs[4].value : ''
       });
     }
@@ -1181,6 +1208,26 @@
   }
 
   // ----- Wire UI -----
+  // Toggle de modo de unidades.
+  var meUnitsBtns = document.querySelectorAll('.me-units-mode button[data-units-mode]');
+  var meUnitsHeader = document.getElementById('meUnitsHeader');
+  var meUnitsHint = document.querySelector('.me-units-hint[data-units-hint="revenue"]');
+  var meGridWrap = document.querySelector('.me-grid-wrap');
+  function setUnitsMode(mode) {
+    if (mode !== 'units' && mode !== 'revenue') mode = 'units';
+    Array.prototype.forEach.call(meUnitsBtns, function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-units-mode') === mode ? 'true' : 'false'); });
+    if (meGridWrap) meGridWrap.setAttribute('data-units-mode', mode);
+    if (meUnitsHeader) meUnitsHeader.textContent = mode === 'revenue' ? 'Ingresos ($)' : 'Unidades';
+    if (meUnitsHint) meUnitsHint.hidden = (mode !== 'revenue');
+    Array.prototype.forEach.call(gridBody.querySelectorAll('tr'), function(tr){
+      var inputs = tr.querySelectorAll('input');
+      if (inputs[3]) inputs[3].placeholder = (mode === 'revenue') ? '1920' : '80';
+    });
+    rerender();
+  }
+  Array.prototype.forEach.call(meUnitsBtns, function(b){
+    b.addEventListener('click', function(){ setUnitsMode(b.getAttribute('data-units-mode')); });
+  });
   addRowBtn.addEventListener('click', function(){ addRow(); rerender(); });
   loadSample.addEventListener('click', loadSampleData);
   if (loadSampleAlt) loadSampleAlt.addEventListener('click', loadSampleData);
