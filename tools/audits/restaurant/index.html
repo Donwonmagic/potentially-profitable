@@ -2786,6 +2786,23 @@
   .top-fixes-item-chips .chip-effort-dev     { background: var(--teal-tint); color: var(--teal); }
   .top-fixes-item-chips .chip-effort-rebuild { background: var(--status-bad-tint); color: var(--rust); }
   .top-fixes-item-chips .chip-time           { background: var(--cream-2, #faf6ee); color: var(--ink); border: 1px solid var(--line, #E6DFCE); }
+  /* Per-check platform recipe picker — collapsed by default; opens
+     to a tab list of platforms with tailored steps. */
+  .top-fixes-recipe { margin-top: 10px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-recipe[open] { padding-bottom: 4px; }
+  .top-fixes-recipe-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--teal); list-style: none; }
+  .top-fixes-recipe-summary::-webkit-details-marker { display: none; }
+  .top-fixes-recipe-summary::before { content: '+ '; color: var(--teal); font-weight: 700; }
+  .top-fixes-recipe[open] .top-fixes-recipe-summary::before { content: '− '; }
+  .top-fixes-recipe-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 12px 8px; }
+  .top-fixes-recipe-tab { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 11.5px; font-weight: 500; cursor: pointer; }
+  .top-fixes-recipe-tab[aria-selected="true"] { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .top-fixes-recipe-steps { padding: 0 12px 12px; }
+  .top-fixes-recipe-list { margin: 0; padding-left: 22px; font-size: 13px; line-height: 1.55; color: var(--ink); }
+  .top-fixes-recipe-list li { margin-bottom: 4px; }
+  .top-fixes-recipe-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.5; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
+  .top-fixes-recipe-eta { font-size: 11.5px; color: var(--stone); margin: 6px 0 0; letter-spacing: 0.04em; }
+  .top-fixes-recipe-fallback { font-size: 12px; color: var(--stone); margin: 0 0 8px; font-style: italic; }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -11413,6 +11430,44 @@
   // Values are % of annual revenue the owner is plausibly leaving on
   // the table by failing this check, based on observed funnel drop-
   // off in restaurant-tech case studies. Missing types → no chip.
+  // Map audit check IDs to MuntinPlatformFixes fix IDs. Drives the
+  // per-check "Show me how to fix this on my platform" disclosure
+  // in the Top Fixes list. Only "Fix yourself" checks need a
+  // mapping; dev/rebuild checks stay on the existing failNote path.
+  var AUDIT_CHECK_TO_FIX_ID = {
+    'audit.viewport':       'viewport-meta',
+    'audit.tap-targets':    'tap-target-padding',
+    'audit.image-alt':      'alt-text-bulk',
+    'audit.image-size':     'image-compress',
+    'audit.image-formats':  'image-compress',
+    'audit.optimized-images':'image-compress',
+    'audit.uses-webp-images':'image-compress',
+    'audit.uses-optimized-images':'image-compress',
+    'audit.modern-image-formats':'image-compress',
+    'audit.efficient-images':'image-compress',
+    'audit.title':          'title-meta-edit',
+    'audit.document-title': 'title-meta-edit',
+    'audit.meta-description':'title-meta-edit',
+    'audit.structured-data':'jsonld-inject',
+    'phone':                'tel-link',
+    'maps':                 'maps-link',
+    'address':              'maps-link',
+    'hours':                'hours-edit',
+    'restaurant-schema':    'jsonld-inject'
+  };
+  // Platform display names — used for picker tabs + the summary
+  // "Show me how to fix this on Squarespace →".
+  var AUDIT_PLATFORM_LABEL = {
+    wix:          'Wix',
+    squarespace:  'Squarespace',
+    wordpress:    'WordPress',
+    shopify:      'Shopify',
+    webflow:      'Webflow',
+    bentobox:     'BentoBox',
+    godaddy:      'GoDaddy',
+    custom:       'a custom site',
+    generic:      'Other / generic'
+  };
   var REVENUE_AT_RISK_PCT = {
     'audit.viewport':          [0.04, 0.09],  // mobile crash = big
     'audit.tap-targets':       [0.01, 0.04],
@@ -11750,6 +11805,9 @@
         } else if (def.effort === 'rebuild') {
           chips.innerHTML += '<span class="chip chip-effort-rebuild">Rebuild needed</span>';
         }
+        // Stash the chip container for later — we'll insert a platform-
+        // recipe disclosure right after this body if we have one.
+        body.__chipsEl = chips;
         if (typeof def.minutes === 'number') {
           var timeLabel;
           if (def.minutes < 60)        timeLabel = '~' + def.minutes + ' min';
@@ -11773,6 +11831,84 @@
           chips.innerHTML += '<span class="chip chip-revenue" title="' + riskTitle + '">' + riskLabel + '</span>';
         }
         body.appendChild(chips);
+      }
+
+      // Per-check platform recipe picker. For "Fix yourself" checks
+      // that map to a known platform-fix ID, render a disclosure
+      // showing platform-aware steps from MuntinPlatformFixes. The
+      // picker auto-defaults to the platform recorded in
+      // mtn:context (written by tech-stack on detection); falls
+      // back to a generic recipe + a tab list of all platforms with
+      // tailored instructions.
+      if (def.effort === 'self' && typeof MuntinPlatformFixes !== 'undefined') {
+        var fixId = AUDIT_CHECK_TO_FIX_ID[def.id || ''] || null;
+        if (fixId) {
+          var detected = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+          var primary = detected || 'generic';
+          var recipe = MuntinPlatformFixes.get(fixId, primary);
+          if (recipe) {
+            var picker = document.createElement('details');
+            picker.className = 'top-fixes-recipe';
+            var platforms = MuntinPlatformFixes.platformsWithRecipe(fixId);
+            // Promote detected platform to first; ensure 'generic' is last.
+            var ordered = [];
+            if (detected && platforms.indexOf(detected) !== -1) ordered.push(detected);
+            platforms.forEach(function(p){ if (p !== detected) ordered.push(p); });
+            ordered.push('generic');
+            var summary = document.createElement('summary');
+            summary.className = 'top-fixes-recipe-summary';
+            summary.textContent = detected
+              ? ('Show me how to fix this on ' + AUDIT_PLATFORM_LABEL[detected] + ' →')
+              : 'Show me how to fix this on my platform →';
+            picker.appendChild(summary);
+            var tabs = document.createElement('div');
+            tabs.className = 'top-fixes-recipe-tabs';
+            tabs.setAttribute('role', 'tablist');
+            ordered.forEach(function(p){
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.setAttribute('role', 'tab');
+              btn.className = 'top-fixes-recipe-tab';
+              btn.textContent = AUDIT_PLATFORM_LABEL[p] || p;
+              btn.setAttribute('data-platform', p);
+              btn.setAttribute('aria-selected', p === primary ? 'true' : 'false');
+              tabs.appendChild(btn);
+            });
+            picker.appendChild(tabs);
+            var stepsBox = document.createElement('div');
+            stepsBox.className = 'top-fixes-recipe-steps';
+            picker.appendChild(stepsBox);
+            function paintRecipe(p) {
+              var r = MuntinPlatformFixes.get(fixId, p);
+              if (!r) { stepsBox.innerHTML = ''; return; }
+              var html = '';
+              if (r.fallback) {
+                html += '<p class="top-fixes-recipe-fallback">No tailored recipe yet for this platform — here\'s the generic version.</p>';
+              }
+              html += '<ol class="top-fixes-recipe-list">';
+              (r.steps || []).forEach(function(s){
+                html += '<li>' + String(s)
+                  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  + '</li>';
+              });
+              html += '</ol>';
+              if (r.note) html += '<p class="top-fixes-recipe-note">' + String(r.note).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</p>';
+              if (r.etaMinutes) html += '<p class="top-fixes-recipe-eta">Roughly ' + r.etaMinutes + ' minute' + (r.etaMinutes === 1 ? '' : 's') + '.</p>';
+              stepsBox.innerHTML = html;
+            }
+            paintRecipe(primary);
+            tabs.addEventListener('click', function(ev){
+              var tabBtn = ev.target && ev.target.closest && ev.target.closest('.top-fixes-recipe-tab');
+              if (!tabBtn) return;
+              var p = tabBtn.getAttribute('data-platform');
+              Array.prototype.forEach.call(tabs.children, function(b){
+                b.setAttribute('aria-selected', b === tabBtn ? 'true' : 'false');
+              });
+              paintRecipe(p);
+            });
+            body.appendChild(picker);
+          }
+        }
       }
 
       li.appendChild(body);
