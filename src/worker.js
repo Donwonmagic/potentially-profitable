@@ -332,6 +332,8 @@ const API_ROUTES = {
   // Phase G.11 (Growth) — generalized share-snapshot endpoints.
   '/api/share/tool-result':          handleShareToolResult,
   '/api/share/storefront-health':    handleShareStorefrontHealth,
+  // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
+  '/api/admin/kpis':                 handleAdminKpis,
 };
 
 
@@ -6010,6 +6012,27 @@ async function handleSubscribeConfirm(request, env, ctx) {
 // Each kind has a dedicated handler so we can validate kind-specific
 // payload shape without a giant switch — a new kind = a new handler.
 // Both endpoints write to AUTH_SESSIONS KV via saveShareSnapshot.
+
+// Phase G.12 (Growth) — admin KPI dashboard data endpoint.
+// Reads data/kpis.json via env.ASSETS so the JSON file is the
+// single source of truth (no duplicated copy bundled into the
+// Worker). Admin-gated via _requireAdminSession (NOTIFY_EMAIL
+// match). Returns the registry verbatim with ok:true wrapper.
+async function handleAdminKpis(request, env, ctx) {
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  try {
+    const url = new URL(request.url);
+    const assetReq = new Request(url.origin + '/data/kpis.json', { headers: { 'accept': 'application/json' } });
+    const r = await env.ASSETS.fetch(assetReq);
+    if (!r.ok) return jsonResponse({ ok: false, error: 'kpi-data-missing' }, 503);
+    const data = await r.json();
+    return jsonResponse({ ok: true, kpis: data.kpis || [], _lastReviewed: data._lastReviewed || null }, 200);
+  } catch (err) {
+    console.warn('[admin/kpis] fetch failed', err && err.message);
+    return jsonResponse({ ok: false, error: 'kpi-data-error' }, 500);
+  }
+}
 
 async function handleShareToolResult(request, env, ctx) {
   if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
