@@ -580,18 +580,21 @@ export default {
       }
     }
 
-    // Fall through to the static-asset server. Phase G.12 — when an
-    // experiment is running on the requested path AND the response
-    // is HTML, stamp <html data-experiment="…" data-treatment="…">
-    // via streaming HTMLRewriter so CSS swaps via
-    // [data-treatment="…"] selectors. No-op for non-HTML and for
-    // paths with no active experiment (the registry is empty until
-    // an experiment status flips to 'running').
+    // Fall through to the static-asset server. Two HTMLRewriter
+    // passes when the response is HTML:
+    //   1. Phase G.3 — inject <link rel="alternate" type="application/rss+xml">
+    //      into <head> so feed readers + LLM crawlers auto-discover the feed.
+    //      Locale-aware: ES paths point at /es/feed.xml, everything else
+    //      at /feed.xml.
+    //   2. Phase G.12 — when an experiment is running on the requested
+    //      path, stamp <html data-experiment="…" data-treatment="…">
+    //      so CSS swaps via [data-treatment="…"] selectors.
     const assetResponse = await env.ASSETS.fetch(request);
     if (request.method === 'GET' && assetResponse.ok) {
       const ct = assetResponse.headers.get('content-type') || '';
       if (ct.startsWith('text/html')) {
-        return rewriteForExperiment(assetResponse, request, pathname);
+        const withRss = rewriteWithRssAlternate(assetResponse, pathname);
+        return rewriteForExperiment(withRss, request, pathname);
       }
     }
     return assetResponse;
@@ -1073,6 +1076,28 @@ function activeExperimentForPath(pathname) {
     return { name, exp };
   }
   return null;
+}
+
+// Phase G.3 — inject <link rel="alternate" type="application/rss+xml">
+// into the <head> of every HTML response. Locale-aware via path prefix.
+// Idempotent if the link already exists (HTMLRewriter doesn't dedupe,
+// so we rely on the fact that hand-edited pages don't already declare
+// the link — true today; a future cohesion-check could verify).
+function rewriteWithRssAlternate(response, pathname) {
+  const isEs = pathname === '/es/' || pathname.startsWith('/es/');
+  const feedUrl = isEs ? 'https://muntin.digital/es/feed.xml' : 'https://muntin.digital/feed.xml';
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('head', {
+    element(el) {
+      el.append(`<link rel="alternate" type="application/rss+xml" title="Muntin Digital" href="${feedUrl}" />`, { html: true });
+    },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 // Stamps data-experiment + data-treatment on <html> for the active
