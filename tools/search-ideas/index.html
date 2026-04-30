@@ -113,9 +113,25 @@
   .si-group{margin-bottom:28px}
   .si-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
   .si-items{list-style:none;padding:0;margin:0}
-  .si-items li{padding:12px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .si-items li{padding:0;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink)}
+  .si-row{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
+  .si-row input[type="checkbox"]{flex:0 0 auto;margin:0;cursor:pointer;accent-color:var(--teal)}
+  .si-q-text{flex:1}
+  .si-items li:has(.si-pick:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--white))}
   .si-items .q{color:var(--stone);font-size:14px;flex:0 0 20px}
   .si-items strong{color:var(--teal)}
+  .si-route{font-weight:500;color:var(--ink-soft);text-transform:none;letter-spacing:0;font-size:11.5px;margin-left:6px}
+  .si-route-why{font-size:12.5px;color:var(--stone);margin:-4px 0 8px;line-height:1.5}
+  .si-multi{display:none;margin:18px 0 0;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-sm);background:var(--surface-1)}
+  .si-multi[data-shown="true"]{display:block}
+  .si-multi-head{font-size:14px;color:var(--ink);margin:0 0 10px}
+  .si-multi-clear{background:none;border:0;color:var(--teal);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0;margin-left:6px}
+  .si-multi-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .si-multi-btn{padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .si-multi-btn:hover{border-color:var(--teal);color:var(--teal)}
+  .si-multi-btn[aria-disabled="true"]{opacity:0.4;pointer-events:none}
+  .si-multi-msg{font-size:12px;color:var(--stone)}
+  .si-multi-tip{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
   .si-tip{font-size:14px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-sm);margin-top:20px}
   .si-tip strong{color:var(--ink)}
   /* Phase 2 (Workshop) — Save-to-Workbench. First adopter of the
@@ -412,20 +428,104 @@
 
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
+  // Per-group route hint — where each query's keywords should land
+  // on the owner's site. Keyed by the leading word of group.cat so
+  // re-keying the categories doesn't break the lookup.
+  var ROUTE_BY_GROUP = {
+    'Discovery':  { tag: 'menu page H1 / GBP primary category',     why: 'These are search-intent queries — they need to anchor your headline and Google primary category to rank.' },
+    'Pricing':    { tag: 'menu page body / FAQ schema',              why: 'Pricing intent gets answered on the menu page itself, not the homepage. Make sure prices and pricing context appear in body copy.' },
+    'Specifics':  { tag: 'photo alt text / GBP attributes / FAQ',    why: 'Long-tail features (BYOB, outdoor seating, kids menu) live in the GBP attribute toggles and image alt text where Google looks for them.' },
+    'Comparison': { tag: 'reviews response copy / About differentiators', why: 'Comparison-shopping searches read your reviews and About page. Lean into what makes you distinct here, not on the homepage.' }
+  };
+  function routeForGroup(cat) {
+    var key = String(cat || '').split(/[^A-Za-z]/)[0];
+    return ROUTE_BY_GROUP[key] || { tag: 'website + GBP description', why: '' };
+  }
+
   function generate(type,city){
-    type=esc(type);city=esc(city);
+    var typeEsc = esc(type), cityEsc = esc(city);
     var html='';
+    var qid = 0;
     PATTERNS.forEach(function(group){
-      html+='<div class="si-group"><p class="si-group-label">'+group.cat+'</p><ul class="si-items">';
+      var route = routeForGroup(group.cat);
+      html+='<div class="si-group"><p class="si-group-label">'+esc(group.cat)+' <span class="si-route">→ ' + esc(route.tag) + '</span></p>';
+      if (route.why) html += '<p class="si-route-why">' + esc(route.why) + '</p>';
+      html += '<ul class="si-items">';
       group.templates.forEach(function(t){
-        var q=t.replace(/\{type\}/g,type).replace(/\{city\}/g,city);
-        html+='<li><span class="q">🔍</span> '+q+'</li>';
+        var q=t.replace(/\{type\}/g,typeEsc).replace(/\{city\}/g,cityEsc);
+        var id = 'si-q-' + (++qid);
+        html+='<li><label class="si-row" for="'+id+'"><input type="checkbox" id="'+id+'" class="si-pick" data-query="'+esc(q)+'" data-route="'+esc(route.tag)+'" /><span class="q">🔍</span><span class="si-q-text">'+q+'</span></label></li>';
       });
       html+='</ul></div>';
     });
-    html+='<div class="si-tip"><strong>How to use these:</strong> Each query above is something real people type into Google. If your website and Google Business Profile don\'t contain the words in these searches, you\'re invisible for them. Add the relevant terms to your title tag, meta description, services page, and GBP description — that\'s how you start showing up.</div>';
+    html += '<div class="si-multi" data-multi role="region" aria-label="Selected query actions">' +
+      '<p class="si-multi-head"><strong>Selected: <span data-multi-count>0</span></strong> &middot; <button type="button" class="si-multi-clear" data-multi-clear>Clear</button></p>' +
+      '<div class="si-multi-actions">' +
+        '<a class="si-multi-btn" data-multi-action="menu-copy" href="#" target="_blank" rel="noopener">Send to Menu Copy &rarr;</a>' +
+        '<a class="si-multi-btn" data-multi-action="gbp" href="#" target="_blank" rel="noopener">Send to GBP Grader &rarr;</a>' +
+        '<a class="si-multi-btn" data-multi-action="seo" href="#" target="_blank" rel="noopener">Send to SEO Grader &rarr;</a>' +
+        '<button type="button" class="si-multi-btn" data-multi-action="copy">Copy selected</button>' +
+        '<span class="si-multi-msg" data-multi-msg aria-live="polite"></span>' +
+      '</div>' +
+      '<p class="si-multi-tip">Pick the 3–5 queries you most want to rank for, send them to the next tool, and you\'ll see exactly where the words go on your site.</p>' +
+    '</div>';
+    html+='<div class="si-tip"><strong>How to use these:</strong> Each query above is something real people type into Google. The <em>→ where to put it</em> tag on each group tells you which surface should carry those words. Tick the queries that fit your business, then send them to the next tool to see the surface change in context.</div>';
     html+='<div class="si-cta"><p>Want to see how your site scores on the checks that matter?</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     return html;
+  }
+
+  // Wires up the multi-select toolbar after generate() renders. The
+  // toolbar disappears when no rows are checked; the Send-to buttons
+  // hand off the selection via the existing #paste= URL-fragment
+  // pattern those tools already accept.
+  function siWireMulti(rootEl) {
+    if (!rootEl) return;
+    var toolbar = rootEl.querySelector('[data-multi]');
+    var countEl = rootEl.querySelector('[data-multi-count]');
+    var msgEl   = rootEl.querySelector('[data-multi-msg]');
+    if (!toolbar || !countEl) return;
+    function selected() {
+      return Array.prototype.slice.call(rootEl.querySelectorAll('.si-pick:checked')).map(function(cb){
+        return { query: cb.getAttribute('data-query'), route: cb.getAttribute('data-route') };
+      });
+    }
+    function flash(text) { if (!msgEl) return; msgEl.textContent = text; setTimeout(function(){ if (msgEl) msgEl.textContent = ''; }, 2200); }
+    function refresh() {
+      var sel = selected();
+      countEl.textContent = sel.length;
+      toolbar.setAttribute('data-shown', sel.length > 0 ? 'true' : 'false');
+      var queries = sel.map(function(s){ return s.query; });
+      var encoded = encodeURIComponent(queries.join('\n'));
+      // Build deep-links per destination.
+      var routes = {
+        'menu-copy': '/tools/menu-copy/#queries=' + encoded,
+        'gbp':       '/tools/gbp-grader/#keywords=' + encoded,
+        'seo':       '/tools/seo-grader/#queries=' + encoded
+      };
+      Array.prototype.forEach.call(rootEl.querySelectorAll('[data-multi-action]'), function(el){
+        var action = el.getAttribute('data-multi-action');
+        if (action !== 'copy' && routes[action]) el.href = routes[action];
+        el.toggleAttribute('aria-disabled', sel.length === 0);
+      });
+    }
+    rootEl.addEventListener('change', function(ev){
+      if (ev.target && ev.target.classList && ev.target.classList.contains('si-pick')) refresh();
+    });
+    var clearBtn = rootEl.querySelector('[data-multi-clear]');
+    if (clearBtn) clearBtn.addEventListener('click', function(){
+      Array.prototype.forEach.call(rootEl.querySelectorAll('.si-pick'), function(cb){ cb.checked = false; });
+      refresh();
+    });
+    var copyBtn = rootEl.querySelector('[data-multi-action="copy"]');
+    if (copyBtn) copyBtn.addEventListener('click', function(){
+      var sel = selected();
+      if (!sel.length) { flash('Pick at least one query first.'); return; }
+      var text = sel.map(function(s){ return s.query + (s.route ? '   → ' + s.route : ''); }).join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ flash('Copied ' + sel.length + ' quer' + (sel.length === 1 ? 'y' : 'ies') + ' to your clipboard.'); });
+      } else { flash('Copy not supported — select the text manually.'); }
+    });
+    refresh();
   }
 
   // Phase 2 (Workshop) — Save-to-Workbench via the shared helper.
@@ -442,6 +542,7 @@
           if (cityInput && p.city) cityInput.value = p.city;
           result.innerHTML = generate(p.type || '', p.city || '');
           result.classList.add('visible');
+          siWireMulti(result);
           result.scrollIntoView({ behavior: 'smooth', block: 'start' });
         },
         workbenchUrl: '/workbench/',
@@ -456,6 +557,7 @@
     if(!city){cityInput.focus();return}
     result.innerHTML=generate(type,city);
     result.classList.add('visible');
+    siWireMulti(result);
     result.scrollIntoView({behavior:'smooth',block:'start'});
     if (wb) wb.showAffordance({ type: type, city: city, generatedAt: Date.now() });
     if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city}});
