@@ -71,6 +71,62 @@
         "Las reseñas negativas no son fatales; las negativas ignoradas sí.",
         "La ventana de composición es de 90 días — el sistema que lleva 90+ días corriendo le gana al de 30."
       ]
+    },
+    "how-to-recover-reservations-from-googles-find-a-table": {
+      "tldr": [
+        "Find a Table cambió cómo Google maneja las búsquedas de restaurantes — la reserva ocurre en Google antes de que el visitante llegue a tu sitio.",
+        "Si tu sistema de reservas no está en Find a Table, pierdes 8-15% de las reservas que vienen de búsqueda hacia competidores que sí están.",
+        "Tres movimientos concretos recuperan la mayoría del flujo perdido sin renunciar a tu propia superficie de reserva."
+      ],
+      "key_takeaways": [
+        "OpenTable, Resy, Tock y SevenRooms están actualmente conectados a Find a Table — elige uno si no tienes ninguno.",
+        "No deshabilites las reservas en GBP — eso te cuesta también las búsquedas de llamada-y-walk-in.",
+        "Añade reservation schema a tu sitio para que Google verifique que la integración es real.",
+        "La sección GBP del Restaurant Audit marca la elegibilidad de Find a Table como puntaje aparte.",
+        "El patrón más amplio: cada superficie de Google que toma la reserva antes que tu sitio te cuesta la relación — toma la reserva, después toma el correo."
+      ]
+    },
+    "how-much-does-a-custom-restaurant-website-cost-in-2026": {
+      "tldr": [
+        "Un sitio custom para un restaurante independiente en 2026 va de $2,500 a $25,000+, con la mayoría aterrizando en $6,000-$12,000.",
+        "Cuatro opciones reales: plataforma DIY ($25-50/mes), estudio de templates ($2.5-6K), custom completo ($6-20K), agencia de récord ($25K+).",
+        "Lo que realmente mueve el precio: complejidad del menú, integración de reservas, integración de ordering, y cuántos idiomas."
+      ],
+      "key_takeaways": [
+        "El pulido visual puro no mueve reservas — velocidad de carga, UX móvil y la base de SEO sí.",
+        "Un sitio custom real usualmente se paga en 12-18 meses para cualquier volumen sobre $40K/mes.",
+        "Banderas rojas en el extremo barato: sin contrato, sin garantía de Lighthouse, sin entrega del código fuente.",
+        "Banderas rojas en el extremo caro: ‘fases de discovery’ antes de mockups, retainer para actualizaciones que tú deberías hacer.",
+        "Corre Tech Stack Detector en tu sitio actual antes de cualquier cotización — la base importa."
+      ]
+    },
+    "what-should-be-on-a-restaurant-website": {
+      "tldr": [
+        "Siete páginas hacen casi todo el trabajo: home, menú, horarios-y-ubicación, reservas, historia, contacto, y una promo actual.",
+        "Páginas que probablemente no necesitas: una de ‘eventos’ aparte, blog, galería (el sitio mismo es la galería).",
+        "La estructura que se gana su lugar: cada página responde una pregunta de hambriento-a-las-11pm en menos de 3 toques."
+      ],
+      "key_takeaways": [
+        "La home existe para responder una pregunta: ‘¿es esto lo que quiero esta noche?’.",
+        "El menú tiene que ser HTML, no PDF — los PDFs están muertos en móvil y en búsqueda con IA.",
+        "Las reservas van sobre la línea de pliegue en cada página, no enterradas en un formulario de contacto.",
+        "La página de historia es la segunda más importante después del menú — es lo que los comensales comparten para convencer a un amigo.",
+        "Borra la página de ‘eventos’; teje los eventos en la home como una franja de promo actual."
+      ]
+    },
+    "why-your-restaurant-loses-reservations-every-night": {
+      "tldr": [
+        "El embudo de reservas es la métrica de marketing más honesta en operaciones de restaurante — y la mayoría de operadores nunca la ha medido.",
+        "Seis fugas, en orden: horarios poco claros, CTA de reserva enterrado, móvil lento, menú ausente, fotos frías, schema ausente.",
+        "Arreglar las primeras tres fugas solas típicamente recupera 8-15% de las reservas perdidas."
+      ],
+      "key_takeaways": [
+        "Los horarios sobre la línea de pliegue tienen el mayor impacto de un solo arreglo en pruebas de campo.",
+        "Si las reservas requieren más de dos toques desde cualquier página, el embudo está fugando.",
+        "Una carga móvil sobre 3 segundos correlaciona con un bounce de 30%+ en la página de reservas.",
+        "Menú ausente o solo-PDF es la segunda fuga más grande — Google no puede ayudarte a posicionar sin él.",
+        "Corre Restaurant Audit, guarda el puntaje, arregla las dos banderas más altas, vuelve a correrlo en 30 días."
+      ]
     }
   }
 }
