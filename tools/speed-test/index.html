@@ -160,6 +160,8 @@
   .speed-compress-result { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
   .speed-compress-download { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--cream); text-decoration: none; font-weight: 500; font-size: 13px; }
   .speed-compress-download:hover { background: var(--teal); }
+  .speed-metric-link{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-dark);transition:border-color var(--t-fast) var(--ease)}
+  .speed-metric-link:hover{border-bottom-color:var(--teal);color:var(--teal)}
   /* Shared MuntinHire disclosure. */
   .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
   .hire-guide[open]{padding-bottom:4px}
@@ -465,19 +467,19 @@
         <div class="speed-metrics">
           <div class="speed-metric">
             <div class="val" id="metricLCP">—</div>
-            <div class="lbl">Largest Contentful Paint</div>
+            <div class="lbl"><a href="/glossary/lcp/" class="speed-metric-link" title="What this is">Largest Contentful Paint</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricFCP">—</div>
-            <div class="lbl">First Contentful Paint</div>
+            <div class="lbl"><a href="/glossary/fcp/" class="speed-metric-link" title="What this is">First Contentful Paint</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricTBT">—</div>
-            <div class="lbl">Total Blocking Time</div>
+            <div class="lbl"><a href="/glossary/core-web-vitals/" class="speed-metric-link" title="What this is">Total Blocking Time</a></div>
           </div>
           <div class="speed-metric">
             <div class="val" id="metricCLS">—</div>
-            <div class="lbl">Cumulative Layout Shift</div>
+            <div class="lbl"><a href="/glossary/cls/" class="speed-metric-link" title="What this is">Cumulative Layout Shift</a></div>
           </div>
         </div>
 
