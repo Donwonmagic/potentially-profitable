@@ -2586,16 +2586,19 @@
     color: var(--teal);
   }
 
-  /* Four category gauges */
+  /* Five category gauges — Restaurant Fundamentals card is featured
+     (spans two columns + teal-accent border) so the differentiator
+     anchors the report instead of sitting in column 5 of 5. */
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 2fr repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 32px;
   }
-  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 640px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 960px) { .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .category-card--featured { grid-column: 1 / -1; } }
+  @media (max-width: 420px) { .category-grid { grid-template-columns: 1fr; }
+    .category-card--featured { grid-column: auto; } }
 
   .category-card {
     padding: 24px;
@@ -2604,6 +2607,12 @@
     border-radius: 16px;
     text-align: center;
   }
+  .category-card--featured {
+    border-color: var(--teal);
+    border-width: 2px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--teal) 4%, var(--white)) 0%, var(--white) 100%);
+  }
+  .category-card--featured .label { color: var(--teal); }
   .category-card .label {
     font-size: 11px;
     font-weight: 700;
@@ -2803,6 +2812,19 @@
   .top-fixes-recipe-note { font-size: 12px; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.5; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
   .top-fixes-recipe-eta { font-size: 11.5px; color: var(--stone); margin: 6px 0 0; letter-spacing: 0.04em; }
   .top-fixes-recipe-fallback { font-size: 12px; color: var(--stone); margin: 0 0 8px; font-style: italic; }
+  /* "Don't have a developer?" hire disclosure on dev/rebuild checks. */
+  .top-fixes-hire { margin-top: 8px; padding: 0; border: 1px dashed var(--line); border-radius: 8px; background: var(--surface-1, #faf6ee); }
+  .top-fixes-hire[open] { padding-bottom: 4px; }
+  .top-fixes-hire-summary { cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); list-style: none; }
+  .top-fixes-hire-summary::-webkit-details-marker { display: none; }
+  .top-fixes-hire-summary::before { content: '+ '; color: var(--ink-soft); font-weight: 700; }
+  .top-fixes-hire[open] .top-fixes-hire-summary::before { content: '− '; }
+  .top-fixes-hire-body { padding: 4px 12px 12px; }
+  .top-fixes-hire-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0 0 8px; font-size: 13px; line-height: 1.5; }
+  .top-fixes-hire-grid dt { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--stone); align-self: start; padding-top: 2px; }
+  .top-fixes-hire-grid dd { margin: 0; color: var(--ink); }
+  .top-fixes-hire-grid a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  .top-fixes-hire-tip { font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin: 0; padding: 8px 10px; background: var(--white); border-radius: 6px; border: 1px solid var(--line); }
   /* Sprint CC6: weekend-to-green ETA badge — small, calm, sits to
      the right of the Top 3 Fixes heading. Teal accent matches the
      exec-summary border treatment so the eye groups it with
@@ -5436,37 +5458,40 @@
         </div>
       </div>
 
-      <!-- Five category gauges — four from Lighthouse + Restaurant Readiness from priority checks -->
+      <!-- Five category gauges — Restaurant fundamentals leads (the
+           differentiator anchor; spans 2 columns on wide layouts), the
+           four Lighthouse pillars follow with owner-language labels.
+           Technical names retained in title attributes for the curious. -->
       <div class="category-grid" id="categoryGrid">
-        <div class="category-card" data-cat="performance">
-          <div class="label">Performance</div>
+        <div class="category-card category-card--featured" data-cat="restaurant" title="Restaurant-specific checks (Muntin's industry pillar)">
+          <div class="label">Restaurant fundamentals</div>
+          <div class="cat-value">—</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Restaurant-specific checks Lighthouse misses</div>
+        </div>
+        <div class="category-card" data-cat="performance" title="Performance (Lighthouse)">
+          <div class="label">Speed on a phone</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">How fast pages load on a phone</div>
         </div>
-        <div class="category-card" data-cat="accessibility">
-          <div class="label">Accessibility</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Usable for every visitor</div>
-        </div>
-        <div class="category-card" data-cat="best-practices">
-          <div class="label">Best Practices</div>
-          <div class="cat-value">—</div>
-          <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Modern, secure web standards</div>
-        </div>
-        <div class="category-card" data-cat="seo">
-          <div class="label">SEO</div>
+        <div class="category-card" data-cat="seo" title="SEO (Lighthouse)">
+          <div class="label">Findable on Google</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
           <div class="sublabel">Whether Google can find you</div>
         </div>
-        <div class="category-card" data-cat="restaurant">
-          <div class="label">Restaurant</div>
+        <div class="category-card" data-cat="accessibility" title="Accessibility (Lighthouse)">
+          <div class="label">Readable for everyone</div>
           <div class="cat-value">—</div>
           <div class="bar"><div class="fill" style="width:0%"></div></div>
-          <div class="sublabel">Restaurant-specific checks</div>
+          <div class="sublabel">Usable for every visitor</div>
+        </div>
+        <div class="category-card" data-cat="best-practices" title="Best Practices (Lighthouse)">
+          <div class="label">Modern &amp; secure</div>
+          <div class="cat-value">—</div>
+          <div class="bar"><div class="fill" style="width:0%"></div></div>
+          <div class="sublabel">Modern, secure web standards</div>
         </div>
       </div>
 
@@ -11468,6 +11493,21 @@
     custom:       'a custom site',
     generic:      'Other / generic'
   };
+  // "Who to hire" guidance per platform for effort:'rebuild' and
+  // effort:'dev' checks. Each entry: budget range, profile, public
+  // directory link the owner can search. Pre-filtered to "what to
+  // type" so the owner doesn't stare at a blank Upwork search.
+  var AUDIT_HIRE_BY_PLATFORM = {
+    wix:          { budgetUsd: '$300–$1,500',  profile: 'Wix Partner (certified freelancer)',                 directoryUrl: 'https://www.wix.com/marketplace/wix-partners',                directoryLabel: 'Wix Marketplace' },
+    squarespace:  { budgetUsd: '$300–$1,800',  profile: 'Squarespace Circle Member',                          directoryUrl: 'https://www.squarespace.com/circle/find-an-expert',          directoryLabel: 'Squarespace Circle directory' },
+    wordpress:    { budgetUsd: '$500–$3,500',  profile: 'WordPress freelancer (Codeable, Upwork, or local)',  directoryUrl: 'https://codeable.io/',                                       directoryLabel: 'Codeable (curated WP freelancers)' },
+    shopify:      { budgetUsd: '$500–$2,500',  profile: 'Shopify Expert',                                     directoryUrl: 'https://experts.shopify.com/',                               directoryLabel: 'Shopify Experts directory' },
+    webflow:      { budgetUsd: '$1,500–$5,000',profile: 'Webflow Expert',                                     directoryUrl: 'https://webflow.com/experts',                                directoryLabel: 'Webflow Experts directory' },
+    bentobox:     { budgetUsd: 'Included in plan', profile: 'BentoBox in-house support',                       directoryUrl: 'https://getbento.com/contact/',                              directoryLabel: 'BentoBox support' },
+    godaddy:      { budgetUsd: '$200–$800',    profile: 'GoDaddy Pro Marketplace freelancer',                 directoryUrl: 'https://www.godaddy.com/pro/marketplace',                    directoryLabel: 'GoDaddy Pro Marketplace' },
+    custom:       { budgetUsd: '$1,000–$8,000',profile: 'Restaurant-specialised web freelancer or studio',    directoryUrl: 'https://www.upwork.com/search/profiles/?q=restaurant%20website%20wordpress', directoryLabel: 'Upwork (restaurant + web)' },
+    generic:      { budgetUsd: 'Varies by platform', profile: 'Web freelancer familiar with your CMS',         directoryUrl: 'https://www.upwork.com/',                                    directoryLabel: 'Upwork' }
+  };
   var REVENUE_AT_RISK_PCT = {
     'audit.viewport':          [0.04, 0.09],  // mobile crash = big
     'audit.tap-targets':       [0.01, 0.04],
@@ -11908,6 +11948,39 @@
             });
             body.appendChild(picker);
           }
+        }
+      }
+
+      // "Don't have a developer?" disclosure — for any check whose
+      // effort is dev or rebuild, surface platform-aware hiring
+      // guidance: budget range, recommended profile, and a public
+      // directory link the owner can search. Bridges the gap between
+      // "the tool found it" and "it gets fixed" for owners who don't
+      // already have someone to hand the brief to.
+      if ((def.effort === 'dev' || def.effort === 'rebuild') && AUDIT_HIRE_BY_PLATFORM) {
+        var detectedHire = (typeof MuntinContext !== 'undefined' && MuntinContext.get) ? MuntinContext.get('platform') : null;
+        var hire = AUDIT_HIRE_BY_PLATFORM[detectedHire || 'generic'] || AUDIT_HIRE_BY_PLATFORM.generic;
+        if (hire) {
+          var hireBox = document.createElement('details');
+          hireBox.className = 'top-fixes-hire';
+          var hireSummary = document.createElement('summary');
+          hireSummary.className = 'top-fixes-hire-summary';
+          hireSummary.textContent = def.effort === 'rebuild'
+            ? "Don't have a developer for the rebuild? →"
+            : "Don't have a developer? Here's who to find. →";
+          hireBox.appendChild(hireSummary);
+          var hireBody = document.createElement('div');
+          hireBody.className = 'top-fixes-hire-body';
+          var pretty = (detectedHire && AUDIT_PLATFORM_LABEL[detectedHire]) || 'your platform';
+          hireBody.innerHTML =
+            '<dl class="top-fixes-hire-grid">' +
+              '<dt>Budget</dt><dd>' + hire.budgetUsd + (def.effort === 'rebuild' && hire.budgetUsd.indexOf('$') === 0 ? ' (rebuild end of the range)' : '') + '</dd>' +
+              '<dt>Who to look for</dt><dd>' + hire.profile + '</dd>' +
+              '<dt>Where</dt><dd><a href="' + hire.directoryUrl + '" target="_blank" rel="noopener">' + hire.directoryLabel + ' &rarr;</a></dd>' +
+            '</dl>' +
+            '<p class="top-fixes-hire-tip">When you reach out, attach the dev brief from the share row above — it lists every check that failed, in plain English, with snippets your developer needs. Mention you\'re on <strong>' + pretty + '</strong> so they don\'t spend the first hour discovering it.</p>';
+          hireBox.appendChild(hireBody);
+          body.appendChild(hireBox);
         }
       }
 
