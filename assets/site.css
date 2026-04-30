@@ -5349,6 +5349,16 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .topic-essay__body a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .topic-essay__body a:hover{border-bottom-color:var(--teal)}
 
+/* Phase G.5 (Growth) — formalized article comparison table.
+   Used in wix-vs-custom, doordash-worth-it, chatgpt-write — three
+   articles where the comparison is the load-bearing claim. */
+.comparison-table{width:100%;border-collapse:collapse;margin:24px 0 32px;font-size:14.5px;line-height:1.55}
+.comparison-table caption{text-align:left;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);padding:0 0 8px;caption-side:top}
+.comparison-table th,.comparison-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.comparison-table thead th{background:var(--cream-2);font-weight:600;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft)}
+.comparison-table tbody th[scope="row"]{background:var(--surface-1);font-weight:500;color:var(--ink)}
+.comparison-table tbody tr:last-child th,.comparison-table tbody tr:last-child td{border-bottom:0}
+
 /* Phase G.4 (Growth) — Last-verified stamp on volatile glossary
    terms (GBP, Find a Table, Web Vitals, third-party platforms). */
 .glossary-verified{font-size:12px;color:var(--ink-soft);font-style:italic;margin:6px 0 16px;letter-spacing:0.02em}
