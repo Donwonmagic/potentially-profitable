@@ -5400,6 +5400,45 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
+/* ============ .edu-result — interpretation card under tool output ============
+   Every calculator emits a number; this block lives directly under
+   the result panel and answers the two questions a small-business
+   owner actually asks: "what does this mean for my business?" and
+   "what do I do next?".
+
+   Structure (all children optional except __lede):
+     .edu-result            — outer card, surface-1 / elev-1
+     .edu-result__lede      — plain-language sentence, founder voice
+     .edu-result__rule      — optional "if X, then Y" rule of thumb
+     .edu-result__next      — "Next step:" CTA row (a.btn.btn-ghost)
+     .edu-result__source    — "Sourced: …" chip with link + last-reviewed
+
+   .edu-result--mini drops padding and hides the source chip — use
+   on the dozen secondary tools where a one-line interpretation is
+   enough.
+
+   Excluded from print + PNG exports (rules at end of file). */
+.edu-result{margin:18px 0 0;padding:18px 22px;background:var(--surface-1);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);box-shadow:var(--elev-1);max-width:760px;font-size:15px;line-height:1.55;color:var(--ink)}
+.edu-result__lede{margin:0;font-family:var(--font-display);font-size:clamp(17px,1.2vw,19px);line-height:1.4;color:var(--ink);letter-spacing:-0.005em}
+.edu-result__lede strong{font-weight:600;color:var(--teal-dark)}
+.edu-result__rule{margin:10px 0 0;color:var(--ink-soft);font-size:14.5px;line-height:1.55}
+.edu-result__next{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.edu-result__next-label{font-weight:700;letter-spacing:0.04em;text-transform:uppercase;font-size:12.5px;color:var(--stone)}
+.edu-result__next a{color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);transition:border-color var(--t-fast) var(--ease)}
+.edu-result__next a:hover,.edu-result__next a:focus-visible{border-bottom-color:var(--teal)}
+.edu-result__source{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--stone);line-height:1.5}
+.edu-result__source-label{font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone)}
+.edu-result__source a{color:var(--ink-soft);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line-dark)}
+.edu-result__source a:hover{text-decoration-color:var(--teal)}
+.edu-result--mini{padding:14px 18px;margin-top:14px;font-size:14.5px}
+.edu-result--mini .edu-result__lede{font-size:16px}
+.edu-result--mini .edu-result__source{display:none}
+@media (max-width:640px){
+  .edu-result{padding:16px 18px}
+  .edu-result__lede{font-size:16.5px}
+}
+@media print{.edu-result{display:none}}
+
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the
