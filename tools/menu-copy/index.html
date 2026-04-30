@@ -468,9 +468,9 @@
         <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Annotated description</h2>
         <div class="mc-annotated" id="mcAnnotated" aria-live="polite"></div>
         <div class="mc-legend" aria-hidden="true">
-          <span><i data-kind="sensory"></i> Sensory adjective</span>
-          <span><i data-kind="provenance"></i> Provenance signal</span>
-          <span><i data-kind="technique"></i> Technique</span>
+          <span><i data-kind="sensory"></i> Taste &amp; feel words <small>(sensory)</small></span>
+          <span><i data-kind="provenance"></i> Where it&rsquo;s from <small>(provenance)</small></span>
+          <span><i data-kind="technique"></i> How it&rsquo;s made <small>(technique)</small></span>
           <span><i data-kind="hedge"></i> Hedge (drag)</span>
         </div>
       </div>
@@ -888,20 +888,20 @@
     var sCats = scored.sensory.categoriesUsed;
     var sCount = scored.sensory.count;
     rows.push(axis(
-      'Sensory',
+      'Taste & feel words',
       sCount + ' word' + (sCount === 1 ? '' : 's') + ' · ' + sCats + '/4 categories',
-      sCats === 0 ? 'No sensory adjectives — this is the highest-leverage move.' :
+      sCats === 0 ? 'No sensory words — this is the highest-leverage move.' :
       sCats < 2  ? 'Reaching one more category compounds the lift.' :
                    'Solid sensory base across multiple dimensions.'
     ));
     rows.push(axis(
-      'Provenance',
+      "Where it's from",
       scored.provenance.count + ' signal' + (scored.provenance.count === 1 ? '' : 's'),
       scored.provenance.count === 0 ? 'No origin or producer named — adding one carries 13–20% lift.' :
                                       'Concrete origin signals are present.'
     ));
     rows.push(axis(
-      'Technique',
+      "How it's made",
       scored.technique.count + ' word' + (scored.technique.count === 1 ? '' : 's'),
       scored.technique.count === 0 ? 'Nothing tells the diner what was DONE to the food.' :
                                      'Technique words communicate competence.'
@@ -916,7 +916,7 @@
                                                 'Too long — attention drops past the range.'
     ));
     rows.push(axis(
-      'Hedges',
+      'Filler words',
       scored.hedges.count + ' flagged',
       scored.hedges.count === 0 ? 'No filler words detected.' :
       scored.hedges.hits.map(function(h){ return h.word; }).join(', ')
