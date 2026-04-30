@@ -57,6 +57,7 @@ const CHECKS = [
   ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
+  ['Hub collection schema (idem)','inject-hub-collection-schema.mjs','--check'],
   ['Sitemap (idem)',      'build-sitemap.mjs',              '--check'],
   ['Tool verified stamp (idem)','inject-tool-verified-stamp.mjs','--check'],
   ['Tool verified stamp', 'check-tool-verified-stamp.mjs', '--check'],
