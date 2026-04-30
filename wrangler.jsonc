@@ -210,7 +210,17 @@
     // visitor surface at /window/ shows pause copy, the admin
     // surface shows "Direct line is paused." Flip back to
     // "false" for an emergency rollback — KV state persists.
-    "WINDOW_ENABLED": "true"
+    "WINDOW_ENABLED": "true",
+    // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
+    // When "true", the cron tick iterates sub:<hash> records and
+    // dispatches welcome/nudge/digest emails per state machine.
+    // When "false" or unset, the dispatcher returns
+    // {skipped:'flag-off'} on every tick. The structural pieces
+    // (templates, dispatcher, state stamping in handleWorkbenchSave)
+    // ship regardless — flipping the flag to "true" turns them on
+    // without a code change. Hard cap of 4 emails per quarter
+    // per subscriber is enforced inside the dispatcher.
+    "LIFECYCLE_EMAILS_ENABLED": "false"
   },
 
   // ─────────────────────────────────────────────────────────────────

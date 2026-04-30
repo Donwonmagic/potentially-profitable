@@ -55,6 +55,8 @@ import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
 // Phase G.11 (Growth) — generalized share-snapshot store.
 import { SHARE_KINDS, saveShareSnapshot, getShareSnapshot, isValidShareKind, isValidShareTokenShape } from './lib/share-snapshots.js';
+// Phase G.11 (Growth) — lifecycle email dispatcher (cron-driven).
+import { dispatchLifecycleEmails } from './lib/lifecycle-emails.js';
 import {
   mintMagicLinkToken,
   mintSessionToken,
@@ -914,6 +916,25 @@ export default {
       }
     }
 
+    // Phase G.11 — lifecycle email dispatcher. Runs after the watch
+    // tick + window batch flush so the same lock window covers both.
+    // Feature-flagged via env.LIFECYCLE_EMAILS_ENABLED — defaults
+    // to off so the pathway can ship + soak before firing emails.
+    let lifecycleAttempted = 0;
+    let lifecycleFired = 0;
+    let lifecycleSkipped = null;
+    try {
+      const result = await dispatchLifecycleEmails(env, { digestItems: [] });
+      if (result && result.skipped) {
+        lifecycleSkipped = result.skipped;
+      } else if (result) {
+        lifecycleAttempted = result.attempted || 0;
+        lifecycleFired = result.fired || 0;
+      }
+    } catch (err) {
+      console.warn('[cron] lifecycle dispatcher failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -927,6 +948,9 @@ export default {
       submissionOrphans,
       windowBatchesFlushed,
       windowBatchesFailed,
+      lifecycleAttempted,
+      lifecycleFired,
+      lifecycleSkipped,
       ms: Date.now() - t0,
     }));
   },
@@ -4721,6 +4745,30 @@ async function handleWorkbenchSave(request, env, ctx) {
     }
     return jsonResponse({ ok: false, error: result.error }, 500);
   }
+
+  // Phase G.11 — stamp the user's subscriber record with last_save_at
+  // so the lifecycle dispatcher can fire a welcome email at +5 min.
+  // Best-effort: a missing subscriber row, KV failure, or absent
+  // user.email is non-fatal — the save itself already succeeded.
+  ctx.waitUntil((async () => {
+    try {
+      const userRaw = await env.AUTH_SESSIONS.get('user:' + auth.sub);
+      if (!userRaw) return;
+      let user; try { user = JSON.parse(userRaw); } catch (_) { return; }
+      if (!user || typeof user.email !== 'string' || !user.email) return;
+      const subKey = 'sub:' + (await sha256Hex(user.email.toLowerCase()));
+      const subRaw = await env.AUTH_SESSIONS.get(subKey);
+      if (!subRaw) return;
+      let sub; try { sub = JSON.parse(subRaw); } catch (_) { return; }
+      if (!sub || sub.status !== 'active') return;
+      sub.last_save_at = Date.now();
+      sub.last_save_kind = validated.item.kind || 'audit';
+      await env.AUTH_SESSIONS.put(subKey, JSON.stringify(sub));
+    } catch (err) {
+      console.warn('[lifecycle] save-stamp failed', err && err.message);
+    }
+  })());
+
   return jsonResponse({ ok: true, id: result.id, createdAt: result.createdAt }, 200);
 }
 
