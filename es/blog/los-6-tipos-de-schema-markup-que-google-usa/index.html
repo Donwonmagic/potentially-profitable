@@ -142,7 +142,7 @@
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
-      <a href="/blog/restaurant-schema-markup-6-types-google-uses/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <a href="/blog/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
@@ -180,7 +180,7 @@
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
     <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
     <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
-    <a href="/blog/restaurant-schema-markup-6-types-google-uses/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a href="/blog/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
@@ -392,8 +392,8 @@
   <p class="smart-next__eyebrow" id="smart-next-h">Qué hacer ahora</p>
   <ol class="smart-next__list">
         <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Lee:</span> <a href="/es/glossary/schema-markup/">the related glossary term →</a></li>
-        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Prueba:</span> <a href="/es/tools/audits/restaurant/?from=blog/restaurant-schema-markup-6-types-google-uses&intent=watch">the tool that pairs with this article →</a></li>
-        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">O escríbele a Don:</span> <a href="/es/window/?topic=restaurant-schema-markup-6-types-google-uses">The Window →</a></li>
+        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Prueba:</span> <a href="/es/tools/audits/restaurant/?from=blog/los-6-tipos-de-schema-markup-que-google-usa&intent=watch">the tool that pairs with this article →</a></li>
+        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">O escríbele a Don:</span> <a href="/es/window/?topic=los-6-tipos-de-schema-markup-que-google-usa">The Window →</a></li>
   </ol>
 </aside>
 <!-- smart-next:end -->
@@ -411,14 +411,21 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="los-6-tipos-de-schema-markup-que-google-usa" data-locale="es" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Cuéntanos</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo intentaste en tu cocina?</h2>
-              <p class="field-notes-submit__subhead">100&ndash;400 palabras, con tu nombre, Don las lee todas.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo has probado en tu cocina?</h2>
+              <p class="field-notes-submit__subhead">100–400 palabras, con tu nombre, Don lee cada una.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
-                <a href="/es/sign-in/?return=%2Fes%2Fblog%2Frestaurant-schema-markup-6-types-google-uses%2F%23field-note-form">Inicia sesión para compartir &rarr;</a>
+                <a href="/es/sign-in/?return=%2Fes%2Fblog%2Flos-6-tipos-de-schema-markup-que-google-usa%2F%23field-note-form">Inicia sesión para compartir tu experiencia →</a>
               </p>
               <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
-                <label class="field-notes-form__label"><span class="field-notes-form__label-text">Tu nombre</span><input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="Cómo quieres ser acreditado" required></label>
-                <label class="field-notes-form__label"><span class="field-notes-form__label-text">Tu nota</span><textarea name="body" class="field-notes-form__body" rows="6" placeholder="Lo que intentaste, lo que pasó, lo que aprendiste." required></textarea><span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span></label>
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Tu nombre</span>
+                  <input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="Cómo quieres aparecer" required>
+                </label>
+                <label class="field-notes-form__label">
+                  <span class="field-notes-form__label-text">Tu apunte</span>
+                  <textarea name="body" class="field-notes-form__body" rows="6" placeholder="Qué probaste, qué pasó, qué aprendiste. Texto simple — sin enlaces." required></textarea>
+                  <span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span>
+                </label>
                 <input type="hidden" name="articleSlug" value="los-6-tipos-de-schema-markup-que-google-usa">
                 <input type="hidden" name="locale" value="es">
                 <button type="submit" class="field-notes-form__submit btn btn-primary">Enviar a Don</button>
