@@ -332,6 +332,7 @@ const API_ROUTES = {
   // Phase G.11 (Growth) — generalized share-snapshot endpoints.
   '/api/share/tool-result':          handleShareToolResult,
   '/api/share/storefront-health':    handleShareStorefrontHealth,
+  '/api/share/get':                  handleShareGet,
   // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
   '/api/admin/kpis':                 handleAdminKpis,
   // Phase G.10 (Growth) — Workshop nav count badge endpoint.
@@ -6356,6 +6357,29 @@ async function handleAdminKpis(request, env, ctx) {
     console.warn('[admin/kpis] fetch failed', err && err.message);
     return jsonResponse({ ok: false, error: 'kpi-data-error' }, 500);
   }
+}
+
+// Phase G.11 — share-snapshot read endpoint. Tool client-side JS
+// calls /api/share/get?kind=<kind>&t=<token> on load when ?s=
+// is present in the URL, hydrates the form/scorecard, fires
+// "Share" recipient-render Plausible event.
+async function handleShareGet(request, env, ctx) {
+  const url = new URL(request.url);
+  const kind = url.searchParams.get('kind') || '';
+  const token = url.searchParams.get('t') || '';
+  if (!isValidShareKind(kind) || !isValidShareTokenShape(token)) {
+    return jsonResponse({ ok: false, error: 'invalid-args' }, 400);
+  }
+  const snap = await getShareSnapshot(env, kind, token);
+  if (!snap || !snap.ok) return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  // Snapshots are immutable, so cache aggressively at the edge.
+  return new Response(JSON.stringify({ ok: true, kind, snapshot: snap.snapshot }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+    },
+  });
 }
 
 async function handleShareToolResult(request, env, ctx) {
