@@ -533,6 +533,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <button type="button" class="pb-action-btn" id="pbDownloadZip">Bundle <span class="pb-action-fmt">.zip</span></button>
       <button type="button" class="pb-action-btn" id="pbCopyCsv">Copy shot list <span class="pb-action-fmt">.csv</span></button>
       <button type="button" class="pb-action-btn" id="pbDownloadJson">Download <span class="pb-action-fmt">.json</span></button>
+      <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pbActionStatus"></span>
     </div>
 
     <div class="pb-handoff" id="pbHandoff" style="display:none;">
@@ -1162,17 +1163,24 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   function withLoading(btn, work) {
     if (!btn) return work();
     var orig = btn.innerHTML;
+    var status = document.getElementById('pbActionStatus');
     btn.disabled = true;
     btn.dataset.state = 'loading';
     btn.textContent = 'Generating…';
+    if (status) status.textContent = 'Generating your file…';
     function restore() {
       btn.disabled = false;
       btn.dataset.state = '';
       btn.innerHTML = orig;
+      if (status) status.textContent = '';
     }
     var p;
     try { p = Promise.resolve(work()); } catch (e) { restore(); return Promise.reject(e); }
-    return p.then(function(v){ restore(); return v; }, function(err){ restore(); throw err; });
+    return p.then(function(v){ restore(); return v; }, function(err){
+      restore();
+      if (status) status.textContent = 'Export failed. Try a different format above.';
+      throw err;
+    });
   }
 
   var downloadBriefBtn = document.getElementById('pbDownloadBrief');
@@ -1386,8 +1394,13 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         // button or a silent failure.
         downloadZipBtn.title = 'Couldn\'t bundle the ZIP — try the individual downloads above.';
         downloadZipBtn.dataset.state = 'error';
+        var status = document.getElementById('pbActionStatus');
+        if (status) status.textContent = 'ZIP bundle failed. Try the individual downloads above.';
         if (window.plausible) window.plausible('Photo Brief Export', { props: { format: 'zip-error' } });
-        setTimeout(function(){ downloadZipBtn.dataset.state = ''; }, 4000);
+        setTimeout(function(){
+          downloadZipBtn.dataset.state = '';
+          if (status) status.textContent = '';
+        }, 4000);
         throw err;
       });
     });
