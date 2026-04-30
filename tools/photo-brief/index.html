@@ -60,6 +60,10 @@
 .pb-meta{display:grid;grid-template-columns:1fr;gap:14px;align-items:end}
 @media(min-width:480px){.pb-meta{grid-template-columns:1fr 1fr}}
 @media(min-width:640px){.pb-meta{grid-template-columns:1fr 1fr 1fr}}
+.pb-mode{display:flex;gap:0;margin:0 0 14px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.pb-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;font-weight:500;cursor:pointer;border-radius:999px}
+.pb-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.pb-self-hint{grid-column:1/-1;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
 .pb-meta label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .pb-meta input,.pb-meta select{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pb-meta input:focus,.pb-meta select:focus{outline:2px solid var(--teal);outline-offset:1px}
@@ -439,7 +443,16 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px;line-height:1.55;">List the dishes you want shot and tick the destinations. The math figures out the minimum number of source frames that covers every destination via crop math &mdash; you walk in with the right brief, the photographer shoots half a day instead of three.</p>
 
   <div class="pb-form">
-    <div class="pb-meta">
+    <!-- Mode toggle. Default is "Hiring a photographer" — keeps the
+         existing photographer + day-rate fields visible. "Shooting it
+         myself" hides those fields, swaps the source-frame default
+         to 4:3 (most phones), and swaps the ROI-math card to a
+         time-budget framing on the brief. -->
+    <div class="pb-mode" role="radiogroup" aria-label="Who's shooting this">
+      <button type="button" data-mode="hire" aria-pressed="true" role="radio">Hiring a photographer</button>
+      <button type="button" data-mode="self" aria-pressed="false" role="radio">Shooting it myself (iPhone)</button>
+    </div>
+    <div class="pb-meta" data-mode-view="hire">
       <label>Restaurant name <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(prints on the brief)</small>
         <input type="text" id="pbName" placeholder="e.g. Osteria Giardino" autocomplete="organization" />
       </label>
@@ -447,8 +460,11 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
         <input type="text" id="pbPhotographer" placeholder="e.g. Alex Reyes" autocomplete="off" />
       </label>
       <label>Photographer day rate ($) <small style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--stone);">(used for the ROI math)</small>
-        <input type="number" id="pbDayRate" min="0" step="50" value="1800" />
+        <input type="number" id="pbDayRate" min="0" step="50" placeholder="e.g. 1800" />
       </label>
+    </div>
+    <div class="pb-meta" data-mode-view="self" hidden>
+      <p class="pb-self-hint">Shooting it on your phone? Plan ~8 minutes per dish, 90 minutes total before service. Bring: phone tripod, white foam-core bounce, neutral linen, lens wipe. Shoot near a north-facing window between 10am and 2pm.</p>
     </div>
 
     <fieldset class="pb-srcframe" id="pbSrcFrame" aria-describedby="pbSrcFrameNote">
@@ -709,6 +725,33 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   var photogEl     = document.getElementById('pbPhotographer');
   var dayRateEl    = document.getElementById('pbDayRate');
   var srcFrameEl   = document.getElementById('pbSrcFrame');
+
+  // Mode toggle: hire vs self-shoot. Self-shoot hides the
+  // photographer + day-rate fields and sets 4:3 (phone) as the
+  // default source-frame ratio. Re-running render after the swap
+  // ensures the live coverage strip + crop math redraws.
+  var modeBtns = document.querySelectorAll('.pb-mode button[data-mode]');
+  var modeViews = document.querySelectorAll('[data-mode-view]');
+  function setMode(mode) {
+    Array.prototype.forEach.call(modeBtns, function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    Array.prototype.forEach.call(modeViews, function (v) {
+      v.hidden = (v.getAttribute('data-mode-view') !== mode);
+    });
+    if (mode === 'self') {
+      // Default to 4:3 (most phone cameras). Don't override an
+      // owner who already picked something else.
+      var any = srcFrameEl && srcFrameEl.querySelector('input[name="pbSrcRatio"]:checked');
+      if (any && any.value !== '4:3') {
+        var phone = srcFrameEl.querySelector('input[name="pbSrcRatio"][value="4:3"]');
+        if (phone) phone.checked = true;
+      }
+    }
+  }
+  Array.prototype.forEach.call(modeBtns, function (b) {
+    b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); });
+  });
   var rowsEl       = document.getElementById('pbRows');
   var addRowBtn    = document.getElementById('pbAddRow');
   var sampleBtn    = document.getElementById('pbSample');
