@@ -54,6 +54,7 @@ const CHECKS = [
   ['Site counts (idem)',  'inject-site-counts.mjs',        '--check'],
   ['Locale parity',       'check-locale-parity.mjs',       '--check'],
   ['Article TL;DR',       'check-article-tldr.mjs',        '--check'],
+  ['Article TL;DR retrofit (idem)','inject-article-tldr.mjs','--check'],
   ['Tool verified stamp (idem)','inject-tool-verified-stamp.mjs','--check'],
   ['Tool verified stamp', 'check-tool-verified-stamp.mjs', '--check'],
   ['llms.txt (idem)',     'build-llms-txt.mjs',            '--check'],

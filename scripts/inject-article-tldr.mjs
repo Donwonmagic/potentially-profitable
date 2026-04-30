@@ -80,9 +80,7 @@ function buildTakeaways(bullets, locale) {
 function injectInto(src, tldrBlock, takeawaysBlock) {
   let next = src;
   // 1. Replace or insert the TL;DR block right after the
-  //    <article id="post-body"> opener. If the sentinel pair is
-  //    already present anywhere in the body, replace in place;
-  //    otherwise inject after the opener.
+  //    <article id="post-body"> opener.
   if (TLDR_RE.test(next)) {
     next = next.replace(TLDR_RE, tldrBlock);
   } else {
@@ -96,7 +94,6 @@ function injectInto(src, tldrBlock, takeawaysBlock) {
   if (TAKEAWAYS_RE.test(next)) {
     next = next.replace(TAKEAWAYS_RE, takeawaysBlock);
   } else {
-    // Find the LAST </article> after the post-body opener.
     const openIdx = next.search(POST_BODY_OPEN);
     if (openIdx === -1) return null;
     const tail = next.slice(openIdx);
@@ -105,8 +102,16 @@ function injectInto(src, tldrBlock, takeawaysBlock) {
     const closeIdx = openIdx + closeMatch.index;
     next = next.slice(0, closeIdx) + takeawaysBlock + '\n    ' + next.slice(closeIdx);
   }
-  // 3. Remove the data-content-pending escape hatch on <body>.
-  next = next.replace(PENDING_ATTR_RE, '');
+  // 3. Only remove the data-content-pending escape hatch if the
+  //    article ALSO meets the cross-link density required by
+  //    check-content-guardrails (≥3 glossary, ≥2 tool). Articles
+  //    that don't keep the hatch — the TL;DR still helps AI search
+  //    even before the link density gets backfilled.
+  const glossaryLinks = (next.match(/href="\/(?:es\/)?glossary\/[a-z0-9-]+\//g) || []).length;
+  const toolLinks = (next.match(/href="\/(?:es\/)?tools\/[a-z0-9/-]+\//g) || []).length;
+  if (glossaryLinks >= 3 && toolLinks >= 2) {
+    next = next.replace(PENDING_ATTR_RE, '');
+  }
   return next;
 }
 
