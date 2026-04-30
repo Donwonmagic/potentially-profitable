@@ -226,6 +226,23 @@
   .gbp-delta-up{color:var(--status-good);font-weight:600}
   .gbp-delta-down{color:var(--rust);font-weight:600}
   .gbp-delta-flat{color:var(--stone)}
+  /* Mini-gráfica de revisiones recientes. */
+  .gbp-spark{margin:0 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--white);text-align:left}
+  .gbp-spark-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  .gbp-spark-row{display:flex;align-items:center;gap:14px}
+  .gbp-spark-svg{width:240px;height:60px;overflow:visible;flex:0 0 auto;color:var(--teal)}
+  .gbp-spark-svg .spark-line{stroke:var(--teal)}
+  .gbp-spark-svg .spark-pt{fill:var(--cream,#FAF6EE);stroke:var(--teal);stroke-width:2}
+  .gbp-spark-svg .spark-pt-current{fill:var(--teal);stroke:var(--teal)}
+  .gbp-spark-svg .spark-label{font:600 11px/1 var(--font-body,system-ui);fill:var(--ink);paint-order:stroke;stroke:var(--cream,#FAF6EE);stroke-width:3px;stroke-linejoin:round}
+  .gbp-spark-prose{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+  .gbp-spark-prose strong{color:var(--ink)}
+  .gbp-spark-axis{display:flex;justify-content:space-between;max-width:240px;font-size:10.5px;color:var(--stone);margin-top:4px;font-variant-numeric:tabular-nums}
+  @media(max-width:540px){
+    .gbp-spark-row{flex-direction:column;align-items:stretch;gap:10px}
+    .gbp-spark-svg{width:100%;max-width:320px;align-self:center}
+    .gbp-spark-axis{max-width:320px;align-self:center;width:100%}
+  }
   /* Fila de compartir — dentro del cuadro CTA, sobre el botón de
      handoff al diagnóstico. Guarda el estado actual en KV vía
      /api/audit-snapshot (Sprint 3C). */
@@ -988,6 +1005,90 @@
       letter:     scored.letter
     };
     try{window.localStorage.setItem(gbpSnapshotKey(placeId),JSON.stringify(snap))}catch(e){}
+    // Replicar el snapshot en una lista de historial por placeId.
+    try{
+      var hKey=gbpHistoryKey(placeId);
+      var prev=[];
+      try{prev=JSON.parse(window.localStorage.getItem(hKey)||'[]')||[]}catch(_){}
+      if(!Array.isArray(prev))prev=[];
+      var GAP=6*60*60*1000, MAX=20;
+      if(prev.length && (snap.ts - prev[prev.length-1].ts) < GAP){
+        prev[prev.length-1] = snap;
+      } else {
+        prev.push(snap);
+        while(prev.length>MAX) prev.shift();
+      }
+      window.localStorage.setItem(hKey, JSON.stringify(prev));
+    }catch(_){}
+  }
+  function gbpHistoryKey(placeId){return'gbpGrader:history:'+placeId}
+  function gbpHistoryRead(placeId){
+    if(!placeId)return[];
+    try{
+      var raw=window.localStorage.getItem(gbpHistoryKey(placeId));
+      if(!raw)return[];
+      var p=JSON.parse(raw);
+      return Array.isArray(p)?p:[];
+    }catch(_){return[]}
+  }
+  function renderGbpSparkline(placeId){
+    var entries=gbpHistoryRead(placeId)
+      .filter(function(e){return e&&typeof e.scaled==='number'})
+      .slice(-6);
+    if(entries.length<3)return'';
+    var W=240,H=60,padX=12,padY=8;
+    var minS=100,maxS=0;
+    entries.forEach(function(e){if(e.scaled<minS)minS=e.scaled;if(e.scaled>maxS)maxS=e.scaled});
+    var range=Math.max(20,maxS-minS);
+    var midY=padY+(H-padY*2)*0.5;
+    var pts=entries.map(function(e,i){
+      var x=padX+(W-padX*2)*(i/Math.max(1,entries.length-1));
+      var rel=(e.scaled-minS)/range;
+      var y=(H-padY)-rel*(H-padY*2);
+      if(maxS-minS<5)y=midY;
+      return{x:x,y:y,score:e.scaled,ts:e.ts};
+    });
+    var poly=pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1)}).join(' ');
+    var dots='';
+    pts.forEach(function(p,i){
+      var cls=i===pts.length-1?'spark-pt spark-pt-current':'spark-pt';
+      var r=i===pts.length-1?'4':'3';
+      dots+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r+'" class="'+cls+'"/>';
+    });
+    var last=pts[pts.length-1];
+    var lblX=Math.max(padX,Math.min(W-padX,last.x+8)).toFixed(1);
+    var lblY=Math.max(12,last.y-8).toFixed(1);
+    var lblAnchor=last.x>W-28?'end':'start';
+    dots+='<text x="'+lblX+'" y="'+lblY+'" text-anchor="'+lblAnchor+'" class="spark-label">'+last.score+'</text>';
+    var first=entries[0],current=entries[entries.length-1];
+    var prior=entries[entries.length-2];
+    var dSince=current.scaled-first.scaled;
+    var dPrior=current.scaled-prior.scaled;
+    var aSince=dSince>0?'↑':dSince<0?'↓':'→';
+    var aPrior=dPrior>0?'↑':dPrior<0?'↓':'→';
+    var prose='<strong>'+aSince+' '+(dSince>0?'+':'')+dSince+'</strong> desde tu primera revisión'
+      +(entries.length>=4?' &middot; '+aPrior+' '+(dPrior>0?'+':'')+dPrior+' desde la última':'');
+    var fmt=function(ts){
+      try{
+        var d=new Date(ts);
+        var diff=Date.now()-ts;
+        var oneDay=86400000;
+        if(diff<oneDay&&d.getDate()===new Date().getDate())return'hoy';
+        if(diff<2*oneDay)return'ayer';
+        return d.toLocaleDateString('es',{month:'short',day:'numeric'});
+      }catch(_){return''}
+    };
+    return'<figure class="gbp-spark">'
+      +'<p class="gbp-spark-eyebrow">Tus últimas revisiones del Perfil</p>'
+      +'<div class="gbp-spark-row">'
+      +'<svg class="gbp-spark-svg" viewBox="0 0 240 60" aria-hidden="true">'
+      +'<polyline class="spark-line" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="'+poly+'"/>'
+      +'<g>'+dots+'</g>'
+      +'</svg>'
+      +'<div class="gbp-spark-prose">'+prose+'</div>'
+      +'</div>'
+      +'<div class="gbp-spark-axis"><span>'+fmt(entries[0].ts)+'</span><span>'+fmt(current.ts)+'</span></div>'
+      +'</figure>';
   }
   function gbpRelativeAge(ms){
     var sec=Math.floor((Date.now()-ms)/1000);
@@ -1198,6 +1299,7 @@
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'es');
     var deltaHtml=renderDelta(chosen,scored);
     gbpSnapshotSave(chosen.placeId,chosen,scored);
+    var sparkHtml=renderGbpSparkline(chosen.placeId);
     var gaugeHtml=renderGauge(scored);
     var fixFirstHtml=renderFixFirst(scored);
 
@@ -1211,7 +1313,7 @@
     var methodHtml=renderMethodology(peerMedians);
     var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
     var roadmapHtml=renderRoadmap(scored);
-    checksEl.innerHTML=preflightHtml+deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
+    checksEl.innerHTML=preflightHtml+deltaHtml+sparkHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill el CTA del Diagnóstico con el
     // sitio de esta ficha — esa herramienta ya fusiona /api/gbp-details
