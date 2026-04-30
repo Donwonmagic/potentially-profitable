@@ -81,7 +81,7 @@
 <style>
   /* Same tool-grid + tool-card system as /tools/audits/ — copied inline verbatim. */
   .tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px}
-  @media (max-width:960px){.tool-grid{grid-template-columns:1fr}}
+  @media (max-width:1023px){.tool-grid{grid-template-columns:1fr}}
   .tool-card{display:flex;flex-direction:column;padding:36px 32px;background:var(--white);border:1px solid var(--line);border-radius:18px;text-decoration:none;color:inherit;transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast);position:relative;overflow:hidden}
   .tool-card.live:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,22,26,0.08);border-color:var(--teal)}
   .tool-card.soon{cursor:default;background:var(--cream-2);color:var(--stone)}

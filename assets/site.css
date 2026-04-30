@@ -1728,7 +1728,7 @@ br.br-lg{display:none}
 .listen-dock-play svg{width:16px;height:16px}
 
 .listen-dock-meta{grid-area:meta;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.25}
-.listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listen-dock-title{font-weight:600;font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .listen-dock-chapter{font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
 .listen-dock-chapter::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 0 3px rgba(31,78,91,0.25)}
 /* Dock dot sits on a near-black glass, so the card's teal-tint aura
