@@ -270,10 +270,34 @@
   <section class="block">
     <div class="container">
     <article class="article-body" id="post-body">
+      <!-- article-tldr:start -->
+            <aside class="tldr" data-llm="tldr" aria-label="Resumen">
+              <p class="tldr__eyebrow">En resumen</p>
+              <ul class="tldr__list">
+              <li>Google lee primero seis tipos de schema.org en páginas de restaurante — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, FAQ.</li>
+        <li>La mayoría de los sitios de restaurantes independientes tienen dos de los seis. Los otros cuatro están ausentes o mal formados.</li>
+        <li>Cada tipo faltante es una superficie distinta de Google para la que no eres elegible: tarjeta del local-pack, citas en AI Overviews, botón Reservar, rich snippet, badge de horarios feriados.</li>
+        <li>El schema se pudre silenciosamente cuando los updates de CMS o plantillas tocan los templates. Un schema check mensual lo detecta antes que las reseñas.</li>
+              </ul>
+            </aside>
+            <!-- article-tldr:end -->
+
 
       <p>Si abriste un restaurante después de 2018 y nunca tocaste el schema markup de tu sitio, igual tienes schema markup. Tu CMS o template builder casi seguro estampó alguno — la pregunta es si es el correcto, si está completo, y si Google realmente puede usarlo.</p>
 
       <p>El patrón se repite: la mayoría de los sitios tienen dos de los seis tipos de schema que Google lee primero; los otros cuatro están ausentes o mal formados. Cada pieza faltante es una superficie distinta en los resultados de Google para la que no eres elegible. Lo que compone es que los tipos faltantes desbloquean superficies distintas — la tarjeta del local-pack, las citas en AI Overviews, el botón Reservar, el rich snippet, el badge de horarios feriados — así que la diferencia entre &ldquo;algo de schema&rdquo; y &ldquo;los seis&rdquo; no es lineal.</p>
+
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Los 6 tipos que Google lee primero">
+          <div class="recovery-row recovery-1"><div class="recovery-num">1</div><div><h4 class="i18n">Restaurant</h4><p class="recovery-sub i18n">Queries de cocina, elegibilidad para local-pack, la tarjeta básica.</p></div><div class="recovery-val">fundacional</div></div>
+          <div class="recovery-row recovery-2"><div class="recovery-num">2</div><div><h4 class="i18n">Menu</h4><p class="recovery-sub i18n">Ranking a nivel de plato + citas literales en AI Overviews.</p></div><div class="recovery-val">long-tail</div></div>
+          <div class="recovery-row recovery-3"><div class="recovery-num">3</div><div><h4 class="i18n">OpeningHoursSpecification</h4><p class="recovery-sub i18n">Badge de &ldquo;Abierto ahora&rdquo; + precisión en horarios feriados.</p></div><div class="recovery-val">walk-ins</div></div>
+          <div class="recovery-row recovery-4"><div class="recovery-num">4</div><div><h4 class="i18n">AggregateRating</h4><p class="recovery-sub i18n">El patrón de estrellas en tu snippet. CTR +8–15%.</p></div><div class="recovery-val">CTR</div></div>
+          <div class="recovery-row recovery-5"><div class="recovery-num">5</div><div><h4 class="i18n">Reservation</h4><p class="recovery-sub i18n">El botón &ldquo;Reservar mesa&rdquo; en tu panel.</p></div><div class="recovery-val">Find a Table</div></div>
+          <div class="recovery-row recovery-6"><div class="recovery-num">6</div><div><h4 class="i18n">FAQ</h4><p class="recovery-sub i18n">La superficie de cita más alta para IA en 2026.</p></div><div class="recovery-val">IA</div></div>
+        </div>
+        <figcaption class="i18n">Los 6 tipos de schema que Google lee primero · qué desbloquea cada uno</figcaption>
+      </figure>
 
       <h2>1. Restaurant — el tipo fundacional</h2>
 
@@ -318,6 +342,18 @@
 
       <p>FAQ schema no es específico de restaurantes, pero es la mayor superficie de cita por IA para páginas de restaurante en 2026. ChatGPT, Perplexity, y las AI Overviews de Google leen los bloques FAQ primero cuando responden preguntas operativas. Seis entradas FAQ bien escritas suben típicamente el tráfico de búsqueda con IA un 20-40% en 60 días.</p>
 
+      <figure class="article-figure">
+        <div class="funnel" role="img" aria-label="Cobertura típica de schema en sitios SEO-sweep">
+          <div class="funnel-row"><div class="funnel-label"><strong>Restaurant</strong> &middot; <span class="i18n">presente, a menudo incompleto</span></div><div class="funnel-bar"><div class="kept" style="width:80%;">presente</div><div class="lost" style="width:20%;">huecos</div></div></div>
+          <div class="funnel-row"><div class="funnel-label"><strong>Menu</strong> &middot; <span class="i18n">blob de string o ausente</span></div><div class="funnel-bar"><div class="kept" style="width:25%;">parsea</div><div class="lost" style="width:75%;">roto</div></div></div>
+          <div class="funnel-row"><div class="funnel-label"><strong>OpeningHours</strong> &middot; <span class="i18n">presente pero obsoleto</span></div><div class="funnel-bar"><div class="kept" style="width:60%;">válido</div><div class="lost" style="width:40%;">obsoleto</div></div></div>
+          <div class="funnel-row"><div class="funnel-label"><strong>AggregateRating</strong> &middot; <span class="i18n">a menudo ausente</span></div><div class="funnel-bar"><div class="kept" style="width:30%;">presente</div><div class="lost" style="width:70%;">faltante</div></div></div>
+          <div class="funnel-row"><div class="funnel-label"><strong>Reservation</strong> &middot; <span class="i18n">solo lo publican OpenTable etc.</span></div><div class="funnel-bar"><div class="kept" style="width:40%;">presente</div><div class="lost" style="width:60%;">faltante</div></div></div>
+          <div class="funnel-row"><div class="funnel-label"><strong>FAQ</strong> &middot; <span class="i18n">el más raro de los seis</span></div><div class="funnel-bar"><div class="kept" style="width:15%;">presente</div><div class="lost" style="width:85%;">faltante</div></div></div>
+        </div>
+        <figcaption class="i18n">Cobertura típica de schema en un sitio SEO-sweep · 6 tipos que Google busca</figcaption>
+      </figure>
+
       <h2>Cómo verificar lo que tienes hoy</h2>
 
       <p>Corre tu home a través de <a href="/es/tools/schema-check/">Schema Checker</a>. Devuelve un veredicto presente/válido/faltante para cada uno de los seis tipos y apunta a las piezas rotas. Guárdalo en tu <a href="/es/tools/audits/restaurant/">Restaurant Audit</a> y vuelve a correrlo mensualmente — el schema se pudre cuando los updates de CMS tocan templates.</p>
@@ -329,6 +365,28 @@
       </blockquote>
 
     
+    <!-- article-takeaways:start -->
+            <aside class="key-takeaways" data-llm="takeaways" aria-label="Puntos clave">
+              <p class="key-takeaways__eyebrow">Puntos clave</p>
+              <ul class="key-takeaways__list">
+              <li>Restaurant schema es fundacional — sin él, podrías no aparecer en queries de cocina.</li>
+        <li>Menu schema con MenuItem estructurado + descripciones es lo que las AI Overviews citan literalmente.</li>
+        <li>OpeningHoursSpecification + specialOpeningHoursSpecification juntos previenen la reseña de &ldquo;cerrado aunque Google decía abierto.&rdquo;</li>
+        <li>AggregateRating con reseñas de tu propio sitio sube CTR 8–15%; agregar reseñas de Google viola la política.</li>
+        <li>FAQ schema es la superficie más alta de cita por IA en una página de restaurante en 2026.</li>
+              </ul>
+            </aside>
+            <!-- article-takeaways:end -->
+
+    <!-- field-notes:start --><!-- field-notes:end -->
+      <!-- post-end-cta:start -->
+    <aside class="post-end-cta" aria-label="Siguiente paso en el Taller">
+      <p class="post-end-cta-headline">Ve qué tipos de los seis le faltan a tu sitio.</p>
+      <p class="post-end-cta-body">Schema Checker corre tu home a través de los seis tipos y devuelve un veredicto de presente / válido / faltante para cada uno. Guárdalo en tu Taller y vuelve a correrlo mensualmente — el schema se pudre cuando los updates de CMS tocan templates.</p>
+      <a class="btn btn-primary" href="/es/tools/schema-check/?from=blog%2Frestaurant-schema-markup-6-types-google-uses&intent=watch">Correr Schema Checker<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>
+    </aside>
+    <!-- post-end-cta:end -->
+
       <!-- smart-next:start -->
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">Qué hacer ahora</p>
@@ -339,6 +397,51 @@
   </ol>
 </aside>
 <!-- smart-next:end -->
+    <!-- LIBRARY:see-also:start -->
+<aside class="see-also" aria-labelledby="see-also-h">
+  <p class="see-also-label" id="see-also-h">Ver también</p>
+  <ul class="see-also-list">
+      <li><a class="see-also-card" href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/"><span class="see-also-kind">Artículo</span><h3>Recuperar reservas de Find a Table de Google</h3><p>Cómo el Reservation schema de este artículo se conecta a la superficie de reservas en el panel de Google.</p></a></li>
+      <li><a class="see-also-card" href="/es/tools/schema-check/"><span class="see-also-kind">Herramienta</span><h3>Schema Checker</h3><p>Valida los seis tipos en cualquier home de restaurante y apunta a las piezas rotas.</p></a></li>
+      <li><a class="see-also-card" href="/es/blog/schema-markup-para-restaurante-ejemplo/"><span class="see-also-kind">Artículo</span><h3>Schema markup para restaurante: ejemplo completo</h3><p>Los seis tipos en un solo bloque JSON-LD listo para copiar y pegar.</p></a></li>
+    </ul>
+</aside>
+<!-- LIBRARY:see-also:end -->
+      <!-- field-notes-submit:start -->
+            <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
+                    data-article-slug="restaurant-schema-markup-6-types-google-uses" data-locale="es" data-fnenabled="true">
+              <p class="field-notes-submit__eyebrow">Cuéntanos</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo intentaste en tu cocina?</h2>
+              <p class="field-notes-submit__subhead">100&ndash;400 palabras, con tu nombre, Don las lee todas.</p>
+              <p class="field-notes-submit__signin js-field-notes-signin" hidden>
+                <a href="/es/sign-in/?return=%2Fes%2Fblog%2Frestaurant-schema-markup-6-types-google-uses%2F%23field-note-form">Inicia sesión para compartir &rarr;</a>
+              </p>
+              <form class="field-notes-form js-field-notes-form" hidden method="post" action="/api/submission/create">
+                <label class="field-notes-form__label"><span class="field-notes-form__label-text">Tu nombre</span><input type="text" name="authorDisplayName" class="field-notes-form__name" maxlength="40" placeholder="Cómo quieres ser acreditado" required></label>
+                <label class="field-notes-form__label"><span class="field-notes-form__label-text">Tu nota</span><textarea name="body" class="field-notes-form__body" rows="6" placeholder="Lo que intentaste, lo que pasó, lo que aprendiste." required></textarea><span class="field-notes-form__counter js-field-notes-counter" aria-live="polite"></span></label>
+                <input type="hidden" name="articleSlug" value="restaurant-schema-markup-6-types-google-uses">
+                <input type="hidden" name="locale" value="es">
+                <button type="submit" class="field-notes-form__submit btn btn-primary">Enviar a Don</button>
+                <p class="field-notes-form__msg js-field-notes-msg" role="status" hidden></p>
+              </form>
+              <script src="/assets/js/article-fieldnotes.js?v=20260429-batch3" defer></script>
+            </section>
+            <!-- field-notes-submit:end -->
+
+    <aside class="further-reading">
+      <p class="label i18n">Sigue leyendo</p>
+      <a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/"><h4 class="i18n">Find a Table — cómo se muestra el botón Reservar</h4><p>La conexión schema-a-superficie en el lado de reservas.</p></a>
+      <a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/"><h4 class="i18n">Configurar Google Business Profile para tu restaurante</h4><p>El otro lado de los datos estructurados — la superficie que el schema alimenta.</p></a>
+      <a href="/es/glossary/schema-markup/"><h4 class="i18n">Schema markup — entrada del glosario</h4><p>La definición en español plano de qué es JSON-LD y por qué Google lo lee.</p></a>
+    </aside>
+
+    <section class="sources" aria-labelledby="sources-heading">
+      <p class="sources-label" id="sources-heading">Fuentes y lectura adicional</p>
+      <details class="cite"><summary>Google Search Central — documentación de datos estructurados</summary><div class="cite-body"><p><span class="cite-source">Google Search Central</span> &mdash; La documentación pública de Google lista Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation y FAQPage como tipos soportados para páginas de restaurante.</p></div></details>
+      <details class="cite"><summary>schema.org — definiciones de tipos Restaurant + Menu</summary><div class="cite-body"><p><span class="cite-source">schema.org</span> &mdash; Los ejemplos JSON-LD en este artículo son subconjuntos viables mínimos de las definiciones canónicas de schema.org.</p></div></details>
+      <details class="cite"><summary>Baymard Institute — investigación de CTR de rich snippets</summary><div class="cite-body"><p><span class="cite-source">Baymard Institute</span> &mdash; La investigación continua de Baymard sobre comportamiento de SERP encuentra consistentemente aumentos de CTR del 8-15% cuando aparecen estrellas en un snippet.</p></div></details>
+      <details class="cite"><summary>Google AI Overviews — comportamiento de citas</summary><div class="cite-body"><p><span class="cite-source">Google AI Overviews</span> &mdash; La guía pública de Google indica que los datos estructurados, incluyendo FAQPage, están entre las señales usadas para identificar respuestas citables.</p></div></details>
+    </section>
     </article>
     </div>
   </section>
