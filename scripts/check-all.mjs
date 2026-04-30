@@ -87,6 +87,7 @@ const CHECKS = [
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
   ['Storefront rail (idem)','inject-tool-storefront-rail.mjs','--check'],
   ['Storefront-health graph (idem)','inject-storefront-health-graph.mjs','--check'],
+  ['Security page schema (idem)','inject-security-page-schema.mjs','--check'],
   ['KPI doc freshness',    'check-kpi-doc.mjs',              '--check'],
   ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
 ];
