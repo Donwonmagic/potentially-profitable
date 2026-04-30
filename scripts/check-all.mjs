@@ -72,6 +72,7 @@ const CHECKS = [
   ['Image dimensions (warn)','check-image-dimensions.mjs',   '--check'],
   ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
   ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
+  ['Image formats (warn)','check-image-formats.mjs',         '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
