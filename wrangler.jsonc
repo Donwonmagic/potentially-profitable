@@ -220,7 +220,11 @@
     // ship regardless — flipping the flag to "true" turns them on
     // without a code change. Hard cap of 4 emails per quarter
     // per subscriber is enforced inside the dispatcher.
-    "LIFECYCLE_EMAILS_ENABLED": "false"
+    "LIFECYCLE_EMAILS_ENABLED": "false",
+    // Phase G.12 (Growth) — weekly KPI snapshot email. When "true",
+    // the Monday cron tick emails NOTIFY_EMAIL a 5-KPI summary.
+    // Off by default so the dispatcher can soak before firing.
+    "KPI_SNAPSHOT_ENABLED": "false"
   },
 
   // ─────────────────────────────────────────────────────────────────

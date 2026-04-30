@@ -955,6 +955,21 @@ export default {
       console.warn('[cron] lifecycle dispatcher failed', err && err.message);
     }
 
+    // Phase G.12 — weekly KPI snapshot email. Sends Don a 5-KPI
+    // summary every Monday morning. Idempotent via a KV stamp
+    // (cron:kpi-snapshot:<YYYY-WW>); duplicate cron runs in the
+    // same week skip silently. Off when KPI_SNAPSHOT_ENABLED is
+    // not "true" so the cron can ship before Plausible API is wired.
+    let kpiSnapshotSent = false;
+    let kpiSnapshotSkipped = null;
+    try {
+      const result = await dispatchKpiSnapshot(env);
+      if (result && result.skipped) kpiSnapshotSkipped = result.skipped;
+      else if (result && result.sent) kpiSnapshotSent = true;
+    } catch (err) {
+      console.warn('[cron] kpi snapshot failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -971,10 +986,73 @@ export default {
       lifecycleAttempted,
       lifecycleFired,
       lifecycleSkipped,
+      kpiSnapshotSent,
+      kpiSnapshotSkipped,
       ms: Date.now() - t0,
     }));
   },
 };
+
+// Phase G.12 — weekly KPI snapshot dispatcher. Reads data/kpis.json
+// for the registry, builds a plain-text summary email keyed by ISO
+// week, and sends to env.NOTIFY_EMAIL. KV stamps prevent duplicates.
+async function dispatchKpiSnapshot(env) {
+  if (env.KPI_SNAPSHOT_ENABLED !== 'true') return { skipped: 'flag-off' };
+  if (!env.AUTH_SESSIONS || !env.RESEND_API_KEY || !env.NOTIFY_EMAIL) return { skipped: 'bindings-missing' };
+  // Only fire on Mondays in UTC. Other ticks return without sending.
+  const now = new Date();
+  if (now.getUTCDay() !== 1) return { skipped: 'not-monday' };
+  // ISO-week key for de-dup. Sufficient for the once-a-week rhythm.
+  const yyyy = now.getUTCFullYear();
+  const week = isoWeekNumber(now);
+  const key = `cron:kpi-snapshot:${yyyy}-${String(week).padStart(2, '0')}`;
+  const already = await env.AUTH_SESSIONS.get(key);
+  if (already) return { skipped: 'already-sent' };
+
+  // Load KPI registry from /data/kpis.json via env.ASSETS.
+  let kpis;
+  try {
+    const r = await env.ASSETS.fetch(new Request('https://muntin.digital/data/kpis.json'));
+    if (!r.ok) return { skipped: 'kpi-data-missing' };
+    const json = await r.json();
+    kpis = json.kpis || [];
+  } catch (_) { return { skipped: 'kpi-fetch-failed' }; }
+
+  const lines = [
+    `KPI snapshot — ISO week ${yyyy}-W${String(week).padStart(2, '0')}`,
+    '',
+    'Live values are not yet wired (Plausible Stats API requires a separate token). This email confirms the cron ran and lists the targets so the rhythm establishes itself.',
+    '',
+  ];
+  for (const k of kpis) {
+    lines.push(`${k.label_en}`);
+    if (k.target_initial != null) lines.push(`  target_initial: ${k.target_initial}`);
+    if (k.metric)                 lines.push(`  metric: ${k.metric}`);
+    if (k.window)                 lines.push(`  window: ${k.window}`);
+    lines.push('');
+  }
+  lines.push('Open dashboard: https://muntin.digital/admin/kpis/');
+  const text = lines.join('\n');
+  const subject = `KPI snapshot — week ${yyyy}-W${String(week).padStart(2, '0')}`;
+  await sendEmail({
+    from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+    to: env.NOTIFY_EMAIL,
+    subject,
+    text,
+    html: `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap">${text.replace(/[&<>]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;' })[c])}</pre>`,
+  }, env.RESEND_API_KEY);
+  await env.AUTH_SESSIONS.put(key, '1', { expirationTtl: 14 * 24 * 60 * 60 });
+  return { sent: true };
+}
+
+function isoWeekNumber(d) {
+  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const dayNum = (date.getUTCDay() + 6) % 7;
+  date.setUTCDate(date.getUTCDate() - dayNum + 3);
+  const firstThursday = new Date(Date.UTC(date.getUTCFullYear(), 0, 4));
+  const diff = (date - firstThursday) / 86400000;
+  return 1 + Math.floor(diff / 7);
+}
 
 // D7b: rewrite og:*/twitter:* meta tags on the audit tool page so
 // shared permalinks get a rich per-snapshot social card. Uses
