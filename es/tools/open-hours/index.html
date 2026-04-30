@@ -1031,7 +1031,8 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/open-hours/open-hours.js?v=20260428-oh12"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260426-oh12"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260430-brand-palette"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
@@ -1796,6 +1797,10 @@
       postalCode: (document.getElementById('ohPostal') || {}).value || ''
     };
     var v = window.OH.validateHours(input);
+    var ctx0 = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+      ? MuntinContext.read() : null;
+    var palette = (ctx0 && Array.isArray(ctx0.palette) && ctx0.palette.length)
+      ? ctx0.palette : null;
     return {
       summary: v,
       closures: getClosureList(),
@@ -1803,7 +1808,8 @@
       googleCopy: window.OH.generatePlatformCopy(input, 'google', 'es'),
       formatTime: window.OH.formatTime,
       strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_ES) || {},
-      locale:    'es'
+      locale:    'es',
+      palette:   palette
     };
   }
   function downloadCanvasAsPng(canvas, filename){
