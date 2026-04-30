@@ -71,6 +71,7 @@ const CHECKS = [
   ['Share snapshot kinds','check-share-snapshot-kinds.mjs', '--check'],
   ['Storefront rail (idem)','inject-tool-storefront-rail.mjs','--check'],
   ['KPI doc freshness',    'check-kpi-doc.mjs',              '--check'],
+  ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
 ];
 
 const results = [];

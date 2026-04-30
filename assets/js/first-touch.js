@@ -170,6 +170,26 @@
     });
   }
 
+  // Phase G.12 — Experiment Exposure. When the worker stamps
+  // data-experiment + data-treatment on <html> via the A/B
+  // HTMLRewriter, fire the exposure event once per session per
+  // experiment. Bounded cardinality: experiment-name × treatment.
+  try {
+    var html = document.documentElement;
+    var expName = html && html.getAttribute('data-experiment');
+    var treatment = html && html.getAttribute('data-treatment');
+    if (expName && treatment) {
+      var exposureKey = 'exp:' + expName + ':' + treatment;
+      if (!sess.exposures[exposureKey]) {
+        sess.exposures[exposureKey] = 1;
+        safeWrite(STORAGE_SESSION, sess);
+        if (typeof window.plausible === 'function') {
+          try { window.plausible('Experiment Exposure', { props: { experiment: expName, treatment: treatment } }); } catch (_) {}
+        }
+      }
+    }
+  } catch (_) { /* DOM access failure on edge cases */ }
+
   window.muntin = window.muntin || {};
   window.muntin.firstTouch = function () { return safeRead(STORAGE_FIRST); };
   window.muntin.aiSearchEngine = function () { return detectAiEngine(refHost()); };

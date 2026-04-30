@@ -580,8 +580,21 @@ export default {
       }
     }
 
-    // Fall through to the static-asset server.
-    return env.ASSETS.fetch(request);
+    // Fall through to the static-asset server. Phase G.12 — when an
+    // experiment is running on the requested path AND the response
+    // is HTML, stamp <html data-experiment="…" data-treatment="…">
+    // via streaming HTMLRewriter so CSS swaps via
+    // [data-treatment="…"] selectors. No-op for non-HTML and for
+    // paths with no active experiment (the registry is empty until
+    // an experiment status flips to 'running').
+    const assetResponse = await env.ASSETS.fetch(request);
+    if (request.method === 'GET' && assetResponse.ok) {
+      const ct = assetResponse.headers.get('content-type') || '';
+      if (ct.startsWith('text/html')) {
+        return rewriteForExperiment(assetResponse, request, pathname);
+      }
+    }
+    return assetResponse;
   },
 
   // ============================================================
@@ -999,6 +1012,90 @@ export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
   // og:url: honor the locale path the request came in on.
   const canonicalUrl = `${origin}${reqUrl.pathname}?s=${encodeURIComponent(token)}`;
   return { ogTitle, ogDescription, ogImage, canonicalUrl };
+}
+
+// Phase G.12 (Growth) — A/B experiment registry.
+//
+// Mirror of data/experiments.json — kept in sync by hand. The
+// dashboard view at /admin/kpis/ reads the JSON; the worker reads
+// this const at request time. Mismatch is caught by the
+// check-experiments-parity guard (see scripts/).
+//
+// To run an experiment: bump status from 'draft' to 'running'
+// here AND in data/experiments.json. To roll back: status to
+// 'draft'. To promote a winning treatment: pick the winner, drop
+// the [data-treatment="…"] selector swap from the CSS, set
+// status to 'promoted'.
+//
+// Bucketing:
+//   anonymous: SHA256(IP || UA || YYYY-MM-DD), first 2 hex chars
+//              → mod 100 → bucket index. Fresh bucket per visitor
+//              per UA per day; cross-day visits roll the dice
+//              again — accepted limitation for v1.
+//   signed-in: would use SHA256(sub || YYYY-MM) for monthly
+//              persistence. Not wired here yet because the
+//              session cookie isn't read on the static-asset
+//              path; a future iteration adds it.
+const EXPERIMENTS = Object.freeze({
+  'window-cta-copy': {
+    status: 'draft',
+    treatments: ['control', 'warmer'],
+    weight: [50, 50],
+    surfaces: ['/', '/window/'],
+  },
+});
+
+function pickTreatment(experiment, bucket) {
+  const treatments = experiment.treatments || ['control'];
+  const weights = experiment.weight || treatments.map(() => 100 / treatments.length);
+  let acc = 0;
+  for (let i = 0; i < treatments.length; i++) {
+    acc += weights[i] || 0;
+    if (bucket < acc) return treatments[i];
+  }
+  return treatments[treatments.length - 1];
+}
+
+async function bucketForRequest(request) {
+  const ip = clientIpFromRequest(request) || 'unknown';
+  const ua = request.headers.get('user-agent') || 'unknown';
+  const day = new Date().toISOString().slice(0, 10);
+  const enc = new TextEncoder().encode(ip + '|' + ua + '|' + day);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const hex = Array.from(new Uint8Array(buf)).slice(0, 1)[0];
+  return hex % 100;
+}
+
+function activeExperimentForPath(pathname) {
+  for (const [name, exp] of Object.entries(EXPERIMENTS)) {
+    if (exp.status !== 'running') continue;
+    if (Array.isArray(exp.surfaces) && !exp.surfaces.some((p) => pathname === p || pathname.startsWith(p) && p !== '/')) continue;
+    return { name, exp };
+  }
+  return null;
+}
+
+// Stamps data-experiment + data-treatment on <html> for the active
+// experiment matching the request's path. Returns the original
+// response untouched when no experiment is running on this surface.
+async function rewriteForExperiment(response, request, pathname) {
+  const match = activeExperimentForPath(pathname);
+  if (!match) return response;
+  const bucket = await bucketForRequest(request);
+  const treatment = pickTreatment(match.exp, bucket);
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('html', {
+    element(el) {
+      el.setAttribute('data-experiment', match.name);
+      el.setAttribute('data-treatment', treatment);
+    },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 function rewriteAuditPageForSnapshot(response, snapshot, token, reqUrl) {
