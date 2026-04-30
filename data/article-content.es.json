@@ -1,0 +1,34 @@
+{
+  "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
+
+  "articles": {
+    "wix-vs-custom-for-restaurants": {
+      "tldr": [
+        "Wix funciona para sitios de primer día, ‘placeholder’ o pop-ups — pero choca con paredes rápido en cualquier restaurante que pase su primer año.",
+        "Seis lugares donde se rompe: menú en sistema cerrado, móvil lento, reservas atadas a sus partners, SEO ‘bueno-de-template’, sin personalización real, y costos de salida.",
+        "La cuenta: un sitio custom usualmente se paga en 12-18 meses para cualquier restaurante que mueva $40K+/mes."
+      ],
+      "key_takeaways": [
+        "Tu menú dentro de Wix no es rastreable como Restaurant schema — Google no puede posicionar platos individuales.",
+        "Los puntajes móviles de Wix suelen quedar entre 40 y 50 sobre 100; eso es la plataforma, no tu configuración.",
+        "Si tu sistema de reservas no está en la lista de socios de Wix, te quedas con lo que ellos ofrezcan.",
+        "Los costos de salida (exportar, redirigir, recrear) son reales e invisibles hasta que intentas irte.",
+        "Wix es la decisión correcta cuando el sitio es genuinamente desechable — pop-ups, ghost kitchens, pruebas de temporada."
+      ]
+    },
+    "is-doordash-worth-it-for-restaurants-in-2026": {
+      "tldr": [
+        "$100 de ingreso de DoorDash típicamente se vuelven $40-50 en tu cuenta, después de comisión, empaque y tiempo de prep.",
+        "La pregunta honesta es si la orden existiría sin DoorDash — para la mayoría de operadores, menos de la mitad sí.",
+        "La recomendación 2026 depende de tu volumen, tu prime cost, y de si tu propio ordering page realmente funciona."
+      ],
+      "key_takeaways": [
+        "Corre la cuenta con TU ticket, no con el promedio — la comisión cambia con el volumen.",
+        "Pedir directo desde tu sitio mantiene el margen completo Y mantiene la relación con el cliente.",
+        "El break-even de un ghost kitchen solo-delivery es distinto al de un dine-in que prueba delivery.",
+        "DoorDash sigue siendo la respuesta correcta cuando no tienes tiempo para correr directo y la cocina tiene capacidad sobrada.",
+        "Guarda tu escenario de DoorDash en Margin Math y vuelve a correrlo cuando tu nivel de comisión cambie."
+      ]
+    }
+  }
+}
