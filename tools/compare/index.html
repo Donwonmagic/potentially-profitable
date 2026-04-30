@@ -91,6 +91,19 @@
   .cmp-helper-list code{background:var(--white);padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid var(--line);font-family:ui-monospace,SFMono-Regular,monospace;word-break:break-all}
   .cmp-helper-link{display:inline-block;margin-top:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
   .cmp-helper-link:hover{border-color:var(--teal);color:var(--teal)}
+  .cmp-suggest-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .cmp-suggest-input{flex:1;min-width:140px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white)}
+  .cmp-suggest-btn{flex-basis:100%}
+  @media(min-width:520px){.cmp-suggest-btn{flex-basis:auto}}
+  .cmp-suggest-status{margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
+  .cmp-suggest-status.error{color:var(--rust)}
+  .cmp-suggest-results{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+  .cmp-suggest-result{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);flex-wrap:wrap}
+  .cmp-suggest-result-name{font-weight:600}
+  .cmp-suggest-result-meta{font-size:12px;color:var(--stone)}
+  .cmp-suggest-use{padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+  .cmp-suggest-use:hover{background:var(--teal)}
+  .cmp-suggest-use[disabled]{opacity:.55;cursor:not-allowed}
   /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
   .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .cmp-save[hidden]{display:none}
@@ -337,9 +350,20 @@
   <button class="cmp-btn" id="cmpSubmit">Compare</button>
 
   <details class="cmp-helper">
-    <summary class="cmp-helper-summary">Don't know who your competitor is? Two ways to find one in 30 seconds &rarr;</summary>
+    <summary class="cmp-helper-summary">Don't know who your competitor is? Three ways to find one in 30 seconds &rarr;</summary>
     <div class="cmp-helper-body">
       <ol class="cmp-helper-list">
+        <li>
+          <strong>Suggest three for me.</strong>
+          Tell us what kind of restaurant you run and where you are. We'll pull three nearby competitors with public websites and you pick.
+          <div class="cmp-suggest-row">
+            <input type="text" id="cmpSuggestCuisine"  class="cmp-suggest-input" placeholder="cuisine (e.g. Vietnamese)" aria-label="Your cuisine" />
+            <input type="text" id="cmpSuggestCity"     class="cmp-suggest-input" placeholder="neighborhood or city"     aria-label="Your city" />
+            <button type="button" class="cmp-helper-link cmp-suggest-btn" id="cmpSuggestBtn">Suggest 3 competitors &rarr;</button>
+          </div>
+          <div class="cmp-suggest-status" id="cmpSuggestStatus" aria-live="polite" hidden></div>
+          <ul class="cmp-suggest-results" id="cmpSuggestResults" hidden></ul>
+        </li>
         <li>
           <strong>Search what your customers search.</strong>
           On Google Maps, type <em>"best [cuisine] in [your neighborhood]"</em> — the top three results are who you're actually competing with for the next reservation. Click their pin → tap "Website" → copy that URL into the right field.
@@ -551,6 +575,109 @@
       url2.focus();
     });
   }
+
+  // Competitor suggester. Reuses /api/gbp-lookup (the same endpoint
+  // gbp-grader uses) with a "<cuisine> in <city>" query and renders
+  // up to 3 candidates that have a public website. Each "Use this →"
+  // button drops the chosen URL into #cmpUrl2 so the owner can submit
+  // the comparison without ever leaving the page.
+  (function () {
+    var btn       = document.getElementById('cmpSuggestBtn');
+    var inCuisine = document.getElementById('cmpSuggestCuisine');
+    var inCity    = document.getElementById('cmpSuggestCity');
+    var statusEl  = document.getElementById('cmpSuggestStatus');
+    var resultsEl = document.getElementById('cmpSuggestResults');
+    if (!btn || !inCuisine || !inCity || !statusEl || !resultsEl) return;
+
+    // Pre-fill from MuntinContext when prior tools wrote them.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      if (ctx.cuisine && !inCuisine.value)                          inCuisine.value = ctx.cuisine;
+      if ((ctx.neighborhood || ctx.city) && !inCity.value)          inCity.value = ctx.neighborhood || ctx.city;
+    } catch (_) {}
+
+    function setStatus(text, isError) {
+      statusEl.textContent = text || '';
+      statusEl.classList.toggle('error', !!isError);
+      statusEl.hidden = !text;
+    }
+    function escHtml(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function host(u) {
+      try { return new URL(u).host.replace(/^www\./i, ''); } catch (_) { return String(u || ''); }
+    }
+    function ownDomain(u) {
+      var h = host(u).toLowerCase();
+      var mine = host((url1.value || '').trim()).toLowerCase();
+      return mine && h && (h === mine);
+    }
+
+    btn.addEventListener('click', function () {
+      var cuisine = (inCuisine.value || '').trim();
+      var city    = (inCity.value || '').trim();
+      if (!cuisine || !city) {
+        setStatus('Both fields needed — cuisine and city.', true);
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Looking…';
+      resultsEl.hidden = true;
+      resultsEl.innerHTML = '';
+      setStatus('Searching nearby ' + cuisine + ' in ' + city + '…', false);
+
+      var q = cuisine + ' restaurants in ' + city;
+      fetch('/api/gbp-lookup?q=' + encodeURIComponent(q))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          var candidates = (j && j.candidates) || (j && j.ok ? [j] : []);
+          // Filter to candidates with a usable website that isn't the
+          // owner's own. Cap at 3 — three is the magic Goldilocks
+          // number for "pick one" without paralysis.
+          var picks = candidates
+            .filter(function (c) { return c && c.website && !ownDomain(c.website); })
+            .slice(0, 3);
+          if (!picks.length) {
+            setStatus('No nearby ' + cuisine + ' with public websites found. Try the Google Maps option below.', true);
+            return;
+          }
+          setStatus('Tap "Use this" to drop a competitor into the second field.', false);
+          resultsEl.innerHTML = picks.map(function (c) {
+            var meta = host(c.website);
+            return '<li class="cmp-suggest-result">' +
+              '<div>' +
+                '<div class="cmp-suggest-result-name">' + escHtml(c.displayName || c.name || 'Unnamed') + '</div>' +
+                '<div class="cmp-suggest-result-meta">' + escHtml(meta) + '</div>' +
+              '</div>' +
+              '<button type="button" class="cmp-suggest-use" data-url="' + escHtml(c.website) + '">Use this &rarr;</button>' +
+            '</li>';
+          }).join('');
+          resultsEl.hidden = false;
+          var useBtns = resultsEl.querySelectorAll('.cmp-suggest-use');
+          for (var i = 0; i < useBtns.length; i++) {
+            useBtns[i].addEventListener('click', function (ev) {
+              var u = ev.currentTarget.getAttribute('data-url');
+              if (!u) return;
+              url2.value = u;
+              url2.focus();
+              setStatus('Filled in the second field. Hit Compare when both URLs look right.', false);
+              // Visually mark the selected one.
+              for (var k = 0; k < useBtns.length; k++) {
+                useBtns[k].textContent = 'Use this →';
+                useBtns[k].disabled = false;
+              }
+              ev.currentTarget.textContent = 'Selected ✓';
+              ev.currentTarget.disabled = true;
+            });
+          }
+        })
+        .catch(function () {
+          setStatus('Lookup failed. Try the Google Maps option below.', true);
+        })
+        .then(function () {
+          btn.disabled = false;
+          btn.textContent = 'Suggest 3 competitors →';
+        });
+    });
+  })();
 
   function renderResult(payload){
     if(!payload||!payload.a||!payload.b)return;
