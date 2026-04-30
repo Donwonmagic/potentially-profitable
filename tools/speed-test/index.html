@@ -160,6 +160,27 @@
   .speed-compress-result { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
   .speed-compress-download { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--cream); text-decoration: none; font-weight: 500; font-size: 13px; }
   .speed-compress-download:hover { background: var(--teal); }
+  /* Recheck-over-time sparkline. Mirrors the audit tool's pattern:
+     a tiny SVG of overall scores from the last 6 runs, hidden until
+     3 snapshots exist. Owners running speed-tests after each fix get
+     proof that the work moved the needle. */
+  .speed-spark { margin: 18px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); text-align: left; }
+  .speed-spark[hidden] { display: none; }
+  .speed-spark-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 6px; }
+  .speed-spark-row { display: flex; align-items: center; gap: 14px; }
+  .speed-spark-svg { width: 240px; height: 60px; overflow: visible; flex: 0 0 auto; }
+  .speed-spark-svg .spark-line { stroke: var(--teal); }
+  .speed-spark-svg .spark-pt { fill: var(--cream, #FAF6EE); stroke: var(--teal); stroke-width: 2; }
+  .speed-spark-svg .spark-pt-current { fill: var(--teal); stroke: var(--teal); }
+  .speed-spark-svg .spark-label { font: 600 11px/1 var(--font-body, system-ui); fill: var(--ink); paint-order: stroke; stroke: var(--cream, #FAF6EE); stroke-width: 3px; stroke-linejoin: round; }
+  .speed-spark-prose { font-size: 13.5px; color: var(--ink-soft); line-height: 1.45; }
+  .speed-spark-prose strong { color: var(--ink); }
+  .speed-spark-axis { display: flex; justify-content: space-between; max-width: 240px; font-size: 10.5px; color: var(--stone); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  @media (max-width: 540px) {
+    .speed-spark-row { flex-direction: column; align-items: stretch; gap: 10px; }
+    .speed-spark-svg { width: 100%; max-width: 320px; align-self: center; }
+    .speed-spark-axis { max-width: 320px; align-self: center; width: 100%; }
+  }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -447,6 +468,22 @@
           </div>
         </div>
 
+        <!-- Recheck-over-time sparkline. Populated client-side from
+             a per-URL localStorage history (last 6 runs). Hidden when
+             fewer than 3 snapshots exist — a 2-point chart isn't a
+             trajectory, just a delta. -->
+        <figure class="speed-spark" id="speedSpark" hidden>
+          <p class="speed-spark-eyebrow">Your last speed tests</p>
+          <div class="speed-spark-row">
+            <svg class="speed-spark-svg" id="speedSparkSvg" viewBox="0 0 240 60" aria-hidden="true">
+              <polyline class="spark-line" id="speedSparkLine" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points=""/>
+              <g class="spark-points" id="speedSparkPoints"></g>
+            </svg>
+            <div class="speed-spark-prose" id="speedSparkProse"></div>
+          </div>
+          <div class="speed-spark-axis" id="speedSparkAxis"></div>
+        </figure>
+
         <!-- Sprint 12b (cohesion) — Learn-back row. -->
         <aside class="learn-back" aria-label="What this score means">
           <p class="learn-back-eyebrow">What this score means</p>
@@ -733,8 +770,137 @@
     document.getElementById('metricCLS').textContent = p.cls != null ? p.cls.toFixed(3) : '—';
     renderScreenshot(p);
     renderBiggestOffender(p);
+    // Persist this run + paint the recheck-over-time sparkline. Done
+    // after the dial+metrics so the chart sits below the fold but
+    // above the learn-back — surfaces motivation without pushing the
+    // primary number down.
+    saveSpeedSnapshot(p.url, p);
+    renderSpeedSparkline(p.url);
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Recheck-over-time storage. Keyed per URL via the same djb2 hash
+  // pattern as the audit tool. We keep last 20 snapshots; with one
+  // re-run per fix sprint, that's ~5 months of history before the
+  // oldest drops. Quota-exceeded fails closed (the chart just won't
+  // render), never blocks the result paint.
+  var SPEED_HISTORY_PREFIX = 'muntin-speed-history:';
+  var SPEED_HISTORY_MAX = 20;
+  var SPEED_HISTORY_MIN_GAP_MS = 6 * 60 * 60 * 1000;
+  function speedHistoryKey(url) {
+    var s = String(url || '').trim().replace(/^https?:\/\//i, '').replace(/\/$/, '').toLowerCase();
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return SPEED_HISTORY_PREFIX + (h >>> 0).toString(16);
+  }
+  function readSpeedHistory(url) {
+    try {
+      var raw = window.localStorage.getItem(speedHistoryKey(url));
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) { return []; }
+  }
+  function saveSpeedSnapshot(url, snap) {
+    if (!url || !snap || typeof snap.score !== 'number') return;
+    var entry = {
+      ts: Date.now(),
+      score: snap.score,
+      lcp: typeof snap.lcp === 'number' ? snap.lcp : null,
+      fcp: typeof snap.fcp === 'number' ? snap.fcp : null,
+      tbt: typeof snap.tbt === 'number' ? snap.tbt : null,
+      cls: typeof snap.cls === 'number' ? snap.cls : null
+    };
+    var prev = readSpeedHistory(url);
+    if (prev.length && entry.ts - prev[prev.length - 1].ts < SPEED_HISTORY_MIN_GAP_MS) {
+      prev[prev.length - 1] = entry;
+    } else {
+      prev.push(entry);
+      while (prev.length > SPEED_HISTORY_MAX) prev.shift();
+    }
+    try { window.localStorage.setItem(speedHistoryKey(url), JSON.stringify(prev)); } catch (_) {}
+  }
+
+  function renderSpeedSparkline(url) {
+    var spark = document.getElementById('speedSpark');
+    var lineEl = document.getElementById('speedSparkLine');
+    var ptsEl  = document.getElementById('speedSparkPoints');
+    var axisEl = document.getElementById('speedSparkAxis');
+    var proseEl= document.getElementById('speedSparkProse');
+    if (!spark || !lineEl || !ptsEl || !axisEl || !proseEl) return;
+    var entries = readSpeedHistory(url)
+      .filter(function(e){ return e && typeof e.score === 'number'; })
+      .slice(-6);
+    if (entries.length < 3) { spark.hidden = true; return; }
+
+    var W = 240, H = 60, padX = 12, padY = 8;
+    var minScore = 100, maxScore = 0;
+    entries.forEach(function(e){
+      if (e.score < minScore) minScore = e.score;
+      if (e.score > maxScore) maxScore = e.score;
+    });
+    var range = Math.max(20, maxScore - minScore);
+    var midY = padY + (H - padY * 2) * 0.5;
+    var pts = entries.map(function(e, i){
+      var x = padX + (W - padX * 2) * (i / Math.max(1, entries.length - 1));
+      var rel = (e.score - minScore) / range;
+      var y = (H - padY) - rel * (H - padY * 2);
+      if (maxScore - minScore < 5) y = midY;
+      return { x: x, y: y, score: e.score, ts: e.ts };
+    });
+    lineEl.setAttribute('points', pts.map(function(p){ return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' '));
+    ptsEl.innerHTML = '';
+    pts.forEach(function(p, i){
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', p.x.toFixed(1));
+      c.setAttribute('cy', p.y.toFixed(1));
+      c.setAttribute('r', i === pts.length - 1 ? '4' : '3');
+      c.setAttribute('class', i === pts.length - 1 ? 'spark-pt spark-pt-current' : 'spark-pt');
+      ptsEl.appendChild(c);
+    });
+    var last = pts[pts.length - 1];
+    var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', Math.max(padX, Math.min(W - padX, last.x + 8)).toFixed(1));
+    label.setAttribute('y', Math.max(12, last.y - 8).toFixed(1));
+    label.setAttribute('text-anchor', last.x > W - 28 ? 'end' : 'start');
+    label.setAttribute('class', 'spark-label');
+    label.textContent = String(last.score);
+    ptsEl.appendChild(label);
+
+    // Prose summary — change since first run, change since prior run.
+    var first = entries[0], current = entries[entries.length - 1];
+    var prior = entries[entries.length - 2];
+    var deltaSince = current.score - first.score;
+    var deltaPrior = current.score - prior.score;
+    var dirSince = deltaSince > 0 ? 'up' : deltaSince < 0 ? 'down' : 'flat';
+    var dirPrior = deltaPrior > 0 ? 'up' : deltaPrior < 0 ? 'down' : 'flat';
+    var arrowSince = dirSince === 'up' ? '↑' : dirSince === 'down' ? '↓' : '→';
+    var arrowPrior = dirPrior === 'up' ? '↑' : dirPrior === 'down' ? '↓' : '→';
+    var p1 = '<strong>' + arrowSince + ' ' + (deltaSince > 0 ? '+' : '') + deltaSince + '</strong> from your first run';
+    var p2 = arrowPrior + ' ' + (deltaPrior > 0 ? '+' : '') + deltaPrior + ' from last run';
+    proseEl.innerHTML = entries.length < 4
+      ? p1
+      : p1 + ' &middot; ' + p2;
+
+    var fmtDate = function(ts){
+      try {
+        var d = new Date(ts);
+        var diffMs = Date.now() - ts;
+        var oneDay = 24 * 60 * 60 * 1000;
+        if (diffMs < oneDay && d.getDate() === new Date().getDate()) return 'today';
+        if (diffMs < 2 * oneDay) return 'yesterday';
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    };
+    axisEl.innerHTML = '';
+    var leftSpan  = document.createElement('span');
+    var rightSpan = document.createElement('span');
+    leftSpan.textContent  = fmtDate(entries[0].ts);
+    rightSpan.textContent = fmtDate(current.ts);
+    axisEl.appendChild(leftSpan);
+    axisEl.appendChild(rightSpan);
+    spark.hidden = false;
   }
 
   // Phase 2 (Workshop) — auth + Save-to-Workbench wiring.
