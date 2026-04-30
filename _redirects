@@ -52,3 +52,10 @@
 /es/resources/                                  /es/learn/checklists/                                  301
 /es/resources/*                                 /es/learn/checklists/:splat                            301
 
+# Native-slug ES blog migrations (April 2026 batch).
+# Old EN-named ES paths held the structural pass during initial publish;
+# canonical now lives at the native Spanish slug. Old paths 301 to native.
+/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/        /es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/        301
+/es/blog/restaurant-schema-markup-6-types-google-uses/    /es/blog/los-6-tipos-de-schema-markup-que-google-usa/                   301
+/es/blog/restaurant-photo-spec-sheet/                     /es/blog/especificaciones-de-fotos-para-restaurantes/                   301
+
