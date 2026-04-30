@@ -637,6 +637,14 @@ h1{font-size:clamp(34px,6.4vw,84px);font-weight:500;overflow-wrap:break-word}
 h2{font-size:clamp(32px,4.2vw,54px)}
 h3{font-size:clamp(22px,2.2vw,30px)}
 p{margin:0}
+/* Global overflow safety for code blocks: <pre> scrolls horizontally
+   inside its container instead of pushing the article wide; inline
+   <code> wraps long identifiers/URLs at any character boundary so a
+   long token can't overflow on phones. Article-body specific styles
+   may still override. */
+pre{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+code{overflow-wrap:anywhere;word-break:break-word}
+pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
