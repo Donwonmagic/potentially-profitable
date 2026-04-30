@@ -99,6 +99,11 @@
 .mc-action-head{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
 .mc-action-detail{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
 .mc-action-lift{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);float:right}
+.mc-action-tpl{margin-top:10px;padding:0;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2)}
+.mc-action-tpl[open]{padding-bottom:4px}
+.mc-action-tpl-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-action-tpl-summary::-webkit-details-marker{display:none}
+.mc-action-tpl-body{margin:0;padding:6px 12px 10px;font-size:13px;line-height:1.55;color:var(--ink-soft);white-space:pre-line}
 
 .mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
@@ -940,9 +945,19 @@
       return;
     }
     actionsEl.innerHTML = moves.map(function(m){
+      var tplHtml = '';
+      if (m.template) {
+        tplHtml =
+          '<details class="mc-action-tpl">' +
+            '<summary class="mc-action-tpl-summary">' + escHtml(m.templateLabel || 'Show me an example') + ' &rarr;</summary>' +
+            '<p class="mc-action-tpl-body">' + escHtml(m.template) + '</p>' +
+          '</details>';
+      }
       return '<div class="mc-action" data-lift="' + m.lift + '">' +
              '<p class="mc-action-head"><span class="mc-action-lift">' + m.lift + ' lift</span>' + escHtml(m.headline) + '</p>' +
-             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p></div>';
+             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p>' +
+             tplHtml +
+             '</div>';
     }).join('');
   }
 
