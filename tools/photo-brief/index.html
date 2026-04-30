@@ -86,6 +86,19 @@
 .pb-shoot-tips-list{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:rgba(250,246,238,0.85)}
 .pb-shoot-tips-list li{margin-bottom:6px}
 .pb-shoot-tips-list li:last-child{margin-bottom:0}
+.pb-rules{padding:0;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--white)}
+.pb-rules-summary{cursor:pointer;padding:14px 18px;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+.pb-rules-summary::-webkit-details-marker{display:none}
+.pb-rules-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pb-rules[open] .pb-rules-summary::before{content:'− '}
+.pb-rules-body{padding:0 18px 18px}
+.pb-rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:0 0 14px}
+.pb-rules-card{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-2)}
+.pb-rules-card h4{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:.01em}
+.pb-rules-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.pb-rules-card li{margin-bottom:5px}
+.pb-rules-card strong{color:var(--ink);font-weight:600}
+.pb-rules-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5;padding-top:8px;border-top:1px solid var(--line)}
 .pb-shoot-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:8px}
 .pb-shoot-nav{flex:1;padding:14px 16px;background:rgba(250,246,238,0.10);border:1px solid rgba(250,246,238,0.25);border-radius:999px;color:var(--cream);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
 .pb-shoot-nav:hover{background:rgba(250,246,238,0.18)}
@@ -570,6 +583,69 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       <div class="pb-coverage" id="pbCoverage"></div>
     </div>
 
+    <!-- Per-platform publishing rules cheat-sheet. Surfaces the
+         actual platform constraints owners forget between shoots so
+         the photographer doesn't deliver assets that need a re-cut. -->
+    <details class="pb-rules" id="pbRules" style="display:none;margin-top:18px;">
+      <summary class="pb-rules-summary">Per-platform publishing rules &mdash; what each surface actually requires &rarr;</summary>
+      <div class="pb-rules-body">
+        <div class="pb-rules-grid">
+          <div class="pb-rules-card">
+            <h4>Google Business Profile</h4>
+            <ul>
+              <li><strong>Cover photo:</strong> 16:9 ratio, 1024×576 minimum, 5 MB max. The first photo a Maps user sees.</li>
+              <li><strong>Profile (logo):</strong> 1:1 square, 250×250 minimum.</li>
+              <li><strong>Additional photos:</strong> JPEG/PNG, 720p or higher resolution. Mix interior, exterior, food, team.</li>
+              <li><strong>What gets rejected:</strong> stock photos, heavily filtered images, photos with overlay text, duplicates.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Instagram</h4>
+            <ul>
+              <li><strong>Feed default:</strong> 4:5 portrait, 1080×1350. Square (1:1) and landscape (1.91:1) also accepted.</li>
+              <li><strong>Story / Reel:</strong> 9:16 vertical, 1080×1920. Keep critical content in the centered safe zone (140 px top + 250 px bottom for UI overlap).</li>
+              <li><strong>Carousel:</strong> all slides must share the same ratio.</li>
+              <li><strong>Profile:</strong> 320×320 minimum, displayed as a circle.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Yelp</h4>
+            <ul>
+              <li><strong>Featured photo:</strong> 1920×1280 (3:2), the first thing a Yelp searcher sees.</li>
+              <li><strong>Per-business cap:</strong> ~250 photos depending on plan tier.</li>
+              <li><strong>Don't:</strong> upload menu screenshots (Yelp parses menus separately) or photos with prices baked in.</li>
+              <li><strong>Owners can flag</strong> customer photos for removal if they're misleading or off-topic — flagging takes 1-3 weeks to clear.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Apple Maps</h4>
+            <ul>
+              <li><strong>Cover image:</strong> via Apple Business Connect, 5184×3456 (3:2) recommended.</li>
+              <li><strong>Photo gallery:</strong> JPEG, no Live Photos, no animated.</li>
+              <li><strong>Showcase photos</strong> appear in Place Cards on iPhone — pick the most "represents what walking in feels like" frame.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Open Graph (Facebook / LinkedIn / iMessage)</h4>
+            <ul>
+              <li><strong>OG image:</strong> 1200×630 (1.91:1). Below 600×315 won't preview at all.</li>
+              <li><strong>Don't put critical text within 100 px of any edge</strong> — different platforms crop differently.</li>
+              <li>Same image works across Facebook, LinkedIn, Slack, iMessage, Twitter/X — one shoot covers all four.</li>
+            </ul>
+          </div>
+          <div class="pb-rules-card">
+            <h4>Your menu &amp; web hero</h4>
+            <ul>
+              <li><strong>Menu inline:</strong> 4:3 or 1:1 keeps the layout stable across phones; vertical (9:16) breaks rhythm.</li>
+              <li><strong>Web hero:</strong> 16:9 if responsive width, 21:9 for cinematic; under 800 KB compressed (the Speed Test will flag heavier).</li>
+              <li><strong>Alt text:</strong> describe the dish in one sentence — readable by screen readers + indexed by Google for image search.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pb-rules-foot">Specs reviewed quarterly; last verified April 2026. Hand this section to the photographer before the shoot — most can deliver every spec from one source frame if they know the constraints upfront.</p>
+      </div>
+    </details>
+
     <aside class="edu-result edu-result--mini" id="pbEduResult" aria-label="What this brief means" style="display:none;">
       <p class="edu-result__lede">A tighter shot list is <strong>not stinginess</strong> &mdash; it's the difference between a half-day shoot you'll re-use for a year and a marathon shoot half of which never reaches a wall, a feed, or a placemat. The dedup math here pays the photographer back for the same money.</p>
     </aside>
@@ -990,6 +1066,8 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
       '</div>';
     }).join('');
     coverageWrap.style.display = '';
+    var rulesEl = document.getElementById('pbRules');
+    if (rulesEl) rulesEl.style.display = checkedSurfaces.length ? '' : 'none';
   }
 
   // -------------------- Render --------------------
