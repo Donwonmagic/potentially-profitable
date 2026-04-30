@@ -1,0 +1,24 @@
+{
+  "_doc": "Phase G.3 (Growth) — manual curation of tool release/refresh dates. scripts/build-rss.mjs reads this file (along with blog posts and data/glossary-added.json) to build /feed.xml + /es/feed.xml. Add an entry when a tool ships a meaningful new feature, refreshes its scoring methodology, or returns from beta. The slug must match the directory under tools/ AND es/tools/. note_en/note_es is a 1-line summary suitable for a feed reader's <description>.",
+
+  "releases": [
+    {
+      "slug": "storefront-health",
+      "date": "2026-04-22",
+      "note_en": "Storefront Health — composite scorecard rolling speed, SEO, mobile, schema, GBP, and the Restaurant Audit into one number. Shareable.",
+      "note_es": "Salud del Escaparate — tarjeta compuesta que resume velocidad, SEO, móvil, schema, GBP y la auditoría en un solo puntaje. Compartible."
+    },
+    {
+      "slug": "audits/restaurant",
+      "date": "2026-04-15",
+      "note_en": "Restaurant Audit — full-property audit with quick-win flags, Workshop save, and watch-mode score-swing alerts.",
+      "note_es": "Auditoría de Restaurante — revisión completa con quick-wins, guardado al Workshop y alertas en modo watch."
+    },
+    {
+      "slug": "margin-math",
+      "date": "2026-04-08",
+      "note_en": "Margin Math — prime cost calculator with break-even and price-raise simulation. The honest math of running an independent restaurant.",
+      "note_es": "Margin Math — calculadora de costo primario con punto de equilibrio y simulación de aumento de precio."
+    }
+  ]
+}
