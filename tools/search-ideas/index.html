@@ -110,6 +110,12 @@
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
+  .si-form{display:flex;flex-wrap:wrap;gap:8px;max-width:560px;margin:24px auto 0}
+  .si-form input{flex:1 1 200px;min-width:160px;padding:12px 14px;border:1px solid var(--line-dark);border-radius:10px;font:inherit;font-size:15px;background:var(--white);color:var(--ink)}
+  .si-form input:focus{outline:none;border-color:var(--teal)}
+  .si-form input#siCompetitor{flex:1 1 100%}
+  .si-form button{padding:12px 22px;border:0;border-radius:10px;background:var(--teal);color:var(--cream);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .si-form button:hover{background:var(--ink)}
   .si-group{margin-bottom:28px}
   .si-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
   .si-items{list-style:none;padding:0;margin:0}
@@ -322,6 +328,7 @@
   <div class="si-form">
     <input type="text" id="siType" placeholder="pizzeria" aria-label="Your business type" />
     <input type="text" id="siCity" placeholder="Silver Spring, MD" aria-label="Your city" />
+    <input type="text" id="siCompetitor" placeholder="(optional) main competitor" aria-label="Main competitor name (optional)" />
     <button type="button" id="siSubmit">Show me</button>
   </div>
   <p class="si-note">Generates the most common search patterns for your business type + location. Instant — no API call needed.</p>
@@ -442,17 +449,41 @@
     return ROUTE_BY_GROUP[key] || { tag: 'website + GBP description', why: '' };
   }
 
-  function generate(type,city){
+  function generate(type,city,competitor){
     var typeEsc = esc(type), cityEsc = esc(city);
+    var compEsc = esc(competitor || '');
     var html='';
     var qid = 0;
-    PATTERNS.forEach(function(group){
+    var groups = PATTERNS.slice();
+    // Append a competitor-specific group when the optional input is
+    // filled. Owners think in rivals, not abstract keywords; this
+    // surfaces the queries customers actually run when they're
+    // shopping between two places. Routes to the About page +
+    // reviews-response copy where comparison-shoppers actually land.
+    if (competitor) {
+      groups.push({
+        cat: 'Versus competitors — rival-name searches',
+        templates: [
+          '{type} vs {competitor}',
+          '{competitor} alternatives {city}',
+          '{competitor} reviews',
+          'restaurants like {competitor} {city}',
+          '{competitor} or {type} better'
+        ]
+      });
+    }
+    groups.forEach(function(group){
       var route = routeForGroup(group.cat);
+      // Comparison-vs group gets a specific route hint that lands on
+      // About differentiators + reviews-response copy.
+      if (/^Versus/.test(group.cat)) {
+        route = { tag: 'About-page differentiators / reviews-response copy', why: 'Comparison searches read your About page and your review replies — lean into what makes you distinct here, not on the homepage.' };
+      }
       html+='<div class="si-group"><p class="si-group-label">'+esc(group.cat)+' <span class="si-route">→ ' + esc(route.tag) + '</span></p>';
       if (route.why) html += '<p class="si-route-why">' + esc(route.why) + '</p>';
       html += '<ul class="si-items">';
       group.templates.forEach(function(t){
-        var q=t.replace(/\{type\}/g,typeEsc).replace(/\{city\}/g,cityEsc);
+        var q=t.replace(/\{type\}/g,typeEsc).replace(/\{city\}/g,cityEsc).replace(/\{competitor\}/g,compEsc);
         var id = 'si-q-' + (++qid);
         html+='<li><label class="si-row" for="'+id+'"><input type="checkbox" id="'+id+'" class="si-pick" data-query="'+esc(q)+'" data-route="'+esc(route.tag)+'" /><span class="q">🔍</span><span class="si-q-text">'+q+'</span></label></li>';
       });
@@ -540,7 +571,9 @@
         onRehydrate: function (p) {
           if (typeInput && p.type) typeInput.value = p.type;
           if (cityInput && p.city) cityInput.value = p.city;
-          result.innerHTML = generate(p.type || '', p.city || '');
+          var compEl = document.getElementById('siCompetitor');
+          if (compEl && p.competitor) compEl.value = p.competitor;
+          result.innerHTML = generate(p.type || '', p.city || '', p.competitor || '');
           result.classList.add('visible');
           siWireMulti(result);
           result.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -550,17 +583,19 @@
       })
     : null;
 
+  var competitorInput = document.getElementById('siCompetitor');
   btn.addEventListener('click',function(){
     var type=typeInput.value.trim().toLowerCase();
     var city=cityInput.value.trim();
+    var competitor=(competitorInput && competitorInput.value || '').trim();
     if(!type){typeInput.focus();return}
     if(!city){cityInput.focus();return}
-    result.innerHTML=generate(type,city);
+    result.innerHTML=generate(type,city,competitor);
     result.classList.add('visible');
     siWireMulti(result);
     result.scrollIntoView({behavior:'smooth',block:'start'});
-    if (wb) wb.showAffordance({ type: type, city: city, generatedAt: Date.now() });
-    if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city}});
+    if (wb) wb.showAffordance({ type: type, city: city, competitor: competitor || undefined, generatedAt: Date.now() });
+    if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city,hasCompetitor:competitor?'yes':'no'}});
   });
 
   // Enter key triggers
