@@ -160,6 +160,19 @@
   .speed-compress-result { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
   .speed-compress-download { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--cream); text-decoration: none; font-weight: 500; font-size: 13px; }
   .speed-compress-download:hover { background: var(--teal); }
+  /* Shared MuntinHire disclosure. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
   /* Recheck-over-time sparkline. Mirrors the audit tool's pattern:
      a tiny SVG of overall scores from the last 6 runs, hidden until
      3 snapshots exist. Owners running speed-tests after each fix get
@@ -605,6 +618,7 @@
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -709,6 +723,15 @@
       html += '<p class="speed-biggest-headline">Your largest visible element</p>';
       html += '<pre class="speed-biggest-snippet">' + escHtml(item.snippet) + '</pre>';
       html += '<p class="speed-biggest-why">This is what Google measured for your LCP score. If it\'s an image, compress it; if it\'s a text block, check what loads above it.</p>';
+    }
+    // Hire-guide for owners whose slowest thing is a server-side fix
+    // (Cloudflare cache, image CDN, plugin removal) — beyond a
+    // browser compress + upload.
+    if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
+      html += MuntinHire.renderDisclosure({
+        scope: 'dev',
+        summary: "Need help shipping the fix? Here's who to find. →"
+      });
     }
     html += '</div>';
     var wrap = document.createElement('div');
