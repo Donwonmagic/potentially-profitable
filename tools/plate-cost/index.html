@@ -555,6 +555,26 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <p class="edu-result__rule">If your three suggested prices straddle a price you can actually charge in your market, you&rsquo;re in shape. If even the 33% column is below what guests will pay, the dish is a <strong>plowhorse candidate</strong> &mdash; bring it to Menu Engineering with sales data.</p>
         <p class="edu-result__next"><span class="edu-result__next-label">Next step</span><a href="#pc-actions">Print the Plate Card for the kitchen</a><span aria-hidden="true">&middot;</span><a href="/tools/menu-engineering/">Test against your sales mix</a><span aria-hidden="true">&middot;</span><a href="/tools/margin-math/">Sanity-check prime cost</a></p>
         <p class="edu-result__source"><span class="edu-result__source-label">Sourced</span><a href="/glossary/food-cost/">CIA yield tables</a> &middot; NRA food-cost benchmarks (2026 edition; medians, full-service segment) &middot; <a href="/glossary/contribution-margin/">contribution margin</a></p>
+
+        <details class="edu-formula">
+          <summary>Show the math (the formula behind every row)</summary>
+          <pre class="edu-formula__body">For each ingredient row:
+    AP unit cost   = AP price &divide; AP qty
+    EP unit cost   = AP unit cost &divide; yield %
+    Used cost      = EP unit cost &times; used qty (converted to AP unit)
+
+Then for the dish:
+    Batch cost     = &Sigma; used cost (every row)
+    Plate cost     = batch cost &divide; portions per recipe
+
+Three suggested menu prices, each backsolved from a food-cost target:
+    Menu price @ 28% = plate cost &divide; 0.28   (fine-dining, labor-heavy)
+    Menu price @ 30% = plate cost &divide; 0.30   (casual full-service)
+    Menu price @ 33% = plate cost &divide; 0.33   (high-volume, lower labor)
+
+Contribution margin per plate = menu price &minus; plate cost</pre>
+          <p class="edu-formula__caption">Yields come from the CIA Standard Yield Tables; chef variance is typically &plusmn;5%, more for trim-heavy proteins. The full module is at <code>/tools/plate-cost/plate-cost.js</code> &mdash; no minification, no build step, readable directly.</p>
+        </details>
       </aside>
     </div>
 

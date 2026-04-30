@@ -524,6 +524,26 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
         <p class="edu-result__rule">Si tus tres precios sugeridos rodean un precio que de verdad puedes cobrar en tu mercado, vas bien. Si hasta la columna del 33% está por debajo de lo que el comensal pagará, el plato es <strong>candidato a plowhorse</strong> &mdash; llévalo a Ingeniería de Menú con datos de ventas.</p>
         <p class="edu-result__next"><span class="edu-result__next-label">Siguiente paso</span><a href="#pc-actions">Imprime la Ficha del Plato para la cocina</a><span aria-hidden="true">&middot;</span><a href="/es/tools/menu-engineering/">Prueba contra tu mezcla de ventas</a><span aria-hidden="true">&middot;</span><a href="/es/tools/margin-math/">Verifica el costo primo</a></p>
         <p class="edu-result__source"><span class="edu-result__source-label">Fuente</span><a href="/es/glossary/food-cost/">Tablas de rendimiento del CIA</a> &middot; benchmarks de costo de alimento NRA (edición 2026; medianas, segmento full-service) &middot; <a href="/es/glossary/contribution-margin/">margen de contribución</a></p>
+
+        <details class="edu-formula">
+          <summary>Muestra la matemática (la fórmula detrás de cada fila)</summary>
+          <pre class="edu-formula__body">Por cada ingrediente:
+    Costo unitario AP  = precio AP &divide; cantidad AP
+    Costo unitario EP  = costo unitario AP &divide; rendimiento %
+    Costo usado        = costo unitario EP &times; cantidad usada (convertida a unidad AP)
+
+Para el plato:
+    Costo del lote     = &Sigma; costo usado (cada fila)
+    Costo del plato    = costo del lote &divide; porciones por receta
+
+Tres precios de menú sugeridos, cada uno despejado de una meta de food cost:
+    Precio @ 28% = costo del plato &divide; 0.28   (fine-dining, labor pesada)
+    Precio @ 30% = costo del plato &divide; 0.30   (servicio completo casual)
+    Precio @ 33% = costo del plato &divide; 0.33   (alto volumen, labor más baja)
+
+Margen de contribución por plato = precio menú &minus; costo del plato</pre>
+          <p class="edu-formula__caption">Los rendimientos vienen de las Tablas Estándar de Rendimiento del CIA; la varianza del chef suele ser &plusmn;5%, más en proteínas con mucha limpieza. El módulo completo está en <code>/tools/plate-cost/plate-cost.js</code> &mdash; sin minificación, sin build, legible directamente.</p>
+        </details>
       </aside>
     </div>
 
