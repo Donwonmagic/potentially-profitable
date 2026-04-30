@@ -81,6 +81,16 @@
   .cmp-diff-list li{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white)}
   .cmp-diff-list strong{font-size:14px;color:var(--ink)}
   .cmp-diff-list span{font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .cmp-helper{max-width:540px;margin:14px auto 0;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:12px 16px;background:var(--white)}
+  .cmp-helper-summary{cursor:pointer;font-size:13.5px;color:var(--ink);font-weight:500}
+  .cmp-helper-body{margin-top:12px}
+  .cmp-helper-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+  .cmp-helper-list li{padding:12px 14px;background:var(--cream-2);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .cmp-helper-list strong{display:block;font-weight:600;margin-bottom:4px;color:var(--ink)}
+  .cmp-helper-list em{font-style:italic;color:var(--teal)}
+  .cmp-helper-list code{background:var(--white);padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid var(--line);font-family:ui-monospace,SFMono-Regular,monospace;word-break:break-all}
+  .cmp-helper-link{display:inline-block;margin-top:8px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .cmp-helper-link:hover{border-color:var(--teal);color:var(--teal)}
   /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
   .cmp-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .cmp-save[hidden]{display:none}
@@ -325,6 +335,25 @@
     <input type="url" id="cmpUrl2" placeholder="https://competitor.com" aria-label="Competitor URL" />
   </div>
   <button class="cmp-btn" id="cmpSubmit">Compare</button>
+
+  <details class="cmp-helper">
+    <summary class="cmp-helper-summary">Don't know who your competitor is? Two ways to find one in 30 seconds &rarr;</summary>
+    <div class="cmp-helper-body">
+      <ol class="cmp-helper-list">
+        <li>
+          <strong>Search what your customers search.</strong>
+          On Google Maps, type <em>"best [cuisine] in [your neighborhood]"</em> — the top three results are who you're actually competing with for the next reservation. Click their pin → tap "Website" → copy that URL into the right field.
+          <button type="button" class="cmp-helper-link" data-helper="maps">Open Google Maps in a new tab &rarr;</button>
+        </li>
+        <li>
+          <strong>Compare against your old self.</strong>
+          Wonder if last year's redesign actually helped? Paste your own URL into the second field with <code>https://web.archive.org/web/2024/</code> in front (e.g. <code>https://web.archive.org/web/2024/https://yoursite.com</code>). The Wayback Machine returns the version closest to that date.
+          <button type="button" class="cmp-helper-link" id="cmpWaybackFill">Fill the second field with my own Wayback URL &rarr;</button>
+        </li>
+      </ol>
+    </div>
+  </details>
+
   <p class="cmp-note">Runs two Google PageSpeed audits in parallel. Takes about 20–30 seconds.</p>
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
@@ -384,6 +413,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -484,6 +514,43 @@
   // Enter key triggers compare from either input
   url1.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
   url2.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();btn.click()}});
+
+  // Helper buttons under the form: Maps deep-link + Wayback prefill.
+  // Both write to url2 only; url1 is the user's site. Pure DOM; no
+  // server calls — the Wayback URL is constructed client-side and
+  // submits through the existing PSI fetch path (Wayback returns
+  // an HTTP 200 with the snapshotted HTML, which Lighthouse will
+  // happily score).
+  var mapsHelper = document.querySelector('.cmp-helper-link[data-helper="maps"]');
+  if (mapsHelper) {
+    mapsHelper.addEventListener('click', function () {
+      // Honor MuntinContext if cuisine + neighborhood are stored
+      // by an upstream tool (seo-grader / search-ideas write these).
+      var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+      var query = '';
+      if (ctx.cuisine || ctx.neighborhood) {
+        query = 'best ' + (ctx.cuisine || 'restaurants') + (ctx.neighborhood ? ' in ' + ctx.neighborhood : '');
+      } else {
+        query = 'best restaurants near me';
+      }
+      var mapsUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(query);
+      window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+    });
+  }
+  var waybackBtn = document.getElementById('cmpWaybackFill');
+  if (waybackBtn) {
+    waybackBtn.addEventListener('click', function () {
+      var v = (url1.value || '').trim();
+      if (!v) {
+        url1.focus();
+        url1.placeholder = 'Type your URL here first';
+        return;
+      }
+      var clean = v.replace(/^https?:\/\//, '');
+      url2.value = 'https://web.archive.org/web/2024/' + 'https://' + clean;
+      url2.focus();
+    });
+  }
 
   function renderResult(payload){
     if(!payload||!payload.a||!payload.b)return;
