@@ -981,6 +981,23 @@
     svg += '<text x="' + (W / 2) + '" y="' + (H - 18) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" text-anchor="middle">Contribution margin per sale &rarr;</text>';
     svg += '<text x="20" y="' + ((y0 + y1) / 2) + '" font-size="12" fill="#14161A" font-family="Inter,sans-serif" transform="rotate(-90 20 ' + ((y0 + y1) / 2) + ')" text-anchor="middle">&uarr; Share of total covers</text>';
 
+    // Axis ticks — five evenly-spaced gridmarks per axis with their
+    // values labeled. Without these, the matrix conveys position but
+    // not magnitude (was the cluster at $4 or $14 of CM?). The labels
+    // are aria-hidden because the visually-hidden item list already
+    // gives screen-reader users exact per-item values.
+    for (var ti = 0; ti <= 4; ti++) {
+      var xt = x0 + (ti / 4) * (x1 - x0);
+      var xv = minCm + (ti / 4) * (maxCm - minCm);
+      // Tick mark below frame
+      svg += '<line x1="' + xt.toFixed(1) + '" y1="' + y1 + '" x2="' + xt.toFixed(1) + '" y2="' + (y1 + 4) + '" stroke="#9A958B" stroke-width="1" />';
+      svg += '<text x="' + xt.toFixed(1) + '" y="' + (y1 + 16) + '" font-size="10" fill="#6B6B6B" font-family="Inter,sans-serif" text-anchor="middle" aria-hidden="true">' + fmtMoney(xv) + '</text>';
+      var yt = y1 - (ti / 4) * (y1 - y0);
+      var yv = (ti / 4) * maxShare;
+      svg += '<line x1="' + (x0 - 4) + '" y1="' + yt.toFixed(1) + '" x2="' + x0 + '" y2="' + yt.toFixed(1) + '" stroke="#9A958B" stroke-width="1" />';
+      svg += '<text x="' + (x0 - 8) + '" y="' + (yt + 3).toFixed(1) + '" font-size="10" fill="#6B6B6B" font-family="Inter,sans-serif" text-anchor="end" aria-hidden="true">' + fmtPct(yv) + '</text>';
+    }
+
     // Plot each item.
     var QC = { Star: '#1F4E5B', Plowhorse: '#C68A2C', Puzzle: '#6E5DB3', Dog: '#B8541A' };
     var QGLYPH = { Star: '★', Plowhorse: '▲', Puzzle: '◆', Dog: '●' };
