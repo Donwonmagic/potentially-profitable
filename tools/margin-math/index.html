@@ -708,7 +708,11 @@
         </label>
         <label for="dbe-foodcost">
           <span>Food cost (% of sales) <output id="dbe-foodcost-val" for="dbe-foodcost">30%</output></span>
-          <input type="range" id="dbe-foodcost" min="20" max="45" step="1" value="30" aria-describedby="dbe-foodcost-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="dbe-foodcost" min="20" max="45" step="1" value="30" aria-describedby="dbe-foodcost-val" />
+            <input type="number" id="dbe-foodcost-num" min="0" max="100" step="0.5" value="30" inputmode="decimal" aria-label="Food cost percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
         </label>
         <fieldset class="mm-tier-group">
           <legend>Aggregator commission tier</legend>
@@ -905,7 +909,11 @@
         </label>
         <label for="bec-margin">
           <span>Contribution margin / cover <output id="bec-margin-val" for="bec-margin">20%</output></span>
-          <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+            <input type="number" id="bec-margin-num" min="0" max="100" step="0.5" value="20" inputmode="decimal" aria-label="Contribution margin percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What a cover contributes after food, hourly labor, and card fees. Not the same as operating margin.</small>
         </label>
         <details class="mm-mini-help">
@@ -975,12 +983,20 @@
         </fieldset>
         <label for="pr-loss">
           <span>Assumed cover loss <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
-          <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+            <input type="number" id="pr-loss-num" min="0" max="100" step="0.1" value="2.5" inputmode="decimal" aria-label="Cover loss percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Defaults reset when you switch tier.</small>
         </label>
         <label for="pr-margin">
           <span>Contribution margin <output id="pr-margin-val" for="pr-margin">20%</output></span>
-          <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+            <input type="number" id="pr-margin-num" min="0" max="100" step="0.5" value="20" inputmode="decimal" aria-label="Contribution margin percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What each cover contributes after food, variable labor, and card fees. Unlocks the profit-based break-even below — more forgiving than revenue because lost covers only cost you their margin, not the whole ticket.</small>
         </label>
       </form>
@@ -1585,6 +1601,18 @@
   foodcostEl.addEventListener('input', onInput);
   ordersEl.addEventListener('input', onInput);
 
+  // Paired number-input lockstep — type or drag, both update.
+  var foodcostNumEl = card.querySelector('#dbe-foodcost-num');
+  if (foodcostNumEl) {
+    foodcostEl.addEventListener('input', function(){ foodcostNumEl.value = foodcostEl.value; });
+    foodcostNumEl.addEventListener('input', function(){
+      var v = parseFloat(foodcostNumEl.value);
+      if (!isFinite(v)) return;
+      foodcostEl.value = String(Math.max(parseFloat(foodcostEl.min), Math.min(parseFloat(foodcostEl.max), v)));
+      onInput();
+    });
+  }
+
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
       Array.prototype.forEach.call(tierBtns, function(b){
@@ -1974,6 +2002,21 @@
   daysEl.addEventListener('input', onInput);
   typicalEl.addEventListener('input', onInput);
 
+  // Paired number input on the contribution-margin slider (the
+  // steepest cliff per the audit — a 1% slider step on a phone is
+  // imprecise and the field demands a number most owners need to
+  // calculate from food + labor).
+  var marginNumEl = card.querySelector('#bec-margin-num');
+  if (marginNumEl) {
+    marginEl.addEventListener('input', function(){ marginNumEl.value = marginEl.value; });
+    marginNumEl.addEventListener('input', function(){
+      var v = parseFloat(marginNumEl.value);
+      if (!isFinite(v)) return;
+      marginEl.value = String(Math.max(parseFloat(marginEl.min), Math.min(parseFloat(marginEl.max), v)));
+      onInput();
+    });
+  }
+
   render();
 })();
 
@@ -2122,6 +2165,32 @@
   baselineEl.addEventListener('input', onInput);
   lossEl.addEventListener('input', function(){ userOverrodeLoss = true; onInput(); });
   marginEl.addEventListener('input', onInput);
+
+  // Paired number inputs on the cover-loss + contribution-margin
+  // sliders. cover-loss steps in 0.1% so the number field uses 0.1
+  // step too. Typing into the number input flips userOverrodeLoss
+  // the same way the slider does.
+  var lossNumEl = card.querySelector('#pr-loss-num');
+  if (lossNumEl) {
+    lossEl.addEventListener('input', function(){ lossNumEl.value = lossEl.value; });
+    lossNumEl.addEventListener('input', function(){
+      var v = parseFloat(lossNumEl.value);
+      if (!isFinite(v)) return;
+      lossEl.value = String(Math.max(parseFloat(lossEl.min), Math.min(parseFloat(lossEl.max), v)));
+      userOverrodeLoss = true;
+      onInput();
+    });
+  }
+  var prMarginNumEl = card.querySelector('#pr-margin-num');
+  if (prMarginNumEl) {
+    marginEl.addEventListener('input', function(){ prMarginNumEl.value = marginEl.value; });
+    prMarginNumEl.addEventListener('input', function(){
+      var v = parseFloat(prMarginNumEl.value);
+      if (!isFinite(v)) return;
+      marginEl.value = String(Math.max(parseFloat(marginEl.min), Math.min(parseFloat(marginEl.max), v)));
+      onInput();
+    });
+  }
 
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
