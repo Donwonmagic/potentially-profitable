@@ -95,6 +95,17 @@
 .pc-prices{padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
 .pc-prices h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px}
 .pc-prices p.pc-prices-dek{font-size:12.5px;color:var(--stone);margin:0 0 14px;line-height:1.5}
+.pc-year{padding:18px 22px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--white);margin-top:16px}
+.pc-year h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.pc-year-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
+@media(max-width:560px){.pc-year-grid{grid-template-columns:1fr}}
+.pc-year-input{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase}
+.pc-year-input span{line-height:1.4}
+.pc-year-input input{padding:10px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-year-out{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--cream-2);border-radius:6px}
+.pc-year-out-label{font-size:11.5px;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase;font-weight:600}
+.pc-year-out-amount{font-family:var(--font-display);font-size:32px;font-weight:500;color:var(--ink);line-height:1.05;letter-spacing:-0.5px}
+.pc-year-out-detail{font-size:13px;color:var(--ink-soft);line-height:1.5}
 .pc-price-row{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .pc-price-row:first-of-type{border-top:0}
 .pc-price-target{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:var(--ink)}
@@ -550,6 +561,26 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <div id="pcPriceRows"></div>
       </div>
 
+      <!-- Year-value panel. Translates "you keep $X per plate" into
+           "this dish keeps $Y per year for the house" — the load-
+           bearing translation from math number to rent paid. The
+           weekly-volume input persists with the recipe in the URL
+           fragment so it round-trips with the Cost Drift Check-in. -->
+      <div class="pc-year" id="pcYear" hidden>
+        <h3>What's this dish worth per year?</h3>
+        <div class="pc-year-grid">
+          <label class="pc-year-input">
+            <span>Plates sold per week (from your POS or a quick estimate)</span>
+            <input type="number" id="pcYearVolume" min="0" step="1" inputmode="numeric" placeholder="e.g. 28">
+          </label>
+          <div class="pc-year-out" id="pcYearOut" aria-live="polite">
+            <span class="pc-year-out-label">At your middle suggested price, this dish keeps</span>
+            <span class="pc-year-out-amount" id="pcYearAmount">— per year</span>
+            <span class="pc-year-out-detail" id="pcYearDetail">Type a weekly volume to see the annual contribution.</span>
+          </div>
+        </div>
+      </div>
+
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
         <p class="edu-result__lede" id="pcEduResultLede">Treat this as a <strong>starting line</strong>, not a price tag. Yield varies by ±5&ndash;10% with trim quality and supplier; revisit when an invoice moves more than a few percent.</p>
         <p class="edu-result__rule">If your three suggested prices straddle a price you can actually charge in your market, you&rsquo;re in shape. If even the 33% column is below what guests will pay, the dish is a <strong>plowhorse candidate</strong> &mdash; bring it to Menu Engineering with sales data.</p>
@@ -735,6 +766,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
@@ -961,6 +993,37 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
         '</div>' +
       '</div>';
     }).join('');
+
+    // Year-value panel — middle (30%) target × weekly volume × 52.
+    // Shown once we have a positive plate cost; hidden otherwise so
+    // a fresh-load page doesn't render with the empty $0 placeholder.
+    var pcYearBox = document.getElementById('pcYear');
+    var pcYearVol = document.getElementById('pcYearVolume');
+    var pcYearAmount = document.getElementById('pcYearAmount');
+    var pcYearDetail = document.getElementById('pcYearDetail');
+    if (pcYearBox) {
+      var midPrice = (prices[1] && prices[1].price) || (prices[0] && prices[0].price) || 0;
+      var midCm    = (prices[1] && prices[1].cmDollars) || (prices[0] && prices[0].cmDollars) || 0;
+      var hasPlate = isFinite(summary.plateCost) && summary.plateCost > 0;
+      pcYearBox.hidden = !hasPlate;
+      function recomputeYear() {
+        if (!pcYearVol || !pcYearAmount || !pcYearDetail) return;
+        var v = parseFloat(pcYearVol.value);
+        if (!isFinite(v) || v <= 0) {
+          pcYearAmount.textContent = '— per year';
+          pcYearDetail.textContent = 'Type a weekly volume to see the annual contribution.';
+          return;
+        }
+        var annual = midCm * v * 52;
+        pcYearAmount.textContent = fmtMoney(annual) + ' per year';
+        pcYearDetail.textContent = 'At ' + fmtMoney(midPrice) + ' and ' + Math.round(v) + ' plates/week, this dish keeps ' + fmtMoney(midCm) + ' × ' + Math.round(v) + ' × 52 = ' + fmtMoney(annual) + ' for the house.';
+      }
+      if (pcYearVol && !pcYearVol.__bound) {
+        pcYearVol.__bound = true;
+        pcYearVol.addEventListener('input', recomputeYear);
+      }
+      recomputeYear();
+    }
 
     // Bottleneck callout — surfaces only when one ingredient ≥ 30%
     // of plate cost. The line a chef will quote at the prep meeting.
