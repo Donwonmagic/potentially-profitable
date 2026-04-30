@@ -189,6 +189,18 @@
 
 /* Pattern Explorer — the educational core, visible when no item is loaded. */
 .mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+.mc-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.mc-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.mc-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+.mc-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.mc-ba-row{margin:0 0 10px}
+.mc-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+.mc-ba-text{font-size:14.5px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+.mc-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+.mc-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+.mc-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+.mc-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
 .mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
 .mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
 .mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
@@ -622,6 +634,55 @@
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">The six patterns the Inspector watches for</h2>
     <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Read these once and you'll start seeing them in your own menu. Read them ten times and you won't need this tool. Each card lists the actual lexicon the rules engine uses; everything is open-source in <code>/tools/menu-copy/menu-copy.js</code>.</p>
     <div class="mc-explorer" id="mcExplorer" aria-label="Pattern Explorer card grid"></div>
+  </div>
+</div></section>
+
+<section class="block" id="mcBeforeAfter"><div class="container">
+  <div style="max-width:900px;margin:0 auto;">
+    <span class="eyebrow">What good looks like</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Before &amp; after — three real-shape rewrites</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">Same dish, same length, same vocabulary the cook uses every day. The difference: one or two more sensory words, the producer named, and the hedge cut. None of these are "writerly" — they're things the line cook can describe out loud.</p>
+    <div class="mc-ba-grid">
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">House salad</span><span class="mc-ba-axis">Add 1 sensory word · cut hedges</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Our nice fresh delicious house salad — just simply our best.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Crunchy little gems with shaved breakfast radish, lemon, and a buttermilk dressing we make every morning.</p>
+        </div>
+        <p class="mc-ba-note">Cut: <em>nice / fresh / delicious / just / simply / our best</em> (six hedges). Added: <em>crunchy</em> (sensory), <em>little gems</em> (variety), <em>breakfast radish</em> (specific produce), <em>every morning</em> (technique).</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Roast chicken</span><span class="mc-ba-axis">Name the producer · name the technique</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Half a chicken with potatoes and seasonal vegetables.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Half a Path Valley chicken, brined overnight and roasted on the bone, with crisped fingerlings and pan jus.</p>
+        </div>
+        <p class="mc-ba-note">Added: <em>Path Valley</em> (provenance — name the farm), <em>brined overnight / roasted on the bone</em> (technique), <em>crisped / pan jus</em> (sensory + technique). Same proteins, same vegetables, same plate cost.</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Tonnarelli al pepe</span><span class="mc-ba-axis">One sensory swap</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Hand-rolled tonnarelli with pecorino and pepper.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.</p>
+        </div>
+        <p class="mc-ba-note">Two-word change. <em>Smoky</em> and <em>cracked</em> are both sensory; together they take a 7-word description from "fine" to "I want that." Read it out loud — the rhythm is the point.</p>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">These are pattern illustrations, not your menu. The Inspector never writes for you — it points at directions. The rewrite is yours, or your line cook's, or whoever knows what makes the dish sing.</p>
   </div>
 </div></section>
 

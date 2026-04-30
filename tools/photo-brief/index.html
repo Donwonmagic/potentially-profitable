@@ -727,6 +727,73 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
   </div>
 </div></section>
 
+<!-- BEFORE/AFTER PANEL — visible artifact (T10) for the photo brief.
+     We don't have rights to ship real before/after dish photos here,
+     so the panel is text-driven: each card describes the specific
+     styling moves that turn a flat menu photo into the kind of frame
+     that gets re-shared. Pure prose; no asset dependencies. -->
+<section class="block" id="pbBeforeAfter"><div class="container" style="max-width:920px;">
+  <span class="eyebrow">What good looks like</span>
+  <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Before &amp; after — three real-shape styling shifts</h2>
+  <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">No retouching tricks, no extra props you don't already have. Three styling moves the line cook can do at family-meal time, captured on the same iPhone you already shoot with.</p>
+  <div class="pb-ba-grid">
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Burger</span><span class="pb-ba-axis">Light + angle</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Top-down shot under warm in-house lighting. Cheese reads orange-brown, the lettuce shadows blow out the bun. Plate fills the frame edge-to-edge.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Three-quarter angle (45° down). Shot at the pass next to a window — the bun catches daylight from the side, the cheese pull is visible at the seam. The plate breathes — 30% empty around it.</p>
+      </div>
+      <p class="pb-ba-note">Two changes: <em>angle</em> (top-down → 3/4) and <em>light source</em> (overhead bulbs → side window). Same burger, same plate, same hour.</p>
+    </article>
+
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Salad</span><span class="pb-ba-axis">Build the height</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Tossed flat in a wide bowl. Looks like a bag of greens with the dressing already mixed in — green-on-green-on-green, no contrast points.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Greens stacked tall in the center, finishing produce (radish slices, citrus segments, herb tips) placed last on top. Dressing pooled to one side, not poured over. Cracked pepper finish that's visible.</p>
+      </div>
+      <p class="pb-ba-note">Build it tall, finish on top. The salad in the photo doesn't have to be the salad you serve — this version is for the camera, the kitchen sends out the eat-able one.</p>
+    </article>
+
+    <article class="pb-ba">
+      <header class="pb-ba-head"><span class="pb-ba-tag">Roast chicken</span><span class="pb-ba-axis">Steam + sauce</span></header>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">Before</p>
+        <p class="pb-ba-text pb-ba-before">Plated and shot 90 seconds after it left the oven. Skin reads matte, the jus on the plate has already absorbed into the potatoes.</p>
+      </div>
+      <div class="pb-ba-row">
+        <p class="pb-ba-label">After</p>
+        <p class="pb-ba-text pb-ba-after">Shot inside 30 seconds. Faint steam catches the side light. Pan jus spooned over right before the shutter fires — surface is glossy and reflective.</p>
+      </div>
+      <p class="pb-ba-note">Hot food photographs as hot food only for the first minute. If you're shooting a service dish, plate one on the side ahead of family meal — the kitchen's already up.</p>
+    </article>
+  </div>
+  <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">These are direction notes, not shot lists. Add the specifics that match your kitchen — what's on the pass, where the daylight comes from, which finishing touches you actually have. The brief above is the structure; this is the texture.</p>
+</div></section>
+
+<style>
+  .pb-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+  .pb-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+  .pb-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+  .pb-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+  .pb-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+  .pb-ba-row{margin:0 0 10px}
+  .pb-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+  .pb-ba-text{font-size:14px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+  .pb-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+  .pb-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+  .pb-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+  .pb-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
+</style>
+
 <!-- WHAT THIS IS / ISN'T (honesty framing) -->
 <section class="block" id="what-this-isnt"><div class="container" style="max-width:760px;">
   <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 6px;">What this <em>is</em>, and what it <em>isn&rsquo;t</em>.</h2>

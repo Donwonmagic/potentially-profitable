@@ -177,6 +177,18 @@
 .mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
 .mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+.mc-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.mc-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.mc-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+.mc-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.mc-ba-row{margin:0 0 10px}
+.mc-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+.mc-ba-text{font-size:14.5px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+.mc-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+.mc-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+.mc-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+.mc-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
 .mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
 .mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
 .mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
@@ -588,6 +600,55 @@
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Los seis patrones que el Inspector busca</h2>
     <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Léelos una vez y empezarás a verlos en tu propio menú. Léelos diez veces y no vas a necesitar esta herramienta. Cada tarjeta lista el léxico real que usa el motor de reglas; todo es código abierto en <code>/tools/menu-copy/menu-copy.js</code>.</p>
     <div class="mc-explorer" id="mcExplorer" aria-label="Explorador de patrones"></div>
+  </div>
+</div></section>
+
+<section class="block" id="mcBeforeAfter"><div class="container">
+  <div style="max-width:900px;margin:0 auto;">
+    <span class="eyebrow">Cómo se ve uno bueno</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Antes y después — tres reescrituras reales</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">Mismo plato, mismo largo, mismo vocabulario que usa el cocinero todos los días. La diferencia: una o dos palabras sensoriales más, el productor nombrado y el muletilla cortada. Nada de esto es "literario" — son cosas que tu línea de cocina describe en voz alta.</p>
+    <div class="mc-ba-grid">
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Ensalada de la casa</span><span class="mc-ba-axis">Suma 1 sensorial · corta muletillas</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Nuestra ensalada rica fresca deliciosa de la casa — simplemente la mejor.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Pequeñas hojas crujientes con rábano de desayuno cortado en láminas, limón y aderezo de buttermilk que hacemos cada mañana.</p>
+        </div>
+        <p class="mc-ba-note">Cortado: <em>rica / fresca / deliciosa / simplemente / la mejor</em>. Sumado: <em>crujientes</em> (sensorial), <em>rábano de desayuno</em> (producto específico), <em>cada mañana</em> (técnica).</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Pollo asado</span><span class="mc-ba-axis">Nombra al productor · nombra la técnica</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Medio pollo con papas y verduras de temporada.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Medio pollo de Path Valley en salmuera de un día, asado al hueso, con fingerlings dorados y jugos de la sartén.</p>
+        </div>
+        <p class="mc-ba-note">Sumado: <em>Path Valley</em> (procedencia), <em>salmuera de un día / asado al hueso</em> (técnica), <em>dorados / jugos de la sartén</em> (sensorial + técnica). Mismas proteínas, mismas verduras, mismo costo del plato.</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Tonnarelli al pepe</span><span class="mc-ba-axis">Un cambio sensorial</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Tonnarelli artesanal con pecorino y pimienta.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Tonnarelli artesanal con pecorino ahumado y pimienta negra recién quebrada.</p>
+        </div>
+        <p class="mc-ba-note">Cambio de dos palabras. <em>Ahumado</em> y <em>recién quebrada</em> son ambos sensoriales; juntos llevan una descripción de 7 palabras de "está bien" a "yo quiero eso".</p>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">Estas son ilustraciones de patrón, no tu menú. El Inspector nunca escribe por ti — solo señala direcciones. La reescritura es tuya, o de tu cocinero, o de quien sepa qué hace cantar el plato.</p>
   </div>
 </div></section>
 
