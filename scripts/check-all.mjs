@@ -61,6 +61,7 @@ const CHECKS = [
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],
   ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
+  ['Topic page schema (idem)','inject-topic-page-schema.mjs','--check'],
   ['Hub collection schema (idem)','inject-hub-collection-schema.mjs','--check'],
   ['Author chip (idem)',  'inject-article-author-chip.mjs', '--check'],
   ['Sitemap (idem)',      'build-sitemap.mjs',              '--check'],
