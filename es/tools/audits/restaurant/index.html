@@ -1006,6 +1006,52 @@
     flex-wrap: wrap;
     gap: 6px 8px;
   }
+  /* Mini-gráfica de auditorías recientes. */
+  .history-banner-spark {
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 4px;
+    color: var(--teal);
+  }
+  .history-banner-spark[hidden] { display: none; }
+  .history-banner-spark-caption {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft, var(--stone));
+  }
+  .history-banner-spark-svg {
+    width: 100%;
+    max-width: 320px;
+    height: 60px;
+    overflow: visible;
+  }
+  .history-banner-spark-svg .spark-line { stroke: var(--teal); }
+  .history-banner-spark-svg .spark-area { fill: rgba(31, 78, 91, 0.10); stroke: none; }
+  .history-banner-spark-svg .spark-pt   { fill: var(--cream, #FAF6EE); stroke: var(--teal); stroke-width: 2; }
+  .history-banner-spark-svg .spark-pt-current { fill: var(--teal); stroke: var(--teal); }
+  .history-banner-spark-svg .spark-label {
+    font: 600 11px/1 var(--font-body, system-ui);
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: var(--cream, #FAF6EE);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+  .history-banner-spark-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    max-width: 320px;
+    font-size: 10.5px;
+    color: var(--stone);
+    font-variant-numeric: tabular-nums;
+  }
+  .history-banner-spark-axis span:first-child { text-align: left; }
+  .history-banner-spark-axis span:last-child  { text-align: right; }
   .history-banner-pillar {
     display: inline-flex;
     align-items: center;
@@ -5628,6 +5674,15 @@
           <span class="history-banner-timing" id="historyBannerTiming"></span>
         </div>
         <div class="history-banner-delta" id="historyBannerDelta"></div>
+        <!-- Mini-gráfica de auditorías recientes. -->
+        <figure class="history-banner-spark" id="historyBannerSpark" hidden>
+          <figcaption class="history-banner-spark-caption" data-tr="history.sparkCaption">Tus últimas auditorías</figcaption>
+          <svg class="history-banner-spark-svg" id="historyBannerSparkSvg" viewBox="0 0 240 60" aria-hidden="true">
+            <polyline class="spark-line" id="historyBannerSparkLine" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points=""/>
+            <g class="spark-points" id="historyBannerSparkPoints"></g>
+          </svg>
+          <div class="history-banner-spark-axis" id="historyBannerSparkAxis"></div>
+        </figure>
         <ul class="history-banner-pillars" id="historyBannerPillars"></ul>
         <!-- Sprint H3: specific priority checks that flipped from
              failed / unverified to a pass between the prior snapshot
@@ -11126,6 +11181,81 @@
     var showBanner = (typeof current.overall === 'number' && typeof previous.overall === 'number')
                      || changesCount > 0 || hasResolved;
     banner.hidden = !showBanner;
+
+    renderHistorySparkline(history);
+  }
+
+  function renderHistorySparkline(history) {
+    var spark    = document.getElementById('historyBannerSpark');
+    var svg      = document.getElementById('historyBannerSparkSvg');
+    var lineEl   = document.getElementById('historyBannerSparkLine');
+    var ptsEl    = document.getElementById('historyBannerSparkPoints');
+    var axisEl   = document.getElementById('historyBannerSparkAxis');
+    if (!spark || !svg || !lineEl || !ptsEl || !axisEl) return;
+    var entries = (Array.isArray(history) ? history : [])
+      .filter(function(e){ return e && typeof e.overall === 'number'; })
+      .slice(-6);
+    if (entries.length < 3) {
+      spark.hidden = true;
+      return;
+    }
+
+    var W = 240, H = 60, padX = 12, padY = 8;
+    var minScore = 100, maxScore = 0;
+    entries.forEach(function(e){
+      if (e.overall < minScore) minScore = e.overall;
+      if (e.overall > maxScore) maxScore = e.overall;
+    });
+    var range = Math.max(20, maxScore - minScore);
+    var midY = padY + (H - padY * 2) * 0.5;
+
+    var pts = entries.map(function(e, i){
+      var x = padX + (W - padX * 2) * (i / Math.max(1, entries.length - 1));
+      var rel = (e.overall - minScore) / range;
+      var y = (H - padY) - rel * (H - padY * 2);
+      if (maxScore - minScore < 5) y = midY;
+      return { x: x, y: y, score: e.overall, ts: e.ts };
+    });
+
+    lineEl.setAttribute('points', pts.map(function(p){ return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' '));
+
+    ptsEl.innerHTML = '';
+    pts.forEach(function(p, i){
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', p.x.toFixed(1));
+      c.setAttribute('cy', p.y.toFixed(1));
+      c.setAttribute('r', i === pts.length - 1 ? '4' : '3');
+      c.setAttribute('class', i === pts.length - 1 ? 'spark-pt spark-pt-current' : 'spark-pt');
+      ptsEl.appendChild(c);
+    });
+    var last = pts[pts.length - 1];
+    var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', Math.max(padX, Math.min(W - padX, last.x + 8)).toFixed(1));
+    label.setAttribute('y', Math.max(12, last.y - 8).toFixed(1));
+    label.setAttribute('text-anchor', last.x > W - 28 ? 'end' : 'start');
+    label.setAttribute('class', 'spark-label');
+    label.textContent = String(last.score);
+    ptsEl.appendChild(label);
+
+    var fmtDate = function(ts){
+      try {
+        var d = new Date(ts);
+        var diffMs = Date.now() - ts;
+        var oneDay = 24 * 60 * 60 * 1000;
+        if (diffMs < oneDay && d.getDate() === new Date().getDate()) return 'hoy';
+        if (diffMs < 2 * oneDay)  return 'ayer';
+        return d.toLocaleDateString('es', { month: 'short', day: 'numeric' });
+      } catch (_) { return ''; }
+    };
+    axisEl.innerHTML = '';
+    var leftSpan  = document.createElement('span');
+    var rightSpan = document.createElement('span');
+    leftSpan.textContent  = fmtDate(entries[0].ts);
+    rightSpan.textContent = fmtDate(entries[entries.length - 1].ts);
+    axisEl.appendChild(leftSpan);
+    axisEl.appendChild(rightSpan);
+
+    spark.hidden = false;
   }
 
   // Sprint T2 + E4: the closed state of the footer now carries a
