@@ -53,7 +53,7 @@
     try {
       if (typeof localStorage === 'undefined') return null;
       var probe = '__mtn_role_probe__';
-      localStorage.setItem(probe, probe);
+      localStorage.setItem(probe, probe); // h8-exempt: quota-availability probe; immediately removed
       localStorage.removeItem(probe);
       return localStorage;
     } catch (e) {
