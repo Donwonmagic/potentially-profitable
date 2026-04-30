@@ -164,6 +164,15 @@
 .pb-coverage-crop{display:block;margin:6px 0;height:48px;background:var(--cream-2);border:1px solid var(--line);position:relative;--pb-crop-w:100%;--pb-crop-h:100%;--pb-crop-x:0%;--pb-crop-y:0%}
 .pb-coverage-crop::after{content:"";position:absolute;background:rgba(31,78,91,0.10);border:2px solid var(--teal);box-sizing:border-box;top:var(--pb-crop-y);left:var(--pb-crop-x);width:var(--pb-crop-w);height:var(--pb-crop-h)}
 
+/* Panel de paleta. */
+.pb-palette{padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+.pb-palette-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.pb-palette-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.pb-palette-chip{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pb-palette-swatch{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18)}
+.pb-palette-hex{font:600 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.pb-palette-note{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0}
+
 .pb-empty{padding:24px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center;margin-top:24px}
 
 .pb-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px;padding:14px 18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
@@ -556,6 +565,13 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     <div id="pbCoverageWrap" style="display:none;margin-top:18px;">
       <p style="font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 8px;">Cobertura de superficies &middot; mapa de proporción</p>
       <div class="pb-coverage" id="pbCoverage"></div>
+    </div>
+
+    <!-- Panel de paleta — alimentado por un handoff de Brand Suite. -->
+    <div id="pbPaletteWrap" class="pb-palette" style="display:none;margin-top:18px;">
+      <p class="pb-palette-eyebrow">Estiliza con esta paleta</p>
+      <div class="pb-palette-chips" id="pbPaletteChips"></div>
+      <p class="pb-palette-note" id="pbPaletteNote"></p>
     </div>
 
     <!-- Reglas de publicación por plataforma — cheat sheet de los
@@ -1009,6 +1025,39 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     }
     return '--pb-crop-w:' + w + ';--pb-crop-h:' + h + ';--pb-crop-x:' + x + ';--pb-crop-y:' + y;
   }
+  // Panel "Estiliza con esta paleta" — alimentado desde el handoff
+  // de Brand Suite. Oculto cuando no hay paleta.
+  function renderPalettePanel(palette) {
+    var wrap   = document.getElementById('pbPaletteWrap');
+    var chips  = document.getElementById('pbPaletteChips');
+    var noteEl = document.getElementById('pbPaletteNote');
+    if (!wrap || !chips || !noteEl) return;
+    if (!palette || !palette.length) {
+      wrap.style.display = 'none';
+      return;
+    }
+    chips.innerHTML = '';
+    palette.forEach(function(hex){
+      var chip = document.createElement('div');
+      chip.className = 'pb-palette-chip';
+      var swatch = document.createElement('div');
+      swatch.className = 'pb-palette-swatch';
+      swatch.style.backgroundColor = hex;
+      var hexLabel = document.createElement('span');
+      hexLabel.className = 'pb-palette-hex';
+      hexLabel.textContent = hex;
+      chip.appendChild(swatch);
+      chip.appendChild(hexLabel);
+      chips.appendChild(chip);
+    });
+    var anchor = palette[0];
+    noteEl.textContent =
+      'Apoya los props (manteles, platos, guarniciones, superficie) en estos ' +
+      palette.length + ' tonos. Ancla en ' + anchor + ' para que la marca ' +
+      'se reconozca en una miniatura; deja que la comida cargue el resto del cuadro.';
+    wrap.style.display = '';
+  }
+
   function renderCoverage(checkedSurfaces){
     if (!checkedSurfaces.length) {
       coverageWrap.style.display = 'none';
@@ -1093,6 +1142,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     paybackNum.textContent= roi.paybackMonths ? roi.paybackMonths.toFixed(1) : '—';
 
     renderCoverage(surfaces);
+    renderPalettePanel(fragmentState.palette);
     mathEl.style.display = '';
     emptyEl.style.display = 'none';
     fireBucketEvent();
