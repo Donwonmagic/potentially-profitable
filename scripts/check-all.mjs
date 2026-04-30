@@ -61,6 +61,7 @@ const CHECKS = [
   ['Glossary article schema (idem)','inject-glossary-article-schema.mjs','--check'],
   ['RSS feeds (idem)',    'build-rss.mjs',                 '--check'],
   ['RSS coverage',        'check-rss-coverage.mjs',        '--check'],
+  ['Content guardrails',  'check-content-guardrails.mjs',  '--check'],
 ];
 
 const results = [];
