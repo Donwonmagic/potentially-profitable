@@ -626,6 +626,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
@@ -1475,6 +1476,22 @@
     deepScanState.peerMedians=peerMedians;
     deepScanState.query=query;
     deepScanState.wasPicked=wasPicked;
+
+    // Cross-tool handoff — write the resolved listing to
+    // MuntinContext so schema-check (and other downstream tools) can
+    // pre-fill businessName/address/phone/cuisine without re-asking.
+    // Best-effort; failures are silent.
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({
+          businessName: chosen.displayName || chosen.name || undefined,
+          address:      chosen.formattedAddress || undefined,
+          phone:        chosen.nationalPhoneNumber || chosen.internationalPhoneNumber || undefined,
+          cuisine:      chosen.primaryTypeDisplayName || undefined,
+          lastUrl:      chosen.website || undefined
+        });
+      }
+    } catch (_) {}
 
     bizEl.innerHTML=renderBusinessCard(chosen);
 

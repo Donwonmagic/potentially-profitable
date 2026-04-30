@@ -596,6 +596,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
@@ -1356,6 +1357,20 @@
     deepScanState.peerMedians=peerMedians;
     deepScanState.query=query;
     deepScanState.wasPicked=wasPicked;
+
+    // Handoff cross-tool — escribe la ficha resuelta en MuntinContext
+    // para que schema-check y otras herramientas pre-llenen sus campos.
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({
+          businessName: chosen.displayName || chosen.name || undefined,
+          address:      chosen.formattedAddress || undefined,
+          phone:        chosen.nationalPhoneNumber || chosen.internationalPhoneNumber || undefined,
+          cuisine:      chosen.primaryTypeDisplayName || undefined,
+          lastUrl:      chosen.website || undefined
+        });
+      }
+    } catch (_) {}
 
     bizEl.innerHTML=renderBusinessCard(chosen);
 
