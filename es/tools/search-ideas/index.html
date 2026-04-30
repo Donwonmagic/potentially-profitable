@@ -109,19 +109,35 @@
 </head>
 <style>
   .si-hero{max-width:680px;margin:0 auto;text-align:center}
-  .si-form{display:flex;gap:10px;max-width:560px;margin:32px auto 0}
-  .si-form input{flex:1;padding:14px 18px;border:2px solid var(--line-dark);border-radius:12px;font:inherit;font-size:16px;background:var(--white);color:var(--ink)}
-  .si-form input:focus{border-color:var(--teal);outline:none}
-  .si-form button{padding:14px 24px;border:0;border-radius:12px;background:var(--teal);color:var(--cream);font:inherit;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap}
-  .si-form button:hover{background:var(--teal-dark)}
-  @media(max-width:640px){.si-form{flex-direction:column}}
+  .si-form{display:flex;flex-wrap:wrap;gap:8px;max-width:560px;margin:24px auto 0}
+  .si-form input{flex:1 1 200px;min-width:160px;padding:12px 14px;border:1px solid var(--line-dark);border-radius:10px;font:inherit;font-size:15px;background:var(--white);color:var(--ink)}
+  .si-form input:focus{outline:none;border-color:var(--teal)}
+  .si-form input#siCompetitor{flex:1 1 100%}
+  .si-form button{padding:12px 22px;border:0;border-radius:10px;background:var(--teal);color:var(--cream);font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .si-form button:hover{background:var(--ink)}
+  .si-row{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer}
+  .si-row input[type="checkbox"]{flex:0 0 auto;margin:0;cursor:pointer;accent-color:var(--teal)}
+  .si-q-text{flex:1}
+  .si-items li:has(.si-pick:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+  .si-route{font-weight:500;color:var(--ink-soft);text-transform:none;letter-spacing:0;font-size:11.5px;margin-left:6px}
+  .si-route-why{font-size:12.5px;color:var(--stone);margin:-4px 0 8px;line-height:1.5}
+  .si-multi{display:none;margin:18px 0 0;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-sm);background:var(--surface-1)}
+  .si-multi[data-shown="true"]{display:block}
+  .si-multi-head{font-size:14px;color:var(--ink);margin:0 0 10px}
+  .si-multi-clear{background:none;border:0;color:var(--teal);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0;margin-left:6px}
+  .si-multi-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .si-multi-btn{padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:none}
+  .si-multi-btn:hover{border-color:var(--teal);color:var(--teal)}
+  .si-multi-btn[aria-disabled="true"]{opacity:0.4;pointer-events:none}
+  .si-multi-msg{font-size:12px;color:var(--stone)}
+  .si-multi-tip{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
   .si-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
   .si-result{display:none;max-width:600px;margin:40px auto 0}
   .si-result.visible{display:block}
   .si-group{margin-bottom:28px}
   .si-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
   .si-items{list-style:none;padding:0;margin:0}
-  .si-items li{padding:12px 16px;border:1px solid var(--line);border-radius:8px;background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .si-items li{padding:0;border:1px solid var(--line);border-radius:8px;background:var(--white);margin-bottom:6px;font-size:15px;color:var(--ink)}
   .si-items .q{color:var(--stone);font-size:14px;flex:0 0 20px}
   .si-items strong{color:var(--teal)}
   .si-tip{font-size:14px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;margin-top:20px}
@@ -297,10 +313,11 @@
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-  <p class="hero-sub" style="margin:20px auto 0;max-width:560px;">Escribe tu tipo de negocio y tu ciudad. Te mostramos las consultas de búsqueda que la gente real escribe en Google — así sabes exactamente de qué deberían estar hablando tu sitio y tu Google Business Profile.</p>
+  <p class="hero-sub" style="margin:20px auto 0;max-width:560px;">Escribe tu tipo de negocio y tu ciudad. Generamos los patrones de búsqueda que tus clientes reales usan — las consultas que tu sitio, página de menú y Google Business Profile deberían responder. <em>(Una librería de patrones curada, no una llamada en vivo a Google. Las formas coinciden con lo que la gente busca; los volúmenes varían por mercado.)</em></p>
   <div class="si-form">
-    <input type="text" id="siType" placeholder="estudio de yoga" aria-label="Tu tipo de negocio" />
+    <input type="text" id="siType" placeholder="pizzería" aria-label="Tu tipo de negocio" />
     <input type="text" id="siCity" placeholder="Silver Spring, MD" aria-label="Tu ciudad" />
+    <input type="text" id="siCompetitor" placeholder="(opcional) competidor principal" aria-label="Competidor principal (opcional)" />
     <button type="button" id="siSubmit">Mostrar</button>
   </div>
   <p class="si-note">Genera los patrones de búsqueda más comunes para tu tipo de negocio + ubicación. Al instante — no hace falta llamar a una API.</p>
@@ -377,21 +394,23 @@
       'nuevo {type} en {city}'
     ]},
     {cat:'Precios — lo que quieren saber antes de reservar',templates:[
-      'cuánto cuesta {type} en {city}',
       'precios {type} {city}',
+      '{type} happy hour {city}',
       '{type} accesible {city}',
       '{type} barato cerca de mí',
-      'precios de membresía {type} {city}',
-      '{type} primera visita gratis {city}'
+      'menú prix fixe {type} {city}',
+      '{type} oferta brunch {city}'
     ]},
     {cat:'Específicas — las consultas de cola larga con intención real',templates:[
-      '{type} con estacionamiento {city}',
-      '{type} para principiantes {city}',
-      '{type} para niños {city}',
-      'tarjeta de regalo {type} {city}',
-      '{type} eventos privados {city}',
-      '{type} reserva para grupo {city}',
-      '{type} sin cita {city}',
+      '{type} delivery {city}',
+      '{type} para llevar {city}',
+      '{type} terraza {city}',
+      '{type} byob {city}',
+      '{type} late night {city}',
+      '{type} menú niños {city}',
+      '{type} comedor privado {city}',
+      '{type} sin gluten {city}',
+      '{type} reservaciones {city}',
       'reseñas {type} {city}'
     ]},
     {cat:'Comparación — tú vs. la competencia',templates:[
@@ -405,20 +424,115 @@
 
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-  function generate(type,city){
-    type=esc(type);city=esc(city);
+  // Sugerencia de ruta por grupo — dónde poner las palabras clave
+  // de cada query en el sitio del operador.
+  var ROUTE_BY_GROUP = {
+    'Descubrimiento': { tag: 'H1 página menú / categoría primaria GBP',  why: 'Estas son consultas de intención de búsqueda — necesitan anclar el titular y la categoría primaria de Google para rankear.' },
+    'Precios':        { tag: 'cuerpo página menú / FAQ schema',           why: 'La intención de precios se contesta en la página del menú, no la home. Asegura que los precios y el contexto aparezcan en el cuerpo.' },
+    'Específicas':    { tag: 'alt text de fotos / atributos GBP / FAQ',   why: 'Las características de cola larga (BYOB, terraza, menú niños) viven en los toggles de atributos GBP y en alt text de imágenes donde Google los lee.' },
+    'Comparación':    { tag: 'respuesta a reseñas / diferenciadores About', why: 'Las búsquedas de comparación leen tus reseñas y página About. Apóyate en lo que te hace distinto ahí, no en la home.' }
+  };
+  function routeForGroup(cat) {
+    var key = String(cat || '').split(/[^A-Za-zÁÉÍÓÚÑáéíóúñ]/)[0];
+    return ROUTE_BY_GROUP[key] || { tag: 'sitio web + descripción GBP', why: '' };
+  }
+
+  function generate(type,city,competitor){
+    var typeEsc = esc(type), cityEsc = esc(city);
+    var compEsc = esc(competitor || '');
     var html='';
-    PATTERNS.forEach(function(group){
-      html+='<div class="si-group"><p class="si-group-label">'+group.cat+'</p><ul class="si-items">';
+    var qid = 0;
+    var groups = PATTERNS.slice();
+    if (competitor) {
+      groups.push({
+        cat: 'Versus competidor — búsquedas con nombre de rival',
+        templates: [
+          '{type} vs {competitor}',
+          'alternativas a {competitor} {city}',
+          'reseñas {competitor}',
+          'restaurantes como {competitor} {city}',
+          '{competitor} o {type} mejor'
+        ]
+      });
+    }
+    groups.forEach(function(group){
+      var route = routeForGroup(group.cat);
+      if (/^Versus/.test(group.cat)) {
+        route = { tag: 'diferenciadores About / respuesta a reseñas', why: 'Las búsquedas de comparación leen tu página About y tus respuestas a reseñas. Apóyate en lo que te hace distinto ahí.' };
+      }
+      html+='<div class="si-group"><p class="si-group-label">'+esc(group.cat)+' <span class="si-route">→ ' + esc(route.tag) + '</span></p>';
+      if (route.why) html += '<p class="si-route-why">' + esc(route.why) + '</p>';
+      html += '<ul class="si-items">';
       group.templates.forEach(function(t){
-        var q=t.replace(/\{type\}/g,type).replace(/\{city\}/g,city);
-        html+='<li><span class="q">🔍</span> '+q+'</li>';
+        var q=t.replace(/\{type\}/g,typeEsc).replace(/\{city\}/g,cityEsc).replace(/\{competitor\}/g,compEsc);
+        var id = 'si-q-' + (++qid);
+        html+='<li><label class="si-row" for="'+id+'"><input type="checkbox" id="'+id+'" class="si-pick" data-query="'+esc(q)+'" data-route="'+esc(route.tag)+'" /><span class="q">🔍</span><span class="si-q-text">'+q+'</span></label></li>';
       });
       html+='</ul></div>';
     });
-    html+='<div class="si-tip"><strong>Cómo usarlas:</strong> cada consulta de arriba es algo que la gente de verdad escribe en Google. Si tu sitio y tu Google Business Profile no contienen las palabras de esas búsquedas, eres invisible para ellas. Agrega los términos relevantes a tu etiqueta de título, meta descripción, página de servicios y descripción del GBP — así es como empiezas a aparecer.</div>';
+    html += '<div class="si-multi" data-multi role="region" aria-label="Acciones para queries seleccionadas">' +
+      '<p class="si-multi-head"><strong>Seleccionadas: <span data-multi-count>0</span></strong> &middot; <button type="button" class="si-multi-clear" data-multi-clear>Limpiar</button></p>' +
+      '<div class="si-multi-actions">' +
+        '<a class="si-multi-btn" data-multi-action="menu-copy" href="#" target="_blank" rel="noopener">Enviar a Inspector de Copy &rarr;</a>' +
+        '<a class="si-multi-btn" data-multi-action="gbp" href="#" target="_blank" rel="noopener">Enviar a Calificador GBP &rarr;</a>' +
+        '<a class="si-multi-btn" data-multi-action="seo" href="#" target="_blank" rel="noopener">Enviar a Calificador SEO &rarr;</a>' +
+        '<button type="button" class="si-multi-btn" data-multi-action="copy">Copiar seleccionadas</button>' +
+        '<span class="si-multi-msg" data-multi-msg aria-live="polite"></span>' +
+      '</div>' +
+      '<p class="si-multi-tip">Marca las 3-5 consultas que más quieras rankear, mándalas a la siguiente herramienta y verás exactamente dónde van las palabras en tu sitio.</p>' +
+    '</div>';
+    html+='<div class="si-tip"><strong>Cómo usarlas:</strong> cada consulta de arriba es algo que tus clientes escriben en Google. La etiqueta <em>→ dónde ponerlo</em> en cada grupo te dice qué superficie debería llevar esas palabras. Marca las que aplican a tu negocio y mándalas a la siguiente herramienta para ver el cambio en contexto.</div>';
     html+='<div class="si-cta"><p>¿Quieres ver cómo le va a tu sitio en las revisiones que importan?</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/es/tools/audits/restaurant/">Diagnóstico de restaurante</a></div></div>';
     return html;
+  }
+
+  function siWireMulti(rootEl) {
+    if (!rootEl) return;
+    var toolbar = rootEl.querySelector('[data-multi]');
+    var countEl = rootEl.querySelector('[data-multi-count]');
+    var msgEl   = rootEl.querySelector('[data-multi-msg]');
+    if (!toolbar || !countEl) return;
+    function selected() {
+      return Array.prototype.slice.call(rootEl.querySelectorAll('.si-pick:checked')).map(function(cb){
+        return { query: cb.getAttribute('data-query'), route: cb.getAttribute('data-route') };
+      });
+    }
+    function flash(text) { if (!msgEl) return; msgEl.textContent = text; setTimeout(function(){ if (msgEl) msgEl.textContent = ''; }, 2200); }
+    function refresh() {
+      var sel = selected();
+      countEl.textContent = sel.length;
+      toolbar.setAttribute('data-shown', sel.length > 0 ? 'true' : 'false');
+      var queries = sel.map(function(s){ return s.query; });
+      var encoded = encodeURIComponent(queries.join('\n'));
+      var routes = {
+        'menu-copy': '/es/tools/menu-copy/#queries=' + encoded,
+        'gbp':       '/es/tools/gbp-grader/#keywords=' + encoded,
+        'seo':       '/es/tools/seo-grader/#queries=' + encoded
+      };
+      Array.prototype.forEach.call(rootEl.querySelectorAll('[data-multi-action]'), function(el){
+        var action = el.getAttribute('data-multi-action');
+        if (action !== 'copy' && routes[action]) el.href = routes[action];
+        el.toggleAttribute('aria-disabled', sel.length === 0);
+      });
+    }
+    rootEl.addEventListener('change', function(ev){
+      if (ev.target && ev.target.classList && ev.target.classList.contains('si-pick')) refresh();
+    });
+    var clearBtn = rootEl.querySelector('[data-multi-clear]');
+    if (clearBtn) clearBtn.addEventListener('click', function(){
+      Array.prototype.forEach.call(rootEl.querySelectorAll('.si-pick'), function(cb){ cb.checked = false; });
+      refresh();
+    });
+    var copyBtn = rootEl.querySelector('[data-multi-action="copy"]');
+    if (copyBtn) copyBtn.addEventListener('click', function(){
+      var sel = selected();
+      if (!sel.length) { flash('Marca al menos una consulta primero.'); return; }
+      var text = sel.map(function(s){ return s.query + (s.route ? '   → ' + s.route : ''); }).join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ flash('Copiadas ' + sel.length + ' consulta' + (sel.length === 1 ? '' : 's') + ' al portapapeles.'); });
+      } else { flash('Copiar no disponible — selecciona el texto manualmente.'); }
+    });
+    refresh();
   }
 
   // Phase 2 (Workshop) — Guardar en mi Taller via el helper.
@@ -431,8 +545,11 @@
         onRehydrate: function (p) {
           if (typeInput && p.type) typeInput.value = p.type;
           if (cityInput && p.city) cityInput.value = p.city;
-          result.innerHTML = generate(p.type || '', p.city || '');
+          var compEl = document.getElementById('siCompetitor');
+          if (compEl && p.competitor) compEl.value = p.competitor;
+          result.innerHTML = generate(p.type || '', p.city || '', p.competitor || '');
           result.classList.add('visible');
+          siWireMulti(result);
           result.scrollIntoView({ behavior: 'smooth', block: 'start' });
         },
         workbenchUrl: '/es/workbench/',
@@ -440,16 +557,19 @@
       })
     : null;
 
+  var competitorInput = document.getElementById('siCompetitor');
   btn.addEventListener('click',function(){
     var type=typeInput.value.trim().toLowerCase();
     var city=cityInput.value.trim();
+    var competitor=(competitorInput && competitorInput.value || '').trim();
     if(!type){typeInput.focus();return}
     if(!city){cityInput.focus();return}
-    result.innerHTML=generate(type,city);
+    result.innerHTML=generate(type,city,competitor);
     result.classList.add('visible');
+    siWireMulti(result);
     result.scrollIntoView({behavior:'smooth',block:'start'});
-    if (wb) wb.showAffordance({ type: type, city: city, generatedAt: Date.now() });
-    if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city}});
+    if (wb) wb.showAffordance({ type: type, city: city, competitor: competitor || undefined, generatedAt: Date.now() });
+    if(window.plausible)window.plausible('Search Ideas',{props:{type:type,city:city,hasCompetitor:competitor?'yes':'no',locale:'es'}});
   });
 
   // Enter key triggers
