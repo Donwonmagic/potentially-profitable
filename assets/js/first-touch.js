@@ -196,6 +196,52 @@
   window.muntin.firstTouch = function () { return safeRead(STORAGE_FIRST); };
   window.muntin.aiSearchEngine = function () { return detectAiEngine(refHost()); };
   window.muntin.session = function () { return safeRead(STORAGE_SESSION); };
+
+  // Phase G.9 — Article Scroll. Fires once per session per depth
+  // bucket {50, 100} when the visitor reaches that fraction of an
+  // article body. Bounded cardinality: 2 depths × landingKind enum.
+  var postBody = document.getElementById('post-body');
+  if (postBody && /^\/(?:es\/)?blog\//.test(location.pathname)) {
+    var fired50 = false;
+    var fired100 = false;
+    function maybeFire() {
+      if (fired50 && fired100) return;
+      var rect = postBody.getBoundingClientRect();
+      var bodyTopAbs = rect.top + window.scrollY;
+      var bodyHeight = postBody.offsetHeight;
+      var viewBottom = window.scrollY + (window.innerHeight || document.documentElement.clientHeight || 0);
+      var read = Math.max(0, viewBottom - bodyTopAbs);
+      var pct = bodyHeight > 0 ? (read / bodyHeight) : 0;
+      if (!fired50 && pct >= 0.5) {
+        fired50 = true;
+        if (!sess.exposures['scroll:50']) {
+          sess.exposures['scroll:50'] = 1;
+          safeWrite(STORAGE_SESSION, sess);
+          if (typeof window.plausible === 'function') {
+            try { window.plausible('Article Scroll', { props: { depth: '50', landingKind: detectLandingKind(location.pathname) } }); } catch (_) {}
+          }
+        }
+      }
+      if (!fired100 && pct >= 0.99) {
+        fired100 = true;
+        if (!sess.exposures['scroll:100']) {
+          sess.exposures['scroll:100'] = 1;
+          safeWrite(STORAGE_SESSION, sess);
+          if (typeof window.plausible === 'function') {
+            try { window.plausible('Article Scroll', { props: { depth: '100', landingKind: detectLandingKind(location.pathname) } }); } catch (_) {}
+          }
+        }
+      }
+    }
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () { maybeFire(); ticking = false; });
+    }, { passive: true });
+    // Run once on load too — short articles can be > 50% read on first paint.
+    setTimeout(maybeFire, 500);
+  }
 })();
 
 // Phase G.10 (Growth) — newsletter footer form submit. Async fetch
