@@ -142,6 +142,24 @@
   .speed-metric .lbl { font-size: 12px; color: var(--stone); margin-top: 4px;
     font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
   @media (max-width: 420px) { .speed-metrics { grid-template-columns: 1fr; } }
+  .speed-shot { margin: 18px 0; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .speed-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .speed-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
+  .speed-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+  .speed-shot-caption { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin: 8px 0 0; }
+  .speed-biggest { margin: 18px 0; padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--rust); border-radius: var(--r-md); background: var(--surface-1); }
+  .speed-biggest-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rust); margin: 0 0 8px; }
+  .speed-biggest-headline { font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); margin: 0 0 8px; }
+  .speed-biggest-why { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.55; }
+  .speed-biggest-snippet { background: var(--cream-2); padding: 10px 12px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; line-height: 1.5; overflow: auto; max-height: 200px; }
+  .speed-compress { margin-top: 10px; }
+  .speed-compress-summary { cursor: pointer; font-size: 13px; color: var(--teal); font-weight: 500; }
+  .speed-compress-body { margin-top: 10px; padding: 12px 14px; background: var(--cream-2); border-radius: 6px; }
+  .speed-compress-help { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; line-height: 1.5; }
+  .speed-compress-out { margin-top: 10px; }
+  .speed-compress-result { font-size: 13.5px; color: var(--ink); margin: 0 0 8px; }
+  .speed-compress-download { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--ink); color: var(--cream); text-decoration: none; font-weight: 500; font-size: 13px; }
+  .speed-compress-download:hover { background: var(--teal); }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -548,6 +566,8 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/platform-fixes.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260429-batch3"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -621,6 +641,85 @@
   // Phase 2 (Workshop) — render extracted from the submit handler
   // so both a fresh test AND a Workbench rehydrate use one path.
   // Payload shape: { url, score, lcp, fcp, tbt, cls, testedAt }.
+  function fmtBytes(b) {
+    if (!b || !isFinite(b)) return '';
+    if (b > 1048576) return (b / 1048576).toFixed(1) + ' MB';
+    if (b > 1024)    return Math.round(b / 1024) + ' KB';
+    return b + ' B';
+  }
+  function renderBiggestOffender(p) {
+    var host = document.getElementById('speedBiggestHost');
+    if (host) host.parentNode.removeChild(host);
+    if (!p.biggestItem) return;
+    var item = p.biggestItem;
+    var html = '<div class="speed-biggest" id="speedBiggestHost">';
+    html += '<p class="speed-biggest-eyebrow">Your slowest thing</p>';
+    if (p.biggestKind === 'opportunity' && item.url) {
+      var fileName = (item.url.split('/').pop() || item.url).split('?')[0];
+      html += '<p class="speed-biggest-headline"><strong>' + escHtml(fileName) + '</strong> &mdash; ' + (item.wastedBytes ? fmtBytes(item.wastedBytes) : 'too large') + '</p>';
+      html += '<p class="speed-biggest-why">Compressing or removing this single resource is the single biggest speed win on your site. ' + (item.saving ? 'Estimated savings: ' + fmtBytes(item.saving) + '.' : '') + '</p>';
+      // Image-shaped → offer the inline compressor.
+      if (/\.(jpe?g|png|webp|gif)$/i.test(fileName)) {
+        html += '<details class="speed-compress" id="speedCompress">';
+        html += '<summary class="speed-compress-summary">Compress an image right here &rarr;</summary>';
+        html += '<div class="speed-compress-body">';
+        html += '<p class="speed-compress-help">Drop a JPEG/PNG and we resize + recompress in your browser. No upload — the file never leaves your device.</p>';
+        html += '<input type="file" id="speedCompressInput" accept="image/jpeg,image/png" />';
+        html += '<div class="speed-compress-out" id="speedCompressOut"></div>';
+        html += '</div></details>';
+      }
+    } else if (item.snippet) {
+      html += '<p class="speed-biggest-headline">Your largest visible element</p>';
+      html += '<pre class="speed-biggest-snippet">' + escHtml(item.snippet) + '</pre>';
+      html += '<p class="speed-biggest-why">This is what Google measured for your LCP score. If it\'s an image, compress it; if it\'s a text block, check what loads above it.</p>';
+    }
+    html += '</div>';
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    var anchor = document.querySelector('.speed-metrics, .speed-result-grid, .speed-result, #speedResult');
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(wrap.firstChild, anchor);
+    var input = document.getElementById('speedCompressInput');
+    var out = document.getElementById('speedCompressOut');
+    if (input) input.addEventListener('change', function (ev) {
+      var file = ev.target.files && ev.target.files[0]; if (!file) return;
+      var img = new Image();
+      var reader = new FileReader();
+      reader.onload = function (e) { img.src = e.target.result; };
+      img.onload = function () {
+        var maxW = 1600;
+        var ratio = img.width > maxW ? maxW / img.width : 1;
+        var w = Math.round(img.width * ratio), h = Math.round(img.height * ratio);
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function (blob) {
+          if (!blob) return;
+          var origSize = file.size;
+          var newSize = blob.size;
+          var url = URL.createObjectURL(blob);
+          out.innerHTML = '<p class="speed-compress-result"><strong>Compressed:</strong> ' + fmtBytes(origSize) + ' &rarr; ' + fmtBytes(newSize) + ' (' + Math.round((1 - newSize/origSize) * 100) + '% smaller)</p>' +
+                          '<a class="speed-compress-download" href="' + url + '" download="compressed-' + (file.name.replace(/\.[^.]+$/, '') || 'image') + '.webp">Download .webp</a>';
+        }, 'image/webp', 0.82);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function renderScreenshot(p) {
+    var existing = document.getElementById('speedShotHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    if (!p.screenshot) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'speedShotHost';
+    wrap.className = 'speed-shot';
+    wrap.innerHTML = '<p class="speed-shot-eyebrow">What your homepage looks like at the 3-second mark on a phone</p>' +
+                     '<div class="speed-shot-frame"><img src="' + p.screenshot + '" alt="Phone screenshot of your site at 3 seconds" loading="lazy"></div>' +
+                     '<p class="speed-shot-caption">When half your visitors decide whether to stay.</p>';
+    var dialEl = document.querySelector('.speed-dial');
+    if (dialEl && dialEl.parentNode) dialEl.parentNode.insertBefore(wrap, dialEl.nextSibling);
+  }
+  function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
   function renderResult(p) {
     var score = p.score;
     scoreNum.textContent = score;
@@ -632,6 +731,8 @@
     document.getElementById('metricFCP').textContent = formatMs(p.fcp != null ? Math.round(p.fcp) : null);
     document.getElementById('metricTBT').textContent = formatMs(p.tbt != null ? Math.round(p.tbt) : null);
     document.getElementById('metricCLS').textContent = p.cls != null ? p.cls.toFixed(3) : '—';
+    renderScreenshot(p);
+    renderBiggestOffender(p);
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -760,8 +861,55 @@
         var tbt = audits['total-blocking-time'] ? audits['total-blocking-time'].numericValue : null;
         var cls = audits['cumulative-layout-shift'] ? audits['cumulative-layout-shift'].numericValue : null;
 
-        var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now() };
+        // Pull biggest-offender signals from the Lighthouse payload.
+        // These are the audit details speed-test was previously
+        // discarding — they're the difference between "your score is
+        // 42" and "your hero.jpg is 3.8 MB."
+        var screenshot = null;
+        try {
+          var fs = audits['final-screenshot'];
+          if (fs && fs.details && fs.details.data) screenshot = fs.details.data;
+        } catch (_) {}
+        // The single largest unused-asset opportunity (image, JS, CSS).
+        var biggestItem = null, biggestKind = null;
+        try {
+          var lcpEl = audits['largest-contentful-paint-element'];
+          if (lcpEl && lcpEl.details && lcpEl.details.items && lcpEl.details.items[0]) {
+            var it = lcpEl.details.items[0];
+            if (it.node && it.node.snippet) { biggestItem = { snippet: it.node.snippet, type: 'lcp-element' }; biggestKind = 'lcp'; }
+          }
+        } catch (_) {}
+        try {
+          var oppOrder = ['unminified-javascript','unused-javascript','uses-optimized-images','uses-webp-images','offscreen-images','render-blocking-resources','unminified-css','unused-css-rules'];
+          var bestOpp = null;
+          oppOrder.forEach(function (id) {
+            var a = audits[id];
+            if (!a || !a.details || !a.details.items || !a.details.items.length) return;
+            var saving = a.details.overallSavingsBytes || a.numericValue || 0;
+            if (saving > 0 && (!bestOpp || saving > bestOpp.saving)) {
+              var first = a.details.items[0];
+              bestOpp = {
+                id: id,
+                title: a.title || id,
+                saving: saving,
+                url: first.url || (first.source && first.source.url) || null,
+                wastedBytes: first.wastedBytes || first.totalBytes || 0
+              };
+            }
+          });
+          if (bestOpp && (!biggestItem || bestOpp.saving > 50000)) {
+            biggestItem = bestOpp; biggestKind = 'opportunity';
+          }
+        } catch (_) {}
+        var ctxBus = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+        var platform = ctxBus.platform || null;
+
+        var payload = { url: url, score: score, lcp: lcp, fcp: fcp, tbt: tbt, cls: cls, testedAt: Date.now(), screenshot: screenshot, biggestItem: biggestItem, biggestKind: biggestKind, platform: platform };
         renderResult(payload);
+        // Persist the URL so the next tool inherits it.
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
+        }
         if (states) states.setSuccess();
         showSaveAffordance(payload);
 
