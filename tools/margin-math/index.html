@@ -86,6 +86,18 @@
   .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
   .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
   .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
+  .mm-mode{display:flex;gap:0;margin:4px 0 4px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+  .mm-mode button{padding:6px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+  .mm-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+  .mm-slider-pair{display:grid;grid-template-columns:1fr 80px auto;gap:8px;align-items:center}
+  .mm-slider-pair input[type="range"]{margin:0}
+  .mm-num-input{width:80px;text-align:right;font-variant-numeric:tabular-nums}
+  .mm-num-input--wide{width:160px}
+  .mm-num-suffix{font-size:13px;color:var(--stone)}
+  .mm-num-row{display:flex;align-items:center;gap:6px}
+  .mm-num-prefix{font-size:18px;color:var(--stone);font-weight:600}
+  .mm-pc-dol{display:flex;flex-direction:column;gap:14px}
+  .mm-pc-dol-hint{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
@@ -791,14 +803,48 @@
             <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
           </div>
         </fieldset>
-        <label for="pc-food">
-          <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
-          <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
-        </label>
-        <label for="pc-labor">
-          <span>Labor cost (% of sales) <output id="pc-labor-val" for="pc-labor">32%</output></span>
-          <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
-        </label>
+        <!-- Dollar-mode toggle. Owners think in last-month sales,
+             food spend, and labor spend (the lines on a P&L) — not
+             percentages. Toggling to $ mode reveals three plain
+             dollar inputs; the sliders update in lockstep so the
+             prime-cost math is identical either way. -->
+        <div class="mm-mode" role="radiogroup" aria-label="Input mode">
+          <button type="button" data-mode="pct" aria-pressed="true"  role="radio" data-target="pc">% of sales</button>
+          <button type="button" data-mode="dol" aria-pressed="false" role="radio" data-target="pc">$ from last month</button>
+        </div>
+        <div class="mm-pc-pct" data-mode-view="pct">
+          <label for="pc-food">
+            <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
+            <div class="mm-slider-pair">
+              <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
+              <input type="number" id="pc-food-num" min="0" max="100" step="0.5" value="30" inputmode="decimal" aria-label="Food cost percent" class="mm-num-input">
+              <span class="mm-num-suffix">%</span>
+            </div>
+          </label>
+          <label for="pc-labor">
+            <span>Labor cost (% of sales) <output id="pc-labor-val" for="pc-labor">32%</output></span>
+            <div class="mm-slider-pair">
+              <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
+              <input type="number" id="pc-labor-num" min="0" max="100" step="0.5" value="32" inputmode="decimal" aria-label="Labor cost percent" class="mm-num-input">
+              <span class="mm-num-suffix">%</span>
+            </div>
+          </label>
+        </div>
+        <div class="mm-pc-dol" data-mode-view="dol" hidden>
+          <p class="mm-pc-dol-hint">From last month's bank statement or P&L. We compute the percentages for you.</p>
+          <label for="pc-sales-dol">
+            <span>Monthly sales</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-sales-dol" min="0" step="100" placeholder="24000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+          <label for="pc-food-dol">
+            <span>Monthly food cost</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-food-dol" min="0" step="100" placeholder="7200" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+          <label for="pc-labor-dol">
+            <span>Monthly labor cost</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-labor-dol" min="0" step="100" placeholder="7680" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+        </div>
       </form>
 
       <div class="mm-results" aria-live="polite" aria-atomic="true">
@@ -1707,6 +1753,61 @@
 
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
+
+  // Number-input pair for each slider — type a precise value or
+  // drag, lockstep both ways. Solves the "1% slider on a thumb" UX.
+  var foodNumEl  = card.querySelector('#pc-food-num');
+  var laborNumEl = card.querySelector('#pc-labor-num');
+  function syncFrom(slider, num) {
+    if (!num) return;
+    slider.addEventListener('input', function(){ num.value = slider.value; });
+    num.addEventListener('input', function(){
+      var v = parseFloat(num.value);
+      if (!isFinite(v)) return;
+      slider.value = String(Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), v)));
+      onInput();
+    });
+  }
+  syncFrom(foodEl, foodNumEl);
+  syncFrom(laborEl, laborNumEl);
+
+  // Dollar-mode toggle. Owners type last-month sales / food / labor
+  // dollars; we compute the percentages and update sliders. Keeps
+  // the existing math path; just changes the input shape.
+  var modeBtns = card.querySelectorAll('.mm-mode button[data-target="pc"]');
+  var pctView  = card.querySelector('[data-mode-view="pct"]');
+  var dolView  = card.querySelector('[data-mode-view="dol"]');
+  var salesDolEl = card.querySelector('#pc-sales-dol');
+  var foodDolEl  = card.querySelector('#pc-food-dol');
+  var laborDolEl = card.querySelector('#pc-labor-dol');
+  function setMode(mode) {
+    Array.prototype.forEach.call(modeBtns, function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    if (pctView) pctView.hidden = (mode !== 'pct');
+    if (dolView) dolView.hidden = (mode !== 'dol');
+  }
+  Array.prototype.forEach.call(modeBtns, function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+  function recomputeFromDollars() {
+    var sales = parseFloat(salesDolEl && salesDolEl.value);
+    var food  = parseFloat(foodDolEl  && foodDolEl.value);
+    var labor = parseFloat(laborDolEl && laborDolEl.value);
+    if (!isFinite(sales) || sales <= 0) return;
+    if (isFinite(food) && food >= 0) {
+      var fp = Math.max(0, Math.min(100, Math.round(food / sales * 100)));
+      foodEl.value = String(Math.max(parseFloat(foodEl.min), Math.min(parseFloat(foodEl.max), fp)));
+      if (foodNumEl) foodNumEl.value = foodEl.value;
+    }
+    if (isFinite(labor) && labor >= 0) {
+      var lp = Math.max(0, Math.min(100, Math.round(labor / sales * 100)));
+      laborEl.value = String(Math.max(parseFloat(laborEl.min), Math.min(parseFloat(laborEl.max), lp)));
+      if (laborNumEl) laborNumEl.value = laborEl.value;
+    }
+    onInput();
+  }
+  [salesDolEl, foodDolEl, laborDolEl].forEach(function(el){ if (el) el.addEventListener('input', recomputeFromDollars); });
 
   Array.prototype.forEach.call(segmentBtns, function(btn){
     btn.addEventListener('click', function(){
