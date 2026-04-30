@@ -34,6 +34,139 @@ import * as ES from './templates.es.js';
 // the code to SUPPORTED_LOCALES below.
 const SUPPORTED_LOCALES = new Set(['en', 'es']);
 
+// Phase G.11 (Growth) — lifecycle email program. Three new templates:
+//
+//   1. lifecycleWelcomeEmail        Trigger: first save while signed-in
+//                                    Send window: +5 min (next cron tick)
+//                                    Subject:  "You saved your first thing."
+//                                    Theme:    Welcome + how the Workshop works
+//
+//   2. lifecycleSavedNoReturnEmail  Trigger: saved, never returned
+//                                    Send window: T+7 days
+//                                    Subject:  "I saw you saved an audit."
+//                                    Theme:    Honest read offer → /window/
+//
+//   3. lifecycleMonthlyDigestEmail  Trigger: signed-in 30+ days, no second save
+//                                    Send window: T+30 days
+//                                    Subject:  "Three things I added since you signed up."
+//                                    Theme:    Latest article + glossary term + tool
+//
+// Hard cap: 4 lifecycle emails per quarter per subscriber. Enforced
+// in src/lib/lifecycle-emails.js dispatcher. Voice mirrors
+// windowConfirmationEmail + subscriberConfirmEmail: short, warm,
+// no-pitch, no-corporate-SaaS.
+export function lifecycleWelcomeEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.lifecycleWelcomeEmail === 'function') {
+    return ES.lifecycleWelcomeEmail(body);
+  }
+  const workshopUrl = String(body.workshopUrl || 'https://muntin.digital/workbench/').trim();
+  const unsubUrl    = String(body.unsubUrl    || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'You saved your first thing.';
+  const html = htmlShell(
+    'Welcome to the Workshop',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Saved. Anything you save lives in the Workshop until you delete it. I won\'t use it for anything — it\'s yours.</p>',
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">If you set a Watch, I check the score weekly and email when it moves more than five points. Otherwise the Workshop is quiet.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(workshopUrl, 'Open the Workshop') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `You saved something to your Muntin Workshop. Unsubscribe: ${unsubUrl}`
+  );
+  const text = [
+    'You saved your first thing',
+    '',
+    'Saved. Anything you save lives in the Workshop until you delete it. I won\'t use it for anything — it\'s yours.',
+    '',
+    'If you set a Watch, I check the score weekly and email when it moves more than five points. Otherwise the Workshop is quiet.',
+    '',
+    'Open the Workshop: ' + workshopUrl,
+    '',
+    '— Don',
+    '',
+    'Unsubscribe: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+export function lifecycleSavedNoReturnEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.lifecycleSavedNoReturnEmail === 'function') {
+    return ES.lifecycleSavedNoReturnEmail(body);
+  }
+  const windowUrl = String(body.windowUrl || 'https://muntin.digital/window/').trim();
+  const unsubUrl  = String(body.unsubUrl  || 'https://muntin.digital/sub/unsubscribe').trim();
+  const savedKind = String(body.savedKind || 'audit').trim();
+  const subject = `I saw you saved a${/^[aeiou]/i.test(savedKind) ? 'n' : ''} ${savedKind}.`;
+  const html = htmlShell(
+    `About that ${savedKind}`,
+    [
+      `<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">You saved a ${savedKind} a week back and didn\'t come back. Want me to look at it? No pitch — just an honest read.</p>`,
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Reply or write through the Window. I read every one.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Open the Window') + '</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Sent because you saved something a week ago. Unsubscribe: ${unsubUrl}`
+  );
+  const text = [
+    `About that ${savedKind}`,
+    '',
+    `You saved a ${savedKind} a week back and didn't come back. Want me to look at it? No pitch — just an honest read.`,
+    '',
+    'Reply or write through the Window. I read every one.',
+    '',
+    'Open the Window: ' + windowUrl,
+    '',
+    '— Don',
+    '',
+    'Unsubscribe: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
+export function lifecycleMonthlyDigestEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.lifecycleMonthlyDigestEmail === 'function') {
+    return ES.lifecycleMonthlyDigestEmail(body);
+  }
+  const items   = Array.isArray(body.items) ? body.items.slice(0, 3) : [];
+  const unsubUrl = String(body.unsubUrl || 'https://muntin.digital/sub/unsubscribe').trim();
+  const subject = 'Three things I added since you signed up.';
+  const itemBlocks = items.map((it) => {
+    const kindLabel = it.kind === 'tool' ? 'Tool' : it.kind === 'glossary' ? 'Glossary' : 'Article';
+    const url = String(it.url || '').trim();
+    const title = String(it.title || '').trim();
+    const blurb = String(it.blurb || '').trim();
+    return [
+      `<p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7A7A7A;">${kindLabel}</p>`,
+      `<p style="margin:0 0 8px;font-size:17px;line-height:1.4;color:#2A2D33;"><a href="${url}" style="color:#1F4E5B;text-decoration:none;border-bottom:1px solid rgba(31,78,91,0.4);">${title}</a></p>`,
+      blurb ? `<p style="margin:0 0 24px;font-size:14px;line-height:1.55;color:#5B5B5B;">${blurb}</p>` : '',
+    ].filter(Boolean).join('\n');
+  }).join('\n');
+  const html = htmlShell(
+    'Three things since you signed up',
+    [
+      '<p style="margin:0 0 24px;font-size:16px;line-height:1.55;color:#2A2D33;">Quiet month. Three things I added I think are worth your time:</p>',
+      itemBlocks,
+      '<p style="margin:24px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n'),
+    `Quarterly note from Don Goldstein. Unsubscribe: ${unsubUrl}`
+  );
+  const textItems = items.map((it) => `${(it.kind || 'article').toUpperCase()}: ${it.title}\n${it.url}${it.blurb ? '\n' + it.blurb : ''}`).join('\n\n');
+  const text = [
+    'Three things since you signed up',
+    '',
+    'Quiet month. Three things I added I think are worth your time:',
+    '',
+    textItems,
+    '',
+    '— Don',
+    '',
+    'Unsubscribe: ' + unsubUrl,
+  ].join('\n');
+  return { subject, html, text };
+}
+
 export function pickLocale(body) {
   const raw = String((body && body.locale) || 'en').trim().toLowerCase();
   return SUPPORTED_LOCALES.has(raw) ? raw : 'en';
@@ -1089,6 +1222,41 @@ export function windowReplyToUserEmail(body) {
 // Phase W.2 (The Window) — sent to the visitor on their first
 // note (acknowledges receipt, sets expectation, closes with the
 // canonical "I read every one" line).
+// Phase G.10 (Growth) — newsletter subscriber double-opt confirmation
+// email. Voice mirrors windowConfirmationEmail: warm, brief, not
+// corporate-SaaS. The framing string "I'll only write when there's
+// something worth writing about" is enforced by
+// scripts/check-newsletter-copy.mjs and must not drift.
+export function subscriberConfirmEmail(body) {
+  const locale = pickLocale(body);
+  if (locale === 'es' && typeof ES.subscriberConfirmEmail === 'function') {
+    return ES.subscriberConfirmEmail(body);
+  }
+  const confirmUrl = String(body.confirmUrl || '').trim();
+  const subject = 'Confirm your email — Don';
+  const html = htmlShell(
+    'One click and you\'re on the list',
+    [
+      '<p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#2A2D33;">Got your address. Click once and I\'ll only write when there\'s something worth writing about.</p>',
+      '<p style="margin:24px 0 0;">' + primaryCta(confirmUrl, 'Confirm my email') + '</p>',
+      '<p style="margin:24px 0 0;font-size:14px;color:#6B6B6B;line-height:1.55;">Hard cap: four notes a quarter, ever. No drip campaigns, no automated funnels. Unsubscribe anytime.</p>',
+      '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">— Don</p>',
+    ].join('\n')
+  );
+  const text = [
+    'One click and you\'re on the list',
+    '',
+    'Got your address. Click once and I\'ll only write when there\'s something worth writing about.',
+    '',
+    'Confirm: ' + confirmUrl,
+    '',
+    'Hard cap: four notes a quarter, ever. No drip campaigns. Unsubscribe anytime.',
+    '',
+    '— Don',
+  ].join('\n');
+  return { subject, html, text };
+}
+
 export function windowConfirmationEmail(body) {
   const locale = pickLocale(body);
   if (locale === 'es' && typeof ES.windowConfirmationEmail === 'function') {

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar | Muntin Digital</title>
+<meta name="description" content="Un ejemplo completo de schema markup para restaurante — los seis tipos en un solo bloque JSON-LD listo para copiar y pegar en tu sitio. Restaurant + Menu + OpeningHoursSpecification + AggregateRating + Reservation + FAQ con datos realistas." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/" />
+<meta property="og:locale" content="es_US" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar" />
+<meta property="og:description" content="Los seis tipos en un solo bloque JSON-LD listo para copiar." />
+<meta property="og:url" content="https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/blog-schema-ejemplo-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-04-30" />
+<meta property="article:author" content="Don Goldstein" />
+
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [{
+    "@type": "BlogPosting",
+    "@id": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/#article",
+    "headline": "Schema Markup para Restaurante: Ejemplo Completo Listo para Pegar",
+    "description": "Un ejemplo completo: los seis tipos de schema en un solo bloque JSON-LD listo para copiar y pegar en tu sitio.",
+    "url": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
+    "datePublished": "2026-04-30",
+    "dateModified": "2026-04-30",
+    "author": { "@id": "https://muntin.digital/#don-goldstein", "@type": "Person", "name": "Don Goldstein" },
+    "publisher": { "@id": "https://muntin.digital/#business" },
+    "image": "https://muntin.digital/brand/og/blog-schema-ejemplo-es.png",
+    "mainEntityOfPage": "https://muntin.digital/es/blog/schema-markup-para-restaurante-ejemplo/",
+    "inLanguage": "es-US"
+  }]
+}
+</script>
+
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+
+<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
+</head>
+<body data-content-pending="2026-04-30">
+
+<a class="skip-link" href="#main">Ir al contenido</a>
+
+<!-- nav:start --><!-- nav:end -->
+
+<main id="main">
+  <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/es/blog/">Blog</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Schema markup ejemplo</span></nav>
+
+  <section class="hero hero-tight">
+    <div class="container">
+      <div class="post-hero">
+        <h1>Schema Markup para Restaurante: Ejemplo Completo</h1>
+        <p class="post-dek">
+          Un ejemplo completo: los seis tipos de schema markup en un solo bloque JSON-LD listo para copiar y pegar en tu sitio. Reemplaza los datos del ejemplo con los tuyos.
+        </p>
+        <p class="post-meta">
+          <time datetime="2026-04-30">30 de abril, 2026</time> · 4 min de lectura · Por <strong>Don</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="container">
+    <article class="article-body" id="post-body">
+
+      <p>Si solo necesitas el ejemplo, está aquí. Si quieres entender qué hace cada parte, lee <a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">los seis tipos de schema markup que Google usa</a> primero. Lo de abajo combina los seis en un solo <code>@graph</code>, que es lo que recomienda Google.</p>
+
+      <h2>Cómo usarlo</h2>
+
+      <ol>
+        <li>Copia el JSON de abajo.</li>
+        <li>Reemplaza cada valor con tus datos reales (nombre, dirección, teléfono, menú, horarios, etc.).</li>
+        <li>Pega el bloque dentro de un <code>&lt;script type="application/ld+json"&gt;</code> en el <code>&lt;head&gt;</code> de tu home.</li>
+        <li>Valida con <a href="/es/tools/schema-check/">Schema Checker</a> antes de publicar.</li>
+      </ol>
+
+      <h2>Ejemplo completo</h2>
+
+      <pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Restaurant",
+      "@id": "https://tu-restaurante.com/#restaurant",
+      "name": "La Casa del Sabor",
+      "image": [
+        "https://tu-restaurante.com/photos/storefront.jpg",
+        "https://tu-restaurante.com/photos/dining-room.jpg",
+        "https://tu-restaurante.com/photos/signature-dish.jpg"
+      ],
+      "telephone": "+1-555-555-0100",
+      "priceRange": "$$",
+      "url": "https://tu-restaurante.com/",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1234 Main St",
+        "addressLocality": "Brooklyn",
+        "addressRegion": "NY",
+        "postalCode": "11215",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.6720,
+        "longitude": -73.9810
+      },
+      "servesCuisine": ["Mexican", "Latin American"],
+      "acceptsReservations": "True",
+      "menu": "https://tu-restaurante.com/menu/",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"],
+          "opens": "17:00",
+          "closes": "22:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Friday", "Saturday"],
+          "opens": "17:00",
+          "closes": "23:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Sunday",
+          "opens": "11:00",
+          "closes": "21:00"
+        }
+      ],
+      "specialOpeningHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "validFrom": "2026-12-25",
+          "validThrough": "2026-12-25",
+          "opens": "00:00",
+          "closes": "00:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "reviewCount": "412",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "hasMenu": {
+        "@type": "Menu",
+        "@id": "https://tu-restaurante.com/menu/#menu",
+        "name": "Cena",
+        "hasMenuSection": [
+          {
+            "@type": "MenuSection",
+            "name": "Tacos",
+            "hasMenuItem": [
+              {
+                "@type": "MenuItem",
+                "name": "Tacos al Pastor",
+                "description": "Pierna de cerdo marinada en achiote, piña, cebolla blanca y cilantro sobre tortillas de maíz hechas en casa.",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "14.00",
+                  "priceCurrency": "USD"
+                }
+              },
+              {
+                "@type": "MenuItem",
+                "name": "Tacos de Lengua",
+                "description": "Lengua de res cocinada lentamente, salsa verde de tomatillo asado, cebolla curtida.",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "15.00",
+                  "priceCurrency": "USD"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "potentialAction": {
+        "@type": "ReserveAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://tu-restaurante.com/reservas/",
+          "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
+        },
+        "result": { "@type": "Reservation", "name": "Reserva" }
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Aceptan reservas para grupos de 8 o más?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí — para grupos de 8 a 14 personas pedimos un depósito de $25 por comensal, que se reembolsa con la cuenta esa noche."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Tienen opciones vegetarianas y veganas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Cinco de nuestros doce platos son vegetarianos y tres son veganos sin modificación. El menú está marcado."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Tienen estacionamiento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El estacionamiento es en la calle. Hay un lote pagado a una cuadra en Smith Street que es la opción más confiable las noches del fin de semana."
+          }
+        }
+      ]
+    }
+  ]
+}
+&lt;/script&gt;</code></pre>
+
+      <h2>Antes de publicar</h2>
+
+      <ul>
+        <li>Reemplaza <code>tu-restaurante.com</code> con tu dominio real en cada URL.</li>
+        <li>Quita los rangos de horarios que no apliquen (no inventes apertura los lunes si estás cerrado).</li>
+        <li>El <code>aggregateRating</code> SOLO si tienes reseñas en tu propio sitio. NO copies las reseñas de Google.</li>
+        <li>Las descripciones del menú son las que las AI Overviews citan textualmente — vale la pena escribirlas bien.</li>
+      </ul>
+
+      <p>Después de pegarlo, corre <a href="/es/tools/schema-check/">Schema Checker</a> y el <a href="https://search.google.com/test/rich-results" rel="noopener">Rich Results Test de Google</a>. Si ambos validan, está bien implementado.</p>
+
+      <p>Si tienes dudas sobre algún campo, escríbeme por <a href="/es/window/">La Ventana</a>. Leo cada mensaje.</p>
+
+    </article>
+    </div>
+  </section>
+</main>
+
+<!-- footer:start --><!-- footer:end -->
+
+<script src="/assets/site.js?v=20260429-batch3" defer></script>
+</body>
+</html>

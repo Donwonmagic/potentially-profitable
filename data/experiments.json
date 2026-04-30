@@ -1,0 +1,20 @@
+{
+  "_doc": "Phase G.12 (Growth) — A/B experiment registry. src/worker.js HTMLRewriter reads this file, computes a per-visitor bucket (SHA256(sub || YYYY-MM) for signed-in; SHA256(IP || UA || YYYY-MM-DD) for anonymous), and stamps <html data-experiment='X' data-treatment='Y'> on the response. CSS swaps via [data-treatment='warmer'] selectors. Each experiment fires 'Experiment Exposure' once per session per experiment (deduped via sessionStorage in first-touch.js). Bucketing rule: first two hex chars of the SHA256 → mod 100 → bucket. Promote a treatment by editing this file: status='promoted', then drop the data-treatment selectors after the next deploy.",
+
+  "experiments": {
+    "window-cta-copy": {
+      "status": "draft",
+      "_status_help": "draft → running → promoted | rolled-back",
+      "treatments": ["control", "warmer"],
+      "weight": [50, 50],
+      "surfaces": ["/", "/window/"],
+      "startedAt": null,
+      "concludedAt": null,
+      "minExposuresPerArm": 200,
+      "minConversionDelta": 10,
+      "goalEvent": "Window Sent"
+    }
+  },
+
+  "_lastReviewed": "2026-04-30"
+}

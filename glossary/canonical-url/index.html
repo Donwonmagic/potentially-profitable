@@ -85,6 +85,52 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/glossary/canonical-url/#article",
+      "headline": "Canonical URL",
+      "abstract": "A tag in a page's HTML that tells Google \"this is the real address for this page, ignore any duplicates\". Matters when the same content lives at multiple URLs (with/without www, with/without tracking parameters, printable versions).",
+      "description": "A tag in a page's HTML that tells Google \"this is the real address for this page, ignore any duplicates\". Matters when the same content lives at multiple URLs (with/without www, with/without tracking parameters, printable versions).",
+      "url": "https://muntin.digital/glossary/canonical-url/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/glossary/canonical-url/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/glossary/canonical-url/#term"
+      },
+      "inLanguage": "en-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-canonical-url.png",
+      "datePublished": "2026-04-24T22:31:11+00:00",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/canonical-url/#term",
+      "sameAs": [
+        "https://developers.google.com/search/docs/crawling-indexing/canonicalization",
+        "https://en.wikipedia.org/wiki/Canonical_link_element"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -238,6 +284,9 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/glossary/findability/">Findability</a></span>
       <h1 class="term-h1">Canonical URL</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Example: A bistro running both `/menu/` and `/menu/index.html` without a canonical link splits its ranking signal across two URLs — Google picks the lower-ranked one half the time.</p>
+            <!-- term-example:end -->
       <p class="term-aka">rel=canonical, the "official" address</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">All</span></div>

@@ -85,6 +85,51 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/glossary/cdn/#article",
+      "headline": "CDN",
+      "abstract": "A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page travels 30 miles instead of 3,000. Most good hosts wire one up for free.",
+      "description": "A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page travels 30 miles instead of 3,000. Most good hosts wire one up for free.",
+      "url": "https://muntin.digital/glossary/cdn/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/glossary/cdn/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/glossary/cdn/#term"
+      },
+      "inLanguage": "en-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-cdn.png",
+      "datePublished": "2026-04-24T22:31:11+00:00",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/cdn/#term",
+      "sameAs": [
+        "https://en.wikipedia.org/wiki/Content_delivery_network"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -238,6 +283,9 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/glossary/mobile/">Mobile &amp; speed</a></span>
       <h1 class="term-h1">CDN</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Example: A Brooklyn pizzeria's images load in under 200ms in San Diego because Cloudflare cached them at a Los Angeles edge — without a CDN, every byte travels the full 2,800 miles each time.</p>
+            <!-- term-example:end -->
       <p class="term-aka">Content Delivery Network, "the edge"</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">All</span></div>

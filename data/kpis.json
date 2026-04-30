@@ -1,0 +1,59 @@
+{
+  "_doc": "Phase G.12 (Growth) — north-star KPI registry. /admin/kpis/ reads this file and renders 5 tiles with live Plausible queries + targets + trend arrows. scripts/check-kpi-doc.mjs asserts _lastReviewed is ≤90 days old; fails CI past that to force a quarterly re-look. Targets are aspirational, not promises — adjust them as data comes in.",
+
+  "_lastReviewed": "2026-04-30",
+
+  "kpis": [
+    {
+      "id": "organic-search-sessions",
+      "label_en": "Organic-search sessions per week",
+      "label_es": "Sesiones de búsqueda orgánica por semana",
+      "plausible_filter": "source != direct, source != ai-search",
+      "metric": "visitors",
+      "window": "7d",
+      "target_initial": 600,
+      "target_q3": 1500,
+      "what_it_measures": "Top-of-funnel demand from Google + Bing + DuckDuckGo (excludes AI-search referrers, which get their own metric)."
+    },
+    {
+      "id": "tool-engagement-rate",
+      "label_en": "Tool engagement rate",
+      "label_es": "Tasa de participación en herramientas",
+      "plausible_filter": "event:goal=Tool First Result OR event:page=/tools/*",
+      "metric": "ratio: Tool First Result ÷ pageview on /tools/*",
+      "window": "7d",
+      "target_initial": 0.28,
+      "what_it_measures": "Of visitors who land on a tool page, the share that actually run the tool. Bottom-of-page bounce vs. activation."
+    },
+    {
+      "id": "workshop-save-rate",
+      "label_en": "Workshop save rate",
+      "label_es": "Tasa de guardado en el Taller",
+      "plausible_filter": "event:goal=Workbench Save",
+      "metric": "ratio: Workbench Save ÷ Tool First Result",
+      "window": "7d",
+      "target_initial": 0.12,
+      "what_it_measures": "Of visitors who run a tool, the share that save the result to their Workshop. The first commitment moment."
+    },
+    {
+      "id": "window-engagement-rate",
+      "label_en": "Window engagement rate",
+      "label_es": "Tasa de participación en La Ventana",
+      "plausible_filter": "event:goal=Window Sent",
+      "metric": "ratio: distinct visitors with Window Sent ÷ distinct authenticated",
+      "window": "30d",
+      "target_initial": 0.08,
+      "what_it_measures": "Share of signed-in operators who actually write to Don. Bottom-of-funnel intent."
+    },
+    {
+      "id": "lead-to-call-rate",
+      "label_en": "Lead-to-call rate",
+      "label_es": "Tasa de prospecto a llamada",
+      "plausible_filter": "event:goal=Window Thread Resolved + props.outcome IN (call, contract)",
+      "metric": "ratio: resolved-as-call+contract ÷ total threads",
+      "window": "30d",
+      "target_initial": 0.15,
+      "what_it_measures": "Of Window threads that get an outcome stamp, the share that escalate to a call or signed contract."
+    }
+  ]
+}

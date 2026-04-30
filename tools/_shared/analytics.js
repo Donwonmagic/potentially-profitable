@@ -159,6 +159,39 @@
       'Submission Rejected',
       'Submission Published',
     ],
+    // Phase G (Growth) — diagnostics + broken-link surfacing.
+    diagnostics: [
+      '404 view',
+    ],
+    // Phase G.9 (Growth) — first-touch attribution + AI-search referrer
+    // detection + tool-funnel + article-scroll instrumentation. Bounded
+    // cardinality enforced by check-event-prop-cardinality.mjs.
+    attribution: [
+      'AI Search Landing',
+      'Article Scroll',
+      'Post-End CTA Click',
+      'Returning Visitor',
+      'Tool First Input',
+      'Tool First Result',
+      'Tool Save Intent',
+    ],
+    // Phase G.10 (Growth) — newsletter capture + double-opt confirm.
+    newsletter: [
+      'Lifecycle Email Click',
+      'Lifecycle Email Opened',
+      'Newsletter Confirmed',
+      'Newsletter Signup',
+    ],
+    // Phase G.11 (Growth) — share-snapshot recipient banner click.
+    share: [
+      // 'Share' already registered under library; keeping recipient
+      // events here for clarity. Plausible filters on props, not group.
+    ],
+    // Phase G.12 (Growth) — A/B framework + KPI dashboard events.
+    experiments: [
+      'Experiment Exposure',
+      'Window Thread Resolved',
+    ],
   };
 
   // Flat allowlist used by the CI checker.

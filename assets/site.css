@@ -5317,3 +5317,63 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-thread__close{font-size:12px;color:var(--stone);background:transparent;border:0;cursor:pointer;text-decoration:underline}
 .admin-thread__close:hover{color:var(--rust)}
 
+/* Phase G.1 (Growth) — TL;DR + Key Takeaways blocks for AI-citation
+   optimization. Visually quiet, editorial. The TL;DR is a 2-3 line
+   prose summary at the top of an article (LLMs lift verbatim). Key
+   Takeaways is a 4-6 bullet list near the foot. Both must carry
+   `data-llm` hints so AI engines can identify them. */
+.tldr{max-width:680px;margin:24px 0 32px;padding:18px 24px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md)}
+.tldr__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.tldr__body{font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.6;color:var(--ink);margin:0}
+.key-takeaways{max-width:680px;margin:32px 0;padding:22px 26px;background:var(--surface-1);border:1px solid var(--line);border-radius:var(--r-md)}
+.key-takeaways__eyebrow{font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 12px}
+.key-takeaways__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.key-takeaways__list li{position:relative;padding-left:20px;font-size:15px;line-height:1.55;color:var(--ink)}
+.key-takeaways__list li::before{content:'';position:absolute;left:0;top:10px;width:8px;height:1px;background:var(--teal)}
+
+/* Phase G.1 — "Last verified" timestamp on tool pages. Cite-worthy
+   freshness signal for both Google + AI engines. */
+.tool-verified{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0;letter-spacing:0.02em}
+.tool-verified time{color:var(--ink);font-style:normal;font-variant-numeric:tabular-nums}
+
+/* Phase G.4 (Growth) — topic pillar essay block. Sits between
+   the hero and the cluster's article cards. Editorial register —
+   serif-italic title, generous reading column, no decorative ink. */
+.topic-essay{padding:48px 0 32px;background:var(--surface-1);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.topic-essay__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
+.topic-essay__title{font-family:var(--font-display);font-size:28px;line-height:1.2;margin:0 0 24px;max-width:760px;color:var(--ink)}
+.topic-essay__body{max-width:680px;font-size:16px;line-height:1.65;color:var(--ink)}
+.topic-essay__body p{margin:0 0 16px}
+.topic-essay__body ul{padding-left:20px;margin:16px 0 24px}
+.topic-essay__body li{margin:6px 0;line-height:1.6}
+.topic-essay__body a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.topic-essay__body a:hover{border-bottom-color:var(--teal)}
+
+/* Phase G.4 (Growth) — concrete-example sentence on glossary term
+   pages. Quiet inline emphasis: italic for the leading "Example:",
+   tabular figures so dollar amounts align cleanly. */
+.term-example{font-style:italic;font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:8px 0 24px;max-width:680px;font-variant-numeric:tabular-nums}
+.term-example code{font-style:normal;background:var(--cream-2);padding:1px 4px;border-radius:3px;font-size:13px}
+
+/* Phase G.8 (Growth) — sub-tool rail back to Storefront Health.
+   Quiet single line; the bold tool name carries the click weight. */
+.tool-storefront-rail{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 0;max-width:680px}
+.tool-storefront-rail a{color:var(--teal);text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent)}
+.tool-storefront-rail a:hover{border-bottom-color:var(--teal)}
+
+/* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
+   Two short lines, one input, one button — no badges, no pop-ups, no
+   "join our community" CTA. Mirrors the Window's "I read every one"
+   tone. The form lives between <!-- newsletter-capture:start -->
+   sentinels in _includes/footer.html so it cascades to all 400 pages. */
+.foot-newsletter{margin:32px 0 24px;padding:24px 0 0;border-top:1px solid color-mix(in srgb, currentColor 12%, transparent)}
+.foot-newsletter-pitch{margin:0 0 12px;font-size:14px;line-height:1.55;color:inherit;opacity:0.85}
+.foot-newsletter-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center;max-width:520px}
+.foot-newsletter-form input[type="email"]{flex:1 1 240px;min-width:0;padding:10px 14px;border:1px solid color-mix(in srgb, currentColor 24%, transparent);border-radius:8px;background:rgba(255,255,255,0.04);color:inherit;font:inherit}
+.foot-newsletter-form input[type="email"]::placeholder{color:inherit;opacity:0.5}
+.foot-newsletter-form input[type="email"]:focus-visible{outline:2px solid var(--teal);outline-offset:1px;background:rgba(255,255,255,0.08)}
+.foot-newsletter-form button{padding:10px 18px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:inherit;font-weight:600;cursor:pointer;letter-spacing:0.02em}
+.foot-newsletter-form button:hover{filter:brightness(1.08)}
+.foot-newsletter-form[data-state="ok"] input,.foot-newsletter-form[data-state="ok"] button{display:none}
+.foot-newsletter-form[data-state="ok"] .foot-newsletter-pitch::after{content:" — got it. Check your inbox.";opacity:1;font-style:italic}
+

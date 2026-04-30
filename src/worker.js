@@ -53,6 +53,10 @@ import { withAuditCache } from './lib/audit-cache.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
+// Phase G.11 (Growth) — generalized share-snapshot store.
+import { SHARE_KINDS, saveShareSnapshot, getShareSnapshot, isValidShareKind, isValidShareTokenShape } from './lib/share-snapshots.js';
+// Phase G.11 (Growth) — lifecycle email dispatcher (cron-driven).
+import { dispatchLifecycleEmails } from './lib/lifecycle-emails.js';
 import {
   mintMagicLinkToken,
   mintSessionToken,
@@ -192,6 +196,8 @@ import {
   windowNotifyDonEmail,
   windowReplyToUserEmail,
   windowConfirmationEmail,
+  // Phase G.10 (Growth) — newsletter double-opt confirmation email.
+  subscriberConfirmEmail,
 } from './lib/templates.js';
 import {
   // Phase F.3 (Field Notes) — server-side submission storage + validation.
@@ -319,6 +325,15 @@ const API_ROUTES = {
   '/api/admin/window/reply':         handleAdminWindowReply,
   '/api/admin/window/close':         handleAdminWindowClose,
   '/api/admin/window/archive':       handleAdminWindowArchive,
+  // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
+  '/api/subscribe':                  handleSubscribe,
+  '/sub/confirm':                    handleSubscribeConfirm,
+  '/sub/unsubscribe':                handleSubscribeUnsubscribe,
+  // Phase G.11 (Growth) — generalized share-snapshot endpoints.
+  '/api/share/tool-result':          handleShareToolResult,
+  '/api/share/storefront-health':    handleShareStorefrontHealth,
+  // Phase G.12 (Growth) — admin KPI dashboard data endpoint.
+  '/api/admin/kpis':                 handleAdminKpis,
 };
 
 
@@ -565,8 +580,21 @@ export default {
       }
     }
 
-    // Fall through to the static-asset server.
-    return env.ASSETS.fetch(request);
+    // Fall through to the static-asset server. Phase G.12 — when an
+    // experiment is running on the requested path AND the response
+    // is HTML, stamp <html data-experiment="…" data-treatment="…">
+    // via streaming HTMLRewriter so CSS swaps via
+    // [data-treatment="…"] selectors. No-op for non-HTML and for
+    // paths with no active experiment (the registry is empty until
+    // an experiment status flips to 'running').
+    const assetResponse = await env.ASSETS.fetch(request);
+    if (request.method === 'GET' && assetResponse.ok) {
+      const ct = assetResponse.headers.get('content-type') || '';
+      if (ct.startsWith('text/html')) {
+        return rewriteForExperiment(assetResponse, request, pathname);
+      }
+    }
+    return assetResponse;
   },
 
   // ============================================================
@@ -903,6 +931,25 @@ export default {
       }
     }
 
+    // Phase G.11 — lifecycle email dispatcher. Runs after the watch
+    // tick + window batch flush so the same lock window covers both.
+    // Feature-flagged via env.LIFECYCLE_EMAILS_ENABLED — defaults
+    // to off so the pathway can ship + soak before firing emails.
+    let lifecycleAttempted = 0;
+    let lifecycleFired = 0;
+    let lifecycleSkipped = null;
+    try {
+      const result = await dispatchLifecycleEmails(env, { digestItems: [] });
+      if (result && result.skipped) {
+        lifecycleSkipped = result.skipped;
+      } else if (result) {
+        lifecycleAttempted = result.attempted || 0;
+        lifecycleFired = result.fired || 0;
+      }
+    } catch (err) {
+      console.warn('[cron] lifecycle dispatcher failed', err && err.message);
+    }
+
     console.log(JSON.stringify({
       event: 'cron.watch_tick',
       cron: (controller && controller.cron) || null,
@@ -916,6 +963,9 @@ export default {
       submissionOrphans,
       windowBatchesFlushed,
       windowBatchesFailed,
+      lifecycleAttempted,
+      lifecycleFired,
+      lifecycleSkipped,
       ms: Date.now() - t0,
     }));
   },
@@ -962,6 +1012,90 @@ export function buildSnapshotMetaOverrides(snapshot, token, reqUrl) {
   // og:url: honor the locale path the request came in on.
   const canonicalUrl = `${origin}${reqUrl.pathname}?s=${encodeURIComponent(token)}`;
   return { ogTitle, ogDescription, ogImage, canonicalUrl };
+}
+
+// Phase G.12 (Growth) — A/B experiment registry.
+//
+// Mirror of data/experiments.json — kept in sync by hand. The
+// dashboard view at /admin/kpis/ reads the JSON; the worker reads
+// this const at request time. Mismatch is caught by the
+// check-experiments-parity guard (see scripts/).
+//
+// To run an experiment: bump status from 'draft' to 'running'
+// here AND in data/experiments.json. To roll back: status to
+// 'draft'. To promote a winning treatment: pick the winner, drop
+// the [data-treatment="…"] selector swap from the CSS, set
+// status to 'promoted'.
+//
+// Bucketing:
+//   anonymous: SHA256(IP || UA || YYYY-MM-DD), first 2 hex chars
+//              → mod 100 → bucket index. Fresh bucket per visitor
+//              per UA per day; cross-day visits roll the dice
+//              again — accepted limitation for v1.
+//   signed-in: would use SHA256(sub || YYYY-MM) for monthly
+//              persistence. Not wired here yet because the
+//              session cookie isn't read on the static-asset
+//              path; a future iteration adds it.
+const EXPERIMENTS = Object.freeze({
+  'window-cta-copy': {
+    status: 'draft',
+    treatments: ['control', 'warmer'],
+    weight: [50, 50],
+    surfaces: ['/', '/window/'],
+  },
+});
+
+function pickTreatment(experiment, bucket) {
+  const treatments = experiment.treatments || ['control'];
+  const weights = experiment.weight || treatments.map(() => 100 / treatments.length);
+  let acc = 0;
+  for (let i = 0; i < treatments.length; i++) {
+    acc += weights[i] || 0;
+    if (bucket < acc) return treatments[i];
+  }
+  return treatments[treatments.length - 1];
+}
+
+async function bucketForRequest(request) {
+  const ip = clientIpFromRequest(request) || 'unknown';
+  const ua = request.headers.get('user-agent') || 'unknown';
+  const day = new Date().toISOString().slice(0, 10);
+  const enc = new TextEncoder().encode(ip + '|' + ua + '|' + day);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const hex = Array.from(new Uint8Array(buf)).slice(0, 1)[0];
+  return hex % 100;
+}
+
+function activeExperimentForPath(pathname) {
+  for (const [name, exp] of Object.entries(EXPERIMENTS)) {
+    if (exp.status !== 'running') continue;
+    if (Array.isArray(exp.surfaces) && !exp.surfaces.some((p) => pathname === p || pathname.startsWith(p) && p !== '/')) continue;
+    return { name, exp };
+  }
+  return null;
+}
+
+// Stamps data-experiment + data-treatment on <html> for the active
+// experiment matching the request's path. Returns the original
+// response untouched when no experiment is running on this surface.
+async function rewriteForExperiment(response, request, pathname) {
+  const match = activeExperimentForPath(pathname);
+  if (!match) return response;
+  const bucket = await bucketForRequest(request);
+  const treatment = pickTreatment(match.exp, bucket);
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  const rw = new HTMLRewriter().on('html', {
+    element(el) {
+      el.setAttribute('data-experiment', match.name);
+      el.setAttribute('data-treatment', treatment);
+    },
+  });
+  return rw.transform(new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  }));
 }
 
 function rewriteAuditPageForSnapshot(response, snapshot, token, reqUrl) {
@@ -4710,6 +4844,30 @@ async function handleWorkbenchSave(request, env, ctx) {
     }
     return jsonResponse({ ok: false, error: result.error }, 500);
   }
+
+  // Phase G.11 — stamp the user's subscriber record with last_save_at
+  // so the lifecycle dispatcher can fire a welcome email at +5 min.
+  // Best-effort: a missing subscriber row, KV failure, or absent
+  // user.email is non-fatal — the save itself already succeeded.
+  ctx.waitUntil((async () => {
+    try {
+      const userRaw = await env.AUTH_SESSIONS.get('user:' + auth.sub);
+      if (!userRaw) return;
+      let user; try { user = JSON.parse(userRaw); } catch (_) { return; }
+      if (!user || typeof user.email !== 'string' || !user.email) return;
+      const subKey = 'sub:' + (await sha256Hex(user.email.toLowerCase()));
+      const subRaw = await env.AUTH_SESSIONS.get(subKey);
+      if (!subRaw) return;
+      let sub; try { sub = JSON.parse(subRaw); } catch (_) { return; }
+      if (!sub || sub.status !== 'active') return;
+      sub.last_save_at = Date.now();
+      sub.last_save_kind = validated.item.kind || 'audit';
+      await env.AUTH_SESSIONS.put(subKey, JSON.stringify(sub));
+    } catch (err) {
+      console.warn('[lifecycle] save-stamp failed', err && err.message);
+    }
+  })());
+
   return jsonResponse({ ok: true, id: result.id, createdAt: result.createdAt }, 200);
 }
 
@@ -5840,4 +5998,208 @@ async function parseFormBody(request) {
     }
   }
   return obj;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase G.10 (Growth) — newsletter subscription endpoints.
+//
+// Storage in AUTH_SESSIONS KV:
+//   sub:<sha256(email)>      → { email, locale, status, source,
+//                                createdAt, confirmedAt? }
+//   sub-confirm:<token>      → { sub, email, locale }   TTL 24h
+//
+// Status enum: pending | active | unsubscribed.
+// Source enum: footer | article-end | workshop-empty-state | window.
+//
+// All endpoints are silent-200 on validation failure (mirrors
+// /api/auth/magic-link) — a network observer cannot tell a real
+// signup from spam. Hard-503 only when KV/Resend bindings missing.
+
+// sha256Hex is already imported from ./lib/auth.js — reuse it.
+
+const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
+
+async function handleSubscribe(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await parseFormBody(request); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  const lenGate = enforceMaxLengths(body, { email: 254, source: 32, locale: 8, hp: 100, ts: 30 });
+  if (!lenGate.ok) return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+
+  const SILENT_OK = jsonResponse({ ok: true }, 200);
+  if (isSpamHoneypot(body))    return SILENT_OK;
+  if (!isTimestampSane(body))  return SILENT_OK;
+  if (isHighThreatIP(request)) return SILENT_OK;
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  if (!isValidEmail(email))    return SILENT_OK;
+
+  const bodyLang = typeof body.locale === 'string' ? body.locale.toLowerCase() : '';
+  const locale = (bodyLang === 'es' || bodyLang === 'en') ? bodyLang : pickLang(request);
+  const source = SUBSCRIBE_SOURCES.has(body.source) ? body.source : 'footer';
+
+  if (!env || !env.AUTH_SESSIONS) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  if (!env.RESEND_API_KEY)        return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+
+  const subKey = 'sub:' + (await sha256Hex(email.toLowerCase()));
+  const existingRaw = await env.AUTH_SESSIONS.get(subKey);
+  if (existingRaw) {
+    let existing; try { existing = JSON.parse(existingRaw); } catch (_) { existing = null; }
+    // Idempotency: if already active, silent-200 without re-emailing.
+    if (existing && existing.status === 'active') return SILENT_OK;
+  }
+
+  let token;
+  for (let i = 0; i < 5; i++) {
+    const candidate = mintMagicLinkToken();
+    const collision = await env.AUTH_SESSIONS.get('sub-confirm:' + candidate);
+    if (!collision) { token = candidate; break; }
+  }
+  if (!token) return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+
+  const now = Date.now();
+  const subRecord = {
+    email, locale, source,
+    status: 'pending',
+    createdAt: now,
+  };
+  await env.AUTH_SESSIONS.put(subKey, JSON.stringify(subRecord));
+  await env.AUTH_SESSIONS.put('sub-confirm:' + token, JSON.stringify({ sub: subKey, email, locale }), {
+    expirationTtl: 24 * 60 * 60,
+  });
+
+  const baseUrl = String(env.MAGIC_LINK_BASE_URL || 'https://muntin.digital').replace(/\/$/, '');
+  const confirmUrl = `${baseUrl}/sub/confirm?t=${token}`;
+  const tmpl = subscriberConfirmEmail({ confirmUrl, locale });
+  ctx.waitUntil(sendEmail({ env, to: email, subject: tmpl.subject, html: tmpl.html, text: tmpl.text }));
+  return SILENT_OK;
+}
+
+async function handleSubscribeConfirm(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('t');
+  if (!token || !env || !env.AUTH_SESSIONS) {
+    return new Response('Invalid or expired link.', { status: 400, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  const ckey = 'sub-confirm:' + token;
+  const raw = await env.AUTH_SESSIONS.get(ckey);
+  if (!raw) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  let payload; try { payload = JSON.parse(raw); } catch (_) { payload = null; }
+  if (!payload || !payload.sub) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  const subRaw = await env.AUTH_SESSIONS.get(payload.sub);
+  let sub; try { sub = JSON.parse(subRaw || 'null'); } catch (_) { sub = null; }
+  if (!sub) {
+    return new Response('Invalid or expired link.', { status: 410, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  sub.status = 'active';
+  sub.confirmedAt = Date.now();
+  await env.AUTH_SESSIONS.put(payload.sub, JSON.stringify(sub));
+  await env.AUTH_SESSIONS.delete(ckey);
+  const dest = sub.locale === 'es' ? '/es/?subscribed=1' : '/?subscribed=1';
+  return new Response(null, { status: 302, headers: { location: dest } });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase G.11 (Growth) — generalized share-snapshot endpoints.
+//
+// Mirror of the audit-snapshot pattern, generalized via kind tag.
+// Each kind has a dedicated handler so we can validate kind-specific
+// payload shape without a giant switch — a new kind = a new handler.
+// Both endpoints write to AUTH_SESSIONS KV via saveShareSnapshot.
+
+// Phase G.12 (Growth) — admin KPI dashboard data endpoint.
+// Reads data/kpis.json via env.ASSETS so the JSON file is the
+// single source of truth (no duplicated copy bundled into the
+// Worker). Admin-gated via _requireAdminSession (NOTIFY_EMAIL
+// match). Returns the registry verbatim with ok:true wrapper.
+async function handleAdminKpis(request, env, ctx) {
+  const auth = await _requireAdminSession(request, env);
+  if (auth.error) return auth.error;
+  try {
+    const url = new URL(request.url);
+    const assetReq = new Request(url.origin + '/data/kpis.json', { headers: { 'accept': 'application/json' } });
+    const r = await env.ASSETS.fetch(assetReq);
+    if (!r.ok) return jsonResponse({ ok: false, error: 'kpi-data-missing' }, 503);
+    const data = await r.json();
+    return jsonResponse({ ok: true, kpis: data.kpis || [], _lastReviewed: data._lastReviewed || null }, 200);
+  } catch (err) {
+    console.warn('[admin/kpis] fetch failed', err && err.message);
+    return jsonResponse({ ok: false, error: 'kpi-data-error' }, 500);
+  }
+}
+
+async function handleShareToolResult(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await request.json(); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  if (!body || typeof body.tool !== 'string' || !body.payload) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Sanitize: tool slug must match /^[a-z0-9-/]+$/, payload size cap
+  // is enforced inside saveShareSnapshot.
+  if (!/^[a-z0-9/-]+$/.test(body.tool) || body.tool.length > 60) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Strip any obvious PII at validation time — share-snapshot payloads
+  // must NEVER contain emails, sub IDs, or auth tokens. Reject if found.
+  const flat = JSON.stringify(body.payload).toLowerCase();
+  if (/\bemail\b/.test(flat) || /\bsub:[a-f0-9]/.test(flat)) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const result = await saveShareSnapshot(env, SHARE_KINDS.TOOL_RESULT, { tool: body.tool, payload: body.payload });
+  if (!result.ok) return jsonResponse({ ok: false, error: result.error }, 503);
+  const url = `/tools/${body.tool}/?s=${result.token}`;
+  return jsonResponse({ ok: true, token: result.token, url, expiresAt: result.expiresAt }, 200);
+}
+
+async function handleShareStorefrontHealth(request, env, ctx) {
+  if (!isOriginAllowed(request)) return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  let body;
+  try { body = await request.json(); } catch (_) { return jsonResponse({ ok: false, error: 'invalid-body' }, 400); }
+  if (!body || typeof body.propertyName !== 'string' || !body.scores) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  if (body.propertyName.length > 200) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const flat = JSON.stringify(body.scores).toLowerCase();
+  if (/\bemail\b/.test(flat) || /\bsub:[a-f0-9]/.test(flat)) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const result = await saveShareSnapshot(env, SHARE_KINDS.STOREFRONT_HEALTH, {
+    propertyName: body.propertyName,
+    scores: body.scores,
+    payload: body.payload || null,
+  });
+  if (!result.ok) return jsonResponse({ ok: false, error: result.error }, 503);
+  const url = `/health/${result.token}/`;
+  return jsonResponse({ ok: true, token: result.token, url, expiresAt: result.expiresAt }, 200);
+}
+
+async function handleSubscribeUnsubscribe(request, env, ctx) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('t');
+  if (!token || !env || !env.AUTH_SESSIONS) {
+    return new Response('Invalid link.', { status: 400, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  // Token form: sha256-hex of email — same key as sub:<hash>. Stable
+  // per-subscriber so unsubscribe links work indefinitely.
+  const subKey = 'sub:' + token.toLowerCase();
+  const raw = await env.AUTH_SESSIONS.get(subKey);
+  if (!raw) {
+    return new Response('Already unsubscribed.', { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  }
+  let sub; try { sub = JSON.parse(raw); } catch (_) { sub = null; }
+  if (sub) {
+    sub.status = 'unsubscribed';
+    sub.unsubscribedAt = Date.now();
+    await env.AUTH_SESSIONS.put(subKey, JSON.stringify(sub));
+  }
+  return new Response('Done. You will not receive further newsletter emails.', {
+    status: 200,
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
 }

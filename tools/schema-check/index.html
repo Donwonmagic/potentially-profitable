@@ -82,6 +82,60 @@
   .sch-types .detail{font-size:14.5px;color:var(--ink-soft);line-height:1.5}
   .sch-types .detail strong{color:var(--ink)}
 </style>
+<!-- tool-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://muntin.digital/tools/schema-check/#tool",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "RestaurantOps",
+      "operatingSystem": "Web",
+      "screenshot": "https://muntin.digital/brand/og/tool-schema-check.png",
+      "featureList": [
+        "Restaurant + Menu + Review schema validation",
+        "OpeningHoursSpecification depth check",
+        "Aggregate rating + price-range review"
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://muntin.digital/tools/schema-check/#howto",
+      "name": "How to read your Schema Checker result",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Drop your URL",
+          "text": "Paste your homepage URL — schema usually lives there.",
+          "url": "https://muntin.digital/tools/schema-check/#step-1"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Read the validation report",
+          "text": "Each schema type gets a present / valid / missing verdict with line-level detail.",
+          "url": "https://muntin.digital/tools/schema-check/#step-2"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Add what's missing",
+          "text": "Restaurant + OpeningHoursSpecification + Menu are the three Google reads first.",
+          "url": "https://muntin.digital/tools/schema-check/#step-3"
+        }
+      ],
+      "about": {
+        "@id": "https://muntin.digital/tools/schema-check/#tool"
+      },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<!-- tool-schema:end -->
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -225,6 +279,12 @@
   <div class="tool-hero-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg></div>
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
   <h1>Does Google understand<br><span class="serif-italic">your business?</span></h1>
+      <!-- tool-verified:start -->
+            <p class="tool-verified">Last verified: <time datetime="2026-04-30">April 30, 2026</time></p>
+            <!-- tool-verified:end -->
+      <!-- storefront-rail:start -->
+            <p class="tool-storefront-rail">Part of <a href="/tools/storefront-health/"><strong>Storefront Health</strong></a> — the composite score that pairs this signal with five others on one scorecard.</p>
+            <!-- storefront-rail:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Schema markup tells Google what kind of business you are — your hours, your type, your location. Paste your URL and see what Google sees.</p>
   <form class="sch-form" id="schForm" novalidate>
     <input type="url" id="schUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />

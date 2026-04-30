@@ -85,6 +85,51 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/glossary/cls/#article",
+      "headline": "Cumulative Layout Shift",
+      "abstract": "A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down. Lower is better; under 0.1 is good.",
+      "description": "A score that measures how much your page jumps around as it loads — when a banner slides in, an image arrives late, or a late-loading font nudges text down. Lower is better; under 0.1 is good.",
+      "url": "https://muntin.digital/glossary/cls/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/glossary/cls/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/glossary/cls/#term"
+      },
+      "inLanguage": "en-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-cls.png",
+      "datePublished": "2026-04-24T22:31:11+00:00",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/glossary/cls/#term",
+      "sameAs": [
+        "https://web.dev/articles/cls"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -238,6 +283,9 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/glossary/mobile/">Mobile &amp; speed</a></span>
       <h1 class="term-h1">Cumulative Layout Shift</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Example: A CLS of 0.25 (your hero image jumps the menu down 200px on load) makes 1-in-7 mobile visitors mis-tap the wrong CTA — usually the wrong reservation slot.</p>
+            <!-- term-example:end -->
       <p class="term-aka">CLS</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurants</span></div>
@@ -310,6 +358,7 @@
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
+          <li><a href="/blog/when-to-rebuild-your-restaurant-website/">when-to-rebuild-your-restaurant-website</a></li>
           <li><a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why your restaurant loses reservations every night</a></li>
         </ul>
       </div>

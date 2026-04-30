@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>KPIs — Admin</title>
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=20260429-batch3" fetchpriority="high">
+<style>
+  /* Phase G.12 (Growth) — admin KPI dashboard. Five tiles with the
+     metric definition, Plausible filter, target_initial/target_q3,
+     and what_it_measures. v1 is a static registry view — the live
+     Plausible numbers are looked up by following the per-tile link
+     to the Plausible UI. v2 wires Plausible API for inline values. */
+  .admin-kpi{padding:96px 24px 64px;max-width:1080px;margin:0 auto;color:var(--ink)}
+  .admin-kpi__head h1{font-family:var(--font-display);font-size:32px;line-height:1.15;margin:0 0 8px;color:var(--ink)}
+  .admin-kpi__head p{font-size:15px;color:var(--ink-soft);margin:0 0 32px;max-width:680px;line-height:1.55}
+  .admin-kpi__forbidden{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-1);color:var(--ink-soft);font-size:15px;margin-top:32px}
+  .admin-kpi__forbidden a{color:var(--teal);text-decoration:underline}
+  .admin-kpi__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:8px}
+  .kpi-tile{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-1);box-shadow:var(--elev-1);display:flex;flex-direction:column;gap:12px}
+  .kpi-tile__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin:0}
+  .kpi-tile__label{font-family:var(--font-display);font-size:20px;line-height:1.25;margin:0;color:var(--ink)}
+  .kpi-tile__targets{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px}
+  .kpi-tile__target{padding:6px 10px;background:var(--cream-2);border-radius:6px}
+  .kpi-tile__target strong{color:var(--ink);font-variant-numeric:tabular-nums}
+  .kpi-tile__filter{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.45;background:var(--cream-2);padding:10px 12px;border-radius:6px;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+  .kpi-tile__what{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .kpi-tile__link{margin-top:auto;align-self:flex-start;color:var(--teal);font-size:13px;text-decoration:none;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);padding-bottom:1px}
+  .kpi-tile__link:hover{border-bottom-color:var(--teal)}
+  .admin-kpi__foot{margin-top:32px;font-size:13px;color:var(--ink-soft)}
+  .admin-kpi__foot strong{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+  <section class="admin-kpi" id="kpiRoot">
+    <header class="admin-kpi__head">
+      <a class="admin-kpi__back" style="font-size:13px;color:var(--teal);text-decoration:none" href="/workbench/">&larr; Workshop</a>
+      <h1>North-star KPIs</h1>
+      <p>The 5 metrics that decide whether this is working. Reviewed quarterly — see the registry at <code>data/kpis.json</code>.</p>
+    </header>
+
+    <p class="admin-kpi__forbidden" id="kpiForbidden" hidden>This is the editor's dashboard. <a href="/workbench/">Back to Workshop</a>.</p>
+    <div class="admin-kpi__grid" id="kpiGrid" hidden></div>
+    <p class="admin-kpi__foot" id="kpiFoot" hidden>Last reviewed: <strong id="kpiLastReviewed"></strong>. Bump <code>_lastReviewed</code> in <code>data/kpis.json</code> within 90 days or CI fails.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  function fmtTarget(v) {
+    if (typeof v !== 'number') return String(v);
+    if (v < 1) return Math.round(v * 100) + '%';
+    return v.toLocaleString();
+  }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+    });
+  }
+  function plausibleLink(filter) {
+    // Best-effort: the Plausible UI accepts URL-encoded filter
+    // expressions in the `f` query param. Fallback to dashboard root.
+    var base = 'https://plausible.io/muntin.digital';
+    return base;
+  }
+  fetch('/api/admin/kpis', { credentials: 'same-origin', headers: { 'accept': 'application/json' } })
+    .then(function (r) {
+      if (r.status === 403 || r.status === 401) {
+        document.getElementById('kpiForbidden').hidden = false;
+        return null;
+      }
+      if (!r.ok) throw new Error('fetch-failed');
+      return r.json();
+    })
+    .then(function (data) {
+      if (!data || !data.ok) return;
+      var grid = document.getElementById('kpiGrid');
+      var rows = data.kpis || [];
+      grid.innerHTML = rows.map(function (k) {
+        return [
+          '<article class="kpi-tile" id="kpi-' + escapeHtml(k.id) + '">',
+          '  <p class="kpi-tile__eyebrow">' + escapeHtml(k.id) + '</p>',
+          '  <p class="kpi-tile__label">' + escapeHtml(k.label_en || k.id) + '</p>',
+          '  <div class="kpi-tile__targets">',
+          (k.target_initial != null ? '    <span class="kpi-tile__target">Initial: <strong>' + fmtTarget(k.target_initial) + '</strong></span>' : ''),
+          (k.target_q3 != null      ? '    <span class="kpi-tile__target">Q3: <strong>' + fmtTarget(k.target_q3) + '</strong></span>' : ''),
+          (k.window                 ? '    <span class="kpi-tile__target">Window: <strong>' + escapeHtml(k.window) + '</strong></span>' : ''),
+          '  </div>',
+          (k.metric                 ? '  <p class="kpi-tile__what"><em>' + escapeHtml(k.metric) + '</em></p>' : ''),
+          (k.what_it_measures       ? '  <p class="kpi-tile__what">' + escapeHtml(k.what_it_measures) + '</p>' : ''),
+          (k.plausible_filter       ? '  <pre class="kpi-tile__filter">' + escapeHtml(k.plausible_filter) + '</pre>' : ''),
+          '  <a class="kpi-tile__link" href="' + plausibleLink(k.plausible_filter) + '" target="_blank" rel="noopener">Open Plausible &rarr;</a>',
+          '</article>',
+        ].join('\n');
+      }).join('\n');
+      grid.hidden = false;
+      var foot = document.getElementById('kpiFoot');
+      var fr = document.getElementById('kpiLastReviewed');
+      fr.textContent = data._lastReviewed || '(unset)';
+      foot.hidden = false;
+    })
+    .catch(function () {
+      document.getElementById('kpiForbidden').hidden = false;
+    });
+})();
+</script>
+
+</body>
+</html>

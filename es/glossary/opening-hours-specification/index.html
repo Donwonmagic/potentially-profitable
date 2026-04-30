@@ -78,6 +78,51 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#article",
+      "headline": "OpeningHoursSpecification",
+      "abstract": "Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como una o más entradas con campos dayOfWeek, opens y closes. Las excepciones por feriados usan el mismo tipo a través de la propiedad paralela specialOpeningHoursSpecification. El formato que el parser de Rich Results de Google sí consume — la diferencia entre \"los horarios varían\" y una cuadrícula semanal completa en tu snippet de búsqueda.",
+      "description": "Un tipo específico de datos estructurados de Schema.org para representar cuándo un lugar está abierto. Vive dentro de un bloque JSON-LD de Restaurant como una o más entradas con campos dayOfWeek, opens y closes. Las excepciones por feriados usan el mismo tipo a través de la propiedad paralela specialOpeningHoursSpecification. El formato que el parser de Rich Results de Google sí consume — la diferencia entre \"los horarios varían\" y una cuadrícula semanal completa en tu snippet de búsqueda.",
+      "url": "https://muntin.digital/es/glossary/opening-hours-specification/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term"
+      },
+      "inLanguage": "es-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-opening-hours-specification-es.png",
+      "datePublished": "2026-04-26T01:40:14+00:00",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/opening-hours-specification/#term",
+      "sameAs": [
+        "https://schema.org/OpeningHoursSpecification"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -219,6 +264,9 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/es/glossary/findability/">Que te encuentren</a></span>
       <h1 class="term-h1">OpeningHoursSpecification</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Ejemplo: Un diner con OpeningHoursSpecification válido + overrides de feriado muestra el aviso correcto 'Cerrado el Día de Navidad' en el panel de Google — sin él, las búsquedas de víspera ven horarios desactualizados.</p>
+            <!-- term-example:end -->
       <p class="term-aka">el tipo de Schema.org que Google lee para mostrar tus horarios en los resultados</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Restaurantes</span></div>
@@ -292,8 +340,8 @@
         <h3>Lee</h3>
         <ul>
           <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Configurar Google Business Profile</a></li>
+          <li><a href="/es/blog/restaurant-schema-markup-6-types-google-uses/">restaurant-schema-markup-6-types-google-uses</a></li>
           <li><a href="/es/blog/how-to-get-more-google-reviews-for-your-restaurant/">Conseguir más reseñas de Google</a></li>
-          <li><a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table de Google</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

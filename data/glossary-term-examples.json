@@ -1,0 +1,66 @@
+{
+  "_doc": "Phase G.4 (Growth) — per-glossary-term concrete-example sentences. Each entry is one short sentence that grounds the abstract definition in a real restaurant scenario. inject-glossary-term-examples.mjs reads this file and stamps a sentinel-bracketed <p class='term-example'> block on each term page (EN + ES). Slug must match a directory under glossary/.",
+
+  "examples": {
+    "cdn": {
+      "en": "Example: A Brooklyn pizzeria's images load in under 200ms in San Diego because Cloudflare cached them at a Los Angeles edge — without a CDN, every byte travels the full 2,800 miles each time.",
+      "es": "Ejemplo: Las imágenes de una pizzería de Brooklyn cargan en menos de 200ms en San Diego porque Cloudflare las guardó en un edge en Los Ángeles — sin CDN, cada byte viaja los 2,800 km cada vez."
+    },
+    "core-web-vitals": {
+      "en": "Example: A bistro's LCP at 4.2s and CLS at 0.18 — both 'poor' — costs the page about 30% of its mobile bookings before any other factor matters.",
+      "es": "Ejemplo: Un LCP de 4.2s y un CLS de 0.18 en un bistró — ambos en 'poor' — le cuesta a la página cerca del 30% de las reservas móviles antes de que cualquier otro factor importe."
+    },
+    "schema-markup": {
+      "en": "Example: A pizzeria with `priceRange: $$` and `acceptsReservations: true` in its Restaurant schema gets the booking-eligible badge in Google's Find a Table card.",
+      "es": "Ejemplo: Una pizzería con `priceRange: $$` y `acceptsReservations: true` en su schema de Restaurant obtiene la insignia de booking-eligible en la tarjeta de Find a Table de Google."
+    },
+    "menu-schema": {
+      "en": "Example: A taqueria using <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> can rank for 'tacos al pastor near me' on the dish itself, not just the restaurant.",
+      "es": "Ejemplo: Una taquería usando <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> puede posicionar para 'tacos al pastor cerca de mí' por el plato mismo, no solo por el restaurante."
+    },
+    "opening-hours-specification": {
+      "en": "Example: A diner with valid OpeningHoursSpecification + holiday overrides shows the correct 'Closed Christmas Day' notice in Google's panel — without it, hungry holiday-eve searches see stale hours.",
+      "es": "Ejemplo: Un diner con OpeningHoursSpecification válido + overrides de feriado muestra el aviso correcto 'Cerrado el Día de Navidad' en el panel de Google — sin él, las búsquedas de víspera ven horarios desactualizados."
+    },
+    "google-business-profile": {
+      "en": "Example: A pizzeria that adds 30 photos and replies to every review within 48 hours during its first 90 days typically lands 2-3 positions higher in the local-pack than identical competitors who don't.",
+      "es": "Ejemplo: Una pizzería que añade 30 fotos y responde a cada reseña en menos de 48 horas durante sus primeros 90 días suele aterrizar 2-3 posiciones más alto en el local-pack que competidores idénticos que no lo hacen."
+    },
+    "find-a-table": {
+      "en": "Example: A trattoria on Resy gets the 'Reserve a table' button directly inside Google's panel — competitors on a non-integrated booking system get 'Book on [their site]' as a less-prominent secondary link.",
+      "es": "Ejemplo: Una trattoria en Resy obtiene el botón 'Reservar mesa' directamente dentro del panel de Google — competidores en un sistema no-integrado obtienen 'Reservar en [su sitio]' como un link secundario menos prominente."
+    },
+    "prime-cost": {
+      "en": "Example: A 65% prime-cost ratio (food + labor combined) is the watershed — above 65% almost no independent restaurant survives a 12-month dip in covers.",
+      "es": "Ejemplo: Un costo primario del 65% (comida + mano de obra) es la línea divisoria — sobre 65% casi ningún restaurante independiente sobrevive una bajada de 12 meses en cubiertos."
+    },
+    "menu-engineering": {
+      "en": "Example: A bistro that re-staged its 4 'puzzle' items (high margin, low sales) with better photos and descriptions saw a 22% lift in their sales mix within 6 weeks — no price changes.",
+      "es": "Ejemplo: Un bistró que re-presentó sus 4 platos 'acertijo' (margen alto, ventas bajas) con mejores fotos y descripciones vio un aumento del 22% en su mix de ventas en 6 semanas — sin cambios de precio."
+    },
+    "lcp": {
+      "en": "Example: An LCP above 2.5s loses an estimated 12% of mobile reservation conversions; above 4.0s the loss compounds to roughly 30%.",
+      "es": "Ejemplo: Un LCP sobre 2.5s pierde un estimado 12% de conversiones móviles de reserva; sobre 4.0s la pérdida compone hasta cerca del 30%."
+    },
+    "cls": {
+      "en": "Example: A CLS of 0.25 (your hero image jumps the menu down 200px on load) makes 1-in-7 mobile visitors mis-tap the wrong CTA — usually the wrong reservation slot.",
+      "es": "Ejemplo: Un CLS de 0.25 (tu imagen hero empuja el menú 200px hacia abajo al cargar) hace que 1 de cada 7 visitantes móviles toque el CTA equivocado — normalmente el slot de reserva equivocado."
+    },
+    "alt-text": {
+      "en": "Example: 'Plate of carnitas with cilantro and lime' beats 'IMG_4521.jpg' for SEO + accessibility + AI search citations — costs 5 seconds per photo to write.",
+      "es": "Ejemplo: 'Plato de carnitas con cilantro y limón' le gana a 'IMG_4521.jpg' en SEO + accesibilidad + citas en búsqueda con IA — cuesta 5 segundos por foto escribirlo."
+    },
+    "canonical-url": {
+      "en": "Example: A bistro running both `/menu/` and `/menu/index.html` without a canonical link splits its ranking signal across two URLs — Google picks the lower-ranked one half the time.",
+      "es": "Ejemplo: Un bistró que sirve tanto `/menu/` como `/menu/index.html` sin canonical link divide su señal de ranking en dos URLs — Google elige la peor mitad del tiempo."
+    },
+    "html-menu": {
+      "en": "Example: A diner switching from PDF menu to HTML saw 4× the click-through from Google search results within 60 days — the PDF was invisible to the dish-level query.",
+      "es": "Ejemplo: Un diner que cambió de PDF a HTML vio 4× el click-through desde resultados de búsqueda en 60 días — el PDF era invisible para la búsqueda a nivel de plato."
+    },
+    "search-console": {
+      "en": "Example: A pizzeria's Search Console shows 12,400 impressions/month for 'pizza near me' but a 0.4% CTR — the meta description is the leverage, not the rank.",
+      "es": "Ejemplo: La Search Console de una pizzería muestra 12,400 impresiones/mes para 'pizza cerca de mí' pero un CTR de 0.4% — la meta description es la palanca, no el ranking."
+    }
+  }
+}

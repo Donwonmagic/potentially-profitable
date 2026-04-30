@@ -143,7 +143,7 @@
     //                             outputs dist/pagefind/ which site.js
     //                             lazy-loads on first open of the
     //                             search modal. Config at pagefind.yml.
-    "command": "node scripts/seed-glossary-og.mjs && node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-library-recent.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/wire-glossary-topics.mjs && node scripts/wire-glossary-knit.mjs && node scripts/inject-glossary-fieldnotes.mjs && node scripts/sync-approved-fieldnotes.mjs && node scripts/inject-article-fieldnotes.mjs && node scripts/inject-article-fieldnote-form.mjs && node scripts/build-people-pages.mjs && node scripts/inject-homepage-fieldnotes-rail.mjs && node scripts/inject-glossary-og.mjs && node scripts/inject-post-end-cta.mjs && node scripts/stamp-hreflang.mjs && node scripts/check-all.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
+    "command": "node scripts/seed-glossary-og.mjs && node scripts/build-og-cards.mjs && node scripts/stamp-es-restaurant-audit.mjs && node scripts/sync-includes.mjs && node scripts/build-tools-index.mjs && node scripts/build-library-recent.mjs && node scripts/build-site-counts.mjs && node scripts/inject-site-counts.mjs && node scripts/inject-tool-knit.mjs && node scripts/wire-glossary-topics.mjs && node scripts/wire-glossary-knit.mjs && node scripts/inject-glossary-fieldnotes.mjs && node scripts/sync-approved-fieldnotes.mjs && node scripts/inject-article-fieldnotes.mjs && node scripts/inject-article-fieldnote-form.mjs && node scripts/build-people-pages.mjs && node scripts/inject-homepage-fieldnotes-rail.mjs && node scripts/inject-glossary-og.mjs && node scripts/inject-post-end-cta.mjs && node scripts/stamp-hreflang.mjs && node scripts/inject-tool-howto.mjs && node scripts/inject-tool-storefront-rail.mjs && node scripts/inject-article-tldr.mjs && node scripts/inject-article-tldr.mjs --es && node scripts/inject-glossary-term-examples.mjs && node scripts/inject-topic-pillar-essay.mjs && node scripts/inject-glossary-article-schema.mjs && node scripts/inject-tool-verified-stamp.mjs && node scripts/build-llms-txt.mjs && node scripts/build-rss.mjs && node scripts/build-sitemap.mjs && node scripts/check-all.mjs && mkdir -p dist && tar -cf - --exclude=dist --exclude=.git --exclude=.github --exclude=docs --exclude=node_modules --exclude=.wrangler --exclude='.env*' --exclude=wrangler.jsonc --exclude='package*.json' --exclude=.gitignore --exclude=README.md --exclude=src --exclude=scripts --exclude=_includes --exclude=pagefind.yml . | tar -xf - -C dist && npx -y pagefind@latest --site dist"
   },
   "assets": {
     "directory": "./dist",
@@ -210,7 +210,17 @@
     // visitor surface at /window/ shows pause copy, the admin
     // surface shows "Direct line is paused." Flip back to
     // "false" for an emergency rollback — KV state persists.
-    "WINDOW_ENABLED": "true"
+    "WINDOW_ENABLED": "true",
+    // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
+    // When "true", the cron tick iterates sub:<hash> records and
+    // dispatches welcome/nudge/digest emails per state machine.
+    // When "false" or unset, the dispatcher returns
+    // {skipped:'flag-off'} on every tick. The structural pieces
+    // (templates, dispatcher, state stamping in handleWorkbenchSave)
+    // ship regardless — flipping the flag to "true" turns them on
+    // without a code change. Hard cap of 4 emails per quarter
+    // per subscriber is enforced inside the dispatcher.
+    "LIFECYCLE_EMAILS_ENABLED": "false"
   },
 
   // ─────────────────────────────────────────────────────────────────

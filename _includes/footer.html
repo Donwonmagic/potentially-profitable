@@ -53,6 +53,21 @@
       </nav>
     </div>
 
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
+        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
+        <label class="sr-only" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+        <input type="hidden" name="locale" value="en" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
@@ -60,7 +75,9 @@
         <a href="/privacy.html">Privacy</a>
         <a href="/accessibility.html">Accessibility</a>
         <a href="/cookies.html">Cookies</a>
+        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>

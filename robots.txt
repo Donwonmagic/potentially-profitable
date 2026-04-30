@@ -16,5 +16,13 @@ Disallow: /es/account/
 # the URL is the only thing that makes the page renderable, but
 # there is no value to a crawler discovering the path.
 Disallow: /api/auth/account-delete-confirm
+# Phase G.1 (Growth) — defense-in-depth for surfaces that should
+# never appear in search. /admin/* gates server-side via
+# _requireAdminSession; /sign-in/ is the magic-link landing;
+# /es/blog/drafts/ mirrors the EN drafts disallow above.
+Disallow: /admin/
+Disallow: /sign-in/
+Disallow: /es/sign-in/
+Disallow: /es/blog/drafts/
 
 Sitemap: https://muntin.digital/sitemap.xml

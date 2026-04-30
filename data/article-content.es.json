@@ -1,0 +1,174 @@
+{
+  "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
+
+  "articles": {
+    "wix-vs-custom-for-restaurants": {
+      "tldr": [
+        "Wix funciona para sitios de primer día, ‘placeholder’ o pop-ups — pero choca con paredes rápido en cualquier restaurante que pase su primer año.",
+        "Seis lugares donde se rompe: menú en sistema cerrado, móvil lento, reservas atadas a sus partners, SEO ‘bueno-de-template’, sin personalización real, y costos de salida.",
+        "La cuenta: un sitio custom usualmente se paga en 12-18 meses para cualquier restaurante que mueva $40K+/mes."
+      ],
+      "key_takeaways": [
+        "Tu menú dentro de Wix no es rastreable como Restaurant schema — Google no puede posicionar platos individuales.",
+        "Los puntajes móviles de Wix suelen quedar entre 40 y 50 sobre 100; eso es la plataforma, no tu configuración.",
+        "Si tu sistema de reservas no está en la lista de socios de Wix, te quedas con lo que ellos ofrezcan.",
+        "Los costos de salida (exportar, redirigir, recrear) son reales e invisibles hasta que intentas irte.",
+        "Wix es la decisión correcta cuando el sitio es genuinamente desechable — pop-ups, ghost kitchens, pruebas de temporada."
+      ]
+    },
+    "is-doordash-worth-it-for-restaurants-in-2026": {
+      "tldr": [
+        "$100 de ingreso de DoorDash típicamente se vuelven $40-50 en tu cuenta, después de comisión, empaque y tiempo de prep.",
+        "La pregunta honesta es si la orden existiría sin DoorDash — para la mayoría de operadores, menos de la mitad sí.",
+        "La recomendación 2026 depende de tu volumen, tu prime cost, y de si tu propio ordering page realmente funciona."
+      ],
+      "key_takeaways": [
+        "Corre la cuenta con TU ticket, no con el promedio — la comisión cambia con el volumen.",
+        "Pedir directo desde tu sitio mantiene el margen completo Y mantiene la relación con el cliente.",
+        "El break-even de un ghost kitchen solo-delivery es distinto al de un dine-in que prueba delivery.",
+        "DoorDash sigue siendo la respuesta correcta cuando no tienes tiempo para correr directo y la cocina tiene capacidad sobrada.",
+        "Guarda tu escenario de DoorDash en Margin Math y vuelve a correrlo cuando tu nivel de comisión cambie."
+      ]
+    },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
+      "tldr": [
+        "La mayor parte de la ansiedad por subir precios viene de hacer la cuenta sobre el número equivocado — ingreso total, en vez de margen de contribución.",
+        "Una subida de 4-7% generalizada típicamente pierde menos de 2% de las reservas si va acompañada de re-staging del menú.",
+        "Los movimientos en el sitio web importan tanto como el precio mismo: mejores descripciones, fotos en los platos de mayor margen, y un flujo de reserva limpio."
+      ],
+      "key_takeaways": [
+        "El charm pricing ($X.95) sigue funcionando para casual; el precio redondo ($X) lee upscale — la decisión depende de tu sala.",
+        "Sube los precios donde la descripción es mejor, no donde el margen es peor.",
+        "Re-fotografía los platos que subes — el valor percibido se mueve más que el cambio real.",
+        "Pon el CTA de reserva sobre la línea de pliegue la misma semana que subes precios; el sitio tiene que sentirse al día.",
+        "Guarda el escenario en Margin Math; vuélvelo a correr cuando tu food cost se mueva más de 1.5%."
+      ]
+    },
+    "how-to-set-up-google-business-profile-for-your-restaurant": {
+      "tldr": [
+        "Reclama, verifica, y luego completa cada campo — la mayoría de restaurantes deja 30%+ del perfil en blanco.",
+        "Las categorías importan más que cualquier otra cosa: elige la categoría primaria más específica para la que tu restaurante califique.",
+        "Las fotos y los Posts decaen — sin un hábito semanal de 15 minutos, el perfil deja de funcionar dentro de un trimestre."
+      ],
+      "key_takeaways": [
+        "La categoría primaria controla para qué búsquedas Google te muestra — cámbiala con cuidado.",
+        "Sube al menos 10 fotos reales al iniciar; apunta a 30 dentro de los primeros 90 días.",
+        "Responde cada reseña dentro de 48 horas — Google lee la tasa de respuesta como una señal de negocio activo.",
+        "Los Google Posts caducan después de 7 días; un perfil callado baja en el local-pack.",
+        "El hábito semanal de 15 minutos (1 foto, 1 post, todas las reseñas respondidas) compone más fuerte que cualquier arreglo único."
+      ]
+    },
+    "how-to-get-more-google-reviews-for-your-restaurant": {
+      "tldr": [
+        "Las reseñas componen — un restaurante que va de 50 a 200 reseñas típicamente ve un 15-25% de aumento en el click-through del pack-card.",
+        "Sistema de cinco piezas: una tarjeta QR impresa, una línea en el ticket, un texto de seguimiento, un CTA en el sitio, y un manager que las lea de verdad.",
+        "No compres reseñas, no filtres, no ‘gates’ — la detección de spam de Google ha mejorado dramáticamente."
+      ],
+      "key_takeaways": [
+        "La tarjeta QR en la cuenta gana 4-a-1 a cualquier otro método de pedirla en pruebas de campo.",
+        "Un texto corto post-comida — ‘esperamos que disfrutaras la cena; leemos cada reseña’ — convierte cuando se manda dentro de 12 horas.",
+        "Las reseñas de cinco estrellas importan menos que las de 4-y-3 a las que respondes bien (Google lee la responsividad).",
+        "Las reseñas negativas no son fatales; las negativas ignoradas sí.",
+        "La ventana de composición es de 90 días — el sistema que lleva 90+ días corriendo le gana al de 30."
+      ]
+    },
+    "how-to-recover-reservations-from-googles-find-a-table": {
+      "tldr": [
+        "Find a Table cambió cómo Google maneja las búsquedas de restaurantes — la reserva ocurre en Google antes de que el visitante llegue a tu sitio.",
+        "Si tu sistema de reservas no está en Find a Table, pierdes 8-15% de las reservas que vienen de búsqueda hacia competidores que sí están.",
+        "Tres movimientos concretos recuperan la mayoría del flujo perdido sin renunciar a tu propia superficie de reserva."
+      ],
+      "key_takeaways": [
+        "OpenTable, Resy, Tock y SevenRooms están actualmente conectados a Find a Table — elige uno si no tienes ninguno.",
+        "No deshabilites las reservas en GBP — eso te cuesta también las búsquedas de llamada-y-walk-in.",
+        "Añade reservation schema a tu sitio para que Google verifique que la integración es real.",
+        "La sección GBP del Restaurant Audit marca la elegibilidad de Find a Table como puntaje aparte.",
+        "El patrón más amplio: cada superficie de Google que toma la reserva antes que tu sitio te cuesta la relación — toma la reserva, después toma el correo."
+      ]
+    },
+    "how-much-does-a-custom-restaurant-website-cost-in-2026": {
+      "tldr": [
+        "Un sitio custom para un restaurante independiente en 2026 va de $2,500 a $25,000+, con la mayoría aterrizando en $6,000-$12,000.",
+        "Cuatro opciones reales: plataforma DIY ($25-50/mes), estudio de templates ($2.5-6K), custom completo ($6-20K), agencia de récord ($25K+).",
+        "Lo que realmente mueve el precio: complejidad del menú, integración de reservas, integración de ordering, y cuántos idiomas."
+      ],
+      "key_takeaways": [
+        "El pulido visual puro no mueve reservas — velocidad de carga, UX móvil y la base de SEO sí.",
+        "Un sitio custom real usualmente se paga en 12-18 meses para cualquier volumen sobre $40K/mes.",
+        "Banderas rojas en el extremo barato: sin contrato, sin garantía de Lighthouse, sin entrega del código fuente.",
+        "Banderas rojas en el extremo caro: ‘fases de discovery’ antes de mockups, retainer para actualizaciones que tú deberías hacer.",
+        "Corre Tech Stack Detector en tu sitio actual antes de cualquier cotización — la base importa."
+      ]
+    },
+    "what-should-be-on-a-restaurant-website": {
+      "tldr": [
+        "Siete páginas hacen casi todo el trabajo: home, menú, horarios-y-ubicación, reservas, historia, contacto, y una promo actual.",
+        "Páginas que probablemente no necesitas: una de ‘eventos’ aparte, blog, galería (el sitio mismo es la galería).",
+        "La estructura que se gana su lugar: cada página responde una pregunta de hambriento-a-las-11pm en menos de 3 toques."
+      ],
+      "key_takeaways": [
+        "La home existe para responder una pregunta: ‘¿es esto lo que quiero esta noche?’.",
+        "El menú tiene que ser HTML, no PDF — los PDFs están muertos en móvil y en búsqueda con IA.",
+        "Las reservas van sobre la línea de pliegue en cada página, no enterradas en un formulario de contacto.",
+        "La página de historia es la segunda más importante después del menú — es lo que los comensales comparten para convencer a un amigo.",
+        "Borra la página de ‘eventos’; teje los eventos en la home como una franja de promo actual."
+      ]
+    },
+    "why-your-restaurant-loses-reservations-every-night": {
+      "tldr": [
+        "El embudo de reservas es la métrica de marketing más honesta en operaciones de restaurante — y la mayoría de operadores nunca la ha medido.",
+        "Seis fugas, en orden: horarios poco claros, CTA de reserva enterrado, móvil lento, menú ausente, fotos frías, schema ausente.",
+        "Arreglar las primeras tres fugas solas típicamente recupera 8-15% de las reservas perdidas."
+      ],
+      "key_takeaways": [
+        "Los horarios sobre la línea de pliegue tienen el mayor impacto de un solo arreglo en pruebas de campo.",
+        "Si las reservas requieren más de dos toques desde cualquier página, el embudo está fugando.",
+        "Una carga móvil sobre 3 segundos correlaciona con un bounce de 30%+ en la página de reservas.",
+        "Menú ausente o solo-PDF es la segunda fuga más grande — Google no puede ayudarte a posicionar sin él.",
+        "Corre Restaurant Audit, guarda el puntaje, arregla las dos banderas más altas, vuelve a correrlo en 30 días."
+      ]
+    },
+    "five-restaurant-website-changes-recover-one-percent-margin": {
+      "tldr": [
+        "Cinco movimientos pequeños en el sitio, ninguno requiere rediseño, componen aproximadamente 1% de margen recuperado para un restaurante de volumen medio.",
+        "Cada movimiento es independiente — elige el más fácil en tu contexto y lánzalo esta semana.",
+        "El argumento de composición es matemática honesta, no un pitch: cada punto porcentual vale $X anual a tu volumen."
+      ],
+      "key_takeaways": [
+        "Horarios sobre la línea de pliegue: +0.20% margen, 30 minutos de trabajo.",
+        "Un único CTA primario de reserva: +0.25%, reemplaza cada otro link de reserva.",
+        "Link directo a tu propio ordering arriba: +0.30%, le gana en margen a cualquier plataforma de terceros.",
+        "Mejores descripciones en los platos de mayor margen: +0.15%, requiere Menu Copy Inspector.",
+        "Borra cada promo vieja y cada PDF muerto: +0.10%, la limpieza que nadie agenda y todo el mundo necesita."
+      ]
+    },
+    "can-chatgpt-write-your-restaurant-website": {
+      "tldr": [
+        "ChatGPT es genuinamente bueno para primer borrador de body copy, alt-text y FAQ estructurado para sitios de restaurantes.",
+        "Donde te equivoca en silencio: detalles específicos del salón, lenguaje hyperlocal, la voz real del menú.",
+        "El briefing de una página que lo arregla: 12 prompts que anclan al modelo a las especificidades de tu restaurante, no a los promedios del modelo."
+      ],
+      "key_takeaways": [
+        "El copy generado con IA posiciona bien para SEO; solo suena genérico, lo cual mata reservas.",
+        "Aliméntale al modelo el PDF impreso de tu menú, no solo los nombres — las descripciones cargan la voz.",
+        "Que un humano reescriba cada ‘aproximadamente’ / ‘varios’ / ‘alrededor de’ — esos son los tells de IA.",
+        "El schema de FAQ es uno de los mejores usos de IA; deja que el modelo escriba 12 preguntas y poda a 6.",
+        "Corre Menu Copy Inspector sobre la salida de IA antes de publicar; detecta los patrones de lenguaje muerto."
+      ]
+    },
+    "does-my-restaurant-need-a-website": {
+      "tldr": [
+        "Si tienes un Google Business Profile y estás satisfecho con que haga todo el trabajo, la respuesta podría ser genuinamente no.",
+        "Donde GBP se queda corto: no puede cargar tu historia, el copy real del menú, ni ningún canal de relación directa.",
+        "La prueba de cinco minutos que te dice si lo necesitas — y cuánto costaría si sí."
+      ],
+      "key_takeaways": [
+        "GBP te da descubribilidad e información básica; un sitio te da la relación.",
+        "Sin sitio, le rentas tu audiencia a Google — bien hasta que el algoritmo cambie.",
+        "Prueba de cinco minutos: si cada cliente regular te encontró por una vía distinta, todavía no necesitas sitio.",
+        "Si genuinamente no lo necesitas, haz la auditoría de 30 minutos a tu GBP y vete.",
+        "Cuando sí lo necesites, un sitio de template de $2,500 es suficiente para empezar; custom completo cuando el salón lo pida."
+      ]
+    }
+  }
+}

@@ -78,6 +78,52 @@
   ]
 }
 </script>
+<!-- glossary-article-schema:start -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/es/glossary/canonical-url/#article",
+      "headline": "URL canónica",
+      "abstract": "Una etiqueta en el HTML de una página que le dice a Google \"esta es la dirección real de esta página, ignora los duplicados\". Importa cuando el mismo contenido vive en varios URLs (con y sin www, con y sin parámetros de seguimiento, versiones para imprimir).",
+      "description": "Una etiqueta en el HTML de una página que le dice a Google \"esta es la dirección real de esta página, ignora los duplicados\". Importa cuando el mismo contenido vive en varios URLs (con y sin www, con y sin parámetros de seguimiento, versiones para imprimir).",
+      "url": "https://muntin.digital/es/glossary/canonical-url/",
+      "mainEntityOfPage": {
+        "@id": "https://muntin.digital/es/glossary/canonical-url/#term"
+      },
+      "about": {
+        "@id": "https://muntin.digital/es/glossary/canonical-url/#term"
+      },
+      "inLanguage": "es-US",
+      "author": {
+        "@type": "Person",
+        "@id": "https://muntin.digital/#don-goldstein",
+        "name": "Don Goldstein",
+        "url": "https://muntin.digital/about/"
+      },
+      "publisher": {
+        "@id": "https://muntin.digital/#business"
+      },
+      "image": "https://muntin.digital/brand/og/glossary-canonical-url-es.png",
+      "datePublished": "2026-04-24T23:03:21+00:00",
+      "isPartOf": {
+        "@id": "https://muntin.digital/glossary/#muntin-glossary"
+      }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://muntin.digital/es/glossary/canonical-url/#term",
+      "sameAs": [
+        "https://developers.google.com/search/docs/crawling-indexing/canonicalization",
+        "https://en.wikipedia.org/wiki/Canonical_link_element"
+      ]
+    }
+  ]
+}
+</script>
+<!-- glossary-article-schema:end -->
 </head>
 <body>
 
@@ -219,6 +265,9 @@
     <header class="term-head">
       <span class="eyebrow"><a href="/es/glossary/findability/">Que te encuentren</a></span>
       <h1 class="term-h1">URL canónica</h1>
+      <!-- term-example:start -->
+            <p class="term-example">Ejemplo: Un bistró que sirve tanto `/menu/` como `/menu/index.html` sin canonical link divide su señal de ranking en dos URLs — Google elige la peor mitad del tiempo.</p>
+            <!-- term-example:end -->
       <p class="term-aka">rel=canonical, la dirección "oficial"</p>
       <div class="term-meta">
         <div class="term-tags"><span class="gloss-tag">Todos</span></div>

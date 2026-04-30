@@ -1,0 +1,143 @@
+{
+  "_doc": "Phase G.4 (Growth) — sameAs canonical external URLs per glossary term. inject-glossary-article-schema.mjs reads this file and emits a DefinedTerm @id-merge fragment with `sameAs` for each entry. Google + LLM search engines treat sameAs as a strong entity-resolution signal: 'this term IS this Wikipedia entity, IS this schema.org type, IS this Google docs page.' Only add entries where there's a clear canonical external definition. Skip if the term is Muntin-original or operator-folklore (e.g., 'walkaway test'). slug must match a directory under glossary/.",
+
+  "terms": {
+    "schema-markup": [
+      "https://schema.org/",
+      "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+      "https://en.wikipedia.org/wiki/Schema.org"
+    ],
+    "menu-schema": [
+      "https://schema.org/Menu",
+      "https://developers.google.com/search/docs/appearance/structured-data/local-business"
+    ],
+    "opening-hours-specification": [
+      "https://schema.org/OpeningHoursSpecification"
+    ],
+    "aggregaterating": [
+      "https://schema.org/AggregateRating"
+    ],
+    "cdn": [
+      "https://en.wikipedia.org/wiki/Content_delivery_network"
+    ],
+    "core-web-vitals": [
+      "https://web.dev/articles/vitals",
+      "https://en.wikipedia.org/wiki/Core_Web_Vitals"
+    ],
+    "ttfb": [
+      "https://web.dev/articles/ttfb"
+    ],
+    "lcp": [
+      "https://web.dev/articles/lcp"
+    ],
+    "cls": [
+      "https://web.dev/articles/cls"
+    ],
+    "fid": [
+      "https://web.dev/articles/fid"
+    ],
+    "inp": [
+      "https://web.dev/articles/inp"
+    ],
+    "canonical-url": [
+      "https://developers.google.com/search/docs/crawling-indexing/canonicalization",
+      "https://en.wikipedia.org/wiki/Canonical_link_element"
+    ],
+    "viewport-meta": [
+      "https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag"
+    ],
+    "alt-text": [
+      "https://www.w3.org/WAI/tutorials/images/decision-tree/"
+    ],
+    "wcag-contrast": [
+      "https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html"
+    ],
+    "robots-txt": [
+      "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
+      "https://en.wikipedia.org/wiki/Robots.txt"
+    ],
+    "sitemap": [
+      "https://www.sitemaps.org/protocol.html",
+      "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview"
+    ],
+    "search-console": [
+      "https://search.google.com/search-console/about"
+    ],
+    "pagespeed-insights": [
+      "https://pagespeed.web.dev/"
+    ],
+    "lighthouse": [
+      "https://developer.chrome.com/docs/lighthouse/overview"
+    ],
+    "google-business-profile": [
+      "https://www.google.com/business/",
+      "https://en.wikipedia.org/wiki/Google_Maps#Google_Business_Profile"
+    ],
+    "yelp-listing": [
+      "https://en.wikipedia.org/wiki/Yelp"
+    ],
+    "doordash": [
+      "https://en.wikipedia.org/wiki/DoorDash"
+    ],
+    "ubereats": [
+      "https://en.wikipedia.org/wiki/Uber_Eats"
+    ],
+    "grubhub": [
+      "https://en.wikipedia.org/wiki/Grubhub"
+    ],
+    "opentable": [
+      "https://en.wikipedia.org/wiki/OpenTable"
+    ],
+    "resy": [
+      "https://en.wikipedia.org/wiki/Resy"
+    ],
+    "tock": [
+      "https://en.wikipedia.org/wiki/Tock_(reservation_service)"
+    ],
+    "find-a-table": [
+      "https://blog.google/products/maps/find-a-table-tool/"
+    ],
+    "https": [
+      "https://en.wikipedia.org/wiki/HTTPS"
+    ],
+    "tls": [
+      "https://en.wikipedia.org/wiki/Transport_Layer_Security"
+    ],
+    "dns": [
+      "https://en.wikipedia.org/wiki/Domain_Name_System"
+    ],
+    "cms": [
+      "https://en.wikipedia.org/wiki/Content_management_system"
+    ],
+    "wordpress": [
+      "https://en.wikipedia.org/wiki/WordPress"
+    ],
+    "wix": [
+      "https://en.wikipedia.org/wiki/Wix.com"
+    ],
+    "squarespace": [
+      "https://en.wikipedia.org/wiki/Squarespace"
+    ],
+    "shopify": [
+      "https://en.wikipedia.org/wiki/Shopify"
+    ],
+    "menu-engineering": [
+      "https://en.wikipedia.org/wiki/Menu_engineering"
+    ],
+    "prime-cost": [
+      "https://en.wikipedia.org/wiki/Cost_of_goods_sold"
+    ],
+    "break-even": [
+      "https://en.wikipedia.org/wiki/Break-even_(economics)"
+    ],
+    "charm-pricing": [
+      "https://en.wikipedia.org/wiki/Psychological_pricing"
+    ],
+    "responsive-design": [
+      "https://en.wikipedia.org/wiki/Responsive_web_design"
+    ],
+    "mobile-first": [
+      "https://developers.google.com/search/blog/2018/03/rolling-out-mobile-first-indexing"
+    ]
+  }
+}
