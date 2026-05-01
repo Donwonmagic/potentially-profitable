@@ -894,13 +894,90 @@
     var f = e.target.files && e.target.files[0];
     if (!f) return;
     setActiveChip('csv');
+    if (typeof MID_CSV_EXTRACT === 'undefined' || !MID_CSV_EXTRACT.extractFile) {
+      showStatus(
+        tt('CSV / Excel reader unavailable.', 'Lector de CSV / Excel no disponible.'),
+        tt('Refresh the page and try again.', 'Recarga la página e intenta de nuevo.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+    if (f.size > 10 * 1024 * 1024) {
+      showStatus(
+        tt('CSV / Excel file too large.', 'Archivo CSV / Excel muy grande.'),
+        tt('That file is over 10 MB. Distributor exports are typically <2 MB; trim or re-export from the portal.',
+           'Pasa de 10 MB. Las exportaciones suelen pesar <2 MB; recórtala o re-expórtala del portal.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
     showStatus(
-      tt('CSV / Excel reader landing in Wave B2', 'El lector de CSV / Excel llega en B2'),
-      tt('We received ' + (f.name || 'export.csv') + '. Tabular ingest ships next sprint alongside the OCR loop.',
-         'Recibimos ' + (f.name || 'exportacion.csv') + '. La importación tabular llega en el próximo sprint junto con el OCR.')
+      tt('Reading ' + (f.name || 'your file') + '…', 'Leyendo ' + (f.name || 'tu archivo') + '…'),
+      tt('Mapping columns to invoice fields. Distributor CSV / XLSX exports are 100% accurate — zero OCR.',
+         'Mapeando columnas a campos de factura. Las exportaciones CSV / XLSX son 100% precisas — sin OCR.')
     );
-    setProgress(0);
-    e.target.value = '';
+    setProgress(20);
+
+    MID_CSV_EXTRACT.extractFile(f).then(function (parsed) {
+      setProgress(70);
+      if (parsed && parsed._noHeaders) {
+        showStatus(
+          tt('Couldn\'t find a header row in this file.', 'No se encontró una fila de encabezados.'),
+          tt('We need at least 2 of these columns named in the first row: Item / Qty / Unit / Price / Total. Re-export with column headers, or fall back to the photo path.',
+             'Necesitamos al menos 2 de estas columnas nombradas en la primera fila: Producto / Cantidad / Unidad / Precio / Total. Re-exporta con encabezados, o usa la ruta de foto.'),
+          'error'
+        );
+        e.target.value = '';
+        return;
+      }
+      // Filename vendor hint (CSV often lacks a vendor letterhead).
+      var vMatch = null;
+      var vendorHint = MID_CSV_EXTRACT.vendorHintFromFilename(f.name);
+      if (vendorHint && typeof MID_VENDORS !== 'undefined') {
+        var registry = MID_VENDORS.REGISTRY;
+        for (var i = 0; i < registry.length; i++) {
+          if (registry[i].id === vendorHint) {
+            vMatch = { id: registry[i].id, label: registry[i].label_en, score: 0.5, vendor: registry[i] };
+            break;
+          }
+        }
+        if (vMatch) {
+          MID_VENDORS.applyVendorBoost(parsed.rows, vMatch);
+          parsed.vendor = vMatch.id;
+        }
+      }
+      // Categorize.
+      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+        parsed.rows.forEach(function (r) {
+          var c = MID_CATEGORIZE.classify(r);
+          r.category = c.category;
+          r.categoryConfidence = c.confidence;
+          r.categoryTier = c.tier;
+        });
+      }
+      setProgress(95);
+      renderParsed(parsed);
+      hideStatus();
+      if (window.plausible) {
+        window.plausible('Invoice Decoder CSV Extract', { props: {
+          rows_bucket: parsed.rows.length < 10 ? '<10' :
+                       parsed.rows.length < 25 ? '10-24' :
+                       parsed.rows.length < 50 ? '25-49' : '50+',
+          format: f.name.toLowerCase().endsWith('.xlsx') ? 'xlsx' : 'csv',
+          vendor_detected: vMatch ? 'true' : 'false'
+        } });
+      }
+    }).catch(function (err) {
+      showStatus(
+        tt('Could not read this file.', 'No se pudo leer este archivo.'),
+        (err && err.message) ? err.message : tt('Try the photo path or re-export the file.', 'Usa la ruta de foto o re-exporta el archivo.'),
+        'error'
+      );
+    }).then(function () {
+      e.target.value = '';
+    });
   });
 
   // -------------------- Reload-and-decrypt (W1-5 BLOCKER fix) --------------------
