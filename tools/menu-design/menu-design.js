@@ -714,7 +714,11 @@
       // Tiny SVG silhouette (proportional to paper).
       var thumbW = 48; var thumbH = Math.round(thumbW * (p.h / p.w));
       if (thumbH > 32) { thumbH = 32; thumbW = Math.round(thumbH * (p.w / p.h)); }
-      var thumb = '<svg class="md-paper-card-thumb" width="' + thumbW + '" height="' + thumbH + '" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
+      // W24-1 — drop the inline width/height; CSS already caps with
+      // max-width: 48px / max-height: 32px. Inline attrs prevented
+      // the silhouette from scaling down on narrower cards (post
+      // W24-1 grid change, paper cards can be < 150px wide).
+      var thumb = '<svg class="md-paper-card-thumb" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true" style="width:100%;max-width:48px;height:auto"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
       var orient = p.orient === 'landscape' ? 'LAND' : (p.orient === 'portrait' ? 'PORT' : '');
       var stockLabel = p.stock ? ('<span class="md-paper-card-stock">' + escHtml(p.stock) + '</span>') : '';
       return '<button type="button" class="md-paper-card" role="radio" aria-checked="' + checked + '" data-key="' + escHtml(k) + '">' +
@@ -892,6 +896,18 @@
       paper.removeAttribute('data-cols');
       paper.removeAttribute('data-section-case');
       paper.removeAttribute('data-logo-slot');
+      paper.removeAttribute('data-paper');
+      paper.removeAttribute('data-flow');
+      paper.style.removeProperty('--paper-aspect');
+      paper.style.removeProperty('--paper-margin-pct');
+      paper.style.removeProperty('--panels');
+      // W24-2 — also strip any leftover sibling pages from the
+      // previous render so the empty state is clean.
+      var emptyFrame = paper.parentElement;
+      if (emptyFrame) {
+        emptyFrame.querySelectorAll('.md-preview-paper-extra, .md-page-break, .md-preview-page-num')
+          .forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+      }
       if (previewMeta) previewMeta.textContent = '';
       if (overflowEl) overflowEl.hidden = true;
       return;
@@ -915,6 +931,24 @@
     paper.dataset.price       = theme.priceStyle;
     paper.dataset.cols        = String(theme.columns);
     paper.dataset.sectionCase = theme.sectionCase;
+    // W24-2 — apply paper aspect ratio + scaled padding so the
+    // preview is shaped like the actual deliverable. Sheet flow
+    // (Letter, A4, etc.) gets a portrait/landscape paper-shape;
+    // panel flow (trifold, table-tent) gets the unfolded sheet
+    // shape and the panel grid is set up via data-flow="panel".
+    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) || null;
+    if (paperInfo) {
+      paper.style.setProperty('--paper-aspect', paperInfo.w + '/' + paperInfo.h);
+      paper.style.setProperty('--paper-margin-pct',
+        String((paperInfo.margin || 48) / paperInfo.w * 100) + '%');
+      paper.dataset.paper = paperKey;
+      paper.dataset.flow  = paperInfo.flow || 'page';
+      if (paperInfo.flow === 'panel') {
+        paper.style.setProperty('--panels', String(paperInfo.panels || 1));
+      } else {
+        paper.style.removeProperty('--panels');
+      }
+    }
     paper.dataset.logoSlot    = theme.logoSlot;
 
     // Group rows[] into [section, dish[]] pairs. Dishes before any
@@ -1094,34 +1128,254 @@
     }
 
     paper.innerHTML = html;
-
-    if (previewMeta) {
-      var paperLabel = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey] && MD_PDF.PAPERS[paperKey].label) || paperKey;
-      previewMeta.textContent = paperLabel + ' · ' + dishes.length + ' ' + tt('dishes', 'platos');
+    // W24-2 — clear any leftover sibling pages + page-break shims
+    // from the previous render. The frame is the multi-page host.
+    var frame = paper.parentElement;
+    if (frame) {
+      var leftover = frame.querySelectorAll('.md-preview-paper-extra, .md-page-break, .md-preview-page-num');
+      leftover.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
     }
-
-    // Heuristic overflow warn — purely advisory; the PDF renderer
-    // does the real flow check on export. Threshold scales with
-    // paper area and column count.
-    var threshold = (theme.columns === 2) ? 32 : 18;
-    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
-    if (paperInfo) {
-      var areaRatio = (paperInfo.w * paperInfo.h) / (612 * 792); // vs Letter
-      threshold = Math.max(6, Math.round(threshold * Math.max(0.45, areaRatio)));
-      if (paperInfo.flow === 'panel') threshold = (paperInfo.panels || 6) * 5; // ~5 dishes per inside panel
+    // W24-3 — panel-flow render: split content into N panels mapped
+    // by paperInfo.panelMap. front=title+logo, inside-N=dish flow,
+    // back=meta-footer / address. Visible fold lines between panels.
+    var pages = 1;
+    var panelCount = paperInfo && paperInfo.flow === 'panel' ? (paperInfo.panels || 1) : 0;
+    if (paperInfo && paperInfo.flow === 'panel' && frame) {
+      pages = renderPanelFlow(paper, paperInfo, theme);
+    } else if (frame && typeof requestAnimationFrame === 'function') {
+      // Sheet flow: split the rendered content into N stacked pages
+      // based on actual measured heights. requestAnimationFrame waits
+      // one frame so getBoundingClientRect returns settled values.
+      requestAnimationFrame(function () {
+        try { pages = paginatePreviewDom(paper, frame, paperInfo); }
+        catch (_) { pages = 1; }
+        updatePreviewMeta(pages, paperInfo, dishes.length);
+      });
     }
+    // Set the meta chip immediately based on the synchronous estimate;
+    // the rAF callback above refines it once the DOM has settled.
+    var initialEstimate = estimatePagesQuick(paperInfo, theme, dishes.length);
+    updatePreviewMeta(initialEstimate, paperInfo, dishes.length);
+    // W24-2 — retire the heuristic overflow warning. Page breaks
+    // are now visible in the preview itself; only surface a
+    // concrete advisory when a panel-flow paper genuinely can't
+    // hold the operator's content.
     if (overflowEl) {
-      if (dishes.length > threshold) {
+      if (paperInfo && paperInfo.flow === 'panel' && dishes.length > (paperInfo.panels || 6) * 8) {
         overflowEl.hidden = false;
-        var ovLabel = (paperInfo && paperInfo.label) || paperKey;
+        var ovLabel = paperInfo.label || paperKey;
         overflowEl.textContent = tt(
-          'Your menu has ' + dishes.length + ' dishes — may overflow on ' + ovLabel + '. The PDF will paginate cleanly when you export.',
-          'Tu menú tiene ' + dishes.length + ' platos — puede desbordarse en ' + ovLabel + '. El PDF paginará limpio al exportar.'
+          "Won't fit one " + ovLabel + ' — try Tabloid or trim ' + Math.max(3, dishes.length - (paperInfo.panels || 6) * 6) + ' dishes.',
+          'No cabe en un ' + ovLabel + ' — prueba Tabloide o quita ' + Math.max(3, dishes.length - (paperInfo.panels || 6) * 6) + ' platos.'
         );
       } else {
         overflowEl.hidden = true;
       }
     }
+  }
+
+  // W24-2 — quick synchronous page-count estimate (no DOM measurement).
+  // Used for the immediate meta-chip update before the rAF refinement.
+  function estimatePagesQuick(paperInfo, theme, dishCount) {
+    if (!paperInfo) return 1;
+    if (paperInfo.flow === 'panel') return paperInfo.panels || 1;
+    var perPage = (theme && theme.columns === 2) ? 32 : 18;
+    var areaRatio = (paperInfo.w * paperInfo.h) / (612 * 792);
+    perPage = Math.max(6, Math.round(perPage * Math.max(0.45, areaRatio)));
+    return Math.max(1, Math.ceil(dishCount / perPage));
+  }
+
+  // W24-2 — write the meta chip. Sheet flow: "13 dishes · 2 pages".
+  // Panel flow: "13 dishes · 6 panels".
+  function updatePreviewMeta(countOrPages, paperInfo, dishCount) {
+    if (!previewMeta) return;
+    var paperLabel = (paperInfo && paperInfo.label) || paperKey;
+    if (paperInfo && paperInfo.flow === 'panel') {
+      var panels = paperInfo.panels || 1;
+      var panelWord = panels === 1 ? tt('panel', 'panel') : tt('panels', 'paneles');
+      previewMeta.textContent = paperLabel + ' · ' + dishCount + ' ' + tt('dishes', 'platos') +
+        ' · ' + panels + ' ' + panelWord;
+    } else {
+      var pages = (typeof countOrPages === 'number' ? countOrPages : 1);
+      var pageWord = pages === 1 ? tt('page', 'página') : tt('pages', 'páginas');
+      previewMeta.textContent = paperLabel + ' · ' + dishCount + ' ' + tt('dishes', 'platos') +
+        ' · ' + pages + ' ' + pageWord;
+    }
+  }
+
+  // W24-2 — DOM-measured page split. After the html is rendered into
+  // the first .md-preview-paper, walk children and bin-pack by
+  // measured height vs the paper's content-area height. When a child
+  // would overflow, start a new .md-preview-paper sibling and insert
+  // a .md-page-break shim between. Per-page corner labels are added
+  // last. Returns final page count.
+  function paginatePreviewDom(paperEl, frame, paperInfo) {
+    if (!paperEl || !frame || !paperInfo) return 1;
+    var rect = paperEl.getBoundingClientRect();
+    if (!rect.width) return 1;
+    var paperHeightPx = rect.width * (paperInfo.h / paperInfo.w);
+    var paddingPx = rect.width * ((paperInfo.margin || 48) / paperInfo.w);
+    var contentAreaH = paperHeightPx - 2 * paddingPx;
+    if (contentAreaH <= 0) return 1;
+
+    var children = Array.prototype.slice.call(paperEl.children);
+    if (!children.length) {
+      addPageNumLabel(paperEl, 1, 1);
+      return 1;
+    }
+    // Measure each child once. Skip absolute-positioned siblings.
+    var heights = children.map(function (c) {
+      var cs = window.getComputedStyle(c);
+      if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
+      return c.getBoundingClientRect().height;
+    });
+    var pageBuckets = [[]];
+    var bucketH = 0;
+    children.forEach(function (c, idx) {
+      var ch = heights[idx];
+      if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
+        pageBuckets.push([c]);
+        bucketH = ch;
+      } else {
+        pageBuckets[pageBuckets.length - 1].push(c);
+        bucketH += ch;
+      }
+    });
+    if (pageBuckets.length <= 1) {
+      addPageNumLabel(paperEl, 1, 1);
+      return 1;
+    }
+    // First bucket stays in paperEl (already there). Move the rest
+    // into new sibling .md-preview-paper elements with shims between.
+    paperEl.innerHTML = '';
+    pageBuckets[0].forEach(function (c) { paperEl.appendChild(c); });
+    addPageNumLabel(paperEl, 1, pageBuckets.length);
+
+    var prevSibling = paperEl;
+    for (var p = 1; p < pageBuckets.length; p++) {
+      var shim = document.createElement('div');
+      shim.className = 'md-page-break';
+      shim.setAttribute('aria-hidden', 'true');
+      shim.innerHTML = '<span>' + escHtml(tt(
+        'Page ' + (p + 1) + ' of ' + pageBuckets.length,
+        'Página ' + (p + 1) + ' de ' + pageBuckets.length)) + '</span>';
+      prevSibling.parentNode.insertBefore(shim, prevSibling.nextSibling);
+
+      var newPaper = paperEl.cloneNode(false);
+      newPaper.classList.add('md-preview-paper-extra');
+      newPaper.removeAttribute('id');
+      pageBuckets[p].forEach(function (c) { newPaper.appendChild(c); });
+      shim.parentNode.insertBefore(newPaper, shim.nextSibling);
+      addPageNumLabel(newPaper, p + 1, pageBuckets.length);
+      prevSibling = newPaper;
+    }
+    return pageBuckets.length;
+  }
+
+  function addPageNumLabel(paperEl, n, total) {
+    if (total <= 1 && n === 1) return; // single page; skip label
+    var lbl = document.createElement('span');
+    lbl.className = 'md-preview-page-num';
+    lbl.setAttribute('aria-hidden', 'true');
+    lbl.textContent = n + ' / ' + total;
+    paperEl.appendChild(lbl);
+  }
+
+  // W24-3 — Panel-flow renderer. Distributes the existing rendered
+  // children into N panel divs based on paperInfo.panelMap. Front
+  // panel gets title + logo; back panel gets meta-footer / address;
+  // inside panels get the dish flow split evenly. CSS handles the
+  // grid layout (desktop side-by-side, mobile stacked).
+  function renderPanelFlow(paperEl, paperInfo, theme) {
+    if (!paperEl || !paperInfo) return 1;
+    var panels = paperInfo.panels || 1;
+    var panelMap = paperInfo.panelMap || [];
+    // Snapshot the current children (built by the same html-string
+    // composer above). Title + logo + tagline + story go into the
+    // front panel; meta-footer + allergen-key into back; everything
+    // else (sections + dishes) flows through inside panels.
+    var children = Array.prototype.slice.call(paperEl.children);
+    var titleNodes  = children.filter(function (c) {
+      return c.classList && (
+        c.classList.contains('md-pp-logo') ||
+        c.classList.contains('md-pp-title') ||
+        c.classList.contains('md-pp-tagline') ||
+        c.classList.contains('md-pp-story')
+      );
+    });
+    var backNodes = children.filter(function (c) {
+      return c.classList && (
+        c.classList.contains('md-pp-footer') ||
+        c.classList.contains('md-pp-allergen-key')
+      );
+    });
+    var insideNodes = children.filter(function (c) {
+      return titleNodes.indexOf(c) === -1 && backNodes.indexOf(c) === -1;
+    });
+    paperEl.innerHTML = '';
+    var insideTotal = panelMap.filter(function (r) {
+      return r === 'inside-1' || r === 'inside-2' || r === 'inside-3' || r === 'inside-4' ||
+             r === 'inside-L' || r === 'inside-R' || r === 'center' ||
+             r === 'side-A' || r === 'side-B' ||
+             /^inside/.test(r);
+    }).length || 1;
+    var perInside = Math.ceil(insideNodes.length / insideTotal);
+    var insideIdx = 0;
+    var insidePanelN = 0;
+    for (var pi = 0; pi < panels; pi++) {
+      var role = panelMap[pi] || 'inside-' + pi;
+      var panelDiv = document.createElement('div');
+      panelDiv.className = 'md-pp-panel';
+      panelDiv.dataset.role = role;
+      var roleLabel = document.createElement('span');
+      roleLabel.className = 'md-pp-panel-role';
+      roleLabel.setAttribute('aria-hidden', 'true');
+      roleLabel.textContent = panelRoleLabel(role);
+      panelDiv.appendChild(roleLabel);
+      if (role === 'front') {
+        titleNodes.forEach(function (c) { panelDiv.appendChild(c.cloneNode(true)); });
+      } else if (role === 'back' || role === 'address') {
+        backNodes.forEach(function (c) { panelDiv.appendChild(c.cloneNode(true)); });
+      } else if (role === 'tear') {
+        // Empty by design — placeholder for coupon / mailing label.
+        var note = document.createElement('p');
+        note.style.cssText = 'opacity:.4;font-size:.7em;text-align:center;margin-top:30%';
+        note.textContent = tt('Tear / mailing panel', 'Panel desprendible / postal');
+        panelDiv.appendChild(note);
+      } else {
+        // Inside-N: take the next slice of inside nodes.
+        var slice = insideNodes.slice(insideIdx, insideIdx + perInside);
+        insideIdx += perInside;
+        insidePanelN++;
+        slice.forEach(function (c) { panelDiv.appendChild(c); });
+      }
+      paperEl.appendChild(panelDiv);
+    }
+    return panels;
+  }
+
+  function panelRoleLabel(role) {
+    var en = {
+      'front':    'FRONT',
+      'back':     'BACK',
+      'address':  'ADDRESS',
+      'tear':     'TEAR',
+      'inside-1': 'INSIDE 1', 'inside-2': 'INSIDE 2', 'inside-3': 'INSIDE 3', 'inside-4': 'INSIDE 4',
+      'inside-L': 'INSIDE LEFT', 'inside-R': 'INSIDE RIGHT', 'center': 'CENTER',
+      'gate-L':   'GATE LEFT', 'gate-R': 'GATE RIGHT',
+      'side-A':   'SIDE A',  'side-B': 'SIDE B'
+    };
+    var es = {
+      'front':    'FRENTE',
+      'back':     'REVERSO',
+      'address':  'DIRECCIÓN',
+      'tear':     'DESPRENDIBLE',
+      'inside-1': 'INTERIOR 1', 'inside-2': 'INTERIOR 2', 'inside-3': 'INTERIOR 3', 'inside-4': 'INTERIOR 4',
+      'inside-L': 'INTERIOR IZQ', 'inside-R': 'INTERIOR DER', 'center': 'CENTRO',
+      'gate-L':   'PORTÓN IZQ', 'gate-R': 'PORTÓN DER',
+      'side-A':   'LADO A',   'side-B': 'LADO B'
+    };
+    return tt(en[role] || role.toUpperCase(), es[role] || role.toUpperCase());
   }
 
   // -------------------- Wire interactions --------------------
