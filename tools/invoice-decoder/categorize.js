@@ -122,7 +122,50 @@
     ]
   };
 
-  function classify(/* row */) {
+  function normalize(s) {
+    return String(s || '')
+      .toLowerCase()
+      .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
+      .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n')
+      .replace(/[^a-z0-9 ]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // Tier 1 — exact substring match. Walks every term in every
+  // category; the longest matching term wins. Returns { category,
+  // confidence, tier, matched } or null when no term fires.
+  // Confidence factors in match-length / line-length so "chicken"
+  // matching all of "chicken" reads stronger than "chicken"
+  // matching one word of "chicken stock seasoning powder".
+  function tier1Exact(rowName) {
+    var name = normalize(rowName);
+    if (!name) return null;
+    var best = null;
+    for (var cat in LEXICON) {
+      var entries = LEXICON[cat];
+      for (var i = 0; i < entries.length; i++) {
+        var terms = (entries[i].en || []).concat(entries[i].es || []);
+        for (var t = 0; t < terms.length; t++) {
+          var term = normalize(terms[t]);
+          if (!term || term.length < 3) continue;
+          if (name.indexOf(term) === -1) continue;
+          if (!best || term.length > best.term.length) {
+            best = { category: cat, term: term };
+          }
+        }
+      }
+    }
+    if (!best) return null;
+    var ratio = best.term.length / Math.max(name.length, 1);
+    var confidence = Math.round(70 + Math.min(25, ratio * 30));
+    return { category: best.category, confidence: confidence, tier: 'exact', matched: best.term };
+  }
+
+  function classify(row) {
+    if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none' };
+    var t1 = tier1Exact(row.name);
+    if (t1) return t1;
     return { category: null, confidence: 0, tier: 'none' };
   }
 
