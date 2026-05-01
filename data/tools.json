@@ -8,7 +8,7 @@
       "label_es": "Operaciones y Márgenes",
       "blurb_en": "The honest math of running an independent restaurant — food cost, menu mix, and the prices that protect your margin.",
       "blurb_es": "La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.",
-      "tools": ["invoice-decoder", "margin-math", "menu-engineering", "plate-cost"]
+      "tools": ["invoice-decoder", "cost-pulse", "margin-math", "menu-engineering", "plate-cost"]
     },
     {
       "id": "local-seo",
@@ -240,6 +240,21 @@
       "cta_es": "Abrir Decodificador de Facturas",
       "url_en": "/tools/invoice-decoder/",
       "url_es": "/es/tools/invoice-decoder/",
+      "cluster": "operations-margin",
+      "status": "live",
+      "added": "2026-05-01"
+    },
+    "cost-pulse": {
+      "title_en": "Cost Pulse",
+      "title_es": "Pulso de Costos",
+      "summary_en": "A dashboard across your saved invoices. Spot food-cost drift, category-share shifts, and rolling medians — no QuickBooks open.",
+      "summary_es": "Un panel sobre tus facturas guardadas. Detecta deriva de costos, cambios de participación por categoría y medianas móviles — sin abrir QuickBooks.",
+      "walkaway_en": "A drift list, sparklines, and a most-recent-save card with a one-tap reload.",
+      "walkaway_es": "Una lista de deriva, sparklines y una tarjeta del último guardado con recarga de un solo toque.",
+      "cta_en": "Open Cost Pulse",
+      "cta_es": "Abrir Pulso de Costos",
+      "url_en": "/tools/cost-pulse/",
+      "url_es": "/es/tools/cost-pulse/",
       "cluster": "operations-margin",
       "status": "live",
       "added": "2026-05-01"
