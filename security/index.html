@@ -416,7 +416,7 @@
       <p>The point of this page is that you don&rsquo;t have to take any of it on faith. Three concrete ways to confirm:</p>
       <ol>
         <li><strong>DevTools.</strong> Open any tool, then DevTools (<kbd>Cmd+Opt+I</kbd> / <kbd>Ctrl+Shift+I</kbd>). Watch the Network tab while you type. Watch Application &rarr; Storage while you click. Both stay empty of your inputs.</li>
-        <li><strong>Source.</strong> Right-click &rarr; View Page Source. Or open <code>/assets/site.js</code> directly. Search for any tool&rsquo;s function — every line is in the open. Hash the file: a SHA-256 of the production bundle is published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</li>
+        <li><strong>Source.</strong> Right-click &rarr; View Page Source. Or open <code>/assets/site.js</code> directly. Search for any tool&rsquo;s function — every line is in the open. Hash the file yourself, or compare against the SHA-256 digests published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a> (regenerated on each deploy; the file lists exactly which paths were hashed).</li>
         <li><strong>The audit.</strong> Run the <a href="/learn/checklists/audit-any-tool/">5-test audit checklist</a> on this site, then on a competitor&rsquo;s &ldquo;free margin calculator.&rdquo; The difference is the load-bearing argument.</li>
       </ol>
       <p style="margin-top:24px"><strong>Found a hole?</strong> Tell Don directly through <a href="/window/?topic=security">The Window</a>. Security reports get the fastest reply turnaround on the site — within 24 hours, weekends included.</p>
@@ -425,8 +425,8 @@
 
   <section class="block" id="care-plan">
     <div class="container" style="max-width:760px">
-      <h2>What about Care Plan customers?</h2>
-      <p>If you sign up for the Care Plan, three things change: we hold a Stripe customer ID, your email, and your plan tier. Nothing else. No billing addresses (Stripe holds those), no card data (Stripe holds that, in PCI scope), no operating numbers from any tool you&rsquo;ve run. The Workshop is opt-in: you save what you choose, you delete it when you choose, and we don&rsquo;t back up to a third location.</p>
+      <h2>What about paid clients?</h2>
+      <p>If you hire the studio &mdash; whether that&rsquo;s a one-off Site Read, a full build, or a recurring Care Plan &mdash; the data we hold for billing is whatever the agreed-upon engagement letter calls for: typically your name, your business name, your email, and an invoice history. Card data is never in our hands; payments go through the payment processor named on the invoice (Stripe, Wise, or check). We don&rsquo;t back up your operating numbers from any tool you&rsquo;ve run to a third location, and the Workshop stays opt-in: you save what you choose, you delete it when you choose.</p>
       <p>The legal version is at <a href="/privacy.html">/privacy.html</a>. This is the operator-trust version: same data, plain English.</p>
     </div>
   </section>
