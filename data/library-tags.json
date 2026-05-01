@@ -1,303 +1,587 @@
 {
   "_doc": "Maps every piece of long-form content to one or more topic slugs and stores the title/dek the build script uses to render Topic page cards. The build script (scripts/build-library.mjs) reads this and uses it to: (a) populate /learn/topics/<slug>/ pages, (b) inject 'See also' blocks into article footers, (c) pick the topic chip on per-term glossary pages. Add a new article? Add it here.",
-
   "glossary_section_to_topics": {
-    "basics": ["conversions"],
-    "mobile": ["speed-mobile"],
-    "conversions": ["conversions"],
-    "trust": ["trust-reviews"],
-    "findability": ["local-seo"],
-    "subtypes": ["operations-margin", "local-seo"],
-    "restaurant-numbers": ["operations-margin"],
-    "data-literacy": ["brand-design"],
-    "brand-design": ["brand-design"]
+    "basics": [
+      "conversions"
+    ],
+    "mobile": [
+      "speed-mobile"
+    ],
+    "conversions": [
+      "conversions"
+    ],
+    "trust": [
+      "trust-reviews"
+    ],
+    "findability": [
+      "local-seo"
+    ],
+    "subtypes": [
+      "operations-margin",
+      "local-seo"
+    ],
+    "restaurant-numbers": [
+      "operations-margin"
+    ],
+    "data-literacy": [
+      "brand-design"
+    ],
+    "brand-design": [
+      "brand-design"
+    ]
   },
-
   "glossary_term_overrides": {
     "_doc": "Override or add topics for individual terms whose primary topic is not their parent section.",
-    "wcag-contrast": ["trust-reviews", "brand-design"],
-    "domain-name": ["brand-design"],
-    "professional-email": ["brand-design"],
-    "real-photos": ["trust-reviews", "brand-design"],
-    "click-to-call": ["conversions"],
-    "click-to-directions": ["conversions"],
-    "hours-visibility": ["conversions"],
-    "copyable-address": ["conversions"],
-    "html-menu": ["conversions"],
-    "cuisine-pitch": ["brand-design"],
-    "dietary-markers": ["conversions"],
-    "lighthouse": ["speed-mobile"],
-    "pagespeed-insights": ["speed-mobile"],
-    "schema": ["local-seo"],
-    "open-graph": ["local-seo", "brand-design"],
-    "gbp": ["local-seo"],
-    "nap-consistency": ["local-seo"],
-    "rich-results": ["local-seo"],
-    "newsletter-capture": ["conversions"],
-    "gift-card-checkout": ["conversions", "operations-margin"],
-    "catering-page": ["conversions", "operations-margin"],
-    "honest-pricing": ["trust-reviews", "operations-margin"]
+    "wcag-contrast": [
+      "trust-reviews",
+      "brand-design"
+    ],
+    "domain-name": [
+      "brand-design"
+    ],
+    "professional-email": [
+      "brand-design"
+    ],
+    "real-photos": [
+      "trust-reviews",
+      "brand-design"
+    ],
+    "click-to-call": [
+      "conversions"
+    ],
+    "click-to-directions": [
+      "conversions"
+    ],
+    "hours-visibility": [
+      "conversions"
+    ],
+    "copyable-address": [
+      "conversions"
+    ],
+    "html-menu": [
+      "conversions"
+    ],
+    "cuisine-pitch": [
+      "brand-design"
+    ],
+    "dietary-markers": [
+      "conversions"
+    ],
+    "lighthouse": [
+      "speed-mobile"
+    ],
+    "pagespeed-insights": [
+      "speed-mobile"
+    ],
+    "schema": [
+      "local-seo"
+    ],
+    "open-graph": [
+      "local-seo",
+      "brand-design"
+    ],
+    "gbp": [
+      "local-seo"
+    ],
+    "nap-consistency": [
+      "local-seo"
+    ],
+    "rich-results": [
+      "local-seo"
+    ],
+    "newsletter-capture": [
+      "conversions"
+    ],
+    "gift-card-checkout": [
+      "conversions",
+      "operations-margin"
+    ],
+    "catering-page": [
+      "conversions",
+      "operations-margin"
+    ],
+    "honest-pricing": [
+      "trust-reviews",
+      "operations-margin"
+    ]
   },
-
   "blog_posts": {
     "how-to-tell-if-a-restaurant-tool-is-safe": {
-      "topics": ["information-security", "operations-margin"],
+      "topics": [
+        "information-security",
+        "operations-margin"
+      ],
       "title": "How to Tell If a Restaurant Tool Is Safe",
       "dek": "A 5-test framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.",
       "date": "2026-04-30",
       "read_min": 9
     },
     "restaurant-schema-markup-6-types-google-uses": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "Restaurant Schema Markup: The 6 Types Google Actually Uses",
       "dek": "The six schema.org types that move the needle for restaurant search results in 2026, with copy-paste JSON-LD examples for each.",
       "date": "2026-04-30",
       "read_min": 9
     },
     "when-to-rebuild-your-restaurant-website": {
-      "topics": ["operations-margin", "speed-mobile"],
+      "topics": [
+        "operations-margin",
+        "speed-mobile"
+      ],
       "title": "When to Rebuild Your Restaurant Website: A Decision Framework",
       "dek": "A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.",
       "date": "2026-04-30",
       "read_min": 8
     },
     "restaurant-photo-spec-sheet": {
-      "topics": ["conversions", "brand-design"],
+      "topics": [
+        "conversions",
+        "brand-design"
+      ],
       "title": "The Restaurant Photo Spec Sheet: Every Image Size for Every Surface",
       "dek": "Every image size, aspect ratio, and resolution your restaurant actually needs across GBP, Yelp, OG, and menu thumbnails — in one spec sheet.",
       "date": "2026-04-30",
       "read_min": 6
     },
     "how-to-read-restaurant-google-search-console": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "How to Read Your Restaurant's Google Search Console (in Plain English)",
       "dek": "The four reports that matter, what each number means, and the three weekly habits that actually move bookings.",
       "date": "2026-04-30",
       "read_min": 7
     },
     "why-your-restaurant-loses-reservations-every-night": {
-      "topics": ["conversions", "speed-mobile"],
+      "topics": [
+        "conversions",
+        "speed-mobile"
+      ],
       "title": "Why Your Restaurant Loses Reservations Every Night",
       "dek": "A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.",
       "date": "2026-04-17",
       "read_min": 10
     },
     "how-much-does-a-custom-restaurant-website-cost-in-2026": {
-      "topics": ["operations-margin", "brand-design"],
+      "topics": [
+        "operations-margin",
+        "brand-design"
+      ],
       "title": "How Much Does a Custom Restaurant Website Cost in 2026?",
       "dek": "Custom restaurant website costs in 2026, itemized line by line — from $2,500 to $15,000+. Real numbers, real tradeoffs, and what nobody else is saying.",
       "date": "2026-04-13",
       "read_min": 12
     },
     "how-to-get-more-google-reviews-for-your-restaurant": {
-      "topics": ["trust-reviews", "local-seo"],
+      "topics": [
+        "trust-reviews",
+        "local-seo"
+      ],
       "title": "How to Get More Google Reviews for Your Restaurant",
       "dek": "A proven system for getting more Google reviews — QR postcards, timing, staff scripts, and the one thing most owners skip.",
       "date": "2026-04-23",
       "read_min": 8
     },
     "how-to-raise-restaurant-menu-prices-without-losing-reservations": {
-      "topics": ["operations-margin", "conversions"],
+      "topics": [
+        "operations-margin",
+        "conversions"
+      ],
       "title": "How to Raise Restaurant Menu Prices Without Losing Reservations",
       "dek": "The honest playbook for raising menu prices on an independent restaurant's website in 2026 — which items to raise, how to stage it, and the website moves that protect reservations.",
       "date": "2026-04-20",
       "read_min": 11
     },
     "how-to-set-up-google-business-profile-for-your-restaurant": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "How to Set Up Google Business Profile for Your Restaurant",
       "dek": "A step-by-step guide to claiming, verifying, and optimizing Google Business Profile for your restaurant — categories, photos, menu links, and the settings most owners miss.",
       "date": "2026-04-24",
       "read_min": 14
     },
     "is-doordash-worth-it-for-restaurants-in-2026": {
-      "topics": ["operations-margin"],
+      "topics": [
+        "operations-margin"
+      ],
       "title": "Is DoorDash Worth It for Restaurants in 2026?",
       "dek": "The honest math of DoorDash and third-party delivery for independent restaurants — what $100 of delivery revenue actually becomes, when it makes sense, and how to build your own-ordering flow.",
       "date": "2026-04-22",
       "read_min": 13
     },
     "wix-vs-custom-for-restaurants": {
-      "topics": ["brand-design", "operations-margin"],
+      "topics": [
+        "brand-design",
+        "operations-margin"
+      ],
       "title": "Wix vs Custom for Restaurants",
       "dek": "An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix is actually the right call.",
       "date": "2026-04-15",
       "read_min": 10
     },
     "five-restaurant-website-changes-recover-one-percent-margin": {
-      "topics": ["conversions", "operations-margin"],
+      "topics": [
+        "conversions",
+        "operations-margin"
+      ],
       "title": "Five Website Changes That Quietly Return 1% of Margin",
       "dek": "Five small, specific website moves — each under an hour of work — that stack to recover roughly one full point of profit margin. On a typical single-location independent restaurant, that's $8,000–$15,000 a year. Compounding.",
       "date": "2026-04-26",
       "read_min": 8
     },
     "how-to-recover-reservations-from-googles-find-a-table": {
-      "topics": ["conversions", "local-seo"],
+      "topics": [
+        "conversions",
+        "local-seo"
+      ],
       "title": "How to Stop Losing Reservations to Google’s “Find a Table”",
       "dek": "Google Maps now finishes the booking inside its own card — your homepage, your menu, your room never get seen. Three moves that recover the brand impression without giving up the reservation.",
       "date": "2026-04-25",
       "read_min": 9
     }
   },
-
   "research_notes": {
     "mobile-page-speed-3-second-rule": {
-      "topics": ["speed-mobile", "conversions"],
+      "topics": [
+        "speed-mobile",
+        "conversions"
+      ],
       "title": "The 3-Second Mobile Load Rule",
       "source": "Think with Google",
       "dek": "Google's benchmark research: the majority of mobile visitors leave pages that take longer than 3 seconds to load."
     },
     "local-business-websites": {
-      "topics": ["conversions", "local-seo"],
+      "topics": [
+        "conversions",
+        "local-seo"
+      ],
       "title": "Usability of Local Business Websites",
       "source": "Nielsen Norman Group",
       "dek": "The most-searched-for information on a local business website is hours and location — and both are the most commonly hidden."
     },
     "fittss-law": {
-      "topics": ["conversions"],
+      "topics": [
+        "conversions"
+      ],
       "title": "Fitts's Law",
       "source": "Nielsen Norman Group",
       "dek": "The 1954 UX principle that explains why button placement decides button use — the harder a button is to reach, the less often it gets pressed."
     },
     "cart-abandonment-rate": {
-      "topics": ["conversions"],
+      "topics": [
+        "conversions"
+      ],
       "title": "The 70% Cart Abandonment Rate",
       "source": "Baymard Institute",
       "dek": "Online checkout forms lose ~70% of shoppers before completion. Reservation widgets are checkout forms wearing a different hat — same dynamics."
     },
     "lighthouse-performance-scoring": {
-      "topics": ["speed-mobile"],
+      "topics": [
+        "speed-mobile"
+      ],
       "title": "How Lighthouse Scores Performance",
       "source": "Chrome developer docs",
       "dek": "Lighthouse's performance metric is a composite of LCP, CLS, INP, and other Core Web Vitals; understanding the weighting helps prioritize fixes."
     }
   },
-
   "tools": {
     "audits/restaurant": {
-      "topics": ["conversions", "speed-mobile", "local-seo", "trust-reviews"],
+      "topics": [
+        "conversions",
+        "speed-mobile",
+        "local-seo",
+        "trust-reviews"
+      ],
       "title": "Restaurant Website Audit",
       "dek": "Full-stack mobile audit: performance, SEO, accessibility, and 9 restaurant-specific checks. Side-by-side competitor mode.",
-      "glossary_terms": ["core-web-vitals", "lighthouse", "lcp", "cls", "cdn", "alt-text", "canonical-url", "search-console"],
-      "article": "why-your-restaurant-loses-reservations-every-night"
+      "glossary_terms": [
+        "core-web-vitals",
+        "lighthouse",
+        "lcp",
+        "cls",
+        "cdn",
+        "alt-text",
+        "canonical-url",
+        "search-console"
+      ],
+      "articles": [
+        "why-your-restaurant-loses-reservations-every-night",
+        "how-to-tell-if-a-restaurant-tool-is-safe"
+      ]
     },
     "speed-test": {
-      "topics": ["speed-mobile"],
+      "topics": [
+        "speed-mobile"
+      ],
       "title": "Speed Test",
       "dek": "PageSpeed Insights, restated for owners. Score, the four metrics that matter, and what to fix first.",
-      "glossary_terms": ["core-web-vitals", "lcp", "cls", "cdn"],
-      "article": "why-your-restaurant-loses-reservations-every-night"
+      "glossary_terms": [
+        "core-web-vitals",
+        "lcp",
+        "cls",
+        "cdn"
+      ],
+      "articles": [
+        "why-your-restaurant-loses-reservations-every-night",
+        "when-to-rebuild-your-restaurant-website"
+      ]
     },
     "mobile-check": {
-      "topics": ["speed-mobile"],
+      "topics": [
+        "speed-mobile"
+      ],
       "title": "Mobile Check",
       "dek": "A three-question read on whether your site behaves like a real phone-first restaurant site.",
-      "glossary_terms": ["tap-targets"],
-      "article": "why-your-restaurant-loses-reservations-every-night"
+      "glossary_terms": [
+        "tap-targets"
+      ],
+      "articles": [
+        "why-your-restaurant-loses-reservations-every-night",
+        "when-to-rebuild-your-restaurant-website"
+      ]
     },
     "seo-grader": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "SEO Grader",
       "dek": "Title, description, headings, schema — the on-site SEO basics scored in plain English.",
-      "glossary_terms": ["title-tag", "alt-text", "canonical-url", "search-console"],
-      "article": "how-to-set-up-google-business-profile-for-your-restaurant"
+      "glossary_terms": [
+        "title-tag",
+        "alt-text",
+        "canonical-url",
+        "search-console"
+      ],
+      "articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "how-to-read-restaurant-google-search-console"
+      ]
     },
     "schema-check": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "Schema Check",
       "dek": "What structured data your site is sending Google — and which restaurant-specific types are missing.",
-      "glossary_terms": ["schema"],
-      "article": "how-to-set-up-google-business-profile-for-your-restaurant"
+      "glossary_terms": [
+        "schema"
+      ],
+      "articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "restaurant-schema-markup-6-types-google-uses"
+      ]
     },
     "search-ideas": {
-      "topics": ["local-seo"],
+      "topics": [
+        "local-seo"
+      ],
       "title": "Search Ideas",
       "dek": "The questions real customers type before choosing a restaurant — built for your cuisine and city.",
-      "glossary_terms": ["gbp"],
-      "article": "how-to-set-up-google-business-profile-for-your-restaurant"
+      "glossary_terms": [
+        "gbp"
+      ],
+      "articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "how-to-read-restaurant-google-search-console"
+      ]
     },
     "tech-stack": {
-      "topics": ["brand-design"],
+      "topics": [
+        "brand-design"
+      ],
       "title": "Tech Stack Detector",
       "dek": "What runs your site today — CMS, ordering platform, reservation widget, analytics. The receipts before you decide what to keep.",
-      "glossary_terms": ["hosting"],
-      "article": "wix-vs-custom-for-restaurants"
+      "glossary_terms": [
+        "hosting"
+      ],
+      "articles": [
+        "wix-vs-custom-for-restaurants",
+        "when-to-rebuild-your-restaurant-website"
+      ]
     },
     "compare": {
-      "topics": ["speed-mobile"],
+      "topics": [
+        "speed-mobile"
+      ],
       "title": "Compare",
       "dek": "Run your site and a competitor's through speed, mobile, SEO, and accessibility audits side-by-side.",
-      "glossary_terms": ["lighthouse"],
-      "article": "wix-vs-custom-for-restaurants"
+      "glossary_terms": [
+        "lighthouse"
+      ],
+      "articles": [
+        "wix-vs-custom-for-restaurants",
+        "when-to-rebuild-your-restaurant-website"
+      ]
     },
     "storefront-health": {
-      "topics": ["speed-mobile", "local-seo"],
+      "topics": [
+        "speed-mobile",
+        "local-seo"
+      ],
       "title": "Storefront Health",
       "dek": "One URL, six checks, one score — the unified scorecard for your restaurant's full storefront.",
-      "glossary_terms": ["lighthouse", "gbp", "core-web-vitals"],
-      "article": "what-should-be-on-a-restaurant-website"
+      "glossary_terms": [
+        "lighthouse",
+        "gbp",
+        "core-web-vitals"
+      ],
+      "articles": [
+        "what-should-be-on-a-restaurant-website",
+        "when-to-rebuild-your-restaurant-website"
+      ]
     },
     "gbp-grader": {
-      "topics": ["local-seo", "trust-reviews"],
+      "topics": [
+        "local-seo",
+        "trust-reviews"
+      ],
       "title": "Google Business Profile Grader",
       "dek": "How your Google listing scores across rating, reviews, photos, categories, hours — with the exact fixes that move it up.",
-      "glossary_terms": ["gbp", "nap-consistency", "hours-visibility"],
-      "article": "how-to-get-more-google-reviews-for-your-restaurant"
+      "glossary_terms": [
+        "gbp",
+        "nap-consistency",
+        "hours-visibility"
+      ],
+      "articles": [
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ]
     },
     "margin-math": {
-      "topics": ["operations-margin"],
+      "topics": [
+        "operations-margin"
+      ],
       "title": "Margin Math",
       "dek": "Four calculators for the financial decisions every independent restaurant has to make — delivery break-even, prime cost, covers needed, price-raise simulation.",
-      "glossary_terms": ["prime-cost", "break-even", "contribution-margin"],
+      "glossary_terms": [
+        "prime-cost",
+        "break-even",
+        "contribution-margin"
+      ],
       "article": "is-doordash-worth-it-for-restaurants-in-2026"
     },
     "brand-suite": {
-      "topics": ["brand-design"],
+      "topics": [
+        "brand-design"
+      ],
       "title": "Brand Suite",
       "dek": "Drop a logo. Get a usable color palette, accessible pairs, and the CSS tokens to ship them.",
-      "glossary_terms": ["brand-identity", "color-palette", "accessible-pair", "design-token", "color-harmony", "complementary-colors", "analogous-colors", "monochromatic-palette", "oklab", "wcag-contrast"],
-      "articles": ["how-much-does-a-custom-restaurant-website-cost-in-2026"]
+      "glossary_terms": [
+        "brand-identity",
+        "color-palette",
+        "accessible-pair",
+        "design-token",
+        "color-harmony",
+        "complementary-colors",
+        "analogous-colors",
+        "monochromatic-palette",
+        "oklab",
+        "wcag-contrast"
+      ],
+      "articles": [
+        "how-much-does-a-custom-restaurant-website-cost-in-2026"
+      ]
     },
     "menu-engineering": {
-      "topics": ["operations-margin"],
+      "topics": [
+        "operations-margin"
+      ],
       "title": "Menu Engineering Matrix",
       "dek": "Paste your menu. Get a 2×2 of stars / plowhorses / puzzles / dogs and a one-page action plan.",
-      "glossary_terms": ["menu-engineering", "contribution-margin", "food-cost", "prime-cost", "menu-mix"],
-      "articles": ["is-doordash-worth-it-for-restaurants-in-2026"]
+      "glossary_terms": [
+        "menu-engineering",
+        "contribution-margin",
+        "food-cost",
+        "prime-cost",
+        "menu-mix"
+      ],
+      "articles": [
+        "is-doordash-worth-it-for-restaurants-in-2026"
+      ]
     },
     "menu-copy": {
-      "topics": ["operations-margin", "conversions"],
+      "topics": [
+        "operations-margin",
+        "conversions"
+      ],
       "title": "Menu Copy Inspector",
       "dek": "Paste a menu description. See what's missing, what's working, what's dragging — and why.",
-      "glossary_terms": ["menu-copy", "sensory-adjective", "charm-pricing", "html-menu"],
-      "articles": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"]
+      "glossary_terms": [
+        "menu-copy",
+        "sensory-adjective",
+        "charm-pricing",
+        "html-menu"
+      ],
+      "articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ]
     },
     "open-hours": {
-      "topics": ["local-seo", "trust-reviews"],
+      "topics": [
+        "local-seo",
+        "trust-reviews"
+      ],
       "title": "Open Hours",
       "dek": "Get your hours right everywhere — Google, Yelp, Apple, your website, your door. About 15 minutes.",
-      "glossary_terms": ["hours-of-operation", "special-hours", "nap-consistency", "opening-hours-specification"],
-      "articles": ["how-to-set-up-google-business-profile-for-your-restaurant"]
+      "glossary_terms": [
+        "hours-of-operation",
+        "special-hours",
+        "nap-consistency",
+        "opening-hours-specification"
+      ],
+      "articles": [
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "how-to-recover-reservations-from-googles-find-a-table"
+      ]
     },
     "plate-cost": {
-      "topics": ["operations-margin"],
+      "topics": [
+        "operations-margin"
+      ],
       "title": "Plate Cost Calculator",
       "dek": "What does each plate actually cost? One recipe at a time, with the math you can show your accountant.",
-      "glossary_terms": ["plate-cost", "yield-percent", "edible-portion", "food-cost", "contribution-margin"],
-      "articles": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"]
+      "glossary_terms": [
+        "plate-cost",
+        "yield-percent",
+        "edible-portion",
+        "food-cost",
+        "contribution-margin"
+      ],
+      "articles": [
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations"
+      ]
     },
     "photo-brief": {
-      "topics": ["brand-design", "conversions", "trust-reviews"],
+      "topics": [
+        "brand-design",
+        "conversions",
+        "trust-reviews"
+      ],
       "title": "Photo Brief Builder",
       "dek": "Walk into your photographer's session with a one-page brief that gets you the right photos in one shoot. About 10 minutes.",
-      "glossary_terms": ["photo-brief", "aspect-ratio", "hero-shot", "real-photos"],
-      "articles": ["why-your-restaurant-loses-reservations-every-night"]
+      "glossary_terms": [
+        "photo-brief",
+        "aspect-ratio",
+        "hero-shot",
+        "real-photos"
+      ],
+      "articles": [
+        "restaurant-photo-spec-sheet",
+        "how-to-set-up-google-business-profile-for-your-restaurant"
+      ]
     }
   },
-
   "checklists": {
     "restaurant-website-checklist": {
-      "topics": ["conversions", "speed-mobile", "local-seo", "trust-reviews"],
+      "topics": [
+        "conversions",
+        "speed-mobile",
+        "local-seo",
+        "trust-reviews"
+      ],
       "title": "The Restaurant Website Checklist",
       "dek": "30-point interactive audit — the basics, mobile, conversions, findability, trust. Save your progress, print a clean sheet."
     }

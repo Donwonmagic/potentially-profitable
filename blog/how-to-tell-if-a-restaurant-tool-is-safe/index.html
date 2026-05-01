@@ -66,7 +66,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -75,6 +75,30 @@
   "@id": "https://muntin.digital/blog/how-to-tell-if-a-restaurant-tool-is-safe/#article",
   "abstract": "A 5-test framework you can run on any free restaurant tool — in your browser, in under a minute — before you type a single real number into it. Plus the 4-tier data model that tells you what to share, where, and the worked example of what 'safe' looks like in practice.",
   "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/margin/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/food-cost/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/funnel/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/commission/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/url-fragment/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/client-side/"
+    },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/devtools/"
@@ -300,9 +324,11 @@
             </aside>
             <!-- article-tldr:end -->
 
-      <p>Most &ldquo;free margin audit&rdquo; tools have a price tag. It's just paid in data. The pattern is well-worn: you type your real ticket, your real food cost, your real labor — and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the funnel. Your numbers were the qualifier.</p>
+      <p>Most &ldquo;free <!-- LIBRARY:autolink:start --><a href="/glossary/margin/" data-glossary-head="Margin" data-glossary-aka="sales minus costs; several kinds" data-glossary-blurb="Sales minus costs.">margin</a><!-- LIBRARY:autolink:end --> audit&rdquo; tools have a price tag. It's just paid in data. The pattern is well-worn: you type your real ticket, your real <!-- LIBRARY:autolink:start --><a href="/glossary/food-cost/" data-glossary-head="Food cost" data-glossary-aka="cost of goods sold, as a % of sales" data-glossary-blurb="The cost of ingredients, alcohol, and consumables (paper goods, to-go packaging) expressed as a percentage of sales.">food cost</a><!-- LIBRARY:autolink:end -->, your real labor — and the tool returns a number. It also tends to return sales reps in your inbox by morning, each with a proposal built on numbers that were never supposed to leave your office. The tool was the <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end -->. Your numbers were the qualifier.</p>
 
       <p>The pattern hides because nobody asks the obvious question: where do my inputs go the moment I type them? In a working browser, you can answer that question in under a minute. This article is the framework — five tests, four data tiers, one worked example — and at the end, a checklist you can run on any tool you encounter.</p>
+
+      <p>The tools that pass these tests will tell you so, plainly. The tools that fail are about to explain why the tests don't apply to them. That's the tell.</p>
 
       <h2>1. The five tests — run before you type</h2>
 
@@ -332,7 +358,7 @@
             <div class="recovery-num">2</div>
             <div>
               <h4 class="i18n">Competitive-sensitive</h4>
-              <p class="recovery-sub i18n">Costs, suppliers, real commission tier. NDA only.</p>
+              <p class="recovery-sub i18n">Costs, suppliers, real <!-- LIBRARY:autolink:start --><a href="/glossary/commission/" data-glossary-head="Commission" data-glossary-aka="the % a platform takes per order" data-glossary-blurb="The percentage an aggregator or payment platform keeps per transaction.">commission</a><!-- LIBRARY:autolink:end --> tier. NDA only.</p>
             </div>
             <div class="recovery-val">NDA</div>
           </div>
@@ -417,24 +443,52 @@
 
       <h2>3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
 
-      <p>Here's the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser:</p>
+      <p>Here's the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser. Tap any claim to see the DevTools step that confirms it.</p>
 
-      <ol>
-        <li>Your numbers never leave the page. No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form submission fires when you type a financial number.</li>
-        <li>There's no server to store them on. The only endpoint a tool page uses is <code>GET /tools/&lt;slug&gt;/</code>.</li>
-        <li>Analytics sees only buckets, never numbers. A $25 ticket becomes <code>25-39</code>; raw values are never properties.</li>
-        <li>No cookies, no localStorage, no sessionStorage — for your inputs.</li>
-        <li>No third-party scripts touch the inputs.</li>
-        <li>Shareable scenario links use the URL fragment (the part after <code>#</code>) — browsers never send fragments to servers.</li>
-        <li>The source is readable: no build step, no minification, every math function named.</li>
-        <li>Nothing persists beyond this tab.</li>
-        <li>Print + calendar exports are 100% client-side.</li>
-      </ol>
+      <aside class="report-decider" aria-labelledby="safe-claims-h">
+        <p class="report-decider__eyebrow" id="safe-claims-h">The 9 claims · expand for the proof</p>
+        <details class="report-decider__item">
+          <summary>1. Your numbers never leave the page</summary>
+          <p>No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form submission fires when you type a financial number. <strong>Verify:</strong> open Network tab, type, watch for new entries. Should be zero.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>2. There's no server to store them on</summary>
+          <p>The only endpoint a tool page uses is <code>GET /tools/&lt;slug&gt;/</code> — the page itself. <strong>Verify:</strong> filter Network → XHR/Fetch. Empty.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>3. Analytics sees only buckets, never numbers</summary>
+          <p>A $25 ticket becomes <code>25-39</code>; raw values are never event properties. <strong>Verify:</strong> filter Network → "plausible". Inspect the request body. No raw inputs.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>4. No cookies, no localStorage, no sessionStorage — for your inputs</summary>
+          <p>Open Application → Storage. Tool inputs never persist there. <strong>Verify:</strong> type, then refresh. Inputs are gone, by design.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>5. No third-party scripts touch the inputs</summary>
+          <p>The only third-party script on a tool page is Plausible analytics, which only sees bucketed event names. <strong>Verify:</strong> filter Network → JS, look for unfamiliar origins. Should be empty.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>6. Shareable scenario links use the <!-- LIBRARY:autolink:start --><a href="/glossary/url-fragment/" data-glossary-head="URL fragment" data-glossary-aka="the part of a URL after the #" data-glossary-blurb="The portion of a URL that comes after the # symbol (sometimes called the &quot;hash&quot;).">URL fragment</a><!-- LIBRARY:autolink:end --></summary>
+          <p>The part after <code>#</code> — browsers never send fragments to servers, only the page before <code>#</code>. <strong>Verify:</strong> share a scenario link. Compare what's after the hash to what's in the request URL Network shows.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>7. The source is readable</summary>
+          <p>No build step, no minification, every math function named. <strong>Verify:</strong> right-click → View Source. Read the script. If you can't audit it, that's the failure mode.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>8. Nothing persists beyond this tab</summary>
+          <p>Close the tab, reopen the tool. Empty form. No history, no recall. <strong>Verify:</strong> exactly that.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>9. Print + calendar exports are 100% <!-- LIBRARY:autolink:start --><a href="/glossary/client-side/" data-glossary-head="Client-side" data-glossary-aka="computation in your browser, not on a server" data-glossary-blurb="Computation that happens inside your browser tab, not on a server.">client-side</a><!-- LIBRARY:autolink:end --></summary>
+          <p>Print to PDF — no upload. Add to calendar — generates an .ics file locally, no API call. <strong>Verify:</strong> Network tab during the export action. Empty.</p>
+        </details>
+      </aside>
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
 
       <blockquote class="pullquote">
-        <p>&ldquo;Verifiable&rdquo; should be a build flag, not a marketing claim.</p>
+        <p>"Verifiable" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.</p>
       </blockquote>
 
       <h2>4. Run the audit</h2>
@@ -471,7 +525,7 @@
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/devtools/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/margin/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/how-to-tell-if-a-restaurant-tool-is-safe&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=how-to-tell-if-a-restaurant-tool-is-safe">The Window →</a></li>
   </ol>
@@ -482,24 +536,24 @@
   <p class="see-also-label" id="see-also-h">See also</p>
   <ul class="see-also-list">
       <li>
-        <a class="see-also-card" href="/blog/can-chatgpt-write-your-restaurant-website/">
-          <span class="see-also-kind">Article</span>
-          <h3>Can ChatGPT write your restaurant website?</h3>
-          <p>The other side of the same problem — what happens when you outsource judgment to a tool, with the inputs your tool gets to see.</p>
+        <a class="see-also-card" href="/blog/when-to-rebuild-your-restaurant-website/">
+          <span class="see-also-kind">Article <span class="see-also-time">6 min read</span></span>
+          <h3>When to Rebuild Your Restaurant Website: A Decision Framework</h3>
+          <p>A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.</p>
         </a>
       </li>
       <li>
-        <a class="see-also-card" href="/tools/audits/restaurant/">
+        <a class="see-also-card" href="/tools/menu-copy/">
           <span class="see-also-kind">Tool</span>
-          <h3>Restaurant Audit</h3>
-          <p>Run a privacy-respecting audit on your own site — same standard the article holds every Muntin tool to.</p>
+          <h3>Menu Copy Inspector</h3>
+          <p>Paste a menu description. See what&#39;s missing, what&#39;s working, what&#39;s dragging — and why.</p>
         </a>
       </li>
       <li>
-        <a class="see-also-card" href="/security/">
-          <span class="see-also-kind">Library</span>
-          <h3>The verifiable-tools standard</h3>
-          <p>The 9 claims every tool on this site is held to, with the DevTools verification step for each.</p>
+        <a class="see-also-card" href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">
+          <span class="see-also-kind">Article <span class="see-also-time">7 min read</span></span>
+          <h3>Five Website Changes That Quietly Return 1% of Margin</h3>
+          <p>Five small, specific website moves — each under an hour of work — that stack to recover roughly one full point of profit margin. On a typical single-location independent restaurant, that&#39;s $8,000–$15,000 a year. Compounding.</p>
         </a>
       </li>
     </ul>
@@ -509,8 +563,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="how-to-tell-if-a-restaurant-tool-is-safe" data-locale="en" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Tell us</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">Have you tried this in your kitchen?</h2>
-              <p class="field-notes-submit__subhead">100–400 words, your name on it, Don reads every one.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Be the first field note on this piece.</h2>
+              <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/sign-in/?return=%2Fblog%2Fhow-to-tell-if-a-restaurant-tool-is-safe%2F%23field-note-form">Sign in to share your experience →</a>
               </p>
@@ -644,6 +698,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>

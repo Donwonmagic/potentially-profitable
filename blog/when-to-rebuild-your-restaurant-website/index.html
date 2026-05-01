@@ -77,7 +77,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -86,6 +86,14 @@
   "@id": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/#article",
   "abstract": "Most operators rebuild their restaurant website 18 months too late. This is the seven-question decision framework I run through with every studio client — and the three case threads that show what each answer actually changes.",
   "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/funnel/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/cdn/"
+    },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/cms/"
@@ -105,6 +113,14 @@
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/cls/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/holiday-hours/"
+    },
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/structured-data/"
     }
   ]
 }
@@ -329,7 +345,7 @@
 
       <p>The conversation almost always starts the same way: an operator has two quotes for a rebuild that differ by 3-4x, neither developer has asked what's actually broken, and the operator isn't really asking which quote to take. They're asking whether to rebuild at all. That's the harder question, and almost nobody helps operators answer it.</p>
 
-      <p>The honest answer is that most independent restaurants rebuild 12-24 months later than they should — by which time the rebuild costs more (because there's more to migrate), takes longer (because the bookings funnel has gotten worse), and the operator is making the decision under stress instead of under planning.</p>
+      <p>The honest answer is that most independent restaurants rebuild 12-24 months later than they should — by which time the rebuild costs more (because there's more to migrate), takes longer (because the bookings <!-- LIBRARY:autolink:start --><a href="/glossary/funnel/" data-glossary-head="Funnel" data-glossary-aka="the path from visitor to customer" data-glossary-blurb="The sequence of steps a visitor goes through before becoming a customer — landing page → menu page → reserve button → reservation form → confirmation.">funnel</a><!-- LIBRARY:autolink:end --> has gotten worse), and the operator is making the decision under stress instead of under planning.</p>
 
       <p>This is the seven-question diagnostic I run through before recommending a rebuild — or, just as often, recommending against one and pointing at three small changes that buy another year.</p>
 
@@ -339,7 +355,7 @@
             <div class="recovery-num">80+</div>
             <div>
               <h4 class="i18n">Don't rebuild</h4>
-              <p class="recovery-sub i18n">Fix the lowest sub-score. Sometimes a CDN + image pass earns another year.</p>
+              <p class="recovery-sub i18n">Fix the lowest sub-score. Sometimes a <!-- LIBRARY:autolink:start --><a href="/glossary/cdn/" data-glossary-head="CDN" data-glossary-aka="Content Delivery Network, &quot;the edge&quot;" data-glossary-blurb="A global network of servers — Cloudflare, Fastly, AWS CloudFront — that keep cached copies of your site close to every visitor in the world, so the page travels 30 miles instead…">CDN</a><!-- LIBRARY:autolink:end --> + image pass earns another year.</p>
             </div>
             <div class="recovery-val">fix leaks</div>
           </div>
@@ -383,7 +399,7 @@
 
       <h2>Question 5: Can you ship a small change in under an hour?</h2>
 
-      <p>Test: try to update the holiday hours on your homepage in the next 60 minutes. If you can't (no access, complex CMS, requires a developer), that's a rebuild signal — not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.</p>
+      <p>Test: try to update the <!-- LIBRARY:autolink:start --><a href="/glossary/holiday-hours/" data-glossary-head="Holiday hours" data-glossary-aka="the recurring per-date overrides every restaurant has to make every year" data-glossary-blurb="The subset of special hours that recur on a calendar — closed on Thanksgiving and Christmas Day, early-close on Christmas Eve, brunch-only on Mother's Day, extended hours for St.">holiday hours</a><!-- LIBRARY:autolink:end --> on your homepage in the next 60 minutes. If you can't (no access, complex CMS, requires a developer), that's a rebuild signal — not because the technical limitation is fatal, but because the operational burden compounds quietly. Every change you delay is a small leak.</p>
 
       <h2>Question 6: Does the brand match the room?</h2>
 
@@ -407,7 +423,7 @@
             <div class="recovery-num">B</div>
             <div>
               <h4 class="i18n">Sub-60 site, full rebuild</h4>
-              <p class="recovery-sub i18n">Platform itself caps the ceiling. Real HTML menu, full schema, fast funnel.</p>
+              <p class="recovery-sub i18n">Platform itself caps the ceiling. Real <!-- LIBRARY:autolink:start --><a href="/glossary/html-menu/" data-glossary-head="HTML menu" data-glossary-aka="not a PDF, not an image" data-glossary-blurb="A menu built as real text on a web page, instead of as a PDF file or a photograph of a printed card.">HTML menu</a><!-- LIBRARY:autolink:end -->, full schema, fast funnel.</p>
             </div>
             <div class="recovery-val">9–14 mo payback</div>
           </div>
@@ -425,14 +441,48 @@
 
       <h2>Three case threads</h2>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Three rebuild verdicts · score band → action → typical payback">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">75</div>
+            <div>
+              <h4 class="i18n">Don't rebuild — fix the leak</h4>
+              <p class="recovery-sub i18n">CDN + image compression + schema repair. Score moves to ~88.</p>
+            </div>
+            <div class="recovery-val">defer 2 yrs</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">&lt;60</div>
+            <div>
+              <h4 class="i18n">Full rebuild</h4>
+              <p class="recovery-sub i18n">Platform itself is the ceiling. Score lands high-80s or 90s.</p>
+            </div>
+            <div class="recovery-val">9–14 mo payback</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">65–70</div>
+            <div>
+              <h4 class="i18n">Partial rebuild</h4>
+              <p class="recovery-sub i18n">Front-end + photos, keep the CMS. ~40% of full-rebuild cost.</p>
+            </div>
+            <div class="recovery-val">~12 mo payback</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Three rebuild verdicts in one line · matched to the case threads below</figcaption>
+      </figure>
+
       <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a CDN, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly $11K.</p>
 
-      <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level structured data, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
+      <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level <!-- LIBRARY:autolink:start --><a href="/glossary/structured-data/" data-glossary-head="Structured data" data-glossary-aka="the machine-readable copy of your site that Google reads" data-glossary-blurb="A small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index…">structured data</a><!-- LIBRARY:autolink:end -->, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>
 
       <p><strong>Case 3 — Site at 65-70, partial rebuild:</strong> Platform fine, brand tired. Keep the CMS, replace the front-end and the photos at roughly 40% of a full-rebuild cost. Score moves into the low-mid 80s. Bookings tick up — but not as steeply as Case 2. The honest tradeoff worth flagging: a partial rebuild caps your ceiling at whatever the underlying platform allows for schema, speed, and indexing. Sometimes the right call; sometimes worth revisiting in 18 months when the platform's ceiling becomes the next constraint.</p>
 
       <blockquote class="pullquote">
         <p>Doing nothing isn't neutral. The gap to your local competitors widens every quarter your site doesn't.</p>
+      </blockquote>
+
+      <blockquote class="pullquote">
+        <p>Most operators don't rebuild because they can't picture what the rebuilt thing looks like. The framework is a forcing function. Run the questions. The answer almost always already exists.</p>
       </blockquote>
 
       <h2>How to use this framework</h2>
@@ -469,7 +519,7 @@
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/cms/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/funnel/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/when-to-rebuild-your-restaurant-website&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=when-to-rebuild-your-restaurant-website">The Window →</a></li>
   </ol>
@@ -480,24 +530,24 @@
   <p class="see-also-label" id="see-also-h">See also</p>
   <ul class="see-also-list">
       <li>
-        <a class="see-also-card" href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">
-          <span class="see-also-kind">Article</span>
-          <h3>Five website changes that recover 1% of margin</h3>
-          <p>The targeted-fix approach for sites scoring 80+ — what to ship instead of rebuilding.</p>
-        </a>
-      </li>
-      <li>
-        <a class="see-also-card" href="/tools/storefront-health/">
+        <a class="see-also-card" href="/tools/compare/">
           <span class="see-also-kind">Tool</span>
-          <h3>Storefront Health</h3>
-          <p>The composite score this framework uses as its first input.</p>
+          <h3>Compare</h3>
+          <p>Run your site and a competitor&#39;s through speed, mobile, SEO, and accessibility audits side-by-side.</p>
         </a>
       </li>
       <li>
-        <a class="see-also-card" href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">
-          <span class="see-also-kind">Article</span>
-          <h3>How much does a custom restaurant website cost in 2026?</h3>
-          <p>The cost side of the rebuild question, once you've decided to rebuild.</p>
+        <a class="see-also-card" href="/learn/research/lighthouse-performance-scoring/">
+          <span class="see-also-kind">Research <span class="see-also-time">3 min read</span></span>
+          <h3>How Lighthouse Scores Performance</h3>
+          <p>Lighthouse&#39;s performance metric is a composite of LCP, CLS, INP, and other Core Web Vitals; understanding the weighting helps prioritize fixes.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">
+          <span class="see-also-kind">Article <span class="see-also-time">6 min read</span></span>
+          <h3>How to Tell If a Restaurant Tool Is Safe</h3>
+          <p>A 5-test framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.</p>
         </a>
       </li>
     </ul>
@@ -507,8 +557,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="when-to-rebuild-your-restaurant-website" data-locale="en" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Tell us</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">Have you tried this in your kitchen?</h2>
-              <p class="field-notes-submit__subhead">100–400 words, your name on it, Don reads every one.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Be the first field note on this piece.</h2>
+              <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/sign-in/?return=%2Fblog%2Fwhen-to-rebuild-your-restaurant-website%2F%23field-note-form">Sign in to share your experience →</a>
               </p>
@@ -642,6 +692,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>
