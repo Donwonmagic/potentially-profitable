@@ -1225,6 +1225,30 @@
         escHtml(tt('First invoice from this vendor — saving starts your baseline.', 'Primera factura de este proveedor — al guardar empieza tu base.')) +
         '</span>';
     }
+    // Volume-weighted invoice drift (domain-expert layer). When a
+    // quorum of rows have history, surface "this invoice is up
+    // 8% ($112 over baseline)" — the actual operator question.
+    var driftLine = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.computeInvoiceDrift) {
+        var drift = MID_SKU_HISTORY.computeInvoiceDrift(parsed.rows);
+        if (drift && drift.ratedRows >= 3 && Math.abs(drift.totalDriftPct) >= 1) {
+          var dr = drift.totalDriftPct > 0 ? 'up' : 'down';
+          var sign = drift.totalDriftDollars >= 0 ? '+' : '−';
+          var absD = Math.abs(drift.totalDriftDollars).toFixed(2);
+          driftLine = '<div class="id-pulse-drift" data-dir="' + dr + '">' +
+            escHtml(tt(
+              'This invoice ' + (drift.totalDriftPct > 0 ? 'up' : 'down') + ' ' +
+                Math.abs(drift.totalDriftPct).toFixed(1) + '% vs your baseline ' +
+                '(' + sign + '$' + absD + ' across ' + drift.ratedRows + ' rows with history)',
+              'Esta factura ' + (drift.totalDriftPct > 0 ? 'sube' : 'baja') + ' ' +
+                Math.abs(drift.totalDriftPct).toFixed(1) + '% vs tu base ' +
+                '(' + sign + '$' + absD + ' en ' + drift.ratedRows + ' renglones con historial)'
+            )) +
+          '</div>';
+        }
+      }
+    } catch (_) {}
     host.innerHTML =
       '<div class="id-pulse-row">' +
         '<span class="id-pulse-vendor">' + escHtml(vendor) + '</span>' +
@@ -1232,6 +1256,7 @@
           (parsed.rows.length) + ' ' + escHtml(tt('lines', 'líneas')) + ' · ' + escHtml(sumStr) +
         '</span>' +
       '</div>' +
+      driftLine +
       '<div class="id-pulse-pills">' + pills + '</div>';
     host.hidden = false;
   }
@@ -1394,14 +1419,83 @@
     } catch (_) {}
 
     // Wave 1.2 — contract-price overcharge badge.
+    // Pack-aware: when checkRow returned a 'comparable' basis, the
+    // tooltip surfaces the per-unit delta in the comparable unit so
+    // operators see "Over $0.05/lb on your contract" instead of the
+    // ambiguous "$0.05/unit."
     var contractBadge = '';
     try {
       if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.checkRow) {
         var ck = MID_SKU_HISTORY.checkRow(r);
         if (ck && ck.isOver) {
+          var unitWord = tt('unit', 'unidad');
+          if (ck.basis === 'comparable' && ck.actualComparableUnit) {
+            unitWord = ({
+              'fl_oz': tt('fl oz', 'oz líq'),
+              'oz':    'oz', 'lb': 'lb', 'kg': 'kg', 'l': tt('l', 'litro'), 'ct': tt('ct', 'unidad')
+            })[ck.actualComparableUnit] || unitWord;
+          }
           contractBadge = '<span class="id-row-contract id-row-contract--over" title="' +
-            escHtml(tt('Over your contract by $' + ck.diffPerUnit.toFixed(4) + '/unit', 'Sobre el contrato por $' + ck.diffPerUnit.toFixed(4) + '/unidad')) +
+            escHtml(tt('Over your contract by $' + ck.diffPerUnit.toFixed(4) + '/' + unitWord +
+                       ' (overcharge ~$' + ck.overcharge.toFixed(2) + ' on this line)',
+                       'Sobre el contrato por $' + ck.diffPerUnit.toFixed(4) + '/' + unitWord +
+                       ' (sobreprecio ~$' + ck.overcharge.toFixed(2) + ' en esta línea)')) +
             '">⚠ ' + escHtml(tt('over contract', 'sobre contrato')) + '</span>';
+        }
+      }
+    } catch (_) {}
+
+    // Cross-vendor savings chip (domain-expert layer). Surfaced
+    // when the operator's history shows ≥2 vendors selling the
+    // same stem and the cheapest charges noticeably less than the
+    // current row's vendor. Operators see "buy from X — saves
+    // 22% per fl oz" inline.
+    var crossVendorChip = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.compareAcrossVendors && r.comparable) {
+        var cmp = MID_SKU_HISTORY.compareAcrossVendors(r);
+        if (cmp && cmp.length >= 2) {
+          var cheapestVendor = cmp[0];
+          var currentRowVendor = r.vendorDetected || null;
+          if (currentRowVendor && cheapestVendor.vendor !== currentRowVendor) {
+            var thisOne = cmp.find(function (x) { return x.vendor === currentRowVendor; });
+            if (thisOne && thisOne.gapPctVsCheapest >= 8) {
+              var unitDispCV = ({
+                'fl_oz': tt('per fl oz', 'por oz líq'), 'oz': tt('per oz', 'por oz'),
+                'lb': tt('per lb', 'por lb'), 'kg': tt('per kg', 'por kg'),
+                'l': tt('per l', 'por litro'), 'ct': tt('per ct', 'por unidad')
+              })[cheapestVendor.comparableUnit] || tt('per unit', 'por unidad');
+              var label = tt(
+                'Saves ' + thisOne.gapPctVsCheapest.toFixed(0) + '% ' + unitDispCV +
+                  ' if you buy from ' + cheapestVendor.vendor +
+                  ' ($' + cheapestVendor.medianComparable + ' vs $' + thisOne.medianComparable + ' here)',
+                'Ahorra ' + thisOne.gapPctVsCheapest.toFixed(0) + '% ' + unitDispCV +
+                  ' si lo compras a ' + cheapestVendor.vendor +
+                  ' ($' + cheapestVendor.medianComparable + ' vs $' + thisOne.medianComparable + ' aquí)'
+              );
+              crossVendorChip = '<span class="id-row-crossvendor" title="' + escHtml(label) +
+                '">↓ ' + escHtml(cheapestVendor.vendor) + ' ' +
+                escHtml('-' + thisOne.gapPctVsCheapest.toFixed(0) + '%') + '</span>';
+            }
+          }
+        }
+      }
+    } catch (_) {}
+
+    // Substitution detection (domain-expert layer). When the row's
+    // own stem has ≤2 prior observations but a similar stem with
+    // ≥3 observations exists at a comparable per-unit price, hint
+    // that this looks like a sub for what the operator usually
+    // buys. Conservative — only fires on high-similarity matches.
+    var subChip = '';
+    try {
+      if (typeof MID_SUBSTITUTION !== 'undefined' && MID_SUBSTITUTION.detectSubstitution) {
+        var sub = MID_SUBSTITUTION.detectSubstitution(r);
+        if (sub && sub.similarity >= 0.55) {
+          subChip = '<span class="id-row-sub" title="' + escHtml(tt(
+            'Looks like a substitute for "' + sub.candidateStem + '" — you usually buy that one (' + sub.observations + ' prior orders, $' + sub.medianComparable + '/' + sub.comparableUnit + ')',
+            'Parece sustitución de "' + sub.candidateStem + '" — usualmente compras esa (' + sub.observations + ' órdenes previas, $' + sub.medianComparable + '/' + sub.comparableUnit + ')'
+          )) + '">↻ ' + escHtml(tt('looks like sub', 'parece sub')) + '</span>';
         }
       }
     } catch (_) {}
@@ -1442,7 +1536,7 @@
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip +
       '</span>' +
       '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
       '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +

@@ -333,6 +333,19 @@
 .id-row-contract{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
 .id-row-contract--over{background:#7a3019;color:#fff;border-color:#7a3019}
 
+/* Cross-vendor savings chip — domain-expert layer. Surfaced when
+   the operator could save by switching suppliers for this stem. */
+.id-row-crossvendor{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2;cursor:help;font-variant-numeric:tabular-nums}
+.id-row-crossvendor:hover{background:#1f6e3a;color:#fff;border-color:#1f6e3a}
+
+/* Substitution chip — looks like a sub for what you usually buy. */
+.id-row-sub{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E5EAF6;color:#1f3a6e;border:1px solid #B0BFE0;cursor:help}
+
+/* Volume-weighted invoice drift line in the Vendor Pulse strip. */
+.id-pulse-drift{margin-top:6px;font-size:13px;color:rgba(255,255,255,0.92);font-variant-numeric:tabular-nums}
+.id-pulse-drift[data-dir="up"]{color:#fcd0c0}
+.id-pulse-drift[data-dir="down"]{color:#aee7d4}
+
 /* Wave 1.1 — toggleable mini-history */
 .id-row-history{grid-column:1 / -1;margin-top:8px;padding:10px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
 .id-row-history-label{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
@@ -1152,12 +1165,13 @@
 <script src="./csv-extract.js?v=20260501-w8-4"></script>
 <script src="./proof-flyout.js?v=20260501-w3-1"></script>
 <script src="./device-key.js?v=20260501-w3-4"></script>
-<script src="./sku-history.js?v=20260501-w8-1"></script>
+<script src="./sku-history.js?v=20260501-w8-9"></script>
+<script src="./substitution.js?v=20260501-w8-9"></script>
 <script src="./margin-impact.js?v=20260501-w8-1"></script>
 <script src="./accountant-export.js?v=20260501-w8-1"></script>
 <script src="./telemetry.js?v=20260501-w8-1"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
-<script src="./invoice-decoder.js?v=20260501-w8-8"></script>
+<script src="./invoice-decoder.js?v=20260501-w8-9"></script>
 
 <!--
   Wave 6.8 — PWA registration + update prompt + install affordance.

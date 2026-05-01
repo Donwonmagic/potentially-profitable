@@ -1896,6 +1896,200 @@ console.log(`\nPack-aware unit pricing (domain-expert layer):`);
 
 console.log(`\nPack-pricing fixtures: ${ppPass} passed.`);
 
+// =====================================================================
+// Domain-expert layer #2 — cross-vendor comparison + invoice-level
+// volume-weighted drift + contract-watch in comparable unit +
+// substitution detection.
+// =====================================================================
+
+let dxPass = 0, dxFail = 0;
+console.log(`\nCross-vendor + invoice-drift + comparable-contract + substitution:`);
+{
+  // Fresh stub MuntinContext that the modules can read/write.
+  const stubStore = { skuHistory: {}, contractPrices: {} };
+  global.window = global.window || {};
+  global.window.MuntinContext = {
+    read: () => stubStore,
+    merge: (patch) => { Object.keys(patch).forEach(k => { stubStore[k] = patch[k]; }); return true; }
+  };
+  global.window.MID_LEARNINGS = {
+    extractStem: (s) => String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\b\d+\b/g, '').replace(/\s+/g, ' ').trim()
+  };
+  const SKU = await import(path.join(repoRoot, 'tools/invoice-decoder/sku-history.js')).then(m => m.default || m);
+  global.window.MID_SKU_HISTORY = SKU;
+
+  // Seed: 5 observations of Stella Artois — 3 from Sysco at $0.146/fl_oz,
+  // 2 more from a craft-beer distributor at $0.117/fl_oz. After 3 samples
+  // each we expect compareAcrossVendors to fire (with the >=3 threshold
+  // hitting on Sysco; we add a 3rd craft observation to clear the bar).
+  function seedObs(stem, vendor, comparable) {
+    if (!stubStore.skuHistory[stem]) stubStore.skuHistory[stem] = [];
+    stubStore.skuHistory[stem].unshift({
+      vendor: vendor, ts: Date.now(),
+      qty: 1, unit: 'cs', unitPrice: 42.0,
+      comparablePrice: comparable, comparableUnit: 'fl_oz'
+    });
+  }
+  seedObs('stella artois', 'sysco', 0.146);
+  seedObs('stella artois', 'sysco', 0.148);
+  seedObs('stella artois', 'sysco', 0.147);
+  seedObs('stella artois', 'craft-distributor', 0.117);
+  seedObs('stella artois', 'craft-distributor', 0.118);
+  seedObs('stella artois', 'craft-distributor', 0.116);
+
+  // 1. compareAcrossVendors finds both vendors and computes gap%.
+  const cmp = SKU.compareAcrossVendors({
+    name: 'Stella Artois 24/12',
+    comparable: { perBaseUnit: 0.146, baseUnit: 'fl_oz' }
+  });
+  const okCmp = cmp && cmp.length === 2 &&
+                cmp[0].vendor === 'craft-distributor' &&
+                cmp[1].vendor === 'sysco' &&
+                cmp[0].gapPctVsCheapest === 0 &&
+                cmp[1].gapPctVsCheapest > 20 && cmp[1].gapPctVsCheapest < 30;
+  console.log(`  ${okCmp ? '✓' : '✗'} compareAcrossVendors finds 2 vendors, sorted ascending, with gap% (got ${cmp ? cmp.map(c => c.vendor + ': ' + c.gapPctVsCheapest + '%').join(' / ') : 'null'})`);
+  if (okCmp) dxPass++; else dxFail++;
+
+  // 2. Single vendor → null (no comparison).
+  const singleVendor = SKU.compareAcrossVendors({ name: 'unknown item' });
+  console.log(`  ${singleVendor === null ? '✓' : '✗'} compareAcrossVendors returns null for stem with no history`);
+  if (singleVendor === null) dxPass++; else dxFail++;
+
+  // 3. Cross-base-unit reject — adding a $/lb observation under the
+  // same stem should NOT contaminate the fl_oz comparison.
+  seedObs('stella artois', 'weird-vendor', 99);   // wrong unit (we'll spoof it)
+  stubStore.skuHistory['stella artois'][0].comparableUnit = 'lb';
+  const cmpAfterContamination = SKU.compareAcrossVendors({
+    name: 'Stella Artois 24/12',
+    comparable: { perBaseUnit: 0.146, baseUnit: 'fl_oz' }
+  });
+  // The lb observation should be filtered out; result still has 2 fl_oz vendors.
+  const okIsolation = cmpAfterContamination && cmpAfterContamination.length === 2 &&
+                      cmpAfterContamination.every(v => v.comparableUnit === 'fl_oz');
+  console.log(`  ${okIsolation ? '✓' : '✗'} compareAcrossVendors filters out cross-base-unit observations`);
+  if (okIsolation) dxPass++; else dxFail++;
+  // Clean up
+  stubStore.skuHistory['stella artois'].shift();
+
+  // 4. Volume-weighted invoice drift. Build rows where a $4 row at
+  // +20% and a $200 row at +5% should result in a drift weighted
+  // toward the $200 line. Add seed history for both stems first.
+  function seedFor(stem, prices) {
+    stubStore.skuHistory[stem] = prices.map((p, i) => ({
+      vendor: 'sysco', ts: Date.now() - i * 86400000,
+      qty: 1, unit: 'cs', unitPrice: p,
+      comparablePrice: p, comparableUnit: 'fl_oz'
+    }));
+  }
+  seedFor('cilantro bunch', [3.50, 3.40, 3.60, 3.50, 3.50]);   // baseline ~$3.50/cs
+  seedFor('beef tenderloin', [200, 198, 202, 200, 200]);
+
+  const invoiceRows = [
+    { name: 'Cilantro Bunch',  lineTotal: 4.20, qty: 1, unit: 'cs', unitPrice: 4.20, comparable: { perBaseUnit: 4.20, baseUnit: 'fl_oz', totalQuantity: 1 }, kind: 'item' },   // +20%
+    { name: 'Beef Tenderloin', lineTotal: 210,  qty: 1, unit: 'cs', unitPrice: 210,  comparable: { perBaseUnit: 210,  baseUnit: 'fl_oz', totalQuantity: 1 }, kind: 'item' },   // +5%
+    { name: 'Tax line', lineTotal: 12, kind: 'tax' }
+  ];
+  const drift = SKU.computeInvoiceDrift(invoiceRows);
+  // Baseline: cilantro 4.20/1.20 = 3.50; beef 210/1.05 = 200; total baseline = 203.50
+  // Drift dollars: cilantro 0.70 + beef 10 = 10.70; pct = 10.70/203.50 = ~5.26%
+  const okDrift = drift && drift.ratedRows === 2 &&
+                  Math.abs(drift.totalDriftDollars - 10.70) < 0.05 &&
+                  Math.abs(drift.totalDriftPct - 5.3) < 0.3 &&
+                  drift.topDrivers[0].name === 'Beef Tenderloin';
+  console.log(`  ${okDrift ? '✓' : '✗'} computeInvoiceDrift: $${drift ? drift.totalDriftDollars : 'null'} over $${drift ? drift.baselineDollars : 'null'} (${drift ? drift.totalDriftPct + '%' : ''}); top driver = ${drift && drift.topDrivers[0] ? drift.topDrivers[0].name : 'none'}`);
+  if (okDrift) dxPass++; else dxFail++;
+
+  // Tax line excluded from rated rows.
+  const okTaxExcluded = drift && drift.ratedRows === 2 &&
+                        !drift.topDrivers.some(d => d.name === 'Tax line');
+  console.log(`  ${okTaxExcluded ? '✓' : '✗'} invoice-drift excludes kind:'tax' rows from drivers`);
+  if (okTaxExcluded) dxPass++; else dxFail++;
+
+  // 5. Comparable-aware contract-watch. Set a $/lb contract and
+  // verify a row at higher $/lb fires the overcharge. Use the same
+  // SKU name on both sides so stemOf produces a consistent key.
+  const chickenName = 'Chicken Thigh 10LB CS';
+  SKU.setContract(chickenName, 32.00, {
+    vendor: 'sysco', unit: 'cs',
+    comparablePrice: 3.20, comparableUnit: 'lb'
+  });
+  const ctxCheck = SKU.checkRow({
+    name: chickenName,
+    qty: 1, unit: 'cs', lineTotal: 35.00, unitPrice: 35.00,
+    comparable: { perBaseUnit: 3.50, baseUnit: 'lb', totalQuantity: 10 }
+  });
+  const okComparableContract = ctxCheck && ctxCheck.basis === 'comparable' &&
+                               ctxCheck.isOver &&
+                               ctxCheck.actualComparableUnit === 'lb' &&
+                               Math.abs(ctxCheck.diffPerUnit - 0.30) < 0.001 &&
+                               Math.abs(ctxCheck.overcharge - 3.00) < 0.05;   // 0.30/lb × 10 lb = 3.00
+  console.log(`  ${okComparableContract ? '✓' : '✗'} comparable-aware contract-watch: $0.30/lb over → $${ctxCheck ? ctxCheck.overcharge : 'null'} overcharge on 10-lb case`);
+  if (okComparableContract) dxPass++; else dxFail++;
+
+  // Legacy unit-based contract still works when row has no comparable.
+  SKU.setContract('rice 50lb bag', 24.00, { vendor: 'sysco', unit: 'bag' });
+  const legacyCheck = SKU.checkRow({
+    name: 'Rice 50LB Bag', qty: 1, unit: 'bag', lineTotal: 26.00, unitPrice: 26.00
+  });
+  const okLegacy = legacyCheck && legacyCheck.basis === 'unit' && legacyCheck.isOver;
+  console.log(`  ${okLegacy ? '✓' : '✗'} legacy unit-price contract-watch still works for rows without comparable`);
+  if (okLegacy) dxPass++; else dxFail++;
+
+  // 6. Substitution detection. Seed 4 observations under the operator's
+  // usual stem ("jumbo shrimp p d 5lb") at ~$14/lb. The truck arrives
+  // with a different SKU — "JUMBO SHRIMP HEAD-ON 5LB" — at $13.50/lb.
+  // Different stem (HEAD-ON tokens replace P&D), high similarity,
+  // close price → fires as a substitution candidate.
+  const usualStem = global.window.MID_LEARNINGS.extractStem('JUMBO SHRIMP P&D 5LB');
+  seedFor(usualStem, [14.10, 14.00, 13.95, 14.05]);
+  stubStore.skuHistory[usualStem].forEach(e => { e.comparableUnit = 'lb'; });
+
+  const SUB = await import(path.join(repoRoot, 'tools/invoice-decoder/substitution.js')).then(m => m.default || m);
+  global.window.MID_SUBSTITUTION = SUB;
+
+  const newShrimp = {
+    name: 'JUMBO SHRIMP HEAD-ON 5LB',
+    qty:  1, unit: 'cs', lineTotal: 67.50,
+    comparable: { perBaseUnit: 13.50, baseUnit: 'lb', totalQuantity: 5 }
+  };
+  const subResult = SUB.detectSubstitution(newShrimp);
+  const okSub = subResult && subResult.candidateStem.indexOf('shrimp') !== -1 &&
+                subResult.similarity >= 0.55 &&
+                subResult.observations >= 3 &&
+                subResult.confidence === 'medium';
+  console.log(`  ${okSub ? '✓' : '✗'} substitution flags JUMBO SHRIMP HEAD-ON as sub for JUMBO SHRIMP P&D family (sim ${subResult ? subResult.similarity : 'null'}, conf ${subResult ? subResult.confidence : 'null'})`);
+  if (okSub) dxPass++; else dxFail++;
+
+  // Substitution suppressed when own-stem already has many observations
+  // (it's the operator's own SKU, not a sub).
+  const ownStem = global.window.MID_LEARNINGS.extractStem('JUMBO SHRIMP HEAD-ON 5LB');
+  seedFor(ownStem, [13.50, 13.45, 13.55, 13.52, 13.48]);
+  stubStore.skuHistory[ownStem].forEach(e => { e.comparableUnit = 'lb'; });
+  const notSub = SUB.detectSubstitution(newShrimp);
+  console.log(`  ${notSub === null ? '✓' : '✗'} substitution suppressed when own-stem has many observations`);
+  if (notSub === null) dxPass++; else dxFail++;
+
+  // Substitution price-gap guard: if the price is wildly off from
+  // the candidate's median, skip.
+  delete stubStore.skuHistory[ownStem];     // remove the new-stem own-history
+  const cheapShrimp = {
+    name: 'JUMBO SHRIMP HEAD-ON 5LB',
+    qty:  1, unit: 'cs', lineTotal: 25.00,
+    comparable: { perBaseUnit: 5.00, baseUnit: 'lb', totalQuantity: 5 }   // $5/lb is way off $14
+  };
+  const noSub2 = SUB.detectSubstitution(cheapShrimp);
+  console.log(`  ${noSub2 === null ? '✓' : '✗'} substitution price-gap guard rejects when row price is >25% off candidate median`);
+  if (noSub2 === null) dxPass++; else dxFail++;
+
+  delete global.window.MID_SKU_HISTORY;
+  delete global.window.MID_LEARNINGS;
+  delete global.window.MID_SUBSTITUTION;
+  delete global.window.MuntinContext;
+  delete global.window;
+}
+
+console.log(`\nDomain-expert layer #2 fixtures: ${dxPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -1907,5 +2101,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + v42Fail
   + lgFail
   + pairFail
-  + ppFail;
+  + ppFail
+  + dxFail;
 process.exit(grandFail === 0 ? 0 : 1);
