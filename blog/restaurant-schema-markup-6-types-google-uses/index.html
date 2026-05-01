@@ -442,6 +442,26 @@
 
       <p>The description matters more than the name — that's the field Google's AI Overviews lift verbatim when someone asks "what are tacos al pastor like at Bistro Petit." Empty descriptions = no AI citation.</p>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="The Menu schema field that does the work · description, not name">
+          <div class="recovery-row recovery-1">
+            <div>
+              <h4 class="i18n">name</h4>
+              <p class="recovery-sub i18n">Required. Used for the listing title only.</p>
+            </div>
+            <div class="recovery-val">title-only</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div>
+              <h4 class="i18n">description</h4>
+              <p class="recovery-sub i18n">Optional in the spec. The field AI Overviews quote verbatim. Skip it = no citation.</p>
+            </div>
+            <div class="recovery-val">the AI field</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Menu schema · which field actually feeds the AI citation</figcaption>
+      </figure>
+
       <h2>3. OpeningHoursSpecification — the one that costs you walk-ins</h2>
 
       <p>If your hours are wrong on Google, your hours are wrong everywhere. <a href="/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-blurb="A specific Schema.org structured-data type for representing when a place is open." target="_blank" rel="noopener">OpeningHoursSpecification</a> is the schema that powers the "Open now" / "Closes at 10 PM" badge on your search panel — and the one that gets stale when you change Sunday hours and forget to update the site.</p>

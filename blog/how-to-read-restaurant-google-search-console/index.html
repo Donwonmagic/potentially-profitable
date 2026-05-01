@@ -433,6 +433,36 @@
 
       <p>Run <a href="/tools/audits/restaurant/">Restaurant Audit</a> if this number looks bad. The audit's technical-SEO section diagnoses the most common indexing blockers.</p>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Coverage red flags · the three findings to act on first">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">A</div>
+            <div>
+              <h4 class="i18n">Discovered — not indexed</h4>
+              <p class="recovery-sub i18n">Google found the URL, decided not to index it. Almost always thin content or a duplicate template.</p>
+            </div>
+            <div class="recovery-val">rewrite the page</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">B</div>
+            <div>
+              <h4 class="i18n">Crawled — currently not indexed</h4>
+              <p class="recovery-sub i18n">Google looked, then waited. Speed or trust signal too low. Fix LCP, fix the canonical.</p>
+            </div>
+            <div class="recovery-val">fix the speed</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">C</div>
+            <div>
+              <h4 class="i18n">Excluded by 'noindex'</h4>
+              <p class="recovery-sub i18n">A meta tag or HTTP header is telling Google to skip the page. If unintentional, that's the cheapest fix on this list.</p>
+            </div>
+            <div class="recovery-val">grep noindex</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Three Coverage red flags · what each one actually means before you go fix it</figcaption>
+      </figure>
+
       <h2>The three weekly habits</h2>
 
       <aside class="report-decider" aria-labelledby="report-decider-h">

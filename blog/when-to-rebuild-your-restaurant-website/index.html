@@ -441,6 +441,36 @@
 
       <h2>Three case threads</h2>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Three rebuild verdicts · score band → action → typical payback">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">75</div>
+            <div>
+              <h4 class="i18n">Don't rebuild — fix the leak</h4>
+              <p class="recovery-sub i18n">CDN + image compression + schema repair. Score moves to ~88.</p>
+            </div>
+            <div class="recovery-val">defer 2 yrs</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">&lt;60</div>
+            <div>
+              <h4 class="i18n">Full rebuild</h4>
+              <p class="recovery-sub i18n">Platform itself is the ceiling. Score lands high-80s or 90s.</p>
+            </div>
+            <div class="recovery-val">9–14 mo payback</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">65–70</div>
+            <div>
+              <h4 class="i18n">Partial rebuild</h4>
+              <p class="recovery-sub i18n">Front-end + photos, keep the CMS. ~40% of full-rebuild cost.</p>
+            </div>
+            <div class="recovery-val">~12 mo payback</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Three rebuild verdicts in one line · matched to the case threads below</figcaption>
+      </figure>
+
       <p><strong>Case 1 — Bistro on a 75 score, doesn't rebuild:</strong> A six-year-old French bistro scoring 75 on Storefront Health. Mobile speed dragging the score down. We added a CDN, recompressed every image, fixed the menu schema. Score moved to 88; they deferred the rebuild for two more years and saved roughly $11K.</p>
 
       <p><strong>Case 2 — Site below 60, rebuilds:</strong> Old front-end, slow on mobile, menu schema malformed, booking funnel hidden. The platform itself is the ceiling. The rebuild here is full custom: real HTML menu, dish-level <!-- LIBRARY:autolink:start --><a href="/glossary/structured-data/" data-glossary-head="Structured data" data-glossary-aka="the machine-readable copy of your site that Google reads" data-glossary-blurb="A small JSON block embedded in your website's &lt;head&gt; that mirrors the human-facing content (hours, address, menu items, reviews, prices) in a format search engines can index…">structured data</a><!-- LIBRARY:autolink:end -->, the booking funnel cleaned up. Score lands in the high 80s or 90s. Search-driven reservations roughly triple within 90 days because the missing schema starts firing in local-pack queries the site never appeared for before. Payback windows on rebuilds in this range are typically 9-14 months — but the leverage compounds as Google's index updates.</p>

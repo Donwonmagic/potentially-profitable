@@ -443,25 +443,49 @@
 
       <h2>3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
 
-      <p>Here's the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser:</p>
+      <p>Here's the standard every tool on this site is held to. Nine claims about how every Muntin tool handles your inputs, each one verifiable in your own browser. Tap any claim to see the DevTools step that confirms it.</p>
 
-      <ol>
-        <li>Your numbers never leave the page. No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form submission fires when you type a financial number.</li>
-        <li>There's no server to store them on. The only endpoint a tool page uses is <code>GET /tools/&lt;slug&gt;/</code>.</li>
-        <li>Analytics sees only buckets, never numbers. A $25 ticket becomes <code>25-39</code>; raw values are never properties.</li>
-        <li>No cookies, no localStorage, no sessionStorage — for your inputs.</li>
-        <li>No third-party scripts touch the inputs.</li>
-        <li>Shareable scenario links use the <!-- LIBRARY:autolink:start --><a href="/glossary/url-fragment/" data-glossary-head="URL fragment" data-glossary-aka="the part of a URL after the #" data-glossary-blurb="The portion of a URL that comes after the # symbol (sometimes called the &quot;hash&quot;).">URL fragment</a><!-- LIBRARY:autolink:end --> (the part after <code>#</code>) — browsers never send fragments to servers.</li>
-        <li>The source is readable: no build step, no minification, every math function named.</li>
-        <li>Nothing persists beyond this tab.</li>
-        <li>Print + calendar exports are 100% <!-- LIBRARY:autolink:start --><a href="/glossary/client-side/" data-glossary-head="Client-side" data-glossary-aka="computation in your browser, not on a server" data-glossary-blurb="Computation that happens inside your browser tab, not on a server.">client-side</a><!-- LIBRARY:autolink:end -->.</li>
-      </ol>
+      <aside class="report-decider" aria-labelledby="safe-claims-h">
+        <p class="report-decider__eyebrow" id="safe-claims-h">The 9 claims · expand for the proof</p>
+        <details class="report-decider__item">
+          <summary>1. Your numbers never leave the page</summary>
+          <p>No <code>fetch()</code>, no <code>XMLHttpRequest</code>, no form submission fires when you type a financial number. <strong>Verify:</strong> open Network tab, type, watch for new entries. Should be zero.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>2. There's no server to store them on</summary>
+          <p>The only endpoint a tool page uses is <code>GET /tools/&lt;slug&gt;/</code> — the page itself. <strong>Verify:</strong> filter Network → XHR/Fetch. Empty.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>3. Analytics sees only buckets, never numbers</summary>
+          <p>A $25 ticket becomes <code>25-39</code>; raw values are never event properties. <strong>Verify:</strong> filter Network → "plausible". Inspect the request body. No raw inputs.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>4. No cookies, no localStorage, no sessionStorage — for your inputs</summary>
+          <p>Open Application → Storage. Tool inputs never persist there. <strong>Verify:</strong> type, then refresh. Inputs are gone, by design.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>5. No third-party scripts touch the inputs</summary>
+          <p>The only third-party script on a tool page is Plausible analytics, which only sees bucketed event names. <strong>Verify:</strong> filter Network → JS, look for unfamiliar origins. Should be empty.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>6. Shareable scenario links use the <!-- LIBRARY:autolink:start --><a href="/glossary/url-fragment/" data-glossary-head="URL fragment" data-glossary-aka="the part of a URL after the #" data-glossary-blurb="The portion of a URL that comes after the # symbol (sometimes called the &quot;hash&quot;).">URL fragment</a><!-- LIBRARY:autolink:end --></summary>
+          <p>The part after <code>#</code> — browsers never send fragments to servers, only the page before <code>#</code>. <strong>Verify:</strong> share a scenario link. Compare what's after the hash to what's in the request URL Network shows.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>7. The source is readable</summary>
+          <p>No build step, no minification, every math function named. <strong>Verify:</strong> right-click → View Source. Read the script. If you can't audit it, that's the failure mode.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>8. Nothing persists beyond this tab</summary>
+          <p>Close the tab, reopen the tool. Empty form. No history, no recall. <strong>Verify:</strong> exactly that.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>9. Print + calendar exports are 100% <!-- LIBRARY:autolink:start --><a href="/glossary/client-side/" data-glossary-head="Client-side" data-glossary-aka="computation in your browser, not on a server" data-glossary-blurb="Computation that happens inside your browser tab, not on a server.">client-side</a><!-- LIBRARY:autolink:end --></summary>
+          <p>Print to PDF — no upload. Add to calendar — generates an .ics file locally, no API call. <strong>Verify:</strong> Network tab during the export action. Empty.</p>
+        </details>
+      </aside>
 
       <p>The full version with each claim's specific DevTools verification step lives at <a href="/security/">/security/</a>. Four of them (1, 2, 4, 5) are <strong>build invariants</strong> — the cohesion-check pass that runs on every deploy fails CI if a future tool ships a forbidden pattern. So &ldquo;verifiable&rdquo; isn't marketing copy; it's a contract enforced by the build, with a public hash of the production bundle published at <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
-
-      <blockquote class="pullquote">
-        <p>&ldquo;Verifiable&rdquo; should be a build flag, not a marketing claim.</p>
-      </blockquote>
 
       <blockquote class="pullquote">
         <p>"Verifiable" should be a build flag, not a marketing claim. If the only proof is the brochure, treat it as the brochure.</p>
