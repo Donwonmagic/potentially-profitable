@@ -109,7 +109,7 @@
   };
 
   // Vendor: Restaurant Depot. Often bilingual EN+ES; printed
-  // header includes the warehouse number stamp. Members-only
+  // header includes the warehouse number stamp. Their wholesale
   // pricing notation ("MEMBER PRICE") is distinctive.
   var REST_DEPOT = {
     id: 'restaurant-depot',
