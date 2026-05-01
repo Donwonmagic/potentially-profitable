@@ -1,0 +1,27 @@
+{
+  "id": "sygma",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Sygma",
+    "es": "Sygma"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bsygma\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "sygma\\s+network",
+        "weight": 0.2
+      },
+      {
+        "pattern": "cust\\s*item\\s*#\\s+house\\s*item",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10
+}

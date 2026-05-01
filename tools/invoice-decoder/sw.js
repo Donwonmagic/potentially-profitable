@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v4-2026-05-01';
+var SW_VERSION = 'id-decoder-v5-2026-05-01';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -49,6 +49,8 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/learnings.js',
   '/tools/invoice-decoder/categorize.js',
   '/tools/invoice-decoder/vendors.js',
+  '/tools/invoice-decoder/vendors/template-runtime.js',
+  '/tools/invoice-decoder/vendors/_index.json',
   '/tools/invoice-decoder/auto-learn.js',
   '/tools/invoice-decoder/vendor-config.js',
   // Wave 6.4 — self-hosted vendor JS entry points. The integrity

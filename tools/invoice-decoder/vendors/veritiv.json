@@ -1,0 +1,31 @@
+{
+  "id": "veritiv",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Veritiv",
+    "es": "Veritiv"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bveritiv\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "veritiv\\s+corporation",
+        "weight": 0.3
+      },
+      {
+        "pattern": "packaging\\s+&?\\s*facility",
+        "weight": 0.15
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9,
+  "categoryBias": {
+    "paper": 1.2,
+    "cleaning": 1.1
+  }
+}

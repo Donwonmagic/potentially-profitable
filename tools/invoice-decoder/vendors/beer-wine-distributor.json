@@ -1,0 +1,55 @@
+{
+  "id": "beer-wine-distributor",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Beer / wine distributor",
+    "es": "Distribuidor de cerveza / vino"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "republic\\s+national\\s+distributing",
+        "weight": 0.55
+      },
+      {
+        "pattern": "\\brndc\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "southern\\s+glazer",
+        "weight": 0.55
+      },
+      {
+        "pattern": "reyes\\s+beverage",
+        "weight": 0.55
+      },
+      {
+        "pattern": "breakthru\\s+beverage",
+        "weight": 0.55
+      },
+      {
+        "pattern": "empire\\s+merchants",
+        "weight": 0.55
+      },
+      {
+        "pattern": "ben\\s+arnold|wirtz\\s+beverage",
+        "weight": 0.45
+      },
+      {
+        "pattern": "\\balcohol\\s+tax|excise\\s+tax|state\\s+liquor\\s+tax\\b",
+        "weight": 0.15
+      },
+      {
+        "pattern": "case\\s+price|bottle\\s+price|keg\\s+price",
+        "weight": 0.1
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10,
+  "categoryBias": {
+    "beverage": 1.4
+  },
+  "alcoholTax": true
+}

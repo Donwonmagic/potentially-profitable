@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "_doc": "Detection-only manifest. Each vendor's full template lives at /tools/invoice-decoder/vendors/<id>.json and is lazy-loaded only after the detection score crosses the threshold. Pattern strings are JS regex sources (no flags); the runtime compiles them with the 'i' flag.",
+  "vendors": [
+    {
+      "id": "sysco",
+      "label": "Sysco",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bsysco\\b", "weight": 0.6 },
+          { "pattern": "sysco\\s+(houston|chicago|atlanta|memphis|kansas|denver|seattle|portland|baltimore|cincinnati|nashville|jacksonville)", "weight": 0.2 },
+          { "pattern": "customer\\s+number\\s*:?\\s*\\d{6,}", "weight": 0.15 },
+          { "pattern": "\\bsupc\\b|\\bsupc#\\b", "weight": 0.15 },
+          { "pattern": "sysco\\s+pickup", "weight": 0.1 }
+        ]
+      }
+    },
+    {
+      "id": "us-foods",
+      "label": "US Foods",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bus\\s*foods\\b", "weight": 0.6 },
+          { "pattern": "\\busfoods\\b", "weight": 0.5 },
+          { "pattern": "\\busf\\b", "weight": 0.15 },
+          { "pattern": "pack\\s*\\/\\s*size", "weight": 0.15 },
+          { "pattern": "\\d+\\s*\\/\\s*\\d+\\s*(oz|lb|ct|ea)", "weight": 0.15 },
+          { "pattern": "division\\s+of\\s+us\\s*foods", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "gfs",
+      "label": "Gordon Food Service",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "gordon\\s+food\\s+service", "weight": 0.6 },
+          { "pattern": "\\bgfs\\b", "weight": 0.4 },
+          { "pattern": "\\bgfs\\s+marketplace", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "restaurant-depot",
+      "label": "Restaurant Depot",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "restaurant\\s+depot", "weight": 0.6 },
+          { "pattern": "\\brdmember\\b|member\\s+price", "weight": 0.2 },
+          { "pattern": "jetro\\s+cash\\s+&\\s+carry", "weight": 0.5 },
+          { "pattern": "warehouse\\s*#?\\s*\\d{2,3}", "weight": 0.15 },
+          { "pattern": "cash\\s+and\\s+carry", "weight": 0.1 }
+        ]
+      }
+    },
+    {
+      "id": "shamrock",
+      "label": "Shamrock Foods",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "shamrock\\s+foods", "weight": 0.6 },
+          { "pattern": "\\bshamrock\\b", "weight": 0.4 },
+          { "pattern": "phoenix|denver|albuquerque|salt\\s+lake", "weight": 0.1 },
+          { "pattern": "clover\\s*pricing|clover\\s*list", "weight": 0.15 }
+        ]
+      }
+    },
+    {
+      "id": "sygma",
+      "label": "Sygma",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bsygma\\b", "weight": 0.6 },
+          { "pattern": "sygma\\s+network", "weight": 0.2 },
+          { "pattern": "cust\\s*item\\s*#\\s+house\\s*item", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "pfg",
+      "label": "Performance Food Group",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "performance\\s+food", "weight": 0.6 },
+          { "pattern": "\\bpfg\\b", "weight": 0.4 },
+          { "pattern": "\\bvistar\\b", "weight": 0.5 },
+          { "pattern": "reinhart\\s+foodservice", "weight": 0.5 },
+          { "pattern": "\\breinhart\\b", "weight": 0.3 },
+          { "pattern": "pfg\\s+customized", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "cheney-brothers",
+      "label": "Cheney Brothers",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bcheney\\s+brothers\\b", "weight": 0.6 },
+          { "pattern": "\\bcbi\\s+invoice\\b", "weight": 0.3 },
+          { "pattern": "\\bcheney\\b", "weight": 0.3 },
+          { "pattern": "riviera\\s+beach|ocala|punta\\s+gorda|north\\s+carolina", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "ben-e-keith",
+      "label": "Ben E. Keith Foods",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "ben\\s*e\\.?\\s*keith", "weight": 0.6 },
+          { "pattern": "\\bbek\\s+invoice\\b", "weight": 0.3 },
+          { "pattern": "dallas|fort\\s+worth|houston|san\\s+antonio|amarillo|albuquerque", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "imperial-dade",
+      "label": "Imperial Dade",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "imperial\\s+dade", "weight": 0.6 },
+          { "pattern": "\\bimp\\s+dade\\b", "weight": 0.3 },
+          { "pattern": "janitorial|disposables|packaging|food\\s*service\\s+supplies", "weight": 0.1 }
+        ]
+      }
+    },
+    {
+      "id": "kehe",
+      "label": "KeHE Distributors",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bkehe\\b", "weight": 0.6 },
+          { "pattern": "kehe\\s+distributors|kehe\\s+specialty", "weight": 0.2 },
+          { "pattern": "natural\\s+foods|specialty\\s+foods|organic\\s+grocery", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "unfi",
+      "label": "UNFI",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bunfi\\b", "weight": 0.6 },
+          { "pattern": "united\\s+natural\\s+foods", "weight": 0.4 },
+          { "pattern": "super\\s*valu|supervalu", "weight": 0.1 }
+        ]
+      }
+    },
+    {
+      "id": "baldor",
+      "label": "Baldor Specialty Foods",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bbaldor\\b", "weight": 0.6 },
+          { "pattern": "baldor\\s+specialty", "weight": 0.3 },
+          { "pattern": "bronx|the\\s+bronx|ny|new\\s+york", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "freshpoint",
+      "label": "FreshPoint",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bfreshpoint\\b", "weight": 0.6 },
+          { "pattern": "fresh\\s+point", "weight": 0.4 },
+          { "pattern": "produce\\s+invoice|produce\\s+order", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "maines",
+      "label": "Maines Paper & Food",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bmaines\\b", "weight": 0.55 },
+          { "pattern": "maines\\s+paper\\s+(and|&)\\s+food", "weight": 0.3 },
+          { "pattern": "conklin|broome\\s+county", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "asian-wholesale",
+      "label": "Asian wholesale (H Mart / 99 Ranch / Restaurant Depot Asia)",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bh\\s*mart\\b|hmart", "weight": 0.6 },
+          { "pattern": "99\\s*ranch", "weight": 0.6 },
+          { "pattern": "restaurant\\s+depot\\s+asia|rd\\s+asia", "weight": 0.5 },
+          { "pattern": "asian\\s+wholesale|korean\\s+market|chinese\\s+market", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "mexican-wholesale",
+      "label": "Mexican wholesaler",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "la\\s+michoacana\\s+meat", "weight": 0.55 },
+          { "pattern": "northgate\\s+market\\s+foodservice|northgate\\s+gonzalez", "weight": 0.5 },
+          { "pattern": "mariscos\\s+linares", "weight": 0.5 },
+          { "pattern": "carniceria\\s+|carnicería\\s+", "weight": 0.2 },
+          { "pattern": "abarrotes\\s+y\\s+mas|abarrotes\\s+y\\s+más", "weight": 0.2 },
+          { "pattern": "proveedor\\s+mexicano|distribuidor\\s+latino", "weight": 0.2 }
+        ]
+      }
+    },
+    {
+      "id": "costco-business",
+      "label": "Costco Business Center",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "costco\\s+business\\s+center", "weight": 0.6 },
+          { "pattern": "\\bcostco\\s+wholesale\\b", "weight": 0.4 },
+          { "pattern": "business\\s+member|gold\\s+star\\s+business", "weight": 0.15 },
+          { "pattern": "\\bsubtotal\\b[\\s\\S]{0,80}\\btax\\b", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "webstaurantstore",
+      "label": "WebstaurantStore",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "webstaurant\\s*store", "weight": 0.6 },
+          { "pattern": "\\bwebstaurant\\b", "weight": 0.4 },
+          { "pattern": "clark\\s+associates", "weight": 0.15 },
+          { "pattern": "order\\s+confirmation\\s+#", "weight": 0.05 }
+        ]
+      }
+    },
+    {
+      "id": "veritiv",
+      "label": "Veritiv",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "\\bveritiv\\b", "weight": 0.6 },
+          { "pattern": "veritiv\\s+corporation", "weight": 0.3 },
+          { "pattern": "packaging\\s+&?\\s*facility", "weight": 0.15 }
+        ]
+      }
+    },
+    {
+      "id": "dairy-dsd",
+      "label": "Dairy / DSD route delivery",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "hiland\\s+dairy", "weight": 0.55 },
+          { "pattern": "borden\\s+dairy|dean\\s+foods", "weight": 0.5 },
+          { "pattern": "producers\\s+dairy", "weight": 0.5 },
+          { "pattern": "crystal\\s+creamery", "weight": 0.5 },
+          { "pattern": "route\\s+\\d+|driver\\s+\\d+", "weight": 0.1 },
+          { "pattern": "route\\s+invoice|dsd\\s+invoice", "weight": 0.15 }
+        ]
+      }
+    },
+    {
+      "id": "beer-wine-distributor",
+      "label": "Beer / wine distributor",
+      "detect": {
+        "minScore": 0.5,
+        "tokens": [
+          { "pattern": "republic\\s+national\\s+distributing", "weight": 0.55 },
+          { "pattern": "\\brndc\\b", "weight": 0.3 },
+          { "pattern": "southern\\s+glazer", "weight": 0.55 },
+          { "pattern": "reyes\\s+beverage", "weight": 0.55 },
+          { "pattern": "breakthru\\s+beverage", "weight": 0.55 },
+          { "pattern": "empire\\s+merchants", "weight": 0.55 },
+          { "pattern": "ben\\s+arnold|wirtz\\s+beverage", "weight": 0.45 },
+          { "pattern": "\\balcohol\\s+tax|excise\\s+tax|state\\s+liquor\\s+tax\\b", "weight": 0.15 },
+          { "pattern": "case\\s+price|bottle\\s+price|keg\\s+price", "weight": 0.1 }
+        ]
+      }
+    }
+  ]
+}

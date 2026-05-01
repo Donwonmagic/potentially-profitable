@@ -1,0 +1,27 @@
+{
+  "id": "kehe",
+  "schemaVersion": 1,
+  "label": {
+    "en": "KeHE Distributors",
+    "es": "KeHE Distributors"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bkehe\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "kehe\\s+distributors|kehe\\s+specialty",
+        "weight": 0.2
+      },
+      {
+        "pattern": "natural\\s+foods|specialty\\s+foods|organic\\s+grocery",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9
+}

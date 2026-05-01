@@ -1,0 +1,34 @@
+{
+  "id": "shamrock",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Shamrock Foods",
+    "es": "Shamrock Foods"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "shamrock\\s+foods",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bshamrock\\b",
+        "weight": 0.4
+      },
+      {
+        "pattern": "phoenix|denver|albuquerque|salt\\s+lake",
+        "weight": 0.1
+      },
+      {
+        "pattern": "clover\\s*pricing|clover\\s*list",
+        "weight": 0.15
+      }
+    ]
+  },
+  "headerSkip": [
+    "^item\\s+class",
+    "^prod\\s*#\\s+description"
+  ],
+  "confidenceBoost": 10
+}

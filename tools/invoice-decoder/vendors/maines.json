@@ -1,0 +1,27 @@
+{
+  "id": "maines",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Maines Paper & Food",
+    "es": "Maines Paper & Food"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bmaines\\b",
+        "weight": 0.55
+      },
+      {
+        "pattern": "maines\\s+paper\\s+(and|&)\\s+food",
+        "weight": 0.3
+      },
+      {
+        "pattern": "conklin|broome\\s+county",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10
+}

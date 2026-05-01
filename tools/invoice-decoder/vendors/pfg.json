@@ -1,0 +1,42 @@
+{
+  "id": "pfg",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Performance Food Group",
+    "es": "Performance Food Group"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "performance\\s+food",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bpfg\\b",
+        "weight": 0.4
+      },
+      {
+        "pattern": "\\bvistar\\b",
+        "weight": 0.5
+      },
+      {
+        "pattern": "reinhart\\s+foodservice",
+        "weight": 0.5
+      },
+      {
+        "pattern": "\\breinhart\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "pfg\\s+customized",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [
+    "^item\\s+#\\s+description",
+    "^pfg\\s+#"
+  ],
+  "confidenceBoost": 10
+}

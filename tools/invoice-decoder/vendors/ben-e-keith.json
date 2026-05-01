@@ -1,0 +1,27 @@
+{
+  "id": "ben-e-keith",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Ben E. Keith Foods",
+    "es": "Ben E. Keith Foods"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "ben\\s*e\\.?\\s*keith",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bbek\\s+invoice\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "dallas|fort\\s+worth|houston|san\\s+antonio|amarillo|albuquerque",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 11
+}

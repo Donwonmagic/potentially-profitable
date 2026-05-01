@@ -1,0 +1,34 @@
+{
+  "id": "cheney-brothers",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Cheney Brothers",
+    "es": "Cheney Brothers"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bcheney\\s+brothers\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bcbi\\s+invoice\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "\\bcheney\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "riviera\\s+beach|ocala|punta\\s+gorda|north\\s+carolina",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [
+    "^cbi\\s+item",
+    "^pack\\s+brand\\s+description"
+  ],
+  "confidenceBoost": 11
+}

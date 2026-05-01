@@ -1,0 +1,39 @@
+{
+  "id": "sysco",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Sysco",
+    "es": "Sysco"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bsysco\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "sysco\\s+(houston|chicago|atlanta|memphis|kansas|denver|seattle|portland|baltimore|cincinnati|nashville|jacksonville)",
+        "weight": 0.2
+      },
+      {
+        "pattern": "customer\\s+number\\s*:?\\s*\\d{6,}",
+        "weight": 0.15
+      },
+      {
+        "pattern": "\\bsupc\\b|\\bsupc#\\b",
+        "weight": 0.15
+      },
+      {
+        "pattern": "sysco\\s+pickup",
+        "weight": 0.1
+      }
+    ]
+  },
+  "headerSkip": [
+    "^pack\\s+brand\\s+description",
+    "^supc\\s+pack\\s+size",
+    "^marketplace\\s+order"
+  ],
+  "confidenceBoost": 12
+}

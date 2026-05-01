@@ -1,0 +1,27 @@
+{
+  "id": "unfi",
+  "schemaVersion": 1,
+  "label": {
+    "en": "UNFI",
+    "es": "UNFI"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bunfi\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "united\\s+natural\\s+foods",
+        "weight": 0.4
+      },
+      {
+        "pattern": "super\\s*valu|supervalu",
+        "weight": 0.1
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9
+}

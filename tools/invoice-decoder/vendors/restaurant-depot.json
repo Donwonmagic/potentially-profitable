@@ -1,0 +1,35 @@
+{
+  "id": "restaurant-depot",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Restaurant Depot",
+    "es": "Restaurant Depot"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "restaurant\\s+depot",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\brdmember\\b|member\\s+price",
+        "weight": 0.2
+      },
+      {
+        "pattern": "jetro\\s+cash\\s+&\\s+carry",
+        "weight": 0.5
+      },
+      {
+        "pattern": "warehouse\\s*#?\\s*\\d{2,3}",
+        "weight": 0.15
+      },
+      {
+        "pattern": "cash\\s+and\\s+carry",
+        "weight": 0.1
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10
+}

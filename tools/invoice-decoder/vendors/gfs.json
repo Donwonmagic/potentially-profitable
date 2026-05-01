@@ -1,0 +1,30 @@
+{
+  "id": "gfs",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Gordon Food Service",
+    "es": "Gordon Food Service"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "gordon\\s+food\\s+service",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bgfs\\b",
+        "weight": 0.4
+      },
+      {
+        "pattern": "\\bgfs\\s+marketplace",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [
+    "^item\\s+class",
+    "^prd\\s+pro\\s+dry"
+  ],
+  "confidenceBoost": 14
+}

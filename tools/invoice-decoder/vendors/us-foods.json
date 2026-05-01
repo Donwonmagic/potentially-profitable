@@ -1,0 +1,42 @@
+{
+  "id": "us-foods",
+  "schemaVersion": 1,
+  "label": {
+    "en": "US Foods",
+    "es": "US Foods"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bus\\s*foods\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\busfoods\\b",
+        "weight": 0.5
+      },
+      {
+        "pattern": "\\busf\\b",
+        "weight": 0.15
+      },
+      {
+        "pattern": "pack\\s*\\/\\s*size",
+        "weight": 0.15
+      },
+      {
+        "pattern": "\\d+\\s*\\/\\s*\\d+\\s*(oz|lb|ct|ea)",
+        "weight": 0.15
+      },
+      {
+        "pattern": "division\\s+of\\s+us\\s*foods",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [
+    "^pack\\s*\\/\\s*size",
+    "^prod\\s+id"
+  ],
+  "confidenceBoost": 12
+}

@@ -1,0 +1,35 @@
+{
+  "id": "webstaurantstore",
+  "schemaVersion": 1,
+  "label": {
+    "en": "WebstaurantStore",
+    "es": "WebstaurantStore"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "webstaurant\\s*store",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bwebstaurant\\b",
+        "weight": 0.4
+      },
+      {
+        "pattern": "clark\\s+associates",
+        "weight": 0.15
+      },
+      {
+        "pattern": "order\\s+confirmation\\s+#",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9,
+  "categoryBias": {
+    "paper": 1.1,
+    "cleaning": 1.05
+  }
+}

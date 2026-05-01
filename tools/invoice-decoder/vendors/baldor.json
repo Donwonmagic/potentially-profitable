@@ -1,0 +1,32 @@
+{
+  "id": "baldor",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Baldor Specialty Foods",
+    "es": "Baldor Specialty Foods"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bbaldor\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "baldor\\s+specialty",
+        "weight": 0.3
+      },
+      {
+        "pattern": "bronx|the\\s+bronx|ny|new\\s+york",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 11,
+  "categoryBias": {
+    "produce": 1.15,
+    "seafood": 1.1,
+    "protein": 1.1
+  }
+}

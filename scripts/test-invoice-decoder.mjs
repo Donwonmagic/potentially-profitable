@@ -1159,6 +1159,10 @@ console.log(`\nKDF + envelope v=2 dual-wrap (Waves 6.1, 6.3):`);
   delete global.window.MID_KDF;
   delete global.window.MID_ENCRYPT;
   delete global.window.MuntinContext;
+  // Wave 4.1 — release the global.window stub so the next test
+  // block (vendor template runtime) sees `typeof window ===
+  // 'undefined'` and falls through to its file-system loader.
+  delete global.window;
 }
 
 let recPass = 0, recFail = 0;
@@ -1192,9 +1196,107 @@ console.log(`\nRecovery phrase generation + validation (Wave 6.3):`);
 
 console.log(`\nWave 6.1+6.3 fixtures: ${kdfPass} kdf+envelope / ${recPass} recovery passed.`);
 
+// =====================================================================
+// Wave 4.1 — JSON-per-vendor schema + template runtime tests.
+// =====================================================================
+
+let v41Pass = 0, v41Fail = 0;
+console.log(`\nVendor JSON schema + template runtime (Wave 4.1):`);
+{
+  const vendorsDir = path.join(repoRoot, 'tools/invoice-decoder/vendors');
+  const indexPath = path.join(vendorsDir, '_index.json');
+  const indexRaw = await fs.promises.readFile(indexPath, 'utf8');
+  const index = JSON.parse(indexRaw);
+
+  // Schema sanity: every entry has id, label, detect.tokens.
+  let schemaOk = Array.isArray(index.vendors) && index.vendors.length >= 22;
+  for (const v of (index.vendors || [])) {
+    if (!v.id || !v.label || !v.detect || !Array.isArray(v.detect.tokens)) {
+      schemaOk = false;
+    }
+    for (const t of (v.detect.tokens || [])) {
+      if (!t.pattern || typeof t.weight !== 'number') schemaOk = false;
+    }
+  }
+  console.log(`  ${schemaOk ? '✓' : '✗'} _index.json contains ≥22 vendors with well-formed detect.tokens`);
+  if (schemaOk) v41Pass++; else v41Fail++;
+
+  // Each per-vendor JSON file exists, parses, and matches its index entry.
+  let perFileOk = true;
+  let missing = [];
+  for (const v of (index.vendors || [])) {
+    const p = path.join(vendorsDir, v.id + '.json');
+    if (!fs.existsSync(p)) { perFileOk = false; missing.push(v.id); continue; }
+    try {
+      const j = JSON.parse(await fs.promises.readFile(p, 'utf8'));
+      if (j.id !== v.id) perFileOk = false;
+      if (!j.label || typeof j.label.en !== 'string') perFileOk = false;
+      if (!Array.isArray(j.detect.tokens) || j.detect.tokens.length === 0) perFileOk = false;
+    } catch (_) { perFileOk = false; }
+  }
+  console.log(`  ${perFileOk ? '✓' : '✗'} every index entry has a corresponding <id>.json file (missing: ${missing.join(',') || 'none'})`);
+  if (perFileOk) v41Pass++; else v41Fail++;
+
+  // Detection token regexes all compile.
+  let regexOk = true;
+  for (const v of index.vendors) {
+    for (const t of v.detect.tokens) {
+      try { new RegExp(t.pattern, 'i'); } catch (_) { regexOk = false; }
+    }
+  }
+  console.log(`  ${regexOk ? '✓' : '✗'} every detection token regex compiles cleanly`);
+  if (regexOk) v41Pass++; else v41Fail++;
+
+  // Template runtime — token-based scoring.
+  const RT = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors/template-runtime.js')).then(m => m.default || m);
+  RT._resetForTests();
+
+  const detected = await RT.detectVendor('SYSCO HOUSTON\nCustomer Number: 1842371\nSUPC Pack Description');
+  const okSysco = detected && detected.id === 'sysco' && detected.score >= 0.5;
+  console.log(`  ${okSysco ? '✓' : '✗'} runtime.detectVendor identifies Sysco from canonical letterhead text`);
+  if (okSysco) v41Pass++; else v41Fail++;
+
+  // The lazy template fetch returns rich data (headerSkip etc.).
+  const okHeaderSkip = detected && detected.template && Array.isArray(detected.template.headerSkip) && detected.template.headerSkip.length >= 3;
+  console.log(`  ${okHeaderSkip ? '✓' : '✗'} matched template carries headerSkip patterns from the per-vendor JSON`);
+  if (okHeaderSkip) v41Pass++; else v41Fail++;
+
+  // No-match path returns null cleanly.
+  const noMatch = await RT.detectVendor('GIBBERISH HEADER\nNot a real distributor invoice');
+  const okNoMatch = noMatch === null;
+  console.log(`  ${okNoMatch ? '✓' : '✗'} runtime returns null for unrecognized letterhead`);
+  if (okNoMatch) v41Pass++; else v41Fail++;
+
+  // Vendor facade compatibility — the legacy fields are populated.
+  if (detected) {
+    const facade = detected.vendor;
+    const okFacade = facade && facade.id === 'sysco' &&
+                     facade.label_en === 'Sysco' &&
+                     typeof facade.confidenceBoost === 'number' &&
+                     Array.isArray(facade.headerLines);
+    console.log(`  ${okFacade ? '✓' : '✗'} runtime builds a legacy-compatible vendor facade for matched template`);
+    if (okFacade) v41Pass++; else v41Fail++;
+  }
+
+  // Inline STUBS array in vendors.js mirrors _index.json count.
+  const VENDORS_REFACTORED = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors.js')).then(m => m.default || m);
+  const stubMatchesIndex = VENDORS_REFACTORED.STUBS && VENDORS_REFACTORED.STUBS.length === index.vendors.length;
+  console.log(`  ${stubMatchesIndex ? '✓' : '✗'} vendors.js inline STUBS count matches _index.json (${VENDORS_REFACTORED.STUBS && VENDORS_REFACTORED.STUBS.length} vs ${index.vendors.length})`);
+  if (stubMatchesIndex) v41Pass++; else v41Fail++;
+
+  // Inline detection still works synchronously (back-compat).
+  const sync = VENDORS_REFACTORED.detectVendor('SYSCO HOUSTON\nCustomer Number: 1842371');
+  const okSync = sync && sync.id === 'sysco';
+  console.log(`  ${okSync ? '✓' : '✗'} legacy synchronous detectVendor() still works after refactor`);
+  if (okSync) v41Pass++; else v41Fail++;
+}
+
+console.log(`\nWave 4.1 fixtures: ${v41Pass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
   + vcFail
-  + kdfFail + recFail;
+  + kdfFail + recFail
+  + v41Fail;
 process.exit(grandFail === 0 ? 0 : 1);
