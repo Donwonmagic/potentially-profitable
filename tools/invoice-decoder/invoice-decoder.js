@@ -341,6 +341,41 @@
         needReview > 0 ? bands.green + ' listas · ' + needReview + ' requieren revisión' : 'las ' + bands.green + ' se ven bien'
       );
     }
+    // B5-3: re-emit the total-verification banner against the
+    // LIVE parsed-sum so owner edits are reflected in the
+    // delta-vs-printed-total reading.
+    rerenderTotals();
+  }
+
+  // Live total reconciliation — printed invoice total (extracted
+  // by the parser at OCR time) vs. the current sum of editable
+  // rows. >5% delta → amber warning; missing printed total →
+  // grey "couldn't verify yourself" line.
+  var lastPrintedTotal = null;
+  function rerenderTotals() {
+    if (!parsedTotals) return;
+    var sum = parsedRowsState.reduce(function (a, r) { return a + (r.lineTotal || 0); }, 0);
+    sum = +sum.toFixed(2);
+    if (lastPrintedTotal != null) {
+      var delta = Math.abs((sum - lastPrintedTotal) / lastPrintedTotal) * 100;
+      var deltaWarn = delta > 5;
+      parsedTotals.classList.toggle('warn', !!deltaWarn);
+      parsedTotals.innerHTML = tt(
+        '<strong>Parsed sum:</strong> $' + sum.toFixed(2) + ' · <strong>Invoice prints:</strong> $' + lastPrintedTotal.toFixed(2) +
+          ' (' + delta.toFixed(1) + '% off) — ' +
+          (deltaWarn ? 'verify before saving.' : 'looks consistent.'),
+        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' · <strong>Total impreso:</strong> $' + lastPrintedTotal.toFixed(2) +
+          ' (' + delta.toFixed(1) + '% de diferencia) — ' +
+          (deltaWarn ? 'verifica antes de guardar.' : 'se ve consistente.')
+      );
+    } else {
+      parsedTotals.classList.remove('warn');
+      parsedTotals.innerHTML = tt(
+        '<strong>Parsed sum:</strong> $' + sum.toFixed(2) + ' — couldn\'t find a printed total to verify against. Sanity-check yourself.',
+        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' — no se encontró un total impreso para comparar. Revísalo tú.'
+      );
+    }
+    parsedTotals.hidden = false;
   }
 
   function rowToHtml(r, idx) {
@@ -477,29 +512,11 @@
     // and re-render through rowToHtml. The state array is what the
     // save flow (B6) will encrypt + persist.
     parsedRowsState = parsed.rows.map(function (r) { return Object.assign({}, r); });
+    lastPrintedTotal = (typeof parsed.totalParsed === 'number') ? parsed.totalParsed : null;
     parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
-    if (parsedTotals) {
-      if (parsed.totalParsed != null) {
-        var deltaWarn = parsed.deltaPct != null && parsed.deltaPct > 5;
-        parsedTotals.classList.toggle('warn', !!deltaWarn);
-        var deltaTxt = parsed.deltaPct != null ? ' (' + parsed.deltaPct.toFixed(1) + '% off)' : '';
-        var deltaTxtEs = parsed.deltaPct != null ? ' (' + parsed.deltaPct.toFixed(1) + '% de diferencia)' : '';
-        parsedTotals.innerHTML = tt(
-          '<strong>Parsed sum:</strong> $' + parsed.sumParsed.toFixed(2) + ' · <strong>Invoice prints:</strong> $' + parsed.totalParsed.toFixed(2) + deltaTxt +
-            (deltaWarn ? ' — verify before saving.' : ' — looks consistent.'),
-          '<strong>Suma leída:</strong> $' + parsed.sumParsed.toFixed(2) + ' · <strong>Total impreso:</strong> $' + parsed.totalParsed.toFixed(2) + deltaTxtEs +
-            (deltaWarn ? ' — verifica antes de guardar.' : ' — se ve consistente.')
-        );
-        parsedTotals.hidden = false;
-      } else {
-        parsedTotals.innerHTML = tt(
-          '<strong>Parsed sum:</strong> $' + parsed.sumParsed.toFixed(2) + ' — couldn\'t find a printed total to verify against. Sanity-check yourself.',
-          '<strong>Suma leída:</strong> $' + parsed.sumParsed.toFixed(2) + ' — no se encontró un total impreso para comparar. Revísalo tú.'
-        );
-        parsedTotals.classList.remove('warn');
-        parsedTotals.hidden = false;
-      }
-    }
+    // B5-3 — totals reconciliation now reads the live state every
+    // re-render so owner edits flip the delta number in real time.
+    rerenderTotals();
     parsedEl.hidden = false;
     if (comingEl) comingEl.hidden = true;
   }
