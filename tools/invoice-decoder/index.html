@@ -172,6 +172,24 @@
 .id-verify-measure:hover{background:var(--accent,#1f6f6a);color:#fff}
 .id-verify-measure-out{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
 
+/* W3-3 — comparison-vs-competitors table inside the honesty card. */
+.id-compare{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.id-compare summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.id-compare summary::-webkit-details-marker{display:none}
+.id-compare summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-compare[open] summary::before{transform:rotate(90deg)}
+.id-compare-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+.id-compare-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.id-compare-table th{text-align:left;font-weight:500;padding:8px 10px;background:#f6f1e7;border-bottom:1px solid var(--line);color:var(--ink-soft);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.id-compare-table th:first-child{width:36%}
+.id-compare-table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;color:var(--ink)}
+.id-compare-table td.id-compare-axis{color:var(--ink-soft);font-weight:500}
+.id-compare-table td.id-compare-ours{background:#eef7f4;color:var(--ink);font-weight:500}
+.id-compare-table td.id-compare-ours::before{content:'✓ ';color:var(--accent,#1f6f6a);font-weight:600}
+.id-compare-table td.id-compare-theirs{color:var(--ink-soft)}
+.id-compare-foot{font-size:13px;color:var(--ink-soft);line-height:1.55;font-style:italic;margin:8px 0 0}
+@media(max-width:540px){.id-compare-table th:first-child,.id-compare-table td.id-compare-axis{width:auto}.id-compare-table th,.id-compare-table td{font-size:12.5px;padding:7px 8px}}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -332,6 +350,8 @@
         <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Measure my last save's transfer size</button>
         <p id="idVerifyMeasureOut" class="id-verify-measure-out" role="status" aria-live="polite"></p>
       </details>
+
+      <div id="idCompareMount"></div>
     </div>
 
   </div>
@@ -343,6 +363,7 @@
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
 <script src="./preprocess.js?v=20260501-b2"></script>
 <script src="./ocr.js?v=20260501-b2"></script>
 <script src="./parse.js?v=20260501-b2"></script>

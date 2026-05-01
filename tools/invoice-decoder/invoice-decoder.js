@@ -1297,6 +1297,72 @@
     });
   }
 
+  // W3-3 — render comparison-vs-vendors table from MuntinDifferentiators.
+  // Static HTML can't host this without locale duplication, so we
+  // render once at boot into the #idCompareMount placeholder. The
+  // <details> element keeps it collapsed so the honesty card doesn't
+  // grow tall on initial paint.
+  function renderCompareTable() {
+    var mount = document.getElementById('idCompareMount');
+    if (!mount || typeof MuntinDifferentiators === 'undefined') return;
+    var data = MuntinDifferentiators.vsAlternative('invoice-decoder', LOCALE);
+    if (!data || !Array.isArray(data.comparisonRows)) return;
+    var det = document.createElement('details');
+    det.className = 'id-compare';
+    var sum = document.createElement('summary');
+    sum.appendChild(document.createTextNode(
+      tt('How this compares to Restaurant365, MarginEdge, Plate IQ',
+         'Cómo se compara con Restaurant365, MarginEdge, Plate IQ')
+    ));
+    var badge = document.createElement('span');
+    badge.className = 'id-compare-badge';
+    badge.textContent = data.chipLabel || tt('vs paid alternatives', 'vs alternativas pagadas');
+    sum.appendChild(badge);
+    det.appendChild(sum);
+
+    var table = document.createElement('table');
+    table.className = 'id-compare-table';
+    var thead = document.createElement('thead');
+    var trh = document.createElement('tr');
+    var hAxis  = document.createElement('th'); hAxis.textContent  = tt('What you care about', 'Lo que te importa');
+    var hOurs  = document.createElement('th'); hOurs.textContent  = tt('This tool', 'Esta herramienta');
+    var hThem  = document.createElement('th'); hThem.textContent  = (data.alternatives || []).join(' / ') || tt('Paid tools', 'Herramientas pagadas');
+    trh.appendChild(hAxis); trh.appendChild(hOurs); trh.appendChild(hThem);
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    var tbody = document.createElement('tbody');
+    data.comparisonRows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      var tdA = document.createElement('td'); tdA.className = 'id-compare-axis';   tdA.textContent = r.axis   || '';
+      var tdO = document.createElement('td'); tdO.className = 'id-compare-ours';   tdO.textContent = r.ours   || '';
+      var tdT = document.createElement('td'); tdT.className = 'id-compare-theirs'; tdT.textContent = r.theirs || '';
+      tr.appendChild(tdA); tr.appendChild(tdO); tr.appendChild(tdT);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    det.appendChild(table);
+
+    if (data.framing) {
+      var foot = document.createElement('p');
+      foot.className = 'id-compare-foot';
+      foot.textContent = data.framing;
+      det.appendChild(foot);
+    }
+
+    mount.appendChild(det);
+
+    // Plausible — engagement signal. Fires only when the operator
+    // actively expands the disclosure.
+    det.addEventListener('toggle', function () {
+      if (det.open && window.plausible) {
+        try { window.plausible('Invoice Decoder Comparison Opened'); } catch (_) {}
+      }
+    });
+  }
+
+  try { renderCompareTable(); } catch (_) {}
+
   // Run on page load.
   handleReloadParam();
   // W3-4 — one-shot scrub of any plaintext invoiceItems left over
