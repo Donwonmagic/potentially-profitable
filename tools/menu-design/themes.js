@@ -558,6 +558,50 @@
   ];
   function groups() { return GROUPS; }
 
+  // W15 — Seasonal / daypart / event modifiers. Sparse overrides
+  // applied on top of the active theme via applyModifier(). Each
+  // modifier names a few token tweaks; nothing is required (an
+  // empty modifier is a no-op).
+  var SEASONAL_MODS = {
+    none:    {},
+    summer:  { accent: '#3E7B5C', muted: '#7C8F7C' },                       // sun-faded green
+    autumn:  { accent: '#A0411D', muted: '#8E5A3C' },                        // burnt orange
+    winter:  { accent: '#2A4060', muted: '#6E7B89' },                        // deep cool blue
+    holiday: { accent: '#8B1A1A', muted: '#5A3A1A' },                        // red + bronze
+    spring:  { accent: '#D6748D', muted: '#9A958B' }                         // soft rose
+  };
+  var DAYPART_MODS = {
+    none:        {},
+    lunch:       { paper: '#FBFAF6', muted: '#7C7167' },                    // brighter
+    dinner:      {},                                                          // theme default
+    'late-night':{ paper: '#0E0E0E', ink: '#F2EDE2', accent: '#C29B5E' }    // high-contrast invert
+  };
+  var EVENT_MODS = {
+    none:         {},
+    valentines:   { accent: '#B42A23', muted: '#7A1C28' },
+    'mothers-day':{ accent: '#D6748D', muted: '#A0411D' },
+    pride:        { accent: '#9F2D9D', muted: '#3E7B5C' },
+    nye:          { accent: '#C29B5E', paper: '#1A1814', ink: '#F2EDE2' },
+    halloween:    { accent: '#E8AB1F', paper: '#1A1815', ink: '#F2EDE2' }
+  };
+  function applyModifier(theme, mods) {
+    if (!mods) return theme;
+    var out = Object.assign({}, theme);
+    var pools = [SEASONAL_MODS[mods.season], DAYPART_MODS[mods.daypart], EVENT_MODS[mods.event]];
+    pools.forEach(function (pool) {
+      if (!pool) return;
+      Object.keys(pool).forEach(function (k) { out[k] = pool[k]; });
+    });
+    return out;
+  }
+  function modifierGroups() {
+    return {
+      season:  Object.keys(SEASONAL_MODS),
+      daypart: Object.keys(DAYPART_MODS),
+      event:   Object.keys(EVENT_MODS)
+    };
+  }
+
   // Apply a palette[] (5 hex strings) to a theme by overriding
   // accent + muted. Paper + ink stay theme-fixed so contrast
   // never degrades — palettes from brand-suite aren't guaranteed
@@ -575,12 +619,14 @@
   }
 
   var api = {
-    THEMES:       THEMES,
-    list:         function () { return Object.keys(THEMES); },
-    get:          function (id) { return THEMES[id] || null; },
-    suggestTheme: suggestTheme,
-    applyPalette: applyPalette,
-    groups:       groups
+    THEMES:         THEMES,
+    list:           function () { return Object.keys(THEMES); },
+    get:            function (id) { return THEMES[id] || null; },
+    suggestTheme:   suggestTheme,
+    applyPalette:   applyPalette,
+    applyModifier:  applyModifier,
+    modifierGroups: modifierGroups,
+    groups:         groups
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

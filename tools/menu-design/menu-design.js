@@ -164,6 +164,12 @@
   function applyCustomizer(theme) {
     if (!theme) return theme;
     var out = Object.assign({}, theme);
+    // W15 — apply modifiers FIRST (sparse seasonal/daypart/event
+    // overrides), then layer the operator's explicit color picks
+    // on top so manual overrides always win.
+    if (customize.mods && typeof MD_THEMES !== 'undefined' && typeof MD_THEMES.applyModifier === 'function') {
+      out = MD_THEMES.applyModifier(out, customize.mods);
+    }
     if (customize.accent) out.accent = customize.accent;
     if (customize.paper)  out.paper  = customize.paper;
     if (customize.ink)    out.ink    = customize.ink;
@@ -1542,7 +1548,7 @@
           address: meta.address, hours: meta.hours, serviceCharge: meta.serviceCharge,
           sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer
         },
-        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture },
+        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -1646,11 +1652,16 @@
           customize.paper  = d.customize.paper  || null;
           customize.ink    = d.customize.ink    || null;
           customize.paperTexture = !!d.customize.paperTexture;
+          customize.mods   = d.customize.mods   || { season: 'none', daypart: 'none', event: 'none' };
           if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
           if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
           if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
           if (paperTextureEl) paperTextureEl.checked = customize.paperTexture;
-          if (customize.accent || customize.paper || customize.ink || customize.paperTexture) {
+          if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
+          if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
+          if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+          var anyMod = customize.mods.season !== 'none' || customize.mods.daypart !== 'none' || customize.mods.event !== 'none';
+          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod) {
             var custEl = document.getElementById('mdCustomize');
             if (custEl) custEl.open = true;
           }
@@ -3367,6 +3378,163 @@
     customize.paperTexture = !!paperTextureEl.checked;
     schedulePreview();
     scheduleSaveDraft();
+  });
+
+  // W15 — seasonal / daypart / event modifier dropdowns. Each
+  // writes to customize.mods and triggers a preview re-render.
+  customize.mods = customize.mods || { season: 'none', daypart: 'none', event: 'none' };
+  var modSeasonEl  = document.getElementById('mdModSeason');
+  var modDaypartEl = document.getElementById('mdModDaypart');
+  var modEventEl   = document.getElementById('mdModEvent');
+  function wireMod(el, key) {
+    if (!el) return;
+    el.addEventListener('change', function () {
+      customize.mods[key] = el.value || 'none';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+  wireMod(modSeasonEl,  'season');
+  wireMod(modDaypartEl, 'daypart');
+  wireMod(modEventEl,   'event');
+
+  // W15 — Theme JSON export. Writes a self-contained snapshot of
+  // the operator's current theme + customizer overrides + modifiers.
+  // Re-importable on a later session via the Import button.
+  var themeExportBtn = document.getElementById('mdThemeExport');
+  var themeImportInput = document.getElementById('mdThemeImport');
+  if (themeExportBtn) themeExportBtn.addEventListener('click', function () {
+    var snapshot = {
+      version: 1,
+      themeId: themeId,
+      customize: customize,
+      meta: { tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage }
+    };
+    var blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'menu-theme-' + themeId + '.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+    setDownloadMsg(tt('Theme JSON downloaded.', 'JSON de tema descargado.'), 'success');
+  });
+  if (themeImportInput) themeImportInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        if (!parsed || typeof parsed !== 'object') return;
+        pushUndo();
+        if (parsed.themeId && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(parsed.themeId)) {
+          themeId = parsed.themeId;
+        }
+        if (parsed.customize) {
+          customize.accent = parsed.customize.accent || null;
+          customize.paper  = parsed.customize.paper  || null;
+          customize.ink    = parsed.customize.ink    || null;
+          customize.paperTexture = !!parsed.customize.paperTexture;
+          customize.mods = parsed.customize.mods || { season:'none', daypart:'none', event:'none' };
+        }
+        if (parsed.meta) {
+          meta.tagline = parsed.meta.tagline || '';
+          meta.story   = parsed.meta.story   || '';
+          meta.coverPage = !!parsed.meta.coverPage;
+        }
+        // Sync UI
+        if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
+        if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
+        if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
+        if (paperTextureEl) paperTextureEl.checked = customize.paperTexture;
+        if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
+        if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
+        if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+        if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+        if (metaStoryEl)   metaStoryEl.value   = meta.story;
+        if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+        renderThemePicker();
+        renderPreview();
+        scheduleSaveDraft();
+        setDownloadMsg(tt('Theme imported successfully.', 'Tema importado correctamente.'), 'success');
+      } catch (_) {
+        setDownloadMsg(tt('Could not parse that JSON.', 'No se pudo leer el JSON.'), 'error');
+      }
+    };
+    reader.readAsText(file);
+    themeImportInput.value = '';
+  });
+
+  // W15 — Vibe quiz. Maps 4-question radio answers to 3 theme
+  // recommendations. Operator picks one, theme is applied + quiz
+  // closes.
+  var vibeQuizBtn = document.getElementById('mdVibeQuizBtn');
+  var vibeQuizEl  = document.getElementById('mdVibeQuiz');
+  var vibeQuizCancelEl = document.getElementById('mdVibeQuizCancel');
+  var vibeQuizBackdropEl = document.getElementById('mdVibeQuizBackdrop');
+  var vibeQuizForm = document.getElementById('mdVibeQuizForm');
+  var vibeQuizResults = document.getElementById('mdVibeQuizResults');
+
+  function vibeRecommend(answers) {
+    // Heuristic mapping: service+feel+era+cuisine -> 3 ranked themes.
+    var pool = [];
+    if (answers.cuisine === 'european') {
+      if (answers.era === 'traditional') pool.push('trattoria', 'brasserie', 'tapas-rustic');
+      else                                pool.push('bistro-paris', 'modern-minimal', 'wine-list-formal');
+    } else if (answers.cuisine === 'latin') {
+      pool.push('cantina', 'tapas-rustic', 'food-truck');
+    } else if (answers.cuisine === 'asian') {
+      pool.push('asian-table', 'ramen-counter', 'dim-sum-rose');
+    } else {
+      // american
+      if (answers.service === 'fine')   pool.push('tasting-omakase', 'steakhouse', 'wine-list-formal');
+      else if (answers.service === 'counter') pool.push('diner-counter', 'pizza-counter', 'food-truck');
+      else                              pool.push('gastropub-oak', 'brewpub-slate', 'modern-minimal');
+    }
+    if (answers.feel === 'rich') {
+      pool = ['steakhouse', 'cocktail-deco', 'brasserie'].concat(pool.filter(function (p) {
+        return ['steakhouse','cocktail-deco','brasserie'].indexOf(p) === -1;
+      }));
+    }
+    return pool.slice(0, 3);
+  }
+  function showVibeQuiz() {
+    if (!vibeQuizEl) return;
+    vibeQuizEl.hidden = false;
+    if (vibeQuizResults) { vibeQuizResults.hidden = true; vibeQuizResults.innerHTML = ''; }
+  }
+  function hideVibeQuiz() { if (vibeQuizEl) vibeQuizEl.hidden = true; }
+  if (vibeQuizBtn) vibeQuizBtn.addEventListener('click', showVibeQuiz);
+  if (vibeQuizCancelEl) vibeQuizCancelEl.addEventListener('click', hideVibeQuiz);
+  if (vibeQuizBackdropEl) vibeQuizBackdropEl.addEventListener('click', hideVibeQuiz);
+  if (vibeQuizForm) vibeQuizForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var fd = new FormData(vibeQuizForm);
+    var answers = {
+      service: fd.get('vq-service'),
+      feel:    fd.get('vq-feel'),
+      era:     fd.get('vq-era'),
+      cuisine: fd.get('vq-cuisine')
+    };
+    var recs = vibeRecommend(answers);
+    if (vibeQuizResults && typeof MD_THEMES !== 'undefined') {
+      vibeQuizResults.hidden = false;
+      vibeQuizResults.innerHTML = '<h3>' + tt('Recommended for you', 'Recomendados para ti') + '</h3><ul>' +
+        recs.map(function (id) {
+          var t = MD_THEMES.get(id); if (!t) return '';
+          var lab = LOCALE === 'es' ? t.label_es : t.label_en;
+          var bl  = LOCALE === 'es' ? t.blurb_es : t.blurb_en;
+          return '<li><button type="button" data-theme="' + escHtml(id) + '"><strong>' + escHtml(lab) + '</strong> <span>' + escHtml(bl || '') + '</span></button></li>';
+        }).join('') + '</ul>';
+      vibeQuizResults.querySelectorAll('button[data-theme]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          themeId = b.dataset.theme;
+          renderThemePicker();
+          renderPreview();
+          scheduleSaveDraft();
+          hideVibeQuiz();
+        });
+      });
+    }
   });
 
   // W11-2 — first-run cuisine quiz takes priority over the older

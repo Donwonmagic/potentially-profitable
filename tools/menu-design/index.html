@@ -273,6 +273,17 @@
 .md-customize-toggle input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
 .md-customize-reset{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
 .md-customize-reset:hover{border-color:var(--rust);color:var(--rust)}
+/* W15 — modifier dropdowns + JSON tools */
+.md-customize-modifiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-mod-field{display:flex;flex-direction:column;gap:4px}
+.md-customize-mod-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-customize-mod-field select{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:var(--white);color:var(--ink)}
+.md-customize-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tool{padding:8px 14px;border:1px solid var(--line-dark);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:12px;font-weight:600;min-height:36px;display:inline-flex;align-items:center;gap:6px}
+.md-customize-tool:hover{border-color:var(--teal);color:var(--teal)}
+.md-customize-tool-import{position:relative;overflow:hidden}
+.md-customize-tool-import input{position:absolute;inset:0;opacity:0;cursor:pointer}
+@media(max-width:640px){.md-customize-modifiers{grid-template-columns:1fr}}
 
 /* Logo + paper-size row. Two compact controls side by side. */
 .md-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
@@ -346,7 +357,31 @@
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
-/* W12-4 — Cmd-K command palette. Centered modal with searchable
+/* W15 — Vibe quiz modal. Four-radio-group form that recommends 3 themes. */
+.md-vibequiz{position:fixed;inset:0;z-index:1500;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px}
+.md-vibequiz[hidden]{display:none}
+.md-vibequiz-backdrop{position:absolute;inset:0;background:rgba(20,30,30,.5)}
+.md-vibequiz-card{position:relative;background:var(--white);border-radius:14px;box-shadow:0 28px 64px rgba(0,0,0,.32);width:100%;max-width:520px;padding:24px 26px;animation:md-palette-rise .2s ease}
+.md-vibequiz-card h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px}
+.md-vibequiz-card p{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+.md-vibequiz-form fieldset{border:0;padding:0;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.md-vibequiz-form legend{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px;width:100%;padding:0;margin-bottom:4px}
+.md-vibequiz-form label{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);min-height:36px}
+.md-vibequiz-form label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 8%,var(--white));color:var(--teal);font-weight:600}
+.md-vibequiz-form input[type="radio"]{accent-color:var(--teal);width:14px;height:14px}
+.md-vibequiz-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.md-vibequiz-submit{padding:10px 18px;border:0;border-radius:6px;background:var(--ink);color:var(--cream);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.md-vibequiz-submit:hover{background:var(--teal)}
+.md-vibequiz-cancel{padding:10px 14px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:13px;cursor:pointer}
+.md-vibequiz-results{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.md-vibequiz-results h3{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 10px;text-transform:uppercase}
+.md-vibequiz-results ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.md-vibequiz-results button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);cursor:pointer;font:inherit;font-size:13.5px;color:var(--ink);text-align:left}
+.md-vibequiz-results button:hover{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+.md-vibequiz-results button strong{color:var(--ink);font-weight:600}
+.md-vibequiz-results button span{font-size:11.5px;color:var(--stone);margin-left:auto}
+
+/* W12-4 — Cmd-K command palette. Centered modal with searchable */
    action list. Handles up/down/Enter/Esc keys. Linear/Notion-style
    productivity for power users. */
 .md-palette{position:fixed;inset:0;z-index:1400;display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 0}
@@ -1027,6 +1062,50 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdCustomizeReset" class="md-customize-reset">Reset to theme default</button>
           </div>
+          <!-- W15 — modifier dropdowns: seasonal palette, daypart,
+               occasion event. Sparse overrides on top of the active
+               theme's tokens; each dropdown defaults to "None" -->
+          <div class="md-customize-modifiers">
+            <label class="md-customize-mod-field">
+              <span>Season</span>
+              <select id="mdModSeason">
+                <option value="none">None</option>
+                <option value="summer">Summer</option>
+                <option value="autumn">Autumn</option>
+                <option value="winter">Winter</option>
+                <option value="holiday">Holiday</option>
+                <option value="spring">Spring</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Daypart</span>
+              <select id="mdModDaypart">
+                <option value="none">None</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="late-night">Late-night</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Occasion</span>
+              <select id="mdModEvent">
+                <option value="none">None</option>
+                <option value="valentines">Valentine's</option>
+                <option value="mothers-day">Mother's Day</option>
+                <option value="pride">Pride</option>
+                <option value="nye">NYE</option>
+                <option value="halloween">Halloween</option>
+              </select>
+            </label>
+          </div>
+          <!-- W15 — Theme JSON export / import + Vibe quiz launcher -->
+          <div class="md-customize-tools">
+            <button type="button" id="mdThemeExport" class="md-customize-tool">Export theme JSON</button>
+            <label class="md-customize-tool md-customize-tool-import">Import theme JSON
+              <input type="file" id="mdThemeImport" accept="application/json,.json" />
+            </label>
+            <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Vibe quiz →</button>
+          </div>
         </div>
       </details>
     </div>
@@ -1185,6 +1264,47 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <!-- /tool-knit -->
 </main>
 
+<!-- W15 — Vibe quiz modal. Four short questions; submits a theme
+     recommendation. Replaces the "is your restaurant ___?" abstraction
+     with concrete vibe descriptors. -->
+<div class="md-vibequiz" id="mdVibeQuiz" hidden role="dialog" aria-modal="true" aria-label="Vibe quiz">
+  <div class="md-vibequiz-backdrop" id="mdVibeQuizBackdrop"></div>
+  <div class="md-vibequiz-card">
+    <h2>What's the vibe?</h2>
+    <p>Four quick questions. We'll suggest 3 themes that fit.</p>
+    <form id="mdVibeQuizForm" class="md-vibequiz-form">
+      <fieldset>
+        <legend>Service style</legend>
+        <label><input type="radio" name="vq-service" value="counter" /> Counter / quick</label>
+        <label><input type="radio" name="vq-service" value="table" checked /> Table service</label>
+        <label><input type="radio" name="vq-service" value="fine" /> Fine dining</label>
+      </fieldset>
+      <fieldset>
+        <legend>Feel</legend>
+        <label><input type="radio" name="vq-feel" value="light" checked /> Light / airy</label>
+        <label><input type="radio" name="vq-feel" value="rich" /> Rich / dark</label>
+      </fieldset>
+      <fieldset>
+        <legend>Era</legend>
+        <label><input type="radio" name="vq-era" value="modern" checked /> Modern</label>
+        <label><input type="radio" name="vq-era" value="traditional" /> Traditional</label>
+      </fieldset>
+      <fieldset>
+        <legend>Cuisine bucket</legend>
+        <label><input type="radio" name="vq-cuisine" value="european" /> European</label>
+        <label><input type="radio" name="vq-cuisine" value="american" checked /> American</label>
+        <label><input type="radio" name="vq-cuisine" value="latin" /> Latin / Mexican</label>
+        <label><input type="radio" name="vq-cuisine" value="asian" /> Asian</label>
+      </fieldset>
+      <div class="md-vibequiz-actions">
+        <button type="submit" class="md-vibequiz-submit">Get recommendations</button>
+        <button type="button" class="md-vibequiz-cancel" id="mdVibeQuizCancel">Cancel</button>
+      </div>
+    </form>
+    <div class="md-vibequiz-results" id="mdVibeQuizResults" hidden></div>
+  </div>
+</div>
+
 <!-- W12-4 — Cmd-K command palette. Hidden until invoked. Modal sits
      above all other content; ESC or backdrop click dismisses. -->
 <div class="md-palette" id="mdPalette" hidden role="dialog" aria-modal="true" aria-label="Command palette">
@@ -1200,10 +1320,10 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="./themes.js?v=20260501-w8-2"></script>
+<script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w14-2"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w14-2"></script>
+<script src="./menu-design.js?v=20260501-w15"></script>
 </body>
 </html>
