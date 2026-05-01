@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Menu Design Suite — Print-Ready Menus for Any Dish Count | Muntin Digital</title>
+<meta name="description" content="Type your dishes, pick a theme, drop your logo. The tool lays out 14 or 53 dishes onto a printable PDF — no Canva fight with templates that assume 12. Free, no signup." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/menu-design/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/menu-design/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/menu-design/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/menu-design/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Menu Design Suite — Print-Ready Menus for Any Dish Count" />
+<meta property="og:description" content="14 or 53 dishes — laid out for print without fighting a fixed-count template. Free." />
+<meta property="og:url" content="https://muntin.digital/tools/menu-design/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-menu-design.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Menu Design Suite — Print-Ready Menus for Any Dish Count" />
+<meta name="twitter:description" content="Layout for any dish count. Free." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-menu-design.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Menu Design Suite tool-scoped styles. Page-prefix .md-*. === */
+.md-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
+.md-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.md-walkaway{margin:14px auto 0;max-width:520px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.md-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
+
+/* "We remember" pill — fed by MuntinContext on returning visits. */
+.md-ctx{margin:18px 0 0;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.md-ctx[hidden]{display:none}
+.md-ctx-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.md-ctx-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.md-ctx-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font-size:12.5px;color:var(--ink)}
+.md-ctx-chip-dot{display:inline-flex;gap:2px}
+.md-ctx-chip-dot span{width:9px;height:9px;border-radius:2px;border:1px solid rgba(0,0,0,.15)}
+.md-ctx-use{margin-left:auto;padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.md-ctx-use:hover{background:var(--teal)}
+
+/* Dish list grid — table on desktop, card-stack on mobile (mirrors plate-cost data-label pattern). */
+.md-grid{margin-top:18px;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden;background:var(--white)}
+.md-grid table{width:100%;border-collapse:collapse}
+.md-grid thead{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.md-grid th,.md-grid td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.md-grid input,.md-grid textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
+.md-grid input:focus,.md-grid textarea:focus{border-color:var(--teal);outline:none}
+.md-grid .md-row-section td{background:#F7F2E5;border-bottom:1px solid var(--line)}
+.md-grid .md-row-section input{font-family:var(--font-display);font-weight:500;font-size:15px;color:var(--ink);border-color:transparent;background:transparent}
+.md-grid .md-remove{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;border-radius:50%;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center}
+.md-grid .md-remove:hover{background:var(--cream-2);color:var(--rust)}
+.md-grid-actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line);align-items:center}
+.md-add-row,.md-add-section,.md-clear,.md-sample{padding:7px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent}
+.md-add-row{border:1px dashed var(--line-dark);color:var(--stone)}
+.md-add-row:hover{border-color:var(--teal);color:var(--teal)}
+.md-add-section{border:1px solid var(--teal);color:var(--teal);background:var(--white)}
+.md-add-section:hover{background:var(--teal);color:var(--cream)}
+.md-sample{border:1px solid var(--line-dark);background:var(--white);color:var(--ink)}
+.md-clear{border:1px solid var(--line);background:var(--white);color:var(--stone);margin-left:auto}
+.md-clear:hover{border-color:var(--rust);color:var(--rust)}
+
+/* Mobile card-stack (<640px) — rows become cards using data-label + ::before. */
+@media(max-width:640px){
+  .md-grid table,.md-grid thead,.md-grid tbody,.md-grid tr,.md-grid td{display:block}
+  .md-grid thead{display:none}
+  .md-grid tr{padding:14px 14px 10px;border-bottom:1px solid var(--line)}
+  .md-grid tr:last-child{border-bottom:0}
+  .md-grid td{padding:6px 0;border:0}
+  .md-grid td::before{content:attr(data-label);display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);margin-bottom:3px}
+  .md-grid .md-row-section td{background:transparent;border:0;padding:8px 0}
+  .md-grid .md-row-section td::before{content:'Section'}
+  .md-grid .md-remove-cell{display:flex;justify-content:flex-end;padding-top:6px}
+  .md-grid .md-remove-cell::before{display:none}
+  .md-grid-actions{justify-content:stretch;flex-direction:column}
+  .md-add-row,.md-add-section,.md-clear,.md-sample{width:100%;justify-content:center}
+  .md-clear{margin-left:0}
+}
+
+/* Sticky add-dish pill follows scroll edge so item 27 still has a one-tap path. */
+.md-stick{position:sticky;bottom:8px;align-self:end;margin-top:-44px;margin-right:14px;padding:10px 16px;background:var(--ink);color:var(--cream);border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);z-index:5}
+.md-stick:hover{background:var(--teal)}
+
+/* Paste drawer (CSV/TSV ingest, mirrors plate-cost). */
+.md-paste{margin-top:16px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--white)}
+.md-paste[open]{padding-bottom:14px}
+.md-paste summary{cursor:pointer;padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none}
+.md-paste summary::-webkit-details-marker{display:none}
+.md-paste summary::before{content:'+ ';color:var(--ink-soft)}
+.md-paste[open] summary::before{content:'\2212  '}
+.md-paste-body{padding:0 14px}
+.md-paste textarea{width:100%;min-height:120px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;font-family:ui-monospace,SFMono-Regular,monospace;background:var(--white);color:var(--ink);box-sizing:border-box;resize:vertical}
+.md-paste-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.md-paste-btn{padding:8px 14px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.md-paste-btn:hover{background:var(--teal)}
+.md-paste-help{font-size:12.5px;color:var(--stone);margin:8px 0 0;line-height:1.55}
+.md-paste-help code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
+
+/* Status footer (post-Wave-A1: dish count + section count). Live, no fetch. */
+.md-status{margin-top:14px;font-size:13px;color:var(--ink-soft);text-align:center}
+.md-status strong{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* What you leave with / What this is + isn't card. */
+.md-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
+.md-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
+.md-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
+.md-honesty p:last-child{margin-bottom:0}
+.md-honesty strong{color:var(--ink);font-weight:600}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","@id":"https://muntin.digital/tools/menu-design/#tool","name":"Menu Design Suite","description":"Auto-layout printable menus for independent restaurants from a typed dish list, four typeset themes, the operator's logo, and four paper sizes. Mechanical layout only — no AI rewriting.","url":"https://muntin.digital/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Menu Design Suite","item":"https://muntin.digital/tools/menu-design/"}]}
+]}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav"></header>
+
+<main id="main">
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/tools/">Tools</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Menu Design Suite</span>
+</nav>
+
+<section class="block">
+  <div class="container" style="max-width:880px;">
+    <div class="md-hero">
+      <p class="md-eyebrow">Free tool · Menu layout for any dish count</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">A menu, laid out for the dishes <span class="serif-italic" style="color:var(--teal);">you actually have</span>.</h1>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Canva templates assume 12 dishes. Real restaurants have 14, 27, or 53. Type your dishes, pick a theme, drop your logo — we lay it out onto a printable PDF that fits whatever count you have. No design software, no template fight.</p>
+      <p class="md-walkaway"><strong>You leave with:</strong> A printable PDF of your menu — your dishes, your prices, your logo, laid out for whatever count you have.</p>
+    </div>
+
+    <!-- "We remember" pill — populated by MuntinContext from prior tool sessions. -->
+    <aside class="md-ctx" id="mdCtx" hidden role="status" aria-live="polite">
+      <span class="md-ctx-eyebrow">We remember from your last visit</span>
+      <ul class="md-ctx-chips" id="mdCtxChips"></ul>
+      <button type="button" class="md-ctx-use" id="mdCtxUse">Use these</button>
+    </aside>
+
+    <!-- Dish list (canonical input). Mobile collapses to card-stack via data-label. -->
+    <div class="md-grid" id="mdGrid">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" style="width:32%;">Dish</th>
+            <th scope="col" style="width:18%;">Price</th>
+            <th scope="col">Description</th>
+            <th scope="col" style="width:36px;"></th>
+          </tr>
+        </thead>
+        <tbody id="mdRows"></tbody>
+      </table>
+      <div class="md-grid-actions">
+        <button type="button" class="md-add-row" id="mdAddRow">+ Add a dish</button>
+        <button type="button" class="md-add-section" id="mdAddSection">+ Add a section</button>
+        <button type="button" class="md-sample" id="mdSample">Load a sample menu</button>
+        <button type="button" class="md-clear" id="mdClear">Clear</button>
+      </div>
+    </div>
+
+    <button type="button" class="md-stick" id="mdStick">+ Add a dish</button>
+
+    <details class="md-paste" id="mdPaste">
+      <summary>Paste your menu from a spreadsheet</summary>
+      <div class="md-paste-body">
+        <p class="md-paste-help">Paste a CSV or TSV with one row per dish. Headers like <code>Item</code> / <code>Name</code> / <code>Section</code> / <code>Price</code> / <code>Description</code> auto-map (Spanish too: <code>Plato</code>, <code>Sección</code>, <code>Precio</code>). Section headers can also be lines starting with <code>##</code>.</p>
+        <textarea id="mdPasteArea" spellcheck="false" autocomplete="off" placeholder="## Starters&#10;Caesar Salad,$14,Crisp little gems with our buttermilk dressing&#10;House Bread,$6&#10;## Mains&#10;Roast Chicken,$28,Half a Path Valley chicken with pan jus"></textarea>
+        <div class="md-paste-actions">
+          <button type="button" class="md-paste-btn" id="mdPasteApply">Add to my menu</button>
+        </div>
+      </div>
+    </details>
+
+    <p class="md-status" id="mdStatus"><strong>0</strong> dishes · <strong>0</strong> sections — your menu lives in this browser only.</p>
+
+    <!-- What this is / what this isn't — the honesty card. -->
+    <div class="md-honesty">
+      <h3>What this is, and what it isn't.</h3>
+      <p><strong>Is:</strong> an auto-layout engine for any dish count, four typeset themes, letter / A4 / half-page / trifold / table-tent output, CMYK + bleed for print vendors, RGB for sharing.</p>
+      <p><strong>Isn't:</strong> a copywriter (<a href="/tools/menu-copy/">Menu Copy Inspector</a> grades and rewrites descriptions), a dish-photo generator (<a href="/tools/photo-brief/">Photo Brief</a> handles the shoot), a translator, a profitability rater (<a href="/tools/menu-engineering/">Menu Engineering</a> scores margin), or InDesign. Themes are intentionally constrained so output can't look amateur.</p>
+      <p><strong>Privacy posture:</strong> Open DevTools → Network. Type a dish, paste your menu, change theme. The Network tab stays empty. The page is static HTML plus one unminified JavaScript file you can read directly.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="./menu-design.js?v=20260501-a1"></script>
+</body>
+</html>
