@@ -449,6 +449,7 @@
 
   function applyRowFilter(rows) {
     return rows.filter(function (r) {
+      if (r.ignored) return false; // W4-3: swipe-left removes from view
       if (__activeCategory && r.category !== __activeCategory) return false;
       if (__activeFilter === 'all') return true;
       var band = confBand(r.confidence);
@@ -538,6 +539,133 @@
     if (window.plausible) {
       try { window.plausible('Invoice Decoder Filter Used', { props: { filter: name } }); } catch (_) {}
     }
+  }
+
+  // ----------------------------------------------------------------
+  // W4-3 — touch swipe gestures on mobile.
+  //
+  // Right > 60px → confirm row (green flash, slide off, ownerConfirmed=true).
+  // Left  > 60px → ignore row (red flash, slide off, 4s undo toast).
+  //
+  // Vanilla touch events; ~80 lines, no dependency. Honors
+  // prefers-reduced-motion (skips the slide-off; jumps to end-state).
+  // Pointer events are passive on touchmove so the browser can scroll
+  // when the gesture is mostly vertical.
+  // ----------------------------------------------------------------
+  var __swipeWired = false;
+  function wireSwipeGestures() {
+    if (__swipeWired || !parsedList) return;
+    __swipeWired = true;
+    var SWIPE_THRESHOLD = 60;
+    var FRICTION_START  = 30;
+    var startX = 0, startY = 0, currentX = 0, rowEl = null, locked = null;
+
+    parsedList.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var li = t.target.closest && t.target.closest('.id-parsed-row');
+      if (!li) return;
+      // Don't start a swipe when the operator is already inside an
+      // editable input (cell-edit mode).
+      if (li.querySelector('input,select')) return;
+      startX = t.clientX; startY = t.clientY; rowEl = li; locked = null;
+      currentX = 0;
+    }, { passive: true });
+
+    parsedList.addEventListener('touchmove', function (e) {
+      if (!rowEl || e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var dx = t.clientX - startX;
+      var dy = t.clientY - startY;
+      if (locked == null) {
+        if (Math.abs(dy) > Math.abs(dx) + 4) { locked = 'vertical'; rowEl = null; return; }
+        if (Math.abs(dx) > 6) locked = 'horizontal';
+      }
+      if (locked !== 'horizontal') return;
+      currentX = dx;
+      // Friction past FRICTION_START so the row doesn't slide all
+      // the way off-screen on a flick.
+      var visual = Math.abs(dx) <= FRICTION_START ? dx :
+        (dx > 0 ? FRICTION_START + (dx - FRICTION_START) * 0.4
+                : -FRICTION_START + (dx + FRICTION_START) * 0.4);
+      rowEl.style.transform = 'translateX(' + visual + 'px)';
+      rowEl.style.background = dx > 30 ? 'rgba(31,158,85,.10)' :
+                                dx < -30 ? 'rgba(178,92,42,.10)' : '';
+    }, { passive: true });
+
+    parsedList.addEventListener('touchend', function () {
+      if (!rowEl) return;
+      var idx = parseInt(rowEl.getAttribute('data-idx'), 10);
+      var dx = currentX;
+      rowEl.style.transition = 'transform .18s ease, background .18s ease';
+      if (dx > SWIPE_THRESHOLD) {
+        rowEl.style.transform = 'translateX(120%)';
+        rowEl.style.background = 'rgba(31,158,85,.18)';
+        setTimeout(function () { confirmRowAt(idx); }, 160);
+      } else if (dx < -SWIPE_THRESHOLD) {
+        rowEl.style.transform = 'translateX(-120%)';
+        rowEl.style.background = 'rgba(178,92,42,.18)';
+        setTimeout(function () { ignoreRowAt(idx); }, 160);
+      } else {
+        rowEl.style.transform = '';
+        rowEl.style.background = '';
+      }
+      rowEl = null; locked = null; currentX = 0;
+    });
+  }
+
+  function confirmRowAt(idx) {
+    var r = parsedRowsState[idx];
+    if (!r) return;
+    r.ownerConfirmed = true;
+    r.confidence = 100;
+    rerenderRows();
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Row Confirmed', { props: { via: 'swipe' } }); } catch (_) {}
+    }
+  }
+
+  function ignoreRowAt(idx) {
+    var r = parsedRowsState[idx];
+    if (!r) return;
+    r.ignored = true;
+    rerenderRows();
+    surfaceUndoToast(idx);
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Row Ignored', { props: { via: 'swipe' } }); } catch (_) {}
+    }
+  }
+
+  var __toastEl = null;
+  var __toastTimer = null;
+  function surfaceUndoToast(idx) {
+    if (__toastTimer) clearTimeout(__toastTimer);
+    if (!__toastEl) {
+      __toastEl = document.createElement('div');
+      __toastEl.className = 'id-undo-toast';
+      __toastEl.setAttribute('role', 'status');
+      __toastEl.setAttribute('aria-live', 'polite');
+      document.body.appendChild(__toastEl);
+    }
+    __toastEl.innerHTML = '';
+    var span = document.createElement('span');
+    span.textContent = tt('Row removed.', 'Renglón quitado.');
+    var btn  = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = tt('Undo', 'Deshacer');
+    btn.addEventListener('click', function () {
+      var r = parsedRowsState[idx];
+      if (r) { r.ignored = false; rerenderRows(); }
+      hideToast();
+    });
+    __toastEl.appendChild(span);
+    __toastEl.appendChild(btn);
+    __toastEl.classList.add('show');
+    __toastTimer = setTimeout(hideToast, 4000);
+  }
+  function hideToast() {
+    if (__toastEl) __toastEl.classList.remove('show');
+    if (__toastTimer) { clearTimeout(__toastTimer); __toastTimer = null; }
   }
 
   // Wire filter chips + per-category select once the bar is in DOM.
@@ -733,6 +861,8 @@
       filterBar.hidden = false;
       wireFilterBar();
     }
+    // W4-3 — wire touch swipe gestures on the parsed list. Idempotent.
+    wireSwipeGestures();
     // rerenderRows handles list innerHTML, filter chip counts, the
     // band summary, and the totals banner.
     rerenderRows();

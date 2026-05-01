@@ -207,6 +207,14 @@
 .id-filter-cat{margin-left:auto;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 @media(max-width:540px){.id-filter-bar{gap:5px}.id-filter-chip{font-size:12px;padding:4px 9px}.id-filter-cat{margin-left:0;flex:1 1 100%;margin-top:4px}}
 
+/* W4-3 — swipe undo toast (4-second). */
+.id-undo-toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(60px);background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-size:14px;padding:10px 14px;border-radius:24px;box-shadow:0 12px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:14px;opacity:0;pointer-events:none;transition:transform .24s ease,opacity .24s ease;z-index:1100}
+.id-undo-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.id-undo-toast button{background:transparent;border:0;color:var(--accent-on-ink,#7be0d4);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:4px}
+.id-undo-toast button:hover{background:rgba(255,255,255,.08)}
+.id-parsed-row{transition:background .12s ease}
+@media(prefers-reduced-motion:reduce){.id-parsed-row,.id-undo-toast{transition:none}}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
