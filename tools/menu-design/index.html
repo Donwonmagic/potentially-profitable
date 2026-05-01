@@ -203,6 +203,19 @@
 .md-download-msg{font-size:12.5px;color:var(--ink-soft);margin:0;flex-basis:100%}
 .md-download-msg.error{color:var(--rust)}
 .md-download-msg.success{color:var(--status-good)}
+/* Inline "Need help describing?" link under empty description fields. */
+.md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
+.md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
+@media(max-width:640px){.md-help-desc{display:block;text-align:center}}
+/* Last-3-menus history (Wave A4). Quiet card under download. */
+.md-history{margin:18px 0 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
+.md-history[hidden]{display:none}
+.md-hist-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.md-hist-list{list-style:none;padding:0;margin:0 0 8px;display:flex;flex-direction:column;gap:6px}
+.md-hist-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 10px;background:var(--cream-2);border-radius:6px;font-size:13px;flex-wrap:wrap}
+.md-hist-theme{font-weight:600;color:var(--ink)}
+.md-hist-meta{font-size:12px;color:var(--stone)}
+.md-hist-note{font-size:11.5px;color:var(--stone);margin:0;font-style:italic;line-height:1.5}
 
 /* What you leave with / What this is + isn't card. */
 .md-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
@@ -338,6 +351,9 @@
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
     </div>
 
+    <!-- Wave A4: Last-3-menus history. Slim — theme/paper/count/date only. -->
+    <div class="md-history" id="mdHistory" hidden></div>
+
     <!-- What this is / what this isn't — the honesty card. -->
     <div class="md-honesty">
       <h3>What this is, and what it isn't.</h3>
@@ -356,7 +372,7 @@
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-a2"></script>
-<script src="./menu-render-pdf.js?v=20260501-a3"></script>
-<script src="./menu-design.js?v=20260501-a3"></script>
+<script src="./menu-render-pdf.js?v=20260501-a4"></script>
+<script src="./menu-design.js?v=20260501-a4"></script>
 </body>
 </html>

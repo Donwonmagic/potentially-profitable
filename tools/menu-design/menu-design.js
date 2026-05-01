@@ -83,14 +83,27 @@
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
           '</tr>';
       } else {
+        // "Need help describing?" link — only shows when the dish
+        // has a name BUT no description yet. One-tap routes to
+        // Menu Copy Inspector with name + price prefilled. No AI
+        // here; this honors the plan's "tool-stays-one-job" stance.
+        var helpHtml = '';
+        if ((r.name || '').trim() && !(r.desc || '').trim()) {
+          var ml = LOCALE === 'es' ? '/es/tools/menu-copy/' : '/tools/menu-copy/';
+          var frag = '#name=' + encodeURIComponent(r.name) + (r.price ? '&price=' + encodeURIComponent(r.price) : '');
+          helpHtml = '<a class="md-help-desc" href="' + ml + frag + '" target="_blank" rel="noopener">' +
+            tt('Need help describing? Open Menu Copy Inspector →', '¿Ayuda para describir? Abrir Inspector de Copy →') +
+            '</a>';
+        }
         html += '<tr data-i="' + i + '">' +
-          '<td data-label="Dish"><input type="text" class="md-input" data-field="name" data-i="' + i +
-          '" value="' + escHtml(r.name) + '" placeholder="Dish name" aria-label="Dish name" autocomplete="off" /></td>' +
-          '<td data-label="Price"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
-          '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="Price" autocomplete="off" /></td>' +
-          '<td data-label="Description"><textarea class="md-input" data-field="desc" data-i="' + i +
-          '" rows="1" placeholder="Crisp little gems, buttermilk dressing" aria-label="Description">' + escHtml(r.desc) + '</textarea></td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove dish">&times;</button></td>' +
+          '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
+          '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
+          '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
+          '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="' + tt('Price', 'Precio') + '" autocomplete="off" /></td>' +
+          '<td data-label="' + tt('Description', 'Descripción') + '"><textarea class="md-input" data-field="desc" data-i="' + i +
+          '" rows="1" placeholder="' + tt('Crisp little gems, buttermilk dressing', 'Hojas tiernas, aderezo de buttermilk') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          helpHtml + '</td>' +
+          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
           '</tr>';
       }
     });
@@ -613,6 +626,51 @@
     if (window.plausible) window.plausible('Menu Design Ctx Used', { props: { dishes: String(imported.length) } });
   });
 
+  // -------------------- Last 3 menus (Wave A4) --------------------
+  // Slim history persisted to MuntinContext.menuHistory after each
+  // download. No dish names, no prices — just theme/paper/count/date.
+  // Renders below the download CTA when at least one menu has been
+  // generated.
+  function renderHistory() {
+    var host = document.getElementById('mdHistory');
+    if (!host) return;
+    var history = [];
+    try {
+      if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+        history = (MuntinContext.read() || {}).menuHistory || [];
+      }
+    } catch (_) {}
+    if (!Array.isArray(history) || !history.length) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    var rows = history.slice(0, 3).map(function (h) {
+      var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(h.themeId)) || null;
+      var themeLabel = theme ? (LOCALE === 'es' ? theme.label_es : theme.label_en) : (h.themeId || '—');
+      var paperLabel = h.paperKey === 'a4' ? 'A4' : h.paperKey === 'half-page' ? tt('Half-page', 'Media página') : tt('Letter', 'Carta');
+      var when = '';
+      try {
+        var d = new Date(h.generatedAt || 0);
+        when = d.toLocaleDateString(LOCALE === 'es' ? 'es' : 'en-US', { month: 'short', day: 'numeric' });
+      } catch (_) { when = ''; }
+      return '<li class="md-hist-row">' +
+        '<span class="md-hist-theme">' + escHtml(themeLabel) + '</span>' +
+        '<span class="md-hist-meta">' + escHtml(paperLabel) + ' · ' + (h.dishCount || 0) + ' ' + tt('dishes', 'platos') +
+        ' · ' + (h.pages || 1) + ' ' + tt(h.pages === 1 ? 'page' : 'pages', h.pages === 1 ? 'página' : 'páginas') +
+        (when ? ' · ' + escHtml(when) : '') +
+        '</span></li>';
+    }).join('');
+    host.innerHTML =
+      '<p class="md-hist-label">' + tt('Last 3 menus you generated', 'Últimos 3 menús generados') + '</p>' +
+      '<ul class="md-hist-list">' + rows + '</ul>' +
+      '<p class="md-hist-note">' + tt(
+        "This tool doesn't track results over time — a menu is a one-time artifact, not a metric.",
+        'Esta herramienta no mide resultados con el tiempo — un menú es un artefacto único, no una métrica.'
+      ) + '</p>';
+    host.hidden = false;
+  }
+
   // -------------------- Download (Wave A3) --------------------
   // Button is enabled at all times — even with zero dishes. The
   // PDF renderer handles the empty case (it'll emit a one-page
@@ -689,6 +747,25 @@
                           'El logo SVG no se pudo incluir; exporta un PNG para añadirlo.');
         }
         setDownloadMsg(msg, 'success');
+        // Wave A4: persist a slim history row to MuntinContext.menuHistory
+        // (capped at 3 most recent) so returning visits can show "Last
+        // 3 menus you generated." No raw dish names persisted — only
+        // theme id, paper key, and a count (privacy posture intact).
+        try {
+          if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.merge === 'function') {
+            var prior = (MuntinContext.read() || {}).menuHistory;
+            if (!Array.isArray(prior)) prior = [];
+            prior.unshift({
+              themeId: themeId,
+              paperKey: paperKey,
+              dishCount: dishes.length,
+              pages: pages,
+              generatedAt: Date.now()
+            });
+            MuntinContext.merge({ menuHistory: prior.slice(0, 3) });
+            renderHistory();
+          }
+        } catch (_) {}
         if (window.plausible) window.plausible('Menu Design Downloaded', { props: {
           theme: themeId, paper: paperKey, pages: String(pages),
           dishCount_bucket: dishes.length < 12 ? '<12' : dishes.length < 25 ? '12-24' : dishes.length < 40 ? '25-39' : '40+'
@@ -722,6 +799,7 @@
   renderThemePicker();
   render();
   renderCtxPill();
+  renderHistory();
 
   // Subscribe so changes in another tab (e.g. saving from Menu
   // Engineering) refresh the pill without a manual reload.
