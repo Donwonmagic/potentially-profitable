@@ -118,9 +118,37 @@
       { en: ['beer', 'draft beer', 'keg', 'case of beer', 'ipa', 'lager', 'pilsner'], es: ['cerveza', 'barril', 'caja de cerveza', 'ipa', 'lager'] },
       { en: ['wine', 'red wine', 'white wine', 'rosé', 'rose wine', 'sparkling wine', 'champagne', 'prosecco', 'bottle of wine', 'case of wine'], es: ['vino', 'vino tinto', 'vino blanco', 'rosado', 'vino espumoso', 'champaña'] },
       { en: ['spirit', 'vodka', 'gin', 'rum', 'tequila', 'whiskey', 'whisky', 'bourbon', 'scotch', 'mezcal', 'brandy', 'cognac'], es: ['vodka', 'ginebra', 'ron', 'tequila', 'whiskey', 'bourbon', 'mezcal', 'brandy'] },
-      { en: ['syrup', 'simple syrup', 'grenadine', 'orgeat', 'flavor syrup'], es: ['jarabe', 'jarabe natural', 'granadina'] }
+      { en: ['syrup', 'simple syrup', 'grenadine', 'orgeat', 'flavor syrup'], es: ['jarabe', 'jarabe natural', 'granadina'] },
+      // W7-6 — energy drinks + brand SKUs commonly on independent-restaurant invoices
+      { en: ['rockstar', 'monster', 'monster energy', 'red bull', 'redbull', 'ghost energy', 'celsius', 'bang', 'reign'], es: ['rockstar', 'monster', 'red bull', 'celsius'] },
+      // Bottled / canned water brands
+      { en: ['smartwater', 'smart water', 'dasani', 'aquafina', 'fiji', 'evian', 'voss', 'la croix', 'lacroix', 'perrier', 'san pellegrino', 'pellegrino', 'topo chico', 'topochico'], es: ['smartwater', 'dasani', 'aquafina', 'fiji', 'evian', 'la croix', 'perrier', 'san pellegrino', 'topo chico', 'agua jarritos'] },
+      // Sports + functional drinks
+      { en: ['gatorade', 'powerade', 'snapple', 'arizona', 'arizona tea', 'kombucha', 'gt kombucha', 'pure leaf'], es: ['gatorade', 'powerade', 'snapple', 'kombucha'] },
+      // Beer brands
+      { en: ['stella artois', 'stella', 'bud light', 'budweiser', 'miller lite', 'coors light', 'modelo', 'modelo especial', 'corona', 'corona extra', 'heineken', 'guinness', 'pacifico', 'tecate', 'dos equis', 'xx amber'], es: ['stella artois', 'bud light', 'budweiser', 'miller lite', 'coors light', 'modelo', 'modelo especial', 'corona', 'corona extra', 'heineken', 'pacifico', 'tecate', 'dos equis'] },
+      // Beer styles + hard seltzer
+      { en: ['hard seltzer', 'white claw', 'truly', 'high noon'], es: ['hard seltzer', 'white claw', 'truly'] },
+      // Mexican-cantina-typical sodas
+      { en: ['jarritos', 'jarritos tamarindo', 'jarritos lima', 'jarritos mandarina', 'sidral', 'fanta', 'sprite', 'mountain dew', 'dr pepper', 'dr. pepper'], es: ['jarritos', 'sidral', 'fanta', 'sprite', 'mountain dew', 'dr pepper'] }
     ]
   };
+
+  // W7-6 — extend paper goods with the take-out / delivery SKUs
+  // that hit modern restaurant invoices weekly.
+  LEXICON.paper.push(
+    { en: ['clamshell', 'oyster pail', 'pizza box', 'deli sheet', 'fold-top take-out', 'food tray', 'doily'], es: ['concha', 'caja para pizza', 'charola', 'papel para deli'] },
+    { en: ['portion lid', 'pan liner', 'sheet pan liner', 'butcher paper', 'kraft bag', 't-shirt bag', 'sandwich wrap'], es: ['tapa porcionera', 'forro de charola', 'papel carnicero', 'bolsa kraft', 'envoltura para sándwich'] },
+    { en: ['bib', 'lobster bib', 'apron', 'disposable apron'], es: ['babero', 'mandil', 'mandil desechable'] }
+  );
+
+  // W7-6 — extend cleaning with the chemicals beyond bleach + soap
+  // that show on Restaurant Depot / Sysco janitorial invoices.
+  LEXICON.cleaning.push(
+    { en: ['peroxide', 'hydrogen peroxide', 'oxiclean', 'ammonia', 'hood degreaser', 'drain cleaner', 'lime remover', 'scale remover'], es: ['peróxido', 'oxiclean', 'amoniaco', 'desengrasante de campana', 'destapacaños'] },
+    { en: ['urinal block', 'urinal cake', 'carpet shampoo', 'enzyme cleaner', 'grill cleaner', 'salamander cleaner'], es: ['pastilla para urinal', 'shampoo para alfombra', 'limpiador enzimático'] },
+    { en: ['ajax', 'fabuloso', 'pinesol', 'pine sol', 'mr clean', 'mr. clean', 'comet', 'lysol'], es: ['ajax', 'fabuloso', 'pinesol', 'comet', 'lysol'] }
+  );
 
   function normalize(s) {
     return String(s || '')
