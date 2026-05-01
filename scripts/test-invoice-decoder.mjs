@@ -454,7 +454,13 @@ const VENDOR_FIXTURES = [
   { text: 'IMPERIAL DADE\nJanitorial & Disposables\n',                  expectVendor: 'imperial-dade' },
   { text: 'KEHE Distributors\nSpecialty Foods\n',                       expectVendor: 'kehe' },
   { text: 'BALDOR Specialty Foods\nBronx NY\n',                         expectVendor: 'baldor' },
-  { text: 'FRESHPOINT\nProduce Order\n',                                expectVendor: 'freshpoint' }
+  { text: 'FRESHPOINT\nProduce Order\n',                                expectVendor: 'freshpoint' },
+  // Wave 4.2 final batch
+  { text: 'COSTCO BUSINESS CENTER\nGold Star Business Member\n',        expectVendor: 'costco-business' },
+  { text: 'WEBSTAURANTSTORE.COM\nClark Associates Order Confirmation #88123\n', expectVendor: 'webstaurantstore' },
+  { text: 'VERITIV CORPORATION\nPackaging & Facility Solutions\n',      expectVendor: 'veritiv' },
+  { text: 'HILAND DAIRY\nRoute 14 Driver 7 DSD INVOICE\n',               expectVendor: 'dairy-dsd' },
+  { text: 'SOUTHERN GLAZER\'S WINE & SPIRITS\nState Liquor Tax\nCase Price\n', expectVendor: 'beer-wine-distributor' }
 ];
 for (const fx of VENDOR_FIXTURES) {
   const m = VENDORS.detectVendor(fx.text);

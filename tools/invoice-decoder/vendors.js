@@ -379,11 +379,119 @@
     confidenceBoost: 8
   };
 
+  // Wave 4.2 (final batch) — receipt/thermal + specialty vendors.
+
+  // Costco Business Center — thermal-receipt format. Detect the
+  // characteristic store header + tax-line shape.
+  var COSTCO_BC = {
+    id: 'costco-business',
+    label_en: 'Costco Business Center',
+    label_es: 'Costco Business Center',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/costco\s+business\s+center/.test(top)) score += 0.6;
+      if (/\bcostco\s+wholesale\b/.test(top))     score += 0.4;
+      if (/business\s+member|gold\s+star\s+business/.test(top)) score += 0.15;
+      if (/\bsubtotal\b[\s\S]{0,80}\btax\b/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: COSTCO_BC.label_en };
+    },
+    confidenceBoost: 8,
+    format: 'thermal'
+  };
+
+  // WebstaurantStore — equipment + smallwares + paper goods. PDF
+  // invoice with consistent layout.
+  var WEBSTAURANT = {
+    id: 'webstaurantstore',
+    label_en: 'WebstaurantStore',
+    label_es: 'WebstaurantStore',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/webstaurant\s*store/.test(top)) score += 0.6;
+      if (/\bwebstaurant\b/.test(top))     score += 0.4;
+      if (/clark\s+associates/.test(top))  score += 0.15;
+      if (/order\s+confirmation\s+#/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: WEBSTAURANT.label_en };
+    },
+    confidenceBoost: 9,
+    categoryBias: { paper: 1.1, cleaning: 1.05 }
+  };
+
+  // Veritiv — paper / packaging across PNW + Midwest where Imperial
+  // Dade isn't dominant.
+  var VERITIV = {
+    id: 'veritiv',
+    label_en: 'Veritiv',
+    label_es: 'Veritiv',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bveritiv\b/.test(top))         score += 0.6;
+      if (/veritiv\s+corporation/.test(top)) score += 0.3;
+      if (/packaging\s+&?\s*facility/.test(top)) score += 0.15;
+      return { score: Math.min(1, score), label: VERITIV.label_en };
+    },
+    confidenceBoost: 9,
+    categoryBias: { paper: 1.2, cleaning: 1.1 }
+  };
+
+  // Dairy / DSD route trucks — Hiland, Borden DSD, Producers, Crystal,
+  // Dean. Receipt-style narrow column layouts; treat as a single
+  // shape since the per-brand differences are small.
+  var DAIRY_DSD = {
+    id: 'dairy-dsd',
+    label_en: 'Dairy / DSD route delivery',
+    label_es: 'Lácteos / entrega ruta DSD',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/hiland\s+dairy/.test(top))       score += 0.55;
+      if (/borden\s+dairy|dean\s+foods/.test(top)) score += 0.5;
+      if (/producers\s+dairy/.test(top))    score += 0.5;
+      if (/crystal\s+creamery/.test(top))   score += 0.5;
+      if (/route\s+\d+|driver\s+\d+/.test(top)) score += 0.1;
+      if (/route\s+invoice|dsd\s+invoice/.test(top)) score += 0.15;
+      return { score: Math.min(1, score), label: DAIRY_DSD.label_en };
+    },
+    confidenceBoost: 9,
+    format: 'thermal',
+    categoryBias: { dairy: 1.3 }
+  };
+
+  // Beer / wine distributors. Different invoice grammar (case + bottle
+  // counts, alcohol-tax line items). High value for any bar program.
+  var BEER_WINE_DIST = {
+    id: 'beer-wine-distributor',
+    label_en: 'Beer / wine distributor',
+    label_es: 'Distribuidor de cerveza / vino',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/republic\s+national\s+distributing/.test(top)) score += 0.55;
+      if (/\brndc\b/.test(top))                            score += 0.3;
+      if (/southern\s+glazer/.test(top))                   score += 0.55;
+      if (/reyes\s+beverage/.test(top))                    score += 0.55;
+      if (/breakthru\s+beverage/.test(top))                score += 0.55;
+      if (/empire\s+merchants/.test(top))                  score += 0.55;
+      if (/ben\s+arnold|wirtz\s+beverage/.test(top))       score += 0.45;
+      if (/\balcohol\s+tax|excise\s+tax|state\s+liquor\s+tax\b/.test(top)) score += 0.15;
+      if (/case\s+price|bottle\s+price|keg\s+price/.test(top)) score += 0.1;
+      return { score: Math.min(1, score), label: BEER_WINE_DIST.label_en };
+    },
+    confidenceBoost: 10,
+    alcoholTax: true,
+    categoryBias: { beverage: 1.4 }
+  };
+
   var REGISTRY = [
     SYSCO, US_FOODS, GFS, REST_DEPOT, SHAMROCK, SYGMA, PFG,
     // Wave 4.2 additions
     CHENEY, BEN_E_KEITH, IMPERIAL_DADE, KEHE, UNFI, BALDOR,
-    FRESHPOINT, MAINES, ASIAN_WHOLESALE, MEXICAN_WHOLESALE
+    FRESHPOINT, MAINES, ASIAN_WHOLESALE, MEXICAN_WHOLESALE,
+    // Wave 4.2 final batch
+    COSTCO_BC, WEBSTAURANT, VERITIV, DAIRY_DSD, BEER_WINE_DIST
   ];
 
   // detectVendor returns highest-scoring vendor with score >=

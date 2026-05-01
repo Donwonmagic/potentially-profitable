@@ -236,6 +236,196 @@
     });
   }
 
+  // Wave 5.5 + 5.6 — returning-visitor banner + personal accuracy
+  // stat. Inserts a top-of-page strip after the input chips when
+  // (a) the operator has run before AND (b) we have ≥1 trend entry.
+  function wireReturningVisitor() {
+    if (typeof document === 'undefined') return;
+    var s = getState();
+    if (!s.hasRun || !s.runs) return;
+    var host = document.getElementById('idInputs');
+    if (!host || !host.parentNode) return;
+    if (document.getElementById('idReturning')) return;  // idempotent
+    var trend = (typeof root.MuntinContext !== 'undefined' && root.MuntinContext.readTrend)
+      ? root.MuntinContext.readTrend() : [];
+    if (!trend.length) return;
+    var banner = document.createElement('div');
+    banner.id = 'idReturning';
+    banner.className = 'id-returning';
+    var es = (root.document && root.document.documentElement && root.document.documentElement.lang === 'es');
+    var stat = personalAccuracySummary();
+    var statText = stat
+      ? (es
+        ? '<span class="id-returning-stat">' + stat.averagePct + '%</span> de tus filas se leyeron bien al primer intento en tus últimas ' + stat.sampleSize + ' facturas.'
+        : '<span class="id-returning-stat">' + stat.averagePct + '%</span> of rows read correctly first time across your last ' + stat.sampleSize + ' invoices.')
+      : '';
+    var lastSum = trend[0] && trend[0].parsedSum ? '$' + trend[0].parsedSum.toFixed(2) : '—';
+    banner.innerHTML =
+      '<p class="id-returning-msg">' +
+        '<strong>' + (es ? 'Bienvenido de vuelta.' : 'Welcome back.') + '</strong> ' +
+        s.runs + (es ? ' factura' : ' invoice') + (s.runs === 1 ? '' : (es ? 's' : 's')) +
+        (es ? ' guardada' : ' saved') + (s.runs === 1 ? '' : (es ? 's' : 's')) +
+        ' · ' + (es ? 'última' : 'last') + ': ' + lastSum + '. ' +
+        statText +
+      '</p>';
+    host.parentNode.insertBefore(banner, host);
+  }
+
+  // Wave 3.3 — Cmd-K command palette. Searchable overlay listing
+  // every keyboard shortcut + workflow action.
+  function wireCmdK() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('idCmdK')) return;
+    var es = (document.documentElement && document.documentElement.lang === 'es');
+    var COMMANDS = [
+      { label: es ? 'Confirmar renglón enfocado' : 'Confirm focused row', kbd: 'Y', act: function () { var b = document.querySelector('.id-row-act-yes'); if (b) b.click(); } },
+      { label: es ? 'Marcar y quitar' : 'Flag and remove', kbd: 'N', act: function () { var b = document.querySelector('.id-row-act-no'); if (b) b.click(); } },
+      { label: es ? 'Confirmar el resto tal cual' : 'Confirm the rest as-is', kbd: '', act: function () { var b = document.getElementById('idBulkConfirm'); if (b && !b.disabled) b.click(); } },
+      { label: es ? 'Ordenar por riesgo' : 'Sort by risk', kbd: '', act: function () { var b = document.getElementById('idSortToggle'); if (b) b.click(); } },
+      { label: es ? 'Filtrar: por revisar' : 'Filter: needs review', kbd: '', act: function () { var b = document.querySelector('[data-filter="needReview"]'); if (b) b.click(); } },
+      { label: es ? 'Filtrar: confirmados' : 'Filter: confirmed', kbd: '', act: function () { var b = document.querySelector('[data-filter="confirmed"]'); if (b) b.click(); } },
+      { label: es ? 'Filtrar: todos' : 'Filter: all', kbd: '', act: function () { var b = document.querySelector('[data-filter="all"]'); if (b) b.click(); } },
+      { label: es ? 'Exportar para QuickBooks Online' : 'Export for QuickBooks Online', kbd: '', act: function () { var b = document.querySelector('[data-fmt="qbo"]'); if (b) b.click(); } },
+      { label: es ? 'Exportar para Xero' : 'Export for Xero', kbd: '', act: function () { var b = document.querySelector('[data-fmt="xero"]'); if (b) b.click(); } },
+      { label: es ? 'Exportar genérico (CSV)' : 'Export generic ledger CSV', kbd: '', act: function () { var b = document.querySelector('[data-fmt="generic"]'); if (b) b.click(); } },
+      { label: es ? 'Guardar a Workshop' : 'Save to Workshop', kbd: '', act: function () { var b = document.getElementById('idBulkSave'); if (b && !b.disabled) b.click(); } },
+      { label: es ? 'Modo privacidad (apagar telemetría)' : 'Privacy mode (telemetry off)', kbd: '', act: function () { try { root.MID_TELEMETRY.setEnabled(false); alert(es ? 'Telemetría apagada.' : 'Telemetry off.'); } catch (_) {} } }
+    ];
+
+    var backdrop = document.createElement('div');
+    backdrop.id = 'idCmdK';
+    backdrop.className = 'id-cmdk-backdrop';
+    backdrop.hidden = true;
+    backdrop.setAttribute('role', 'dialog');
+    backdrop.setAttribute('aria-modal', 'true');
+    backdrop.setAttribute('aria-label', es ? 'Paleta de comandos' : 'Command palette');
+    backdrop.innerHTML =
+      '<div class="id-cmdk-sheet">' +
+        '<input type="text" id="idCmdKInput" class="id-cmdk-input" placeholder="' + (es ? 'Buscar un comando…' : 'Search a command…') + '" aria-label="' + (es ? 'Buscar comando' : 'Search command') + '" />' +
+        '<ul id="idCmdKList" class="id-cmdk-list"></ul>' +
+      '</div>';
+    document.body.appendChild(backdrop);
+
+    var input = backdrop.querySelector('#idCmdKInput');
+    var list = backdrop.querySelector('#idCmdKList');
+    var selectedIdx = 0;
+    var visible = COMMANDS.slice();
+
+    function render() {
+      if (!visible.length) {
+        list.innerHTML = '<li class="id-cmdk-empty">' + (es ? 'Sin coincidencias' : 'No matches') + '</li>';
+        return;
+      }
+      list.innerHTML = visible.map(function (c, i) {
+        return '<li class="id-cmdk-item" data-idx="' + i + '" aria-selected="' + (i === selectedIdx ? 'true' : 'false') + '">' +
+          '<span>' + c.label + '</span>' +
+          (c.kbd ? '<kbd>' + c.kbd + '</kbd>' : '') +
+        '</li>';
+      }).join('');
+    }
+    function filter(q) {
+      var qq = String(q || '').toLowerCase();
+      visible = qq
+        ? COMMANDS.filter(function (c) { return c.label.toLowerCase().indexOf(qq) !== -1; })
+        : COMMANDS.slice();
+      selectedIdx = 0;
+      render();
+    }
+    function open() {
+      backdrop.hidden = false;
+      input.value = '';
+      filter('');
+      setTimeout(function () { input.focus(); }, 0);
+    }
+    function close() {
+      backdrop.hidden = true;
+    }
+    function execute(idx) {
+      var cmd = visible[idx];
+      if (!cmd) return;
+      close();
+      try { cmd.act(); } catch (_) {}
+    }
+
+    input.addEventListener('input', function () { filter(input.value); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); selectedIdx = Math.min(visible.length - 1, selectedIdx + 1); render(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); selectedIdx = Math.max(0, selectedIdx - 1); render(); }
+      else if (e.key === 'Enter') { e.preventDefault(); execute(selectedIdx); }
+      else if (e.key === 'Escape') { e.preventDefault(); close(); }
+    });
+    list.addEventListener('click', function (e) {
+      var li = e.target.closest && e.target.closest('.id-cmdk-item');
+      if (!li) return;
+      execute(parseInt(li.getAttribute('data-idx'), 10));
+    });
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(); });
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (backdrop.hidden) open();
+        else close();
+      }
+    });
+  }
+
+  // Wave 6.6 — Privacy Self-Check. Records resource entries during a
+  // synthetic OCR run on a sample fixture, asserts every entry is in
+  // the allowlist, and prints a diff-able report. Single button next
+  // to the verify-yourself disclosure.
+  function wireSelfCheck() {
+    if (typeof document === 'undefined') return;
+    var honesty = document.querySelector('.id-honesty');
+    if (!honesty) return;
+    if (document.getElementById('idSelfCheck')) return;
+    var es = (document.documentElement && document.documentElement.lang === 'es');
+    var panel = document.createElement('div');
+    panel.id = 'idSelfCheck';
+    panel.className = 'id-selfcheck';
+    panel.innerHTML =
+      '<button type="button" class="id-selfcheck-btn" id="idSelfCheckBtn">' +
+        (es ? 'Auditar privacidad ahora' : 'Run a privacy self-check') +
+      '</button>' +
+      '<pre class="id-selfcheck-out" id="idSelfCheckOut" aria-live="polite"></pre>';
+    honesty.appendChild(panel);
+    var btn = panel.querySelector('#idSelfCheckBtn');
+    var out = panel.querySelector('#idSelfCheckOut');
+    btn.addEventListener('click', function () {
+      var ALLOWED = ['plausible.io', 'cdn.jsdelivr.net'];
+      try {
+        var origin = root.location ? root.location.origin : '';
+        try { performance.clearResourceTimings(); } catch (_) {}
+        // Run a sample so resources fire.
+        runSample('sysco', function () {
+          setTimeout(function () {
+            var entries = (performance.getEntriesByType('resource') || []).map(function (e) {
+              try {
+                var u = new URL(e.name);
+                return { host: u.host, ok: u.origin === origin || ALLOWED.some(function (h) { return u.host === h || u.host.endsWith('.' + h); }) };
+              } catch (_) { return { host: e.name, ok: false }; }
+            });
+            var bad = entries.filter(function (e) { return !e.ok; });
+            var report = (es ? 'Auditoría de privacidad' : 'Privacy self-check') + '\n';
+            report += '— ' + entries.length + (es ? ' solicitudes vistas' : ' resource requests observed') + '\n';
+            entries.forEach(function (e) { report += (e.ok ? '✓ ' : '✗ ') + e.host + '\n'; });
+            report += '\n';
+            report += bad.length === 0
+              ? (es ? '✓ Todas las solicitudes están en la lista permitida (mismo origen + plausible + jsdelivr).'
+                    : '✓ Every request is on the allowlist (same-origin + plausible + jsdelivr).')
+              : (es ? '✗ ' + bad.length + ' solicitudes fuera de la lista — REPORTA ESTO.'
+                    : '✗ ' + bad.length + ' off-allowlist requests — PLEASE REPORT.');
+            out.textContent = report;
+            out.classList.add('show');
+          }, 800);
+        });
+      } catch (e) {
+        out.textContent = (es ? 'Falló la auditoría: ' : 'Self-check failed: ') + (e.message || e);
+        out.classList.add('show');
+      }
+    });
+  }
+
   function ready(fn) {
     if (typeof document === 'undefined') return;
     if (document.readyState !== 'loading') fn();
@@ -245,6 +435,9 @@
   ready(function () {
     wireFirstRun();
     wireResume();
+    wireReturningVisitor();
+    wireCmdK();
+    wireSelfCheck();
   });
 
   var api = {

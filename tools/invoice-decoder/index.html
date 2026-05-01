@@ -443,6 +443,83 @@
 .id-resume-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
 .id-resume-btn:hover{background:var(--accent,#1f6f6a)}
 
+/* Wave 2.4 — bulk-count badge + wide undo banner */
+.id-bulk-count{display:inline-block;margin-left:6px;padding:1px 7px;font-size:11px;font-weight:600;border-radius:999px;background:rgba(31,111,106,.18);color:var(--accent,#1f6f6a);min-width:20px;text-align:center}
+.id-bulk-confirm[disabled]{opacity:.55;cursor:not-allowed}
+.id-bulk-undo{position:sticky;bottom:0;display:flex;align-items:center;gap:12px;padding:11px 14px;margin-top:0;background:var(--ink,#14161A);color:var(--cream,#FAF6EE);border-radius:0 0 10px 10px;box-shadow:0 -4px 14px rgba(20,22,26,.18);z-index:6;overflow:hidden}
+.id-bulk-undo[hidden]{display:none}
+.id-bulk-undo-msg{flex:1 1 auto;font-size:13.5px}
+.id-bulk-undo-btn{font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid var(--accent-on-ink,#7be0d4);background:transparent;color:var(--accent-on-ink,#7be0d4);cursor:pointer}
+.id-bulk-undo-btn:hover{background:var(--accent-on-ink,#7be0d4);color:var(--ink,#14161A)}
+.id-bulk-undo-bar{position:absolute;left:0;bottom:0;width:100%;height:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.id-bulk-undo-fill{display:block;height:100%;background:var(--accent-on-ink,#7be0d4)}
+
+/* Wave 3.4 — skeleton loading + edit-commit color rise + save underline */
+.id-parsed-skel{padding:10px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:24px 1fr auto 88px;column-gap:12px;align-items:center}
+.id-parsed-skel-bar{height:12px;background:linear-gradient(90deg,#f3efe7 0%,#fdf9f1 50%,#f3efe7 100%);background-size:200% 100%;border-radius:6px;animation:id-shimmer 1.6s infinite linear}
+.id-parsed-skel-bar--sm{height:10px;width:60%}
+.id-parsed-skel-bar--md{height:12px;width:100%}
+.id-parsed-skel-bar--xs{height:10px;width:40%}
+@keyframes id-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.id-parsed-skel-bar{animation:none;background:#f3efe7}}
+.id-parsed-row.is-confirmed-rise{animation:id-conf-rise .48s ease}
+@keyframes id-conf-rise{0%{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}50%{box-shadow:inset 3px 0 0 #c89a3c}100%{box-shadow:inset 3px 0 0 var(--status-good,#1f6e3a)}}
+.id-save-underline{display:inline-block;height:2px;width:0;background:var(--accent,#1f6f6a);transition:width .48s ease;vertical-align:middle;margin-left:8px}
+.id-save-underline.show{width:42px}
+
+/* Wave 5.2 — phase ladder + tip carousel inside id-status */
+.id-phase-ladder{margin:8px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.id-phase-ladder li{padding:1px 0;display:flex;align-items:center;gap:6px}
+.id-phase-ladder li::before{content:'○';color:var(--ink-soft);font-size:11px}
+.id-phase-ladder li[data-state="active"]{color:var(--ink);font-weight:500}
+.id-phase-ladder li[data-state="active"]::before{content:'●';color:var(--accent,#1f6f6a)}
+.id-phase-ladder li[data-state="done"]::before{content:'✓';color:var(--status-good,#1f6e3a)}
+.id-phase-eta{margin-top:4px;font-size:11.5px;color:var(--ink-soft);font-style:italic}
+.id-tip-carousel{margin-top:8px;padding:8px 12px;background:var(--white);border:1px dashed var(--line);border-radius:6px;font-size:12px;color:var(--ink-soft);min-height:1.5em;line-height:1.55}
+.id-tip-carousel strong{color:var(--ink);font-weight:600}
+
+/* Wave 4.5 — auto-applied trust chip on learned rows */
+.id-row-learned{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.04em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2}
+.id-row-learned[data-source="bilingual"]{background:#F0E5FA;color:#4a1f6a;border-color:#C9B0E5}
+.id-row-learned[data-source="stem"]{background:#F4ECE0;color:#5A4A30;border-color:#D9C5A3}
+
+/* Wave 5.3 — error-recovery panel */
+.id-error-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.id-error-actions button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.id-error-actions button:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+.id-raw-ocr{margin-top:10px;padding:8px 10px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;display:none}
+.id-raw-ocr.show{display:block}
+
+/* Wave 5.5 — returning-visitor banner */
+.id-returning{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,var(--cream-2) 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-returning[hidden]{display:none}
+.id-returning-msg{margin:0;font-size:14px;color:var(--ink);line-height:1.55}
+.id-returning-msg strong{color:var(--ink);font-weight:600}
+.id-returning-stat{display:inline-block;margin-right:8px;padding:1px 8px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:999px;background:var(--accent,#1f6f6a);color:#fff;text-transform:uppercase}
+
+/* Wave 5.4 — passphrase generator chip */
+.midpass-generate{margin-top:6px;padding:5px 10px;font-size:12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.midpass-generate:hover{background:var(--accent,#1f6f6a);color:#fff}
+
+/* Wave 3.3 — Cmd-K command palette */
+.id-cmdk-backdrop{position:fixed;inset:0;background:rgba(20,22,26,.45);display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 40px;z-index:1300}
+.id-cmdk-backdrop[hidden]{display:none}
+.id-cmdk-sheet{width:100%;max-width:520px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.28);padding:14px 16px}
+.id-cmdk-input{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);box-sizing:border-box}
+.id-cmdk-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
+.id-cmdk-list{margin:10px 0 0;padding:0;list-style:none;max-height:50vh;overflow-y:auto}
+.id-cmdk-item{padding:9px 12px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.id-cmdk-item:hover,.id-cmdk-item[aria-selected="true"]{background:var(--cream-2)}
+.id-cmdk-item kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;padding:1px 5px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink-soft)}
+.id-cmdk-empty{padding:14px 12px;color:var(--ink-soft);font-size:13px;font-style:italic}
+
+/* Wave 6.6 — Privacy Self-Check panel */
+.id-selfcheck{margin-top:14px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
+.id-selfcheck-btn{padding:9px 16px;font:inherit;font-size:13px;font-weight:600;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.id-selfcheck-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-selfcheck-out{margin-top:10px;padding:10px 12px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;line-height:1.55;white-space:pre-wrap;display:none}
+.id-selfcheck-out.show{display:block}
+
 /* Wave 6.11 — dark-mode Stage 1. Honors prefers-color-scheme so
    kitchens with dim lighting + auto-dark phones get a readable
    surface without a manual toggle. Only the tool-scoped surfaces
@@ -781,8 +858,16 @@
            batch-confirm amber rows when they trust the read, and
            save the verified set to Workshop. Save UI lands in B6. -->
       <div class="id-bulkbar" id="idBulkbar" hidden>
-        <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Mark amber as verified</button>
+        <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Confirm the rest as-is <span class="id-bulk-count" id="idBulkCount">0</span></button>
         <button type="button" class="id-bulk-save" id="idBulkSave" disabled>Save to my Workshop →</button>
+      </div>
+      <!-- Wave 2.4 — wide undo banner sits inside the bulk bar's
+           sticky region so the operator can see the action they just
+           took. Replaces the small corner toast for batch actions. -->
+      <div class="id-bulk-undo" id="idBulkUndo" hidden role="status" aria-live="polite">
+        <span class="id-bulk-undo-msg" id="idBulkUndoMsg"></span>
+        <button type="button" class="id-bulk-undo-btn" id="idBulkUndoBtn">Undo</button>
+        <span class="id-bulk-undo-bar"><span class="id-bulk-undo-fill" id="idBulkUndoFill"></span></span>
       </div>
       <div class="id-handoff" id="idHandoff" hidden></div>
     </div>

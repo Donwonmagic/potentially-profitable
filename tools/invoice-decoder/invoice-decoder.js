@@ -89,7 +89,37 @@
     // For Wave B1 we preview the FIRST page only; multi-page sweep
     // (and per-page status) ships with B2 alongside the OCR loop.
     var file = fileList[0];
+    // Wave 5.3 — auto-resize oversized photos via canvas downsample
+    // before failing. Operator's own camera-roll image gets handled
+    // gracefully without forcing them to manually shrink.
     if (file.size > 12 * 1024 * 1024) {
+      showStatus(
+        tt('Photo is large — shrinking it for you…', 'Foto grande — la achicamos por ti…'),
+        tt('Down-sampling to 6 MP. Most invoices read fine at this resolution.',
+           'Reduciendo a 6 MP. La mayoría de facturas se leen bien a esta resolución.')
+      );
+      try {
+        if (typeof MID_PREPROCESS !== 'undefined' && MID_PREPROCESS.fileToCanvas) {
+          MID_PREPROCESS.fileToCanvas(file, 1800).then(function (canvas) {
+            return new Promise(function (res) {
+              canvas.toBlob(function (blob) { res(blob); }, 'image/jpeg', 0.9);
+            });
+          }).then(function (blob) {
+            if (!blob) throw new Error('resize failed');
+            var resized = new File([blob], 'resized.jpg', { type: 'image/jpeg' });
+            var rest = Array.prototype.slice.call(fileList, 1);
+            handlePhotoFiles([resized].concat(rest));
+          }).catch(function () {
+            showStatus(
+              tt('Photo too large', 'Foto muy grande'),
+              tt('Auto-resize failed. Try a lower-resolution shot — most invoices read fine at 4–6 MP.',
+                 'Falló el auto-redimensionado. Intenta una foto de menor resolución — la mayoría se leen bien con 4–6 MP.'),
+              'error'
+            );
+          });
+          return;
+        }
+      } catch (_) {}
       showStatus(
         tt('Photo too large', 'Foto muy grande'),
         tt('That photo is over 12 MB. Try a lower-resolution shot — most invoices read fine at 4–6 MP.',
@@ -277,11 +307,21 @@
       readBtn.innerHTML = tt('Reading…', 'Leyendo…');
     }
     showStatus(
-      tt('Reading the invoice…', 'Leyendo la factura…'),
-      tt('First load also fetches the reader (about 4 MB). After this it\'s cached and instant.',
-         'La primera carga también descarga el lector (unos 4 MB). Después queda en caché y es instantánea.')
+      tt('Reading the invoice…', 'Leyendo the invoice…').replace('the invoice', 'the invoice'),
+      tt('First time only: we download the reader (about 4 MB). After this it\'s saved for next time.',
+         'Solo la primera vez: bajamos el lector (unos 4 MB). Queda guardado para la próxima.')
     );
     setProgress(2);
+    // Wave 5.2 — phase ladder + ETA + rotating tips.
+    showPhaseLadder([
+      tt('Cleaning up the photo', 'Limpiando la foto'),
+      tt('Reading the lines', 'Leyendo las líneas'),
+      tt('Sorting into categories', 'Ordenando en categorías'),
+      tt('Looking up vendor shape', 'Buscando la forma del proveedor')
+    ], pendingPages.length * 12);
+    advancePhase(1);
+    // Wave 3.4 — skeleton rows so the operator sees structure forming.
+    showSkeleton(8);
 
     var pageShare = 92 / pendingPages.length;
     var doneShare = 0;
@@ -368,6 +408,7 @@
       });
     }, Promise.resolve()).then(function () {
       setProgress(96);
+      advancePhase(2);  // Wave 5.2 — sorting now
       var parsed = MID_PARSE.parseLines(allLines, fullText);
       // Wave B3 — vendor detection. When detect() crosses
       // threshold the rows get a confidence boost (knowing the
@@ -391,9 +432,16 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
+      advancePhase(3);  // Wave 5.2 — vendor lookup done
+      // Wave 5.3 — preserve raw OCR text so the operator can debug
+      // when the parsed-row count is unexpectedly low.
+      parsed._rawOcrText = fullText;
       renderParsed(parsed);
+      clearPhaseLadder();
       setProgress(100);
       hideStatus();
       if (window.plausible) {
@@ -406,17 +454,69 @@
         } });
       }
     }).catch(function (err) {
+      clearPhaseLadder();
       showStatus(
         tt('OCR failed', 'OCR falló'),
         tt('The reader couldn\'t process this image. ' + (err && err.message ? '(' + err.message + ')' : ''),
            'El lector no pudo procesar esta imagen. ' + (err && err.message ? '(' + err.message + ')' : '')),
         'error'
       );
+      // Wave 5.3 — actionable error recovery. Tesseract CDN failures
+      // tend to be the most common one; offer a retry path + the
+      // manual-entry fallback so the operator isn't stuck.
+      renderErrorActions(err);
     }).then(function () {
       if (readBtn) {
         readBtn.disabled = false;
         readBtn.innerHTML = tt('Read this invoice', 'Leer esta factura');
       }
+    });
+  }
+
+  // Wave 5.3 — error-recovery action buttons. Renders inside the
+  // status panel; each button gives the operator a clear next step.
+  function renderErrorActions(err) {
+    if (!statusEl) return;
+    var existing = document.getElementById('idErrorActions');
+    if (existing) existing.parentNode.removeChild(existing);
+    var wrap = document.createElement('div');
+    wrap.id = 'idErrorActions';
+    wrap.className = 'id-error-actions';
+    var msg = String(err && err.message || '');
+    var isCdnFail = /Tesseract|network|fetch/i.test(msg);
+    var html = '';
+    if (isCdnFail) {
+      html += '<button type="button" id="idRetryReader">' + escHtml(tt('Retry reader', 'Reintentar lector')) + '</button>';
+    }
+    html += '<button type="button" id="idTypeManually">' + escHtml(tt('Type one row manually', 'Escribir un renglón a mano')) + '</button>';
+    html += '<button type="button" id="idShowRawOcr">' + escHtml(tt('Show raw OCR', 'Ver OCR crudo')) + '</button>';
+    wrap.innerHTML = html;
+    var rawHost = document.createElement('pre');
+    rawHost.id = 'idRawOcr';
+    rawHost.className = 'id-raw-ocr';
+    rawHost.textContent = (lastReadParsed && lastReadParsed._rawOcrText) || tt('(no raw text yet — run a read first)', '(sin texto crudo todavía)');
+    statusEl.appendChild(wrap);
+    statusEl.appendChild(rawHost);
+    var retryBtn = document.getElementById('idRetryReader');
+    if (retryBtn) retryBtn.addEventListener('click', function () { readPendingInvoice(); });
+    var manualBtn = document.getElementById('idTypeManually');
+    if (manualBtn) manualBtn.addEventListener('click', function () {
+      // Synthesize a single empty row the operator can edit into.
+      var stub = {
+        rows: [{
+          name: '', qty: 1, unit: 'ea', unitPrice: 0, lineTotal: 0,
+          confidence: 50, fieldConf: { name: 50, qty: 50, price: 50, category: 50 },
+          raw: '', kind: 'item'
+        }],
+        vendor: null, totalParsed: null, sumParsed: 0, deltaPct: null, mathFix: null,
+        kindCounts: { item: 1 }, _manualEntry: true
+      };
+      renderParsed(stub);
+      hideStatus();
+    });
+    var rawBtn = document.getElementById('idShowRawOcr');
+    if (rawBtn) rawBtn.addEventListener('click', function () {
+      rawHost.classList.toggle('show');
     });
   }
 
@@ -446,8 +546,13 @@
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
     row.ownerConfirmed = true;
+    // Wave 3.4 — color-rise animation on the row that just got
+    // confirmed; rerenderRows wipes the DOM so we mark the row idx
+    // and apply the class on the next render.
+    __riseIdx = rowIdx;
     rerenderRows();
   }
+  var __riseIdx = -1;
 
   // W4-1 — verification filter state. After fresh OCR we land on
   // 'needReview' so the operator's eyes go straight to amber/red
@@ -605,6 +710,12 @@
       parsedList.innerHTML = visible.map(function (r) {
         return rowToHtml(r, parsedRowsState.indexOf(r));
       }).join('');
+      // Wave 3.4 — color-rise on the just-edited row.
+      if (__riseIdx !== -1) {
+        var riseEl = parsedList.querySelector('[data-idx="' + __riseIdx + '"]');
+        if (riseEl) riseEl.classList.add('is-confirmed-rise');
+        __riseIdx = -1;
+      }
     }
     // W4-5 — fire verify-speed metric when needReview filter empties.
     maybeFireVerifySpeed(visible.length);
@@ -1180,6 +1291,21 @@
       kindTag = '<span class="id-row-kind" data-kind="' + escHtml(r.kind) + '">' + escHtml(kindLabel) + '</span>';
     }
 
+    // Wave 4.5 — "auto-applied" trust chip when the categorization
+    // came from a previous operator override. Surfaces tier + source
+    // (direct, stem, bilingual) so the operator knows where the
+    // signal came from.
+    var learnedChip = '';
+    if (r.categoryTier === 'learned') {
+      var src = r.categorySource || 'direct';
+      var lbl = src === 'bilingual'
+        ? tt('auto · ES/EN match', 'auto · coincidencia ES/EN')
+        : src === 'stem'
+        ? tt('auto · pack variant', 'auto · variante de empaque')
+        : tt('auto · your prior fix', 'auto · tu corrección previa');
+      learnedChip = '<span class="id-row-learned" data-source="' + escHtml(src) + '" title="' + escHtml(lbl) + '">' + escHtml(lbl) + '</span>';
+    }
+
     // Visible Y/N quick action buttons (Wave 3.1 — keyboard-or-pointer).
     var actions = '<span class="id-row-actions" role="group" aria-label="' + escHtml(tt('Row actions', 'Acciones del renglón')) + '">' +
       '<button type="button" class="id-row-act id-row-act-yes" data-act="confirm" data-idx="' + idx + '" aria-label="' + escHtml(tt('Confirm row', 'Confirmar renglón')) + '" title="Y">✓</button>' +
@@ -1189,7 +1315,7 @@
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + kindTag + driftChip + contractBadge +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge +
       '</span>' +
       '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
       '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
@@ -1288,6 +1414,105 @@
       // No commit on blur unless they changed it; rerender restores chip.
       if (select.value === (current || '')) rerenderRows();
     });
+  }
+
+  // ============================================================
+  // Wave 3.4 — skeleton-row loader. Renders 8 placeholder rows in
+  // the parsed list while OCR runs so the operator sees structure
+  // forming, not a spinner of doom. Cleared on first real render.
+  // ============================================================
+  function showSkeleton(count) {
+    if (!parsedList) return;
+    if (parsedEl) parsedEl.hidden = false;
+    var n = Math.max(3, Math.min(12, count || 8));
+    var html = '';
+    for (var i = 0; i < n; i++) {
+      html += '<li class="id-parsed-skel" aria-hidden="true">' +
+        '<span></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--md"></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--xs"></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--sm"></span>' +
+        '</li>';
+    }
+    parsedList.innerHTML = html;
+  }
+
+  // ============================================================
+  // Wave 5.2 — phase ladder + ETA + tip carousel during the wait.
+  // The status panel renders a four-step ladder; the active phase
+  // pulses, completed phases get a check, the tip carousel rotates
+  // every 6s with restaurant-flavored pro-tips.
+  // ============================================================
+  var TIPS_EN = [
+    'Did you know? PDFs read in 1s instead of 30. Ask your distributor to email you one.',
+    'You can paste a CSV from Sysco\'s order-history page directly — skip the photo entirely.',
+    'Tap a row to edit — your corrections train the categorizer for next time.',
+    'Y / N / J / K / 1-9 keyboard shortcuts speed up review on a laptop.',
+    'Switch tabs while we work — a Workshop badge will pop up when ready.'
+  ];
+  var TIPS_ES = [
+    '¿Sabías? Los PDF se leen en 1s en lugar de 30. Pide a tu distribuidor que te envíe uno.',
+    'Puedes pegar un CSV de la página de historial de órdenes de Sysco — sáltate la foto.',
+    'Toca un renglón para editar — tus correcciones entrenan al categorizador.',
+    'Y / N / J / K / 1-9 son atajos de teclado que aceleran la revisión.',
+    'Cambia de pestaña mientras trabajamos — verás una insignia en Workshop cuando esté listo.'
+  ];
+  var __tipTimer = null;
+  function showPhaseLadder(phaseLabels, etaSeconds) {
+    if (!statusEl) return;
+    var ladderId = 'idPhaseLadder';
+    var existing = document.getElementById(ladderId);
+    if (existing) existing.parentNode.removeChild(existing);
+    var ul = document.createElement('ul');
+    ul.id = ladderId;
+    ul.className = 'id-phase-ladder';
+    phaseLabels.forEach(function (lbl, i) {
+      var li = document.createElement('li');
+      li.dataset.state = i === 0 ? 'active' : 'pending';
+      li.textContent = lbl;
+      ul.appendChild(li);
+    });
+    statusEl.appendChild(ul);
+    if (etaSeconds && etaSeconds > 0) {
+      var p = document.createElement('p');
+      p.id = 'idPhaseEta';
+      p.className = 'id-phase-eta';
+      p.textContent = tt('about ' + etaSeconds + 's left', 'unos ' + etaSeconds + 's restantes');
+      statusEl.appendChild(p);
+    }
+    // Tip carousel.
+    var tipEl = document.createElement('div');
+    tipEl.className = 'id-tip-carousel';
+    tipEl.id = 'idTipCarousel';
+    statusEl.appendChild(tipEl);
+    var tips = LOCALE === 'es' ? TIPS_ES : TIPS_EN;
+    var tipIdx = Math.floor(Math.random() * tips.length);
+    var rotate = function () {
+      tipEl.innerHTML = '<strong>' + tt('Tip:', 'Sugerencia:') + '</strong> ' + tips[tipIdx % tips.length];
+      tipIdx++;
+    };
+    rotate();
+    if (__tipTimer) clearInterval(__tipTimer);
+    __tipTimer = setInterval(rotate, 6000);
+  }
+  function advancePhase(idx) {
+    var ladder = document.getElementById('idPhaseLadder');
+    if (!ladder) return;
+    var lis = ladder.querySelectorAll('li');
+    for (var i = 0; i < lis.length; i++) {
+      if (i < idx) lis[i].dataset.state = 'done';
+      else if (i === idx) lis[i].dataset.state = 'active';
+      else lis[i].dataset.state = 'pending';
+    }
+  }
+  function clearPhaseLadder() {
+    var ladder = document.getElementById('idPhaseLadder');
+    if (ladder) ladder.parentNode.removeChild(ladder);
+    var eta = document.getElementById('idPhaseEta');
+    if (eta) eta.parentNode.removeChild(eta);
+    var tip = document.getElementById('idTipCarousel');
+    if (tip) tip.parentNode.removeChild(tip);
+    if (__tipTimer) { clearInterval(__tipTimer); __tipTimer = null; }
   }
 
   // Wave 4.6 — keep the latest parsed object so the accountant
@@ -1797,21 +2022,92 @@
     });
   }
 
+  // Wave 2.4 — bulk-confirm with live count + 5s wide undo.
+  // The button label always shows the live count of un-confirmed
+  // non-red rows. Click captures a snapshot, applies the bulk move,
+  // then surfaces a wide banner with a 5-second countdown bar; the
+  // operator can revert in one tap.
+  function refreshBulkCount() {
+    var lbl = document.getElementById('idBulkCount');
+    if (!lbl) return;
+    var cnt = 0;
+    parsedRowsState.forEach(function (r) {
+      if (r.ignored) return;
+      var band = confBand(r.confidence);
+      if (band !== 'red' && !r.ownerConfirmed) cnt++;
+    });
+    lbl.textContent = cnt;
+    var btn = document.getElementById('idBulkConfirm');
+    if (btn) {
+      btn.disabled = cnt === 0;
+      btn.setAttribute('aria-label', tt('Confirm ' + cnt + ' remaining rows as-is', 'Confirmar ' + cnt + ' renglones restantes tal cual'));
+    }
+  }
+  // Hook into the existing rerenderRows call sequence by patching
+  // updateFilterChipCounts (always called from rerenderRows).
+  var __origUpdateChipCounts = updateFilterChipCounts;
+  updateFilterChipCounts = function () {
+    __origUpdateChipCounts();
+    refreshBulkCount();
+  };
+
+  function showBulkUndo(message, undoFn) {
+    var host = document.getElementById('idBulkUndo');
+    var msg = document.getElementById('idBulkUndoMsg');
+    var btn = document.getElementById('idBulkUndoBtn');
+    var fill = document.getElementById('idBulkUndoFill');
+    if (!host || !msg || !btn || !fill) return;
+    if (host.__timer) clearTimeout(host.__timer);
+    host.hidden = false;
+    msg.textContent = message;
+    fill.style.transition = 'none';
+    fill.style.width = '100%';
+    // Force reflow then animate the fill.
+    void fill.offsetWidth;
+    fill.style.transition = 'width 5000ms linear';
+    fill.style.width = '0%';
+    var newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.textContent = tt('Undo', 'Deshacer');
+    newBtn.addEventListener('click', function () {
+      try { undoFn(); } catch (_) {}
+      host.hidden = true;
+    });
+    host.__timer = setTimeout(function () { host.hidden = true; }, 5000);
+  }
+
   if (bulkConfirm) {
     bulkConfirm.addEventListener('click', function () {
-      // Mark every amber row as confirmed at full confidence.
-      // Red rows are intentionally NOT batched — they need
-      // individual review (likely OCR misreads or ambiguous
-      // categories). The owner can still tap-edit each one.
+      // Snapshot every row's prior state for one-shot undo.
+      var snapshot = parsedRowsState.map(function (r) {
+        return { confidence: r.confidence, ownerConfirmed: !!r.ownerConfirmed };
+      });
+      // Confirm every non-red, un-confirmed row. Red rows are
+      // intentionally NOT batched — they need individual review.
       var moved = 0;
       parsedRowsState.forEach(function (r) {
-        if (confBand(r.confidence) === 'amber') {
-          r.confidence = 100;
-          r.ownerConfirmed = true;
-          moved++;
-        }
+        if (r.ignored) return;
+        if (confBand(r.confidence) === 'red') return;
+        if (r.ownerConfirmed) return;
+        r.confidence = 100;
+        r.ownerConfirmed = true;
+        moved++;
       });
       rerenderRows();
+      if (moved > 0) {
+        showBulkUndo(
+          tt('Confirmed ' + moved + ' rows. ', 'Confirmados ' + moved + ' renglones. '),
+          function () {
+            parsedRowsState.forEach(function (r, i) {
+              if (snapshot[i]) {
+                r.confidence = snapshot[i].confidence;
+                r.ownerConfirmed = snapshot[i].ownerConfirmed;
+              }
+            });
+            rerenderRows();
+          }
+        );
+      }
       if (window.plausible && moved > 0) {
         window.plausible('Invoice Decoder Bulk Confirm', { props: {
           count_bucket: moved < 5 ? '<5' : moved < 15 ? '5-14' : '15+'
@@ -1975,6 +2271,8 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
       setProgress(95);
@@ -2066,6 +2364,8 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
       setProgress(95);
