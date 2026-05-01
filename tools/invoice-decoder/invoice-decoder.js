@@ -1257,6 +1257,29 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
+          // W4-7 — push a 12-deep ring-buffer entry into invoiceTrend
+          // so Cost Pulse / Plate Cost stale-banner / Margin Math
+          // food-cost-band can read trend deltas without re-decrypting
+          // the server-side envelopes. Aggregates only (no item names,
+          // no SKUs, no raw OCR).
+          try {
+            if (typeof MuntinContext !== 'undefined' &&
+                typeof MuntinContext.pushTrendEntry === 'function') {
+              var totalsByCategory = {};
+              parsedRowsState.forEach(function (r) {
+                if (r.ignored) return;
+                if (!r.category || r.lineTotal == null) return;
+                totalsByCategory[r.category] = +(((totalsByCategory[r.category] || 0) + r.lineTotal).toFixed(2));
+              });
+              MuntinContext.pushTrendEntry({
+                vendor:           payload.vendor || null,
+                savedAt:          payload.savedAt,
+                totalsByCategory: totalsByCategory,
+                parsedSum:        payload.parsedSum,
+                itemCount:        payload.itemCount
+              });
+            }
+          } catch (_) {}
           // W3-4 (was B6-4): write a slim summary so Plate Cost can
           // pre-fill its ingredient grid; Menu Engineering surfaces a
           // rolling food-cost % suggestion; Margin Math reads the
