@@ -117,6 +117,7 @@
       'Invoice Decoder Page Dedup',
       'Invoice Decoder Preprocess',
       'Invoice Decoder Read',
+      'Invoice Decoder Recovery Set',
       'Invoice Decoder Row Confirmed',
       'Invoice Decoder Row Ignored',
       'Invoice Decoder Saved',

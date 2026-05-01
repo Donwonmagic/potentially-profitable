@@ -27,6 +27,8 @@
   var TESSCORE_VERSION    = '5.0.0';
   var TESSDATA_VERSION    = '4.0.0';
 
+  var HASHWASM_VERSION = '4.11.0';
+
   // Self-hosted URLs the runtime prefers.
   var SELF = {
     tesseract:     '/assets/vendor/tesseract.js@'      + TESSERACT_VERSION + '/tesseract.min.js',
@@ -35,7 +37,8 @@
     pdfjsWorker:   '/assets/vendor/pdfjs-dist@'        + PDFJS_VERSION    + '/pdf.worker.min.mjs',
     xlsx:          '/assets/vendor/xlsx@'              + XLSX_VERSION     + '/xlsx.mjs',
     tessCorePath:  '/assets/vendor/tesseract.js-core@' + TESSCORE_VERSION + '/',
-    tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/'
+    tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/',
+    argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js'
   };
 
   // Legacy CDN fallbacks. Only used when the build's vendor-pin
@@ -144,6 +147,7 @@
     XLSX_VERSION:      XLSX_VERSION,
     TESSCORE_VERSION:  TESSCORE_VERSION,
     TESSDATA_VERSION:  TESSDATA_VERSION,
+    HASHWASM_VERSION:  HASHWASM_VERSION,
     loadManifest:   loadManifest,
     resolve:        resolve,
     loadScript:     loadScript,

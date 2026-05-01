@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v3-2026-05-01';
+var SW_VERSION = 'id-decoder-v4-2026-05-01';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -60,8 +60,12 @@ var SHELL_URLS = [
   '/assets/vendor/pdfjs-dist@4.5.136/pdf.min.mjs',
   '/assets/vendor/pdfjs-dist@4.5.136/pdf.worker.min.mjs',
   '/assets/vendor/xlsx@0.20.3/xlsx.mjs',
+  '/tools/invoice-decoder/kdf.js',
   '/tools/invoice-decoder/encrypt.js',
+  '/tools/invoice-decoder/recovery.js',
   '/tools/invoice-decoder/passphrase-modal.js',
+  '/tools/invoice-decoder/data/bip39-en.txt',
+  '/assets/vendor/hash-wasm@4.11.0/argon2.umd.min.js',
   '/tools/invoice-decoder/pdf-extract.js',
   '/tools/invoice-decoder/csv-extract.js',
   '/tools/invoice-decoder/proof-flyout.js',

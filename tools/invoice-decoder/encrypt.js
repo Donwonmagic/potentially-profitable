@@ -1,30 +1,49 @@
 /**
- * Invoice Decoder — client-side envelope encryption (Wave B6-2).
+ * Invoice Decoder — client-side envelope encryption (Wave 6.1).
  *
- * AES-GCM 256 over plaintext invoice payloads. Key is derived in
- * the browser from a passphrase the operator supplies once per
- * session (B6-3 wires the UI prompt). Server stores ciphertext
- * + iv only; plaintext never crosses the wire.
+ * Two envelope versions in production simultaneously:
  *
- * Threat model is operator-aligned: someone who has the operator's
- * sign-in cookie should still NOT be able to read past invoices
- * without the passphrase. The server has no decryption capability.
+ *   v=1 (legacy) — single-key envelope.
+ *     { v:1, salt, iv, ct, aad }
+ *     Plaintext is encrypted DIRECTLY with a passphrase-derived key.
+ *     Loses recoverability if the operator forgets the passphrase.
+ *     Only read; new saves always emit v=2.
  *
- * Privacy: SubtleCrypto runs in the browser. No fetch from this
- * module. The check-tool-no-fetch invariant remains satisfied.
+ *   v=2 (dual-wrap) — data-key + multiple wraps.
+ *     {
+ *       v:2,
+ *       iv,                                          (12 bytes for the body)
+ *       ct,                                          (AES-GCM(dataKey, plaintext))
+ *       aad,
+ *       wraps: [
+ *         { kind:'passphrase', kdf:..., m,t,p|iter, salt, iv, wrap },
+ *         { kind:'recovery',   kdf:..., m,t,p,      salt, iv, wrap }
+ *         // future: { kind:'paired-device', publicKey, ... }
+ *       ]
+ *     }
+ *     A random 256-bit data key encrypts the payload. Each wrap
+ *     stores AES-GCM(KEK, dataKey) where KEK is derived from a
+ *     different secret (passphrase, recovery phrase, paired-device
+ *     key). On unlock, the operator supplies one of those secrets;
+ *     we try each wrap until one succeeds.
  *
- * Algorithms:
- *   PBKDF2-SHA256, 250000 iterations, 16-byte salt → 32-byte AES key
- *   AES-GCM with random 12-byte IV per write, AAD = sub || itemId
+ * Privacy posture:
+ *   - SubtleCrypto runs in-browser; Argon2id WASM also in-browser.
+ *   - The server stores ciphertext + wrap envelope only. Server has
+ *     no decryption capability and never sees the data key.
+ *   - Forward-compatible: more wrap kinds can be added (paired
+ *     device, WebAuthn passkey) without changing existing readers.
  *
- * Wire format (base64-everything):
- *   { v: 1, salt, iv, ct, aad }
- * v: 1 lets a future migration drop in higher iteration counts
- * or a different KDF without breaking existing reads.
+ * Migration: when decryptPayload reads a v=1 envelope, the wrap
+ * helper exposes the recovered data key plus a flag the controller
+ * can act on; controller asks the operator if they want to add a
+ * recovery code, then re-saves as v=2.
  */
 (function (root) {
   'use strict';
 
+  // Encoding helpers — duplicated from kdf.js for the legacy v=1
+  // path that doesn't go through MID_KDF.
   function bytesToBase64(bytes) {
     var bin = '';
     for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
@@ -43,63 +62,33 @@
     return new TextDecoder().decode(b);
   }
 
-  // Derive a 256-bit AES key from the passphrase + salt. Cached
-  // per-session so consecutive saves don't re-run 250k iterations.
-  var __keyCache = new Map();
-  function deriveKey(passphrase, saltBytes) {
-    var cacheKey = passphrase + '|' + bytesToBase64(saltBytes);
-    if (__keyCache.has(cacheKey)) return Promise.resolve(__keyCache.get(cacheKey));
+  // -------------------- Legacy v=1 path --------------------
+  // Kept for read compatibility. encryptPayload no longer emits v=1.
+  var __legacyKeyCache = new Map();
+  function deriveLegacyKey(passphrase, saltBytes, iterations) {
+    var iter = iterations || 250000;
+    var ck = passphrase + '|' + bytesToBase64(saltBytes) + '|' + iter;
+    if (__legacyKeyCache.has(ck)) return Promise.resolve(__legacyKeyCache.get(ck));
     var enc = strToBytes(passphrase);
     return crypto.subtle.importKey('raw', enc, 'PBKDF2', false, ['deriveKey'])
       .then(function (baseKey) {
         return crypto.subtle.deriveKey(
-          { name: 'PBKDF2', salt: saltBytes, iterations: 250000, hash: 'SHA-256' },
+          { name: 'PBKDF2', salt: saltBytes, iterations: iter, hash: 'SHA-256' },
           baseKey,
           { name: 'AES-GCM', length: 256 },
           false,
           ['encrypt', 'decrypt']
         );
       })
-      .then(function (key) {
-        __keyCache.set(cacheKey, key);
-        return key;
-      });
+      .then(function (key) { __legacyKeyCache.set(ck, key); return key; });
   }
-
-  // Encrypt a JS object. Caller passes passphrase + AAD context
-  // (sub + itemId). Returns the wire-format object.
-  function encryptPayload(payload, passphrase, aadString) {
-    if (!payload || typeof payload !== 'object') return Promise.reject(new Error('payload required'));
-    if (!passphrase || passphrase.length < 8) return Promise.reject(new Error('passphrase too short — needs ≥8 chars'));
-    if (typeof crypto === 'undefined' || !crypto.subtle) return Promise.reject(new Error('SubtleCrypto unavailable'));
-    var salt = crypto.getRandomValues(new Uint8Array(16));
-    var iv   = crypto.getRandomValues(new Uint8Array(12));
-    var aad  = strToBytes(String(aadString || ''));
-    var plaintext = strToBytes(JSON.stringify(payload));
-    return deriveKey(passphrase, salt).then(function (key) {
-      return crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, key, plaintext);
-    }).then(function (ctBuffer) {
-      return {
-        v: 1,
-        salt: bytesToBase64(salt),
-        iv: bytesToBase64(iv),
-        ct: bytesToBase64(new Uint8Array(ctBuffer)),
-        aad: aadString || ''
-      };
-    });
-  }
-
-  // Decrypt a wire-format object. Returns the original JS object
-  // or rejects if AAD doesn't match (tamper detection).
-  function decryptPayload(envelope, passphrase, aadString) {
-    if (!envelope || envelope.v !== 1) return Promise.reject(new Error('unsupported envelope version'));
-    if (!passphrase) return Promise.reject(new Error('passphrase required'));
-    if (typeof crypto === 'undefined' || !crypto.subtle) return Promise.reject(new Error('SubtleCrypto unavailable'));
+  function decryptV1(envelope, passphrase, aadString) {
     var salt = base64ToBytes(envelope.salt);
     var iv   = base64ToBytes(envelope.iv);
     var ct   = base64ToBytes(envelope.ct);
     var aad  = strToBytes(String(aadString || envelope.aad || ''));
-    return deriveKey(passphrase, salt).then(function (key) {
+    var iter = envelope.iter || 250000;
+    return deriveLegacyKey(passphrase, salt, iter).then(function (key) {
       return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, key, ct);
     }).then(function (plainBuffer) {
       var json = bytesToStr(new Uint8Array(plainBuffer));
@@ -107,15 +96,227 @@
     });
   }
 
-  function clearKeyCache() { __keyCache.clear(); }
+  // -------------------- v=2 helpers --------------------
+  function kdfMod() {
+    if (typeof root === 'undefined' || !root || !root.MID_KDF) {
+      throw new Error('MID_KDF module missing — encrypt.js depends on kdf.js');
+    }
+    return root.MID_KDF;
+  }
+
+  // Wrap a 32-byte data key with a secret-derived KEK. Returns the
+  // wrap entry (without `kind` — caller adds it).
+  function buildWrap(dataKey, secret, kdfParams) {
+    if (!secret || typeof secret !== 'string') return Promise.reject(new Error('secret required'));
+    var KDF = kdfMod();
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var iv   = crypto.getRandomValues(new Uint8Array(12));
+    return KDF.deriveKey(secret, salt, kdfParams).then(function (kekBytes) {
+      return KDF.importAesKey(kekBytes);
+    }).then(function (kek) {
+      return crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, kek, dataKey);
+    }).then(function (wrappedBuf) {
+      var wrap = {
+        kdf:  kdfParams.kdf || 'pbkdf2',
+        salt: bytesToBase64(salt),
+        iv:   bytesToBase64(iv),
+        wrap: bytesToBase64(new Uint8Array(wrappedBuf))
+      };
+      if (kdfParams.kdf === 'argon2id') {
+        wrap.m = kdfParams.m;
+        wrap.t = kdfParams.t;
+        wrap.p = kdfParams.p;
+      } else {
+        wrap.iter = kdfParams.iter || 600000;
+      }
+      return wrap;
+    });
+  }
+
+  // Unwrap one wrap entry with a candidate secret. Returns the
+  // recovered 32-byte data key on success, rejects on failure.
+  function unwrap(wrap, secret) {
+    var KDF = kdfMod();
+    var salt = base64ToBytes(wrap.salt);
+    var iv   = base64ToBytes(wrap.iv);
+    var ct   = base64ToBytes(wrap.wrap);
+    var params;
+    if (wrap.kdf === 'argon2id') {
+      params = { kdf: 'argon2id', m: wrap.m, t: wrap.t, p: wrap.p };
+    } else {
+      params = { kdf: 'pbkdf2', iter: wrap.iter || 600000 };
+    }
+    return KDF.deriveKey(secret, salt, params).then(function (kekBytes) {
+      return KDF.importAesKey(kekBytes);
+    }).then(function (kek) {
+      return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, kek, ct);
+    }).then(function (buf) {
+      return new Uint8Array(buf);
+    });
+  }
+
+  // Default KDF parameters. We default to Argon2id when hash-wasm is
+  // available; PBKDF2 otherwise. The KDF dispatcher handles both.
+  var DEFAULT_KDF_PARAMS = { kdf: 'argon2id', m: 65536, t: 3, p: 1 };
+
+  // ---------------------------------------------------------------
+  // Public API — encrypt
+  // ---------------------------------------------------------------
+  // encryptPayload(payload, passphrase, aadString, opts?) — emits v=2.
+  //   opts:
+  //     recoveryPhrase: string (24 BIP39 words)  → adds a recovery wrap
+  //     kdfParams:      override defaults
+  function encryptPayload(payload, passphrase, aadString, opts) {
+    if (!payload || typeof payload !== 'object') return Promise.reject(new Error('payload required'));
+    if (!passphrase || passphrase.length < 8) return Promise.reject(new Error('passphrase too short — needs ≥8 chars'));
+    if (typeof crypto === 'undefined' || !crypto.subtle) return Promise.reject(new Error('SubtleCrypto unavailable'));
+    opts = opts || {};
+    var kdfParams = Object.assign({}, DEFAULT_KDF_PARAMS, opts.kdfParams || {});
+    var KDF = kdfMod();
+
+    // 1. Generate a random 256-bit data key.
+    var dataKey = crypto.getRandomValues(new Uint8Array(32));
+    var iv      = crypto.getRandomValues(new Uint8Array(12));
+    var aad     = strToBytes(String(aadString || ''));
+    var plaintext = strToBytes(JSON.stringify(payload));
+
+    // 2. Encrypt the payload with the data key.
+    var bodyPromise = KDF.importAesKey(dataKey).then(function (dk) {
+      return crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv, additionalData: aad },
+        dk,
+        plaintext
+      );
+    });
+
+    // 3. Build the passphrase wrap (always present).
+    var wrapsPromise = buildWrap(dataKey, passphrase, kdfParams).then(function (pw) {
+      pw.kind = 'passphrase';
+      var wraps = [pw];
+      if (opts.recoveryPhrase) {
+        return buildWrap(dataKey, opts.recoveryPhrase, kdfParams).then(function (rw) {
+          rw.kind = 'recovery';
+          wraps.push(rw);
+          return wraps;
+        });
+      }
+      return wraps;
+    });
+
+    // 4. Compose envelope.
+    return Promise.all([bodyPromise, wrapsPromise]).then(function (results) {
+      // Wipe the plaintext data key from memory ASAP.
+      dataKey.fill(0);
+      return {
+        v:     2,
+        iv:    bytesToBase64(iv),
+        ct:    bytesToBase64(new Uint8Array(results[0])),
+        aad:   aadString || '',
+        wraps: results[1]
+      };
+    });
+  }
+
+  // Add a new wrap to an existing v=2 envelope (e.g., add a recovery
+  // wrap to an envelope that was originally saved without one).
+  // Requires unlocking via an existing wrap, then deriving a fresh
+  // wrap for the new secret.
+  function addWrap(envelope, knownSecret, newSecret, newWrapKind, kdfParams) {
+    if (!envelope || envelope.v !== 2) return Promise.reject(new Error('addWrap only supports v=2 envelopes'));
+    if (!Array.isArray(envelope.wraps)) return Promise.reject(new Error('envelope.wraps missing'));
+    kdfParams = Object.assign({}, DEFAULT_KDF_PARAMS, kdfParams || {});
+    return tryUnwrapAny(envelope.wraps, knownSecret).then(function (dataKey) {
+      return buildWrap(dataKey, newSecret, kdfParams).then(function (w) {
+        w.kind = newWrapKind || 'extra';
+        // Wipe data key.
+        dataKey.fill(0);
+        var next = JSON.parse(JSON.stringify(envelope));
+        next.wraps = (next.wraps || []).concat([w]);
+        return next;
+      });
+    });
+  }
+
+  // Try each wrap in order; resolve with the data key from the first
+  // wrap that unlocks, reject when all fail.
+  function tryUnwrapAny(wraps, secret) {
+    var attempts = (wraps || []).map(function (w) {
+      return function () { return unwrap(w, secret); };
+    });
+    if (!attempts.length) return Promise.reject(new Error('no wraps in envelope'));
+    return new Promise(function (resolve, reject) {
+      var idx = 0;
+      function next() {
+        if (idx >= attempts.length) return reject(new Error('no wrap accepts this secret'));
+        attempts[idx++]().then(resolve).catch(next);
+      }
+      next();
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // Public API — decrypt
+  // ---------------------------------------------------------------
+  // decryptPayload(envelope, secret, aadString) — accepts v=1 + v=2.
+  // For v=2, `secret` may be the passphrase OR the recovery phrase;
+  // we try every wrap.
+  function decryptPayload(envelope, secret, aadString) {
+    if (!envelope) return Promise.reject(new Error('envelope required'));
+    if (!secret) return Promise.reject(new Error('secret required'));
+    if (typeof crypto === 'undefined' || !crypto.subtle) return Promise.reject(new Error('SubtleCrypto unavailable'));
+
+    if (envelope.v === 1) {
+      return decryptV1(envelope, secret, aadString);
+    }
+    if (envelope.v !== 2) return Promise.reject(new Error('unsupported envelope version: ' + envelope.v));
+
+    var KDF = kdfMod();
+    return tryUnwrapAny(envelope.wraps, secret).then(function (dataKey) {
+      var iv  = base64ToBytes(envelope.iv);
+      var ct  = base64ToBytes(envelope.ct);
+      var aad = strToBytes(String(aadString || envelope.aad || ''));
+      return KDF.importAesKey(dataKey).then(function (dk) {
+        return crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv, additionalData: aad }, dk, ct);
+      }).then(function (buf) {
+        // Wipe the data key from memory.
+        dataKey.fill(0);
+        var json = bytesToStr(new Uint8Array(buf));
+        return JSON.parse(json);
+      });
+    });
+  }
+
+  // Helper: which wrap kinds does this envelope support? Used by the
+  // controller to decide whether to surface a "use recovery code"
+  // option.
+  function envelopeWrapKinds(envelope) {
+    if (!envelope || envelope.v === 1) return ['passphrase'];
+    if (envelope.v === 2 && Array.isArray(envelope.wraps)) {
+      return envelope.wraps.map(function (w) { return w.kind || 'unknown'; });
+    }
+    return [];
+  }
+
+  function clearKeyCache() {
+    __legacyKeyCache.clear();
+    if (root && root.MID_KDF && typeof root.MID_KDF.clearKeyCache === 'function') {
+      root.MID_KDF.clearKeyCache();
+    }
+  }
 
   var api = {
-    encryptPayload:   encryptPayload,
-    decryptPayload:   decryptPayload,
-    clearKeyCache:    clearKeyCache,
+    encryptPayload:     encryptPayload,
+    decryptPayload:     decryptPayload,
+    addWrap:            addWrap,
+    envelopeWrapKinds:  envelopeWrapKinds,
+    clearKeyCache:      clearKeyCache,
+    DEFAULT_KDF_PARAMS: DEFAULT_KDF_PARAMS,
     // exposed for tests
-    _bytesToBase64:   bytesToBase64,
-    _base64ToBytes:   base64ToBytes
+    _bytesToBase64:     bytesToBase64,
+    _base64ToBytes:     base64ToBytes,
+    _buildWrap:         buildWrap,
+    _unwrap:            unwrap,
+    _tryUnwrapAny:      tryUnwrapAny
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_ENCRYPT = api;

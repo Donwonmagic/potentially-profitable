@@ -2034,8 +2034,13 @@
       // proof flyout can show the real ciphertext after success.
       var savedEnvelope = null;
       var savedAad = null;
+      // Wave 6.3 — capture the passphrase in the save closure so the
+      // post-save recovery-phrase setup can call MID_ENCRYPT.addWrap
+      // without re-prompting. We never expose this to globals.
+      var savedPassphrase = null;
       pickPassphrase().then(function (pp) {
         if (!pp) return; // owner cancelled — silent.
+        savedPassphrase = pp;
         setSaveStatus(null, 'busy');
         var payload = buildSavePayload();
         // AAD binds this ciphertext to a logical-id; we use a
@@ -2207,6 +2212,53 @@
               });
             } catch (_) { /* flyout is purely decorative — never block save */ }
           }
+          // Wave 6.3 — offer the recovery-phrase setup AFTER the
+          // save has succeeded. We only ask the very first time:
+          // once the operator sets up a recovery phrase OR explicitly
+          // skips, we don't pester. The recovery wrap is added to
+          // the existing envelope via MID_ENCRYPT.addWrap, then
+          // re-saved. Failures are non-fatal — the original save
+          // already succeeded, the operator can try again later.
+          try {
+            if (savedEnvelope && savedEnvelope.v === 2 &&
+                typeof MID_RECOVERY !== 'undefined' &&
+                typeof MID_PASS !== 'undefined' && MID_PASS.showRecoveryPhrase &&
+                savedPassphrase) {
+              var alreadyHasRecovery = (savedEnvelope.wraps || []).some(function (w) { return w.kind === 'recovery'; });
+              var alreadyOffered = !!(MID_RECOVERY.readGenerated && MID_RECOVERY.readGenerated());
+              if (!alreadyHasRecovery && !alreadyOffered) {
+                MID_RECOVERY.generatePhrase().then(function (phrase) {
+                  return MID_PASS.showRecoveryPhrase(phrase).then(function (confirmed) {
+                    if (!confirmed) {
+                      // Operator dismissed; mark "offered" so we don't
+                      // re-prompt every save. They can re-trigger from
+                      // a future settings panel.
+                      MID_RECOVERY.markGenerated();
+                      return;
+                    }
+                    return MID_ENCRYPT.addWrap(savedEnvelope, savedPassphrase, phrase, 'recovery').then(function (newEnv) {
+                      // Re-save the envelope with the additional wrap.
+                      var retryBody = new FormData();
+                      retryBody.set('kind', 'invoice-decoder');
+                      retryBody.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
+                      retryBody.set('aad', savedAad);
+                      retryBody.set('payload', JSON.stringify({ envelope: newEnv, aad: savedAad, items: payload.itemCount, parsedSum: payload.parsedSum }));
+                      return fetch('/api/workbench/save', { // h8-exempt:workshop-save — same encrypted-only POST, now adds recovery wrap
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body: retryBody
+                      }).then(function (r) { return r.ok ? r.json() : null; }).then(function () {
+                        MID_RECOVERY.markGenerated();
+                        if (window.plausible) {
+                          try { window.plausible('Invoice Decoder Recovery Set'); } catch (_) {}
+                        }
+                      });
+                    });
+                  });
+                }).catch(function () { /* never block on recovery setup */ });
+              }
+            }
+          } catch (_) {}
         } else {
           throw new Error(j.error || 'unknown server error');
         }

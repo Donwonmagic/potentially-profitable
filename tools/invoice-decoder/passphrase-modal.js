@@ -131,6 +131,18 @@
 .midpass-pm-links{display:flex;flex-wrap:wrap;gap:6px}\
 .midpass-pm{font-size:12px;padding:5px 10px;border:1px solid var(--line,#dcd2bf);border-radius:6px;text-decoration:none;color:var(--ink,#14161A);background:#fff;font-weight:500}\
 .midpass-pm:hover{background:var(--ink,#14161A);color:#fff;border-color:var(--ink,#14161A)}\
+.midpass-input--recovery{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.6;letter-spacing:0;padding:10px 12px;resize:vertical;min-height:88px}\
+.midpass-recovery-link{margin:8px 0 0;font-size:12.5px}\
+.midpass-link{color:var(--accent,#1F6F6A);text-decoration:underline;cursor:pointer}\
+.midpass-link:hover{color:var(--ink,#14161A)}\
+.midpass-card--recovery{max-width:560px}\
+.midpass-words{list-style:none;margin:14px 0 18px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.4}\
+@media(max-width:540px){.midpass-words{grid-template-columns:repeat(2,1fr)}}\
+.midpass-word{display:flex;align-items:baseline;gap:6px}\
+.midpass-word-n{font-size:11px;color:var(--ink-soft,#5C6470);min-width:18px;font-variant-numeric:tabular-nums}\
+.midpass-word-w{color:var(--ink,#14161A);font-weight:500}\
+.midpass-secondary{padding:9px 14px;border:1px solid var(--ink-soft,#5C6470);border-radius:999px;background:#fff;color:var(--ink,#14161A);font:inherit;font-size:13px;font-weight:500;cursor:pointer}\
+.midpass-secondary:hover{border-color:var(--accent,#1F6F6A);color:var(--accent,#1F6F6A)}\
 ';
 
   var __cssInjected = false;
@@ -155,14 +167,23 @@
       back.setAttribute('aria-modal', 'true');
       back.setAttribute('aria-labelledby', 'midpass-title');
 
+      // Wave 6.3 — recovery-phrase mode is a sub-state of unlock that
+      // shows a 24-word textarea instead of a password input.
+      var subMode = opts.subMode === 'recovery' ? 'recovery' : null;
+
       var title = mode === 'create'
         ? tt('Pick a secret to lock this invoice', 'Elige un secreto para bloquear esta factura')
-        : tt('Unlock your saved invoice', 'Desbloquea tu factura guardada');
+        : (subMode === 'recovery'
+            ? tt('Type your 24-word recovery phrase', 'Escribe tu frase de recuperación de 24 palabras')
+            : tt('Unlock your saved invoice', 'Desbloquea tu factura guardada'));
       var body = mode === 'create'
         ? tt('Pick something memorable. We never see it. Without it, your saved invoice is unreadable — even by us.',
              'Elige algo que recuerdes. Nunca lo vemos. Sin él, tu factura guardada queda ilegible — incluso para nosotros.')
-        : tt('Type the secret you used when you saved this invoice.',
-             'Escribe el secreto que usaste cuando guardaste esta factura.');
+        : (subMode === 'recovery'
+            ? tt('Paste the recovery phrase you saved when you first locked this invoice. Lowercase, single spaces; we accept any whitespace.',
+                 'Pega la frase de recuperación que guardaste al bloquear esta factura. Minúsculas, espacios sencillos; aceptamos cualquier espaciado.')
+            : tt('Type the secret you used when you saved this invoice.',
+                 'Escribe el secreto que usaste cuando guardaste esta factura.'));
 
       var html = '<div class="midpass-card">' +
         '<p class="midpass-eyebrow">' + (mode === 'create'
@@ -171,9 +192,13 @@
         '<h2 id="midpass-title" class="midpass-title">' + title + '</h2>' +
         '<p class="midpass-body">' + body + '</p>' +
         '<div class="midpass-row">' +
-          '<label class="midpass-label" for="midpass-input">' + tt('Your secret', 'Tu secreto') + '</label>' +
-          '<input id="midpass-input" class="midpass-input" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" />' +
-          '<button type="button" class="midpass-reveal" data-act="reveal" aria-pressed="false">' + tt('show', 'ver') + '</button>' +
+          '<label class="midpass-label" for="midpass-input">' +
+            (subMode === 'recovery' ? tt('Recovery phrase', 'Frase de recuperación') : tt('Your secret', 'Tu secreto')) +
+          '</label>' +
+          (subMode === 'recovery'
+            ? '<textarea id="midpass-input" class="midpass-input midpass-input--recovery" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="' + tt('twenty-four lowercase words separated by spaces', 'veinticuatro palabras en minúsculas separadas por espacios') + '"></textarea>'
+            : '<input id="midpass-input" class="midpass-input" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" />') +
+          (subMode === 'recovery' ? '' : '<button type="button" class="midpass-reveal" data-act="reveal" aria-pressed="false">' + tt('show', 'ver') + '</button>') +
           (mode === 'create' ? '<button type="button" class="midpass-generate" id="midpass-generate" aria-label="' + tt('Generate a memorable passphrase', 'Generar una contraseña memorable') + '">' + tt('Suggest one', 'Sugerir una') + '</button>' : '') +
           (mode === 'create' ? '<div class="midpass-meter" data-score="0"><span></span><span></span><span></span><span></span></div>' +
                                '<p class="midpass-meter-label" id="midpass-meter-label">' + tt('strength: empty', 'fuerza: vacío') + '</p>' : '') +
@@ -188,10 +213,24 @@
           tt('SubtleCrypto runs in your browser. The server stores opaque ciphertext — we cannot decrypt it.',
              'SubtleCrypto corre en tu navegador. El servidor guarda solo ciphertext opaco — no podemos desencriptarlo.') + '</p>' +
         '<p class="midpass-error" id="midpass-error"></p>' +
+        // Wave 6.3 — recovery-phrase escape hatch on unlock.
+        (mode === 'unlock'
+          ? '<p class="midpass-recovery-link">' +
+              (subMode === 'recovery'
+                ? '<a href="#" id="midpass-use-passphrase" class="midpass-link">' +
+                    tt('Use my passphrase instead', 'Usar mi contraseña en su lugar') +
+                  '</a>'
+                : '<a href="#" id="midpass-use-recovery" class="midpass-link">' +
+                    tt('Forgot it? Use your 24-word recovery phrase', '¿La olvidaste? Usa tu frase de recuperación de 24 palabras') +
+                  '</a>') +
+            '</p>'
+          : '') +
         '<div class="midpass-actions">' +
           '<button type="button" class="midpass-cancel" data-act="cancel">' + tt('Cancel', 'Cancelar') + '</button>' +
           '<button type="button" class="midpass-submit" data-act="submit" disabled>' +
-            (mode === 'create' ? tt('Lock & save', 'Bloquear y guardar') : tt('Unlock', 'Desbloquear')) +
+            (mode === 'create'
+              ? tt('Lock & save', 'Bloquear y guardar')
+              : (subMode === 'recovery' ? tt('Unlock with recovery phrase', 'Desbloquear con la frase') : tt('Unlock', 'Desbloquear'))) +
           '</button>' +
         '</div>' +
         (mode === 'create'
@@ -244,6 +283,18 @@
           else if (pp.length >= 8 && s.score < 2) errorEl.textContent = tt('Pick something stronger — mix letters, numbers, or symbols.', 'Elige algo más fuerte — mezcla letras, números o símbolos.');
           else if (confirm.value && confirm.value !== pp) errorEl.textContent = tt('The two entries don\'t match yet.', 'Los dos no coinciden aún.');
           else errorEl.textContent = '';
+        } else if (subMode === 'recovery') {
+          // Wave 6.3 — recovery phrase: enable submit when the input
+          // has at least 12 word-like tokens (we'll let the unlock
+          // attempt itself bounce a bad phrase rather than block at
+          // input-time, since whitespace forgiveness matters).
+          var tokens = String(pp || '').trim().split(/\s+/).filter(Boolean);
+          submit.disabled = tokens.length < 12;
+          errorEl.textContent = tokens.length === 0
+            ? ''
+            : (tokens.length < 24
+                ? tt(tokens.length + ' of 24 words typed', tokens.length + ' de 24 palabras')
+                : (tokens.length === 24 ? '' : tt('Too many words; recovery phrase is 24', 'Demasiadas palabras; la frase tiene 24')));
         } else {
           submit.disabled = pp.length < 1;
           errorEl.textContent = '';
@@ -264,6 +315,32 @@
       input.addEventListener('input', update);
       if (confirm) confirm.addEventListener('input', update);
       submit.addEventListener('click', attemptSubmit);
+
+      // Wave 6.3 — toggle between passphrase and recovery sub-modes.
+      // We close the current modal and re-open with the alternate
+      // sub-mode; the operator's progress isn't preserved across the
+      // switch (there's nothing meaningful to preserve — the inputs
+      // are different shapes).
+      var switchToRecovery = back.querySelector('#midpass-use-recovery');
+      var switchToPass     = back.querySelector('#midpass-use-passphrase');
+      if (switchToRecovery) {
+        switchToRecovery.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.removeEventListener('keydown', trapKeys);
+          try { back.remove(); } catch (_) {}
+          // Re-open in recovery sub-mode; the new modal resolves
+          // this same outer Promise via its own cleanup() call.
+          ask({ mode: 'unlock', subMode: 'recovery' }).then(resolve);
+        });
+      }
+      if (switchToPass) {
+        switchToPass.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.removeEventListener('keydown', trapKeys);
+          try { back.remove(); } catch (_) {}
+          ask({ mode: 'unlock' }).then(resolve);
+        });
+      }
       // Wave 5.4 — passphrase generator: 4 random words + a number
       // suffix from a 64-word EN+ES list. Operator can keep it,
       // tweak it, or generate again. Words are intentionally simple
@@ -417,6 +494,97 @@
     window.addEventListener('beforeunload', forget);
   }
 
+  // ---------------------------------------------------------------
+  // Wave 6.3 — show-recovery-phrase modal. Surfaced AFTER a
+  // successful save when the operator hasn't generated a recovery
+  // phrase yet. Returns Promise<phrase|null>: the operator either
+  // confirms they wrote the phrase down (resolves with the phrase
+  // so the controller can dual-wrap) or dismisses (resolves null).
+  // ---------------------------------------------------------------
+  function showRecoveryPhrase(phrase) {
+    injectCss();
+    return new Promise(function (resolve) {
+      var back = document.createElement('div');
+      back.className = 'midpass-back';
+      back.setAttribute('role', 'dialog');
+      back.setAttribute('aria-modal', 'true');
+      back.setAttribute('aria-labelledby', 'midpass-recovery-title');
+      var words = String(phrase || '').split(' ').filter(Boolean);
+      var grid = words.map(function (w, i) {
+        return '<li class="midpass-word"><span class="midpass-word-n">' + (i + 1) + '</span>' +
+               '<span class="midpass-word-w">' + w + '</span></li>';
+      }).join('');
+      back.innerHTML =
+        '<div class="midpass-card midpass-card--recovery">' +
+          '<p class="midpass-eyebrow">' + tt('Recovery phrase', 'Frase de recuperación') + '</p>' +
+          '<h2 id="midpass-recovery-title" class="midpass-title">' +
+            tt('Save these 24 words somewhere safe', 'Guarda estas 24 palabras en un lugar seguro') +
+          '</h2>' +
+          '<p class="midpass-body">' +
+            tt('If you forget your passphrase, this phrase unlocks your saved invoices. We never see it. Write it down on paper, store it in a password manager, or do both.',
+               'Si olvidas tu contraseña, esta frase desbloquea tus facturas. Nunca la vemos. Escríbela en papel, guárdala en un gestor de contraseñas, o ambas.') +
+          '</p>' +
+          '<ol class="midpass-words">' + grid + '</ol>' +
+          '<div class="midpass-actions">' +
+            '<button type="button" class="midpass-cancel" id="midpass-recovery-skip">' +
+              tt('Not yet', 'Aún no') +
+            '</button>' +
+            '<button type="button" class="midpass-secondary" id="midpass-recovery-copy">' +
+              tt('Copy to clipboard', 'Copiar al portapapeles') +
+            '</button>' +
+            '<button type="button" class="midpass-secondary" id="midpass-recovery-print">' +
+              tt('Print', 'Imprimir') +
+            '</button>' +
+            '<button type="button" class="midpass-submit" id="midpass-recovery-confirm">' +
+              tt("I've saved it — lock with recovery", 'Guardada — bloquear con recuperación') +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(back);
+
+      var cleanup = function (val) {
+        try { back.remove(); } catch (_) {}
+        resolve(val);
+      };
+      back.querySelector('#midpass-recovery-skip').addEventListener('click', function () {
+        cleanup(null);
+      });
+      back.querySelector('#midpass-recovery-confirm').addEventListener('click', function () {
+        cleanup(phrase);
+      });
+      back.querySelector('#midpass-recovery-copy').addEventListener('click', function () {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phrase);
+          } else {
+            // Fallback for older browsers — select+copy via temp textarea.
+            var ta = document.createElement('textarea');
+            ta.value = phrase;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+        } catch (_) {}
+      });
+      back.querySelector('#midpass-recovery-print').addEventListener('click', function () {
+        // Open a small print-only window with the phrase formatted.
+        try {
+          var w = window.open('', 'recovery-print', 'width=520,height=720');
+          if (!w) return;
+          w.document.write('<title>Recovery phrase</title>' +
+            '<style>body{font-family:ui-monospace,monospace;font-size:14px;padding:24px;line-height:1.6}h1{font-size:18px}ol{padding-left:28px}li{padding:2px 0}</style>' +
+            '<h1>Invoice Decoder — recovery phrase</h1>' +
+            '<p>Keep this paper somewhere safe. Anyone with these 24 words can unlock your saved invoices.</p>' +
+            '<ol>' + words.map(function (w) { return '<li>' + w + '</li>'; }).join('') + '</ol>' +
+            '<p style="margin-top:24px;font-size:11px;color:#666">Generated ' + new Date().toLocaleString() + '</p>' +
+            '<script>window.onload=function(){window.print()}</' + 'script>');
+          w.document.close();
+        } catch (_) {}
+      });
+    });
+  }
+
   // Surface the strength function so encrypt.js (or tests) can
   // sanity-check programmatically without rendering the modal.
   var api = {
@@ -426,6 +594,7 @@
     forget: forget,
     hasMemory: hasMemory,
     classifyStrength: classifyStrength,
+    showRecoveryPhrase: showRecoveryPhrase,
     _COMMON_BLOCKLIST: COMMON_BLOCKLIST
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
