@@ -324,7 +324,7 @@
       var swatches = [t.paper, t.ink, t.accent, t.muted].map(function (c) {
         return '<span style="background:' + c + '"></span>';
       }).join('');
-      return '<li class="md-theme" role="radio" tabindex="0" aria-checked="' + (id === themeId) + '" data-active="' + (id === themeId) + '" data-id="' + id + '">' +
+      return '<li class="md-theme" role="radio" tabindex="' + (id === themeId ? '0' : '-1') + '" aria-checked="' + (id === themeId) + '" data-active="' + (id === themeId) + '" data-id="' + id + '">' +
         '<p class="md-theme-name">' + escHtml(label) + '</p>' +
         '<p class="md-theme-blurb">' + escHtml(blurb) + '</p>' +
         '<div class="md-theme-swatches">' + swatches + '</div>' +
@@ -341,17 +341,66 @@
       renderPreview();
       scheduleSaveDraft();
     });
+    // W10-2 — full keyboard support per APG radiogroup pattern.
+    // Enter / Space = select; ArrowLeft/Right/Up/Down = move focus
+    // and select; Home / End = first / last. Roving tabindex
+    // means only the active radio carries tabindex="0".
     themesEl.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
       var li = e.target.closest('.md-theme');
       if (!li) return;
-      e.preventDefault();
-      themeId = li.dataset.id;
+      var allLis = Array.prototype.slice.call(themesEl.querySelectorAll('.md-theme'));
+      var idx = allLis.indexOf(li);
+      var nextIdx = idx;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        themeId = li.dataset.id;
+        renderThemePicker();
+        renderPreview();
+        scheduleSaveDraft();
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); nextIdx = (idx + 1) % allLis.length; }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); nextIdx = (idx - 1 + allLis.length) % allLis.length; }
+      else if (e.key === 'Home') { e.preventDefault(); nextIdx = 0; }
+      else if (e.key === 'End')  { e.preventDefault(); nextIdx = allLis.length - 1; }
+      else return;
+      themeId = allLis[nextIdx].dataset.id;
       renderThemePicker();
       renderPreview();
       scheduleSaveDraft();
+      // Restore focus to the newly-active radio (renderThemePicker
+      // recreates the list).
+      var freshLis = themesEl.querySelectorAll('.md-theme');
+      if (freshLis[nextIdx]) freshLis[nextIdx].focus();
     });
   }
+  // W10-2 — global keyboard shortcuts: Cmd/Ctrl-S = manual save toast,
+  // Cmd/Ctrl-D = trigger download, Esc = close any open <details>
+  // (allergen popovers, draft banner, paste drawer, meta block).
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      persistDraft();
+      setDownloadMsg(tt('Draft saved.', 'Borrador guardado.'), 'success');
+      return;
+    }
+    if (mod && (e.key === 'd' || e.key === 'D')) {
+      e.preventDefault();
+      if (downloadBtn && !downloadBtn.disabled) downloadBtn.click();
+      return;
+    }
+    if (e.key === 'Escape') {
+      // Close any open details (popovers, banners) — non-destructive.
+      var openDetails = document.querySelectorAll('details[open]');
+      openDetails.forEach(function (d) {
+        if (d.classList.contains('md-allergen-pop') || d.classList.contains('md-meta') ||
+            d.classList.contains('md-paste') || d.classList.contains('md-print-checklist')) {
+          d.open = false;
+        }
+      });
+    }
+  });
 
   // -------------------- Logo upload --------------------
   function setLogoWarn(msg) {
@@ -1125,13 +1174,37 @@
     return out;
   }
 
+  // W10-2 — inline paste-error banner (replaces blocking alert()).
+  function setPasteError(text) {
+    var host = document.getElementById('mdPaste');
+    if (!host) return;
+    var existing = document.getElementById('mdPasteError');
+    if (text) {
+      var el = existing;
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'mdPasteError';
+        el.setAttribute('role', 'alert');
+        el.style.cssText = 'margin:8px 14px 0;padding:8px 12px;border:1px solid var(--rust);border-left:3px solid var(--rust);border-radius:6px;background:#FBF0EA;color:#7a4408;font-size:12.5px;line-height:1.5';
+        host.appendChild(el);
+      }
+      el.textContent = text;
+    } else if (existing) {
+      existing.parentNode && existing.parentNode.removeChild(existing);
+    }
+  }
+
   if (pasteApply) pasteApply.addEventListener('click', function () {
     if (!pasteArea) return;
     var parsed = parsePaste(pasteArea.value);
     if (!parsed.length) {
-      alert('Could not find any dishes in that paste. Try one row per dish, or use the sample as a template.');
+      setPasteError(tt(
+        'Could not find any dishes in that paste. Try one row per dish, or use the sample as a template.',
+        'No se encontraron platos en el pegado. Prueba un renglón por plato, o usa la muestra como plantilla.'
+      ));
       return;
     }
+    setPasteError('');
     // Append to existing rows, preserving the user's prior typing.
     rows = rows.concat(parsed);
     render();
@@ -1585,6 +1658,80 @@
         largePrintBtn.disabled = false;
         largePrintBtn.innerHTML = origLabel;
       });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W10-2 — Plain-text + SSML accessible exports. Both build entirely
+  // in-memory using the MD_TEXT module; no fetches, no CDN. The
+  // resulting Blob is downloaded via createObjectURL.
+  // ----------------------------------------------------------------
+  var exportTextBtn = document.getElementById('mdExportText');
+  var exportSsmlBtn = document.getElementById('mdExportSsml');
+
+  function downloadBlob(content, filename, mime) {
+    var blob = new Blob([content], { type: mime });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      if (a.parentNode) a.parentNode.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }, 4000);
+  }
+  function buildEmitterOpts() {
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    var titleVal = '';
+    try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
+    if (!titleVal) titleVal = tt('Menu', 'Menú');
+    return {
+      rows:    realRows,
+      theme:   theme,
+      title:   titleVal,
+      tagline: meta.tagline,
+      story:   meta.story,
+      locale:  LOCALE
+    };
+  }
+
+  if (exportTextBtn) {
+    exportTextBtn.addEventListener('click', function () {
+      if (typeof MD_TEXT === 'undefined') return;
+      var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting plain text.', 'Agrega al menos un plato antes de exportar.'), 'error');
+        return;
+      }
+      var opts = buildEmitterOpts();
+      var md  = MD_TEXT.exportMarkdown(opts);
+      var txt = MD_TEXT.exportPlainText(opts);
+      var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      // Download both — operators tend to want either.
+      downloadBlob(md,  slug + '-menu.md',  'text/markdown');
+      setTimeout(function () { downloadBlob(txt, slug + '-menu.txt', 'text/plain'); }, 250);
+      setDownloadMsg(tt('Plain text + Markdown downloaded — screen-reader friendly.',
+                        'Texto plano + Markdown descargados — compatibles con lectores de pantalla.'), 'success');
+      if (window.plausible) { try { window.plausible('Menu Design Text Exported'); } catch (_) {} }
+    });
+  }
+  if (exportSsmlBtn) {
+    exportSsmlBtn.addEventListener('click', function () {
+      if (typeof MD_TEXT === 'undefined') return;
+      var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting SSML.', 'Agrega al menos un plato antes de exportar SSML.'), 'error');
+        return;
+      }
+      var opts = buildEmitterOpts();
+      var ssml = MD_TEXT.exportSsml(opts);
+      var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      downloadBlob(ssml, slug + '-menu.ssml', 'application/ssml+xml');
+      setDownloadMsg(tt('SSML downloaded — pipe to AWS Polly / Google TTS / Azure Speech.',
+                        'SSML descargado — compatible con AWS Polly / Google TTS / Azure Speech.'), 'success');
+      if (window.plausible) { try { window.plausible('Menu Design SSML Exported'); } catch (_) {} }
     });
   }
 
