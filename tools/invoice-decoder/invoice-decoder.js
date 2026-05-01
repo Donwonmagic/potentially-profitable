@@ -191,6 +191,22 @@
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
   function confBand(c) { return c >= 80 ? 'green' : c >= 60 ? 'amber' : 'red'; }
+  // Restaurant-real category labels, EN + ES. The lexicon keys
+  // are stable identifiers; these are the user-facing strings.
+  var CAT_LABEL_EN = {
+    protein: 'Protein', seafood: 'Seafood', produce: 'Produce', dairy: 'Dairy',
+    'dry-goods': 'Dry goods', 'herbs-spices': 'Herbs & spices',
+    paper: 'Paper goods', cleaning: 'Cleaning', beverage: 'Beverage'
+  };
+  var CAT_LABEL_ES = {
+    protein: 'Proteína', seafood: 'Mariscos', produce: 'Verduras', dairy: 'Lácteos',
+    'dry-goods': 'Abarrotes', 'herbs-spices': 'Hierbas y especias',
+    paper: 'Papel', cleaning: 'Limpieza', beverage: 'Bebidas'
+  };
+  function catLabel(cat) {
+    if (!cat) return tt('uncategorized', 'sin categoría');
+    return (LOCALE === 'es' ? CAT_LABEL_ES[cat] : CAT_LABEL_EN[cat]) || cat;
+  }
 
   function readPendingInvoice() {
     if (!pendingPages.length) return;
@@ -237,6 +253,18 @@
     }, Promise.resolve()).then(function () {
       setProgress(96);
       var parsed = MID_PARSE.parseLines(allLines, fullText);
+      // Wave B4 — classify every parsed row. Stamps category +
+      // categoryConfidence + categoryTier on each row so the
+      // verification UX (B5) can render chips, group totals, and
+      // sort review priority.
+      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+        parsed.rows.forEach(function (r) {
+          var c = MID_CATEGORIZE.classify(r);
+          r.category = c.category;
+          r.categoryConfidence = c.confidence;
+          r.categoryTier = c.tier;
+        });
+      }
       renderParsed(parsed);
       setProgress(100);
       hideStatus();
@@ -297,8 +325,17 @@
       if (r.unit) qtyParts.push(r.unit);
       var qtyText = qtyParts.length ? qtyParts.join(' ') : '';
       var priceText = r.lineTotal != null ? '$' + r.lineTotal.toFixed(2) : '';
+      // Category chip — restaurant-real bucket label. Hidden when
+      // unclassified (tier-3 heuristic returned null AND lexicon
+      // missed). Owner edits the category in Wave B5's verifier.
+      var chip = '';
+      if (r.category) {
+        chip = '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '">' + escHtml(catLabel(r.category)) + '</span>';
+      } else {
+        chip = '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
+      }
       return '<li class="id-parsed-row" data-conf="' + confBand(r.confidence) + '" title="' + escHtml(r.raw) + '">' +
-        '<span class="id-parsed-name">' + escHtml(r.name) + '</span>' +
+        '<span class="id-parsed-name">' + escHtml(r.name) + chip + '</span>' +
         '<span class="id-parsed-qty">' + escHtml(qtyText) + '</span>' +
         '<span class="id-parsed-price">' + escHtml(priceText) + '</span>' +
       '</li>';

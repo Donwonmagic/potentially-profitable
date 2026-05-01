@@ -94,6 +94,17 @@
 .id-parsed-row .id-parsed-name{font-weight:500;color:var(--ink)}
 .id-parsed-row .id-parsed-qty{color:var(--stone);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .id-parsed-row .id-parsed-price{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-cat{display:inline-block;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;color:var(--ink);background:var(--cream-2);border:1px solid var(--line);vertical-align:middle}
+.id-parsed-cat[data-cat="protein"]    {background:#FCE9E1;color:#7a2e1f;border-color:#f3cab8}
+.id-parsed-cat[data-cat="seafood"]    {background:#E1F0F4;color:#0f5063;border-color:#bcdce4}
+.id-parsed-cat[data-cat="produce"]    {background:#E8F4E1;color:#3a6a1f;border-color:#c4dfb6}
+.id-parsed-cat[data-cat="dairy"]      {background:#FAF1DC;color:#7a5a14;border-color:#ecdaa9}
+.id-parsed-cat[data-cat="dry-goods"]  {background:#F0EBE0;color:#5a4a30;border-color:#d8cdb6}
+.id-parsed-cat[data-cat="herbs-spices"]{background:#E8E1F0;color:#4a2f6a;border-color:#cdbcdf}
+.id-parsed-cat[data-cat="paper"]      {background:#EEEEEE;color:#444;border-color:#cccccc}
+.id-parsed-cat[data-cat="cleaning"]   {background:#E1EFF0;color:#1f5663;border-color:#b8d8de}
+.id-parsed-cat[data-cat="beverage"]   {background:#F0E1F0;color:#5a1f5a;border-color:#dfbbdf}
+.id-parsed-cat-none{color:var(--stone);background:transparent;border-style:dashed}
 @media(max-width:540px){
   .id-parsed-row{grid-template-columns:1fr;gap:2px}
   .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
@@ -231,6 +242,7 @@
 <script src="./preprocess.js?v=20260501-b2"></script>
 <script src="./ocr.js?v=20260501-b2"></script>
 <script src="./parse.js?v=20260501-b2"></script>
-<script src="./invoice-decoder.js?v=20260501-b2"></script>
+<script src="./categorize.js?v=20260501-b4"></script>
+<script src="./invoice-decoder.js?v=20260501-b4"></script>
 </body>
 </html>
