@@ -432,6 +432,16 @@
           parsed.vendor = vendorMatch.id;
         }
       }
+      // Wave 4.2 evolution — wait for the vendor enrichment fetch so
+      // categorize.tier05VendorHints can read the categoryHints (SKU
+      // prefix maps, class-code maps) from the per-vendor JSON.
+      // Falls through with no enrichment when fetch fails or when no
+      // vendor matched. Cache-first; subsequent invoices from the
+      // same vendor see no delay.
+      var enrichmentPromise = (vendorMatch && MID_VENDORS.loadEnrichment)
+        ? MID_VENDORS.loadEnrichment(vendorMatch.id)
+        : Promise.resolve(null);
+      return enrichmentPromise.then(function () {
       // Wave B4 — classify every parsed row. Stamps category +
       // categoryConfidence + categoryTier on each row so the
       // verification UX (B5) can render chips, group totals, and
@@ -463,6 +473,7 @@
           delta_known: parsed.deltaPct != null ? 'true' : 'false'
         } });
       }
+      });   // close enrichmentPromise.then
     }).catch(function (err) {
       clearPhaseLadder();
       showStatus(

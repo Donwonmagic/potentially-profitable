@@ -232,7 +232,16 @@
       if (!r.ok) return null;
       return r.json();
     }).then(function (j) {
-      if (j) __enrichmentCache[id] = j;
+      if (j) {
+        __enrichmentCache[id] = j;
+        // Wave 4.2 evolution — pin the enrichment back onto the
+        // matching STUB so categorize.tier05VendorHints() can read
+        // categoryHints synchronously when classifying rows. The
+        // cache lives across renders for the page's lifetime.
+        for (var i = 0; i < STUBS.length; i++) {
+          if (STUBS[i].id === id) { STUBS[i]._enrichment = j; break; }
+        }
+      }
       return j;
     }).catch(function () { return null; });
   }
@@ -277,6 +286,28 @@
   // Public REGISTRY — array of facades. Compatible with legacy
   // consumers; `detect()` is synchronous.
   var REGISTRY = STUBS.map(facadeForStub);
+
+  // Wave 4.2 evolution — eagerly prefetch every vendor's enrichment
+  // JSON at idle time after page load. The 22 templates are tiny
+  // (~1 KB each) and lazy-load over HTTP cache; warming them all
+  // pre-emptively means categorize.tier05VendorHints sees the
+  // categoryHints synchronously when an invoice is parsed. Browsers
+  // without requestIdleCallback fall back to a 1.5s setTimeout.
+  function prefetchAllEnrichments() {
+    if (typeof root === 'undefined' || !root || typeof fetch === 'undefined') return;
+    var schedule = (typeof root.requestIdleCallback === 'function')
+      ? function (cb) { root.requestIdleCallback(cb, { timeout: 4000 }); }
+      : function (cb) { setTimeout(cb, 1500); };
+    schedule(function () {
+      for (var i = 0; i < STUBS.length; i++) {
+        loadEnrichment(STUBS[i].id);   // fire-and-forget
+      }
+    });
+  }
+  if (typeof root !== 'undefined' && root && root.document) {
+    if (root.document.readyState === 'complete') prefetchAllEnrichments();
+    else root.addEventListener('load', prefetchAllEnrichments, { once: true });
+  }
 
   // ---------------------------------------------------------------
   // detectVendor — unchanged signature.

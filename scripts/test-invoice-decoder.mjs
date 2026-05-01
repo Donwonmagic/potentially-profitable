@@ -1430,6 +1430,129 @@ console.log(`\nLive capture coach state machine + metrics (Wave 2.1):`);
 
 console.log(`\nWave 2.1 fixtures: ${coachPass} passed.`);
 
+// =====================================================================
+// Wave 4.2 evolution — vendor categoryHints (Tier 0.5).
+// =====================================================================
+
+let v42Pass = 0, v42Fail = 0;
+console.log(`\nVendor categoryHints — Tier 0.5 (Wave 4.2 evolution):`);
+{
+  // Stub MID_VENDORS with the cached-enrichment shape categorize.js
+  // expects. We're testing that tier05VendorHints reads the
+  // _enrichment fields and short-circuits to the mapped category.
+  global.window = global.window || {};
+  global.window.MID_VENDORS = {
+    STUBS: [
+      {
+        id: 'sysco',
+        _enrichment: {
+          categoryHints: {
+            skuPrefixMap: { '01': 'produce', '02': 'protein', '05': 'seafood' }
+          }
+        }
+      },
+      {
+        id: 'gfs',
+        _enrichment: {
+          categoryHints: {
+            classCodeRegex: '\\b(PRD|PRO|DRY|PAP|FRZ|BEV|JAN|SML|EQU|SEA|DAI|HRB)\\b',
+            classCodeMap: { 'PRD': 'produce', 'PRO': 'protein', 'DRY': 'dry-goods', 'PAP': 'paper' }
+          }
+        }
+      }
+    ]
+  };
+
+  // Fresh import of categorize so the new global.window.MID_VENDORS
+  // is visible. (Node module-cache means a re-import reuses the
+  // first-load — but the IIFE captures `root` once at module load.
+  // We're stubbing AFTER first-load above; tier05VendorHints
+  // re-reads root.MID_VENDORS each call, so the stub still works.)
+  // Re-importing also avoids cross-test pollution from earlier
+  // stubs that stuffed root.MuntinContext etc.
+  const CAT = await import(path.join(repoRoot, 'tools/invoice-decoder/categorize.js')).then(m => m.default || m);
+
+  // GFS class-code path: row.raw contains "PRD" → produce.
+  const gfsRow = {
+    name:           'Romaine Hearts 24ct',
+    raw:            '0123456 PRD ROMAINE HEARTS 24CT 2 CS $48.00',
+    vendorDetected: 'gfs'
+  };
+  const gfsHit = CAT.tier05VendorHints(gfsRow);
+  const okGfs = gfsHit && gfsHit.category === 'produce' && gfsHit.tier === 'vendor-class-code' && gfsHit.matched === 'PRD';
+  console.log(`  ${okGfs ? '✓' : '✗'} GFS classCodeRegex matches PRD on row.raw → produce (got ${gfsHit ? gfsHit.category : 'null'})`);
+  if (okGfs) v42Pass++; else v42Fail++;
+
+  // GFS class-code: PRO → protein.
+  const gfsRow2 = {
+    name:           'Ground Chuck 10lb',
+    raw:            '0234567 PRO GROUND CHUCK 10LB 2 CS $58.00',
+    vendorDetected: 'gfs'
+  };
+  const gfsHit2 = CAT.tier05VendorHints(gfsRow2);
+  const okGfs2 = gfsHit2 && gfsHit2.category === 'protein';
+  console.log(`  ${okGfs2 ? '✓' : '✗'} GFS PRO class-code → protein (got ${gfsHit2 ? gfsHit2.category : 'null'})`);
+  if (okGfs2) v42Pass++; else v42Fail++;
+
+  // Sysco SKU-prefix path: row.sku starts with '01' → produce.
+  const syscoRow = {
+    name:           'Whatever',
+    sku:            '0123456',
+    vendorDetected: 'sysco'
+  };
+  const syscoHit = CAT.tier05VendorHints(syscoRow);
+  const okSysco = syscoHit && syscoHit.category === 'produce' && syscoHit.tier === 'vendor-sku-prefix' && syscoHit.matched === '01';
+  console.log(`  ${okSysco ? '✓' : '✗'} Sysco skuPrefixMap matches '01' → produce (got ${syscoHit ? syscoHit.category : 'null'})`);
+  if (okSysco) v42Pass++; else v42Fail++;
+
+  // Sysco SKU '02' → protein
+  const syscoRow2 = { name: 'Beef', sku: '0234567', vendorDetected: 'sysco' };
+  const syscoHit2 = CAT.tier05VendorHints(syscoRow2);
+  const okSysco2 = syscoHit2 && syscoHit2.category === 'protein';
+  console.log(`  ${okSysco2 ? '✓' : '✗'} Sysco skuPrefixMap matches '02' → protein (got ${syscoHit2 ? syscoHit2.category : 'null'})`);
+  if (okSysco2) v42Pass++; else v42Fail++;
+
+  // Unknown SKU prefix returns null (no false positive).
+  const unknownPrefix = CAT.tier05VendorHints({ name: 'X', sku: '999XXXX', vendorDetected: 'sysco' });
+  const okUnknown = unknownPrefix === null;
+  console.log(`  ${okUnknown ? '✓' : '✗'} unknown SKU prefix returns null (no false positive)`);
+  if (okUnknown) v42Pass++; else v42Fail++;
+
+  // No vendor detected → null.
+  const noVendor = CAT.tier05VendorHints({ name: 'X', sku: '0123456' });
+  console.log(`  ${noVendor === null ? '✓' : '✗'} no vendorDetected returns null cleanly`);
+  if (noVendor === null) v42Pass++; else v42Fail++;
+
+  // Confidence is 88-90 (vendor-printed signals are essentially
+  // ground truth; we want them to outrank brand index at 92 only
+  // when learned-overrides haven't fired).
+  const okConfRange = gfsHit.confidence >= 88 && gfsHit.confidence <= 95 &&
+                      syscoHit.confidence >= 88 && syscoHit.confidence <= 95;
+  console.log(`  ${okConfRange ? '✓' : '✗'} categoryHints confidence in 88-95 band (class-code ${gfsHit.confidence}, sku-prefix ${syscoHit.confidence})`);
+  if (okConfRange) v42Pass++; else v42Fail++;
+
+  // The full classify() pipeline routes through tier05 BEFORE the
+  // brand index, so a row that matches both should pick the vendor
+  // signal. Build a row that has both a brand name AND a class code.
+  const dualRow = {
+    name:           'STELLA ARTOIS 24/12 BTL',
+    raw:            'BEV STELLA ARTOIS 24/12 BTL CASE $42.00',
+    vendorDetected: 'gfs'
+  };
+  // GFS classCodeMap doesn't include BEV in our test stub — the
+  // brand-index path should win. Add BEV to the stub map first.
+  global.window.MID_VENDORS.STUBS[1]._enrichment.categoryHints.classCodeMap.BEV = 'beverage';
+  const dual = CAT.classify(dualRow);
+  const okDual = dual.tier === 'vendor-class-code' && dual.category === 'beverage';
+  console.log(`  ${okDual ? '✓' : '✗'} classify() routes through tier05 before brand-index when both match (got tier=${dual.tier}, cat=${dual.category})`);
+  if (okDual) v42Pass++; else v42Fail++;
+
+  delete global.window.MID_VENDORS;
+  delete global.window;
+}
+
+console.log(`\nWave 4.2 evolution fixtures: ${v42Pass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -1437,5 +1560,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + kdfFail + recFail
   + v41Fail
   + splitFail
-  + coachFail;
+  + coachFail
+  + v42Fail;
 process.exit(grandFail === 0 ? 0 : 1);

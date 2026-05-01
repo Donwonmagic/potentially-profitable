@@ -35,5 +35,22 @@
     "^supc\\s+pack\\s+size",
     "^marketplace\\s+order"
   ],
-  "confidenceBoost": 12
+  "confidenceBoost": 12,
+  "categoryHints": {
+    "_doc": "SUPC stems map deterministically to category. Sysco's 7-digit SKU is structured: the first 2 digits indicate the warehouse pick zone, which lines up almost 1:1 with our 9-bucket taxonomy. Stems are matched via row.sku.startsWith() — only the first 2 chars are consulted.",
+    "skuPrefixMap": {
+      "01": "produce",
+      "02": "protein",
+      "03": "dairy",
+      "04": "produce",
+      "05": "seafood",
+      "06": "beverage",
+      "07": "dry-goods",
+      "08": "dry-goods",
+      "09": "herbs-spices",
+      "10": "paper",
+      "11": "cleaning",
+      "12": "paper"
+    }
+  }
 }

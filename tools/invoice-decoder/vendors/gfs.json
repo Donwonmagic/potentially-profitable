@@ -26,5 +26,23 @@
     "^item\\s+class",
     "^prd\\s+pro\\s+dry"
   ],
-  "confidenceBoost": 14
+  "confidenceBoost": 14,
+  "categoryHints": {
+    "_doc": "GFS prints a 3-letter item-class code on each line, immediately after the SKU. PRD/PRO/DRY/PAP/FRZ/BEV/JAN are the canonical set; we map them to our 9-bucket taxonomy. classCodeRegex matches the code against the row's raw text.",
+    "classCodeRegex": "\\b(PRD|PRO|DRY|PAP|FRZ|BEV|JAN|SML|EQU|SEA|DAI|HRB)\\b",
+    "classCodeMap": {
+      "PRD": "produce",
+      "PRO": "protein",
+      "SEA": "seafood",
+      "DAI": "dairy",
+      "DRY": "dry-goods",
+      "HRB": "herbs-spices",
+      "PAP": "paper",
+      "JAN": "cleaning",
+      "BEV": "beverage",
+      "FRZ": "produce",
+      "SML": "paper",
+      "EQU": "paper"
+    }
+  }
 }
