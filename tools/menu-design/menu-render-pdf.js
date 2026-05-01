@@ -1914,14 +1914,181 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // W24-2 — Page count estimator. Runs the same paginate() logic
+  // against a no-render jsPDF doc to count pages and record the
+  // block index where each page break falls. The preview consumes
+  // this so the operator sees the actual deliverable shape (one
+  // .md-preview-paper per page) instead of an unbounded column.
+  //
+  // Returns { pages: number, breaks: [blockIndex,...], panels?: number }
+  //   pages   — page count for sheet flow OR panel count for panel flow
+  //   breaks  — block-index points where the renderer would addPage()
+  //   panels  — only set when paper.flow === 'panel'
+  //
+  // Cost: ~5ms at 30 dishes. Caller (renderPreview) protects against
+  // jank with the existing 300ms previewTimer debounce.
+  // ----------------------------------------------------------------
+  function paginateForCountSheet(blocks, doc, theme, paper) {
+    // Mirror of paginate() at line 1305, but record breaks instead
+    // of calling drawBlock.
+    var minTwoColW = 400;
+    var twoColumn = (theme.columns === 2) && (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    if (twoColumn) return paginateForCountTwoCol(blocks, doc, theme, paper);
+    var margin = paper.margin || 48;
+    var contentY = margin;
+    var contentWidth = paper.w - margin * 2;
+    var bottom = paper.h - margin;
+    var pageCount = 1;
+    var breaks = [];
+    blocks.forEach(function (block, i) {
+      var h = measureBlock(block, doc, theme, contentWidth);
+      if (block.kind === 'cover') {
+        // Cover always consumes a full sheet; the next dish block
+        // starts on the next sheet.
+        pageCount++;
+        contentY = margin;
+        breaks.push(i + 1);
+        return;
+      }
+      if (block.kind === 'section') {
+        var nextDishH = 0;
+        for (var j = i + 1; j < Math.min(i + 3, blocks.length); j++) {
+          if (blocks[j].kind === 'dish') {
+            nextDishH += measureBlock(blocks[j], doc, theme, contentWidth);
+          }
+        }
+        if (contentY + h + nextDishH > bottom) {
+          pageCount++;
+          contentY = margin;
+          breaks.push(i);
+        }
+      } else if (contentY + h > bottom) {
+        pageCount++;
+        contentY = margin;
+        breaks.push(i);
+      }
+      // Approximate the post-block y-cursor. measureBlock returns
+      // height; we don't run drawBlock so just advance contentY by h.
+      contentY += h;
+    });
+    return { pages: pageCount, breaks: breaks };
+  }
+
+  function paginateForCountTwoCol(blocks, doc, theme, paper) {
+    // Mirror of paginateTwoCol() at line 1386 — count-only branch.
+    // The packer fills column 1 then column 2 then breaks. We track
+    // pages by simulating the same logic.
+    var margin = paper.margin || 48;
+    var pageH = paper.h;
+    var contentY = margin;
+    var contentWidth = paper.w - margin * 2;
+    var gutter = 24;
+    var colWidth = (contentWidth - gutter) / 2;
+    var bottom = pageH - margin;
+    var pageCount = 1;
+    var breaks = [];
+
+    var i = 0;
+    while (i < blocks.length && blocks[i].kind === 'cover') {
+      pageCount++;
+      contentY = margin;
+      breaks.push(i + 1);
+      i++;
+    }
+    function spanWidth(b) {
+      return (b.kind === 'title' || b.kind === 'logo' || b.kind === 'story' ||
+              b.kind === 'section' || b.kind === 'section-hero' ||
+              b.kind === 'meta-footer' || b.kind === 'allergen-key' ||
+              b.kind === 'footer-ornament') ? 'both' : 'col';
+    }
+    var pending = [];
+    function flushPending() {
+      if (!pending.length) return;
+      var heights = pending.map(function (b) { return measureBlock(b, doc, theme, colWidth); });
+      var idx = 0;
+      while (idx < pending.length) {
+        var perCol = bottom - contentY;
+        // Greedy column 1 fill.
+        var col1H = 0; var col1End = idx;
+        var remainH = 0;
+        for (var k = idx; k < pending.length; k++) remainH += heights[k];
+        var target = Math.min(remainH / 2 + 12, perCol);
+        while (col1End < pending.length && col1H + heights[col1End] <= target) {
+          col1H += heights[col1End]; col1End++;
+        }
+        if (col1End === idx && col1End < pending.length) { col1H += heights[col1End]; col1End++; }
+        // Greedy column 2 fill.
+        var col2H = 0; var col2End = col1End;
+        while (col2End < pending.length && col2H + heights[col2End] <= perCol) {
+          col2H += heights[col2End]; col2End++;
+        }
+        contentY += Math.max(col1H, col2H) + 6;
+        idx = col2End;
+        if (idx < pending.length) {
+          pageCount++;
+          contentY = margin;
+        }
+      }
+      pending = [];
+    }
+    while (i < blocks.length) {
+      var b = blocks[i];
+      if (spanWidth(b) === 'both') {
+        flushPending();
+        var h = measureBlock(b, doc, theme, contentWidth);
+        if (contentY + h > bottom) {
+          pageCount++;
+          contentY = margin;
+          breaks.push(i);
+        }
+        contentY += h;
+      } else {
+        pending.push(b);
+      }
+      i++;
+    }
+    flushPending();
+    return { pages: pageCount, breaks: breaks };
+  }
+
+  function paginateForCountPanel(blocks, doc, theme, paper) {
+    // Panel flow doesn't paginate — it maps to logical panels. The
+    // estimator returns { panels: paper.panels } for the chip and
+    // sets pages: 1 (the unfolded sheet IS one page). The preview
+    // consumes panels separately via paper.panelMap.
+    var panels = paper.panels || 1;
+    return { pages: 1, panels: panels, breaks: [] };
+  }
+
+  function paginateForCount(blocks, doc, theme, paper) {
+    if (paper.flow === 'panel') return paginateForCountPanel(blocks, doc, theme, paper);
+    return paginateForCountSheet(blocks, doc, theme, paper);
+  }
+
+  function estimatePages(rows, theme, paperKey, customDims) {
+    var paper = resolvePaper(paperKey, customDims);
+    if (!root.jspdf || !root.jspdf.jsPDF) return { pages: 1, breaks: [], panels: paper.panels };
+    try {
+      var doc = new root.jspdf.jsPDF({ unit: 'pt', format: [paper.w, paper.h] });
+      var blocks = buildBlocks(rows || [], '', null, { themeId: (theme && theme.id) || '' });
+      var out = paginateForCount(blocks, doc, theme, paper);
+      out.flow = paper.flow;
+      return out;
+    } catch (e) {
+      return { pages: 1, breaks: [], panels: paper.panels, error: e && e.message };
+    }
+  }
+
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride };
+    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride, estimatePages: estimatePages };
   }
   if (root) root.MD_PDF = {
     exportPdf: exportPdf,
     PAPERS: PAPERS,
     applyLargePrintOverride: applyLargePrintOverride,
     applyHighContrastOverride: applyHighContrastOverride,
+    estimatePages: estimatePages,
     preloadSvg2Pdf: function () { return loadSvg2Pdf().catch(function () { return null; }); }
   };
 })(typeof window !== 'undefined' ? window : null);

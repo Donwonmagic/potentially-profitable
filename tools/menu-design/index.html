@@ -372,8 +372,38 @@
 .md-preview-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
 .md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
-.md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
-.md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
+/* W24-2 — frame is now the multi-page host; document scroll
+   handles tall menus instead of nested overflow. */
+.md-preview-frame{position:relative;padding:18px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+/* W24-2 — preview paper now respects the operator's paper choice
+   via aspect-ratio + padding-percent driven by JS. Default to
+   Letter portrait when no paper is selected. */
+.md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:var(--paper-margin-pct,7.8%);width:100%;max-width:680px;aspect-ratio:var(--paper-aspect,612/792);min-height:0;box-sizing:border-box;font-family:var(--bodyFamily);position:relative}
+.md-preview-paper-extra{margin:0 auto}
+/* W24-2 — page-break shim: dashed rule + accent label visible
+   between stacked sheets so the operator can see exactly where
+   the PDF will break. */
+.md-page-break{display:flex;align-items:center;gap:10px;margin:18px auto;max-width:680px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.md-page-break::before,.md-page-break::after{content:'';flex:1;border-top:1px dashed var(--line-dark)}
+.md-page-break span{flex:0 0 auto}
+@media(max-width:640px){.md-page-break{font-size:10px;letter-spacing:.08em}}
+/* W24-2 — per-page corner indicator. Anchored to the paper
+   element's bottom-right gutter; muted color so it sits below
+   the dish content visually. */
+.md-preview-page-num{position:absolute;bottom:10px;right:14px;font-size:10px;color:var(--muted);font-variant:tabular-nums;letter-spacing:.04em;opacity:.7}
+/* W24-3 — folded-format panel preview. Operator sees N panels
+   side-by-side at the unfolded sheet's aspect ratio, with
+   visible fold lines. On mobile we stack panels vertically
+   because 6 panels at 390pt is unreadable. */
+.md-preview-paper[data-flow="panel"]{display:grid;grid-template-columns:repeat(var(--panels,3),1fr);padding:0}
+.md-preview-paper[data-flow="panel"] > .md-pp-panel{padding:6%;border-right:1px dashed color-mix(in srgb,var(--ink) 30%,transparent);position:relative;overflow:hidden;font-size:0.8em}
+.md-preview-paper[data-flow="panel"] > .md-pp-panel:last-child{border-right:0}
+.md-pp-panel-role{position:absolute;top:6px;left:8px;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55;pointer-events:none}
+@media(max-width:640px){
+  .md-preview-paper[data-flow="panel"]{grid-template-columns:1fr;aspect-ratio:auto}
+  .md-preview-paper[data-flow="panel"] > .md-pp-panel{border-right:0;border-bottom:1px dashed color-mix(in srgb,var(--ink) 30%,transparent);font-size:1em}
+  .md-preview-paper[data-flow="panel"] > .md-pp-panel:last-child{border-bottom:0}
+}
 /* W15 — Vibe quiz modal. Four-radio-group form that recommends 3 themes. */
 /* W24-1 — max(16px, 5vh) collapses on iPhone SE 568pt height,
    stays generous on tall screens. */
@@ -1384,9 +1414,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="./state/draft.js?v=20260501-w22"></script>
 <script src="./state/history.js?v=20260501-w22"></script>
 <script src="./themes.js?v=20260501-w15"></script>
-<script src="./menu-render-pdf.js?v=20260501-w23"></script>
+<script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
 <script src="./menu-render-html.js?v=20260501-w23"></script>
 <script src="./menu-render-text.js?v=20260501-w23"></script>
-<script src="./menu-design.js?v=20260501-w24-1"></script>
+<script src="./menu-design.js?v=20260501-w24-2"></script>
 </body>
 </html>
