@@ -32,7 +32,7 @@
   }
 
   function setEnabled(on) {
-    try { localStorage.setItem(KEY, on ? 'on' : 'off'); } catch (_) {}
+    try { localStorage.setItem(KEY, on ? 'on' : 'off'); } catch (_) {} // h8-exempt: privacy-mode toggle; on-device preference, never sent over network
     if (!on) {
       // Replace plausible with a no-op so any subsequent call from
       // anywhere in the tool becomes silent.

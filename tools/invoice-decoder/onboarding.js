@@ -166,7 +166,7 @@
   // resume. Capped to 24h freshness; never auto-applied.
   var RESUME_KEY = 'mtn:invoice-decoder:resume';
   function saveResumeRecord(rec) {
-    try { localStorage.setItem(RESUME_KEY, JSON.stringify({ ts: Date.now(), record: rec })); } catch (_) {}
+    try { localStorage.setItem(RESUME_KEY, JSON.stringify({ ts: Date.now(), record: rec })); } catch (_) {} // h8-exempt: resume-metadata stays on device; never POSTed
   }
   function readResumeRecord() {
     try {
