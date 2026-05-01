@@ -247,6 +247,14 @@
     logoMeta = { name: name, w: w, h: h };
     if (logoThumb) {
       logoThumb.innerHTML = '<img src="' + escHtml(dataUrl) + '" alt="" />';
+      // W5-5 — small bounce so the operator sees the logo land.
+      // Honors prefers-reduced-motion via the CSS rule.
+      logoThumb.classList.remove('md-pp-logo-bounce');
+      void logoThumb.offsetHeight; // force reflow so the class re-triggers
+      logoThumb.classList.add('md-pp-logo-bounce');
+      setTimeout(function () {
+        if (logoThumb) logoThumb.classList.remove('md-pp-logo-bounce');
+      }, 320);
     }
     if (logoLine) logoLine.textContent = name;
     // Low-res chip — fine for letter, may pixelate at A3.

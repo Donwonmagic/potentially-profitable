@@ -233,6 +233,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 .md-encourage.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(prefers-reduced-motion:reduce){.md-encourage{transition:opacity .12s ease;transform:translateX(-50%) translateY(0)}}
 
+/* W5-5 — logo-applied bounce. */
+@keyframes md-pp-logo-bounce{0%{transform:scale(.92);opacity:.4}50%{transform:scale(1.04);opacity:1}100%{transform:scale(1);opacity:1}}
+.md-pp-logo-bounce{animation:md-pp-logo-bounce .28s cubic-bezier(.34,1.56,.64,1)}
+@media(prefers-reduced-motion:reduce){.md-pp-logo-bounce{animation:none}}
+
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles para restaurantes independientes a partir de una lista de platos, cuatro temas tipográficos, el logo del operador y cuatro tamaños de papel. Solo acomodo mecánico — sin reescritura por IA.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
