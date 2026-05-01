@@ -78,25 +78,39 @@ function prettyPathFor(relPath) {
 // for the alternates block. EN pages point es → /es<path>; ES pages
 // already under /es/ are not stamped by this script (they inherit
 // their own block when authored).
-function alternatesFor(enPath) {
+//
+// Hreflang must point at a *reachable* URL. If the ES counterpart
+// doesn't exist on disk, we omit the es alternate rather than declare
+// a phantom 404. Google ignores one-way claims; a missing alternate is
+// safer than a stale one.
+function alternatesFor(enPath, repoRoot) {
   const esPath = enPath === '/' ? '/es/' : `/es${enPath}`;
+  const esExists = (() => {
+    if (!repoRoot) return true; // back-compat: fall through if no root
+    // Map a pretty path back to the file on disk.
+    const rel = esPath === '/es/' ? 'es/index.html' : ('es' + esPath.slice(3) + (esPath.endsWith('/') ? 'index.html' : ''));
+    const candidate = path.join(repoRoot, rel.startsWith('es/') ? rel : 'es' + rel);
+    try { return fs.existsSync(candidate); } catch { return false; }
+  })();
   return {
     en: `${BASE}${enPath}`,
-    es: `${BASE}${esPath}`,
+    es: esExists ? `${BASE}${esPath}` : null,
     xDefault: `${BASE}${enPath}`,
+    esExists,
   };
 }
 
 function renderBlock(alts) {
-  return [
+  const lines = [
     MARK_OPEN,
     `<link rel="alternate" hreflang="en" href="${alts.en}" />`,
-    `<link rel="alternate" hreflang="es" href="${alts.es}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${alts.xDefault}" />`,
-    '<meta property="og:locale" content="en_US" />',
-    '<meta property="og:locale:alternate" content="es_US" />',
-    MARK_CLOSE,
-  ].join('\n') + '\n';
+  ];
+  if (alts.es) lines.push(`<link rel="alternate" hreflang="es" href="${alts.es}" />`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${alts.xDefault}" />`);
+  lines.push('<meta property="og:locale" content="en_US" />');
+  if (alts.es) lines.push('<meta property="og:locale:alternate" content="es_US" />');
+  lines.push(MARK_CLOSE);
+  return lines.join('\n') + '\n';
 }
 
 let changed = 0;
@@ -122,7 +136,7 @@ for (const file of collectHtml(repoRoot)) {
     continue;
   }
 
-  const alts = alternatesFor(prettyPathFor(rel));
+  const alts = alternatesFor(prettyPathFor(rel), repoRoot);
   const block = renderBlock(alts);
 
   let next;

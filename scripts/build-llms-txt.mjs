@@ -134,9 +134,12 @@ Los operadores pueden escribir directamente en /es/window/ — asíncrono, norma
 `;
 
   let body = isEs ? headerEs : headerEn;
-  body += `## Articles\n\n${articles.map(renderArticleLine).join('\n')}\n\n`;
-  body += `## Glossary\n\n${glossary.map(renderGlossaryLine).join('\n')}\n\n`;
-  body += `## Tools\n\n${tools.map(renderToolLine).join('\n')}\n`;
+  const h2Articles  = isEs ? '## Artículos'    : '## Articles';
+  const h2Glossary  = isEs ? '## Glosario'     : '## Glossary';
+  const h2Tools     = isEs ? '## Herramientas' : '## Tools';
+  body += `${h2Articles}\n\n${articles.map(renderArticleLine).join('\n')}\n\n`;
+  body += `${h2Glossary}\n\n${glossary.map(renderGlossaryLine).join('\n')}\n\n`;
+  body += `${h2Tools}\n\n${tools.map(renderToolLine).join('\n')}\n`;
   return body;
 }
 
