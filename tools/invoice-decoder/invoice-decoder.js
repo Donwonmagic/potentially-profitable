@@ -1811,6 +1811,71 @@
   }
   try { renderDriftBanner(); } catch (_) {}
 
+  // ----------------------------------------------------------------
+  // W4-9 — per-category sparkline strip below the result panel.
+  //
+  // When >=3 trend entries exist, render a strip showing each
+  // category's spend trajectory across the trend (oldest → newest)
+  // with a delta% chip. Below 3 saves we render the honest line
+  // "Each invoice stands alone — for trends across weeks, save 2
+  // more invoices."
+  // ----------------------------------------------------------------
+  function renderTrendSparklines() {
+    if (typeof MuntinSparkline === 'undefined') return;
+    if (typeof MuntinContext === 'undefined') return;
+    var host = document.getElementById('idTrendStrip');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'idTrendStrip';
+      host.className = 'id-trend-strip';
+      host.hidden = true;
+      if (parsedEl && parsedEl.parentNode) {
+        parsedEl.parentNode.appendChild(host);
+      }
+    }
+    var trend = MuntinContext.readTrend();
+    host.innerHTML = '';
+    if (!trend || trend.length < 3) {
+      if (trend && trend.length >= 1) {
+        host.hidden = false;
+        host.innerHTML = '<p class="id-trend-empty">' + tt(
+          'Each invoice stands alone — for trends across weeks, save ' + (3 - trend.length) +
+            ' more ' + (3 - trend.length === 1 ? 'invoice' : 'invoices') + '.',
+          'Cada factura es independiente — para ver tendencias entre semanas, guarda ' +
+            (3 - trend.length) + ' factura' + (3 - trend.length === 1 ? '' : 's') + ' más.'
+        ) + '</p>';
+      } else {
+        host.hidden = true;
+      }
+      return;
+    }
+    // Build per-category series oldest-first (trend is newest-first).
+    var ordered = trend.slice().reverse();
+    var perCat = {};
+    ordered.forEach(function (e) {
+      Object.keys(e.totalsByCategory || {}).forEach(function (k) {
+        (perCat[k] = perCat[k] || []).push(e.totalsByCategory[k]);
+      });
+    });
+    var labelMap = {};
+    Object.keys(perCat).forEach(function (k) { labelMap[k] = catLabel(k); });
+    host.hidden = false;
+    var heading = document.createElement('p');
+    heading.className = 'id-trend-heading';
+    heading.innerHTML = '<strong>' +
+      tt('Across your last ' + trend.length + ' invoices',
+         'En tus últimas ' + trend.length + ' facturas') +
+      '</strong>';
+    host.appendChild(heading);
+    var stripWrap = document.createElement('div');
+    stripWrap.innerHTML = MuntinSparkline.renderCategoryStrip(perCat, {
+      locale: LOCALE,
+      labelMap: labelMap
+    });
+    host.appendChild(stripWrap);
+  }
+  try { renderTrendSparklines(); } catch (_) {}
+
   // W3-3 — render comparison-vs-vendors table from MuntinDifferentiators.
   // Static HTML can't host this without locale duplication, so we
   // render once at boot into the #idCompareMount placeholder. The
