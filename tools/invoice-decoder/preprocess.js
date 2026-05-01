@@ -362,7 +362,8 @@
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,
-    otsuThreshold:     otsuThreshold
+    otsuThreshold:     otsuThreshold,
+    classifyQuality:   classifyQuality
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_PREPROCESS = api;
