@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Pulso de Costos — Tendencias de costos para tu restaurante | Muntin Digital</title>
+<meta name="description" content="Un panel gratuito para restaurantes independientes. Detecta deriva en costos, cambios de participación por categoría y medianas móviles entre tus facturas guardadas — todo en tu dispositivo, todo encriptado." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/cost-pulse/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/cost-pulse/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/cost-pulse/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/cost-pulse/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pulso de Costos — Tendencias de costos para tu restaurante" />
+<meta property="og:description" content="Alertas de deriva, sparklines por categoría y medianas móviles entre facturas guardadas. Gratis, en tu dispositivo, encriptado." />
+<meta property="og:url" content="https://muntin.digital/es/tools/cost-pulse/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
+<style>
+.cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
+.cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
+.cp-hero p.cp-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
+.cp-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
+.cp-card h2{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.cp-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.cp-card p:last-child{margin-bottom:0}
+.cp-empty{background:linear-gradient(135deg,#eef7f4 0%,#fff 100%);border:1px dashed #bfe2d6;text-align:center;padding:40px 24px}
+.cp-empty p{font-size:15px;color:var(--ink);max-width:480px;margin:0 auto 16px;line-height:1.55}
+.cp-empty .cp-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-weight:600;font-size:14.5px;text-decoration:none}
+.cp-empty .cp-cta:hover{background:var(--teal,#1F4E5B)}
+.cp-drift-list{margin:0;padding:0;list-style:none}
+.cp-drift-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cp-drift-row:last-child{border-bottom:0}
+.cp-drift-cat{font-weight:600;color:var(--ink);min-width:120px;text-transform:capitalize}
+.cp-drift-delta{font-variant-numeric:tabular-nums;font-weight:600;min-width:64px;text-align:right}
+.cp-drift-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
+.cp-drift-delta[data-dir="down"]{color:var(--accent,#1f6f6a)}
+.cp-drift-hint{font-size:13.5px;color:var(--ink-soft);line-height:1.5;flex:1}
+.cp-last-invoice{display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-size:14.5px;color:var(--ink)}
+.cp-last-invoice strong{color:var(--ink);font-weight:600}
+.cp-last-invoice a{color:var(--accent,#1f6f6a);font-weight:500;text-decoration:underline}
+@media(max-width:540px){
+  .cp-hero h1{font-size:28px}
+  .cp-card{padding:18px}
+  .cp-drift-row{flex-direction:column;gap:4px}
+  .cp-drift-cat,.cp-drift-delta{min-width:0}
+  .cp-drift-delta{text-align:left}
+}
+</style>
+</head>
+<body>
+<header class="site-header" id="header"></header>
+
+<main>
+<section class="cp-shell">
+  <div class="cp-hero">
+    <h1>Tu pulso de costos.</h1>
+    <p class="cp-lede">Un panel sobre las facturas que has guardado con el <a href="/es/tools/invoice-decoder/">Decodificador de Facturas</a>. Detecta deriva, mira cambios de participación por categoría y encuentra la peor semana sin abrir QuickBooks.</p>
+  </div>
+
+  <div id="cpStatus"></div>
+
+  <div class="cp-card cp-empty" id="cpEmpty" hidden>
+    <p><strong>Guarda tu primera factura — toma 30 segundos.</strong> Cuando tengas al menos una factura guardada, este panel se llena con sparklines, alertas de deriva y medianas móviles entre las categorías que importan (proteína, verduras, lácteos, papel, limpieza).</p>
+    <a class="cp-cta" href="/es/tools/invoice-decoder/">Abrir Decodificador de Facturas →</a>
+  </div>
+
+  <div class="cp-card" id="cpDriftCard" hidden>
+    <h2>Deriva esta semana</h2>
+    <p>Categorías cuyo gasto reciente se desvía más de 15% de la mediana móvil de 4 semanas. Movimientos grandes que merecen atención.</p>
+    <ul class="cp-drift-list" id="cpDriftList"></ul>
+  </div>
+
+  <div class="cp-card" id="cpSparkCard" hidden>
+    <h2>Tendencia entre facturas guardadas</h2>
+    <p>Cada renglón es la trayectoria del gasto de una categoría entre las facturas que has guardado (más antigua → más reciente). El número a la derecha es el cambio de la primera a la última.</p>
+    <div id="cpSparkMount"></div>
+  </div>
+
+  <div class="cp-card" id="cpLastCard" hidden>
+    <h2>Guardado más reciente</h2>
+    <p class="cp-last-invoice" id="cpLastLine"></p>
+  </div>
+
+  <div class="cp-card">
+    <h2>Lo que este panel no es.</h2>
+    <p><strong>No es tu contabilidad.</strong> Pulso de Costos solo ve las facturas que activamente has guardado con el Decodificador. No detecta una factura olvidada, no se sincroniza con QuickBooks o Restaurant365, y no concilia con tu banco.</p>
+    <p><strong>Sin benchmark.</strong> Las tendencias que ves son <em>tus</em> datos. No agrupamos datos entre operadores, no vendemos benchmarks de costos, y no rellenamos retroactivamente facturas históricas si más adelante hay un opt-in.</p>
+    <p><strong>vs Restaurant365 / MarginEdge:</strong> sus dashboards viven en su nube y leen todo lo que subes. Pulso de Costos solo lee lo que activamente guardaste, todo encriptado con una llave derivada de tu sesión. La matemática es local.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
+<script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
+<script>
+(function () {
+  'use strict';
+  var LOCALE = 'es';
+  function tt(en, es) { return es; }
+
+  function catLabel(c) {
+    var map = { protein:'Proteína', produce:'Verduras', dairy:'Lácteos', seafood:'Mariscos',
+                'dry-goods':'Abarrotes', paper:'Papel', cleaning:'Limpieza',
+                beverage:'Bebidas', 'herbs-spices':'Hierbas/especias' };
+    return map[c] || c;
+  }
+
+  function init() {
+    if (typeof MuntinContext === 'undefined' ||
+        typeof MuntinCostTrend === 'undefined' ||
+        typeof MuntinSparkline === 'undefined') return;
+    var trend = MuntinContext.readTrend ? MuntinContext.readTrend() : [];
+    var emptyEl = document.getElementById('cpEmpty');
+    var driftCard = document.getElementById('cpDriftCard');
+    var sparkCard = document.getElementById('cpSparkCard');
+    var lastCard  = document.getElementById('cpLastCard');
+
+    if (!trend.length) { emptyEl.hidden = false; return; }
+
+    var latest = trend[0];
+    var lastLine = document.getElementById('cpLastLine');
+    var when = new Date(latest.savedAt || Date.now());
+    lastLine.innerHTML = '<strong>$' + (latest.parsedSum || 0).toFixed(2) + '</strong> · ' +
+      latest.itemCount + ' ' + (latest.itemCount === 1 ? 'partida' : 'partidas') +
+      ' · ' + when.toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' }) +
+      (latest.vendor ? ' · ' + latest.vendor : '') +
+      ' · <a href="/es/tools/invoice-decoder/">Abrir en Decodificador de Facturas →</a>';
+    lastCard.hidden = false;
+
+    if (trend.length >= 2) {
+      var drifts = MuntinCostTrend.detectDrift(trend, { thresholdPct: 15, weeks: 4 });
+      if (drifts.length) {
+        driftCard.hidden = false;
+        document.getElementById('cpDriftList').innerHTML = drifts.map(function (d) {
+          var hint = MuntinCostTrend.hintForDrift(d.category, d.direction, LOCALE);
+          var sign = d.direction === 'up' ? '+' : '';
+          return '<li class="cp-drift-row">' +
+            '<span class="cp-drift-cat">' + catLabel(d.category) + '</span>' +
+            '<span class="cp-drift-delta" data-dir="' + d.direction + '">' + sign + d.deltaPct + '%</span>' +
+            '<span class="cp-drift-hint">' + hint + '</span>' +
+          '</li>';
+        }).join('');
+      }
+    }
+
+    if (trend.length >= 3) {
+      var ordered = trend.slice().reverse();
+      var perCat = {};
+      ordered.forEach(function (e) {
+        Object.keys(e.totalsByCategory || {}).forEach(function (k) {
+          (perCat[k] = perCat[k] || []).push(e.totalsByCategory[k]);
+        });
+      });
+      var labelMap = {};
+      Object.keys(perCat).forEach(function (k) { labelMap[k] = catLabel(k); });
+      var html = MuntinSparkline.renderCategoryStrip(perCat, { locale: LOCALE, labelMap: labelMap });
+      if (html) {
+        sparkCard.hidden = false;
+        document.getElementById('cpSparkMount').innerHTML = html;
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  if (window.plausible) {
+    try { window.plausible('Cost Pulse Loaded'); } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>

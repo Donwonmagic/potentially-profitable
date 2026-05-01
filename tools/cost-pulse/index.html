@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Cost Pulse — Track restaurant cost trends across invoices | Muntin Digital</title>
+<meta name="description" content="A free dashboard for independent restaurants. Spot food-cost drift, category-share shifts, and rolling medians across your saved invoices — all on-device, all encrypted." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/cost-pulse/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/cost-pulse/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/cost-pulse/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/cost-pulse/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Cost Pulse — Track restaurant cost trends across invoices" />
+<meta property="og:description" content="Drift alerts, category sparklines, and rolling medians across saved invoices. Free, on-device, encrypted." />
+<meta property="og:url" content="https://muntin.digital/tools/cost-pulse/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
+<style>
+.cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
+.cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
+.cp-hero p.cp-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
+.cp-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
+.cp-card h2{font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.cp-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin:0 0 12px}
+.cp-card p:last-child{margin-bottom:0}
+.cp-empty{background:linear-gradient(135deg,#eef7f4 0%,#fff 100%);border:1px dashed #bfe2d6;text-align:center;padding:40px 24px}
+.cp-empty p{font-size:15px;color:var(--ink);max-width:480px;margin:0 auto 16px;line-height:1.55}
+.cp-empty .cp-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-weight:600;font-size:14.5px;text-decoration:none}
+.cp-empty .cp-cta:hover{background:var(--teal,#1F4E5B)}
+.cp-drift-list{margin:0;padding:0;list-style:none}
+.cp-drift-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cp-drift-row:last-child{border-bottom:0}
+.cp-drift-cat{font-weight:600;color:var(--ink);min-width:120px;text-transform:capitalize}
+.cp-drift-delta{font-variant-numeric:tabular-nums;font-weight:600;min-width:64px;text-align:right}
+.cp-drift-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
+.cp-drift-delta[data-dir="down"]{color:var(--accent,#1f6f6a)}
+.cp-drift-hint{font-size:13.5px;color:var(--ink-soft);line-height:1.5;flex:1}
+.cp-last-invoice{display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-size:14.5px;color:var(--ink)}
+.cp-last-invoice strong{color:var(--ink);font-weight:600}
+.cp-last-invoice a{color:var(--accent,#1f6f6a);font-weight:500;text-decoration:underline}
+.cp-diff-strip{margin-top:18px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:8px;font-size:13px;line-height:1.45}
+.cp-diff-strip strong{color:#fff;font-weight:600}
+@media(max-width:540px){
+  .cp-hero h1{font-size:28px}
+  .cp-card{padding:18px}
+  .cp-drift-row{flex-direction:column;gap:4px}
+  .cp-drift-cat,.cp-drift-delta{min-width:0}
+  .cp-drift-delta{text-align:left}
+}
+</style>
+</head>
+<body>
+<header class="site-header" id="header"></header>
+
+<main>
+<section class="cp-shell">
+  <div class="cp-hero">
+    <h1>Your cost pulse.</h1>
+    <p class="cp-lede">A dashboard across the invoices you've saved with the <a href="/tools/invoice-decoder/">Invoice Decoder</a>. Spot drift, see category-share moves, and find the worst-offender week without opening QuickBooks.</p>
+  </div>
+
+  <div id="cpStatus"></div>
+
+  <div class="cp-card cp-empty" id="cpEmpty" hidden>
+    <p><strong>Save your first invoice — it takes 30 seconds.</strong> Once you have at least one saved invoice, this dashboard fills with sparklines, drift alerts, and rolling medians across the categories that matter (protein, produce, dairy, paper, cleaning).</p>
+    <a class="cp-cta" href="/tools/invoice-decoder/">Open Invoice Decoder →</a>
+  </div>
+
+  <div class="cp-card" id="cpDriftCard" hidden>
+    <h2>Drift this week</h2>
+    <p>Categories whose latest spend deviates by more than 15% from the rolling 4-week median. Big swings worth attention.</p>
+    <ul class="cp-drift-list" id="cpDriftList"></ul>
+  </div>
+
+  <div class="cp-card" id="cpSparkCard" hidden>
+    <h2>Trend across saved invoices</h2>
+    <p>Each row is one category's spend trajectory across the invoices you've saved (oldest → newest). The number on the right is the change from first to last.</p>
+    <div id="cpSparkMount"></div>
+  </div>
+
+  <div class="cp-card" id="cpLastCard" hidden>
+    <h2>Most recent save</h2>
+    <p class="cp-last-invoice" id="cpLastLine"></p>
+  </div>
+
+  <div class="cp-card">
+    <h2>What this dashboard isn't.</h2>
+    <p><strong>Not your books.</strong> Cost Pulse only sees the invoices you've actively saved through the Invoice Decoder. It won't catch a forgotten invoice, won't sync to QuickBooks or Restaurant365, and won't reconcile against your bank.</p>
+    <p><strong>Not benchmarked.</strong> The trends you see here are <em>your</em> data only. We don't pool data across operators, don't sell aggregated cost benchmarks, and don't backfill historical invoices into a future opt-in even if one ships.</p>
+    <p><strong>vs Restaurant365 / MarginEdge:</strong> their dashboards live in their cloud and read everything you upload. Cost Pulse reads only what you've actively saved here, all encrypted with a key derived from your sign-in. The math is local.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
+<script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
+<script>
+(function () {
+  'use strict';
+  var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+  function tt(en, es) { return LOCALE === 'es' ? es : en; }
+
+  function catLabel(c) {
+    var map = LOCALE === 'es'
+      ? { protein:'Proteína', produce:'Verduras', dairy:'Lácteos', seafood:'Mariscos',
+          'dry-goods':'Abarrotes', paper:'Papel', cleaning:'Limpieza',
+          beverage:'Bebidas', 'herbs-spices':'Hierbas/especias' }
+      : { protein:'Protein', produce:'Produce', dairy:'Dairy', seafood:'Seafood',
+          'dry-goods':'Dry goods', paper:'Paper', cleaning:'Cleaning',
+          beverage:'Beverage', 'herbs-spices':'Herbs/spices' };
+    return map[c] || c;
+  }
+
+  function init() {
+    if (typeof MuntinContext === 'undefined' ||
+        typeof MuntinCostTrend === 'undefined' ||
+        typeof MuntinSparkline === 'undefined') return;
+    var trend = MuntinContext.readTrend ? MuntinContext.readTrend() : [];
+    var emptyEl = document.getElementById('cpEmpty');
+    var driftCard = document.getElementById('cpDriftCard');
+    var sparkCard = document.getElementById('cpSparkCard');
+    var lastCard  = document.getElementById('cpLastCard');
+
+    if (!trend.length) {
+      emptyEl.hidden = false;
+      return;
+    }
+
+    // Last invoice card — always shows when at least one save exists.
+    var latest = trend[0];
+    var lastLine = document.getElementById('cpLastLine');
+    var when = new Date(latest.savedAt || Date.now());
+    lastLine.innerHTML = '<strong>$' + (latest.parsedSum || 0).toFixed(2) + '</strong> · ' +
+      latest.itemCount + ' ' + tt(latest.itemCount === 1 ? 'item' : 'items',
+                                   latest.itemCount === 1 ? 'partida' : 'partidas') +
+      ' · ' + when.toLocaleDateString(LOCALE === 'es' ? 'es-MX' : 'en-US',
+                                      { year: 'numeric', month: 'short', day: 'numeric' }) +
+      (latest.vendor ? ' · ' + latest.vendor : '') +
+      ' · <a href="/tools/invoice-decoder/">' +
+      tt('Open in Invoice Decoder', 'Abrir en Decodificador de Facturas') + ' →</a>';
+    lastCard.hidden = false;
+
+    // Drift list — only renders when ≥2 entries.
+    if (trend.length >= 2) {
+      var drifts = MuntinCostTrend.detectDrift(trend, { thresholdPct: 15, weeks: 4 });
+      if (drifts.length) {
+        driftCard.hidden = false;
+        var list = document.getElementById('cpDriftList');
+        list.innerHTML = drifts.map(function (d) {
+          var hint = MuntinCostTrend.hintForDrift(d.category, d.direction, LOCALE);
+          var sign = d.direction === 'up' ? '+' : '';
+          return '<li class="cp-drift-row">' +
+            '<span class="cp-drift-cat">' + catLabel(d.category) + '</span>' +
+            '<span class="cp-drift-delta" data-dir="' + d.direction + '">' + sign + d.deltaPct + '%</span>' +
+            '<span class="cp-drift-hint">' + hint + '</span>' +
+          '</li>';
+        }).join('');
+      }
+    }
+
+    // Sparkline strip — needs ≥3 entries.
+    if (trend.length >= 3) {
+      var ordered = trend.slice().reverse();
+      var perCat = {};
+      ordered.forEach(function (e) {
+        Object.keys(e.totalsByCategory || {}).forEach(function (k) {
+          (perCat[k] = perCat[k] || []).push(e.totalsByCategory[k]);
+        });
+      });
+      var labelMap = {};
+      Object.keys(perCat).forEach(function (k) { labelMap[k] = catLabel(k); });
+      var html = MuntinSparkline.renderCategoryStrip(perCat, { locale: LOCALE, labelMap: labelMap });
+      if (html) {
+        sparkCard.hidden = false;
+        document.getElementById('cpSparkMount').innerHTML = html;
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  if (window.plausible) {
+    try { window.plausible('Cost Pulse Loaded'); } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>
