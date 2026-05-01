@@ -1609,7 +1609,10 @@ function renderToolDeepLinks(locale, tool, glossaryTerms, articles) {
           <span class="tool-deep-cta">${esc(t(locale, 'tool_deep_cta_glossary'))} <span aria-hidden="true">→</span></span>
         </a>`).join('\n      ');
 
-  const articleCards = (articles || []).slice(0, 1).map(article => `<a class="tool-deep-card tool-deep-card-article" href="${pathFor(locale, '/blog/' + article.slug + '/')}">
+  // Lift the article slice from 1 to 2 so each tool surfaces two
+  // related reads, not just one. Cuts the "one cold read or nothing"
+  // bounce path on tool pages without crowding the term cards.
+  const articleCards = (articles || []).slice(0, 2).map(article => `<a class="tool-deep-card tool-deep-card-article" href="${pathFor(locale, '/blog/' + article.slug + '/')}">
           <span class="tool-deep-kind">${esc(t(locale, 'tool_deep_kind_article'))}</span>
           <h3>${esc(article.title)}</h3>
           <p class="tool-deep-snippet">${esc(article.dek)}</p>
