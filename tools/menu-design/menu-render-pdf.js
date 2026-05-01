@@ -229,14 +229,26 @@
   // theme)` returning {width, height} and a `draw(x, y, doc, theme)`
   // mutating the page. This shape lets us swap in a column packer
   // later (Wave A4) without touching block draw code.
-  function buildBlocks(rows, title, logoDataUrl) {
+  function buildBlocks(rows, title, logoDataUrl, opts) {
+    opts = opts || {};
     var blocks = [];
-    blocks.push({ kind: 'title', text: title || 'Menu' });
+    blocks.push({ kind: 'title', text: title || 'Menu', tagline: opts.tagline || '' });
     if (logoDataUrl) blocks.push({ kind: 'logo', src: logoDataUrl });
+    // W9-3 — story block (chef's note / opening blurb). Renders as
+    // an italic indented pull-quote between the title and the first
+    // section. Operator-supplied via opts.story; empty by default.
+    if (opts.story && String(opts.story).trim()) {
+      blocks.push({ kind: 'story', text: String(opts.story).trim() });
+    }
     var seenAllergens = {};
+    var firstDishOfSection = true;
     rows.forEach(function (r) {
       if (r.kind === 'section' && (r.name || '').trim()) {
-        blocks.push({ kind: 'section', text: r.name.trim() });
+        // W9-3 — sections can be flagged as a "specials" callout via
+        // a `specials: true` token. The renderer draws a boxed
+        // accent-tint background instead of a plain header.
+        blocks.push({ kind: 'section', text: r.name.trim(), specials: !!r.specials });
+        firstDishOfSection = true;
       } else if (r.kind === 'dish' && (r.name || '').trim()) {
         // W7-2 — propagate allergen codes + spice level into the
         // dish block. The draw routine renders glyphs after the
@@ -252,8 +264,10 @@
           price: (r.price || '').trim(),
           desc:  (r.desc || '').trim(),
           allergens: allergens,
-          spice: spice
+          spice: spice,
+          firstOfSection: firstDishOfSection // W9-3 — drives drop-cap rendering
         });
+        firstDishOfSection = false;
       }
     });
     // W7-2 — append the auto-generated allergen-key legend at the
@@ -288,9 +302,31 @@
   // wrapText is jsPDF's splitTextToSize; we measure with doc on a
   // throwaway font/size to honor descender + leading.
   function measureBlock(block, doc, theme, contentWidth) {
-    if (block.kind === 'title') return theme.h1Pt * 1.4 + 22;
-    if (block.kind === 'logo')  return 56; // ~80px max — see logo-slot constraint
-    if (block.kind === 'section') return theme.h2Pt * 1.6 + 16;
+    if (block.kind === 'title') {
+      var titleH = theme.h1Pt * 1.4 + 22;
+      // W9-3 — tagline adds ~14pt line below the title.
+      if (block.tagline) titleH += theme.descPt * 1.6 + 6;
+      return titleH;
+    }
+    if (block.kind === 'logo') {
+      // Watermark logo doesn't consume vertical space (drawn behind
+      // content). Header logo uses the existing 56pt slot.
+      if ((theme.logoSlot || '') === 'watermark') return 0;
+      return 56;
+    }
+    if (block.kind === 'story') {
+      // W9-3 — italic pull-quote block. Estimate height from wrapped
+      // line count at description point size, +28pt vertical padding.
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+      doc.setFontSize(theme.descPt);
+      var storyLines = doc.splitTextToSize(block.text, contentWidth - 60);
+      return storyLines.length * theme.descPt * 1.6 + 28;
+    }
+    if (block.kind === 'section') {
+      var secH = theme.h2Pt * 1.6 + 16;
+      if (block.specials) secH += 12; // boxed callout adds padding
+      return secH;
+    }
     if (block.kind === 'dish') {
       var nameH  = theme.bodyPt * 1.25;
       var descH  = 0;
@@ -329,7 +365,41 @@
       doc.setFontSize(theme.h1Pt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       doc.text(block.text, x + contentWidth / 2, y + theme.h1Pt, { align: 'center' });
-      return y + theme.h1Pt * 1.4 + 22;
+      var titleNextY = y + theme.h1Pt * 1.4 + 22;
+      // W9-3 — tagline rendered in italic accent below the title.
+      if (block.tagline) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.text(block.tagline, x + contentWidth / 2, titleNextY, { align: 'center' });
+        titleNextY += theme.descPt * 1.6 + 6;
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      }
+      return titleNextY;
+    }
+    // W9-3 — story / chef's note. Italic pull-quote, indented 30pt
+    // each side, with a thin top + bottom rule in muted color.
+    if (block.kind === 'story') {
+      var storyX = x + 30;
+      var storyW = contentWidth - 60;
+      // Top rule
+      doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      doc.setLineWidth(0.4);
+      doc.line(storyX, y + 6, storyX + storyW, y + 6);
+      // Italic body
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+      doc.setFontSize(theme.descPt);
+      doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      var storyLines = doc.splitTextToSize(block.text, storyW);
+      var storyY = y + 18;
+      for (var sli = 0; sli < storyLines.length; sli++) {
+        doc.text(storyLines[sli], x + contentWidth / 2, storyY, { align: 'center' });
+        storyY += theme.descPt * 1.6;
+      }
+      // Bottom rule
+      doc.line(storyX, storyY + 4, storyX + storyW, storyY + 4);
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+      return storyY + 16;
     }
     if (block.kind === 'logo') {
       // Skip image embed for SVG (jsPDF doesn't natively rasterize
@@ -339,6 +409,33 @@
                   // the on-screen preview, but PDF v1 needs a raster.
       }
       try {
+        var slot = theme.logoSlot || 'header-center';
+        // W9-1 — real watermark via GState. Centered on the page,
+        // 6% opacity, ~280pt wide. Drawn at the current y but
+        // returns y unchanged so content flows over the top.
+        if (slot === 'watermark') {
+          var pageW = doc.internal.pageSize.getWidth();
+          var pageH = doc.internal.pageSize.getHeight();
+          var wmW = Math.min(280, pageW * 0.55);
+          var wmRatio = (logoMeta && logoMeta.w && logoMeta.h) ? (logoMeta.w / logoMeta.h) : 1;
+          var wmH = wmW / wmRatio;
+          var wmX = (pageW - wmW) / 2;
+          var wmY = (pageH - wmH) / 2;
+          try {
+            // jsPDF supports GState in 2.5+. Wrap in try so older
+            // builds quietly fall through.
+            var prevGS = null;
+            if (typeof doc.GState === 'function' || (doc.internal.events && doc.GState)) {
+              var gs = new doc.GState({ opacity: 0.06 });
+              doc.setGState(gs);
+              doc.addImage(block.src, 'PNG', wmX, wmY, wmW, wmH);
+              doc.setGState(new doc.GState({ opacity: 1 }));
+            } else {
+              doc.addImage(block.src, 'PNG', wmX, wmY, wmW, wmH); // best-effort no-alpha
+            }
+          } catch (_) { /* skip on failure */ }
+          return y; // do not consume vertical space
+        }
         var maxH = 56;
         var maxW = 200;
         var w = maxW, h = maxH;
@@ -348,16 +445,9 @@
           else            { h = Math.min(maxH, logoMeta.h); w = h * ratio; }
         }
         // logo-slot: header-center default (centered above title).
-        var slot = theme.logoSlot || 'header-center';
         var lx = x + (contentWidth - w) / 2;
         if (slot === 'header-left')  lx = x;
         if (slot === 'header-right') lx = x + contentWidth - w;
-        if (slot === 'watermark') {
-          // Watermark placement is tricky in jsPDF — defer to A4
-          // (needs alpha + page-center math). For v1 fall through
-          // to header-center so the logo still ships.
-          lx = x + (contentWidth - w) / 2;
-        }
         doc.addImage(block.src, 'PNG', lx, y, w, h);
         return y + h + 12;
       } catch (e) {
@@ -370,8 +460,24 @@
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       var label = block.text;
       if (theme.sectionCase === 'uppercase') label = label.toUpperCase();
-      // hand-rule: short rule both sides of the centered label.
       var sectionY = y + theme.h2Pt + 4;
+      // W9-3 — specials callout: tinted box around the section,
+      // accent border, label set in accent color. Adds visual weight
+      // so "Today's specials" reads as a real callout, not just
+      // another section header.
+      if (block.specials) {
+        try {
+          var prevSpec = doc.GState ? new doc.GState({ opacity: 0.08 }) : null;
+          if (prevSpec) doc.setGState(prevSpec);
+          doc.setFillColor(accentRgb.r, accentRgb.g, accentRgb.b);
+          doc.rect(x - 6, y, contentWidth + 12, theme.h2Pt * 1.6 + 28, 'F');
+          if (prevSpec) doc.setGState(new doc.GState({ opacity: 1 }));
+        } catch (_) {}
+        doc.setDrawColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.setLineWidth(0.6);
+        doc.rect(x - 6, y, contentWidth + 12, theme.h2Pt * 1.6 + 28, 'S');
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+      }
       doc.text(label, x + contentWidth / 2, sectionY, { align: 'center' });
       if (theme.dividerStyle === 'hand-rule') {
         var labelW = doc.getStringUnitWidth(label) * theme.h2Pt / doc.internal.scaleFactor;
@@ -386,13 +492,37 @@
         doc.setLineWidth(0.6);
         doc.rect(x + (contentWidth - bw) / 2, sectionY - theme.h2Pt - 2, bw, theme.h2Pt + 10);
       } else if (theme.dividerStyle === 'ornament') {
-        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
-        doc.setFontSize(theme.h2Pt);
-        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
-        doc.text('❦', x + contentWidth / 2 - 60, sectionY);
-        doc.text('❦', x + contentWidth / 2 + 60, sectionY);
+        // W9-1 — vector-drawn ornament instead of '❦' (which doesn't
+        // render in PDF base-14 fonts). Three diamond-shaped marks
+        // in accent color, flanking the centered label.
+        doc.setFillColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        var dY = sectionY - theme.h2Pt * 0.32;
+        var dSize = theme.h2Pt * 0.18;
+        var labelW2 = doc.getStringUnitWidth(label) * theme.h2Pt / doc.internal.scaleFactor;
+        var lx2 = x + (contentWidth - labelW2) / 2;
+        var rx2 = lx2 + labelW2;
+        // Left diamond
+        doc.triangle(lx2 - 14,        dY,     lx2 - 14 + dSize, dY - dSize, lx2 - 14 + dSize, dY + dSize, 'F');
+        doc.triangle(lx2 - 14,        dY,     lx2 - 14 - dSize, dY - dSize, lx2 - 14 - dSize, dY + dSize, 'F');
+        // Right diamond
+        doc.triangle(rx2 + 14,        dY,     rx2 + 14 + dSize, dY - dSize, rx2 + 14 + dSize, dY + dSize, 'F');
+        doc.triangle(rx2 + 14,        dY,     rx2 + 14 - dSize, dY - dSize, rx2 + 14 - dSize, dY + dSize, 'F');
       }
-      return y + theme.h2Pt * 1.6 + 16;
+      // W9-1 — section gets an extra bottom rule for whitespace +
+      // ornament dividers when on a 1-col theme so dishes don't
+      // crowd up against the header.
+      if (theme.dividerStyle === 'whitespace' && theme.columns === 1) {
+        // 0.5pt centered rule, 80pt wide
+        doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.setLineWidth(0.4);
+        var hairY = sectionY + theme.h2Pt * 0.45;
+        doc.line(x + contentWidth / 2 - 40, hairY, x + contentWidth / 2 + 40, hairY);
+      }
+      // Restore body color for the dishes that follow.
+      doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      var sectionConsumed = y + theme.h2Pt * 1.6 + 16;
+      if (block.specials) sectionConsumed += 12;
+      return sectionConsumed;
     }
     if (block.kind === 'dish') {
       doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
@@ -401,7 +531,33 @@
       // Reserve right margin for price.
       var priceWidth = 60;
       var nameWidth  = contentWidth - priceWidth - 8;
-      doc.text(block.name, x, y + theme.bodyPt);
+      // W9-3 — drop cap for the first dish of each section on
+      // ornament-friendly themes. Renders the first character of
+      // the dish name in the display face, ~1.8x body size, in
+      // accent color, with the rest of the name shifted right.
+      var dropCapW = 0;
+      var dropCapThemes = ['trattoria','brasserie','steakhouse','cantina','coastal-raw-bar','bistro-paris','tapas-rustic','dessert-only','cocktail-deco','wine-list-formal','tasting-omakase'];
+      var enableDropCap = block.firstOfSection && block.name.length > 1 &&
+                          dropCapThemes.indexOf(theme.id) !== -1;
+      var bodyFontKey = pickPdfFont(theme.bodyFamily, doc.__brandsLoaded);
+      var displayFontKey = pickPdfFont(theme.displayFamily, doc.__brandsLoaded);
+      if (enableDropCap) {
+        var capChar = block.name.charAt(0);
+        var capRest = block.name.slice(1);
+        var capPt = theme.bodyPt * 1.85;
+        doc.setFont(displayFontKey, 'normal');
+        doc.setFontSize(capPt);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.text(capChar, x, y + theme.bodyPt + (capPt - theme.bodyPt) * 0.18);
+        dropCapW = doc.getStringUnitWidth(capChar) * capPt / doc.internal.scaleFactor + 3;
+        // Now draw the rest of the name in body face, body size.
+        doc.setFont(bodyFontKey, 'normal');
+        doc.setFontSize(theme.bodyPt);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        doc.text(capRest, x + dropCapW, y + theme.bodyPt);
+      } else {
+        doc.text(block.name, x, y + theme.bodyPt);
+      }
       // W7-2 — allergen + spice glyphs after the dish name. Each
       // chip is a small pill: rounded rect outline in the theme's
       // accent color with the 1-2 letter code centered. Spice
@@ -409,7 +565,8 @@
       // color; emoji isn't safe in jsPDF base-14 fonts.
       if ((block.allergens && block.allergens.length) || block.spice) {
         var nameW = doc.getStringUnitWidth(block.name) * theme.bodyPt / doc.internal.scaleFactor;
-        var chipX = x + nameW + 6;
+        // Account for the drop-cap width if it was rendered.
+        var chipX = x + dropCapW + nameW + 6;
         var chipY = y + theme.bodyPt - theme.bodyPt * 0.78; // top of pill
         var chipH = theme.bodyPt * 0.78;
         var chipPad = 3;
@@ -749,7 +906,10 @@
         doc.setFillColor(paperRgb.r, paperRgb.g, paperRgb.b);
         doc.rect(0, 0, paper.w, paper.h, 'F');
       }
-      var blocks = buildBlocks(opts.rows || [], opts.title, opts.logoDataUrl);
+      var blocks = buildBlocks(opts.rows || [], opts.title, opts.logoDataUrl, {
+        tagline: opts.tagline || '',
+        story:   opts.story   || ''
+      });
       // Forward logoMeta + locale onto the relevant blocks.
       blocks.forEach(function (b) {
         if (b.kind === 'logo' && opts.logoMeta) b._logoMeta = opts.logoMeta;

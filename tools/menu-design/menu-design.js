@@ -116,6 +116,9 @@
   var paperKey = 'letter';
   var logoUrl  = null;       // data: URL string or SVG-text
   var logoMeta = null;       // { name, w, h } or null
+  // W9-3 — menu-level metadata (tagline + chef's note). Both render
+  // on the deliverable; both empty by default; both persist to draft.
+  var meta = { tagline: '', story: '' };
 
   // W7-3 — paperKey migration. Old drafts wrote 'trifold' / 'tabletent';
   // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
@@ -509,6 +512,20 @@
   // Initial render once MD_PDF is available (script loads after PDF
   // module so this runs at end-of-script init).
 
+  // W9-3 — menu-level meta input wiring.
+  var metaTaglineEl = document.getElementById('mdMetaTagline');
+  var metaStoryEl   = document.getElementById('mdMetaStory');
+  if (metaTaglineEl) metaTaglineEl.addEventListener('input', function () {
+    meta.tagline = metaTaglineEl.value || '';
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+  if (metaStoryEl) metaStoryEl.addEventListener('input', function () {
+    meta.story = metaStoryEl.value || '';
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper
   // element from the active theme. Theme tokens map cleanly to CSS custom
@@ -591,6 +608,13 @@
     } catch (_) {}
     if (!title) title = tt('Menu', 'Menú');
     html += '<h1 class="md-pp-title">' + escHtml(title) + '</h1>';
+    // W9-3 — tagline + story render between title and first section.
+    if (meta.tagline) {
+      html += '<p class="md-pp-tagline">' + escHtml(meta.tagline) + '</p>';
+    }
+    if (meta.story) {
+      html += '<blockquote class="md-pp-story">' + escHtml(meta.story) + '</blockquote>';
+    }
 
     // Two-column theme: render dishes inside grid, sections span both columns.
     var isTwoCol = theme.columns === 2;
@@ -734,6 +758,7 @@
         themeId: themeId,
         paperKey: paperKey,
         customDims: paperKey === 'custom' ? customDims : null,
+        meta: { tagline: meta.tagline, story: meta.story },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -803,6 +828,17 @@
         paperKey = migratePaperKey(d.paperKey || paperKey);
         logoMeta = d.logoMeta || null;
         if (d.customDims) customDims = d.customDims;
+        // W9-3 — meta restore + UI hydrate
+        if (d.meta) {
+          meta.tagline = d.meta.tagline || '';
+          meta.story   = d.meta.story   || '';
+          if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+          if (metaStoryEl)   metaStoryEl.value   = meta.story;
+          if (meta.tagline || meta.story) {
+            var metaEl = document.getElementById('mdMeta');
+            if (metaEl) metaEl.open = true;
+          }
+        }
         if (savedLogo) { logoUrl = savedLogo; }
         render();
         renderPreview();
@@ -1301,6 +1337,8 @@
         paperKey:    paperKey,
         customDims:  paperKey === 'custom' ? customDims : null,
         title:       title,
+        tagline:     meta.tagline,
+        story:       meta.story,
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
         filename:    filename,

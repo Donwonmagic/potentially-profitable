@@ -51,6 +51,22 @@
 .md-walkaway{margin:14px auto 0;max-width:520px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
 .md-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
 
+/* W9-3 — menu-level meta block (tagline + chef's note). Calm
+   collapsed surface above the dish grid. */
+.md-meta{margin:18px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--white);overflow:hidden}
+.md-meta[open]{border-color:var(--teal);background:var(--surface-1,var(--white))}
+.md-meta-summary{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);list-style:none;min-height:44px}
+.md-meta-summary::-webkit-details-marker{display:none}
+.md-meta-summary:hover{color:var(--teal)}
+.md-meta[open] .md-meta-summary{color:var(--teal);border-bottom:1px solid var(--line)}
+.md-meta-hint{color:var(--stone);font-weight:400;font-size:12px}
+.md-meta-body{padding:14px 16px}
+.md-meta-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.md-meta-field:last-child{margin-bottom:0}
+.md-meta-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.md-meta-field input,.md-meta-field textarea{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
+.md-meta-field input:focus,.md-meta-field textarea:focus{border-color:var(--teal);outline:none}
+
 /* "We remember" pill — fed by MuntinContext on returning visits. */
 .md-ctx{margin:18px 0 0;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .md-ctx[hidden]{display:none}
@@ -192,7 +208,10 @@
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
-.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 26px;color:var(--ink);letter-spacing:0}
+.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 6px;color:var(--ink);letter-spacing:0}
+/* W9-3 — Tagline + chef's-note story block render between title and first section. */
+.md-preview-paper .md-pp-tagline{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--accent);margin:0 0 18px;font-size:0.86em;letter-spacing:.04em}
+.md-preview-paper .md-pp-story{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--ink);margin:0 auto 28px;padding:14px 0;font-size:0.9em;line-height:1.6;border-top:0.5px solid var(--muted);border-bottom:0.5px solid var(--muted);max-width:80%}
 .md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}
 .md-preview-paper .md-pp-cols{display:grid;gap:0 32px}
 .md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:8px 0;break-inside:avoid}
@@ -581,6 +600,27 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <button type="button" class="md-ctx-use" id="mdCtxUse">Use these</button>
     </aside>
 
+    <!-- W9-3 — Menu-level metadata: tagline + chef's note / story.
+         Both render on the printed deliverable. Empty by default;
+         no required field. Wraps in a collapsed <details> so the
+         editor surface stays calm for first-time users. -->
+    <details class="md-meta" id="mdMeta">
+      <summary class="md-meta-summary">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Tagline &amp; chef's note <span class="md-meta-hint">(optional, prints on the deliverable)</span></span>
+      </summary>
+      <div class="md-meta-body">
+        <div class="md-meta-field">
+          <label for="mdMetaTagline">Tagline</label>
+          <input type="text" id="mdMetaTagline" maxlength="100" placeholder="A neighborhood Italian table since 1998." autocomplete="off" />
+        </div>
+        <div class="md-meta-field">
+          <label for="mdMetaStory">Chef's note / story</label>
+          <textarea id="mdMetaStory" rows="3" maxlength="600" placeholder="A short paragraph that opens the menu — your sourcing, your story, your dedication. Renders as italic pull-quote."></textarea>
+        </div>
+      </div>
+    </details>
+
     <!-- Dish list (canonical input). Mobile collapses to card-stack via data-label. -->
     <div class="md-grid table-scroll" id="mdGrid">
       <table>
@@ -749,8 +789,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w9-2"></script>
+<script src="./menu-render-pdf.js?v=20260501-w9-3"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
-<script src="./menu-design.js?v=20260501-w9-2"></script>
+<script src="./menu-design.js?v=20260501-w9-3"></script>
 </body>
 </html>
