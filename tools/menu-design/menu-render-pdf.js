@@ -448,7 +448,16 @@
         // W9-3 — sections can be flagged as a "specials" callout via
         // a `specials: true` token. The renderer draws a boxed
         // accent-tint background instead of a plain header.
-        blocks.push({ kind: 'section', text: r.name.trim(), specials: !!r.specials });
+        // W12-2 — section enrichments (blurb / glyph / availability)
+        // propagate to PDF as additional fields on the section block.
+        blocks.push({
+          kind: 'section',
+          text: r.name.trim(),
+          specials: !!r.specials,
+          blurb: (r.blurb || '').trim(),
+          glyph: (r.glyph || '').trim(),
+          availability: (r.availability || '').trim()
+        });
         firstDishOfSection = true;
       } else if (r.kind === 'dish' && (r.name || '').trim()) {
         // W7-2 — propagate allergen codes + spice level into the
@@ -461,12 +470,15 @@
         var spice = (typeof r.spice === 'number' && r.spice > 0 && r.spice <= 3) ? r.spice : 0;
         blocks.push({
           kind: 'dish',
-          name:  (r.name || '').trim(),
-          price: (r.price || '').trim(),
-          desc:  (r.desc || '').trim(),
+          name:     (r.name || '').trim(),
+          price:    (r.price || '').trim(),
+          desc:     (r.desc || '').trim(),
           allergens: allergens,
           spice: spice,
-          photo: r.photo || null, // W11-4 — propagate dish photo
+          photo: r.photo || null,             // W11-4 — propagate dish photo
+          pairing:  (r.pairing  || '').trim(), // W12-2
+          modifier: (r.modifier || '').trim(), // W12-2
+          halfPrice:(r.halfPrice|| '').trim(), // W12-2
           firstOfSection: firstDishOfSection // W9-3 — drives drop-cap rendering
         });
         firstDishOfSection = false;
@@ -536,6 +548,8 @@
     if (block.kind === 'section') {
       var secH = theme.h2Pt * 1.6 + 16;
       if (block.specials) secH += 12; // boxed callout adds padding
+      // W12-2 — blurb adds an italic line below the header.
+      if (block.blurb) secH += theme.descPt * 1.45 + 6;
       return secH;
     }
     if (block.kind === 'dish') {
@@ -547,10 +561,14 @@
         var lines = doc.splitTextToSize(block.desc, contentWidth - 70 - (block.photo ? 50 : 0));
         descH = lines.length * theme.descPt * 1.32;
       }
+      // W12-2 — pairing + modifier each add an extra small line.
+      var extraH = 0;
+      if (block.pairing)  extraH += theme.descPt * 1.4;
+      if (block.modifier) extraH += theme.descPt * 1.4;
       // W11-4 — when photo present, ensure the row is at least as
       // tall as the embed (~44pt + 4pt padding).
       var photoH = (block.photo && block.photo.dataUrl) ? 48 : 0;
-      return Math.max(nameH + descH + 6, photoH);
+      return Math.max(nameH + descH + extraH + 6, photoH);
     }
     // W11-3 — footer ornament block. Closes the menu visually with
     // a small cuisine-specific mark at center, ~40% opacity.
@@ -733,7 +751,33 @@
         doc.rect(x - 6, y, contentWidth + 12, theme.h2Pt * 1.6 + 28, 'S');
         doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
       }
+      // W12-2 — section glyph prefixes the label.
+      if (block.glyph) {
+        var glyphPt = theme.h2Pt * 0.8;
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+        doc.setFontSize(glyphPt);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        var labelW = doc.getStringUnitWidth(label) * theme.h2Pt / doc.internal.scaleFactor;
+        var glyphX = x + (contentWidth - labelW) / 2 - 14;
+        doc.text(block.glyph, glyphX, sectionY);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
+        doc.setFontSize(theme.h2Pt);
+      }
       doc.text(label, x + contentWidth / 2, sectionY, { align: 'center' });
+      // W12-2 — availability tag rendered to the right of the label
+      // in muted italic.
+      if (block.availability) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt * 0.85);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        var avLabelW = doc.getStringUnitWidth(label) * theme.h2Pt / doc.internal.scaleFactor;
+        var avX = x + (contentWidth + avLabelW) / 2 + 8;
+        doc.text(block.availability, avX, sectionY);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
+        doc.setFontSize(theme.h2Pt);
+      }
       if (theme.dividerStyle === 'hand-rule') {
         var labelW = doc.getStringUnitWidth(label) * theme.h2Pt / doc.internal.scaleFactor;
         var ruleHalf = (contentWidth - labelW) / 2 - 12;
@@ -777,6 +821,16 @@
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       var sectionConsumed = y + theme.h2Pt * 1.6 + 16;
       if (block.specials) sectionConsumed += 12;
+      // W12-2 — section blurb in italic, centered, below the header.
+      if (block.blurb) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(block.blurb, x + contentWidth / 2, sectionConsumed, { align: 'center' });
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        sectionConsumed += theme.descPt * 1.45 + 6;
+      }
       return sectionConsumed;
     }
     if (block.kind === 'dish') {
@@ -915,6 +969,33 @@
           nextY += theme.descPt * 1.32;
         }
       }
+      // W12-2 — half-portion price as inline tag after the main price.
+      if (block.halfPrice) {
+        doc.setFontSize(theme.descPt * 0.95);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        var hpText = '/ ½ ' + block.halfPrice;
+        var priceW = doc.getStringUnitWidth(block.price || '') * theme.bodyPt / doc.internal.scaleFactor;
+        doc.text(hpText, x + contentWidth - priceW - 4, y + theme.bodyPt, { align: 'right' });
+        doc.setFontSize(theme.bodyPt);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      }
+      // W12-2 — pairing line (italic, accent color).
+      if (block.pairing) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt * 0.95);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.text('✧ ' + block.pairing, x, nextY + theme.descPt);
+        nextY += theme.descPt * 1.4;
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+      }
+      // W12-2 — modifier line (muted, smaller).
+      if (block.modifier) {
+        doc.setFontSize(theme.descPt * 0.9);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(block.modifier, x, nextY + theme.descPt);
+        nextY += theme.descPt * 1.4;
+      }
+      doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       return nextY + 6;
     }
     // W11-3 — footer ornament: cuisine-specific mark at 40% opacity,

@@ -328,6 +328,16 @@
 .md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
 .md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
 .md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+/* W12-2 — pairing italic line in accent color, modifier muted, half-price inline tag */
+.md-preview-paper .md-pp-pairing{grid-column:1/-1;color:var(--accent);font-size:0.78em;font-style:italic;margin-top:2px;line-height:1.45}
+.md-preview-paper .md-pp-pairing::before{content:'\2737  ';opacity:.7}
+.md-preview-paper .md-pp-modifier{grid-column:1/-1;color:var(--muted);font-size:0.78em;margin-top:1px;line-height:1.45;font-style:normal}
+.md-preview-paper .md-pp-half-price{font-size:0.86em;color:var(--muted);font-weight:400}
+/* W12-2 — section enrichments in preview */
+.md-preview-paper .md-pp-section-glyph{font-size:0.85em;color:var(--accent);margin-right:6px;font-weight:400}
+.md-preview-paper .md-pp-section-avail{display:inline-block;margin-left:10px;font-size:0.6em;color:var(--muted);font-weight:400;font-style:italic;vertical-align:middle;letter-spacing:.04em}
+.md-preview-paper .md-pp-section-blurb{text-align:center;font-style:italic;font-size:0.82em;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.md-preview-paper .md-pp-section-specials{border:1px solid var(--accent);padding:6px 14px;background:color-mix(in srgb,var(--accent) 8%,transparent)}
 /* Theme-specific dividers + price styles. */
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section{position:relative;padding:0 22px}
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::before,
@@ -443,6 +453,28 @@
 /* W11-4 — preview-side dish photo: 56x56 thumb left of the dish name. */
 .md-preview-paper .md-pp-dish-thumb{display:inline-block;width:56px;height:56px;border-radius:4px;overflow:hidden;margin-right:10px;vertical-align:middle;border:0.5px solid color-mix(in srgb,var(--ink) 16%,transparent)}
 .md-preview-paper .md-pp-dish-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* W12-2 — extra dish/section input fields. Live inside the popover
+   panel for dishes; inside a <details> disclosure for sections. */
+.md-extra-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-extra-field{display:flex;flex-direction:column;gap:3px}
+.md-extra-field-half{grid-column:auto}
+.md-extra-field label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-extra-field input{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white);box-sizing:border-box}
+.md-extra-field input:focus{border-color:var(--teal);outline:none}
+@media(max-width:640px){.md-extra-fields{grid-template-columns:1fr}}
+
+/* W12-2 — section-row disclosure for blurb/glyph/availability/specials. */
+.md-section-extras{margin-top:6px;border-top:1px dashed var(--line-dark)}
+.md-section-extras summary{cursor:pointer;font-size:12px;color:var(--ink-soft);font-weight:600;list-style:none;padding:6px 0;min-height:36px;display:flex;align-items:center;gap:6px}
+.md-section-extras summary::-webkit-details-marker{display:none}
+.md-section-extras summary::before{content:'+ ';color:var(--ink-soft)}
+.md-section-extras[open] summary::before{content:'\2212  '}
+.md-section-extras-badge{font-size:11px;color:var(--teal);background:var(--cream-2);padding:2px 8px;border-radius:999px}
+.md-section-extras-body{display:grid;grid-template-columns:1fr 80px 1fr;gap:8px;padding:8px 0}
+@media(max-width:640px){.md-section-extras-body{grid-template-columns:1fr}}
+.md-section-specials{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;padding:6px 0;min-height:36px}
+.md-section-specials input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
 
 /* Mobile — popover stays full-width inside the dish card. */
 @media(max-width:640px){
@@ -1003,9 +1035,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w12-1"></script>
+<script src="./menu-render-pdf.js?v=20260501-w12-2"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w11-5"></script>
+<script src="./menu-design.js?v=20260501-w12-2"></script>
 </body>
 </html>

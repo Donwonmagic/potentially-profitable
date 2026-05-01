@@ -26,8 +26,17 @@
   var rows = [];
   var SCHEMA_VERSION = 2;
 
-  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null }; }
-  function blankSection(name) { return { kind: 'section', name: name || '' }; }
+  // W12-2 — extended dish + section schemas. New per-dish fields
+  // (pairing, modifier, halfPrice) and per-section enrichments
+  // (blurb, glyph, availability) all default to empty so existing
+  // drafts continue to round-trip. The renderer no-ops on empty.
+  function blankDish() {
+    return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
+             pairing: '', modifier: '', halfPrice: '' };
+  }
+  function blankSection(name) {
+    return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '' };
+  }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
   // seeded for empty-state anchoring. Cleared by clearGhostRows().
@@ -155,10 +164,45 @@
           '<button type="button" data-act="movedn" data-i="' + i + '" aria-label="' + tt('Move down', 'Mover abajo') + '"' + touchDn + '>↓</button>' +
         '</div>';
       if (r.kind === 'section') {
+        // W12-2 — section enrichments (blurb / glyph / availability)
+        // live behind a "+ details" disclosure so the basic flow
+        // stays simple. Each is optional; renderer no-ops on empty.
+        var hasSecExtras = !!(r.blurb || r.glyph || r.availability);
+        var secExtras =
+          '<details class="md-section-extras" data-i="' + i + '"' + (hasSecExtras ? ' open' : '') + '>' +
+            '<summary class="md-section-extras-trigger">' +
+              tt('Section details', 'Detalles de sección') + ' ' +
+              (hasSecExtras ? '<span class="md-section-extras-badge">' + (r.blurb ? '✎ ' : '') + (r.glyph ? r.glyph + ' ' : '') + (r.availability ? '⏱ ' : '') + '</span>' : '') +
+            '</summary>' +
+            '<div class="md-section-extras-body">' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-blurb-' + i + '">' + tt('Section blurb', 'Descripción de sección') + '</label>' +
+                '<input type="text" id="md-sec-blurb-' + i + '" data-field="blurb" data-i="' + i +
+                  '" value="' + escHtml(r.blurb || '') + '" placeholder="' +
+                  tt('Hand-rolled, made to order', 'Hechos a mano, al momento') + '" />' +
+              '</div>' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-glyph-' + i + '">' + tt('Glyph', 'Símbolo') + '</label>' +
+                '<input type="text" id="md-sec-glyph-' + i + '" data-field="glyph" data-i="' + i +
+                  '" value="' + escHtml(r.glyph || '') + '" placeholder="◆" maxlength="2" />' +
+              '</div>' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-avail-' + i + '">' + tt('Availability', 'Disponibilidad') + '</label>' +
+                '<input type="text" id="md-sec-avail-' + i + '" data-field="availability" data-i="' + i +
+                  '" value="' + escHtml(r.availability || '') + '" placeholder="' +
+                  tt('After 5pm · Weekends', 'Después de 5pm · Fines de semana') + '" />' +
+              '</div>' +
+              '<label class="md-section-specials">' +
+                '<input type="checkbox" data-field="specials" data-i="' + i + '"' + (r.specials ? ' checked' : '') + ' />' +
+                ' ' + tt('Treat as a "Today\'s specials" callout', 'Tratar como recuadro de "Especiales de hoy"') +
+              '</label>' +
+            '</div>' +
+          '</details>';
         html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + draggable + '>' +
           handleCell +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
-          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" />' + touchReorder + '</td>' +
+          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" />' +
+          secExtras + touchReorder + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
           '</tr>';
       } else {
@@ -249,6 +293,27 @@
                 spiceDots +
               '</div>' +
               photoBlock +
+              // W12-2 — pairing, modifier, half-price fields. All
+              // optional; renderer no-ops on empty.
+              '<div class="md-extra-fields">' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-pair-' + i + '">' + tt('Pairing', 'Maridaje') + '</label>' +
+                  '<input type="text" id="md-pair-' + i + '" data-field="pairing" data-i="' + i +
+                    '" value="' + escHtml(r.pairing || '') + '" placeholder="' +
+                    tt('Pair with: Sancerre 2022', 'Marida con: Sancerre 2022') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-mod-' + i + '">' + tt('Modifier', 'Modificador') + '</label>' +
+                  '<input type="text" id="md-mod-' + i + '" data-field="modifier" data-i="' + i +
+                    '" value="' + escHtml(r.modifier || '') + '" placeholder="' +
+                    tt('+$3 add chicken · +$2 GF bun', '+$3 con pollo · +$2 pan SG') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-half-' + i + '">' + tt('Half portion', 'Media porción') + '</label>' +
+                  '<input type="text" id="md-half-' + i + '" data-field="halfPrice" data-i="' + i +
+                    '" value="' + escHtml(r.halfPrice || '') + '" placeholder="$8" />' +
+                '</div>' +
+              '</div>' +
             '</div>' +
           '</details>';
 
@@ -756,11 +821,18 @@
     // Group rows[] into [section, dish[]] pairs. Dishes before any
     // section header land in an unnamed group at the top.
     var groups = [];
-    var current = { name: null, dishes: [] };
+    var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false };
     rows.forEach(function (r) {
       if (r.kind === 'section') {
         if (current.name !== null || current.dishes.length) groups.push(current);
-        current = { name: (r.name || '').trim(), dishes: [] };
+        current = {
+          name: (r.name || '').trim(),
+          dishes: [],
+          blurb: (r.blurb || '').trim(),
+          glyph: (r.glyph || '').trim(),
+          availability: (r.availability || '').trim(),
+          specials: !!r.specials
+        };
       } else if ((r.name || '').trim()) {
         current.dishes.push(r);
       }
@@ -794,7 +866,15 @@
     if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
     groups.forEach(function (g) {
       if (g.name) {
-        html += '<h2 class="md-pp-section"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' + escHtml(g.name) + '</h2>';
+        var sectionClasses = 'md-pp-section' + (g.specials ? ' md-pp-section-specials' : '');
+        var glyphPrefix = g.glyph ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> ' : '';
+        var availTag = g.availability ? '<span class="md-pp-section-avail">' + escHtml(g.availability) + '</span>' : '';
+        html += '<h2 class="' + sectionClasses + '"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' +
+                glyphPrefix + escHtml(g.name) + availTag +
+                '</h2>';
+        if (g.blurb) {
+          html += '<p class="md-pp-section-blurb"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' + escHtml(g.blurb) + '</p>';
+        }
       }
       g.dishes.forEach(function (d) {
         var name  = (d.name || '').trim();
@@ -823,10 +903,18 @@
         var thumbHtml = (d.photo && d.photo.dataUrl)
           ? '<span class="md-pp-dish-thumb" aria-hidden="true"><img src="' + escHtml(d.photo.dataUrl) + '" alt="" /></span>'
           : '';
+        // W12-2 — pairing / modifier / halfPrice render below desc.
+        var pairing  = (d.pairing  || '').trim();
+        var modifier = (d.modifier || '').trim();
+        var halfPrice = (d.halfPrice || '').trim();
+        var priceHtml = escHtml(price);
+        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' + escHtml(halfPrice) + '</span>';
         html += '<div class="md-pp-row">';
         html += '<div class="md-pp-name">' + thumbHtml + escHtml(name) + glyphsHtml + '</div>';
-        html += '<div class="md-pp-price">' + escHtml(price) + '</div>';
+        html += '<div class="md-pp-price">' + priceHtml + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        if (pairing)  html += '<div class="md-pp-pairing">' + escHtml(pairing) + '</div>';
+        if (modifier) html += '<div class="md-pp-modifier">' + escHtml(modifier) + '</div>';
         html += '</div>';
       });
     });
@@ -1311,6 +1399,15 @@
     rowsEl.addEventListener('change', function (e) {
       var t = e.target;
       if (!t) return;
+      // W12-2 — section "specials" checkbox change handler.
+      if (t.type === 'checkbox' && t.dataset.field === 'specials') {
+        var spi = parseInt(t.dataset.i, 10);
+        if (!isFinite(spi) || !rows[spi]) return;
+        rows[spi].specials = !!t.checked;
+        schedulePreview();
+        scheduleSaveDraft();
+        return;
+      }
       if (t.dataset.act === 'photo-pick') {
         var pi = parseInt(t.dataset.i, 10);
         var file = t.files && t.files[0];
