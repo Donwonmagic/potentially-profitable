@@ -1344,11 +1344,98 @@ console.log(`\nDesktop split-pane (Wave 6.10):`);
 
 console.log(`\nWave 6.10 fixtures: ${splitPass} passed.`);
 
+// =====================================================================
+// Wave 2.1 — live capture coach. Tests the pure-function pieces that
+// run in the browser: state-machine debouncing, glare scoring, and
+// laplacian-variance blur scoring. The video / getUserMedia / overlay
+// rendering are exercised manually in a real browser; out of scope here.
+// =====================================================================
+
+let coachPass = 0, coachFail = 0;
+console.log(`\nLive capture coach state machine + metrics (Wave 2.1):`);
+{
+  const COACH = await import(path.join(repoRoot, 'tools/invoice-decoder/capture-coach.js')).then(m => m.default || m);
+
+  // State machine — sustained-signal debouncing.
+  const evaluators = COACH._makeEvaluators();
+  let state = COACH._makeCoachState();
+  // Frame 1: all good (no rule fires) → candidate is allGood.
+  let id = COACH._tickCoach(state, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1000);
+  // After exactly 0ms, candidate just set; activeId still null → tick returns null
+  // We set the timestamp to 1000; threshold is 400ms; activeId not yet flipped.
+  console.log(`  ${id === null ? '✓' : '✗'} no rule firing within sustain window leaves activeId unset (got ${id})`);
+  if (id === null) coachPass++; else coachFail++;
+
+  // Frame 2: 500ms later, still all good → activeId becomes allGood.
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1500);
+  console.log(`  ${id === 'allGood' ? '✓' : '✗'} sustained no-rule for ≥400ms transitions to allGood (got ${id})`);
+  if (id === 'allGood') coachPass++; else coachFail++;
+
+  // Frame 3: glare appears, but only briefly → state should NOT flip yet.
+  state = COACH._makeCoachState();
+  state.activeId = 'allGood';
+  state.candidateId = 'allGood';
+  state.candidateAt = 1000;
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 1100);
+  // Glare just started 100ms ago; sustain is 400ms → activeId still allGood.
+  console.log(`  ${id === 'allGood' ? '✓' : '✗'} glare flicker shorter than sustain window keeps activeId stable (got ${id})`);
+  if (id === 'allGood') coachPass++; else coachFail++;
+
+  // Frame 4: glare sustained → flip to glare.
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 1500);
+  console.log(`  ${id === 'glare' ? '✓' : '✗'} glare sustained ≥400ms transitions to glare (got ${id})`);
+  if (id === 'glare') coachPass++; else coachFail++;
+
+  // Glare > Blur > Fill-frame priority order. When multiple rules
+  // fire at once, glare wins.
+  state = COACH._makeCoachState();
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 30, quadArea: 0.2 }, 1000);
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 30, quadArea: 0.2 }, 1500);
+  console.log(`  ${id === 'glare' ? '✓' : '✗'} priority order glare > blur > fillFrame (got ${id})`);
+  if (id === 'glare') coachPass++; else coachFail++;
+
+  // Glare scoring on a synthetic image: a 40×40 image with a 10×10
+  // blob of pure-white pixels in the center should score > 0.25 in
+  // ONE of the 4×4 grid cells.
+  const W = 40, H = 40;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      const inBlob = x >= 15 && x < 25 && y >= 15 && y < 25;
+      const v = inBlob ? 255 : 50;
+      data[i] = data[i + 1] = data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  }
+  const score = COACH._computeGlareScore({ data, width: W, height: H });
+  console.log(`  ${score >= 0.25 ? '✓' : '✗'} computeGlareScore detects a focused white blob (got ${score.toFixed(3)} ≥ 0.25)`);
+  if (score >= 0.25) coachPass++; else coachFail++;
+
+  // Glare scoring on a uniformly mid-gray image: low score.
+  const dataGray = new Uint8ClampedArray(W * H * 4);
+  for (let i = 0; i < dataGray.length; i += 4) { dataGray[i] = dataGray[i + 1] = dataGray[i + 2] = 120; dataGray[i + 3] = 255; }
+  const grayScore = COACH._computeGlareScore({ data: dataGray, width: W, height: H });
+  console.log(`  ${grayScore < 0.05 ? '✓' : '✗'} computeGlareScore returns near-zero for a uniformly gray image (got ${grayScore.toFixed(3)})`);
+  if (grayScore < 0.05) coachPass++; else coachFail++;
+
+  // Laplacian variance: a sharp edge should produce non-zero variance,
+  // a uniform gray image should produce ~zero.
+  const lvSharp = COACH._computeLaplacianVariance({ data, width: W, height: H });
+  const lvFlat  = COACH._computeLaplacianVariance({ data: dataGray, width: W, height: H });
+  const okLvOrder = lvSharp > lvFlat;
+  console.log(`  ${okLvOrder ? '✓' : '✗'} laplacian variance higher on sharp edges (sharp ${lvSharp.toFixed(1)} > flat ${lvFlat.toFixed(1)})`);
+  if (okLvOrder) coachPass++; else coachFail++;
+}
+
+console.log(`\nWave 2.1 fixtures: ${coachPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
   + vcFail
   + kdfFail + recFail
   + v41Fail
-  + splitFail;
+  + splitFail
+  + coachFail;
 process.exit(grandFail === 0 ? 0 : 1);

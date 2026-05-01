@@ -2439,6 +2439,43 @@
     e.target.value = '';
   });
 
+  // Wave 2.1 — intercept the photo chip click. When the live capture
+  // coach is supported (HTTPS + getUserMedia available + camera
+  // grantable) we open it INSTEAD of the OS file/camera picker. The
+  // coach gives the operator a real-time edge-overlay + coaching
+  // prompts before capture; on "Done" we feed its captured Files
+  // into the same handlePhotoFiles pipeline. On unsupported browsers,
+  // permission denied, or operator dismissal, we fall through to the
+  // native picker by clicking photoInput directly.
+  var photoChip = document.querySelector('.id-input-chip[data-input="photo"]');
+  if (photoChip && photoInput && typeof MID_CAPTURE_COACH !== 'undefined' && MID_CAPTURE_COACH.isSupported && MID_CAPTURE_COACH.isSupported()) {
+    photoChip.addEventListener('click', function (e) {
+      // Don't intercept clicks on the inner <input> — that's the
+      // browser's own file-picker bubble; let it proceed normally.
+      // We're after the label-click that bubbles up here.
+      if (e.target === photoInput) return;
+      // Don't intercept when the operator already opened a picker
+      // (modifier keys, right-click, etc).
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      e.stopPropagation();
+      MID_CAPTURE_COACH.open().then(function (files) {
+        if (files && files.length) {
+          handlePhotoFiles(files);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Coach Done', { props: { pages: files.length } }); } catch (_) {}
+          }
+        } else {
+          // Operator dismissed or permission denied. Fall back to
+          // the native picker so they can still pick from camera roll.
+          if (photoInput) {
+            try { photoInput.click(); } catch (_) {}
+          }
+        }
+      });
+    }, { capture: true });
+  }
+
   // -------------------- PDF + CSV (B2 will wire fully) --------------------
   if (pdfInput) pdfInput.addEventListener('change', function (e) {
     var f = e.target.files && e.target.files[0];

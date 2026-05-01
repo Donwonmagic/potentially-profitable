@@ -106,6 +106,8 @@
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',
       'Invoice Decoder Bulk Confirm',
+      'Invoice Decoder Coach Capture',
+      'Invoice Decoder Coach Done',
       'Invoice Decoder CSV Extract',
       'Invoice Decoder Category Set',
       'Invoice Decoder Comparison Opened',
