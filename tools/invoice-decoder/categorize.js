@@ -162,10 +162,84 @@
     return { category: best.category, confidence: confidence, tier: 'exact', matched: best.term };
   }
 
+  // Levenshtein distance with early-exit when distance > maxDist.
+  // Only computed when the lengths are within a small ratio of
+  // each other; saves wasted work on obviously-different tokens.
+  function levenshtein(a, b, maxDist) {
+    if (a === b) return 0;
+    var la = a.length, lb = b.length;
+    if (Math.abs(la - lb) > maxDist) return maxDist + 1;
+    var prev = new Array(lb + 1);
+    var curr = new Array(lb + 1);
+    for (var j = 0; j <= lb; j++) prev[j] = j;
+    for (var i = 1; i <= la; i++) {
+      curr[0] = i;
+      var rowMin = i;
+      for (var j2 = 1; j2 <= lb; j2++) {
+        var cost = a.charCodeAt(i - 1) === b.charCodeAt(j2 - 1) ? 0 : 1;
+        var v = Math.min(prev[j2] + 1, curr[j2 - 1] + 1, prev[j2 - 1] + cost);
+        curr[j2] = v;
+        if (v < rowMin) rowMin = v;
+      }
+      if (rowMin > maxDist) return maxDist + 1; // early exit
+      var tmp = prev; prev = curr; curr = tmp;
+    }
+    return prev[lb];
+  }
+
+  // Tier 2 — fuzzy match on individual tokens. For each token in
+  // the line, find the closest lexicon term (Hamming-style with
+  // Levenshtein distance ≤2). Best match per category aggregates
+  // a per-category score; the highest-scoring category wins.
+  // Confidence drops to amber band (60-79) by design — fuzzy
+  // matches need owner confirmation more often than exact ones.
+  function tier2Fuzzy(rowName) {
+    var name = normalize(rowName);
+    if (!name) return null;
+    var tokens = name.split(/\s+/).filter(function (t) { return t.length >= 4; });
+    if (!tokens.length) return null;
+    var perCat = {};
+    var bestPerCat = {};
+    tokens.forEach(function (tok) {
+      for (var cat in LEXICON) {
+        var entries = LEXICON[cat];
+        for (var i = 0; i < entries.length; i++) {
+          var terms = (entries[i].en || []).concat(entries[i].es || []);
+          for (var t = 0; t < terms.length; t++) {
+            var term = normalize(terms[t]);
+            if (!term || term.length < 4) continue;
+            // Only test against single-word terms (multi-word
+            // matches are tier 1's job).
+            if (term.indexOf(' ') !== -1) continue;
+            var maxDist = term.length >= 8 ? 2 : 1;
+            var d = levenshtein(tok, term, maxDist);
+            if (d <= maxDist) {
+              perCat[cat] = (perCat[cat] || 0) + (term.length - d);
+              if (!bestPerCat[cat] || (term.length - d) > bestPerCat[cat].score) {
+                bestPerCat[cat] = { term: term, score: term.length - d, dist: d };
+              }
+            }
+          }
+        }
+      }
+    });
+    var winner = null;
+    for (var cat2 in perCat) {
+      if (!winner || perCat[cat2] > perCat[winner]) winner = cat2;
+    }
+    if (!winner) return null;
+    var match = bestPerCat[winner];
+    // Amber confidence band — fuzzy matches need verification.
+    var confidence = Math.round(60 + Math.min(15, (match.term.length - match.dist) * 1.5));
+    return { category: winner, confidence: confidence, tier: 'fuzzy', matched: match.term, dist: match.dist };
+  }
+
   function classify(row) {
     if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none' };
     var t1 = tier1Exact(row.name);
     if (t1) return t1;
+    var t2 = tier2Fuzzy(row.name);
+    if (t2) return t2;
     return { category: null, confidence: 0, tier: 'none' };
   }
 
