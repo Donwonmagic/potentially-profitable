@@ -120,23 +120,11 @@
     },
     {
       "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/schema-markup/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/price-range/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/menu-schema/"
+      "url": "https://muntin.digital/glossary/rich-results/"
     },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/opening-hours-specification/"
-    },
-    {
-      "@type": "DefinedTerm",
-      "url": "https://muntin.digital/glossary/aggregaterating/"
     }
   ]
 }
@@ -421,7 +409,7 @@
 
       <h2>1. Restaurant — the foundational type</h2>
 
-      <p>This is the one you cannot skip. <a href="/glossary/schema-markup/">Restaurant schema</a> tells Google what business type you are, your address, your phone, your <a href="/glossary/price-range/">price range</a>, and a handful of other facts that determine whether you appear in queries like "Italian restaurants near me" at all.</p>
+      <p>This is the one you cannot skip. <a href="/glossary/schema/">Restaurant schema</a> tells Google what business type you are, your address, your phone, your <a href="/glossary/rich-results/">price range</a>, and a handful of other facts that determine whether you appear in queries like "Italian restaurants near me" at all.</p>
 
       <p>Minimum viable JSON-LD:</p>
 
@@ -448,7 +436,7 @@
 
       <h2>2. Menu — the type most restaurants fake</h2>
 
-      <p>Almost every restaurant site I audit has either no <a href="/glossary/menu-schema/">Menu schema</a> at all, or the platform stamped it as a single string blob. Either way, Google can't parse individual dishes and you don't rank for "tacos al pastor near me" at the dish level.</p>
+      <p>Almost every restaurant site I audit has either no <a href="/glossary/schema/">Menu schema</a> at all, or the platform stamped it as a single string blob. Either way, Google can't parse individual dishes and you don't rank for "tacos al pastor near me" at the dish level.</p>
 
       <p>The structure that works:</p>
 
@@ -515,7 +503,7 @@
 
       <h2>4. AggregateRating — the one that boosts CTR by double digits</h2>
 
-      <p>If you have reviews on your own site, <a href="/glossary/aggregaterating/">AggregateRating</a> shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.</p>
+      <p>If you have reviews on your own site, <a href="/glossary/rich-results/">AggregateRating</a> shows up as the gold-star pattern in your search snippet. The CTR lift is real — typically 8-15% for restaurant queries.</p>
 
       <pre><code>"aggregateRating": {
   "@type": "AggregateRating",
@@ -695,7 +683,7 @@
         <h4 class="i18n">GBP setup for restaurants</h4>
         <p>The other side of structured data — the surface schema feeds.</p>
       </a>
-      <a href="/glossary/schema-markup/">
+      <a href="/glossary/schema/">
         <h4 class="i18n">Schema markup — the glossary entry</h4>
         <p>The plain-English definition of what JSON-LD is and why Google reads it.</p>
       </a>
