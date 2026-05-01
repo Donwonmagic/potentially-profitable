@@ -43,6 +43,68 @@
     return __pdfLibPromise;
   }
 
+  // W9-2 — Brand font loader. Mirrors the audits/restaurant pattern.
+  // Fetches subset TTFs from /assets/fonts/pdf/ (Fraunces + Inter,
+  // pre-built by scripts/build-pdf-fonts.mjs) and base64-encodes
+  // them so jsPDF's addFileToVFS / addFont can register them. Same-
+  // origin only — never an external CDN. Failure short-circuits to
+  // base-14 fonts so the PDF still ships.
+  var __pdfFontsPromise = null;
+  function loadBrandFonts() {
+    if (root.__menuPdfFonts) return Promise.resolve(root.__menuPdfFonts);
+    if (__pdfFontsPromise) return __pdfFontsPromise;
+    var specs = [
+      ['fraunces400', '/assets/fonts/pdf/fraunces-400.ttf'],
+      ['fraunces500', '/assets/fonts/pdf/fraunces-500.ttf'],
+      ['fraunces600', '/assets/fonts/pdf/fraunces-600.ttf'],
+      ['inter400',    '/assets/fonts/pdf/inter-400.ttf'],
+      ['inter500',    '/assets/fonts/pdf/inter-500.ttf'],
+      ['inter600',    '/assets/fonts/pdf/inter-600.ttf']
+    ];
+    __pdfFontsPromise = Promise.all(specs.map(function (s) {
+      return fetch(s[1], { cache: 'force-cache' }) // h8-exempt: same-origin font asset for in-browser PDF embed
+        .then(function (r) { if (!r.ok) throw new Error('font ' + s[1] + ' ' + r.status); return r.arrayBuffer(); })
+        .then(function (buf) {
+          var bytes = new Uint8Array(buf);
+          var CHUNK = 0x8000, parts = [];
+          for (var i = 0; i < bytes.length; i += CHUNK) {
+            parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK)));
+          }
+          return [s[0], btoa(parts.join(''))];
+        });
+    })).then(function (pairs) {
+      var out = {};
+      for (var i = 0; i < pairs.length; i++) out[pairs[i][0]] = pairs[i][1];
+      root.__menuPdfFonts = out;
+      return out;
+    }).catch(function () {
+      __pdfFontsPromise = null;
+      return null;
+    });
+    return __pdfFontsPromise;
+  }
+
+  function registerBrandFonts(doc, fonts) {
+    if (!fonts) return false;
+    try {
+      doc.addFileToVFS('Fraunces-400.ttf', fonts.fraunces400);
+      doc.addFont('Fraunces-400.ttf', 'Fraunces', 'normal');
+      doc.addFileToVFS('Fraunces-500.ttf', fonts.fraunces500);
+      doc.addFont('Fraunces-500.ttf', 'Fraunces', 'medium');
+      doc.addFileToVFS('Fraunces-600.ttf', fonts.fraunces600);
+      doc.addFont('Fraunces-600.ttf', 'Fraunces', 'bold');
+      doc.addFileToVFS('Inter-400.ttf', fonts.inter400);
+      doc.addFont('Inter-400.ttf', 'Inter', 'normal');
+      doc.addFileToVFS('Inter-500.ttf', fonts.inter500);
+      doc.addFont('Inter-500.ttf', 'Inter', 'medium');
+      doc.addFileToVFS('Inter-600.ttf', fonts.inter600);
+      doc.addFont('Inter-600.ttf', 'Inter', 'bold');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   // Paper dimensions in PostScript points (jsPDF unit:'pt').
   // W7-3 — expanded catalog. Each entry self-describes its flow
   // (single page vs multi-panel folded), default orientation,
@@ -118,13 +180,33 @@
     return p;
   }
 
-  // Map theme bodyFamily/displayFamily strings to jsPDF's built-in
-  // PDF base 14 fonts. jsPDF can register custom fonts but that
-  // adds 100KB+ to the bundle; for v1 we use fonts every PDF
-  // viewer can render natively. This keeps the file small and
-  // ensures consistent rendering across email clients + print.
-  function pickPdfFont(family) {
+  // Map theme bodyFamily/displayFamily strings to a jsPDF font
+  // identifier. W9-2 prefers Muntin's brand fonts (Fraunces +
+  // Inter) when they've been registered on the doc; otherwise
+  // falls back to PDF base-14 (times/helvetica/courier) so output
+  // is still legible without the font fetch.
+  //
+  // The 2nd arg `brandsLoaded` is a boolean the caller sets after
+  // registerBrandFonts() succeeds.
+  function pickPdfFont(family, brandsLoaded) {
     var f = String(family || '').toLowerCase();
+    if (brandsLoaded) {
+      // Match every serif theme face to Fraunces (covers Georgia,
+      // Cormorant, Quattrocento, Noto, Playfair, Source Serif —
+      // they all read as serif on screen, and Fraunces is a
+      // fitting general-purpose stand-in for the PDF deliverable).
+      if (/georgia|times|fraunces|cormorant|noto|quattrocento|playfair|garamond|source.serif|serif/.test(f)) {
+        return 'Fraunces';
+      }
+      // Match every sans theme face to Inter.
+      if (/inter|helvetica|arial|work.sans|system/.test(f)) {
+        return 'Inter';
+      }
+      // Display-only special cases (Bebas, Alfa Slab) get Inter
+      // bold as the closest available stand-in until W9-3 adds
+      // those subsets.
+      if (/bebas|alfa.slab|condensed/.test(f)) return 'Inter';
+    }
     if (/georgia|times|fraunces|serif/.test(f)) return 'times';
     if (/courier|monospace/.test(f)) return 'courier';
     return 'helvetica';
@@ -213,7 +295,7 @@
       var nameH  = theme.bodyPt * 1.25;
       var descH  = 0;
       if (block.desc) {
-        doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
         doc.setFontSize(theme.descPt);
         var lines = doc.splitTextToSize(block.desc, contentWidth - 70);
         descH = lines.length * theme.descPt * 1.32;
@@ -224,7 +306,7 @@
     // many codes present; reuse splitTextToSize with the rendered
     // string to get an honest height.
     if (block.kind === 'allergen-key') {
-      doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.descPt);
       var keyText = (block.codes || []).map(function (c) {
         return c + ' = ' + allergenLabelPdf(c, block.locale || 'en');
@@ -243,7 +325,7 @@
     var mutedRgb   = hexToRgb(theme.muted);
     var accentRgb  = hexToRgb(theme.accent);
     if (block.kind === 'title') {
-      doc.setFont(pickPdfFont(theme.displayFamily), 'normal');
+      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.h1Pt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       doc.text(block.text, x + contentWidth / 2, y + theme.h1Pt, { align: 'center' });
@@ -283,7 +365,7 @@
       }
     }
     if (block.kind === 'section') {
-      doc.setFont(pickPdfFont(theme.displayFamily), 'normal');
+      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.h2Pt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       var label = block.text;
@@ -304,7 +386,7 @@
         doc.setLineWidth(0.6);
         doc.rect(x + (contentWidth - bw) / 2, sectionY - theme.h2Pt - 2, bw, theme.h2Pt + 10);
       } else if (theme.dividerStyle === 'ornament') {
-        doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
         doc.setFontSize(theme.h2Pt);
         doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
         doc.text('❦', x + contentWidth / 2 - 60, sectionY);
@@ -313,7 +395,7 @@
       return y + theme.h2Pt * 1.6 + 16;
     }
     if (block.kind === 'dish') {
-      doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.bodyPt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       // Reserve right margin for price.
@@ -348,6 +430,7 @@
             chipX += pillW + 3;
           }
           // Restore body type for following text + price.
+          doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
           doc.setFontSize(theme.bodyPt);
           doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
         }
@@ -390,7 +473,7 @@
             doc.setLineDashPattern([], 0);
           }
         }
-        doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
       }
       var nextY = y + theme.bodyPt * 1.25;
       if (block.desc) {
@@ -412,7 +495,7 @@
       doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
       doc.setLineWidth(0.4);
       doc.line(x, keyTopRuleY, x + contentWidth, keyTopRuleY);
-      doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.descPt);
       // Build the legend as a single string so splitTextToSize can
       // wrap it cleanly across the available width. Each entry is
@@ -633,7 +716,10 @@
 
   function exportPdf(opts) {
     opts = opts || {};
-    return loadJsPdf().then(function (jsPDF) {
+    // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
+    return Promise.all([loadJsPdf(), loadBrandFonts()]).then(function (results) {
+      var jsPDF = results[0];
+      var brandFonts = results[1]; // null on failure
       if (!jsPDF) throw new Error('jsPDF unavailable');
       // W6-3 — apply large-print override before paper / blocks build.
       if (opts.largePrint && opts.theme) {
@@ -642,6 +728,13 @@
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
       var paper = resolvePaper(paperKey, opts.customDims);
       var doc = new jsPDF({ unit: 'pt', format: [paper.w, paper.h], compress: true });
+      // W9-2 — register Fraunces + Inter on this doc so subsequent
+      // pickPdfFont() calls return 'Fraunces' / 'Inter' instead of
+      // 'times' / 'helvetica'.
+      var brandsLoaded = registerBrandFonts(doc, brandFonts);
+      // Stamp the boolean on the doc so drawBlock / measureBlock
+      // can read it via doc.__brandsLoaded (added below).
+      doc.__brandsLoaded = brandsLoaded;
       try {
         doc.setProperties({
           title:   opts.title || 'Menu',
