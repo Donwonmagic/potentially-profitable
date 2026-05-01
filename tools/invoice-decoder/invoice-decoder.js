@@ -668,6 +668,127 @@
     if (__toastTimer) { clearTimeout(__toastTimer); __toastTimer = null; }
   }
 
+  // ----------------------------------------------------------------
+  // W4-4 — keyboard shortcuts for the verification flow.
+  //
+  //   Y / Space  → confirm focused row (alias for "yes, looks right")
+  //   N          → flag (ignore + undo toast)
+  //   J / ↓      → next visible row
+  //   K / ↑      → previous visible row
+  //   1-9        → set category on focused row
+  //   /          → focus the per-category filter
+  //   Escape     → blur active editor; close cell editor
+  //
+  // Active when focus is anywhere on the parsed list. Ignored when
+  // focus is in a text input / textarea / select to avoid eating the
+  // operator's typing during cell-edit.
+  // ----------------------------------------------------------------
+  var __kbWired = false;
+  // Map of digit-key → category. Stable order matches the categorize
+  // module's primary buckets so the muscle-memory carries across
+  // sessions.
+  var KB_CATS = ['protein', 'produce', 'dairy', 'seafood', 'beverage', 'paper', 'cleaning', 'dry-goods', 'herbs-spices'];
+
+  function focusedRowIdx() {
+    var active = document.activeElement;
+    if (!active || !active.closest) return -1;
+    var li = active.closest('.id-parsed-row');
+    if (!li) return -1;
+    var idx = parseInt(li.getAttribute('data-idx'), 10);
+    return isNaN(idx) ? -1 : idx;
+  }
+
+  function focusRowByIdx(idx) {
+    if (!parsedList) return false;
+    var li = parsedList.querySelector('[data-idx="' + idx + '"]');
+    if (!li) return false;
+    var first = li.querySelector('[data-edit]');
+    (first || li).focus();
+    li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    return true;
+  }
+
+  function visibleRowIndices() {
+    if (!parsedList) return [];
+    var lis = parsedList.querySelectorAll('.id-parsed-row');
+    var out = [];
+    Array.prototype.forEach.call(lis, function (li) {
+      var idx = parseInt(li.getAttribute('data-idx'), 10);
+      if (!isNaN(idx)) out.push(idx);
+    });
+    return out;
+  }
+
+  function nextVisible(curIdx, dir) {
+    var arr = visibleRowIndices();
+    if (!arr.length) return -1;
+    var pos = arr.indexOf(curIdx);
+    if (pos === -1) return arr[0];
+    var next = pos + dir;
+    if (next < 0 || next >= arr.length) return arr[Math.max(0, Math.min(arr.length - 1, next))];
+    return arr[next];
+  }
+
+  function wireKeyboardShortcuts() {
+    if (__kbWired) return;
+    __kbWired = true;
+    document.addEventListener('keydown', function (e) {
+      // Only act when the result panel is in scope.
+      if (!parsedEl || parsedEl.hidden) return;
+      var t = e.target;
+      var inEditor = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
+      // The "/" shortcut focuses the filter even outside the result
+      // panel — global discoverability for power users.
+      if (e.key === '/' && !inEditor) {
+        var sel = document.getElementById('idFilterCat');
+        if (sel) { e.preventDefault(); sel.focus(); }
+        return;
+      }
+      // Inside an editor → only Escape escapes.
+      if (inEditor) {
+        if (e.key === 'Escape') {
+          t.blur();
+        }
+        return;
+      }
+      // Global single-key shortcuts.
+      var idx = focusedRowIdx();
+      if (idx === -1) {
+        // No row focused → J / K still navigate (start from first).
+        if (e.key === 'j' || e.key === 'k' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          var arr = visibleRowIndices();
+          if (arr.length) { e.preventDefault(); focusRowByIdx(arr[0]); }
+        }
+        return;
+      }
+      // Row in scope → handle shortcuts.
+      var key = e.key.toLowerCase();
+      if (key === 'y' || e.key === ' ') {
+        e.preventDefault(); confirmRowAt(idx);
+        var nxt = nextVisible(idx, 1);
+        if (nxt !== -1 && nxt !== idx) setTimeout(function () { focusRowByIdx(nxt); }, 0);
+      } else if (key === 'n') {
+        e.preventDefault(); ignoreRowAt(idx);
+        var nxt2 = nextVisible(idx, 1);
+        if (nxt2 !== -1) setTimeout(function () { focusRowByIdx(nxt2); }, 0);
+      } else if (key === 'j' || e.key === 'ArrowDown') {
+        e.preventDefault(); var n = nextVisible(idx, 1); if (n !== -1) focusRowByIdx(n);
+      } else if (key === 'k' || e.key === 'ArrowUp') {
+        e.preventDefault(); var p = nextVisible(idx, -1); if (p !== -1) focusRowByIdx(p);
+      } else if (e.key >= '1' && e.key <= '9') {
+        var ci = parseInt(e.key, 10) - 1;
+        var cat = KB_CATS[ci];
+        if (cat) {
+          e.preventDefault();
+          commitCellEdit(idx, 'category', cat);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Category Set', { props: { via: 'keyboard' } }); } catch (_) {}
+          }
+        }
+      }
+    });
+  }
+
   // Wire filter chips + per-category select once the bar is in DOM.
   function wireFilterBar() {
     var bar = document.getElementById('idFilterBar');
@@ -863,6 +984,8 @@
     }
     // W4-3 — wire touch swipe gestures on the parsed list. Idempotent.
     wireSwipeGestures();
+    // W4-4 — wire keyboard shortcuts (Y/N, J/K, 1-9, /). Idempotent.
+    wireKeyboardShortcuts();
     // rerenderRows handles list innerHTML, filter chip counts, the
     // band summary, and the totals banner.
     rerenderRows();
