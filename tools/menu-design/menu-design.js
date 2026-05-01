@@ -55,6 +55,7 @@
   var downloadBtn = document.getElementById('mdDownload');
   var downloadMsg = document.getElementById('mdDownloadMsg');
   var exportQrBtn = document.getElementById('mdExportQr');
+  var largePrintBtn = document.getElementById('mdLargePrint');
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -1061,6 +1062,66 @@
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W6-3 — Large-print accessibility variant. Reuses the existing
+  // PDF flow with largePrint: true. Override bumps body to 18pt /
+  // h1 to 36pt / forces single column / pure-white-on-pure-black /
+  // whitespace dividers. Hits WCAG AAA. Filename gets -large-print
+  // suffix so the operator can keep both versions side-by-side.
+  // ----------------------------------------------------------------
+  if (largePrintBtn) {
+    largePrintBtn.addEventListener('click', function () {
+      if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt(
+          'PDF generator not loaded. Refresh and try again.',
+          'El generador de PDF no se cargó. Recarga e intenta de nuevo.'
+        ), 'error');
+        return;
+      }
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt(
+          'Add at least one dish before exporting a large-print version.',
+          'Agrega al menos un plato antes de exportar la versión letra grande.'
+        ), 'error');
+        return;
+      }
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
+      var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-large-print';
+      largePrintBtn.disabled = true;
+      var origLabel = largePrintBtn.innerHTML;
+      largePrintBtn.textContent = tt('Building large-print PDF…', 'Generando letra grande…');
+      MD_PDF.exportPdf({
+        rows:        realRows,
+        theme:       theme,
+        paperKey:    paperKey,
+        title:       title,
+        logoDataUrl: logoUrl,
+        logoMeta:    logoMeta,
+        filename:    fnameBase,
+        largePrint:  true
+      }).then(function (result) {
+        var pages = result.pageCount || 1;
+        setDownloadMsg(tt(
+          'Large-print version downloaded — ' + pages + ' page' + (pages === 1 ? '' : 's') + '. WCAG AAA at 18pt body.',
+          'Versión letra grande descargada — ' + pages + ' página' + (pages === 1 ? '' : 's') + '. WCAG AAA con cuerpo de 18pt.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design Large Print Exported'); } catch (_) {}
+        }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'Large-print PDF failed: ' + (err && err.message ? err.message : 'unknown error'),
+          'Falló la versión letra grande: ' + (err && err.message ? err.message : 'error desconocido')
+        ), 'error');
+      }).then(function () {
+        largePrintBtn.disabled = false;
+        largePrintBtn.innerHTML = origLabel;
       });
     });
   }
