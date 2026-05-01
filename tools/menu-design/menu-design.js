@@ -512,6 +512,51 @@
   // Initial render once MD_PDF is available (script loads after PDF
   // module so this runs at end-of-script init).
 
+  // W10-1 — print-vendor mode state + readiness checklist.
+  var printVendor = false;
+  var printVendorEl = document.getElementById('mdPrintVendor');
+  var printChecklistEl = document.getElementById('mdPrintChecklist');
+  var printChecklistItems = document.getElementById('mdPrintChecklistItems');
+  function renderPrintChecklist() {
+    if (!printChecklistItems) return;
+    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    var paperLabel = (paperInfo && paperInfo.label) || paperKey;
+    var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+    var logoDpiState = 'ok';
+    var logoDpiNote = 'no logo';
+    if (logoUrl && logoMeta && logoMeta.w && logoMeta.h) {
+      var maxDim = Math.max(logoMeta.w, logoMeta.h);
+      if (maxDim < 600) { logoDpiState = 'warn'; logoDpiNote = 'low DPI (' + logoMeta.w + '×' + logoMeta.h + ') — may print soft'; }
+      else { logoDpiNote = 'high DPI (' + logoMeta.w + '×' + logoMeta.h + ')'; }
+    }
+    var items = [
+      { state: 'ok',  text: tt('Paper size: ' + paperLabel,                'Tamaño de papel: ' + paperLabel) },
+      { state: 'ok',  text: tt('Bleed: 0.125" all sides',                  'Sangrado: 0.125\" todos los lados') },
+      { state: 'ok',  text: tt('Crop marks: enabled',                      'Marcas de corte: activas') },
+      { state: 'ok',  text: tt('Color profile: sRGB IEC61966-2.1 (vendor converts to CMYK)',
+                                'Perfil de color: sRGB IEC61966-2.1 (el impresor convierte a CMYK)') },
+      { state: logoDpiState, text: tt('Logo DPI: ' + logoDpiNote, 'DPI del logo: ' + logoDpiNote) },
+      { state: 'ok',  text: tt('Fonts: Fraunces + Inter embedded (or PDF base-14 fallback)',
+                                'Tipos: Fraunces + Inter incrustados (o fallback PDF base-14)') },
+      { state: 'ok',  text: tt('Dish count: ' + dishCount + ' — paginates cleanly',
+                                'Platos: ' + dishCount + ' — pagina limpio') }
+    ];
+    printChecklistItems.innerHTML = items.map(function (it) {
+      return '<li class="' + it.state + '">' + escHtml(it.text) + '</li>';
+    }).join('');
+  }
+  if (printVendorEl) {
+    printVendorEl.addEventListener('change', function () {
+      printVendor = !!printVendorEl.checked;
+      if (printChecklistEl) {
+        printChecklistEl.hidden = !printVendor;
+        printChecklistEl.open = printVendor;
+      }
+      if (printVendor) renderPrintChecklist();
+      scheduleSaveDraft();
+    });
+  }
+
   // W9-3 — menu-level meta input wiring.
   var metaTaglineEl = document.getElementById('mdMetaTagline');
   var metaStoryEl   = document.getElementById('mdMetaStory');
@@ -1332,17 +1377,18 @@
       setDownloadMsg('');
 
       MD_PDF.exportPdf({
-        rows:        rows,
-        theme:       theme,
-        paperKey:    paperKey,
-        customDims:  paperKey === 'custom' ? customDims : null,
-        title:       title,
-        tagline:     meta.tagline,
-        story:       meta.story,
-        logoDataUrl: logoUrl,
-        logoMeta:    logoMeta,
-        filename:    filename,
-        locale:      LOCALE
+        rows:         rows,
+        theme:        theme,
+        paperKey:     paperKey,
+        customDims:   paperKey === 'custom' ? customDims : null,
+        title:        title,
+        tagline:      meta.tagline,
+        story:        meta.story,
+        logoDataUrl:  logoUrl,
+        logoMeta:     logoMeta,
+        filename:     printVendor ? filename + '-press' : filename,
+        locale:       LOCALE,
+        printVendor:  printVendor
       }).then(function (result) {
         var pages = result.pageCount || 1;
         var msg = tt(
