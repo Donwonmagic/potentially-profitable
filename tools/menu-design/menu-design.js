@@ -1137,13 +1137,17 @@
   // dismissable "Pick up where you left off?" affordance instead of
   // overwriting silently.
   // ----------------------------------------------------------------
-  var DRAFT_KEY = 'mtn:menu-design:draft';
-  var LOGO_KEY  = 'mtn:menu-design:logo';
+  // W22 — draft persistence + safeLs probe extracted to state/draft.js.
+  // Keep these constants for back-compat with any helpers that still
+  // reference them inline (they alias the same keys).
+  var DRAFT_KEY = (typeof MD_DRAFT !== 'undefined') ? MD_DRAFT.DRAFT_KEY : 'mtn:menu-design:draft';
+  var LOGO_KEY  = (typeof MD_DRAFT !== 'undefined') ? MD_DRAFT.LOGO_KEY  : 'mtn:menu-design:logo';
   var LOGO_BUDGET = 200 * 1024; // 200KB
   var __saveTimer = null;
   var __saveDraftEnabled = true;
 
   function safeLs() {
+    if (typeof MD_DRAFT !== 'undefined') return MD_DRAFT.safeLs();
     try {
       var probe = '__md_probe__';
       localStorage.setItem(probe, probe); // h8-exempt: storage probe
@@ -1914,129 +1918,11 @@
     scheduleSaveDraft();
   });
 
-  // W11-1 — Cuisine starter templates. Each template is a curated
-  // dataset that demonstrates the data shape for a specific menu
-  // type. Selecting a template appends its rows to the current
-  // editor (or replaces if empty). Pairs with auto-suggested theme.
-  var TEMPLATES = {
-    brunch: {
-      label_en: 'Brunch', label_es: 'Brunch',
-      hint_en: '8 sections · 24 dishes · cafe-counter theme',
-      hint_es: '8 secciones · 24 platos · tema cafe-counter',
-      themeHint: 'cafe-counter',
-      rows: [
-        { kind: 'section', name: 'Eggs & toast' },
-        { kind: 'dish', name: 'Avocado toast',     price: '$14', desc: 'Sourdough, smashed avocado, soft-boiled egg, chili oil.', allergens: ['VG','E'], spice: 1 },
-        { kind: 'dish', name: 'Eggs Benedict',     price: '$18', desc: 'Toasted English muffin, ham, hollandaise.',                allergens: ['E','DF'] },
-        { kind: 'dish', name: 'Shakshuka',         price: '$16', desc: 'Stewed tomato, bell pepper, two baked eggs, feta.',         allergens: ['VG','E'], spice: 2 },
-        { kind: 'section', name: 'Sweets' },
-        { kind: 'dish', name: 'Buttermilk pancakes', price: '$13', desc: 'Stack of three with maple syrup and butter.',             allergens: ['VG','E'] },
-        { kind: 'dish', name: 'French toast',      price: '$15', desc: 'Brioche, vanilla custard, berry compote.',                  allergens: ['VG','E'] },
-        { kind: 'section', name: 'Breakfast plates' },
-        { kind: 'dish', name: 'The Big Plate',     price: '$22', desc: 'Two eggs, bacon, sausage, hash browns, toast.',             allergens: ['E'] },
-        { kind: 'dish', name: 'Veggie scramble',   price: '$17', desc: 'Three eggs, spinach, mushroom, tomato, goat cheese.',       allergens: ['VG','E'] },
-        { kind: 'section', name: 'Drinks' },
-        { kind: 'dish', name: 'Drip coffee',       price: '$4',  desc: 'Local roaster, refills included.' },
-        { kind: 'dish', name: 'Cappuccino',        price: '$5',  desc: 'Double shot, steamed milk, dry foam.', allergens: ['VG'] },
-        { kind: 'dish', name: 'Fresh OJ',          price: '$6',  desc: 'Squeezed to order.', allergens: ['V'] }
-      ]
-    },
-    'wine-list': {
-      label_en: 'Wine list', label_es: 'Carta de vinos',
-      hint_en: '4 sections · 18 wines · wine-list-formal theme',
-      hint_es: '4 secciones · 18 vinos · tema wine-list-formal',
-      themeHint: 'wine-list-formal',
-      rows: [
-        { kind: 'section', name: 'White' },
-        { kind: 'dish', name: 'Sancerre, Henri Bourgeois 2022',   price: '$58',  desc: 'Loire Valley, France · sauvignon blanc' },
-        { kind: 'dish', name: 'Albariño, Bodegas Fillaboa 2021',  price: '$48',  desc: 'Rías Baixas, Spain · saline minerality' },
-        { kind: 'dish', name: 'Riesling, Dr. Loosen 2021',        price: '$42',  desc: 'Mosel, Germany · off-dry, peach' },
-        { kind: 'section', name: 'Red' },
-        { kind: 'dish', name: 'Chianti Classico, Felsina 2019',   price: '$72',  desc: 'Tuscany, Italy · sangiovese' },
-        { kind: 'dish', name: 'Pinot Noir, Au Bon Climat 2020',   price: '$68',  desc: 'Santa Barbara, USA · cherry, earth' },
-        { kind: 'dish', name: 'Côtes du Rhône, Guigal 2020',      price: '$54',  desc: 'Southern Rhône, France · GSM blend' },
-        { kind: 'section', name: 'Sparkling' },
-        { kind: 'dish', name: 'Champagne brut, Pol Roger NV',     price: '$110', desc: 'Épernay, France · Pinot-Chardonnay' },
-        { kind: 'dish', name: 'Cava brut, Raventós i Blanc NV',   price: '$42',  desc: 'Penedès, Spain · biodynamic', allergens: ['LO'] },
-        { kind: 'section', name: 'By the glass' },
-        { kind: 'dish', name: 'House white',                       price: '$11',  desc: 'Ask your server.' },
-        { kind: 'dish', name: 'House red',                         price: '$11',  desc: 'Ask your server.' }
-      ]
-    },
-    tasting: {
-      label_en: 'Tasting menu', label_es: 'Menú de degustación',
-      hint_en: '5 courses · single column · tasting-omakase theme',
-      hint_es: '5 cursos · una columna · tema tasting-omakase',
-      themeHint: 'tasting-omakase',
-      rows: [
-        { kind: 'section', name: 'I' },
-        { kind: 'dish', name: 'Oyster',   price: '',  desc: 'Hama Hama, mignonette of pickled green strawberry.', allergens: ['SF','GF'] },
-        { kind: 'section', name: 'II' },
-        { kind: 'dish', name: 'Crudo',    price: '',  desc: 'Spotted prawn, tomato water, sea bean, lemon oil.', allergens: ['SF','GF','DF'] },
-        { kind: 'section', name: 'III' },
-        { kind: 'dish', name: 'Pasta',    price: '',  desc: 'Hand-cut tagliatelle, brown butter, koji, parmigiano.', allergens: ['VG','E'] },
-        { kind: 'section', name: 'IV' },
-        { kind: 'dish', name: 'Main',     price: '',  desc: 'Aged duck, beet, chrysanthemum, port reduction.', allergens: ['DF'] },
-        { kind: 'section', name: 'V' },
-        { kind: 'dish', name: 'Dessert',  price: '',  desc: 'Brown butter cake, miso caramel, bay leaf ice cream.', allergens: ['VG','E','DF'] }
-      ]
-    },
-    cocktails: {
-      label_en: 'Cocktail menu', label_es: 'Carta de cócteles',
-      hint_en: '3 sections · 12 cocktails · cocktail-deco theme',
-      hint_es: '3 secciones · 12 cócteles · tema cocktail-deco',
-      themeHint: 'cocktail-deco',
-      rows: [
-        { kind: 'section', name: 'Stirred' },
-        { kind: 'dish', name: 'Old Fashioned',  price: '$16', desc: 'Bourbon, demerara, Angostura, orange peel.', allergens: ['GF','DF'] },
-        { kind: 'dish', name: 'Manhattan',      price: '$16', desc: 'Rye, sweet vermouth, Angostura, cherry.', allergens: ['GF','DF'] },
-        { kind: 'dish', name: 'Negroni',        price: '$15', desc: 'Gin, Campari, sweet vermouth, orange.', allergens: ['GF','DF'] },
-        { kind: 'section', name: 'Shaken' },
-        { kind: 'dish', name: 'Margarita',      price: '$14', desc: 'Tequila, lime, agave, salt rim.', allergens: ['GF','DF'] },
-        { kind: 'dish', name: 'Daiquiri',       price: '$14', desc: 'Rum, lime, demerara.', allergens: ['GF','DF'] },
-        { kind: 'dish', name: 'Whiskey sour',   price: '$15', desc: 'Bourbon, lemon, demerara, egg white.', allergens: ['E','DF'] },
-        { kind: 'section', name: 'House' },
-        { kind: 'dish', name: 'Smoke & Mirror', price: '$18', desc: 'Mezcal, lime, ancho, Tajín rim.', allergens: ['GF','DF'], spice: 2 },
-        { kind: 'dish', name: 'Garden Party',   price: '$16', desc: 'Gin, cucumber, mint, elderflower.', allergens: ['GF','DF','V'] }
-      ]
-    },
-    kids: {
-      label_en: 'Kids menu', label_es: 'Menú infantil',
-      hint_en: '4 sections · friendly portions · kids-bright theme',
-      hint_es: '4 secciones · porciones amigables · tema kids-bright',
-      themeHint: 'kids-bright',
-      rows: [
-        { kind: 'section', name: 'Mains' },
-        { kind: 'dish', name: 'Mac & cheese',     price: '$8',  desc: 'Cavatappi pasta, three-cheese sauce.', allergens: ['VG','E'] },
-        { kind: 'dish', name: 'Chicken tenders',  price: '$9',  desc: 'Crispy chicken with ketchup or honey mustard.', allergens: ['DF'] },
-        { kind: 'dish', name: 'Cheese pizza',     price: '$8',  desc: '6-inch personal pizza.', allergens: ['VG'] },
-        { kind: 'section', name: 'Sides' },
-        { kind: 'dish', name: 'French fries',     price: '$4',  desc: '', allergens: ['V','GF'] },
-        { kind: 'dish', name: 'Apple slices',     price: '$3',  desc: 'With caramel dip.', allergens: ['V','GF'] },
-        { kind: 'section', name: 'Drinks' },
-        { kind: 'dish', name: 'Lemonade',         price: '$3',  desc: '', allergens: ['V'] },
-        { kind: 'dish', name: 'Chocolate milk',   price: '$3',  desc: '', allergens: ['VG'] },
-        { kind: 'section', name: 'Sweets' },
-        { kind: 'dish', name: 'Vanilla ice cream',price: '$5',  desc: 'One scoop, sprinkles on request.', allergens: ['VG','E'] }
-      ]
-    },
-    dessert: {
-      label_en: 'Dessert menu', label_es: 'Menú de postres',
-      hint_en: '2 sections · 8 desserts · dessert-only theme',
-      hint_es: '2 secciones · 8 postres · tema dessert-only',
-      themeHint: 'dessert-only',
-      rows: [
-        { kind: 'section', name: 'House desserts' },
-        { kind: 'dish', name: 'Olive-oil cake',   price: '$11', desc: 'Citrus glaze, candied zest, crème fraîche.', allergens: ['VG','E'] },
-        { kind: 'dish', name: 'Tiramisu',         price: '$13', desc: 'Mascarpone, espresso-soaked savoiardi, cocoa.', allergens: ['VG','E'] },
-        { kind: 'dish', name: 'Panna cotta',      price: '$10', desc: 'Vanilla bean, seasonal berries.', allergens: ['VG','GF'] },
-        { kind: 'dish', name: 'Chocolate torte',  price: '$12', desc: 'Single-origin 70%, sea salt, olive oil.', allergens: ['VG','GF','E'] },
-        { kind: 'section', name: 'Ice cream & gelato' },
-        { kind: 'dish', name: 'Affogato',         price: '$9',  desc: 'House gelato, espresso pour, hazelnut crumble.', allergens: ['VG','N','E'] },
-        { kind: 'dish', name: 'Gelato trio',      price: '$11', desc: 'Three scoops · ask about today.', allergens: ['VG','E'] }
-      ]
-    }
-  };
+  // W11-1 + W22 — Cuisine starter templates extracted to
+  // data/templates.js. Read through the MD_TEMPLATES global; the
+  // orchestrator just exposes a TEMPLATES alias for back-compat
+  // with downstream call sites.
+  var TEMPLATES = (typeof MD_TEMPLATES !== 'undefined') ? MD_TEMPLATES.TEMPLATES : {};
   function renderTemplatesList() {
     var host = document.getElementById('mdTemplatesList');
     if (!host) return;
@@ -3134,17 +3020,8 @@
   // cuisine -> theme suggested + matching template loaded.
   // Time-to-first-output goal: 90 seconds.
   // ----------------------------------------------------------------
-  var QUIZ_TILES = [
-    { id: 'italian',     glyph: '🍝', label_en: 'Italian / pasta',         label_es: 'Italiana / pasta',     hint_en: 'Trattoria, pizza, neighborhood',  hint_es: 'Trattoria, pizza, vecindario',     theme: 'trattoria',     template: null },
-    { id: 'french',      glyph: '🥖', label_en: 'French / bistro',          label_es: 'Francesa / bistró',    hint_en: 'Brasserie, weeknight tablecloth',  hint_es: 'Brasserie, mantel entre semana',   theme: 'bistro-paris',  template: null },
-    { id: 'mexican',     glyph: '🌮', label_en: 'Mexican / cantina',        label_es: 'Mexicana / cantina',   hint_en: 'Cantina, taquería, family-run',    hint_es: 'Cantina, taquería, familiar',      theme: 'cantina',       template: null },
-    { id: 'cafe',        glyph: '☕', label_en: 'Café / brunch',            label_es: 'Café / brunch',        hint_en: 'Coffee, sandwiches, brunch',       hint_es: 'Café, sándwiches, brunch',          theme: 'cafe-counter',  template: 'brunch' },
-    { id: 'asian',       glyph: '🍣', label_en: 'Asian fusion',             label_es: 'Asiática',             hint_en: 'Ramen, sushi, dim sum, Thai',      hint_es: 'Ramen, sushi, dim sum, tailandesa',theme: 'asian-table',   template: null },
-    { id: 'pizza',       glyph: '🍕', label_en: 'Pizza counter',            label_es: 'Pizzería',             hint_en: 'Slice joint, takeaway',            hint_es: 'Pizzería, para llevar',            theme: 'pizza-counter', template: null },
-    { id: 'bbq',         glyph: '🔥', label_en: 'BBQ / smokehouse',         label_es: 'BBQ / asador',         hint_en: 'Pit, ribs, brisket, sides',         hint_es: 'Pit, costillas, brisket, guarniciones', theme: 'bbq-smoke', template: null },
-    { id: 'wine-bar',    glyph: '🍷', label_en: 'Wine bar / cellar',        label_es: 'Bar de vinos',         hint_en: 'Wine list, small plates',          hint_es: 'Carta de vinos, raciones',          theme: 'wine-list-formal', template: 'wine-list' },
-    { id: 'modern',      glyph: '◯', label_en: 'Modern / something else',   label_es: 'Moderno / otro',       hint_en: 'Minimalist, generous whitespace',  hint_es: 'Minimalista, mucho espacio',        theme: 'modern-minimal', template: null }
-  ];
+  // W11-2 + W22 — Quiz tile catalog extracted to data/quiz-tiles.js.
+  var QUIZ_TILES = (typeof MD_QUIZ !== 'undefined') ? MD_QUIZ.TILES : [];
   function renderQuizTiles() {
     var host = document.getElementById('mdQuizTiles');
     if (!host) return;
