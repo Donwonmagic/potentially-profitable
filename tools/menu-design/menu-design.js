@@ -19,15 +19,62 @@
   // section header rows. The render function projects this into the
   // grid; every interaction mutates this array, then re-renders.
   // Section rows: { kind: 'section', name: string }
-  // Dish rows:    { kind: 'dish', name, price, desc }
+  // Dish rows:    { kind: 'dish', name, price, desc, allergens?, spice? }
+  //
+  // schemaVersion lives on the persisted draft (state/draft) so v1
+  // drafts (lacking allergens) restore cleanly under Object.assign.
   var rows = [];
+  var SCHEMA_VERSION = 2;
 
-  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '' }; }
+  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0 }; }
   function blankSection(name) { return { kind: 'section', name: name || '' }; }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
   // seeded for empty-state anchoring. Cleared by clearGhostRows().
   var __ghostActive = false;
+
+  // -------------------- Allergen catalog (W7-2) --------------------
+  // Industry-standard codes used by independent restaurants. The
+  // glyph is a 1-2 letter monogram rendered inside a pill — works
+  // in jsPDF base-14 (Times Roman) without needing emoji fonts, and
+  // stays legible on every theme (dark Steakhouse stock included).
+  // Spice is a separate 0-3 stepper, rendered as chili glyphs.
+  //
+  // All output paths (preview, PDF, QR-HTML, large-print) consume
+  // this catalog. Adding a code here automatically extends the
+  // dropdown UI, the chip rendering, and the footer legend.
+  var ALLERGEN_CODES = [
+    { id: 'V',  label_en: 'Vegan',         label_es: 'Vegano',         hint_en: 'No animal products',     hint_es: 'Sin productos animales' },
+    { id: 'VG', label_en: 'Vegetarian',    label_es: 'Vegetariano',    hint_en: 'No meat',                hint_es: 'Sin carne' },
+    { id: 'GF', label_en: 'Gluten-free',   label_es: 'Sin gluten',     hint_en: 'No wheat, barley, rye',  hint_es: 'Sin trigo, cebada, centeno' },
+    { id: 'DF', label_en: 'Dairy-free',    label_es: 'Sin lácteos',    hint_en: 'No milk products',       hint_es: 'Sin lácteos' },
+    { id: 'N',  label_en: 'Contains nuts', label_es: 'Frutos secos',   hint_en: 'Tree nuts',              hint_es: 'Nueces de árbol' },
+    { id: 'E',  label_en: 'Contains eggs', label_es: 'Huevos',         hint_en: '',                       hint_es: '' },
+    { id: 'SO', label_en: 'Contains soy',  label_es: 'Soya',           hint_en: '',                       hint_es: '' },
+    { id: 'SF', label_en: 'Shellfish',     label_es: 'Mariscos',       hint_en: 'Crab, lobster, shrimp',  hint_es: 'Cangrejo, langosta, camarón' },
+    { id: 'FI', label_en: 'Contains fish', label_es: 'Pescado',        hint_en: '',                       hint_es: '' },
+    { id: 'SE', label_en: 'Sesame',        label_es: 'Sésamo',         hint_en: '',                       hint_es: '' },
+    { id: 'LO', label_en: 'Locally sourced', label_es: 'Origen local', hint_en: '',                       hint_es: '' }
+  ];
+  function allergenById(id) {
+    for (var i = 0; i < ALLERGEN_CODES.length; i++) if (ALLERGEN_CODES[i].id === id) return ALLERGEN_CODES[i];
+    return null;
+  }
+  function allergenLabel(id) {
+    var a = allergenById(id);
+    if (!a) return id;
+    return LOCALE === 'es' ? a.label_es : a.label_en;
+  }
+  // Aggregate every code present across rows[] — drives the auto-
+  // generated key legend at the bottom of the menu.
+  function activeAllergenCodes() {
+    var seen = {};
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !Array.isArray(r.allergens)) return;
+      r.allergens.forEach(function (c) { if (allergenById(c)) seen[c] = true; });
+    });
+    return ALLERGEN_CODES.filter(function (a) { return seen[a.id]; }).map(function (a) { return a.id; });
+  }
 
   // -------------------- DOM --------------------
   var rowsEl    = document.getElementById('mdRows');
@@ -102,13 +149,70 @@
             tt('Need help describing? Open Menu Copy Inspector →', '¿Ayuda para describir? Abrir Inspector de Copy →') +
             '</a>';
         }
+        // W7-2 — allergen dropdown trigger + chip strip + spice stepper.
+        // Sits BELOW the description in the same cell so the table
+        // stays a 4-column layout. <details> manages its own open/
+        // close state; we delegate change events on the checkbox grid.
+        var dishAllergens = Array.isArray(r.allergens) ? r.allergens : [];
+        var dishSpice = (typeof r.spice === 'number' && r.spice >= 0 && r.spice <= 3) ? r.spice : 0;
+        var chipsHtml = dishAllergens.map(function (code) {
+          var a = allergenById(code); if (!a) return '';
+          return '<span class="md-chip" data-code="' + escHtml(code) + '" title="' + escHtml(allergenLabel(code)) + '" aria-label="' + escHtml(allergenLabel(code)) + '">' + escHtml(code) + '</span>';
+        }).join('');
+        var spiceChip = '';
+        if (dishSpice > 0) {
+          var fire = '';
+          for (var sp = 0; sp < dishSpice; sp++) fire += '🌶';
+          spiceChip = '<span class="md-chip md-chip-spice" aria-label="' + tt('Spicy level ' + dishSpice, 'Picante nivel ' + dishSpice) + '">' + fire + '</span>';
+        }
+        var summary = (dishAllergens.length || dishSpice)
+          ? tt(dishAllergens.length + ' tag' + (dishAllergens.length === 1 ? '' : 's'),
+               dishAllergens.length + ' etiqueta' + (dishAllergens.length === 1 ? '' : 's'))
+          : tt('Add allergens / dietary tags', 'Agregar alérgenos / etiquetas dietarias');
+        var allergenGrid = ALLERGEN_CODES.map(function (a) {
+          var checked = dishAllergens.indexOf(a.id) !== -1 ? ' checked' : '';
+          var label = LOCALE === 'es' ? a.label_es : a.label_en;
+          var hint  = LOCALE === 'es' ? a.hint_es  : a.hint_en;
+          return '<label class="md-allergen-opt' + (checked ? ' is-on' : '') + '" data-code="' + escHtml(a.id) + '">' +
+            '<input type="checkbox" data-act="allergen" data-i="' + i + '" data-code="' + escHtml(a.id) + '"' + checked + ' />' +
+            '<span class="md-allergen-glyph" aria-hidden="true">' + escHtml(a.id) + '</span>' +
+            '<span class="md-allergen-label">' + escHtml(label) +
+            (hint ? '<span class="md-allergen-hint">' + escHtml(hint) + '</span>' : '') +
+            '</span></label>';
+        }).join('');
+        var spiceDots = '';
+        for (var sd = 1; sd <= 3; sd++) {
+          spiceDots += '<button type="button" class="md-spice-dot' + (sd <= dishSpice ? ' is-on' : '') +
+            '" data-act="spice" data-i="' + i + '" data-level="' + sd + '" aria-label="' +
+            tt('Spice level ' + sd, 'Picante nivel ' + sd) + '" aria-pressed="' + (sd <= dishSpice) + '">🌶</button>';
+        }
+        var allergenPop =
+          '<details class="md-allergen-pop" data-i="' + i + '">' +
+            '<summary class="md-allergen-trigger">' +
+              '<svg class="md-allergen-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>' +
+              '<span class="md-allergen-summary-text">' + escHtml(summary) + '</span>' +
+              (chipsHtml ? '<span class="md-allergen-chip-strip">' + chipsHtml + spiceChip + '</span>' : (spiceChip ? '<span class="md-allergen-chip-strip">' + spiceChip + '</span>' : '')) +
+            '</summary>' +
+            '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens and dietary tags', 'Alérgenos y etiquetas dietarias') + '">' +
+              '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
+              '<div class="md-spice-row">' +
+                '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
+                '<button type="button" class="md-spice-dot md-spice-zero' + (dishSpice === 0 ? ' is-on' : '') +
+                  '" data-act="spice" data-i="' + i + '" data-level="0" aria-label="' +
+                  tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
+                spiceDots +
+              '</div>' +
+            '</div>' +
+          '</details>';
+
         html += '<tr data-i="' + i + '"' + ghostAttr + '>' +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
           '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="' + tt('Price', 'Precio') + '" autocomplete="off" /></td>' +
-          '<td data-label="' + tt('Description', 'Descripción') + '"><textarea class="md-input" data-field="desc" data-i="' + i +
-          '" rows="1" placeholder="' + tt('Crisp little gems, buttermilk dressing', 'Hojas tiernas, aderezo de buttermilk') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          '<td data-label="' + tt('Description', 'Descripción') + '" class="md-cell-desc"><textarea class="md-input md-input-desc" data-field="desc" data-i="' + i +
+          '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          allergenPop +
           helpHtml + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
           '</tr>';
@@ -417,14 +521,54 @@
         var name  = (d.name || '').trim();
         var price = (d.price || '').trim();
         var desc  = (d.desc || '').trim();
+        // W7-2 — render allergen + spice glyphs inline after the
+        // dish name. Each chip carries an aria-label so screen
+        // readers say "Vegan" not just "V".
+        var dAllergens = Array.isArray(d.allergens) ? d.allergens : [];
+        var dSpice = (typeof d.spice === 'number' && d.spice > 0) ? d.spice : 0;
+        var glyphsHtml = '';
+        if (dAllergens.length || dSpice) {
+          glyphsHtml = ' <span class="md-pp-glyphs" role="list">';
+          dAllergens.forEach(function (code) {
+            var a = allergenById(code); if (!a) return;
+            glyphsHtml += '<span class="md-pp-glyph" role="listitem" aria-label="' + escHtml(allergenLabel(code)) + '">' + escHtml(code) + '</span>';
+          });
+          if (dSpice) {
+            var fireGlyph = '';
+            for (var fg = 0; fg < dSpice; fg++) fireGlyph += '🌶';
+            glyphsHtml += '<span class="md-pp-glyph md-pp-glyph-spice" role="listitem" aria-label="' + escHtml(tt('Spicy level ' + dSpice, 'Picante nivel ' + dSpice)) + '">' + fireGlyph + '</span>';
+          }
+          glyphsHtml += '</span>';
+        }
         html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + escHtml(name) + '</div>';
+        html += '<div class="md-pp-name">' + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + escHtml(price) + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
         html += '</div>';
       });
     });
     if (isTwoCol) html += '</div>';
+
+    // W7-2 — auto-generated allergen-key legend at the menu footer.
+    // Surfaces only when at least one dish carries a code; collects
+    // the unique codes used and prints a comma-separated key. The
+    // legend respects locale (EN/ES labels).
+    var activeCodes = activeAllergenCodes();
+    if (activeCodes.length) {
+      html += '<div class="md-pp-allergen-key" aria-label="' +
+        tt('Allergen and dietary key', 'Clave de alérgenos y dieta') + '">' +
+        '<span class="md-pp-allergen-key-label">' +
+        tt('Allergen / dietary key', 'Clave de alérgenos / dieta') + ':</span> ';
+      activeCodes.forEach(function (code, ai) {
+        var a = allergenById(code); if (!a) return;
+        var lbl = LOCALE === 'es' ? a.label_es : a.label_en;
+        html += '<span class="md-pp-allergen-key-item">' +
+          '<span class="md-pp-allergen-key-glyph">' + escHtml(code) + '</span>' +
+          ' = ' + escHtml(lbl) + '</span>';
+        if (ai < activeCodes.length - 1) html += '<span class="md-pp-allergen-key-sep" aria-hidden="true"> · </span>';
+      });
+      html += '</div>';
+    }
 
     paper.innerHTML = html;
 
@@ -617,12 +761,52 @@
     });
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
-      if (!t || t.dataset.act !== 'del') return;
+      if (!t) return;
+      // W7-2 — spice stepper. Clicking the same level toggles off
+      // back to 0; clicking a higher level sets it.
+      var spiceBtn = t.closest && t.closest('[data-act="spice"]');
+      if (spiceBtn) {
+        var si = parseInt(spiceBtn.dataset.i, 10);
+        var level = parseInt(spiceBtn.dataset.level, 10);
+        if (!isFinite(si) || !rows[si]) return;
+        rows[si].spice = (rows[si].spice === level) ? 0 : level;
+        render();
+        // Reopen the popover so the operator stays in context.
+        var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + si + '"]');
+        if (pop) pop.open = true;
+        scheduleSaveDraft();
+        return;
+      }
+      var act = t.dataset && t.dataset.act;
+      if (act === 'del') {
+        var i = parseInt(t.dataset.i, 10);
+        if (!isFinite(i)) return;
+        rows.splice(i, 1);
+        render();
+        scheduleSaveDraft();
+        return;
+      }
+    });
+    // W7-2 — allergen checkbox change. Lives on 'change' so it fires
+    // for both mouse + keyboard (Space toggles a checkbox).
+    rowsEl.addEventListener('change', function (e) {
+      var t = e.target;
+      if (!t || t.dataset.act !== 'allergen') return;
       var i = parseInt(t.dataset.i, 10);
-      if (!isFinite(i)) return;
-      rows.splice(i, 1);
+      var code = t.dataset.code;
+      if (!isFinite(i) || !rows[i] || !code) return;
+      if (!Array.isArray(rows[i].allergens)) rows[i].allergens = [];
+      var idx = rows[i].allergens.indexOf(code);
+      if (t.checked && idx === -1) rows[i].allergens.push(code);
+      else if (!t.checked && idx !== -1) rows[i].allergens.splice(idx, 1);
+      // Update the chip strip + summary inline without a full re-render
+      // so the popover stays open (open state survives a render anyway
+      // because the <details> open attr is stored on the DOM, but a
+      // full re-render is wasteful for a single chip flip).
       render();
-      scheduleSaveDraft();    // W5-8
+      var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + i + '"]');
+      if (pop) pop.open = true;
+      scheduleSaveDraft();
     });
   }
 
@@ -669,8 +853,8 @@
   // EN or ES; (b) markdown-shape with `## Section` header lines and
   // `Dish, $price, description` data lines. Both produce the same
   // rows[] shape. Mirrors plate-cost's parseMenuPaste tolerance.
-  var EN_HEADERS = { dish: ['item', 'name', 'dish'], price: ['price'], section: ['section'], desc: ['description', 'desc'] };
-  var ES_HEADERS = { dish: ['plato', 'nombre', 'item'], price: ['precio'], section: ['seccion', 'sección'], desc: ['descripcion', 'descripción'] };
+  var EN_HEADERS = { dish: ['item', 'name', 'dish'], price: ['price'], section: ['section'], desc: ['description', 'desc'], allergens: ['allergens', 'tags', 'dietary'], spice: ['spice', 'heat'] };
+  var ES_HEADERS = { dish: ['plato', 'nombre', 'item'], price: ['precio'], section: ['seccion', 'sección'], desc: ['descripcion', 'descripción'], allergens: ['alergenos', 'alérgenos', 'etiquetas'], spice: ['picante'] };
 
   function detectDelim(text) {
     var firstLine = (text.split(/\r?\n/)[0] || '');
@@ -745,6 +929,17 @@
           else if (k === 'price')   dish.price = cell;
           else if (k === 'desc')    dish.desc = cell;
           else if (k === 'section' && cell) out.push(blankSection(cell));
+          else if (k === 'allergens' && cell) {
+            // W7-2 — accepts comma/space/slash-delimited codes; only
+            // those matching ALLERGEN_CODES are kept (silent skip).
+            dish.allergens = String(cell).split(/[,\s\/|]+/)
+              .map(function (s) { return s.trim().toUpperCase(); })
+              .filter(function (s) { return !!allergenById(s); });
+          }
+          else if (k === 'spice' && cell) {
+            var n = parseInt(String(cell).replace(/\D/g, ''), 10);
+            if (isFinite(n) && n >= 0 && n <= 3) dish.spice = n;
+          }
         });
       } else {
         // Positional: name, price, description.
@@ -780,22 +975,22 @@
   // get wrong. Prices stay in the typical American-bistro band.
   var SAMPLE_MENU = [
     blankSection('Starters'),
-    { kind: 'dish', name: 'House bread', price: '$6',  desc: 'Whole-wheat sourdough, cultured butter.' },
-    { kind: 'dish', name: 'Caesar salad', price: '$14', desc: 'Little gems, buttermilk-anchovy, parmesan crisp.' },
-    { kind: 'dish', name: 'Soup of the day', price: '$10', desc: 'Ask your server.' },
-    { kind: 'dish', name: 'Cheese plate', price: '$18', desc: 'Three local cheeses, honey, walnuts.' },
+    { kind: 'dish', name: 'House bread', price: '$6',  desc: 'Whole-wheat sourdough, cultured butter.', allergens: ['VG'], spice: 0 },
+    { kind: 'dish', name: 'Caesar salad', price: '$14', desc: 'Little gems, buttermilk-anchovy, parmesan crisp.', allergens: ['FI', 'E'], spice: 0 },
+    { kind: 'dish', name: 'Soup of the day', price: '$10', desc: 'Ask your server.', allergens: [], spice: 0 },
+    { kind: 'dish', name: 'Cheese plate', price: '$18', desc: 'Three local cheeses, honey, walnuts.', allergens: ['VG', 'N', 'LO'], spice: 0 },
     blankSection('Pasta'),
-    { kind: 'dish', name: 'Tonnarelli al pepe', price: '$22', desc: 'Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.' },
-    { kind: 'dish', name: 'Mushroom rigatoni', price: '$24', desc: 'Cremini and oyster mushrooms, sherry, thyme.' },
+    { kind: 'dish', name: 'Tonnarelli al pepe', price: '$22', desc: 'Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.', allergens: ['VG', 'E'], spice: 1 },
+    { kind: 'dish', name: 'Mushroom rigatoni', price: '$24', desc: 'Cremini and oyster mushrooms, sherry, thyme.', allergens: ['VG'], spice: 0 },
     blankSection('Mains'),
-    { kind: 'dish', name: 'Roast chicken', price: '$28', desc: 'Half a Path Valley chicken, brined overnight, pan jus.' },
-    { kind: 'dish', name: 'Pan-seared salmon', price: '$32', desc: 'Wild king, lemon-caper butter, brown rice.' },
-    { kind: 'dish', name: 'Hanger steak', price: '$34', desc: 'Grass-fed, chimichurri, fingerling potatoes.' },
-    { kind: 'dish', name: 'Cauliflower steak', price: '$22', desc: 'Romesco, smoked almonds, crispy chickpeas.' },
+    { kind: 'dish', name: 'Roast chicken', price: '$28', desc: 'Half a Path Valley chicken, brined overnight, pan jus.', allergens: ['LO'], spice: 0 },
+    { kind: 'dish', name: 'Pan-seared salmon', price: '$32', desc: 'Wild king, lemon-caper butter, brown rice.', allergens: ['FI', 'GF'], spice: 0 },
+    { kind: 'dish', name: 'Hanger steak', price: '$34', desc: 'Grass-fed, chimichurri, fingerling potatoes.', allergens: ['GF', 'DF'], spice: 1 },
+    { kind: 'dish', name: 'Cauliflower steak', price: '$22', desc: 'Romesco, smoked almonds, crispy chickpeas.', allergens: ['V', 'GF', 'N'], spice: 2 },
     blankSection('Dessert'),
-    { kind: 'dish', name: 'Olive-oil cake', price: '$10', desc: 'Citrus glaze, candied zest.' },
-    { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.' },
-    { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.' }
+    { kind: 'dish', name: 'Olive-oil cake', price: '$10', desc: 'Citrus glaze, candied zest.', allergens: ['VG', 'E'], spice: 0 },
+    { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.', allergens: ['VG', 'N'], spice: 0 },
+    { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.', allergens: ['VG', 'LO'], spice: 0 }
   ];
 
   // ----------------------------------------------------------------
@@ -1016,7 +1211,8 @@
         title:       title,
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
-        filename:    filename
+        filename:    filename,
+        locale:      LOCALE
       }).then(function (result) {
         var pages = result.pageCount || 1;
         var msg = tt(
@@ -1192,7 +1388,8 @@
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
         filename:    fnameBase,
-        largePrint:  true
+        largePrint:  true,
+        locale:      LOCALE
       }).then(function (result) {
         var pages = result.pageCount || 1;
         setDownloadMsg(tt(

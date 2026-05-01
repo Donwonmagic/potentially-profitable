@@ -83,19 +83,55 @@
     var blocks = [];
     blocks.push({ kind: 'title', text: title || 'Menu' });
     if (logoDataUrl) blocks.push({ kind: 'logo', src: logoDataUrl });
+    var seenAllergens = {};
     rows.forEach(function (r) {
       if (r.kind === 'section' && (r.name || '').trim()) {
         blocks.push({ kind: 'section', text: r.name.trim() });
       } else if (r.kind === 'dish' && (r.name || '').trim()) {
+        // W7-2 — propagate allergen codes + spice level into the
+        // dish block. The draw routine renders glyphs after the
+        // name; pagination re-measures with that extra width.
+        var allergens = Array.isArray(r.allergens)
+          ? r.allergens.filter(function (c) { return typeof c === 'string' && c.length; })
+          : [];
+        allergens.forEach(function (c) { seenAllergens[c] = true; });
+        var spice = (typeof r.spice === 'number' && r.spice > 0 && r.spice <= 3) ? r.spice : 0;
         blocks.push({
           kind: 'dish',
           name:  (r.name || '').trim(),
           price: (r.price || '').trim(),
-          desc:  (r.desc || '').trim()
+          desc:  (r.desc || '').trim(),
+          allergens: allergens,
+          spice: spice
         });
       }
     });
+    // W7-2 — append the auto-generated allergen-key legend at the
+    // very bottom. Renderer no-ops if seenAllergens is empty.
+    var keys = Object.keys(seenAllergens);
+    if (keys.length) blocks.push({ kind: 'allergen-key', codes: keys });
     return blocks;
+  }
+
+  // W7-2 — minimal allergen catalog mirror (label-only). Lives here
+  // so the PDF renderer can emit human-readable legends without
+  // pulling the editor's catalog. Keep in sync with menu-design.js.
+  var PDF_ALLERGENS = {
+    V:  { en: 'Vegan',          es: 'Vegano' },
+    VG: { en: 'Vegetarian',     es: 'Vegetariano' },
+    GF: { en: 'Gluten-free',    es: 'Sin gluten' },
+    DF: { en: 'Dairy-free',     es: 'Sin lácteos' },
+    N:  { en: 'Contains nuts',  es: 'Frutos secos' },
+    E:  { en: 'Contains eggs',  es: 'Huevos' },
+    SO: { en: 'Contains soy',   es: 'Soya' },
+    SF: { en: 'Shellfish',      es: 'Mariscos' },
+    FI: { en: 'Contains fish',  es: 'Pescado' },
+    SE: { en: 'Sesame',         es: 'Sésamo' },
+    LO: { en: 'Locally sourced', es: 'Origen local' }
+  };
+  function allergenLabelPdf(code, locale) {
+    var a = PDF_ALLERGENS[code]; if (!a) return code;
+    return locale === 'es' ? a.es : a.en;
   }
 
   // Vertical space a block consumes at the active theme's text sizes.
@@ -115,6 +151,19 @@
         descH = lines.length * theme.descPt * 1.32;
       }
       return nameH + descH + 6;
+    }
+    // W7-2 — allergen-key legend block. Wraps onto multiple lines if
+    // many codes present; reuse splitTextToSize with the rendered
+    // string to get an honest height.
+    if (block.kind === 'allergen-key') {
+      doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+      doc.setFontSize(theme.descPt);
+      var keyText = (block.codes || []).map(function (c) {
+        return c + ' = ' + allergenLabelPdf(c, block.locale || 'en');
+      }).join('  ·  ');
+      var keyLines = doc.splitTextToSize(keyText, contentWidth);
+      // 14pt top padding + a leading rule + the wrapped text
+      return 18 + keyLines.length * theme.descPt * 1.5 + 4;
     }
     return 0;
   }
@@ -203,6 +252,56 @@
       var priceWidth = 60;
       var nameWidth  = contentWidth - priceWidth - 8;
       doc.text(block.name, x, y + theme.bodyPt);
+      // W7-2 — allergen + spice glyphs after the dish name. Each
+      // chip is a small pill: rounded rect outline in the theme's
+      // accent color with the 1-2 letter code centered. Spice
+      // renders as up to 3 small filled triangles in the rust/accent
+      // color; emoji isn't safe in jsPDF base-14 fonts.
+      if ((block.allergens && block.allergens.length) || block.spice) {
+        var nameW = doc.getStringUnitWidth(block.name) * theme.bodyPt / doc.internal.scaleFactor;
+        var chipX = x + nameW + 6;
+        var chipY = y + theme.bodyPt - theme.bodyPt * 0.78; // top of pill
+        var chipH = theme.bodyPt * 0.78;
+        var chipPad = 3;
+        var chipFontPt = Math.max(6, theme.bodyPt * 0.62);
+        if (block.allergens && block.allergens.length) {
+          doc.setFontSize(chipFontPt);
+          doc.setDrawColor(accentRgb.r, accentRgb.g, accentRgb.b);
+          doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+          doc.setLineWidth(0.4);
+          for (var ci = 0; ci < block.allergens.length; ci++) {
+            var code = String(block.allergens[ci]);
+            var codeW = doc.getStringUnitWidth(code) * chipFontPt / doc.internal.scaleFactor;
+            var pillW = codeW + chipPad * 2;
+            // Stop drawing if we'd collide with the price column.
+            if (chipX + pillW > x + contentWidth - priceWidth - 4) break;
+            doc.roundedRect(chipX, chipY, pillW, chipH, chipH / 2, chipH / 2, 'S');
+            doc.text(code, chipX + chipPad, chipY + chipH * 0.78);
+            chipX += pillW + 3;
+          }
+          // Restore body type for following text + price.
+          doc.setFontSize(theme.bodyPt);
+          doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        }
+        if (block.spice) {
+          // Small filled triangles, up to 3, in rust/accent.
+          doc.setFillColor(accentRgb.r, accentRgb.g, accentRgb.b);
+          var triH = chipH * 0.85;
+          var triW = triH * 0.85;
+          var triY = chipY + (chipH - triH) / 2;
+          for (var sp = 0; sp < block.spice; sp++) {
+            if (chipX + triW > x + contentWidth - priceWidth - 4) break;
+            doc.triangle(
+              chipX,         triY + triH,
+              chipX + triW,  triY + triH,
+              chipX + triW/2, triY,
+              'F'
+            );
+            chipX += triW + 2;
+          }
+          doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        }
+      }
       // Price right-aligned.
       if (block.price) {
         if (theme.priceStyle === 'right-monospace') {
@@ -236,6 +335,33 @@
         }
       }
       return nextY + 6;
+    }
+    // W7-2 — allergen-key legend at the menu footer. Top rule + small
+    // wrapped text listing each code = label. Code is rendered in
+    // the accent color so it visually echoes the inline glyphs.
+    if (block.kind === 'allergen-key') {
+      var keyTopRuleY = y + 8;
+      doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      doc.setLineWidth(0.4);
+      doc.line(x, keyTopRuleY, x + contentWidth, keyTopRuleY);
+      doc.setFont(pickPdfFont(theme.bodyFamily), 'normal');
+      doc.setFontSize(theme.descPt);
+      // Build the legend as a single string so splitTextToSize can
+      // wrap it cleanly across the available width. Each entry is
+      // "CODE = Label", joined with a middle-dot separator.
+      var keyLocale = block.locale || 'en';
+      var entries = (block.codes || []).map(function (c) {
+        return c + ' = ' + allergenLabelPdf(c, keyLocale);
+      });
+      var keyText = entries.join('  ·  ');
+      var keyLines = doc.splitTextToSize(keyText, contentWidth);
+      doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      var ky = keyTopRuleY + 14;
+      for (var li = 0; li < keyLines.length; li++) {
+        doc.text(keyLines[li], x, ky);
+        ky += theme.descPt * 1.5;
+      }
+      return ky + 4;
     }
     return y;
   }
@@ -335,9 +461,10 @@
         doc.rect(0, 0, paper.w, paper.h, 'F');
       }
       var blocks = buildBlocks(opts.rows || [], opts.title, opts.logoDataUrl);
-      // Forward logoMeta to the logo block for sizing math.
+      // Forward logoMeta + locale onto the relevant blocks.
       blocks.forEach(function (b) {
         if (b.kind === 'logo' && opts.logoMeta) b._logoMeta = opts.logoMeta;
+        if (b.kind === 'allergen-key') b.locale = opts.locale || 'en';
       });
       var droppedSvgLogo = false;
       if (opts.logoDataUrl && opts.logoDataUrl.indexOf('data:image/svg') === 0) {
