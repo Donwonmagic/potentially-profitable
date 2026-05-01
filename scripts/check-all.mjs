@@ -59,6 +59,7 @@ const CHECKS = [
   ['Article abstract+mentions (idem)','inject-article-abstract-mentions.mjs','--check'],
   ['Smart-next CTA (idem)','inject-smart-next-cta.mjs',     '--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
+  ['Glossary article backlinks (idem)','inject-glossary-article-backlinks.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],
   ['Glossary verified stamp (idem)','inject-glossary-verified-stamp.mjs','--check'],
   ['Glossary tool sidecar (idem)','inject-glossary-tool-sidecar.mjs','--check'],

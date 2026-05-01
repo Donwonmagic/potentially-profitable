@@ -55,7 +55,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -280,6 +280,8 @@
 
       <p>El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder eso en menos de un minuto. Este artículo es el framework — cinco pruebas, cuatro niveles de datos, un ejemplo trabajado — y al final, una checklist que puedes correr en cualquier herramienta.</p>
 
+      <p>Las herramientas que pasan estas pruebas te lo dicen claramente. Las que las fallan están a punto de explicarte por qué las pruebas no aplican a su caso. Esa es la pista.</p>
+
       <h2>1. Las cinco pruebas — corre antes de teclear</h2>
 
       <p>Abre DevTools en cualquier herramienta que estés evaluando (<kbd>Cmd+Opt+I</kbd> en Mac, <kbd>Ctrl+Shift+I</kbd> en Windows). Cinco preguntas:</p>
@@ -346,24 +348,52 @@
 
       <h2>3. Cómo se ve &ldquo;seguro&rdquo; — el ejemplo trabajado</h2>
 
-      <p>Este es el estándar al que se sostiene cada herramienta en este sitio. Nueve afirmaciones sobre cómo cada herramienta de Muntin maneja tus inputs, cada una verificable en tu propio navegador:</p>
+      <p>Este es el estándar al que se sostiene cada herramienta en este sitio. Nueve afirmaciones sobre cómo cada herramienta de Muntin maneja tus inputs, cada una verificable en tu propio navegador. Toca una afirmación para ver el paso de DevTools que la confirma.</p>
 
-      <ol>
-        <li>Tus números no salen de la página. Sin <code>fetch()</code>, sin <code>XMLHttpRequest</code>, sin envío de formulario.</li>
-        <li>No hay servidor donde guardarlos. El único endpoint es <code>GET /tools/&lt;slug&gt;/</code>.</li>
-        <li>Analytics ve solo cubetas, nunca números. Un ticket de $25 se vuelve <code>25-39</code>.</li>
-        <li>Ni cookies, ni localStorage, ni sessionStorage — para tus inputs.</li>
-        <li>Ningún script de terceros toca los inputs.</li>
-        <li>Los links compartibles usan el fragmento de URL (después del <code>#</code>) — los navegadores nunca lo mandan al servidor.</li>
-        <li>El código fuente es legible: sin build step, sin minificar, cada función con nombre.</li>
-        <li>Nada persiste más allá de la pestaña.</li>
-        <li>Las exportaciones a impresión y calendario son 100% client-side.</li>
-      </ol>
+      <aside class="report-decider" aria-labelledby="safe-claims-h">
+        <p class="report-decider__eyebrow" id="safe-claims-h">Las 9 afirmaciones · expande para ver la prueba</p>
+        <details class="report-decider__item">
+          <summary>1. Tus números no salen de la página</summary>
+          <p>Sin <code>fetch()</code>, sin <code>XMLHttpRequest</code>, sin envío de formulario al teclear un número financiero. <strong>Verifica:</strong> abre Network, teclea, observa si aparecen entradas nuevas. Debería ser cero.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>2. No hay servidor donde guardarlos</summary>
+          <p>El único endpoint que usa una página de herramienta es <code>GET /tools/&lt;slug&gt;/</code> — la página misma. <strong>Verifica:</strong> filtra Network → XHR/Fetch. Vacío.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>3. Analytics ve solo cubetas, nunca números</summary>
+          <p>Un ticket de $25 se vuelve <code>25-39</code>; los valores crudos nunca son propiedades del evento. <strong>Verifica:</strong> filtra Network → "plausible". Inspecciona el body del request. Sin inputs crudos.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>4. Ni cookies, ni localStorage, ni sessionStorage — para tus inputs</summary>
+          <p>Abre Application → Storage. Los inputs de la herramienta nunca persisten ahí. <strong>Verifica:</strong> teclea, luego refresca. Los inputs se fueron, por diseño.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>5. Ningún script de terceros toca los inputs</summary>
+          <p>El único script de tercero en una página de herramienta es Plausible analytics, que solo ve nombres de eventos cubeteados. <strong>Verifica:</strong> filtra Network → JS, busca orígenes desconocidos. Debería estar vacío.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>6. Los links compartibles usan el fragmento de URL</summary>
+          <p>La parte después de <code>#</code> — los navegadores nunca mandan el fragmento al servidor, solo lo previo a <code>#</code>. <strong>Verifica:</strong> comparte un link de escenario. Compara lo que va después del hash con lo que muestra la URL del request en Network.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>7. El código fuente es legible</summary>
+          <p>Sin build step, sin minificar, cada función matemática con nombre. <strong>Verifica:</strong> clic derecho → Ver código fuente. Léelo. Si no puedes auditarlo, ese es el modo de falla.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>8. Nada persiste más allá de la pestaña</summary>
+          <p>Cierra la pestaña, vuelve a abrir la herramienta. Formulario vacío. Sin historial, sin recall. <strong>Verifica:</strong> exactamente eso.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>9. Las exportaciones a impresión y calendario son 100% client-side</summary>
+          <p>Imprimir a PDF — sin subida. Agregar al calendario — genera un .ics localmente, sin llamada a API. <strong>Verifica:</strong> Network durante la acción de exportar. Vacío.</p>
+        </details>
+      </aside>
 
       <p>La versión completa con la verificación específica de DevTools de cada afirmación vive en <a href="/es/security/">/es/security/</a>. Cuatro de ellas (1, 2, 4, 5) son <strong>invariantes de build</strong> — el pase de cohesión que corre en cada deploy falla CI si una herramienta futura envía un patrón prohibido. Así que &ldquo;verificable&rdquo; no es copy de marketing; es un contrato aplicado por el build, con un hash público del bundle de producción publicado en <a href="/security/integrity.txt"><code>/security/integrity.txt</code></a>.</p>
 
       <blockquote class="pullquote">
-        <p>&ldquo;Verificable&rdquo; debería ser un flag del build, no una promesa de marketing.</p>
+        <p>"Verificable" debería ser un flag del build, no una promesa de marketing. Si la única prueba es el folleto, trátalo como el folleto.</p>
       </blockquote>
 
       <h2>4. Corre la auditoría</h2>
@@ -419,8 +449,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="como-saber-si-una-herramienta-de-restaurante-es-segura" data-locale="es" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Cuéntanos</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo has probado en tu cocina?</h2>
-              <p class="field-notes-submit__subhead">100–400 palabras, con tu nombre, Don lee cada una.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Sé el primer apunte de campo en este artículo.</h2>
+              <p class="field-notes-submit__subhead">¿Lo probaste en tu propio restaurante? 100–400 palabras, con tu nombre. Don lee cada una. Tu apunte aparece aquí una vez aprobado.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/es/sign-in/?return=%2Fes%2Fblog%2Fcomo-saber-si-una-herramienta-de-restaurante-es-segura%2F%23field-note-form">Inicia sesión para compartir tu experiencia →</a>
               </p>
@@ -527,6 +557,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>

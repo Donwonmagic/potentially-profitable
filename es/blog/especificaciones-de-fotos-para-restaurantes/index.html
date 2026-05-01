@@ -56,7 +56,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 
 <style>
   .spec-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px;line-height:1.55}
@@ -325,6 +325,26 @@
         <figcaption class="i18n">Una toma, diez salidas · la regla de resolución</figcaption>
       </figure>
 
+      <aside class="photo-aspect-decoder" aria-labelledby="aspect-decoder-h">
+        <p class="photo-aspect-decoder__eyebrow" id="aspect-decoder-h">Mi foto no tiene esta proporción — ¿qué pasa?</p>
+        <details class="photo-aspect-decoder__item">
+          <summary>Disparaste apaisado (16:9), la superficie pide cuadrado (1:1)</summary>
+          <p>Recorte al centro. Lo que quedaba en los tercios izquierdo y derecho desaparece. Si tu sujeto — el plato, una persona, el cartel — quedó cerca del borde, se corta. Pon el sujeto en el 60% central antes de disparar, o asume que las alas se van a recortar.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>Disparaste cuadrado (1:1), la superficie pide 16:9</summary>
+          <p>Arriba y abajo se rellenan con el fondo — bien para plato-sobre-madera, feo para planos del salón donde techo y piso son parte de la historia. Dispara 16:9 directo si la superficie lo pide; ampliar siempre se nota.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>Disparaste vertical (4:5 o 9:16), la superficie pide 16:9</summary>
+          <p>O la superficie rechaza la subida o letterboxea la foto arriba y abajo. Las portadas de Yelp y GBP recortadas desde vertical se ven mal — una franja en el centro y barras grises arriba/abajo. Re-disparar. Los teléfonos pasan a 4:3 o 16:9 si tocas el selector antes del disparo.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>Tu cámara disparó 4:3, toda superficie moderna pide 16:9 o 1:1</summary>
+          <p>Recorta en post. 4:3 → 16:9 quita un poco arriba y abajo; 4:3 → 1:1 quita por los costados. Lightroom o Photos.app hacen recortes en lote para una sesión de 30 fotos en menos de un minuto.</p>
+        </details>
+      </aside>
+
       <h2>Reglas de resolución</h2>
 
       <p>Siempre dispara a la resolución recomendada arriba MÁS un 30% extra. Siempre puedes recortar hacia abajo; nunca puedes ampliar. Un <a href="/es/glossary/hero-shot/" data-glossary-head="Toma hero" data-glossary-blurb="Para una superficie de destino (web hero, destacada de Yelp, lead del perfil de Instagram, portada de Google Business), la única fotografía que carga la id…" target="_blank" rel="noopener">hero shot</a> a 2400×1024 te permite también producir la card OG de 1200×630 desde el mismo archivo.</p>
@@ -334,6 +354,40 @@
       <h2>Alt text — la parte más saltada</h2>
 
       <p>Cada imagen necesita <a href="/es/glossary/alt-text/" data-glossary-head="Texto alternativo" data-glossary-blurb="Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=&quot;…&quot; en el HTML." target="_blank" rel="noopener">alt text</a>. No "IMG_4521.jpg," ni el nombre del menú, ni "comida deliciosa." Una oración descriptiva específica: "Plato de carnitas con cilantro, cebolla blanca y limón sobre tabla de madera." Cuesta 5 segundos por foto y te gana SEO + accesibilidad + cita en búsqueda con IA.</p>
+
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Cómo se ve un buen alt text — tres reglas">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">1</div>
+            <div>
+              <h4 class="i18n">Sujeto específico</h4>
+              <p class="recovery-sub i18n">"Plato de carnitas" — no "comida deliciosa", no "almuerzo".</p>
+            </div>
+            <div class="recovery-val">nombra el plato</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">2</div>
+            <div>
+              <h4 class="i18n">Sustantivo de contexto</h4>
+              <p class="recovery-sub i18n">"Sobre tabla de madera." "En el patio." Dónde está la foto, no solo qué hay.</p>
+            </div>
+            <div class="recovery-val">agrega el dónde</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">3</div>
+            <div>
+              <h4 class="i18n">Sin nombre de archivo, sin marketing</h4>
+              <p class="recovery-sub i18n">"IMG_4521.jpg" no sirve. "Comida deliciosa" sirve menos — Google la descarta.</p>
+            </div>
+            <div class="recovery-val">describe, no vendas</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Tres reglas para el alt text · qué guarda Google y qué descarta</figcaption>
+      </figure>
+
+      <blockquote class="pullquote">
+        <p>El alt text es la parte de la hoja de especificaciones que nadie lee. También es la primera parte que lee Google.</p>
+      </blockquote>
 
       <h2>El shot list para entregar a un fotógrafo</h2>
 
@@ -413,8 +467,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="especificaciones-de-fotos-para-restaurantes" data-locale="es" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Cuéntanos</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo has probado en tu cocina?</h2>
-              <p class="field-notes-submit__subhead">100–400 palabras, con tu nombre, Don lee cada una.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Sé el primer apunte de campo en este artículo.</h2>
+              <p class="field-notes-submit__subhead">¿Lo probaste en tu propio restaurante? 100–400 palabras, con tu nombre. Don lee cada una. Tu apunte aparece aquí una vez aprobado.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/es/sign-in/?return=%2Fes%2Fblog%2Fespecificaciones-de-fotos-para-restaurantes%2F%23field-note-form">Inicia sesión para compartir tu experiencia →</a>
               </p>
@@ -522,6 +576,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>

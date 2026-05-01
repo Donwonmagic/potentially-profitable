@@ -77,7 +77,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -86,6 +86,10 @@
   "@id": "https://muntin.digital/blog/restaurant-schema-markup-6-types-google-uses/#article",
   "abstract": "The six schema.org types that move the needle for restaurant search results in 2026 — Restaurant, Menu, OpeningHoursSpecification, AggregateRating, Reservation, and FAQ — with copy-paste JSON-LD examples for each.",
   "mentions": [
+    {
+      "@type": "DefinedTerm",
+      "url": "https://muntin.digital/glossary/schema/"
+    },
     {
       "@type": "DefinedTerm",
       "url": "https://muntin.digital/glossary/schema-markup/"
@@ -327,7 +331,7 @@
             </aside>
             <!-- article-tldr:end -->
 
-      <p>If you opened a restaurant after 2018 and never touched the schema markup on your site, you have schema markup. Your CMS or template builder almost certainly stamped some — the question is whether it's the right schema, whether it's complete, and whether Google can actually use it.</p>
+      <p>If you opened a restaurant after 2018 and never touched the <!-- LIBRARY:autolink:start --><a href="/glossary/schema/" data-glossary-head="Schema markup" data-glossary-aka="JSON-LD, structured data, schema.org" data-glossary-blurb="Invisible tags on your page that spell out, in a format Google can read directly, exactly what kind of business you are — &quot;I'm a Restaurant, here's my cuisine, my address, my…">schema markup</a><!-- LIBRARY:autolink:end --> on your site, you have schema markup. Your CMS or template builder almost certainly stamped some — the question is whether it's the right schema, whether it's complete, and whether Google can actually use it.</p>
 
       <p>The pattern repeats: most sites have two of the six schema types Google reads first; the other four are missing or malformed. Each missing piece is a different surface in Google's results you're not eligible for. The compounding part is that the missing types unlock different surfaces — the local-pack card, AI Overview citations, the Reserve button, the rich snippet, the holiday-hours badge — so the gap between &ldquo;some schema&rdquo; and &ldquo;all six&rdquo; isn't linear.</p>
 
@@ -438,6 +442,26 @@
 
       <p>The description matters more than the name — that's the field Google's AI Overviews lift verbatim when someone asks "what are tacos al pastor like at Bistro Petit." Empty descriptions = no AI citation.</p>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="The Menu schema field that does the work · description, not name">
+          <div class="recovery-row recovery-1">
+            <div>
+              <h4 class="i18n">name</h4>
+              <p class="recovery-sub i18n">Required. Used for the listing title only.</p>
+            </div>
+            <div class="recovery-val">title-only</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div>
+              <h4 class="i18n">description</h4>
+              <p class="recovery-sub i18n">Optional in the spec. The field AI Overviews quote verbatim. Skip it = no citation.</p>
+            </div>
+            <div class="recovery-val">the AI field</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Menu schema · which field actually feeds the AI citation</figcaption>
+      </figure>
+
       <h2>3. OpeningHoursSpecification — the one that costs you walk-ins</h2>
 
       <p>If your hours are wrong on Google, your hours are wrong everywhere. <a href="/glossary/opening-hours-specification/" data-glossary-head="OpeningHoursSpecification" data-glossary-blurb="A specific Schema.org structured-data type for representing when a place is open." target="_blank" rel="noopener">OpeningHoursSpecification</a> is the schema that powers the "Open now" / "Closes at 10 PM" badge on your search panel — and the one that gets stale when you change Sunday hours and forget to update the site.</p>
@@ -478,6 +502,10 @@
       <p>If you're on OpenTable, Resy, Tock, or SevenRooms, your reservation system already publishes the right schema. But if your booking is a custom form on your own site, you need to publish Reservation schema yourself — otherwise Google can't show the "Reserve a table" button in your panel.</p>
 
       <p>The integration with <a href="/blog/how-to-recover-reservations-from-googles-find-a-table/">Find a Table</a> requires this schema to be valid AND your booking endpoint to be publicly reachable. Check both with <a href="/tools/schema-check/">Schema Checker</a>.</p>
+
+      <blockquote class="pullquote">
+        <p>FAQ schema is the cheapest AI-citation surface a restaurant has. The fact that almost nobody ships it is the opportunity.</p>
+      </blockquote>
 
       <h2>6. FAQ — the AI-citation magnet</h2>
 
@@ -533,6 +561,8 @@
 
       <p>The compounding argument: each missing schema type is a different Google surface you're not eligible for. The six types together unlock the local-pack card, AI Overview citations, the Reserve button, the rich snippet, and the holiday-hours badge. Add them in order, and the cumulative effect on impressions usually lands somewhere between 20% and 60% within a quarter.</p>
 
+      <p>The move is: ship Restaurant + OpeningHours + Menu this week, FAQ next, and let AggregateRating + Reservation come from your booking platform. Six types in roughly two weeks of deliberate work. The surfaces queue up behind them.</p>
+
       <blockquote class="pullquote">
         <p>Schema isn't optional. Each missing type is a Google surface you've voluntarily disqualified yourself from.</p>
       </blockquote>
@@ -565,7 +595,7 @@
 <aside class="smart-next" aria-labelledby="smart-next-h">
   <p class="smart-next__eyebrow" id="smart-next-h">What to do next</p>
   <ol class="smart-next__list">
-        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/schema-markup/">the related glossary term →</a></li>
+        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">Read:</span> <a href="/glossary/schema/">the related glossary term →</a></li>
         <li class="smart-next__item smart-next__try"><span class="smart-next__verb">Try:</span> <a href="/tools/audits/restaurant/?from=blog/restaurant-schema-markup-6-types-google-uses&intent=watch">the tool that pairs with this article →</a></li>
         <li class="smart-next__item smart-next__note"><span class="smart-next__verb">Or send Don a note:</span> <a href="/window/?topic=restaurant-schema-markup-6-types-google-uses">The Window →</a></li>
   </ol>
@@ -576,24 +606,24 @@
   <p class="see-also-label" id="see-also-h">See also</p>
   <ul class="see-also-list">
       <li>
-        <a class="see-also-card" href="/blog/how-to-recover-reservations-from-googles-find-a-table/">
-          <span class="see-also-kind">Article</span>
-          <h3>Recovering reservations from Google's Find a Table</h3>
-          <p>How Reservation schema in this post connects to the booking surface in Google's panel.</p>
-        </a>
-      </li>
-      <li>
-        <a class="see-also-card" href="/tools/schema-check/">
+        <a class="see-also-card" href="/tools/gbp-grader/">
           <span class="see-also-kind">Tool</span>
-          <h3>Schema Checker</h3>
-          <p>Validates the six types on any restaurant homepage and points at the broken pieces.</p>
+          <h3>Google Business Profile Grader</h3>
+          <p>How your Google listing scores across rating, reviews, photos, categories, hours — with the exact fixes that move it up.</p>
         </a>
       </li>
       <li>
-        <a class="see-also-card" href="/learn/research/structured-data-impact/">
-          <span class="see-also-kind">Research</span>
-          <h3>Structured data impact on local search</h3>
-          <p>The evidence behind the cumulative-impressions claim in this post.</p>
+        <a class="see-also-card" href="/blog/how-to-read-restaurant-google-search-console/">
+          <span class="see-also-kind">Article <span class="see-also-time">6 min read</span></span>
+          <h3>How to Read Your Restaurant&#39;s Google Search Console (in Plain English)</h3>
+          <p>The four reports that matter, what each number means, and the three weekly habits that actually move bookings.</p>
+        </a>
+      </li>
+      <li>
+        <a class="see-also-card" href="/learn/research/local-business-websites/">
+          <span class="see-also-kind">Research <span class="see-also-time">3 min read</span></span>
+          <h3>Usability of Local Business Websites</h3>
+          <p>The most-searched-for information on a local business website is hours and location — and both are the most commonly hidden.</p>
         </a>
       </li>
     </ul>
@@ -603,8 +633,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="restaurant-schema-markup-6-types-google-uses" data-locale="en" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Tell us</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">Have you tried this in your kitchen?</h2>
-              <p class="field-notes-submit__subhead">100–400 words, your name on it, Don reads every one.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Be the first field note on this piece.</h2>
+              <p class="field-notes-submit__subhead">Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/sign-in/?return=%2Fblog%2Frestaurant-schema-markup-6-types-google-uses%2F%23field-note-form">Sign in to share your experience →</a>
               </p>
@@ -744,6 +774,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>

@@ -55,7 +55,7 @@
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -281,6 +281,8 @@
 
       <p><a href="/es/glossary/search-console/" data-glossary-head="Google Search Console" data-glossary-blurb="El panel gratuito de Google que te muestra con qué términos de búsqueda llegó la gente a tu sitio, en qué páginas aterrizó y si Google tiene problemas para…" target="_blank" rel="noopener">Google Search Console</a> es gratis, oficial, y te dice exactamente para qué queries Google muestra tu restaurante, con qué frecuencia los visitantes hacen clic, y qué páginas están funcionando. La interfaz es el problema. Está construida para profesionales de SEO; las etiquetas asumen terminología que un operador de restaurante no tiene.</p>
 
+      <p>Estás pensando: ya tengo Google Analytics. Sí. Y te dice qué hicieron una vez que llegaron. Search Console es lo que tecleó la gente antes de llegar. Pregunta distinta.</p>
+
       <p>Esta es la versión en español plano. Cuatro reportes hacen el trabajo. Salta el resto.</p>
 
       <h2>Configúralo primero (10 minutos, una vez)</h2>
@@ -319,6 +321,10 @@
         <li><strong>Queries faltantes.</strong> Si &ldquo;tacos al pastor cerca de mí&rdquo; no aparece, tu schema de menú está roto o ausente.</li>
       </ul>
 
+      <blockquote class="pullquote">
+        <p>El reporte de Queries es el único lugar donde las palabras reales del cliente aterrizan en tu dashboard. Léelo como el mesero lee un comentario en una tarjeta.</p>
+      </blockquote>
+
       <h2>Reporte 3: Pages — qué páginas hacen el trabajo</h2>
 
       <p>Cambia la pestaña a &ldquo;Pages.&rdquo; Ordena por clics descendente. El patrón típico:</p>
@@ -334,7 +340,53 @@
 
       <p>En la barra lateral izquierda, bajo &ldquo;Indexing,&rdquo; haz clic en &ldquo;Pages.&rdquo; Esto te dice cuántas de tus páginas Google ha agregado realmente a su índice. Si 50% de tus páginas están &ldquo;Excluded&rdquo; o &ldquo;Discovered — not indexed,&rdquo; tienes un problema fundacional — usualmente carga lenta, canonical roto, o contenido pobre.</p>
 
+      <figure class="article-figure">
+        <div class="recovery-stack" role="img" aria-label="Banderas rojas en Coverage · los tres hallazgos que vale atender primero">
+          <div class="recovery-row recovery-1">
+            <div class="recovery-num">A</div>
+            <div>
+              <h4 class="i18n">Discovered — not indexed</h4>
+              <p class="recovery-sub i18n">Google encontró la URL y decidió no indexarla. Casi siempre contenido pobre o plantilla duplicada.</p>
+            </div>
+            <div class="recovery-val">reescribe la página</div>
+          </div>
+          <div class="recovery-row recovery-2">
+            <div class="recovery-num">B</div>
+            <div>
+              <h4 class="i18n">Crawled — currently not indexed</h4>
+              <p class="recovery-sub i18n">Google miró y esperó. Señal de velocidad o de confianza muy baja. Arregla LCP, arregla el canonical.</p>
+            </div>
+            <div class="recovery-val">arregla la velocidad</div>
+          </div>
+          <div class="recovery-row recovery-3">
+            <div class="recovery-num">C</div>
+            <div>
+              <h4 class="i18n">Excluded by 'noindex'</h4>
+              <p class="recovery-sub i18n">Una meta tag o un header HTTP le dice a Google que salte la página. Si no fue a propósito, es el arreglo más barato de esta lista.</p>
+            </div>
+            <div class="recovery-val">busca noindex</div>
+          </div>
+        </div>
+        <figcaption class="i18n">Tres banderas rojas en Coverage · qué significa cada una antes de salir a arreglarla</figcaption>
+      </figure>
+
       <h2>Los tres hábitos semanales</h2>
+
+      <aside class="report-decider" aria-labelledby="report-decider-h">
+        <p class="report-decider__eyebrow" id="report-decider-h">¿Qué reporte deberías abrir hoy?</p>
+        <details class="report-decider__item">
+          <summary>No miraste en todo el mes</summary>
+          <p>Abre <strong>Performance</strong> primero para ver la tendencia mensual de clics/impresiones, luego <strong>Coverage</strong> para confirmar que Google sigue viendo tus páginas. Si alguno está raro, el resto se desprende de ahí.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>Miraste la semana pasada</summary>
+          <p>Abre <strong>Queries</strong>. Ordena por impresiones descendentes. Mira las filas 11 a 30 para queries que no apuntaste deliberadamente — son las primeras que afloran cuando algo está cambiando.</p>
+        </details>
+        <details class="report-decider__item">
+          <summary>Algo se siente raro (bajaron las reservas, o se achicó el panel)</summary>
+          <p>Abre <strong>Pages</strong>, ordena por clics descendentes, y revisa si tu página de menú y la de reservas siguen llevándose 15&ndash;25% y 3&ndash;8% de los clics totales respectivamente. Si esas proporciones se rompieron, el diagnóstico está en esas páginas, no en Search Console.</p>
+        </details>
+      </aside>
 
       <figure class="article-figure" data-audio-alt="Cadencia de Search Console · bajo 20 minutos al mes.">
         <div class="recovery-stack" role="img" aria-label="Cadencia de Search Console · bajo 20 minutos al mes">
@@ -407,8 +459,8 @@
             <section class="field-notes-submit" id="field-note-form" aria-labelledby="field-note-heading"
                     data-article-slug="como-leer-google-search-console-de-tu-restaurante" data-locale="es" data-fnenabled="true">
               <p class="field-notes-submit__eyebrow">Cuéntanos</p>
-              <h2 class="field-notes-submit__headline" id="field-note-heading">¿Lo has probado en tu cocina?</h2>
-              <p class="field-notes-submit__subhead">100–400 palabras, con tu nombre, Don lee cada una.</p>
+              <h2 class="field-notes-submit__headline" id="field-note-heading">Sé el primer apunte de campo en este artículo.</h2>
+              <p class="field-notes-submit__subhead">¿Lo probaste en tu propio restaurante? 100–400 palabras, con tu nombre. Don lee cada una. Tu apunte aparece aquí una vez aprobado.</p>
               <p class="field-notes-submit__signin js-field-notes-signin" hidden>
                 <a href="/es/sign-in/?return=%2Fes%2Fblog%2Fcomo-leer-google-search-console-de-tu-restaurante%2F%23field-note-form">Inicia sesión para compartir tu experiencia →</a>
               </p>
@@ -514,6 +566,6 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>

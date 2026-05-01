@@ -3390,7 +3390,34 @@
       show(L);
     }; })(link));
     link.addEventListener('blur', scheduleHide);
+
+    // Touch / coarse-pointer devices have no hover. Without this
+    // handler, tapping the term opens the full glossary entry in a
+    // new tab (because the inline link carries target="_blank") and
+    // the reader never sees the inline definition. With this handler,
+    // the first tap shows the popover with the first-sentence
+    // definition; the popover's "Read full" CTA inside is the
+    // explicit path to the full term in a new tab. Tapping the same
+    // link again, or tapping anywhere outside the popover, dismisses.
+    link.addEventListener('click', (function(L){ return function(e){
+      if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+      if (activeLink === L) { hide(); return; }
+      e.preventDefault();
+      window.clearTimeout(hideTimer);
+      show(L);
+    }; })(link));
   }
+
+  // Tap-outside on touch devices closes the popover. Pointer events
+  // unify mouse + touch so this also serves as desktop click-outside.
+  document.addEventListener('click', function(e){
+    if (!activeLink) return;
+    if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+    var target = e.target;
+    if (popover && popover.contains(target)) return;
+    if (target === activeLink || (activeLink && activeLink.contains(target))) return;
+    hide();
+  });
 
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && activeLink) {
