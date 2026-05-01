@@ -292,6 +292,187 @@
 .mid-pf-cta:hover{filter:brightness(1.05)}
 @media(prefers-reduced-motion:reduce){.mid-pf-backdrop,.mid-pf-sheet{animation:none}}
 @media(max-width:540px){.mid-pf-sheet{padding:20px 14px 18px}.mid-pf-card{padding:14px}}
+
+/* ======================================================================
+   Wave 8 — upgraded row layout, per-field dots, drift chips,
+   contract badges, Vendor Pulse, math-fix card, accountant export,
+   margin-impact callout, sort toggle, row history, action buttons.
+   ====================================================================== */
+
+/* Row grid — disciplined columns, leading glyph, fielddots + actions on right. */
+.id-parsed-row{display:grid;grid-template-columns:24px 1fr auto 88px auto auto;align-items:center;column-gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px;transition:background .12s ease,box-shadow .12s ease}
+.id-row-glyph-cell{display:flex;align-items:center;justify-content:center;width:24px}
+.id-row-glyph{width:18px;height:18px;flex:none}
+@media(prefers-reduced-motion:reduce){.id-parsed-row{transition:none}}
+.id-parsed-row[data-anomaly="true"]{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}
+.id-parsed-row[data-kind="credit"]{background:#FBF1E5}
+.id-parsed-row[data-kind="deposit"]{background:#F1F4FB}
+.id-parsed-row[data-kind="surcharge"]{background:#FAF1F4}
+.id-parsed-row[data-kind="backorder"]{background:#F4F4F4;opacity:.85}
+
+.id-row-kind{display:inline-block;margin-left:8px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;background:#F1ECE0;color:#6a4a14;border:1px solid #d9c5a3}
+.id-row-kind[data-kind="credit"]{background:#FBE9E0;color:#7a3019;border-color:#e9bfaa}
+.id-row-kind[data-kind="deposit"]{background:#E0EAF9;color:#1f3a6e;border-color:#b8c8e0}
+.id-row-kind[data-kind="surcharge"]{background:#F9E0F2;color:#5a1f4a;border-color:#dfb8d0}
+
+/* Wave 1.7 — per-field dots */
+.id-row-fielddots{display:inline-flex;gap:5px;align-items:center;justify-content:flex-end}
+.id-field-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink-soft);background:transparent}
+.id-field-dot[data-band="green"]{background:#1f6e3a;border-color:#1f6e3a}
+.id-field-dot[data-band="amber"]{background:#D9A93B;border-color:#9A6A12}
+.id-field-dot[data-band="red"]{background:transparent;border-color:#7a2419;box-shadow:inset 0 0 0 2px #7a2419}
+
+/* Wave 1.1 — drift chip + Wave 1.2 — contract badge */
+.id-row-drift{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:999px;font-variant-numeric:tabular-nums;cursor:pointer}
+.id-row-drift[data-dir="up"]{background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
+.id-row-drift[data-dir="down"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
+.id-row-drift[data-dir="flat"]{background:#F1ECE0;color:#5a4a30;border:1px solid #d9c5a3}
+.id-row-drift--anomaly{outline:2px solid var(--rust,#B25C2A);outline-offset:1px}
+.id-row-contract{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
+.id-row-contract--over{background:#7a3019;color:#fff;border-color:#7a3019}
+
+/* Wave 1.1 — toggleable mini-history */
+.id-row-history{grid-column:1 / -1;margin-top:8px;padding:10px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.id-row-history-label{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
+.id-row-history-list{margin:6px 0 0;padding:0;list-style:none;font-size:11.5px;color:var(--ink-soft);line-height:1.55;font-variant-numeric:tabular-nums}
+.id-row-history-list li{padding:2px 0}
+.id-row-history-contract{margin-top:8px;padding:6px 11px;font-size:12px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);border-radius:6px;cursor:pointer}
+.id-row-history-contract:hover{background:var(--accent,#1f6f6a);color:#fff}
+
+/* Wave 3.1 — visible Y/N action buttons on each row (single-pointer
+   alternative to swipe; 32×32 hit target meets WCAG 2.5.8 24×24 min). */
+.id-row-actions{display:inline-flex;gap:6px;align-items:center}
+.id-row-act{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.id-row-act-yes:hover{border-color:#1f6e3a;color:#1f6e3a;background:#E6F4EC}
+.id-row-act-no:hover{border-color:#7a2419;color:#7a2419;background:#FCE0DA}
+.id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 2.3 — Vendor Pulse Strip */
+.id-vendor-pulse{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0c2826 0%,#1f4e5b 100%);color:#fff;border-radius:10px}
+.id-vendor-pulse[hidden]{display:none}
+.id-pulse-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;font-size:14px}
+.id-pulse-vendor{font-family:var(--font-display);font-weight:500;font-size:16px}
+.id-pulse-meta{font-size:12.5px;color:rgba(255,255,255,0.78)}
+.id-pulse-pills{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.id-pulse-pill{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,0.16);color:#fff;font-variant-numeric:tabular-nums}
+.id-pulse-pill[data-dir="up"]{background:rgba(252,224,215,0.95);color:#7a2e1f}
+.id-pulse-pill[data-dir="down"]{background:rgba(199,228,212,0.92);color:#0c4a26}
+.id-pulse-empty{font-size:12.5px;color:rgba(255,255,255,0.86);font-style:italic}
+
+/* Wave 1.3 — math-fix card */
+.id-mathfix{margin:0 0 12px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px;color:var(--ink)}
+.id-mathfix[hidden]{display:none}
+.id-mathfix-msg{margin:0 0 8px;font-size:13.5px;line-height:1.55}
+.id-mathfix-actions{margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.id-mathfix-apply,.id-mathfix-dismiss{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line-dark,#7d7d7d);background:#fff;color:var(--ink);cursor:pointer}
+.id-mathfix-apply{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-mathfix-apply:hover{background:var(--accent,#1f6f6a)}
+.id-mathfix-dismiss:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+
+/* Wave 2.4 — sort toggle */
+.id-sort-toggle{font:inherit;font-size:12px;padding:4px 10px;margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.id-sort-toggle:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+.id-sort-toggle[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Wave 2.6 — margin-impact callout inside handoff */
+.id-margin-impact{margin-top:14px;padding:12px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #B25C2A;border-radius:8px;font-size:13px;color:var(--ink);line-height:1.55}
+.id-margin-impact[hidden]{display:none}
+.id-margin-label{margin:0 0 6px;font-size:11.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.id-margin-list{margin:0;padding:0;list-style:none}
+.id-margin-line{padding:3px 0}
+.id-margin-line[data-dir="up"]{color:#7a3019}
+.id-margin-line[data-dir="down"]{color:#1f6e3a}
+
+/* Wave 4.6 — accountant export drawer */
+.id-export-drawer{margin-top:14px;padding:8px 12px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.id-export-drawer summary{cursor:pointer;font-weight:500;font-size:13.5px;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.id-export-drawer summary::-webkit-details-marker{display:none}
+.id-export-drawer summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-export-drawer[open] summary::before{transform:rotate(90deg)}
+.id-export-blurb{margin:8px 0 10px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.id-export-row{display:flex;flex-wrap:wrap;gap:6px}
+.id-export-btn{font:inherit;font-size:12.5px;padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.id-export-btn:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a);background:#f0f9f7}
+.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 3.1 — focus rings + larger tap targets across the board */
+.id-input-chip:focus-within{border-color:var(--accent,#1f6f6a);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#1f6f6a) 22%,transparent)}
+.id-bulk-confirm:focus-visible,.id-bulk-save:focus-visible,.id-handoff-btn:focus-visible,.id-read-btn:focus-visible,.id-filter-chip:focus-visible,.mid-pf-close:focus-visible,.id-drift-dismiss:focus-visible,.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:6px}
+[data-edit]:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:4px}
+[data-edit]{min-height:32px;display:inline-block;padding:4px 6px}
+
+@media(max-width:540px){
+  .id-parsed-row{grid-template-columns:24px 1fr auto auto;column-gap:6px}
+  .id-row-fielddots{display:none}
+  .id-row-act{width:28px;height:28px;font-size:12px}
+  .id-vendor-pulse{padding:11px 13px}
+  .id-pulse-vendor{font-size:14px}
+}
+
+/* Wave 3.5 — honesty card accordion. Each declarative claim opens to
+   reveal the detail behind it. First claim opens by default. */
+.id-honesty-fact{padding:12px 14px;margin:0 0 8px;background:var(--white);border:1px solid var(--line);border-radius:8px}
+.id-honesty-fact summary{cursor:pointer;font-size:14.5px;color:var(--ink);padding:2px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.id-honesty-fact summary::-webkit-details-marker{display:none}
+.id-honesty-fact summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-honesty-fact[open] summary::before{transform:rotate(90deg)}
+.id-honesty-fact summary strong{font-weight:500;color:var(--ink)}
+.id-honesty-fact p{margin:8px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+
+/* Wave 3.3 — compact keyboard legend pinned in bottom corner */
+.id-kbd-compact{margin:8px 0 0;font-size:11px;color:var(--ink-soft);text-align:right}
+.id-kbd-compact kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:10.5px;padding:1px 4px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink)}
+
+/* Wave 3.1 — visually-hidden utility for SR-only headings */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Wave 5 — first-run sample strip */
+.id-firstrun{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-firstrun[hidden]{display:none}
+.id-firstrun-msg{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-firstrun-row{display:flex;flex-wrap:wrap;gap:8px}
+.id-firstrun-btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.id-firstrun-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-firstrun-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 5 — abandonment resume banner */
+.id-resume{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
+.id-resume[hidden]{display:none}
+.id-resume-msg{margin:0;font-size:13px;color:var(--ink);line-height:1.5}
+.id-resume-btn,.id-resume-dismiss{font:inherit;font-size:13px;padding:4px 10px;border-radius:4px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer;margin-left:6px}
+.id-resume-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-resume-btn:hover{background:var(--accent,#1f6f6a)}
+
+/* Wave 6.11 — dark-mode Stage 1. Honors prefers-color-scheme so
+   kitchens with dim lighting + auto-dark phones get a readable
+   surface without a manual toggle. Only the tool-scoped surfaces
+   are themed here; the sitewide design system handles the rest. */
+@media (prefers-color-scheme: dark){
+  .id-vendor-pulse{background:linear-gradient(135deg,#0c1817 0%,#1f3a37 100%)}
+  .id-honesty-fact{background:#1B1E23;border-color:#2C3036}
+  .id-honesty-fact summary{color:#F0EBE0}
+  .id-honesty-fact p{color:#C8C2B6}
+  .id-mathfix{background:#2A2418;border-color:#5A4A30;color:#F0EBE0}
+  .id-mathfix-msg{color:#F0EBE0}
+  .id-mathfix-apply{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
+  .id-mathfix-dismiss{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-export-drawer{background:#1B1E23;border-color:#2C3036}
+  .id-export-btn{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-export-btn:hover{background:#2C3036;color:#F0EBE0}
+  .id-firstrun{background:linear-gradient(135deg,#1B1E23 0%,#2C3036 100%);border-color:#2C3036}
+  .id-firstrun-msg{color:#F0EBE0}
+  .id-firstrun-btn{background:#1B1E23;color:#7be0d4;border-color:#7be0d4}
+  .id-firstrun-btn:hover{background:#7be0d4;color:#0c1817}
+  .id-row-history{background:#1B1E23;border-color:#2C3036}
+  .id-row-history-label{color:#C8C2B6}
+  .id-row-history-list{color:#C8C2B6}
+  .id-resume{background:#2A2418;border-color:#5A4A30}
+  .id-resume-msg{color:#F0EBE0}
+  .id-resume-btn{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
+  .id-row-act{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-row-act-yes:hover{background:#1f3a37;color:#7be0d4;border-color:#7be0d4}
+  .id-row-act-no:hover{background:#3a1f1f;color:#f5b8a8;border-color:#7a2419}
+}
 </style>
 
 <script type="application/ld+json">
@@ -486,26 +667,43 @@
     <!-- Three input paths. Photo and PDF lazy-load their workers; CSV
          needs no extra library. We let the owner pick the path that
          matches what their distributor actually sends them. -->
-    <div class="id-inputs" id="idInputs">
+    <h2 id="idInputsHeading" class="visually-hidden">Pick how to send your invoice</h2>
+    <div class="id-inputs" id="idInputs" role="group" aria-labelledby="idInputsHeading">
       <label class="id-input-chip" data-input="photo">
         <span class="id-input-icon" aria-hidden="true">📷</span>
         <p class="id-input-title">Photo or scan</p>
-        <p class="id-input-blurb">Take a photo with your phone, or drop in a scanner-app image. Up to 8 pages.</p>
-        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple />
+        <p class="id-input-blurb" id="idPhotoBlurb">Take a photo with your phone, or drop in a scanner-app image. Up to 8 pages.</p>
+        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple aria-label="Pick a photo or scan of your invoice" aria-describedby="idPhotoBlurb" />
       </label>
       <label class="id-input-chip" data-input="pdf">
         <span class="id-input-icon" aria-hidden="true">📄</span>
         <p class="id-input-title">PDF</p>
-        <p class="id-input-blurb">Drop your distributor's emailed PDF. Text extraction is &gt;99% accurate — no OCR needed.</p>
+        <p class="id-input-blurb" id="idPdfBlurb">Drop your distributor's emailed PDF. Text extraction is &gt;99% accurate — no OCR needed.</p>
         <span class="id-input-tag">Best</span>
-        <input type="file" id="idPdfInput" accept="application/pdf" />
+        <input type="file" id="idPdfInput" accept="application/pdf" aria-label="Pick your distributor's PDF" aria-describedby="idPdfBlurb" />
       </label>
       <label class="id-input-chip" data-input="csv">
         <span class="id-input-icon" aria-hidden="true">📊</span>
         <p class="id-input-title">CSV / Excel</p>
-        <p class="id-input-blurb">Sysco / US Foods / Restaurant Depot order-history exports work as-is.</p>
-        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" />
+        <p class="id-input-blurb" id="idCsvBlurb">Sysco / US Foods / Restaurant Depot order-history exports work as-is.</p>
+        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" aria-label="Pick your distributor's CSV or spreadsheet" aria-describedby="idCsvBlurb" />
       </label>
+    </div>
+
+    <!-- Wave 5 — sample-demo strip + telemetry-toggle + abandonment-resume.
+         Visible only on first run (controller checks
+         MuntinContext.invoiceDecoder.hasRun). -->
+    <div class="id-firstrun" id="idFirstRun" hidden>
+      <p class="id-firstrun-msg"><strong>First time?</strong> Run a sample first — no upload, all on your phone.</p>
+      <div class="id-firstrun-row">
+        <button type="button" class="id-firstrun-btn" data-sample="sysco">Sysco invoice</button>
+        <button type="button" class="id-firstrun-btn" data-sample="rest-depot">Restaurant Depot</button>
+        <button type="button" class="id-firstrun-btn" data-sample="produce">Produce jobber</button>
+      </div>
+    </div>
+
+    <div class="id-resume" id="idResume" hidden role="status" aria-live="polite">
+      <p class="id-resume-msg">You had an invoice in progress yesterday. <button type="button" class="id-resume-btn">Pick it up</button> · <button type="button" class="id-resume-dismiss">Dismiss</button></p>
     </div>
 
     <!-- Status / progress strip. Shown once a file is chosen. -->
@@ -540,14 +738,26 @@
     <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <!-- Wave 2.3 — Vendor Pulse Strip. Shows vendor + line count +
+           sum + top movers vs. operator's history. -->
+      <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Vendor pulse"></aside>
+
       <div class="id-diff-strip" id="idDiffStrip" hidden></div>
+
+      <!-- Wave 1.3 — Math reconciliation candidate-fix card. -->
+      <div class="id-mathfix" id="idMathFix" hidden role="region" aria-label="Math reconciliation"></div>
+
       <div class="id-parsed-summary">
         <span class="id-parsed-count" id="idParsedCount">0 items</span>
         <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
         <span class="id-parsed-meta" id="idParsedMeta"></span>
+        <button type="button" class="id-sort-toggle" id="idSortToggle" aria-pressed="false" title="Riskiest rows first">
+          <span aria-hidden="true">⇅</span> <span class="id-sort-toggle-label"></span>
+        </button>
       </div>
+      <p class="id-kbd-compact"><kbd>Y</kbd> confirm · <kbd>N</kbd> flag · <kbd>J</kbd>/<kbd>K</kbd> next/prev · <kbd>1</kbd>-<kbd>9</kbd> category</p>
       <details class="id-kbd-legend">
-        <summary>Keyboard shortcuts <span class="id-kbd-hint">faster on a laptop</span></summary>
+        <summary>All keyboard shortcuts <span class="id-kbd-hint">faster on a laptop</span></summary>
         <ul class="id-kbd-list">
           <li><kbd>Y</kbd> / <kbd>Space</kbd> — confirm focused row</li>
           <li><kbd>N</kbd> — flag &amp; remove (4-second undo)</li>
@@ -578,19 +788,39 @@
     </div>
 
     <div class="id-honesty">
-      <h3>What this is, and what it isn't.</h3>
-      <p><strong>Is:</strong> a fast way to turn one invoice photo, scan, or PDF into sorted line items the operator owns. Encrypted at rest, tied only to your sign-in. Categorized into restaurant-real groups (protein, produce, dairy, dry goods, paper, cleaning, beverage, herbs-spices).</p>
-      <p><strong>Isn't:</strong> your books. Won't sync to QuickBooks, Restaurant365, or Toast. Won't catch every pricing error — treat the sanity check as a second pair of eyes, not an auditor. Plate costs only update on tap-confirm.</p>
-      <p><strong>vs. Restaurant365:</strong> your invoices stay on your device until you explicitly save. Saved invoices are encrypted with a key derived from your sign-in. No benchmark dataset, no vendor pool, no ML training on your cost data — and never backfilled retroactively if a future opt-in arrives.</p>
-      <p><strong>Privacy posture:</strong> Open DevTools → Network. Pick a photo. Cleaned-up version renders in this page. Network panel stays empty. Image bytes never leave your device.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">What this is, and what it isn't.</h2>
 
-      <details class="id-verify">
+      <!-- Wave 3.5 — accordion-ize the four trust paragraphs.
+           Each summary line is a declarative claim; the body is the
+           detail behind it. Skimmers see the four claims in one
+           glance; readers tap through. -->
+      <details class="id-honesty-fact" open>
+        <summary><strong>Your invoices stay on your device.</strong></summary>
+        <p>Pick a photo, PDF, or CSV. The reader runs in your browser via WebAssembly. Image bytes never travel. Your network panel will stay empty until you press Save — and even then, what travels is encrypted ciphertext, not the contents.</p>
+      </details>
+      <details class="id-honesty-fact">
+        <summary><strong>We don't sell, train, or pool your data.</strong></summary>
+        <p>Saved invoices are encrypted with a key only you can derive from your passphrase. No benchmark dataset. No ML training set. No vendor pool. Not retroactively if a future opt-in arrives.</p>
+      </details>
+      <details class="id-honesty-fact">
+        <summary><strong>Doesn't sync to QuickBooks or Restaurant365.</strong></summary>
+        <p>Instead, exports a one-click CSV your accountant imports in the four most common formats: QuickBooks Online, QuickBooks Desktop, Xero, and ContPaqi/Aspel. Plus a generic ledger CSV for everything else. Your data never leaves your device.</p>
+      </details>
+      <details class="id-honesty-fact">
+        <summary><strong>Open DevTools → Network. It stays empty.</strong></summary>
+        <p>Until you press Save, no requests carry your image or your line items. After Save, exactly one POST goes out — and its body is base64-encoded ciphertext. Search the body for any of your dish names. You won't find them.</p>
+      </details>
+
+      <details class="id-verify" itemscope itemtype="https://schema.org/HowTo">
         <summary>Verify it yourself: open DevTools → Network <span class="id-verify-badge">2-minute walk-through</span></summary>
+        <meta itemprop="name" content="Verify invoice decoder runs in your browser, not on a server" />
+        <meta itemprop="description" content="A four-step DevTools walk-through that confirms image bytes stay on your device and saved invoices travel as ciphertext." />
+        <meta itemprop="totalTime" content="PT2M" />
         <ol class="id-verify-steps">
-          <li><strong>Open Chrome / Firefox / Safari DevTools.</strong> Right-click anywhere on this page → <em>Inspect</em>. (On iPhone or Android, plug into a desktop browser and use remote inspection — phone DevTools is too cramped to read.)</li>
-          <li><strong>Switch to the Network tab and check "Preserve log."</strong> That keeps the request list visible across page actions instead of clearing.</li>
-          <li><strong>Pick a photo, then read it.</strong> Watch the Network tab as the OCR runs. The only requests are the Tesseract WASM + language packs (cached after the first load) — and zero requests carrying your image bytes. The image lives in a <code>&lt;canvas&gt;</code> in this tab.</li>
-          <li><strong>Save to your Workshop.</strong> Now the Network tab shows ONE POST to <code>/api/workbench/save</code>. Click it → Payload. The body contains an <code>envelope.ct</code> field of base64 bytes — that's the AES-GCM ciphertext. Search the body for any of your dish names. You won't find them.</li>
+          <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><meta itemprop="name" content="Open DevTools" /><span itemprop="text"><strong>Open Chrome / Firefox / Safari DevTools.</strong> Right-click anywhere on this page → <em>Inspect</em>. (On iPhone or Android, plug into a desktop browser and use remote inspection — phone DevTools is too cramped to read.)</span></li>
+          <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><meta itemprop="name" content="Switch to Network tab" /><span itemprop="text"><strong>Switch to the Network tab and check "Preserve log."</strong> That keeps the request list visible across page actions instead of clearing.</span></li>
+          <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><meta itemprop="name" content="Pick a photo and read it" /><span itemprop="text"><strong>Pick a photo, then read it.</strong> Watch the Network tab as the OCR runs. The only requests are the Tesseract WASM + language packs (cached after the first load) — and zero requests carrying your image bytes. The image lives in a <code>&lt;canvas&gt;</code> in this tab.</span></li>
+          <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><meta itemprop="name" content="Save and inspect the POST" /><span itemprop="text"><strong>Save to your Workshop.</strong> Now the Network tab shows ONE POST to <code>/api/workbench/save</code>. Click it → Payload. The body contains an <code>envelope.ct</code> field of base64 bytes — that's the AES-GCM ciphertext. Search the body for any of your dish names. You won't find them.</span></li>
         </ol>
         <p class="id-verify-foot">If at any step you see something that looks like your invoice contents leaving the page, tell us — that would be a bug worth fixing immediately.</p>
         <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Measure my last save's transfer size</button>
@@ -647,18 +877,23 @@
 <script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
-<script src="./preprocess.js?v=20260501-b2"></script>
-<script src="./ocr.js?v=20260501-b2"></script>
-<script src="./parse.js?v=20260501-b2"></script>
-<script src="./learnings.js?v=20260501-w7-8"></script>
-<script src="./categorize.js?v=20260501-w7-8"></script>
-<script src="./vendors.js?v=20260501-b3"></script>
+<script src="./preprocess.js?v=20260501-w8-1"></script>
+<script src="./ocr.js?v=20260501-w8-1"></script>
+<script src="./parse.js?v=20260501-w8-1"></script>
+<script src="./learnings.js?v=20260501-w8-1"></script>
+<script src="./categorize.js?v=20260501-w8-1"></script>
+<script src="./vendors.js?v=20260501-w8-1"></script>
 <script src="./encrypt.js?v=20260501-b6"></script>
 <script src="./passphrase-modal.js?v=20260501-w3-5"></script>
 <script src="./pdf-extract.js?v=20260501-w2-1"></script>
 <script src="./csv-extract.js?v=20260501-w2-2"></script>
 <script src="./proof-flyout.js?v=20260501-w3-1"></script>
 <script src="./device-key.js?v=20260501-w3-4"></script>
-<script src="./invoice-decoder.js?v=20260501-w3-4"></script>
+<script src="./sku-history.js?v=20260501-w8-1"></script>
+<script src="./margin-impact.js?v=20260501-w8-1"></script>
+<script src="./accountant-export.js?v=20260501-w8-1"></script>
+<script src="./telemetry.js?v=20260501-w8-1"></script>
+<script src="./onboarding.js?v=20260501-w8-1"></script>
+<script src="./invoice-decoder.js?v=20260501-w8-1"></script>
 </body>
 </html>

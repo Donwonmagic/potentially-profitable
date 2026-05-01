@@ -418,7 +418,10 @@
     'allergen-fish':  /\b(fish|salmon|tuna|cod|halibut|tilapia|pescado|salm[oó]n|at[uú]n|bacalao)\b/i,
     'allergen-shellfish': /\b(shrimp|crab|lobster|scallop|oyster|mussel|clam|prawn|camar[oó]n|cangrejo|langosta)\b/i,
     'allergen-sesame': /\b(sesame|tahini|aj[oo]nj[oo]l[ií]|s[eé]samo)\b/i,
-    'alcoholic':      /\b(beer|wine|vodka|gin|rum|tequila|whiskey|whisky|bourbon|scotch|mezcal|brandy|cognac|champagne|prosecco|cerveza|vino|ron|vodka|whisky)\b/i,
+    // Alcoholic — direct vocabulary plus the well-known beer / spirit
+    // brand names. Matches case-insensitively against the row's raw
+    // text (which includes the brand spelling).
+    'alcoholic':      /\b(beer|wine|vodka|gin|rum|tequila|whiskey|whisky|bourbon|scotch|mezcal|brandy|cognac|champagne|prosecco|cerveza|vino|ron|stella\s+artois|budweiser|bud\s+light|miller\s+lite|coors|modelo|corona|heineken|guinness|pacifico|tecate|dos\s+equis|white\s+claw|truly|jack\s+daniel|jameson|crown\s+royal|absolut|grey\s+goose|patron|patrón|don\s+julio|herradura|hennessy|courvoisier)\b/i,
     'gluten-free':    /\b(gluten\s*free|gf|sin\s+gluten)\b/i,
     'vegan':          /\b(vegan|vegano|vegana|plant\s+based|plant-based)\b/i
   };
