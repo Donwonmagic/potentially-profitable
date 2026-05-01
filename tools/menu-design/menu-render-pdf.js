@@ -466,6 +466,7 @@
           desc:  (r.desc || '').trim(),
           allergens: allergens,
           spice: spice,
+          photo: r.photo || null, // W11-4 — propagate dish photo
           firstOfSection: firstDishOfSection // W9-3 — drives drop-cap rendering
         });
         firstDishOfSection = false;
@@ -543,10 +544,13 @@
       if (block.desc) {
         doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
         doc.setFontSize(theme.descPt);
-        var lines = doc.splitTextToSize(block.desc, contentWidth - 70);
+        var lines = doc.splitTextToSize(block.desc, contentWidth - 70 - (block.photo ? 50 : 0));
         descH = lines.length * theme.descPt * 1.32;
       }
-      return nameH + descH + 6;
+      // W11-4 — when photo present, ensure the row is at least as
+      // tall as the embed (~44pt + 4pt padding).
+      var photoH = (block.photo && block.photo.dataUrl) ? 48 : 0;
+      return Math.max(nameH + descH + 6, photoH);
     }
     // W11-3 — footer ornament block. Closes the menu visually with
     // a small cuisine-specific mark at center, ~40% opacity.
@@ -782,6 +786,24 @@
       // Reserve right margin for price.
       var priceWidth = 60;
       var nameWidth  = contentWidth - priceWidth - 8;
+      // W11-4 — embed dish photo at left, shift content right.
+      var photoOff = 0;
+      if (block.photo && block.photo.dataUrl && typeof block.photo.dataUrl === 'string' &&
+          block.photo.dataUrl.indexOf('data:image/svg') !== 0) {
+        try {
+          var pW = 44, pH = 44;
+          if (block.photo.w && block.photo.h) {
+            var pr = block.photo.w / block.photo.h;
+            if (pr >= 1) { pH = pW / pr; } else { pW = pH * pr; }
+          }
+          var fmt = (block.photo.dataUrl.indexOf('data:image/png') === 0) ? 'PNG' : 'JPEG';
+          doc.addImage(block.photo.dataUrl, fmt, x, y, pW, pH);
+          photoOff = pW + 8;
+        } catch (_) { /* embed failed; render text-only */ }
+      }
+      x = x + photoOff;
+      contentWidth = contentWidth - photoOff;
+      nameWidth = contentWidth - priceWidth - 8;
       // W9-3 — drop cap for the first dish of each section on
       // ornament-friendly themes. Renders the first character of
       // the dish name in the display face, ~1.8x body size, in

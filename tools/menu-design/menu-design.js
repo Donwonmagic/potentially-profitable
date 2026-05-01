@@ -26,7 +26,7 @@
   var rows = [];
   var SCHEMA_VERSION = 2;
 
-  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0 }; }
+  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null }; }
   function blankSection(name) { return { kind: 'section', name: name || '' }; }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
@@ -211,14 +211,35 @@
             '" data-act="spice" data-i="' + i + '" data-level="' + sd + '" aria-label="' +
             tt('Spice level ' + sd, 'Picante nivel ' + sd) + '" aria-pressed="' + (sd <= dishSpice) + '">🌶</button>';
         }
+        // W11-4 — per-dish photo. The thumbnail preview lives inside
+        // the allergen popup panel along with the file input. Drives
+        // both the live preview and the PDF embed (downscaled to
+        // 320px, capped at 80KB before persistence).
+        var photoUrl = (r.photo && r.photo.dataUrl) ? r.photo.dataUrl : null;
+        var photoTrigger = photoUrl
+          ? '<span class="md-photo-thumb-mini" aria-hidden="true"><img src="' + escHtml(photoUrl) + '" alt="" /></span>'
+          : '';
+        var photoBlock =
+          '<div class="md-photo-row">' +
+            '<span class="md-photo-label">' + tt('Photo', 'Foto') + ':</span>' +
+            (photoUrl
+              ? '<span class="md-photo-thumb"><img src="' + escHtml(photoUrl) + '" alt="" /></span><button type="button" class="md-photo-remove" data-act="photo-remove" data-i="' + i + '" aria-label="' + tt('Remove photo', 'Quitar foto') + '">&times;</button>'
+              : '<label class="md-photo-pick">' +
+                  '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> ' +
+                  tt('Add a photo', 'Agregar foto') +
+                  '<input type="file" accept="image/png,image/jpeg,image/webp" data-act="photo-pick" data-i="' + i + '" />' +
+                '</label>'
+            ) +
+          '</div>';
         var allergenPop =
           '<details class="md-allergen-pop" data-i="' + i + '">' +
             '<summary class="md-allergen-trigger">' +
               '<svg class="md-allergen-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>' +
               '<span class="md-allergen-summary-text">' + escHtml(summary) + '</span>' +
+              photoTrigger +
               (chipsHtml ? '<span class="md-allergen-chip-strip">' + chipsHtml + spiceChip + '</span>' : (spiceChip ? '<span class="md-allergen-chip-strip">' + spiceChip + '</span>' : '')) +
             '</summary>' +
-            '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens and dietary tags', 'Alérgenos y etiquetas dietarias') + '">' +
+            '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens, photo, and dietary tags', 'Alérgenos, foto y etiquetas') + '">' +
               '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
               '<div class="md-spice-row">' +
                 '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
@@ -227,6 +248,7 @@
                   tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
                 spiceDots +
               '</div>' +
+              photoBlock +
             '</div>' +
           '</details>';
 
@@ -449,6 +471,43 @@
     }
     renderPreview();
     scheduleSaveDraft();
+  }
+
+  // W11-4 — downscale a File to a max-dimension data URL via canvas.
+  // Used by per-dish photos so each image stays small enough to
+  // persist in localStorage and embed in PDF without blowing the
+  // page weight. Returns dataUrl + final dimensions via callback.
+  function downscaleImage(file, maxDim, quality, cb) {
+    if (!file || !cb) return cb && cb(null);
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var ratio = img.naturalWidth / img.naturalHeight;
+        var tw, th;
+        if (img.naturalWidth <= maxDim && img.naturalHeight <= maxDim) {
+          tw = img.naturalWidth; th = img.naturalHeight;
+        } else if (ratio >= 1) {
+          tw = maxDim; th = Math.round(maxDim / ratio);
+        } else {
+          th = maxDim; tw = Math.round(maxDim * ratio);
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = tw; canvas.height = th;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, tw, th);
+        try {
+          // Use JPEG for photo content (smaller); PNG for transparent.
+          var mime = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
+          var url = canvas.toDataURL(mime, quality || 0.82);
+          cb(url, tw, th);
+        } catch (_) { cb(null); }
+      };
+      img.onerror = function () { cb(null); };
+      img.src = String(reader.result);
+    };
+    reader.onerror = function () { cb(null); };
+    reader.readAsDataURL(file);
   }
 
   function readLogoFile(file) {
@@ -760,8 +819,12 @@
           }
           glyphsHtml += '</span>';
         }
+        // W11-4 — dish photo thumbnail
+        var thumbHtml = (d.photo && d.photo.dataUrl)
+          ? '<span class="md-pp-dish-thumb" aria-hidden="true"><img src="' + escHtml(d.photo.dataUrl) + '" alt="" /></span>'
+          : '';
         html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + escHtml(name) + glyphsHtml + '</div>';
+        html += '<div class="md-pp-name">' + thumbHtml + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + escHtml(price) + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
         html += '</div>';
@@ -999,9 +1062,20 @@
     var ls = safeLs();
     if (!ls) { updateSavedIndicator('saved'); return; }
     try {
+      // W11-4 — strip dish photos before draft persistence. A 30-
+      // dish menu × ~80KB photos would push past the 5MB localStorage
+      // budget. Photos are treated as transient session content;
+      // operators re-upload on restore. This is the conservative v1
+      // trade-off (IndexedDB storage of photos is queued for later).
       var draft = {
         version: SCHEMA_VERSION,
-        rows: rows.map(function (r) { return Object.assign({}, r); }),
+        rows: rows.map(function (r) {
+          var copy = Object.assign({}, r);
+          if (copy.kind === 'dish' && copy.photo) {
+            copy.photo = { name: copy.photo.name || null, w: copy.photo.w || 0, h: copy.photo.h || 0 };
+          }
+          return copy;
+        }),
         themeId: themeId,
         paperKey: paperKey,
         customDims: paperKey === 'custom' ? customDims : null,
@@ -1218,12 +1292,48 @@
         scheduleSaveDraft();
         return;
       }
+      // W11-4 — remove dish photo
+      if (act === 'photo-remove') {
+        var pri = parseInt(t.dataset.i, 10);
+        if (!isFinite(pri) || !rows[pri]) return;
+        pushUndo();
+        rows[pri].photo = null;
+        render();
+        var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + pri + '"]');
+        if (pop) pop.open = true;
+        scheduleSaveDraft();
+        return;
+      }
     });
     // W7-2 — allergen checkbox change. Lives on 'change' so it fires
     // for both mouse + keyboard (Space toggles a checkbox).
+    // W11-4 — also handles photo file picker change events.
     rowsEl.addEventListener('change', function (e) {
       var t = e.target;
-      if (!t || t.dataset.act !== 'allergen') return;
+      if (!t) return;
+      if (t.dataset.act === 'photo-pick') {
+        var pi = parseInt(t.dataset.i, 10);
+        var file = t.files && t.files[0];
+        if (!isFinite(pi) || !rows[pi] || !file) return;
+        downscaleImage(file, 320, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          // Cap at 80KB so localStorage doesn't fill up — operators
+          // with bigger images get warned via the success toast.
+          if (dataUrl.length > 110000) {
+            // ~80KB after base64 -> binary
+            setDownloadMsg(tt('Image is large; we kept the highest-quality version that fits the device storage budget.',
+                              'La imagen es grande; guardamos la mejor versión que cabe en el presupuesto de almacenamiento.'), 'success');
+          }
+          pushUndo();
+          rows[pi].photo = { dataUrl: dataUrl, w: w, h: h, name: file.name };
+          render();
+          var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + pi + '"]');
+          if (pop) pop.open = true;
+          scheduleSaveDraft();
+        });
+        return;
+      }
+      if (t.dataset.act !== 'allergen') return;
       var i = parseInt(t.dataset.i, 10);
       var code = t.dataset.code;
       if (!isFinite(i) || !rows[i] || !code) return;
