@@ -328,8 +328,19 @@
       }
     }
     if (parsedMeta) {
-      var meanConf = Math.round(parsed.rows.reduce(function (a, r) { return a + r.confidence; }, 0) / parsed.rows.length);
-      parsedMeta.textContent = tt('Average confidence ' + meanConf + '%', 'Confianza promedio ' + meanConf + '%');
+      // Count summary by confidence band — owner instantly sees
+      // how many lines need their eyes (amber + red) vs ready
+      // to flow through (green).
+      var bands = { green: 0, amber: 0, red: 0 };
+      parsed.rows.forEach(function (r) { bands[confBand(r.confidence)]++; });
+      var needReview = bands.amber + bands.red;
+      var labelEn = needReview > 0
+        ? bands.green + ' ready · ' + needReview + ' need review'
+        : 'all ' + bands.green + ' look good';
+      var labelEs = needReview > 0
+        ? bands.green + ' listas · ' + needReview + ' requieren revisión'
+        : 'las ' + bands.green + ' se ven bien';
+      parsedMeta.textContent = tt(labelEn, labelEs);
     }
     parsedList.innerHTML = parsed.rows.map(function (r) {
       var qtyParts = [];
@@ -346,8 +357,15 @@
       } else {
         chip = '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
       }
+      // Visible confidence pill — green ≥80%, amber 60-79%, red
+      // <60%. Owner's eye lands on amber/red first; green rows
+      // batch through unless tapped.
+      var confPct = Math.round(r.confidence || 0);
+      var confChip = '<span class="id-parsed-conf" data-conf="' + confBand(r.confidence) + '" title="' +
+        tt('How sure we are this row read correctly', 'Qué tan seguros estamos de esta lectura') + '">' +
+        confPct + '%</span>';
       return '<li class="id-parsed-row" data-conf="' + confBand(r.confidence) + '" title="' + escHtml(r.raw) + '">' +
-        '<span class="id-parsed-name">' + escHtml(r.name) + chip + '</span>' +
+        '<span class="id-parsed-name">' + escHtml(r.name) + chip + confChip + '</span>' +
         '<span class="id-parsed-qty">' + escHtml(qtyText) + '</span>' +
         '<span class="id-parsed-price">' + escHtml(priceText) + '</span>' +
       '</li>';
