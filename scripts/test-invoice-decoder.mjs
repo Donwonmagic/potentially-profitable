@@ -533,5 +533,288 @@ console.log(`\nAccountant export (Wave 4.6):`);
 
 console.log(`\nWave 8 fixtures: ${kindPass} kind / ${packPass} pack / ${mathPass} math / ${brandPass} brand / ${abbrPass} abbr / ${tagPass} tag / ${vendorPass} vendor / ${skuPass} sku / ${exportPass} export passed.`);
 
-const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail;
+// =====================================================================
+// Wave 2.2 — perspective rectification math tests.
+//
+// Tests run against the pure-function exports of preprocess.js. They
+// don't need a real <canvas>; ImageData is just {data, width, height}
+// where data is a Uint8ClampedArray of RGBA bytes.
+// =====================================================================
+
+let homPass = 0, homFail = 0;
+console.log(`\nHomography math (Wave 2.2):`);
+{
+  // Identity case: src = dst → H should map any point to itself.
+  const id = PREP.solveHomography(
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}],
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}]
+  );
+  const idOk = id && Math.abs(id[0] - 1) < 1e-6 && Math.abs(id[4] - 1) < 1e-6 && Math.abs(id[2]) < 1e-6 && Math.abs(id[5]) < 1e-6;
+  console.log(`  ${idOk ? '✓' : '✗'} identity homography returns near-identity matrix`);
+  if (idOk) homPass++; else homFail++;
+
+  // Perspective case: a known forward H should map source corners
+  // to destination corners exactly.
+  const src = [{x:10,y:20},{x:200,y:30},{x:210,y:180},{x:5,y:170}];
+  const dst = [{x:0,y:0},{x:200,y:0},{x:200,y:150},{x:0,y:150}];
+  const H = PREP.solveHomography(src, dst);
+  let mapOk = !!H;
+  if (H) {
+    for (let k = 0; k < 4 && mapOk; k++) {
+      const p = PREP.applyHomography(H, src[k].x, src[k].y);
+      if (!p || Math.abs(p.x - dst[k].x) > 0.01 || Math.abs(p.y - dst[k].y) > 0.01) mapOk = false;
+    }
+  }
+  console.log(`  ${mapOk ? '✓' : '✗'} solveHomography: each src corner maps to its dst corner within 0.01 px`);
+  if (mapOk) homPass++; else homFail++;
+
+  // Inverse: H · H⁻¹ should map any point back to itself.
+  const Hinv = PREP.invertHomography(H);
+  let invOk = !!Hinv;
+  if (Hinv) {
+    for (let k = 0; k < 4 && invOk; k++) {
+      const p = PREP.applyHomography(H, src[k].x, src[k].y);
+      const back = PREP.applyHomography(Hinv, p.x, p.y);
+      if (!back || Math.abs(back.x - src[k].x) > 0.01 || Math.abs(back.y - src[k].y) > 0.01) invOk = false;
+    }
+  }
+  console.log(`  ${invOk ? '✓' : '✗'} invertHomography: round-trip H · H⁻¹ returns the source corner within 0.01 px`);
+  if (invOk) homPass++; else homFail++;
+
+  // Singular system (3 collinear src points) should return null.
+  const sing = PREP.solveHomography(
+    [{x:0,y:0},{x:50,y:0},{x:100,y:0},{x:0,y:50}],   // 3 points on y=0
+    [{x:0,y:0},{x:50,y:0},{x:100,y:0},{x:0,y:50}]
+  );
+  // Note: identical src and dst is technically not singular here;
+  // build a genuinely singular system.
+  const sing2 = PREP.solveHomography(
+    [{x:0,y:0},{x:0,y:0},{x:100,y:0},{x:0,y:100}],   // duplicate corner
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}]
+  );
+  const singOk = sing2 === null;
+  console.log(`  ${singOk ? '✓' : '✗'} singular system returns null gracefully`);
+  if (singOk) homPass++; else homFail++;
+}
+
+let warpPass = 0, warpFail = 0;
+console.log(`\nWarp + bilinear sample (Wave 2.2):`);
+{
+  // Build a 20×20 RGBA buffer with a vertical color gradient
+  // (red ramp 0→255). Identity warp should reproduce it.
+  const W = 20, H = 20;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      data[i] = Math.round(x / (W - 1) * 255);     // R ramps with x
+      data[i + 1] = Math.round(y / (H - 1) * 255); // G ramps with y
+      data[i + 2] = 128;
+      data[i + 3] = 255;
+    }
+  }
+  const srcImg = { data, width: W, height: H };
+  // Identity homography
+  const idH = PREP.solveHomography(
+    [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}],
+    [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}]
+  );
+  const out = PREP.warpPerspective(srcImg, idH, W, H);
+  let okIdentity = !!out;
+  if (out) {
+    // Compare every pixel — identity should be exact (or off by ≤1 due to bilinear edge clamping).
+    let maxDiff = 0;
+    for (let y = 1; y < H - 1; y++) {
+      for (let x = 1; x < W - 1; x++) {
+        const i = (y * W + x) * 4;
+        for (let ch = 0; ch < 3; ch++) {
+          const d = Math.abs(out.data[i + ch] - data[i + ch]);
+          if (d > maxDiff) maxDiff = d;
+        }
+      }
+    }
+    okIdentity = maxDiff <= 1;
+  }
+  console.log(`  ${okIdentity ? '✓' : '✗'} identity warp reproduces source within ±1 channel value`);
+  if (okIdentity) warpPass++; else warpFail++;
+
+  // Bilinear sample at exact integer points returns the pixel value.
+  const r0 = PREP.bilinearSample(data, W, H, 5, 5);
+  const ix = (5 * W + 5) * 4;
+  const okExact = r0[0] === data[ix] && r0[1] === data[ix + 1] && r0[2] === data[ix + 2];
+  console.log(`  ${okExact ? '✓' : '✗'} bilinearSample at integer (5,5) matches source pixel exactly`);
+  if (okExact) warpPass++; else warpFail++;
+
+  // Bilinear sample at midpoint between two pixels is ~average.
+  const mid = PREP.bilinearSample(data, W, H, 5.5, 5);
+  // Expected R ≈ avg of (5/19)*255 and (6/19)*255
+  const expectedR = ((5 / 19) * 255 + (6 / 19) * 255) / 2;
+  const okMid = Math.abs(mid[0] - expectedR) < 1;
+  console.log(`  ${okMid ? '✓' : '✗'} bilinearSample at half-pixel returns interpolated value (got ${mid[0]}, expected ~${expectedR.toFixed(1)})`);
+  if (okMid) warpPass++; else warpFail++;
+
+  // Out-of-bounds returns white.
+  const oob = PREP.bilinearSample(data, W, H, -5, -5);
+  const okOob = oob[0] === 255 && oob[1] === 255 && oob[2] === 255;
+  console.log(`  ${okOob ? '✓' : '✗'} bilinearSample out-of-bounds returns white background`);
+  if (okOob) warpPass++; else warpFail++;
+
+  // Round-trip: forward-warp source through a known perspective,
+  // then inverse-warp the result. Final output should match source.
+  const skewSrc = [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}];
+  const skewDst = [{x:2,y:1},{x:W-1,y:3},{x:W-3,y:H-1},{x:1,y:H-2}];
+  const fwd = PREP.solveHomography(skewSrc, skewDst);
+  const fwdImg = PREP.warpPerspective(srcImg, fwd, W, H);
+  const inv = PREP.solveHomography(skewDst, skewSrc);
+  const back = PREP.warpPerspective(fwdImg, inv, W, H);
+  let roundTripErr = 0;
+  let roundTripCount = 0;
+  // Skip a 4px border; bilinear sampling can't fully recover those.
+  for (let y = 4; y < H - 4; y++) {
+    for (let x = 4; x < W - 4; x++) {
+      const i = (y * W + x) * 4;
+      for (let ch = 0; ch < 3; ch++) {
+        roundTripErr += Math.abs(back.data[i + ch] - data[i + ch]);
+        roundTripCount++;
+      }
+    }
+  }
+  const meanErr = roundTripErr / roundTripCount;
+  const okRoundTrip = meanErr < 12;
+  console.log(`  ${okRoundTrip ? '✓' : '✗'} forward+inverse warp round-trip mean channel error = ${meanErr.toFixed(2)} (need <12)`);
+  if (okRoundTrip) warpPass++; else warpFail++;
+}
+
+let quadPass = 0, quadFail = 0;
+console.log(`\nQuad picker (Wave 2.2):`);
+{
+  // Build synthetic Hough peaks for a simple rectangle of corners
+  // at (10,20)-(190,20)-(190,180)-(10,180). The 4 lines:
+  //   top:    y = 20    →  Hough form: 0*x + 1*y = 20  →  theta=90, rho=20
+  //   bottom: y = 180   →  theta=90, rho=180
+  //   left:   x = 10    →  theta=0,  rho=10
+  //   right:  x = 190   →  theta=0,  rho=190
+  const peaks = [
+    { theta: 0,  rho: 10,  votes: 200 },
+    { theta: 0,  rho: 190, votes: 200 },
+    { theta: 90, rho: 20,  votes: 180 },
+    { theta: 90, rho: 180, votes: 180 }
+  ];
+  const quad = PREP.pickQuad(peaks, 200, 200);
+  const ok = !!quad;
+  let cornersOk = false;
+  if (quad) {
+    const expected = [
+      { x: 10, y: 20 },
+      { x: 190, y: 20 },
+      { x: 190, y: 180 },
+      { x: 10, y: 180 }
+    ];
+    cornersOk = quad.corners.every((c, i) =>
+      Math.abs(c.x - expected[i].x) < 0.5 && Math.abs(c.y - expected[i].y) < 0.5
+    );
+  }
+  console.log(`  ${ok && cornersOk ? '✓' : '✗'} pickQuad returns the expected corner set for a simple rectangle`);
+  if (ok && cornersOk) quadPass++; else quadFail++;
+
+  // Reject when only 3 lines are present.
+  const peaks3 = peaks.slice(0, 3);
+  const quad3 = PREP.pickQuad(peaks3, 200, 200);
+  const okReject = quad3 === null;
+  console.log(`  ${okReject ? '✓' : '✗'} pickQuad rejects when fewer than 4 lines available`);
+  if (okReject) quadPass++; else quadFail++;
+
+  // Reject when area coverage <25%.
+  const tinyPeaks = [
+    { theta: 0,  rho: 90,  votes: 200 },
+    { theta: 0,  rho: 110, votes: 200 },
+    { theta: 90, rho: 90,  votes: 200 },
+    { theta: 90, rho: 110, votes: 200 }
+  ];
+  const tinyQuad = PREP.pickQuad(tinyPeaks, 200, 200);
+  const okTinyReject = tinyQuad === null;
+  console.log(`  ${okTinyReject ? '✓' : '✗'} pickQuad rejects quads covering <25% of frame`);
+  if (okTinyReject) quadPass++; else quadFail++;
+
+  // Reject opposite-side angle parity violation (a parallelogram
+  // tilted hard one way).
+  const skewedPeaks = [
+    { theta: 0,   rho: 10,  votes: 200 },
+    { theta: 0,   rho: 190, votes: 200 },
+    { theta: 95,  rho: 20,  votes: 180 },  // 5° from horizontal
+    { theta: 75,  rho: 180, votes: 180 }   // 15° from horizontal — 20° apart
+  ];
+  const skQuad = PREP.pickQuad(skewedPeaks, 200, 200);
+  const okSkewReject = skQuad === null;
+  console.log(`  ${okSkewReject ? '✓' : '✗'} pickQuad rejects when opposite-side angle parity exceeds 12°`);
+  if (okSkewReject) quadPass++; else quadFail++;
+}
+
+let sobelPass = 0, sobelFail = 0;
+console.log(`\nSobel edge magnitude (Wave 2.2):`);
+{
+  // Build a 10×10 image with a sharp vertical line at x=5.
+  const W = 10, H = 10;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      const v = x < 5 ? 0 : 255;
+      data[i] = data[i + 1] = data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  }
+  const edges = PREP.sobelMagnitude({ data, width: W, height: H });
+  // The vertical line should produce strong edge response at x=5.
+  let maxEdge = 0, maxX = -1;
+  for (let y = 1; y < H - 1; y++) {
+    for (let x = 1; x < W - 1; x++) {
+      const v = edges[y * W + x];
+      if (v > maxEdge) { maxEdge = v; maxX = x; }
+    }
+  }
+  const ok = maxEdge >= 200 && (maxX === 4 || maxX === 5);
+  console.log(`  ${ok ? '✓' : '✗'} Sobel: vertical line at x=5 produces strong edge at x=${maxX} (mag=${maxEdge})`);
+  if (ok) sobelPass++; else sobelFail++;
+}
+
+console.log(`\nWave 2.2 fixtures: ${homPass} homography / ${warpPass} warp / ${quadPass} quad / ${sobelPass} sobel passed.`);
+
+// End-to-end pipeline test: build a synthetic edge buffer with a
+// rectangular border, run Hough → pickQuad, verify the quad matches
+// the synthetic rectangle within a few pixels.
+let pipePass = 0, pipeFail = 0;
+console.log(`\nEnd-to-end Hough → pickQuad pipeline (Wave 2.2):`);
+{
+  const W = 100, H = 80;
+  const edges = new Uint8ClampedArray(W * H);
+  // Rectangle edges: top y=10, bottom y=70, left x=15, right x=85
+  function paintLineH(y, intensity) { for (let x = 0; x < W; x++) edges[y * W + x] = intensity; }
+  function paintLineV(x, intensity) { for (let y = 0; y < H; y++) edges[y * W + x] = intensity; }
+  paintLineH(10, 200);
+  paintLineH(70, 200);
+  paintLineV(15, 200);
+  paintLineV(85, 200);
+  const peaks = PREP.houghLines(edges, W, H, { threshold: 100, topK: 12 });
+  const ok = peaks.length >= 4;
+  console.log(`  ${ok ? '✓' : '✗'} houghLines extracts ≥4 peaks from a rectangular edge buffer (got ${peaks.length})`);
+  if (ok) pipePass++; else pipeFail++;
+
+  const quad = PREP.pickQuad(peaks, W, H);
+  const okQuad = !!quad;
+  let cornersClose = false;
+  if (quad) {
+    const exp = [{x:15,y:10},{x:85,y:10},{x:85,y:70},{x:15,y:70}];
+    cornersClose = quad.corners.every((c, i) =>
+      Math.abs(c.x - exp[i].x) < 2 && Math.abs(c.y - exp[i].y) < 2
+    );
+  }
+  console.log(`  ${okQuad && cornersClose ? '✓' : '✗'} pipeline maps 4 strongest Hough peaks to the source rectangle within ±2 px`);
+  if (okQuad && cornersClose) pipePass++; else pipeFail++;
+}
+
+console.log(`\nWave 2.2 totals: ${homPass + warpPass + quadPass + sobelPass + pipePass} of ${homPass + warpPass + quadPass + sobelPass + pipePass + homFail + warpFail + quadFail + sobelFail + pipeFail} math + pipeline tests passed.`);
+
+const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
+  + homFail + warpFail + quadFail + sobelFail + pipeFail;
 process.exit(grandFail === 0 ? 0 : 1);

@@ -164,7 +164,11 @@
             // 30s of OCR time on a blurry shot).
             blurScore: results[0].blurScore,
             bimodalityScore: results[0].bimodalityScore,
-            qualityHint: results[0].qualityHint
+            qualityHint: results[0].qualityHint,
+            // Wave 2.2 — surface rectification result so the preview
+            // meta can report "We straightened the page perspective".
+            rectified: !!results[0].rectified,
+            rectifyConfidence: results[0].rectifyConfidence || null
           });
           doneFiles++;
           setProgress(15 + perFileShare * doneFiles);
@@ -179,9 +183,15 @@
       var first = pendingPages[0];
       if (previewEl) previewEl.hidden = false;
       if (previewMeta) {
+        // Wave 2.2 — when perspective rectification fired we lead
+        // with that signal; skew becomes informational.
+        var rectLabel = first.rectified
+          ? tt('Page perspective fixed · ', 'Perspectiva de página corregida · ')
+          : '';
         var skewLabel = Math.abs(first.skewAngle) >= 1
           ? tt('Straightened by ' + first.skewAngle + '° · ', 'Enderezada ' + first.skewAngle + '° · ')
-          : tt('Already straight · ', 'Ya estaba derecha · ');
+          : (first.rectified ? '' : tt('Already straight · ', 'Ya estaba derecha · '));
+        skewLabel = rectLabel + skewLabel;
         var pageNote = files.length > 1
           ? tt(' · ' + files.length + ' pages ready', ' · ' + files.length + ' páginas listas')
           : '';
