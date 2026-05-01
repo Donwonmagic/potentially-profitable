@@ -5728,3 +5728,20 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    Already had .is-reading variants in the file; this adds the base figcaption. */
 .article-figure{margin:32px 0;padding:0}
 .article-figure figcaption{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--stone);text-align:center;margin-top:14px;font-style:italic}
+
+/* .report-decider + .photo-aspect-decoder — light interactive moments
+   inside articles. Native <details>/<summary>; zero JS. The reader
+   gets a question they actually had answered without leaving the
+   article. Pattern: bordered card, eyebrow label, expandable rows. */
+.report-decider,.photo-aspect-decoder{margin:32px auto;max-width:680px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
+.report-decider__eyebrow,.photo-aspect-decoder__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin:0 0 16px}
+.report-decider__item,.photo-aspect-decoder__item{margin:0 0 8px;padding:0;border:0;background:transparent}
+.report-decider__item:last-child,.photo-aspect-decoder__item:last-child{margin-bottom:0}
+.report-decider__item summary,.photo-aspect-decoder__item summary{cursor:pointer;font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);padding:10px 0;border-bottom:1px solid var(--line);list-style:none;letter-spacing:-0.005em}
+.report-decider__item summary::-webkit-details-marker{display:none}
+.report-decider__item summary::before,.photo-aspect-decoder__item summary::before{content:'+ ';color:var(--teal);font-weight:600;display:inline-block;width:1.2em}
+.report-decider__item[open] summary::before,.photo-aspect-decoder__item[open] summary::before{content:'– '}
+.report-decider__item p,.photo-aspect-decoder__item p{margin:12px 0 16px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.report-decider__item:last-child summary,.photo-aspect-decoder__item:last-child summary{border-bottom:0}
+.report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
+@media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}

@@ -409,6 +409,26 @@
         </tbody>
       </table></div>
 
+      <aside class="photo-aspect-decoder" aria-labelledby="aspect-decoder-h">
+        <p class="photo-aspect-decoder__eyebrow" id="aspect-decoder-h">My photo isn't this aspect — what happens?</p>
+        <details class="photo-aspect-decoder__item">
+          <summary>You shot landscape (16:9), the surface wants square (1:1)</summary>
+          <p>Center-crop. Anything past the left and right thirds disappears. If your subject — plate, person, signage — was framed against the edge, it gets clipped. Move the subject to the centre 60% of the frame before you shoot, or accept that the wings will be cropped.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>You shot square (1:1), the surface wants 16:9</summary>
+          <p>Top and bottom get padded with whatever your background is — usually fine for plate-on-wood, ugly for room shots where the ceiling and floor are part of the story. Shoot 16:9 native if the surface needs it; up-conversion always reads as a hack.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>You shot portrait (4:5 or 9:16), the surface wants 16:9</summary>
+          <p>The surface either rejects the upload or top-and-bottom letterboxes the photo. Yelp and GBP cover photos cropped from portrait look noticeably bad — cover sliver in the middle, grey bars top and bottom. Re-shoot. Phones default to 4:3 or 16:9 if you tap the aspect picker before the shot.</p>
+        </details>
+        <details class="photo-aspect-decoder__item">
+          <summary>Your camera shot 4:3, every modern surface wants 16:9 or 1:1</summary>
+          <p>Crop in post. 4:3 → 16:9 takes a small slice off top-and-bottom; 4:3 → 1:1 takes a slice off the sides. Lightroom or Photos.app can both do batch aspect crops in under a minute for a 30-photo shoot.</p>
+        </details>
+      </aside>
+
       <h2>Resolution rules</h2>
 
       <p>Always shoot at the resolution recommended above PLUS roughly 30% extra. You can always crop down; you can never crop up. A <a href="/glossary/hero-shot/" data-glossary-head="Hero shot" data-glossary-blurb="For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visua…" target="_blank" rel="noopener">hero shot</a> at 2400×1024 lets you also produce the 1200×630 OG card from the same file; a <!-- LIBRARY:autolink:start --><a href="/glossary/hero-shot/" data-glossary-head="Hero shot" data-glossary-aka="the one photo per surface that does the load-bearing visual work" data-glossary-blurb="For a given destination surface (web hero, Yelp featured, Instagram profile-grid lead, Google Business cover), the single photograph that carries the visual identity of the…">hero shot</a><!-- LIBRARY:autolink:end --> at 1200×630 leaves you stuck.</p>
