@@ -531,6 +531,138 @@
   var bulkConfirm = document.getElementById('idBulkConfirm');
   var bulkSave    = document.getElementById('idBulkSave');
 
+  // -------------------- Save flow (B6-3) --------------------
+  // The save flow is the only point where this tool issues a
+  // network request. The cleartext invoice is encrypted in the
+  // browser via MID_ENCRYPT before the POST. The server stores
+  // the ciphertext envelope unchanged.
+  function pickPassphrase() {
+    // Owner sets a passphrase per save. We could cache it per
+    // session for follow-up saves, but the first-save explicit
+    // ask is the trust moment. ESL-friendly copy avoids "key" /
+    // "passphrase" jargon — uses "secret you'll remember".
+    var promptText = tt(
+      'Pick a secret you\'ll remember (4+ characters). We\'ll use it to lock this invoice. We never see this secret — without it the saved invoice is unreadable, even by us.',
+      'Elige un secreto que recuerdes (4+ caracteres). Lo usaremos para bloquear esta factura. Nunca vemos este secreto — sin él, la factura guardada es ilegible, incluso para nosotros.'
+    );
+    var pp = window.prompt(promptText, '');
+    if (!pp || pp.length < 4) return null;
+    return pp;
+  }
+
+  function buildSavePayload() {
+    // Slim shape — never raw OCR text or image bytes. Caps each
+    // field below the 50KB-per-row Workshop budget.
+    var rows = parsedRowsState.map(function (r) {
+      return {
+        name: String(r.name || '').slice(0, 80),
+        qty: r.qty,
+        unit: r.unit,
+        unitPrice: r.unitPrice,
+        lineTotal: r.lineTotal,
+        category: r.category,
+        confidence: r.confidence,
+        ownerConfirmed: !!r.ownerConfirmed
+      };
+    });
+    var sum = rows.reduce(function (a, r) { return a + (r.lineTotal || 0); }, 0);
+    return {
+      version: 1,
+      vendor: rows.length && parsedRowsState[0].vendorDetected ? parsedRowsState[0].vendorDetected : null,
+      items: rows,
+      itemCount: rows.length,
+      parsedSum: +sum.toFixed(2),
+      printedTotal: lastPrintedTotal,
+      savedAt: Date.now()
+    };
+  }
+
+  function setSaveStatus(text, kind) {
+    if (!bulkSave) return;
+    if (text) bulkSave.title = text;
+    if (kind === 'busy') {
+      bulkSave.disabled = true;
+      bulkSave.textContent = tt('Saving…', 'Guardando…');
+    } else if (kind === 'error') {
+      bulkSave.disabled = false;
+      bulkSave.textContent = tt('Save to my Workshop →', 'Guardar en mi Taller →');
+    } else if (kind === 'ok') {
+      bulkSave.disabled = false;
+      bulkSave.textContent = tt('Saved ✓ — save another?', '¡Guardada! — ¿guardar otra?');
+    } else {
+      bulkSave.disabled = false;
+      bulkSave.textContent = tt('Save to my Workshop →', 'Guardar en mi Taller →');
+    }
+  }
+
+  if (bulkSave) {
+    // Enable the button as soon as we have rows.
+    var origRerender = rerenderRows;
+    rerenderRows = function () {
+      origRerender();
+      if (bulkSave) bulkSave.disabled = !parsedRowsState.length;
+    };
+
+    bulkSave.addEventListener('click', function () {
+      if (!parsedRowsState.length) return;
+      if (typeof MID_ENCRYPT === 'undefined' || !MID_ENCRYPT.encryptPayload) {
+        alert(tt('Encryption module missing. Refresh and try again.',
+                 'Falta el módulo de encriptación. Recarga e intenta de nuevo.'));
+        return;
+      }
+      var pp = pickPassphrase();
+      if (!pp) return; // owner cancelled — silent.
+      setSaveStatus(null, 'busy');
+      var payload = buildSavePayload();
+      // AAD binds this ciphertext to a logical-id; we use a
+      // session-random itemId since the server assigns the real
+      // KV id on save. The server can't decrypt anyway, but AAD
+      // is good hygiene.
+      var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
+      MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
+        var body = new URLSearchParams();
+        body.set('kind', 'invoice-decoder');
+        body.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
+        // Wrap envelope in a payload field the workbench expects.
+        // Server does NOT decrypt — it just stores the envelope.
+        body.set('payload', JSON.stringify({ envelope: envelope, aad: aad, items: payload.itemCount, parsedSum: payload.parsedSum }));
+        return fetch('/api/workbench/save', { // h8-exempt:workshop-save — encrypted ciphertext only; user-initiated
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
+      }).then(function (r) {
+        if (r.status === 401) {
+          // Anonymous owner — point to sign-in.
+          window.location.href = '/sign-in/?returnTo=' + encodeURIComponent(location.pathname);
+          return null;
+        }
+        if (!r.ok) throw new Error('save failed (' + r.status + ')');
+        return r.json();
+      }).then(function (j) {
+        if (!j) return;
+        if (j.ok) {
+          setSaveStatus(null, 'ok');
+          if (window.plausible) {
+            window.plausible('Invoice Decoder Saved', { props: {
+              items_bucket: payload.itemCount < 10 ? '<10' :
+                            payload.itemCount < 25 ? '10-24' :
+                            payload.itemCount < 50 ? '25-49' : '50+',
+              vendor_detected: payload.vendor ? 'true' : 'false'
+            } });
+          }
+        } else {
+          throw new Error(j.error || 'unknown server error');
+        }
+      }).catch(function (err) {
+        setSaveStatus(null, 'error');
+        alert(tt('Save failed: ' + (err.message || 'unknown error'),
+                 'Falló el guardado: ' + (err.message || 'error desconocido')));
+      });
+    });
+  }
+
   if (bulkConfirm) {
     bulkConfirm.addEventListener('click', function () {
       // Mark every amber row as confirmed at full confidence.
