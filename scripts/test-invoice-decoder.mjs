@@ -31,6 +31,7 @@
  */
 
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -936,7 +937,81 @@ console.log(`\nAuto-learn — letterhead hashing + induction (Wave 4.3):`);
 
 console.log(`\nWave 4.3 fixtures: ${alPass} passed.`);
 
+// =====================================================================
+// Wave 6.4 — vendor-config + vendor-pin tests.
+// =====================================================================
+
+let vcPass = 0, vcFail = 0;
+console.log(`\nVendor pin manifest + URL config (Wave 6.4):`);
+{
+  // Verify the integrity manifest parses + has the expected entries.
+  const integrityPath = path.join(repoRoot, 'dist/assets/vendor/_integrity.json');
+  let manifest = null;
+  try {
+    manifest = JSON.parse(await fs.promises.readFile(integrityPath, 'utf8'));
+  } catch (_) { /* might not be present in CI without build */ }
+  if (manifest && manifest.files) {
+    const expectedKeys = [
+      '/assets/vendor/tesseract.js@5.1.1/tesseract.min.js',
+      '/assets/vendor/tesseract.js@5.1.1/worker.min.js',
+      '/assets/vendor/pdfjs-dist@4.5.136/pdf.min.mjs',
+      '/assets/vendor/pdfjs-dist@4.5.136/pdf.worker.min.mjs',
+      '/assets/vendor/xlsx@0.20.3/xlsx.mjs'
+    ];
+    for (const k of expectedKeys) {
+      const hit = manifest.files[k];
+      const ok = hit && /^sha384-/.test(hit.sha384) && hit.bytes > 0;
+      console.log(`  ${ok ? '✓' : '✗'} ${k.padEnd(60)} ${hit ? hit.sha384.slice(0, 24) + '...' : 'MISSING'}`);
+      if (ok) vcPass++; else vcFail++;
+    }
+  } else {
+    console.log('  · manifest not present in dist/ (run `node scripts/vendor-pin.mjs --allow-offline`); skipping these checks');
+  }
+
+  // Static analysis: vendor-config exposes the right URLs.
+  const cfg = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/vendor-config.js'), 'utf8');
+  const okSelfTesseract = cfg.indexOf("/assets/vendor/tesseract.js@") !== -1;
+  const okSelfPdfjs     = cfg.indexOf("/assets/vendor/pdfjs-dist@")    !== -1;
+  const okSelfXlsx      = cfg.indexOf("/assets/vendor/xlsx@")          !== -1;
+  console.log(`  ${okSelfTesseract ? '✓' : '✗'} vendor-config.js declares tesseract self-hosted path`);
+  console.log(`  ${okSelfPdfjs     ? '✓' : '✗'} vendor-config.js declares pdfjs self-hosted path`);
+  console.log(`  ${okSelfXlsx      ? '✓' : '✗'} vendor-config.js declares xlsx self-hosted path`);
+  if (okSelfTesseract) vcPass++; else vcFail++;
+  if (okSelfPdfjs)     vcPass++; else vcFail++;
+  if (okSelfXlsx)      vcPass++; else vcFail++;
+
+  // Static analysis: ocr / pdf / csv no longer reference jsdelivr.
+  const ocr  = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/ocr.js'), 'utf8');
+  const pdfx = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/pdf-extract.js'), 'utf8');
+  const csvx = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/csv-extract.js'), 'utf8');
+  // The vendor-config module legitimately keeps LEGACY entries with jsdelivr;
+  // the consumer modules should not embed those URLs themselves anymore.
+  const okOcrClean  = !/cdn\.jsdelivr\.net/.test(ocr);
+  const okPdfClean  = !/cdn\.jsdelivr\.net/.test(pdfx);
+  const okCsvClean  = !/cdn\.jsdelivr\.net/.test(csvx);
+  console.log(`  ${okOcrClean ? '✓' : '✗'} ocr.js no longer hard-codes jsdelivr URLs`);
+  console.log(`  ${okPdfClean ? '✓' : '✗'} pdf-extract.js no longer hard-codes jsdelivr URLs`);
+  console.log(`  ${okCsvClean ? '✓' : '✗'} csv-extract.js no longer hard-codes jsdelivr URLs`);
+  if (okOcrClean) vcPass++; else vcFail++;
+  if (okPdfClean) vcPass++; else vcFail++;
+  if (okCsvClean) vcPass++; else vcFail++;
+
+  // Static analysis: CSP no longer allows jsdelivr in script-src.
+  const headers = await fs.promises.readFile(path.join(repoRoot, '_headers'), 'utf8');
+  const cspMatch = headers.match(/Content-Security-Policy:\s*([^\n]+)/);
+  if (cspMatch) {
+    const csp = cspMatch[1];
+    const scriptSrc = csp.match(/script-src([^;]+);/);
+    const okCspClean = scriptSrc && !/cdn\.jsdelivr\.net/.test(scriptSrc[1]);
+    console.log(`  ${okCspClean ? '✓' : '✗'} CSP script-src no longer allows cdn.jsdelivr.net`);
+    if (okCspClean) vcPass++; else vcFail++;
+  }
+}
+
+console.log(`\nWave 6.4 fixtures: ${vcPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
-  + alFail;
+  + alFail
+  + vcFail;
 process.exit(grandFail === 0 ? 0 : 1);

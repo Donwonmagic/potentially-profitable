@@ -20,8 +20,11 @@
   var KEY = 'mtn:telemetry';
   var ALLOWLIST_HOSTS = [
     'self',                                  // same-origin
-    'plausible.io',                          // Plausible analytics (gated by telemetry toggle)
-    'cdn.jsdelivr.net'                       // Tesseract / pdfjs / SheetJS bootstrap (transitional)
+    'plausible.io'                           // Plausible analytics (gated by telemetry toggle)
+    // Wave 6.4 — cdn.jsdelivr.net dropped from the runtime allowlist.
+    // Tesseract / pdfjs / SheetJS are now self-hosted under
+    // /assets/vendor/; the build step (scripts/vendor-pin.mjs) is
+    // the only thing that talks to jsdelivr and only at deploy time.
   ];
 
   function isOn() {

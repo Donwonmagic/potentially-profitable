@@ -392,7 +392,7 @@
     var btn = panel.querySelector('#idSelfCheckBtn');
     var out = panel.querySelector('#idSelfCheckOut');
     btn.addEventListener('click', function () {
-      var ALLOWED = ['plausible.io', 'cdn.jsdelivr.net'];
+      var ALLOWED = ['plausible.io'];
       try {
         var origin = root.location ? root.location.origin : '';
         try { performance.clearResourceTimings(); } catch (_) {}

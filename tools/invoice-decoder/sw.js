@@ -17,8 +17,9 @@
  *
  * Privacy posture:
  *   - The SW NEVER fetches any non-allowlisted host. Allowlist is
- *     identical to the page's CSP: same-origin, plausible.io,
- *     cdn.jsdelivr.net (Tesseract / pdfjs / SheetJS bootstrap).
+ *     identical to the page's CSP: same-origin + plausible.io.
+ *     (Wave 6.4 self-hosted Tesseract / pdfjs / SheetJS so jsdelivr
+ *     dropped out of the allowlist.)
  *   - Shared files are stored in a same-origin Cache and never sent
  *     anywhere. Cleared after one consumption.
  *   - A user toggling "Privacy mode" off in the page does not affect
@@ -28,7 +29,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v2-2026-05-01';
+var SW_VERSION = 'id-decoder-v3-2026-05-01';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -49,6 +50,16 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/categorize.js',
   '/tools/invoice-decoder/vendors.js',
   '/tools/invoice-decoder/auto-learn.js',
+  '/tools/invoice-decoder/vendor-config.js',
+  // Wave 6.4 — self-hosted vendor JS entry points. The integrity
+  // manifest at /assets/vendor/_integrity.json (also precached) is
+  // consulted at runtime by vendor-config.js to set SRI on each load.
+  '/assets/vendor/_integrity.json',
+  '/assets/vendor/tesseract.js@5.1.1/tesseract.min.js',
+  '/assets/vendor/tesseract.js@5.1.1/worker.min.js',
+  '/assets/vendor/pdfjs-dist@4.5.136/pdf.min.mjs',
+  '/assets/vendor/pdfjs-dist@4.5.136/pdf.worker.min.mjs',
+  '/assets/vendor/xlsx@0.20.3/xlsx.mjs',
   '/tools/invoice-decoder/encrypt.js',
   '/tools/invoice-decoder/passphrase-modal.js',
   '/tools/invoice-decoder/pdf-extract.js',
@@ -73,7 +84,9 @@ var SHELL_URLS = [
 
 // Hosts the SW is allowed to fetch from. Identical to the page's CSP
 // so the SW's behavior never extends the network surface.
-var ALLOW_HOSTS = ['plausible.io', 'cdn.jsdelivr.net'];
+// Wave 6.4 — jsdelivr dropped out of this list because Tesseract /
+// pdfjs / SheetJS now load from /assets/vendor/ on our own origin.
+var ALLOW_HOSTS = ['plausible.io'];
 
 function isAllowedHost(url) {
   try {
