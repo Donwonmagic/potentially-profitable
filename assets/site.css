@@ -5938,3 +5938,42 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .report-decider__item:last-child summary,.photo-aspect-decoder__item:last-child summary{border-bottom:0}
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
+
+/* ============================================================
+   Touch-device hover hygiene — neutralize sticky :hover effects
+   on devices that don't have a hover capability. CSS :hover on
+   touch fires on tap and lingers until another tap elsewhere,
+   leaving cards visually "lifted" until the user dismisses them.
+   This block targets the lift/scale family of effects (transform
+   + box-shadow) while leaving color-only hover rules alone — those
+   are still useful as visited-tap feedback on touch.
+   ============================================================ */
+@media (hover: none), (pointer: coarse) {
+  .btn-primary:hover,
+  .compare .card:hover,
+  .service:hover,
+  .plan:hover,
+  .work-item:hover,
+  .form-submit.ready:hover,
+  .foot-cta .btn-primary:hover,
+  .listen-iconbtn:hover:not(:disabled),
+  .listen-card-play:hover,
+  .listen-dock-play:hover,
+  .listen-select select:hover,
+  .learn-start:hover,
+  .learn-topic:hover,
+  .learn-tool:hover,
+  .gallery-card:hover,
+  .post-card:hover,
+  .tool-card:hover,
+  .tool-card-flagship:hover,
+  .term-page .term-aka:hover,
+  .nav-library-trigger:hover,
+  .topics-hub-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  /* Generic safety net: any small movement effect inside hover
+     should not stick on touch. Color/border changes are fine. */
+  *:hover { transition-duration: 0ms !important; }
+}
