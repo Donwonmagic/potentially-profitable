@@ -74,6 +74,13 @@
   // "glare" and "good" when the operator's hand wobbles.
   var SUSTAIN_MS = 400;
 
+  // Auto-capture: when the coach has held "allGood" for this long
+  // continuously, fire the shutter. Operators don't time the shot
+  // — they aim, hold steady, and the tool snaps. Aligns with the
+  // CamScanner / Office Lens UX expectation. Manual shutter still
+  // works at any time and races auto-capture safely.
+  var AUTO_CAPTURE_MS = 1500;
+
   // Each evaluator returns true iff its signal is currently active.
   // The evaluator order is also priority order — first-match wins.
   function makeEvaluators(opts) {
@@ -109,12 +116,15 @@
 
   // Coach state holder. Tracks the candidate signal and its
   // first-seen timestamp; the active prompt only changes when a
-  // new signal has held for SUSTAIN_MS.
+  // new signal has held for SUSTAIN_MS. `goodSince` records when
+  // "allGood" first fired so the auto-capture timer can trigger
+  // after AUTO_CAPTURE_MS of continuous green-state.
   function makeCoachState() {
     var state = {
       activeId:    null,            // currently shown prompt
       candidateId: null,            // most recent rule firing
-      candidateAt: 0
+      candidateAt: 0,
+      goodSince:   0                // first ms continuous "allGood"; 0 = not in state
     };
     return state;
   }
@@ -133,6 +143,8 @@
       if (state.activeId !== 'allGood' && (now - state.candidateAt) >= SUSTAIN_MS) {
         state.activeId = 'allGood';
       }
+      // Track continuous-good window for auto-capture.
+      if (state.activeId === 'allGood' && !state.goodSince) state.goodSince = now;
       return state.activeId;
     }
     if (state.candidateId !== firing) {
@@ -142,7 +154,25 @@
     if (state.activeId !== firing && (now - state.candidateAt) >= SUSTAIN_MS) {
       state.activeId = firing;
     }
+    // Any non-good signal resets the auto-capture timer immediately —
+    // even during the sustain debounce window — so a brief glare blip
+    // doesn't allow auto-fire mid-blip.
+    state.goodSince = 0;
     return state.activeId;
+  }
+
+  // Auto-capture predicate. Returns true once the coach has held
+  // "allGood" continuously for AUTO_CAPTURE_MS. Caller is responsible
+  // for actually firing the shutter and resetting the timer (we don't
+  // want the same green window to trigger twice).
+  function shouldAutoCapture(state, now) {
+    now = now || Date.now();
+    if (state.activeId !== 'allGood') return false;
+    if (!state.goodSince) return false;
+    return (now - state.goodSince) >= AUTO_CAPTURE_MS;
+  }
+  function clearAutoCaptureTimer(state) {
+    state.goodSince = 0;
   }
 
   // ---------------------------------------------------------------
@@ -287,11 +317,17 @@
           '<div class="mid-cap-top">' +
             '<button type="button" class="mid-cap-close" id="midCapClose" aria-label="' + tt('Close camera', 'Cerrar cámara') + '">×</button>' +
             '<span class="mid-cap-counter" id="midCapCounter">0</span>' +
+            '<button type="button" class="mid-cap-auto" id="midCapAuto" aria-pressed="true" title="' + tt('Auto-capture when steady', 'Captura automática cuando esté firme') + '">' + tt('Auto', 'Auto') + '</button>' +
           '</div>' +
           '<p class="mid-cap-coach" id="midCapCoach" role="status" aria-live="polite"></p>' +
           '<div class="mid-cap-tray" id="midCapTray" hidden></div>' +
           '<div class="mid-cap-bottom">' +
-            '<button type="button" class="mid-cap-shutter" id="midCapShutter" aria-label="' + tt('Capture page', 'Capturar página') + '"><span class="mid-cap-shutter-inner"></span></button>' +
+            '<button type="button" class="mid-cap-shutter" id="midCapShutter" aria-label="' + tt('Capture page', 'Capturar página') + '">' +
+              '<svg class="mid-cap-ring" id="midCapRing" viewBox="0 0 100 100" aria-hidden="true">' +
+                '<circle cx="50" cy="50" r="46" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>' +
+              '</svg>' +
+              '<span class="mid-cap-shutter-inner"></span>' +
+            '</button>' +
             '<button type="button" class="mid-cap-done" id="midCapDone" aria-label="' + tt('Done — read all pages', 'Listo — leer todas las páginas') + '" disabled>' + tt('Done', 'Listo') + '</button>' +
           '</div>' +
         '</div>';
@@ -306,6 +342,8 @@
       var shutter  = back.querySelector('#midCapShutter');
       var doneBtn  = back.querySelector('#midCapDone');
       var closeBtn = back.querySelector('#midCapClose');
+      var autoBtn  = back.querySelector('#midCapAuto');
+      var ring     = back.querySelector('#midCapRing circle');
 
       var pages = [];                         // [{ blob, thumb, corners? }]
       var stream = null;
@@ -314,6 +352,9 @@
       var scratch = document.createElement('canvas');
       var capScratch = document.createElement('canvas');
       var tickHandle = 0;
+      var capturing = false;                  // race-guard for auto+manual shutter
+      var autoEnabled = true;                 // operator can long-press shutter to disable
+      var autoIndicator = null;               // ring DOM ref (set after style mount)
 
       function updateCoach(id) {
         if (!coachEl) return;
@@ -379,6 +420,16 @@
         var metrics = computeMetrics(frame, capScratch);
         var newState = tickCoach(coachState, evaluators, metrics);
         updateCoach(newState);
+        // Drive the auto-capture ring: fills 0→100% over AUTO_CAPTURE_MS
+        // while in allGood state; instantly empties when state changes.
+        if (ring) {
+          var pct = 0;
+          if (autoEnabled && newState === 'allGood' && coachState.goodSince) {
+            pct = Math.min(1, (Date.now() - coachState.goodSince) / AUTO_CAPTURE_MS);
+          }
+          // pathLength=100 → dashoffset 100=empty, 0=full
+          ring.setAttribute('stroke-dashoffset', String(100 - pct * 100));
+        }
         // The corner coords from findDocumentQuad come back in
         // full-resolution space (it un-scales internally before
         // returning). Map them to overlay coords by scaling against
@@ -392,6 +443,12 @@
           drawOverlay(scaled);
         } else {
           drawOverlay(null);
+        }
+        // Fire auto-capture at the end of the tick so the coach state
+        // and overlay reflect the moment the snapshot was taken.
+        if (autoEnabled && !capturing && shouldAutoCapture(coachState)) {
+          clearAutoCaptureTimer(coachState);
+          captureCurrentFrame(true);
         }
         tickHandle = setTimeout(tick, 160);
       }
@@ -418,14 +475,24 @@
         });
       }
 
-      function captureCurrentFrame() {
+      function captureCurrentFrame(isAuto) {
+        if (capturing) return;
         if (!video.videoWidth || !video.videoHeight) return;
+        capturing = true;
         var w = video.videoWidth, h = video.videoHeight;
         capScratch.width = w; capScratch.height = h;
         var ctx = capScratch.getContext('2d');
-        if (!ctx) return;
+        if (!ctx) { capturing = false; return; }
         ctx.drawImage(video, 0, 0, w, h);
+        // Brief shutter flash + haptic so the operator knows it fired
+        // (esp. important for auto-capture, where there's no tap).
+        try {
+          back.classList.add('mid-cap-flash');
+          setTimeout(function () { back.classList.remove('mid-cap-flash'); }, 140);
+          if (isAuto && navigator.vibrate) navigator.vibrate(20);
+        } catch (_) {}
         capScratch.toBlob(function (blob) {
+          capturing = false;
           if (!blob) return;
           // Build a File so the downstream pipeline doesn't need
           // to know about Blobs vs Files.
@@ -438,7 +505,7 @@
           if (counter) counter.textContent = String(pages.length);
           if (doneBtn) doneBtn.disabled = pages.length === 0;
           if (window.plausible) {
-            try { window.plausible('Invoice Decoder Coach Capture'); } catch (_) {}
+            try { window.plausible('Invoice Decoder Coach Capture', { props: { mode: isAuto ? 'auto' : 'manual' } }); } catch (_) {}
           }
         }, 'image/jpeg', 0.92);
       }
@@ -481,7 +548,22 @@
         resolve(filesOrNull);
       }
 
-      shutter.addEventListener('click', captureCurrentFrame);
+      shutter.addEventListener('click', function () {
+        // Manual tap is always honored — bypasses the coach so the
+        // operator can override (e.g. capture in dim light, or skip
+        // the auto-capture wait).
+        clearAutoCaptureTimer(coachState);
+        captureCurrentFrame(false);
+      });
+      if (autoBtn) {
+        autoBtn.addEventListener('click', function () {
+          autoEnabled = !autoEnabled;
+          autoBtn.setAttribute('aria-pressed', autoEnabled ? 'true' : 'false');
+          autoBtn.classList.toggle('mid-cap-auto-off', !autoEnabled);
+          if (!autoEnabled && ring) ring.setAttribute('stroke-dashoffset', '100');
+          clearAutoCaptureTimer(coachState);
+        });
+      }
       doneBtn.addEventListener('click', function () {
         if (pages.length) finish(pages.map(function (p) { return p.file; }));
         else finish(null);
@@ -489,8 +571,8 @@
       closeBtn.addEventListener('click', function () { finish(null); });
       // Spacebar = shutter for keyboard users.
       back.addEventListener('keydown', function (e) {
-        if (e.target === shutter || e.target === doneBtn || e.target === closeBtn) return;
-        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); captureCurrentFrame(); }
+        if (e.target === shutter || e.target === doneBtn || e.target === closeBtn || e.target === autoBtn) return;
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); clearAutoCaptureTimer(coachState); captureCurrentFrame(false); }
         if (e.key === 'Escape') { e.preventDefault(); finish(null); }
       });
       back.tabIndex = -1;
@@ -521,9 +603,15 @@
       '.mid-cap-coach[data-state="glare"]{background:rgba(178,92,42,0.85)}' +
       '.mid-cap-coach[data-state="blur"]{background:rgba(122,46,31,0.85)}' +
       '.mid-cap-bottom{position:absolute;bottom:env(safe-area-inset-bottom, 16px);left:0;right:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:14px 16px;z-index:5}' +
-      '.mid-cap-shutter{width:88px;height:88px;border-radius:50%;border:4px solid rgba(255,255,255,0.85);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}' +
+      '.mid-cap-shutter{position:relative;width:88px;height:88px;border-radius:50%;border:4px solid rgba(255,255,255,0.85);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}' +
       '.mid-cap-shutter:active{transform:scale(0.96)}' +
-      '.mid-cap-shutter-inner{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,0.95)}' +
+      '.mid-cap-shutter-inner{position:relative;z-index:1;width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,0.95)}' +
+      '.mid-cap-ring{position:absolute;inset:-4px;width:96px;height:96px;transform:rotate(-90deg);pointer-events:none}' +
+      '.mid-cap-ring circle{fill:none;stroke:rgba(123,224,212,0.9);stroke-width:5;transition:stroke-dashoffset 90ms linear}' +
+      '.mid-cap-auto{font:inherit;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid rgba(123,224,212,0.65);background:rgba(123,224,212,0.18);color:#7be0d4;cursor:pointer}' +
+      '.mid-cap-auto.mid-cap-auto-off{border-color:rgba(255,255,255,0.3);background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.65)}' +
+      '.mid-cap-flash::after{content:"";position:absolute;inset:0;background:#fff;animation:mid-cap-flash-fade 140ms ease-out forwards;pointer-events:none;z-index:9}' +
+      '@keyframes mid-cap-flash-fade{from{opacity:0.8}to{opacity:0}}' +
       '.mid-cap-done{position:absolute;right:max(20px, env(safe-area-inset-right, 0));bottom:30px;padding:11px 18px;border-radius:999px;border:0;background:#7be0d4;color:#0c1817;font:inherit;font-size:14px;font-weight:600;cursor:pointer}' +
       '.mid-cap-done:disabled{opacity:0.45;cursor:not-allowed;background:#3a4d4a;color:rgba(255,255,255,0.55)}' +
       '.mid-cap-tray{position:absolute;left:env(safe-area-inset-left, 14px);bottom:118px;display:flex;flex-direction:row-reverse;gap:8px;max-width:100%;overflow-x:auto;padding:6px 14px;z-index:4}' +
@@ -549,7 +637,10 @@
     _tickCoach:                tickCoach,
     _makeCoachState:           makeCoachState,
     _makeEvaluators:           makeEvaluators,
-    _SUSTAIN_MS:               SUSTAIN_MS
+    _shouldAutoCapture:        shouldAutoCapture,
+    _clearAutoCaptureTimer:    clearAutoCaptureTimer,
+    _SUSTAIN_MS:               SUSTAIN_MS,
+    _AUTO_CAPTURE_MS:          AUTO_CAPTURE_MS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_CAPTURE_COACH = api;

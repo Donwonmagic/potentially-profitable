@@ -60,6 +60,34 @@
   var PACK_HASH_RE     = /\b(\d+)\s*#\s*(\d+)\b/;       // "6#10" = 6 #10 cans
   var PACK_SIMPLE_RE   = /\b(\d+)\s*(ct|count|pk|pack|cs|case|bx|box|bag|sleeve)\b/i;
 
+  // Wave 8.1 — OCR numeric-cluster repair.
+  //
+  // Tesseract routinely confuses similar-looking glyphs in price /
+  // quantity columns: O↔0, l/I/|↔1, S↔5, B↔8. Confusion is ALWAYS
+  // wrong for our purposes — invoice numerics are pure digits — but
+  // the regex parsers (`\d+(?:[.,]\d{2})`) reject any letter, so a
+  // line like `ROMAINE  $48.OO` fails to match instead of just being
+  // misread.
+  //
+  // Strategy: walk the line, find clusters that look numeric (start
+  // with $ OR contain a .dd decimal), and substitute the confused
+  // letter back to its digit. We DO NOT touch other clusters — words
+  // like "loss" or unit suffixes like "10lb" stay intact.
+  //
+  // Conservative bias: skip lone-digit clusters with letters (e.g.
+  // "B7" — could be a SKU prefix). The .dd-decimal / $-prefix
+  // requirement filters out almost all false positives.
+  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
+  function repairOcrNumerics(line) {
+    return String(line || '').replace(OCR_CLUSTER_RE, function (m) {
+      return m
+        .replace(/[OoQq]/g, '0')
+        .replace(/[lI|]/g,  '1')
+        .replace(/[Ss]/g,   '5')
+        .replace(/[Bb]/g,   '8');
+    });
+  }
+
   function normPrice(s) {
     var v = String(s || '').replace(/,/g, '').replace(/[^0-9.\-]/g, '');
     if (!v) return null;
@@ -186,6 +214,10 @@
     var line = String(rawLine || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').trim();
     if (line.length < 4) return null;
     if (HEADER_SKIP_RE.test(line)) return null;
+    // Wave 8.1 — repair common OCR digit confusions in numeric clusters
+    // before pattern matching. Ensures "$48.OO" (Tesseract O→0 mis-read)
+    // matches Pattern A/B/C/D regexes that require strict `\d{2}` decimals.
+    line = repairOcrNumerics(line);
 
     var ocrConf = (typeof ocrConfidence === 'number') ? ocrConfidence : 60;
 
@@ -395,13 +427,98 @@
     };
   }
 
+  // Wave 8.1 — Multi-line description merger.
+  //
+  // Long product descriptions sometimes span two OCR rows because
+  // the printed line wrapped on the invoice paper:
+  //
+  //   Row N    : "ROMAINE HEARTS GREEN"
+  //   Row N+1  : "LEAF ORGANIC 24CT  2  CS  $48.00"
+  //
+  // The first row has no qty/price, so parseLine returns null and the
+  // line is silently dropped; the second row's NAME ends up truncated
+  // ("LEAF ORGANIC 24CT" instead of the full "ROMAINE HEARTS GREEN
+  // LEAF ORGANIC 24CT"). Merger fixes this conservatively: a non-row
+  // line that has letters and isn't a header gets held; the next
+  // line that ends in a price gets the held text prepended to its name.
+  //
+  // Bail conditions:
+  //   - Empty lines flush the pending buffer (lines aren't continuous).
+  //   - Header lines flush.
+  //   - Continuation lines >60 chars are rejected (likely a real row
+  //     the parser failed on; we don't want to glue it onto something
+  //     unrelated).
+  //   - The pending buffer never grows beyond 3 segments.
+  function endsWithPrice(s) {
+    return /\$?\d+(?:[.,]\d{3})*[.,]\d{2}\s*$/.test(String(s || ''));
+  }
+  function mergeWrappedLines(lines) {
+    if (!Array.isArray(lines)) return [];
+    var out = [];
+    var pendingText = '';
+    var pendingConf = 100;
+    var pendingSegments = 0;
+    for (var i = 0; i < lines.length; i++) {
+      var ln = lines[i];
+      var text = String(ln && ln.text || '').trim();
+      var conf = (typeof ln.confidence === 'number') ? ln.confidence : 60;
+      if (!text) {
+        pendingText = '';
+        pendingConf = 100;
+        pendingSegments = 0;
+        continue;
+      }
+      // A repaired version is what parseLine sees, so use it for the
+      // ends-with-price probe.
+      var repaired = repairOcrNumerics(text);
+      var isRow = endsWithPrice(repaired);
+      if (isRow) {
+        if (pendingText) {
+          out.push({
+            text:       pendingText + ' ' + text,
+            confidence: Math.min(pendingConf, conf),
+            merged:     true
+          });
+          pendingText = '';
+          pendingConf = 100;
+          pendingSegments = 0;
+        } else {
+          out.push(ln);
+        }
+        continue;
+      }
+      // Not-a-row: candidate continuation if it has letters, isn't a
+      // header, and is short enough to be a wrapped name.
+      var hasLetters = /[a-záéíóúñ]/i.test(text);
+      var isHeader   = HEADER_SKIP_RE.test(text);
+      if (hasLetters && !isHeader && text.length <= 60 && pendingSegments < 3) {
+        pendingText = pendingText ? (pendingText + ' ' + text) : text;
+        if (conf < pendingConf) pendingConf = conf;
+        pendingSegments++;
+      } else {
+        // Non-letter / header / too long → flush.
+        pendingText = '';
+        pendingConf = 100;
+        pendingSegments = 0;
+      }
+    }
+    return out;
+  }
+
   // Top-level: parse an array of OCR lines into rows + meta.
   function parseLines(lines, fullText) {
     if (!Array.isArray(lines)) lines = [];
+    // Wave 8.1 — merge wrapped descriptions before per-line parsing
+    // so the second-row's price/qty doesn't become a row with a
+    // truncated name.
+    var merged = mergeWrappedLines(lines);
     var rows = [];
-    lines.forEach(function (ln) {
+    merged.forEach(function (ln) {
       var row = parseLine(ln.text || '', ln.confidence);
-      if (row) rows.push(row);
+      if (row) {
+        if (ln.merged) row.merged = true;
+        rows.push(row);
+      }
     });
     deriveUnitPrices(rows);
     var meta = extractMeta(fullText || lines.map(function (l) { return l.text; }).join('\n'));
@@ -438,6 +555,8 @@
     suggestMathFix: suggestMathFix,
     classifyKind: classifyKind,
     extractPack: extractPack,
+    repairOcrNumerics: repairOcrNumerics,
+    mergeWrappedLines: mergeWrappedLines,
     UNITS_RE: UNITS_RE
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

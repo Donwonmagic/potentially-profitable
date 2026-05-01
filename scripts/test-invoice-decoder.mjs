@@ -2090,6 +2090,153 @@ console.log(`\nCross-vendor + invoice-drift + comparable-contract + substitution
 
 console.log(`\nDomain-expert layer #2 fixtures: ${dxPass} passed.`);
 
+// =====================================================================
+// Wave 8.1 — Edge-case hardening:
+//   - capture-coach auto-capture timer
+//   - preprocess illumination/shadow correction
+//   - parse OCR numeric repair (0/O, 1/l/I, 5/S, 8/B)
+//   - parse multi-line description merger (wrapped product names)
+//   - preprocess confidence-triggered retry
+// =====================================================================
+
+let edgePass = 0, edgeFail = 0;
+console.log(`\nEdge-case hardening (Wave 8.1):`);
+{
+  const COACH = await import(path.join(repoRoot, 'tools/invoice-decoder/capture-coach.js')).then(m => m.default || m);
+  const PARSE = await import(path.join(repoRoot, 'tools/invoice-decoder/parse.js')).then(m => m.default || m);
+  const PREP  = await import(path.join(repoRoot, 'tools/invoice-decoder/preprocess.js')).then(m => m.default || m);
+
+  // 1. Auto-capture timer: needs allGood held for AUTO_CAPTURE_MS.
+  const evaluators = COACH._makeEvaluators();
+  let cstate = COACH._makeCoachState();
+  const auto = COACH._AUTO_CAPTURE_MS;
+  // First two ticks at t=1000 and t=1500 → activeId='allGood', goodSince=1500.
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1000);
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1500);
+  const tooSoon = COACH._shouldAutoCapture(cstate, 1500 + auto - 100);
+  console.log(`  ${tooSoon === false ? '✓' : '✗'} shouldAutoCapture is false before AUTO_CAPTURE_MS elapses`);
+  if (tooSoon === false) edgePass++; else edgeFail++;
+
+  const ready = COACH._shouldAutoCapture(cstate, 1500 + auto + 10);
+  console.log(`  ${ready === true ? '✓' : '✗'} shouldAutoCapture fires after AUTO_CAPTURE_MS continuous good`);
+  if (ready === true) edgePass++; else edgeFail++;
+
+  // Glare interruption resets the goodSince timer.
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 2500);
+  const noFire = COACH._shouldAutoCapture(cstate, 2500 + auto + 100);
+  console.log(`  ${noFire === false ? '✓' : '✗'} shouldAutoCapture stays false when state leaves allGood`);
+  if (noFire === false) edgePass++; else edgeFail++;
+
+  // 2. OCR numeric repair: $48.OO → $48.00 (price-cluster) but 10lb stays.
+  const r1 = PARSE.repairOcrNumerics('ROMAINE 24CT  2 CS $48.OO');
+  const okR1 = r1.indexOf('$48.00') !== -1;
+  console.log(`  ${okR1 ? '✓' : '✗'} repairOcrNumerics fixes $48.OO → $48.00 (got "${r1}")`);
+  if (okR1) edgePass++; else edgeFail++;
+
+  const r2 = PARSE.repairOcrNumerics('GROUND CHUCK 10lb 2 CT $58.00');
+  const okR2 = r2.indexOf('10lb') !== -1;
+  console.log(`  ${okR2 ? '✓' : '✗'} repairOcrNumerics leaves "10lb" intact (no false-positive on unit suffix)`);
+  if (okR2) edgePass++; else edgeFail++;
+
+  const r3 = PARSE.repairOcrNumerics('Boss salesman delivered $S6.5O');
+  const okR3 = r3.indexOf('$56.50') !== -1 && r3.indexOf('Boss') !== -1;
+  console.log(`  ${okR3 ? '✓' : '✗'} repairOcrNumerics fixes $S6.5O → $56.50 but leaves "Boss" alone (got "${r3}")`);
+  if (okR3) edgePass++; else edgeFail++;
+
+  // Repaired line then becomes parseable end-to-end.
+  const parsedRepaired = PARSE.parseLine('ROMAINE HEARTS 24CT  2 CS $48.OO', 78);
+  const okParsedRepair = parsedRepaired && parsedRepaired.lineTotal === 48.00;
+  console.log(`  ${okParsedRepair ? '✓' : '✗'} parseLine accepts a $48.OO line after repair (got lineTotal=${parsedRepaired ? parsedRepaired.lineTotal : 'null'})`);
+  if (okParsedRepair) edgePass++; else edgeFail++;
+
+  // 3. Wrapped-line merger.
+  const wrapped = [
+    { text: 'ROMAINE HEARTS GREEN', confidence: 80 },
+    { text: 'LEAF ORGANIC 24CT  2 CS $48.00', confidence: 82 },
+    { text: '', confidence: 0 },
+    { text: 'GROUND CHUCK 80/20', confidence: 70 },
+    { text: '10LB 2 CT $58.00', confidence: 75 }
+  ];
+  const merged = PARSE.mergeWrappedLines(wrapped);
+  const okMerged = merged.length === 2 &&
+                   merged[0].text.indexOf('ROMAINE HEARTS GREEN LEAF ORGANIC') !== -1 &&
+                   merged[1].text.indexOf('GROUND CHUCK 80/20 10LB') !== -1;
+  console.log(`  ${okMerged ? '✓' : '✗'} mergeWrappedLines re-joins continuation rows (got ${merged.length} merged rows)`);
+  if (okMerged) edgePass++; else edgeFail++;
+
+  // Headers do NOT join (they flush pending).
+  const withHeader = [
+    { text: 'PRODUCT INFO', confidence: 80 },
+    { text: 'invoice', confidence: 60 },              // header
+    { text: 'CHEDDAR CHUNKS 1 CS $32.00', confidence: 78 }
+  ];
+  const mergedH = PARSE.mergeWrappedLines(withHeader);
+  const headerWins = mergedH.length === 1 && mergedH[0].text === 'CHEDDAR CHUNKS 1 CS $32.00';
+  console.log(`  ${headerWins ? '✓' : '✗'} mergeWrappedLines flushes pending when a header line appears`);
+  if (headerWins) edgePass++; else edgeFail++;
+
+  // End-to-end: parseLines on wrapped rows produces full names.
+  const parsed = PARSE.parseLines(wrapped, wrapped.map(l => l.text).join('\n'));
+  const e2eOk = parsed.rows.length === 2 &&
+                parsed.rows[0].name.indexOf('ROMAINE HEARTS GREEN LEAF ORGANIC') !== -1 &&
+                parsed.rows[0].merged === true;
+  console.log(`  ${e2eOk ? '✓' : '✗'} parseLines emits merged rows with the full description (rows: ${parsed.rows.map(r => r.name).join(' | ')})`);
+  if (e2eOk) edgePass++; else edgeFail++;
+
+  // 4. Illumination correction: a synthetic 60×60 grayscale with a
+  // diagonal brightness gradient should be flatter after correction.
+  function makeGradient(w, h) {
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        // Gradient from ~80 (top-left) to ~220 (bottom-right) — emulates
+        // shadow on one corner of the page.
+        const v = 80 + Math.round((x + y) / (w + h) * 140);
+        data[i] = data[i + 1] = data[i + 2] = v;
+        data[i + 3] = 255;
+      }
+    }
+    return { data, width: w, height: h };
+  }
+  function spread(img) {
+    let mn = 255, mx = 0;
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = img.data[i];
+      if (v < mn) mn = v;
+      if (v > mx) mx = v;
+    }
+    return mx - mn;
+  }
+  const grad = makeGradient(60, 60);
+  const spreadBefore = spread(grad);
+  PREP.correctIlluminationInPlace(grad);
+  const spreadAfter = spread(grad);
+  const flatter = spreadAfter < spreadBefore * 0.6;
+  console.log(`  ${flatter ? '✓' : '✗'} correctIlluminationInPlace flattens a brightness gradient (spread ${spreadBefore} → ${spreadAfter})`);
+  if (flatter) edgePass++; else edgeFail++;
+
+  // Tiny image short-circuit (no-op) — should not throw.
+  let threw = false;
+  try { PREP.correctIlluminationInPlace({ data: new Uint8ClampedArray(16 * 16 * 4), width: 16, height: 16 }); }
+  catch (_) { threw = true; }
+  console.log(`  ${!threw ? '✓' : '✗'} correctIlluminationInPlace short-circuits on tiny images without throwing`);
+  if (!threw) edgePass++; else edgeFail++;
+
+  // 5. Confidence-triggered retry: build a stub canvas-y object that the
+  // helpers can treat as input. We can't easily run preprocessCanvas
+  // headless (depends on Canvas/2D context), so we test the qualityScore
+  // helper's monotonicity via classifyQuality.
+  const goodHint   = PREP.classifyQuality(200, 3000);   // good
+  const lowContrast = PREP.classifyQuality(200, 800);   // low-contrast
+  const blurry      = PREP.classifyQuality(40, 3000);   // blurry
+  const okQual = goodHint === 'good' && lowContrast === 'low-contrast' && blurry === 'blurry';
+  console.log(`  ${okQual ? '✓' : '✗'} classifyQuality monotonic across blur + bimodality (good/low-contrast/blurry)`);
+  if (okQual) edgePass++; else edgeFail++;
+}
+
+console.log(`\nWave 8.1 edge-case fixtures: ${edgePass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -2102,5 +2249,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + lgFail
   + pairFail
   + ppFail
-  + dxFail;
+  + dxFail
+  + edgeFail;
 process.exit(grandFail === 0 ? 0 : 1);

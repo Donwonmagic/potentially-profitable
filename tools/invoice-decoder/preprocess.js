@@ -203,6 +203,129 @@
     return imageData;
   }
 
+  // -------------------- Illumination / shadow correction --------------------
+  // Subtracts a low-frequency "background" map from the grayscale
+  // image so binarization sees an evenly-lit page. This is the secret
+  // sauce behind clean phone-camera scans: a restaurant's overhead
+  // lighting almost always casts uneven brightness across an invoice
+  // (one corner shadowed by the operator's hand, the other lit by a
+  // ceiling can-light), and Otsu picks a single global threshold that
+  // can't recover both halves at once.
+  //
+  // Algorithm (Wave 8.1):
+  //   1. Downsample grayscale to a thumbnail (~96 px on long edge) —
+  //      this collapses the text strokes into the "background" plane
+  //      so they don't leak into the illumination estimate.
+  //   2. Box-blur the thumbnail 3× — a cheap Gaussian approximation.
+  //   3. Compute the thumbnail's global mean (= "what should white be").
+  //   4. For each full-resolution pixel, look up the corresponding
+  //      thumbnail value (bilinear), subtract it, add the global mean,
+  //      clamp 0..255. The text (which is well below local background)
+  //      stays dark; uneven lighting flattens out.
+  //
+  // Compute budget: 96×128 thumbnail blur is cheap; the bilinear
+  // upsample is the dominant cost (one read + four interp lookups
+  // per pixel — a few ms even on 2000×3000).
+  //
+  // Used by the gentle preset right before Sauvola when the bimodality
+  // score is low, signaling the histogram is washed out.
+  function correctIlluminationInPlace(imageData, opts) {
+    opts = opts || {};
+    var w = imageData.width, h = imageData.height;
+    if (w < 32 || h < 32) return imageData;
+    var d = imageData.data;
+    var thumbLong = Math.max(48, Math.min(192, opts.thumbLong || 96)) | 0;
+    // Compute thumbnail dims preserving aspect.
+    var tw, th;
+    if (w >= h) { tw = thumbLong; th = Math.max(8, Math.round(h * tw / w)); }
+    else        { th = thumbLong; tw = Math.max(8, Math.round(w * th / h)); }
+    // 1. Downsample (box-average) into Float32 so we can blur in place.
+    var thumb = new Float32Array(tw * th);
+    var sx = w / tw, sy = h / th;
+    for (var ty = 0; ty < th; ty++) {
+      var y0 = Math.floor(ty * sy);
+      var y1 = Math.max(y0 + 1, Math.floor((ty + 1) * sy));
+      if (y1 > h) y1 = h;
+      for (var tx = 0; tx < tw; tx++) {
+        var x0 = Math.floor(tx * sx);
+        var x1 = Math.max(x0 + 1, Math.floor((tx + 1) * sx));
+        if (x1 > w) x1 = w;
+        var sum = 0, n = 0;
+        // Sample stride 1 — windows are small.
+        for (var yy = y0; yy < y1; yy++) {
+          var rowOff = yy * w;
+          for (var xx = x0; xx < x1; xx++) {
+            sum += d[(rowOff + xx) * 4];
+            n++;
+          }
+        }
+        thumb[ty * tw + tx] = n > 0 ? sum / n : 0;
+      }
+    }
+    // 2. Box-blur 3 times (separable horizontal + vertical) — emulates
+    //    Gaussian. Use a fixed 5-wide window (effective σ ≈ 2 over 3 passes).
+    var win = 5;
+    var halfW = win >> 1;
+    var tmp = new Float32Array(tw * th);
+    for (var pass = 0; pass < 3; pass++) {
+      // Horizontal
+      for (var yh = 0; yh < th; yh++) {
+        for (var xh = 0; xh < tw; xh++) {
+          var sH = 0, cH = 0;
+          for (var kx = -halfW; kx <= halfW; kx++) {
+            var ix = xh + kx;
+            if (ix < 0 || ix >= tw) continue;
+            sH += thumb[yh * tw + ix];
+            cH++;
+          }
+          tmp[yh * tw + xh] = cH > 0 ? sH / cH : thumb[yh * tw + xh];
+        }
+      }
+      // Vertical
+      for (var yv = 0; yv < th; yv++) {
+        for (var xv = 0; xv < tw; xv++) {
+          var sV = 0, cV = 0;
+          for (var ky = -halfW; ky <= halfW; ky++) {
+            var iy = yv + ky;
+            if (iy < 0 || iy >= th) continue;
+            sV += tmp[iy * tw + xv];
+            cV++;
+          }
+          thumb[yv * tw + xv] = cV > 0 ? sV / cV : tmp[yv * tw + xv];
+        }
+      }
+    }
+    // 3. Global mean of the smoothed thumbnail = where "white" should sit.
+    var meanBg = 0;
+    for (var i = 0; i < thumb.length; i++) meanBg += thumb[i];
+    meanBg /= thumb.length;
+    // 4. Bilinear-upsample lookup + subtract + add meanBg + clamp.
+    for (var y = 0; y < h; y++) {
+      var fy = (y / h) * (th - 1);
+      var y0i = fy | 0;
+      var y1i = Math.min(th - 1, y0i + 1);
+      var fyf = fy - y0i;
+      for (var x = 0; x < w; x++) {
+        var fx = (x / w) * (tw - 1);
+        var x0i = fx | 0;
+        var x1i = Math.min(tw - 1, x0i + 1);
+        var fxf = fx - x0i;
+        var b00 = thumb[y0i * tw + x0i];
+        var b01 = thumb[y0i * tw + x1i];
+        var b10 = thumb[y1i * tw + x0i];
+        var b11 = thumb[y1i * tw + x1i];
+        var bgTop = b00 * (1 - fxf) + b01 * fxf;
+        var bgBot = b10 * (1 - fxf) + b11 * fxf;
+        var bg = bgTop * (1 - fyf) + bgBot * fyf;
+        var pIdx = (y * w + x) * 4;
+        var v = d[pIdx] - bg + meanBg;
+        if (v < 0) v = 0; else if (v > 255) v = 255;
+        d[pIdx] = d[pIdx + 1] = d[pIdx + 2] = v | 0;
+      }
+    }
+    return imageData;
+  }
+
   // -------------------- Median 3×3 denoise --------------------
   // Skip when the binarized image is already clean (low pixel-flip
   // count). Used on the gentle preset only — the aggressive preset
@@ -851,10 +974,23 @@
     // motion blur). Pure Otsu falls back when bimodality is high
     // since Sauvola adds compute we don't need.
     var thresholdMethod = 'otsu';
+    var illuminationCorrected = false;
     if (preset === 'aggressive') {
       t = Math.min(255, t + 8);
       applyThresholdInPlace(img, t);
     } else if (preset === 'gentle' && bimodalityScore < 1500 && blurScore > 60) {
+      // Wave 8.1 — when the histogram is washed-out (low bimodality)
+      // but the image is sharp, the culprit is almost always uneven
+      // lighting (shadows/glare). Subtract the background-illumination
+      // map first; Sauvola then operates on a near-evenly-lit page
+      // and produces a much cleaner binary surface for OCR.
+      correctIlluminationInPlace(img);
+      illuminationCorrected = true;
+      // Re-Otsu so the surfaced threshold reflects the corrected image
+      // (downstream callers — and the bimodality-trigger for retake
+      // coaching — read this value).
+      t = otsuThreshold(img);
+      bimodalityScore = otsuBetweenClassVariance(img, t);
       sauvolaInPlace(img, { window: 21, k: 0.34 });
       thresholdMethod = 'sauvola';
     } else if (preset === 'gentle') {
@@ -872,7 +1008,8 @@
       bimodalityScore: bimodalityScore,
       qualityHint: classifyQuality(blurScore, bimodalityScore),
       rectified: !!rectified,
-      rectifyConfidence: rectConf
+      rectifyConfidence: rectConf,
+      illuminationCorrected: illuminationCorrected
     };
   }
 
@@ -946,6 +1083,52 @@
     return 'good';
   }
 
+  // Wave 8.1 — Confidence-triggered preprocess retry.
+  //
+  // The preprocessCanvas pipeline uses fixed preset paths. When the
+  // first pass scores poorly (low contrast / low bimodality), a SECOND
+  // pass with the alternate preset frequently recovers most of the
+  // accuracy gap on hard photos. We don't ship multipass for free in
+  // the controller — that's the OCR layer's job — but for callers who
+  // want a single best-effort canvas (e.g. unit tests, Workshop), this
+  // wrapper picks the better of two passes.
+  //
+  // Decision: pick by `qualityHint` first (good > low-contrast > blurry),
+  // then by bimodalityScore as a tiebreaker. Blur can't be fixed in
+  // software so we never re-pass on blur; we just surface the hint.
+  function qualityScoreFor(r) {
+    if (!r) return 0;
+    if (r.qualityHint === 'good') return 100;
+    if (r.qualityHint === 'low-contrast') return 40 + Math.min(40, r.bimodalityScore / 40);
+    if (r.qualityHint === 'blurry') return 0 + Math.min(35, (r.blurScore || 0) / 2);
+    return 25;
+  }
+  function preprocessCanvasWithRetry(canvas, opts) {
+    opts = opts || {};
+    var firstPreset = opts.preset || 'aggressive';
+    var altPreset = (firstPreset === 'gentle') ? 'aggressive' : 'gentle';
+    var first = preprocessCanvas(canvas, firstPreset);
+    if (first.qualityHint === 'good' || opts.skipRetry) {
+      first.retried = false;
+      first.preset = firstPreset;
+      return first;
+    }
+    // Re-pass on the original input canvas so we get a clean rectify.
+    var second = preprocessCanvas(canvas, altPreset);
+    var firstScore = qualityScoreFor(first);
+    var secondScore = qualityScoreFor(second);
+    if (secondScore > firstScore + 5) {
+      second.retried = true;
+      second.retryPreset = altPreset;
+      second.firstQualityHint = first.qualityHint;
+      second.preset = altPreset;
+      return second;
+    }
+    first.retried = false;
+    first.preset = firstPreset;
+    return first;
+  }
+
   // Public entry: takes a File, returns a preprocessed canvas plus
   // metadata. The caller (Wave B2) feeds the canvas to Tesseract.
   function preprocessFile(file, opts) {
@@ -953,14 +1136,18 @@
     var maxEdge = opts.maxEdge || 2000;
     var preset = opts.preset || 'aggressive';
     return fileToCanvas(file, maxEdge).then(function (raw) {
-      var result = preprocessCanvas(raw, preset);
+      var result = opts.retryOnLowQuality
+        ? preprocessCanvasWithRetry(raw, { preset: preset })
+        : preprocessCanvas(raw, preset);
       return {
         canvas: result.canvas,
         rawWidth:  raw.width,
         rawHeight: raw.height,
         skewAngle: result.skewAngle,
         threshold: result.threshold,
-        preset: preset
+        preset:    result.preset || preset,
+        retried:   !!result.retried,
+        qualityHint: result.qualityHint
       };
     });
   }
@@ -973,11 +1160,13 @@
   var api = {
     preprocessFile:    preprocessFile,
     preprocessCanvas:  preprocessCanvas,
+    preprocessCanvasWithRetry: preprocessCanvasWithRetry,
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,
     otsuThreshold:     otsuThreshold,
     sauvolaInPlace:    sauvolaInPlace,
+    correctIlluminationInPlace: correctIlluminationInPlace,
     classifyQuality:   classifyQuality,
     // Wave 2.2 — perspective rectification suite. Pure-function
     // helpers exposed for testing in Node.
