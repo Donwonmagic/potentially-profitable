@@ -259,10 +259,128 @@
     });
   }
 
+  // -------------------- W1-7: session-memory cache --------------------
+  // Module-scope (NEVER localStorage / sessionStorage). 30-min
+  // idle expiry refreshes on every successful use. The audit
+  // found that retyping the passphrase on every save was real
+  // friction; this cache means: tap Save → first save asks →
+  // tap Save again within 30 min → re-uses without asking.
+  //
+  // Exposed surface:
+  //   MID_PASS.askWithMemory({mode}) — uses cache when fresh,
+  //     re-prompts on miss + checkbox "Use this same secret as
+  //     before? [Yes, save] [Different secret]" affordance after
+  //     first save.
+  //   MID_PASS.remember(pp) — explicit set (called by askWithMemory
+  //     on successful resolve)
+  //   MID_PASS.forget() — clears cache (called by W3-6 logout
+  //     hook + by clear-on-beforeunload)
+  //   MID_PASS.hasMemory() — whether a fresh entry exists right
+  //     now (drives the "Use same secret as before" checkbox)
+  //
+  // Critically: the cache holds the cleartext passphrase in a
+  // module-scope variable. It IS in JS memory; it is NOT in
+  // any persistent store. Tab close = cache gone. 30 min idle
+  // = cache gone. Explicit forget() = cache gone.
+  var __ppMemory = null;
+  var __ppExpiresAt = 0;
+  var IDLE_MS = 30 * 60 * 1000;
+
+  function hasMemory() {
+    if (!__ppMemory) return false;
+    if (Date.now() > __ppExpiresAt) { __ppMemory = null; return false; }
+    return true;
+  }
+  function remember(pp) {
+    if (typeof pp !== 'string' || pp.length < 8) return;
+    __ppMemory = pp;
+    __ppExpiresAt = Date.now() + IDLE_MS;
+  }
+  function forget() {
+    __ppMemory = null;
+    __ppExpiresAt = 0;
+  }
+  function askWithMemory(opts) {
+    opts = opts || {};
+    // Cache hit + create-mode + opts.allowReuse !== false →
+    // surface a confirm chip first; on accept, refresh expiry
+    // and resolve with the cached value.
+    if (opts.allowReuse !== false && hasMemory() && opts.mode === 'create') {
+      return askReuseConfirmation().then(function (decision) {
+        if (decision === 'reuse') {
+          __ppExpiresAt = Date.now() + IDLE_MS; // refresh expiry on re-use
+          return __ppMemory;
+        }
+        if (decision === 'cancel') return null;
+        // 'different' → fall through to a fresh ask.
+        return ask(opts).then(function (fresh) {
+          if (fresh) remember(fresh);
+          return fresh;
+        });
+      });
+    }
+    // No cache OR unlock mode: just ask. On success, remember
+    // (so the *next* save can reuse).
+    return ask(opts).then(function (fresh) {
+      if (fresh && opts.mode === 'create') remember(fresh);
+      return fresh;
+    });
+  }
+  // Tiny inline confirmation modal — NOT the full passphrase
+  // input; just a yes/no chip. Lives at the same z-index as the
+  // main modal, dismissable.
+  function askReuseConfirmation() {
+    injectCss();
+    return new Promise(function (resolve) {
+      var back = document.createElement('div');
+      back.className = 'midpass-back';
+      back.setAttribute('role', 'dialog');
+      back.setAttribute('aria-modal', 'true');
+      back.innerHTML = '<div class="midpass-card">' +
+        '<p class="midpass-eyebrow">' + tt('Use same secret?', '¿Usar el mismo secreto?') + '</p>' +
+        '<h2 class="midpass-title">' + tt('Lock with the same secret as before?', '¿Bloquear con el mismo secreto que antes?') + '</h2>' +
+        '<p class="midpass-body">' + tt(
+          'You set a secret a few minutes ago. Use it again so you don\'t have to retype, or pick a different one for this invoice.',
+          'Pusiste un secreto hace unos minutos. Úsalo de nuevo para no retipear, o elige uno diferente para esta factura.'
+        ) + '</p>' +
+        '<p class="midpass-trust">🔒 <strong>' + tt('Still on your device.', 'Sigue en tu dispositivo.') + '</strong> ' +
+        tt('The secret never left your browser. We just remembered it for the next 30 minutes.',
+           'El secreto nunca salió del navegador. Solo lo recordamos por los próximos 30 minutos.') + '</p>' +
+        '<div class="midpass-actions">' +
+          '<button type="button" class="midpass-cancel" data-act="different">' + tt('Different secret', 'Secreto diferente') + '</button>' +
+          '<button type="button" class="midpass-submit" data-act="reuse">' + tt('Yes, use it', 'Sí, úsalo') + '</button>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(back);
+      function cleanup(decision) {
+        try { back.remove(); } catch (_) {}
+        resolve(decision);
+      }
+      back.addEventListener('click', function (e) {
+        if (e.target === back) return cleanup('cancel');
+        var act = e.target && e.target.dataset && e.target.dataset.act;
+        if (act === 'reuse') cleanup('reuse');
+        else if (act === 'different') cleanup('different');
+      });
+      var trapKeys = function (e) { if (e.key === 'Escape') { document.removeEventListener('keydown', trapKeys); cleanup('cancel'); } };
+      document.addEventListener('keydown', trapKeys);
+    });
+  }
+
+  // Forget on tab close. Also called by W3-6 logout hook +
+  // clear-on-logout flow.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', forget);
+  }
+
   // Surface the strength function so encrypt.js (or tests) can
   // sanity-check programmatically without rendering the modal.
   var api = {
     ask: ask,
+    askWithMemory: askWithMemory,
+    remember: remember,
+    forget: forget,
+    hasMemory: hasMemory,
     classifyStrength: classifyStrength,
     _COMMON_BLOCKLIST: COMMON_BLOCKLIST
   };

@@ -604,7 +604,13 @@
     if (typeof MID_PASS === 'undefined' || !MID_PASS.ask) {
       return Promise.resolve(null);
     }
-    return MID_PASS.ask({ mode: 'create' });
+    // W1-7: memory-aware path. First save in a session asks
+    // normally; subsequent saves within 30 min surface the
+    // "Use same secret as before?" confirm chip instead of the
+    // full passphrase modal. Tab close / 30-min idle / explicit
+    // logout (W3-6) all wipe the cache.
+    var fn = MID_PASS.askWithMemory || MID_PASS.ask;
+    return fn({ mode: 'create' });
   }
 
   function buildSavePayload() {
