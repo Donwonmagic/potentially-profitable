@@ -32,8 +32,15 @@
   // to empty so existing drafts continue to round-trip. The renderer
   // no-ops on empty values.
   function blankDish() {
+    // W14-1 — additive completionist fields:
+    //   portion: "8 oz", "2 tacos" (free text)
+    //   calories: numeric (FDA-style)
+    //   altName / altDesc: multilingual mirror (renders when locale
+    //                      switches OR when the operator wants to
+    //                      ship a bilingual menu in one PDF)
     return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
-             pairing: '', modifier: '', halfPrice: '', badges: [] };
+             pairing: '', modifier: '', halfPrice: '', badges: [],
+             portion: '', calories: '', altName: '', altDesc: '' };
   }
   function blankSection(name) {
     return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '', hero: null };
@@ -139,10 +146,13 @@
   var paperKey = 'letter';
   var logoUrl  = null;       // data: URL string or SVG-text
   var logoMeta = null;       // { name, w, h } or null
-  // W9-3 — menu-level metadata (tagline + chef's note). Both render
-  // on the deliverable; both empty by default; both persist to draft.
-  // W11-3 — coverPage flag on meta for the dedicated cover-page render.
-  var meta = { tagline: '', story: '', coverPage: false };
+  // W9-3 + W11-3 + W14-2 — menu-level metadata. Renders on the
+  // printed deliverable. All fields optional; renderer no-ops on
+  // empty. Persists in the draft via meta.* keys.
+  var meta = {
+    tagline: '', story: '', coverPage: false,
+    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: ''
+  };
 
   // W12-3 — theme customizer state. Each field is null when the
   // operator hasn't customized; otherwise an explicit hex. The
@@ -369,6 +379,35 @@
                   '<label for="md-half-' + i + '">' + tt('Half portion', 'Media porción') + '</label>' +
                   '<input type="text" id="md-half-' + i + '" data-field="halfPrice" data-i="' + i +
                     '" value="' + escHtml(r.halfPrice || '') + '" placeholder="$8" />' +
+                '</div>' +
+                // W14-1 — portion, calories, altName / altDesc.
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-port-' + i + '">' + tt('Portion', 'Porción') + '</label>' +
+                  '<input type="text" id="md-port-' + i + '" data-field="portion" data-i="' + i +
+                    '" value="' + escHtml(r.portion || '') + '" placeholder="' +
+                    tt('8 oz · 2 tacos', '8 oz · 2 tacos') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-cal-' + i + '">' + tt('Calories', 'Calorías') + '</label>' +
+                  '<input type="number" id="md-cal-' + i + '" data-field="calories" data-i="' + i +
+                    '" value="' + escHtml(r.calories || '') + '" placeholder="' +
+                    tt('480', '480') + '" min="0" max="9999" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-alt-name-' + i + '">' +
+                    (LOCALE === 'es' ? 'Name (English)' : 'Name (Spanish)') +
+                  '</label>' +
+                  '<input type="text" id="md-alt-name-' + i + '" data-field="altName" data-i="' + i +
+                    '" value="' + escHtml(r.altName || '') + '" placeholder="' +
+                    (LOCALE === 'es' ? 'House bread' : 'Pan de la casa') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-alt-desc-' + i + '">' +
+                    (LOCALE === 'es' ? 'Description (English)' : 'Description (Spanish)') +
+                  '</label>' +
+                  '<input type="text" id="md-alt-desc-' + i + '" data-field="altDesc" data-i="' + i +
+                    '" value="' + escHtml(r.altDesc || '') + '" placeholder="' +
+                    tt('Translated description', 'Descripción traducida') + '" />' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -826,6 +865,25 @@
     meta.coverPage = !!metaCoverEl.checked;
     scheduleSaveDraft();
   });
+  // W14-2 — wire the address/hours/footer fields. Each writes to a
+  // meta.* key, debounces preview + draft save.
+  var metaFooterFields = [
+    ['mdMetaAddress',       'address'],
+    ['mdMetaHours',         'hours'],
+    ['mdMetaServiceCharge', 'serviceCharge'],
+    ['mdMetaSourcing',      'sourcing'],
+    ['mdMetaDisclaimer',    'disclaimer'],
+    ['mdMetaAskYourServer', 'askYourServer']
+  ];
+  metaFooterFields.forEach(function (pair) {
+    var el = document.getElementById(pair[0]);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      meta[pair[1]] = el.value || '';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  });
 
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper
@@ -998,12 +1056,38 @@
         html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        // W14-1 — portion + calories rendered as a small muted suffix.
+        var portionBits = [];
+        if (d.portion)  portionBits.push(escHtml(d.portion));
+        if (d.calories) portionBits.push(escHtml(d.calories) + ' cal');
+        if (portionBits.length) {
+          html += '<div class="md-pp-portion">' + portionBits.join(' &middot; ') + '</div>';
+        }
         if (pairing)  html += '<div class="md-pp-pairing">' + escHtml(pairing) + '</div>';
         if (modifier) html += '<div class="md-pp-modifier">' + escHtml(modifier) + '</div>';
         html += '</div>';
       });
     });
     if (isTwoCol) html += '</div>';
+
+    // W14-2 — restaurant contact + footer notes block. Renders before
+    // the allergen-key legend so the legal/sourcing/disclaimer copy
+    // sits below the menu but above the dietary key.
+    var hasFooter = meta.address || meta.hours || meta.serviceCharge || meta.sourcing || meta.disclaimer || meta.askYourServer;
+    if (hasFooter) {
+      html += '<footer class="md-pp-footer">';
+      if (meta.askYourServer) html += '<p class="md-pp-footer-prompt">' + escHtml(meta.askYourServer) + '</p>';
+      var contactBits = [];
+      if (meta.address) contactBits.push(escHtml(meta.address));
+      if (meta.hours)   contactBits.push(escHtml(meta.hours));
+      if (contactBits.length) html += '<p class="md-pp-footer-contact">' + contactBits.join(' &middot; ') + '</p>';
+      var noteBits = [];
+      if (meta.serviceCharge) noteBits.push(escHtml(meta.serviceCharge));
+      if (meta.sourcing)      noteBits.push(escHtml(meta.sourcing));
+      if (noteBits.length) html += '<p class="md-pp-footer-note">' + noteBits.join(' &middot; ') + '</p>';
+      if (meta.disclaimer) html += '<p class="md-pp-footer-disclaimer">' + escHtml(meta.disclaimer) + '</p>';
+      html += '</footer>';
+    }
 
     // W7-2 — auto-generated allergen-key legend at the menu footer.
     // Surfaces only when at least one dish carries a code; collects
@@ -1453,7 +1537,11 @@
         themeId: themeId,
         paperKey: paperKey,
         customDims: paperKey === 'custom' ? customDims : null,
-        meta: { tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage },
+        meta: {
+          tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage,
+          address: meta.address, hours: meta.hours, serviceCharge: meta.serviceCharge,
+          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer
+        },
         customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture },
         logoMeta: logoMeta,
         savedAt: Date.now()
@@ -1530,10 +1618,24 @@
           meta.tagline = d.meta.tagline || '';
           meta.story   = d.meta.story   || '';
           meta.coverPage = !!d.meta.coverPage;
+          // W14-2 — restore the new footer fields too.
+          meta.address       = d.meta.address       || '';
+          meta.hours         = d.meta.hours         || '';
+          meta.serviceCharge = d.meta.serviceCharge || '';
+          meta.sourcing      = d.meta.sourcing      || '';
+          meta.disclaimer    = d.meta.disclaimer    || '';
+          meta.askYourServer = d.meta.askYourServer || '';
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
-          if (meta.tagline || meta.story || meta.coverPage) {
+          metaFooterFields.forEach(function (pair) {
+            var fEl = document.getElementById(pair[0]);
+            if (fEl) fEl.value = meta[pair[1]] || '';
+          });
+          var hasMeta = meta.tagline || meta.story || meta.coverPage ||
+                        meta.address || meta.hours || meta.serviceCharge ||
+                        meta.sourcing || meta.disclaimer || meta.askYourServer;
+          if (hasMeta) {
             var metaEl = document.getElementById('mdMeta');
             if (metaEl) metaEl.open = true;
           }
@@ -2392,6 +2494,15 @@
         title:        title,
         tagline:      meta.tagline,
         story:        meta.story,
+        // W14-2 — restaurant footer fields
+        footer: {
+          address:       meta.address,
+          hours:         meta.hours,
+          serviceCharge: meta.serviceCharge,
+          sourcing:      meta.sourcing,
+          disclaimer:    meta.disclaimer,
+          askYourServer: meta.askYourServer
+        },
         coverPage:    !!meta.coverPage,
         paperTexture: !!customize.paperTexture,
         logoDataUrl:  logoUrl,

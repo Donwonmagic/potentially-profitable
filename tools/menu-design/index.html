@@ -93,6 +93,14 @@
 .md-meta-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
 .md-meta-field input,.md-meta-field textarea{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
 .md-meta-field input:focus,.md-meta-field textarea:focus{border-color:var(--teal);outline:none}
+/* W14-2 — nested meta-sub block (address/hours/footer fields) */
+.md-meta-sub{margin-top:8px;border-top:1px dashed var(--line);padding-top:10px}
+.md-meta-sub summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;padding:6px 0;min-height:36px}
+.md-meta-sub summary::-webkit-details-marker{display:none}
+.md-meta-sub summary::before{content:'+ ';color:var(--ink-soft)}
+.md-meta-sub[open] summary::before{content:'\2212  '}
+.md-meta-sub-body{padding:8px 0 0}
+
 /* W11-3 — cover-page toggle row */
 .md-meta-toggle{margin-top:6px}
 .md-meta-toggle-row{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);min-height:44px;line-height:1.45}
@@ -375,6 +383,8 @@
 .md-preview-paper .md-pp-pairing{grid-column:1/-1;color:var(--accent);font-size:0.78em;font-style:italic;margin-top:2px;line-height:1.45}
 .md-preview-paper .md-pp-pairing::before{content:'\2737  ';opacity:.7}
 .md-preview-paper .md-pp-modifier{grid-column:1/-1;color:var(--muted);font-size:0.78em;margin-top:1px;line-height:1.45;font-style:normal}
+/* W14-1 — portion + calories suffix */
+.md-preview-paper .md-pp-portion{grid-column:1/-1;color:var(--muted);font-size:0.74em;margin-top:1px;line-height:1.45;letter-spacing:.02em}
 .md-preview-paper .md-pp-half-price{font-size:0.86em;color:var(--muted);font-weight:400}
 /* W12-2 — section enrichments in preview */
 .md-preview-paper .md-pp-section-glyph{font-size:0.85em;color:var(--accent);margin-right:6px;font-weight:400}
@@ -562,6 +572,14 @@
 
 /* Auto-generated allergen key legend at the menu footer. Renders only
    when at least one dish carries a code. */
+/* W14-2 — restaurant footer (address, hours, sourcing, disclaimer). */
+.md-preview-paper .md-pp-footer{margin-top:30px;padding-top:14px;border-top:0.5px solid color-mix(in srgb,var(--ink) 22%,transparent);text-align:center;font-size:0.74em;color:var(--muted);line-height:1.6}
+.md-preview-paper .md-pp-footer p{margin:0 0 4px}
+.md-preview-paper .md-pp-footer-prompt{font-style:italic;color:var(--accent);font-size:0.92em}
+.md-preview-paper .md-pp-footer-contact{font-weight:600;color:var(--ink);font-size:0.96em}
+.md-preview-paper .md-pp-footer-note{font-size:0.92em}
+.md-preview-paper .md-pp-footer-disclaimer{font-size:0.86em;font-style:italic;margin-top:6px}
+
 .md-preview-paper .md-pp-allergen-key{margin-top:32px;padding-top:14px;border-top:0.6px solid color-mix(in srgb,var(--accent) 24%,transparent);font-size:0.78em;color:var(--muted);line-height:1.7}
 .md-preview-paper .md-pp-allergen-key-label{font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;font-size:0.92em;margin-right:8px}
 .md-preview-paper .md-pp-allergen-key-item{white-space:nowrap}
@@ -876,6 +894,38 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             <span><strong>Add a cover page</strong> <span class="md-meta-hint">— large display title + tagline + ornament. Recommended for upmarket / fine-dining themes.</span></span>
           </label>
         </div>
+
+        <!-- W14-2 — Restaurant contact + footer fields. All optional;
+             render at the very bottom of the menu when present. -->
+        <details class="md-meta-sub">
+          <summary>Address, hours, footer notes</summary>
+          <div class="md-meta-sub-body">
+            <div class="md-meta-field">
+              <label for="mdMetaAddress">Address</label>
+              <input type="text" id="mdMetaAddress" maxlength="200" placeholder="123 Main St · Anytown, USA · 555-0100" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaHours">Hours</label>
+              <input type="text" id="mdMetaHours" maxlength="200" placeholder="Tue–Sun · 5pm – 10pm · closed Mon" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaServiceCharge">Service / gratuity note</label>
+              <input type="text" id="mdMetaServiceCharge" maxlength="200" placeholder="20% gratuity included on parties of 6+" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaSourcing">Sourcing / origin note</label>
+              <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Sourced from farms within 100 miles of our kitchen" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaDisclaimer">Pricing / allergen disclaimer</label>
+              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Prices subject to change. Please notify your server of any allergies." autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaAskYourServer">Ask-your-server prompt</label>
+              <input type="text" id="mdMetaAskYourServer" maxlength="120" placeholder="Ask your server about today's market fish" autocomplete="off" />
+            </div>
+          </div>
+        </details>
       </div>
     </details>
 
@@ -1151,9 +1201,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w13-2"></script>
+<script src="./menu-render-pdf.js?v=20260501-w14-2"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w13-2"></script>
+<script src="./menu-design.js?v=20260501-w14-2"></script>
 </body>
 </html>

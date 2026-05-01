@@ -529,11 +529,21 @@
           pairing:  (r.pairing  || '').trim(), // W12-2
           modifier: (r.modifier || '').trim(), // W12-2
           halfPrice:(r.halfPrice|| '').trim(), // W12-2
+          portion:  (r.portion  || '').trim(), // W14-1 — portion size
+          calories: (r.calories || '').trim ? r.calories.trim() : (r.calories ? String(r.calories) : ''),
+          altName:  (r.altName  || '').trim(), // W14-1 — multilingual mirror
+          altDesc:  (r.altDesc  || '').trim(),
           firstOfSection: firstDishOfSection // W9-3 — drives drop-cap rendering
         });
         firstDishOfSection = false;
       }
     });
+    // W14-2 — restaurant contact + footer notes block. Surfaces only
+    // when at least one footer field is populated.
+    var ftr = opts.footer || {};
+    if (ftr.address || ftr.hours || ftr.serviceCharge || ftr.sourcing || ftr.disclaimer || ftr.askYourServer) {
+      blocks.push({ kind: 'meta-footer', footer: ftr });
+    }
     // W7-2 — append the auto-generated allergen-key legend at the
     // very bottom. Renderer no-ops if seenAllergens is empty.
     var keys = Object.keys(seenAllergens);
@@ -627,6 +637,17 @@
     // W11-3 — footer ornament block. Closes the menu visually with
     // a small cuisine-specific mark at center, ~40% opacity.
     if (block.kind === 'footer-ornament') return 36;
+    // W14-2 — restaurant footer (address / hours / sourcing /
+    // disclaimer). Compute height from how many lines populated.
+    if (block.kind === 'meta-footer') {
+      var ft = block.footer || {};
+      var lines = 0;
+      if (ft.askYourServer) lines += 1;
+      if (ft.address || ft.hours) lines += 1;
+      if (ft.serviceCharge || ft.sourcing) lines += 1;
+      if (ft.disclaimer) lines += 1;
+      return 14 + lines * theme.descPt * 1.5 + 4;
+    }
     // W7-2 — allergen-key legend block. Wraps onto multiple lines if
     // many codes present; reuse splitTextToSize with the rendered
     // string to get an honest height.
@@ -1108,6 +1129,18 @@
         doc.setFontSize(theme.bodyPt);
         doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       }
+      // W14-1 — portion + calories suffix under the dish name (muted).
+      var portionBits = [];
+      if (block.portion)  portionBits.push(block.portion);
+      if (block.calories) portionBits.push(block.calories + ' cal');
+      if (portionBits.length) {
+        doc.setFontSize(theme.descPt * 0.82);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(portionBits.join(' · '), x, nextY + theme.descPt * 0.9);
+        nextY += theme.descPt * 1.3;
+        doc.setFontSize(theme.bodyPt);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      }
       // W12-2 — pairing line (italic, accent color).
       if (block.pairing) {
         doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
@@ -1149,6 +1182,53 @@
         if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 }));
       } catch (_) {}
       return ornY + 18;
+    }
+    // W14-2 — restaurant meta footer. Top rule + 1-4 centered lines:
+    //   ask-your-server prompt (italic accent)
+    //   address · hours (bold)
+    //   service · sourcing (regular)
+    //   disclaimer (italic muted)
+    if (block.kind === 'meta-footer') {
+      var fy = y + 8;
+      doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      doc.setLineWidth(0.4);
+      doc.line(x, fy, x + contentWidth, fy);
+      var ft2 = block.footer || {};
+      var fyl = fy + 12;
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+      if (ft2.askYourServer) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt * 1.05);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.text(ft2.askYourServer, x + contentWidth / 2, fyl, { align: 'center' });
+        fyl += theme.descPt * 1.5;
+      }
+      if (ft2.address || ft2.hours) {
+        var contactStr = [ft2.address, ft2.hours].filter(Boolean).join(' · ');
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'bold');
+        doc.setFontSize(theme.descPt);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+        doc.text(contactStr, x + contentWidth / 2, fyl, { align: 'center' });
+        fyl += theme.descPt * 1.5;
+      }
+      if (ft2.serviceCharge || ft2.sourcing) {
+        var noteStr = [ft2.serviceCharge, ft2.sourcing].filter(Boolean).join(' · ');
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+        doc.setFontSize(theme.descPt * 0.95);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(noteStr, x + contentWidth / 2, fyl, { align: 'center' });
+        fyl += theme.descPt * 1.5;
+      }
+      if (ft2.disclaimer) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt * 0.88);
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(ft2.disclaimer, x + contentWidth / 2, fyl, { align: 'center' });
+        fyl += theme.descPt * 1.4;
+      }
+      doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+      doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      return fyl + 4;
     }
     // W7-2 — allergen-key legend at the menu footer. Top rule + small
     // wrapped text listing each code = label. Code is rendered in
@@ -1298,7 +1378,7 @@
       // Blocks that always span full width.
       if (block.kind === 'title' || block.kind === 'logo' ||
           block.kind === 'story' || block.kind === 'section' ||
-          block.kind === 'section-hero' ||
+          block.kind === 'section-hero' || block.kind === 'meta-footer' ||
           block.kind === 'allergen-key' || block.kind === 'footer-ornament') {
         return 'both';
       }
