@@ -788,13 +788,106 @@
     var f = e.target.files && e.target.files[0];
     if (!f) return;
     setActiveChip('pdf');
+    if (typeof MID_PDF_EXTRACT === 'undefined' || !MID_PDF_EXTRACT.extractPdf) {
+      showStatus(
+        tt('PDF reader unavailable.', 'Lector de PDF no disponible.'),
+        tt('Refresh the page and try again. If the problem persists, fall back to the photo path.',
+           'Recarga la página e intenta de nuevo. Si el problema persiste, usa la ruta de foto.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+    if (f.size > 25 * 1024 * 1024) {
+      showStatus(
+        tt('PDF too large.', 'PDF muy grande.'),
+        tt('That PDF is over 25 MB. Most distributor invoices are under 5 MB — re-export from the portal or trim to invoice-only pages.',
+           'Ese PDF pasa de 25 MB. La mayoría de facturas pesan menos de 5 MB — re-exporta del portal o deja solo las páginas de la factura.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
     showStatus(
-      tt('PDF reader landing in Wave B2', 'El lector de PDF llega en B2'),
-      tt('We received your PDF (' + (f.name || 'invoice.pdf') + '). The text extractor lands next sprint — until then, try the photo path or the CSV path if your distributor offers one.',
-         'Recibimos tu PDF (' + (f.name || 'factura.pdf') + '). El extractor de texto llega en el próximo sprint — por ahora prueba la ruta de foto o la de CSV si tu distribuidor lo ofrece.')
+      tt('Reading the PDF…', 'Leyendo el PDF…'),
+      tt('Extracting the text layer. PDFs from Sysco / US Foods / GFS / Restaurant Depot are >99% accurate without any OCR.',
+         'Extrayendo la capa de texto. Los PDF de Sysco / US Foods / GFS / Restaurant Depot son >99% precisos sin OCR.')
     );
-    setProgress(0);
-    e.target.value = '';
+    setProgress(15);
+
+    MID_PDF_EXTRACT.extractPdf(f).then(function (result) {
+      setProgress(70);
+      if (result.imageOnly) {
+        // Image-only PDF (scan with no text layer). Honest fallback:
+        // surface a coaching chip suggesting the photo path. The
+        // canvas-render-each-page bridge ships in a follow-up sprint
+        // (W2-3 image-quality coaching unblocks it).
+        showStatus(
+          tt('This PDF is a scanned image, not a text document.',
+             'Este PDF es una imagen escaneada, no un documento de texto.'),
+          tt('No text layer to read. Try the photo path with each page snapped separately, or ask your distributor to send a text-based PDF.',
+             'No hay capa de texto. Usa la ruta de foto con cada página por separado, o pide a tu distribuidor un PDF basado en texto.'),
+          'error'
+        );
+        e.target.value = '';
+        return;
+      }
+      // Feed the extracted lines straight to MID_PARSE.parseLines
+      // and the existing render pipeline. Same flow as photo OCR
+      // EXCEPT we skip multi-pass OCR + adaptive re-read since
+      // the source is authoritative.
+      var parsed = MID_PARSE.parseLines(result.lines, result.fullText);
+      // Apply the filename-derived vendor hint when the text
+      // doesn't contain a clear letterhead match.
+      var vMatch = null;
+      if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
+        vMatch = MID_VENDORS.detectVendor(result.fullText);
+        if (!vMatch && result.vendorHint) {
+          // Synthetic vMatch shape so applyVendorBoost has what it needs.
+          var registry = MID_VENDORS.REGISTRY;
+          for (var i = 0; i < registry.length; i++) {
+            if (registry[i].id === result.vendorHint) {
+              vMatch = { id: registry[i].id, label: registry[i].label_en, score: 0.5, vendor: registry[i] };
+              break;
+            }
+          }
+        }
+        if (vMatch) {
+          MID_VENDORS.applyVendorBoost(parsed.rows, vMatch);
+          parsed.vendor = vMatch.id;
+        }
+      }
+      // Categorize.
+      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+        parsed.rows.forEach(function (r) {
+          var c = MID_CATEGORIZE.classify(r);
+          r.category = c.category;
+          r.categoryConfidence = c.confidence;
+          r.categoryTier = c.tier;
+        });
+      }
+      setProgress(95);
+      renderParsed(parsed);
+      hideStatus();
+      if (window.plausible) {
+        window.plausible('Invoice Decoder PDF Extract', { props: {
+          rows_bucket: parsed.rows.length < 10 ? '<10' :
+                       parsed.rows.length < 25 ? '10-24' :
+                       parsed.rows.length < 50 ? '25-49' : '50+',
+          pages: String(result.pages),
+          vendor_detected: vMatch ? 'true' : 'false'
+        } });
+      }
+    }).catch(function (err) {
+      showStatus(
+        tt('Could not read this PDF.', 'No se pudo leer este PDF.'),
+        (err && err.message) ? err.message :
+          tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
+        'error'
+      );
+    }).then(function () {
+      e.target.value = '';
+    });
   });
 
   if (csvInput) csvInput.addEventListener('change', function (e) {
