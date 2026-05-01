@@ -714,7 +714,11 @@
       // Tiny SVG silhouette (proportional to paper).
       var thumbW = 48; var thumbH = Math.round(thumbW * (p.h / p.w));
       if (thumbH > 32) { thumbH = 32; thumbW = Math.round(thumbH * (p.w / p.h)); }
-      var thumb = '<svg class="md-paper-card-thumb" width="' + thumbW + '" height="' + thumbH + '" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
+      // W24-1 — drop the inline width/height; CSS already caps with
+      // max-width: 48px / max-height: 32px. Inline attrs prevented
+      // the silhouette from scaling down on narrower cards (post
+      // W24-1 grid change, paper cards can be < 150px wide).
+      var thumb = '<svg class="md-paper-card-thumb" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true" style="width:100%;max-width:48px;height:auto"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
       var orient = p.orient === 'landscape' ? 'LAND' : (p.orient === 'portrait' ? 'PORT' : '');
       var stockLabel = p.stock ? ('<span class="md-paper-card-stock">' + escHtml(p.stock) + '</span>') : '';
       return '<button type="button" class="md-paper-card" role="radio" aria-checked="' + checked + '" data-key="' + escHtml(k) + '">' +
