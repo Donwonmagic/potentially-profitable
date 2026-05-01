@@ -4181,6 +4181,13 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   font-family:var(--font-body);font-size:10px;font-weight:700;
   letter-spacing:0.14em;text-transform:uppercase;
   color:var(--teal);margin-bottom:8px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.see-also-time{
+  font-family:var(--font-body);font-size:10px;font-weight:500;
+  letter-spacing:0.06em;text-transform:none;
+  color:var(--stone);
+  padding-left:8px;border-left:1px solid var(--line);
 }
 .see-also-card h3{
   font-family:var(--font-display);

@@ -89,7 +89,7 @@ const STRINGS = {
     term_more_in_section: 'More in',
     term_final_eyebrow: 'Glossary',
     term_final_h2_l1: 'Browse all',
-    term_final_h2_l2: '97 terms.',
+    term_final_h2_l2: '<!-- count:glossary.terms -->135<!-- /count --> terms.',
     term_final_sub: 'Plain-English definitions for every term in your audit, organized by category.',
     term_final_btn: 'Open the full glossary',
     term_final_btn_alt: 'Back to the Library',
@@ -144,7 +144,7 @@ const STRINGS = {
     term_more_in_section: 'Más en',
     term_final_eyebrow: 'Glosario',
     term_final_h2_l1: 'Explora los',
-    term_final_h2_l2: '97 términos.',
+    term_final_h2_l2: '<!-- count:glossary.terms -->135<!-- /count --> términos.',
     term_final_sub: 'Definiciones en lenguaje claro para cada término en tu auditoría, organizadas por categoría.',
     term_final_btn: 'Abrir el glosario completo',
     term_final_btn_alt: 'Volver a la biblioteca',
@@ -228,13 +228,33 @@ const _metaCache = new Map();
 function pageMeta(file) {
   if (_metaCache.has(file)) return _metaCache.get(file);
   let html = '';
-  try { html = readFileSync(file, 'utf8'); } catch { return { title: '', dek: '' }; }
+  try { html = readFileSync(file, 'utf8'); } catch { return { title: '', dek: '', readMinutes: 0 }; }
   const titleM = html.match(/<title>([\s\S]*?)<\/title>/i);
   const descM = html.match(/<meta[^>]*\bname=["']description["'][^>]*\bcontent=["']([^"']*)["']/i)
              || html.match(/<meta[^>]*\bcontent=["']([^"']*)["'][^>]*\bname=["']description["']/i);
   const title = titleM ? decodeEntities(titleM[1]).replace(/\s*\|\s*Muntin Digital\s*$/, '').trim() : '';
   const dek = descM ? decodeEntities(descM[1]).trim() : '';
-  const out = { title, dek };
+  // Read-time estimate. Strip nav/footer/header/script/style/aside, then
+  // count words inside <article id="post-body"> (or fall back to <main>).
+  // 220 wpm is the median for adult silent reading on web prose.
+  let readMinutes = 0;
+  const articleM = html.match(/<article[^>]*id=["']post-body["'][^>]*>([\s\S]*?)<\/article>/i)
+                || html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+  if (articleM) {
+    const text = articleM[1]
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<aside[\s\S]*?<\/aside>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&[a-z]+;|&#?\w+;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (text) {
+      const words = text.split(' ').filter(Boolean).length;
+      readMinutes = Math.max(1, Math.round(words / 220));
+    }
+  }
+  const out = { title, dek, readMinutes };
   _metaCache.set(file, out);
   return out;
 }
@@ -554,7 +574,7 @@ function siteFooter() {
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a 97-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->135<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1417,11 +1437,15 @@ function relatedItemsFor(locale, sourceSlug, sourceTopics, existingHrefs = new S
     const overlap = (enMeta.topics || []).filter(tp => sourceTopicSet.has(tp)).length;
     if (!overlap) continue;
     const meta = getMeta(locale, 'blog', slug);
+    // Read-time always comes from the EN file (article length ~= across
+    // translations, and the EN file always exists for the EN slug).
+    const enReadMins = pageMeta(join(REPO, 'blog', slug, 'index.html')).readMinutes || 0;
     candidates.push({
       kind: 'article',
       url: pathFor(locale, `/blog/${slug}/`),
       title: meta.title,
       dek: meta.dek,
+      readMinutes: enReadMins,
       score: overlap,
       date: enMeta.date,
     });
@@ -1430,11 +1454,13 @@ function relatedItemsFor(locale, sourceSlug, sourceTopics, existingHrefs = new S
     const overlap = (enMeta.topics || []).filter(tp => sourceTopicSet.has(tp)).length;
     if (!overlap) continue;
     const meta = getMeta(locale, 'research', slug);
+    const enReadMins = pageMeta(join(REPO, 'learn/research', slug, 'index.html')).readMinutes || 0;
     candidates.push({
       kind: 'research',
       url: pathFor(locale, `/learn/research/${slug}/`),
       title: meta.title,
       dek: meta.dek,
+      readMinutes: enReadMins,
       score: overlap,
     });
   }
@@ -1447,6 +1473,8 @@ function relatedItemsFor(locale, sourceSlug, sourceTopics, existingHrefs = new S
       url: pathFor(locale, `/tools/${slug}/`),
       title: meta.title,
       dek: meta.dek,
+      // Tools don't carry a read-time — they're calculators, not articles.
+      readMinutes: 0,
       score: overlap,
     });
   }
@@ -1494,15 +1522,22 @@ function renderSeeAlso(locale, items) {
     research: t(locale, 'see_also_kind_research'),
     tool: t(locale, 'see_also_kind_tool'),
   };
-  const cards = items.map(it =>
-    `      <li>
+  // Localized "min read" suffix. Tools have no read-time, so we omit
+  // the pill there. Articles + research read on the EN file (length
+  // is approximately equal across translations).
+  const minReadSuffix = locale === 'es' ? 'min de lectura' : 'min read';
+  const cards = items.map(it => {
+    const timePill = it.readMinutes
+      ? ` <span class="see-also-time">${it.readMinutes} ${minReadSuffix}</span>`
+      : '';
+    return `      <li>
         <a class="see-also-card" href="${esc(it.url)}">
-          <span class="see-also-kind">${esc(kindLabel[it.kind] || '')}</span>
+          <span class="see-also-kind">${esc(kindLabel[it.kind] || '')}${timePill}</span>
           <h3>${esc(it.title)}</h3>
           <p>${esc(it.dek || '')}</p>
         </a>
-      </li>`
-  ).join('\n');
+      </li>`;
+  }).join('\n');
   return `<!-- LIBRARY:see-also:start -->
 <aside class="see-also" aria-labelledby="see-also-h">
   <p class="see-also-label" id="see-also-h">${esc(t(locale, 'see_also_label'))}</p>
