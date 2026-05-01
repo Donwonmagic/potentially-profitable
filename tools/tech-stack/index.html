@@ -64,6 +64,27 @@
   .ts-empty{font-size:15px;color:var(--stone);padding:20px;border:1px dashed var(--line-dark);border-radius:var(--r-sm);text-align:center}
   .ts-context{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:24px 0 0;padding:20px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
   .ts-context strong{color:var(--ink)}
+  .ts-platform-card{margin:0 0 24px;padding:22px 24px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:var(--r-input)}
+  .ts-platform-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  .ts-platform-name{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.2}
+  .ts-platform-grid{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
+  .ts-platform-grid dt{font-weight:600;color:var(--ink);font-size:13px;letter-spacing:.02em;text-transform:uppercase;align-self:start;padding-top:2px}
+  .ts-platform-grid dd{margin:0}
+  @media(max-width:560px){
+    .ts-platform-grid{grid-template-columns:1fr;gap:2px 0}
+    .ts-platform-grid dt{margin-top:10px;font-size:12px}
+  }
+  .ts-redundant{margin:0 0 24px;padding:14px 18px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-sm)}
+  .ts-redundant-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 8px}
+  .ts-redundant-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5}
+  .ts-redundant-list li{display:flex;flex-direction:column;gap:2px;color:var(--ink-soft)}
+  .ts-redundant-list strong{color:var(--ink)}
+  .ts-handoff{margin:24px 0 0;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white)}
+  .ts-handoff-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  .ts-handoff-body{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+  .ts-handoff-row{display:flex;flex-wrap:wrap;gap:8px 12px}
+  .ts-handoff-link{padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;background:var(--cream-2)}
+  .ts-handoff-link:hover{border-color:var(--teal);color:var(--teal)}
   /* Phase 2 (Workshop) — Save-to-Workbench. Recipe: docs/workbench-save-pattern.md. */
   .ts-save{margin-top:24px;padding:18px 22px;background:var(--surface-inset);border:1px solid var(--line);border-radius:var(--r-md);display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
   .ts-save[hidden]{display:none}
@@ -370,6 +391,7 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 (function(){
@@ -430,25 +452,172 @@
     ]}
   ];
 
-  // CMS context: what does this platform mean for the owner?
-  var CMS_CONTEXT={
-    'Wix':'<strong>Wix</strong> — a template builder. Easy to start, but has speed ceilings and limited customization. If you\'re hitting walls, a custom build may be the next step.',
-    'Squarespace':'<strong>Squarespace</strong> — polished templates, decent for simple sites. Limited booking integrations and slower mobile performance than custom builds.',
-    'WordPress':'<strong>WordPress</strong> — flexible and powerful, but requires maintenance (updates, security patches, plugin compatibility). You own the code.',
-    'Shopify':'<strong>Shopify</strong> — purpose-built for e-commerce. Overkill if you\'re not selling products online, but excellent if you are.',
-    'Webflow':'<strong>Webflow</strong> — a design tool with hosting. More flexible than Wix/Squarespace but with a steeper learning curve.',
-    'BentoBox':'<strong>BentoBox</strong> — built specifically for restaurants. Good integration story but you\'re on their platform.',
-    'Popmenu':'<strong>Popmenu</strong> — restaurant-specific with AI menu features. Platform lock-in applies.',
-    'Cloudflare Pages':'<strong>Cloudflare Pages</strong> — fast, modern hosting. Usually means a custom-built site.',
-    'Netlify':'<strong>Netlify</strong> — modern static/JAMstack hosting. Usually means a custom or developer-built site.',
-    'Vercel':'<strong>Vercel</strong> — modern hosting, often Next.js. Developer-built site.'
+  // Display name → canonical platform key for the cross-tool context
+  // bus. Other tools (speed-test, seo-grader, schema-check, audits)
+  // read mtn:platform via MuntinContext.get('platform') and route
+  // their fix copy on the value.
+  var PLATFORM_KEY={
+    'Wix':'wix',
+    'Squarespace':'squarespace',
+    'WordPress':'wordpress',
+    'Shopify':'shopify',
+    'Webflow':'webflow',
+    'BentoBox':'bentobox',
+    'Popmenu':'popmenu',
+    'Owner.com':'owner',
+    'GoDaddy Website Builder':'godaddy',
+    'Cloudflare Pages':'custom',
+    'Netlify':'custom',
+    'Vercel':'custom',
+    'Cloudflare Workers':'custom'
   };
+
+  // Structured "what this means for you" cards. Replaces the prior
+  // free-text paragraphs with four named beats per platform — owners
+  // see consistent answers to the same four questions for every CMS.
+  var PLATFORM_INFO={
+    'Wix':{
+      strength:'Fastest path from zero to a functioning site. The drag-and-drop editor is genuinely beginner-friendly.',
+      ceiling:'Speed ceiling on heavy pages, limited control over <head> and schema, image-optimization is automatic but not tunable.',
+      topFix:'Most fixes happen in Settings → Marketing & SEO → SEO Tools, or in the Editor with a click-and-edit. You rarely need code.',
+      switchAt:'Migrate when (a) Speed Test stays sub-50 after image compression, (b) you need integrations Wix doesn\'t support, or (c) the platform fees outpace what a custom rebuild would amortise in 18 months.'
+    },
+    'Squarespace':{
+      strength:'Polished templates with the cleanest typography of any builder. Good for portfolio-leaning restaurants.',
+      ceiling:'Limited booking integrations, slower mobile performance than custom, schema requires Code Injection rather than UI.',
+      topFix:'Settings → Advanced → Code Injection holds your <head> overrides; SEO fields live under each page\'s gear icon.',
+      switchAt:'Migrate when you need POS-tight ordering, multi-location, or rich-result schema beyond the built-in Restaurant block.'
+    },
+    'WordPress':{
+      strength:'Maximum flexibility — every plugin you can imagine exists. You own the code; nothing is locked behind a vendor.',
+      ceiling:'Maintenance burden (updates, security, plugin compatibility), and a slow theme can drag any site down regardless of hosting.',
+      topFix:'Most edit paths run through Pages/Posts → Edit; SEO fields live in Yoast/Rank Math/AIOSEO depending on what\'s installed.',
+      switchAt:'Stay on WordPress unless you\'re drowning in plugin maintenance or your theme can\'t hit Core Web Vitals after image + cache work.'
+    },
+    'Shopify':{
+      strength:'Purpose-built for e-commerce. Inventory, payments, taxes, shipping all integrate cleanly.',
+      ceiling:'Overkill for non-commerce restaurants — the cheapest plan still charges per-transaction fees and you pay for features you don\'t use.',
+      topFix:'Theme → Edit code surfaces the Liquid layer; Settings → Online store covers most non-code edits.',
+      switchAt:'Move off Shopify if you\'re not actually selling products online — a builder or custom site costs less and runs faster.'
+    },
+    'Webflow':{
+      strength:'Design control closer to custom code, with hosting and CMS bundled. Fast by default if you keep images lean.',
+      ceiling:'Steeper learning curve, no e-commerce parity with Shopify, third-party integrations sometimes require Zapier-style glue.',
+      topFix:'Designer for visual edits; Editor for client-facing copy edits without touching the design.',
+      switchAt:'Webflow is often the destination, not the origin — most owners arrive after outgrowing Wix/Squarespace.'
+    },
+    'BentoBox':{
+      strength:'Restaurant-specific by design — menu, online ordering, gift cards, reservations all built in.',
+      ceiling:'Platform lock-in. Migrating off means redoing every integration and losing built-in restaurant schemas.',
+      topFix:'Site editor handles most operator-facing edits; deeper changes require BentoBox support.',
+      switchAt:'Stay on BentoBox if the bundled features cover your needs. Move off when you\'re paying for features you don\'t use or hitting customization walls.'
+    },
+    'Popmenu':{
+      strength:'Restaurant-specific with AI menu and dish-detail features competitors don\'t offer.',
+      ceiling:'Platform lock-in plus monthly fees that can outpace a custom build over 2-3 years.',
+      topFix:'Most edits happen in the Popmenu admin; advanced changes route to support.',
+      switchAt:'Re-evaluate annually — the Popmenu features that justify the spend in year 1 may matter less in year 3.'
+    },
+    'Owner.com':{
+      strength:'Strong direct-ordering focus and aggressive feature velocity for small restaurants.',
+      ceiling:'Newer platform with less ecosystem; lock-in and pricing changes are real considerations.',
+      topFix:'Owner.com admin handles most edits; design customization is limited.',
+      switchAt:'Watch the math — if direct-ordering uplift covers the monthly fee, stay; if not, reconsider.'
+    },
+    'GoDaddy Website Builder':{
+      strength:'Cheap and bundled with domain/email if you\'re already a GoDaddy customer.',
+      ceiling:'Low ceiling on every front — speed, SEO, integrations, design. Hard to scale.',
+      topFix:'GoDaddy editor handles basic content; SEO fields live under each page\'s settings.',
+      switchAt:'Plan a migration soon — most restaurants outgrow GoDaddy Website Builder within the first year of trying to grow.'
+    },
+    'Cloudflare Pages':{
+      strength:'Modern static hosting — fast by default, free tier is generous, deploys via Git.',
+      ceiling:'Assumes a custom-built site; non-developers can\'t edit content without engineer intervention.',
+      topFix:'Edits happen in your Git repository or your headless CMS, not in a CMS UI.',
+      switchAt:'You\'re here because you (or your developer) chose this. The choice usually pays off in speed and control.'
+    },
+    'Netlify':{
+      strength:'Same JAMstack story as Cloudflare Pages — fast, modern, deploys via Git.',
+      ceiling:'Same as Cloudflare Pages: developer-leaning, not a UI-first builder.',
+      topFix:'Edits route through the Git repo or a headless CMS layer (Sanity, Contentful, Decap).',
+      switchAt:'Stay — the speed and control payoff is real. Watch build minutes if traffic spikes.'
+    },
+    'Vercel':{
+      strength:'Optimised for Next.js and modern frameworks. Excellent CDN performance and previews per branch.',
+      ceiling:'Same as Netlify/Cloudflare Pages: developer-only edit path.',
+      topFix:'Edits via Git; Vercel\'s preview deployments make stakeholder review unusually easy.',
+      switchAt:'Stay unless you outgrow the pricing — the developer-experience gap to alternatives is real.'
+    }
+  };
+
+  // Vendor pairs that, when both present, indicate the owner is
+  // probably paying for two solutions to the same problem. Surfaced
+  // as a callout so the operator can audit subscriptions.
+  var REDUNDANT_VENDORS=[
+    { both:['Toast','Square'],         label:'Toast + Square Payments',          why:'Two POS / payments platforms — independents typically use only one. If both fire, check whether one is a legacy contract you forgot to cancel.' },
+    { both:['OpenTable','Resy'],       label:'OpenTable + Resy',                 why:'Two reservation platforms running in parallel — possible during a migration, but otherwise you\'re paying twice for the same booking.' },
+    { both:['OpenTable','Tock'],       label:'OpenTable + Tock',                 why:'Two reservation platforms. Tock is usually used for prepaid / fixed-menu service; OpenTable for à la carte. Confirm both are intentional.' },
+    { both:['Resy','Tock'],            label:'Resy + Tock',                      why:'Two reservation platforms. Confirm both are intentional or pick one.' },
+    { both:['Google Analytics','Plausible'], label:'Google Analytics + Plausible', why:'Two analytics platforms. GA gives more data, Plausible respects privacy — you generally want one.' },
+    { both:['Stripe','Square Payments'],label:'Stripe + Square Payments',        why:'Two payment processors. Common during a migration; otherwise you\'re paying double processor fees on different routes.' }
+  ];
 
   function renderResult(payload){
     var groups=(payload&&payload.groups)||[];
     var html='';
+
+    // Surface "what this means for you" FIRST when we have a platform.
+    // Audit finding: the structured info card is the load-bearing
+    // value of this tool; the per-vendor list is supporting evidence.
+    var cmsGroup=groups.find(function(g){return g.cat==='CMS / Platform'});
+    var platformName=(cmsGroup&&cmsGroup.items.length)?cmsGroup.items[0]:null;
+    if(platformName&&PLATFORM_INFO[platformName]){
+      var info=PLATFORM_INFO[platformName];
+      html+='<div class="ts-platform-card">';
+      html+='<p class="ts-platform-eyebrow">What this means for you</p>';
+      html+='<h3 class="ts-platform-name">You\'re on '+platformName+'</h3>';
+      html+='<dl class="ts-platform-grid">';
+      html+='<dt>What it does well</dt><dd>'+info.strength+'</dd>';
+      html+='<dt>Where it hits a ceiling</dt><dd>'+info.ceiling+'</dd>';
+      html+='<dt>Top fix path (without leaving)</dt><dd>'+info.topFix+'</dd>';
+      html+='<dt>When to consider switching</dt><dd>'+info.switchAt+'</dd>';
+      html+='</dl></div>';
+
+      // Persist the canonical platform key for the rest of the suite.
+      // speed-test, seo-grader, schema-check, mobile-check, audits
+      // all read this and route their fix copy on it.
+      var key=PLATFORM_KEY[platformName];
+      if(key&&typeof MuntinContext!=='undefined'&&MuntinContext.merge){
+        try { MuntinContext.merge({ platform:key, lastUrl:(payload&&payload.url)||null }); } catch(_){ }
+      }
+    } else if(platformName){
+      // Detected platform we don't have an info card for. Still write
+      // the name to context if we have a key mapping; otherwise skip.
+      var fallbackKey=PLATFORM_KEY[platformName];
+      if(fallbackKey&&typeof MuntinContext!=='undefined'&&MuntinContext.merge){
+        try { MuntinContext.merge({ platform:fallbackKey, lastUrl:(payload&&payload.url)||null }); } catch(_){ }
+      }
+    } else if(groups.length>0&&typeof MuntinContext!=='undefined'&&MuntinContext.merge){
+      // No CMS platform detected but other vendors fired — likely a
+      // custom build. Mark accordingly so downstream tools know.
+      try { MuntinContext.merge({ platform:'custom', lastUrl:(payload&&payload.url)||null }); } catch(_){ }
+    }
+
+    // Redundant-vendor detector — find pairs from REDUNDANT_VENDORS
+    // where both vendors appear anywhere in the result.
+    var allItems={};
+    groups.forEach(function(g){ g.items.forEach(function(n){ allItems[n]=true; }); });
+    var redundancies=REDUNDANT_VENDORS.filter(function(rv){ return rv.both.every(function(v){ return allItems[v]; }); });
+    if(redundancies.length){
+      html+='<div class="ts-redundant"><p class="ts-redundant-eyebrow">You may be paying for two of these</p><ul class="ts-redundant-list">';
+      redundancies.forEach(function(rv){
+        html+='<li><strong>'+rv.label+'</strong><span>'+rv.why+'</span></li>';
+      });
+      html+='</ul></div>';
+    }
+
     if(groups.length===0){
-      html='<div class="ts-empty">We couldn\'t detect any known platforms. This might mean your site is custom-built — or the scan didn\'t pick up all resources. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
+      html+='<div class="ts-empty">We couldn\'t detect any known platforms. This often means your site is custom-built — which is a positive signal: you have full control of speed, schema, and integrations. Try the full <a href="/tools/audits/restaurant/" style="color:var(--teal)">industry audit</a> for a deeper look.</div>';
     } else {
       groups.forEach(function(g){
         html+='<div class="ts-group"><p class="ts-group-label">'+g.cat+'</p><div class="ts-items">';
@@ -457,17 +626,24 @@
         });
         html+='</div></div>';
       });
-      var cmsGroup=groups.find(function(g){return g.cat==='CMS / Platform'});
-      if(cmsGroup&&cmsGroup.items.length){
-        var ctx=CMS_CONTEXT[cmsGroup.items[0]];
-        if(ctx)html+='<div class="ts-context">'+ctx+'</div>';
-      }
     }
     if(groups.length>0){
       html+='<p style="font-size:13px;color:var(--stone);margin:16px 0 0;text-align:center;">This scan detects technologies loaded during the initial mobile page load. Some tools (lazy-loaded widgets, login-gated features) may not appear.</p>';
     }
+    // Cross-tool handoff: deep-link into the suite-specific tools that
+    // get more accurate now that we know the platform.
+    if(platformName){
+      html+='<div class="ts-handoff"><p class="ts-handoff-eyebrow">What this enables across the suite</p>';
+      html+='<p class="ts-handoff-body">Now that we know you\'re on '+platformName+', the Speed Test, SEO Grader, Schema Check, and Restaurant Audit can show platform-specific fix instructions instead of generic "ask your developer" copy.</p>';
+      html+='<div class="ts-handoff-row">';
+      html+='<a class="ts-handoff-link" href="/tools/speed-test/">Speed Test &rarr;</a>';
+      html+='<a class="ts-handoff-link" href="/tools/seo-grader/">SEO Grader &rarr;</a>';
+      html+='<a class="ts-handoff-link" href="/tools/schema-check/">Schema Check &rarr;</a>';
+      html+='<a class="ts-handoff-link" href="/tools/audits/restaurant/">Restaurant Audit &rarr;</a>';
+      html+='</div></div>';
+    }
     // Sprint 12b (cohesion) — Learn-back row, embedded in the rendered result.
-    html+='<aside class="learn-back" aria-label="What this scan tells you"><p class="learn-back-eyebrow">What this scan tells you</p><p class="learn-back-body">Your <a href="/glossary/hosting/">hosting</a> setup decides what you can and can\'t do — speed, ordering integration, schema, even how the menu renders on a slow connection. The <a href="/blog/wix-vs-custom-for-restaurants/">Wix-vs-custom playbook</a> walks through where each option runs out of room.</p></aside>';
+    html+='<aside class="learn-back" aria-label="What this scan tells you"><p class="learn-back-eyebrow">What this scan tells you</p><p class="learn-back-body">Your <a href="/glossary/hosting/">hosting</a> setup decides what you can and can\'t do — speed, ordering integration, schema, even how the menu renders on a slow connection. Most restaurants are best served by improving the platform they\'re on; migration is a real cost. <a href="/blog/wix-vs-custom-for-restaurants/">When migration makes sense</a>.</p></aside>';
     html+='<div class="ts-cta"><p>Want the full picture? The industry audits go deeper.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn btn-primary" href="/tools/audits/restaurant/">Restaurant audit</a></div></div>';
     result.innerHTML=html;
     result.classList.add('visible');

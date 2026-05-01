@@ -46,6 +46,14 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
+/* Inspiration banner — alimentado por handoff de Search Ideas. */
+.mc-inspiration{margin:0 0 16px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);background:var(--surface-1, var(--white))}
+.mc-inspiration[hidden]{display:none}
+.mc-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-inspiration-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mc-inspiration-chip{display:inline-block;padding:6px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+.mc-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+.mc-inspiration-note{margin:0;font-size:12.5px;color:var(--stone);line-height:1.45}
 .mc-form{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 @media(min-width:640px){.mc-form{grid-template-columns:1.6fr 1fr}}
 .mc-form-field{display:flex;flex-direction:column;gap:6px}
@@ -99,6 +107,36 @@
 .mc-action-head{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
 .mc-action-detail{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
 .mc-action-lift{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);float:right}
+.mc-action-tpl{margin-top:10px;padding:0;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2)}
+.mc-action-tpl[open]{padding-bottom:4px}
+.mc-action-tpl-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-action-tpl-summary::-webkit-details-marker{display:none}
+.mc-action-tpl-body{margin:0;padding:6px 12px 10px;font-size:13px;line-height:1.55;color:var(--ink-soft);white-space:pre-line}
+.mc-interview{margin-top:14px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1)}
+.mc-interview[hidden]{display:none}
+.mc-interview-summary{cursor:pointer;padding:12px 16px;font-size:13.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-interview-summary::-webkit-details-marker{display:none}
+.mc-interview-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.mc-interview[open] .mc-interview-summary::before{content:'− '}
+.mc-interview-body{padding:0 16px 16px}
+.mc-interview-help{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+.mc-interview-row{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+.mc-interview-row span{color:var(--ink)}
+.mc-interview-row small{color:var(--stone);font-weight:400;letter-spacing:0;font-size:11.5px;display:block;margin-top:2px;text-transform:none}
+.mc-interview-row input{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink)}
+.mc-interview-row input:focus{outline:none;border-color:var(--teal)}
+.mc-interview-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mc-interview-build{padding:9px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.mc-interview-build:hover{background:var(--teal);border-color:var(--teal)}
+.mc-interview-msg{font-size:12.5px;color:var(--rust);font-weight:500}
+.mc-interview-out{margin-top:14px;padding:12px 14px;border:1px solid var(--teal);border-radius:6px;background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+.mc-interview-out-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-interview-out-text{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0 0 12px;font-style:italic}
+.mc-interview-out-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mc-interview-use{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.mc-interview-use:hover{background:var(--ink);border-color:var(--ink)}
+.mc-interview-dismiss{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+.mc-interview-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
 
 .mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
@@ -151,6 +189,18 @@
 
 /* Pattern Explorer — the educational core, visible when no item is loaded. */
 .mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+.mc-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.mc-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.mc-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+.mc-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.mc-ba-row{margin:0 0 10px}
+.mc-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+.mc-ba-text{font-size:14.5px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+.mc-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+.mc-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+.mc-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+.mc-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
 .mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
 .mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
 .mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
@@ -415,6 +465,18 @@
 </div></section>
 
 <section class="block"><div class="container">
+  <!-- Inspiration banner — populated when an inbound link from Search
+       Ideas carries a #queries= list. Hidden on first paint and on any
+       direct visit. The banner shows the queries the owner picked
+       upstream so they can write copy that uses the words customers
+       actually search. Pure read-only surface; clicking a chip drops
+       the term into the dish-name input as a starter. -->
+  <div class="mc-inspiration" id="mcInspiration" hidden>
+    <p class="mc-inspiration-eyebrow">Search words customers used</p>
+    <ul class="mc-inspiration-chips" id="mcInspirationChips"></ul>
+    <p class="mc-inspiration-note">From Search Ideas. Tap a chip to drop it into the dish name as a starting point.</p>
+  </div>
+
   <div class="mc-input">
     <div class="mc-modes" role="tablist" aria-label="Input mode">
       <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Single dish</button>
@@ -468,9 +530,9 @@
         <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px;">Annotated description</h2>
         <div class="mc-annotated" id="mcAnnotated" aria-live="polite"></div>
         <div class="mc-legend" aria-hidden="true">
-          <span><i data-kind="sensory"></i> Sensory adjective</span>
-          <span><i data-kind="provenance"></i> Provenance signal</span>
-          <span><i data-kind="technique"></i> Technique</span>
+          <span><i data-kind="sensory"></i> Taste &amp; feel words <small>(sensory)</small></span>
+          <span><i data-kind="provenance"></i> Where it&rsquo;s from <small>(provenance)</small></span>
+          <span><i data-kind="technique"></i> How it&rsquo;s made <small>(technique)</small></span>
           <span><i data-kind="hedge"></i> Hedge (drag)</span>
         </div>
       </div>
@@ -487,6 +549,40 @@
     <div class="mc-scorecard">
       <div class="mc-verdict" id="mcVerdict"></div>
       <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
+      <!-- "Interview me" drawer — appears when verdict fires "rewrite".
+           Three plain-language questions surface what the owner
+           actually knows about the dish; then a button synthesizes
+           a starter description in their voice for them to react to. -->
+      <details class="mc-interview" id="mcInterview" hidden>
+        <summary class="mc-interview-summary">Stuck on what to write? Interview yourself in 30 seconds &rarr;</summary>
+        <div class="mc-interview-body">
+          <p class="mc-interview-help">Three questions. Answer in plain words — we synthesize a starter description you can react to (cut, tweak, replace).</p>
+          <label class="mc-interview-row">
+            <span>What's the hero ingredient?</span>
+            <input type="text" id="mcIvHero" placeholder="e.g. salmon, ricotta, short rib" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>Where does it come from? <small>(a farm, a region, a specific source — optional)</small></span>
+            <input type="text" id="mcIvSource" placeholder="e.g. Whitmore Farm / North Atlantic / our garden" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>What technique or treatment tells the kitchen's story?</span>
+            <input type="text" id="mcIvTech" placeholder="e.g. hand-rolled, salt-baked, dry-aged 30 days, smoked over apple wood" autocomplete="off" />
+          </label>
+          <div class="mc-interview-actions">
+            <button type="button" class="mc-interview-build" id="mcIvBuild">Build me a starter &rarr;</button>
+            <span class="mc-interview-msg" id="mcIvMsg" aria-live="polite"></span>
+          </div>
+          <div class="mc-interview-out" id="mcIvOut" hidden>
+            <p class="mc-interview-out-eyebrow">Starter (yours to edit)</p>
+            <p class="mc-interview-out-text" id="mcIvOutText"></p>
+            <div class="mc-interview-out-actions">
+              <button type="button" class="mc-interview-use" id="mcIvUse">Use this &rarr;</button>
+              <button type="button" class="mc-interview-dismiss" id="mcIvDismiss">Dismiss</button>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
   <div class="mc-save" id="mcSave" hidden>
@@ -538,6 +634,55 @@
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">The six patterns the Inspector watches for</h2>
     <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Read these once and you'll start seeing them in your own menu. Read them ten times and you won't need this tool. Each card lists the actual lexicon the rules engine uses; everything is open-source in <code>/tools/menu-copy/menu-copy.js</code>.</p>
     <div class="mc-explorer" id="mcExplorer" aria-label="Pattern Explorer card grid"></div>
+  </div>
+</div></section>
+
+<section class="block" id="mcBeforeAfter"><div class="container">
+  <div style="max-width:900px;margin:0 auto;">
+    <span class="eyebrow">What good looks like</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Before &amp; after — three real-shape rewrites</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">Same dish, same length, same vocabulary the cook uses every day. The difference: one or two more sensory words, the producer named, and the hedge cut. None of these are "writerly" — they're things the line cook can describe out loud.</p>
+    <div class="mc-ba-grid">
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">House salad</span><span class="mc-ba-axis">Add 1 sensory word · cut hedges</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Our nice fresh delicious house salad — just simply our best.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Crunchy little gems with shaved breakfast radish, lemon, and a buttermilk dressing we make every morning.</p>
+        </div>
+        <p class="mc-ba-note">Cut: <em>nice / fresh / delicious / just / simply / our best</em> (six hedges). Added: <em>crunchy</em> (sensory), <em>little gems</em> (variety), <em>breakfast radish</em> (specific produce), <em>every morning</em> (technique).</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Roast chicken</span><span class="mc-ba-axis">Name the producer · name the technique</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Half a chicken with potatoes and seasonal vegetables.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Half a Path Valley chicken, brined overnight and roasted on the bone, with crisped fingerlings and pan jus.</p>
+        </div>
+        <p class="mc-ba-note">Added: <em>Path Valley</em> (provenance — name the farm), <em>brined overnight / roasted on the bone</em> (technique), <em>crisped / pan jus</em> (sensory + technique). Same proteins, same vegetables, same plate cost.</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Tonnarelli al pepe</span><span class="mc-ba-axis">One sensory swap</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Before</p>
+          <p class="mc-ba-text mc-ba-before">Hand-rolled tonnarelli with pecorino and pepper.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">After</p>
+          <p class="mc-ba-text mc-ba-after">Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.</p>
+        </div>
+        <p class="mc-ba-note">Two-word change. <em>Smoky</em> and <em>cracked</em> are both sensory; together they take a 7-word description from "fine" to "I want that." Read it out loud — the rhythm is the point.</p>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">These are pattern illustrations, not your menu. The Inspector never writes for you — it points at directions. The rewrite is yours, or your line cook's, or whoever knows what makes the dish sing.</p>
   </div>
 </div></section>
 
@@ -795,6 +940,74 @@
   var axesEl    = document.getElementById('mcAxes');
   var actionsEl = document.getElementById('mcActions');
 
+  // "Interview me" wiring — synthesizes a starter description from
+  // three plain-language inputs (hero / source / technique). The
+  // pattern: "[Technique] [hero] [from source]." with a sensory
+  // capper appropriate to the dish category. Owners react to a
+  // concrete starter much faster than they generate one cold.
+  var ivBuildBtn = document.getElementById('mcIvBuild');
+  var ivOutEl    = document.getElementById('mcIvOut');
+  var ivOutText  = document.getElementById('mcIvOutText');
+  var ivUseBtn   = document.getElementById('mcIvUse');
+  var ivDismiss  = document.getElementById('mcIvDismiss');
+  var ivMsg      = document.getElementById('mcIvMsg');
+  function buildInterviewStarter() {
+    var hero   = (document.getElementById('mcIvHero')   || {}).value || '';
+    var source = (document.getElementById('mcIvSource') || {}).value || '';
+    var tech   = (document.getElementById('mcIvTech')   || {}).value || '';
+    hero = hero.trim(); source = source.trim(); tech = tech.trim();
+    if (!hero) return '';
+    // Compose: prefer "Technique hero" if technique present and the
+    // hero word doesn't already start with the technique.
+    var lead = tech ? (tech.charAt(0).toUpperCase() + tech.slice(1) + ' ' + hero) : (hero.charAt(0).toUpperCase() + hero.slice(1));
+    var body = '';
+    if (source) {
+      // "from {source}" if source looks like a place; "with {source}"
+      // looks more natural for things like "house garlic." Use "from"
+      // when we see 'farm', 'region', 'co.', a state abbreviation, or
+      // a comma; "with" otherwise.
+      body = / farm| region| co\.| dairy|,| valley| coast/i.test(source) ? ' from ' + source : ' from ' + source;
+    }
+    var sentence1 = lead + body + '.';
+    // Sensory capper — generic but reliable for non-cuisine-specific
+    // dishes. Owners trim if it doesn't fit.
+    var sensory = ' Bright with one finishing touch — fresh herb, citrus oil, or a flake of finishing salt.';
+    return sentence1 + sensory;
+  }
+  if (ivBuildBtn) {
+    ivBuildBtn.addEventListener('click', function () {
+      var hero = (document.getElementById('mcIvHero') || {}).value || '';
+      if (!hero.trim()) {
+        if (ivMsg) { ivMsg.textContent = 'Tell me at least the hero ingredient.'; setTimeout(function(){ ivMsg.textContent=''; }, 2400); }
+        var f = document.getElementById('mcIvHero'); if (f) f.focus();
+        return;
+      }
+      var starter = buildInterviewStarter();
+      if (!starter) return;
+      if (ivOutText) ivOutText.textContent = starter;
+      if (ivOutEl) ivOutEl.hidden = false;
+    });
+  }
+  if (ivUseBtn) {
+    ivUseBtn.addEventListener('click', function () {
+      var t = ivOutText && ivOutText.textContent;
+      if (!t || !descEl) return;
+      descEl.value = t;
+      // Fire input so the live analyzer re-runs.
+      descEl.dispatchEvent(new Event('input', { bubbles: true }));
+      // Move focus to the textarea so the owner can edit immediately.
+      descEl.focus();
+      // Scroll the input into view; the result re-renders below.
+      descEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (ivMsg) { ivMsg.textContent = 'Loaded into the description above. Edit until it sounds like you.'; setTimeout(function(){ ivMsg.textContent=''; }, 3200); }
+    });
+  }
+  if (ivDismiss) {
+    ivDismiss.addEventListener('click', function () {
+      if (ivOutEl) ivOutEl.hidden = true;
+    });
+  }
+
   var sampleCursor = 0;
   var firstAnalysisFired = false;
 
@@ -883,6 +1096,23 @@
       '<span class="mc-verdict-pill" data-v="' + v + '">' + v + '</span>' +
       '<span class="mc-verdict-score">' + scored.score + '<span style="font-size:13px;color:var(--stone);font-weight:400;">/100</span></span>' +
       '<span class="mc-verdict-text">' + escHtml(cmt) + '</span>';
+    // "Interview me" — auto-reveal when the verdict is rewrite. The
+    // drawer stays user-controlled (collapsed by default) for edit
+    // and polish so we don't shove it in front of a working draft.
+    var iv = document.getElementById('mcInterview');
+    if (iv) {
+      if (v === 'rewrite') {
+        iv.hidden = false;
+        if (!iv.__autoOpened) {
+          iv.setAttribute('open', '');
+          iv.__autoOpened = true;
+        }
+      } else {
+        iv.hidden = true;
+        iv.removeAttribute('open');
+        iv.__autoOpened = false;
+      }
+    }
   }
 
   function paintAxes(scored){
@@ -895,20 +1125,20 @@
     var sCats = scored.sensory.categoriesUsed;
     var sCount = scored.sensory.count;
     rows.push(axis(
-      'Sensory',
+      'Taste & feel words',
       sCount + ' word' + (sCount === 1 ? '' : 's') + ' · ' + sCats + '/4 categories',
-      sCats === 0 ? 'No sensory adjectives — this is the highest-leverage move.' :
+      sCats === 0 ? 'No sensory words — this is the highest-leverage move.' :
       sCats < 2  ? 'Reaching one more category compounds the lift.' :
                    'Solid sensory base across multiple dimensions.'
     ));
     rows.push(axis(
-      'Provenance',
+      "Where it's from",
       scored.provenance.count + ' signal' + (scored.provenance.count === 1 ? '' : 's'),
       scored.provenance.count === 0 ? 'No origin or producer named — adding one carries 13–20% lift.' :
                                       'Concrete origin signals are present.'
     ));
     rows.push(axis(
-      'Technique',
+      "How it's made",
       scored.technique.count + ' word' + (scored.technique.count === 1 ? '' : 's'),
       scored.technique.count === 0 ? 'Nothing tells the diner what was DONE to the food.' :
                                      'Technique words communicate competence.'
@@ -923,7 +1153,7 @@
                                                 'Too long — attention drops past the range.'
     ));
     rows.push(axis(
-      'Hedges',
+      'Filler words',
       scored.hedges.count + ' flagged',
       scored.hedges.count === 0 ? 'No filler words detected.' :
       scored.hedges.hits.map(function(h){ return h.word; }).join(', ')
@@ -947,9 +1177,19 @@
       return;
     }
     actionsEl.innerHTML = moves.map(function(m){
+      var tplHtml = '';
+      if (m.template) {
+        tplHtml =
+          '<details class="mc-action-tpl">' +
+            '<summary class="mc-action-tpl-summary">' + escHtml(m.templateLabel || 'Show me an example') + ' &rarr;</summary>' +
+            '<p class="mc-action-tpl-body">' + escHtml(m.template) + '</p>' +
+          '</details>';
+      }
       return '<div class="mc-action" data-lift="' + m.lift + '">' +
              '<p class="mc-action-head"><span class="mc-action-lift">' + m.lift + ' lift</span>' + escHtml(m.headline) + '</p>' +
-             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p></div>';
+             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p>' +
+             tplHtml +
+             '</div>';
     }).join('');
   }
 
@@ -1113,6 +1353,63 @@
     priceEl.addEventListener(ev, rerender);
     tierEl.addEventListener(ev, rerender);
   });
+
+  // Cross-tool fragment hydration. Two shapes:
+  //   /tools/menu-copy/#name=Tonnarelli&desc=…&price=24   (Menu Engineering Puzzle handoff)
+  //   /tools/menu-copy/#queries=pasta%20al%20pepe%0Avegan%20brunch  (Search Ideas multi-select)
+  //
+  // The name/desc/price keys pre-fill the single-dish form (only
+  // empty fields are seeded). The queries key opens an inspiration
+  // banner above the form with each query as a clickable chip; tapping
+  // a chip drops it into the dish-name input as a starter so the
+  // owner can begin re-describing with the words customers used.
+  (function hydrateFromHash(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var seeded = false;
+    var queriesRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      var k = pair.slice(0, eq);
+      var v;
+      try { v = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { v = pair.slice(eq + 1); }
+      if (!v) return;
+      if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
+      if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
+      if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+      if (k === 'queries') queriesRaw = v;
+    });
+    if (queriesRaw) {
+      var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+      var insp = document.getElementById('mcInspiration');
+      var chipsEl = document.getElementById('mcInspirationChips');
+      if (insp && chipsEl && queries.length) {
+        chipsEl.innerHTML = '';
+        queries.slice(0, 12).forEach(function(q){
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mc-inspiration-chip';
+          btn.textContent = q;
+          btn.addEventListener('click', function(){
+            if (nameEl) {
+              nameEl.value = q;
+              try { nameEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+              try { nameEl.focus(); } catch (_) {}
+            }
+          });
+          li.appendChild(btn);
+          chipsEl.appendChild(li);
+        });
+        insp.hidden = false;
+      }
+    }
+    if (seeded) {
+      rerender();
+    }
+  })();
 
   // ----- Mode switching (Single / Whole menu) -----
   var modeBtns = document.querySelectorAll('.mc-mode-btn');

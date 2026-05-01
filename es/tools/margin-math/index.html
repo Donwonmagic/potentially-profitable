@@ -82,6 +82,22 @@
   .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
   .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
   .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
+  .mm-num-input{width:80px;text-align:right;font-variant-numeric:tabular-nums}
+  .mm-num-input--wide{width:160px}
+  .mm-num-row{display:flex;align-items:center;gap:6px}
+  .mm-num-prefix{font-size:18px;color:var(--stone);font-weight:600}
+  .mm-pnl{padding:22px 24px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--surface-1);margin:0 0 24px;display:flex;flex-direction:column;gap:14px}
+  .mm-pnl h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .mm-pnl p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .mm-pnl-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0}
+  .mm-pnl-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-pnl-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mm-pnl-btn{padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .mm-pnl-btn:hover{background:var(--teal);border-color:var(--teal)}
+  .mm-pnl-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-pnl-msg.error{color:var(--rust)}
+  .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
@@ -660,6 +676,41 @@
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
     </button>
   </div>
+  <!-- "¿Tienes el P&L? Empieza aquí" — cinco números en dólares
+       de tu último mes pre-cargan las cuatro calculadoras para que
+       no calcules cuatro porcentajes a mano antes de usar la
+       herramienta. Auditoría P0. -->
+  <article class="mm-pnl" id="mmPnl">
+    <div class="mm-card-header">
+      <span class="mm-card-eyebrow">Atajo opcional</span>
+      <span class="mm-badge-safe" title="Se queda en tu navegador. Misma promesa de privacidad que las calculadoras.">Se queda en tu navegador</span>
+    </div>
+    <h3>¿Tienes el P&amp;L? Empieza aquí.</h3>
+    <p>Cinco números del mes pasado — las líneas de un estado de cuenta o P&amp;L. Calculamos los porcentajes y pre-cargamos las cuatro calculadoras. Te ahorra la matemática mental.</p>
+    <form class="mm-pnl-form" onsubmit="return false;" aria-label="Atajo de P&amp;L">
+      <label for="pnl-sales"><span>Ventas mensuales</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-sales" min="0" step="100" placeholder="24000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-food"><span>Costo mensual de alimentos</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-food" min="0" step="100" placeholder="7200" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-labor"><span>Costo mensual de mano de obra</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-labor" min="0" step="100" placeholder="7680" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-fixed"><span>Costos fijos mensuales <small style="color:var(--stone);font-weight:400;">renta + seguros + préstamo + SaaS</small></span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-fixed" min="0" step="100" placeholder="6000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-check"><span>Ticket promedio</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-check" min="0" step="0.5" placeholder="35" inputmode="decimal" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+    </form>
+    <div class="mm-pnl-actions">
+      <button type="button" class="mm-pnl-btn" id="mmPnlApply">Pre-cargar las cuatro calculadoras &rarr;</button>
+      <span class="mm-pnl-msg" id="mmPnlMsg" aria-live="polite"></span>
+    </div>
+    <p class="mm-pnl-foot">El margen de contribución asume <code>(ventas − alimentos − mano de obra × 0.4) ÷ ventas</code> — la parte variable de la mano de obra es ~40%, el resto es salariada/fija. Ajusta el slider en Calc 3 o 4 si tu mezcla es distinta.</p>
+  </article>
+
   <div class="mm-grid" aria-label="Calculadoras">
     <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
@@ -759,7 +810,7 @@
         <span class="mm-badge-safe" title="Cada número que escribes se procesa en tu navegador. Nada se envía a nuestros servidores.">Se queda en tu navegador</span>
       </div>
       <h3>Chequeo de prime cost</h3>
-      <p>Dos entradas — <a href="/es/glossary/#food-cost" data-term="Food cost" data-def="Costo de los ingredientes como porcentaje de las ventas que generan. 28–35% es típico para independientes de servicio completo; más bajo en concepts con fuerte barra, más alto en conceptos con mucha materia prima." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">food cost</a> y <a href="/es/glossary/#labor-cost" data-term="Labor cost" data-def="Sueldos + impuestos de nómina + aporte de empleados de propina como porcentaje de las ventas. Incluye front-of-house y back-of-house; no incluye salario gerencial (suele ir aparte)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">labor cost</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" data-term="Prime cost" data-def="Food cost + labor cost combinados. La línea más observada en las finanzas de un restaurante — 55–65% es la franja saludable de la NRA para independientes de servicio completo. Más alta para fine-dining, más apretada arriba en fast-casual." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">prime cost</a> según tu tipo de restaurante. Servicio completo va en 55–65%; fast-casual se aprieta en el tope; fine-dining corre naturalmente más alto.</p>
+      <p>Dos entradas — <a href="/es/glossary/#food-cost" data-term="Costo de alimentos (food cost)" data-def="Costo de los ingredientes como porcentaje de las ventas que generan. 28–35% es típico para independientes de servicio completo; más bajo en conceptos con fuerte barra, más alto en conceptos con mucha materia prima." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">costo de alimentos</a> y <a href="/es/glossary/#labor-cost" data-term="Costo de mano de obra (labor cost)" data-def="Sueldos + impuestos de nómina + aporte de empleados de propina como porcentaje de las ventas. Incluye salón y cocina; no incluye salario gerencial (suele ir aparte)." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">costo de mano de obra</a> como porcentajes de ventas — contra la franja saludable del <a href="/es/glossary/#prime-cost" data-term="Costo primario (prime cost)" data-def="Costo de alimentos + costo de mano de obra combinados. La línea más observada en las finanzas de un restaurante — 55–65% es la franja saludable de la NRA para independientes de servicio completo. Más alta para alta cocina, más apretada arriba en casual rápido." style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none;">costo primario</a> según tu tipo de restaurante. Servicio completo va en 55–65%; el casual rápido se aprieta en el tope; la alta cocina corre naturalmente más alta.</p>
       <p style="font-size:13px;color:var(--stone);margin:0 0 12px;line-height:1.5;background:var(--cream-2);padding:10px 14px;border-radius:var(--r-sm);">¿No tienes un costo de alimento real todavía? La <a href="/es/tools/plate-cost/" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px dashed currentColor;">Calculadora de Costo del Plato</a> lo construye desde tus recetas, plato por plato.</p>
 
       <form class="mm-form" onsubmit="return false;" aria-label="Chequeo de prime cost">
@@ -767,16 +818,16 @@
           <legend>Tipo de restaurante</legend>
           <div class="mm-tier-btns" role="radiogroup" aria-label="Tipo de restaurante">
             <button type="button" data-segment="full-service" aria-pressed="true"  role="radio">Servicio completo<small>55–65%</small></button>
-            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Fast-casual<small>55–65%</small></button>
-            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
+            <button type="button" data-segment="fast-casual"  aria-pressed="false" role="radio">Casual rápido<small>55–65%</small></button>
+            <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Alta cocina<small>60–70%</small></button>
           </div>
         </fieldset>
         <label for="pc-food">
-          <span>Food cost (% de ventas) <output id="pc-food-val" for="pc-food">30%</output></span>
+          <span>Costo de alimentos (% de ventas) <output id="pc-food-val" for="pc-food">30%</output></span>
           <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
         </label>
         <label for="pc-labor">
-          <span>Labor cost (% de ventas) <output id="pc-labor-val" for="pc-labor">32%</output></span>
+          <span>Costo de mano de obra (% de ventas) <output id="pc-labor-val" for="pc-labor">32%</output></span>
           <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
         </label>
       </form>
@@ -975,8 +1026,8 @@
   <p class="mm-benchmarks">
     Benchmarks revisados por última vez el <time datetime="2026-04-24">24 de abril de 2026</time> &middot;
     Niveles de comisión de DoorDash (15 / 25 / 30%) &middot;
-    Franja saludable de prime cost NRA 55&ndash;65% servicio completo (mediana, independientes US) &middot;
-    fast-casual 60&ndash;68%, fine-dining 65&ndash;75% &middot;
+    Franja saludable de costo primario NRA 55&ndash;65% servicio completo (mediana, independientes US) &middot;
+    casual rápido 60&ndash;68%, alta cocina 65&ndash;75% &middot;
     Procesamiento directo 3% (Stripe / Toast / Square con tarjeta presente, 2026).
     Las franjas son tendencias centrales, no absolutos &mdash; tu geografía, temporada y concepto legítimamente te empujan 2&ndash;3 puntos en cualquier dirección.
     Fuentes citadas en <a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a>
@@ -1015,9 +1066,9 @@
     <div class="tool-deep-grid">
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/prime-cost/">
           <span class="tool-deep-kind">Glosario</span>
-          <h3>Prime cost</h3>
-          <p class="tool-deep-aka">food cost + labor cost, como % de ventas</p>
-          <p class="tool-deep-snippet">Tu food cost más tu labor cost, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70% es o…</p>
+          <h3>Costo primario (prime cost)</h3>
+          <p class="tool-deep-aka">costo de alimentos + costo de mano de obra, como % de ventas</p>
+          <p class="tool-deep-snippet">Tu costo de alimentos más tu costo de mano de obra, expresado como porcentaje de ventas. Los independientes saludables caen entre 55–65%; por encima de 70% es o…</p>
           <span class="tool-deep-cta">Leer la definición <span aria-hidden="true">→</span></span>
         </a>
       <a class="tool-deep-card tool-deep-card-term" href="/es/glossary/break-even/">
@@ -1115,6 +1166,27 @@
   // compartidos (food cost, ticket promedio, margen de contribución)
   // entre calculadoras cuando una tiene el valor y otra no.
   window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  // Si el fragmento llega con datos para una calculadora específica,
+  // hace scroll a esa tarjeta para que el dueño aterrice donde lo
+  // mandó el enlace, no al inicio de la página.
+  (function(){
+    var hyd = window.__mmHydratedState || {};
+    var nsToCalc = { dbe: 'calc-delivery', pc: 'calc-primecost', bec: 'calc-breakeven', pr: 'calc-priceraise' };
+    var firstNs = null;
+    ['dbe','pc','bec','pr'].forEach(function(ns){
+      if (firstNs) return;
+      if (hyd[ns] && Object.keys(hyd[ns]).length) firstNs = ns;
+    });
+    if (!firstNs) return;
+    var targetId = nsToCalc[firstNs];
+    if (!targetId) return;
+    setTimeout(function(){
+      var el = document.getElementById(targetId);
+      if (!el) return;
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch (_) { el.scrollIntoView(); }
+    }, 80);
+  })();
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;
@@ -1604,9 +1676,9 @@
   var REC_COPY = {
     'below': 'Debajo de 55% es muy apretado. Verifica que cada costo esté capturado — productos de papel, porciones, merma, impuestos de nómina, aporte de propinas. Si todo está dentro y aún estás aquí, operas muy eficiente; documenta el sistema que te llevó aquí.',
     'good':  'En el punto dulce donde tienden a caer los independientes que duran. No te relajes — revisa semanalmente. Un mes malo con un proveedor o un incidente de personal te mueve a los 60.',
-    'ok':    'Aceptable pero amarillo. 60-65% no tiene colchón — un alza de costo y estás arriba de la franja saludable. Aprieta una categoría este mes: food cost (spec de porción, log de merma) o labor (ajuste de horarios, cross-training).',
-    'warn':  'Zona de presión. Entre 65-70% todavía tienes espacio, pero no mucho. El primer movimiento típico es labor de back-of-house (más rápido de ajustar que food cost), después una revisión de menú sobre los ítems de menor margen.',
-    'bad':   'Arriba de 70% es insostenible sin intervención. Orden típico de reparación: labor primero (palanca más rápida), después re-ingeniería de tus 3-5 ítems de menor margen, después una auditoría de proveedores. Si el número no baja, el modelo de negocio necesita una conversación más dura.'
+    'ok':    'Aceptable pero amarillo. 60-65% no tiene colchón — un alza de costo y estás arriba de la franja saludable. Aprieta una categoría este mes: costo de alimentos (especificación de porción, registro de merma) o mano de obra (ajuste de horarios, capacitación cruzada).',
+    'warn':  'Zona de presión. Entre 65-70% todavía tienes espacio, pero no mucho. El primer movimiento típico es la mano de obra de cocina (más rápido de ajustar que el costo de alimentos), después una revisión de menú sobre los ítems de menor margen.',
+    'bad':   'Arriba de 70% es insostenible sin intervención. Orden típico de reparación: mano de obra primero (palanca más rápida), después re-ingeniería de tus 3-5 ítems de menor margen, después una auditoría de proveedores. Si el número no baja, el modelo de negocio necesita una conversación más dura.'
   };
 
   function markerLeft(pct){
@@ -2215,6 +2287,81 @@
     } else {
       flash('No se pudo copiar — selecciónalo manualmente');
     }
+  });
+})();
+
+/* Atajo "¿Tienes el P&L? Empieza aquí". Lee cinco números en
+ * dólares, deriva todos los porcentajes que las cuatro
+ * calculadoras necesitan, los escribe en cada slider/input y
+ * dispara eventos input para que los renderers existentes corran.
+ * Sin backend, sin duplicar matemáticas. */
+(function(){
+  var btn = document.getElementById('mmPnlApply');
+  if (!btn) return;
+  var msgEl = document.getElementById('mmPnlMsg');
+  function pnum(id){ var el = document.getElementById(id); var v = parseFloat(el && el.value); return isFinite(v) ? v : null; }
+  function setSlider(id, value){
+    var el = document.getElementById(id); if (!el) return;
+    var min = parseFloat(el.min); var max = parseFloat(el.max);
+    if (isFinite(min) && value < min) value = min;
+    if (isFinite(max) && value > max) value = max;
+    el.value = String(value);
+    var paired = document.getElementById(id + '-num');
+    if (paired) paired.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  function setNumber(id, value){
+    var el = document.getElementById(id); if (!el) return;
+    el.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  btn.addEventListener('click', function(){
+    var sales = pnum('pnl-sales'), food = pnum('pnl-food'), labor = pnum('pnl-labor');
+    var fixed = pnum('pnl-fixed'), check = pnum('pnl-check');
+    if (msgEl) { msgEl.textContent = ''; msgEl.classList.remove('error'); }
+    if (!sales || sales <= 0) {
+      if (msgEl) { msgEl.textContent = 'Escribe primero las ventas mensuales.'; msgEl.classList.add('error'); }
+      var f = document.getElementById('pnl-sales'); if (f) f.focus();
+      return;
+    }
+    var foodPct = food != null ? Math.round((food / sales) * 100) : null;
+    var laborPct = labor != null ? Math.round((labor / sales) * 100) : null;
+    var marginPct = null;
+    if (food != null && labor != null) {
+      marginPct = Math.round((1 - food / sales - (labor * 0.4) / sales) * 100);
+    }
+    var applied = [];
+    if (foodPct != null) {
+      setSlider('dbe-foodcost', foodPct);
+      setSlider('pc-food', foodPct);
+      applied.push('costo de alimentos ' + foodPct + '%');
+    }
+    if (laborPct != null) {
+      setSlider('pc-labor', laborPct);
+      applied.push('mano de obra ' + laborPct + '%');
+    }
+    if (check != null && check > 0) {
+      setSlider('dbe-ticket', check);
+      setSlider('bec-check', check);
+      applied.push('ticket promedio $' + check);
+    }
+    if (fixed != null && fixed > 0) {
+      setNumber('bec-fixed', fixed);
+      applied.push('costos fijos $' + fixed);
+    }
+    if (marginPct != null && isFinite(marginPct)) {
+      var mp = Math.max(5, Math.min(50, marginPct));
+      setSlider('bec-margin', mp);
+      setSlider('pr-margin', mp);
+      applied.push('margen de contribución ' + mp + '%');
+    }
+    if (msgEl) {
+      msgEl.textContent = 'Pre-cargado: ' + applied.join(', ') + '. Desliza hacia abajo para ver cada calculadora.';
+      msgEl.classList.remove('error');
+    }
+    var firstCalc = document.getElementById('calc-delivery');
+    if (firstCalc) firstCalc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Margin Math PnL Shortcut', { props: { applied: applied.length, locale: 'es' } });
   });
 })();
 

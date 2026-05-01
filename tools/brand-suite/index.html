@@ -103,6 +103,7 @@
   .bs-chip-sublabel{font-size:10.5px;line-height:1.35;color:var(--ink-soft);font-style:italic}
   .bs-chip-hex{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
   .bs-chip-share{font-size:11px;color:var(--stone)}
+  .bs-chip-print{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10.5px;color:var(--stone);font-variant-numeric:tabular-nums;line-height:1.4}
   .bs-chip-warn{font-size:11px;color:var(--rust);display:inline-flex;align-items:center;gap:4px}
   .bs-chip-warn::before{content:"⚠";font-size:11px}
   .bs-chip.copied{border-color:var(--status-good);background:var(--status-good-tint)}
@@ -144,6 +145,11 @@
   .bs-entry-chip:hover{border-color:var(--teal);background:var(--white)}
   .bs-entry-chip strong{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
   .bs-entry-chip small{font-size:12px;color:var(--stone);line-height:1.45}
+  .bs-camera-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  /* Treat the camera-capture <label> like its sibling buttons —
+     focusable + clickable + the same hover affordance. */
+  label.bs-entry-chip{display:flex}
+  label.bs-entry-chip:focus-within{border-color:var(--teal);background:var(--white);outline:2px solid var(--teal);outline-offset:2px}
 
   /* Manual hex entry — five inputs + apply button. */
   .bs-manual-wrap{padding:24px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);display:flex;flex-direction:column;gap:14px}
@@ -294,6 +300,28 @@
   .bs-export-btn.copy-failed{background:rgba(184,84,26,0.06);color:var(--rust);border-color:var(--rust)}
   .bs-export-btn-primary{background:var(--teal);color:var(--cream)}
   .bs-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .bs-variants{display:flex;flex-direction:column;gap:14px}
+  .bs-variants-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+  .bs-variant{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:10px;background:var(--white)}
+  .bs-variant-swatch{width:100%;aspect-ratio:1;border-radius:var(--r-sm);background:var(--cream-2);background-image:linear-gradient(45deg,#e8e6e1 25%,transparent 25%),linear-gradient(-45deg,#e8e6e1 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e8e6e1 75%),linear-gradient(-45deg,transparent 75%,#e8e6e1 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .bs-variant-swatch[data-bg="dark"]{background:var(--ink);background-image:none}
+  .bs-variant-swatch img{max-width:84%;max-height:84%;object-fit:contain}
+  .bs-variant-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .bs-variant-name{font-size:12px;font-weight:600;color:var(--ink)}
+  .bs-variant-bg{font-size:10.5px;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;background:none;border:0;padding:0;font:inherit}
+  .bs-variant-bg:hover{color:var(--teal)}
+  .bs-variant-dl{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none}
+  .bs-variant-dl:hover{border-color:var(--teal);color:var(--teal)}
+  .bs-mockups{display:flex;flex-direction:column;gap:14px}
+  .bs-mockups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .bs-mockup{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:var(--r-input);padding:10px;background:var(--white)}
+  .bs-mockup-frame{width:100%;aspect-ratio:1;border-radius:var(--r-sm);background:var(--cream-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .bs-mockup-frame svg{max-width:100%;max-height:100%;display:block}
+  .bs-mockup-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .bs-mockup-name{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .bs-mockup-spec{font-size:10.5px;color:var(--stone);letter-spacing:.04em;text-transform:uppercase}
+  .bs-mockup-dl{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:none}
+  .bs-mockup-dl:hover{border-color:var(--teal);color:var(--teal)}
 
   /* Print stylesheet — collapses the page into a one-page starter sheet
      a restaurant owner can hand to a designer or a printer. Hides the
@@ -713,6 +741,24 @@
     <div class="bs-entry-paths" id="bsEntryPaths">
       <span class="bs-entry-or">Or, if you don&rsquo;t have a logo handy:</span>
       <div class="bs-entry-chips">
+        <!-- Camera capture — for owners on a phone who only have a
+             physical sign / printed menu / business card. The
+             capture="environment" attribute opens the back camera
+             on mobile (no-op on desktop, where the chip stays useful
+             as a regular file picker). Same handleFile pipeline as
+             the dropzone above. -->
+        <label class="bs-entry-chip" id="bsEntryCameraLabel" for="bsCameraInput">
+          <strong>Photograph my logo (phone)</strong>
+          <small>Snap your sign, awning, or business card. We&rsquo;ll pull the palette from the photo.</small>
+        </label>
+        <input
+          type="file"
+          id="bsCameraInput"
+          accept="image/*"
+          capture="environment"
+          class="bs-camera-input"
+          aria-describedby="bsUploadHint"
+        />
         <button type="button" class="bs-entry-chip" id="bsEntryWorkshopCold">
           <strong>Start from scratch</strong>
           <small>Pick an anchor colour, build a palette around it. The Workshop walks you through it.</small>
@@ -968,14 +1014,17 @@
         <table class="bs-contrast-table" id="bsContrastTable" aria-label="Contrast ratios between every pair of palette colors"></table>
       </div>
       <p class="bs-contrast-hint">
-        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.
+        Read pair-wise: each cell is text-on-color contrast for that pair. Diagonal duplicates omitted. Hover any cell for plain-English guidance — "Body text OK" means use it freely; "Headlines only" means use it for big type but not paragraphs; "Don't use" means readers will struggle.
         <br>
         <span class="bs-contrast-legend">
-          <span data-l="AAA">AAA &ge; 7</span>
-          <span data-l="AA">AA &ge; 4.5</span>
-          <span data-l="AA-large">AA-large &ge; 3</span>
-          <span data-l="fail">fail &lt; 3</span>
+          <span data-l="AAA">Body text OK</span>
+          <span data-l="AA-large">Headlines only</span>
+          <span data-l="fail">Don't use</span>
         </span>
+        <br>
+        <details style="display:inline-block;margin-top:6px;font-size:11.5px;color:var(--stone);"><summary style="cursor:pointer;">Show the WCAG technical thresholds</summary>
+          <span style="display:block;margin-top:6px;">Ratios of 7+ clear AAA (normal text). 4.5+ clears AA. 3+ clears AA for large text only (18pt+ or 14pt bold). Below 3 fails for body copy. The simulation toggle re-renders the grid through Brettel/Viénot dichromacy projections — perceptual preview, not a clinical test.</span>
+        </details>
       </p>
     </div>
 
@@ -1005,6 +1054,30 @@
       </div>
       <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Muntin Pane</strong> is a 1200&times;1260 PNG arranging your logo, palette, type sample, and menu preview into the same 2&times;2 grid as our brand mark — one shareable file you can email to a designer, post to Instagram, or print. The ZIP includes the Pane plus <code>palette.css</code>, <code>tokens.json</code>, and a <code>README.md</code> naming each color's role. Everything is composed and packaged in your browser — no upload.</p>
       <pre class="bs-export-preview" id="bsExportPreview" aria-label="CSS variables preview"></pre>
+    </div>
+
+    <!-- Logo variant generator. The Photoshop replacement: takes the
+         uploaded logo and produces five color-shifted PNGs at 2x
+         the source resolution. Pure canvas, no upload, no third-
+         party libraries. The use cases are concrete: a white logo
+         for dark menus, a black logo for receipts and napkins, a
+         single-color teal for awnings, an inverted version for
+         photography watermarks. -->
+    <div class="bs-variants" id="bsVariants" hidden>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;">Logo variants</h2>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);">Five color-shifted versions of your uploaded logo. Each is a transparent PNG at 2&times; your source resolution — drop them on light or dark backgrounds, print them at any size. Generated in your browser; the logo never leaves the device.</p>
+      <div class="bs-variants-grid" id="bsVariantsGrid" aria-label="Logo color variants"></div>
+      <p style="margin:0;font-size:12px;line-height:1.55;color:var(--stone);">Best results with PNG or SVG logos that already have a transparent background. JPEG logos will render with their original background pixels intact (the recolor only touches non-transparent pixels).</p>
+    </div>
+
+    <!-- Mockup pack — four parameterized SVG canvases dressed in
+         the user's palette + logo. The "shoebox of ready-to-print
+         assets" the audit asked for. SVG so they scale crisply at
+         any size; rendered to PNG for download via canvas. -->
+    <div class="bs-mockups" id="bsMockups" hidden>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;">Mockup pack</h2>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft);">Four ready-to-use canvases dressed in your palette. Drop your logo on, hand to a printer, post to Instagram, or staple to the door. Generated in your browser at print-grade resolution.</p>
+      <div class="bs-mockups-grid" id="bsMockupsGrid" aria-label="Mockup canvases"></div>
     </div>
 
     <div class="bs-save" id="bsSave" hidden>
@@ -1436,6 +1509,7 @@
 <script src="./brand-suite.js?v=20260424-bs1"></script>
 <script src="./pane-render.js?v=20260425-bs2"></script>
 <script src="./palette-sheet-render.js?v=20260427-bs3"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Brand Suite — upload + palette wiring.
@@ -1872,6 +1946,8 @@
         contrastWrap.hidden = false;
         renderExports(latestPalette);
         exportWrap.hidden = false;
+        renderLogoVariants(latestPalette);
+        renderMockupPack(latestPalette);
         if (opts.source === 'extract') firePlausible(latestPalette, opts.file);
       });
     });
@@ -1948,7 +2024,15 @@
         } else {
           var ratio = window.BS.contrastRatio(rowColor.hex, colColor.hex);
           var grade = window.BS.gradeContrast(ratio);
-          body += '<td data-grade="' + grade + '" aria-label="' + rowColor.hex + ' on ' + colColor.hex + ', ' + grade + '">' +
+          // Plain-English label for the cell tooltip — owners read
+          // "Body text OK" faster than "AAA". The AAA/AA/AA-large/
+          // fail labels stay in data-grade for the CSS to colour and
+          // for the legend disclosure to expose to anyone curious.
+          var ownerLabel = grade === 'AAA' ? 'Body text OK'
+                         : grade === 'AA' ? 'Body text OK'
+                         : grade === 'AA-large' ? 'Headlines only'
+                         : 'Don\'t use';
+          body += '<td data-grade="' + grade + '" title="' + ownerLabel + ' (' + grade + ', ratio ' + ratio.toFixed(1) + ')" aria-label="' + rowColor.hex + ' on ' + colColor.hex + ': ' + ownerLabel + '">' +
                   ratio.toFixed(1) + '</td>';
         }
       });
@@ -2092,6 +2176,283 @@
 
   function renderExports(palette){
     exportPreview.textContent = buildCssBlock(palette);
+  }
+
+  // ----------------------------------------------------------------
+  // Logo variant generator. Recolors the source logo's opaque pixels
+  // into five concrete variants the owner can drop on light/dark
+  // backgrounds, print on signage, or hand to a vendor.
+  //
+  // Algorithm: source logo → 2x canvas → per-pixel recolor based on
+  // the variant rule, preserving alpha. The result is always a
+  // transparent-ground PNG.
+  //
+  // Variants:
+  //   White        — every opaque pixel becomes white (R=G=B=255)
+  //   Black        — every opaque pixel becomes black (R=G=B=0)
+  //   Brand color  — every opaque pixel becomes the primary palette
+  //                  color (slot 0 — typically the most-saturated)
+  //   Inverted     — channel-flip every opaque pixel (255 - R, 255 - G, 255 - B)
+  //   Monochrome   — convert opaque pixels to greyscale (Rec. 709 luma)
+  //
+  // Best results: PNG/SVG with already-transparent ground. JPEGs
+  // get their full canvas recolored — explicit caveat in the UI.
+  // ----------------------------------------------------------------
+  var bsVariantsEl       = document.getElementById('bsVariants');
+  var bsVariantsGridEl   = document.getElementById('bsVariantsGrid');
+  function bsParseHexToRgb(hex){
+    var s = String(hex || '').replace(/^#/, '');
+    if (s.length === 3) s = s.charAt(0) + s.charAt(0) + s.charAt(1) + s.charAt(1) + s.charAt(2) + s.charAt(2);
+    if (s.length !== 6 || /[^0-9a-f]/i.test(s)) return [33, 86, 95]; // teal fallback
+    return [parseInt(s.slice(0,2),16), parseInt(s.slice(2,4),16), parseInt(s.slice(4,6),16)];
+  }
+  function bsRecolorCanvas(srcImg, variant, brandRgb){
+    var w = (srcImg.naturalWidth  || srcImg.width  || 0) * 2;
+    var h = (srcImg.naturalHeight || srcImg.height || 0) * 2;
+    if (w <= 0 || h <= 0) return null;
+    // Soft cap so we don't OOM on a 6000px logo.
+    var maxDim = 4096;
+    if (w > maxDim || h > maxDim) {
+      var scale = Math.min(maxDim / w, maxDim / h);
+      w = Math.round(w * scale); h = Math.round(h * scale);
+    }
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(srcImg, 0, 0, w, h);
+    var img = ctx.getImageData(0, 0, w, h);
+    var d = img.data;
+    var br = brandRgb[0], bg = brandRgb[1], bb = brandRgb[2];
+    for (var i = 0; i < d.length; i += 4) {
+      var a = d[i + 3];
+      if (a === 0) continue; // fully transparent — skip
+      var r = d[i], g = d[i+1], b = d[i+2];
+      switch (variant) {
+        case 'white':
+          d[i] = 255; d[i+1] = 255; d[i+2] = 255;
+          break;
+        case 'black':
+          d[i] = 0; d[i+1] = 0; d[i+2] = 0;
+          break;
+        case 'brand':
+          d[i] = br; d[i+1] = bg; d[i+2] = bb;
+          break;
+        case 'inverted':
+          d[i] = 255 - r; d[i+1] = 255 - g; d[i+2] = 255 - b;
+          break;
+        case 'mono':
+          // Rec. 709 luma — preserves perceived brightness.
+          var y = Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
+          d[i] = y; d[i+1] = y; d[i+2] = y;
+          break;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return c;
+  }
+  // ----------------------------------------------------------------
+  // Mockup pack — four parameterized SVG canvases dressed in the
+  // owner's palette + logo. Concrete artifacts the owner can post,
+  // print, or hand off without opening Photoshop:
+  //
+  //   IG avatar (1080×1080, circular)  — round logo on brand-tint
+  //   IG post   (1080×1080, square)    — logo + brand band, social-shape
+  //   Business card front (1050×600)   — 3.5×2" @ 300 DPI
+  //   Menu header wide (2400×800)      — 3:1 banner for menu top
+  //
+  // Each SVG is rendered to PNG via a Blob → Image → canvas pipeline
+  // (the only browser path that produces a downloadable raster from
+  // SVG that includes embedded images). The logo is converted to a
+  // data: URL once and reused across all four mockups.
+  //
+  // Output is a card-per-mockup grid; each card preview-renders the
+  // SVG inline (cheap, stays sharp at preview size) and a download
+  // button rasterizes to PNG on demand.
+  // ----------------------------------------------------------------
+  var bsMockupsEl     = document.getElementById('bsMockups');
+  var bsMockupsGridEl = document.getElementById('bsMockupsGrid');
+
+  function bsLogoToDataUrl(img) {
+    if (!img) return null;
+    try {
+      var c = document.createElement('canvas');
+      c.width = img.naturalWidth || img.width || 0;
+      c.height = img.naturalHeight || img.height || 0;
+      if (!c.width || !c.height) return null;
+      c.getContext('2d').drawImage(img, 0, 0);
+      return c.toDataURL('image/png');
+    } catch (e) { return null; }
+  }
+  function bsContrastTextOn(hex) {
+    var rgb = bsParseHexToRgb(hex);
+    var lum = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
+    return lum > 0.55 ? '#14161A' : '#FAF6EE';
+  }
+  function bsEscXml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+  function bsMockupSvgIgAvatar(palette, logoUrl) {
+    var brand = (palette[0] && palette[0].hex) || '#21565F';
+    var w = 1080;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + w + '" width="' + w + '" height="' + w + '">' +
+      '<rect width="' + w + '" height="' + w + '" fill="' + brand + '"/>' +
+      '<circle cx="' + (w/2) + '" cy="' + (w/2) + '" r="' + (w/2 - 60) + '" fill="' + bsContrastTextOn(brand) + '" opacity="0.06"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.18) + '" y="' + (w*0.18) + '" width="' + (w*0.64) + '" height="' + (w*0.64) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '<text x="' + (w/2) + '" y="' + (w/2 + 20) + '" font-family="Georgia, serif" font-size="80" fill="' + bsContrastTextOn(brand) + '" text-anchor="middle">Your logo</text>') +
+      '</svg>';
+  }
+  function bsMockupSvgIgPost(palette, logoUrl, brandName) {
+    var w = 1080;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var accentInk = bsContrastTextOn(ground);
+    var label     = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + w + '" width="' + w + '" height="' + w + '">' +
+      '<rect width="' + w + '" height="' + w + '" fill="' + ground + '"/>' +
+      '<rect x="0" y="' + (w*0.78) + '" width="' + w + '" height="' + (w*0.22) + '" fill="' + brand + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.22) + '" y="' + (w*0.18) + '" width="' + (w*0.56) + '" height="' + (w*0.46) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '') +
+      '<text x="' + (w/2) + '" y="' + (w*0.89) + '" font-family="Georgia, serif" font-size="56" font-weight="500" fill="' + bsContrastTextOn(brand) + '" text-anchor="middle">' + bsEscXml(label) + '</text>' +
+      '<text x="' + (w/2) + '" y="' + (w*0.945) + '" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="' + bsContrastTextOn(brand) + '" opacity="0.8" text-anchor="middle">@' + bsEscXml(label.toLowerCase().replace(/[^a-z0-9]+/g, '')) + '</text>' +
+      '</svg>';
+  }
+  function bsMockupSvgBusinessCard(palette, logoUrl, brandName) {
+    // 3.5" × 2" @ 300dpi = 1050 × 600
+    var w = 1050, h = 600;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var name      = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">' +
+      '<rect width="' + w + '" height="' + h + '" fill="' + ground + '"/>' +
+      '<rect x="0" y="0" width="' + (w*0.06) + '" height="' + h + '" fill="' + brand + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.10) + '" y="' + (h*0.18) + '" width="' + (w*0.30) + '" height="' + (h*0.34) + '" preserveAspectRatio="xMinYMid meet"/>'
+        : '') +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.78) + '" font-family="Georgia, serif" font-size="44" font-weight="500" fill="' + bsContrastTextOn(ground) + '">' + bsEscXml(name) + '</text>' +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.88) + '" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="' + bsContrastTextOn(ground) + '" opacity="0.7">123 Main Street · City, ST</text>' +
+      '<text x="' + (w*0.10) + '" y="' + (h*0.95) + '" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="' + bsContrastTextOn(ground) + '" opacity="0.7">(555) 555-1234 · yourrestaurant.com</text>' +
+      '</svg>';
+  }
+  function bsMockupSvgMenuHeader(palette, logoUrl, brandName) {
+    var w = 2400, h = 800;
+    var brand     = (palette[0] && palette[0].hex) || '#21565F';
+    var ground    = (palette[1] && palette[1].hex) || '#FAF6EE';
+    var name      = brandName || 'Your Restaurant';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">' +
+      '<rect width="' + w + '" height="' + h + '" fill="' + ground + '"/>' +
+      (logoUrl
+        ? '<image href="' + logoUrl + '" x="' + (w*0.06) + '" y="' + (h*0.20) + '" width="' + (h*0.60) + '" height="' + (h*0.60) + '" preserveAspectRatio="xMidYMid meet"/>'
+        : '') +
+      '<text x="' + (w*0.30) + '" y="' + (h*0.55) + '" font-family="Georgia, serif" font-size="120" font-weight="500" fill="' + bsContrastTextOn(ground) + '">' + bsEscXml(name) + '</text>' +
+      '<text x="' + (w*0.30) + '" y="' + (h*0.72) + '" font-family="Helvetica, Arial, sans-serif" font-size="40" fill="' + brand + '" letter-spacing="6">DINNER · BRUNCH · TAKEOUT</text>' +
+      '<rect x="' + (w*0.30) + '" y="' + (h*0.78) + '" width="' + (w*0.50) + '" height="6" fill="' + brand + '"/>' +
+      '</svg>';
+  }
+  function bsSvgToPngBlob(svg, width, height, onReady, onFail) {
+    var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var img = new Image();
+    img.onload = function () {
+      var c = document.createElement('canvas');
+      c.width = width; c.height = height;
+      c.getContext('2d').drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+      c.toBlob(function (b) { if (b) onReady(b); else onFail && onFail(); }, 'image/png');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); onFail && onFail(); };
+    img.src = url;
+  }
+
+  function renderMockupPack(palette) {
+    if (!bsMockupsEl || !bsMockupsGridEl) return;
+    var ctx = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var brandName = ctx.businessName || '';
+    var logoUrl = bsLogoToDataUrl(latestLogoImage);
+    // Don't show without a palette (fixture takes care of palette
+    // presence). Logo is optional — the SVGs render typographic
+    // versions when there's no logo.
+    if (!palette || !palette.length) { bsMockupsEl.hidden = true; return; }
+    var mockups = [
+      { id: 'ig-avatar',     name: 'Instagram avatar',  spec: '1080×1080',   w: 1080, h: 1080, svg: bsMockupSvgIgAvatar(palette, logoUrl) },
+      { id: 'ig-post',       name: 'Instagram post',    spec: '1080×1080',   w: 1080, h: 1080, svg: bsMockupSvgIgPost(palette, logoUrl, brandName) },
+      { id: 'business-card', name: 'Business card front', spec: '3.5×2 in @ 300dpi', w: 1050, h: 600, svg: bsMockupSvgBusinessCard(palette, logoUrl, brandName) },
+      { id: 'menu-header',   name: 'Menu header',       spec: '2400×800 (3:1)', w: 2400, h: 800, svg: bsMockupSvgMenuHeader(palette, logoUrl, brandName) }
+    ];
+    bsMockupsGridEl.innerHTML = '';
+    mockups.forEach(function (m) {
+      var card = document.createElement('div');
+      card.className = 'bs-mockup';
+      card.innerHTML =
+        '<div class="bs-mockup-frame">' + m.svg + '</div>' +
+        '<div class="bs-mockup-meta">' +
+          '<span class="bs-mockup-name">' + m.name + '</span>' +
+          '<span class="bs-mockup-spec">' + m.spec + '</span>' +
+        '</div>' +
+        '<button type="button" class="bs-mockup-dl" data-mockup-dl="' + m.id + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+          'Download PNG' +
+        '</button>';
+      var btn = card.querySelector('[data-mockup-dl]');
+      btn.addEventListener('click', function () {
+        var orig = btn.innerHTML;
+        btn.disabled = true; btn.textContent = 'Rendering…';
+        bsSvgToPngBlob(m.svg, m.w, m.h, function (blob) {
+          var u = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = u; a.download = 'mockup-' + m.id + '.png';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(u); }, 5000);
+          btn.disabled = false; btn.innerHTML = orig;
+        }, function () {
+          btn.disabled = false; btn.innerHTML = orig + ' (failed)';
+        });
+      });
+      bsMockupsGridEl.appendChild(card);
+    });
+    bsMockupsEl.hidden = false;
+  }
+
+  function renderLogoVariants(palette){
+    if (!bsVariantsEl || !bsVariantsGridEl) return;
+    if (!latestLogoImage) { bsVariantsEl.hidden = true; return; }
+    var brandHex = (palette && palette[0] && palette[0].hex) || '#21565F';
+    var brandRgb = bsParseHexToRgb(brandHex);
+    var brandLabel = brandHex.toUpperCase();
+    var variants = [
+      { id: 'white',    name: 'White',         bg: 'dark'  },
+      { id: 'black',    name: 'Black',         bg: 'light' },
+      { id: 'brand',    name: 'Brand (' + brandLabel + ')', bg: 'light' },
+      { id: 'inverted', name: 'Inverted',      bg: 'light' },
+      { id: 'mono',     name: 'Monochrome',    bg: 'light' }
+    ];
+    bsVariantsGridEl.innerHTML = '';
+    variants.forEach(function(v){
+      var canvas = bsRecolorCanvas(latestLogoImage, v.id, brandRgb);
+      if (!canvas) return;
+      var dataUrl = canvas.toDataURL('image/png');
+      var card = document.createElement('div');
+      card.className = 'bs-variant';
+      card.innerHTML =
+        '<div class="bs-variant-swatch" data-bg="' + v.bg + '"><img alt="' + v.name + ' logo variant" src="' + dataUrl + '"></div>' +
+        '<div class="bs-variant-meta">' +
+          '<span class="bs-variant-name">' + v.name + '</span>' +
+          '<button type="button" class="bs-variant-bg" aria-label="Toggle preview background">flip bg</button>' +
+        '</div>' +
+        '<a class="bs-variant-dl" download="logo-' + v.id + '.png" href="' + dataUrl + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+          'PNG' +
+        '</a>';
+      var swatch = card.querySelector('.bs-variant-swatch');
+      var bgBtn  = card.querySelector('.bs-variant-bg');
+      bgBtn.addEventListener('click', function(){
+        swatch.setAttribute('data-bg', swatch.getAttribute('data-bg') === 'dark' ? 'light' : 'dark');
+      });
+      bsVariantsGridEl.appendChild(card);
+    });
+    bsVariantsEl.hidden = false;
   }
 
   copyCssBtn.addEventListener('click', function(){
@@ -2414,8 +2775,93 @@
     return -1;
   }
 
+  // CMYK conversion + nearest-Pantone bridge for the print-vendor
+  // workflow. Audit P4: owners hand a palette to a print shop and
+  // get asked "what's the CMYK?" or "what Pantone?" — we surface
+  // both inline so the answer ships with the palette.
+  //
+  // CMYK conversion is a textbook RGB→CMYK formula. It's not color-
+  // managed (no ICC profile) and won't match a calibrated press
+  // exactly — flagged in the README. The Pantone bridge is a small
+  // embedded LUT (~70 PMS Solid-Coated entries spanning the gamut)
+  // that nearest-matches via straight RGB Euclidean distance.
+  function bsRgbToCmyk(rgb) {
+    if (!rgb) return '— — — —';
+    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+    var k = 1 - Math.max(r, g, b);
+    if (k >= 0.999) return '0 0 0 100';
+    var c = (1 - r - k) / (1 - k);
+    var m = (1 - g - k) / (1 - k);
+    var y = (1 - b - k) / (1 - k);
+    return Math.round(c * 100) + ' ' + Math.round(m * 100) + ' ' + Math.round(y * 100) + ' ' + Math.round(k * 100);
+  }
+  // Compact PMS-Coated LUT — covers common brand-color clusters.
+  // Format: [name, R, G, B]. Sourced from publicly published PMS
+  // hex equivalents (Pantone has never published an ICC table; these
+  // are the widely-used screen approximations from Pantone Connect /
+  // common open references).
+  var BS_PANTONE_LUT = [
+    ['PMS Black 6',     0,33,71],     ['PMS White',           255,255,255],
+    ['PMS Red 032',     239,51,64],   ['PMS Red 1788',        212,0,40],
+    ['PMS Red 1797',    175,30,45],   ['PMS Warm Red',        249,79,55],
+    ['PMS Pink 2375',   223,82,170],  ['PMS Magenta 219',     206,0,124],
+    ['PMS Orange 165',  255,121,0],   ['PMS Orange 1505',     255,138,0],
+    ['PMS Yellow 012',  255,217,0],   ['PMS Yellow 116',      255,205,0],
+    ['PMS Yellow 7406', 233,177,0],   ['PMS Olive 5763',      90,87,55],
+    ['PMS Green 354',   0,178,89],    ['PMS Green 7740',      63,140,52],
+    ['PMS Green 348',   0,127,73],    ['PMS Green 343',       0,107,68],
+    ['PMS Teal 320',    0,156,166],   ['PMS Teal 326',        0,176,168],
+    ['PMS Teal 3155',   0,114,124],   ['PMS Teal 3165',       0,86,92],
+    ['PMS Blue 2925',   0,154,222],   ['PMS Blue 285',        0,116,200],
+    ['PMS Blue 286',    0,57,166],    ['PMS Blue 7686',       30,72,143],
+    ['PMS Navy 281',    0,32,91],     ['PMS Navy 295',        0,42,84],
+    ['PMS Purple 2685', 56,0,150],    ['PMS Purple 268',      82,35,152],
+    ['PMS Violet',      66,0,170],    ['PMS Violet 2587',     130,76,182],
+    ['PMS Brown 4625',  79,46,28],    ['PMS Brown 478',       117,56,32],
+    ['PMS Brown 1685',  148,79,29],   ['PMS Brown 1545',      90,57,38],
+    ['PMS Tan 472',     223,178,131], ['PMS Tan 7501',        217,201,168],
+    ['PMS Cream 7527',  216,209,189], ['PMS Cream 7401',      243,231,206],
+    ['PMS Beige 4685',  201,165,116], ['PMS Beige 4685 C',    191,160,128],
+    ['PMS Cool Gray 1', 217,217,214], ['PMS Cool Gray 2',     208,208,206],
+    ['PMS Cool Gray 4', 187,187,186], ['PMS Cool Gray 6',     168,168,167],
+    ['PMS Cool Gray 8', 136,139,141], ['PMS Cool Gray 11',    83,86,90],
+    ['PMS Warm Gray 4', 184,176,165], ['PMS Warm Gray 8',     140,130,121],
+    ['PMS Black',       45,41,38],    ['PMS Process Black',   27,27,27],
+    ['PMS Rust 7589',   170,90,55],   ['PMS Rust 167',        190,86,38],
+    ['PMS Coral 1645',  255,121,79],  ['PMS Coral 178',       248,131,121],
+    ['PMS Sand 7501',   217,201,168], ['PMS Forest 357',      33,87,50],
+    ['PMS Mint 339',    0,166,118],   ['PMS Mint 7479',       62,212,150],
+    ['PMS Sky 305',     89,203,232],  ['PMS Sky 297',         113,197,232]
+  ];
+  function bsNearestPantone(hex) {
+    var rgb = bsParseHexToRgb(hex);
+    if (!rgb) return { name: 'unmatched', dist: Infinity };
+    var best = null;
+    for (var i = 0; i < BS_PANTONE_LUT.length; i++) {
+      var p = BS_PANTONE_LUT[i];
+      var dr = rgb[0] - p[1], dg = rgb[1] - p[2], db = rgb[2] - p[3];
+      var d = dr*dr + dg*dg + db*db;
+      if (!best || d < best.dist) best = { name: p[0], dist: d };
+    }
+    return best;
+  }
+
   function renderPalette(palette){
     paletteEl.innerHTML = '';
+    // Persist the committed palette to the cross-tool context bus
+    // so photo-brief, open-hours' branded door card, and the schema-
+    // check generator can render in the restaurant's actual brand
+    // colors. Hex values normalized via shared MuntinFragment when
+    // available; fallback to uppercase '#xxxxxx'.
+    if (typeof MuntinContext !== 'undefined' && MuntinContext.merge && palette && palette.length) {
+      try {
+        var hexes = palette.slice(0, 5).map(function(e){
+          var h = String(e && e.hex || '').toUpperCase();
+          return h.charAt(0) === '#' ? h : '#' + h;
+        });
+        MuntinContext.merge({ palette: hexes });
+      } catch (_) {}
+    }
     palette.slice(0, 5).forEach(function(entry, i){
       var role = ROLE_NAMES[i] || ('Color ' + (i + 1));
       var btn = document.createElement('button');
@@ -2430,12 +2876,15 @@
         simHtml = '<span class="bs-chip-warn">visually similar to ' + simRole + '</span>';
       }
       var sublabel = ROLE_SUBLABELS[i] || '';
+      var cmyk = bsRgbToCmyk(bsParseHexToRgb(entry.hex));
+      var pantone = bsNearestPantone(entry.hex);
       btn.innerHTML =
         '<span class="bs-chip-swatch" style="background:' + entry.hex + '"></span>' +
         '<span class="bs-chip-meta">' +
           '<span class="bs-chip-role">' + role + '</span>' +
           (sublabel ? '<span class="bs-chip-sublabel">' + sublabel + '</span>' : '') +
           '<span class="bs-chip-hex">' + entry.hex.toUpperCase() + '</span>' +
+          '<span class="bs-chip-print">CMYK ' + cmyk + ' &middot; ≈ ' + pantone.name + '</span>' +
           '<span class="bs-chip-share">' + Math.round(entry.dominancePct * 100) + '% share</span>' +
           simHtml +
         '</span>';
@@ -2849,6 +3298,17 @@
   fileInput.addEventListener('change', function(){
     if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
   });
+  // Camera capture — for phone owners photographing a physical sign /
+  // awning / business card. capture="environment" opens the back
+  // camera on iOS + Android; on desktop the input falls back to a
+  // regular file picker, so the chip stays useful everywhere. Routes
+  // through the same handleFile() pipeline as the dropzone.
+  var cameraInput = document.getElementById('bsCameraInput');
+  if (cameraInput) {
+    cameraInput.addEventListener('change', function(){
+      if (cameraInput.files && cameraInput.files[0]) handleFile(cameraInput.files[0]);
+    });
+  }
 
   // Drag-and-drop
   ;['dragenter', 'dragover'].forEach(function(t){

@@ -84,7 +84,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
 
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
@@ -124,6 +124,53 @@
   .seo-save-link:hover { border-color: var(--ink); }
   .seo-save-msg { font-size: 13px; color: var(--status-good); font-weight: 500; }
   .seo-save-msg.error { color: var(--rust); }
+  /* Inspiration banner — Search Ideas handoff. Chips are clickable
+     and drop into seoSignature so the rewrite template uses the
+     queries the owner just picked upstream. */
+  .seo-inspiration { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-input); padding: 12px 14px; background: var(--white); }
+  .seo-inspiration[hidden] { display: none; }
+  .seo-inspiration-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-inspiration-chips { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .seo-inspiration-chip { display: inline-block; padding: 5px 11px; border: 1px solid var(--line-dark); border-radius: 999px; background: var(--white); font: inherit; font-size: 12.5px; color: var(--ink); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .seo-inspiration-chip:hover { border-color: var(--teal); background: var(--cream-2); }
+  .seo-inspiration-note { margin: 0; font-size: 12px; color: var(--stone); line-height: 1.45; }
+
+  .seo-ctx { margin: 14px auto 4px; max-width: 540px; text-align: left; border: 1px dashed var(--line-dark); border-radius: var(--r-input); padding: 10px 14px; background: var(--white); }
+  .seo-ctx-summary { cursor: pointer; font-size: 13px; color: var(--ink); }
+  .seo-ctx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+  @media (max-width: 640px) { .seo-ctx-grid { grid-template-columns: 1fr; } }
+  .seo-ctx-grid label { display: flex; flex-direction: column; font-size: 11px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; gap: 4px; }
+  .seo-ctx-grid input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 13px; color: var(--ink); }
+  .seo-serp { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-serp-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .seo-serp-mock { padding: 12px 14px; background: var(--cream-2); border-radius: 6px; font-family: Arial, sans-serif; line-height: 1.4; }
+  .seo-serp-host { font-size: 12px; color: #1a73e8; }
+  .seo-serp-title { font-size: 18px; color: #1a0dab; margin: 2px 0; }
+  .seo-serp-desc { font-size: 13px; color: #4d5156; }
+  .seo-rewrite { padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); margin-bottom: 18px; }
+  .seo-rewrite-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .seo-rewrite-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .seo-rewrite-row strong { font-size: 12px; font-weight: 600; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; }
+  .seo-rewrite-row input, .seo-rewrite-row textarea { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; }
+  .seo-rewrite-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .seo-rewrite-btn { padding: 8px 14px; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--cream); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .seo-rewrite-btn:hover { background: var(--teal); }
+  .seo-rewrite-msg { font-size: 12.5px; color: var(--status-good); }
+  .seo-rewrite-help { font-size: 12.5px; color: var(--ink-soft); margin: 10px 0 0; line-height: 1.55; }
+  /* Shared MuntinHire disclosure. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
+  .seo-rewrite-prompt { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; padding: 12px 14px; background: var(--cream-2); border-radius: 8px; border: 1px solid var(--line); }
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -351,7 +398,7 @@
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
       <h1>Is Google showing your<br><span class="serif-italic">best side?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-01">May 1, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-04-30">April 30, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -367,11 +414,37 @@
         Your title tag and meta description are the first thing people see in search results. Paste your URL and I'll grade both — length, readability, and what to fix.
       </p>
 
+      <!-- Inspiration banner — populated when an inbound link from
+           Search Ideas carries a #queries= list. Shows the picked
+           queries as chips; tapping one drops it into the signature/
+           feature field below so the rewrite template uses the
+           words customers actually search. -->
+      <div class="seo-inspiration" id="seoInspiration" hidden>
+        <p class="seo-inspiration-eyebrow">Search words customers used</p>
+        <ul class="seo-inspiration-chips" id="seoInspirationChips"></ul>
+        <p class="seo-inspiration-note">From Search Ideas. Tap a chip to use it as your "signature dish or feature".</p>
+      </div>
+
       <form class="seo-form" id="seoForm" novalidate>
         <input type="url" id="seoUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
         <button type="submit" id="seoSubmit">Grade it</button>
       </form>
-      <p class="seo-note">Powered by Google PageSpeed Insights. Takes about thirty seconds.</p>
+
+      <!-- Three-question restaurant context. Optional but unlocks
+           the suggested rewrite block — without these we have no
+           way to template a useful title or description. Fields
+           prefill from MuntinContext when the user has used another
+           tool first. -->
+      <details class="seo-ctx" id="seoCtx">
+        <summary class="seo-ctx-summary">Add three details for a tailored rewrite (optional, 30 seconds)</summary>
+        <div class="seo-ctx-grid">
+          <label>Cuisine<input type="text" id="seoCuisine" placeholder="Italian, Mexican, Vietnamese…"></label>
+          <label>Neighborhood<input type="text" id="seoNeighborhood" placeholder="Silver Spring, MD"></label>
+          <label>Signature dish or feature<input type="text" id="seoSignature" placeholder="hand-rolled pasta, brunch, patio…"></label>
+        </div>
+      </details>
+
+      <p class="seo-note">Runs in your browser. About 10 seconds — we fetch your title and description, grade them, and (if you fill the three context fields) suggest a rewrite.</p>
 
       <!-- Sprint 5 (cohesion) — shared loading + error states. The
            slot is filled by tools/_shared/states.js; markup +
@@ -442,37 +515,10 @@
           <p class="tool-deep-snippet">The line of text that shows up as the clickable blue headline of your page in Google search results, and as the name of the tab in a browser…</p>
           <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-term" href="/glossary/alt-text/">
-          <span class="tool-deep-kind">Glossary</span>
-          <h3>Alt text</h3>
-          <p class="tool-deep-aka">image descriptions</p>
-          <p class="tool-deep-snippet">A short written description of every image, set via the alt=&quot;…&quot; attribute in the HTML. Screen readers read it aloud; Google uses it to under…</p>
-          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
-        </a>
-      <a class="tool-deep-card tool-deep-card-term" href="/glossary/canonical-url/">
-          <span class="tool-deep-kind">Glossary</span>
-          <h3>Canonical URL</h3>
-          <p class="tool-deep-aka">rel=canonical, the "official" address</p>
-          <p class="tool-deep-snippet">A tag in a page&#39;s HTML that tells Google &quot;this is the real address for this page, ignore any duplicates&quot;. Matters when the same content live…</p>
-          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
-        </a>
-      <a class="tool-deep-card tool-deep-card-term" href="/glossary/search-console/">
-          <span class="tool-deep-kind">Glossary</span>
-          <h3>Google Search Console</h3>
-          <p class="tool-deep-aka">GSC</p>
-          <p class="tool-deep-snippet">The free Google dashboard that shows you which search terms people used to find your site, which pages they landed on, and whether Google ha…</p>
-          <span class="tool-deep-cta">Read the definition <span aria-hidden="true">→</span></span>
-        </a>
       <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-set-up-google-business-profile-for-your-restaurant/">
           <span class="tool-deep-kind">Article</span>
           <h3>How to Set Up Google Business Profile for Your Restaurant</h3>
           <p class="tool-deep-snippet">A step-by-step guide to claiming, verifying, and optimizing Google Business Profile for your restaurant — categories, photos, menu links, and the settings most owners miss.</p>
-          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
-        </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/blog/how-to-read-restaurant-google-search-console/">
-          <span class="tool-deep-kind">Article</span>
-          <h3>How to Read Your Restaurant&#39;s Google Search Console (in Plain English)</h3>
-          <p class="tool-deep-snippet">The four reports that matter, what each number means, and the three weekly habits that actually move bookings.</p>
           <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
         </a>
     </div>
@@ -521,6 +567,8 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks (e.g., from blog post-end
@@ -543,6 +591,51 @@
   var input = document.getElementById('seoUrl');
   var btn = document.getElementById('seoSubmit');
   var result = document.getElementById('seoResult');
+
+  // Search Ideas handoff: a #queries=q1%0Aq2 fragment opens an
+  // inspiration banner of clickable chips. Tapping a chip drops it
+  // into the signature/feature field so the suggested-rewrite
+  // template uses the words customers actually search.
+  (function hydrateInspiration(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var queriesRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      if (pair.slice(0, eq) !== 'queries') return;
+      try { queriesRaw = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { queriesRaw = pair.slice(eq + 1); }
+    });
+    if (!queriesRaw) return;
+    var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!queries.length) return;
+    var insp = document.getElementById('seoInspiration');
+    var chipsEl = document.getElementById('seoInspirationChips');
+    if (!insp || !chipsEl) return;
+    var sigEl = document.getElementById('seoSignature');
+    chipsEl.innerHTML = '';
+    queries.slice(0, 12).forEach(function(q){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'seo-inspiration-chip';
+      btn.textContent = q;
+      btn.addEventListener('click', function(){
+        if (!sigEl) return;
+        sigEl.value = q;
+        try { sigEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+        // The signature field lives inside a <details> — open it
+        // automatically so the user sees the field they just filled.
+        var ctx = document.getElementById('seoCtx');
+        if (ctx && !ctx.open) ctx.open = true;
+        try { sigEl.focus(); } catch (_) {}
+      });
+      li.appendChild(btn);
+      chipsEl.appendChild(li);
+    });
+    insp.hidden = false;
+  })();
   // Sprint 5 (cohesion) — shared loading + error states.
   var states = (typeof MuntinStates !== 'undefined') ? MuntinStates.attach({
     slotEl: document.getElementById('seoStates'),
@@ -668,6 +761,109 @@
       li.innerHTML = '<span class="mark ' + (c.pass ? 'pass' : 'fail') + '">' + (c.pass ? '✓' : '✗') + '</span><span>' + c.text + '</span>';
       list.appendChild(li);
     });
+  }
+
+  // Suggested rewrite + live SERP preview. Runs after the title/desc
+  // have been graded. Pulls cuisine + neighborhood + signature from
+  // the optional context fields (if filled) and from MuntinContext
+  // (if previously written by another tool). The rewrite is a
+  // template — opinionated but explicit so the owner can see the
+  // shape and tune it. The preview shows the title and description
+  // truncated at the real Google pixel widths.
+  function escAttr(s) { return String(s == null ? '' : s).replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function renderRewriteAndPreview(url, currentTitle, currentDesc) {
+    var existing = document.getElementById('seoRewriteHost');
+    if (existing) existing.parentNode.removeChild(existing);
+    var ctxBus = (typeof MuntinContext !== 'undefined') ? MuntinContext.read() : {};
+    var cuisine      = (document.getElementById('seoCuisine')      || {}).value || ctxBus.cuisine      || '';
+    var neighborhood = (document.getElementById('seoNeighborhood') || {}).value || ctxBus.neighborhood || '';
+    var signature    = (document.getElementById('seoSignature')    || {}).value || '';
+    var hostname = '';
+    try { hostname = new URL(url).hostname.replace(/^www\./, ''); } catch (_) { hostname = url; }
+    var brand = (ctxBus.businessName || hostname.split('.')[0] || 'Your Restaurant');
+    if (cuisine || neighborhood) {
+      // Persist for the next tool.
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        try { MuntinContext.merge({ cuisine: cuisine || undefined, neighborhood: neighborhood || undefined, lastUrl: url }); } catch (_) {}
+      }
+    }
+    var hasCtx = !!(cuisine || neighborhood || signature);
+    // Templates — restaurant-specific, cuisine + neighborhood + city.
+    var titleSuggest = '';
+    var descSuggest  = '';
+    if (hasCtx) {
+      var titleParts = [brand];
+      if (cuisine && neighborhood) titleParts.push(cuisine + ' in ' + neighborhood);
+      else if (cuisine)            titleParts.push(cuisine + ' restaurant');
+      else if (neighborhood)       titleParts.push('Restaurant in ' + neighborhood);
+      titleSuggest = titleParts.join(' — ');
+      if (titleSuggest.length > 60) titleSuggest = titleSuggest.slice(0, 57) + '…';
+      var descBits = [];
+      if (cuisine && neighborhood)  descBits.push(cuisine + ' restaurant in ' + neighborhood + '.');
+      else if (cuisine)             descBits.push(cuisine + ' restaurant.');
+      else if (neighborhood)        descBits.push('Restaurant in ' + neighborhood + '.');
+      if (signature) descBits.push(signature.charAt(0).toUpperCase() + signature.slice(1) + '.');
+      descBits.push('Reserve online or walk in.');
+      descSuggest = descBits.join(' ');
+      if (descSuggest.length > 155) descSuggest = descSuggest.slice(0, 152) + '…';
+    }
+
+    var wrap = document.createElement('div');
+    wrap.id = 'seoRewriteHost';
+    var html = '';
+    // SERP preview always renders; uses suggested rewrite when present
+    // and the user's actual values otherwise.
+    var previewTitle = titleSuggest || currentTitle || ('(empty title) — ' + hostname);
+    var previewDesc  = descSuggest  || currentDesc  || '(empty description)';
+    html += '<div class="seo-serp">';
+    html += '<p class="seo-serp-eyebrow">SERP preview &mdash; what Google shows</p>';
+    html += '<div class="seo-serp-mock">';
+    html += '<div class="seo-serp-host">' + escHtml(hostname) + '</div>';
+    html += '<div class="seo-serp-title">' + escHtml(previewTitle) + '</div>';
+    html += '<div class="seo-serp-desc">' + escHtml(previewDesc) + '</div>';
+    html += '</div></div>';
+    if (hasCtx) {
+      html += '<div class="seo-rewrite">';
+      html += '<p class="seo-rewrite-eyebrow">Suggested rewrite</p>';
+      html += '<div class="seo-rewrite-row"><label><strong>Title (' + titleSuggest.length + ' chars)</strong><input type="text" id="seoNewTitle" value="' + escAttr(titleSuggest) + '"></label></div>';
+      html += '<div class="seo-rewrite-row"><label><strong>Description (' + descSuggest.length + ' chars)</strong><textarea id="seoNewDesc" rows="2">' + escHtml(descSuggest) + '</textarea></label></div>';
+      html += '<div class="seo-rewrite-actions">';
+      html += '<button type="button" class="seo-rewrite-btn" id="seoRewriteCopy">Copy both</button>';
+      html += '<span class="seo-rewrite-msg" id="seoRewriteMsg" aria-live="polite"></span>';
+      html += '</div>';
+      html += '<p class="seo-rewrite-help">Paste these into your platform\'s SEO settings — for Wix, in the page\'s SEO Basics tab; for Squarespace, in Page Settings → SEO; for WordPress, in the Yoast/RankMath/AIOSEO box. The cuisine + neighborhood pattern is what local searchers actually type.</p>';
+      // Hire-guide disclosure for owners who can't get into their
+      // platform's SEO panel themselves. Reads platform from
+      // MuntinContext (written by tech-stack); falls back to generic.
+      if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
+        html += MuntinHire.renderDisclosure({
+          scope: 'dev',
+          summary: "Can't reach your SEO settings? Here's who to find. →"
+        });
+      }
+      html += '</div>';
+    } else {
+      html += '<p class="seo-rewrite-prompt">Add cuisine + neighborhood above to get a tailored rewrite (30 seconds, optional).</p>';
+    }
+    wrap.innerHTML = html;
+    var titleCard = document.getElementById('titleCard');
+    if (titleCard && titleCard.parentNode) titleCard.parentNode.insertBefore(wrap, titleCard);
+    // Wire copy.
+    var copyBtn = document.getElementById('seoRewriteCopy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var t = (document.getElementById('seoNewTitle') || {}).value || '';
+        var d = (document.getElementById('seoNewDesc')  || {}).value || '';
+        var text = 'Title: ' + t + '\nDescription: ' + d;
+        var msg = document.getElementById('seoRewriteMsg');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            if (msg) { msg.textContent = 'Copied. Paste into your platform\'s SEO settings.'; setTimeout(function(){ msg.textContent=''; }, 2400); }
+          });
+        }
+      });
+    }
   }
 
   // Phase 2 (Workshop) — auth state + Save-to-Workbench wiring.
@@ -811,6 +1007,7 @@
 
         renderCard('title', titleResult, titleResult.title);
         renderCard('desc', descResult, descResult.desc);
+        renderRewriteAndPreview(url, data.title || '', data.description || '');
 
         if (states) states.setSuccess();
         result.classList.add('visible');

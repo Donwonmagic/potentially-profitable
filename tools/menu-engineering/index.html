@@ -51,7 +51,32 @@
 .me-btn:hover{background:var(--teal);color:var(--cream)}
 .me-btn-ghost{border-color:var(--line-dark);color:var(--ink)}
 .me-btn-ghost:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
-.me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.me-grid-wrap{border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+@media(min-width:640px){.me-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+/* Mobile card-stack — under 640px every row reads as a labeled
+   card so phone owners can fill the form without horizontal scroll.
+   The audit's #1 abandonment risk for this tool. CSS-only —
+   addRow's data-label attributes drive the per-cell labels. */
+@media(max-width:639px){
+  .me-grid-wrap{padding:8px;background:transparent;border:0}
+  .me-grid,.me-grid thead,.me-grid tbody,.me-grid tr,.me-grid td{display:block;width:100%}
+  .me-grid thead{position:absolute;left:-9999px;top:auto}
+  .me-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);margin-bottom:10px;position:relative}
+  .me-grid td{padding:8px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .me-grid td:last-of-type{border-bottom:0}
+  .me-grid td:not([data-label]){display:block}
+  .me-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
+  .me-grid td:not([data-label])::before{content:none}
+  .me-grid td.me-num input{text-align:left}
+  .me-grid td.me-row-actions{position:absolute;top:6px;right:6px;padding:0;border:0}
+  .me-grid td.me-row-actions::before{content:none}
+  .me-grid .me-remove-row{min-width:36px;min-height:36px;font-size:16px;color:var(--stone);background:var(--cream-2);border-radius:50%}
+}
+.me-units-mode{display:flex;gap:0;margin:0 0 12px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+.me-units-mode button{padding:7px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+.me-units-mode button strong{font-weight:700}
+.me-units-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+.me-units-hint{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:10px 14px 0;padding:10px 12px;background:var(--cream-2);border-radius:8px;border:1px solid var(--line)}
 .me-grid{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.me-grid{min-width:560px}}
 .me-grid th,.me-grid td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
@@ -431,18 +456,28 @@
       </span>
     </div>
 
-    <div class="me-grid-wrap" data-mode="manual">
+    <!-- Units mode toggle. Most owners get revenue out of their POS,
+         not unit counts. Revenue mode divides by price client-side
+         to derive units, so the same downstream math runs without
+         re-typing. -->
+    <div class="me-units-mode" role="radiogroup" aria-label="What sales data do you have">
+      <button type="button" data-units-mode="units" aria-pressed="true" role="radio">I have <strong>units sold</strong></button>
+      <button type="button" data-units-mode="revenue" aria-pressed="false" role="radio">I have <strong>revenue ($)</strong></button>
+    </div>
+
+    <div class="me-grid-wrap" data-mode="manual" data-units-mode="units">
       <table class="me-grid" id="meGrid" aria-label="Menu items input grid">
         <thead><tr>
           <th scope="col" style="width:34%">Item</th>
           <th scope="col" style="width:14%">Price</th>
           <th scope="col" style="width:14%">Food cost</th>
-          <th scope="col" style="width:14%">Units sold</th>
+          <th scope="col" style="width:14%" id="meUnitsHeader">Units sold</th>
           <th scope="col" style="width:18%">Category (optional)</th>
           <th scope="col" aria-label="Remove"></th>
         </tr></thead>
         <tbody id="meGridBody"></tbody>
       </table>
+      <p class="me-units-hint" data-units-hint="revenue" hidden>Revenue mode: type the dollar revenue each item brought in last period. We compute units = revenue ÷ price client-side, so the matrix runs the same math.</p>
     </div>
 
     <div class="me-paste" data-mode="paste" hidden>
@@ -790,13 +825,30 @@
   function readGrid(){
     var rows = gridBody.querySelectorAll('tr');
     var items = [];
+    var wrap = document.querySelector('.me-grid-wrap');
+    var mode = wrap ? wrap.getAttribute('data-units-mode') : 'units';
     for (var i = 0; i < rows.length; i++){
       var inputs = rows[i].querySelectorAll('input');
+      var price = inputs[1] ? inputs[1].value : '';
+      var unitsRaw = inputs[3] ? inputs[3].value : '';
+      var units;
+      if (mode === 'revenue') {
+        // The fourth column carries revenue in revenue mode.
+        var revenue = parseFloat(unitsRaw);
+        var p = parseFloat(price);
+        if (isFinite(revenue) && isFinite(p) && p > 0 && revenue >= 0) {
+          units = String(Math.round(revenue / p));
+        } else {
+          units = '';
+        }
+      } else {
+        units = unitsRaw;
+      }
       items.push({
         item:       inputs[0] ? inputs[0].value : '',
-        price:      inputs[1] ? inputs[1].value : '',
+        price:      price,
         food_cost:  inputs[2] ? inputs[2].value : '',
-        units_sold: inputs[3] ? inputs[3].value : '',
+        units_sold: units,
         category:   inputs[4] ? inputs[4].value : ''
       });
     }
@@ -806,12 +858,18 @@
   function addRow(item){
     item = item || { item: '', price: '', food_cost: '', units_sold: '', category: '' };
     var tr = document.createElement('tr');
+    // Read units header dynamically — switches between "Units sold"
+    // and "Revenue ($)" depending on the units-mode toggle.
+    var unitsLabel = (function () {
+      var h = document.getElementById('meUnitsHeader');
+      return h ? h.textContent : 'Units sold';
+    })();
     tr.innerHTML =
-      '<td><input type="text" placeholder="e.g. Cacio e pepe" value="' + escAttr(item.item) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="24" value="' + escAttr(item.price) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="6" value="' + escAttr(item.food_cost) + '" /></td>' +
-      '<td class="me-num"><input type="number" inputmode="numeric" step="1" min="0" placeholder="80" value="' + escAttr(item.units_sold) + '" /></td>' +
-      '<td><input type="text" placeholder="(Pasta, Mains…)" value="' + escAttr(item.category) + '" /></td>' +
+      '<td data-label="Item"><input type="text" placeholder="e.g. Cacio e pepe" value="' + escAttr(item.item) + '" /></td>' +
+      '<td class="me-num" data-label="Price"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="24" value="' + escAttr(item.price) + '" /></td>' +
+      '<td class="me-num" data-label="Food cost"><input type="number" inputmode="decimal" step="0.01" min="0" placeholder="6" value="' + escAttr(item.food_cost) + '" /></td>' +
+      '<td class="me-num" data-label="' + escAttr(unitsLabel) + '"><input type="number" inputmode="numeric" step="1" min="0" placeholder="80" value="' + escAttr(item.units_sold) + '" /></td>' +
+      '<td data-label="Category"><input type="text" placeholder="(Pasta, Mains…)" value="' + escAttr(item.category) + '" /></td>' +
       '<td class="me-row-actions"><button type="button" class="me-remove-row" aria-label="Remove row">×</button></td>';
     gridBody.appendChild(tr);
     return tr;
@@ -970,10 +1028,10 @@
       svg += '<line x1="' + medX + '" y1="' + y0 + '" x2="' + medX + '" y2="' + y1 + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
       svg += '<line x1="' + x0 + '" y1="' + medY + '" x2="' + x1 + '" y2="' + medY + '" stroke="#14161A" stroke-dasharray="4 4" stroke-width="1" />';
       // Quadrant labels
-      svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · popular but thin</text>';
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Plowhorses · re-cost them</text>';
       svg += '<text x="' + (x1 - 8) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Stars · push them</text>';
-      svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · drop or replace</text>';
-      svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · reposition</text>';
+      svg += '<text x="' + (x0 + 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif">Dogs · retire them</text>';
+      svg += '<text x="' + (x1 - 8) + '" y="' + (y1 - 10) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="end">Puzzles · repromote them</text>';
     } else {
       svg += '<text x="' + ((x0 + x1) / 2) + '" y="' + (y0 + 18) + '" font-size="11" fill="#5A5752" font-family="Inter,sans-serif" text-anchor="middle">Per-category split — quadrants in the per-item table below</text>';
     }
@@ -1078,19 +1136,56 @@
       }).join('~');
       return '/tools/photo-brief/#stars=' + encodeURIComponent(lines);
     }
+    // Margin Math handoff for Plowhorses — pre-fill the Price Raise
+    // calculator's contribution-margin slider with the average CM%
+    // across the Plowhorse items so the simulator opens at a number
+    // tied to this menu, not the global 20% default. Slider is
+    // clamped 5–50; we round to the nearest integer the input
+    // accepts. Encoded with the existing margin-math fragment
+    // schema (v=1&pr.m=XX). Owner can override on arrival.
+    function plowhorseMarginMathHref(items){
+      if (!items || !items.length) return '/tools/margin-math/#calc-priceraise';
+      var sum = 0, n = 0;
+      items.forEach(function(it){
+        if (typeof it.cm_percent === 'number' && isFinite(it.cm_percent)) {
+          sum += it.cm_percent; n++;
+        }
+      });
+      if (!n) return '/tools/margin-math/#calc-priceraise';
+      var avgPct = Math.round((sum / n) * 100);
+      avgPct = Math.max(5, Math.min(50, avgPct));
+      return '/tools/margin-math/#v=1&pr.m=' + avgPct;
+    }
     var toolLinks = {
       Star: function(items){ return [
         { href: briefLinkFor('Star', items), label: 'Brief these for your photographer &rarr;' }
       ]; },
       Plowhorse: function(items){ return [
-        { href: '/tools/margin-math/#calc-priceraise', label: 'Re-cost in Margin Math &rarr;' },
+        { href: plowhorseMarginMathHref(items),        label: 'Re-cost in Margin Math &rarr;' },
         { href: '/tools/plate-cost/',                  label: 'Audit ingredient cost in Plate Cost &rarr;' },
         { href: briefLinkFor('Plowhorse', items),      label: 'Brief these for your photographer &rarr;' }
       ]; },
-      Puzzle: function(items){ return [
-        { href: '/tools/menu-copy/',                   label: 'Re-describe in Menu Copy Inspector &rarr;' },
-        { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
-      ]; }
+      Puzzle: function(items){
+        // Handoff to Menu Copy: pre-fill the single-dish form with
+        // the first Puzzle item's name + price (we don't carry a
+        // description because the whole point is the description
+        // needs rewriting). The single-dish flow accepts a
+        // #name=…&price=… fragment.
+        var first = items && items[0];
+        var mcHref = '/tools/menu-copy/';
+        if (first && first.item) {
+          var bits = ['name=' + encodeURIComponent(first.item)];
+          if (typeof first.price === 'number' && isFinite(first.price)) {
+            bits.push('price=' + encodeURIComponent('$' + first.price));
+          }
+          mcHref += '#' + bits.join('&');
+        }
+        return [
+          { href: mcHref,                                label: 'Re-describe in Menu Copy Inspector &rarr;' },
+          { href: briefLinkFor('Puzzle', items),         label: 'Re-photograph these &rarr;' },
+          { href: '/tools/plate-cost/',                  label: 'Re-cost the recipe in Plate Cost &rarr;' }
+        ];
+      }
     };
     var html = '';
     ['Star','Plowhorse','Puzzle','Dog'].forEach(function(q){
@@ -1226,6 +1321,34 @@
   }
 
   // ----- Wire UI -----
+  // Units-mode toggle: swap column header label, placeholder, hint,
+  // and the wrap's data-units-mode attribute so readGrid() does the
+  // revenue-÷-price derivation. Re-render so the matrix updates
+  // immediately without requiring an extra row edit.
+  var meUnitsBtns = document.querySelectorAll('.me-units-mode button[data-units-mode]');
+  var meUnitsHeader = document.getElementById('meUnitsHeader');
+  var meUnitsHint = document.querySelector('.me-units-hint[data-units-hint="revenue"]');
+  var meGridWrap = document.querySelector('.me-grid-wrap');
+  function setUnitsMode(mode) {
+    if (mode !== 'units' && mode !== 'revenue') mode = 'units';
+    Array.prototype.forEach.call(meUnitsBtns, function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-units-mode') === mode ? 'true' : 'false'); });
+    if (meGridWrap) meGridWrap.setAttribute('data-units-mode', mode);
+    if (meUnitsHeader) meUnitsHeader.textContent = mode === 'revenue' ? 'Revenue ($)' : 'Units sold';
+    if (meUnitsHint) meUnitsHint.hidden = (mode !== 'revenue');
+    // Update placeholders + per-row data-label (drives mobile
+    // card-stack header text) on every existing row.
+    var newLabel = (mode === 'revenue') ? 'Revenue ($)' : 'Units sold';
+    Array.prototype.forEach.call(gridBody.querySelectorAll('tr'), function(tr){
+      var inputs = tr.querySelectorAll('input');
+      var cells  = tr.querySelectorAll('td');
+      if (inputs[3]) inputs[3].placeholder = (mode === 'revenue') ? '1920' : '80';
+      if (cells[3]) cells[3].setAttribute('data-label', newLabel);
+    });
+    rerender();
+  }
+  Array.prototype.forEach.call(meUnitsBtns, function(b){
+    b.addEventListener('click', function(){ setUnitsMode(b.getAttribute('data-units-mode')); });
+  });
   addRowBtn.addEventListener('click', function(){ addRow(); rerender(); });
   loadSample.addEventListener('click', loadSampleData);
   if (loadSampleAlt) loadSampleAlt.addEventListener('click', loadSampleData);

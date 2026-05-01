@@ -580,6 +580,21 @@
 
     <article class="oh-task-card">
       <header class="oh-task-head">
+        <h3>Read this onto your voicemail.</h3>
+        <span class="oh-task-format">For your phone greeting</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Stale voicemails are the #1 customer touchpoint independents forget. Read this script naturally — pauses where the punctuation suggests. Update it the next time your hours change.</p>
+      <pre class="oh-task-block" id="ohVoicemailBlock" aria-label="Voicemail script" style="white-space:pre-line;"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohVoicemailBlock" data-copy-label="Copy voicemail script">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy voicemail script
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
         <h3>Send this to whoever made your website.</h3>
         <span class="oh-task-format" title="Schema.org OpeningHoursSpecification JSON-LD">For your website builder</span>
       </header>
@@ -1068,8 +1083,9 @@
 </footer>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./open-hours.js?v=20260428-oh12"></script>
-<script src="./sign-render.js?v=20260426-oh12"></script>
+<script src="./sign-render.js?v=20260430-brand-palette"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
@@ -1589,6 +1605,36 @@
       appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
       emailBlock.textContent  = window.OH.generateBuilderEmail(input);
+      // Cross-tool handoff: write the structured opening-hours spec
+      // (and any picked closures) to MuntinContext so schema-check
+      // can pull them into its Restaurant JSON-LD generator without
+      // asking the owner to re-type. Also persist name + address —
+      // they're the other three Restaurant fields schema-check asks
+      // for. Best-effort; quota failures are silent.
+      try {
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          var docObj = window.OH.generateJsonLd(input, { format: 'object' });
+          var hoursPayload = null;
+          if (docObj && Array.isArray(docObj.openingHoursSpecification)) {
+            hoursPayload = {
+              openingHoursSpecification: docObj.openingHoursSpecification,
+              specialOpeningHoursSpecification: docObj.specialOpeningHoursSpecification || []
+            };
+          }
+          MuntinContext.merge({
+            businessName: input.name || undefined,
+            address: [input.street, input.city, input.region, input.postalCode]
+              .filter(Boolean).join(', ') || undefined,
+            city: input.city || undefined,
+            hours: hoursPayload || undefined
+          });
+        }
+      } catch (_) {}
+      var voicemailBlockEl    = document.getElementById('ohVoicemailBlock');
+      if (voicemailBlockEl && window.OH.generateVoicemailScript) {
+        var locale = document.documentElement.lang === 'es' ? 'es' : 'en';
+        voicemailBlockEl.textContent = window.OH.generateVoicemailScript(input, locale);
+      }
       paintSerpPreview(v, input);
       paintChecklist(v);
       paintDiff();
@@ -1895,13 +1941,23 @@
       postalCode: (document.getElementById('ohPostal') || {}).value || ''
     };
     var v = window.OH.validateHours(input);
+    // Brand handoff: pull the palette from MuntinContext (written by
+    // Brand Suite when the owner extracted a palette from their logo).
+    // Passed straight to sign-render which picks a contrast-suitable
+    // accent for the muntin glyph + eyebrows. Falls through to the
+    // built-in Muntin teal when no palette exists yet.
+    var ctx0 = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+      ? MuntinContext.read() : null;
+    var palette = (ctx0 && Array.isArray(ctx0.palette) && ctx0.palette.length)
+      ? ctx0.palette : null;
     return {
       summary: v,
       closures: getClosureList(),
       jsonLd:    window.OH.generateJsonLd(input),
       googleCopy: window.OH.generatePlatformCopy(input, 'google'),
       formatTime: window.OH.formatTime,
-      strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_EN) || {}
+      strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_EN) || {},
+      palette:   palette
     };
   }
 

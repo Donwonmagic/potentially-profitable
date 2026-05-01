@@ -740,47 +740,61 @@ function mcActionLadder(scored) {
     moves.push({
       lift: 'small',
       headline: 'Cut ' + hedgeCount + ' hedge word' + (hedgeCount === 1 ? '' : 's') + '.',
-      detail: 'Drop or replace each flagged word. Most are filler that adds no information; the description usually tightens cleanly.'
+      detail: 'Drop or replace each flagged word. Most are filler that adds no information; the description usually tightens cleanly.',
+      template: 'Find each highlighted hedge in the description above and remove it. If the sentence still makes sense without it, the cut is right. Replace with a concrete word only when the cut leaves a real gap (e.g., "delicious" → "smoky" or "buttery").',
+      templateLabel: 'How to do it'
     });
   }
   if (s < 1) {
     moves.push({
       lift: 'large',
       headline: 'Add 1 sensory adjective.',
-      detail: 'Pick one word from flavor / texture / temperature / preparation that actually fits the dish. Wansink found descriptive labels lifted selection +27% on average.'
+      detail: 'Pick one word from flavor / texture / temperature / preparation that actually fits the dish. Cornell School of Hotel Administration menu-language research found descriptive labels lifted selection meaningfully on average.',
+      template: 'Pattern: [flavor word] [hero ingredient], [texture word] [side]. Examples: "smoky pecorino, cracked black pepper" / "charred poblano, buttery polenta" / "tart cherry, crisp meringue". One word per dimension is plenty — pick the one that actually fits and sounds like you.',
+      templateLabel: 'Show me an example'
     });
   } else if (s < 2) {
     moves.push({
       lift: 'medium',
       headline: 'Add a second sensory category.',
-      detail: 'You have one sensory dimension; reaching for a second (combine flavor + texture, or texture + temperature) compounds the lift.'
+      detail: 'You have one sensory dimension; reaching for a second (combine flavor + texture, or texture + temperature) compounds the lift.',
+      template: 'You have e.g. flavor — add texture or temperature. "Smoky pecorino" → "smoky pecorino, silken egg yolk." "Tart cherry" → "tart cherry, cold cream." Combinations that span dimensions read as composed; same-dimension stacking reads as a thesaurus.',
+      templateLabel: 'Show me an example'
     });
   }
   if (!hasProv) {
     moves.push({
       lift: 'medium',
       headline: 'Name a producer or origin.',
-      detail: 'A specific farm, region, breed, or aging duration. Provenance signals carry 13–20% selection lift in restaurant studies and convert vague claims into evidence.'
+      detail: 'A specific farm, region, breed, or aging duration. Provenance signals carry 13–20% selection lift in restaurant studies and convert vague claims into evidence.',
+      template: 'Pattern: [hero ingredient] from [specific source]. Examples: "tomatoes from Whitmore Farm", "mozzarella from Caputo Brothers", "lamb from a small farm in [region]", "Parmigiano-Reggiano aged 24 months", "olive oil from a single grove in Liguria." Specific beats poetic — the audience verifies what you name.',
+      templateLabel: 'Show me an example'
     });
   }
   if (!hasTech) {
     moves.push({
       lift: 'medium',
       headline: 'Surface a technique.',
-      detail: 'What was DONE to the food (braised, charred, dry-aged) communicates competence. Different audience, different lift than sensory words.'
+      detail: 'What was DONE to the food (braised, charred, dry-aged) communicates competence. Different audience, different lift than sensory words.',
+      template: 'Pattern: [verb-en participle] [hero ingredient]. Examples: "hand-rolled pasta", "salt-baked branzino", "slow-simmered Bolognese", "house-cured guanciale", "wood-fired focaccia." If you do it for real in your kitchen, write it.',
+      templateLabel: 'Show me an example'
     });
   }
   if (lenVerdict === 'short' || lenVerdict === 'short-edge') {
     moves.push({
       lift: 'small',
       headline: 'Stretch the description.',
-      detail: 'Targeting 9–15 words for casual, 12–22 for fine. Below 6 reads as a stub.'
+      detail: 'Targeting 9–15 words for casual, 12–22 for fine. Below 6 reads as a stub.',
+      template: 'Add one of: a sensory word (smoky/silken/charred), a technique (braised/aged/fired), or a provenance signal (from [farm], aged [N] months). One specific addition lifts more than three vague ones.',
+      templateLabel: 'How to stretch it'
     });
   } else if (lenVerdict === 'long' || lenVerdict === 'long-edge') {
     moves.push({
       lift: 'small',
       headline: 'Trim the description.',
-      detail: 'Past 22–25 words, attention drops. Cut explanation that the dish name already implies.'
+      detail: 'Past 22–25 words, attention drops. Cut explanation that the dish name already implies.',
+      template: 'Cut: prepositions ("with", "served alongside"), redundancies (the dish name already says "salad"), and any second adjective in a same-dimension pair (only one of "fresh, crisp, vibrant" earns its keep).',
+      templateLabel: 'How to trim it'
     });
   }
   return moves;

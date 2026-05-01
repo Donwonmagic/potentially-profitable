@@ -86,6 +86,30 @@
   .mm-form input[type="range"]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r-sm)}
   .mm-form input[type="number"]{padding:8px 10px;border:1px solid var(--line-dark);border-radius:var(--r-sm);font:inherit;font-size:15px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box}
   .mm-form input[type="number"]:focus{border-color:var(--teal);outline:none}
+  .mm-mode{display:flex;gap:0;margin:4px 0 4px;border:1px solid var(--line);border-radius:999px;padding:2px;width:fit-content;background:var(--surface-1)}
+  .mm-mode button{padding:6px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;border-radius:999px}
+  .mm-mode button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}
+  .mm-slider-pair{display:grid;grid-template-columns:1fr 80px auto;gap:8px;align-items:center}
+  .mm-slider-pair input[type="range"]{margin:0}
+  .mm-num-input{width:80px;text-align:right;font-variant-numeric:tabular-nums}
+  .mm-num-input--wide{width:160px}
+  .mm-num-suffix{font-size:13px;color:var(--stone)}
+  .mm-num-row{display:flex;align-items:center;gap:6px}
+  .mm-num-prefix{font-size:18px;color:var(--stone);font-weight:600}
+  .mm-pc-dol{display:flex;flex-direction:column;gap:14px}
+  .mm-pc-dol-hint{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5;padding:10px 14px;background:var(--cream-2);border-radius:var(--r-sm);border:1px solid var(--line)}
+  .mm-pnl{padding:22px 24px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--surface-1);margin:0 0 24px;display:flex;flex-direction:column;gap:14px}
+  .mm-pnl h3{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0;line-height:1.2}
+  .mm-pnl p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0}
+  .mm-pnl-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0}
+  .mm-pnl-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .mm-pnl-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mm-pnl-btn{padding:10px 18px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .mm-pnl-btn:hover{background:var(--teal);border-color:var(--teal)}
+  .mm-pnl-msg{font-size:13px;color:var(--status-good);font-weight:500}
+  .mm-pnl-msg.error{color:var(--rust)}
+  .mm-pnl-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .mm-pnl-foot code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
   .mm-tier-group{display:flex;gap:6px;border:0;padding:0;margin:0}
   .mm-tier-group legend{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;padding:0}
   .mm-tier-btns{display:flex;gap:6px;width:100%}
@@ -680,6 +704,40 @@
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
     </button>
   </div>
+  <!-- "Got a P&L? Start here" — five plain-dollar inputs from last
+       month seed every calculator so the owner doesn't compute four
+       percentages by hand before they can use the tool. Audit P0. -->
+  <article class="mm-pnl" id="mmPnl">
+    <div class="mm-card-header">
+      <span class="mm-card-eyebrow">Optional shortcut</span>
+      <span class="mm-badge-safe" title="Stays in your browser. Same privacy promise as the calculators.">Stays in your browser</span>
+    </div>
+    <h3>Got a P&amp;L? Start here.</h3>
+    <p>Five numbers from last month — the lines on a bank statement or P&amp;L. We'll compute every percentage and pre-fill all four calculators. Saves you the back-of-envelope math.</p>
+    <form class="mm-pnl-form" onsubmit="return false;" aria-label="P&amp;L shortcut">
+      <label for="pnl-sales"><span>Monthly sales</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-sales" min="0" step="100" placeholder="24000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-food"><span>Monthly food cost</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-food" min="0" step="100" placeholder="7200" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-labor"><span>Monthly labor cost</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-labor" min="0" step="100" placeholder="7680" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-fixed"><span>Monthly fixed costs <small style="color:var(--stone);font-weight:400;">rent + insurance + loan + SaaS</small></span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-fixed" min="0" step="100" placeholder="6000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+      <label for="pnl-check"><span>Average check size</span>
+        <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pnl-check" min="0" step="0.5" placeholder="35" inputmode="decimal" class="mm-num-input mm-num-input--wide"></div>
+      </label>
+    </form>
+    <div class="mm-pnl-actions">
+      <button type="button" class="mm-pnl-btn" id="mmPnlApply">Pre-fill all four calculators &rarr;</button>
+      <span class="mm-pnl-msg" id="mmPnlMsg" aria-live="polite"></span>
+    </div>
+    <p class="mm-pnl-foot">Contribution margin defaults to <code>(sales − food − labor × 0.4) ÷ sales</code> — labor's variable share is roughly 40%, the rest is salaried/fixed. Adjust the slider on Calc 3 or 4 if your mix is different.</p>
+  </article>
+
   <div class="mm-grid" aria-label="Calculators">
     <article class="mm-card mm-live" id="calc-delivery" data-calc="delivery-breakeven">
       <div class="mm-card-header">
@@ -696,7 +754,11 @@
         </label>
         <label for="dbe-foodcost">
           <span>Food cost (% of sales) <output id="dbe-foodcost-val" for="dbe-foodcost">30%</output></span>
-          <input type="range" id="dbe-foodcost" min="20" max="45" step="1" value="30" aria-describedby="dbe-foodcost-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="dbe-foodcost" min="20" max="45" step="1" value="30" aria-describedby="dbe-foodcost-val" />
+            <input type="number" id="dbe-foodcost-num" min="0" max="100" step="0.5" value="30" inputmode="decimal" aria-label="Food cost percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
         </label>
         <fieldset class="mm-tier-group">
           <legend>Aggregator commission tier</legend>
@@ -791,14 +853,48 @@
             <button type="button" data-segment="fine-dining"  aria-pressed="false" role="radio">Fine-dining<small>60–70%</small></button>
           </div>
         </fieldset>
-        <label for="pc-food">
-          <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
-          <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
-        </label>
-        <label for="pc-labor">
-          <span>Labor cost (% of sales) <output id="pc-labor-val" for="pc-labor">32%</output></span>
-          <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
-        </label>
+        <!-- Dollar-mode toggle. Owners think in last-month sales,
+             food spend, and labor spend (the lines on a P&L) — not
+             percentages. Toggling to $ mode reveals three plain
+             dollar inputs; the sliders update in lockstep so the
+             prime-cost math is identical either way. -->
+        <div class="mm-mode" role="radiogroup" aria-label="Input mode">
+          <button type="button" data-mode="pct" aria-pressed="true"  role="radio" data-target="pc">% of sales</button>
+          <button type="button" data-mode="dol" aria-pressed="false" role="radio" data-target="pc">$ from last month</button>
+        </div>
+        <div class="mm-pc-pct" data-mode-view="pct">
+          <label for="pc-food">
+            <span>Food cost (% of sales) <output id="pc-food-val" for="pc-food">30%</output></span>
+            <div class="mm-slider-pair">
+              <input type="range" id="pc-food" min="15" max="50" step="1" value="30" aria-describedby="pc-food-val" />
+              <input type="number" id="pc-food-num" min="0" max="100" step="0.5" value="30" inputmode="decimal" aria-label="Food cost percent" class="mm-num-input">
+              <span class="mm-num-suffix">%</span>
+            </div>
+          </label>
+          <label for="pc-labor">
+            <span>Labor cost (% of sales) <output id="pc-labor-val" for="pc-labor">32%</output></span>
+            <div class="mm-slider-pair">
+              <input type="range" id="pc-labor" min="15" max="50" step="1" value="32" aria-describedby="pc-labor-val" />
+              <input type="number" id="pc-labor-num" min="0" max="100" step="0.5" value="32" inputmode="decimal" aria-label="Labor cost percent" class="mm-num-input">
+              <span class="mm-num-suffix">%</span>
+            </div>
+          </label>
+        </div>
+        <div class="mm-pc-dol" data-mode-view="dol" hidden>
+          <p class="mm-pc-dol-hint">From last month's bank statement or P&L. We compute the percentages for you.</p>
+          <label for="pc-sales-dol">
+            <span>Monthly sales</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-sales-dol" min="0" step="100" placeholder="24000" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+          <label for="pc-food-dol">
+            <span>Monthly food cost</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-food-dol" min="0" step="100" placeholder="7200" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+          <label for="pc-labor-dol">
+            <span>Monthly labor cost</span>
+            <div class="mm-num-row"><span class="mm-num-prefix">$</span><input type="number" id="pc-labor-dol" min="0" step="100" placeholder="7680" inputmode="numeric" class="mm-num-input mm-num-input--wide"></div>
+          </label>
+        </div>
       </form>
 
       <div class="mm-results" aria-live="polite" aria-atomic="true">
@@ -859,7 +955,11 @@
         </label>
         <label for="bec-margin">
           <span>Contribution margin / cover <output id="bec-margin-val" for="bec-margin">20%</output></span>
-          <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="bec-margin" min="5" max="50" step="1" value="20" aria-describedby="bec-margin-val" />
+            <input type="number" id="bec-margin-num" min="0" max="100" step="0.5" value="20" inputmode="decimal" aria-label="Contribution margin percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What a cover contributes after food, hourly labor, and card fees. Not the same as operating margin.</small>
         </label>
         <details class="mm-mini-help">
@@ -929,12 +1029,20 @@
         </fieldset>
         <label for="pr-loss">
           <span>Assumed cover loss <output id="pr-loss-val" for="pr-loss">2.5%</output></span>
-          <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="pr-loss" min="0" max="15" step="0.1" value="2.5" aria-describedby="pr-loss-val" />
+            <input type="number" id="pr-loss-num" min="0" max="100" step="0.1" value="2.5" inputmode="decimal" aria-label="Cover loss percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">Defaults reset when you switch tier.</small>
         </label>
         <label for="pr-margin">
           <span>Contribution margin <output id="pr-margin-val" for="pr-margin">20%</output></span>
-          <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+          <div class="mm-slider-pair">
+            <input type="range" id="pr-margin" min="5" max="50" step="1" value="20" aria-describedby="pr-margin-val" />
+            <input type="number" id="pr-margin-num" min="0" max="100" step="0.5" value="20" inputmode="decimal" aria-label="Contribution margin percent" class="mm-num-input">
+            <span class="mm-num-suffix">%</span>
+          </div>
           <small style="color:var(--stone);font-weight:400;font-size:12px;line-height:1.4;">What each cover contributes after food, variable labor, and card fees. Unlocks the profit-based break-even below — more forgiving than revenue because lost covers only cost you their margin, not the whole ticket.</small>
         </label>
       </form>
@@ -1134,6 +1242,33 @@
   // shared concepts (food cost, average check, contribution margin)
   // across calculators where one set the value and another didn't.
   window.__mmHydratedState = window.MM.crossFillState(window.MM.decodeState(location.hash));
+  // When the page boots with a pre-filled namespace, scroll the
+  // matching calculator into view so the owner lands on the calc
+  // their inbound link was about — not at the top of the page.
+  // Triggered only when at least one of the four namespaces was
+  // hydrated from the URL; default-load (no fragment) keeps the
+  // existing top-of-page scroll. Non-namespaced anchors like
+  // "#calc-priceraise" still work via the browser's native jump.
+  (function(){
+    var hyd = window.__mmHydratedState || {};
+    var nsToCalc = { dbe: 'calc-delivery', pc: 'calc-primecost', bec: 'calc-breakeven', pr: 'calc-priceraise' };
+    var firstNs = null;
+    ['dbe','pc','bec','pr'].forEach(function(ns){
+      if (firstNs) return;
+      if (hyd[ns] && Object.keys(hyd[ns]).length) firstNs = ns;
+    });
+    if (!firstNs) return;
+    var targetId = nsToCalc[firstNs];
+    if (!targetId) return;
+    // Defer to the next tick so the calc-card IIFEs have wired their
+    // state from __mmHydratedState before we scroll the user there.
+    setTimeout(function(){
+      var el = document.getElementById(targetId);
+      if (!el) return;
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch (_) { el.scrollIntoView(); }
+    }, 80);
+  })();
   window.__mmUserInteracted = false;
   window.__mmSyncFragment = function(){
     if (!window.__mmUserInteracted) return;  // don't trample URL until user acts
@@ -1553,6 +1688,18 @@
   foodcostEl.addEventListener('input', onInput);
   ordersEl.addEventListener('input', onInput);
 
+  // Paired number-input lockstep — type or drag, both update.
+  var foodcostNumEl = card.querySelector('#dbe-foodcost-num');
+  if (foodcostNumEl) {
+    foodcostEl.addEventListener('input', function(){ foodcostNumEl.value = foodcostEl.value; });
+    foodcostNumEl.addEventListener('input', function(){
+      var v = parseFloat(foodcostNumEl.value);
+      if (!isFinite(v)) return;
+      foodcostEl.value = String(Math.max(parseFloat(foodcostEl.min), Math.min(parseFloat(foodcostEl.max), v)));
+      onInput();
+    });
+  }
+
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
       Array.prototype.forEach.call(tierBtns, function(b){
@@ -1722,6 +1869,61 @@
   foodEl.addEventListener('input', onInput);
   laborEl.addEventListener('input', onInput);
 
+  // Number-input pair for each slider — type a precise value or
+  // drag, lockstep both ways. Solves the "1% slider on a thumb" UX.
+  var foodNumEl  = card.querySelector('#pc-food-num');
+  var laborNumEl = card.querySelector('#pc-labor-num');
+  function syncFrom(slider, num) {
+    if (!num) return;
+    slider.addEventListener('input', function(){ num.value = slider.value; });
+    num.addEventListener('input', function(){
+      var v = parseFloat(num.value);
+      if (!isFinite(v)) return;
+      slider.value = String(Math.max(parseFloat(slider.min), Math.min(parseFloat(slider.max), v)));
+      onInput();
+    });
+  }
+  syncFrom(foodEl, foodNumEl);
+  syncFrom(laborEl, laborNumEl);
+
+  // Dollar-mode toggle. Owners type last-month sales / food / labor
+  // dollars; we compute the percentages and update sliders. Keeps
+  // the existing math path; just changes the input shape.
+  var modeBtns = card.querySelectorAll('.mm-mode button[data-target="pc"]');
+  var pctView  = card.querySelector('[data-mode-view="pct"]');
+  var dolView  = card.querySelector('[data-mode-view="dol"]');
+  var salesDolEl = card.querySelector('#pc-sales-dol');
+  var foodDolEl  = card.querySelector('#pc-food-dol');
+  var laborDolEl = card.querySelector('#pc-labor-dol');
+  function setMode(mode) {
+    Array.prototype.forEach.call(modeBtns, function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-mode') === mode ? 'true' : 'false');
+    });
+    if (pctView) pctView.hidden = (mode !== 'pct');
+    if (dolView) dolView.hidden = (mode !== 'dol');
+  }
+  Array.prototype.forEach.call(modeBtns, function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+  function recomputeFromDollars() {
+    var sales = parseFloat(salesDolEl && salesDolEl.value);
+    var food  = parseFloat(foodDolEl  && foodDolEl.value);
+    var labor = parseFloat(laborDolEl && laborDolEl.value);
+    if (!isFinite(sales) || sales <= 0) return;
+    if (isFinite(food) && food >= 0) {
+      var fp = Math.max(0, Math.min(100, Math.round(food / sales * 100)));
+      foodEl.value = String(Math.max(parseFloat(foodEl.min), Math.min(parseFloat(foodEl.max), fp)));
+      if (foodNumEl) foodNumEl.value = foodEl.value;
+    }
+    if (isFinite(labor) && labor >= 0) {
+      var lp = Math.max(0, Math.min(100, Math.round(labor / sales * 100)));
+      laborEl.value = String(Math.max(parseFloat(laborEl.min), Math.min(parseFloat(laborEl.max), lp)));
+      if (laborNumEl) laborNumEl.value = laborEl.value;
+    }
+    onInput();
+  }
+  [salesDolEl, foodDolEl, laborDolEl].forEach(function(el){ if (el) el.addEventListener('input', recomputeFromDollars); });
+
   Array.prototype.forEach.call(segmentBtns, function(btn){
     btn.addEventListener('click', function(){
       setSegment(btn.getAttribute('data-segment'));
@@ -1887,6 +2089,21 @@
   daysEl.addEventListener('input', onInput);
   typicalEl.addEventListener('input', onInput);
 
+  // Paired number input on the contribution-margin slider (the
+  // steepest cliff per the audit — a 1% slider step on a phone is
+  // imprecise and the field demands a number most owners need to
+  // calculate from food + labor).
+  var marginNumEl = card.querySelector('#bec-margin-num');
+  if (marginNumEl) {
+    marginEl.addEventListener('input', function(){ marginNumEl.value = marginEl.value; });
+    marginNumEl.addEventListener('input', function(){
+      var v = parseFloat(marginNumEl.value);
+      if (!isFinite(v)) return;
+      marginEl.value = String(Math.max(parseFloat(marginEl.min), Math.min(parseFloat(marginEl.max), v)));
+      onInput();
+    });
+  }
+
   render();
 })();
 
@@ -2036,6 +2253,32 @@
   lossEl.addEventListener('input', function(){ userOverrodeLoss = true; onInput(); });
   marginEl.addEventListener('input', onInput);
 
+  // Paired number inputs on the cover-loss + contribution-margin
+  // sliders. cover-loss steps in 0.1% so the number field uses 0.1
+  // step too. Typing into the number input flips userOverrodeLoss
+  // the same way the slider does.
+  var lossNumEl = card.querySelector('#pr-loss-num');
+  if (lossNumEl) {
+    lossEl.addEventListener('input', function(){ lossNumEl.value = lossEl.value; });
+    lossNumEl.addEventListener('input', function(){
+      var v = parseFloat(lossNumEl.value);
+      if (!isFinite(v)) return;
+      lossEl.value = String(Math.max(parseFloat(lossEl.min), Math.min(parseFloat(lossEl.max), v)));
+      userOverrodeLoss = true;
+      onInput();
+    });
+  }
+  var prMarginNumEl = card.querySelector('#pr-margin-num');
+  if (prMarginNumEl) {
+    marginEl.addEventListener('input', function(){ prMarginNumEl.value = marginEl.value; });
+    prMarginNumEl.addEventListener('input', function(){
+      var v = parseFloat(prMarginNumEl.value);
+      if (!isFinite(v)) return;
+      marginEl.value = String(Math.max(parseFloat(marginEl.min), Math.min(parseFloat(marginEl.max), v)));
+      onInput();
+    });
+  }
+
   Array.prototype.forEach.call(tierBtns, function(btn){
     btn.addEventListener('click', function(){
       Array.prototype.forEach.call(tierBtns, function(b){
@@ -2055,6 +2298,86 @@
   });
 
   render();
+})();
+
+/* "Got a P&L? Start here" shortcut. Reads five plain-dollar inputs,
+ * derives every percentage all four calculators want, writes them
+ * to each calculator's slider/number inputs, and dispatches input
+ * events so the existing renderers run. No backend, no math
+ * duplication — the shortcut is a write into the same UI the
+ * calculators already react to. */
+(function(){
+  var btn = document.getElementById('mmPnlApply');
+  if (!btn) return;
+  var msgEl = document.getElementById('mmPnlMsg');
+  function pnum(id){ var el = document.getElementById(id); var v = parseFloat(el && el.value); return isFinite(v) ? v : null; }
+  function setSlider(id, value, fireUserEvent){
+    var el = document.getElementById(id); if (!el) return;
+    var min = parseFloat(el.min); var max = parseFloat(el.max);
+    if (isFinite(min) && value < min) value = min;
+    if (isFinite(max) && value > max) value = max;
+    el.value = String(value);
+    var paired = document.getElementById(id + '-num');
+    if (paired) paired.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  function setNumber(id, value){
+    var el = document.getElementById(id); if (!el) return;
+    el.value = String(value);
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  btn.addEventListener('click', function(){
+    var sales = pnum('pnl-sales'), food = pnum('pnl-food'), labor = pnum('pnl-labor');
+    var fixed = pnum('pnl-fixed'), check = pnum('pnl-check');
+    if (msgEl) { msgEl.textContent = ''; msgEl.classList.remove('error'); }
+    if (!sales || sales <= 0) {
+      if (msgEl) { msgEl.textContent = 'Type your monthly sales first.'; msgEl.classList.add('error'); }
+      var f = document.getElementById('pnl-sales'); if (f) f.focus();
+      return;
+    }
+    var foodPct = food != null ? Math.round((food / sales) * 100) : null;
+    var laborPct = labor != null ? Math.round((labor / sales) * 100) : null;
+    // Contribution margin = (1 − food/sales − labor*0.4/sales). Labor's
+    // variable share is roughly 40% in independents; the rest is fixed.
+    var marginPct = null;
+    if (food != null && labor != null) {
+      marginPct = Math.round((1 - food / sales - (labor * 0.4) / sales) * 100);
+    }
+    var applied = [];
+    if (foodPct != null) {
+      setSlider('dbe-foodcost', foodPct);
+      setSlider('pc-food', foodPct);
+      applied.push('food cost ' + foodPct + '%');
+    }
+    if (laborPct != null) {
+      setSlider('pc-labor', laborPct);
+      applied.push('labor ' + laborPct + '%');
+    }
+    if (check != null && check > 0) {
+      setSlider('dbe-ticket', check);
+      setSlider('bec-check', check);
+      applied.push('average check $' + check);
+    }
+    if (fixed != null && fixed > 0) {
+      setNumber('bec-fixed', fixed);
+      applied.push('fixed costs $' + fixed);
+    }
+    if (marginPct != null && isFinite(marginPct)) {
+      // Clamp to slider bounds.
+      var mp = Math.max(5, Math.min(50, marginPct));
+      setSlider('bec-margin', mp);
+      setSlider('pr-margin', mp);
+      applied.push('contribution margin ' + mp + '%');
+    }
+    if (msgEl) {
+      msgEl.textContent = 'Pre-filled: ' + applied.join(', ') + '. Scroll down to see each calculator.';
+      msgEl.classList.remove('error');
+    }
+    // Smooth-scroll to the first calculator so the pre-fill is visible.
+    var firstCalc = document.getElementById('calc-delivery');
+    if (firstCalc) firstCalc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (window.plausible) window.plausible('Margin Math PnL Shortcut', { props: { applied: applied.length } });
+  });
 })();
 
 /* Monthly Margin Report — print. Stamps date + scenario URL onto

@@ -62,6 +62,15 @@
   .gbp-form button:disabled{opacity:.5;cursor:wait}
   @media(max-width:640px){.gbp-form{flex-direction:column}}
   .gbp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  /* Banner de inspiración — handoff de Search Ideas. */
+  .gbp-inspiration{margin:14px auto 0;max-width:560px;text-align:left;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);padding:12px 14px;background:var(--white)}
+  .gbp-inspiration[hidden]{display:none}
+  .gbp-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-inspiration-chips{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+  .gbp-inspiration-chip{display:inline-block;padding:5px 11px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+  .gbp-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+  .gbp-inspiration-note{margin:0;font-size:12px;color:var(--stone);line-height:1.45}
+  .gbp-inspiration-flash{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:var(--status-good);min-height:16px}
   .gbp-result{display:none;max-width:560px;margin:48px auto 0}
   .gbp-result.visible{display:block}
   .gbp-biz{text-align:center;margin-bottom:28px}
@@ -157,6 +166,44 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Metodología — <details> al final para credibilidad sin ensuciar
      la vista por defecto. */
+  .gbp-preflight{margin:0 0 22px;padding:16px 20px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-input)}
+  .gbp-preflight-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 10px}
+  .gbp-preflight-body{font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+  .gbp-preflight-list{margin:0 0 12px;padding-left:20px;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .gbp-preflight-cta{display:inline-block;padding:9px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px;margin:0 0 10px}
+  .gbp-preflight-cta:hover{filter:brightness(0.92)}
+  .gbp-preflight-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .gbp-mirror{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-mirror-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+  .gbp-mirror-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .gbp-mirror-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .gbp-mirror-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .gbp-mirror-table tbody tr:last-child td{border-bottom:0}
+  .gbp-mirror-label{font-weight:600;color:var(--ink)}
+  .gbp-mirror-you{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gbp-mirror-peer{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta{font-weight:700;font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta.win{color:var(--status-good)}
+  .gbp-mirror-delta.lose{color:var(--rust)}
+  .gbp-mirror-delta.tie{color:var(--stone)}
+  .gbp-mirror-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+  .gbp-mirror-foot{font-size:12px;color:var(--stone);margin:10px 0 0;line-height:1.5}
+  .gbp-mirror-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  @media(max-width:560px){.gbp-mirror-table th:nth-child(5),.gbp-mirror-table td:nth-child(5){display:none}}
+  .gbp-roadmap{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-roadmap-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-roadmap-body{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 14px}
+  .gbp-roadmap-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .gbp-roadmap-day{display:grid;grid-template-columns:120px 1fr;gap:10px 14px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1)}
+  .gbp-roadmap-day[data-empty="true"]{opacity:0.5;background:var(--cream-2)}
+  .gbp-roadmap-name{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);letter-spacing:0.02em;align-self:center}
+  .gbp-roadmap-action{display:flex;align-items:start;gap:8px;font-size:13.5px;line-height:1.55;color:var(--ink);grid-column:2}
+  .gbp-roadmap-day[data-empty="true"] .gbp-roadmap-action{grid-column:2;color:var(--stone);font-style:italic}
+  .gbp-roadmap-state{flex:0 0 18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700;margin-top:1px}
+  .gbp-roadmap-state.state-fail{background:#fde9e0;color:var(--rust)}
+  .gbp-roadmap-state.state-warn{background:#fbf3d8;color:#9c7416}
+  .gbp-roadmap-foot{font-size:12px;color:var(--stone);margin:12px 0 0;line-height:1.5}
+  @media(max-width:560px){.gbp-roadmap-day{grid-template-columns:1fr}.gbp-roadmap-name{align-self:auto}.gbp-roadmap-action{grid-column:1}}
   .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2)}
   .gbp-methodology summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .gbp-methodology summary::-webkit-details-marker{display:none}
@@ -188,6 +235,23 @@
   .gbp-delta-up{color:var(--status-good);font-weight:600}
   .gbp-delta-down{color:var(--rust);font-weight:600}
   .gbp-delta-flat{color:var(--stone)}
+  /* Mini-gráfica de revisiones recientes. */
+  .gbp-spark{margin:0 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--white);text-align:left}
+  .gbp-spark-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  .gbp-spark-row{display:flex;align-items:center;gap:14px}
+  .gbp-spark-svg{width:240px;height:60px;overflow:visible;flex:0 0 auto;color:var(--teal)}
+  .gbp-spark-svg .spark-line{stroke:var(--teal)}
+  .gbp-spark-svg .spark-pt{fill:var(--cream,#FAF6EE);stroke:var(--teal);stroke-width:2}
+  .gbp-spark-svg .spark-pt-current{fill:var(--teal);stroke:var(--teal)}
+  .gbp-spark-svg .spark-label{font:600 11px/1 var(--font-body,system-ui);fill:var(--ink);paint-order:stroke;stroke:var(--cream,#FAF6EE);stroke-width:3px;stroke-linejoin:round}
+  .gbp-spark-prose{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+  .gbp-spark-prose strong{color:var(--ink)}
+  .gbp-spark-axis{display:flex;justify-content:space-between;max-width:240px;font-size:10.5px;color:var(--stone);margin-top:4px;font-variant-numeric:tabular-nums}
+  @media(max-width:540px){
+    .gbp-spark-row{flex-direction:column;align-items:stretch;gap:10px}
+    .gbp-spark-svg{width:100%;max-width:320px;align-self:center}
+    .gbp-spark-axis{max-width:320px;align-self:center;width:100%}
+  }
   /* Fila de compartir — dentro del cuadro CTA, sobre el botón de
      handoff al diagnóstico. Guarda el estado actual en KV vía
      /api/audit-snapshot (Sprint 3C). */
@@ -416,6 +480,14 @@
             <!-- storefront-rail:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Busca el nombre de tu negocio y mira cómo se compara tu ficha — calificación, número de reseñas, fotos, horarios, categorías — con arreglos específicos para lo que falta.</p>
 
+  <!-- Banner de inspiración — handoff de Search Ideas. -->
+  <div class="gbp-inspiration" id="gbpInspiration" hidden>
+    <p class="gbp-inspiration-eyebrow">Palabras de búsqueda que usan los clientes</p>
+    <ul class="gbp-inspiration-chips" id="gbpInspirationChips"></ul>
+    <p class="gbp-inspiration-note">Vienen de Search Ideas. Toca un chip para copiarlo — pégalo en tu descripción de GBP, en "Servicios" o en tu próxima Publicación de Google.</p>
+    <span class="gbp-inspiration-flash" id="gbpInspirationFlash" aria-live="polite"></span>
+  </div>
+
   <form class="gbp-form" id="gbpForm" novalidate>
     <input type="text" id="gbpQuery" placeholder="Nombre del negocio, Ciudad" autocomplete="off" required aria-label="Nombre del negocio y ciudad" />
     <button type="submit" id="gbpSubmit">Calificar</button>
@@ -544,6 +616,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/es/terms.html">Términos</a><a href="/es/privacy.html">Privacidad</a><a href="/es/accessibility.html">Accesibilidad</a><a href="/es/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
@@ -565,6 +638,55 @@
   var btn=document.getElementById('gbpSubmit');
   var result=document.getElementById('gbpResult');
   var bizEl=document.getElementById('gbpBiz');
+
+  // Handoff de Search Ideas (#keywords=…).
+  (function hydrateInspiration(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var keywordsRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      if (pair.slice(0, eq) !== 'keywords') return;
+      try { keywordsRaw = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { keywordsRaw = pair.slice(eq + 1); }
+    });
+    if (!keywordsRaw) return;
+    var kws = keywordsRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!kws.length) return;
+    var insp    = document.getElementById('gbpInspiration');
+    var chipsEl = document.getElementById('gbpInspirationChips');
+    var flashEl = document.getElementById('gbpInspirationFlash');
+    if (!insp || !chipsEl) return;
+    var clearFlash;
+    chipsEl.innerHTML = '';
+    kws.slice(0, 12).forEach(function(kw){
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'gbp-inspiration-chip';
+      b.textContent = kw;
+      b.addEventListener('click', function(){
+        var done = function(msg){
+          if (!flashEl) return;
+          flashEl.textContent = msg;
+          if (clearFlash) clearTimeout(clearFlash);
+          clearFlash = setTimeout(function(){ flashEl.textContent = ''; }, 2200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(kw).then(
+            function(){ done('Copiado "' + kw + '" — pégalo en tu descripción de GBP.'); },
+            function(){ done('No se pudo copiar. Mantén pulsado el chip para seleccionarlo.'); }
+          );
+        } else {
+          done('Copiar no está disponible aquí — selecciona manualmente.');
+        }
+      });
+      li.appendChild(b);
+      chipsEl.appendChild(li);
+    });
+    insp.hidden = false;
+  })();
   var checksEl=document.getElementById('gbpChecks');
 
   // Tabla de copy — paralela al EN. Sprint 1E la mueve a gbp-grader.js.
@@ -796,6 +918,134 @@
       +'</details>';
   }
 
+  // Pre-flight: detector de listado no reclamado.
+  function pbDetectUnclaimed(chosen) {
+    if (!chosen) return { likely: false, signals: [] };
+    var sigs = [];
+    if (!chosen.website && !chosen.googleMapsUri) sigs.push('sin sitio web en el listado');
+    else if (!chosen.website) sigs.push('sin enlace al sitio web en el listado');
+    if (chosen.photoCount === 0) sigs.push('cero fotos');
+    var hasHours = !!(chosen.regularOpeningHours || chosen.openingHours || (chosen.currentOpeningHours && chosen.currentOpeningHours.weekdayDescriptions));
+    if (!hasHours) sigs.push('sin horarios definidos');
+    if (!chosen.nationalPhoneNumber && !chosen.internationalPhoneNumber && !chosen.formattedPhoneNumber) sigs.push('sin número de teléfono');
+    var reviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    if (reviews != null && reviews < 5 && !chosen.primaryTypeDisplayName) sigs.push('menos de 5 reseñas y sin categoría de negocio');
+    return { likely: sigs.length >= 3, signals: sigs };
+  }
+  function renderPreflightBanner(pre) {
+    if (!pre || !pre.likely) return '';
+    var listHtml = pre.signals.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    return '<div class="gbp-preflight">'
+      + '<p class="gbp-preflight-eyebrow">Atención — este listado podría estar sin reclamar</p>'
+      + '<p class="gbp-preflight-body">Varias señales se ven como auto-generadas por Google en lugar de gestionadas por el dueño:</p>'
+      + '<ul class="gbp-preflight-list">' + listHtml + '</ul>'
+      + '<p class="gbp-preflight-body">Reclamar el listado es la jugada de mayor palanca en GBP — desbloquea cualquier otro arreglo y le dice a Google que estás operando este negocio activamente.</p>'
+      + '<a class="gbp-preflight-cta" href="https://business.google.com/create" target="_blank" rel="noopener">Abrir Google Business Profile para reclamar &rarr;</a>'
+      + '<p class="gbp-preflight-foot">Si ya lo reclamaste y estas señales están equivocadas, el puntaje de abajo aún refleja lo que muestran los datos públicos de Google — que es lo que ven los nuevos clientes.</p>'
+      + '</div>';
+  }
+
+  // Espejo de competidores — el tuyo vs. la mediana de tu categoría.
+  function renderCompetitorMirror(chosen, peerMedians){
+    if (!chosen || !peerMedians) return '';
+    var primary = (chosen.primaryTypeDisplayName || chosen.types && chosen.types[0]) || '';
+    var familyKey = (peerMedians._familyMap && peerMedians._familyMap[primary]) || null;
+    var benchmark = peerMedians[primary] || (familyKey && peerMedians._families && peerMedians._families[familyKey]) || peerMedians._default || null;
+    if (!benchmark) return '';
+    var yourReviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    var yourPhotos  = (typeof chosen.photoCount === 'number') ? chosen.photoCount : null;
+    var yourRating  = (typeof chosen.rating === 'number') ? chosen.rating : null;
+    function row(label, your, peer, note) {
+      if (your == null && peer == null) return '';
+      var delta = (typeof your === 'number' && typeof peer === 'number') ? your - peer : null;
+      var deltaCls = delta == null ? 'tie' : (delta >= 0 ? 'win' : 'lose');
+      var deltaTxt = delta == null ? '—' : (delta > 0 ? '+' + Math.round(delta) : Math.round(delta));
+      var yourTxt  = (your == null ? '—' : (typeof your === 'number' ? Math.round(your * 10) / 10 : your));
+      var peerTxt  = (peer == null ? '—' : (typeof peer === 'number' ? Math.round(peer * 10) / 10 : peer));
+      return '<tr><td class="gbp-mirror-label">' + label + '</td>'
+        +    '<td class="gbp-mirror-you">' + yourTxt + '</td>'
+        +    '<td class="gbp-mirror-peer">' + peerTxt + '</td>'
+        +    '<td class="gbp-mirror-delta ' + deltaCls + '">' + deltaTxt + '</td>'
+        +    (note ? '<td class="gbp-mirror-note">' + note + '</td>' : '<td></td>')
+        +    '</tr>';
+    }
+    var rows = '';
+    rows += row('Reseñas',     yourReviews, (benchmark.reviewCount || null), yourReviews != null && benchmark.reviewCount && yourReviews < benchmark.reviewCount ? 'Apunta primero a la mediana; el lift de ranking compone después.' : '');
+    rows += row('Fotos',       yourPhotos,  (benchmark.photoCount || null),  yourPhotos != null && benchmark.photoCount && yourPhotos < benchmark.photoCount ? 'Las fotos son la métrica más barata de mover — sube semanalmente.' : '');
+    rows += row('Calificación', yourRating, 4.5, yourRating != null && yourRating < 4.5 ? 'Bajo el umbral de 4.5 que la mayoría filtra. Responde a las reseñas recientes — las respuestas públicas suben la media visible.' : '');
+    if (!rows) return '';
+    var label = primary || (familyKey || 'restaurantes');
+    return '<div class="gbp-mirror">'
+      + '<p class="gbp-mirror-eyebrow">Cómo te comparas con la mediana de ' + label + 's</p>'
+      + '<table class="gbp-mirror-table">'
+      +   '<thead><tr><th>Métrica</th><th>Tú</th><th>Mediana</th><th>Δ</th><th></th></tr></thead>'
+      +   '<tbody>' + rows + '</tbody>'
+      + '</table>'
+      + '<p class="gbp-mirror-foot">La mediana es un benchmark direccional de <a href="#">investigación BrightLocal + Whitespark</a>, no de competidores cercanos. Para comparar con tres vecinos reales, corre la herramienta <a href="/es/tools/compare/">Comparar</a>.</p>'
+      + '</div>';
+  }
+
+  // 7-day roadmap ES.
+  var ROADMAP_HINTS = {
+    primary_category:  { day: 'Lunes',     action: 'Elige la categoría más específica de tu negocio en el dashboard de GBP.' },
+    hours:             { day: 'Lunes',     action: 'Define horarios regulares para cada día abierto. Genéralos en Horario de Atención y pégalos.' },
+    phone:             { day: 'Lunes',     action: 'Agrega (o corrige) el número de teléfono tap-to-call. Iguálalo con tu sitio.' },
+    website:           { day: 'Lunes',     action: 'Enlaza tu sitio web. Una página simple supera no tener nada — Google manda los clics de "saber más" ahí.' },
+    service_attrs:     { day: 'Martes',    action: 'Activa cada atributo de servicio que aplique (mesa, para llevar, delivery, reservaciones, banderas de cocina).' },
+    hours_fresh:       { day: 'Martes',    action: 'Verifica la cobertura de feriados y horarios especiales — los huecos bajan la frescura.' },
+    nap:               { day: 'Martes',    action: 'Reconcilia nombre/dirección/teléfono entre Google y el schema de tu sitio. Texto idéntico en ambos.' },
+    photos:            { day: 'Miércoles', action: 'Sube 4-6 fotos: exterior, interior, plato firma, equipo. Reúsalas el resto de la semana.' },
+    editorial_summary: { day: 'Miércoles', action: 'Escribe la descripción del negocio (250 caracteres). Lidera con cocina + barrio + lo que te distingue.' },
+    rating:            { day: 'Jueves',    action: 'Lee todas las reseñas de 1-3 estrellas. Identifica el patrón recurrente y atáquelo operativamente.' },
+    owner_reply:       { day: 'Jueves',    action: 'Responde públicamente a las 5-10 reseñas más recientes. Incluye las elogiosas y las críticas.' },
+    review_volume:     { day: 'Viernes',   action: 'Imprime una tarjeta QR con tu enlace de reseñas de Google. Repártela a las mesas satisfechas este fin de semana.' },
+    review_recency:    { day: 'Sábado',    action: 'Pide a 3-5 clientes regulares una reseña por su nombre. Las peticiones directas convierten ~10x más que los prompts en frío.' },
+    operational:       { day: 'Domingo',   action: 'Confirma que el listado no aparezca como cerrado/mudado si sigues abierto. Estado equivocado = invisible.' }
+  };
+  var ROADMAP_DAY_ORDER = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  function renderRoadmap(scored) {
+    if (!scored || !scored.groups) return '';
+    var actionable = [];
+    scored.groups.forEach(function (g) {
+      (g.checks || []).forEach(function (c) {
+        if (c.state === 'fail' || c.state === 'warn') {
+          if (ROADMAP_HINTS[c.id]) actionable.push({ id: c.id, weight: c.weight, state: c.state });
+        }
+      });
+    });
+    actionable.sort(function (a, b) { return b.weight - a.weight; });
+    if (!actionable.length) return '';
+    var byDay = {};
+    ROADMAP_DAY_ORDER.forEach(function (d) { byDay[d] = []; });
+    actionable.forEach(function (a) {
+      var hint = ROADMAP_HINTS[a.id];
+      if (!hint) return;
+      var idx = ROADMAP_DAY_ORDER.indexOf(hint.day);
+      var attempts = 0;
+      while (byDay[ROADMAP_DAY_ORDER[idx]].length >= 2 && attempts < 7) {
+        idx = (idx + 1) % 7; attempts++;
+      }
+      byDay[ROADMAP_DAY_ORDER[idx]].push({ id: a.id, hint: hint, state: a.state });
+    });
+    var dayHtml = ROADMAP_DAY_ORDER.map(function (d) {
+      var actions = byDay[d];
+      if (!actions.length) {
+        return '<li class="gbp-roadmap-day" data-empty="true"><span class="gbp-roadmap-name">' + d + '</span><span class="gbp-roadmap-action">— día de descanso —</span></li>';
+      }
+      var lines = actions.map(function (a) {
+        var stateBadge = a.state === 'fail' ? '<span class="gbp-roadmap-state state-fail">!</span>' : '<span class="gbp-roadmap-state state-warn">·</span>';
+        return '<span class="gbp-roadmap-action">' + stateBadge + a.hint.action + '</span>';
+      }).join('');
+      return '<li class="gbp-roadmap-day"><span class="gbp-roadmap-name">' + d + '</span>' + lines + '</li>';
+    }).join('');
+    return '<div class="gbp-roadmap">'
+      + '<p class="gbp-roadmap-eyebrow">Tu hoja de ruta de 7 días</p>'
+      + '<p class="gbp-roadmap-body">Una versión secuenciada de los chequeos fallidos y de advertencia de arriba. Una o dos acciones por día, ordenadas por palanca. Trata los días como una guía — si las acciones del lunes te toman 20 minutos, sentirás que estás corriendo.</p>'
+      + '<ul class="gbp-roadmap-list">' + dayHtml + '</ul>'
+      + '<p class="gbp-roadmap-foot">La hoja de ruta se genera de los chequeos de arriba; si arreglas uno y vuelves a correr el calificador, la próxima corrida lo descarta.</p>'
+      + '</div>';
+  }
+
   function renderMethodology(peerMedians){
     var compiled=peerMedians&&peerMedians._compiled?peerMedians._compiled:'versión actual';
     var source=peerMedians&&peerMedians._source?peerMedians._source:'investigación pública de SEO local';
@@ -842,6 +1092,90 @@
       letter:     scored.letter
     };
     try{window.localStorage.setItem(gbpSnapshotKey(placeId),JSON.stringify(snap))}catch(e){}
+    // Replicar el snapshot en una lista de historial por placeId.
+    try{
+      var hKey=gbpHistoryKey(placeId);
+      var prev=[];
+      try{prev=JSON.parse(window.localStorage.getItem(hKey)||'[]')||[]}catch(_){}
+      if(!Array.isArray(prev))prev=[];
+      var GAP=6*60*60*1000, MAX=20;
+      if(prev.length && (snap.ts - prev[prev.length-1].ts) < GAP){
+        prev[prev.length-1] = snap;
+      } else {
+        prev.push(snap);
+        while(prev.length>MAX) prev.shift();
+      }
+      window.localStorage.setItem(hKey, JSON.stringify(prev));
+    }catch(_){}
+  }
+  function gbpHistoryKey(placeId){return'gbpGrader:history:'+placeId}
+  function gbpHistoryRead(placeId){
+    if(!placeId)return[];
+    try{
+      var raw=window.localStorage.getItem(gbpHistoryKey(placeId));
+      if(!raw)return[];
+      var p=JSON.parse(raw);
+      return Array.isArray(p)?p:[];
+    }catch(_){return[]}
+  }
+  function renderGbpSparkline(placeId){
+    var entries=gbpHistoryRead(placeId)
+      .filter(function(e){return e&&typeof e.scaled==='number'})
+      .slice(-6);
+    if(entries.length<3)return'';
+    var W=240,H=60,padX=12,padY=8;
+    var minS=100,maxS=0;
+    entries.forEach(function(e){if(e.scaled<minS)minS=e.scaled;if(e.scaled>maxS)maxS=e.scaled});
+    var range=Math.max(20,maxS-minS);
+    var midY=padY+(H-padY*2)*0.5;
+    var pts=entries.map(function(e,i){
+      var x=padX+(W-padX*2)*(i/Math.max(1,entries.length-1));
+      var rel=(e.scaled-minS)/range;
+      var y=(H-padY)-rel*(H-padY*2);
+      if(maxS-minS<5)y=midY;
+      return{x:x,y:y,score:e.scaled,ts:e.ts};
+    });
+    var poly=pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1)}).join(' ');
+    var dots='';
+    pts.forEach(function(p,i){
+      var cls=i===pts.length-1?'spark-pt spark-pt-current':'spark-pt';
+      var r=i===pts.length-1?'4':'3';
+      dots+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r+'" class="'+cls+'"/>';
+    });
+    var last=pts[pts.length-1];
+    var lblX=Math.max(padX,Math.min(W-padX,last.x+8)).toFixed(1);
+    var lblY=Math.max(12,last.y-8).toFixed(1);
+    var lblAnchor=last.x>W-28?'end':'start';
+    dots+='<text x="'+lblX+'" y="'+lblY+'" text-anchor="'+lblAnchor+'" class="spark-label">'+last.score+'</text>';
+    var first=entries[0],current=entries[entries.length-1];
+    var prior=entries[entries.length-2];
+    var dSince=current.scaled-first.scaled;
+    var dPrior=current.scaled-prior.scaled;
+    var aSince=dSince>0?'↑':dSince<0?'↓':'→';
+    var aPrior=dPrior>0?'↑':dPrior<0?'↓':'→';
+    var prose='<strong>'+aSince+' '+(dSince>0?'+':'')+dSince+'</strong> desde tu primera revisión'
+      +(entries.length>=4?' &middot; '+aPrior+' '+(dPrior>0?'+':'')+dPrior+' desde la última':'');
+    var fmt=function(ts){
+      try{
+        var d=new Date(ts);
+        var diff=Date.now()-ts;
+        var oneDay=86400000;
+        if(diff<oneDay&&d.getDate()===new Date().getDate())return'hoy';
+        if(diff<2*oneDay)return'ayer';
+        return d.toLocaleDateString('es',{month:'short',day:'numeric'});
+      }catch(_){return''}
+    };
+    return'<figure class="gbp-spark">'
+      +'<p class="gbp-spark-eyebrow">Tus últimas revisiones del Perfil</p>'
+      +'<div class="gbp-spark-row">'
+      +'<svg class="gbp-spark-svg" viewBox="0 0 240 60" aria-hidden="true">'
+      +'<polyline class="spark-line" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="'+poly+'"/>'
+      +'<g>'+dots+'</g>'
+      +'</svg>'
+      +'<div class="gbp-spark-prose">'+prose+'</div>'
+      +'</div>'
+      +'<div class="gbp-spark-axis"><span>'+fmt(entries[0].ts)+'</span><span>'+fmt(current.ts)+'</span></div>'
+      +'</figure>';
   }
   function gbpRelativeAge(ms){
     var sec=Math.floor((Date.now()-ms)/1000);
@@ -1044,11 +1378,29 @@
     deepScanState.query=query;
     deepScanState.wasPicked=wasPicked;
 
+    // Handoff cross-tool — escribe la ficha resuelta en MuntinContext
+    // para que schema-check y otras herramientas pre-llenen sus campos.
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({
+          businessName: chosen.displayName || chosen.name || undefined,
+          address:      chosen.formattedAddress || undefined,
+          phone:        chosen.nationalPhoneNumber || chosen.internationalPhoneNumber || undefined,
+          cuisine:      chosen.primaryTypeDisplayName || undefined,
+          lastUrl:      chosen.website || undefined
+        });
+      }
+    } catch (_) {}
+
     bizEl.innerHTML=renderBusinessCard(chosen);
+
+    var preflight = pbDetectUnclaimed(chosen);
+    var preflightHtml = preflight.likely ? renderPreflightBanner(preflight) : '';
 
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'es');
     var deltaHtml=renderDelta(chosen,scored);
     gbpSnapshotSave(chosen.placeId,chosen,scored);
+    var sparkHtml=renderGbpSparkline(chosen.placeId);
     var gaugeHtml=renderGauge(scored);
     var fixFirstHtml=renderFixFirst(scored);
 
@@ -1060,7 +1412,9 @@
 
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+    var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
+    var roadmapHtml=renderRoadmap(scored);
+    checksEl.innerHTML=preflightHtml+deltaHtml+sparkHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill el CTA del Diagnóstico con el
     // sitio de esta ficha — esa herramienta ya fusiona /api/gbp-details

@@ -55,9 +55,34 @@
 .pc-meta input{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white);font:inherit;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
 
-.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
+@media(min-width:640px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
 .pc-grid table{width:100%;border-collapse:collapse;font-size:13px}
 @media(min-width:640px){.pc-grid table{min-width:780px}}
+/* Mobile card-stack for the 9-column ingredient grid — the audit's
+   biggest abandonment risk in the suite. Phone owners couldn't
+   complete the form via horizontal scroll. Under 640px every row
+   reads as a card with each field labeled inline. */
+@media(max-width:639px){
+  .pc-grid{padding:8px;background:transparent;border:0}
+  .pc-grid table,.pc-grid thead,.pc-grid tbody,.pc-grid tr,.pc-grid td{display:block;width:100%}
+  .pc-grid thead{position:absolute;left:-9999px;top:auto}
+  .pc-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);margin-bottom:10px;position:relative}
+  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .pc-grid td:last-of-type{border-bottom:0}
+  .pc-grid td:not([data-label]){display:block}
+  .pc-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
+  .pc-grid td:not([data-label])::before{content:none}
+  .pc-grid td input[type="number"]{text-align:left}
+  .pc-grid td.pc-num{font-size:15px;font-weight:600;color:var(--ink)}
+  .pc-grid td.pc-row-actions{position:absolute;top:6px;right:6px;padding:0;border:0}
+  .pc-grid td.pc-row-actions::before{content:none}
+  .pc-grid .pc-remove{min-width:36px;min-height:36px;font-size:16px;color:var(--stone);background:var(--cream-2);border:0;border-radius:50%;cursor:pointer}
+  /* "Show math" expanded row spans full width on mobile. */
+  .pc-grid tr.pc-math-row{padding:8px 12px;background:var(--cream-2);margin-top:-6px;border-top:0}
+  .pc-grid tr.pc-math-row td{display:block;border:0;grid-template-columns:none;padding:0}
+  .pc-grid tr.pc-math-row td::before{content:none}
+}
 .pc-grid th{padding:10px 8px;text-align:left;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
 .pc-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
 .pc-grid tr:last-child td{border-bottom:0}
@@ -80,6 +105,28 @@
 .pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
 .pc-clear-btn:hover{border-color:var(--rust);color:var(--rust)}
 
+/* Invoice-photo OCR (Tesseract.js, lazy-loaded). */
+.pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
+.pc-ocr[open]{padding-bottom:18px}
+.pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
+.pc-ocr-summary::-webkit-details-marker{display:none}
+.pc-ocr-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+.pc-ocr[open] .pc-ocr-summary::before{content:'− '}
+.pc-ocr-beta{display:inline-block;padding:1px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cream);background:var(--teal);border-radius:999px}
+.pc-ocr-body{margin-top:12px}
+.pc-ocr-help{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
+.pc-ocr-fileLabel{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.pc-ocr-fileLabel:hover{background:var(--ink);color:var(--cream)}
+.pc-ocr-fileLabel input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.pc-ocr-progress{margin-top:12px}
+.pc-ocr-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.pc-ocr-progress-fill{height:100%;background:var(--teal);width:0;transition:width 200ms ease}
+.pc-ocr-progress-msg{margin:6px 0 0;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.pc-ocr-status{margin-top:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:12.5px;color:var(--ink);line-height:1.5}
+.pc-ocr-status.error{border-color:var(--rust);color:var(--rust)}
+.pc-ocr-status.success{border-color:var(--teal);color:var(--teal)}
+.pc-ocr-disclaimer{margin-top:12px;font-size:11.5px;color:var(--stone);line-height:1.5;font-style:italic}
+
 .pc-result{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:24px}
 @media(max-width:639px){.pc-result{grid-template-columns:1fr}}
 .pc-headline{padding:24px 26px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--cream-2)}
@@ -95,6 +142,17 @@
 .pc-prices{padding:18px 22px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
 .pc-prices h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 4px}
 .pc-prices p.pc-prices-dek{font-size:12.5px;color:var(--stone);margin:0 0 14px;line-height:1.5}
+.pc-year{padding:18px 22px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-md);background:var(--white);margin-top:16px}
+.pc-year h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.pc-year-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
+@media(max-width:560px){.pc-year-grid{grid-template-columns:1fr}}
+.pc-year-input{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase}
+.pc-year-input span{line-height:1.4}
+.pc-year-input input{padding:10px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-year-out{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:var(--cream-2);border-radius:6px}
+.pc-year-out-label{font-size:11.5px;color:var(--stone);letter-spacing:0.04em;text-transform:uppercase;font-weight:600}
+.pc-year-out-amount{font-family:var(--font-display);font-size:32px;font-weight:500;color:var(--ink);line-height:1.05;letter-spacing:-0.5px}
+.pc-year-out-detail{font-size:13px;color:var(--ink-soft);line-height:1.5}
 .pc-price-row{display:grid;grid-template-columns:64px 1fr auto;align-items:baseline;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
 .pc-price-row:first-of-type{border-top:0}
 .pc-price-target{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;font-weight:600;color:var(--ink)}
@@ -175,6 +233,25 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
 
 .pc-bottleneck{margin:8px 0 0;font-size:13px;color:var(--ink-soft);line-height:1.5;font-style:italic}
 .pc-bottleneck strong{color:var(--ink);font-style:normal}
+.pc-bottleneck-subs{margin-top:8px;font-style:normal;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2);padding:0}
+.pc-bottleneck-subs summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.pc-bottleneck-subs summary::-webkit-details-marker{display:none}
+.pc-bottleneck-subs summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.pc-bottleneck-subs[open] summary::before{content:'− '}
+.pc-bottleneck-subs ul{margin:0;padding:0 12px 12px 32px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:normal}
+.pc-bottleneck-subs li{margin-bottom:6px}
+.pc-bottleneck-kind{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);background:var(--white);padding:2px 6px;border-radius:4px;margin-right:8px;border:1px solid var(--line);vertical-align:1px}
+.pc-stress-toggle{display:flex;align-items:start;gap:8px;margin-top:14px;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;font-size:13px;color:var(--ink-soft);cursor:pointer}
+.pc-stress-toggle input{flex:0 0 auto;margin-top:2px;cursor:pointer;accent-color:var(--teal)}
+.pc-stress-toggle small{display:block;font-size:11.5px;color:var(--stone);margin-top:2px}
+.pc-stress-out{margin-top:10px;padding:14px 16px;border:1px solid var(--rust);border-radius:8px;background:color-mix(in srgb,var(--rust) 4%,var(--white))}
+.pc-stress-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin:0 0 10px}
+.pc-stress-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pc-stress-row:last-of-type{border-bottom:0}
+.pc-stress-label{color:var(--ink)}
+.pc-stress-value{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-stress-value small{font-size:12px;color:var(--rust);margin-left:4px;font-family:var(--font-body);font-weight:500}
+.pc-stress-foot{font-size:12px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
 
 .pc-price-row{position:relative}
 .pc-price-row[data-recommended="true"]{background:var(--cream-2);margin:0 -22px;padding-left:22px;padding-right:22px}
@@ -529,6 +606,31 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <button type="button" class="pc-sample-btn" id="pcSample">Load sample recipe</button>
         <button type="button" class="pc-clear-btn" id="pcClear">Clear</button>
       </div>
+
+      <!-- Invoice-photo OCR. The 9-column desktop grid is the single
+           biggest abandonment risk in the suite; a "snap a photo of
+           your supplier invoice" path lets phone owners populate the
+           rows from the image they already have. Tesseract.js loads
+           lazily on the first tap of the file input — keeps the
+           ~3 MB wasm out of the page weight for owners who never
+           use the feature. Beta-flagged copy because OCR accuracy on
+           thermal-printed and faxed receipts is noisy. -->
+      <details class="pc-ocr">
+        <summary class="pc-ocr-summary">📷 Snap an invoice photo instead <span class="pc-ocr-beta">beta</span></summary>
+        <div class="pc-ocr-body">
+          <p class="pc-ocr-help">Take a clear photo of your supplier invoice — we'll read it on this device (the photo never leaves your phone) and pre-fill the rows below. Edit anything that misreads.</p>
+          <label class="pc-ocr-fileLabel" for="pcOcrFile">
+            <span>Choose photo or take a new one</span>
+            <input type="file" id="pcOcrFile" accept="image/*" capture="environment" />
+          </label>
+          <div class="pc-ocr-progress" id="pcOcrProgress" hidden>
+            <div class="pc-ocr-progress-bar"><div class="pc-ocr-progress-fill" id="pcOcrProgressFill"></div></div>
+            <p class="pc-ocr-progress-msg" id="pcOcrProgressMsg">Loading the reader (~3 MB, one-time)…</p>
+          </div>
+          <p class="pc-ocr-status" id="pcOcrStatus" aria-live="polite" hidden></p>
+          <p class="pc-ocr-disclaimer">OCR runs entirely in your browser via Tesseract.js. No upload, no API call. Accuracy depends on lighting and contrast — bright, flat, well-focused photos work best.</p>
+        </div>
+      </details>
     </div>
 
     <ul class="pc-warnings" id="pcWarnings" aria-live="polite" style="display:none;"></ul>
@@ -548,6 +650,31 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
         <h3>Three suggested menu prices</h3>
         <p class="pc-prices-dek">Each row works backwards from a target food-cost percent. The dollars on the right are what you keep per plate after ingredients.</p>
         <div id="pcPriceRows"></div>
+        <label class="pc-stress-toggle">
+          <input type="checkbox" id="pcStressTest" />
+          <span>Show me a stress-tested price <small>(bottleneck +15%, protein yield −5 pp)</small></span>
+        </label>
+        <div class="pc-stress-out" id="pcStressOut" hidden></div>
+      </div>
+
+      <!-- Year-value panel. Translates "you keep $X per plate" into
+           "this dish keeps $Y per year for the house" — the load-
+           bearing translation from math number to rent paid. The
+           weekly-volume input persists with the recipe in the URL
+           fragment so it round-trips with the Cost Drift Check-in. -->
+      <div class="pc-year" id="pcYear" hidden>
+        <h3>What's this dish worth per year?</h3>
+        <div class="pc-year-grid">
+          <label class="pc-year-input">
+            <span>Plates sold per week (from your POS or a quick estimate)</span>
+            <input type="number" id="pcYearVolume" min="0" step="1" inputmode="numeric" placeholder="e.g. 28">
+          </label>
+          <div class="pc-year-out" id="pcYearOut" aria-live="polite">
+            <span class="pc-year-out-label">At your middle suggested price, this dish keeps</span>
+            <span class="pc-year-out-amount" id="pcYearAmount">— per year</span>
+            <span class="pc-year-out-detail" id="pcYearDetail">Type a weekly volume to see the annual contribution.</span>
+          </div>
+        </div>
       </div>
 
       <aside class="edu-result" id="pcEduResult" aria-labelledby="pcEduResultLede">
@@ -735,6 +862,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
@@ -810,15 +938,15 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
   function rowHtml(row, idx) {
     return '<tr data-idx="' + idx + '">' +
-      '<td><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
-      '<td><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
-      '<td><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
-      '<td>' + unitSelect('apUnit', row.apUnit) + '</td>' +
-      '<td><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
-      '<td><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
-      '<td>' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
-      '<td class="pc-num" data-cell="cost">&mdash;</td>' +
-      '<td><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
+      '<td data-label="Ingredient"><input type="text" data-field="ingredient" list="pcYieldNames" autocomplete="off" value="' + esc(row.ingredient) + '" placeholder="e.g. Romaine" /></td>' +
+      '<td data-label="AP price ($)"><input type="number" data-field="apPrice" min="0" step="0.01" value="' + esc(row.apPrice) + '" /></td>' +
+      '<td data-label="AP qty"><input type="number" data-field="apQty" min="0" step="0.01" value="' + esc(row.apQty) + '" /></td>' +
+      '<td data-label="AP unit">' + unitSelect('apUnit', row.apUnit) + '</td>' +
+      '<td data-label="Yield %"><input type="number" data-field="yieldPercent" min="0" max="1" step="0.01" value="' + esc(row.yieldPercent) + '" placeholder="auto" /></td>' +
+      '<td data-label="Used qty"><input type="number" data-field="usedQty" min="0" step="0.01" value="' + esc(row.usedQty) + '" /></td>' +
+      '<td data-label="Used unit">' + unitSelect('usedUnit', row.usedUnit) + '</td>' +
+      '<td class="pc-num" data-cell="cost" data-label="Cost on plate">&mdash;</td>' +
+      '<td class="pc-row-actions"><button type="button" class="pc-remove" aria-label="Remove ingredient" title="Remove">&times;</button></td>' +
       '</tr>';
   }
   function esc(v) {
@@ -962,18 +1090,92 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
       '</div>';
     }).join('');
 
+    // Year-value panel — middle (30%) target × weekly volume × 52.
+    // Shown once we have a positive plate cost; hidden otherwise so
+    // a fresh-load page doesn't render with the empty $0 placeholder.
+    var pcYearBox = document.getElementById('pcYear');
+    var pcYearVol = document.getElementById('pcYearVolume');
+    var pcYearAmount = document.getElementById('pcYearAmount');
+    var pcYearDetail = document.getElementById('pcYearDetail');
+    if (pcYearBox) {
+      var midPrice = (prices[1] && prices[1].price) || (prices[0] && prices[0].price) || 0;
+      var midCm    = (prices[1] && prices[1].cmDollars) || (prices[0] && prices[0].cmDollars) || 0;
+      var hasPlate = isFinite(summary.plateCost) && summary.plateCost > 0;
+      pcYearBox.hidden = !hasPlate;
+      function recomputeYear() {
+        if (!pcYearVol || !pcYearAmount || !pcYearDetail) return;
+        var v = parseFloat(pcYearVol.value);
+        if (!isFinite(v) || v <= 0) {
+          pcYearAmount.textContent = '— per year';
+          pcYearDetail.textContent = 'Type a weekly volume to see the annual contribution.';
+          return;
+        }
+        var annual = midCm * v * 52;
+        pcYearAmount.textContent = fmtMoney(annual) + ' per year';
+        pcYearDetail.textContent = 'At ' + fmtMoney(midPrice) + ' and ' + Math.round(v) + ' plates/week, this dish keeps ' + fmtMoney(midCm) + ' × ' + Math.round(v) + ' × 52 = ' + fmtMoney(annual) + ' for the house.';
+      }
+      if (pcYearVol && !pcYearVol.__bound) {
+        pcYearVol.__bound = true;
+        pcYearVol.addEventListener('input', recomputeYear);
+      }
+      recomputeYear();
+    }
+
     // Bottleneck callout — surfaces only when one ingredient ≥ 30%
     // of plate cost. The line a chef will quote at the prep meeting.
     var bottleneckEl = document.getElementById('pcBottleneck');
     var bottleneck = PC.bottleneckLine(summary);
     if (bottleneckEl) {
       if (bottleneck) {
-        bottleneckEl.innerHTML = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
+        var html = '<strong>' + esc(bottleneck.name) + '</strong> is ' +
           Math.round(bottleneck.share * 100) + '% of your plate cost. Watch its invoice.';
+        if (bottleneck.suggestions && bottleneck.suggestions.length) {
+          html += '<details class="pc-bottleneck-subs"><summary>Show me ways to trim it &rarr;</summary><ul>';
+          bottleneck.suggestions.forEach(function (s) {
+            html += '<li><span class="pc-bottleneck-kind">' + esc(s.kind) + '</span>' + esc(s.text) + '</li>';
+          });
+          html += '</ul></details>';
+        }
+        bottleneckEl.innerHTML = html;
         bottleneckEl.hidden = false;
       } else {
         bottleneckEl.hidden = true;
         bottleneckEl.textContent = '';
+      }
+    }
+
+    // Stress-test: render a "Recession price" row alongside the
+    // three suggested prices when the user has flipped the toggle.
+    // Recomputes plate cost with bottleneck +15% and proteins -5%
+    // yield, then shows the price needed to hit the recommended
+    // food-cost target under those harder conditions.
+    var stressToggleEl = document.getElementById('pcStressTest');
+    var stressShown = stressToggleEl && stressToggleEl.checked;
+    var stressOutEl = document.getElementById('pcStressOut');
+    if (stressOutEl) {
+      stressOutEl.hidden = true;
+      stressOutEl.innerHTML = '';
+      if (stressShown && summary.batchCost > 0) {
+        var stressed = PC.stressTestRecipe(recipe, bottleneck && bottleneck.name);
+        var stressedSummary = PC.computePlateCost(stressed);
+        if (stressedSummary && isFinite(stressedSummary.plateCost) && stressedSummary.plateCost > 0) {
+          var recTier = PC.recommendedTier(summary);
+          var stressedPrices = PC.suggestMenuPrices(stressedSummary.plateCost);
+          var matchingPrice = stressedPrices.find(function(p){ return p.label === recTier; }) || stressedPrices[1] || stressedPrices[0];
+          var deltaPct = Math.round(((stressedSummary.plateCost - summary.plateCost) / summary.plateCost) * 100);
+          stressOutEl.hidden = false;
+          stressOutEl.innerHTML =
+            '<p class="pc-stress-eyebrow">If costs spike (bottleneck +15%, protein yield −5pp)</p>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Stressed plate cost</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(stressedSummary.plateCost) + ' <small>(' + (deltaPct >= 0 ? '+' : '') + deltaPct + '%)</small></span>' +
+            '</div>' +
+            '<div class="pc-stress-row">' +
+              '<span class="pc-stress-label">Price to hold ' + matchingPrice.label + ' margin</span>' +
+              '<span class="pc-stress-value">' + fmtMoney(matchingPrice.price) + '</span>' +
+            '</div>' +
+            '<p class="pc-stress-foot">If you can charge this without losing covers, the dish survives a bad invoice month. If not, the bottleneck is a structural risk worth re-engineering.</p>';
+        }
       }
     }
 
@@ -1119,6 +1321,8 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 
   rowsEl.addEventListener('input', renderResults);
   rowsEl.addEventListener('change', renderResults);
+  var pcStressEl = document.getElementById('pcStressTest');
+  if (pcStressEl) pcStressEl.addEventListener('change', renderResults);
   rowsEl.addEventListener('click', function(e){
     if (e.target.classList.contains('pc-remove')) {
       var tr = e.target.closest('tr');
@@ -1173,6 +1377,160 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
   }
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
+
+  // -------------------- Invoice-photo OCR --------------------
+  // Lazy-loads Tesseract.js from a CDN on first file input change.
+  // Reads the image entirely in-browser (the file never leaves the
+  // device), parses ingredient lines via a few heuristics, and
+  // populates the recipe rows. We never overwrite a user-typed
+  // recipe silently — when existing rows are non-empty, the parsed
+  // rows are appended; otherwise they replace the blank starter set.
+  var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  var tesseractLoadPromise = null;
+  function loadTesseract() {
+    if (tesseractLoadPromise) return tesseractLoadPromise;
+    tesseractLoadPromise = new Promise(function (resolve, reject) {
+      if (window.Tesseract) return resolve(window.Tesseract);
+      var s = document.createElement('script');
+      s.src = TESSERACT_CDN;
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.onload = function () {
+        if (window.Tesseract) resolve(window.Tesseract);
+        else reject(new Error('Tesseract loaded but global is missing'));
+      };
+      s.onerror = function () { reject(new Error('Could not load OCR library')); };
+      document.head.appendChild(s);
+    });
+    return tesseractLoadPromise;
+  }
+
+  // Parse OCR output into recipe rows. Receipt and invoice formats
+  // are diverse; we run several regex passes from most-specific to
+  // most-general and keep the first that produces a plausible row.
+  function parseInvoiceText(text) {
+    if (!text) return [];
+    var lines = String(text).split(/\r?\n/);
+    // Common units the cost table accepts. Used to discriminate a
+    // unit token from an ingredient word.
+    var UNITS = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box)$/i;
+    var rows = [];
+    lines.forEach(function (raw) {
+      var line = (raw || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').trim();
+      if (line.length < 6) return;
+      // Skip obvious non-ingredient lines.
+      if (/^(invoice|total|subtotal|tax|due|customer|page|date|account|terms|po|p\.o\.)/i.test(line)) return;
+      // Pattern A: "<qty> <unit> <description> <price>" — common on
+      // distributor invoices.
+      var m = line.match(/^(\d+(?:[.,]\d+)?)\s+([a-zA-Z]+)\s+(.+?)\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
+      if (m && UNITS.test(m[2])) {
+        rows.push({
+          ingredient: m[3].replace(/\s{2,}/g, ' '),
+          apQty: m[1].replace(',', '.'),
+          apUnit: m[2].toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz').replace(/^each$/, 'ea'),
+          apPrice: m[4].replace(',', '.'),
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+      // Pattern B: "<description> <qty> <unit> $<price>"
+      m = line.match(/^(.+?)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)?\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
+      if (m && (!m[3] || UNITS.test(m[3]))) {
+        rows.push({
+          ingredient: m[1].replace(/\s{2,}/g, ' '),
+          apQty: m[2].replace(',', '.'),
+          apUnit: (m[3] || 'lb').toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz'),
+          apPrice: m[4].replace(',', '.'),
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+      // Pattern C: "<description> $<price>" — last-resort, gives the
+      // owner a price + name pair to flesh out manually.
+      m = line.match(/^(.+?)\s+\$?(\d+\.\d{2})\s*$/);
+      if (m) {
+        rows.push({
+          ingredient: m[1].replace(/\s{2,}/g, ' '),
+          apQty: '1',
+          apUnit: 'lb',
+          apPrice: m[2],
+          yieldPercent: '',
+          usedQty: '',
+          usedUnit: 'oz'
+        });
+        return;
+      }
+    });
+    // Cap at 30 rows — past that the OCR is almost certainly noise.
+    return rows.slice(0, 30);
+  }
+
+  function setupInvoiceOcr() {
+    var fileInput  = document.getElementById('pcOcrFile');
+    var progress   = document.getElementById('pcOcrProgress');
+    var fill       = document.getElementById('pcOcrProgressFill');
+    var msg        = document.getElementById('pcOcrProgressMsg');
+    var status     = document.getElementById('pcOcrStatus');
+    if (!fileInput) return;
+
+    function setStatus(text, kind) {
+      if (!status) return;
+      status.textContent = text || '';
+      status.classList.remove('error', 'success');
+      if (kind) status.classList.add(kind);
+      status.hidden = !text;
+    }
+    function setProgress(pct, text) {
+      if (progress) progress.hidden = (pct == null);
+      if (fill && pct != null) fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+      if (msg && text) msg.textContent = text;
+    }
+
+    fileInput.addEventListener('change', function (ev) {
+      var file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      setStatus('');
+      setProgress(2, 'Loading the reader (~3 MB, one-time)…');
+      loadTesseract().then(function (T) {
+        setProgress(15, 'Reading the image…');
+        return T.recognize(file, 'eng', {
+          logger: function (m) {
+            if (m && m.status === 'recognizing text' && typeof m.progress === 'number') {
+              setProgress(15 + Math.round(m.progress * 80), 'Reading the image — ' + Math.round(m.progress * 100) + '%');
+            }
+          }
+        });
+      }).then(function (result) {
+        var text = result && result.data && result.data.text || '';
+        var parsed = parseInvoiceText(text);
+        setProgress(null);
+        if (!parsed.length) {
+          setStatus('Could not find ingredient lines in this photo. Try a brighter, flatter shot — or type rows manually below.', 'error');
+          return;
+        }
+        // Don't overwrite a user-typed recipe — append instead.
+        var current = readRows();
+        var nonEmpty = current.filter(function (r) {
+          return (r.ingredient || '').trim() || (r.apPrice || '').trim();
+        });
+        var merged = nonEmpty.length ? nonEmpty.concat(parsed) : parsed;
+        rerenderRows(merged);
+        renderResults();
+        setStatus('Read ' + parsed.length + ' line' + (parsed.length === 1 ? '' : 's') + ' from your photo. Edit anything that misread below.', 'success');
+        if (window.plausible) window.plausible('Plate Cost OCR', { props: { rows: String(parsed.length) } });
+      }).catch(function (err) {
+        setProgress(null);
+        setStatus('OCR failed: ' + (err && err.message || 'unknown error') + '. You can still type rows manually below.', 'error');
+      }).finally(function () {
+        fileInput.value = '';
+      });
+    });
+  }
+  setupInvoiceOcr();
 
   // -------------------- Exports (CSV + JSON) --------------------
   // CSV is the per-ingredient breakdown — every row's AP cost, EP cost,

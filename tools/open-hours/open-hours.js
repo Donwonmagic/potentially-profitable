@@ -452,6 +452,93 @@ function ohGeneratePlatformCopy(input, platform, locale) {
   return lines.join('\n');
 }
 
+// Voicemail / on-hold script generator. Produces a naturally-
+// spoken multi-line script the owner can read into voicemail or
+// hand to an answering service. Stale voicemails are the #1
+// customer-facing surface most independents forget; this is the
+// missing artifact the audit flagged. EN + ES.
+//
+// Output shape (EN sample):
+//   "Hi, you've reached Joe's Taqueria. We're open Tuesday through
+//    Saturday, 11 AM to 10 PM. We're closed Sunday and Monday. If
+//    you'd like to leave a message, please share your name, the
+//    date and time you'd like to come in, and the number of guests.
+//    Thanks for calling."
+//
+// Grouping logic: consecutive days with identical hours are merged
+// ("Tuesday through Saturday, 11 AM to 10 PM"). A standalone open
+// day reads as "Friday, 11 AM to 10 PM". Closed days are rolled
+// into the trailing "We're closed X and Y" sentence.
+function ohGenerateVoicemailScript(input, locale) {
+  var v = ohValidateHours(input);
+  locale = locale === 'es' ? 'es' : 'en';
+  var dayFull = locale === 'es' ? OH_DAYS_FULL_ES : OH_DAYS_FULL;
+  // Build per-day signature strings — used to group consecutive
+  // identical days. Closed days have signature 'CLOSED'.
+  var sigs = OH_DAYS.map(function (d) {
+    var services = (v.week && v.week[d]) || [];
+    if (!services.length) return 'CLOSED';
+    return services.map(function (s) { return s.opens + '-' + s.closes; }).join('|');
+  });
+  // Group adjacent days with the same signature.
+  var groups = [];
+  var i = 0;
+  while (i < OH_DAYS.length) {
+    var sig = sigs[i];
+    var j = i;
+    while (j + 1 < OH_DAYS.length && sigs[j + 1] === sig) j++;
+    groups.push({ start: i, end: j, sig: sig });
+    i = j + 1;
+  }
+  function dayName(idx, capitalize) {
+    var name = dayFull[idx];
+    return capitalize ? (name.charAt(0).toUpperCase() + name.slice(1)) : name;
+  }
+  var openParts = [];
+  var closedDays = [];
+  groups.forEach(function (g) {
+    if (g.sig === 'CLOSED') {
+      for (var k = g.start; k <= g.end; k++) closedDays.push(dayName(k, true));
+      return;
+    }
+    var range = (g.start === g.end)
+      ? dayName(g.start, true)
+      : (locale === 'es'
+          ? dayName(g.start, true) + ' a ' + dayName(g.end, false)
+          : dayName(g.start, true) + ' through ' + dayName(g.end, false));
+    var services = v.week[OH_DAYS[g.start]] || [];
+    var hoursPart = services.map(function (s) {
+      return ohFormatTime(s.opens, locale) + (locale === 'es' ? ' a ' : ' to ') + ohFormatTime(s.closes, locale);
+    }).join(locale === 'es' ? ', y ' : ' and ');
+    openParts.push(range + ', ' + hoursPart);
+  });
+
+  var name = v.name || (locale === 'es' ? 'nuestro restaurante' : 'our restaurant');
+  var lines = [];
+  if (locale === 'es') {
+    lines.push('Hola, has llamado a ' + name + '.');
+    if (openParts.length) lines.push('Estamos abiertos ' + openParts.join('; ') + '.');
+    if (closedDays.length) {
+      var closedList = closedDays.length === 1
+        ? closedDays[0]
+        : (closedDays.slice(0, -1).join(', ') + ' y ' + closedDays[closedDays.length - 1]);
+      lines.push('Cerramos ' + closedList + '.');
+    }
+    lines.push('Si quieres dejar un mensaje, por favor dinos tu nombre, la fecha y hora que te gustaría venir, y cuántas personas. Gracias por llamar.');
+  } else {
+    lines.push("Hi, you've reached " + name + '.');
+    if (openParts.length) lines.push("We're open " + openParts.join('; ') + '.');
+    if (closedDays.length) {
+      var closedListEn = closedDays.length === 1
+        ? closedDays[0]
+        : (closedDays.slice(0, -1).join(', ') + ' and ' + closedDays[closedDays.length - 1]);
+      lines.push("We're closed " + closedListEn + '.');
+    }
+    lines.push("If you'd like to leave a message, please share your name, the date and time you'd like to come in, and the number of guests. Thanks for calling.");
+  }
+  return lines.join('\n');
+}
+
 // One-sentence email template the owner can copy verbatim and send
 // to whoever built their site. Locale-aware.
 function ohGenerateBuilderEmail(input, locale) {
@@ -667,6 +754,10 @@ function ohHolidaysForYear(year, locale) {
   var blackFriday = new Date(thanksgiving); blackFriday.setUTCDate(blackFriday.getUTCDate() + 1);
   // MLK Jr. Day = 3rd Monday of January.
   var mlk = ohNthWeekdayOfMonth(year, 1, 1, 3);
+  // Super Bowl Sunday = 2nd Sunday of February (NFL's 17-game era,
+  // 2022 onward). One of the highest takeout/wings days of the year
+  // for casual independents — owners regularly forget to plan for it.
+  var superBowl = ohNthWeekdayOfMonth(year, 2, 0, 2);
 
   if (locale === 'es') {
     // Spanish-language slate. Latin-American observances added,
@@ -675,6 +766,7 @@ function ohHolidaysForYear(year, locale) {
       { id: 'new-years',     name: 'Año Nuevo',           date: year + '-01-01', note: 'La mayoría cierra o abre tarde.' },
       { id: 'reyes',         name: 'Día de Reyes',        date: year + '-01-06', note: 'Tradición en muchas familias latinas; algunos cierran o tienen menú especial.' },
       { id: 'mlk',           name: 'Día de MLK Jr.',      date: ohFmtDate(mlk),  note: 'Feriado federal; depende de ti.' },
+      { id: 'super-bowl',    name: 'Super Bowl',          date: ohFmtDate(superBowl), note: 'Uno de los días más fuertes de takeout y delivery del año — alitas, pizza, parrillada para llevar.' },
       { id: 'valentines',    name: 'Día de San Valentín', date: year + '-02-14', note: 'Una de las noches más reservadas del año — usualmente abierto con reservas y menú especial.' },
       { id: 'mardi-gras',    name: 'Martes de Carnaval',  date: ohFmtDate(mardiGras), note: 'Algunos restaurantes corren un menú especial en vez de cerrar.' },
       { id: 'st-patricks',   name: 'Día de San Patricio', date: year + '-03-17', note: 'Noche fuerte para bares y pubs; la mayoría abre con horario extendido.' },
@@ -704,6 +796,7 @@ function ohHolidaysForYear(year, locale) {
   return [
     { id: 'new-years',     name: "New Year's Day",     date: year + '-01-01', note: 'Most restaurants close or open late.' },
     { id: 'mlk',           name: 'MLK Jr. Day',        date: ohFmtDate(mlk), note: 'Federal holiday; up to you.' },
+    { id: 'super-bowl',    name: 'Super Bowl Sunday',  date: ohFmtDate(superBowl),                          note: 'One of the biggest takeout/delivery days of the year — wings, pizza, BBQ-to-go.' },
     { id: 'valentines',    name: "Valentine's Day",    date: year + '-02-14', note: 'One of the most-reserved nights of the year — usually open with reservations and a fixed menu.' },
     { id: 'mardi-gras',    name: 'Mardi Gras',         date: ohFmtDate(mardiGras),                          note: 'Some restaurants run a special menu instead of closing.' },
     { id: 'st-patricks',   name: "St. Patrick's Day",  date: year + '-03-17', note: 'Big night for bars and pubs; most open with extended hours.' },
@@ -990,6 +1083,7 @@ var OH_PUBLIC = {
   generateJsonLdScript: ohGenerateJsonLdScript,
   generatePlatformCopy: ohGeneratePlatformCopy,
   generateBuilderEmail: ohGenerateBuilderEmail,
+  generateVoicemailScript: ohGenerateVoicemailScript,
   generateIcs:         ohGenerateIcs,
   generateQuarterlyIcs: ohGenerateQuarterlyIcs,
   // Date parsing (Phase E4)

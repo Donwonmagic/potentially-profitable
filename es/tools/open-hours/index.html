@@ -543,6 +543,21 @@
 
     <article class="oh-task-card">
       <header class="oh-task-head">
+        <h3>Lee esto en tu buz&oacute;n de voz.</h3>
+        <span class="oh-task-format">Para tu saludo telef&oacute;nico</span>
+      </header>
+      <p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);">Los mensajes de voz desactualizados son el contacto con el cliente que m&aacute;s independientes olvidan. L&eacute;elo natural &mdash; con pausas donde la puntuaci&oacute;n las sugiere. Actu&aacute;lzalo la pr&oacute;xima vez que cambien tus horarios.</p>
+      <pre class="oh-task-block" id="ohVoicemailBlock" aria-label="Texto del buz&oacute;n de voz" style="white-space:pre-line;"></pre>
+      <div class="oh-task-actions">
+        <button type="button" class="oh-task-btn oh-task-btn-primary" data-copy-target="ohVoicemailBlock" data-copy-label="Copiar texto del buz&oacute;n">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copiar texto del buz&oacute;n
+        </button>
+      </div>
+    </article>
+
+    <article class="oh-task-card">
+      <header class="oh-task-head">
         <h3>Manda esto a quien hizo tu sitio.</h3>
         <span class="oh-task-format" title="Schema.org OpeningHoursSpecification JSON-LD">Para quien hizo tu sitio</span>
       </header>
@@ -1029,7 +1044,8 @@
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/open-hours/open-hours.js?v=20260428-oh12"></script>
-<script src="/tools/open-hours/sign-render.js?v=20260426-oh12"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/open-hours/sign-render.js?v=20260430-brand-palette"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script>
 /* Open Hours — week-grid input + live output render.
@@ -1495,6 +1511,31 @@
       appleBlock.textContent  = window.OH.generatePlatformCopy(input, 'apple', 'es');
       jsonLdBlock.textContent = window.OH.generateJsonLdScript(input);
       emailBlock.textContent  = window.OH.generateBuilderEmail(input, 'es');
+      // Handoff cross-tool — escribe los horarios estructurados en
+      // MuntinContext para que schema-check los recoja sin retipear.
+      try {
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          var docObj = window.OH.generateJsonLd(input, { format: 'object' });
+          var hoursPayload = null;
+          if (docObj && Array.isArray(docObj.openingHoursSpecification)) {
+            hoursPayload = {
+              openingHoursSpecification: docObj.openingHoursSpecification,
+              specialOpeningHoursSpecification: docObj.specialOpeningHoursSpecification || []
+            };
+          }
+          MuntinContext.merge({
+            businessName: input.name || undefined,
+            address: [input.street, input.city, input.region, input.postalCode]
+              .filter(Boolean).join(', ') || undefined,
+            city: input.city || undefined,
+            hours: hoursPayload || undefined
+          });
+        }
+      } catch (_) {}
+      var voicemailBlockEl    = document.getElementById('ohVoicemailBlock');
+      if (voicemailBlockEl && window.OH.generateVoicemailScript) {
+        voicemailBlockEl.textContent = window.OH.generateVoicemailScript(input, 'es');
+      }
       paintSerpPreview(v, input);
       paintChecklist(v);
       paintDiff();
@@ -1790,6 +1831,10 @@
       postalCode: (document.getElementById('ohPostal') || {}).value || ''
     };
     var v = window.OH.validateHours(input);
+    var ctx0 = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+      ? MuntinContext.read() : null;
+    var palette = (ctx0 && Array.isArray(ctx0.palette) && ctx0.palette.length)
+      ? ctx0.palette : null;
     return {
       summary: v,
       closures: getClosureList(),
@@ -1797,7 +1842,8 @@
       googleCopy: window.OH.generatePlatformCopy(input, 'google', 'es'),
       formatTime: window.OH.formatTime,
       strings:   (window.OHSign && window.OHSign.DEFAULT_STRINGS_ES) || {},
-      locale:    'es'
+      locale:    'es',
+      palette:   palette
     };
   }
   function downloadCanvasAsPng(canvas, filename){

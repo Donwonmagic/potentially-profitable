@@ -62,6 +62,15 @@
   .gbp-form button:disabled{opacity:.5;cursor:wait}
   @media(max-width:640px){.gbp-form{flex-direction:column}}
   .gbp-note{font-size:13px;color:var(--stone);margin-top:14px;text-align:center}
+  /* Inspiration banner — Search Ideas handoff. */
+  .gbp-inspiration{margin:14px auto 0;max-width:560px;text-align:left;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);padding:12px 14px;background:var(--white)}
+  .gbp-inspiration[hidden]{display:none}
+  .gbp-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-inspiration-chips{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+  .gbp-inspiration-chip{display:inline-block;padding:5px 11px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+  .gbp-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+  .gbp-inspiration-note{margin:0;font-size:12px;color:var(--stone);line-height:1.45}
+  .gbp-inspiration-flash{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:var(--status-good);min-height:16px}
   .gbp-result{display:none;max-width:560px;margin:48px auto 0}
   .gbp-result.visible{display:block}
   .gbp-biz{text-align:center;margin-bottom:28px}
@@ -162,6 +171,46 @@
   .gbp-cat-empty{font-size:13px;color:var(--stone);font-style:italic;padding:0 4px 4px}
   /* Methodology disclosure — tucked at the bottom for credibility
      without cluttering the default view. */
+  .gbp-roadmap{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-roadmap-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  .gbp-roadmap-body{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 14px}
+  .gbp-roadmap-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .gbp-roadmap-day{display:grid;grid-template-columns:120px 1fr;gap:10px 14px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-1)}
+  .gbp-roadmap-day[data-empty="true"]{opacity:0.5;background:var(--cream-2)}
+  .gbp-roadmap-name{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);letter-spacing:0.02em;align-self:center}
+  .gbp-roadmap-action{display:flex;align-items:start;gap:8px;font-size:13.5px;line-height:1.55;color:var(--ink);grid-column:2}
+  .gbp-roadmap-day[data-empty="true"] .gbp-roadmap-action{grid-column:2;color:var(--stone);font-style:italic}
+  .gbp-roadmap-state{flex:0 0 18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700;margin-top:1px}
+  .gbp-roadmap-state.state-fail{background:#fde9e0;color:var(--rust)}
+  .gbp-roadmap-state.state-warn{background:#fbf3d8;color:#9c7416}
+  .gbp-roadmap-foot{font-size:12px;color:var(--stone);margin:12px 0 0;line-height:1.5}
+  @media(max-width:560px){.gbp-roadmap-day{grid-template-columns:1fr}.gbp-roadmap-name{align-self:auto}.gbp-roadmap-action{grid-column:1}}
+  .gbp-preflight{margin:0 0 22px;padding:16px 20px;border:1px solid #d9c179;background:#fbf3d8;border-radius:var(--r-input)}
+  .gbp-preflight-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9c7416;margin:0 0 10px}
+  .gbp-preflight-body{font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 8px}
+  .gbp-preflight-list{margin:0 0 12px;padding-left:20px;font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  .gbp-preflight-cta{display:inline-block;padding:9px 16px;border-radius:999px;background:var(--ink);color:var(--cream);text-decoration:none;font-weight:600;font-size:13.5px;margin:0 0 10px}
+  .gbp-preflight-cta:hover{filter:brightness(0.92)}
+  .gbp-preflight-foot{font-size:12px;color:var(--stone);margin:0;line-height:1.5}
+  .gbp-mirror{margin:0 0 22px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+  .gbp-mirror-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+  .gbp-mirror-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .gbp-mirror-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);border-bottom:1px solid var(--line)}
+  .gbp-mirror-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .gbp-mirror-table tbody tr:last-child td{border-bottom:0}
+  .gbp-mirror-label{font-weight:600;color:var(--ink)}
+  .gbp-mirror-you{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gbp-mirror-peer{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta{font-weight:700;font-variant-numeric:tabular-nums}
+  .gbp-mirror-delta.win{color:var(--status-good)}
+  .gbp-mirror-delta.lose{color:var(--rust)}
+  .gbp-mirror-delta.tie{color:var(--stone)}
+  .gbp-mirror-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+  .gbp-mirror-foot{font-size:12px;color:var(--stone);margin:10px 0 0;line-height:1.5}
+  .gbp-mirror-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  @media(max-width:560px){
+    .gbp-mirror-table th:nth-child(5),.gbp-mirror-table td:nth-child(5){display:none}
+  }
   .gbp-methodology{margin:0 0 22px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--cream-2)}
   .gbp-methodology summary{list-style:none;cursor:pointer;padding:14px 18px;font-size:14px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
   .gbp-methodology summary::-webkit-details-marker{display:none}
@@ -194,6 +243,23 @@
   .gbp-delta-up{color:var(--status-good);font-weight:600}
   .gbp-delta-down{color:var(--rust);font-weight:600}
   .gbp-delta-flat{color:var(--stone)}
+  /* Recheck-over-time sparkline. Same shape as audits + speed-test. */
+  .gbp-spark{margin:0 0 18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--white);text-align:left}
+  .gbp-spark-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
+  .gbp-spark-row{display:flex;align-items:center;gap:14px}
+  .gbp-spark-svg{width:240px;height:60px;overflow:visible;flex:0 0 auto;color:var(--teal)}
+  .gbp-spark-svg .spark-line{stroke:var(--teal)}
+  .gbp-spark-svg .spark-pt{fill:var(--cream,#FAF6EE);stroke:var(--teal);stroke-width:2}
+  .gbp-spark-svg .spark-pt-current{fill:var(--teal);stroke:var(--teal)}
+  .gbp-spark-svg .spark-label{font:600 11px/1 var(--font-body,system-ui);fill:var(--ink);paint-order:stroke;stroke:var(--cream,#FAF6EE);stroke-width:3px;stroke-linejoin:round}
+  .gbp-spark-prose{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+  .gbp-spark-prose strong{color:var(--ink)}
+  .gbp-spark-axis{display:flex;justify-content:space-between;max-width:240px;font-size:10.5px;color:var(--stone);margin-top:4px;font-variant-numeric:tabular-nums}
+  @media(max-width:540px){
+    .gbp-spark-row{flex-direction:column;align-items:stretch;gap:10px}
+    .gbp-spark-svg{width:100%;max-width:320px;align-self:center}
+    .gbp-spark-axis{max-width:320px;align-self:center;width:100%}
+  }
   /* Share-link row — sits inside the CTA box, above the audit
      handoff button. Writes the current grade state to KV via
      /api/audit-snapshot (Sprint 3C). */
@@ -435,11 +501,28 @@
             <!-- storefront-rail:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Search for your business name and see how your profile stacks up — rating, review count, photos, hours, categories — with specific fixes for what's missing.</p>
 
+  <details class="gbp-primer" style="margin:14px auto 0;max-width:560px;text-align:left;border:1px dashed var(--line-dark);border-radius:var(--r-input);padding:10px 14px;background:var(--white);">
+    <summary style="cursor:pointer;font-size:13.5px;color:var(--ink);"><strong>What's a Google Business Profile (GBP)?</strong></summary>
+    <p style="margin:8px 0 0;font-size:13px;line-height:1.55;color:var(--ink-soft);">It's the panel that shows up on Google when someone searches your name — the box on the right with your rating, hours, photos, and "Order online" / "Reserve" buttons. It's free, you control it, and on mobile it usually decides whether someone walks in. If you've never seen yours, search "[your restaurant name] [your city]" on Google right now.</p>
+  </details>
+
+  <!-- Inspiration banner — populated when an inbound link from
+       Search Ideas carries a #keywords= list. These are the terms
+       customers used to find restaurants like this one; the owner
+       should weave them into their GBP description, services list,
+       and post copy. Tapping a chip copies it to the clipboard. -->
+  <div class="gbp-inspiration" id="gbpInspiration" hidden>
+    <p class="gbp-inspiration-eyebrow">Search words customers used</p>
+    <ul class="gbp-inspiration-chips" id="gbpInspirationChips"></ul>
+    <p class="gbp-inspiration-note">From Search Ideas. Tap any chip to copy it — paste into your GBP description, "Services" list, or your next Google Post.</p>
+    <span class="gbp-inspiration-flash" id="gbpInspirationFlash" aria-live="polite"></span>
+  </div>
+
   <form class="gbp-form" id="gbpForm" novalidate>
-    <input type="text" id="gbpQuery" placeholder="Your Business Name, City" autocomplete="off" required aria-label="Your business name and city" />
+    <input type="text" id="gbpQuery" placeholder="Your Business Name, City — or paste a Google Maps link" autocomplete="off" required aria-label="Your business name and city, or Google Maps link" />
     <button type="submit" id="gbpSubmit">Grade it</button>
   </form>
-  <p class="gbp-note">Powered by Google Places API. Type your business name + city for best results.</p>
+  <p class="gbp-note">Type your business name + city, or paste a Google Maps share link (maps.app.goo.gl, maps.google.com, or g.co/kgs).</p>
 
   <div class="gbp-result" id="gbpResult" aria-live="polite">
     <div class="gbp-biz" id="gbpBiz"></div>
@@ -563,6 +646,7 @@
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </div></footer>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./gbp-grader.js?v=20260424-gbp1"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
@@ -585,6 +669,58 @@
   var result=document.getElementById('gbpResult');
   var bizEl=document.getElementById('gbpBiz');
   var checksEl=document.getElementById('gbpChecks');
+
+  // Search Ideas handoff: a #keywords=q1%0Aq2 fragment opens an
+  // inspiration banner of clickable chips above the form. Tapping
+  // a chip copies it to the clipboard so the owner can paste into
+  // their GBP description, "Services" list, or a Google Post.
+  (function hydrateInspiration(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var keywordsRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      if (pair.slice(0, eq) !== 'keywords') return;
+      try { keywordsRaw = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { keywordsRaw = pair.slice(eq + 1); }
+    });
+    if (!keywordsRaw) return;
+    var kws = keywordsRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!kws.length) return;
+    var insp    = document.getElementById('gbpInspiration');
+    var chipsEl = document.getElementById('gbpInspirationChips');
+    var flashEl = document.getElementById('gbpInspirationFlash');
+    if (!insp || !chipsEl) return;
+    var clearFlash;
+    chipsEl.innerHTML = '';
+    kws.slice(0, 12).forEach(function(kw){
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'gbp-inspiration-chip';
+      b.textContent = kw;
+      b.addEventListener('click', function(){
+        var done = function(msg){
+          if (!flashEl) return;
+          flashEl.textContent = msg;
+          if (clearFlash) clearTimeout(clearFlash);
+          clearFlash = setTimeout(function(){ flashEl.textContent = ''; }, 2200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(kw).then(
+            function(){ done('Copied "' + kw + '" — paste into your GBP description.'); },
+            function(){ done('Could not copy. Long-press the chip to select it manually.'); }
+          );
+        } else {
+          done('Copy not supported here — long-press the chip to select.');
+        }
+      });
+      li.appendChild(b);
+      chipsEl.appendChild(li);
+    });
+    insp.hidden = false;
+  })();
 
   // ----- Copy table -------------------------------------------------
   // Keyed by [check.id][state] -> {title, body}. Placeholders in curly
@@ -842,6 +978,166 @@
       +'</details>';
   }
 
+  // 7-day roadmap. Walks the scored groups, collects checks in fail
+  // or warn state, ranks by check weight (highest = most leverage),
+  // assigns 1-2 actions per day across 7 days. Day-named slots map
+  // to the kind of action (Mon = high-leverage edits in the GBP
+  // dashboard, mid-week = photo uploads, weekend = review-asking
+  // pushes). The map is just heuristic — all actions get scheduled
+  // even if the heuristic is wrong, because what matters is having
+  // a sequence rather than a list.
+  var ROADMAP_HINTS = {
+    primary_category:  { day: 'Monday',   action: 'Pick the most specific business category in your GBP dashboard.' },
+    hours:             { day: 'Monday',   action: 'Set regular hours for every day you\'re open. Generate them in Open Hours and paste in.' },
+    phone:             { day: 'Monday',   action: 'Add (or correct) the tap-to-call phone number. Match what\'s on your website.' },
+    website:           { day: 'Monday',   action: 'Link your website. Even one page beats none — Google sends learn-more clicks here.' },
+    service_attrs:     { day: 'Tuesday',  action: 'Toggle every service attribute that applies (dine-in, takeout, delivery, reservations, cuisine flags).' },
+    hours_fresh:       { day: 'Tuesday',  action: 'Verify the holiday and special-hours coverage — gaps lower freshness signals.' },
+    nap:               { day: 'Tuesday',  action: 'Reconcile your name / address / phone between Google + your website schema. Same exact text on both.' },
+    photos:            { day: 'Wednesday',action: 'Upload 4-6 photos: exterior, interior, signature dish, team. Reuse for the rest of the week.' },
+    editorial_summary: { day: 'Wednesday',action: 'Write the 250-character business description. Lead with cuisine + neighborhood + what makes you distinct.' },
+    rating:            { day: 'Thursday', action: 'Read all 1-3 star reviews. Pattern-match the recurring complaint and address it operationally.' },
+    owner_reply:       { day: 'Thursday', action: 'Reply publicly to the most recent 5-10 reviews. Include both glowing and critical ones.' },
+    review_volume:     { day: 'Friday',   action: 'Print a QR card with your Google review link. Hand it to satisfied tables this weekend.' },
+    review_recency:    { day: 'Saturday', action: 'Ask 3-5 regulars for a review by name. Direct asks convert ~10x cold prompts.' },
+    operational:       { day: 'Sunday',   action: 'Confirm the listing isn\'t marked closed/moved if you\'re still open. Wrong status = invisible.' }
+  };
+  var ROADMAP_DAY_ORDER = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  function renderRoadmap(scored) {
+    if (!scored || !scored.groups) return '';
+    // Collect failed/warn checks, dedup by id, ranked by weight desc.
+    var actionable = [];
+    scored.groups.forEach(function (g) {
+      (g.checks || []).forEach(function (c) {
+        if (c.state === 'fail' || c.state === 'warn') {
+          if (ROADMAP_HINTS[c.id]) actionable.push({ id: c.id, weight: c.weight, state: c.state });
+        }
+      });
+    });
+    actionable.sort(function (a, b) { return b.weight - a.weight; });
+    if (!actionable.length) return '';
+    // Bucket by day.
+    var byDay = {};
+    ROADMAP_DAY_ORDER.forEach(function (d) { byDay[d] = []; });
+    actionable.forEach(function (a) {
+      var hint = ROADMAP_HINTS[a.id];
+      if (!hint) return;
+      // Cap each day at 2 actions; overflow rolls forward by one day
+      // (mod 7) until a day has space. Keeps the plan executable.
+      var idx = ROADMAP_DAY_ORDER.indexOf(hint.day);
+      var attempts = 0;
+      while (byDay[ROADMAP_DAY_ORDER[idx]].length >= 2 && attempts < 7) {
+        idx = (idx + 1) % 7; attempts++;
+      }
+      byDay[ROADMAP_DAY_ORDER[idx]].push({ id: a.id, hint: hint, state: a.state });
+    });
+    var dayHtml = ROADMAP_DAY_ORDER.map(function (d) {
+      var actions = byDay[d];
+      if (!actions.length) {
+        return '<li class="gbp-roadmap-day" data-empty="true"><span class="gbp-roadmap-name">' + d + '</span><span class="gbp-roadmap-action">— rest day —</span></li>';
+      }
+      var lines = actions.map(function (a) {
+        var stateBadge = a.state === 'fail' ? '<span class="gbp-roadmap-state state-fail">!</span>' : '<span class="gbp-roadmap-state state-warn">·</span>';
+        return '<span class="gbp-roadmap-action">' + stateBadge + a.hint.action + '</span>';
+      }).join('');
+      return '<li class="gbp-roadmap-day"><span class="gbp-roadmap-name">' + d + '</span>' + lines + '</li>';
+    }).join('');
+    return '<div class="gbp-roadmap">'
+      + '<p class="gbp-roadmap-eyebrow">Your 7-day roadmap</p>'
+      + '<p class="gbp-roadmap-body">A sequenced version of the failed and warning checks above. One or two actions per day, ordered by leverage. Treat the days as a prompt — if Monday\'s actions take 20 minutes you\'ll feel like you\'re running.</p>'
+      + '<ul class="gbp-roadmap-list">' + dayHtml + '</ul>'
+      + '<p class="gbp-roadmap-foot">Roadmap is generated from the checks above; if you fix one and re-run the grader, the next run drops it.</p>'
+      + '</div>';
+  }
+
+  // Pre-flight unclaimed-listing detector. No single Places API
+  // field reliably says "this is unclaimed" without a server-side
+  // owner-status check, so we infer from observable signals that
+  // co-occur on auto-generated / abandoned listings:
+  //
+  //   - no website on the listing
+  //   - no photos at all
+  //   - no opening hours set
+  //   - no phone number
+  //   - very low review count (<5) AND missing primaryTypeDisplayName
+  //
+  // Three or more co-occurring signals flips the heuristic. Returns
+  // { likely, signals[], reason }. Conservative — false negatives
+  // are fine (the user proceeds to the regular grade); false
+  // positives risk distracting an active operator from fixing
+  // actual problems, so we skew the threshold high.
+  function pbDetectUnclaimed(chosen) {
+    if (!chosen) return { likely: false, signals: [] };
+    var sigs = [];
+    if (!chosen.website && !chosen.googleMapsUri) sigs.push('no website on the listing');
+    else if (!chosen.website) sigs.push('no website link on the listing');
+    if (!chosen.photoCount && chosen.photoCount !== 0) {} // photoCount missing entirely is normal in some response shapes
+    else if (chosen.photoCount === 0) sigs.push('zero photos');
+    var hasHours = !!(chosen.regularOpeningHours || chosen.openingHours || (chosen.currentOpeningHours && chosen.currentOpeningHours.weekdayDescriptions));
+    if (!hasHours) sigs.push('no hours set');
+    if (!chosen.nationalPhoneNumber && !chosen.internationalPhoneNumber && !chosen.formattedPhoneNumber) sigs.push('no phone number');
+    var reviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    if (reviews != null && reviews < 5 && !chosen.primaryTypeDisplayName) sigs.push('under 5 reviews and no business category');
+    return { likely: sigs.length >= 3, signals: sigs };
+  }
+  function renderPreflightBanner(pre) {
+    if (!pre || !pre.likely) return '';
+    var listHtml = pre.signals.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    return '<div class="gbp-preflight">'
+      + '<p class="gbp-preflight-eyebrow">Heads up — this listing might be unclaimed</p>'
+      + '<p class="gbp-preflight-body">Several signals look like Google-auto-generated rather than owner-managed:</p>'
+      + '<ul class="gbp-preflight-list">' + listHtml + '</ul>'
+      + '<p class="gbp-preflight-body">Claiming the listing is the highest-leverage GBP move there is — it unlocks every other fix and tells Google you\'re actively running this business.</p>'
+      + '<a class="gbp-preflight-cta" href="https://business.google.com/create" target="_blank" rel="noopener">Open Google Business Profile to claim &rarr;</a>'
+      + '<p class="gbp-preflight-foot">If you\'ve already claimed it and these signals are wrong, the score below still reflects what Google\'s public data shows — which is what new customers see.</p>'
+      + '</div>';
+  }
+
+  // Competitor mirror: yours vs. category median. Uses the
+  // peer-medians.json data already loaded for this category. Not
+  // a "nearby search" (which would need a separate Places API
+  // call) — instead surfaces "what a typical {your category} looks
+  // like" so the owner has a felt sense of where they stand. Honest:
+  // labelled as median, not "average competitor."
+  function renderCompetitorMirror(chosen, peerMedians){
+    if (!chosen || !peerMedians) return '';
+    var primary = (chosen.primaryTypeDisplayName || chosen.types && chosen.types[0]) || '';
+    var familyKey = (peerMedians._familyMap && peerMedians._familyMap[primary]) || null;
+    var benchmark = peerMedians[primary] || (familyKey && peerMedians._families && peerMedians._families[familyKey]) || peerMedians._default || null;
+    if (!benchmark) return '';
+    var yourReviews = (typeof chosen.userRatingCount === 'number') ? chosen.userRatingCount : (typeof chosen.reviewCount === 'number' ? chosen.reviewCount : null);
+    var yourPhotos  = (typeof chosen.photoCount === 'number') ? chosen.photoCount : null;
+    var yourRating  = (typeof chosen.rating === 'number') ? chosen.rating : null;
+    function row(label, your, peer, note) {
+      if (your == null && peer == null) return '';
+      var delta = (typeof your === 'number' && typeof peer === 'number') ? your - peer : null;
+      var deltaCls = delta == null ? 'tie' : (delta >= 0 ? 'win' : 'lose');
+      var deltaTxt = delta == null ? '—' : (delta > 0 ? '+' + Math.round(delta) : Math.round(delta));
+      var yourTxt  = (your == null ? '—' : (typeof your === 'number' ? Math.round(your * 10) / 10 : your));
+      var peerTxt  = (peer == null ? '—' : (typeof peer === 'number' ? Math.round(peer * 10) / 10 : peer));
+      return '<tr><td class="gbp-mirror-label">' + label + '</td>'
+        +    '<td class="gbp-mirror-you">' + yourTxt + '</td>'
+        +    '<td class="gbp-mirror-peer">' + peerTxt + '</td>'
+        +    '<td class="gbp-mirror-delta ' + deltaCls + '">' + deltaTxt + '</td>'
+        +    (note ? '<td class="gbp-mirror-note">' + note + '</td>' : '<td></td>')
+        +    '</tr>';
+    }
+    var rows = '';
+    rows += row('Reviews',  yourReviews, (benchmark.reviewCount || null), yourReviews != null && benchmark.reviewCount && yourReviews < benchmark.reviewCount ? 'Aim for the median first; ranking lift compounds past it.' : '');
+    rows += row('Photos',   yourPhotos,  (benchmark.photoCount || null),  yourPhotos != null && benchmark.photoCount && yourPhotos < benchmark.photoCount ? 'Photos are the cheapest single metric to move — upload weekly.' : '');
+    rows += row('Rating',   yourRating,  4.5, yourRating != null && yourRating < 4.5 ? 'Below the 4.5 threshold most diners filter to. Reply to recent reviews — public replies lift the visible mean.' : '');
+    if (!rows) return '';
+    var label = primary || (familyKey || 'restaurants');
+    return '<div class="gbp-mirror">'
+      + '<p class="gbp-mirror-eyebrow">How you compare to median ' + label + 's</p>'
+      + '<table class="gbp-mirror-table">'
+      +   '<thead><tr><th>Metric</th><th>You</th><th>Median peer</th><th>Δ</th><th></th></tr></thead>'
+      +   '<tbody>' + rows + '</tbody>'
+      + '</table>'
+      + '<p class="gbp-mirror-foot">Median is a directional benchmark from <a href="#" data-toggle-method>BrightLocal + Whitespark research</a>, not nearby competitors. To compare against three actual neighbors, run the <a href="/tools/compare/">Compare tool</a>.</p>'
+      + '</div>';
+  }
+
   function renderMethodology(peerMedians){
     var compiled=peerMedians&&peerMedians._compiled?peerMedians._compiled:'current release';
     var source=peerMedians&&peerMedians._source?peerMedians._source:'public local-SEO research';
@@ -894,6 +1190,98 @@
       letter:     scored.letter
     };
     try{window.localStorage.setItem(gbpSnapshotKey(placeId),JSON.stringify(snap))}catch(e){}
+    // Mirror the snapshot into a per-placeId history list — capped at
+    // 20 entries with a 6h minimum gap between rows. Powers the
+    // recheck-over-time sparkline (renderGbpSparkline). Distinct from
+    // the single-snapshot above so the existing renderDelta logic
+    // ("vs. your last scan") doesn't change shape.
+    try{
+      var hKey=gbpHistoryKey(placeId);
+      var prev=[];
+      try{prev=JSON.parse(window.localStorage.getItem(hKey)||'[]')||[]}catch(_){}
+      if(!Array.isArray(prev))prev=[];
+      var GAP=6*60*60*1000, MAX=20;
+      if(prev.length && (snap.ts - prev[prev.length-1].ts) < GAP){
+        prev[prev.length-1] = snap;
+      } else {
+        prev.push(snap);
+        while(prev.length>MAX) prev.shift();
+      }
+      window.localStorage.setItem(hKey, JSON.stringify(prev));
+    }catch(_){}
+  }
+  function gbpHistoryKey(placeId){return'gbpGrader:history:'+placeId}
+  function gbpHistoryRead(placeId){
+    if(!placeId)return[];
+    try{
+      var raw=window.localStorage.getItem(gbpHistoryKey(placeId));
+      if(!raw)return[];
+      var p=JSON.parse(raw);
+      return Array.isArray(p)?p:[];
+    }catch(_){return[]}
+  }
+  // Recheck-over-time sparkline. Mirrors the audits + speed-test
+  // pattern: a tiny SVG of the last 6 scaled scores. Hidden when
+  // fewer than 3 snapshots exist (the delta strip already covers 2).
+  // Returns an HTML string for embedding in the result innerHTML.
+  function renderGbpSparkline(placeId){
+    var entries=gbpHistoryRead(placeId)
+      .filter(function(e){return e&&typeof e.scaled==='number'})
+      .slice(-6);
+    if(entries.length<3)return'';
+    var W=240,H=60,padX=12,padY=8;
+    var minS=100,maxS=0;
+    entries.forEach(function(e){if(e.scaled<minS)minS=e.scaled;if(e.scaled>maxS)maxS=e.scaled});
+    var range=Math.max(20,maxS-minS);
+    var midY=padY+(H-padY*2)*0.5;
+    var pts=entries.map(function(e,i){
+      var x=padX+(W-padX*2)*(i/Math.max(1,entries.length-1));
+      var rel=(e.scaled-minS)/range;
+      var y=(H-padY)-rel*(H-padY*2);
+      if(maxS-minS<5)y=midY;
+      return{x:x,y:y,score:e.scaled,ts:e.ts};
+    });
+    var poly=pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1)}).join(' ');
+    var dots='';
+    pts.forEach(function(p,i){
+      var cls=i===pts.length-1?'spark-pt spark-pt-current':'spark-pt';
+      var r=i===pts.length-1?'4':'3';
+      dots+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+r+'" class="'+cls+'"/>';
+    });
+    var last=pts[pts.length-1];
+    var lblX=Math.max(padX,Math.min(W-padX,last.x+8)).toFixed(1);
+    var lblY=Math.max(12,last.y-8).toFixed(1);
+    var lblAnchor=last.x>W-28?'end':'start';
+    dots+='<text x="'+lblX+'" y="'+lblY+'" text-anchor="'+lblAnchor+'" class="spark-label">'+last.score+'</text>';
+    var first=entries[0],current=entries[entries.length-1];
+    var prior=entries[entries.length-2];
+    var dSince=current.scaled-first.scaled;
+    var dPrior=current.scaled-prior.scaled;
+    var aSince=dSince>0?'↑':dSince<0?'↓':'→';
+    var aPrior=dPrior>0?'↑':dPrior<0?'↓':'→';
+    var prose='<strong>'+aSince+' '+(dSince>0?'+':'')+dSince+'</strong> from your first check'
+      +(entries.length>=4?' &middot; '+aPrior+' '+(dPrior>0?'+':'')+dPrior+' from last check':'');
+    var fmt=function(ts){
+      try{
+        var d=new Date(ts);
+        var diff=Date.now()-ts;
+        var oneDay=86400000;
+        if(diff<oneDay&&d.getDate()===new Date().getDate())return'today';
+        if(diff<2*oneDay)return'yesterday';
+        return d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+      }catch(_){return''}
+    };
+    return'<figure class="gbp-spark">'
+      +'<p class="gbp-spark-eyebrow">Your last GBP checks</p>'
+      +'<div class="gbp-spark-row">'
+      +'<svg class="gbp-spark-svg" viewBox="0 0 240 60" aria-hidden="true">'
+      +'<polyline class="spark-line" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="'+poly+'"/>'
+      +'<g>'+dots+'</g>'
+      +'</svg>'
+      +'<div class="gbp-spark-prose">'+prose+'</div>'
+      +'</div>'
+      +'<div class="gbp-spark-axis"><span>'+fmt(entries[0].ts)+'</span><span>'+fmt(current.ts)+'</span></div>'
+      +'</figure>';
   }
   function gbpRelativeAge(ms){
     var sec=Math.floor((Date.now()-ms)/1000);
@@ -1109,13 +1497,40 @@
     deepScanState.query=query;
     deepScanState.wasPicked=wasPicked;
 
+    // Cross-tool handoff — write the resolved listing to
+    // MuntinContext so schema-check (and other downstream tools) can
+    // pre-fill businessName/address/phone/cuisine without re-asking.
+    // Best-effort; failures are silent.
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({
+          businessName: chosen.displayName || chosen.name || undefined,
+          address:      chosen.formattedAddress || undefined,
+          phone:        chosen.nationalPhoneNumber || chosen.internationalPhoneNumber || undefined,
+          cuisine:      chosen.primaryTypeDisplayName || undefined,
+          lastUrl:      chosen.website || undefined
+        });
+      }
+    } catch (_) {}
+
     bizEl.innerHTML=renderBusinessCard(chosen);
+
+    // Pre-flight claim check. Detects signals consistent with an
+    // unclaimed listing — listings Google auto-generated for the
+    // owner that have never been claimed/managed. Surfaces a warm
+    // amber banner ABOVE the score so the owner addresses claiming
+    // first (claiming a listing is what unlocks every other fix
+    // and is itself a high-leverage move). Pure client-side
+    // heuristic from data already in chosen — no extra fetch.
+    var preflight = pbDetectUnclaimed(chosen);
+    var preflightHtml = preflight.likely ? renderPreflightBanner(preflight) : '';
 
     var scored=window.gbpScoreCandidate(chosen,peerMedians,deepScanState.data,'en');
     // Read the prior snapshot BEFORE saving the new one, so the
     // delta strip compares current vs. last, not current vs. current.
     var deltaHtml=renderDelta(chosen,scored);
     gbpSnapshotSave(chosen.placeId,chosen,scored);
+    var sparkHtml=renderGbpSparkline(chosen.placeId);
     var gaugeHtml=renderGauge(scored);
     var fixFirstHtml=renderFixFirst(scored);
 
@@ -1127,7 +1542,9 @@
 
     var deepHtml=renderDeepScan(chosen.placeId);
     var methodHtml=renderMethodology(peerMedians);
-    checksEl.innerHTML=deltaHtml+gaugeHtml+fixFirstHtml+catsHtml+deepHtml+methodHtml;
+    var competitorHtml=renderCompetitorMirror(chosen, peerMedians);
+    var roadmapHtml=renderRoadmap(scored);
+    checksEl.innerHTML=preflightHtml+deltaHtml+sparkHtml+gaugeHtml+fixFirstHtml+catsHtml+roadmapHtml+competitorHtml+deepHtml+methodHtml;
 
     // Handoff (Sprint 3B): prefill the Restaurant Audit CTA with this
     // listing's website when available — that tool already fuses
@@ -1235,7 +1652,26 @@
         renderFor(candidates[0],peerMedians,q,false);
       }
     }).catch(function(err){
-      alert(err.message||'Could not look up that business. Try adding your city name.');
+      // Inline error instead of alert(). The hero form has a
+      // states slot already wired by MuntinStates; if not, fall
+      // back to a small inline error message under the form.
+      var msg = err && err.message ? err.message : 'Could not look up that business.';
+      var hint = /city/i.test(msg) ? '' : ' Try adding your city name (e.g. "Joe\'s Taqueria, Silver Spring") or pasting a Google Maps link.';
+      var states = document.getElementById('gbpStates');
+      if (states && typeof MuntinStates !== 'undefined') {
+        try { MuntinStates.attach({ slotEl: states }).setError({ kind: 'unknown', messageEn: msg + hint, messageEs: msg + hint }); } catch (_) {}
+      } else {
+        var box = document.getElementById('gbpInlineError');
+        if (!box) {
+          box = document.createElement('p');
+          box.id = 'gbpInlineError';
+          box.setAttribute('role', 'alert');
+          box.style.cssText = 'margin:10px auto 0;max-width:540px;padding:10px 14px;background:#fbf3d8;border:1px solid #d9c179;border-radius:8px;font-size:13.5px;color:#1a0d05;line-height:1.5;';
+          var formEl = document.getElementById('gbpForm');
+          if (formEl && formEl.parentNode) formEl.parentNode.insertBefore(box, formEl.nextSibling);
+        }
+        box.textContent = msg + hint;
+      }
     }).finally(function(){btn.disabled=false;btn.textContent='Grade it'});
   });
 

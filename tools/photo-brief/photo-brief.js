@@ -65,6 +65,54 @@
   var NEG_SPACE = ['none', 'left', 'right', 'top', 'bottom'];
   var CATEGORIES = ['appetizer', 'main', 'pasta', 'dessert', 'drink', 'wholeMenu', 'room'];
 
+  // Per-category styling tips. Surface in Shoot Mode + the printable
+  // brief so the photographer (or the owner shooting iPhone) gets
+  // category-specific guidance without a Pinterest spiral. Each entry
+  // is 2-3 sentences of practical food-styling craft, written for
+  // someone shooting in the restaurant during a 90-minute window.
+  var STYLING_TIPS = {
+    appetizer: [
+      'Plate against a contrasting linen — appetizers are usually small; the linen reads more than the dish does on a phone.',
+      'Add a single garnish (herb sprig, oil drizzle, microplane shaving) right before the shutter. Movement reads as fresh.',
+      'Steam dies in 30 seconds — shoot the hot-from-the-pass version first, then re-stage from there.'
+    ],
+    main: [
+      'Hero ingredient faces the camera — if it\'s a steak, the cross-section; if it\'s fish, the skin side; if it\'s a chop, the bone.',
+      'Sauce goes on AFTER the dish is positioned. Pour live; the trail of motion is what makes the photo look like food, not a model.',
+      'Side dishes get cropped, not centered. The eye should land on the protein within half a second.'
+    ],
+    pasta: [
+      'Twirl with tongs and a fork directly in the bowl, then lift slightly so a single nest sits proud above the pool. That nest IS the photo.',
+      'Cheese gets grated TO TASTE — overhead, with motion blur. A static pile of pre-grated cheese reads as dry.',
+      'Wide bowls hold the eye longer than deep ones; shoot at 45° if the rim is visible, overhead if you want the swirl pattern to dominate.'
+    ],
+    dessert: [
+      'Overhead almost always wins for dessert — the geometry of plating reads better top-down than sideways.',
+      'Sauces should be poured live. Caramel, chocolate, fruit reductions — the arc of the pour is the photo.',
+      'Dust powdered sugar through a fine sieve seconds before the shot; it settles into the air and disappears within 30 seconds.'
+    ],
+    drink: [
+      'Shoot at glass-rim height (plate-level), not from above. The drink\'s color and clarity is the brand here.',
+      'Backlight where you can — a window or softbox behind the glass turns the liquid into the brightest object in the frame.',
+      'Garnishes go on AFTER you\'ve set the camera. Citrus oils evaporate; a fresh twist looks alive.'
+    ],
+    wholeMenu: [
+      'Overhead, every dish at the same plane — use stacked books or a flat tray under shorter items so heights match.',
+      'Stagger colors and shapes — alternate round / oval / rectangular plates so the grid reads as composed, not lined-up.',
+      'A single hand reaching in (chef\'s, server\'s) gives scale and energy. One hand only; two reads as crowded.'
+    ],
+    room: [
+      'Shoot 30 minutes before doors open. Empty room reads as composed; mid-service reads as documentary.',
+      'Tabletops get one of everything: water glass, candle, menu, single set of cutlery. Negative space is your friend.',
+      'Wide angle (24-35mm equivalent) for room shots; tighter for corners and the bar. Don\'t fisheye the dining room.'
+    ]
+  };
+
+  function stylingTipsFor(category) {
+    if (!category || !STYLING_TIPS[category]) return STYLING_TIPS.main || [];
+    return STYLING_TIPS[category];
+  }
+
   // The cell-defaults matrix — every (surface, category) pair returns
   // a canonical (angle, lighting, neg-space) triple. Owner can
   // override per cell; the brief reports override count. This is the
@@ -748,6 +796,8 @@
     NEG_SPACE:              NEG_SPACE,
     CATEGORIES:             CATEGORIES,
     defaultsForCell:        defaultsForCell,
+    stylingTipsFor:         stylingTipsFor,
+    STYLING_TIPS:           STYLING_TIPS,
     computeCropRectangle:   computeCropRectangle,
     dedupShotList:          dedupShotList,
     computeRoiMath:         computeRoiMath,

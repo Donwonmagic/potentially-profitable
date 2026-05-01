@@ -85,7 +85,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
 <style>
   .mob-hero { max-width: 680px; margin: 0 auto; text-align: center; }
   .mob-form { display: flex; gap: 10px; max-width: 560px; margin: 32px auto 0; }
@@ -126,6 +126,28 @@
   .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
   .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
   .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .mob-shot { margin: 14px 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .mob-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
+  .mob-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+  .mob-essentials { margin: 14px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-essentials-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .mob-essentials-list { display: flex; flex-direction: column; gap: 10px; }
+  .mob-essentials-foot { font-size: 12px; color: var(--stone); margin: 12px 0 0; line-height: 1.5; }
+  .mob-essentials-foot a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  /* MuntinHire disclosure compartido. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
 
   .mob-cta { margin-top: 32px; padding: 28px 32px; background: var(--cream-2); border: 1px solid var(--line); border-radius: 14px; text-align: center; }
   .mob-cta p { font-size: 15px; color: var(--stone); margin: 0 0 16px; }
@@ -339,7 +361,7 @@
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
       <h1>¿Tu sitio es<br><span class="serif-italic">apto para móvil?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-01">1 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-04-30">30 de abril de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -416,12 +438,6 @@
           <p class="tool-deep-snippet">Un embudo real de pérdida de reservas — los seis lugares donde el sitio web de tu restaurante está silenciosamente perdiendo a comensales con intención, lo que cada fuga te cuesta en dólares, y el arreglo para cada una.</p>
           <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/es/blog/when-to-rebuild-your-restaurant-website/">
-          <span class="tool-deep-kind">Artículo</span>
-          <h3>When to Rebuild Your Restaurant Website: A Decision Framework</h3>
-          <p class="tool-deep-snippet">A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.</p>
-          <span class="tool-deep-cta">Leer la guía <span aria-hidden="true">→</span></span>
-        </a>
     </div>
   </div>
 </section>
@@ -445,6 +461,8 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks (ES).
@@ -491,15 +509,15 @@
     {
       id: 'tap-targets',
       title: 'Los botones son lo suficientemente grandes para tocar',
-      passText: 'Tus botones y enlaces tienen al menos 44×44 píxeles — se tocan a la primera con el pulgar.',
-      failText: 'Algunos botones o enlaces son muy chicos. Cualquier cosa menor a 44×44 píxeles causa toques fallidos en el teléfono. Agrega relleno a los botones y separa los enlaces del menú.',
+      passText: 'Tus botones y enlaces tienen al menos 44×44 píxeles — se <a href="/es/glossary/tap-targets/">tocan</a> a la primera con el pulgar.',
+      failText: 'Algunos botones o enlaces son muy chicos. Cualquier cosa menor a 44×44 píxeles causa toques fallidos en el teléfono — ver <a href="/es/glossary/tap-targets/">tap targets</a>. Agrega relleno a los botones y separa los enlaces del menú.',
       nullText: 'No se pudo revisar — intenta correr la prueba de nuevo.'
     },
     {
       id: 'font-size',
       title: 'El texto se lee sin hacer zoom',
       passText: 'El texto del cuerpo está por encima del umbral de legibilidad en móvil. Tus visitantes pueden leer el contenido con el teléfono a la distancia del brazo sin hacer pinch-zoom.',
-      failText: 'Más del 40 % de tu texto está por debajo del umbral de legibilidad. En el teléfono, los visitantes tienen que hacer pinch-zoom para leer — y la mayoría no se va a molestar. Pon el tamaño de letra del cuerpo en al menos 16 px.',
+      failText: 'Más del 40 % de tu texto está por debajo del umbral de legibilidad. En el teléfono, los visitantes tienen que hacer pinch-zoom para leer — y la mayoría no se va a molestar. Pon el <a href="/es/glossary/body-text-size/">tamaño de letra del cuerpo</a> en al menos 16 px.',
       nullText: 'No se pudo revisar — intenta correr la prueba de nuevo.'
     }
   ];
@@ -526,12 +544,63 @@
       verdictIcon = 'fail'; verdictMark = '?';
     }
     verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    var shotHost = document.getElementById('mobShotHost');
+    if (shotHost) shotHost.parentNode.removeChild(shotHost);
+    if (p.screenshot) {
+      var wrap = document.createElement('div');
+      wrap.id = 'mobShotHost';
+      wrap.className = 'mob-shot';
+      wrap.innerHTML =
+        '<p class="mob-shot-eyebrow">Cómo se ve tu inicio en un teléfono</p>' +
+        '<div class="mob-shot-frame"><img src="' + p.screenshot + '" alt="Captura del sitio" loading="lazy"></div>';
+      verdict.parentNode.insertBefore(wrap, verdict.nextSibling);
+    }
     checksEl.innerHTML = '';
     (p.results || []).forEach(function(r) {
       var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
       var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
       checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
     });
+    var essHost = document.getElementById('mobEssentialsHost');
+    if (essHost) essHost.parentNode.removeChild(essHost);
+    if (p.essentials) {
+      var e = p.essentials;
+      var rows = [
+        { ok: !!e.tel.present,  label: 'El teléfono se puede tocar',
+          good: 'Tienes un enlace tel: — un toque del pulgar inicia la llamada. La acción móvil #1 para restaurantes.',
+          bad:  'No se encontró un enlace tel:. En el teléfono, tu número se lee como texto — el cliente tiene que copiar/pegar o re-tipear. Envuelve el número en un enlace tel: y pierdes menos reservas a esa fricción.' },
+        { ok: !!e.maps.present, label: 'La dirección abre en Maps',
+          good: 'Tu dirección enlaza a Google Maps o Apple Maps. Toque → indicaciones, sin copiar/pegar.',
+          bad:  'Tu dirección no está enlazada a una app de mapas. En el móvil, los clientes esperan tocar "1234 Main St" y que abra en Maps. Una URL de Google Maps toma 30 segundos.' },
+        { ok: !!e.cta.present,  label: 'Botón de acción visible arriba',
+          good: 'Encontramos una acción clara: ' + (e.cta.label ? '"' + e.cta.label + '"' : 'un enlace de Pedir / Reservar / Menú') + '.',
+          bad:  'No detectamos un enlace claro de "Pedir", "Reservar" o "Menú" arriba del fold. Lo primero que necesita un visitante en el móvil es una acción primaria — hazla visible y arriba del fold.' },
+        { ok: !!e.menu.present, label: 'El menú está a un toque',
+          good: 'Enlazas tu menú por nombre. Los visitantes del móvil deciden por el menú antes que por la dirección.',
+          bad:  'No detectamos un enlace de "menú" en el escaneo. La mayoría de los clientes deciden por el menú primero — hazlo visible y titulado "Menú", no escondido como "Nuestra comida" o en un menú desplegable.' }
+      ];
+      var html = '<div class="mob-essentials" id="mobEssentialsHost">';
+      html += '<p class="mob-essentials-eyebrow">Fundamentos para restaurantes en móvil</p>';
+      html += '<div class="mob-essentials-list">';
+      rows.forEach(function(r){
+        var cls = r.ok ? 'pass' : 'fail';
+        var mark = r.ok ? '&#10003;' : '&#10005;';
+        html += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.label + '</h3><p>' + (r.ok ? r.good : r.bad) + '</p></div></div>';
+      });
+      html += '</div>';
+      html += '<p class="mob-essentials-foot"><em>La detección lee los enlaces y tap-targets que devuelve PSI desde la página renderizada. Algunos elementos cargados de forma diferida (chat, sticky CTA tras primer paint) no aparecen; si sabes que el enlace existe, el <a href="/es/tools/audits/restaurant/">Diagnóstico de Restaurante</a> lo cubre.</em></p>';
+      if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
+        html += MuntinHire.renderDisclosure({
+          scope: 'dev',
+          locale: 'es',
+          summary: '¿Necesitas un dev para conectar alguno? Aquí cómo encontrarlo. →'
+        });
+      }
+      html += '</div>';
+      var w = document.createElement('div');
+      w.innerHTML = html;
+      checksEl.parentNode.insertBefore(w.firstChild, checksEl.nextSibling);
+    }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -661,8 +730,40 @@
           });
         });
 
-        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
+        // Captura del PSI final-screenshot (decodificada antes en EN —
+        // mismo flujo).
+        var screenshot = null;
+        try { var fs = audits['final-screenshot']; if (fs && fs.details && fs.details.data) screenshot = fs.details.data; } catch (_) {}
+
+        // Bloque "fundamentos para restaurantes" — escanea los items
+        // de link-text / tap-targets para detectar tel:, mapa, CTA,
+        // y enlace al menú. Mismo algoritmo que EN.
+        function essentialsScan() {
+          var out = { tel:{present:false,count:0}, maps:{present:false,count:0}, cta:{present:false,label:null}, menu:{present:false} };
+          var linkAudit = audits['link-text'] || audits['crawlable-anchors'] || null;
+          var items = (linkAudit && linkAudit.details && linkAudit.details.items) || [];
+          if (!items.length) {
+            var tt = audits['tap-targets'];
+            if (tt && tt.details && tt.details.items) items = tt.details.items;
+          }
+          var ctaWords = /\b(orden|reservar|menu|menú|reserva|cater|delivery|recoger|para llevar|order|reserve|book)\b/i;
+          items.forEach(function(it){
+            var href = (it.href || (it.node && it.node.snippet) || '') + '';
+            var text = (it.text || it.linkText || (it.node && (it.node.nodeLabel || it.node.snippet)) || '') + '';
+            var blob = href + ' ' + text;
+            if (/\btel:/i.test(blob)) { out.tel.present = true; out.tel.count++; }
+            if (/\bmaps?\.(google|apple)\.com|maps\.app\.goo\.gl|google\.com\/maps/i.test(blob)) { out.maps.present = true; out.maps.count++; }
+            var ctaMatch = text.match(ctaWords);
+            if (ctaMatch) { out.cta.present = true; if (!out.cta.label) out.cta.label = (text.length > 40 ? text.slice(0,40) + '…' : text).trim(); }
+            if (/\b(menu|menú|carta)\b/i.test(text)) out.menu.present = true;
+          });
+          return out;
+        }
+        var essentials = essentialsScan();
+
+        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now(), screenshot: screenshot, essentials: essentials };
         renderResult(payload);
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) { try { MuntinContext.merge({ lastUrl: url }); } catch (_) {} }
         if (states) states.setSuccess();
         showSaveAffordance(payload);
 

@@ -84,7 +84,7 @@
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion">
 <style>
   /* Tool-specific result rendering. Form, hero, note, result container,
      and CTA card live in site.css under "TOOL SHELL" — see /docs/. */
@@ -115,6 +115,28 @@
   .mob-check .mark.unknown { background: var(--cream-2); color: var(--stone); }
   .mob-check h3 { font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 6px; color: var(--ink); }
   .mob-check p { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+  .mob-shot { margin: 14px 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-shot-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 8px; }
+  .mob-shot-frame { display: flex; justify-content: center; padding: 14px; background: var(--cream-2); border-radius: 24px; }
+  .mob-shot-frame img { max-width: 280px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.12); }
+  .mob-essentials { margin: 14px 0 0; padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--r-md); background: var(--surface-1); }
+  .mob-essentials-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 10px; }
+  .mob-essentials-list { display: flex; flex-direction: column; gap: 10px; }
+  .mob-essentials-foot { font-size: 12px; color: var(--stone); margin: 12px 0 0; line-height: 1.5; }
+  .mob-essentials-foot a { color: var(--teal); text-decoration: none; border-bottom: 1px dashed currentColor; }
+  /* Shared MuntinHire disclosure. */
+  .hire-guide{margin-top:12px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1, #faf6ee)}
+  .hire-guide[open]{padding-bottom:4px}
+  .hire-guide-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+  .hire-guide-summary::-webkit-details-marker{display:none}
+  .hire-guide-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
+  .hire-guide[open] .hire-guide-summary::before{content:'− '}
+  .hire-guide-body{padding:4px 12px 12px}
+  .hire-guide-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0 0 8px;font-size:13px;line-height:1.5}
+  .hire-guide-dl dt{font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--stone);align-self:start;padding-top:2px}
+  .hire-guide-dl dd{margin:0;color:var(--ink)}
+  .hire-guide-dl a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
+  .hire-guide-note{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;padding:8px 10px;background:var(--white);border-radius:6px;border:1px solid var(--line)}
 </style>
 <!-- tool-schema:start -->
 <script type="application/ld+json">
@@ -338,7 +360,7 @@
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
       <h1>Is your website<br><span class="serif-italic">mobile-friendly?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-01">May 1, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-04-30">April 30, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -415,12 +437,6 @@
           <p class="tool-deep-snippet">A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p>
           <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
         </a>
-      <a class="tool-deep-card tool-deep-card-article" href="/blog/when-to-rebuild-your-restaurant-website/">
-          <span class="tool-deep-kind">Article</span>
-          <h3>When to Rebuild Your Restaurant Website: A Decision Framework</h3>
-          <p class="tool-deep-snippet">A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.</p>
-          <span class="tool-deep-cta">Read the playbook <span aria-hidden="true">→</span></span>
-        </a>
     </div>
   </div>
 </section>
@@ -444,6 +460,8 @@
 <script src="/tools/_shared/fetch-error.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/analytics.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/states.js?v=20260429-states"></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/hire-guide.js?v=20260430-hire-guide"></script>
 <script src="/assets/workbench-save.js?v=20260501-engagement"></script>
 <script>
 // Phase D — honor ?intent=watch deeplinks.
@@ -490,15 +508,15 @@
     {
       id: 'tap-targets',
       title: 'Buttons are big enough to tap',
-      passText: 'Your buttons and links are at least 44×44 pixels — tappable on the first try with a thumb.',
-      failText: 'Some buttons or links are too small. Anything under 44×44 pixels causes missed taps on phones. Add padding to your buttons and space out your nav links.',
+      passText: 'Your buttons and links are at least 44×44 pixels — <a href="/glossary/tap-targets/">tappable</a> on the first try with a thumb.',
+      failText: 'Some buttons or links are too small. Anything under 44×44 pixels causes missed taps on phones — see <a href="/glossary/tap-targets/">tap targets</a>. Add padding to your buttons and space out your nav links.',
       nullText: 'Couldn\'t check this — try re-running the test.'
     },
     {
       id: 'font-size',
       title: 'Text is readable without zooming',
       passText: 'Your body text is above the mobile readability threshold. Visitors can read your content at arm\'s length without pinch-zooming.',
-      failText: 'More than 40% of your text is below the legibility threshold. On a phone, visitors have to pinch-zoom to read — and most won\'t bother. Set your body font-size to at least 16px.',
+      failText: 'More than 40% of your text is below the legibility threshold. On a phone, visitors have to pinch-zoom to read — and most won\'t bother. Set your <a href="/glossary/body-text-size/">body font-size</a> to at least 16px.',
       nullText: 'Couldn\'t check this — try re-running the test.'
     }
   ];
@@ -526,12 +544,73 @@
       verdictIcon = 'fail'; verdictMark = '?';
     }
     verdict.innerHTML = '<div class="icon ' + verdictIcon + '">' + verdictMark + '</div><h2>' + verdictTitle + '</h2><p>' + verdictDesc + '</p>';
+    // Phone-frame screenshot under the verdict — owners viscerally
+    // understand a picture more than three pass/fail badges.
+    var shotHost = document.getElementById('mobShotHost');
+    if (shotHost) shotHost.parentNode.removeChild(shotHost);
+    if (p.screenshot) {
+      var wrap = document.createElement('div');
+      wrap.id = 'mobShotHost';
+      wrap.className = 'mob-shot';
+      wrap.innerHTML =
+        '<p class="mob-shot-eyebrow">What your homepage looks like on a phone</p>' +
+        '<div class="mob-shot-frame"><img src="' + p.screenshot + '" alt="Phone screenshot of your site" loading="lazy"></div>';
+      verdict.parentNode.insertBefore(wrap, verdict.nextSibling);
+    }
     checksEl.innerHTML = '';
     (p.results || []).forEach(function(r) {
       var cls = r.isNull ? 'unknown' : (r.passed ? 'pass' : 'fail');
       var mark = r.isNull ? '?' : (r.passed ? '&#10003;' : '&#10005;');
       checksEl.innerHTML += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.title + '</h3><p>' + r.text + '</p></div></div>';
     });
+
+    // Restaurant-essentials block — surfaced under the three core
+    // mobile checks. Detected via PSI's link-text / tap-targets
+    // audit details (no new fetch). Each row is pass/fail with a
+    // restaurant-specific consequence in plain English.
+    var essHost = document.getElementById('mobEssentialsHost');
+    if (essHost) essHost.parentNode.removeChild(essHost);
+    if (p.essentials) {
+      var e = p.essentials;
+      var rows = [
+        { ok: !!e.tel.present,  label: 'Phone number is tappable',
+          good: 'You have a tel: link — a thumb tap places the call. The #1 mobile-restaurant action.',
+          bad:  'No tel: link found. On a phone, your number reads as text — guests have to copy/paste or retype. Wrap the number in a tel: link and you\'ll lose fewer reservations to that one frustration.' },
+        { ok: !!e.maps.present, label: 'Address opens in Maps',
+          good: 'Your address links to Google or Apple Maps. Tap → directions, no copy/paste.',
+          bad:  'Your address isn\'t linked to a maps app. On phones, guests expect to tap "1234 Main St" and have it open in Maps. A Google Maps URL takes 30 seconds to add.' },
+        { ok: !!e.cta.present,  label: 'Above-fold action button',
+          good: 'Found a clear action: ' + (e.cta.label ? '"' + e.cta.label + '"' : 'an Order / Reserve / Menu link') + '.',
+          bad:  'No clear "Order", "Reserve", or "Menu" link in the visible scan. The first thing a phone visitor needs is a single primary action — make it loud and above the fold.' },
+        { ok: !!e.menu.present, label: 'Menu is one tap away',
+          good: 'You link to your menu by name. Phone-first visitors decide on the menu before the address.',
+          bad:  'No "menu" link detected in the scan. Most diners decide based on the menu first — make it visible and titled "Menu", not buried as "Our Food" or hidden in a drop-down.' }
+      ];
+      var html = '<div class="mob-essentials" id="mobEssentialsHost">';
+      html += '<p class="mob-essentials-eyebrow">Restaurant essentials on mobile</p>';
+      html += '<div class="mob-essentials-list">';
+      rows.forEach(function(r){
+        var cls = r.ok ? 'pass' : 'fail';
+        var mark = r.ok ? '&#10003;' : '&#10005;';
+        html += '<div class="mob-check"><div class="mark ' + cls + '">' + mark + '</div><div><h3>' + r.label + '</h3><p>' + (r.ok ? r.good : r.bad) + '</p></div></div>';
+      });
+      html += '</div>';
+      html += '<p class="mob-essentials-foot"><em>Detection scans the links and tap targets PSI returns from the rendered page. Some lazy-loaded affordances (chat widget, sticky CTA loaded after first paint) won\'t appear; if you know the link exists, the deeper <a href="/tools/audits/restaurant/">Restaurant Audit</a> covers it.</em></p>';
+      // Hire-guide for owners who can't add a tel: link, fix tap-
+      // target padding, or wire a sticky CTA themselves. The
+      // restaurant-essentials checks above are the dead-end —
+      // diagnostic without a fix path is half a tool.
+      if (typeof MuntinHire !== 'undefined' && MuntinHire.renderDisclosure) {
+        html += MuntinHire.renderDisclosure({
+          scope: 'dev',
+          summary: "Need a developer to wire any of these? Here's who to find. →"
+        });
+      }
+      html += '</div>';
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      checksEl.parentNode.insertBefore(wrap.firstChild, checksEl.nextSibling);
+    }
     result.classList.add('visible');
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -661,8 +740,59 @@
           });
         });
 
-        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now() };
+        // Phone-frame screenshot from PSI's final-screenshot — already
+        // in the response, previously discarded. Closes the gap
+        // between the schema's "compare snapshots" promise and the
+        // empty UI.
+        var screenshot = null;
+        try {
+          var fs = audits['final-screenshot'];
+          if (fs && fs.details && fs.details.data) screenshot = fs.details.data;
+        } catch (_) {}
+
+        // Restaurant-essentials block: scan PSI's link-text audit
+        // (which surfaces every anchor on the page with its href +
+        // text) for restaurant-specific signals owners care about.
+        // No new fetch; pure post-processing of data already in the
+        // response. Each signal is a one-line consequence statement
+        // for a non-developer.
+        function essentialsScan() {
+          var out = {
+            tel: { present: false, count: 0 },
+            maps: { present: false, count: 0 },
+            cta: { present: false, label: null },
+            menu: { present: false }
+          };
+          var linkAudit = audits['link-text'] || audits['crawlable-anchors'] || null;
+          var items = (linkAudit && linkAudit.details && linkAudit.details.items) || [];
+          // Some PSI responses don't expose link-text item detail
+          // (varies by category requested). Fall back to scanning
+          // 'tap-targets' element snippets which always include
+          // href attributes for anchor tap targets.
+          if (!items.length) {
+            var tt = audits['tap-targets'];
+            if (tt && tt.details && tt.details.items) items = tt.details.items;
+          }
+          var ctaWords = /\b(order|reserve|book|menu|reservation|catering|delivery|pick.?up|takeout)\b/i;
+          items.forEach(function(it){
+            var href = (it.href || (it.node && it.node.snippet) || '') + '';
+            var text = (it.text || it.linkText || (it.node && (it.node.nodeLabel || it.node.snippet)) || '') + '';
+            var blob = href + ' ' + text;
+            if (/\btel:/i.test(blob))         { out.tel.present = true; out.tel.count++; }
+            if (/\bmaps?\.(google|apple)\.com|maps\.app\.goo\.gl|google\.com\/maps/i.test(blob)) { out.maps.present = true; out.maps.count++; }
+            var ctaMatch = text.match(ctaWords);
+            if (ctaMatch) { out.cta.present = true; if (!out.cta.label) out.cta.label = (text.length > 40 ? text.slice(0,40) + '…' : text).trim(); }
+            if (/\b(menu|carte)\b/i.test(text)) out.menu.present = true;
+          });
+          return out;
+        }
+        var essentials = essentialsScan();
+
+        var payload = { url: url, results: results, passCount: passCount, failCount: failCount, unknownCount: unknownCount, checkedAt: Date.now(), screenshot: screenshot, essentials: essentials };
         renderResult(payload);
+        if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+          try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
+        }
         if (states) states.setSuccess();
         showSaveAffordance(payload);
 

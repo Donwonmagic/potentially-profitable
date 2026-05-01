@@ -39,6 +39,13 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
 /* === Menu Copy Inspector tool-scoped styles. Page-prefix .mc-*. === */
 .mc-input{display:flex;flex-direction:column;gap:14px}
+.mc-inspiration{margin:0 0 16px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:var(--r-input);background:var(--surface-1, var(--white))}
+.mc-inspiration[hidden]{display:none}
+.mc-inspiration-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-inspiration-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mc-inspiration-chip{display:inline-block;padding:6px 12px;border:1px solid var(--line-dark);border-radius:999px;background:var(--white);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color 140ms ease,background 140ms ease}
+.mc-inspiration-chip:hover{border-color:var(--teal);background:var(--cream-2)}
+.mc-inspiration-note{margin:0;font-size:12.5px;color:var(--stone);line-height:1.45}
 .mc-form{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 @media(min-width:640px){.mc-form{grid-template-columns:1.6fr 1fr}}
 .mc-form-field{display:flex;flex-direction:column;gap:6px}
@@ -92,6 +99,36 @@
 .mc-action-head{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
 .mc-action-detail{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0}
 .mc-action-lift{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);float:right}
+.mc-action-tpl{margin-top:10px;padding:0;border:1px dashed var(--line);border-radius:6px;background:var(--cream-2)}
+.mc-action-tpl[open]{padding-bottom:4px}
+.mc-action-tpl-summary{cursor:pointer;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-action-tpl-summary::-webkit-details-marker{display:none}
+.mc-action-tpl-body{margin:0;padding:6px 12px 10px;font-size:13px;line-height:1.55;color:var(--ink-soft);white-space:pre-line}
+.mc-interview{margin-top:14px;padding:0;border:1px dashed var(--line);border-radius:8px;background:var(--surface-1)}
+.mc-interview[hidden]{display:none}
+.mc-interview-summary{cursor:pointer;padding:12px 16px;font-size:13.5px;font-weight:600;color:var(--teal);list-style:none}
+.mc-interview-summary::-webkit-details-marker{display:none}
+.mc-interview-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.mc-interview[open] .mc-interview-summary::before{content:'− '}
+.mc-interview-body{padding:0 16px 16px}
+.mc-interview-help{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 12px}
+.mc-interview-row{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+.mc-interview-row span{color:var(--ink)}
+.mc-interview-row small{color:var(--stone);font-weight:400;letter-spacing:0;font-size:11.5px;display:block;margin-top:2px;text-transform:none}
+.mc-interview-row input{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink)}
+.mc-interview-row input:focus{outline:none;border-color:var(--teal)}
+.mc-interview-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mc-interview-build{padding:9px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.mc-interview-build:hover{background:var(--teal);border-color:var(--teal)}
+.mc-interview-msg{font-size:12.5px;color:var(--rust);font-weight:500}
+.mc-interview-out{margin-top:14px;padding:12px 14px;border:1px solid var(--teal);border-radius:6px;background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+.mc-interview-out-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.mc-interview-out-text{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0 0 12px;font-style:italic}
+.mc-interview-out-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mc-interview-use{padding:7px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.mc-interview-use:hover{background:var(--ink);border-color:var(--ink)}
+.mc-interview-dismiss{padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+.mc-interview-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
 
 .mc-empty{padding:18px;border:1px dashed var(--line);border-radius:var(--r-input);background:var(--cream-2);font-size:13.5px;color:var(--stone);text-align:center}
 
@@ -140,6 +177,18 @@
 .mc-export-btn-primary:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 
 .mc-explorer{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.mc-ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:8px}
+.mc-ba{padding:18px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1)}
+.mc-ba-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.mc-ba-tag{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink)}
+.mc-ba-axis{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.mc-ba-row{margin:0 0 10px}
+.mc-ba-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin:0 0 4px}
+.mc-ba-text{font-size:14.5px;line-height:1.55;margin:0;padding:8px 12px;border-radius:6px}
+.mc-ba-before{background:#FFF6F0;color:var(--ink);border-left:3px solid var(--rust)}
+.mc-ba-after {background:#F0F7F4;color:var(--ink);border-left:3px solid var(--teal)}
+.mc-ba-note{font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin:12px 0 0;padding:0;font-style:normal}
+.mc-ba-note em{color:var(--teal);font-style:normal;font-weight:500}
 .mc-pattern-card{padding:16px 18px;border:1px solid var(--line);border-left-width:4px;border-radius:var(--r-input);background:var(--white);display:flex;flex-direction:column;gap:8px}
 .mc-pattern-card[data-kind="sensory"]   {border-left-color:#1F4E5B}
 .mc-pattern-card[data-kind="provenance"]{border-left-color:#3A6BB3}
@@ -391,6 +440,13 @@
 </div></section>
 
 <section class="block"><div class="container">
+  <!-- Banner de inspiración — alimentado por handoff de Search Ideas. -->
+  <div class="mc-inspiration" id="mcInspiration" hidden>
+    <p class="mc-inspiration-eyebrow">Palabras de búsqueda que usan los clientes</p>
+    <ul class="mc-inspiration-chips" id="mcInspirationChips"></ul>
+    <p class="mc-inspiration-note">Vienen de Search Ideas. Toca un chip para usarlo como punto de partida en el nombre del plato.</p>
+  </div>
+
   <div class="mc-input">
     <div class="mc-modes" role="tablist" aria-label="Modo de entrada">
       <button type="button" class="mc-mode-btn" role="tab" aria-selected="true"  data-mode="single">Un plato</button>
@@ -399,7 +455,7 @@
     <div class="mc-form" data-mode="single">
       <div class="mc-form-field">
         <label for="mcDesc">Descripción del plato</label>
-        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Pega una descripción aquí, por ejemplo: &#10;Tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil."></textarea>
+        <textarea id="mcDesc" spellcheck="true" autocomplete="off" placeholder="Pega una descripción aquí, por ejemplo: &#10;Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana."></textarea>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="mc-form-field">
@@ -428,7 +484,7 @@
 
     <div class="mc-paste" data-mode="whole" hidden>
       <p class="mc-paste-hint">Pega un CSV o TSV con una fila por plato. La primera fila debería ser un encabezado — los nombres típicos (<code>Plato</code>, <code>Descripción</code>, <code>Precio</code>) se mapean automáticamente. Funciona con tabs y comas; CSV con comillas también. <strong>Tip:</strong> si solo tienes nombre + descripción en una pegada, el parser lo descifra.</p>
-      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Descripción,Precio&#10;Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino and cracked pepper.,$24&#10;House salad,Our nice fresh house salad — just simply our best.,$12.99"></textarea>
+      <textarea id="mcPasteArea" spellcheck="false" autocomplete="off" placeholder="Plato,Descripción,Precio&#10;Tonnarelli al pepe,Tonnarelli hechos a mano con pecorino ahumado y pimienta negra recién molida.,$24&#10;Ensalada de la casa,Nuestra rica ensalada fresca — simplemente la mejor de todas.,$12.99"></textarea>
       <div class="mc-paste-actions">
         <button type="button" class="mc-btn" id="mcParse">Analizar menú pegado</button>
         <button type="button" class="mc-btn mc-btn-ghost" id="mcPasteSample">Pegar un CSV de ejemplo</button>
@@ -463,6 +519,36 @@
     <div class="mc-scorecard">
       <div class="mc-verdict" id="mcVerdict"></div>
       <div class="mc-axes" id="mcAxes" aria-label="Per-axis diagnostics"></div>
+      <details class="mc-interview" id="mcInterview" hidden>
+        <summary class="mc-interview-summary">¿Atascado? Entrevístate en 30 segundos &rarr;</summary>
+        <div class="mc-interview-body">
+          <p class="mc-interview-help">Tres preguntas. Responde en lenguaje sencillo — sintetizamos un borrador inicial al que puedes reaccionar (cortar, ajustar, reemplazar).</p>
+          <label class="mc-interview-row">
+            <span>¿Cuál es el ingrediente protagonista?</span>
+            <input type="text" id="mcIvHero" placeholder="ej. salmón, ricotta, costilla" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>¿De dónde viene? <small>(una granja, una región, un origen específico — opcional)</small></span>
+            <input type="text" id="mcIvSource" placeholder="ej. Whitmore Farm / Atlántico Norte / nuestra huerta" autocomplete="off" />
+          </label>
+          <label class="mc-interview-row">
+            <span>¿Qué técnica o tratamiento cuenta la historia de la cocina?</span>
+            <input type="text" id="mcIvTech" placeholder="ej. amasada a mano, asada a la sal, añejada 30 días, ahumada con leña de manzano" autocomplete="off" />
+          </label>
+          <div class="mc-interview-actions">
+            <button type="button" class="mc-interview-build" id="mcIvBuild">Constrúyeme un borrador &rarr;</button>
+            <span class="mc-interview-msg" id="mcIvMsg" aria-live="polite"></span>
+          </div>
+          <div class="mc-interview-out" id="mcIvOut" hidden>
+            <p class="mc-interview-out-eyebrow">Borrador (tuyo para editar)</p>
+            <p class="mc-interview-out-text" id="mcIvOutText"></p>
+            <div class="mc-interview-out-actions">
+              <button type="button" class="mc-interview-use" id="mcIvUse">Usar esto &rarr;</button>
+              <button type="button" class="mc-interview-dismiss" id="mcIvDismiss">Descartar</button>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
   <div class="mc-save" id="mcSave" hidden>
@@ -514,6 +600,55 @@
     <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Los seis patrones que el Inspector busca</h2>
     <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;">Léelos una vez y empezarás a verlos en tu propio menú. Léelos diez veces y no vas a necesitar esta herramienta. Cada tarjeta lista el léxico real que usa el motor de reglas; todo es código abierto en <code>/tools/menu-copy/menu-copy.js</code>.</p>
     <div class="mc-explorer" id="mcExplorer" aria-label="Explorador de patrones"></div>
+  </div>
+</div></section>
+
+<section class="block" id="mcBeforeAfter"><div class="container">
+  <div style="max-width:900px;margin:0 auto;">
+    <span class="eyebrow">Cómo se ve uno bueno</span>
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3vw,32px);font-weight:500;color:var(--ink);margin:10px 0 4px;">Antes y después — tres reescrituras reales</h2>
+    <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 22px;">Mismo plato, mismo largo, mismo vocabulario que usa el cocinero todos los días. La diferencia: una o dos palabras sensoriales más, el productor nombrado y el muletilla cortada. Nada de esto es "literario" — son cosas que tu línea de cocina describe en voz alta.</p>
+    <div class="mc-ba-grid">
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Ensalada de la casa</span><span class="mc-ba-axis">Suma 1 sensorial · corta muletillas</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Nuestra ensalada rica fresca deliciosa de la casa — simplemente la mejor.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Pequeñas hojas crujientes con rábano de desayuno cortado en láminas, limón y aderezo de buttermilk que hacemos cada mañana.</p>
+        </div>
+        <p class="mc-ba-note">Cortado: <em>rica / fresca / deliciosa / simplemente / la mejor</em>. Sumado: <em>crujientes</em> (sensorial), <em>rábano de desayuno</em> (producto específico), <em>cada mañana</em> (técnica).</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Pollo asado</span><span class="mc-ba-axis">Nombra al productor · nombra la técnica</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Medio pollo con papas y verduras de temporada.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Medio pollo de Path Valley en salmuera de un día, asado al hueso, con fingerlings dorados y jugos de la sartén.</p>
+        </div>
+        <p class="mc-ba-note">Sumado: <em>Path Valley</em> (procedencia), <em>salmuera de un día / asado al hueso</em> (técnica), <em>dorados / jugos de la sartén</em> (sensorial + técnica). Mismas proteínas, mismas verduras, mismo costo del plato.</p>
+      </article>
+
+      <article class="mc-ba">
+        <header class="mc-ba-head"><span class="mc-ba-tag">Tonnarelli al pepe</span><span class="mc-ba-axis">Un cambio sensorial</span></header>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Antes</p>
+          <p class="mc-ba-text mc-ba-before">Tonnarelli artesanal con pecorino y pimienta.</p>
+        </div>
+        <div class="mc-ba-row">
+          <p class="mc-ba-label">Después</p>
+          <p class="mc-ba-text mc-ba-after">Tonnarelli artesanal con pecorino ahumado y pimienta negra recién quebrada.</p>
+        </div>
+        <p class="mc-ba-note">Cambio de dos palabras. <em>Ahumado</em> y <em>recién quebrada</em> son ambos sensoriales; juntos llevan una descripción de 7 palabras de "está bien" a "yo quiero eso".</p>
+      </article>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:18px 0 0;line-height:1.6;font-style:italic;">Estas son ilustraciones de patrón, no tu menú. El Inspector nunca escribe por ti — solo señala direcciones. La reescritura es tuya, o de tu cocinero, o de quien sepa qué hace cantar el plato.</p>
   </div>
 </div></section>
 
@@ -702,19 +837,19 @@
     {
       name: 'Tonnarelli al pepe',
       price: '$24',
-      description: 'Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.',
+      description: 'Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana.',
       tier: 'casual'
     },
     {
-      name: 'House salad',
+      name: 'Ensalada de la casa',
       price: '$12.99',
-      description: 'Our nice fresh house salad — just simply our best.',
+      description: 'Nuestra rica ensalada fresca — simplemente la mejor de todas.',
       tier: 'casual'
     },
     {
       name: 'Branzino',
       price: '$38',
-      description: 'Whole Adriatic branzino salt-baked tableside, finished with charred Meyer lemon and Sicilian olive oil from Frantoio Galantino.',
+      description: 'Branzino entero asado a la sal en mesa, terminado con limón Meyer caramelizado y aceite de oliva andaluz de prensado en frío.',
       tier: 'fineDining'
     },
     {
@@ -724,27 +859,27 @@
       tier: 'casual'
     },
     {
-      name: 'Bolognese',
+      name: 'Boloñesa',
       price: '$26',
-      description: 'Slow-simmered Bolognese over hand-cut pappardelle with Parmigiano-Reggiano aged 24 months.',
+      description: 'Boloñesa de cocción lenta sobre pappardelle hechos a mano con Parmigiano-Reggiano añejado 24 meses.',
       tier: 'casual'
     },
     {
-      name: 'Tomato toast',
+      name: 'Tostada de jitomate',
       price: '$14',
-      description: 'Heirloom tomatoes from Whitmore Farm on toasted country bread with sea salt, basil, and house-pressed olive oil.',
+      description: 'Jitomates patrimoniales de la granja Whitmore sobre pan rústico tostado con sal de mar, albahaca y aceite de oliva prensado en casa.',
       tier: 'casual'
     },
     {
-      name: 'Pork chop',
+      name: 'Chuleta de cerdo',
       price: '$32',
-      description: 'A really nice pork chop with roasted vegetables and a delicious sauce — our chef’s favorite!',
+      description: 'Una chuleta de cerdo realmente rica con verduras asadas y una salsa deliciosa — ¡la favorita de nuestro chef!',
       tier: 'casual'
     },
     {
       name: 'Carbonara',
       price: '$23',
-      description: 'House-made guanciale, slow-braised eggs from Cream Line Dairy, pecorino di fossa.',
+      description: 'Guanciale curado en casa, huevos braseados a fuego lento de la lechería Cream Line, pecorino di fossa.',
       tier: 'casual'
     }
   ];
@@ -763,6 +898,55 @@
   var verdictEl = document.getElementById('mcVerdict');
   var axesEl    = document.getElementById('mcAxes');
   var actionsEl = document.getElementById('mcActions');
+
+  // "Entrevístate" — sintetiza un borrador a partir de tres
+  // entradas (héroe / origen / técnica). Mismo patrón que EN.
+  var ivBuildBtn = document.getElementById('mcIvBuild');
+  var ivOutEl    = document.getElementById('mcIvOut');
+  var ivOutText  = document.getElementById('mcIvOutText');
+  var ivUseBtn   = document.getElementById('mcIvUse');
+  var ivDismiss  = document.getElementById('mcIvDismiss');
+  var ivMsg      = document.getElementById('mcIvMsg');
+  function buildInterviewStarter() {
+    var hero   = (document.getElementById('mcIvHero')   || {}).value || '';
+    var source = (document.getElementById('mcIvSource') || {}).value || '';
+    var tech   = (document.getElementById('mcIvTech')   || {}).value || '';
+    hero = hero.trim(); source = source.trim(); tech = tech.trim();
+    if (!hero) return '';
+    var lead = tech ? (tech.charAt(0).toUpperCase() + tech.slice(1) + ' ' + hero) : (hero.charAt(0).toUpperCase() + hero.slice(1));
+    var body = source ? ' de ' + source : '';
+    var sentence1 = lead + body + '.';
+    var sensory = ' Vivo con un toque final — hierba fresca, aceite cítrico o una hojuela de sal de acabado.';
+    return sentence1 + sensory;
+  }
+  if (ivBuildBtn) {
+    ivBuildBtn.addEventListener('click', function () {
+      var hero = (document.getElementById('mcIvHero') || {}).value || '';
+      if (!hero.trim()) {
+        if (ivMsg) { ivMsg.textContent = 'Dame al menos el ingrediente protagonista.'; setTimeout(function(){ ivMsg.textContent=''; }, 2400); }
+        var f = document.getElementById('mcIvHero'); if (f) f.focus();
+        return;
+      }
+      var starter = buildInterviewStarter();
+      if (!starter) return;
+      if (ivOutText) ivOutText.textContent = starter;
+      if (ivOutEl) ivOutEl.hidden = false;
+    });
+  }
+  if (ivUseBtn) {
+    ivUseBtn.addEventListener('click', function () {
+      var t = ivOutText && ivOutText.textContent;
+      if (!t || !descEl) return;
+      descEl.value = t;
+      descEl.dispatchEvent(new Event('input', { bubbles: true }));
+      descEl.focus();
+      descEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (ivMsg) { ivMsg.textContent = 'Cargado en la descripción de arriba. Edítalo hasta que suene como tú.'; setTimeout(function(){ ivMsg.textContent=''; }, 3200); }
+    });
+  }
+  if (ivDismiss) {
+    ivDismiss.addEventListener('click', function () { if (ivOutEl) ivOutEl.hidden = true; });
+  }
 
   var sampleCursor = 0;
   var firstAnalysisFired = false;
@@ -844,14 +1028,25 @@
   function paintVerdict(scored){
     var v = scored.verdict;
     var cmt = ({
-      polish:  'Most signals are present. One or two small moves and this description is doing its job.',
-      edit:    'Some pieces are working; one or two are missing. The action ladder shows the highest-leverage moves.',
-      rewrite: 'Multiple signal families are empty or the length / hedge load is dragging hard. Worth rewriting from a fresh angle rather than polishing the current draft.'
+      polish:  'La mayoría de las señales están presentes. Uno o dos cambios pequeños y la descripción está haciendo su trabajo.',
+      edit:    'Algunas piezas funcionan; una o dos faltan. La escalera de acciones muestra los movimientos de mayor palanca.',
+      rewrite: 'Varias familias de señales están vacías o la longitud / carga de muletillas pesa demasiado. Vale más reescribir desde un ángulo fresco que pulir el borrador actual.'
     })[v] || '';
     verdictEl.innerHTML =
       '<span class="mc-verdict-pill" data-v="' + v + '">' + v + '</span>' +
       '<span class="mc-verdict-score">' + scored.score + '<span style="font-size:13px;color:var(--stone);font-weight:400;">/100</span></span>' +
       '<span class="mc-verdict-text">' + escHtml(cmt) + '</span>';
+    var iv = document.getElementById('mcInterview');
+    if (iv) {
+      if (v === 'rewrite') {
+        iv.hidden = false;
+        if (!iv.__autoOpened) { iv.setAttribute('open', ''); iv.__autoOpened = true; }
+      } else {
+        iv.hidden = true;
+        iv.removeAttribute('open');
+        iv.__autoOpened = false;
+      }
+    }
   }
 
   function paintAxes(scored){
@@ -912,13 +1107,32 @@
   function paintActions(scored){
     var moves = window.MC.actionLadder(scored);
     if (!moves.length) {
-      actionsEl.innerHTML = '<div class="mc-empty">Nothing flagged. The description is clearing every diagnostic.</div>';
+      actionsEl.innerHTML = '<div class="mc-empty">Nada flageado. La descripción pasa cada diagnóstico.</div>';
       return;
     }
     actionsEl.innerHTML = moves.map(function(m){
+      var tplHtml = '';
+      if (m.template) {
+        // Translate the templateLabel — the body stays in EN until
+        // we author Spanish versions of the patterns themselves.
+        // The label localizes; the example patterns are surfaced
+        // verbatim because their value is the SHAPE not the language.
+        var label = m.templateLabel || 'Show me an example';
+        if (label === 'Show me an example')   label = 'Muéstrame un ejemplo';
+        else if (label === 'How to do it')    label = 'Cómo hacerlo';
+        else if (label === 'How to stretch it') label = 'Cómo estirarla';
+        else if (label === 'How to trim it')  label = 'Cómo recortarla';
+        tplHtml =
+          '<details class="mc-action-tpl">' +
+            '<summary class="mc-action-tpl-summary">' + escHtml(label) + ' &rarr;</summary>' +
+            '<p class="mc-action-tpl-body">' + escHtml(m.template) + '</p>' +
+          '</details>';
+      }
       return '<div class="mc-action" data-lift="' + m.lift + '">' +
              '<p class="mc-action-head"><span class="mc-action-lift">' + m.lift + ' lift</span>' + escHtml(m.headline) + '</p>' +
-             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p></div>';
+             '<p class="mc-action-detail">' + escHtml(m.detail) + '</p>' +
+             tplHtml +
+             '</div>';
     }).join('');
   }
 
@@ -1079,6 +1293,55 @@
     tierEl.addEventListener(ev, rerender);
   });
 
+  // Hidratación cross-tool desde el fragmento — dos formas:
+  //   #name=…&desc=…&price=…   (handoff de Menu Engineering)
+  //   #queries=q1%0Aq2          (handoff de Search Ideas)
+  (function hydrateFromHash(){
+    var raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    var seeded = false;
+    var queriesRaw = null;
+    raw.split('&').forEach(function(pair){
+      var eq = pair.indexOf('=');
+      if (eq < 1) return;
+      var k = pair.slice(0, eq);
+      var v;
+      try { v = decodeURIComponent(pair.slice(eq + 1).replace(/\+/g, ' ')); }
+      catch (_) { v = pair.slice(eq + 1); }
+      if (!v) return;
+      if (k === 'name'  && nameEl  && !nameEl.value)  { nameEl.value  = v; seeded = true; }
+      if (k === 'desc'  && descEl  && !descEl.value)  { descEl.value  = v; seeded = true; }
+      if (k === 'price' && priceEl && !priceEl.value) { priceEl.value = v; seeded = true; }
+      if (k === 'queries') queriesRaw = v;
+    });
+    if (queriesRaw) {
+      var queries = queriesRaw.split(/\n+/).map(function(s){ return s.trim(); }).filter(Boolean);
+      var insp = document.getElementById('mcInspiration');
+      var chipsEl = document.getElementById('mcInspirationChips');
+      if (insp && chipsEl && queries.length) {
+        chipsEl.innerHTML = '';
+        queries.slice(0, 12).forEach(function(q){
+          var li = document.createElement('li');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mc-inspiration-chip';
+          btn.textContent = q;
+          btn.addEventListener('click', function(){
+            if (nameEl) {
+              nameEl.value = q;
+              try { nameEl.dispatchEvent(new Event('input', { bubbles: true })); } catch (_) {}
+              try { nameEl.focus(); } catch (_) {}
+            }
+          });
+          li.appendChild(btn);
+          chipsEl.appendChild(li);
+        });
+        insp.hidden = false;
+      }
+    }
+    if (seeded) rerender();
+  })();
+
   var modeBtns = document.querySelectorAll('.mc-mode-btn');
   var modePanels = {
     single: document.querySelectorAll('[data-mode="single"]'),
@@ -1209,9 +1472,9 @@
   pasteSampleBtn.addEventListener('click', function(){
     pasteArea.value =
       'Plato,Descripción,Precio\n' +
-      'Tonnarelli al pepe,Hand-rolled tonnarelli with smoky pecorino, cracked black pepper, and aged Tuscan olive oil.,$24\n' +
-      'House salad,Our nice fresh house salad — just simply our best.,$12.99\n' +
-      'Branzino,Whole Adriatic branzino salt-baked tableside with charred Meyer lemon.,$38';
+      'Tonnarelli al pepe,Tonnarelli hechos a mano con pecorino ahumado, pimienta negra recién molida y aceite de oliva añejado de Toscana.,$24\n' +
+      'Ensalada de la casa,Nuestra rica ensalada fresca — simplemente la mejor de todas.,$12.99\n' +
+      'Branzino,Branzino entero asado a la sal en mesa con limón Meyer caramelizado.,$38';
     rerunBulk();
   });
 
