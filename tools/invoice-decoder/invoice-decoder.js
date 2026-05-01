@@ -1197,6 +1197,64 @@
     host.hidden = false;
   }
 
+  // Wave 4.3 — render the "save this layout?" prompt when the
+  // auto-learner has accumulated 3+ observations of a previously-
+  // unrecognized letterhead. Operator types a friendly name, taps
+  // Save, and the template lands in MuntinContext.learnedVendors
+  // for use on the next invoice.
+  function renderLearnVendorPrompt(fullText) {
+    var host = document.getElementById('idLearnVendor');
+    if (!host) return;
+    if (typeof MID_AUTOLEARN === 'undefined') return;
+    var ready = MID_AUTOLEARN.shouldPromptToLearn(fullText);
+    if (!ready) { host.hidden = true; host.innerHTML = ''; return; }
+    var sample = (ready.samples && ready.samples[0] && ready.samples[0].topLines && ready.samples[0].topLines[0]) || '';
+    host.innerHTML =
+      '<p class="id-learn-msg"><strong>' +
+        escHtml(tt('We\'ve seen 3 invoices from this vendor.', 'Hemos visto 3 facturas de este proveedor.')) +
+      '</strong> ' +
+        escHtml(tt('Save this layout so the next one parses cleaner.', 'Guarda este formato para que el próximo se lea mejor.')) +
+      '</p>' +
+      '<p class="id-learn-sample">' + escHtml(sample) + '</p>' +
+      '<form class="id-learn-form" id="idLearnForm">' +
+        '<label for="idLearnLabel" class="visually-hidden">' + escHtml(tt('Vendor name', 'Nombre del proveedor')) + '</label>' +
+        '<input type="text" id="idLearnLabel" class="id-learn-input" maxlength="60" ' +
+          'placeholder="' + escHtml(tt('e.g. My Local Produce Co', 'ej. Mi Verdulería Local')) + '" />' +
+        '<button type="submit" class="id-learn-save">' + escHtml(tt('Save layout', 'Guardar formato')) + '</button>' +
+        '<button type="button" class="id-learn-dismiss" id="idLearnDismiss">' + escHtml(tt('Not yet', 'Aún no')) + '</button>' +
+      '</form>';
+    host.hidden = false;
+    var form = document.getElementById('idLearnForm');
+    var input = document.getElementById('idLearnLabel');
+    var dis = document.getElementById('idLearnDismiss');
+    if (form && input) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var label = (input.value || '').trim();
+        if (!label) { input.focus(); return; }
+        try {
+          var template = MID_AUTOLEARN.buildLearnedTemplate(MID_AUTOLEARN.normalize(fullText), ready.samples, label);
+          if (template && MID_AUTOLEARN.saveLearnedTemplate(template)) {
+            host.innerHTML = '<p class="id-learn-msg id-learn-msg--saved"><strong>' +
+              escHtml(tt('Saved as ' + label, 'Guardado como ' + label)) + '.</strong> ' +
+              escHtml(tt('Next invoice from this vendor will be auto-detected.',
+                         'La próxima factura de este proveedor se detectará sola.')) +
+              '</p>';
+            if (window.plausible) {
+              try { window.plausible('Invoice Decoder Vendor Learned'); } catch (_) {}
+            }
+            setTimeout(function () { host.hidden = true; }, 4000);
+          } else {
+            input.focus();
+          }
+        } catch (_) {}
+      });
+    }
+    if (dis) {
+      dis.addEventListener('click', function () { host.hidden = true; });
+    }
+  }
+
   // Wave 2.6 — margin-impact callout in the handoff panel.
   function renderMarginImpact(parsed) {
     var host = document.getElementById('idMarginImpact');
@@ -1750,6 +1808,21 @@
     renderVendorPulse(parsed);
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
+    // Wave 4.3 — auto-learn observation. When no vendor matched
+    // (neither a hard-coded one nor a previously-learned one),
+    // record a fingerprint of the letterhead so a 3rd unrecognized
+    // run can trigger the "save this layout?" prompt.
+    try {
+      if (typeof MID_AUTOLEARN !== 'undefined' && MID_AUTOLEARN.recordObservation) {
+        if (!parsed.vendor) {
+          var fullText = (parsed && parsed._rawOcrText) || '';
+          if (fullText) {
+            MID_AUTOLEARN.recordObservation(fullText, parsed.rows || [], parsed.totalParsed || null);
+            renderLearnVendorPrompt(fullText);
+          }
+        }
+      }
+    } catch (_) {}
     // Wave 2.7 — diff-strip volume gating: only render when drift is
     // material (≥15% per cost-trend's threshold). Otherwise hide.
     var diffStrip = document.getElementById('idDiffStrip');
@@ -2399,6 +2472,9 @@
           r.tags = c.tags || [];
         });
       }
+      // Wave 4.3 — preserve PDF text so auto-learn can fingerprint
+      // unrecognized vendors from the PDF path too.
+      parsed._rawOcrText = result.fullText || '';
       setProgress(95);
       renderParsed(parsed);
       hideStatus();

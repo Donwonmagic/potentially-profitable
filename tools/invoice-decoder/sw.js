@@ -28,7 +28,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v1-2026-05-01';
+var SW_VERSION = 'id-decoder-v2-2026-05-01';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -48,6 +48,7 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/learnings.js',
   '/tools/invoice-decoder/categorize.js',
   '/tools/invoice-decoder/vendors.js',
+  '/tools/invoice-decoder/auto-learn.js',
   '/tools/invoice-decoder/encrypt.js',
   '/tools/invoice-decoder/passphrase-modal.js',
   '/tools/invoice-decoder/pdf-extract.js',

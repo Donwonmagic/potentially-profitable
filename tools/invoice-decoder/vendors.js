@@ -497,6 +497,11 @@
   // detectVendor returns highest-scoring vendor with score >=
   // threshold (0.5), or null when none match. Caller falls
   // through to the generic parser when null.
+  //
+  // Wave 4.3 — also consults the operator's learned templates via
+  // MID_AUTOLEARN.detectLearnedVendor. Hard-coded REGISTRY wins when
+  // a top-15 vendor matches above its threshold; learned templates
+  // fill the gap for everything else.
   function detectVendor(ocrText, threshold) {
     var t = (typeof threshold === 'number') ? threshold : 0.5;
     var best = null;
@@ -507,7 +512,14 @@
         best = { id: v.id, label: r.label, score: r.score, vendor: v };
       }
     }
-    return best;
+    if (best) return best;
+    // No top-15 match — try the operator's learned templates.
+    if (typeof root !== 'undefined' && root && root.MID_AUTOLEARN &&
+        typeof root.MID_AUTOLEARN.detectLearnedVendor === 'function') {
+      var learned = root.MID_AUTOLEARN.detectLearnedVendor(ocrText);
+      if (learned) return learned;
+    }
+    return null;
   }
 
   function applyVendorBoost(rows, vendor) {

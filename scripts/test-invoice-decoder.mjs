@@ -815,6 +815,128 @@ console.log(`\nEnd-to-end Hough → pickQuad pipeline (Wave 2.2):`);
 
 console.log(`\nWave 2.2 totals: ${homPass + warpPass + quadPass + sobelPass + pipePass} of ${homPass + warpPass + quadPass + sobelPass + pipePass + homFail + warpFail + quadFail + sobelFail + pipeFail} math + pipeline tests passed.`);
 
+// =====================================================================
+// Wave 4.3 — auto-learn (vendor template induction) tests.
+// =====================================================================
+
+let alPass = 0, alFail = 0;
+console.log(`\nAuto-learn — letterhead hashing + induction (Wave 4.3):`);
+{
+  // Stub MuntinContext so the module's storage helpers work.
+  const stubStore = { learnedVendorObservations: [], learnedVendors: [] };
+  global.window = global.window || {};
+  global.window.MuntinContext = {
+    read: () => stubStore,
+    merge: (patch) => { Object.keys(patch).forEach(k => { stubStore[k] = patch[k]; }); return true; }
+  };
+  const AL = await import(path.join(repoRoot, 'tools/invoice-decoder/auto-learn.js')).then(m => m.default || m);
+
+  // Hash stability: same letterhead text → same hash.
+  const lh1 = AL.normalize('LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX 75201\nCustomer Number: 4421');
+  const lh2 = AL.normalize('LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX 75201\nCustomer Number: 9988');  // different invoice number
+  const h1 = AL.fnv1a(lh1);
+  const h2 = AL.fnv1a(lh2);
+  const okStable = h1 === h2;
+  console.log(`  ${okStable ? '✓' : '✗'} fnv1a hash is stable across invoice-number variation (${h1} === ${h2})`);
+  if (okStable) alPass++; else alFail++;
+
+  // Bigram Jaccard: identical text → 1.0; different text → low.
+  const j1 = AL.bigramJaccard(lh1, lh1);
+  const okIdentJ = Math.abs(j1 - 1.0) < 0.001;
+  console.log(`  ${okIdentJ ? '✓' : '✗'} bigramJaccard(self, self) === 1.0 (got ${j1.toFixed(3)})`);
+  if (okIdentJ) alPass++; else alFail++;
+
+  const j2 = AL.bigramJaccard('the quick brown fox', 'a totally different sentence');
+  const okDiffJ = j2 < 0.4;
+  console.log(`  ${okDiffJ ? '✓' : '✗'} bigramJaccard distinguishes unrelated text (got ${j2.toFixed(3)} < 0.4)`);
+  if (okDiffJ) alPass++; else alFail++;
+
+  // Bigram Jaccard tolerates light OCR noise.
+  const noisy = AL.normalize('LA MICH0ACANA MEAT MAREKT\nWHOLESALE F00DS\nDalls TX 75201');
+  const jNoisy = AL.bigramJaccard(lh1, noisy);
+  const okNoiseTol = jNoisy >= 0.5;
+  console.log(`  ${okNoiseTol ? '✓' : '✗'} bigramJaccard tolerates light OCR noise (got ${jNoisy.toFixed(3)} ≥ 0.5)`);
+  if (okNoiseTol) alPass++; else alFail++;
+
+  // induceDetectTokens picks the long distinctive words.
+  const tokens = AL.induceDetectTokens(lh1);
+  const okTokens = tokens.length >= 3 && tokens.includes('michoacana');
+  console.log(`  ${okTokens ? '✓' : '✗'} induceDetectTokens picks distinctive words (got ${JSON.stringify(tokens)})`);
+  if (okTokens) alPass++; else alFail++;
+
+  // Header-skip induction: lines appearing in 2 of 3 samples become headers.
+  const samples = [
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '0123 RIBEYE 5LB $48.00'] },
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '4567 CARNITAS 10LB $58.00'] },
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '8910 CHORIZO 5LB $32.00'] }
+  ];
+  const headers = AL.induceHeaderSkip(samples);
+  const okHeaders = headers.length >= 2 && headers.some(h => /michoacana/i.test(h));
+  console.log(`  ${okHeaders ? '✓' : '✗'} induceHeaderSkip extracts ≥2 recurring header lines (got ${headers.length})`);
+  if (okHeaders) alPass++; else alFail++;
+
+  // Total-regex induction: needs the same total phrasing in ≥2 samples.
+  const totalSamples = [
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $168.50'] },
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $284.00'] },
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $112.75'] }
+  ];
+  const totalRe = AL.induceTotalRegex(totalSamples);
+  const okTotalRe = totalRe && totalRe.indexOf('grand') !== -1;
+  console.log(`  ${okTotalRe ? '✓' : '✗'} induceTotalRegex extracts the recurring total phrasing (got ${totalRe})`);
+  if (okTotalRe) alPass++; else alFail++;
+
+  // Full flow: 3 observations → shouldPromptToLearn returns the bucket;
+  // build template; save; detectLearnedVendor finds it.
+  AL.clearAll();
+  const sampleText = 'LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX\nItem Description Qty Unit Price\n0123 RIBEYE 5LB $48.00';
+  AL.recordObservation(sampleText, [], null);
+  AL.recordObservation(sampleText.replace('0123', '4567').replace('48.00', '58.00'), [], null);
+  AL.recordObservation(sampleText.replace('0123', '8910').replace('48.00', '32.00'), [], null);
+  const ready = AL.shouldPromptToLearn(sampleText);
+  const okReady = ready && ready.samples && ready.samples.length === 3;
+  console.log(`  ${okReady ? '✓' : '✗'} shouldPromptToLearn returns bucket after 3 observations`);
+  if (okReady) alPass++; else alFail++;
+
+  if (ready) {
+    const tmpl = AL.buildLearnedTemplate(ready.letterhead, ready.samples, 'La Michoacana');
+    const okBuild = tmpl && tmpl.label === 'La Michoacana' && tmpl.detectTokens.length >= 3;
+    console.log(`  ${okBuild ? '✓' : '✗'} buildLearnedTemplate constructs a complete template`);
+    if (okBuild) alPass++; else alFail++;
+
+    const okSave = AL.saveLearnedTemplate(tmpl);
+    console.log(`  ${okSave ? '✓' : '✗'} saveLearnedTemplate persists the template`);
+    if (okSave) alPass++; else alFail++;
+
+    const detected = AL.detectLearnedVendor(sampleText);
+    const okDetect = detected && detected.id === tmpl.id && detected.score >= 0.55;
+    console.log(`  ${okDetect ? '✓' : '✗'} detectLearnedVendor matches the saved template (score ${detected ? detected.score.toFixed(3) : 'null'})`);
+    if (okDetect) alPass++; else alFail++;
+
+    // After save, observations for this letterhead are cleared.
+    const clearedReady = AL.shouldPromptToLearn(sampleText);
+    const okClear = clearedReady === null;
+    console.log(`  ${okClear ? '✓' : '✗'} shouldPromptToLearn returns null once template is saved`);
+    if (okClear) alPass++; else alFail++;
+
+    // Recognized template should not re-trigger the prompt for a new
+    // invoice from the same vendor.
+    AL.recordObservation(sampleText.replace('0123', '9999'), [], null);
+    const stillCleared = AL.shouldPromptToLearn(sampleText.replace('0123', '9999'));
+    const okStillCleared = stillCleared === null;
+    console.log(`  ${okStillCleared ? '✓' : '✗'} learned letterhead does not re-prompt on future invoices`);
+    if (okStillCleared) alPass++; else alFail++;
+  } else {
+    alFail += 4;
+  }
+
+  // Cleanup global stub.
+  delete global.window;
+}
+
+console.log(`\nWave 4.3 fixtures: ${alPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
-  + homFail + warpFail + quadFail + sobelFail + pipeFail;
+  + homFail + warpFail + quadFail + sobelFail + pipeFail
+  + alFail;
 process.exit(grandFail === 0 ? 0 : 1);

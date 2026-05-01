@@ -122,6 +122,7 @@
       'Invoice Decoder Saved',
       'Invoice Decoder Share Received',
       'Invoice Decoder Unlocked',
+      'Invoice Decoder Vendor Learned',
       'Invoice Decoder Verify Speed',
       'Margin Math BreakEvenCovers',
       'Margin Math DeliveryBreakeven',
