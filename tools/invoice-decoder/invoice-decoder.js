@@ -804,4 +804,155 @@
     e.target.value = '';
   });
 
+  // -------------------- Reload-and-decrypt (W1-5 BLOCKER fix) --------------------
+  // Phase 6 W6-3 shipped saved-invoice encryption with NO path
+  // to read it back through the tool. The encrypted file became
+  // a write-only black hole. This sprint closes that loop.
+  //
+  // Trigger: query string `?reload=<itemId>` from a Workshop card
+  // (added in W1-8) or a manually-pasted link. Flow:
+  //
+  //   1. Fetch encrypted envelope from /api/workbench/get?id=
+  //   2. Open MID_PASS.ask({mode:'unlock'}) for the passphrase
+  //   3. MID_ENCRYPT.decryptPayload(envelope, pp, aad)
+  //   4. On success: hydrate parsedRowsState[] from items, render
+  //      verification panel as if a fresh OCR completed
+  //   5. On failure: passphrase-mismatch error, retry up to 5x
+  //      per 10-min window
+  function handleReloadParam() {
+    var id = (function () {
+      try {
+        var u = new URL(location.href);
+        return u.searchParams.get('reload');
+      } catch (_) { return null; }
+    })();
+    if (!id) return;
+    if (typeof MID_ENCRYPT === 'undefined' || !MID_ENCRYPT.decryptPayload) return;
+    if (typeof MID_PASS === 'undefined' || !MID_PASS.ask) return;
+
+    // Hide the upload UI — we're reading a saved file, not parsing a new one.
+    var inputsEl = document.getElementById('idInputs');
+    if (inputsEl) inputsEl.style.display = 'none';
+    if (statusEl) {
+      showStatus(
+        tt('Loading your saved invoice…', 'Cargando tu factura guardada…'),
+        tt('Fetching the encrypted file. The next step asks for your secret to unlock it.',
+           'Descargando el archivo encriptado. El siguiente paso pide tu secreto para desbloquear.')
+      );
+      setProgress(20);
+    }
+
+    // h8-exempt:workshop-save — same as the save POST; this is the
+    // matching read-back GET, also user-initiated, also returns
+    // ciphertext only.
+    fetch('/api/workbench/get?id=' + encodeURIComponent(id), { // h8-exempt:workshop-save
+      credentials: 'same-origin'
+    }).then(function (r) {
+      if (r.status === 401) {
+        window.location.href = '/sign-in/?returnTo=' + encodeURIComponent(location.pathname + location.search);
+        return null;
+      }
+      if (!r.ok) throw new Error('fetch failed (' + r.status + ')');
+      return r.json();
+    }).then(function (j) {
+      if (!j || !j.ok || !j.item || !j.item.payload) {
+        throw new Error(tt('Saved file not found or unreadable.',
+                           'Archivo guardado no encontrado o ilegible.'));
+      }
+      var saved;
+      try { saved = JSON.parse(j.item.payload); } catch (_) { saved = null; }
+      if (!saved || !saved.envelope) {
+        throw new Error(tt('Saved file format unknown.', 'Formato de archivo desconocido.'));
+      }
+      setProgress(60);
+      return promptAndDecrypt(saved.envelope, saved.aad || '', 0);
+    }).catch(function (err) {
+      if (statusEl) {
+        showStatus(
+          tt('Could not load your saved invoice.', 'No se pudo cargar la factura guardada.'),
+          err && err.message ? err.message : tt('Try again or return to your Workshop.',
+                                                 'Intenta de nuevo o regresa a tu Taller.'),
+          'error'
+        );
+      }
+    });
+  }
+
+  // Helper: prompt for passphrase, attempt decrypt, retry on
+  // failure up to 5 times per 10-minute window. The retry counter
+  // is in-tab only (not server-enforced) — pure UX speed bump.
+  var __decryptAttempts = [];
+  function promptAndDecrypt(envelope, aad, attemptIdx) {
+    var now = Date.now();
+    __decryptAttempts = __decryptAttempts.filter(function (t) { return t > now - 600000; });
+    if (__decryptAttempts.length >= 5) {
+      if (statusEl) {
+        showStatus(
+          tt('Too many wrong tries.', 'Demasiados intentos fallidos.'),
+          tt('Take 10 minutes and try again — the saved file is still safe, but we slow down to protect it.',
+             'Espera 10 minutos e intenta de nuevo — el archivo está a salvo, pero te frenamos para protegerlo.'),
+          'error'
+        );
+      }
+      return Promise.resolve(null);
+    }
+    return MID_PASS.ask({ mode: 'unlock' }).then(function (pp) {
+      if (!pp) {
+        if (statusEl) {
+          showStatus(
+            tt('Cancelled. Your saved invoice is still locked.', 'Cancelado. Tu factura sigue bloqueada.'),
+            tt('Tap a Workshop card again to retry, or close this tab.',
+               'Toca una tarjeta del Taller para reintentar, o cierra esta pestaña.')
+          );
+        }
+        return null;
+      }
+      return MID_ENCRYPT.decryptPayload(envelope, pp, aad).then(function (payload) {
+        // Success — hydrate state and render verification panel.
+        hideStatus();
+        if (!payload || !Array.isArray(payload.items)) {
+          throw new Error(tt('Decrypted but the format looks wrong.',
+                             'Desencriptado, pero el formato se ve mal.'));
+        }
+        parsedRowsState = payload.items.slice();
+        lastPrintedTotal = (typeof payload.printedTotal === 'number') ? payload.printedTotal : null;
+        // Re-use the existing render path. parsedEl, parsedList,
+        // parsedMeta etc. all read from parsedRowsState.
+        if (parsedEl) parsedEl.hidden = false;
+        if (parsedList) parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
+        rerenderTotals();
+        var bulkBarEl = document.getElementById('idBulkbar');
+        if (bulkBarEl) bulkBarEl.hidden = false;
+        // Banner: this is a reloaded file, not a fresh scan.
+        var banner = document.createElement('div');
+        banner.style.cssText = 'margin:14px 0 0;padding:12px 16px;background:#E6F4EC;border:1px solid #c4e3cf;border-left:3px solid var(--status-good,#1f9d55);border-radius:8px;font-size:13px;color:#1f6e3a';
+        banner.innerHTML = '<strong>' + tt('Unlocked.', 'Desbloqueada.') + '</strong> ' +
+          tt('This is your saved invoice. Edit it the same way you would after a fresh scan; save again to overwrite, or close to leave it as-is.',
+             'Esta es tu factura guardada. Edítala igual que después de un escaneo fresco; guarda de nuevo para sobreescribir, o cierra para dejarla igual.');
+        if (parsedEl && parsedEl.parentNode) {
+          parsedEl.parentNode.insertBefore(banner, parsedEl);
+        }
+        if (window.plausible) window.plausible('Invoice Decoder Unlocked');
+        return payload;
+      }).catch(function () {
+        __decryptAttempts.push(Date.now());
+        if (statusEl) {
+          showStatus(
+            tt('That secret didn\'t unlock the file.', 'Ese secreto no abrió el archivo.'),
+            tt('Try again — make sure caps lock is off. ' +
+               (5 - __decryptAttempts.length) + ' tries left before a 10-minute cooldown.',
+               'Intenta de nuevo — revisa que mayúsculas no esté activo. Quedan ' +
+               (5 - __decryptAttempts.length) + ' intentos antes del enfriamiento de 10 min.'),
+            'error'
+          );
+        }
+        // Re-prompt automatically.
+        return promptAndDecrypt(envelope, aad, attemptIdx + 1);
+      });
+    });
+  }
+
+  // Run on page load.
+  handleReloadParam();
+
 })();
