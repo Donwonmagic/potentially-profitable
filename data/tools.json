@@ -8,7 +8,7 @@
       "label_es": "Operaciones y Márgenes",
       "blurb_en": "The honest math of running an independent restaurant — food cost, menu mix, and the prices that protect your margin.",
       "blurb_es": "La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.",
-      "tools": ["margin-math", "menu-engineering", "plate-cost"]
+      "tools": ["margin-math", "menu-engineering", "plate-cost", "invoice-decoder"]
     },
     {
       "id": "local-seo",
@@ -32,7 +32,7 @@
       "label_es": "Marca y Diseño",
       "blurb_en": "The system around your mark — palette, accessible color pairs, tokens you can hand to any builder or developer.",
       "blurb_es": "El sistema alrededor de tu marca — paleta, pares de color accesibles, tokens que puedes pasar a cualquier herramienta o desarrollador.",
-      "tools": ["brand-suite"]
+      "tools": ["brand-suite", "menu-design"]
     }
   ],
 
@@ -53,7 +53,13 @@
       "id": "refreshing-brand",
       "label_en": "Refreshing your brand",
       "label_es": "Refrescar tu marca",
-      "tools": ["brand-suite", "photo-brief", "menu-copy"]
+      "tools": ["brand-suite", "photo-brief", "menu-copy", "menu-design"]
+    },
+    {
+      "id": "tracking-costs",
+      "label_en": "Track your costs without a spreadsheet",
+      "label_es": "Lleva tus costos sin hoja de cálculo",
+      "tools": ["invoice-decoder", "plate-cost", "margin-math"]
     }
   ],
 
@@ -207,6 +213,36 @@
       "cluster": "conversions",
       "status": "live",
       "added": "2026-04-29"
+    },
+    "menu-design": {
+      "title_en": "Menu Design Suite",
+      "title_es": "Suite de Diseño de Menú",
+      "summary_en": "Type your dishes, pick a theme, drop your logo. The tool lays out 14 or 53 dishes onto a printable PDF — no Canva fight with templates that assume 12.",
+      "summary_es": "Escribe tus platos, elige un tema, sube tu logo. La herramienta acomoda 14 o 53 platos en un PDF imprimible — sin pelearte con plantillas que asumen 12.",
+      "walkaway_en": "A printable menu PDF that fits whatever dish count you actually have.",
+      "walkaway_es": "Un PDF de menú imprimible que se adapta a la cantidad de platos que realmente tienes.",
+      "cta_en": "Open Menu Design Suite",
+      "cta_es": "Abrir Suite de Diseño de Menú",
+      "url_en": "/tools/menu-design/",
+      "url_es": "/es/tools/menu-design/",
+      "cluster": "brand-design",
+      "status": "live",
+      "added": "2026-05-01"
+    },
+    "invoice-decoder": {
+      "title_en": "Advanced Invoice Decoder",
+      "title_es": "Decodificador de Facturas",
+      "summary_en": "Snap a Sysco or produce invoice. Get sorted line items you can drop into Plate Cost — no spreadsheet, no re-typing.",
+      "summary_es": "Saca foto a tu factura de Sysco o de verduras. Obtén partidas ordenadas para pasar al Costo del Plato — sin hoja de cálculo.",
+      "walkaway_en": "Categorized line items saved to your Workshop, ready for Plate Cost.",
+      "walkaway_es": "Partidas categorizadas guardadas en tu Taller, listas para Costo del Plato.",
+      "cta_en": "Open Invoice Decoder",
+      "cta_es": "Abrir Decodificador de Facturas",
+      "url_en": "/tools/invoice-decoder/",
+      "url_es": "/es/tools/invoice-decoder/",
+      "cluster": "operations-margin",
+      "status": "live",
+      "added": "2026-05-01"
     }
   },
 

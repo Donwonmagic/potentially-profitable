@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Advanced Invoice Decoder — Snap an invoice. We sort it. You keep it. | Muntin Digital</title>
+<meta name="description" content="Snap an invoice photo, upload a PDF, or drop a CSV. We read it, sort the line items into groups, and save them to your Workshop — encrypted, on-device, never aggregated. Free." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/invoice-decoder/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Advanced Invoice Decoder — Snap. Sort. Keep." />
+<meta property="og:description" content="Photo, PDF, or CSV — we sort line items into groups, save to your Workshop, encrypted on device. Free." />
+<meta property="og:url" content="https://muntin.digital/tools/invoice-decoder/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-invoice-decoder.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Advanced Invoice Decoder" />
+<meta name="twitter:description" content="Snap. Sort. Keep. Encrypted on-device. Free." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-invoice-decoder.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Invoice Decoder tool-scoped styles. Page-prefix .id-*. === */
+.id-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
+.id-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.id-walkaway{margin:14px auto 0;max-width:540px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
+
+/* Three input chips above the fold. Single-column on phones. */
+.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+@media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
+.id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
+.id-input-chip:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,22,26,.08)}
+.id-input-chip[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
+.id-input-chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.id-input-icon{font-size:20px;line-height:1}
+.id-input-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0}
+.id-input-blurb{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
+.id-input-tag{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--cream-2);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
+
+/* Status / progress bar surfaced once an input is chosen. */
+.id-status{margin:18px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
+.id-status[hidden]{display:none}
+.id-status-title{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.id-status-msg{font-size:12.5px;color:var(--ink-soft);margin:0 0 8px;line-height:1.5}
+.id-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.id-progress-fill{height:100%;background:var(--teal);width:0;transition:width 220ms ease}
+.id-status.error .id-progress-bar{display:none}
+.id-status.error .id-status-msg{color:var(--rust)}
+
+/* Cleaned-up image preview — proves preprocessing landed before
+   B2 wires OCR. Side-by-side raw + cleaned thumbs. */
+.id-preview-wrap{margin:18px 0 0}
+.id-preview-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:540px){.id-preview-row{grid-template-columns:1fr}}
+.id-preview-tile{padding:10px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-align:center}
+.id-preview-tile-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px}
+.id-preview-tile img{max-width:100%;max-height:280px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.id-preview-meta{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.id-preview-meta strong{color:var(--ink);font-weight:600}
+
+.id-coming{margin:18px 0 0;padding:14px 16px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:8px;font-size:12.5px;color:#7a4408;line-height:1.55}
+/* Parsed-rows panel — Wave B2's read-only proof. B5 will turn this
+   into the editable verification card-stack. */
+.id-parsed{margin:18px 0 0}
+.id-parsed[hidden]{display:none}
+.id-parsed-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin:0 0 12px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px}
+.id-parsed-count{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
+.id-parsed-meta{font-size:12.5px;color:var(--ink-soft)}
+.id-parsed-vendor{padding:3px 10px;font-size:11.5px;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.id-parsed-list{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--white)}
+.id-parsed-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.id-parsed-row:last-child{border-bottom:0}
+.id-parsed-row[data-conf="green"]{border-left:3px solid var(--status-good)}
+.id-parsed-row[data-conf="amber"]{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-row[data-conf="red"]  {border-left:3px solid var(--rust);background:#FFF6F0}
+.id-parsed-row .id-parsed-name{font-weight:500;color:var(--ink)}
+.id-parsed-row .id-parsed-qty{color:var(--stone);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-row .id-parsed-price{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-cat{display:inline-block;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;color:var(--ink);background:var(--cream-2);border:1px solid var(--line);vertical-align:middle}
+.id-parsed-cat[data-cat="protein"]    {background:#FCE9E1;color:#7a2e1f;border-color:#f3cab8}
+.id-parsed-cat[data-cat="seafood"]    {background:#E1F0F4;color:#0f5063;border-color:#bcdce4}
+.id-parsed-cat[data-cat="produce"]    {background:#E8F4E1;color:#3a6a1f;border-color:#c4dfb6}
+.id-parsed-cat[data-cat="dairy"]      {background:#FAF1DC;color:#7a5a14;border-color:#ecdaa9}
+.id-parsed-cat[data-cat="dry-goods"]  {background:#F0EBE0;color:#5a4a30;border-color:#d8cdb6}
+.id-parsed-cat[data-cat="herbs-spices"]{background:#E8E1F0;color:#4a2f6a;border-color:#cdbcdf}
+.id-parsed-cat[data-cat="paper"]      {background:#EEEEEE;color:#444;border-color:#cccccc}
+.id-parsed-cat[data-cat="cleaning"]   {background:#E1EFF0;color:#1f5663;border-color:#b8d8de}
+.id-parsed-cat[data-cat="beverage"]   {background:#F0E1F0;color:#5a1f5a;border-color:#dfbbdf}
+.id-parsed-cat-none{color:var(--stone);background:transparent;border-style:dashed}
+.id-parsed-conf{display:inline-block;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:999px;font-variant-numeric:tabular-nums;vertical-align:middle}
+.id-parsed-conf[data-conf="green"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
+.id-parsed-conf[data-conf="amber"]{background:#FFF1D7;color:#8a5e0c;border:1px solid #ecd6a8}
+.id-parsed-conf[data-conf="red"]{background:#FCE0DA;color:#7a2419;border:1px solid #f0c0b3}
+/* B5-2: inline cell editors. Tap-to-edit replaces the span with
+   a styled input; Enter or blur commits, Escape reverts. */
+.id-parsed-row [data-edit]{cursor:text;border-radius:4px;padding:2px 4px}
+.id-parsed-row [data-edit]:hover{background:rgba(31,78,91,.06)}
+.id-parsed-input{font:inherit;font-size:13.5px;padding:4px 6px;border:1px solid var(--teal);border-radius:4px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box;min-width:60px}
+.id-parsed-input:focus{outline:2px solid color-mix(in srgb,var(--teal) 35%,transparent);outline-offset:1px}
+.id-parsed-cat-select{font:inherit;font-size:11px;padding:2px 6px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--ink)}
+/* B5-4: bulk-action sticky bar. Sits at the bottom of the parsed
+   panel; sticky so the Save CTA follows the scroll on long
+   invoices. The Save button activates in Wave B6 — until then
+   it stays disabled with a "Save lands in next sprint" tooltip. */
+.id-bulkbar{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-top:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:0 -4px 14px rgba(20,22,26,.06);z-index:5}
+.id-bulkbar[hidden]{display:none}
+.id-bulk-confirm{padding:9px 16px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.id-bulk-confirm:hover{border-color:var(--teal);color:var(--teal)}
+.id-bulk-save{margin-left:auto;padding:11px 20px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-fast)}
+.id-bulk-save:hover{background:var(--teal)}
+.id-bulk-save[disabled]{opacity:.55;cursor:not-allowed}
+/* B6-4: cross-tool handoff panel — three big tappable cards. */
+.id-handoff{margin-top:18px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.id-handoff[hidden]{display:none}
+.id-handoff-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.id-handoff-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.id-handoff-row{grid-template-columns:1fr}}
+.id-handoff-btn{display:flex;flex-direction:column;gap:4px;padding:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);transition:border-color var(--t-fast),transform var(--t-fast)}
+.id-handoff-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,22,26,.06)}
+.id-handoff-btn strong{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink)}
+.id-handoff-btn span{font-size:12.5px;color:var(--stone)}
+@media(max-width:540px){
+  .id-parsed-row{grid-template-columns:1fr;gap:2px}
+  .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
+}
+.id-parsed-totals{margin:10px 0 0;padding:10px 14px;background:var(--white);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+.id-parsed-totals strong{color:var(--ink);font-weight:600}
+.id-parsed-totals.warn{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-empty{padding:24px 16px;text-align:center;color:var(--stone);font-size:13px}
+.id-read-btn{margin-top:14px;padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
+.id-read-btn:hover{background:var(--teal)}
+.id-read-btn[disabled]{opacity:.55;cursor:wait}
+
+/* Honesty card. */
+.id-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
+.id-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
+.id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
+.id-honesty p:last-child{margin-bottom:0}
+.id-honesty strong{color:var(--ink);font-weight:600}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","@id":"https://muntin.digital/tools/invoice-decoder/#tool","name":"Advanced Invoice Decoder","description":"Reads supplier invoices (photo, PDF, or CSV), sorts the line items into operational groups (protein, produce, dairy, dry goods, paper, cleaning, beverage, herbs-spices), and saves the result encrypted to the operator's Workshop. On-device OCR; nothing uploads.","url":"https://muntin.digital/tools/invoice-decoder/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Advanced Invoice Decoder","item":"https://muntin.digital/tools/invoice-decoder/"}]}
+]}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="nav" id="nav"></header>
+
+<main id="main">
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/tools/">Tools</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Advanced Invoice Decoder</span>
+</nav>
+
+<section class="block">
+  <div class="container" style="max-width:880px;">
+    <div class="id-hero">
+      <p class="id-eyebrow">Free tool · Snap. Sort. Keep.</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Snap an invoice. <span class="serif-italic" style="color:var(--teal);">We sort it.</span> You keep it.</h1>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Take a photo of your supplier invoice — Sysco, US Foods, Restaurant Depot, your produce jobber, anyone. We read every line, sort each item into restaurant groups, and save the result to your Workshop. Encrypted on your device. Never sold, never trained on, never pooled with other restaurants.</p>
+      <p class="id-walkaway"><strong>You leave with:</strong> Your last invoice — sorted into groups, saved to your Workshop, and ready to drop into Plate Cost.</p>
+    </div>
+
+    <!-- Three input paths. Photo and PDF lazy-load their workers; CSV
+         needs no extra library. We let the owner pick the path that
+         matches what their distributor actually sends them. -->
+    <div class="id-inputs" id="idInputs">
+      <label class="id-input-chip" data-input="photo">
+        <span class="id-input-icon" aria-hidden="true">📷</span>
+        <p class="id-input-title">Photo or scan</p>
+        <p class="id-input-blurb">Take a photo with your phone, or drop in a scanner-app image. Up to 8 pages.</p>
+        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple />
+      </label>
+      <label class="id-input-chip" data-input="pdf">
+        <span class="id-input-icon" aria-hidden="true">📄</span>
+        <p class="id-input-title">PDF</p>
+        <p class="id-input-blurb">Drop your distributor's emailed PDF. Text extraction is &gt;99% accurate — no OCR needed.</p>
+        <span class="id-input-tag">Best</span>
+        <input type="file" id="idPdfInput" accept="application/pdf" />
+      </label>
+      <label class="id-input-chip" data-input="csv">
+        <span class="id-input-icon" aria-hidden="true">📊</span>
+        <p class="id-input-title">CSV / Excel</p>
+        <p class="id-input-blurb">Sysco / US Foods / Restaurant Depot order-history exports work as-is.</p>
+        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" />
+      </label>
+    </div>
+
+    <!-- Status / progress strip. Shown once a file is chosen. -->
+    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
+      <p class="id-status-title" id="idStatusTitle">Reading the photo…</p>
+      <p class="id-status-msg" id="idStatusMsg">Cleaning up the image so the next step (line-by-line reading) gets the best shot.</p>
+      <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
+    </div>
+
+    <!-- Preview tiles — proves preprocessing landed before B2 wires OCR. -->
+    <div class="id-preview-wrap" id="idPreview" hidden>
+      <div class="id-preview-row">
+        <div class="id-preview-tile">
+          <p class="id-preview-tile-label">Your photo</p>
+          <img id="idRawImg" alt="" />
+        </div>
+        <div class="id-preview-tile">
+          <p class="id-preview-tile-label">Cleaned for reading</p>
+          <img id="idCleanImg" alt="" />
+        </div>
+      </div>
+      <p class="id-preview-meta" id="idPreviewMeta"></p>
+      <button type="button" class="id-read-btn" id="idReadBtn" hidden aria-label="Read this invoice">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+        Read this invoice
+      </button>
+    </div>
+
+    <!-- Wave-B2: line-by-line reader. Banner stays for the
+         photo-not-yet-OCR'd state; flips to a parsed-rows panel
+         once OCR completes. -->
+    <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
+
+    <div class="id-parsed" id="idParsed" hidden>
+      <div class="id-parsed-summary">
+        <span class="id-parsed-count" id="idParsedCount">0 items</span>
+        <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
+        <span class="id-parsed-meta" id="idParsedMeta"></span>
+      </div>
+      <ul class="id-parsed-list" id="idParsedList"></ul>
+      <p class="id-parsed-totals" id="idParsedTotals" hidden></p>
+      <!-- B5-4: bulk actions sticky bar. Two paths the owner needs:
+           batch-confirm amber rows when they trust the read, and
+           save the verified set to Workshop. Save UI lands in B6. -->
+      <div class="id-bulkbar" id="idBulkbar" hidden>
+        <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Mark amber as verified</button>
+        <button type="button" class="id-bulk-save" id="idBulkSave" disabled>Save to my Workshop →</button>
+      </div>
+      <div class="id-handoff" id="idHandoff" hidden></div>
+    </div>
+
+    <div class="id-honesty">
+      <h3>What this is, and what it isn't.</h3>
+      <p><strong>Is:</strong> a fast way to turn one invoice photo, scan, or PDF into sorted line items the operator owns. Encrypted at rest, tied only to your sign-in. Categorized into restaurant-real groups (protein, produce, dairy, dry goods, paper, cleaning, beverage, herbs-spices).</p>
+      <p><strong>Isn't:</strong> your books. Won't sync to QuickBooks, Restaurant365, or Toast. Won't catch every pricing error — treat the sanity check as a second pair of eyes, not an auditor. Plate costs only update on tap-confirm.</p>
+      <p><strong>vs. Restaurant365:</strong> your invoices stay on your device until you explicitly save. Saved invoices are encrypted with a key derived from your sign-in. No benchmark dataset, no vendor pool, no ML training on your cost data — and never backfilled retroactively if a future opt-in arrives.</p>
+      <p><strong>Privacy posture:</strong> Open DevTools → Network. Pick a photo. Cleaned-up version renders in this page. Network panel stays empty. Image bytes never leave your device.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="./preprocess.js?v=20260501-b2"></script>
+<script src="./ocr.js?v=20260501-b2"></script>
+<script src="./parse.js?v=20260501-b2"></script>
+<script src="./categorize.js?v=20260501-b4"></script>
+<script src="./vendors.js?v=20260501-b3"></script>
+<script src="./encrypt.js?v=20260501-b6"></script>
+<script src="./invoice-decoder.js?v=20260501-b6-3"></script>
+</body>
+</html>

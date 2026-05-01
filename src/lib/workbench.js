@@ -52,6 +52,12 @@ const ALLOWED_KINDS = new Set([
   // /api/admin/submissions/decide → approved-fieldnote: KV →
   // data/article-fieldnotes.json → article HTML.
   'submission',
+  // Phase 6 / Wave B6 (Advanced Invoice Decoder) — encrypted
+  // line-item payload from a parsed supplier invoice. Payload
+  // shape: { ciphertext, iv, v: 1, source, invoiceDate, ... }.
+  // Saved rows MUST go through the envelope-encryption branch
+  // in saveItem (B6-2); plaintext writes are rejected.
+  'invoice-decoder',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear

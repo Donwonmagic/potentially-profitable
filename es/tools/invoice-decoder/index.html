@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="referrer" content="no-referrer" />
+<title>Decodificador de Facturas — Saca foto. Ordenamos. Es tuya. | Muntin Digital</title>
+<meta name="description" content="Saca foto a tu factura, sube un PDF o pega un CSV. Leemos cada línea, la ordenamos en grupos, y la guardamos en tu Taller — encriptada, en tu dispositivo, sin agregarla a nadie. Gratis." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/invoice-decoder/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/invoice-decoder/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Decodificador de Facturas — Saca foto. Ordenamos. Es tuya." />
+<meta property="og:description" content="Foto, PDF o CSV — ordenamos las partidas en grupos y guardamos en tu Taller, encriptado en tu dispositivo. Gratis." />
+<meta property="og:url" content="https://muntin.digital/es/tools/invoice-decoder/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-invoice-decoder-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Decodificador de Facturas" />
+<meta name="twitter:description" content="Foto. Ordena. Guarda. Encriptado en tu dispositivo. Gratis." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-invoice-decoder-es.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<link rel="dns-prefetch" href="https://plausible.io" />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
+<style>.breadcrumb{visibility:hidden;padding-top:100px}
+.id-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
+.id-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+.id-walkaway{margin:14px auto 0;max-width:540px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
+.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+@media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
+.id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
+.id-input-chip:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,22,26,.08)}
+.id-input-chip[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
+.id-input-chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.id-input-icon{font-size:20px;line-height:1}
+.id-input-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0}
+.id-input-blurb{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
+.id-input-tag{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--cream-2);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
+.id-status{margin:18px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
+.id-status[hidden]{display:none}
+.id-status-title{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.id-status-msg{font-size:12.5px;color:var(--ink-soft);margin:0 0 8px;line-height:1.5}
+.id-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.id-progress-fill{height:100%;background:var(--teal);width:0;transition:width 220ms ease}
+.id-status.error .id-progress-bar{display:none}
+.id-status.error .id-status-msg{color:var(--rust)}
+.id-preview-wrap{margin:18px 0 0}
+.id-preview-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:540px){.id-preview-row{grid-template-columns:1fr}}
+.id-preview-tile{padding:10px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-align:center}
+.id-preview-tile-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px}
+.id-preview-tile img{max-width:100%;max-height:280px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.id-preview-meta{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.id-preview-meta strong{color:var(--ink);font-weight:600}
+.id-coming{margin:18px 0 0;padding:14px 16px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:8px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.id-parsed{margin:18px 0 0}
+.id-parsed[hidden]{display:none}
+.id-parsed-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin:0 0 12px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px}
+.id-parsed-count{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
+.id-parsed-meta{font-size:12.5px;color:var(--ink-soft)}
+.id-parsed-vendor{padding:3px 10px;font-size:11.5px;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.id-parsed-list{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--white)}
+.id-parsed-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.id-parsed-row:last-child{border-bottom:0}
+.id-parsed-row[data-conf="green"]{border-left:3px solid var(--status-good)}
+.id-parsed-row[data-conf="amber"]{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-row[data-conf="red"]  {border-left:3px solid var(--rust);background:#FFF6F0}
+.id-parsed-row .id-parsed-name{font-weight:500;color:var(--ink)}
+.id-parsed-row .id-parsed-qty{color:var(--stone);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-row .id-parsed-price{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-cat{display:inline-block;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;color:var(--ink);background:var(--cream-2);border:1px solid var(--line);vertical-align:middle}
+.id-parsed-cat[data-cat="protein"]    {background:#FCE9E1;color:#7a2e1f;border-color:#f3cab8}
+.id-parsed-cat[data-cat="seafood"]    {background:#E1F0F4;color:#0f5063;border-color:#bcdce4}
+.id-parsed-cat[data-cat="produce"]    {background:#E8F4E1;color:#3a6a1f;border-color:#c4dfb6}
+.id-parsed-cat[data-cat="dairy"]      {background:#FAF1DC;color:#7a5a14;border-color:#ecdaa9}
+.id-parsed-cat[data-cat="dry-goods"]  {background:#F0EBE0;color:#5a4a30;border-color:#d8cdb6}
+.id-parsed-cat[data-cat="herbs-spices"]{background:#E8E1F0;color:#4a2f6a;border-color:#cdbcdf}
+.id-parsed-cat[data-cat="paper"]      {background:#EEEEEE;color:#444;border-color:#cccccc}
+.id-parsed-cat[data-cat="cleaning"]   {background:#E1EFF0;color:#1f5663;border-color:#b8d8de}
+.id-parsed-cat[data-cat="beverage"]   {background:#F0E1F0;color:#5a1f5a;border-color:#dfbbdf}
+.id-parsed-cat-none{color:var(--stone);background:transparent;border-style:dashed}
+.id-parsed-conf{display:inline-block;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:999px;font-variant-numeric:tabular-nums;vertical-align:middle}
+.id-parsed-conf[data-conf="green"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
+.id-parsed-conf[data-conf="amber"]{background:#FFF1D7;color:#8a5e0c;border:1px solid #ecd6a8}
+.id-parsed-conf[data-conf="red"]{background:#FCE0DA;color:#7a2419;border:1px solid #f0c0b3}
+.id-parsed-row [data-edit]{cursor:text;border-radius:4px;padding:2px 4px}
+.id-parsed-row [data-edit]:hover{background:rgba(31,78,91,.06)}
+.id-parsed-input{font:inherit;font-size:13.5px;padding:4px 6px;border:1px solid var(--teal);border-radius:4px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box;min-width:60px}
+.id-parsed-input:focus{outline:2px solid color-mix(in srgb,var(--teal) 35%,transparent);outline-offset:1px}
+.id-parsed-cat-select{font:inherit;font-size:11px;padding:2px 6px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--ink)}
+.id-bulkbar{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-top:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:0 -4px 14px rgba(20,22,26,.06);z-index:5}
+.id-bulkbar[hidden]{display:none}
+.id-bulk-confirm{padding:9px 16px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.id-bulk-confirm:hover{border-color:var(--teal);color:var(--teal)}
+.id-bulk-save{margin-left:auto;padding:11px 20px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-fast)}
+.id-bulk-save:hover{background:var(--teal)}
+.id-bulk-save[disabled]{opacity:.55;cursor:not-allowed}
+.id-handoff{margin-top:18px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.id-handoff[hidden]{display:none}
+.id-handoff-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.id-handoff-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.id-handoff-row{grid-template-columns:1fr}}
+.id-handoff-btn{display:flex;flex-direction:column;gap:4px;padding:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);transition:border-color var(--t-fast),transform var(--t-fast)}
+.id-handoff-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,22,26,.06)}
+.id-handoff-btn strong{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink)}
+.id-handoff-btn span{font-size:12.5px;color:var(--stone)}
+@media(max-width:540px){
+  .id-parsed-row{grid-template-columns:1fr;gap:2px}
+  .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
+}
+.id-parsed-totals{margin:10px 0 0;padding:10px 14px;background:var(--white);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+.id-parsed-totals strong{color:var(--ink);font-weight:600}
+.id-parsed-totals.warn{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-empty{padding:24px 16px;text-align:center;color:var(--stone);font-size:13px}
+.id-read-btn{margin-top:14px;padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
+.id-read-btn:hover{background:var(--teal)}
+.id-read-btn[disabled]{opacity:.55;cursor:wait}
+.id-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
+.id-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
+.id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
+.id-honesty p:last-child{margin-bottom:0}
+.id-honesty strong{color:var(--ink);font-weight:600}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/invoice-decoder/#tool","name":"Decodificador de Facturas","description":"Lee facturas de proveedores (foto, PDF o CSV), ordena las partidas en grupos operativos (proteína, verduras, lácteos, abarrotes, papel, limpieza, bebidas, hierbas-especias) y guarda el resultado encriptado en el Taller del operador. OCR en el dispositivo; nada se sube.","url":"https://muntin.digital/es/tools/invoice-decoder/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Decodificador de Facturas","item":"https://muntin.digital/es/tools/invoice-decoder/"}]}
+]}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+<header class="nav" id="nav"></header>
+
+<main id="main">
+
+<nav class="breadcrumb container" aria-label="Ruta de navegación">
+  <a href="/es/">Inicio</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <a href="/es/tools/">Herramientas</a>
+  <span class="breadcrumb-sep" aria-hidden="true">›</span>
+  <span aria-current="page">Decodificador de Facturas</span>
+</nav>
+
+<section class="block">
+  <div class="container" style="max-width:880px;">
+    <div class="id-hero">
+      <p class="id-eyebrow">Herramienta gratis · Saca foto. Ordena. Guarda.</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Saca foto a tu factura. <span class="serif-italic" style="color:var(--teal);">La ordenamos.</span> Es tuya.</h1>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Toma una foto de la factura de tu proveedor — Sysco, US Foods, Restaurant Depot, tu mayorista de verduras, quien sea. Leemos cada línea, ordenamos cada partida en grupos de restaurante y guardamos el resultado en tu Taller. Encriptado en tu dispositivo. Nunca vendido, nunca usado para entrenar IA, nunca juntado con otros restaurantes.</p>
+      <p class="id-walkaway"><strong>Te llevas:</strong> Tu última factura — ordenada por grupos, guardada en tu Taller, lista para pasar al Costo del Plato.</p>
+    </div>
+
+    <div class="id-inputs" id="idInputs">
+      <label class="id-input-chip" data-input="photo">
+        <span class="id-input-icon" aria-hidden="true">📷</span>
+        <p class="id-input-title">Foto o escaneo</p>
+        <p class="id-input-blurb">Saca foto con tu teléfono o sube una imagen de app de escaneo. Hasta 8 páginas.</p>
+        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple />
+      </label>
+      <label class="id-input-chip" data-input="pdf">
+        <span class="id-input-icon" aria-hidden="true">📄</span>
+        <p class="id-input-title">PDF</p>
+        <p class="id-input-blurb">Sube el PDF que tu distribuidor manda por correo. La extracción de texto es &gt;99% precisa — sin OCR.</p>
+        <span class="id-input-tag">Mejor</span>
+        <input type="file" id="idPdfInput" accept="application/pdf" />
+      </label>
+      <label class="id-input-chip" data-input="csv">
+        <span class="id-input-icon" aria-hidden="true">📊</span>
+        <p class="id-input-title">CSV / Excel</p>
+        <p class="id-input-blurb">Las exportaciones de historial de Sysco / US Foods / Restaurant Depot funcionan tal cual.</p>
+        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" />
+      </label>
+    </div>
+
+    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
+      <p class="id-status-title" id="idStatusTitle">Leyendo la foto…</p>
+      <p class="id-status-msg" id="idStatusMsg">Limpiando la imagen para que el siguiente paso (lectura línea por línea) tenga la mejor base.</p>
+      <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
+    </div>
+
+    <div class="id-preview-wrap" id="idPreview" hidden>
+      <div class="id-preview-row">
+        <div class="id-preview-tile">
+          <p class="id-preview-tile-label">Tu foto</p>
+          <img id="idRawImg" alt="" />
+        </div>
+        <div class="id-preview-tile">
+          <p class="id-preview-tile-label">Limpia para leer</p>
+          <img id="idCleanImg" alt="" />
+        </div>
+      </div>
+      <p class="id-preview-meta" id="idPreviewMeta"></p>
+      <button type="button" class="id-read-btn" id="idReadBtn" hidden aria-label="Leer esta factura">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+        Leer esta factura
+      </button>
+    </div>
+
+    <p class="id-coming" id="idComing" hidden><strong>Siguiente paso:</strong> toca "Leer esta factura" para extraer cada línea. Mostraremos categorías, totales, y te dejaremos guardar el resultado en B5.</p>
+
+    <div class="id-parsed" id="idParsed" hidden>
+      <div class="id-parsed-summary">
+        <span class="id-parsed-count" id="idParsedCount">0 partidas</span>
+        <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
+        <span class="id-parsed-meta" id="idParsedMeta"></span>
+      </div>
+      <ul class="id-parsed-list" id="idParsedList"></ul>
+      <p class="id-parsed-totals" id="idParsedTotals" hidden></p>
+      <div class="id-bulkbar" id="idBulkbar" hidden>
+        <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Marcar ámbar como verificadas</button>
+        <button type="button" class="id-bulk-save" id="idBulkSave" disabled>Guardar en mi Taller →</button>
+      </div>
+      <div class="id-handoff" id="idHandoff" hidden></div>
+    </div>
+
+    <div class="id-honesty">
+      <h3>Qué es, y qué no es.</h3>
+      <p><strong>Es:</strong> una forma rápida de convertir una foto, escaneo o PDF de factura en partidas ordenadas que son tuyas. Encriptado al guardar, atado solo a tu sesión. Categorizado en grupos reales de restaurante (proteína, verduras, lácteos, abarrotes, papel, limpieza, bebidas, hierbas-especias).</p>
+      <p><strong>No es:</strong> tu contabilidad. No se sincroniza con QuickBooks, Restaurant365 ni Toast. No detecta cada error de precio — úsalo como segundo par de ojos, no un auditor. Los costos de plato sólo se actualizan cuando tú confirmas.</p>
+      <p><strong>vs. Restaurant365:</strong> tus facturas se quedan en tu dispositivo hasta que decidas guardar. Las guardadas se encriptan con una llave derivada de tu sesión. No hay benchmark, no hay pool de proveedores, no entrenamos IA con tus costos — y nunca se rellenan retroactivamente si más adelante hay un opt-in.</p>
+      <p><strong>Postura de privacidad:</strong> Abre DevTools → Network. Elige una foto. La versión limpia se renderiza aquí. La pestaña Network sigue vacía. Los bytes de la imagen nunca salen de tu dispositivo.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<script src="/assets/site.js?v=20260430-cohesion" defer></script>
+<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/invoice-decoder/preprocess.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/ocr.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/parse.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/categorize.js?v=20260501-b4"></script>
+<script src="/tools/invoice-decoder/vendors.js?v=20260501-b3"></script>
+<script src="/tools/invoice-decoder/encrypt.js?v=20260501-b6"></script>
+<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-b6-3"></script>
+</body>
+</html>
