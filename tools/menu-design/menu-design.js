@@ -2849,6 +2849,45 @@
       if (window.plausible) { try { window.plausible('Menu Design SSML Exported'); } catch (_) {} }
     });
   }
+  // W16 — BRF Grade-1 export
+  var exportBrfBtn = document.getElementById('mdExportBrf');
+  if (exportBrfBtn) exportBrfBtn.addEventListener('click', function () {
+    if (typeof MD_TEXT === 'undefined' || typeof MD_TEXT.exportBrf !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting Braille.',
+                        'Agrega al menos un plato antes de exportar Braille.'), 'error');
+      return;
+    }
+    var optsB = buildEmitterOpts();
+    var brf = MD_TEXT.exportBrf(optsB);
+    var slug = String(optsB.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+    downloadBlob(brf, slug + '-menu.brf', 'application/x-brf');
+    setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
+                      'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
+    if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
+  });
+  // W16 — Tablet kiosk HTML
+  var exportTabletBtn = document.getElementById('mdExportTablet');
+  if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
+    if (typeof MD_HTML === 'undefined' || typeof MD_HTML.exportHtmlTablet !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting tablet HTML.',
+                        'Agrega al menos un plato antes de exportar HTML para tablet.'), 'error');
+      return;
+    }
+    var optsT = buildEmitterOpts();
+    var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+    optsT.theme = applyCustomizer(theme);
+    optsT.logoDataUrl = logoUrl;
+    var html = MD_HTML.exportHtmlTablet(optsT);
+    var slug = String(optsT.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+    downloadBlob(html, slug + '-menu-tablet.html', 'text/html');
+    setDownloadMsg(tt('Tablet HTML downloaded — drop on a kiosk device for guest reference.',
+                      'HTML para tablet descargado — para uso en kiosko.'), 'success');
+    if (window.plausible) { try { window.plausible('Menu Design Tablet Exported'); } catch (_) {} }
+  });
 
   // ----------------------------------------------------------------
   // W6-1 — QR-menu export. Promps for a destination URL the operator

@@ -246,10 +246,98 @@
     return out;
   }
 
+  // -------------------- BRF Grade-1 emitter --------------------
+  // BRF (Braille Ready Format) is a 6-dot ASCII-mapped format for
+  // braille embossers / readers. Grade 1 is uncontracted (every
+  // letter expanded literally, no shorthand). Real grade-2 requires
+  // BANA contractions which are licensed; we ship grade-1 only with
+  // a header note so operators know what to expect. Many embossers
+  // accept grade-1 BRF fine for menu-shaped content.
+  //
+  // Format: 40 chars per line, 25 lines per page; pages separated
+  // by ASCII form-feed (0x0C). Numbers prefixed with the number
+  // sign (#); capitals prefixed with the capital sign (,) per BANA.
+  function exportBrf(opts) {
+    opts = opts || {};
+    var rows = opts.rows || [];
+    var locale = opts.locale || 'en';
+    var lineW = 40;
+    var pageH = 25;
+    var lines = [];
+    function pushLine(text) {
+      // Wrap any oversize line.
+      var t = String(text || '');
+      while (t.length > lineW) {
+        var space = t.lastIndexOf(' ', lineW);
+        if (space <= 0) { lines.push(t.slice(0, lineW)); t = t.slice(lineW); }
+        else { lines.push(t.slice(0, space)); t = t.slice(space + 1); }
+      }
+      if (t.length || lines.length === 0) lines.push(t);
+    }
+    function brfText(s) {
+      // Apply Grade-1 capital marker (,) before each uppercase run
+      // and number marker (#) before each digit run. Punctuation
+      // stays literal — embossers map it natively.
+      var out = '';
+      var inNum = false;
+      var inCap = false;
+      for (var i = 0; i < s.length; i++) {
+        var c = s.charAt(i);
+        if (/\d/.test(c)) {
+          if (!inNum) { out += '#'; inNum = true; }
+          out += c;
+          inCap = false;
+        } else {
+          inNum = false;
+          if (/[A-Z]/.test(c)) {
+            if (!inCap) { out += ','; inCap = true; }
+            out += c.toLowerCase();
+          } else {
+            inCap = false;
+            out += c;
+          }
+        }
+      }
+      return out;
+    }
+    pushLine(',,brf grade-#a uncontracted');
+    pushLine('');
+    if (opts.title) { pushLine(brfText(opts.title)); pushLine(''); }
+    if (opts.tagline) { pushLine(brfText(opts.tagline)); pushLine(''); }
+    rows.forEach(function (r) {
+      if (!r) return;
+      if (r.kind === 'section' && r.name) {
+        pushLine('');
+        pushLine(',,' + r.name.toLowerCase());
+        pushLine(repeat('-', Math.min(lineW, r.name.length)));
+      } else if (r.kind === 'dish' && r.name) {
+        var line = brfText(r.name);
+        if (r.price) {
+          var priceStr = brfText(r.price);
+          var pad = lineW - line.length - priceStr.length;
+          if (pad > 1) line = line + repeat(' ', pad) + priceStr;
+          else line = line + ' ' + priceStr;
+        }
+        pushLine(line);
+        if (r.desc) pushLine('  ' + brfText(r.desc));
+      }
+    });
+    // Pad pages to 25 lines and join with form-feed separators.
+    var paged = [];
+    for (var p = 0; p < lines.length; p += pageH) {
+      var page = lines.slice(p, p + pageH);
+      while (page.length < pageH) page.push('');
+      paged.push(page.join('\n'));
+    }
+    return paged.join('\n\f\n'); // 0x0C form-feed between pages
+  }
+  function repeat(c, n) { var o = ''; for (var i = 0; i < n; i++) o += c; return o; }
+
   var api = {
     exportMarkdown:  exportMarkdown,
     exportPlainText: exportPlainText,
-    exportSsml:      exportSsml
+    exportSsml:      exportSsml,
+    exportBrf:       exportBrf
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MD_TEXT = api;

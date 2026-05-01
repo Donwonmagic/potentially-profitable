@@ -1209,6 +1209,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
           SSML (audio-ready)
         </button>
+        <!-- W16 — Braille Ready Format + tablet kiosk HTML. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Download Braille Ready Format (Grade 1)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+          Braille (BRF)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Download tablet kiosk HTML">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Tablet kiosk HTML
+        </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
     </div>
@@ -1322,8 +1331,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w14-2"></script>
-<script src="./menu-render-html.js?v=20260501-w7-2"></script>
-<script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w15"></script>
+<script src="./menu-render-html.js?v=20260501-w16"></script>
+<script src="./menu-render-text.js?v=20260501-w16"></script>
+<script src="./menu-design.js?v=20260501-w16"></script>
 </body>
 </html>

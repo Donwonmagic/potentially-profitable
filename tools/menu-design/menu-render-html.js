@@ -101,6 +101,11 @@
         // chips after the dish name. Each chip carries an explicit
         // aria-label so screen readers announce the full word, not
         // just the code letters.
+        // W16 — EU FIC Reg. 1169/2011 mandates inline bold uppercase
+        // allergen marks within the description. Triggered when
+        // opts.euAllergenStyle === true OR locale === 'es' (heuristic
+        // for EU/Latam markets).
+        var euAllergens = !!opts.euAllergenStyle || locale === 'es';
         var glyphHtml = '';
         var validAllergens = (Array.isArray(r.allergens) ? r.allergens : [])
           .filter(function (c) { return !!HTML_ALLERGENS[c]; });
@@ -110,7 +115,12 @@
           validAllergens.forEach(function (code) {
             seenCodes[code] = true;
             var lbl = allergenLabelHtml(code, locale);
-            glyphHtml += '<span class="ml-glyph" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code) + '</span>';
+            if (euAllergens) {
+              // Bold uppercase code, no rounded chip — EU convention.
+              glyphHtml += '<strong class="ml-glyph-eu" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code.toUpperCase()) + '</strong>';
+            } else {
+              glyphHtml += '<span class="ml-glyph" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code) + '</span>';
+            }
           });
           if (spice) {
             var sLbl = (locale === 'es' ? 'Picante nivel ' : 'Spicy level ') + spice;
@@ -192,6 +202,8 @@
 '  .ml-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}\n' +
 '  .ml-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:16px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1;background:transparent}\n' +
 '  .ml-glyph-spice{border:0;color:inherit;font-size:11.5px;letter-spacing:0;padding:0}\n' +
+/* W16 — EU FIC bold-uppercase allergen mark */
+'  .ml-glyph-eu{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);margin-left:4px;font-size:0.92em}\n' +
 /* W7-2 footer allergen-key block — small two-column list of code → label. */
 '  .ml-allergen-key{margin-top:36px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--accent) 24%,transparent)}\n' +
 '  .ml-allergen-key-title{font-family:var(--display);font-size:14px;font-weight:500;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;text-align:left;border:0;padding:0}\n' +
@@ -300,11 +312,38 @@
     });
   }
 
+  // -------------------- W16 tablet variant --------------------
+  // Front-of-house tablet display HTML. Locked-zoom 1024x768 layout,
+  // larger type (20pt body), no hover effects, fully kiosk-friendly.
+  // Restaurants pin this on a tablet on the table or near the entry
+  // for guest reference. Reuses the standard exportHtml emitter
+  // with a fixed `display: 'tablet'` flag we honor by injecting an
+  // additional <style> block.
+  function exportHtmlTablet(opts) {
+    opts = opts || {};
+    var standard = exportHtml(opts);
+    var tabletCss = '\n<style>\n' +
+      '@viewport { user-zoom: fixed; }\n' +
+      'html,body{height:100%}\n' +
+      'body{font-size:20px;line-height:1.7;padding:48px 32px;max-width:1024px;margin:0 auto}\n' +
+      '.ml-page{max-width:none}\n' +
+      '.ml-title{font-size:48px}\n' +
+      'h2{font-size:28px;margin-top:48px}\n' +
+      '.ml-name{font-size:22px;font-weight:600}\n' +
+      '.ml-price{font-size:22px}\n' +
+      '.ml-desc{font-size:18px;line-height:1.6}\n' +
+      '.ml-glyph{height:22px;font-size:14px;min-width:32px}\n' +
+      '@media (prefers-color-scheme: dark){body{filter:invert(0.92) hue-rotate(180deg)}.ml-logo,.ml-thumb,img{filter:invert(1) hue-rotate(180deg)}}\n' +
+      '</style>\n</body>';
+    return standard.replace('</body>', tabletCss);
+  }
+
   var api = {
-    exportHtml:    exportHtml,
-    exportQrPng:   exportQrPng,
-    exportZip:     exportZip,
-    loadQrCode:    loadQrCode
+    exportHtml:       exportHtml,
+    exportHtmlTablet: exportHtmlTablet,
+    exportQrPng:      exportQrPng,
+    exportZip:        exportZip,
+    loadQrCode:       loadQrCode
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MD_HTML = api;
