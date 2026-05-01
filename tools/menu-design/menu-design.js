@@ -124,8 +124,8 @@
 
   function updateStatus() {
     if (!statusEl) return;
-    var dishes   = rows.filter(function (r) { return r.kind === 'dish'; }).length;
-    var sections = rows.filter(function (r) { return r.kind === 'section'; }).length;
+    var dishes   = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost; }).length;
+    var sections = rows.filter(function (r) { return r.kind === 'section' && !r.ghost; }).length;
     if (LOCALE === 'es') {
       statusEl.innerHTML = '<strong>' + dishes + '</strong> plato' + (dishes === 1 ? '' : 's') +
         ' · <strong>' + sections + '</strong> sección' + (sections === 1 ? '' : 'es') +
@@ -135,6 +135,63 @@
         ' · <strong>' + sections + '</strong> section' + (sections === 1 ? '' : 's') +
         ' — your menu lives in this browser only.';
     }
+    // W5-2 — mid-flow encouragement at meaningful milestones.
+    maybeEncourage(dishes);
+  }
+
+  // ----------------------------------------------------------------
+  // W5-2 — mid-flow encouragement toasts.
+  //
+  // Fires a short, single-line toast at every 5-dish milestone
+  // (5, 10, 15, 20). Each milestone fires at most once per session.
+  // Throttle: never twice in <8s; max 4 toasts per session. Honors
+  // prefers-reduced-motion (no slide-in; quick fade).
+  // ----------------------------------------------------------------
+  var __encourageHits = {};
+  var __encourageLastTs = 0;
+  var __encourageCount = 0;
+  var ENCOURAGE_MSGS = {
+    5:  { en: 'Five dishes already. Most owners stop typing here and lose them — you\'re past that.',
+          es: 'Cinco platos ya. La mayoría se atora aquí — tú ya pasaste ese punto.' },
+    10: { en: 'Ten dishes — that\'s a real menu. Try a different theme to see how it shifts the feel.',
+          es: 'Diez platos — eso ya es un menú de verdad. Prueba otro tema para ver cómo cambia.' },
+    15: { en: 'Fifteen dishes. Add a logo if you have one — small touch, big lift on the printable.',
+          es: 'Quince platos. Si tienes logo, súbelo — toque pequeño, salto grande en el imprimible.' },
+    20: { en: 'Twenty dishes. You\'re in "real menu" territory now — most printable PDFs cap around 30.',
+          es: 'Veinte platos. Ya estás en territorio de menú real — la mayoría de PDFs caben hasta 30.' }
+  };
+  function maybeEncourage(dishCount) {
+    var key = ENCOURAGE_MSGS[dishCount] ? dishCount : null;
+    if (!key) return;
+    if (__encourageHits[key]) return;
+    if (__encourageCount >= 4) return;
+    var now = Date.now();
+    if (now - __encourageLastTs < 8000) return;
+    __encourageHits[key] = true;
+    __encourageLastTs = now;
+    __encourageCount++;
+    var msg = ENCOURAGE_MSGS[key];
+    surfaceEncouragement(LOCALE === 'es' ? msg.es : msg.en);
+    if (window.plausible) {
+      try { window.plausible('Menu Design Encouragement', { props: { milestone: String(key) } }); } catch (_) {}
+    }
+  }
+  function surfaceEncouragement(text) {
+    var el = document.createElement('div');
+    el.className = 'md-encourage';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.textContent = text;
+    document.body.appendChild(el);
+    // Force reflow so the transition triggers.
+    void el.offsetHeight;
+    el.classList.add('show');
+    setTimeout(function () {
+      el.classList.remove('show');
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, 300);
+    }, 2500);
   }
 
   // -------------------- Theme picker --------------------

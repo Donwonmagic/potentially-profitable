@@ -228,6 +228,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 .md-celebrate-back{margin-top:12px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 @media(prefers-reduced-motion:reduce){.md-celebrate,.md-celebrate-card{animation:none}}
 
+/* W5-2 — mid-flow encouragement toast. */
+.md-encourage{position:fixed;left:50%;top:80px;transform:translateX(-50%) translateY(-8px);background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-size:14px;padding:10px 16px;border-radius:24px;box-shadow:0 12px 28px rgba(0,0,0,.18);max-width:min(560px,calc(100% - 32px));text-align:center;line-height:1.4;opacity:0;pointer-events:none;transition:opacity .24s ease,transform .24s ease;z-index:1150}
+.md-encourage.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(prefers-reduced-motion:reduce){.md-encourage{transition:opacity .12s ease;transform:translateX(-50%) translateY(0)}}
+
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles para restaurantes independientes a partir de una lista de platos, cuatro temas tipográficos, el logo del operador y cuatro tamaños de papel. Solo acomodo mecánico — sin reescritura por IA.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
