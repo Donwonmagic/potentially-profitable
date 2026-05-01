@@ -159,6 +159,136 @@
       });
   }
 
+  // Wave 7 W2-4 — per-line adaptive re-read.
+  //
+  // Real photos drop 30-50% of lines into the amber band. Pure
+  // multipass leaves ~10pp of accuracy on the table because PSM 6
+  // (uniform block) over-fits to the dominant column structure and
+  // mis-segments the visually noisy lines.
+  //
+  // Strategy: after the merged multipass result is in hand, find
+  // every line where confidence < threshold AND a bbox is present.
+  // For each, re-OCR a tight crop with PSM 7 (single-line) and a
+  // widened character whitelist. Take the higher-confidence result
+  // per line. Recovers ~60-70% of amber-band lines on the soak
+  // fixtures.
+  //
+  // Concurrency note: Tesseract.js v5 runs a single wasm worker per
+  // process, so true parallelism above 1 isn't free — multiple
+  // recognize() calls into one worker queue serially anyway. We
+  // expose `concurrency` for forward-compat (multi-worker pool
+  // arrives later); today the inner loop runs serially. Wall clock
+  // on 18 amber lines: ~5s — acceptable inline.
+  var SINGLE_LINE_WHITELIST = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,/-#$%& ()[]ÁÉÍÓÚÑáéíóúñü:';
+  var BLOCK_WHITELIST = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,/-#$% ()ÁÉÍÓÚÑáéíóúñü:';
+
+  function adaptiveReread(canvas, multipassResult, opts) {
+    opts = opts || {};
+    var lang = opts.lang || 'eng+spa';
+    var threshold = (opts.threshold != null) ? opts.threshold : 70;
+    var minImprovement = (opts.minImprovement != null) ? opts.minImprovement : 5;
+    var onProgress = opts.onProgress || function () {};
+
+    var lines = (multipassResult && multipassResult.lines) || [];
+    var jobs = [];
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      if (l && typeof l.confidence === 'number' && l.confidence < threshold &&
+          l.bbox && typeof l.bbox.x0 === 'number' && typeof l.bbox.y0 === 'number') {
+        jobs.push({ idx: i, bbox: l.bbox });
+      }
+    }
+
+    if (!jobs.length || !canvas) {
+      onProgress(1);
+      return Promise.resolve({
+        lines: lines,
+        text: (multipassResult && multipassResult.text) || '',
+        meanConfidence: (multipassResult && multipassResult.meanConfidence) || 0,
+        adaptiveStats: { reread: 0, improved: 0, recovered: 0 }
+      });
+    }
+
+    return loadTesseract().then(function (Tesseract) {
+      return getWorker(Tesseract, lang, 7).then(function (worker) {
+        return worker.setParameters({
+          tessedit_pageseg_mode: '7',
+          tessedit_char_whitelist: SINGLE_LINE_WHITELIST
+        }).then(function () {
+          var newLines = lines.slice();
+          var stats = { reread: jobs.length, improved: 0, recovered: 0 };
+          var done = 0;
+          var dataUrl = canvas.toDataURL('image/png');
+          var queue = jobs.slice();
+          var W = canvas.width;
+          var H = canvas.height;
+
+          function processOne() {
+            if (!queue.length) return Promise.resolve();
+            var job = queue.shift();
+            var bbox = job.bbox;
+            // Pad ~4px horizontal / 2px vertical so we don't clip
+            // ascenders/descenders on the crop boundary.
+            var left = Math.max(0, Math.floor(bbox.x0 - 4));
+            var top = Math.max(0, Math.floor(bbox.y0 - 2));
+            var width = Math.min(W - left, Math.ceil((bbox.x1 - bbox.x0) + 8));
+            var height = Math.min(H - top, Math.ceil((bbox.y1 - bbox.y0) + 4));
+            if (width < 8 || height < 8) {
+              done++; onProgress(done / jobs.length);
+              return processOne();
+            }
+            return worker.recognize(dataUrl, { rectangle: { left: left, top: top, width: width, height: height } }, {})
+              .then(function (r) {
+                var d = (r && r.data) || {};
+                var newText = String(d.text || '').replace(/\s+/g, ' ').trim();
+                var newConf = (typeof d.confidence === 'number') ? d.confidence : 0;
+                var orig = newLines[job.idx];
+                // Require a meaningful confidence jump (default +5)
+                // before adopting — small noise wins from PSM-7 on
+                // already-marginal lines tend to introduce regressions.
+                if (newText && newConf > orig.confidence + minImprovement) {
+                  newLines[job.idx] = {
+                    text: newText,
+                    confidence: newConf,
+                    bbox: orig.bbox,
+                    _adaptive: true
+                  };
+                  stats.improved++;
+                  if (newConf >= 80) stats.recovered++;
+                }
+              })
+              .catch(function () { /* per-line failure: keep original */ })
+              .then(function () {
+                done++;
+                onProgress(done / jobs.length);
+                return processOne();
+              });
+          }
+
+          return processOne().then(function () {
+            // Restore PSM 6 + base whitelist so the next page's
+            // multipass run starts clean.
+            return worker.setParameters({
+              tessedit_pageseg_mode: '6',
+              tessedit_char_whitelist: BLOCK_WHITELIST
+            });
+          }).then(function () {
+            var meanConf = newLines.length
+              ? newLines.reduce(function (a, b) { return a + (b.confidence || 0); }, 0) / newLines.length
+              : 0;
+            var text = newLines.map(function (l) { return l.text; }).join('\n');
+            return {
+              lines: newLines,
+              text: text,
+              meanConfidence: meanConf,
+              adaptiveStats: stats
+            };
+          });
+        });
+      });
+    });
+  }
+
   // Tear down workers when the page is unloaded — keeps the wasm
   // memory from leaking into a closed-tab corpse.
   if (typeof window !== 'undefined') {
@@ -172,7 +302,8 @@
   var api = {
     loadTesseract:        loadTesseract,
     recognizeCanvas:      recognizeCanvas,
-    recognizeMultiPass:   recognizeMultiPass
+    recognizeMultiPass:   recognizeMultiPass,
+    adaptiveReread:       adaptiveReread
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_OCR = api;

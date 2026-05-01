@@ -289,6 +289,34 @@
             );
           }
         }).then(function (ocrResult) {
+          // W2-4: per-line adaptive bbox re-OCR. Lines that came
+          // back amber (<70% confidence) and carry a bbox get
+          // re-read with PSM 7 + widened whitelist on a tight crop.
+          // The multipass result is passed through unchanged when
+          // no candidates exist. We feed the gentle preprocessed
+          // canvas — both passes share dimensions, gentle keeps
+          // text most legible for a single-line read.
+          if (typeof MID_OCR.adaptiveReread === 'function') {
+            return MID_OCR.adaptiveReread(page.gentle, ocrResult, {
+              lang: 'eng+spa',
+              threshold: 70
+            }).then(function (improved) {
+              if (improved && improved.adaptiveStats &&
+                  improved.adaptiveStats.improved > 0 &&
+                  window.plausible) {
+                window.plausible('Invoice Decoder Adaptive Reread', { props: {
+                  page: String(pageIdx + 1),
+                  reread_bucket: improved.adaptiveStats.reread < 5 ? '<5' :
+                                 improved.adaptiveStats.reread < 15 ? '5-14' : '15+',
+                  improved_bucket: improved.adaptiveStats.improved < 3 ? '<3' :
+                                   improved.adaptiveStats.improved < 8 ? '3-7' : '8+'
+                } });
+              }
+              return improved;
+            });
+          }
+          return ocrResult;
+        }).then(function (ocrResult) {
           // W2-5: multi-page footer-repeat dedup. A 2-page Sysco
           // invoice repeats the SYSCO HOUSTON / Customer Number /
           // column-header band on page 2; the previous concat
