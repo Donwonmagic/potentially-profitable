@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v7-2026-05-01';
+var SW_VERSION = 'id-decoder-v8-2026-05-01';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -66,6 +66,7 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/kdf.js',
   '/tools/invoice-decoder/encrypt.js',
   '/tools/invoice-decoder/recovery.js',
+  '/tools/invoice-decoder/pairing.js',
   '/tools/invoice-decoder/passphrase-modal.js',
   '/tools/invoice-decoder/data/bip39-en.txt',
   '/assets/vendor/hash-wasm@4.11.0/argon2.umd.min.js',

@@ -1638,6 +1638,124 @@ console.log(`\nPer-vendor line grammar — tax + discount classification (Wave 4
 
 console.log(`\nWave 4.2 line-grammar fixtures: ${lgPass} passed.`);
 
+// =====================================================================
+// Wave 6.3 second half — multi-device pairing.
+// Tests the pairing module + the encrypt.addWrap label/addedAt
+// fields + encrypt.removeWrap with the safety guard.
+// =====================================================================
+
+let pairPass = 0, pairFail = 0;
+console.log(`\nMulti-device pairing (Wave 6.3 second half):`);
+{
+  // Stub the browser globals the modules expect.
+  global.window = global.window || {};
+  global.window.crypto = global.crypto;
+  global.window.MuntinContext = global.window.MuntinContext || {
+    read: () => ({}),
+    merge: () => true
+  };
+
+  const KDF = await import(path.join(repoRoot, 'tools/invoice-decoder/kdf.js'))    .then(m => m.default || m);
+  global.window.MID_KDF = KDF;
+  const ENC = await import(path.join(repoRoot, 'tools/invoice-decoder/encrypt.js')).then(m => m.default || m);
+  global.window.MID_ENCRYPT = ENC;
+
+  // Build a baseline v=2 envelope with a passphrase-only wrap.
+  const payload = { rows: [{ name: 'Coffee Beans', qty: 5, lineTotal: 60 }], totalParsed: 60 };
+  const passphrase = 'master-pass-correct-horse-99';
+  const aad = 'invoice:pair-test:001';
+  const lowParams = { kdf: 'pbkdf2', iter: 5000 };
+  const env = await ENC.encryptPayload(payload, passphrase, aad, { kdfParams: lowParams });
+
+  // 1. addWrap accepts a meta object with kind + label + addedAt.
+  const env2 = await ENC.addWrap(env, passphrase, 'phone-token-secret', { kind: 'paired-device', label: 'My Phone', addedAt: 1700000000000 }, lowParams);
+  const pairWrap = env2.wraps.find(w => w.kind === 'paired-device');
+  const okMeta = pairWrap && pairWrap.label === 'My Phone' && pairWrap.addedAt === 1700000000000;
+  console.log(`  ${okMeta ? '✓' : '✗'} addWrap stores label + addedAt on the new wrap`);
+  if (okMeta) pairPass++; else pairFail++;
+
+  // 2. Decrypt with the device-specific token.
+  const got = await ENC.decryptPayload(env2, 'phone-token-secret', aad);
+  const okDevTok = got && got.totalParsed === 60;
+  console.log(`  ${okDevTok ? '✓' : '✗'} envelope decrypts with the paired-device token`);
+  if (okDevTok) pairPass++; else pairFail++;
+
+  // 3. Backward-compat: addWrap accepts a string kind (legacy callers).
+  const env3 = await ENC.addWrap(env, passphrase, 'recovery-words-here-yes', 'recovery', lowParams);
+  const recWrap = env3.wraps.find(w => w.kind === 'recovery');
+  const okLegacy = recWrap && !recWrap.label;
+  console.log(`  ${okLegacy ? '✓' : '✗'} addWrap legacy string-kind shape still works (no label set)`);
+  if (okLegacy) pairPass++; else pairFail++;
+
+  // 4. Add two paired-device wraps with distinct labels; both unlock.
+  let envMulti = env;
+  envMulti = await ENC.addWrap(envMulti, passphrase, 'phone-token-secret', { kind: 'paired-device', label: 'Phone' }, lowParams);
+  envMulti = await ENC.addWrap(envMulti, passphrase, 'laptop-token-secret', { kind: 'paired-device', label: 'Laptop' }, lowParams);
+  const pairs = envMulti.wraps.filter(w => w.kind === 'paired-device');
+  const okMulti = pairs.length === 2 && pairs[0].label === 'Phone' && pairs[1].label === 'Laptop';
+  console.log(`  ${okMulti ? '✓' : '✗'} envelope holds multiple paired-device wraps with distinct labels`);
+  if (okMulti) pairPass++; else pairFail++;
+  const phoneOk = await ENC.decryptPayload(envMulti, 'phone-token-secret', aad);
+  const laptopOk = await ENC.decryptPayload(envMulti, 'laptop-token-secret', aad);
+  const masterOk = await ENC.decryptPayload(envMulti, passphrase, aad);
+  const allUnlock = phoneOk && phoneOk.totalParsed === 60 && laptopOk && laptopOk.totalParsed === 60 && masterOk && masterOk.totalParsed === 60;
+  console.log(`  ${allUnlock ? '✓' : '✗'} all three secrets (master, Phone, Laptop) unlock the same envelope`);
+  if (allUnlock) pairPass++; else pairFail++;
+
+  // 5. removeWrap by kind+label revokes only the matching wrap.
+  const revoked = ENC.removeWrap(envMulti, 'paired-device', 'Phone');
+  const okRevoke = revoked && revoked.wraps.length === envMulti.wraps.length - 1 &&
+                   !revoked.wraps.some(w => w.kind === 'paired-device' && w.label === 'Phone') &&
+                   revoked.wraps.some(w => w.kind === 'paired-device' && w.label === 'Laptop');
+  console.log(`  ${okRevoke ? '✓' : '✗'} removeWrap revokes only the matching label`);
+  if (okRevoke) pairPass++; else pairFail++;
+
+  // Phone token no longer unlocks; laptop still does; master still does.
+  let phoneStillWorks = false;
+  try { await ENC.decryptPayload(revoked, 'phone-token-secret', aad); phoneStillWorks = true; } catch (_) {}
+  console.log(`  ${!phoneStillWorks ? '✓' : '✗'} revoked Phone token no longer unlocks`);
+  if (!phoneStillWorks) pairPass++; else pairFail++;
+
+  const laptopStillOk = await ENC.decryptPayload(revoked, 'laptop-token-secret', aad);
+  const okLaptopStill = laptopStillOk && laptopStillOk.totalParsed === 60;
+  console.log(`  ${okLaptopStill ? '✓' : '✗'} surviving Laptop token still unlocks after revoke`);
+  if (okLaptopStill) pairPass++; else pairFail++;
+
+  // 6. removeWrap refuses to leave the envelope without any wraps.
+  const stripBoth = ENC.removeWrap(env2, 'paired-device', 'My Phone');     // removes the only paired wrap
+  const stripPass = ENC.removeWrap(stripBoth, 'passphrase');               // tries to remove the last wrap
+  const okGuard = stripPass === null;
+  console.log(`  ${okGuard ? '✓' : '✗'} removeWrap refuses to leave an envelope without any unlock paths`);
+  if (okGuard) pairPass++; else pairFail++;
+
+  // 7. listDevices via the pairing module (uses encrypt.addWrap
+  // internally, exercises the labeled-wrap shape end-to-end). The
+  // pairing module pulls the BIP39 wordlist via fetch, which we
+  // can't run in pure Node — so we just sanity-check listDevices
+  // against an envelope we hand-build.
+  const PAIRING = await import(path.join(repoRoot, 'tools/invoice-decoder/pairing.js')).then(m => m.default || m);
+  global.window.MID_PAIRING = PAIRING;
+  const devices = PAIRING.listDevices(envMulti);
+  const okList = devices.length === 2 && devices[0].label === 'Phone' && devices[1].label === 'Laptop' && devices.every(d => typeof d.addedAt === 'number');
+  console.log(`  ${okList ? '✓' : '✗'} listDevices enumerates labeled paired-device wraps in order`);
+  if (okList) pairPass++; else pairFail++;
+
+  // removeDevice via the pairing module wraps removeWrap + null guard.
+  const afterRemove = PAIRING.removeDevice(envMulti, 'Phone');
+  const okPairRemove = afterRemove && PAIRING.listDevices(afterRemove).length === 1 &&
+                       PAIRING.listDevices(afterRemove)[0].label === 'Laptop';
+  console.log(`  ${okPairRemove ? '✓' : '✗'} pairing.removeDevice removes by label and preserves siblings`);
+  if (okPairRemove) pairPass++; else pairFail++;
+
+  delete global.window.MID_KDF;
+  delete global.window.MID_ENCRYPT;
+  delete global.window.MID_PAIRING;
+  delete global.window.MuntinContext;
+  delete global.window;
+}
+
+console.log(`\nWave 6.3 pairing fixtures: ${pairPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -1647,5 +1765,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + splitFail
   + coachFail
   + v42Fail
-  + lgFail;
+  + lgFail
+  + pairFail;
 process.exit(grandFail === 0 ? 0 : 1);

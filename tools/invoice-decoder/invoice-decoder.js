@@ -1892,6 +1892,64 @@
   // round-trip, no leak via referrer (referrerpolicy:no-referrer
   // already on the page). The handoff fragment shape mirrors the
   // existing tools/_shared/url-fragment.js encoders.
+  // ============================================================
+  // Wave 6.3 second half — multi-device pairing flow.
+  //
+  // Asks the operator for a friendly device label, generates a
+  // 24-word pair token, adds a `paired-device` wrap to the envelope
+  // via MID_PAIRING.addDevice, re-saves the envelope to the server
+  // (one extra POST), then surfaces the token via MID_PASS
+  // .showRecoveryPhrase (reusing the same word-grid + copy/print
+  // affordances). Operator transcribes the token to Device B and
+  // unlocks via the existing recovery-phrase path.
+  // ============================================================
+  function runPairingFlow(envelope, passphrase, aad, payload) {
+    if (typeof MID_PAIRING === 'undefined' || !MID_PAIRING.addDevice) return;
+    var label = window.prompt(
+      tt('What\'s a name for the device you\'re pairing? (e.g. "My Laptop")',
+         '¿Qué nombre le pones al dispositivo que vas a vincular? (ej. "Mi Laptop")'),
+      tt('My laptop', 'Mi laptop')
+    );
+    if (!label) return;
+    label = String(label).trim().slice(0, 60);
+    if (!label) return;
+    MID_PAIRING.addDevice(envelope, passphrase, label).then(function (result) {
+      if (!result || !result.envelope || !result.token) return;
+      // Re-save the envelope with the new wrap. The server stores
+      // ciphertext only — the new wrap is just a few hundred extra
+      // bytes added to the existing envelope.
+      var body = new FormData();
+      body.set('kind',    'invoice-decoder');
+      body.set('title',   tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
+      body.set('aad',     aad);
+      body.set('payload', JSON.stringify({
+        envelope:  result.envelope,
+        aad:       aad,
+        items:     payload.itemCount,
+        parsedSum: payload.parsedSum
+      }));
+      return fetch('/api/workbench/save', { // h8-exempt:workshop-save — same encrypted-only POST, adds paired-device wrap
+        method:      'POST',
+        credentials: 'same-origin',
+        body:        body
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function () {
+        // Show the token to the operator. We reuse showRecoveryPhrase
+        // because the UX shape (24-word grid + copy/print) is the
+        // same — just relabel the heading via a wrapper helper.
+        if (typeof MID_PASS !== 'undefined' && MID_PASS.showRecoveryPhrase) {
+          return MID_PASS.showRecoveryPhrase(result.token).then(function () {
+            if (window.plausible) {
+              try { window.plausible('Invoice Decoder Device Paired'); } catch (_) {}
+            }
+          });
+        }
+      });
+    }).catch(function () {
+      alert(tt('Pairing failed. Try again — or write to Don if it keeps happening.',
+               'Falló la vinculación. Intenta de nuevo — o escríbele a Don si sigue pasando.'));
+    });
+  }
+
   function renderHandoffPanel(payload) {
     var host = document.getElementById('idHandoff');
     if (!host) return;
@@ -2228,6 +2286,19 @@
                 payload: { itemCount: payload.itemCount, sampleNames: sampleNames },
                 decrypt: function (env, tryPp) {
                   return MID_ENCRYPT.decryptPayload(env, tryPp, savedAad);
+                },
+                // Wave 6.3 second half — give the proof flyout a
+                // pairing handler. The flyout shows a "Pair another
+                // device" button only when this callback is present
+                // (i.e., we have an unlocked passphrase + envelope
+                // in scope). Operator clicks → openPairingModal()
+                // generates a labeled 24-word token, calls addDevice,
+                // re-saves the envelope, displays the token.
+                openPairing: function () {
+                  if (savedEnvelope && savedPassphrase &&
+                      typeof MID_PAIRING !== 'undefined' && MID_PAIRING.addDevice) {
+                    runPairingFlow(savedEnvelope, savedPassphrase, savedAad, payload);
+                  }
                 }
               });
             } catch (_) { /* flyout is purely decorative — never block save */ }

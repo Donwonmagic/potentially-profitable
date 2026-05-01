@@ -98,10 +98,15 @@
 
   // -------------------- v=2 helpers --------------------
   function kdfMod() {
-    if (typeof root === 'undefined' || !root || !root.MID_KDF) {
-      throw new Error('MID_KDF module missing — encrypt.js depends on kdf.js');
-    }
-    return root.MID_KDF;
+    // Read from globalThis so this works in both browser
+    // (window.MID_KDF) and Node tests (which set
+    // globalThis.window.MID_KDF). The IIFE's captured `root` may be
+    // null in Node CommonJS contexts where `window` is undefined at
+    // module load time.
+    var g = (typeof globalThis !== 'undefined') ? globalThis : null;
+    var kdf = g && (g.MID_KDF || (g.window && g.window.MID_KDF));
+    if (!kdf) throw new Error('MID_KDF module missing — encrypt.js depends on kdf.js');
+    return kdf;
   }
 
   // Wrap a 32-byte data key with a secret-derived KEK. Returns the
@@ -218,16 +223,29 @@
   }
 
   // Add a new wrap to an existing v=2 envelope (e.g., add a recovery
-  // wrap to an envelope that was originally saved without one).
+  // wrap to an envelope that was originally saved without one, or
+  // add a paired-device wrap with a friendly label).
   // Requires unlocking via an existing wrap, then deriving a fresh
   // wrap for the new secret.
-  function addWrap(envelope, knownSecret, newSecret, newWrapKind, kdfParams) {
+  //
+  // wrapMeta: { kind, label?, addedAt? } — kind is required; the
+  // optional label + addedAt let the UI list paired devices and
+  // surface "added 3 days ago" affordances.
+  function addWrap(envelope, knownSecret, newSecret, wrapMeta, kdfParams) {
     if (!envelope || envelope.v !== 2) return Promise.reject(new Error('addWrap only supports v=2 envelopes'));
     if (!Array.isArray(envelope.wraps)) return Promise.reject(new Error('envelope.wraps missing'));
     kdfParams = Object.assign({}, DEFAULT_KDF_PARAMS, kdfParams || {});
+    // Backward compat: callers that pass a string (the previous
+    // 'newWrapKind' arg) get a wrap with just the kind set.
+    var meta = (typeof wrapMeta === 'string')
+      ? { kind: wrapMeta || 'extra' }
+      : (wrapMeta || { kind: 'extra' });
     return tryUnwrapAny(envelope.wraps, knownSecret).then(function (dataKey) {
       return buildWrap(dataKey, newSecret, kdfParams).then(function (w) {
-        w.kind = newWrapKind || 'extra';
+        w.kind = meta.kind;
+        if (meta.label)   w.label   = String(meta.label).slice(0, 60);
+        if (meta.addedAt) w.addedAt = meta.addedAt;
+        else              w.addedAt = Date.now();
         // Wipe data key.
         dataKey.fill(0);
         var next = JSON.parse(JSON.stringify(envelope));
@@ -235,6 +253,27 @@
         return next;
       });
     });
+  }
+
+  // Remove a wrap from an envelope. Used to revoke a paired-device
+  // wrap when the operator loses access to that device. Identifies
+  // the wrap by kind + label (so multiple paired-device wraps can
+  // coexist with distinct labels). Always preserves at least one
+  // wrap — refuses to remove the last unlock path so the operator
+  // can't accidentally lock themselves out.
+  function removeWrap(envelope, kind, label) {
+    if (!envelope || envelope.v !== 2 || !Array.isArray(envelope.wraps)) {
+      return null;
+    }
+    var remaining = envelope.wraps.filter(function (w) {
+      if (w.kind !== kind) return true;
+      if (label && w.label !== label) return true;
+      return false;
+    });
+    if (!remaining.length) return null;  // refuse to leave envelope unwrappable
+    var next = JSON.parse(JSON.stringify(envelope));
+    next.wraps = remaining;
+    return next;
   }
 
   // Try each wrap in order; resolve with the data key from the first
@@ -308,6 +347,7 @@
     encryptPayload:     encryptPayload,
     decryptPayload:     decryptPayload,
     addWrap:            addWrap,
+    removeWrap:         removeWrap,
     envelopeWrapKinds:  envelopeWrapKinds,
     clearKeyCache:      clearKeyCache,
     DEFAULT_KDF_PARAMS: DEFAULT_KDF_PARAMS,

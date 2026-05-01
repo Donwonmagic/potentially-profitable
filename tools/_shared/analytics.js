@@ -112,6 +112,7 @@
       'Invoice Decoder Category Set',
       'Invoice Decoder Comparison Opened',
       'Invoice Decoder Contract Set',
+      'Invoice Decoder Device Paired',
       'Invoice Decoder Filter Used',
       'Invoice Decoder Installed',
       'Invoice Decoder Math Fix Applied',
