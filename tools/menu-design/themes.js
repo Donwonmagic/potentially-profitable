@@ -41,7 +41,7 @@
       logoSlot:      'header-center',
       letterSpacing: 'normal',
       sectionCase:   'capitalize',
-      paperFloors:   ['letter', 'a4', 'half-page', 'trifold', 'table-tent'],
+      paperFloors:   ['letter', 'a4', 'half-page', 'trifold-letter-z', 'table-tent', 'placemat'],
       cuisineHint: ['italian', 'italiana', 'trattoria', 'osteria', 'pasta', 'family italian']
     },
 
@@ -101,7 +101,7 @@
       logoSlot:      'header-right',
       letterSpacing: 'wide',
       sectionCase:   'uppercase',
-      paperFloors:   ['letter', 'a4', 'half-page', 'trifold', 'table-tent'],
+      paperFloors:   ['letter', 'a4', 'half-page', 'trifold-letter-z', 'table-tent', 'placemat'],
       cuisineHint: ['modern', 'minimalist', 'tasting', 'bistro', 'new american', 'farm to table']
     },
 
@@ -161,7 +161,7 @@
       logoSlot:      'header-center',
       letterSpacing: 'normal',
       sectionCase:   'small-caps',
-      paperFloors:   ['letter', 'a4', 'half-page', 'trifold', 'table-tent'],
+      paperFloors:   ['letter', 'a4', 'half-page', 'trifold-letter-z', 'table-tent', 'placemat'],
       ornamentGlyph: '◆',
       cuisineHint: ['mexican', 'mexicana', 'taco', 'taqueria', 'taquería', 'cantina', 'tex-mex']
     },
@@ -222,7 +222,7 @@
       logoSlot:      'header-left',
       letterSpacing: 'normal',
       sectionCase:   'capitalize',
-      paperFloors:   ['letter', 'a4', 'half-page', 'trifold', 'table-tent'],
+      paperFloors:   ['letter', 'a4', 'half-page', 'trifold-letter-z', 'table-tent', 'placemat'],
       cuisineHint: ['seafood', 'oyster', 'raw bar', 'fish house', 'mariscos', 'pescados']
     },
 
@@ -281,7 +281,7 @@
       logoSlot:      'header-left',
       letterSpacing: 'normal',
       sectionCase:   'small-caps',
-      paperFloors:   ['letter', 'a4', 'half-page', 'trifold', 'table-tent'],
+      paperFloors:   ['letter', 'a4', 'half-page', 'trifold-letter-z', 'table-tent', 'placemat'],
       cuisineHint: ['cafe', 'café', 'coffee', 'bakery', 'panaderia', 'panadería', 'sandwich', 'breakfast']
     },
 

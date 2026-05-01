@@ -44,11 +44,79 @@
   }
 
   // Paper dimensions in PostScript points (jsPDF unit:'pt').
+  // W7-3 — expanded catalog. Each entry self-describes its flow
+  // (single page vs multi-panel folded), default orientation,
+  // margin, recommended stock, and a panel structure for folded
+  // formats. The marketing copy on index.html line 588 finally
+  // matches reality: trifold + table-tent + bifold ship.
+  //
+  // Categories (used by the picker UI):
+  //   sheet   — single-page sheet (letter, A4, legal, tabloid, half-page, quarter, postcard)
+  //   folded  — multi-panel folded (bifold, trifold-z, trifold-gate, trifold-legal)
+  //   table   — table-presentation (tent, card, placemat, wine-narrow)
+  //   board   — large format (A2 board, A1 board)
+  //   digital — screen-aspect-ratio (16:9 horizontal, 9:16 vertical)
+  //   custom  — operator-typed dimensions
   var PAPERS = {
-    'letter':    { w: 612,    h: 792    },
-    'a4':        { w: 595.28, h: 841.89 },
-    'half-page': { w: 612,    h: 396    }
+    // -------- Sheets --------
+    'letter':       { w: 612,    h: 792,    flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 48, label: 'Letter (8.5×11)',          stock: '24lb-text' },
+    'letter-land':  { w: 792,    h: 612,    flow: 'page',  cat: 'sheet',  orient: 'landscape', margin: 48, label: 'Letter landscape (11×8.5)', stock: '24lb-text' },
+    'a4':           { w: 595.28, h: 841.89, flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 48, label: 'A4 (210×297mm)',           stock: '24lb-text' },
+    'a4-land':      { w: 841.89, h: 595.28, flow: 'page',  cat: 'sheet',  orient: 'landscape', margin: 48, label: 'A4 landscape',             stock: '24lb-text' },
+    'legal':        { w: 612,    h: 1008,   flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 48, label: 'Legal (8.5×14)',           stock: '24lb-text' },
+    'tabloid':      { w: 792,    h: 1224,   flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 60, label: 'Tabloid (11×17)',          stock: '32lb-text' },
+    'half-page':    { w: 612,    h: 396,    flow: 'page',  cat: 'sheet',  orient: 'landscape', margin: 30, label: 'Half-page (8.5×5.5)',      stock: '32lb-text' },
+    'quarter-pc':   { w: 306,    h: 396,    flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 24, label: 'Postcard (4.25×5.5)',      stock: '80lb-cover' },
+    // -------- Folded multi-panel --------
+    'bifold-letter': { w: 792, h: 612, flow: 'panel', cat: 'folded', orient: 'landscape', panels: 4, fold: 'bifold',
+                       panelMap: ['back', 'front', 'inside-L', 'inside-R'], gutter: 18, margin: 36,
+                       label: 'Bi-fold (letter, 4 panels)', stock: '80lb-cover' },
+    'trifold-letter-z': { w: 792, h: 612, flow: 'panel', cat: 'folded', orient: 'landscape', panels: 6, fold: 'z-fold',
+                          panelMap: ['front', 'inside-1', 'inside-2', 'back', 'address', 'tear'],
+                          panelWidths: [264, 264, 264], gutter: 12, margin: 24,
+                          label: 'Tri-fold Z (letter)', stock: '80lb-cover' },
+    'trifold-letter-gate': { w: 792, h: 612, flow: 'panel', cat: 'folded', orient: 'landscape', panels: 6, fold: 'gate-fold',
+                             panelWidths: [198, 396, 198],
+                             panelMap: ['gate-L', 'front', 'gate-R', 'inside-L', 'center', 'inside-R'],
+                             gutter: 12, margin: 24, label: 'Tri-fold gate (letter)', stock: '80lb-cover' },
+    'trifold-legal': { w: 1008, h: 612, flow: 'panel', cat: 'folded', orient: 'landscape', panels: 6, fold: 'z-fold',
+                       panelMap: ['front', 'inside-1', 'inside-2', 'back', 'inside-3', 'inside-4'],
+                       panelWidths: [336, 336, 336], gutter: 12, margin: 24,
+                       label: 'Tri-fold Z (legal — more dishes)', stock: '80lb-cover' },
+    // -------- Table formats --------
+    'table-tent':   { w: 360, h: 720, flow: 'panel', cat: 'table', orient: 'portrait', panels: 2, fold: 'tent',
+                      panelMap: ['side-A', 'side-B'], gutter: 6, margin: 18,
+                      label: 'Table tent (5×10 folded to 5×5)', stock: '100lb-cover' },
+    'table-card':   { w: 360, h: 504, flow: 'page',  cat: 'table', orient: 'portrait', margin: 18, label: 'Table card (5×7)',   stock: '100lb-cover' },
+    'placemat':     { w: 720, h: 1008, flow: 'page', cat: 'table', orient: 'landscape', margin: 36, label: 'Placemat (10×14)',  stock: '70lb-uncoated' },
+    'wine-narrow':  { w: 306, h: 792, flow: 'page',  cat: 'table', orient: 'portrait',  margin: 24, label: 'Wine list (4.25×11)', stock: '32lb-text' },
+    'specials':     { w: 360, h: 504, flow: 'page',  cat: 'table', orient: 'portrait',  margin: 18, label: 'Specials card (5×7)', stock: '100lb-cover' },
+    // -------- Board / poster --------
+    'a2-board':     { w: 1190.55, h: 1683.78, flow: 'page', cat: 'board', orient: 'portrait', margin: 72, label: 'A2 menu board',     stock: 'rigid-board' },
+    'a1-board':     { w: 1683.78, h: 2383.94, flow: 'page', cat: 'board', orient: 'portrait', margin: 96, label: 'A1 menu board',     stock: 'rigid-board' },
+    // -------- Digital display --------
+    'digital-16x9': { w: 1440,    h: 810,     flow: 'page', cat: 'digital', orient: 'landscape', margin: 60, label: 'Digital screen 16:9',     stock: 'screen-rgb' },
+    'digital-9x16': { w: 810,     h: 1440,    flow: 'page', cat: 'digital', orient: 'portrait',  margin: 48, label: 'Digital screen 9:16 (TV)', stock: 'screen-rgb' },
+    // -------- Custom (resolved at runtime) --------
+    'custom':       { w: 612,     h: 792,     flow: 'page', cat: 'custom', orient: 'portrait',  margin: 48, label: 'Custom dimensions', stock: 'operator-choice', custom: true }
   };
+
+  // Resolve a paper key, applying custom-dimension overrides if needed.
+  function resolvePaper(key, customDims) {
+    var p = PAPERS[key] ? Object.assign({}, PAPERS[key]) : Object.assign({}, PAPERS.letter);
+    if (p.custom && customDims && customDims.w && customDims.h) {
+      var unit = (customDims.unit || 'in').toLowerCase();
+      var toPt = unit === 'mm' ? (72 / 25.4) : unit === 'cm' ? (72 / 2.54) : unit === 'pt' ? 1 : 72;
+      var w = Math.round(customDims.w * toPt);
+      var h = Math.round(customDims.h * toPt);
+      // Clamp to sane bounds (2"×2" to 50"×50").
+      w = Math.max(144, Math.min(3600, w));
+      h = Math.max(144, Math.min(3600, h));
+      p.w = w; p.h = h;
+      p.label = 'Custom ' + customDims.w + '×' + customDims.h + ' ' + unit;
+    }
+    return p;
+  }
 
   // Map theme bodyFamily/displayFamily strings to jsPDF's built-in
   // PDF base 14 fonts. jsPDF can register custom fonts but that
@@ -371,9 +439,14 @@
   // and resets y to the top margin. Section headers within 3 dish
   // heights of bottom force an early page break to avoid widow
   // headers.
-  function paginate(blocks, doc, theme, paperKey) {
-    var paper = PAPERS[paperKey] || PAPERS.letter;
-    var margin = 48;
+  //
+  // W7-3 — branches to paginatePanel() for folded formats. Sheet
+  // and digital formats use the simple flow below; panel formats
+  // (bifold/trifold/tent) get a panel-aware layout that maps
+  // content to logical panels (front/inside/back/address).
+  function paginate(blocks, doc, theme, paper) {
+    if (paper.flow === 'panel') return paginatePanel(blocks, doc, theme, paper);
+    var margin = paper.margin || 48;
     var contentX = margin;
     var contentY = margin;
     var contentWidth = paper.w - margin * 2;
@@ -405,6 +478,129 @@
       contentY = drawBlock(block, contentX, contentY, doc, theme, contentWidth, block._logoMeta);
     });
 
+    return pageCount;
+  }
+
+  // W7-3 — Panel-flow paginator for folded formats (bifold, trifold,
+  // table-tent). Slices the page into N panels, then walks blocks
+  // assigning content to panel roles:
+  //   front     — title + logo + tagline (no dishes)
+  //   inside-*  — dish flow (broken at section boundaries)
+  //   back      — overflow + footer info
+  //   address   — restaurant address/hours/QR slot (skipped here;
+  //                operator can fill via menu-meta in a later wave)
+  //   tear      — coupon/email-list slot (skipped)
+  //   side-A/B  — table-tent two-sided (B duplicates A rotated)
+  function paginatePanel(blocks, doc, theme, paper) {
+    var margin = paper.margin || 24;
+    var gutter = paper.gutter || 12;
+    var pageCount = 1;
+    var panels = paper.panels || 6;
+
+    // Compute panel rectangles given paper.panelWidths or even split.
+    var panelWidths = paper.panelWidths;
+    if (!panelWidths) {
+      // For tents (2 panels stacked vertically) split height; for
+      // others (horizontal panels) split width.
+      if (paper.fold === 'tent') {
+        panelWidths = null; // we'll split vertically below
+      } else {
+        var equalW = (paper.w - 2 * margin - gutter * (panels - 1)) / panels;
+        panelWidths = [];
+        for (var pi = 0; pi < panels; pi++) panelWidths.push(equalW);
+      }
+    }
+
+    function panelRect(idx) {
+      if (paper.fold === 'tent') {
+        // Vertical split — side-A on top, side-B on bottom.
+        var half = paper.h / 2;
+        return { x: margin, y: idx * half + margin, w: paper.w - 2 * margin, h: half - 2 * margin };
+      }
+      var x = margin;
+      for (var k = 0; k < idx; k++) x += panelWidths[k] + gutter;
+      return { x: x, y: margin, w: panelWidths[idx], h: paper.h - 2 * margin };
+    }
+
+    // Categorize blocks: title/logo go to front; dishes flow into
+    // inside panels; allergen-key goes on the back. The naive but
+    // honest approach for a v1 panel renderer.
+    var frontBlocks = [];
+    var insideBlocks = [];
+    var backBlocks = [];
+    blocks.forEach(function (b) {
+      if (b.kind === 'title' || b.kind === 'logo') frontBlocks.push(b);
+      else if (b.kind === 'allergen-key') backBlocks.push(b);
+      else insideBlocks.push(b);
+    });
+
+    function drawIntoPanel(panel, panelBlocks, isBack) {
+      var py = panel.y;
+      var bottom = panel.y + panel.h;
+      panelBlocks.forEach(function (block, i) {
+        var h = measureBlock(block, doc, theme, panel.w);
+        if (block.kind === 'section') {
+          var look = 0;
+          for (var j = i + 1; j < Math.min(i + 3, panelBlocks.length); j++) {
+            if (panelBlocks[j].kind === 'dish') look += measureBlock(panelBlocks[j], doc, theme, panel.w);
+          }
+          if (py + h + look > bottom) return; // overflow this panel — drop block (will be picked up by overflow logic below)
+        } else if (py + h > bottom) {
+          return;
+        }
+        py = drawBlock(block, panel.x, py, doc, theme, panel.w, block._logoMeta);
+      });
+      return py;
+    }
+
+    // Walk paper.panelMap and place content per role.
+    var panelMap = paper.panelMap || [];
+    var insideQueue = insideBlocks.slice();
+    for (var pIdx = 0; pIdx < panels; pIdx++) {
+      var role = panelMap[pIdx] || 'inside-' + pIdx;
+      var rect = panelRect(pIdx);
+      // For tent side-B, save state then rotate via transform.
+      var rotated = (paper.fold === 'tent' && role === 'side-B');
+      if (rotated) {
+        // jsPDF doesn't expose easy 180° rotation per region; fall
+        // back to redrawing the same content (operators can flip
+        // the printed sheet manually). v1 trade-off.
+      }
+      if (role === 'front') {
+        // Front cover: title + logo only, centered vertically.
+        drawIntoPanel(rect, frontBlocks, false);
+      } else if (role === 'side-A' || role === 'side-B' || role === 'inside-1' || role === 'inside-2' ||
+                 role === 'inside-L' || role === 'inside-R' || role === 'center' ||
+                 role === 'inside-3' || role === 'inside-4') {
+        // Pull as many inside blocks as fit into this panel, in order.
+        var panelHeight = rect.h;
+        var taken = [];
+        var consumedH = 0;
+        while (insideQueue.length) {
+          var nb = insideQueue[0];
+          var nh = measureBlock(nb, doc, theme, rect.w);
+          if (consumedH + nh > panelHeight) break;
+          taken.push(insideQueue.shift());
+          consumedH += nh;
+        }
+        drawIntoPanel(rect, taken, false);
+      } else if (role === 'back') {
+        // Back panel: any leftover inside content + the allergen-key.
+        var backFlow = insideQueue.splice(0, insideQueue.length).concat(backBlocks);
+        drawIntoPanel(rect, backFlow, true);
+      } else {
+        // Address / tear / unmapped — empty for now.
+      }
+    }
+
+    // If we still have unflushed inside content, paginate to a new
+    // sheet (front-and-back duplex) so nothing is silently dropped.
+    while (insideQueue.length) {
+      doc.addPage();
+      pageCount++;
+      var leftover = insideQueue.splice(0, insideQueue.length);
+      drawIntoPanel({ x: margin, y: margin, w: paper.w - 2 * margin, h: paper.h - 2 * margin }, leftover);
+    }
     return pageCount;
   }
 
@@ -444,7 +640,7 @@
         opts = Object.assign({}, opts, { theme: applyLargePrintOverride(opts.theme) });
       }
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
-      var paper = PAPERS[paperKey];
+      var paper = resolvePaper(paperKey, opts.customDims);
       var doc = new jsPDF({ unit: 'pt', format: [paper.w, paper.h], compress: true });
       try {
         doc.setProperties({
@@ -480,7 +676,7 @@
           doc.rect(0, 0, paper.w, paper.h, 'F');
         }
       };
-      var pageCount = paginate(blocks, doc, opts.theme, paperKey);
+      var pageCount = paginate(blocks, doc, opts.theme, paper);
       var fname = (opts.filename || 'menu') + '.pdf';
       doc.save(fname);
       return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo };

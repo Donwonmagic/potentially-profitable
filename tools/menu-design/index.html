@@ -162,6 +162,27 @@
 .md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
 .md-paper-row input{accent-color:var(--teal)}
 
+/* W7-3 — Paper category-pill + card-grid picker. Replaces the
+   3-radio row. Five horizontal scrollable category pills sit
+   above a responsive grid of paper cards. */
+.md-paper-tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-bottom:10px;scrollbar-width:thin}
+.md-paper-tab{flex:0 0 auto;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color var(--t-fast),color var(--t-fast)}
+.md-paper-tab:hover{border-color:var(--teal);color:var(--teal)}
+.md-paper-tab[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.md-paper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.md-paper-card{position:relative;display:flex;flex-direction:column;gap:4px;padding:10px 12px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;font-size:12.5px;color:var(--ink);min-height:88px;transition:border-color var(--t-fast),transform var(--t-fast)}
+.md-paper-card:hover{border-color:var(--teal);transform:translateY(-1px)}
+.md-paper-card[aria-checked="true"]{border-color:var(--teal);box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 24%,transparent)}
+.md-paper-card-name{font-weight:600;color:var(--ink);font-size:12.5px;line-height:1.3}
+.md-paper-card-thumb{margin-top:auto;align-self:flex-start;border:1px solid var(--line-dark);background:var(--cream-2);max-width:48px;max-height:32px}
+.md-paper-card-stock{font-size:10.5px;color:var(--stone);line-height:1.4}
+.md-paper-card-orient{position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--stone-2);text-transform:uppercase}
+.md-paper-custom{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;padding:10px 12px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--cream-2)}
+.md-paper-custom[hidden]{display:none}
+.md-paper-custom label{font-size:12px;color:var(--ink-soft);font-weight:600}
+.md-paper-custom input{width:64px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px}
+.md-paper-custom select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:var(--white)}
+
 /* Preview — HTML/CSS rendering. The PDF renderer (Wave A3) will
    read the same theme tokens; the HTML preview is the canonical
    on-screen representation. The PDF aims to match this 1:1. */
@@ -618,10 +639,24 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       </div>
       <div class="md-option">
         <p class="md-option-label">Paper</p>
-        <div class="md-paper-row" id="mdPaperRow" role="radiogroup" aria-label="Paper size">
-          <label><input type="radio" name="md-paper" value="letter" checked /> Letter</label>
-          <label><input type="radio" name="md-paper" value="a4" /> A4</label>
-          <label><input type="radio" name="md-paper" value="half-page" /> Half-page</label>
+        <!-- W7-3 — Category pills above a card grid. The picker
+             scales to 18 paper sizes + custom without overwhelming
+             the viewport. -->
+        <div class="md-paper-tabs" id="mdPaperTabs" role="tablist" aria-label="Paper categories">
+          <button type="button" class="md-paper-tab" role="tab" data-cat="sheet"   aria-selected="true">Sheet</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="folded"  aria-selected="false">Folded</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="table"   aria-selected="false">Table</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="board"   aria-selected="false">Poster / board</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="digital" aria-selected="false">Digital screen</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="custom"  aria-selected="false">Custom</button>
+        </div>
+        <div class="md-paper-grid" id="mdPaperRow" role="radiogroup" aria-label="Paper size"></div>
+        <div class="md-paper-custom" id="mdPaperCustom" hidden>
+          <label for="mdPaperCustomW">W</label>
+          <input type="number" id="mdPaperCustomW" min="2" max="50" step="0.25" value="8.5" />
+          <label for="mdPaperCustomH">H</label>
+          <input type="number" id="mdPaperCustomH" min="2" max="50" step="0.25" value="11" />
+          <select id="mdPaperCustomUnit" aria-label="Unit"><option value="in">in</option><option value="mm">mm</option><option value="cm">cm</option><option value="pt">pt</option></select>
         </div>
       </div>
     </div>

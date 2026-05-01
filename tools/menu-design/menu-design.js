@@ -117,6 +117,16 @@
   var logoUrl  = null;       // data: URL string or SVG-text
   var logoMeta = null;       // { name, w, h } or null
 
+  // W7-3 — paperKey migration. Old drafts wrote 'trifold' / 'tabletent';
+  // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
+  // Returns a known-good key, falling back to 'letter'.
+  function migratePaperKey(k) {
+    if (typeof MD_PDF === 'undefined' || !MD_PDF.PAPERS) return k;
+    if (k === 'trifold')   return 'trifold-letter-z';
+    if (k === 'tabletent') return 'table-tent';
+    return MD_PDF.PAPERS[k] ? k : 'letter';
+  }
+
   // -------------------- Helpers --------------------
   function escHtml(s) {
     return String(s == null ? '' : s)
@@ -416,16 +426,88 @@
     });
   }
 
-  // -------------------- Paper size --------------------
-  if (paperRow) {
-    paperRow.addEventListener('change', function (e) {
-      if (e.target && e.target.name === 'md-paper') {
-        paperKey = e.target.value;
-        renderPreview();
-        scheduleSaveDraft();
+  // -------------------- Paper size (W7-3) --------------------
+  // Category-pill + card-grid picker driven by the PAPERS catalog
+  // shipped on MD_PDF.PAPERS. Each category renders cards for the
+  // papers whose `cat` matches; clicking a card sets paperKey and
+  // re-renders. Custom dimensions live in their own panel.
+  var paperTabs = document.getElementById('mdPaperTabs');
+  var paperCustom = document.getElementById('mdPaperCustom');
+  var paperCustomW = document.getElementById('mdPaperCustomW');
+  var paperCustomH = document.getElementById('mdPaperCustomH');
+  var paperCustomU = document.getElementById('mdPaperCustomUnit');
+  var customDims = { w: 8.5, h: 11, unit: 'in' };
+  var activePaperCat = 'sheet';
+
+  function renderPaperGrid() {
+    if (!paperRow || typeof MD_PDF === 'undefined') return;
+    var paperRegistry = MD_PDF.PAPERS || {};
+    var keys = Object.keys(paperRegistry);
+    var inCat = keys.filter(function (k) {
+      var p = paperRegistry[k];
+      return (p.cat || 'sheet') === activePaperCat;
+    });
+    if (activePaperCat === 'custom') {
+      paperRow.innerHTML = '';
+      if (paperCustom) paperCustom.hidden = false;
+      return;
+    }
+    if (paperCustom) paperCustom.hidden = true;
+    paperRow.innerHTML = inCat.map(function (k) {
+      var p = paperRegistry[k];
+      var checked = (k === paperKey) ? 'true' : 'false';
+      // Tiny SVG silhouette (proportional to paper).
+      var thumbW = 48; var thumbH = Math.round(thumbW * (p.h / p.w));
+      if (thumbH > 32) { thumbH = 32; thumbW = Math.round(thumbH * (p.w / p.h)); }
+      var thumb = '<svg class="md-paper-card-thumb" width="' + thumbW + '" height="' + thumbH + '" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
+      var orient = p.orient === 'landscape' ? 'LAND' : (p.orient === 'portrait' ? 'PORT' : '');
+      var stockLabel = p.stock ? ('<span class="md-paper-card-stock">' + escHtml(p.stock) + '</span>') : '';
+      return '<button type="button" class="md-paper-card" role="radio" aria-checked="' + checked + '" data-key="' + escHtml(k) + '">' +
+        '<span class="md-paper-card-name">' + escHtml(p.label || k) + '</span>' +
+        stockLabel +
+        '<span class="md-paper-card-orient" aria-hidden="true">' + orient + '</span>' +
+        thumb +
+        '</button>';
+    }).join('');
+  }
+
+  if (paperTabs) {
+    paperTabs.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-cat]'); if (!t) return;
+      activePaperCat = t.dataset.cat;
+      var siblings = paperTabs.querySelectorAll('[data-cat]');
+      for (var i = 0; i < siblings.length; i++) {
+        siblings[i].setAttribute('aria-selected', siblings[i] === t ? 'true' : 'false');
       }
+      renderPaperGrid();
     });
   }
+  if (paperRow) {
+    paperRow.addEventListener('click', function (e) {
+      var card = e.target.closest('[data-key]'); if (!card) return;
+      paperKey = card.dataset.key;
+      var sibs = paperRow.querySelectorAll('[data-key]');
+      for (var i = 0; i < sibs.length; i++) sibs[i].setAttribute('aria-checked', sibs[i] === card ? 'true' : 'false');
+      renderPreview();
+      scheduleSaveDraft();
+    });
+  }
+  function readCustomDims() {
+    if (!paperCustomW || !paperCustomH || !paperCustomU) return;
+    var w = parseFloat(paperCustomW.value); var h = parseFloat(paperCustomH.value);
+    if (isFinite(w) && isFinite(h) && w > 0 && h > 0) {
+      customDims = { w: w, h: h, unit: paperCustomU.value || 'in' };
+      paperKey = 'custom';
+      renderPreview();
+      scheduleSaveDraft();
+    }
+  }
+  if (paperCustomW) paperCustomW.addEventListener('input', readCustomDims);
+  if (paperCustomH) paperCustomH.addEventListener('input', readCustomDims);
+  if (paperCustomU) paperCustomU.addEventListener('change', readCustomDims);
+
+  // Initial render once MD_PDF is available (script loads after PDF
+  // module so this runs at end-of-script init).
 
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper
@@ -573,21 +655,27 @@
     paper.innerHTML = html;
 
     if (previewMeta) {
-      var paperLabel = paperKey === 'a4' ? 'A4' : paperKey === 'half-page' ? tt('Half-page', 'Media') : tt('Letter', 'Carta');
+      var paperLabel = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey] && MD_PDF.PAPERS[paperKey].label) || paperKey;
       previewMeta.textContent = paperLabel + ' · ' + dishes.length + ' ' + tt('dishes', 'platos');
     }
 
-    // Heuristic overflow warn — purely advisory at A2; PDF renderer
-    // does the real flow check in Wave A3. Trigger when dish count
-    // > a threshold for the chosen theme + paper.
+    // Heuristic overflow warn — purely advisory; the PDF renderer
+    // does the real flow check on export. Threshold scales with
+    // paper area and column count.
     var threshold = (theme.columns === 2) ? 32 : 18;
-    if (paperKey === 'half-page') threshold = Math.round(threshold * 0.55);
+    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    if (paperInfo) {
+      var areaRatio = (paperInfo.w * paperInfo.h) / (612 * 792); // vs Letter
+      threshold = Math.max(6, Math.round(threshold * Math.max(0.45, areaRatio)));
+      if (paperInfo.flow === 'panel') threshold = (paperInfo.panels || 6) * 5; // ~5 dishes per inside panel
+    }
     if (overflowEl) {
       if (dishes.length > threshold) {
         overflowEl.hidden = false;
+        var ovLabel = (paperInfo && paperInfo.label) || paperKey;
         overflowEl.textContent = tt(
-          'Your menu has ' + dishes.length + ' dishes — likely two pages on ' + paperLabel + '. The PDF will paginate cleanly when you export.',
-          'Tu menú tiene ' + dishes.length + ' platos — probablemente dos páginas en ' + paperLabel + '. El PDF paginará limpio al exportar.'
+          'Your menu has ' + dishes.length + ' dishes — may overflow on ' + ovLabel + '. The PDF will paginate cleanly when you export.',
+          'Tu menú tiene ' + dishes.length + ' platos — puede desbordarse en ' + ovLabel + '. El PDF paginará limpio al exportar.'
         );
       } else {
         overflowEl.hidden = true;
@@ -641,9 +729,11 @@
     if (!ls) return;
     try {
       var draft = {
+        version: SCHEMA_VERSION,
         rows: rows.map(function (r) { return Object.assign({}, r); }),
         themeId: themeId,
         paperKey: paperKey,
+        customDims: paperKey === 'custom' ? customDims : null,
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -710,8 +800,9 @@
         __saveDraftEnabled = false;  // pause autosave during hydrate
         rows = d.rows.map(function (r) { return Object.assign({}, r); });
         themeId = d.themeId || themeId;
-        paperKey = d.paperKey || paperKey;
+        paperKey = migratePaperKey(d.paperKey || paperKey);
         logoMeta = d.logoMeta || null;
+        if (d.customDims) customDims = d.customDims;
         if (savedLogo) { logoUrl = savedLogo; }
         render();
         renderPreview();
@@ -1208,6 +1299,7 @@
         rows:        rows,
         theme:       theme,
         paperKey:    paperKey,
+        customDims:  paperKey === 'custom' ? customDims : null,
         title:       title,
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
@@ -1384,6 +1476,7 @@
         rows:        realRows,
         theme:       theme,
         paperKey:    paperKey,
+        customDims:  paperKey === 'custom' ? customDims : null,
         title:       title,
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
@@ -1629,6 +1722,7 @@
   } catch (_) {}
 
   renderThemePicker();
+  renderPaperGrid();      // W7-3 — populate the new paper-card picker
   render();
   renderCtxPill();
   renderHistory();
