@@ -670,16 +670,40 @@
      audit on page load so the flow is one submit → result page.
      The score-ring mock on the right is a static SVG so there's
      no runtime cost. -->
-<section class="tool-cta tool-cta-slim" aria-labelledby="tool-cta-heading">
-  <div class="container tool-cta-inner" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;">
-    <div style="max-width:640px;">
-      <span class="eyebrow">Free restaurant audit &middot; 30 seconds &middot; no signup</span>
-      <h2 id="tool-cta-heading" style="margin:8px 0 8px;">Run a free, restaurant-specific audit of your site.</h2>
-      <p style="margin:0;">23 checks &mdash; mobile speed, menu, ordering, reservations, GBP &mdash; ranked by impact for your segment.</p>
+<!-- Phase 7 W1-4: flagship hero — two new tools (Menu Design Suite
+     + Advanced Invoice Decoder) replace the single Restaurant
+     Audit CTA. The differentiator chip is the centerpiece move:
+     "vs Canva templates" / "vs Restaurant365 · MarginEdge ·
+     Plate IQ" — owners see immediately what these tools beat.
+     Audit demotes to a muted text link beneath the flagships;
+     it's still in /tools/ at full visibility. -->
+<section class="tool-cta tool-cta-flagships" aria-labelledby="tool-cta-heading">
+  <div class="container">
+    <div class="tool-cta-flagships__head">
+      <span class="eyebrow">Free flagship tools &middot; on your device &middot; no signup</span>
+      <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Two tools we built differently.</h2>
     </div>
-    <a class="btn btn-primary" href="/tools/audits/restaurant/">Open the audit
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-    </a>
+    <div class="tool-cta-flagships__grid">
+      <a class="tool-card-flagship" href="/tools/menu-design/">
+        <span class="tool-card-flagship__chip">vs Canva templates</span>
+        <h3 class="tool-card-flagship__title">Menu Design Suite</h3>
+        <p class="tool-card-flagship__headline">The only restaurant menu tool that auto-lays out 14 or 53 dishes from one paste &mdash; no Canva fight with templates that assume 12.</p>
+        <span class="tool-card-flagship__cta">Open the tool
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
+      <a class="tool-card-flagship" href="/tools/invoice-decoder/">
+        <span class="tool-card-flagship__chip">vs Restaurant365 &middot; MarginEdge &middot; Plate IQ</span>
+        <h3 class="tool-card-flagship__title">Advanced Invoice Decoder</h3>
+        <p class="tool-card-flagship__headline">An invoice tool that locks your data with a secret only you know &mdash; Restaurant365 reads everything; we read nothing.</p>
+        <span class="tool-card-flagship__cta">Open the tool
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
+    </div>
+    <p class="tool-cta-flagships__secondary">
+      Need to diagnose your site first? <a href="/tools/audits/restaurant/">Run the free 30-second restaurant audit &rarr;</a>
+    </p>
   </div>
 </section>
 

@@ -2232,6 +2232,110 @@ br.br-lg{display:none}
   .tool-cta-visual{ gap: 20px; }
   .tool-cta-preview{ max-width: 440px; margin: 0 auto; text-align: center; }
 }
+
+/* Phase 7 W1-4: flagship hero variant. Two large cards
+   replacing the single Restaurant Audit CTA. The
+   .tool-card-flagship class is structurally similar to
+   .tool-card-spotlight (W1-3) but lives on the homepage
+   not /tools/, with a slightly different rhythm. */
+.tool-cta-flagships{
+  padding: 64px 0 56px;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--surface-1, var(--white)) 100%);
+}
+.tool-cta-flagships__head{
+  max-width: 720px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.tool-cta-flagships__heading{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.08;
+  margin: 12px 0 0;
+  color: var(--ink);
+}
+.tool-cta-flagships__grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+@media (max-width: 840px){
+  .tool-cta-flagships__grid{ grid-template-columns: 1fr; gap: 18px; }
+}
+.tool-card-flagship{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 36px 36px 30px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-fast);
+  overflow: hidden;
+}
+.tool-card-flagship:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(20,22,26,0.10);
+  border-color: var(--teal);
+}
+.tool-card-flagship__chip{
+  align-self: flex-start;
+  padding: 6px 14px;
+  background: color-mix(in srgb, var(--teal) 12%, transparent);
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent);
+  white-space: nowrap;
+}
+.tool-card-flagship__title{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.014em;
+  line-height: 1.08;
+  margin: 0;
+  color: var(--ink);
+}
+.tool-card-flagship__headline{
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+  flex: 1;
+}
+.tool-card-flagship__cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 0.01em;
+}
+.tool-card-flagship__cta svg{ width: 16px; height: 16px; }
+.tool-card-flagship:hover .tool-card-flagship__cta{ color: var(--ink); }
+.tool-cta-flagships__secondary{
+  text-align: center;
+  margin: 28px auto 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.tool-cta-flagships__secondary a{ color: var(--teal); font-weight: 500; }
+@media (max-width: 560px){
+  .tool-card-flagship{ padding: 28px 24px 24px; }
+  .tool-cta-flagships{ padding: 48px 0 40px; }
+}
 @media (max-width: 540px){
   .tool-cta-form{
     flex-direction: column;
