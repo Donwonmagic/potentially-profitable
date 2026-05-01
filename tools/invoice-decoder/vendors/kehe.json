@@ -23,5 +23,17 @@
     ]
   },
   "headerSkip": [],
-  "confidenceBoost": 9
+  "confidenceBoost": 9,
+  "lineGrammar": {
+    "_doc": "KeHE — natural/specialty wholesale. Heavy use of MCB (manufacturer chargeback), deal allowances, and broker discounts. Sales tax fires on non-food.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(mcb|manufacturer\\s+chargeback)\\b",
+      "\\b(deal|promo|broker)\\s+(allowance|discount|rebate)\\b",
+      "\\b(turnover\\s+rebate|spoils\\s+credit|new\\s+item\\s+slotting)\\b"
+    ]
+  }
 }

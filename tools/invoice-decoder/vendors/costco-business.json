@@ -28,5 +28,16 @@
   },
   "headerSkip": [],
   "confidenceBoost": 8,
-  "format": "thermal"
+  "format": "thermal",
+  "lineGrammar": {
+    "_doc": "Costco Business Center — thermal-printed cash receipt. Sales tax line is universal; rebate/savings appear as 'Instant Savings' or 'Manufacturer's Coupon' lines.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\btax\\s+\\d+\\.\\d{2}\\s*$"
+    ],
+    "discountPatterns": [
+      "\\b(instant\\s+savings|mfr\\s+coupon|manufacturer.?s?\\s+coupon)\\b",
+      "\\bcostco\\s+(rebate|reward|cash\\s+back)\\b"
+    ]
+  }
 }

@@ -38,5 +38,17 @@
     "^pack\\s*\\/\\s*size",
     "^prod\\s+id"
   ],
-  "confidenceBoost": 12
+  "confidenceBoost": 12,
+  "lineGrammar": {
+    "_doc": "US Foods prints sales tax on non-food items at the bottom; Monarch / Cattleman's Selection brands sometimes carry a 'preferred-customer rebate' line.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|sundries|paper|chemical)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|preferred[- ]?customer|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance|growth\\s+incentive)\\b",
+      "\\busf\\s+(perks|rebate|reward)\\b"
+    ]
+  }
 }

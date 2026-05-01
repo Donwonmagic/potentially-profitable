@@ -38,5 +38,17 @@
     "^item\\s+#\\s+description",
     "^pfg\\s+#"
   ],
-  "confidenceBoost": 10
+  "confidenceBoost": 10,
+  "lineGrammar": {
+    "_doc": "PFG / Reinhart / Vistar all share the parent-company tax footer; promotional allowances appear under the operations subsidiary's name.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|preferred|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b",
+      "\\b(pfg|vistar|reinhart)\\s+(rebate|advantage|allowance)\\b"
+    ]
+  }
 }

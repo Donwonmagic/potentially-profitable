@@ -35,5 +35,18 @@
     ]
   },
   "headerSkip": [],
-  "confidenceBoost": 8
+  "confidenceBoost": 8,
+  "lineGrammar": {
+    "_doc": "Mexican wholesale — La Michoacana, Northgate Foodservice, Mariscos Linares. Spanish tax footers (IVA / impuesto) plus standard sales tax for US-located distributors.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\biva\\b",
+      "\\bimpuesto(s)?\\s+(al\\s+)?valor\\s+agregado\\b",
+      "\\bimpuesto\\s+sobre\\s+ventas\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty|member)\\s+(discount|rebate|allowance)\\b",
+      "\\b(descuento|promoci[oó]n|rebaja)\\s+(por\\s+)?(volumen|cantidad|caja)\\b"
+    ]
+  }
 }

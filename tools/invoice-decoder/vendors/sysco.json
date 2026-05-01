@@ -52,5 +52,18 @@
       "11": "cleaning",
       "12": "paper"
     }
+  },
+  "lineGrammar": {
+    "_doc": "Sysco prints sales tax for non-food items (paper/cleaning/sundries) on a discrete line near the foot. Promotional allowances appear as named line items the operator might mistake for ingredients; routing them to 'discount' keeps cost-of-goods clean.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county|metro|district)\\s+tax\\b",
+      "\\b(sundries|dry\\s+goods|paper|cleaning)\\s+tax\\b",
+      "\\b(retail|use)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|seasonal|promo|promotional)\\s+(allowance|discount|rebate|deduction)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance|growth\\s+incentive)\\b",
+      "\\bsysco\\s+(perks|rebate|loyalty)\\b"
+    ]
   }
 }

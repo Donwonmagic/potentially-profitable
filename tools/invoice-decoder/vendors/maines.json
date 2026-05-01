@@ -23,5 +23,16 @@
     ]
   },
   "headerSkip": [],
-  "confidenceBoost": 10
+  "confidenceBoost": 10,
+  "lineGrammar": {
+    "_doc": "Maines — Northeast broadliner with strong paper/disposables emphasis. Paper goods are taxable in most NE states.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b"
+    ]
+  }
 }

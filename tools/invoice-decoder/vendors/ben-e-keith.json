@@ -23,5 +23,17 @@
     ]
   },
   "headerSkip": [],
-  "confidenceBoost": 11
+  "confidenceBoost": 11,
+  "lineGrammar": {
+    "_doc": "Ben E. Keith — Texas/Southwest broadliner. Has both Foods and Beverages divisions; the Beverages arm shares grammar with beer-wine-distributor (already covered there). This template handles the Foods invoices.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county|texas|tx)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical|sundries)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b",
+      "\\bbek\\s+(rebate|advantage)\\b"
+    ]
+  }
 }

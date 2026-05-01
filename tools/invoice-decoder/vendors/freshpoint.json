@@ -26,5 +26,15 @@
   "confidenceBoost": 12,
   "categoryBias": {
     "produce": 1.25
+  },
+  "lineGrammar": {
+    "_doc": "FreshPoint — Sysco's produce arm. Most produce is tax-exempt; tax lines are rare except for cut-fruit packaging and value-added items. Volume rebates appear when the operator clears program quantities.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|seasonal|program)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|deal\\s+allowance)\\b"
+    ]
   }
 }

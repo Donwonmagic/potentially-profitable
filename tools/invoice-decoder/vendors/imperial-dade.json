@@ -27,5 +27,16 @@
   "categoryBias": {
     "paper": 1.2,
     "cleaning": 1.2
+  },
+  "lineGrammar": {
+    "_doc": "Imperial Dade — disposables / janitorial. Sales tax fires on EVERY item (no food exemption). Quantity-tier discounts and freight are common.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\btax\\s+on\\s+(merchandise|goods)\\b"
+    ],
+    "discountPatterns": [
+      "\\b(quantity|tier|case\\s+rate)\\s+(discount|allowance|rebate)\\b",
+      "\\b(promo|seasonal)\\s+(allowance|discount)\\b"
+    ]
   }
 }

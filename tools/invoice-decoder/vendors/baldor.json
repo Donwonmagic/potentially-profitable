@@ -28,5 +28,15 @@
     "produce": 1.15,
     "seafood": 1.1,
     "protein": 1.1
+  },
+  "lineGrammar": {
+    "_doc": "Baldor — NYC tri-state specialty distributor. Delivery fee + cold-chain surcharge appear as non-item lines; sales tax fires on processed/value-added SKUs.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county|nyc|new\\s+york)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\bbaldor\\s+(advantage|rebate|reward)\\b"
+    ]
   }
 }

@@ -44,5 +44,17 @@
       "SML": "paper",
       "EQU": "paper"
     }
+  },
+  "lineGrammar": {
+    "_doc": "GFS sales tax + Marketplace promo allowances.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical|jan)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|seasonal|promo|promotional)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b",
+      "\\bgfs\\s+marketplace\\s+rebate\\b"
+    ]
   }
 }

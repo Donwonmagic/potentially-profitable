@@ -30,5 +30,16 @@
     "^item\\s+class",
     "^prod\\s*#\\s+description"
   ],
-  "confidenceBoost": 10
+  "confidenceBoost": 10,
+  "lineGrammar": {
+    "_doc": "Shamrock prints sales tax on non-food at the foot. 'Clover Pricing' contract rows surface as deal allowances when the operator buys above a threshold.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|clover|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b"
+    ]
+  }
 }

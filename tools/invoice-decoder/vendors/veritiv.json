@@ -27,5 +27,16 @@
   "categoryBias": {
     "paper": 1.2,
     "cleaning": 1.1
+  },
+  "lineGrammar": {
+    "_doc": "Veritiv — packaging + facility supplies. Universal sales tax; freight surcharge is captured by parser's SURCHARGE_RE.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\btax\\s+on\\s+(merchandise|goods)\\b"
+    ],
+    "discountPatterns": [
+      "\\b(quantity|tier|contract)\\s+(discount|allowance|rebate)\\b",
+      "\\b(promo|seasonal|veritiv)\\s+(allowance|rebate)\\b"
+    ]
   }
 }
