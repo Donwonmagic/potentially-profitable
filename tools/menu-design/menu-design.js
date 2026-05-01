@@ -158,6 +158,7 @@
       themeId = li.dataset.id;
       renderThemePicker();
       renderPreview();
+      scheduleSaveDraft();
     });
     themesEl.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -167,6 +168,7 @@
       themeId = li.dataset.id;
       renderThemePicker();
       renderPreview();
+      scheduleSaveDraft();
     });
   }
 
@@ -195,6 +197,7 @@
       setLogoWarn('');
     }
     renderPreview();
+    scheduleSaveDraft();
   }
 
   function readLogoFile(file) {
@@ -243,6 +246,7 @@
       if (e.target && e.target.name === 'md-paper') {
         paperKey = e.target.value;
         renderPreview();
+        scheduleSaveDraft();
       }
     });
   }
@@ -385,6 +389,127 @@
     previewTimer = setTimeout(function () { previewTimer = null; renderPreview(); }, 300);
   }
 
+  // ----------------------------------------------------------------
+  // W5-8 — per-keystroke autosave + draft restore.
+  //
+  // A menu in progress is the operator's typed work — losing it on a
+  // tab close ranks among the worst trust failures a tool can have.
+  // We debounce 500ms then write a slim draft to localStorage. Logo
+  // data URL is stored separately because it can be large; we cap it
+  // at 200KB before write to avoid blowing the 5MB localStorage
+  // budget.
+  //
+  // On boot, if a draft exists AND rows[] is empty, surface a
+  // dismissable "Pick up where you left off?" affordance instead of
+  // overwriting silently.
+  // ----------------------------------------------------------------
+  var DRAFT_KEY = 'mtn:menu-design:draft';
+  var LOGO_KEY  = 'mtn:menu-design:logo';
+  var LOGO_BUDGET = 200 * 1024; // 200KB
+  var __saveTimer = null;
+  var __saveDraftEnabled = true;
+
+  function safeLs() {
+    try {
+      var probe = '__md_probe__';
+      localStorage.setItem(probe, probe); // h8-exempt: storage probe
+      localStorage.removeItem(probe);
+      return localStorage;
+    } catch (_) { return null; }
+  }
+
+  function persistDraft() {
+    if (!__saveDraftEnabled) return;
+    var ls = safeLs();
+    if (!ls) return;
+    try {
+      var draft = {
+        rows: rows.map(function (r) { return Object.assign({}, r); }),
+        themeId: themeId,
+        paperKey: paperKey,
+        logoMeta: logoMeta,
+        savedAt: Date.now()
+      };
+      ls.setItem(DRAFT_KEY, JSON.stringify(draft)); // h8-exempt: in-progress menu draft
+      if (logoUrl && logoUrl.length <= LOGO_BUDGET) {
+        ls.setItem(LOGO_KEY, logoUrl); // h8-exempt: in-progress menu logo
+      } else if (!logoUrl) {
+        ls.removeItem(LOGO_KEY);
+      }
+    } catch (_) { /* quota — silent */ }
+  }
+
+  function scheduleSaveDraft() {
+    if (__saveTimer) clearTimeout(__saveTimer);
+    __saveTimer = setTimeout(function () { __saveTimer = null; persistDraft(); }, 500);
+  }
+
+  function loadDraft() {
+    var ls = safeLs();
+    if (!ls) return null;
+    try {
+      var raw = ls.getItem(DRAFT_KEY); // h8-exempt: read draft
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.rows)) return null;
+      return d;
+    } catch (_) { return null; }
+  }
+
+  function clearDraft() {
+    var ls = safeLs();
+    if (!ls) return;
+    try { ls.removeItem(DRAFT_KEY); ls.removeItem(LOGO_KEY); } catch (_) {}
+  }
+
+  function offerDraftRestore() {
+    var d = loadDraft();
+    if (!d || !Array.isArray(d.rows) || !d.rows.length) return;
+    if (rows.length) return;  // operator already started fresh
+    if (!statusEl) return;
+    var ls = safeLs();
+    var savedLogo = ls ? ls.getItem(LOGO_KEY) : null; // h8-exempt: read logo draft
+    var ageMin = Math.max(1, Math.round((Date.now() - (d.savedAt || 0)) / 60000));
+    var hostId = 'mdDraftBanner';
+    if (document.getElementById(hostId)) return;
+    var banner = document.createElement('div');
+    banner.id = hostId;
+    banner.className = 'md-draft-banner';
+    banner.innerHTML =
+      '<span>' + tt(
+        'You started a menu ' + ageMin + ' min ago. ',
+        'Empezaste un menú hace ' + ageMin + ' min. '
+      ) + '<strong>' + d.rows.length + ' ' + tt(
+        d.rows.length === 1 ? 'row' : 'rows', d.rows.length === 1 ? 'renglón' : 'renglones'
+      ) + '</strong>' + tt(' saved.', ' guardado.') + '</span>' +
+      '<div class="md-draft-actions">' +
+        '<button type="button" data-act="restore">' + tt('Pick up where I left off', 'Continuar donde lo dejé') + '</button>' +
+        '<button type="button" data-act="discard" class="md-draft-discard">' + tt('Start fresh', 'Empezar de nuevo') + '</button>' +
+      '</div>';
+    statusEl.parentNode.insertBefore(banner, statusEl);
+    banner.addEventListener('click', function (e) {
+      var act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
+      if (act === 'restore') {
+        __saveDraftEnabled = false;  // pause autosave during hydrate
+        rows = d.rows.map(function (r) { return Object.assign({}, r); });
+        themeId = d.themeId || themeId;
+        paperKey = d.paperKey || paperKey;
+        logoMeta = d.logoMeta || null;
+        if (savedLogo) { logoUrl = savedLogo; }
+        render();
+        renderPreview();
+        __saveDraftEnabled = true;
+        banner.parentNode.removeChild(banner);
+        if (window.plausible) {
+          try { window.plausible('Menu Design Draft Restored'); } catch (_) {}
+        }
+      } else if (act === 'discard') {
+        clearDraft();
+        banner.parentNode.removeChild(banner);
+      }
+    });
+  }
+
   if (rowsEl) {
     rowsEl.addEventListener('input', function (e) {
       var t = e.target;
@@ -393,6 +518,7 @@
       if (!isFinite(i) || !rows[i]) return;
       rows[i][t.dataset.field] = t.value;
       schedulePreview();
+      scheduleSaveDraft();    // W5-8
     });
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
@@ -401,19 +527,21 @@
       if (!isFinite(i)) return;
       rows.splice(i, 1);
       render();
+      scheduleSaveDraft();    // W5-8
     });
   }
 
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
     rows.push(blankDish());
     render();
-    // Focus the new row's name input.
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
     rows.push(blankDish());
     render();
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
@@ -421,6 +549,7 @@
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
     rows.push(blankSection());
     render();
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('.md-row-section input');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
@@ -430,11 +559,13 @@
     if (!confirm('Clear every row? This can\'t be undone.')) return;
     rows = [];
     render();
+    clearDraft();
   });
 
   if (sampleBtn) sampleBtn.addEventListener('click', function () {
     rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
     render();
+    scheduleSaveDraft();
   });
 
   // -------------------- Paste-CSV ingest --------------------
@@ -800,6 +931,10 @@
   render();
   renderCtxPill();
   renderHistory();
+  // W5-8 — surface "Pick up where you left off" if a draft exists
+  // and the operator hasn't started fresh yet. Runs after the
+  // initial render so the banner sits above an empty editor.
+  try { offerDraftRestore(); } catch (_) {}
 
   // Subscribe so changes in another tab (e.g. saving from Menu
   // Engineering) refresh the pill without a manual reload.
