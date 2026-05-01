@@ -609,6 +609,9 @@
       // SVG: read as text + embed without rasterizing.
       if (file.type === 'image/svg+xml') {
         applyLogo(dataUrl, file.name, null, null);
+        // W13-1 — pre-warm svg2pdf so the first PDF export doesn't
+        // pay a 80KB CDN load on the user-initiated click.
+        try { if (typeof MD_PDF !== 'undefined' && MD_PDF.preloadSvg2Pdf) MD_PDF.preloadSvg2Pdf(); } catch (_) {}
         return;
       }
       // Raster: load to inspect dimensions, then keep as data URL.

@@ -19,7 +19,44 @@
   'use strict';
 
   var JSPDF_CDN = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+  // W13-1 — svg2pdf.js plugin lets jsPDF embed SVG logos as vectors.
+  // Lazy-loaded only when the operator uploads an SVG logo. Adds
+  // ~80KB to the wire when used; zero bytes otherwise.
+  var SVG2PDF_CDN = 'https://cdn.jsdelivr.net/npm/svg2pdf.js@2.4.0/dist/svg2pdf.umd.min.js';
   var __pdfLibPromise = null;
+  var __svg2pdfPromise = null;
+  function loadSvg2Pdf() {
+    if (root.svg2pdf) return Promise.resolve(root.svg2pdf);
+    if (__svg2pdfPromise) return __svg2pdfPromise;
+    __svg2pdfPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = SVG2PDF_CDN;
+      s.crossOrigin = 'anonymous';
+      s.referrerPolicy = 'no-referrer';
+      s.onload = function () {
+        if (root.svg2pdf) resolve(root.svg2pdf);
+        else { __svg2pdfPromise = null; reject(new Error('svg2pdf loaded but global missing')); }
+      };
+      s.onerror = function () { __svg2pdfPromise = null; reject(new Error('svg2pdf load failed')); };
+      document.head.appendChild(s);
+    });
+    return __svg2pdfPromise;
+  }
+  function svgDataUrlToElement(dataUrl) {
+    // Decode the data URL to an SVG string, parse with DOMParser.
+    var prefix = 'data:image/svg+xml';
+    if (!dataUrl || dataUrl.indexOf(prefix) !== 0) return null;
+    var idx = dataUrl.indexOf(',');
+    if (idx === -1) return null;
+    var enc = dataUrl.slice(0, idx);
+    var raw = dataUrl.slice(idx + 1);
+    var svgText = enc.indexOf(';base64') !== -1 ? atob(raw) : decodeURIComponent(raw);
+    try {
+      var parser = new DOMParser();
+      var doc2 = parser.parseFromString(svgText, 'image/svg+xml');
+      return doc2.documentElement;
+    } catch (_) { return null; }
+  }
 
   function loadJsPdf() {
     if (root.jspdf && root.jspdf.jsPDF) return Promise.resolve(root.jspdf.jsPDF);
@@ -87,16 +124,21 @@
   function registerBrandFonts(doc, fonts) {
     if (!fonts) return false;
     try {
+      // jsPDF setFont() recognizes 'normal' / 'bold' / 'italic' /
+      // 'bolditalic' style strings only. Match the audits/restaurant
+      // tool's pattern: 400 -> normal, 600 -> bold. The 500 weight
+      // is registered under "Fraunces Medium" / "Inter Medium" as a
+      // separate family for callers that want a true 500.
       doc.addFileToVFS('Fraunces-400.ttf', fonts.fraunces400);
       doc.addFont('Fraunces-400.ttf', 'Fraunces', 'normal');
       doc.addFileToVFS('Fraunces-500.ttf', fonts.fraunces500);
-      doc.addFont('Fraunces-500.ttf', 'Fraunces', 'medium');
+      doc.addFont('Fraunces-500.ttf', 'Fraunces Medium', 'normal');
       doc.addFileToVFS('Fraunces-600.ttf', fonts.fraunces600);
       doc.addFont('Fraunces-600.ttf', 'Fraunces', 'bold');
       doc.addFileToVFS('Inter-400.ttf', fonts.inter400);
       doc.addFont('Inter-400.ttf', 'Inter', 'normal');
       doc.addFileToVFS('Inter-500.ttf', fonts.inter500);
-      doc.addFont('Inter-500.ttf', 'Inter', 'medium');
+      doc.addFont('Inter-500.ttf', 'Inter Medium', 'normal');
       doc.addFileToVFS('Inter-600.ttf', fonts.inter600);
       doc.addFont('Inter-600.ttf', 'Inter', 'bold');
       return true;
@@ -634,7 +676,10 @@
       return Number.MAX_SAFE_INTEGER;
     }
     if (block.kind === 'title') {
-      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
+      // W13-1 — title uses bold weight when brand fonts are loaded
+      // for visible typographic hierarchy.
+      var titleStyle = doc.__brandsLoaded ? 'bold' : 'normal';
+      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), titleStyle);
       doc.setFontSize(theme.h1Pt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       doc.text(block.text, x + contentWidth / 2, y + theme.h1Pt, { align: 'center' });
@@ -675,11 +720,44 @@
       return storyY + 16;
     }
     if (block.kind === 'logo') {
-      // Skip image embed for SVG (jsPDF doesn't natively rasterize
-      // SVG without an extra plugin; defer SVG path to Wave A4).
+      // W13-1 — SVG logo path. svg2pdf.js was loaded in parallel
+      // with jsPDF; use it to embed the SVG as a vector. Falls
+      // back to no-op only on parse error.
       if (typeof block.src === 'string' && block.src.indexOf('data:image/svg') === 0) {
-        return y; // silently skip; SVG logos are still rendered in
-                  // the on-screen preview, but PDF v1 needs a raster.
+        try {
+          if (root.svg2pdf && doc.svg) {
+            var svgEl = svgDataUrlToElement(block.src);
+            if (svgEl) {
+              var slot2 = theme.logoSlot || 'header-center';
+              var maxH2 = 56;
+              var maxW2 = 200;
+              var w2 = maxW2, h2 = maxH2;
+              if (logoMeta && logoMeta.w && logoMeta.h) {
+                var ratio2 = logoMeta.w / logoMeta.h;
+                if (ratio2 >= 1) { w2 = Math.min(maxW2, logoMeta.w); h2 = w2 / ratio2; }
+                else            { h2 = Math.min(maxH2, logoMeta.h); w2 = h2 * ratio2; }
+              }
+              var lx2 = x + (contentWidth - w2) / 2;
+              if (slot2 === 'header-left')  lx2 = x;
+              if (slot2 === 'header-right') lx2 = x + contentWidth - w2;
+              if (slot2 === 'watermark') {
+                var pageW2 = doc.internal.pageSize.getWidth();
+                var pageH2 = doc.internal.pageSize.getHeight();
+                var wmW2 = Math.min(280, pageW2 * 0.55);
+                var wmH2 = wmW2 / (logoMeta && logoMeta.w && logoMeta.h ? (logoMeta.w / logoMeta.h) : 1);
+                try {
+                  if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.06 }));
+                  doc.svg(svgEl, { x: (pageW2 - wmW2) / 2, y: (pageH2 - wmH2) / 2, width: wmW2, height: wmH2 });
+                  if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 }));
+                } catch (_) {}
+                return y;
+              }
+              doc.svg(svgEl, { x: lx2, y: y, width: w2, height: h2 });
+              return y + h2 + 12;
+            }
+          }
+        } catch (_) { /* fall through to no-op */ }
+        return y; // silent fallback; preview still shows the SVG
       }
       try {
         var slot = theme.logoSlot || 'header-center';
@@ -728,7 +806,9 @@
       }
     }
     if (block.kind === 'section') {
-      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
+      // W13-1 — section h2 also goes bold under brand fonts.
+      var sectionStyle = doc.__brandsLoaded ? 'bold' : 'normal';
+      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), sectionStyle);
       doc.setFontSize(theme.h2Pt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       var label = block.text;
@@ -1442,7 +1522,12 @@
   function exportPdf(opts) {
     opts = opts || {};
     // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
-    return Promise.all([loadJsPdf(), loadBrandFonts()]).then(function (results) {
+    // W13-1 — also load svg2pdf when the operator's logo is SVG so
+    // the doc.svg() call in the logo drawer has the plugin available.
+    var hasSvgLogo = opts.logoDataUrl && typeof opts.logoDataUrl === 'string' && opts.logoDataUrl.indexOf('data:image/svg') === 0;
+    var loaders = [loadJsPdf(), loadBrandFonts()];
+    if (hasSvgLogo) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
+    return Promise.all(loaders).then(function (results) {
       var jsPDF = results[0];
       var brandFonts = results[1]; // null on failure
       if (!jsPDF) throw new Error('jsPDF unavailable');
@@ -1520,8 +1605,11 @@
         if (b.kind === 'logo' && opts.logoMeta) b._logoMeta = opts.logoMeta;
         if (b.kind === 'allergen-key') b.locale = opts.locale || 'en';
       });
+      // W13-1 — droppedSvgLogo is now true only when svg2pdf failed
+      // to load AND the operator uploaded an SVG. With the plugin
+      // working, SVG logos embed as vectors so the flag stays false.
       var droppedSvgLogo = false;
-      if (opts.logoDataUrl && opts.logoDataUrl.indexOf('data:image/svg') === 0) {
+      if (opts.logoDataUrl && opts.logoDataUrl.indexOf('data:image/svg') === 0 && !root.svg2pdf) {
         droppedSvgLogo = true;
       }
       // Track whether subsequent pages need the paper-color fill
@@ -1556,5 +1644,11 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride };
   }
-  if (root) root.MD_PDF = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride };
+  if (root) root.MD_PDF = {
+    exportPdf: exportPdf,
+    PAPERS: PAPERS,
+    applyLargePrintOverride: applyLargePrintOverride,
+    applyHighContrastOverride: applyHighContrastOverride,
+    preloadSvg2Pdf: function () { return loadSvg2Pdf().catch(function () { return null; }); }
+  };
 })(typeof window !== 'undefined' ? window : null);
