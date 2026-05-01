@@ -75,6 +75,12 @@
   // Run OCR on a canvas. Returns { text, lines, meanConfidence }
   // where lines is an array of { text, confidence }. Tesseract.js
   // v5 returns this shape natively via worker.recognize.
+  //
+  // Wave 1.4 — pass the canvas directly to Tesseract instead of
+  // round-tripping through a base64 data URL. canvas.toDataURL on
+  // a 2000px buffer takes ~300-600ms on iPhone 11 SE; Tesseract.js
+  // v5 accepts HTMLCanvasElement / OffscreenCanvas / ImageData /
+  // Blob / File natively. Cuts OCR setup time per page.
   function recognizeCanvas(canvas, opts) {
     opts = opts || {};
     var lang = opts.lang || 'eng+spa';
@@ -85,8 +91,9 @@
         // Re-bind logger per call so progress events flow to this
         // page's status bar.
         worker.setParameters({}); // no-op kept for shape symmetry
-        var data = canvas.toDataURL('image/png');
-        return worker.recognize(data, {}, {
+        // Direct-canvas path: Tesseract.js v5 reads the bitmap from
+        // the HTMLCanvasElement without our toDataURL detour.
+        return worker.recognize(canvas, {}, {
           // Tesseract.js v5 doesn't accept a per-call logger via
           // the public API; we hook progress through createWorker
           // options. For now we synthesize discrete progress
@@ -218,6 +225,10 @@
           var newLines = lines.slice();
           var stats = { reread: jobs.length, improved: 0, recovered: 0 };
           var done = 0;
+          // Wave 1.4 — single toDataURL up front because Tesseract's
+          // rectangle option re-decodes per call; passing the canvas
+          // directly N times forces N decodes of the same buffer.
+          // One data URL up front is cheaper net.
           var dataUrl = canvas.toDataURL('image/png');
           var queue = jobs.slice();
           var W = canvas.width;
