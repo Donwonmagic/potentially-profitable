@@ -98,6 +98,11 @@
 .id-parsed-conf[data-conf="green"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
 .id-parsed-conf[data-conf="amber"]{background:#FFF1D7;color:#8a5e0c;border:1px solid #ecd6a8}
 .id-parsed-conf[data-conf="red"]{background:#FCE0DA;color:#7a2419;border:1px solid #f0c0b3}
+.id-parsed-row [data-edit]{cursor:text;border-radius:4px;padding:2px 4px}
+.id-parsed-row [data-edit]:hover{background:rgba(31,78,91,.06)}
+.id-parsed-input{font:inherit;font-size:13.5px;padding:4px 6px;border:1px solid var(--teal);border-radius:4px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box;min-width:60px}
+.id-parsed-input:focus{outline:2px solid color-mix(in srgb,var(--teal) 35%,transparent);outline-offset:1px}
+.id-parsed-cat-select{font:inherit;font-size:11px;padding:2px 6px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--ink)}
 @media(max-width:540px){
   .id-parsed-row{grid-template-columns:1fr;gap:2px}
   .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}

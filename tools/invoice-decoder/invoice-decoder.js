@@ -304,6 +304,137 @@
     });
   }
 
+  // -------------------- Inline editors (B5-2) --------------------
+  // Tap any cell → it becomes an input. Blur or Enter commits the
+  // change back to parsedRowsState; the row's confidence is bumped
+  // to 100 (owner-confirmed) and the chip flips green. The row's
+  // category becomes editable via a native <select> driven by
+  // CAT_LABEL_EN/ES so iOS / Android present the system picker.
+  var parsedRowsState = []; // Live array the user is editing.
+
+  function commitCellEdit(rowIdx, field, value) {
+    if (!parsedRowsState[rowIdx]) return;
+    var row = parsedRowsState[rowIdx];
+    if (field === 'name')      row.name = String(value).trim();
+    else if (field === 'qty')  row.qty = parseFloat(value) || 0;
+    else if (field === 'unitPrice' || field === 'lineTotal') row[field] = parseFloat(value) || 0;
+    else if (field === 'category') {
+      row.category = value || null;
+      row.categoryConfidence = 100; // owner-confirmed
+    }
+    // Owner-touched rows flip to confirmed at full confidence.
+    row.confidence = 100;
+    row.ownerConfirmed = true;
+    rerenderRows();
+  }
+
+  function rerenderRows() {
+    if (!parsedList) return;
+    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
+    // Re-emit summary count.
+    if (parsedMeta) {
+      var bands = { green: 0, amber: 0, red: 0 };
+      parsedRowsState.forEach(function (r) { bands[confBand(r.confidence)]++; });
+      var needReview = bands.amber + bands.red;
+      parsedMeta.textContent = tt(
+        needReview > 0 ? bands.green + ' ready · ' + needReview + ' need review' : 'all ' + bands.green + ' look good',
+        needReview > 0 ? bands.green + ' listas · ' + needReview + ' requieren revisión' : 'las ' + bands.green + ' se ven bien'
+      );
+    }
+  }
+
+  function rowToHtml(r, idx) {
+    var qtyParts = [];
+    if (r.qty != null) qtyParts.push(r.qty);
+    if (r.unit) qtyParts.push(r.unit);
+    var qtyText = qtyParts.length ? qtyParts.join(' ') : '';
+    var priceText = r.lineTotal != null ? '$' + r.lineTotal.toFixed(2) : '';
+    var chip = r.category
+      ? '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '">' + escHtml(catLabel(r.category)) + '</span>'
+      : '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
+    var confPct = Math.round(r.confidence || 0);
+    var confChip = '<span class="id-parsed-conf" data-conf="' + confBand(r.confidence) + '">' + confPct + '%</span>';
+    return '<li class="id-parsed-row" data-conf="' + confBand(r.confidence) + '" data-idx="' + idx + '" title="' + escHtml(r.raw || '') + '">' +
+      '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' + escHtml(r.name) + chip + confChip + '</span>' +
+      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
+      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
+    '</li>';
+  }
+
+  // Click delegation — turn a span into an <input> on tap.
+  if (parsedList) {
+    parsedList.addEventListener('click', function (e) {
+      var span = e.target.closest && e.target.closest('[data-edit]');
+      if (!span) return;
+      // Don't restart edit when user clicked the chip inside the name span.
+      if (e.target !== span && (e.target.classList.contains('id-parsed-cat') || e.target.classList.contains('id-parsed-conf'))) {
+        // Special case: tap the category chip → open category picker.
+        var rowEl = e.target.closest('.id-parsed-row');
+        if (e.target.classList.contains('id-parsed-cat') && rowEl) {
+          openCategoryPicker(rowEl, parseInt(rowEl.dataset.idx, 10));
+        }
+        return;
+      }
+      var rowEl = span.closest('.id-parsed-row');
+      if (!rowEl) return;
+      var rowIdx = parseInt(rowEl.dataset.idx, 10);
+      if (!isFinite(rowIdx)) return;
+      var field = span.dataset.edit;
+      var current = parsedRowsState[rowIdx] && parsedRowsState[rowIdx][field === 'lineTotal' ? 'lineTotal' : field];
+      var input = document.createElement('input');
+      input.type = (field === 'qty' || field === 'lineTotal') ? 'text' : 'text';
+      if (field === 'qty' || field === 'lineTotal') input.inputMode = 'decimal';
+      input.value = current != null ? String(current) : '';
+      input.className = 'id-parsed-input';
+      input.setAttribute('aria-label', tt('Edit ' + field, 'Editar ' + field));
+      span.innerHTML = '';
+      span.appendChild(input);
+      input.focus();
+      input.select();
+      var done = function () {
+        commitCellEdit(rowIdx, field, input.value);
+      };
+      input.addEventListener('blur', done);
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+        if (ev.key === 'Escape') { input.value = current != null ? String(current) : ''; input.blur(); }
+      });
+    });
+  }
+
+  function openCategoryPicker(rowEl, rowIdx) {
+    if (!isFinite(rowIdx)) return;
+    var nameSpan = rowEl.querySelector('.id-parsed-name');
+    var chip = nameSpan && nameSpan.querySelector('.id-parsed-cat');
+    if (!chip) return;
+    var select = document.createElement('select');
+    select.className = 'id-parsed-cat-select';
+    select.setAttribute('aria-label', tt('Category', 'Categoría'));
+    var cats = ['protein', 'seafood', 'produce', 'dairy', 'dry-goods', 'herbs-spices', 'paper', 'cleaning', 'beverage'];
+    var current = parsedRowsState[rowIdx] && parsedRowsState[rowIdx].category;
+    var blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = tt('— uncategorized —', '— sin categoría —');
+    if (!current) blank.selected = true;
+    select.appendChild(blank);
+    cats.forEach(function (c) {
+      var o = document.createElement('option');
+      o.value = c;
+      o.textContent = catLabel(c);
+      if (current === c) o.selected = true;
+      select.appendChild(o);
+    });
+    chip.replaceWith(select);
+    select.focus();
+    select.addEventListener('change', function () {
+      commitCellEdit(rowIdx, 'category', select.value);
+    });
+    select.addEventListener('blur', function () {
+      // No commit on blur unless they changed it; rerender restores chip.
+      if (select.value === (current || '')) rerenderRows();
+    });
+  }
+
   function renderParsed(parsed) {
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
@@ -342,34 +473,11 @@
         : 'las ' + bands.green + ' se ven bien';
       parsedMeta.textContent = tt(labelEn, labelEs);
     }
-    parsedList.innerHTML = parsed.rows.map(function (r) {
-      var qtyParts = [];
-      if (r.qty != null) qtyParts.push(r.qty);
-      if (r.unit) qtyParts.push(r.unit);
-      var qtyText = qtyParts.length ? qtyParts.join(' ') : '';
-      var priceText = r.lineTotal != null ? '$' + r.lineTotal.toFixed(2) : '';
-      // Category chip — restaurant-real bucket label. Hidden when
-      // unclassified (tier-3 heuristic returned null AND lexicon
-      // missed). Owner edits the category in Wave B5's verifier.
-      var chip = '';
-      if (r.category) {
-        chip = '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '">' + escHtml(catLabel(r.category)) + '</span>';
-      } else {
-        chip = '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
-      }
-      // Visible confidence pill — green ≥80%, amber 60-79%, red
-      // <60%. Owner's eye lands on amber/red first; green rows
-      // batch through unless tapped.
-      var confPct = Math.round(r.confidence || 0);
-      var confChip = '<span class="id-parsed-conf" data-conf="' + confBand(r.confidence) + '" title="' +
-        tt('How sure we are this row read correctly', 'Qué tan seguros estamos de esta lectura') + '">' +
-        confPct + '%</span>';
-      return '<li class="id-parsed-row" data-conf="' + confBand(r.confidence) + '" title="' + escHtml(r.raw) + '">' +
-        '<span class="id-parsed-name">' + escHtml(r.name) + chip + confChip + '</span>' +
-        '<span class="id-parsed-qty">' + escHtml(qtyText) + '</span>' +
-        '<span class="id-parsed-price">' + escHtml(priceText) + '</span>' +
-      '</li>';
-    }).join('');
+    // Wave B5 — adopt the parsed rows into the live editable state
+    // and re-render through rowToHtml. The state array is what the
+    // save flow (B6) will encrypt + persist.
+    parsedRowsState = parsed.rows.map(function (r) { return Object.assign({}, r); });
+    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
     if (parsedTotals) {
       if (parsed.totalParsed != null) {
         var deltaWarn = parsed.deltaPct != null && parsed.deltaPct > 5;
