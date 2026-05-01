@@ -1044,26 +1044,31 @@
         var nameW = doc.getStringUnitWidth(block.name) * theme.bodyPt / doc.internal.scaleFactor;
         // Account for the drop-cap width if it was rendered.
         var chipX = x + dropCapW + nameW + 6;
-        var chipY = y + theme.bodyPt - theme.bodyPt * 0.78; // top of pill
-        var chipH = theme.bodyPt * 0.78;
-        var chipPad = 3;
-        var chipFontPt = Math.max(6, theme.bodyPt * 0.62);
+        // W19 — circular SVG-glyph chip. Slightly larger than the
+        // previous letter-pill so the icon reads at print scale.
+        var chipSize = theme.bodyPt * 0.95;
+        var chipY = y + theme.bodyPt - chipSize * 0.92;
         if (block.allergens && block.allergens.length) {
-          doc.setFontSize(chipFontPt);
           doc.setDrawColor(accentRgb.r, accentRgb.g, accentRgb.b);
-          doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
-          doc.setLineWidth(0.4);
           for (var ci = 0; ci < block.allergens.length; ci++) {
             var code = String(block.allergens[ci]);
-            var codeW = doc.getStringUnitWidth(code) * chipFontPt / doc.internal.scaleFactor;
-            var pillW = codeW + chipPad * 2;
             // Stop drawing if we'd collide with the price column.
-            if (chipX + pillW > x + contentWidth - priceWidth - 4) break;
-            doc.roundedRect(chipX, chipY, pillW, chipH, chipH / 2, chipH / 2, 'S');
-            doc.text(code, chipX + chipPad, chipY + chipH * 0.78);
-            chipX += pillW + 3;
+            if (chipX + chipSize > x + contentWidth - priceWidth - 4) break;
+            doc.setLineWidth(0.45);
+            doc.circle(chipX + chipSize / 2, chipY + chipSize / 2, chipSize / 2, 'S');
+            if (root.MD_GLYPHS && root.MD_GLYPHS.has(code)) {
+              var inset = chipSize * 0.18;
+              root.MD_GLYPHS.drawPdf(doc, code, chipX + inset, chipY + inset, chipSize - inset * 2, accentRgb);
+            } else {
+              // Letter fallback (when MD_GLYPHS module didn't load).
+              var fbPt = Math.max(6, chipSize * 0.55);
+              doc.setFontSize(fbPt);
+              doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+              doc.text(code, chipX + chipSize / 2, chipY + chipSize * 0.66, { align: 'center' });
+            }
+            chipX += chipSize + 3;
           }
-          // Restore body type for following text + price.
+          // Restore body type / color for downstream draws.
           doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
           doc.setFontSize(theme.bodyPt);
           doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
@@ -1071,9 +1076,9 @@
         if (block.spice) {
           // Small filled triangles, up to 3, in rust/accent.
           doc.setFillColor(accentRgb.r, accentRgb.g, accentRgb.b);
-          var triH = chipH * 0.85;
+          var triH = chipSize * 0.78;
           var triW = triH * 0.85;
-          var triY = chipY + (chipH - triH) / 2;
+          var triY = chipY + (chipSize - triH) / 2;
           for (var sp = 0; sp < block.spice; sp++) {
             if (chipX + triW > x + contentWidth - priceWidth - 4) break;
             doc.triangle(
@@ -1244,17 +1249,44 @@
       // wrap it cleanly across the available width. Each entry is
       // "CODE = Label", joined with a middle-dot separator.
       var keyLocale = block.locale || 'en';
-      var entries = (block.codes || []).map(function (c) {
-        return c + ' = ' + allergenLabelPdf(c, keyLocale);
-      });
-      var keyText = entries.join('  ·  ');
-      var keyLines = doc.splitTextToSize(keyText, contentWidth);
-      doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      // W19 — render each entry as: circular glyph chip + " = " + label
+      // wrapping to multiple lines as needed. Glyphs use the same
+      // accent color as the inline chips for visual consistency.
       var ky = keyTopRuleY + 14;
-      for (var li = 0; li < keyLines.length; li++) {
-        doc.text(keyLines[li], x, ky);
-        ky += theme.descPt * 1.5;
-      }
+      doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      doc.setFontSize(theme.descPt);
+      var keyChipSize = theme.descPt * 1.05;
+      var keyEntryGap = 14;
+      var keyX = x;
+      var keyMaxX = x + contentWidth;
+      (block.codes || []).forEach(function (c) {
+        var lbl = allergenLabelPdf(c, keyLocale);
+        var labelText = ' = ' + lbl;
+        var labelW = doc.getStringUnitWidth(labelText) * theme.descPt / doc.internal.scaleFactor;
+        var entryW = keyChipSize + labelW + keyEntryGap;
+        if (keyX + entryW > keyMaxX) {
+          keyX = x;
+          ky += theme.descPt * 1.6;
+        }
+        doc.setDrawColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.setLineWidth(0.45);
+        var keyChipY = ky - keyChipSize * 0.8;
+        doc.circle(keyX + keyChipSize / 2, keyChipY + keyChipSize / 2, keyChipSize / 2, 'S');
+        if (root.MD_GLYPHS && root.MD_GLYPHS.has(c)) {
+          var keyInset = keyChipSize * 0.18;
+          root.MD_GLYPHS.drawPdf(doc, c, keyX + keyInset, keyChipY + keyInset, keyChipSize - keyInset * 2, accentRgb);
+        } else {
+          var keyFbPt = Math.max(5, keyChipSize * 0.55);
+          doc.setFontSize(keyFbPt);
+          doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+          doc.text(c, keyX + keyChipSize / 2, keyChipY + keyChipSize * 0.66, { align: 'center' });
+          doc.setFontSize(theme.descPt);
+        }
+        doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+        doc.text(labelText, keyX + keyChipSize + 2, ky);
+        keyX += entryW;
+      });
+      ky += theme.descPt * 1.6;
       return ky + 4;
     }
     return y;

@@ -498,6 +498,10 @@
    preview output; theme tokens override the colors there. */
 .md-chip{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border:1px solid var(--teal);border-radius:999px;background:color-mix(in srgb,var(--teal) 8%,var(--white));color:var(--teal);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1}
 .md-chip-spice{border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,var(--white));color:var(--rust);padding:0 4px;letter-spacing:0;font-size:11px}
+/* W19 — SVG-glyph chip variant. Tighter padding + circular shape
+   when the chip carries a bespoke icon instead of a letter. */
+.md-chip-glyph{padding:2px;width:22px;min-width:22px;height:22px;border-radius:50%}
+.md-chip-glyph svg{width:14px;height:14px;display:block}
 
 /* Allergen panel — checkbox grid + spice stepper. Auto-fills the
    popover width; on mobile it stretches edge-to-edge inside the
@@ -510,6 +514,11 @@
 .md-allergen-opt input{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:var(--teal);cursor:pointer}
 .md-allergen-glyph{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:18px;padding:0 5px;border:1px solid currentColor;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--teal)}
 .md-allergen-opt.is-on .md-allergen-glyph{background:var(--teal);color:var(--cream)}
+/* W19 — SVG variant of the allergen-grid glyph slot. Keeps the
+   pill shape but enlarges + centers the icon. */
+.md-allergen-glyph-svg{padding:2px;width:24px;min-width:24px;height:24px;border-radius:50%}
+.md-allergen-glyph-svg svg{width:18px;height:18px;display:block}
+.md-allergen-opt.is-on .md-allergen-glyph-svg{background:var(--teal);color:var(--cream)}
 .md-allergen-label{flex:1 1 auto;display:flex;flex-direction:column;gap:1px;font-weight:600}
 .md-allergen-hint{font-size:11px;font-weight:400;color:var(--stone);line-height:1.4}
 
@@ -603,6 +612,10 @@
    contrast hit on dark stocks. */
 .md-preview-paper .md-pp-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}
 .md-preview-paper .md-pp-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 5px;border:0.6px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);font-size:8.5px;font-weight:700;letter-spacing:.04em;line-height:1;font-family:var(--bodyFamily)}
+/* W19 — SVG variant of the preview chip. Circular border, sized
+   so the icon reads at the menu's body-text scale. */
+.md-preview-paper .md-pp-glyph-svg{padding:1px;width:16px;min-width:16px;height:16px;border-radius:50%}
+.md-preview-paper .md-pp-glyph-svg svg{width:12px;height:12px;display:block}
 .md-preview-paper .md-pp-glyph-spice{border:0;background:transparent;color:inherit;font-size:9.5px;letter-spacing:0;padding:0}
 
 /* Auto-generated allergen key legend at the menu footer. Renders only
@@ -619,6 +632,8 @@
 .md-preview-paper .md-pp-allergen-key-label{font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;font-size:0.92em;margin-right:8px}
 .md-preview-paper .md-pp-allergen-key-item{white-space:nowrap}
 .md-preview-paper .md-pp-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 5px;border:0.6px solid var(--accent);border-radius:999px;color:var(--accent);font-weight:700;font-size:0.86em;letter-spacing:.04em;margin-right:2px}
+.md-preview-paper .md-pp-allergen-key-glyph-svg{padding:1px;width:18px;min-width:18px;height:18px;border-radius:50%}
+.md-preview-paper .md-pp-allergen-key-glyph-svg svg{width:12px;height:12px;display:block}
 .md-preview-paper .md-pp-allergen-key-sep{color:var(--muted);opacity:.6}
 /* Last-3-menus history (Wave A4). Quiet card under download. */
 .md-history{margin:18px 0 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
@@ -1334,12 +1349,13 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      MD_I18N globals at parse time. -->
 <script src="./data/allergens.js?v=20260501-w18"></script>
 <script src="./data/badges.js?v=20260501-w18"></script>
+<script src="./data/allergen-glyphs.js?v=20260501-w19"></script>
 <script src="./infra/dom.js?v=20260501-w18"></script>
 <script src="./infra/i18n.js?v=20260501-w18"></script>
 <script src="./themes.js?v=20260501-w15"></script>
-<script src="./menu-render-pdf.js?v=20260501-w17"></script>
-<script src="./menu-render-html.js?v=20260501-w16"></script>
+<script src="./menu-render-pdf.js?v=20260501-w19"></script>
+<script src="./menu-render-html.js?v=20260501-w19"></script>
 <script src="./menu-render-text.js?v=20260501-w16"></script>
-<script src="./menu-design.js?v=20260501-w18"></script>
+<script src="./menu-design.js?v=20260501-w19"></script>
 </body>
 </html>

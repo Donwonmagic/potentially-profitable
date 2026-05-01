@@ -259,9 +259,15 @@
         // close state; we delegate change events on the checkbox grid.
         var dishAllergens = Array.isArray(r.allergens) ? r.allergens : [];
         var dishSpice = (typeof r.spice === 'number' && r.spice >= 0 && r.spice <= 3) ? r.spice : 0;
+        // W19 — render the bespoke SVG glyph instead of the letter
+        // monogram inside each chip when the glyph module is loaded.
         var chipsHtml = dishAllergens.map(function (code) {
           var a = allergenById(code); if (!a) return '';
-          return '<span class="md-chip" data-code="' + escHtml(code) + '" title="' + escHtml(allergenLabel(code)) + '" aria-label="' + escHtml(allergenLabel(code)) + '">' + escHtml(code) + '</span>';
+          var lbl = allergenLabel(code);
+          var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+            ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.6 })
+            : escHtml(code);
+          return '<span class="md-chip md-chip-glyph" data-code="' + escHtml(code) + '" title="' + escHtml(lbl) + '" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
         }).join('');
         var spiceChip = '';
         if (dishSpice > 0) {
@@ -277,9 +283,14 @@
           var checked = dishAllergens.indexOf(a.id) !== -1 ? ' checked' : '';
           var label = LOCALE === 'es' ? a.label_es : a.label_en;
           var hint  = LOCALE === 'es' ? a.hint_es  : a.hint_en;
+          // W19 — bespoke SVG glyph in each option tile, falling back
+          // to the letter code if the glyph module isn't loaded.
+          var glyphInner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(a.id))
+            ? MD_GLYPHS.inlineSvg(a.id, { size: 18, title: label, strokeWidth: 1.6 })
+            : escHtml(a.id);
           return '<label class="md-allergen-opt' + (checked ? ' is-on' : '') + '" data-code="' + escHtml(a.id) + '">' +
             '<input type="checkbox" data-act="allergen" data-i="' + i + '" data-code="' + escHtml(a.id) + '"' + checked + ' />' +
-            '<span class="md-allergen-glyph" aria-hidden="true">' + escHtml(a.id) + '</span>' +
+            '<span class="md-allergen-glyph md-allergen-glyph-svg" aria-hidden="true">' + glyphInner + '</span>' +
             '<span class="md-allergen-label">' + escHtml(label) +
             (hint ? '<span class="md-allergen-hint">' + escHtml(hint) + '</span>' : '') +
             '</span></label>';
@@ -973,7 +984,12 @@
           glyphsHtml = ' <span class="md-pp-glyphs" role="list">';
           dAllergens.forEach(function (code) {
             var a = allergenById(code); if (!a) return;
-            glyphsHtml += '<span class="md-pp-glyph" role="listitem" aria-label="' + escHtml(allergenLabel(code)) + '">' + escHtml(code) + '</span>';
+            var lbl = allergenLabel(code);
+            // W19 — bespoke SVG glyph in preview, fallback to letter.
+            var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+              ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.4 })
+              : escHtml(code);
+            glyphsHtml += '<span class="md-pp-glyph md-pp-glyph-svg" role="listitem" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
           });
           if (dSpice) {
             var fireGlyph = '';
@@ -1053,8 +1069,13 @@
       activeCodes.forEach(function (code, ai) {
         var a = allergenById(code); if (!a) return;
         var lbl = LOCALE === 'es' ? a.label_es : a.label_en;
+        // W19 — render the bespoke SVG in the legend too so editor /
+        // preview / PDF all read with the same iconography.
+        var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+          ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+          : escHtml(code);
         html += '<span class="md-pp-allergen-key-item">' +
-          '<span class="md-pp-allergen-key-glyph">' + escHtml(code) + '</span>' +
+          '<span class="md-pp-allergen-key-glyph md-pp-allergen-key-glyph-svg">' + inner + '</span>' +
           ' = ' + escHtml(lbl) + '</span>';
         if (ai < activeCodes.length - 1) html += '<span class="md-pp-allergen-key-sep" aria-hidden="true"> · </span>';
       });

@@ -119,7 +119,12 @@
               // Bold uppercase code, no rounded chip — EU convention.
               glyphHtml += '<strong class="ml-glyph-eu" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code.toUpperCase()) + '</strong>';
             } else {
-              glyphHtml += '<span class="ml-glyph" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code) + '</span>';
+              // W19 — bespoke SVG glyph in the QR-menu HTML; falls
+              // back to the letter code when MD_GLYPHS isn't available.
+              var inner = (root && root.MD_GLYPHS && root.MD_GLYPHS.has(code))
+                ? root.MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+                : escHtml(code);
+              glyphHtml += '<span class="ml-glyph ml-glyph-svg" role="listitem" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
             }
           });
           if (spice) {
@@ -155,9 +160,13 @@
         '<h2 class="ml-allergen-key-title">' + escHtml(keyTitle) + '</h2>' +
         '<dl class="ml-allergen-key-list">';
       ordered.forEach(function (code) {
+        var lbl = allergenLabelHtml(code, locale);
+        var inner = (root && root.MD_GLYPHS && root.MD_GLYPHS.has(code))
+          ? root.MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+          : escHtml(code);
         keyHtml += '<div class="ml-allergen-key-row">' +
-          '<dt class="ml-allergen-key-glyph">' + escHtml(code) + '</dt>' +
-          '<dd>' + escHtml(allergenLabelHtml(code, locale)) + '</dd>' +
+          '<dt class="ml-allergen-key-glyph ml-allergen-key-glyph-svg">' + inner + '</dt>' +
+          '<dd>' + escHtml(lbl) + '</dd>' +
           '</div>';
       });
       keyHtml += '</dl></section>';
@@ -201,6 +210,10 @@
 /* W7-2 allergen/spice glyph chips — same monogram pattern as the editor. */
 '  .ml-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}\n' +
 '  .ml-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:16px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1;background:transparent}\n' +
+'  .ml-glyph-svg{padding:1px;width:18px;min-width:18px;height:18px;border-radius:50%}\n' +
+'  .ml-glyph-svg svg{width:14px;height:14px;display:block;stroke:currentColor;fill:none}\n' +
+'  .ml-allergen-key-glyph-svg{padding:1px;width:22px;min-width:22px;height:22px;border-radius:50%}\n' +
+'  .ml-allergen-key-glyph-svg svg{width:14px;height:14px;display:block;stroke:currentColor;fill:none}\n' +
 '  .ml-glyph-spice{border:0;color:inherit;font-size:11.5px;letter-spacing:0;padding:0}\n' +
 /* W16 — EU FIC bold-uppercase allergen mark */
 '  .ml-glyph-eu{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);margin-left:4px;font-size:0.92em}\n' +
