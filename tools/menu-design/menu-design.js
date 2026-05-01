@@ -1055,14 +1055,102 @@
         // success toast. Honors prefers-reduced-motion.
         try { surfaceDownloadCelebration(filename, pages); } catch (_) {}
       }).catch(function (err) {
-        setDownloadMsg(tt(
-          'PDF generation failed: ' + (err && err.message ? err.message : 'unknown error'),
-          'Falló la generación del PDF: ' + (err && err.message ? err.message : 'error desconocido')
-        ), 'error');
+        // W10-10 — failure-mode delight. Don't dead-end on a PDF
+        // failure; surface a retry + a PNG fallback so the operator
+        // walks away with an artifact regardless. Lazy-loads
+        // html2canvas only when the operator taps the PNG path.
+        var msgEl = downloadMsg;
+        if (msgEl) {
+          msgEl.innerHTML = '';
+          msgEl.classList.remove('success'); msgEl.classList.add('error');
+          var span = document.createElement('span');
+          span.textContent = tt(
+            'We couldn\'t build your PDF. Try again, or grab it as a PNG image instead.',
+            'No pudimos armar tu PDF. Intenta de nuevo, o llévatelo como imagen PNG.'
+          );
+          var retryBtn = document.createElement('button');
+          retryBtn.type = 'button';
+          retryBtn.className = 'md-fail-retry';
+          retryBtn.textContent = tt('Try PDF again', 'Reintentar PDF');
+          retryBtn.addEventListener('click', function () { downloadBtn.click(); });
+          var pngBtn = document.createElement('button');
+          pngBtn.type = 'button';
+          pngBtn.className = 'md-fail-png';
+          pngBtn.textContent = tt('Download as PNG', 'Descargar como PNG');
+          pngBtn.addEventListener('click', function () { downloadAsPng(filename, title); });
+          msgEl.appendChild(span);
+          msgEl.appendChild(document.createTextNode(' '));
+          msgEl.appendChild(retryBtn);
+          msgEl.appendChild(document.createTextNode(' '));
+          msgEl.appendChild(pngBtn);
+        }
+        if (window.plausible) {
+          try { window.plausible('Menu Design PDF Failed'); } catch (_) {}
+        }
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
       });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W10-10 — PNG fallback. Lazy-loads html2canvas (~40KB gz) on
+  // first invocation. Captures the live preview iframe / panel into
+  // a high-res PNG. Lower fidelity than PDF (rasterized), but the
+  // operator never leaves empty-handed.
+  // ----------------------------------------------------------------
+  var H2C_CDN = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  var __h2cLoadPromise = null;
+  function loadHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve(window.html2canvas);
+    if (__h2cLoadPromise) return __h2cLoadPromise;
+    __h2cLoadPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = H2C_CDN; s.async = true; s.crossOrigin = 'anonymous'; s.referrerPolicy = 'no-referrer';
+      s.onload = function () {
+        if (window.html2canvas) resolve(window.html2canvas);
+        else { __h2cLoadPromise = null; reject(new Error('html2canvas missing after load')); }
+      };
+      s.onerror = function () { __h2cLoadPromise = null; reject(new Error('html2canvas load failed')); };
+      document.head.appendChild(s);
+    });
+    return __h2cLoadPromise;
+  }
+
+  function downloadAsPng(filenameBase, title) {
+    var preview = document.getElementById('mdPreviewSlot') || document.querySelector('.md-preview') || document.body;
+    if (!preview) return;
+    setDownloadMsg(tt('Capturing preview as PNG…', 'Capturando vista previa como PNG…'));
+    loadHtml2Canvas().then(function (h2c) {
+      return h2c(preview, { backgroundColor: null, scale: 2, useCORS: true });
+    }).then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          setDownloadMsg(tt('Couldn\'t make a PNG. Sorry.', 'No se pudo armar el PNG.'), 'error');
+          return;
+        }
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (filenameBase || 'menu') + '.png';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'PNG downloaded — lower fidelity than the PDF, but it travels.',
+          'PNG descargado — menos fiel que el PDF, pero viaja bien.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design PNG Fallback'); } catch (_) {}
+        }
+      }, 'image/png');
+    }).catch(function () {
+      setDownloadMsg(tt(
+        'Couldn\'t load the PNG capture library. Check your network and retry.',
+        'No se pudo cargar la librería de captura PNG. Revisa tu red e intenta de nuevo.'
+      ), 'error');
     });
   }
 

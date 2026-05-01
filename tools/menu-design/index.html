@@ -272,6 +272,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 .md-pp-logo-bounce{animation:md-pp-logo-bounce .28s cubic-bezier(.34,1.56,.64,1)}
 @media(prefers-reduced-motion:reduce){.md-pp-logo-bounce{animation:none}}
 
+/* W10-10 — failure-mode delight buttons in the download message line. */
+.md-fail-retry,.md-fail-png{font-size:13px;padding:4px 12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer;font-weight:500;margin-right:4px}
+.md-fail-png{background:#fff;color:var(--accent,#1f6f6a)}
+.md-fail-retry:hover,.md-fail-png:hover{filter:brightness(1.05)}
+
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebApplication","@id":"https://muntin.digital/tools/menu-design/#tool","name":"Menu Design Suite","description":"Auto-layout printable menus for independent restaurants from a typed dish list, four typeset themes, the operator's logo, and four paper sizes. Mechanical layout only — no AI rewriting.","url":"https://muntin.digital/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
