@@ -141,6 +141,96 @@
     return function () { root.removeEventListener('storage', handler); };
   }
 
+  // ----------------------------------------------------------------
+  // W3-4 — encrypted invoice handoff helpers.
+  //
+  // The cross-tool handoff for invoice items used to be a plaintext
+  // localStorage write (MuntinContext.merge({ invoiceItems: slim })).
+  // That contradicted the privacy claim — saved invoices live as
+  // AES-GCM ciphertext on the server, but the SAME line items sat
+  // unencrypted in the browser profile so other tools could pre-fill.
+  //
+  // Now: writeInvoiceItems wraps the array via MID_DEVICE_KEY (per-
+  // device AES-GCM key, see tools/invoice-decoder/device-key.js) and
+  // stores the envelope under `invoiceItemsEnc`. readInvoiceItems
+  // resolves to the decrypted array — async because SubtleCrypto is.
+  //
+  // Failure mode: when MID_DEVICE_KEY is absent (it loads only on
+  // pages that include invoice-decoder/device-key.js), these helpers
+  // resolve to null on read and reject on write so the caller can
+  // detect and surface a "module missing" hint instead of falling
+  // back to plaintext writes.
+  // ----------------------------------------------------------------
+  function writeInvoiceItems(items) {
+    if (!root.MID_DEVICE_KEY || typeof root.MID_DEVICE_KEY.wrap !== 'function') {
+      return Promise.reject(new Error('device-key module missing'));
+    }
+    return root.MID_DEVICE_KEY.wrap(items || []).then(function (env) {
+      // Drop any legacy plaintext invoiceItems alongside the wrap.
+      var current = read();
+      if (Array.isArray(current.invoiceItems)) delete current.invoiceItems;
+      current.invoiceItemsEnc = env;
+      return write(current);
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W4-7 — invoiceTrend persistence (operations spine v1).
+  //
+  // Each saved invoice appends a slim summary entry to a 12-deep
+  // ring buffer in MuntinContext.invoiceTrend so downstream tools
+  // (Cost Pulse dashboard, Plate Cost stale banner, Margin Math
+  // food-cost-band hint, GBP category-shift CTA) can compute drift,
+  // share-shifts, and rolling medians from local data alone.
+  //
+  // Schema:
+  //   { vendor, savedAt, totalsByCategory, parsedSum, itemCount }
+  //
+  // No item names, no SKUs, no raw OCR — only aggregates. Keeps the
+  // entry under ~600 bytes typed so the 50KB-per-key Workshop budget
+  // never gets squeezed even at full 12-entry capacity. Plaintext
+  // (these are aggregates, not row-level data) but still device-
+  // local; the W3-4 wrap covers row-level invoiceItems separately.
+  // ----------------------------------------------------------------
+  function pushTrendEntry(entry) {
+    if (!entry || typeof entry !== 'object') return false;
+    var slim = {
+      vendor:           entry.vendor || null,
+      savedAt:          entry.savedAt || Date.now(),
+      totalsByCategory: entry.totalsByCategory || {},
+      parsedSum:        +(entry.parsedSum || 0).toFixed(2),
+      itemCount:        entry.itemCount || 0
+    };
+    var current = read();
+    var trend = Array.isArray(current.invoiceTrend) ? current.invoiceTrend.slice() : [];
+    trend.unshift(slim);             // newest first
+    if (trend.length > 12) trend = trend.slice(0, 12);
+    current.invoiceTrend = trend;
+    return write(current);
+  }
+
+  function readTrend() {
+    var current = read();
+    return Array.isArray(current.invoiceTrend) ? current.invoiceTrend : [];
+  }
+
+  function readInvoiceItems() {
+    var current = read();
+    var env = current && current.invoiceItemsEnc;
+    if (!env || !env.ct) return Promise.resolve(null);
+    if (!root.MID_DEVICE_KEY || typeof root.MID_DEVICE_KEY.unwrap !== 'function') {
+      return Promise.resolve(null);
+    }
+    return root.MID_DEVICE_KEY.unwrap(env).then(function (arr) {
+      return Array.isArray(arr) ? arr : null;
+    }).catch(function () {
+      // Stale envelope (device-id rotated, key import failure, etc).
+      // Resolve null rather than throwing — callers degrade to "no
+      // last invoice" cleanly.
+      return null;
+    });
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     SCHEMA_VERSION: SCHEMA_VERSION,
@@ -149,7 +239,11 @@
     merge: merge,
     get: get,
     clear: clear,
-    subscribe: subscribe
+    subscribe: subscribe,
+    writeInvoiceItems: writeInvoiceItems,
+    readInvoiceItems:  readInvoiceItems,
+    pushTrendEntry:    pushTrendEntry,
+    readTrend:         readTrend
   };
 
   if (typeof module !== 'undefined' && module.exports) {

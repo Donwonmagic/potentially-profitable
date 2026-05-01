@@ -25,6 +25,10 @@
   function blankDish() { return { kind: 'dish', name: '', price: '', desc: '' }; }
   function blankSection(name) { return { kind: 'section', name: name || '' }; }
 
+  // W5-1 — track whether the current rows[] are demo (ghost) rows
+  // seeded for empty-state anchoring. Cleared by clearGhostRows().
+  var __ghostActive = false;
+
   // -------------------- DOM --------------------
   var rowsEl    = document.getElementById('mdRows');
   var addRowBtn = document.getElementById('mdAddRow');
@@ -50,6 +54,8 @@
   var overflowEl  = document.getElementById('mdOverflow');
   var downloadBtn = document.getElementById('mdDownload');
   var downloadMsg = document.getElementById('mdDownloadMsg');
+  var exportQrBtn = document.getElementById('mdExportQr');
+  var largePrintBtn = document.getElementById('mdLargePrint');
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -76,8 +82,9 @@
     if (!rowsEl) return;
     var html = '';
     rows.forEach(function (r, i) {
+      var ghostAttr = r.ghost ? ' data-ghost="1"' : '';
       if (r.kind === 'section') {
-        html += '<tr class="md-row-section" data-i="' + i + '">' +
+        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + '>' +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" /></td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
@@ -95,7 +102,7 @@
             tt('Need help describing? Open Menu Copy Inspector →', '¿Ayuda para describir? Abrir Inspector de Copy →') +
             '</a>';
         }
-        html += '<tr data-i="' + i + '">' +
+        html += '<tr data-i="' + i + '"' + ghostAttr + '>' +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
@@ -119,8 +126,8 @@
 
   function updateStatus() {
     if (!statusEl) return;
-    var dishes   = rows.filter(function (r) { return r.kind === 'dish'; }).length;
-    var sections = rows.filter(function (r) { return r.kind === 'section'; }).length;
+    var dishes   = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost; }).length;
+    var sections = rows.filter(function (r) { return r.kind === 'section' && !r.ghost; }).length;
     if (LOCALE === 'es') {
       statusEl.innerHTML = '<strong>' + dishes + '</strong> plato' + (dishes === 1 ? '' : 's') +
         ' · <strong>' + sections + '</strong> sección' + (sections === 1 ? '' : 'es') +
@@ -130,6 +137,63 @@
         ' · <strong>' + sections + '</strong> section' + (sections === 1 ? '' : 's') +
         ' — your menu lives in this browser only.';
     }
+    // W5-2 — mid-flow encouragement at meaningful milestones.
+    maybeEncourage(dishes);
+  }
+
+  // ----------------------------------------------------------------
+  // W5-2 — mid-flow encouragement toasts.
+  //
+  // Fires a short, single-line toast at every 5-dish milestone
+  // (5, 10, 15, 20). Each milestone fires at most once per session.
+  // Throttle: never twice in <8s; max 4 toasts per session. Honors
+  // prefers-reduced-motion (no slide-in; quick fade).
+  // ----------------------------------------------------------------
+  var __encourageHits = {};
+  var __encourageLastTs = 0;
+  var __encourageCount = 0;
+  var ENCOURAGE_MSGS = {
+    5:  { en: 'Five dishes already. Most owners stop typing here and lose them — you\'re past that.',
+          es: 'Cinco platos ya. La mayoría se atora aquí — tú ya pasaste ese punto.' },
+    10: { en: 'Ten dishes — that\'s a real menu. Try a different theme to see how it shifts the feel.',
+          es: 'Diez platos — eso ya es un menú de verdad. Prueba otro tema para ver cómo cambia.' },
+    15: { en: 'Fifteen dishes. Add a logo if you have one — small touch, big lift on the printable.',
+          es: 'Quince platos. Si tienes logo, súbelo — toque pequeño, salto grande en el imprimible.' },
+    20: { en: 'Twenty dishes. You\'re in "real menu" territory now — most printable PDFs cap around 30.',
+          es: 'Veinte platos. Ya estás en territorio de menú real — la mayoría de PDFs caben hasta 30.' }
+  };
+  function maybeEncourage(dishCount) {
+    var key = ENCOURAGE_MSGS[dishCount] ? dishCount : null;
+    if (!key) return;
+    if (__encourageHits[key]) return;
+    if (__encourageCount >= 4) return;
+    var now = Date.now();
+    if (now - __encourageLastTs < 8000) return;
+    __encourageHits[key] = true;
+    __encourageLastTs = now;
+    __encourageCount++;
+    var msg = ENCOURAGE_MSGS[key];
+    surfaceEncouragement(LOCALE === 'es' ? msg.es : msg.en);
+    if (window.plausible) {
+      try { window.plausible('Menu Design Encouragement', { props: { milestone: String(key) } }); } catch (_) {}
+    }
+  }
+  function surfaceEncouragement(text) {
+    var el = document.createElement('div');
+    el.className = 'md-encourage';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.textContent = text;
+    document.body.appendChild(el);
+    // Force reflow so the transition triggers.
+    void el.offsetHeight;
+    el.classList.add('show');
+    setTimeout(function () {
+      el.classList.remove('show');
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, 300);
+    }, 2500);
   }
 
   // -------------------- Theme picker --------------------
@@ -158,6 +222,7 @@
       themeId = li.dataset.id;
       renderThemePicker();
       renderPreview();
+      scheduleSaveDraft();
     });
     themesEl.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -167,6 +232,7 @@
       themeId = li.dataset.id;
       renderThemePicker();
       renderPreview();
+      scheduleSaveDraft();
     });
   }
 
@@ -183,6 +249,14 @@
     logoMeta = { name: name, w: w, h: h };
     if (logoThumb) {
       logoThumb.innerHTML = '<img src="' + escHtml(dataUrl) + '" alt="" />';
+      // W5-5 — small bounce so the operator sees the logo land.
+      // Honors prefers-reduced-motion via the CSS rule.
+      logoThumb.classList.remove('md-pp-logo-bounce');
+      void logoThumb.offsetHeight; // force reflow so the class re-triggers
+      logoThumb.classList.add('md-pp-logo-bounce');
+      setTimeout(function () {
+        if (logoThumb) logoThumb.classList.remove('md-pp-logo-bounce');
+      }, 320);
     }
     if (logoLine) logoLine.textContent = name;
     // Low-res chip — fine for letter, may pixelate at A3.
@@ -195,6 +269,7 @@
       setLogoWarn('');
     }
     renderPreview();
+    scheduleSaveDraft();
   }
 
   function readLogoFile(file) {
@@ -243,6 +318,7 @@
       if (e.target && e.target.name === 'md-paper') {
         paperKey = e.target.value;
         renderPreview();
+        scheduleSaveDraft();
       }
     });
   }
@@ -385,14 +461,159 @@
     previewTimer = setTimeout(function () { previewTimer = null; renderPreview(); }, 300);
   }
 
+  // ----------------------------------------------------------------
+  // W5-8 — per-keystroke autosave + draft restore.
+  //
+  // A menu in progress is the operator's typed work — losing it on a
+  // tab close ranks among the worst trust failures a tool can have.
+  // We debounce 500ms then write a slim draft to localStorage. Logo
+  // data URL is stored separately because it can be large; we cap it
+  // at 200KB before write to avoid blowing the 5MB localStorage
+  // budget.
+  //
+  // On boot, if a draft exists AND rows[] is empty, surface a
+  // dismissable "Pick up where you left off?" affordance instead of
+  // overwriting silently.
+  // ----------------------------------------------------------------
+  var DRAFT_KEY = 'mtn:menu-design:draft';
+  var LOGO_KEY  = 'mtn:menu-design:logo';
+  var LOGO_BUDGET = 200 * 1024; // 200KB
+  var __saveTimer = null;
+  var __saveDraftEnabled = true;
+
+  function safeLs() {
+    try {
+      var probe = '__md_probe__';
+      localStorage.setItem(probe, probe); // h8-exempt: storage probe
+      localStorage.removeItem(probe);
+      return localStorage;
+    } catch (_) { return null; }
+  }
+
+  function persistDraft() {
+    if (!__saveDraftEnabled) return;
+    if (__ghostActive) return;        // W5-1: never save demo rows as the operator's draft
+    var ls = safeLs();
+    if (!ls) return;
+    try {
+      var draft = {
+        rows: rows.map(function (r) { return Object.assign({}, r); }),
+        themeId: themeId,
+        paperKey: paperKey,
+        logoMeta: logoMeta,
+        savedAt: Date.now()
+      };
+      ls.setItem(DRAFT_KEY, JSON.stringify(draft)); // h8-exempt: in-progress menu draft
+      if (logoUrl && logoUrl.length <= LOGO_BUDGET) {
+        ls.setItem(LOGO_KEY, logoUrl); // h8-exempt: in-progress menu logo
+      } else if (!logoUrl) {
+        ls.removeItem(LOGO_KEY);
+      }
+    } catch (_) { /* quota — silent */ }
+  }
+
+  function scheduleSaveDraft() {
+    if (__saveTimer) clearTimeout(__saveTimer);
+    __saveTimer = setTimeout(function () { __saveTimer = null; persistDraft(); }, 500);
+  }
+
+  function loadDraft() {
+    var ls = safeLs();
+    if (!ls) return null;
+    try {
+      var raw = ls.getItem(DRAFT_KEY); // h8-exempt: read draft
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      if (!d || !Array.isArray(d.rows)) return null;
+      return d;
+    } catch (_) { return null; }
+  }
+
+  function clearDraft() {
+    var ls = safeLs();
+    if (!ls) return;
+    try { ls.removeItem(DRAFT_KEY); ls.removeItem(LOGO_KEY); } catch (_) {}
+  }
+
+  function offerDraftRestore() {
+    var d = loadDraft();
+    if (!d || !Array.isArray(d.rows) || !d.rows.length) return;
+    if (rows.length) return;  // operator already started fresh
+    if (!statusEl) return;
+    var ls = safeLs();
+    var savedLogo = ls ? ls.getItem(LOGO_KEY) : null; // h8-exempt: read logo draft
+    var ageMin = Math.max(1, Math.round((Date.now() - (d.savedAt || 0)) / 60000));
+    var hostId = 'mdDraftBanner';
+    if (document.getElementById(hostId)) return;
+    var banner = document.createElement('div');
+    banner.id = hostId;
+    banner.className = 'md-draft-banner';
+    banner.innerHTML =
+      '<span>' + tt(
+        'You started a menu ' + ageMin + ' min ago. ',
+        'Empezaste un menú hace ' + ageMin + ' min. '
+      ) + '<strong>' + d.rows.length + ' ' + tt(
+        d.rows.length === 1 ? 'row' : 'rows', d.rows.length === 1 ? 'renglón' : 'renglones'
+      ) + '</strong>' + tt(' saved.', ' guardado.') + '</span>' +
+      '<div class="md-draft-actions">' +
+        '<button type="button" data-act="restore">' + tt('Pick up where I left off', 'Continuar donde lo dejé') + '</button>' +
+        '<button type="button" data-act="discard" class="md-draft-discard">' + tt('Start fresh', 'Empezar de nuevo') + '</button>' +
+      '</div>';
+    statusEl.parentNode.insertBefore(banner, statusEl);
+    banner.addEventListener('click', function (e) {
+      var act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
+      if (act === 'restore') {
+        __saveDraftEnabled = false;  // pause autosave during hydrate
+        rows = d.rows.map(function (r) { return Object.assign({}, r); });
+        themeId = d.themeId || themeId;
+        paperKey = d.paperKey || paperKey;
+        logoMeta = d.logoMeta || null;
+        if (savedLogo) { logoUrl = savedLogo; }
+        render();
+        renderPreview();
+        __saveDraftEnabled = true;
+        banner.parentNode.removeChild(banner);
+        if (window.plausible) {
+          try { window.plausible('Menu Design Draft Restored'); } catch (_) {}
+        }
+      } else if (act === 'discard') {
+        clearDraft();
+        banner.parentNode.removeChild(banner);
+      }
+    });
+  }
+
   if (rowsEl) {
     rowsEl.addEventListener('input', function (e) {
       var t = e.target;
       if (!t || !t.dataset || !t.dataset.field) return;
       var i = parseInt(t.dataset.i, 10);
       if (!isFinite(i) || !rows[i]) return;
+      // W5-1 — first keystroke on a ghost row clears the entire
+      // demo and lets the operator's typing land on a fresh blank.
+      if (rows[i].ghost) {
+        var typedField = t.dataset.field;
+        var typedValue = t.value;
+        clearGhostRows();
+        rows.push(blankDish());
+        var newIdx = rows.length - 1;
+        rows[newIdx][typedField] = typedValue;
+        render();
+        // Restore focus + caret on the freshly-rendered input.
+        var fresh = rowsEl.querySelector('[data-field="' + typedField + '"][data-i="' + newIdx + '"]');
+        if (fresh) {
+          fresh.focus();
+          try {
+            var pos = typedValue.length;
+            if (fresh.setSelectionRange) fresh.setSelectionRange(pos, pos);
+          } catch (_) {}
+        }
+        scheduleSaveDraft();
+        return;
+      }
       rows[i][t.dataset.field] = t.value;
       schedulePreview();
+      scheduleSaveDraft();    // W5-8
     });
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
@@ -401,19 +622,21 @@
       if (!isFinite(i)) return;
       rows.splice(i, 1);
       render();
+      scheduleSaveDraft();    // W5-8
     });
   }
 
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
     rows.push(blankDish());
     render();
-    // Focus the new row's name input.
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
     rows.push(blankDish());
     render();
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
@@ -421,6 +644,7 @@
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
     rows.push(blankSection());
     render();
+    scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('.md-row-section input');
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
@@ -430,11 +654,13 @@
     if (!confirm('Clear every row? This can\'t be undone.')) return;
     rows = [];
     render();
+    clearDraft();
   });
 
   if (sampleBtn) sampleBtn.addEventListener('click', function () {
     rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
     render();
+    scheduleSaveDraft();
   });
 
   // -------------------- Paste-CSV ingest --------------------
@@ -571,6 +797,61 @@
     { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.' },
     { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.' }
   ];
+
+  // ----------------------------------------------------------------
+  // W5-1 — ghost preview empty state.
+  //
+  // First impression problem: a Menu Design Suite with an empty
+  // editor + empty preview is "I don't know what this thing does."
+  // We seed the editor with SAMPLE_MENU clones flagged ghost=true
+  // and a floating overlay that says "this is a demo — tap any
+  // dish to start your real menu." The first input/click on a
+  // ghost row clears ALL ghost rows in one move so the operator
+  // never has to delete demo rows individually.
+  // ----------------------------------------------------------------
+  function seedGhostRows() {
+    if (rows.length) return false;     // operator already has work
+    if (loadDraft())  return false;    // draft will be offered
+    rows = SAMPLE_MENU.map(function (r) {
+      return Object.assign({}, r, { ghost: true });
+    });
+    __ghostActive = true;
+    return true;
+  }
+
+  function clearGhostRows() {
+    if (!__ghostActive) return;
+    rows = rows.filter(function (r) { return !r.ghost; });
+    __ghostActive = false;
+    var ov = document.getElementById('mdGhostOverlay');
+    if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+    render();
+    if (window.plausible) {
+      try { window.plausible('Menu Design Ghost Cleared'); } catch (_) {}
+    }
+  }
+
+  function renderGhostOverlay() {
+    if (!__ghostActive) return;
+    if (document.getElementById('mdGhostOverlay')) return;
+    if (!rowsEl || !rowsEl.parentNode) return;
+    var ov = document.createElement('div');
+    ov.id = 'mdGhostOverlay';
+    ov.className = 'md-ghost-overlay';
+    ov.innerHTML = '<strong>' +
+      tt('This is a demo.', 'Esto es una demostración.') +
+      '</strong> ' +
+      tt('Tap any dish or "Start fresh" to begin your real menu — the demo will clear instantly.',
+         'Toca cualquier plato o "Empezar de nuevo" para iniciar tu menú real — la demo se borra al instante.') +
+      ' <button type="button" data-act="ghost-start" class="md-ghost-start">' +
+      tt('Start fresh', 'Empezar de nuevo') + '</button>';
+    rowsEl.parentNode.insertBefore(ov, rowsEl);
+    ov.addEventListener('click', function (e) {
+      if (e.target && e.target.getAttribute('data-act') === 'ghost-start') {
+        clearGhostRows();
+      }
+    });
+  }
 
   // -------------------- "We remember" pill (MuntinContext) --------------------
   // Read-only at A1 — surfaces what other tools have already saved
@@ -770,16 +1051,370 @@
           theme: themeId, paper: paperKey, pages: String(pages),
           dishCount_bucket: dishes.length < 12 ? '<12' : dishes.length < 25 ? '12-24' : dishes.length < 40 ? '25-39' : '40+'
         } });
+        // W5-7 — peak-end celebration moment. Replaces the bare
+        // success toast. Honors prefers-reduced-motion.
+        try { surfaceDownloadCelebration(filename, pages); } catch (_) {}
       }).catch(function (err) {
-        setDownloadMsg(tt(
-          'PDF generation failed: ' + (err && err.message ? err.message : 'unknown error'),
-          'Falló la generación del PDF: ' + (err && err.message ? err.message : 'error desconocido')
-        ), 'error');
+        // W10-10 — failure-mode delight. Don't dead-end on a PDF
+        // failure; surface a retry + a PNG fallback so the operator
+        // walks away with an artifact regardless. Lazy-loads
+        // html2canvas only when the operator taps the PNG path.
+        var msgEl = downloadMsg;
+        if (msgEl) {
+          msgEl.innerHTML = '';
+          msgEl.classList.remove('success'); msgEl.classList.add('error');
+          var span = document.createElement('span');
+          span.textContent = tt(
+            'We couldn\'t build your PDF. Try again, or grab it as a PNG image instead.',
+            'No pudimos armar tu PDF. Intenta de nuevo, o llévatelo como imagen PNG.'
+          );
+          var retryBtn = document.createElement('button');
+          retryBtn.type = 'button';
+          retryBtn.className = 'md-fail-retry';
+          retryBtn.textContent = tt('Try PDF again', 'Reintentar PDF');
+          retryBtn.addEventListener('click', function () { downloadBtn.click(); });
+          var pngBtn = document.createElement('button');
+          pngBtn.type = 'button';
+          pngBtn.className = 'md-fail-png';
+          pngBtn.textContent = tt('Download as PNG', 'Descargar como PNG');
+          pngBtn.addEventListener('click', function () { downloadAsPng(filename, title); });
+          msgEl.appendChild(span);
+          msgEl.appendChild(document.createTextNode(' '));
+          msgEl.appendChild(retryBtn);
+          msgEl.appendChild(document.createTextNode(' '));
+          msgEl.appendChild(pngBtn);
+        }
+        if (window.plausible) {
+          try { window.plausible('Menu Design PDF Failed'); } catch (_) {}
+        }
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
       });
     });
+  }
+
+  // ----------------------------------------------------------------
+  // W10-10 — PNG fallback. Lazy-loads html2canvas (~40KB gz) on
+  // first invocation. Captures the live preview iframe / panel into
+  // a high-res PNG. Lower fidelity than PDF (rasterized), but the
+  // operator never leaves empty-handed.
+  // ----------------------------------------------------------------
+  var H2C_CDN = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  var __h2cLoadPromise = null;
+  function loadHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve(window.html2canvas);
+    if (__h2cLoadPromise) return __h2cLoadPromise;
+    __h2cLoadPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = H2C_CDN; s.async = true; s.crossOrigin = 'anonymous'; s.referrerPolicy = 'no-referrer';
+      s.onload = function () {
+        if (window.html2canvas) resolve(window.html2canvas);
+        else { __h2cLoadPromise = null; reject(new Error('html2canvas missing after load')); }
+      };
+      s.onerror = function () { __h2cLoadPromise = null; reject(new Error('html2canvas load failed')); };
+      document.head.appendChild(s);
+    });
+    return __h2cLoadPromise;
+  }
+
+  function downloadAsPng(filenameBase, title) {
+    var preview = document.getElementById('mdPreviewSlot') || document.querySelector('.md-preview') || document.body;
+    if (!preview) return;
+    setDownloadMsg(tt('Capturing preview as PNG…', 'Capturando vista previa como PNG…'));
+    loadHtml2Canvas().then(function (h2c) {
+      return h2c(preview, { backgroundColor: null, scale: 2, useCORS: true });
+    }).then(function (canvas) {
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          setDownloadMsg(tt('Couldn\'t make a PNG. Sorry.', 'No se pudo armar el PNG.'), 'error');
+          return;
+        }
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (filenameBase || 'menu') + '.png';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'PNG downloaded — lower fidelity than the PDF, but it travels.',
+          'PNG descargado — menos fiel que el PDF, pero viaja bien.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design PNG Fallback'); } catch (_) {}
+        }
+      }, 'image/png');
+    }).catch(function () {
+      setDownloadMsg(tt(
+        'Couldn\'t load the PNG capture library. Check your network and retry.',
+        'No se pudo cargar la librería de captura PNG. Revisa tu red e intenta de nuevo.'
+      ), 'error');
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W6-3 — Large-print accessibility variant. Reuses the existing
+  // PDF flow with largePrint: true. Override bumps body to 18pt /
+  // h1 to 36pt / forces single column / pure-white-on-pure-black /
+  // whitespace dividers. Hits WCAG AAA. Filename gets -large-print
+  // suffix so the operator can keep both versions side-by-side.
+  // ----------------------------------------------------------------
+  if (largePrintBtn) {
+    largePrintBtn.addEventListener('click', function () {
+      if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt(
+          'PDF generator not loaded. Refresh and try again.',
+          'El generador de PDF no se cargó. Recarga e intenta de nuevo.'
+        ), 'error');
+        return;
+      }
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt(
+          'Add at least one dish before exporting a large-print version.',
+          'Agrega al menos un plato antes de exportar la versión letra grande.'
+        ), 'error');
+        return;
+      }
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
+      var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-large-print';
+      largePrintBtn.disabled = true;
+      var origLabel = largePrintBtn.innerHTML;
+      largePrintBtn.textContent = tt('Building large-print PDF…', 'Generando letra grande…');
+      MD_PDF.exportPdf({
+        rows:        realRows,
+        theme:       theme,
+        paperKey:    paperKey,
+        title:       title,
+        logoDataUrl: logoUrl,
+        logoMeta:    logoMeta,
+        filename:    fnameBase,
+        largePrint:  true
+      }).then(function (result) {
+        var pages = result.pageCount || 1;
+        setDownloadMsg(tt(
+          'Large-print version downloaded — ' + pages + ' page' + (pages === 1 ? '' : 's') + '. WCAG AAA at 18pt body.',
+          'Versión letra grande descargada — ' + pages + ' página' + (pages === 1 ? '' : 's') + '. WCAG AAA con cuerpo de 18pt.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design Large Print Exported'); } catch (_) {}
+        }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'Large-print PDF failed: ' + (err && err.message ? err.message : 'unknown error'),
+          'Falló la versión letra grande: ' + (err && err.message ? err.message : 'error desconocido')
+        ), 'error');
+      }).then(function () {
+        largePrintBtn.disabled = false;
+        largePrintBtn.innerHTML = origLabel;
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W6-1 — QR-menu export. Promps for a destination URL the operator
+  // controls (their Wix Media path, GitHub Pages root, etc), then
+  // downloads a zip with menu.html + menu-qr.png. The HTML is self-
+  // contained — they drop it in once and the QR points at it.
+  // ----------------------------------------------------------------
+  if (exportQrBtn) {
+    exportQrBtn.addEventListener('click', function () {
+      if (typeof MD_HTML === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt(
+          'QR exporter not loaded. Refresh and try again.',
+          'El exportador QR no se cargó. Recarga e intenta de nuevo.'
+        ), 'error');
+        return;
+      }
+      // Don't include ghost rows in the export.
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt(
+          'Add at least one dish before exporting your QR menu.',
+          'Agrega al menos un plato antes de exportar tu menú QR.'
+        ), 'error');
+        return;
+      }
+      var defaultUrl = 'https://yourrestaurant.com/menu.html';
+      var url = prompt(tt(
+        'Where will menu.html live? Type the full URL — that\'s what the QR will point to.\n(e.g. https://yourrestaurant.com/menu.html)',
+        '¿Dónde va a vivir menu.html? Escribe la URL completa — a eso apuntará el QR.\n(p.ej. https://turestaurante.com/menu.html)'
+      ), defaultUrl);
+      if (!url || !/^https?:\/\//i.test(url.trim())) {
+        if (url !== null) {
+          setDownloadMsg(tt(
+            'That doesn\'t look like a URL. Cancelled.',
+            'Eso no parece una URL. Cancelado.'
+          ), 'error');
+        }
+        return;
+      }
+      url = url.trim();
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var palette = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+        ? (MuntinContext.read() || {}).palette : null;
+      if (Array.isArray(palette) && palette.length && MD_THEMES.applyPalette) {
+        theme = MD_THEMES.applyPalette(theme, palette);
+      }
+      var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
+      exportQrBtn.disabled = true;
+      var origLabel = exportQrBtn.innerHTML;
+      exportQrBtn.textContent = tt('Building zip…', 'Empacando zip…');
+      setDownloadMsg('', 'success');
+      MD_HTML.exportZip({
+        rows:         realRows,
+        theme:        theme,
+        title:        title,
+        locale:       LOCALE,
+        logoDataUrl:  logoUrl,
+        targetUrl:    url
+      }).then(function (blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-qr-bundle.zip';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'Zip downloaded. Drop menu.html into your hosting root, then print menu-qr.png and stick it on the table.',
+          'Zip descargado. Sube menu.html a tu hosting, luego imprime menu-qr.png y pégalo en la mesa.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design QR Exported', { props: { theme: themeId, dishCount_bucket:
+            realRows.length < 12 ? '<12' : realRows.length < 25 ? '12-24' : '25+'
+          } }); } catch (_) {}
+        }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'Couldn\'t build the zip — check your network and try again.',
+          'No se pudo armar el zip — revisa tu red e intenta de nuevo.'
+        ), 'error');
+      }).then(function () {
+        exportQrBtn.disabled = false;
+        exportQrBtn.innerHTML = origLabel;
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W5-7 — download-moment celebration (peak-end engineering).
+  //
+  // Replaces the bare success-toast with a 3-second fullscreen
+  // overlay + a 40-particle confetti canvas. Three follow-up cards
+  // slide in: print-from-Mac / email-to-printer / share-with-team.
+  //
+  // Honors prefers-reduced-motion (skips the canvas, fades in/out).
+  // Auto-dismisses after 4s; click anywhere to dismiss earlier.
+  // ----------------------------------------------------------------
+  function reducedMotionMD() {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    catch (_) { return false; }
+  }
+  function surfaceDownloadCelebration(filename, pages) {
+    if (document.getElementById('mdCelebrate')) return;
+    var ov = document.createElement('div');
+    ov.id = 'mdCelebrate';
+    ov.className = 'md-celebrate';
+    ov.setAttribute('role', 'status');
+    ov.setAttribute('aria-live', 'polite');
+    ov.innerHTML =
+      '<div class="md-celebrate-card">' +
+        '<h2>' + tt('Your menu is ready.', 'Tu menú está listo.') + '</h2>' +
+        '<p>' + tt(
+          pages + (pages === 1 ? ' page' : ' pages') + ' downloaded as ' + filename + '.',
+          pages + (pages === 1 ? ' página' : ' páginas') + ' descargadas como ' + filename + '.'
+        ) + '</p>' +
+        '<div class="md-celebrate-actions">' +
+          '<button type="button" data-act="print">' + tt('Print from your Mac/PC', 'Imprimir desde tu Mac/PC') + '</button>' +
+          '<button type="button" data-act="email">' + tt('Email to your printer', 'Enviar por correo a tu impresor') + '</button>' +
+          '<button type="button" data-act="dismiss">' + tt('Close', 'Cerrar') + '</button>' +
+        '</div>' +
+      '</div>' +
+      (reducedMotionMD() ? '' : '<canvas class="md-celebrate-canvas"></canvas>');
+    document.body.appendChild(ov);
+    function close() { if (ov.parentNode) ov.parentNode.removeChild(ov); }
+    ov.addEventListener('click', function (e) {
+      var act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
+      if (act === 'dismiss' || e.target === ov) { close(); return; }
+      if (act === 'print') {
+        // Open the freshly-downloaded file in a new tab — operators
+        // can use the browser print dialog from there. We don't have
+        // a handle on the blob URL anymore (it's already revoked by
+        // jsPDF's save flow), so we surface guidance instead.
+        ov.querySelector('.md-celebrate-card').innerHTML =
+          '<h2>' + tt('Print on a Mac', 'Imprimir en Mac') + '</h2>' +
+          '<p>' + tt(
+            'Open ' + filename + ' in Preview (it\'s in your Downloads). Press ⌘P. Pick "Letter" paper. Print.',
+            'Abre ' + filename + ' en Preview (está en Descargas). Presiona ⌘P. Elige "Carta". Imprime.'
+          ) + '</p>' +
+          '<button type="button" data-act="dismiss" class="md-celebrate-back">' +
+          tt('Got it', 'Entendido') + '</button>';
+      } else if (act === 'email') {
+        var subject = encodeURIComponent(tt('Menu PDF for printing', 'PDF de menú para imprimir'));
+        var body = encodeURIComponent(tt(
+          'Hi — please print 100 copies of the attached menu (' + filename + ') on 24-lb letter paper. Bleeds: none. Thanks.',
+          'Hola — por favor imprime 100 copias del menú adjunto (' + filename + ') en papel carta 24-lb. Sin sangrado. Gracias.'
+        ));
+        window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+        close();
+      }
+    });
+    setTimeout(close, 4500);
+    if (!reducedMotionMD()) startConfetti(ov.querySelector('.md-celebrate-canvas'));
+  }
+
+  // ~40 particles, ~2.5s playtime. Uses requestAnimationFrame and
+  // stops on its own; doesn't keep the canvas alive after the tail
+  // particle settles.
+  function startConfetti(canvas) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    var COLORS = ['#1F4E5B', '#7A2E1F', '#C29B5E', '#3E6B6F', '#9F2D1F', '#FAF6EE'];
+    var parts = [];
+    for (var i = 0; i < 42; i++) {
+      parts.push({
+        x: W / 2 + (Math.random() - 0.5) * 160,
+        y: H * 0.35,
+        vx: (Math.random() - 0.5) * 8,
+        vy: -8 - Math.random() * 4,
+        c: COLORS[i % COLORS.length],
+        rot: Math.random() * Math.PI,
+        rotV: (Math.random() - 0.5) * 0.2,
+        life: 0,
+        maxLife: 100 + Math.random() * 30
+      });
+    }
+    var raf;
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      var alive = false;
+      parts.forEach(function (p) {
+        p.life++;
+        if (p.life > p.maxLife) return;
+        alive = true;
+        p.vy += 0.3;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.rot += p.rotV;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-4, -3, 8, 6);
+        ctx.restore();
+      });
+      if (alive) raf = requestAnimationFrame(frame);
+      else if (raf) cancelAnimationFrame(raf);
+    }
+    raf = requestAnimationFrame(frame);
   }
 
   // -------------------- Init --------------------
@@ -800,6 +1435,20 @@
   render();
   renderCtxPill();
   renderHistory();
+  // W5-8 — surface "Pick up where you left off" if a draft exists
+  // and the operator hasn't started fresh yet. Runs after the
+  // initial render so the banner sits above an empty editor.
+  try { offerDraftRestore(); } catch (_) {}
+  // W5-1 — if no draft exists and the editor is still empty after
+  // restore-offer, seed ghost preview rows. First keystroke clears.
+  try {
+    if (!rows.length && !loadDraft()) {
+      if (seedGhostRows()) {
+        render();
+        renderGhostOverlay();
+      }
+    }
+  } catch (_) {}
 
   // Subscribe so changes in another tab (e.g. saving from Menu
   // Engineering) refresh the pill without a manual reload.

@@ -286,10 +286,37 @@
   // Args: { rows, theme, paperKey, title, logoDataUrl, logoMeta,
   //         filename }. Returns a Promise resolving to { pageCount,
   //         droppedSvgLogo } so the caller can show toasts.
+  // W6-3 — Large-print accessibility override. Bumps body / heading
+  // / description point sizes, forces single column, swaps theme
+  // paper to high-contrast white-on-black with a whitespace divider
+  // style. Hits WCAG AAA on 18pt body text. Operator passes
+  // largePrint: true on the opts.
+  function applyLargePrintOverride(theme) {
+    return Object.assign({}, theme, {
+      bodyPt:  18,
+      h1Pt:    36,
+      h2Pt:    24,
+      descPt:  16,
+      pricePt: 18,
+      columns: 1,
+      paper:        '#FFFFFF',
+      ink:          '#000000',
+      muted:        '#202020',
+      accent:       '#000000',
+      dividerStyle: 'whitespace',
+      priceStyle:   'right-monospace',
+      logoSlot:     'header-center'
+    });
+  }
+
   function exportPdf(opts) {
     opts = opts || {};
     return loadJsPdf().then(function (jsPDF) {
       if (!jsPDF) throw new Error('jsPDF unavailable');
+      // W6-3 — apply large-print override before paper / blocks build.
+      if (opts.largePrint && opts.theme) {
+        opts = Object.assign({}, opts, { theme: applyLargePrintOverride(opts.theme) });
+      }
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
       var paper = PAPERS[paperKey];
       var doc = new jsPDF({ unit: 'pt', format: [paper.w, paper.h], compress: true });
@@ -334,7 +361,7 @@
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS };
+    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride };
   }
-  if (root) root.MD_PDF = { exportPdf: exportPdf, PAPERS: PAPERS };
+  if (root) root.MD_PDF = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride };
 })(typeof window !== 'undefined' ? window : null);

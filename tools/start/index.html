@@ -424,7 +424,8 @@
       'tech-stack':        { name: 'Tech Stack Detector',            url: '/tools/tech-stack/' },
       'compare':           { name: 'Compare',                        url: '/tools/compare/' },
       'menu-design':       { name: 'Menu Design Suite',              url: '/tools/menu-design/' },
-      'invoice-decoder':   { name: 'Advanced Invoice Decoder',        url: '/tools/invoice-decoder/' }
+      'invoice-decoder':   { name: 'Advanced Invoice Decoder',        url: '/tools/invoice-decoder/' },
+      'cost-pulse':        { name: 'Cost Pulse',                      url: '/tools/cost-pulse/' }
     };
 
     // Per-tool meta — the consultant-style framing the hub already
@@ -450,7 +451,8 @@
       'tech-stack':        { leaveWith: 'What your site is built on + what that means for fixes',  time: '10 sec',      needs: 'your URL' },
       'compare':           { leaveWith: 'A side-by-side scorecard vs. a competitor',               time: '60 sec',      needs: 'two URLs' },
       'menu-design':       { leaveWith: 'A printable PDF menu laid out for whatever dish count you have', time: '20 min',  needs: 'your dish list + a logo' },
-      'invoice-decoder':   { leaveWith: 'Sorted invoice line items saved to your Workshop',               time: '3 min',       needs: 'phone camera + one invoice' }
+      'invoice-decoder':   { leaveWith: 'Sorted invoice line items saved to your Workshop',               time: '3 min',       needs: 'phone camera + one invoice' },
+      'cost-pulse':        { leaveWith: 'A drift dashboard across your saved invoices — see which category jumped',         time: '60 sec',      needs: 'at least one saved invoice (use Invoice Decoder first)' }
     };
 
     // Phrasing helpers: echo the user's answers back in plain English.
@@ -487,6 +489,13 @@
       var skipped = [];
 
       if (answers.leak === 'margin') {
+        // W10-8 — Invoice Decoder routes when the operator hasn't
+        // recipe-costed yet. The fastest path from "I think margin
+        // is leaking" to a structured cost view is one invoice photo
+        // → 12 line items in their workshop, then plate cost, then
+        // margin math. Cost Pulse is the dashboard view they get
+        // after a few saves.
+        path.push({ k: 'invoice-decoder', why: 'A 30-second snap of one invoice gives you the line-item costs the rest of the margin tools need.' });
         if (answers.recipe === 'yes' || answers.recipe === 'partial') {
           path.push({ k: 'plate-cost', why: 'Recipe-level cost per plate is the input every other margin tool needs.' });
         }
@@ -516,6 +525,11 @@
         path.push({ k: 'seo-grader', why: 'Title and meta description — the readable layer of every search result.' });
       } else if (answers.leak === 'kitchen') {
         path.push({ k: 'plate-cost', why: 'Plate-level cost first. Without it, every other kitchen-side decision is a guess.' });
+        // W10-8 — Menu Design routes for kitchen-side leaks because
+        // the printable menu is the single biggest brand artifact a
+        // kitchen-focused operator updates monthly. Doing it AFTER
+        // plate-cost so prices reflect the costed math.
+        path.push({ k: 'menu-design', why: 'A printable PDF menu in the theme that matches your cuisine — refresh it when you update prices.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Per-dish profitability + popularity. Tells you which Stars to protect and which Dogs to retire.' });
         }

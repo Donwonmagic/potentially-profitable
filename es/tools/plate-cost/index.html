@@ -84,6 +84,10 @@
 .pc-grid-actions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pc-add-row{padding:6px 14px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:12px;font-weight:600;color:var(--stone);cursor:pointer}
 .pc-add-row:hover{border-color:var(--teal);color:var(--teal)}
+.pc-pull-invoice{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.pc-pull-invoice:hover{filter:brightness(1.06)}
+.pc-pull-invoice[disabled]{opacity:.55;cursor:wait}
+.pc-pull-invoice-msg{font-size:12.5px;margin:6px 12px 0;color:var(--ink-soft)}
 .pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
 .pc-ocr[open]{padding-bottom:18px}
 .pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
@@ -554,9 +558,11 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </table>
       <div class="pc-grid-actions">
         <button type="button" class="pc-add-row" id="pcAddRow">+ Agregar ingrediente</button>
+        <button type="button" class="pc-pull-invoice" id="pcPullInvoice" hidden>↳ Traer de tu última factura</button>
         <button type="button" class="pc-sample-btn" id="pcSample">Cargar receta de muestra</button>
         <button type="button" class="pc-clear-btn" id="pcClear">Limpiar</button>
       </div>
+      <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
       <details class="pc-ocr">
         <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
@@ -785,6 +791,8 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>
@@ -1217,6 +1225,82 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     renderResults();
     fireBucketEvent();
   });
+
+  // ----------------------------------------------------------------
+  // W9-1 — "Pull from last invoice" CTA (ES mirror).
+  // ----------------------------------------------------------------
+  var pullInvoiceBtn = document.getElementById('pcPullInvoice');
+  var pullInvoiceMsg = document.getElementById('pcPullInvoiceMsg');
+  function setPullMsg(text, kind) {
+    if (!pullInvoiceMsg) return;
+    pullInvoiceMsg.textContent = text || '';
+    pullInvoiceMsg.style.color = kind === 'error' ? 'var(--rust,#B25C2A)'
+                                : kind === 'ok'   ? 'var(--accent,#1f6f6a)'
+                                                  : 'var(--ink-soft)';
+  }
+  function checkLastInvoice() {
+    if (!pullInvoiceBtn || typeof MuntinContext === 'undefined' || typeof MuntinContext.readInvoiceItems !== 'function') return;
+    MuntinContext.readInvoiceItems().then(function (items) {
+      if (Array.isArray(items) && items.length) {
+        var ingredients = items.filter(function (it) {
+          return it && /^(protein|produce|dairy|seafood|herbs-spices)$/.test(String(it.category || ''));
+        });
+        if (!ingredients.length) { pullInvoiceBtn.hidden = true; return; }
+        pullInvoiceBtn.hidden = false;
+        pullInvoiceBtn.textContent = '↳ Traer ' + ingredients.length +
+          ' ingrediente' + (ingredients.length === 1 ? '' : 's') + ' de tu última factura';
+      } else {
+        pullInvoiceBtn.hidden = true;
+      }
+    }).catch(function () { pullInvoiceBtn.hidden = true; });
+  }
+  if (pullInvoiceBtn) {
+    pullInvoiceBtn.addEventListener('click', function () {
+      if (typeof MuntinContext === 'undefined' || typeof MuntinContext.readInvoiceItems !== 'function') return;
+      pullInvoiceBtn.disabled = true;
+      MuntinContext.readInvoiceItems().then(function (items) {
+        var rows = readRows();
+        while (rows.length && !rows[rows.length - 1].ingredient) rows.pop();
+        var added = 0;
+        (items || []).forEach(function (it) {
+          if (!it || !/^(protein|produce|dairy|seafood|herbs-spices)$/.test(String(it.category || ''))) return;
+          var unit = (it.unit || 'lb').toLowerCase();
+          if (/case|cs/.test(unit)) unit = 'lb';
+          if (/each|ea|piece|piezas?/.test(unit)) unit = 'each';
+          if (/gal/.test(unit)) unit = 'gal';
+          rows.push({
+            ingredient:  String(it.name || '').slice(0, 60),
+            apPrice:     it.unitPrice != null ? String(it.unitPrice) : '',
+            apQty:       it.qty != null ? String(it.qty) : '',
+            apUnit:      unit,
+            yieldPercent: '',
+            usedQty:     '',
+            usedUnit:    'oz'
+          });
+          added++;
+        });
+        if (rows.length === 0) rows.push(blankRow());
+        rerenderRows(rows);
+        renderResults();
+        setPullMsg(
+          added + ' ingrediente' + (added === 1 ? '' : 's') +
+          ' agregados. Llena el % de rendimiento y la cantidad usada, luego revisa los totales.',
+          'ok'
+        );
+        if (window.plausible) {
+          try { window.plausible('Plate Cost Invoice Pulled', { props: {
+            count_bucket: added < 5 ? '<5' : added < 12 ? '5-11' : '12+'
+          } }); } catch (_) {}
+        }
+      }).catch(function () {
+        setPullMsg('No se pudo desbloquear la última factura — abre el Decodificador de Facturas.', 'error');
+      }).then(function () {
+        pullInvoiceBtn.disabled = false;
+      });
+    });
+    try { checkLastInvoice(); } catch (_) {}
+  }
+
 
   function loadSample() {
     var s = PC.SAMPLE_RECIPE_ES || PC.SAMPLE_RECIPE_EN;

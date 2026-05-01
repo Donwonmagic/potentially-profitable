@@ -93,7 +93,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/security/#claim-list",
-      "numberOfItems": 9,
+      "numberOfItems": 10,
       "itemListElement": [
         {
           "@type": "Claim",
@@ -192,6 +192,17 @@
           "appearance": {
             "@type": "WebPageElement",
             "url": "https://muntin.digital/es/security/#claim-9"
+          }
+        },
+        {
+          "@type": "Claim",
+          "@id": "https://muntin.digital/es/security/#claim-10",
+          "position": 10,
+          "name": "Los datos de costos guardados no se venden, comparten ni usan para entrenar IA.",
+          "text": "Las facturas guardadas con el Decodificador de Facturas se encriptan en tu navegador antes de salir de tu dispositivo — AES-GCM 256, llave derivada vía PBKDF2 de un secreto que tú eliges. No vendemos datos agregados de costos, no los compartimos con proveedores, no los incluimos en marketing, no entrenamos IA con ellos, y no se rellenan retroactivamente si más adelante hay un opt-in. El servidor guarda solo ciphertext + IV; no puede desencriptar.",
+          "appearance": {
+            "@type": "WebPageElement",
+            "url": "https://muntin.digital/es/security/#claim-10"
           }
         }
       ]
@@ -294,6 +305,16 @@
           <p class="security-claim__text">&quot;Imprimir este reporte&quot; abre el diálogo de impresión nativo del navegador — nunca vemos la salida. &quot;Añadir al calendario&quot; genera un archivo .ics en tu navegador y se descarga localmente. El evento de calendario incluye solo valores ya visibles para ti.</p>
           <details class="security-claim__inspect"><summary>Verifícalo</summary>
             <p class="security-claim__verify">DevTools → Network. Haz clic en Imprimir reporte — no hay nuevos requests. Haz clic en Añadir al calendario — siguen sin nuevos requests; aparece una descarga .ics. Ábrelo con un editor de texto: cada campo del evento es texto plano.</p>
+          </details>
+        </div>
+      </article>
+      <article class="security-claim" id="claim-10">
+        <span class="security-claim__num" aria-hidden="true">10</span>
+        <div class="security-claim__body">
+          <h3 class="security-claim__title">Los datos de costos guardados no se venden, comparten ni usan para entrenar IA.</h3>
+          <p class="security-claim__text">Las facturas guardadas con el Decodificador de Facturas se encriptan en tu navegador antes de salir de tu dispositivo — AES-GCM 256, llave derivada vía PBKDF2 de un secreto que tú eliges. No vendemos datos agregados de costos, no los compartimos con proveedores, no los incluimos en marketing, no entrenamos IA con ellos, y no se rellenan retroactivamente si más adelante hay un opt-in. El servidor guarda solo ciphertext + IV; no puede desencriptar.</p>
+          <details class="security-claim__inspect"><summary>Verifícalo</summary>
+            <p class="security-claim__verify">Tres formas de verificar, en orden de dificultad: (1) Después de cada guardado, la herramienta muestra una ventana de Prueba con un demo &#39;intenta romperlo&#39; — escribe cualquier secreto incorrecto y mira a SubtleCrypto lanzar OperationError. (2) En la página de la herramienta, abre &#39;Verifícalo tú mismo: abre DevTools → Network&#39; para un recorrido de 4 pasos; la única petición tras Leer es el WASM de Tesseract, y la única tras Guardar es un POST cuyo cuerpo es { envelope: { v:1, salt, iv, ct, aad } } donde ct es base64 opaco. (3) Ve el código fuente de /tools/invoice-decoder/encrypt.js — solo SubtleCrypto, sin SDK de terceros, sin exportación a analítica. El traspaso a localStorage para Costo del Plato / Ingeniería de Menú / Matemática de Margen también va envuelto en AES-GCM vía /tools/invoice-decoder/device-key.js, así los nombres de platos + precios no quedan en texto plano en el perfil del navegador.</p>
           </details>
         </div>
       </article>

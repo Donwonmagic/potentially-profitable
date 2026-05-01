@@ -109,7 +109,7 @@
   };
 
   // Vendor: Restaurant Depot. Often bilingual EN+ES; printed
-  // header includes the warehouse number stamp. Members-only
+  // header includes the warehouse number stamp. Their wholesale
   // pricing notation ("MEMBER PRICE") is distinctive.
   var REST_DEPOT = {
     id: 'restaurant-depot',
@@ -128,7 +128,73 @@
     confidenceBoost: 10
   };
 
-  var REGISTRY = [SYSCO, US_FOODS, GFS, REST_DEPOT];
+  // Vendor: Shamrock Foods. Mountain-West regional; letterhead
+  // always says "Shamrock Foods" verbatim. Item-class column
+  // sometimes includes 2-letter codes (PR/PD/DG) — useful but
+  // not required for detection.
+  var SHAMROCK = {
+    id: 'shamrock',
+    label_en: 'Shamrock Foods',
+    label_es: 'Shamrock Foods',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/shamrock\s+foods/.test(top)) score += 0.6;
+      if (/\bshamrock\b/.test(top))     score += 0.4;
+      if (/phoenix|denver|albuquerque|salt\s+lake/.test(top)) score += 0.1;
+      if (/clover\s*pricing|clover\s*list/.test(top)) score += 0.15;
+      return { score: Math.min(1, score), label: SHAMROCK.label_en };
+    },
+    confidenceBoost: 10,
+    headerLines: [
+      /^item\s+class/i,
+      /^prod\s*#\s+description/i
+    ]
+  };
+
+  // Vendor: Sygma. Sysco subsidiary but distinct invoice format —
+  // uses customer SKU + house SKU columns side-by-side.
+  var SYGMA = {
+    id: 'sygma',
+    label_en: 'Sygma',
+    label_es: 'Sygma',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bsygma\b/.test(top))                     score += 0.6;
+      if (/sygma\s+network/.test(top))               score += 0.2;
+      if (/cust\s*item\s*#\s+house\s*item/.test(top)) score += 0.2;
+      return { score: Math.min(1, score), label: SYGMA.label_en };
+    },
+    confidenceBoost: 10
+  };
+
+  // Vendor: Performance Food (PFG) / Vistar / Reinhart. Major
+  // East-Coast and chain-restaurant distributor. PFG umbrella
+  // includes Vistar (vending/concessions) and Reinhart (broadliner).
+  var PFG = {
+    id: 'pfg',
+    label_en: 'Performance Food Group',
+    label_es: 'Performance Food Group',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/performance\s+food/.test(top)) score += 0.6;
+      if (/\bpfg\b/.test(top))            score += 0.4;
+      if (/\bvistar\b/.test(top))         score += 0.5;
+      if (/reinhart\s+foodservice/.test(top)) score += 0.5;
+      if (/\breinhart\b/.test(top))       score += 0.3;
+      if (/pfg\s+customized/.test(top))   score += 0.2;
+      return { score: Math.min(1, score), label: PFG.label_en };
+    },
+    confidenceBoost: 10,
+    headerLines: [
+      /^item\s+#\s+description/i,
+      /^pfg\s+#/i
+    ]
+  };
+
+  var REGISTRY = [SYSCO, US_FOODS, GFS, REST_DEPOT, SHAMROCK, SYGMA, PFG];
 
   // detectVendor returns highest-scoring vendor with score >=
   // threshold (0.5), or null when none match. Caller falls

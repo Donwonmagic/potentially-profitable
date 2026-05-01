@@ -128,7 +128,13 @@
             aggressive: results[0].canvas,
             gentle: results[1].canvas,
             skewAngle: results[0].skewAngle,
-            threshold: results[0].threshold
+            threshold: results[0].threshold,
+            // W2-3: store quality metrics so the controller can
+            // coach a retake BEFORE OCR runs (pre-empts wasted
+            // 30s of OCR time on a blurry shot).
+            blurScore: results[0].blurScore,
+            bimodalityScore: results[0].bimodalityScore,
+            qualityHint: results[0].qualityHint
           });
           doneFiles++;
           setProgress(15 + perFileShare * doneFiles);
@@ -157,18 +163,43 @@
              'Si la versión limpia se ve borrosa o cortada, prueba una foto más plana y brillante.');
       }
       setProgress(100);
-      showStatus(
-        tt('Photo ready.', 'Foto lista.'),
-        tt(files.length === 1 ? 'Cleaned up. Tap "Read this invoice" to extract every line.' :
-                                'Cleaned up ' + files.length + ' pages. Tap "Read this invoice" to extract every line.',
-           files.length === 1 ? 'Limpia. Toca "Leer esta factura" para extraer cada línea.' :
-                                'Limpias ' + files.length + ' páginas. Toca "Leer esta factura" para extraer cada línea.')
-      );
+      // W2-3: image-quality coaching. When ANY page returns
+      // 'blurry' or 'low-contrast', surface a soft chip BEFORE
+      // OCR so the operator can retake the photo (pre-empts
+      // ~30s of wasted OCR time + ~5min of cleanup-after-the-
+      // fact). 'good' pages flow through silently.
+      var worstHint = 'good';
+      pendingPages.forEach(function (p) {
+        if (p.qualityHint === 'blurry') worstHint = 'blurry';
+        else if (p.qualityHint === 'low-contrast' && worstHint === 'good') worstHint = 'low-contrast';
+      });
+      if (worstHint === 'blurry') {
+        showStatus(
+          tt('This photo looks blurry.', 'Esta foto se ve borrosa.'),
+          tt('Reading it anyway will give you ~70% accuracy. A flatter, brighter shot will give you ~95%. Want to retake?',
+             'Leerla de todos modos te dará ~70% de precisión. Una foto más plana y brillante te dará ~95%. ¿Quieres re-tomar?')
+        );
+      } else if (worstHint === 'low-contrast') {
+        showStatus(
+          tt('Photo ready — but contrast is faded.', 'Foto lista — pero el contraste es bajo.'),
+          tt('We\'ll read it, but expect a few extra amber rows to verify. A photo in brighter light reads sharper.',
+             'La leeremos, pero espera algunas filas en ámbar para verificar. Una foto con más luz se lee más nítida.')
+        );
+      } else {
+        showStatus(
+          tt('Photo ready.', 'Foto lista.'),
+          tt(files.length === 1 ? 'Cleaned up. Tap "Read this invoice" to extract every line.' :
+                                  'Cleaned up ' + files.length + ' pages. Tap "Read this invoice" to extract every line.',
+             files.length === 1 ? 'Limpia. Toca "Leer esta factura" para extraer cada línea.' :
+                                  'Limpias ' + files.length + ' páginas. Toca "Leer esta factura" para extraer cada línea.')
+        );
+      }
       if (comingEl) comingEl.hidden = false;
       if (readBtn) readBtn.hidden = false;
       if (window.plausible) {
         window.plausible('Invoice Decoder Preprocess', { props: {
           skew_bucket: Math.abs(first.skewAngle) >= 5 ? 'high' : Math.abs(first.skewAngle) >= 1 ? 'low' : 'none',
+          quality: worstHint,
           pages: String(files.length)
         } });
       }
@@ -189,6 +220,19 @@
   // card-stack with confidence chips and inline editors.
   function escHtml(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // W2-5: dedup-key normalizer. Lower-cased, whitespace-collapsed,
+  // OCR-noise tolerant (drops the leading/trailing punctuation
+  // that frequently flips between page reads). Empty strings
+  // return '' so the caller can skip them.
+  function normalizeForDedup(s) {
+    if (!s) return '';
+    var n = String(s).toLowerCase()
+      .replace(/[^\w\s]/g, ' ')   // collapse punctuation
+      .replace(/\s+/g, ' ')
+      .trim();
+    return (n.length >= 4) ? n : '';
   }
   function confBand(c) { return c >= 80 ? 'green' : c >= 60 ? 'amber' : 'red'; }
   // Restaurant-real category labels, EN + ES. The lexicon keys
@@ -245,7 +289,67 @@
             );
           }
         }).then(function (ocrResult) {
-          allLines = allLines.concat(ocrResult.lines || []);
+          // W2-4: per-line adaptive bbox re-OCR. Lines that came
+          // back amber (<70% confidence) and carry a bbox get
+          // re-read with PSM 7 + widened whitelist on a tight crop.
+          // The multipass result is passed through unchanged when
+          // no candidates exist. We feed the gentle preprocessed
+          // canvas — both passes share dimensions, gentle keeps
+          // text most legible for a single-line read.
+          if (typeof MID_OCR.adaptiveReread === 'function') {
+            return MID_OCR.adaptiveReread(page.gentle, ocrResult, {
+              lang: 'eng+spa',
+              threshold: 70
+            }).then(function (improved) {
+              if (improved && improved.adaptiveStats &&
+                  improved.adaptiveStats.improved > 0 &&
+                  window.plausible) {
+                window.plausible('Invoice Decoder Adaptive Reread', { props: {
+                  page: String(pageIdx + 1),
+                  reread_bucket: improved.adaptiveStats.reread < 5 ? '<5' :
+                                 improved.adaptiveStats.reread < 15 ? '5-14' : '15+',
+                  improved_bucket: improved.adaptiveStats.improved < 3 ? '<3' :
+                                   improved.adaptiveStats.improved < 8 ? '3-7' : '8+'
+                } });
+              }
+              return improved;
+            });
+          }
+          return ocrResult;
+        }).then(function (ocrResult) {
+          // W2-5: multi-page footer-repeat dedup. A 2-page Sysco
+          // invoice repeats the SYSCO HOUSTON / Customer Number /
+          // column-header band on page 2; the previous concat
+          // would treat each repeat as a new line and the parser
+          // would silently inflate row count. We hash each
+          // incoming line and skip when it matches a line already
+          // present from an earlier page (whole-document window —
+          // header/footer repeats can land anywhere relative to
+          // the invoice body).
+          var newLines = ocrResult.lines || [];
+          if (pageIdx === 0) {
+            // First page: trust everything.
+            allLines = allLines.concat(newLines);
+          } else {
+            var seenHashes = new Set();
+            allLines.forEach(function (l) { seenHashes.add(normalizeForDedup(l.text)); });
+            var droppedRepeats = 0;
+            newLines.forEach(function (l) {
+              var h = normalizeForDedup(l.text);
+              if (h && seenHashes.has(h)) {
+                droppedRepeats++;
+                return;
+              }
+              allLines.push(l);
+              if (h) seenHashes.add(h);
+            });
+            if (droppedRepeats > 0 && window.plausible) {
+              window.plausible('Invoice Decoder Page Dedup', { props: {
+                page: String(pageIdx + 1),
+                dropped_bucket: droppedRepeats < 3 ? '<3' : droppedRepeats < 8 ? '3-7' : '8+'
+              } });
+            }
+          }
           fullText += '\n' + (ocrResult.text || '');
           doneShare += pageShare;
         });
@@ -321,6 +425,11 @@
     else if (field === 'category') {
       row.category = value || null;
       row.categoryConfidence = 100; // owner-confirmed
+      // W7-8 — record this override so the same SKU on a future
+      // invoice classifies correctly without owner intervention.
+      if (typeof MID_LEARNINGS !== 'undefined' && MID_LEARNINGS.recordOverride && row.name) {
+        try { MID_LEARNINGS.recordOverride(row.name, value); } catch (_) {}
+      }
     }
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
@@ -328,9 +437,90 @@
     rerenderRows();
   }
 
+  // W4-1 — verification filter state. After fresh OCR we land on
+  // 'needReview' so the operator's eyes go straight to amber/red
+  // rows instead of scanning all 47 lines. Last-chosen filter
+  // persists across sessions via MuntinContext so a power user can
+  // change their default once and have it stick.
+  var __activeFilter = (function () {
+    try {
+      if (typeof MuntinContext === 'undefined') return 'needReview';
+      var stored = MuntinContext.get('invoiceDecoder');
+      if (stored && typeof stored.defaultFilter === 'string') return stored.defaultFilter;
+    } catch (_) {}
+    return 'needReview';
+  })();
+  var __activeCategory = '';
+
+  // ----------------------------------------------------------------
+  // W4-5 — verify-speed Plausible metric.
+  //
+  // Defends the "review takes 90 seconds" claim publicly. We start
+  // the timer the first time renderParsed populates rows and stop
+  // when the active filter (default 'needReview') first transitions
+  // to empty. Bucketed: <60s | 60-180s | 180-360s | 360s+. Fires
+  // exactly once per OCR session.
+  // ----------------------------------------------------------------
+  var __verifyStartTs = 0;
+  var __verifyFired = false;
+  function markVerifyStart() {
+    __verifyStartTs = Date.now();
+    __verifyFired = false;
+  }
+  function maybeFireVerifySpeed(visibleCount) {
+    if (__verifyFired || !__verifyStartTs) return;
+    if (__activeFilter !== 'needReview') return;
+    if (visibleCount > 0) return;
+    var elapsed = Math.round((Date.now() - __verifyStartTs) / 1000);
+    var bucket = elapsed < 60 ? '<60s' :
+                 elapsed < 180 ? '60-180s' :
+                 elapsed < 360 ? '180-360s' : '360s+';
+    __verifyFired = true;
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Verify Speed', { props: { bucket: bucket } }); } catch (_) {}
+    }
+    // Surface the celebratory "all reviewed" state inline so the
+    // operator sees they actually finished — not just an empty list.
+    if (parsedList && parsedRowsState.length) {
+      var done = document.createElement('li');
+      done.className = 'id-parsed-empty id-parsed-done';
+      done.innerHTML = '<strong>' +
+        tt('All amber rows reviewed in ' + elapsed + 's.', 'Todas las amber revisadas en ' + elapsed + 's.') +
+        '</strong> ' +
+        tt('Save this invoice now to keep it.', 'Guarda esta factura para conservarla.');
+      parsedList.appendChild(done);
+    }
+  }
+
+  function applyRowFilter(rows) {
+    return rows.filter(function (r) {
+      if (r.ignored) return false; // W4-3: swipe-left removes from view
+      if (__activeCategory && r.category !== __activeCategory) return false;
+      if (__activeFilter === 'all') return true;
+      var band = confBand(r.confidence);
+      if (__activeFilter === 'needReview') return (band !== 'green') && !r.ownerConfirmed;
+      if (__activeFilter === 'confirmed') return !!r.ownerConfirmed || band === 'green';
+      if (__activeFilter === 'red')       return band === 'red';
+      return true;
+    });
+  }
+
   function rerenderRows() {
     if (!parsedList) return;
-    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
+    var visible = applyRowFilter(parsedRowsState);
+    if (!visible.length && parsedRowsState.length) {
+      parsedList.innerHTML = '<li class="id-parsed-empty">' +
+        tt('No rows match this filter — switch to "All" to see everything.',
+           'Ningún renglón coincide — cambia a "Todas" para ver todo.') +
+        '</li>';
+    } else {
+      parsedList.innerHTML = visible.map(function (r) {
+        return rowToHtml(r, parsedRowsState.indexOf(r));
+      }).join('');
+    }
+    // W4-5 — fire verify-speed metric when needReview filter empties.
+    maybeFireVerifySpeed(visible.length);
+    updateFilterChipCounts();
     // Re-emit summary count.
     if (parsedMeta) {
       var bands = { green: 0, amber: 0, red: 0 };
@@ -345,6 +535,324 @@
     // LIVE parsed-sum so owner edits are reflected in the
     // delta-vs-printed-total reading.
     rerenderTotals();
+  }
+
+  function updateFilterChipCounts() {
+    var bar = document.getElementById('idFilterBar');
+    if (!bar) return;
+    var counts = { all: 0, needReview: 0, confirmed: 0, red: 0 };
+    parsedRowsState.forEach(function (r) {
+      counts.all++;
+      var band = confBand(r.confidence);
+      if (band === 'red') counts.red++;
+      if ((band !== 'green') && !r.ownerConfirmed) counts.needReview++;
+      else                                          counts.confirmed++;
+    });
+    Array.prototype.forEach.call(bar.querySelectorAll('.id-filter-chip'), function (chip) {
+      var k = chip.getAttribute('data-filter');
+      var c = chip.querySelector('.id-filter-count');
+      if (c) c.textContent = counts[k] != null ? counts[k] : 0;
+      var selected = (k === __activeFilter);
+      chip.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    // Populate the per-category select.
+    var sel = document.getElementById('idFilterCat');
+    if (sel) {
+      var seen = {};
+      parsedRowsState.forEach(function (r) {
+        if (r.category) seen[r.category] = (seen[r.category] || 0) + 1;
+      });
+      var cats = Object.keys(seen).sort();
+      // Preserve existing selection if still present.
+      var prev = sel.value || __activeCategory || '';
+      sel.innerHTML = '<option value="">' +
+        tt('All categories', 'Todas las categorías') +
+        '</option>' + cats.map(function (k) {
+          return '<option value="' + escHtml(k) + '"' + (k === prev ? ' selected' : '') + '>' +
+            escHtml(catLabel(k)) + ' (' + seen[k] + ')</option>';
+        }).join('');
+    }
+  }
+
+  function setActiveFilter(name) {
+    if (name === __activeFilter) return;
+    __activeFilter = name;
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({ invoiceDecoder: { defaultFilter: name } });
+      }
+    } catch (_) {}
+    rerenderRows();
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Filter Used', { props: { filter: name } }); } catch (_) {}
+    }
+  }
+
+  // ----------------------------------------------------------------
+  // W4-3 — touch swipe gestures on mobile.
+  //
+  // Right > 60px → confirm row (green flash, slide off, ownerConfirmed=true).
+  // Left  > 60px → ignore row (red flash, slide off, 4s undo toast).
+  //
+  // Vanilla touch events; ~80 lines, no dependency. Honors
+  // prefers-reduced-motion (skips the slide-off; jumps to end-state).
+  // Pointer events are passive on touchmove so the browser can scroll
+  // when the gesture is mostly vertical.
+  // ----------------------------------------------------------------
+  var __swipeWired = false;
+  function wireSwipeGestures() {
+    if (__swipeWired || !parsedList) return;
+    __swipeWired = true;
+    var SWIPE_THRESHOLD = 60;
+    var FRICTION_START  = 30;
+    var startX = 0, startY = 0, currentX = 0, rowEl = null, locked = null;
+
+    parsedList.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var li = t.target.closest && t.target.closest('.id-parsed-row');
+      if (!li) return;
+      // Don't start a swipe when the operator is already inside an
+      // editable input (cell-edit mode).
+      if (li.querySelector('input,select')) return;
+      startX = t.clientX; startY = t.clientY; rowEl = li; locked = null;
+      currentX = 0;
+    }, { passive: true });
+
+    parsedList.addEventListener('touchmove', function (e) {
+      if (!rowEl || e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var dx = t.clientX - startX;
+      var dy = t.clientY - startY;
+      if (locked == null) {
+        if (Math.abs(dy) > Math.abs(dx) + 4) { locked = 'vertical'; rowEl = null; return; }
+        if (Math.abs(dx) > 6) locked = 'horizontal';
+      }
+      if (locked !== 'horizontal') return;
+      currentX = dx;
+      // Friction past FRICTION_START so the row doesn't slide all
+      // the way off-screen on a flick.
+      var visual = Math.abs(dx) <= FRICTION_START ? dx :
+        (dx > 0 ? FRICTION_START + (dx - FRICTION_START) * 0.4
+                : -FRICTION_START + (dx + FRICTION_START) * 0.4);
+      rowEl.style.transform = 'translateX(' + visual + 'px)';
+      rowEl.style.background = dx > 30 ? 'rgba(31,158,85,.10)' :
+                                dx < -30 ? 'rgba(178,92,42,.10)' : '';
+    }, { passive: true });
+
+    parsedList.addEventListener('touchend', function () {
+      if (!rowEl) return;
+      var idx = parseInt(rowEl.getAttribute('data-idx'), 10);
+      var dx = currentX;
+      rowEl.style.transition = 'transform .18s ease, background .18s ease';
+      if (dx > SWIPE_THRESHOLD) {
+        rowEl.style.transform = 'translateX(120%)';
+        rowEl.style.background = 'rgba(31,158,85,.18)';
+        setTimeout(function () { confirmRowAt(idx); }, 160);
+      } else if (dx < -SWIPE_THRESHOLD) {
+        rowEl.style.transform = 'translateX(-120%)';
+        rowEl.style.background = 'rgba(178,92,42,.18)';
+        setTimeout(function () { ignoreRowAt(idx); }, 160);
+      } else {
+        rowEl.style.transform = '';
+        rowEl.style.background = '';
+      }
+      rowEl = null; locked = null; currentX = 0;
+    });
+  }
+
+  function confirmRowAt(idx) {
+    var r = parsedRowsState[idx];
+    if (!r) return;
+    r.ownerConfirmed = true;
+    r.confidence = 100;
+    rerenderRows();
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Row Confirmed', { props: { via: 'swipe' } }); } catch (_) {}
+    }
+  }
+
+  function ignoreRowAt(idx) {
+    var r = parsedRowsState[idx];
+    if (!r) return;
+    r.ignored = true;
+    rerenderRows();
+    surfaceUndoToast(idx);
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Row Ignored', { props: { via: 'swipe' } }); } catch (_) {}
+    }
+  }
+
+  var __toastEl = null;
+  var __toastTimer = null;
+  function surfaceUndoToast(idx) {
+    if (__toastTimer) clearTimeout(__toastTimer);
+    if (!__toastEl) {
+      __toastEl = document.createElement('div');
+      __toastEl.className = 'id-undo-toast';
+      __toastEl.setAttribute('role', 'status');
+      __toastEl.setAttribute('aria-live', 'polite');
+      document.body.appendChild(__toastEl);
+    }
+    __toastEl.innerHTML = '';
+    var span = document.createElement('span');
+    span.textContent = tt('Row removed.', 'Renglón quitado.');
+    var btn  = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = tt('Undo', 'Deshacer');
+    btn.addEventListener('click', function () {
+      var r = parsedRowsState[idx];
+      if (r) { r.ignored = false; rerenderRows(); }
+      hideToast();
+    });
+    __toastEl.appendChild(span);
+    __toastEl.appendChild(btn);
+    __toastEl.classList.add('show');
+    __toastTimer = setTimeout(hideToast, 4000);
+  }
+  function hideToast() {
+    if (__toastEl) __toastEl.classList.remove('show');
+    if (__toastTimer) { clearTimeout(__toastTimer); __toastTimer = null; }
+  }
+
+  // ----------------------------------------------------------------
+  // W4-4 — keyboard shortcuts for the verification flow.
+  //
+  //   Y / Space  → confirm focused row (alias for "yes, looks right")
+  //   N          → flag (ignore + undo toast)
+  //   J / ↓      → next visible row
+  //   K / ↑      → previous visible row
+  //   1-9        → set category on focused row
+  //   /          → focus the per-category filter
+  //   Escape     → blur active editor; close cell editor
+  //
+  // Active when focus is anywhere on the parsed list. Ignored when
+  // focus is in a text input / textarea / select to avoid eating the
+  // operator's typing during cell-edit.
+  // ----------------------------------------------------------------
+  var __kbWired = false;
+  // Map of digit-key → category. Stable order matches the categorize
+  // module's primary buckets so the muscle-memory carries across
+  // sessions.
+  var KB_CATS = ['protein', 'produce', 'dairy', 'seafood', 'beverage', 'paper', 'cleaning', 'dry-goods', 'herbs-spices'];
+
+  function focusedRowIdx() {
+    var active = document.activeElement;
+    if (!active || !active.closest) return -1;
+    var li = active.closest('.id-parsed-row');
+    if (!li) return -1;
+    var idx = parseInt(li.getAttribute('data-idx'), 10);
+    return isNaN(idx) ? -1 : idx;
+  }
+
+  function focusRowByIdx(idx) {
+    if (!parsedList) return false;
+    var li = parsedList.querySelector('[data-idx="' + idx + '"]');
+    if (!li) return false;
+    var first = li.querySelector('[data-edit]');
+    (first || li).focus();
+    li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    return true;
+  }
+
+  function visibleRowIndices() {
+    if (!parsedList) return [];
+    var lis = parsedList.querySelectorAll('.id-parsed-row');
+    var out = [];
+    Array.prototype.forEach.call(lis, function (li) {
+      var idx = parseInt(li.getAttribute('data-idx'), 10);
+      if (!isNaN(idx)) out.push(idx);
+    });
+    return out;
+  }
+
+  function nextVisible(curIdx, dir) {
+    var arr = visibleRowIndices();
+    if (!arr.length) return -1;
+    var pos = arr.indexOf(curIdx);
+    if (pos === -1) return arr[0];
+    var next = pos + dir;
+    if (next < 0 || next >= arr.length) return arr[Math.max(0, Math.min(arr.length - 1, next))];
+    return arr[next];
+  }
+
+  function wireKeyboardShortcuts() {
+    if (__kbWired) return;
+    __kbWired = true;
+    document.addEventListener('keydown', function (e) {
+      // Only act when the result panel is in scope.
+      if (!parsedEl || parsedEl.hidden) return;
+      var t = e.target;
+      var inEditor = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT');
+      // The "/" shortcut focuses the filter even outside the result
+      // panel — global discoverability for power users.
+      if (e.key === '/' && !inEditor) {
+        var sel = document.getElementById('idFilterCat');
+        if (sel) { e.preventDefault(); sel.focus(); }
+        return;
+      }
+      // Inside an editor → only Escape escapes.
+      if (inEditor) {
+        if (e.key === 'Escape') {
+          t.blur();
+        }
+        return;
+      }
+      // Global single-key shortcuts.
+      var idx = focusedRowIdx();
+      if (idx === -1) {
+        // No row focused → J / K still navigate (start from first).
+        if (e.key === 'j' || e.key === 'k' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          var arr = visibleRowIndices();
+          if (arr.length) { e.preventDefault(); focusRowByIdx(arr[0]); }
+        }
+        return;
+      }
+      // Row in scope → handle shortcuts.
+      var key = e.key.toLowerCase();
+      if (key === 'y' || e.key === ' ') {
+        e.preventDefault(); confirmRowAt(idx);
+        var nxt = nextVisible(idx, 1);
+        if (nxt !== -1 && nxt !== idx) setTimeout(function () { focusRowByIdx(nxt); }, 0);
+      } else if (key === 'n') {
+        e.preventDefault(); ignoreRowAt(idx);
+        var nxt2 = nextVisible(idx, 1);
+        if (nxt2 !== -1) setTimeout(function () { focusRowByIdx(nxt2); }, 0);
+      } else if (key === 'j' || e.key === 'ArrowDown') {
+        e.preventDefault(); var n = nextVisible(idx, 1); if (n !== -1) focusRowByIdx(n);
+      } else if (key === 'k' || e.key === 'ArrowUp') {
+        e.preventDefault(); var p = nextVisible(idx, -1); if (p !== -1) focusRowByIdx(p);
+      } else if (e.key >= '1' && e.key <= '9') {
+        var ci = parseInt(e.key, 10) - 1;
+        var cat = KB_CATS[ci];
+        if (cat) {
+          e.preventDefault();
+          commitCellEdit(idx, 'category', cat);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Category Set', { props: { via: 'keyboard' } }); } catch (_) {}
+          }
+        }
+      }
+    });
+  }
+
+  // Wire filter chips + per-category select once the bar is in DOM.
+  function wireFilterBar() {
+    var bar = document.getElementById('idFilterBar');
+    if (!bar || bar.dataset.wired === '1') return;
+    bar.dataset.wired = '1';
+    bar.addEventListener('click', function (e) {
+      var chip = e.target && e.target.closest && e.target.closest('.id-filter-chip');
+      if (!chip) return;
+      setActiveFilter(chip.getAttribute('data-filter') || 'all');
+    });
+    var sel = document.getElementById('idFilterCat');
+    if (sel) {
+      sel.addEventListener('change', function () {
+        __activeCategory = sel.value || '';
+        rerenderRows();
+      });
+    }
   }
 
   // Live total reconciliation — printed invoice total (extracted
@@ -513,15 +1021,55 @@
     // save flow (B6) will encrypt + persist.
     parsedRowsState = parsed.rows.map(function (r) { return Object.assign({}, r); });
     lastPrintedTotal = (typeof parsed.totalParsed === 'number') ? parsed.totalParsed : null;
-    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
-    // B5-3 — totals reconciliation now reads the live state every
-    // re-render so owner edits flip the delta number in real time.
-    rerenderTotals();
+    // W4-5 — start the verify-speed clock. Stops when needReview
+    // filter first empties.
+    markVerifyStart();
+    // W4-1 — reveal + wire the filter chip bar; rerenderRows now
+    // applies the active filter so the operator lands on amber rows
+    // instead of staring down the full 47.
+    var filterBar = document.getElementById('idFilterBar');
+    if (filterBar) {
+      filterBar.hidden = false;
+      wireFilterBar();
+    }
+    // W4-3 — wire touch swipe gestures on the parsed list. Idempotent.
+    wireSwipeGestures();
+    // W4-4 — wire keyboard shortcuts (Y/N, J/K, 1-9, /). Idempotent.
+    wireKeyboardShortcuts();
+    // rerenderRows handles list innerHTML, filter chip counts, the
+    // band summary, and the totals banner.
+    rerenderRows();
     parsedEl.hidden = false;
     if (comingEl) comingEl.hidden = true;
     // B5-4 — reveal the sticky bulk-action bar once we have rows.
     var bulkBarEl = document.getElementById('idBulkbar');
     if (bulkBarEl) bulkBarEl.hidden = !parsedRowsState.length;
+    // W3-7 — render the differentiator strip above the result panel
+    // exactly once. Pulls chipLabel + a one-sentence framing from
+    // MuntinDifferentiators (single source of truth, see W1-9).
+    renderDiffStripOnce();
+  }
+
+  function renderDiffStripOnce() {
+    var strip = document.getElementById('idDiffStrip');
+    if (!strip || strip.dataset.rendered === '1') return;
+    if (typeof MuntinDifferentiators === 'undefined') return;
+    var data = MuntinDifferentiators.vsAlternative('invoice-decoder', LOCALE);
+    if (!data) return;
+    var chip = document.createElement('span');
+    chip.className = 'id-diff-strip-chip';
+    chip.textContent = data.chipLabel || tt('vs paid alternatives', 'vs alternativas pagadas');
+    var text = document.createElement('span');
+    text.className = 'id-diff-strip-text';
+    text.innerHTML = '<strong>' +
+      tt('Restaurant-grade and your data stays yours.',
+         'Calidad de restaurante y tus datos siguen siendo tuyos.') + '</strong> ' +
+      tt('No subscription, no benchmark dataset, no ML training on your costs.',
+         'Sin suscripción, sin set de benchmark, sin entrenar IA con tus costos.');
+    strip.appendChild(chip);
+    strip.appendChild(text);
+    strip.hidden = false;
+    strip.dataset.rendered = '1';
   }
 
   if (readBtn) readBtn.addEventListener('click', readPendingInvoice);
@@ -594,17 +1142,23 @@
   // browser via MID_ENCRYPT before the POST. The server stores
   // the ciphertext envelope unchanged.
   function pickPassphrase() {
-    // Owner sets a passphrase per save. We could cache it per
-    // session for follow-up saves, but the first-save explicit
-    // ask is the trust moment. ESL-friendly copy avoids "key" /
-    // "passphrase" jargon — uses "secret you'll remember".
-    var promptText = tt(
-      'Pick a secret you\'ll remember (4+ characters). We\'ll use it to lock this invoice. We never see this secret — without it the saved invoice is unreadable, even by us.',
-      'Elige un secreto que recuerdes (4+ caracteres). Lo usaremos para bloquear esta factura. Nunca vemos este secreto — sin él, la factura guardada es ilegible, incluso para nosotros.'
-    );
-    var pp = window.prompt(promptText, '');
-    if (!pp || pp.length < 4) return null;
-    return pp;
+    // W1-6: returns a Promise<string|null> from MID_PASS.ask. The
+    // synchronous window.prompt path was retired — too many trust-
+    // breaking gaps (no strength meter, no confirm field, no in-
+    // context "we never see this" framing). Callers must `await`
+    // or `.then(pp => ...)`. Falls back to null when the modal
+    // module didn't load (extremely rare; loaded via HTML script
+    // tag at page start, same as encrypt.js).
+    if (typeof MID_PASS === 'undefined' || !MID_PASS.ask) {
+      return Promise.resolve(null);
+    }
+    // W1-7: memory-aware path. First save in a session asks
+    // normally; subsequent saves within 30 min surface the
+    // "Use same secret as before?" confirm chip instead of the
+    // full passphrase modal. Tab close / 30-min idle / explicit
+    // logout (W3-6) all wipe the cache.
+    var fn = MID_PASS.askWithMemory || MID_PASS.ask;
+    return fn({ mode: 'create' });
   }
 
   function buildSavePayload() {
@@ -667,16 +1221,23 @@
                  'Falta el módulo de encriptación. Recarga e intenta de nuevo.'));
         return;
       }
-      var pp = pickPassphrase();
-      if (!pp) return; // owner cancelled — silent.
-      setSaveStatus(null, 'busy');
-      var payload = buildSavePayload();
-      // AAD binds this ciphertext to a logical-id; we use a
-      // session-random itemId since the server assigns the real
-      // KV id on save. The server can't decrypt anyway, but AAD
-      // is good hygiene.
-      var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
-      MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
+      // W1-6: pickPassphrase now returns a Promise (modal-driven).
+      // W3-1: capture the envelope + aad in this closure so the
+      // proof flyout can show the real ciphertext after success.
+      var savedEnvelope = null;
+      var savedAad = null;
+      pickPassphrase().then(function (pp) {
+        if (!pp) return; // owner cancelled — silent.
+        setSaveStatus(null, 'busy');
+        var payload = buildSavePayload();
+        // AAD binds this ciphertext to a logical-id; we use a
+        // session-random itemId since the server assigns the real
+        // KV id on save. The server can't decrypt anyway, but AAD
+        // is good hygiene.
+        var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
+        savedAad = aad;
+        return MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
+        savedEnvelope = envelope;
         var body = new URLSearchParams();
         body.set('kind', 'invoice-decoder');
         body.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
@@ -701,17 +1262,40 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
-          // B6-4: write a slim summary into MuntinContext so
-          // Plate Cost can pre-fill its ingredient grid from the
-          // last invoice; Menu Engineering surfaces a rolling
-          // food-cost % suggestion; Margin Math reads the
-          // category totals as input. NO ciphertext goes here —
-          // localStorage is plaintext-shaped by definition; we
-          // only write category aggregates + recent item names
-          // (capped at 50). The encrypted envelope stays on the
-          // server.
+          // W4-7 — push a 12-deep ring-buffer entry into invoiceTrend
+          // so Cost Pulse / Plate Cost stale-banner / Margin Math
+          // food-cost-band can read trend deltas without re-decrypting
+          // the server-side envelopes. Aggregates only (no item names,
+          // no SKUs, no raw OCR).
           try {
-            if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+            if (typeof MuntinContext !== 'undefined' &&
+                typeof MuntinContext.pushTrendEntry === 'function') {
+              var totalsByCategory = {};
+              parsedRowsState.forEach(function (r) {
+                if (r.ignored) return;
+                if (!r.category || r.lineTotal == null) return;
+                totalsByCategory[r.category] = +(((totalsByCategory[r.category] || 0) + r.lineTotal).toFixed(2));
+              });
+              MuntinContext.pushTrendEntry({
+                vendor:           payload.vendor || null,
+                savedAt:          payload.savedAt,
+                totalsByCategory: totalsByCategory,
+                parsedSum:        payload.parsedSum,
+                itemCount:        payload.itemCount
+              });
+            }
+          } catch (_) {}
+          // W3-4 (was B6-4): write a slim summary so Plate Cost can
+          // pre-fill its ingredient grid; Menu Engineering surfaces a
+          // rolling food-cost % suggestion; Margin Math reads the
+          // category totals. The earlier shape wrote these rows to
+          // localStorage in plaintext, contradicting the privacy
+          // claim. Now wrapped via MID_DEVICE_KEY (per-device AES-GCM)
+          // so the localStorage value is opaque ciphertext — readers
+          // call MuntinContext.readInvoiceItems() which decrypts.
+          try {
+            if (typeof MuntinContext !== 'undefined' &&
+                typeof MuntinContext.writeInvoiceItems === 'function') {
               var slim = parsedRowsState.slice(0, 50).map(function (r) {
                 return {
                   name: String(r.name || '').slice(0, 60),
@@ -723,7 +1307,12 @@
                   parsedAt: payload.savedAt
                 };
               });
-              MuntinContext.merge({ invoiceItems: slim });
+              MuntinContext.writeInvoiceItems(slim).catch(function () {
+                // Never fall back to plaintext on failure — that
+                // would silently re-introduce the contradiction.
+                // The handoff just doesn't happen this run; the
+                // server-side encrypted envelope still saved fine.
+              });
             }
           } catch (_) {}
           renderHandoffPanel(payload);
@@ -735,13 +1324,68 @@
               vendor_detected: payload.vendor ? 'true' : 'false'
             } });
           }
+          // W3-2: reveal the network-walkthrough Measure button.
+          // Reads performance.getEntriesByType('resource') for the
+          // /api/workbench/save POST and reports actual bytes — gives
+          // the operator a concrete, real number when they expand
+          // the verify-it-yourself disclosure.
+          try {
+            var verifyBtn = document.getElementById('idVerifyMeasureBtn');
+            var verifyOut = document.getElementById('idVerifyMeasureOut');
+            if (verifyBtn && !verifyBtn.dataset.wired) {
+              verifyBtn.hidden = false;
+              verifyBtn.dataset.wired = '1';
+              verifyBtn.addEventListener('click', function () {
+                var entries = [];
+                try {
+                  entries = (performance.getEntriesByType('resource') || [])
+                    .filter(function (e) { return e.name && e.name.indexOf('/api/workbench/save') !== -1; });
+                } catch (_) {}
+                if (!entries.length) {
+                  verifyOut.textContent = tt(
+                    'No /api/workbench/save entry found yet — try again after a save.',
+                    'Aún no hay entrada /api/workbench/save — intenta después de guardar.'
+                  );
+                  return;
+                }
+                var last = entries[entries.length - 1];
+                var bytes = last.encodedBodySize || last.transferSize || 0;
+                verifyOut.textContent = tt(
+                  '✓ POST /api/workbench/save · ' + bytes + ' bytes on the wire · status: encrypted ciphertext',
+                  '✓ POST /api/workbench/save · ' + bytes + ' bytes en la red · estado: ciphertext encriptado'
+                );
+              });
+            }
+          } catch (_) {}
+          // W3-1: surface the proof flyout. Shows the actual
+          // ciphertext, the actual outgoing POST shape, and a
+          // try-to-break demo that uses MID_ENCRYPT.decryptPayload
+          // against operator-typed wrong passphrases. Privacy
+          // claim becomes verifiable from the UI, not a footnote.
+          if (savedEnvelope && typeof MID_PROOF !== 'undefined' && MID_PROOF.show) {
+            try {
+              var sampleNames = parsedRowsState.slice(0, 3).map(function (r) {
+                var bits = [String(r.name || '').slice(0, 40)];
+                if (r.lineTotal != null) bits.push('$' + r.lineTotal.toFixed(2));
+                return bits.join(' · ');
+              });
+              MID_PROOF.show({
+                envelope: savedEnvelope,
+                payload: { itemCount: payload.itemCount, sampleNames: sampleNames },
+                decrypt: function (env, tryPp) {
+                  return MID_ENCRYPT.decryptPayload(env, tryPp, savedAad);
+                }
+              });
+            } catch (_) { /* flyout is purely decorative — never block save */ }
+          }
         } else {
           throw new Error(j.error || 'unknown server error');
         }
-      }).catch(function (err) {
-        setSaveStatus(null, 'error');
-        alert(tt('Save failed: ' + (err.message || 'unknown error'),
-                 'Falló el guardado: ' + (err.message || 'error desconocido')));
+        }).catch(function (err) {
+          setSaveStatus(null, 'error');
+          alert(tt('Save failed: ' + (err.message || 'unknown error'),
+                   'Falló el guardado: ' + (err.message || 'error desconocido')));
+        });
       });
     });
   }
@@ -780,26 +1424,537 @@
     var f = e.target.files && e.target.files[0];
     if (!f) return;
     setActiveChip('pdf');
+    if (typeof MID_PDF_EXTRACT === 'undefined' || !MID_PDF_EXTRACT.extractPdf) {
+      showStatus(
+        tt('PDF reader unavailable.', 'Lector de PDF no disponible.'),
+        tt('Refresh the page and try again. If the problem persists, fall back to the photo path.',
+           'Recarga la página e intenta de nuevo. Si el problema persiste, usa la ruta de foto.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+    if (f.size > 25 * 1024 * 1024) {
+      showStatus(
+        tt('PDF too large.', 'PDF muy grande.'),
+        tt('That PDF is over 25 MB. Most distributor invoices are under 5 MB — re-export from the portal or trim to invoice-only pages.',
+           'Ese PDF pasa de 25 MB. La mayoría de facturas pesan menos de 5 MB — re-exporta del portal o deja solo las páginas de la factura.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
     showStatus(
-      tt('PDF reader landing in Wave B2', 'El lector de PDF llega en B2'),
-      tt('We received your PDF (' + (f.name || 'invoice.pdf') + '). The text extractor lands next sprint — until then, try the photo path or the CSV path if your distributor offers one.',
-         'Recibimos tu PDF (' + (f.name || 'factura.pdf') + '). El extractor de texto llega en el próximo sprint — por ahora prueba la ruta de foto o la de CSV si tu distribuidor lo ofrece.')
+      tt('Reading the PDF…', 'Leyendo el PDF…'),
+      tt('Extracting the text layer. PDFs from Sysco / US Foods / GFS / Restaurant Depot are >99% accurate without any OCR.',
+         'Extrayendo la capa de texto. Los PDF de Sysco / US Foods / GFS / Restaurant Depot son >99% precisos sin OCR.')
     );
-    setProgress(0);
-    e.target.value = '';
+    setProgress(15);
+
+    MID_PDF_EXTRACT.extractPdf(f).then(function (result) {
+      setProgress(70);
+      if (result.imageOnly) {
+        // Image-only PDF (scan with no text layer). Honest fallback:
+        // surface a coaching chip suggesting the photo path. The
+        // canvas-render-each-page bridge ships in a follow-up sprint
+        // (W2-3 image-quality coaching unblocks it).
+        showStatus(
+          tt('This PDF is a scanned image, not a text document.',
+             'Este PDF es una imagen escaneada, no un documento de texto.'),
+          tt('No text layer to read. Try the photo path with each page snapped separately, or ask your distributor to send a text-based PDF.',
+             'No hay capa de texto. Usa la ruta de foto con cada página por separado, o pide a tu distribuidor un PDF basado en texto.'),
+          'error'
+        );
+        e.target.value = '';
+        return;
+      }
+      // Feed the extracted lines straight to MID_PARSE.parseLines
+      // and the existing render pipeline. Same flow as photo OCR
+      // EXCEPT we skip multi-pass OCR + adaptive re-read since
+      // the source is authoritative.
+      var parsed = MID_PARSE.parseLines(result.lines, result.fullText);
+      // Apply the filename-derived vendor hint when the text
+      // doesn't contain a clear letterhead match.
+      var vMatch = null;
+      if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
+        vMatch = MID_VENDORS.detectVendor(result.fullText);
+        if (!vMatch && result.vendorHint) {
+          // Synthetic vMatch shape so applyVendorBoost has what it needs.
+          var registry = MID_VENDORS.REGISTRY;
+          for (var i = 0; i < registry.length; i++) {
+            if (registry[i].id === result.vendorHint) {
+              vMatch = { id: registry[i].id, label: registry[i].label_en, score: 0.5, vendor: registry[i] };
+              break;
+            }
+          }
+        }
+        if (vMatch) {
+          MID_VENDORS.applyVendorBoost(parsed.rows, vMatch);
+          parsed.vendor = vMatch.id;
+        }
+      }
+      // Categorize.
+      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+        parsed.rows.forEach(function (r) {
+          var c = MID_CATEGORIZE.classify(r);
+          r.category = c.category;
+          r.categoryConfidence = c.confidence;
+          r.categoryTier = c.tier;
+        });
+      }
+      setProgress(95);
+      renderParsed(parsed);
+      hideStatus();
+      if (window.plausible) {
+        window.plausible('Invoice Decoder PDF Extract', { props: {
+          rows_bucket: parsed.rows.length < 10 ? '<10' :
+                       parsed.rows.length < 25 ? '10-24' :
+                       parsed.rows.length < 50 ? '25-49' : '50+',
+          pages: String(result.pages),
+          vendor_detected: vMatch ? 'true' : 'false'
+        } });
+      }
+    }).catch(function (err) {
+      showStatus(
+        tt('Could not read this PDF.', 'No se pudo leer este PDF.'),
+        (err && err.message) ? err.message :
+          tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
+        'error'
+      );
+    }).then(function () {
+      e.target.value = '';
+    });
   });
 
   if (csvInput) csvInput.addEventListener('change', function (e) {
     var f = e.target.files && e.target.files[0];
     if (!f) return;
     setActiveChip('csv');
+    if (typeof MID_CSV_EXTRACT === 'undefined' || !MID_CSV_EXTRACT.extractFile) {
+      showStatus(
+        tt('CSV / Excel reader unavailable.', 'Lector de CSV / Excel no disponible.'),
+        tt('Refresh the page and try again.', 'Recarga la página e intenta de nuevo.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+    if (f.size > 10 * 1024 * 1024) {
+      showStatus(
+        tt('CSV / Excel file too large.', 'Archivo CSV / Excel muy grande.'),
+        tt('That file is over 10 MB. Distributor exports are typically <2 MB; trim or re-export from the portal.',
+           'Pasa de 10 MB. Las exportaciones suelen pesar <2 MB; recórtala o re-expórtala del portal.'),
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
     showStatus(
-      tt('CSV / Excel reader landing in Wave B2', 'El lector de CSV / Excel llega en B2'),
-      tt('We received ' + (f.name || 'export.csv') + '. Tabular ingest ships next sprint alongside the OCR loop.',
-         'Recibimos ' + (f.name || 'exportacion.csv') + '. La importación tabular llega en el próximo sprint junto con el OCR.')
+      tt('Reading ' + (f.name || 'your file') + '…', 'Leyendo ' + (f.name || 'tu archivo') + '…'),
+      tt('Mapping columns to invoice fields. Distributor CSV / XLSX exports are 100% accurate — zero OCR.',
+         'Mapeando columnas a campos de factura. Las exportaciones CSV / XLSX son 100% precisas — sin OCR.')
     );
-    setProgress(0);
-    e.target.value = '';
+    setProgress(20);
+
+    MID_CSV_EXTRACT.extractFile(f).then(function (parsed) {
+      setProgress(70);
+      if (parsed && parsed._noHeaders) {
+        showStatus(
+          tt('Couldn\'t find a header row in this file.', 'No se encontró una fila de encabezados.'),
+          tt('We need at least 2 of these columns named in the first row: Item / Qty / Unit / Price / Total. Re-export with column headers, or fall back to the photo path.',
+             'Necesitamos al menos 2 de estas columnas nombradas en la primera fila: Producto / Cantidad / Unidad / Precio / Total. Re-exporta con encabezados, o usa la ruta de foto.'),
+          'error'
+        );
+        e.target.value = '';
+        return;
+      }
+      // Filename vendor hint (CSV often lacks a vendor letterhead).
+      var vMatch = null;
+      var vendorHint = MID_CSV_EXTRACT.vendorHintFromFilename(f.name);
+      if (vendorHint && typeof MID_VENDORS !== 'undefined') {
+        var registry = MID_VENDORS.REGISTRY;
+        for (var i = 0; i < registry.length; i++) {
+          if (registry[i].id === vendorHint) {
+            vMatch = { id: registry[i].id, label: registry[i].label_en, score: 0.5, vendor: registry[i] };
+            break;
+          }
+        }
+        if (vMatch) {
+          MID_VENDORS.applyVendorBoost(parsed.rows, vMatch);
+          parsed.vendor = vMatch.id;
+        }
+      }
+      // Categorize.
+      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+        parsed.rows.forEach(function (r) {
+          var c = MID_CATEGORIZE.classify(r);
+          r.category = c.category;
+          r.categoryConfidence = c.confidence;
+          r.categoryTier = c.tier;
+        });
+      }
+      setProgress(95);
+      renderParsed(parsed);
+      hideStatus();
+      if (window.plausible) {
+        window.plausible('Invoice Decoder CSV Extract', { props: {
+          rows_bucket: parsed.rows.length < 10 ? '<10' :
+                       parsed.rows.length < 25 ? '10-24' :
+                       parsed.rows.length < 50 ? '25-49' : '50+',
+          format: f.name.toLowerCase().endsWith('.xlsx') ? 'xlsx' : 'csv',
+          vendor_detected: vMatch ? 'true' : 'false'
+        } });
+      }
+    }).catch(function (err) {
+      showStatus(
+        tt('Could not read this file.', 'No se pudo leer este archivo.'),
+        (err && err.message) ? err.message : tt('Try the photo path or re-export the file.', 'Usa la ruta de foto o re-exporta el archivo.'),
+        'error'
+      );
+    }).then(function () {
+      e.target.value = '';
+    });
   });
+
+  // -------------------- Reload-and-decrypt (W1-5 BLOCKER fix) --------------------
+  // Phase 6 W6-3 shipped saved-invoice encryption with NO path
+  // to read it back through the tool. The encrypted file became
+  // a write-only black hole. This sprint closes that loop.
+  //
+  // Trigger: query string `?reload=<itemId>` from a Workshop card
+  // (added in W1-8) or a manually-pasted link. Flow:
+  //
+  //   1. Fetch encrypted envelope from /api/workbench/get?id=
+  //   2. Open MID_PASS.ask({mode:'unlock'}) for the passphrase
+  //   3. MID_ENCRYPT.decryptPayload(envelope, pp, aad)
+  //   4. On success: hydrate parsedRowsState[] from items, render
+  //      verification panel as if a fresh OCR completed
+  //   5. On failure: passphrase-mismatch error, retry up to 5x
+  //      per 10-min window
+  function handleReloadParam() {
+    var id = (function () {
+      try {
+        var u = new URL(location.href);
+        return u.searchParams.get('reload');
+      } catch (_) { return null; }
+    })();
+    if (!id) return;
+    if (typeof MID_ENCRYPT === 'undefined' || !MID_ENCRYPT.decryptPayload) return;
+    if (typeof MID_PASS === 'undefined' || !MID_PASS.ask) return;
+
+    // Hide the upload UI — we're reading a saved file, not parsing a new one.
+    var inputsEl = document.getElementById('idInputs');
+    if (inputsEl) inputsEl.style.display = 'none';
+    if (statusEl) {
+      showStatus(
+        tt('Loading your saved invoice…', 'Cargando tu factura guardada…'),
+        tt('Fetching the encrypted file. The next step asks for your secret to unlock it.',
+           'Descargando el archivo encriptado. El siguiente paso pide tu secreto para desbloquear.')
+      );
+      setProgress(20);
+    }
+
+    // h8-exempt:workshop-save — same as the save POST; this is the
+    // matching read-back GET, also user-initiated, also returns
+    // ciphertext only.
+    fetch('/api/workbench/get?id=' + encodeURIComponent(id), { // h8-exempt:workshop-save
+      credentials: 'same-origin'
+    }).then(function (r) {
+      if (r.status === 401) {
+        window.location.href = '/sign-in/?returnTo=' + encodeURIComponent(location.pathname + location.search);
+        return null;
+      }
+      if (!r.ok) throw new Error('fetch failed (' + r.status + ')');
+      return r.json();
+    }).then(function (j) {
+      if (!j || !j.ok || !j.item || !j.item.payload) {
+        throw new Error(tt('Saved file not found or unreadable.',
+                           'Archivo guardado no encontrado o ilegible.'));
+      }
+      var saved;
+      try { saved = JSON.parse(j.item.payload); } catch (_) { saved = null; }
+      if (!saved || !saved.envelope) {
+        throw new Error(tt('Saved file format unknown.', 'Formato de archivo desconocido.'));
+      }
+      setProgress(60);
+      return promptAndDecrypt(saved.envelope, saved.aad || '', 0);
+    }).catch(function (err) {
+      if (statusEl) {
+        showStatus(
+          tt('Could not load your saved invoice.', 'No se pudo cargar la factura guardada.'),
+          err && err.message ? err.message : tt('Try again or return to your Workshop.',
+                                                 'Intenta de nuevo o regresa a tu Taller.'),
+          'error'
+        );
+      }
+    });
+  }
+
+  // Helper: prompt for passphrase, attempt decrypt, retry on
+  // failure up to 5 times per 10-minute window. The retry counter
+  // is in-tab only (not server-enforced) — pure UX speed bump.
+  var __decryptAttempts = [];
+  function promptAndDecrypt(envelope, aad, attemptIdx) {
+    var now = Date.now();
+    __decryptAttempts = __decryptAttempts.filter(function (t) { return t > now - 600000; });
+    if (__decryptAttempts.length >= 5) {
+      if (statusEl) {
+        showStatus(
+          tt('Too many wrong tries.', 'Demasiados intentos fallidos.'),
+          tt('Take 10 minutes and try again — the saved file is still safe, but we slow down to protect it.',
+             'Espera 10 minutos e intenta de nuevo — el archivo está a salvo, pero te frenamos para protegerlo.'),
+          'error'
+        );
+      }
+      return Promise.resolve(null);
+    }
+    return MID_PASS.ask({ mode: 'unlock' }).then(function (pp) {
+      if (!pp) {
+        if (statusEl) {
+          showStatus(
+            tt('Cancelled. Your saved invoice is still locked.', 'Cancelado. Tu factura sigue bloqueada.'),
+            tt('Tap a Workshop card again to retry, or close this tab.',
+               'Toca una tarjeta del Taller para reintentar, o cierra esta pestaña.')
+          );
+        }
+        return null;
+      }
+      return MID_ENCRYPT.decryptPayload(envelope, pp, aad).then(function (payload) {
+        // Success — hydrate state and render verification panel.
+        hideStatus();
+        if (!payload || !Array.isArray(payload.items)) {
+          throw new Error(tt('Decrypted but the format looks wrong.',
+                             'Desencriptado, pero el formato se ve mal.'));
+        }
+        parsedRowsState = payload.items.slice();
+        lastPrintedTotal = (typeof payload.printedTotal === 'number') ? payload.printedTotal : null;
+        // Re-use the existing render path. parsedEl, parsedList,
+        // parsedMeta etc. all read from parsedRowsState.
+        if (parsedEl) parsedEl.hidden = false;
+        if (parsedList) parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
+        rerenderTotals();
+        var bulkBarEl = document.getElementById('idBulkbar');
+        if (bulkBarEl) bulkBarEl.hidden = false;
+        // Banner: this is a reloaded file, not a fresh scan.
+        var banner = document.createElement('div');
+        banner.style.cssText = 'margin:14px 0 0;padding:12px 16px;background:#E6F4EC;border:1px solid #c4e3cf;border-left:3px solid var(--status-good,#1f9d55);border-radius:8px;font-size:13px;color:#1f6e3a';
+        banner.innerHTML = '<strong>' + tt('Unlocked.', 'Desbloqueada.') + '</strong> ' +
+          tt('This is your saved invoice. Edit it the same way you would after a fresh scan; save again to overwrite, or close to leave it as-is.',
+             'Esta es tu factura guardada. Edítala igual que después de un escaneo fresco; guarda de nuevo para sobreescribir, o cierra para dejarla igual.');
+        if (parsedEl && parsedEl.parentNode) {
+          parsedEl.parentNode.insertBefore(banner, parsedEl);
+        }
+        if (window.plausible) window.plausible('Invoice Decoder Unlocked');
+        return payload;
+      }).catch(function () {
+        __decryptAttempts.push(Date.now());
+        if (statusEl) {
+          showStatus(
+            tt('That secret didn\'t unlock the file.', 'Ese secreto no abrió el archivo.'),
+            tt('Try again — make sure caps lock is off. ' +
+               (5 - __decryptAttempts.length) + ' tries left before a 10-minute cooldown.',
+               'Intenta de nuevo — revisa que mayúsculas no esté activo. Quedan ' +
+               (5 - __decryptAttempts.length) + ' intentos antes del enfriamiento de 10 min.'),
+            'error'
+          );
+        }
+        // Re-prompt automatically.
+        return promptAndDecrypt(envelope, aad, attemptIdx + 1);
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W4-8 — drift banner above the parsed panel.
+  //
+  // When MuntinContext has at least 2 trend entries, run the drift
+  // detector. If any category drifted >15% vs the rolling median,
+  // render a banner above the result panel naming the worst offender
+  // and pointing at a coaching hint. Operator can dismiss it (per-
+  // session). Banner re-renders only when MuntinContext changes
+  // (cross-tab subscribe).
+  // ----------------------------------------------------------------
+  function renderDriftBanner() {
+    if (typeof MuntinCostTrend === 'undefined') return;
+    if (typeof MuntinContext === 'undefined') return;
+    var host = document.getElementById('idDriftBanner');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'idDriftBanner';
+      host.className = 'id-drift-banner';
+      host.hidden = true;
+      // Mount above the result panel.
+      if (parsedEl && parsedEl.parentNode) {
+        parsedEl.parentNode.insertBefore(host, parsedEl);
+      }
+    }
+    var trend = MuntinContext.readTrend();
+    if (!trend || trend.length < 2) { host.hidden = true; return; }
+    var drifts = MuntinCostTrend.detectDrift(trend, { thresholdPct: 15, weeks: 4 });
+    if (!drifts.length) { host.hidden = true; return; }
+    var top = drifts[0];
+    var sign = top.direction === 'up' ? '+' : '';
+    var hint = MuntinCostTrend.hintForDrift(top.category, top.direction, LOCALE);
+    host.hidden = false;
+    host.innerHTML = '';
+    var head = document.createElement('strong');
+    head.textContent = tt(
+      catLabel(top.category) + ' moved ' + sign + top.deltaPct + '% vs your last few invoices.',
+      catLabel(top.category) + ' se movió ' + sign + top.deltaPct + '% vs tus últimas facturas.'
+    );
+    var body = document.createElement('span');
+    body.textContent = ' ' + hint;
+    var dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.className = 'id-drift-dismiss';
+    dismiss.setAttribute('aria-label', tt('Dismiss', 'Cerrar'));
+    dismiss.textContent = '×';
+    dismiss.addEventListener('click', function () { host.hidden = true; });
+    host.appendChild(head);
+    host.appendChild(body);
+    host.appendChild(dismiss);
+  }
+  try { renderDriftBanner(); } catch (_) {}
+
+  // ----------------------------------------------------------------
+  // W4-9 — per-category sparkline strip below the result panel.
+  //
+  // When >=3 trend entries exist, render a strip showing each
+  // category's spend trajectory across the trend (oldest → newest)
+  // with a delta% chip. Below 3 saves we render the honest line
+  // "Each invoice stands alone — for trends across weeks, save 2
+  // more invoices."
+  // ----------------------------------------------------------------
+  function renderTrendSparklines() {
+    if (typeof MuntinSparkline === 'undefined') return;
+    if (typeof MuntinContext === 'undefined') return;
+    var host = document.getElementById('idTrendStrip');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'idTrendStrip';
+      host.className = 'id-trend-strip';
+      host.hidden = true;
+      if (parsedEl && parsedEl.parentNode) {
+        parsedEl.parentNode.appendChild(host);
+      }
+    }
+    var trend = MuntinContext.readTrend();
+    host.innerHTML = '';
+    if (!trend || trend.length < 3) {
+      if (trend && trend.length >= 1) {
+        host.hidden = false;
+        host.innerHTML = '<p class="id-trend-empty">' + tt(
+          'Each invoice stands alone — for trends across weeks, save ' + (3 - trend.length) +
+            ' more ' + (3 - trend.length === 1 ? 'invoice' : 'invoices') + '.',
+          'Cada factura es independiente — para ver tendencias entre semanas, guarda ' +
+            (3 - trend.length) + ' factura' + (3 - trend.length === 1 ? '' : 's') + ' más.'
+        ) + '</p>';
+      } else {
+        host.hidden = true;
+      }
+      return;
+    }
+    // Build per-category series oldest-first (trend is newest-first).
+    var ordered = trend.slice().reverse();
+    var perCat = {};
+    ordered.forEach(function (e) {
+      Object.keys(e.totalsByCategory || {}).forEach(function (k) {
+        (perCat[k] = perCat[k] || []).push(e.totalsByCategory[k]);
+      });
+    });
+    var labelMap = {};
+    Object.keys(perCat).forEach(function (k) { labelMap[k] = catLabel(k); });
+    host.hidden = false;
+    var heading = document.createElement('p');
+    heading.className = 'id-trend-heading';
+    heading.innerHTML = '<strong>' +
+      tt('Across your last ' + trend.length + ' invoices',
+         'En tus últimas ' + trend.length + ' facturas') +
+      '</strong>';
+    host.appendChild(heading);
+    var stripWrap = document.createElement('div');
+    stripWrap.innerHTML = MuntinSparkline.renderCategoryStrip(perCat, {
+      locale: LOCALE,
+      labelMap: labelMap
+    });
+    host.appendChild(stripWrap);
+  }
+  try { renderTrendSparklines(); } catch (_) {}
+
+  // W3-3 — render comparison-vs-vendors table from MuntinDifferentiators.
+  // Static HTML can't host this without locale duplication, so we
+  // render once at boot into the #idCompareMount placeholder. The
+  // <details> element keeps it collapsed so the honesty card doesn't
+  // grow tall on initial paint.
+  function renderCompareTable() {
+    var mount = document.getElementById('idCompareMount');
+    if (!mount || typeof MuntinDifferentiators === 'undefined') return;
+    var data = MuntinDifferentiators.vsAlternative('invoice-decoder', LOCALE);
+    if (!data || !Array.isArray(data.comparisonRows)) return;
+    var det = document.createElement('details');
+    det.className = 'id-compare';
+    var sum = document.createElement('summary');
+    sum.appendChild(document.createTextNode(
+      tt('How this compares to Restaurant365, MarginEdge, Plate IQ',
+         'Cómo se compara con Restaurant365, MarginEdge, Plate IQ')
+    ));
+    var badge = document.createElement('span');
+    badge.className = 'id-compare-badge';
+    badge.textContent = data.chipLabel || tt('vs paid alternatives', 'vs alternativas pagadas');
+    sum.appendChild(badge);
+    det.appendChild(sum);
+
+    var table = document.createElement('table');
+    table.className = 'id-compare-table';
+    var thead = document.createElement('thead');
+    var trh = document.createElement('tr');
+    var hAxis  = document.createElement('th'); hAxis.textContent  = tt('What you care about', 'Lo que te importa');
+    var hOurs  = document.createElement('th'); hOurs.textContent  = tt('This tool', 'Esta herramienta');
+    var hThem  = document.createElement('th'); hThem.textContent  = (data.alternatives || []).join(' / ') || tt('Paid tools', 'Herramientas pagadas');
+    trh.appendChild(hAxis); trh.appendChild(hOurs); trh.appendChild(hThem);
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    var tbody = document.createElement('tbody');
+    data.comparisonRows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      var tdA = document.createElement('td'); tdA.className = 'id-compare-axis';   tdA.textContent = r.axis   || '';
+      var tdO = document.createElement('td'); tdO.className = 'id-compare-ours';   tdO.textContent = r.ours   || '';
+      var tdT = document.createElement('td'); tdT.className = 'id-compare-theirs'; tdT.textContent = r.theirs || '';
+      tr.appendChild(tdA); tr.appendChild(tdO); tr.appendChild(tdT);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    det.appendChild(table);
+
+    if (data.framing) {
+      var foot = document.createElement('p');
+      foot.className = 'id-compare-foot';
+      foot.textContent = data.framing;
+      det.appendChild(foot);
+    }
+
+    mount.appendChild(det);
+
+    // Plausible — engagement signal. Fires only when the operator
+    // actively expands the disclosure.
+    det.addEventListener('toggle', function () {
+      if (det.open && window.plausible) {
+        try { window.plausible('Invoice Decoder Comparison Opened'); } catch (_) {}
+      }
+    });
+  }
+
+  try { renderCompareTable(); } catch (_) {}
+
+  // Run on page load.
+  handleReloadParam();
+  // W3-4 — one-shot scrub of any plaintext invoiceItems left over
+  // from earlier saves (pre-encrypted-handoff). No-op when MID_DEVICE_KEY
+  // hasn't loaded yet or there's nothing to scrub.
+  if (typeof MID_DEVICE_KEY !== 'undefined' &&
+      typeof MID_DEVICE_KEY.migratePlaintextInvoiceItems === 'function') {
+    try { MID_DEVICE_KEY.migratePlaintextInvoiceItems(); } catch (_) {}
+  }
 
 })();

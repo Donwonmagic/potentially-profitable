@@ -510,7 +510,16 @@
       items.forEach(function (item) {
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/tools/';
-        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        // Phase 7 W1-8: Invoice Decoder rows are encrypted. The
+        // generic ?saved= rehydrate path doesn't work for them
+        // (the saved payload is opaque ciphertext). Route to
+        // ?reload= instead so the W1-5 decrypt-and-reload flow
+        // catches it on the tool page and prompts for the
+        // passphrase.
+        var openUrl = (item.kind === 'invoice-decoder')
+          ? openBase + '?reload=' + encodeURIComponent(item.id)
+          : openBase + '?saved=' + encodeURIComponent(item.id);
+        var isInvoice = item.kind === 'invoice-decoder';
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
@@ -534,14 +543,24 @@
         row.className = 'wsh-item';
         row.setAttribute('data-id', item.id);
         row.setAttribute('data-kind', item.kind);
+        // Phase 7 W1-8: encrypted-row indicator. Invoice cards
+        // get a 🔒 chip + a tap-to-unlock label so the operator
+        // sees from the list page that the file is locked, the
+        // server holds opaque ciphertext, and they need their
+        // passphrase to read it back.
+        var encryptedChip = isInvoice
+          ? '<span class="status-chip" data-band="solid" data-size="xs" style="background:#E6F4EC;color:#1f6e3a;border-color:#c4e3cf;margin-left:6px;">🔒 Encrypted</span>'
+          : '';
+        var dateLabel = isInvoice ? 'Locked ' : (isSubmission ? 'Submitted ' : 'Saved ');
         row.innerHTML =
           '<div class="wsh-item-body">' +
             '<div class="wsh-item-meta">' +
               '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+              encryptedChip +
               statusPillHtml +
             '</div>' +
             '<h3 class="wsh-item-title">' + escapeHtml(item.title) + '</h3>' +
-            '<p class="wsh-item-date">' + (isSubmission ? 'Submitted ' : 'Saved ') + fmtDate(item.createdAt) + '</p>' +
+            '<p class="wsh-item-date">' + dateLabel + fmtDate(item.createdAt) + (isInvoice ? ' · tap Open and unlock with your secret' : '') + '</p>' +
           '</div>' +
           '<div class="wsh-item-actions">' +
             actionsHtml +

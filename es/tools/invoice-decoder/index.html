@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="referrer" content="no-referrer" />
-<title>Decodificador de Facturas — Saca foto. Ordenamos. Es tuya. | Muntin Digital</title>
-<meta name="description" content="Saca foto a tu factura, sube un PDF o pega un CSV. Leemos cada línea, la ordenamos en grupos, y la guardamos en tu Taller — encriptada, en tu dispositivo, sin agregarla a nadie. Gratis." />
+<title>Lector de facturas OCR gratis para restaurantes — Sysco / US Foods / GFS (alternativa a Restaurant365) | Muntin Digital</title>
+<meta name="description" content="Lector de facturas gratis para restaurantes independientes. Foto, PDF o CSV — leemos 7 formatos de distribuidor (Sysco, US Foods, GFS, Restaurant Depot, Shamrock, Sygma, PFG), ordenamos partidas en grupos, y las guardamos encriptadas en tu dispositivo. Sin suscripción. Sin agregación de datos. Alternativa a Restaurant365." />
+<meta name="keywords" content="lector facturas OCR restaurante gratis, escáner facturas Sysco, alternativa Restaurant365 gratis, lector facturas US Foods, categorización facturas restaurante, control costos restaurante app gratis, alternativa MarginEdge" />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/es/tools/invoice-decoder/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/tools/invoice-decoder/" />
@@ -135,6 +136,135 @@
 .id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
 .id-honesty p:last-child{margin-bottom:0}
 .id-honesty strong{color:var(--ink);font-weight:600}
+
+/* W3-2 — verify-it-yourself disclosure inside the honesty card. */
+.id-verify{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.id-verify summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.id-verify summary::-webkit-details-marker{display:none}
+.id-verify summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-verify[open] summary::before{transform:rotate(90deg)}
+.id-verify-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+.id-verify-steps{margin:10px 0 8px 22px;padding:0;font-size:13.5px;color:var(--ink);line-height:1.6}
+.id-verify-steps li{margin:0 0 8px}
+.id-verify-steps strong{color:var(--ink);font-weight:600}
+.id-verify-steps code{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;background:#f3efe7;padding:1px 4px;border-radius:3px;color:var(--ink)}
+.id-verify-foot{font-size:13px;color:var(--ink-soft);font-style:italic;margin:8px 0 6px}
+.id-verify-measure{font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;margin-top:6px}
+.id-verify-measure:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-verify-measure-out{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+
+/* W3-3 — comparison-vs-competitors table inside the honesty card. */
+.id-compare{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.id-compare summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.id-compare summary::-webkit-details-marker{display:none}
+.id-compare summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-compare[open] summary::before{transform:rotate(90deg)}
+.id-compare-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+.id-compare-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.id-compare-table th{text-align:left;font-weight:500;padding:8px 10px;background:#f6f1e7;border-bottom:1px solid var(--line);color:var(--ink-soft);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.id-compare-table th:first-child{width:36%}
+.id-compare-table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;color:var(--ink)}
+.id-compare-table td.id-compare-axis{color:var(--ink-soft);font-weight:500}
+.id-compare-table td.id-compare-ours{background:#eef7f4;color:var(--ink);font-weight:500}
+.id-compare-table td.id-compare-ours::before{content:'✓ ';color:var(--accent,#1f6f6a);font-weight:600}
+.id-compare-table td.id-compare-theirs{color:var(--ink-soft)}
+.id-compare-foot{font-size:13px;color:var(--ink-soft);line-height:1.55;font-style:italic;margin:8px 0 0}
+@media(max-width:540px){.id-compare-table th:first-child,.id-compare-table td.id-compare-axis{width:auto}.id-compare-table th,.id-compare-table td{font-size:12.5px;padding:7px 8px}}
+
+/* W3-7 — differentiator strip pinned above the result panel. Reads chipLabel + headline from MuntinDifferentiators. */
+.id-diff-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:10px 10px 0 0;font-size:13px;line-height:1.4;margin:0 0 -1px}
+.id-diff-strip-chip{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:10px;white-space:nowrap}
+.id-diff-strip-text{flex:1 1 200px;font-size:13px;color:#e0f3ef}
+.id-diff-strip-text strong{color:#fff;font-weight:600}
+@media(max-width:540px){.id-diff-strip{font-size:12px;padding:8px 12px}.id-diff-strip-chip{font-size:10px}}
+
+/* W4-1 — filter chip bar above the parsed list. */
+.id-filter-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:6px}
+.id-filter-chip{font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:background .12s,color .12s,border-color .12s}
+.id-filter-chip:hover{background:#f3efe7;color:var(--ink)}
+.id-filter-chip[aria-selected="true"]{background:var(--ink,#14161A);color:#fff;border-color:var(--ink,#14161A)}
+.id-filter-chip[aria-selected="true"] .id-filter-count{color:rgba(255,255,255,.75)}
+.id-filter-count{font-size:11px;color:var(--ink-soft);font-weight:400;font-variant-numeric:tabular-nums}
+.id-filter-cat{margin-left:auto;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+@media(max-width:540px){.id-filter-bar{gap:5px}.id-filter-chip{font-size:12px;padding:4px 9px}.id-filter-cat{margin-left:0;flex:1 1 100%;margin-top:4px}}
+
+/* W4-3 — swipe undo toast (4-second). */
+.id-undo-toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(60px);background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-size:14px;padding:10px 14px;border-radius:24px;box-shadow:0 12px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:14px;opacity:0;pointer-events:none;transition:transform .24s ease,opacity .24s ease;z-index:1100}
+.id-undo-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.id-undo-toast button{background:transparent;border:0;color:var(--accent-on-ink,#7be0d4);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:4px}
+.id-undo-toast button:hover{background:rgba(255,255,255,.08)}
+.id-parsed-row{transition:background .12s ease}
+@media(prefers-reduced-motion:reduce){.id-parsed-row,.id-undo-toast{transition:none}}
+
+/* W4-4 — keyboard shortcut legend. */
+.id-kbd-legend{margin:6px 0 0;font-size:13px;color:var(--ink-soft)}
+.id-kbd-legend summary{cursor:pointer;list-style:none;padding:4px 0;display:inline-flex;align-items:center;gap:8px}
+.id-kbd-legend summary::-webkit-details-marker{display:none}
+.id-kbd-legend summary::before{content:'▸';font-size:11px;transition:transform .2s}
+.id-kbd-legend[open] summary::before{transform:rotate(90deg)}
+.id-kbd-hint{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px}
+.id-kbd-list{margin:6px 0 0;padding:0 0 0 18px;font-size:12.5px;line-height:1.7}
+.id-kbd-list kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;padding:1px 5px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink);min-width:18px;display:inline-block;text-align:center}
+
+/* W4-5 — celebratory "all reviewed" tail. */
+.id-parsed-done{background:#eef7f4;border:1px solid #bfe2d6;border-left:3px solid var(--accent,#1f6f6a);padding:12px 14px;border-radius:8px;margin-top:6px;font-size:13.5px;color:var(--ink)}
+.id-parsed-done strong{color:var(--accent,#1f6f6a)}
+
+/* W4-8 — drift banner above the result panel. */
+.id-drift-banner{position:relative;margin:14px 0;padding:12px 40px 12px 16px;background:#fbf2e1;border:1px solid #e6cf9b;border-left:3px solid var(--rust,#B25C2A);border-radius:8px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.id-drift-banner strong{color:var(--ink);font-weight:600;display:inline}
+.id-drift-dismiss{position:absolute;top:6px;right:8px;background:transparent;border:0;font-size:22px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:4px}
+.id-drift-dismiss:hover{background:rgba(0,0,0,.06);color:var(--ink)}
+
+/* W4-9 — trend sparkline strip below result panel. */
+.id-trend-strip{margin:14px 0 0;padding:12px 14px;background:var(--surface-2,#f9f7f1);border:1px solid var(--line);border-radius:10px}
+.id-trend-heading{margin:0 0 8px;font-size:13.5px;color:var(--ink-soft)}
+.id-trend-heading strong{color:var(--ink);font-weight:600}
+.id-trend-empty{margin:0;font-size:13px;color:var(--ink-soft);font-style:italic}
+.mtn-spark-strip{display:grid;grid-template-columns:1fr;gap:6px}
+.mtn-spark-row{display:grid;grid-template-columns:90px 1fr 64px;align-items:center;gap:8px;font-size:12.5px;color:var(--ink)}
+.mtn-spark-label{color:var(--ink-soft);text-transform:capitalize}
+.mtn-spark{display:block;width:100%;max-width:220px;height:36px}
+.mtn-spark-delta{font-size:12px;font-variant-numeric:tabular-nums;text-align:right;font-weight:500}
+.mtn-spark-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
+.mtn-spark-delta[data-dir="down"]{color:var(--accent,#1f6f6a)}
+.mtn-spark-delta[data-dir="flat"]{color:var(--ink-soft)}
+@media(max-width:540px){.mtn-spark-row{grid-template-columns:80px 1fr 54px;font-size:11.5px}}
+
+/* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
+.mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
+@keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
+.mid-pf-sheet{position:relative;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.28);max-width:680px;width:100%;padding:24px 22px 22px;display:grid;gap:18px;animation:mid-pf-rise .35s ease}
+@keyframes mid-pf-rise{from{transform:translateY(8px);opacity:.7}to{transform:none;opacity:1}}
+.mid-pf-close{position:absolute;top:8px;right:10px;background:transparent;border:0;font-size:28px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:4px 8px;border-radius:6px}
+.mid-pf-close:hover{background:rgba(0,0,0,.06);color:var(--ink)}
+.mid-pf-card{background:var(--surface-2,#f9f7f1);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.mid-pf-h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.35}
+.mid-pf-label{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.mid-pf-row-plain{font-size:13.5px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.mid-pf-arrow{margin:8px 0;font-size:11px;color:var(--ink-soft);text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.mid-pf-after{background:#0c1817;border:1px solid #2b3a3a;border-radius:8px;padding:10px 12px}
+.mid-pf-after .mid-pf-label{color:#9ad6cd}
+.mid-pf-ct{display:block;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:#7be0d4;word-break:break-all;line-height:1.45}
+.mid-pf-algo{font-size:11.5px;color:#7c9590;margin-top:8px}
+.mid-pf-pre{background:#0c1817;color:#cfe5e1;border-radius:8px;padding:12px 14px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;line-height:1.55;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0}
+.mid-pf-note{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.5}
+.mid-pf-tryrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mid-pf-tryinput{flex:1 1 160px;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+.mid-pf-trybtn{font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer}
+.mid-pf-trybtn:hover{filter:brightness(1.06)}
+.mid-pf-tryout{margin-top:10px;font-size:13px;line-height:1.5;padding:8px 10px;border-radius:6px;min-height:1.4em}
+.mid-pf-tryout--neutral{background:#f3efe7;color:var(--ink-soft)}
+.mid-pf-tryout--proof{background:#1f3a37;color:#a8e6dd}
+.mid-pf-tryout--ok{background:#2a4a2a;color:#cfeacb}
+.mid-pf-diff{font-size:14px;color:var(--ink);line-height:1.55;margin:0 0 14px}
+.mid-pf-diff strong{color:var(--ink);font-weight:600}
+.mid-pf-actions{display:flex;flex-wrap:wrap;gap:8px}
+.mid-pf-cta{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer;font-weight:500}
+.mid-pf-cta--quiet{background:#fff;color:var(--accent,#1f6f6a)}
+.mid-pf-cta:hover{filter:brightness(1.05)}
+@media(prefers-reduced-motion:reduce){.mid-pf-backdrop,.mid-pf-sheet{animation:none}}
+@media(max-width:540px){.mid-pf-sheet{padding:20px 14px 18px}.mid-pf-card{padding:14px}}
 </style>
 
 <script type="application/ld+json">
@@ -147,7 +277,142 @@
 <body>
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
-<header class="nav" id="nav"></header>
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/" role="menuitem">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/" role="menuitem"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/" role="menuitem"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/" role="menuitem"><strong>Glosario</strong><span><!-- count:glossary.terms -->135<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/" role="menuitem"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/" role="menuitem"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/" role="menuitem"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/" role="menuitem"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
+        </div>
+      </div>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/invoice-decoder/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
+    </details>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a href="/tools/invoice-decoder/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
 
 <main id="main">
 
@@ -162,8 +427,18 @@
 <section class="block">
   <div class="container" style="max-width:880px;">
     <div class="id-hero">
-      <p class="id-eyebrow">Herramienta gratis · Saca foto. Ordena. Guarda.</p>
+      <p class="id-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Herramienta gratis · Saca foto. Ordena. Guarda.</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Saca foto a tu factura. <span class="serif-italic" style="color:var(--teal);">La ordenamos.</span> Es tuya.</h1>
+      <!-- tool-verified:start -->
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-01">1 de mayo de 2026</time></p>
+            <!-- tool-verified:end -->
+      <!-- data-promise:start -->
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            </aside>
+            <!-- data-promise:end -->
       <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Toma una foto de la factura de tu proveedor — Sysco, US Foods, Restaurant Depot, tu mayorista de verduras, quien sea. Leemos cada línea, ordenamos cada partida en grupos de restaurante y guardamos el resultado en tu Taller. Encriptado en tu dispositivo. Nunca vendido, nunca usado para entrenar IA, nunca juntado con otros restaurantes.</p>
       <p class="id-walkaway"><strong>Te llevas:</strong> Tu última factura — ordenada por grupos, guardada en tu Taller, lista para pasar al Costo del Plato.</p>
     </div>
@@ -217,10 +492,30 @@
     <p class="id-coming" id="idComing" hidden><strong>Siguiente paso:</strong> toca "Leer esta factura" para extraer cada línea. Mostraremos categorías, totales, y te dejaremos guardar el resultado en B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <div class="id-diff-strip" id="idDiffStrip" hidden></div>
       <div class="id-parsed-summary">
         <span class="id-parsed-count" id="idParsedCount">0 partidas</span>
         <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
         <span class="id-parsed-meta" id="idParsedMeta"></span>
+      </div>
+      <details class="id-kbd-legend">
+        <summary>Atajos de teclado <span class="id-kbd-hint">más rápido en una laptop</span></summary>
+        <ul class="id-kbd-list">
+          <li><kbd>Y</kbd> / <kbd>Espacio</kbd> — confirmar renglón</li>
+          <li><kbd>N</kbd> — marcar y quitar (deshacer en 4 seg)</li>
+          <li><kbd>J</kbd> / <kbd>↓</kbd> — siguiente · <kbd>K</kbd> / <kbd>↑</kbd> — anterior</li>
+          <li><kbd>1</kbd>-<kbd>9</kbd> — categoría (1=proteína, 2=verduras, 3=lácteos, 4=mariscos, 5=bebidas, 6=papel, 7=limpieza, 8=abarrotes, 9=hierbas/especias)</li>
+          <li><kbd>/</kbd> — enfocar el filtro de categoría</li>
+        </ul>
+      </details>
+      <div class="id-filter-bar" id="idFilterBar" hidden role="tablist" aria-label="Filtrar partidas">
+        <button type="button" class="id-filter-chip" data-filter="all"        role="tab" aria-selected="false">Todas <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="needReview" role="tab" aria-selected="true">Por revisar <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="confirmed"  role="tab" aria-selected="false">Confirmadas <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="red"        role="tab" aria-selected="false">Rojas <span class="id-filter-count">0</span></button>
+        <select class="id-filter-cat" id="idFilterCat" aria-label="Filtrar por categoría">
+          <option value="">Todas las categorías</option>
+        </select>
       </div>
       <ul class="id-parsed-list" id="idParsedList"></ul>
       <p class="id-parsed-totals" id="idParsedTotals" hidden></p>
@@ -237,23 +532,82 @@
       <p><strong>No es:</strong> tu contabilidad. No se sincroniza con QuickBooks, Restaurant365 ni Toast. No detecta cada error de precio — úsalo como segundo par de ojos, no un auditor. Los costos de plato sólo se actualizan cuando tú confirmas.</p>
       <p><strong>vs. Restaurant365:</strong> tus facturas se quedan en tu dispositivo hasta que decidas guardar. Las guardadas se encriptan con una llave derivada de tu sesión. No hay benchmark, no hay pool de proveedores, no entrenamos IA con tus costos — y nunca se rellenan retroactivamente si más adelante hay un opt-in.</p>
       <p><strong>Postura de privacidad:</strong> Abre DevTools → Network. Elige una foto. La versión limpia se renderiza aquí. La pestaña Network sigue vacía. Los bytes de la imagen nunca salen de tu dispositivo.</p>
+
+      <details class="id-verify">
+        <summary>Verifícalo tú mismo: abre DevTools → Network <span class="id-verify-badge">2 minutos</span></summary>
+        <ol class="id-verify-steps">
+          <li><strong>Abre DevTools en Chrome / Firefox / Safari.</strong> Click derecho en cualquier parte de la página → <em>Inspeccionar</em>. (En iPhone o Android, conecta a un navegador de escritorio y usa inspección remota — DevTools del teléfono es ilegible.)</li>
+          <li><strong>Cambia a la pestaña Network y marca "Preserve log".</strong> Eso mantiene la lista de peticiones visible entre acciones.</li>
+          <li><strong>Elige una foto y léela.</strong> Mira el Network mientras corre el OCR. Las únicas peticiones son el WASM de Tesseract + paquetes de idioma (cacheados después del primer uso) — y cero peticiones llevando los bytes de tu imagen. La imagen vive en un <code>&lt;canvas&gt;</code> de esta pestaña.</li>
+          <li><strong>Guarda en tu Taller.</strong> Ahora el Network muestra UN POST a <code>/api/workbench/save</code>. Click → Payload. El cuerpo trae un campo <code>envelope.ct</code> con bytes base64 — eso es el ciphertext AES-GCM. Busca en el cuerpo cualquier nombre de tus platos. No los encontrarás.</li>
+        </ol>
+        <p class="id-verify-foot">Si en algún paso ves algo que parece contenido de tu factura saliendo de la página, avísanos — sería un bug que arreglaríamos de inmediato.</p>
+        <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Medir el tamaño del último guardado</button>
+        <p id="idVerifyMeasureOut" class="id-verify-measure-out" role="status" aria-live="polite"></p>
+      </details>
+
+      <div id="idCompareMount"></div>
     </div>
 
   </div>
 </section>
 
+<!-- tool-knit -->
+<aside class="tool-knit" aria-labelledby="tool-knit-heading-invoice-decoder">
+    <div class="container">
+      <h2 id="tool-knit-heading-invoice-decoder" class="tool-knit__h">Sigue.</h2>
+      <div class="tool-knit__grid">
+      <div class="tool-knit__col">
+        <h3>Tema</h3>
+        <a href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Herramientas relacionadas</h3>
+        <ul>
+          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
+          <li><a href="/es/tools/cost-pulse/">Pulso de Costos</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Lee</h3>
+        <ul>
+          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
+        </ul>
+      </div>
+      <div class="tool-knit__col">
+        <h3>Palabras</h3>
+        <ul>
+          <li><a href="/es/glossary/food-cost/">Food cost</a></li>
+          <li><a href="/es/glossary/prime-cost/">Prime cost</a></li>
+          <li><a href="/es/glossary/variable-costs/">Costos variables</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </aside>
+<!-- /tool-knit -->
 </main>
 
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
-<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
+<script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
+<script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="/tools/invoice-decoder/preprocess.js?v=20260501-b2"></script>
 <script src="/tools/invoice-decoder/ocr.js?v=20260501-b2"></script>
 <script src="/tools/invoice-decoder/parse.js?v=20260501-b2"></script>
-<script src="/tools/invoice-decoder/categorize.js?v=20260501-b4"></script>
+<script src="/tools/invoice-decoder/learnings.js?v=20260501-w7-8"></script>
+<script src="/tools/invoice-decoder/categorize.js?v=20260501-w7-8"></script>
 <script src="/tools/invoice-decoder/vendors.js?v=20260501-b3"></script>
 <script src="/tools/invoice-decoder/encrypt.js?v=20260501-b6"></script>
-<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-b6-3"></script>
+<script src="/tools/invoice-decoder/passphrase-modal.js?v=20260501-w3-5"></script>
+<script src="/tools/invoice-decoder/pdf-extract.js?v=20260501-w2-1"></script>
+<script src="/tools/invoice-decoder/csv-extract.js?v=20260501-w2-2"></script>
+<script src="/tools/invoice-decoder/proof-flyout.js?v=20260501-w3-1"></script>
+<script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
+<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w3-4"></script>
 </body>
 </html>
