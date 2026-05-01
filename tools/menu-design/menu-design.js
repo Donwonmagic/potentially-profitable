@@ -840,11 +840,144 @@
     } catch (_) { return null; }
   }
 
+  // W8-1 — saved-state indicator UI driven by the autosave cycle.
+  var savedEl = document.getElementById('mdSaved');
+  var savedText = savedEl ? savedEl.querySelector('.md-saved-text') : null;
+  var __lastSavedTs = 0;
+  function updateSavedIndicator(state) {
+    if (!savedEl || !savedText) return;
+    savedEl.classList.remove('is-saved', 'is-saving');
+    if (state === 'saving') {
+      savedEl.classList.add('is-saving');
+      savedText.textContent = tt('Saving…', 'Guardando…');
+    } else if (state === 'saved') {
+      __lastSavedTs = Date.now();
+      savedEl.classList.add('is-saved');
+      savedText.textContent = tt('Saved just now', 'Guardado ahora');
+    } else if (state === 'tick') {
+      // Periodic refresh — show "Saved 12s ago" / "Saved 3m ago".
+      if (!__lastSavedTs) return;
+      savedEl.classList.add('is-saved');
+      var ago = Math.max(1, Math.round((Date.now() - __lastSavedTs) / 1000));
+      var label;
+      if (ago < 60) label = tt('Saved ' + ago + 's ago', 'Guardado hace ' + ago + 's');
+      else if (ago < 3600) label = tt('Saved ' + Math.round(ago/60) + 'm ago', 'Guardado hace ' + Math.round(ago/60) + 'm');
+      else label = tt('Saved a while ago', 'Guardado hace rato');
+      savedText.textContent = label;
+    }
+  }
+  // Periodic refresher every 15s so the "Saved Xs ago" string ages.
+  setInterval(function () { updateSavedIndicator('tick'); }, 15000);
+
+  // W8-1 — undo/redo stack. Snapshot rows + key UI state on every
+  // committed mutation; cap at 50. Cmd-Z / Cmd-Shift-Z bound at the
+  // document keydown handler from W10-2.
+  var __undoStack = [];
+  var __redoStack = [];
+  var UNDO_CAP = 50;
+  var undoBtn = document.getElementById('mdUndoBtn');
+  var redoBtn = document.getElementById('mdRedoBtn');
+  function snapshot() {
+    return {
+      rows: rows.map(function (r) { return Object.assign({}, r); }),
+      themeId: themeId,
+      paperKey: paperKey,
+      meta: { tagline: meta.tagline, story: meta.story }
+    };
+  }
+  function applySnapshot(snap) {
+    if (!snap) return;
+    rows = (snap.rows || []).map(function (r) { return Object.assign({}, r); });
+    themeId = snap.themeId || themeId;
+    paperKey = snap.paperKey || paperKey;
+    meta.tagline = (snap.meta && snap.meta.tagline) || '';
+    meta.story   = (snap.meta && snap.meta.story)   || '';
+    if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+    if (metaStoryEl)   metaStoryEl.value   = meta.story;
+    render();
+    renderThemePicker();
+    renderPaperGrid();
+  }
+  function pushUndo() {
+    if (__ghostActive) return;
+    __undoStack.push(snapshot());
+    if (__undoStack.length > UNDO_CAP) __undoStack.shift();
+    __redoStack.length = 0;
+    refreshUndoRedoBtns();
+  }
+  function refreshUndoRedoBtns() {
+    if (undoBtn) undoBtn.disabled = !__undoStack.length;
+    if (redoBtn) redoBtn.disabled = !__redoStack.length;
+  }
+  function doUndo() {
+    if (!__undoStack.length) return;
+    __redoStack.push(snapshot());
+    applySnapshot(__undoStack.pop());
+    refreshUndoRedoBtns();
+    scheduleSaveDraft();
+  }
+  function doRedo() {
+    if (!__redoStack.length) return;
+    __undoStack.push(snapshot());
+    applySnapshot(__redoStack.pop());
+    refreshUndoRedoBtns();
+    scheduleSaveDraft();
+  }
+  if (undoBtn) undoBtn.addEventListener('click', doUndo);
+  if (redoBtn) redoBtn.addEventListener('click', doRedo);
+  // Wire Cmd-Z / Cmd-Shift-Z (Z key with mod) to undo/redo. The
+  // existing global keydown handler from W10-2 already catches
+  // Cmd-S / Cmd-D / Esc — we add Z handling next to it.
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 'z' || e.key === 'Z')) {
+      e.preventDefault();
+      if (e.shiftKey) doRedo(); else doUndo();
+    }
+  });
+
+  // W8-1 — search filter. Hides rows whose name+desc don't match.
+  // Section headers stay visible if any child dish matches; if not,
+  // the section is also hidden so the operator sees a clean filter.
+  var searchEl = document.getElementById('mdSearch');
+  function applySearchFilter() {
+    if (!rowsEl || !searchEl) return;
+    var q = (searchEl.value || '').toLowerCase().trim();
+    var trs = rowsEl.querySelectorAll('tr[data-i]');
+    if (!q) {
+      trs.forEach(function (tr) { tr.style.display = ''; });
+      return;
+    }
+    // Determine which sections retain at least one matching dish.
+    var keepSections = {};
+    var lastSec = null;
+    rows.forEach(function (r, i) {
+      if (r.kind === 'section') { lastSec = i; return; }
+      if (r.kind === 'dish') {
+        var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
+        if (hay.indexOf(q) !== -1) keepSections[lastSec] = true;
+      }
+    });
+    trs.forEach(function (tr) {
+      var i = parseInt(tr.dataset.i, 10);
+      if (!isFinite(i) || !rows[i]) return;
+      var r = rows[i];
+      if (r.kind === 'section') {
+        tr.style.display = keepSections[i] ? '' : 'none';
+      } else {
+        var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
+        tr.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+      }
+    });
+  }
+  if (searchEl) searchEl.addEventListener('input', applySearchFilter);
+
   function persistDraft() {
     if (!__saveDraftEnabled) return;
     if (__ghostActive) return;        // W5-1: never save demo rows as the operator's draft
+    updateSavedIndicator('saving');
     var ls = safeLs();
-    if (!ls) return;
+    if (!ls) { updateSavedIndicator('saved'); return; }
     try {
       var draft = {
         version: SCHEMA_VERSION,
@@ -862,7 +995,8 @@
       } else if (!logoUrl) {
         ls.removeItem(LOGO_KEY);
       }
-    } catch (_) { /* quota — silent */ }
+      updateSavedIndicator('saved');
+    } catch (_) { /* quota — silent */ updateSavedIndicator('saved'); }
   }
 
   function scheduleSaveDraft() {
@@ -1002,6 +1136,7 @@
       if (act === 'del') {
         var i = parseInt(t.dataset.i, 10);
         if (!isFinite(i)) return;
+        pushUndo();
         rows.splice(i, 1);
         render();
         scheduleSaveDraft();
@@ -1032,6 +1167,7 @@
   }
 
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankDish());
     render();
     scheduleSaveDraft();
@@ -1039,6 +1175,7 @@
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankDish());
     render();
     scheduleSaveDraft();
@@ -1047,6 +1184,7 @@
   });
 
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankSection());
     render();
     scheduleSaveDraft();
@@ -1057,12 +1195,14 @@
   if (clearBtn) clearBtn.addEventListener('click', function () {
     if (!rows.length) return;
     if (!confirm('Clear every row? This can\'t be undone.')) return;
+    pushUndo();
     rows = [];
     render();
     clearDraft();
   });
 
   if (sampleBtn) sampleBtn.addEventListener('click', function () {
+    pushUndo();
     rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
     render();
     scheduleSaveDraft();
@@ -1205,6 +1345,7 @@
       return;
     }
     setPasteError('');
+    pushUndo();
     // Append to existing rows, preserving the user's prior typing.
     rows = rows.concat(parsed);
     render();
