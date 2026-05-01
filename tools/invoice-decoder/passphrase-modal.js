@@ -124,7 +124,13 @@
 .midpass-submit:hover{background:var(--teal,#1F4E5B)}\
 .midpass-submit[disabled]{opacity:0.45;cursor:not-allowed}\
 .midpass-error{margin:6px 0 0;font-size:12px;color:var(--rust,#B25C2A);min-height:1em}\
-.midpass-recover{margin:14px 0 0;font-size:11.5px;color:var(--ink-soft,#5C6470);line-height:1.5}\
+.midpass-recover{margin:14px 0 0;padding:12px 14px;font-size:12px;color:var(--ink-soft,#5C6470);line-height:1.55;background:#fbf5e8;border:1px solid #ebd9b6;border-radius:8px}\
+.midpass-recover-lead{margin:0 0 8px;color:var(--ink,#14161A);font-size:12.5px}\
+.midpass-recover-lead strong{color:var(--ink,#14161A)}\
+.midpass-recover-action{margin:0 0 6px;font-weight:500;color:var(--ink,#14161A)}\
+.midpass-pm-links{display:flex;flex-wrap:wrap;gap:6px}\
+.midpass-pm{font-size:12px;padding:5px 10px;border:1px solid var(--line,#dcd2bf);border-radius:6px;text-decoration:none;color:var(--ink,#14161A);background:#fff;font-weight:500}\
+.midpass-pm:hover{background:var(--ink,#14161A);color:#fff;border-color:var(--ink,#14161A)}\
 ';
 
   var __cssInjected = false;
@@ -188,10 +194,23 @@
           '</button>' +
         '</div>' +
         (mode === 'create'
-          ? '<p class="midpass-recover">' + tt(
-              'Forget your secret? Your saved invoice becomes unrecoverable. Save the secret in a password manager.',
-              '¿Olvidas el secreto? La factura guardada queda irrecuperable. Guárdalo en un gestor de contraseñas.'
-            ) + '</p>'
+          ? '<div class="midpass-recover">' +
+              '<p class="midpass-recover-lead"><strong>' +
+                tt('If you forget this secret, your saved invoice is unrecoverable.',
+                   'Si olvidas este secreto, la factura guardada queda irrecuperable.') +
+              '</strong> ' +
+                tt('Even we can\'t help — the math we use means there\'s no master key on our end.',
+                   'Ni siquiera nosotros podemos ayudarte — la matemática que usamos no tiene llave maestra de nuestro lado.') +
+              '</p>' +
+              '<p class="midpass-recover-action">' +
+                tt('Save it in a password manager:', 'Guárdalo en un gestor de contraseñas:') +
+              '</p>' +
+              '<div class="midpass-pm-links">' +
+                '<a class="midpass-pm" href="https://bitwarden.com/help/" target="_blank" rel="noopener noreferrer">Bitwarden</a>' +
+                '<a class="midpass-pm" href="https://support.1password.com/" target="_blank" rel="noopener noreferrer">1Password</a>' +
+                '<a class="midpass-pm" href="https://support.apple.com/guide/iphone/keep-passwords-passkeys-and-codes-secure-iphd5d8daf4f/ios" target="_blank" rel="noopener noreferrer">iCloud ' + tt('Keychain', 'Llaveros') + '</a>' +
+              '</div>' +
+            '</div>'
           : '') +
         '</div>';
       back.innerHTML = html;
