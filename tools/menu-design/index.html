@@ -338,6 +338,23 @@
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
+/* W12-4 — Cmd-K command palette. Centered modal with searchable
+   action list. Handles up/down/Enter/Esc keys. Linear/Notion-style
+   productivity for power users. */
+.md-palette{position:fixed;inset:0;z-index:1400;display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 0}
+.md-palette[hidden]{display:none}
+.md-palette-backdrop{position:absolute;inset:0;background:rgba(20,30,30,.5);animation:md-palette-fade .15s ease}
+@keyframes md-palette-fade{from{opacity:0}to{opacity:1}}
+.md-palette-card{position:relative;background:var(--white);border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.32);width:100%;max-width:560px;overflow:hidden;animation:md-palette-rise .2s ease}
+@keyframes md-palette-rise{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+.md-palette-input{width:100%;padding:16px 20px;border:0;border-bottom:1px solid var(--line);font:inherit;font-size:16px;color:var(--ink);background:var(--white);box-sizing:border-box;outline:none}
+.md-palette-list{list-style:none;margin:0;padding:6px;max-height:320px;overflow-y:auto}
+.md-palette-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:14px;color:var(--ink);min-height:40px}
+.md-palette-item.is-active,.md-palette-item:hover{background:var(--cream-2)}
+.md-palette-item-label{flex:1;font-weight:500}
+.md-palette-item-shortcut{font-size:11px;color:var(--stone);background:var(--cream-2);padding:2px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,monospace}
+.md-palette-foot{padding:8px 16px;font-size:11px;color:var(--stone);border-top:1px solid var(--line);text-align:center;margin:0}
+
 /* W12-3 — paper-texture overlay (linen grain) via two crossed
    hairline-stripe gradients at 4% opacity. Subtle, not pictorial. */
 .md-preview-paper.md-pp-texture{background-image:
@@ -1023,6 +1040,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Large-print version
         </button>
+        <!-- W12-4 — High-contrast variant (yellow-on-black) for low-vision patrons. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Download high-contrast accessibility version">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12c-3 0-5-2-5-5s2-5 5-5z" fill="currentColor"/></svg>
+          High-contrast
+        </button>
         <!-- W10-2 — accessible / screen-reader-friendly variants. -->
         <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Download plain text + Markdown">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -1087,14 +1109,25 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <!-- /tool-knit -->
 </main>
 
+<!-- W12-4 — Cmd-K command palette. Hidden until invoked. Modal sits
+     above all other content; ESC or backdrop click dismisses. -->
+<div class="md-palette" id="mdPalette" hidden role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="md-palette-backdrop" id="mdPaletteBackdrop"></div>
+  <div class="md-palette-card">
+    <input type="text" class="md-palette-input" id="mdPaletteInput" placeholder="Run a command…" aria-label="Command search" autocomplete="off" />
+    <ul class="md-palette-list" id="mdPaletteList" role="listbox"></ul>
+    <p class="md-palette-foot">↑ ↓ to navigate · Enter to run · Esc to dismiss</p>
+  </div>
+</div>
+
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w12-3"></script>
+<script src="./menu-render-pdf.js?v=20260501-w12-4"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w12-3"></script>
+<script src="./menu-design.js?v=20260501-w12-4"></script>
 </body>
 </html>

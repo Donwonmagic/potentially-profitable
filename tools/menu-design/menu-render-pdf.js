@@ -1414,6 +1414,31 @@
     });
   }
 
+  // W12-4 — High-contrast accessibility variant. Yellow-on-black
+  // (FFFF00 on 000000), recommended by low-vision specialists for
+  // patrons with macular degeneration and other contrast-sensitivity
+  // conditions. Body type bumped to 16pt; single column; whitespace
+  // dividers (no rules to compete with text). Suffix the filename
+  // with -high-contrast so operators keep both side-by-side with
+  // their standard PDF.
+  function applyHighContrastOverride(theme) {
+    return Object.assign({}, theme, {
+      bodyPt:  16,
+      h1Pt:    32,
+      h2Pt:    20,
+      descPt:  14,
+      pricePt: 16,
+      columns: 1,
+      paper:        '#000000',
+      ink:          '#FFFF00',
+      muted:        '#FFE600',
+      accent:       '#FFFF00',
+      dividerStyle: 'whitespace',
+      priceStyle:   'right-monospace',
+      logoSlot:     'header-center'
+    });
+  }
+
   function exportPdf(opts) {
     opts = opts || {};
     // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
@@ -1424,6 +1449,10 @@
       // W6-3 — apply large-print override before paper / blocks build.
       if (opts.largePrint && opts.theme) {
         opts = Object.assign({}, opts, { theme: applyLargePrintOverride(opts.theme) });
+      }
+      // W12-4 — apply high-contrast override (yellow-on-black).
+      if (opts.highContrast && opts.theme) {
+        opts = Object.assign({}, opts, { theme: applyHighContrastOverride(opts.theme) });
       }
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
       var paper = resolvePaper(paperKey, opts.customDims);
@@ -1525,7 +1554,7 @@
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride };
+    module.exports = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride };
   }
-  if (root) root.MD_PDF = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride };
+  if (root) root.MD_PDF = { exportPdf: exportPdf, PAPERS: PAPERS, applyLargePrintOverride: applyLargePrintOverride, applyHighContrastOverride: applyHighContrastOverride };
 })(typeof window !== 'undefined' ? window : null);

@@ -1131,6 +1131,201 @@
     }
   });
 
+  // ----------------------------------------------------------------
+  // W12-4 — Cmd-K command palette. Modal launcher with fuzzy search
+  // over registered commands. Linear/Notion pattern; power-user
+  // productivity. Trapped focus while open; ESC dismisses; Enter
+  // runs the highlighted command; Up/Down navigates.
+  // ----------------------------------------------------------------
+  var paletteEl = document.getElementById('mdPalette');
+  var paletteInput = document.getElementById('mdPaletteInput');
+  var paletteList = document.getElementById('mdPaletteList');
+  var paletteBackdrop = document.getElementById('mdPaletteBackdrop');
+  var paletteActiveIdx = 0;
+  var paletteFiltered = [];
+
+  function paletteCommands() {
+    return [
+      { label: tt('Add a dish',                'Agregar plato'),                run: function () { if (addRowBtn) addRowBtn.click(); }, hot: '⌘ ⇧ A' },
+      { label: tt('Add a section',             'Agregar sección'),              run: function () { if (addSecBtn) addSecBtn.click(); } },
+      { label: tt('Load sample menu',          'Cargar muestra'),                run: function () { if (sampleBtn) sampleBtn.click(); } },
+      { label: tt('Download PDF',              'Descargar PDF'),                run: function () { if (downloadBtn) downloadBtn.click(); }, hot: '⌘ D' },
+      { label: tt('Download large-print PDF',  'Descargar PDF letra grande'),   run: function () { if (largePrintBtn) largePrintBtn.click(); } },
+      { label: tt('Download high-contrast PDF','Descargar PDF alto contraste'), run: function () { if (highContrastBtn) highContrastBtn.click(); } },
+      { label: tt('Export QR menu (HTML + QR)','Exportar menú QR'),              run: function () { if (exportQrBtn) exportQrBtn.click(); } },
+      { label: tt('Export plain text + Markdown','Exportar texto plano + Markdown'), run: function () { if (exportTextBtn) exportTextBtn.click(); } },
+      { label: tt('Export SSML for TTS',       'Exportar SSML para TTS'),        run: function () { if (exportSsmlBtn) exportSsmlBtn.click(); } },
+      { label: tt('Undo',                      'Deshacer'),                      run: function () { doUndo(); }, hot: '⌘ Z' },
+      { label: tt('Redo',                      'Rehacer'),                       run: function () { doRedo(); }, hot: '⇧ ⌘ Z' },
+      { label: tt('Save draft now',            'Guardar borrador'),              run: function () { persistDraft(); setDownloadMsg(tt('Draft saved.', 'Borrador guardado.'), 'success'); }, hot: '⌘ S' },
+      { label: tt('Toggle print-vendor mode',  'Modo imprenta'),                 run: function () { if (printVendorEl) { printVendorEl.checked = !printVendorEl.checked; printVendorEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Toggle paper texture',      'Textura de papel'),              run: function () { if (paperTextureEl) { paperTextureEl.checked = !paperTextureEl.checked; paperTextureEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Toggle cover page',         'Portada'),                       run: function () { if (metaCoverEl) { metaCoverEl.checked = !metaCoverEl.checked; metaCoverEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Clear menu',                'Limpiar menú'),                  run: function () { if (clearBtn) clearBtn.click(); } },
+      { label: tt('Open templates',            'Abrir plantillas'),              run: function () { var d = document.querySelector('.md-templates'); if (d) d.open = true; } },
+      { label: tt('Search dishes…',            'Buscar platos…'),                run: function () { if (searchEl) searchEl.focus(); } },
+      // W12-4 — bulk actions via the palette. Cleaner than adding
+      // multi-select checkboxes to already-busy dish rows.
+      { label: tt('Bulk: increase all prices by 10%', 'Lote: subir precios 10%'),
+        run: function () { bulkPriceAdjust(1.10); } },
+      { label: tt('Bulk: increase all prices by 5%', 'Lote: subir precios 5%'),
+        run: function () { bulkPriceAdjust(1.05); } },
+      { label: tt('Bulk: round all prices to nearest dollar', 'Lote: redondear precios al dólar'),
+        run: function () { bulkPriceRound(); } },
+      { label: tt('Bulk: tag all dishes as locally sourced', 'Lote: etiquetar todo como local'),
+        run: function () { bulkTagAllergen('LO'); } },
+      { label: tt('Bulk: clear all photos',     'Lote: quitar todas las fotos'),
+        run: function () { bulkClearPhotos(); } }
+    ];
+  }
+  // ----------------------------------------------------------------
+  // W12-4 — Bulk-action helpers. Each pushes a single undo snapshot
+  // before mutating, so a misfire can be reverted with Cmd-Z.
+  // Price parsing is lenient: strips currency symbols, parses the
+  // numeric portion, multiplies, then re-prefixes the original
+  // currency mark if any.
+  // ----------------------------------------------------------------
+  function bulkPriceAdjust(multiplier) {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.price) return;
+      var match = String(r.price).match(/^([^\d.,-]*)([\d.,-]+)([^\d]*)$/);
+      if (!match) return;
+      var prefix = match[1] || '';
+      var raw    = match[2].replace(/,/g, '');
+      var suffix = match[3] || '';
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return;
+      var adjusted = (n * multiplier);
+      // Round to 2 decimals, then drop trailing .00 for whole dollars.
+      var newStr = (Math.round(adjusted * 100) / 100).toFixed(2).replace(/\.00$/, '');
+      r.price = prefix + newStr + suffix;
+      changed++;
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt('Updated ' + changed + ' price' + (changed === 1 ? '' : 's') + '.',
+                      'Actualizados ' + changed + ' precio' + (changed === 1 ? '' : 's') + '.'), 'success');
+  }
+  function bulkPriceRound() {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.price) return;
+      var match = String(r.price).match(/^([^\d.,-]*)([\d.,-]+)([^\d]*)$/);
+      if (!match) return;
+      var prefix = match[1] || '';
+      var raw    = match[2].replace(/,/g, '');
+      var suffix = match[3] || '';
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return;
+      r.price = prefix + Math.round(n) + suffix;
+      changed++;
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt('Rounded ' + changed + ' price' + (changed === 1 ? '' : 's') + '.',
+                      'Redondeados ' + changed + ' precio' + (changed === 1 ? '' : 's') + '.'), 'success');
+  }
+  function bulkTagAllergen(code) {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.name) return;
+      if (!Array.isArray(r.allergens)) r.allergens = [];
+      if (r.allergens.indexOf(code) === -1) {
+        r.allergens.push(code);
+        changed++;
+      }
+    });
+    render();
+    scheduleSaveDraft();
+    var label = (function () { var a = allergenById(code); return a ? (LOCALE === 'es' ? a.label_es : a.label_en) : code; })();
+    setDownloadMsg(tt(
+      'Tagged ' + changed + ' dish' + (changed === 1 ? '' : 'es') + ' as ' + label + '.',
+      'Etiquetados ' + changed + ' plato' + (changed === 1 ? '' : 's') + ' como ' + label + '.'
+    ), 'success');
+  }
+  function bulkClearPhotos() {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind === 'dish' && r.photo) { r.photo = null; changed++; }
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt(
+      'Cleared ' + changed + ' photo' + (changed === 1 ? '' : 's') + '.',
+      'Quitadas ' + changed + ' foto' + (changed === 1 ? '' : 's') + '.'
+    ), 'success');
+  }
+  function renderPalette(query) {
+    if (!paletteList) return;
+    var all = paletteCommands();
+    var q = (query || '').toLowerCase().trim();
+    paletteFiltered = q
+      ? all.filter(function (c) { return c.label.toLowerCase().indexOf(q) !== -1; })
+      : all;
+    paletteActiveIdx = 0;
+    paletteList.innerHTML = paletteFiltered.map(function (c, i) {
+      return '<li class="md-palette-item' + (i === paletteActiveIdx ? ' is-active' : '') + '" data-i="' + i + '" role="option">' +
+        '<span class="md-palette-item-label">' + escHtml(c.label) + '</span>' +
+        (c.hot ? '<span class="md-palette-item-shortcut">' + c.hot + '</span>' : '') +
+        '</li>';
+    }).join('');
+  }
+  function showPalette() {
+    if (!paletteEl) return;
+    paletteEl.hidden = false;
+    if (paletteInput) { paletteInput.value = ''; paletteInput.focus(); }
+    renderPalette('');
+  }
+  function hidePalette() {
+    if (!paletteEl) return;
+    paletteEl.hidden = true;
+  }
+  function runActiveCommand() {
+    var cmd = paletteFiltered[paletteActiveIdx];
+    if (cmd && typeof cmd.run === 'function') {
+      hidePalette();
+      try { cmd.run(); } catch (_) {}
+    }
+  }
+  if (paletteInput) {
+    paletteInput.addEventListener('input', function () { renderPalette(paletteInput.value); });
+    paletteInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); paletteActiveIdx = Math.min(paletteFiltered.length - 1, paletteActiveIdx + 1); refreshActive(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); paletteActiveIdx = Math.max(0, paletteActiveIdx - 1); refreshActive(); }
+      else if (e.key === 'Enter') { e.preventDefault(); runActiveCommand(); }
+      else if (e.key === 'Escape') { e.preventDefault(); hidePalette(); }
+    });
+  }
+  function refreshActive() {
+    if (!paletteList) return;
+    var items = paletteList.querySelectorAll('.md-palette-item');
+    items.forEach(function (it, i) {
+      it.classList.toggle('is-active', i === paletteActiveIdx);
+    });
+    var active = items[paletteActiveIdx];
+    if (active) active.scrollIntoView({ block: 'nearest' });
+  }
+  if (paletteList) paletteList.addEventListener('click', function (e) {
+    var item = e.target.closest('.md-palette-item'); if (!item) return;
+    paletteActiveIdx = parseInt(item.dataset.i, 10);
+    runActiveCommand();
+  });
+  if (paletteBackdrop) paletteBackdrop.addEventListener('click', hidePalette);
+
+  // Cmd-K / Ctrl-K opens the palette.
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      showPalette();
+    }
+  });
+
   // W8-1 — search filter. Hides rows whose name+desc don't match.
   // Section headers stay visible if any child dish matches; if not,
   // the section is also hidden so the operator sees a clean filter.
@@ -2301,6 +2496,62 @@
   // ----------------------------------------------------------------
   var exportTextBtn = document.getElementById('mdExportText');
   var exportSsmlBtn = document.getElementById('mdExportSsml');
+  var highContrastBtn = document.getElementById('mdHighContrast');
+
+  // W12-4 — High-contrast PDF variant. Twin of the large-print
+  // export but routed through applyHighContrastOverride.
+  if (highContrastBtn) {
+    highContrastBtn.addEventListener('click', function () {
+      if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt('PDF generator not loaded. Refresh and try again.',
+                          'El generador de PDF no se cargó. Recarga e intenta de nuevo.'), 'error');
+        return;
+      }
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting a high-contrast version.',
+                          'Agrega al menos un plato antes de exportar la versión de alto contraste.'), 'error');
+        return;
+      }
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var title = '';
+      try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) title = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
+      if (!title) title = tt('Menu', 'Menú');
+      var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-high-contrast';
+      highContrastBtn.disabled = true;
+      var origLabel = highContrastBtn.innerHTML;
+      highContrastBtn.textContent = tt('Building high-contrast PDF…', 'Generando alto contraste…');
+      MD_PDF.exportPdf({
+        rows:         realRows,
+        theme:        theme,
+        paperKey:     paperKey,
+        customDims:   paperKey === 'custom' ? customDims : null,
+        title:        title,
+        tagline:      meta.tagline,
+        story:        meta.story,
+        logoDataUrl:  logoUrl,
+        logoMeta:     logoMeta,
+        filename:     fnameBase,
+        highContrast: true,
+        locale:       LOCALE
+      }).then(function (result) {
+        var pages = result.pageCount || 1;
+        setDownloadMsg(tt(
+          'High-contrast version downloaded — ' + pages + ' page' + (pages === 1 ? '' : 's') + '. Yellow-on-black for low-vision patrons.',
+          'Versión de alto contraste descargada — ' + pages + ' página' + (pages === 1 ? '' : 's') + '. Amarillo sobre negro para baja visión.'
+        ), 'success');
+        if (window.plausible) { try { window.plausible('Menu Design High Contrast Exported'); } catch (_) {} }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'High-contrast PDF failed: ' + (err && err.message ? err.message : 'unknown error'),
+          'Falló alto contraste: ' + (err && err.message ? err.message : 'error desconocido')
+        ), 'error');
+      }).then(function () {
+        highContrastBtn.disabled = false;
+        highContrastBtn.innerHTML = origLabel;
+      });
+    });
+  }
 
   function downloadBlob(content, filename, mime) {
     var blob = new Blob([content], { type: mime });
