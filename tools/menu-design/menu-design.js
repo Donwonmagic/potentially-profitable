@@ -38,6 +38,29 @@
   var ctxEl     = document.getElementById('mdCtx');
   var ctxChips  = document.getElementById('mdCtxChips');
   var ctxUse    = document.getElementById('mdCtxUse');
+  // A2 additions:
+  var themesEl  = document.getElementById('mdThemes');
+  var logoInput = document.getElementById('mdLogoInput');
+  var logoThumb = document.getElementById('mdLogoThumb');
+  var logoLine  = document.getElementById('mdLogoLine');
+  var logoWarn  = document.getElementById('mdLogoWarn');
+  var paperRow  = document.getElementById('mdPaperRow');
+  var paper     = document.getElementById('mdPaper');
+  var previewMeta = document.getElementById('mdPreviewMeta');
+  var overflowEl  = document.getElementById('mdOverflow');
+
+  // Locale-detected from <html lang>; affects ES-vs-EN copy in
+  // status, theme labels, and overflow warnings. ES theme labels
+  // come from MD_THEMES.label_es.
+  var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+  function tt(en, es) { return LOCALE === 'es' ? es : en; }
+
+  // A2 state — theme id, logo data-URL, paper size key. Lives in
+  // the same closure as rows[] so render() can pull everything.
+  var themeId  = 'modern-minimal';
+  var paperKey = 'letter';
+  var logoUrl  = null;       // data: URL string or SVG-text
+  var logoMeta = null;       // { name, w, h } or null
 
   // -------------------- Helpers --------------------
   function escHtml(s) {
@@ -76,18 +99,277 @@
     }
     rowsEl.innerHTML = html;
     updateStatus();
+    renderPreview();
   }
 
   function updateStatus() {
     if (!statusEl) return;
     var dishes   = rows.filter(function (r) { return r.kind === 'dish'; }).length;
     var sections = rows.filter(function (r) { return r.kind === 'section'; }).length;
-    statusEl.innerHTML = '<strong>' + dishes + '</strong> dish' + (dishes === 1 ? '' : 'es') +
-      ' · <strong>' + sections + '</strong> section' + (sections === 1 ? '' : 's') +
-      ' — your menu lives in this browser only.';
+    if (LOCALE === 'es') {
+      statusEl.innerHTML = '<strong>' + dishes + '</strong> plato' + (dishes === 1 ? '' : 's') +
+        ' · <strong>' + sections + '</strong> sección' + (sections === 1 ? '' : 'es') +
+        ' — tu menú vive solo en este navegador.';
+    } else {
+      statusEl.innerHTML = '<strong>' + dishes + '</strong> dish' + (dishes === 1 ? '' : 'es') +
+        ' · <strong>' + sections + '</strong> section' + (sections === 1 ? '' : 's') +
+        ' — your menu lives in this browser only.';
+    }
+  }
+
+  // -------------------- Theme picker --------------------
+  function renderThemePicker() {
+    if (!themesEl || typeof MD_THEMES === 'undefined') return;
+    var ids = MD_THEMES.list();
+    themesEl.innerHTML = ids.map(function (id) {
+      var t = MD_THEMES.get(id);
+      var label = LOCALE === 'es' ? t.label_es : t.label_en;
+      var blurb = LOCALE === 'es' ? t.blurb_es : t.blurb_en;
+      var swatches = [t.paper, t.ink, t.accent, t.muted].map(function (c) {
+        return '<span style="background:' + c + '"></span>';
+      }).join('');
+      return '<li class="md-theme" role="radio" tabindex="0" aria-checked="' + (id === themeId) + '" data-active="' + (id === themeId) + '" data-id="' + id + '">' +
+        '<p class="md-theme-name">' + escHtml(label) + '</p>' +
+        '<p class="md-theme-blurb">' + escHtml(blurb) + '</p>' +
+        '<div class="md-theme-swatches">' + swatches + '</div>' +
+        '</li>';
+    }).join('');
+  }
+
+  if (themesEl) {
+    themesEl.addEventListener('click', function (e) {
+      var li = e.target.closest('.md-theme');
+      if (!li) return;
+      themeId = li.dataset.id;
+      renderThemePicker();
+      renderPreview();
+    });
+    themesEl.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var li = e.target.closest('.md-theme');
+      if (!li) return;
+      e.preventDefault();
+      themeId = li.dataset.id;
+      renderThemePicker();
+      renderPreview();
+    });
+  }
+
+  // -------------------- Logo upload --------------------
+  function setLogoWarn(msg) {
+    if (!logoWarn) return;
+    if (!msg) { logoWarn.hidden = true; logoWarn.textContent = ''; return; }
+    logoWarn.hidden = false;
+    logoWarn.textContent = msg;
+  }
+
+  function applyLogo(dataUrl, name, w, h) {
+    logoUrl = dataUrl;
+    logoMeta = { name: name, w: w, h: h };
+    if (logoThumb) {
+      logoThumb.innerHTML = '<img src="' + escHtml(dataUrl) + '" alt="" />';
+    }
+    if (logoLine) logoLine.textContent = name;
+    // Low-res chip — fine for letter, may pixelate at A3.
+    if (w && h && Math.max(w, h) < 400) {
+      setLogoWarn(tt(
+        'Low-res logo (' + w + '×' + h + ') — fine for letter-size print, may pixelate on A3 or trifold.',
+        'Logo de baja resolución (' + w + '×' + h + ') — sirve para tamaño carta, puede pixelarse en A3 o tríptico.'
+      ));
+    } else {
+      setLogoWarn('');
+    }
+    renderPreview();
+  }
+
+  function readLogoFile(file) {
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      setLogoWarn(tt(
+        'Logo over 4 MB — too large to embed in a print PDF. Try compressing first.',
+        'El logo pasa de 4 MB — muy grande para un PDF imprimible. Comprímelo primero.'
+      ));
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataUrl = String(reader.result);
+      // SVG: read as text + embed without rasterizing.
+      if (file.type === 'image/svg+xml') {
+        applyLogo(dataUrl, file.name, null, null);
+        return;
+      }
+      // Raster: load to inspect dimensions, then keep as data URL.
+      var img = new Image();
+      img.onload = function () { applyLogo(dataUrl, file.name, img.naturalWidth, img.naturalHeight); };
+      img.onerror = function () {
+        setLogoWarn(tt('Could not read this image. Try a PNG or JPG.', 'No se pudo leer la imagen. Prueba PNG o JPG.'));
+      };
+      img.src = dataUrl;
+    };
+    reader.onerror = function () {
+      setLogoWarn(tt('Could not read this image.', 'No se pudo leer la imagen.'));
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (logoInput) {
+    logoInput.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      readLogoFile(file);
+      // Reset input value so re-selecting the same file fires change.
+      e.target.value = '';
+    });
+  }
+
+  // -------------------- Paper size --------------------
+  if (paperRow) {
+    paperRow.addEventListener('change', function (e) {
+      if (e.target && e.target.name === 'md-paper') {
+        paperKey = e.target.value;
+        renderPreview();
+      }
+    });
+  }
+
+  // -------------------- Live preview --------------------
+  // The preview is rendered with CSS variables set on the .md-preview-paper
+  // element from the active theme. Theme tokens map cleanly to CSS custom
+  // properties (--paper, --ink, --accent, --muted, --bodyFamily,
+  // --displayFamily, --h1px). The Wave-A3 PDF renderer reads the same
+  // theme object so on-screen and on-paper render from identical sources.
+  function renderPreview() {
+    if (!paper) return;
+    if (typeof MD_THEMES === 'undefined') return;
+    var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+    if (!theme) return;
+    // If a brand palette is in MuntinContext, honor it (accent + muted only).
+    try {
+      if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+        var ctx = MuntinContext.read() || {};
+        if (Array.isArray(ctx.palette) && ctx.palette.length) theme = MD_THEMES.applyPalette(theme, ctx.palette);
+      }
+    } catch (_) {}
+
+    // Empty state.
+    var dishes = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
+    if (!dishes.length) {
+      paper.innerHTML = '<div class="md-preview-empty">' +
+        tt('Add a dish (or load the sample) to see your menu render here.',
+           'Añade un plato (o carga la muestra) para ver tu menú aquí.') +
+        '</div>';
+      paper.removeAttribute('style');
+      paper.removeAttribute('data-divider');
+      paper.removeAttribute('data-price');
+      paper.removeAttribute('data-cols');
+      paper.removeAttribute('data-section-case');
+      paper.removeAttribute('data-logo-slot');
+      if (previewMeta) previewMeta.textContent = '';
+      if (overflowEl) overflowEl.hidden = true;
+      return;
+    }
+
+    // Theme tokens → CSS custom properties on the paper element.
+    paper.style.setProperty('--paper', theme.paper);
+    paper.style.setProperty('--ink', theme.ink);
+    paper.style.setProperty('--accent', theme.accent);
+    paper.style.setProperty('--muted', theme.muted);
+    paper.style.setProperty('--bodyFamily', theme.bodyFamily);
+    paper.style.setProperty('--displayFamily', theme.displayFamily);
+    paper.style.setProperty('--h1px', theme.h1Pt + 'px');
+    paper.style.setProperty('--h2px', theme.h2Pt + 'px');
+    paper.style.setProperty('--bodypx', theme.bodyPt + 'px');
+    paper.style.setProperty('--descpx', theme.descPt + 'px');
+    paper.dataset.divider     = theme.dividerStyle;
+    paper.dataset.price       = theme.priceStyle;
+    paper.dataset.cols        = String(theme.columns);
+    paper.dataset.sectionCase = theme.sectionCase;
+    paper.dataset.logoSlot    = theme.logoSlot;
+
+    // Group rows[] into [section, dish[]] pairs. Dishes before any
+    // section header land in an unnamed group at the top.
+    var groups = [];
+    var current = { name: null, dishes: [] };
+    rows.forEach(function (r) {
+      if (r.kind === 'section') {
+        if (current.name !== null || current.dishes.length) groups.push(current);
+        current = { name: (r.name || '').trim(), dishes: [] };
+      } else if ((r.name || '').trim()) {
+        current.dishes.push(r);
+      }
+    });
+    if (current.name !== null || current.dishes.length) groups.push(current);
+
+    var html = '';
+    if (logoUrl) {
+      html += '<img class="md-pp-logo" src="' + escHtml(logoUrl) + '" alt="" />';
+    }
+    // Title from MuntinContext.businessName if present, else generic.
+    var title = '';
+    try {
+      if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+        var ctx2 = MuntinContext.read() || {};
+        title = (ctx2.businessName || '').trim();
+      }
+    } catch (_) {}
+    if (!title) title = tt('Menu', 'Menú');
+    html += '<h1 class="md-pp-title">' + escHtml(title) + '</h1>';
+
+    // Two-column theme: render dishes inside grid, sections span both columns.
+    var isTwoCol = theme.columns === 2;
+    if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
+    groups.forEach(function (g) {
+      if (g.name) {
+        html += '<h2 class="md-pp-section"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' + escHtml(g.name) + '</h2>';
+      }
+      g.dishes.forEach(function (d) {
+        var name  = (d.name || '').trim();
+        var price = (d.price || '').trim();
+        var desc  = (d.desc || '').trim();
+        html += '<div class="md-pp-row">';
+        html += '<div class="md-pp-name">' + escHtml(name) + '</div>';
+        html += '<div class="md-pp-price">' + escHtml(price) + '</div>';
+        if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        html += '</div>';
+      });
+    });
+    if (isTwoCol) html += '</div>';
+
+    paper.innerHTML = html;
+
+    if (previewMeta) {
+      var paperLabel = paperKey === 'a4' ? 'A4' : paperKey === 'half-page' ? tt('Half-page', 'Media') : tt('Letter', 'Carta');
+      previewMeta.textContent = paperLabel + ' · ' + dishes.length + ' ' + tt('dishes', 'platos');
+    }
+
+    // Heuristic overflow warn — purely advisory at A2; PDF renderer
+    // does the real flow check in Wave A3. Trigger when dish count
+    // > a threshold for the chosen theme + paper.
+    var threshold = (theme.columns === 2) ? 32 : 18;
+    if (paperKey === 'half-page') threshold = Math.round(threshold * 0.55);
+    if (overflowEl) {
+      if (dishes.length > threshold) {
+        overflowEl.hidden = false;
+        overflowEl.textContent = tt(
+          'Your menu has ' + dishes.length + ' dishes — likely two pages on ' + paperLabel + '. The PDF will paginate cleanly when you export.',
+          'Tu menú tiene ' + dishes.length + ' platos — probablemente dos páginas en ' + paperLabel + '. El PDF paginará limpio al exportar.'
+        );
+      } else {
+        overflowEl.hidden = true;
+      }
+    }
   }
 
   // -------------------- Wire interactions --------------------
+  // Debounce live-preview re-render so each keystroke during fast
+  // typing doesn't recompute layout — matches the 300ms cadence
+  // mentioned in the cohesive plan's A2 spec.
+  var previewTimer = null;
+  function schedulePreview() {
+    if (previewTimer) clearTimeout(previewTimer);
+    previewTimer = setTimeout(function () { previewTimer = null; renderPreview(); }, 300);
+  }
+
   if (rowsEl) {
     rowsEl.addEventListener('input', function (e) {
       var t = e.target;
@@ -95,6 +377,7 @@
       var i = parseInt(t.dataset.i, 10);
       if (!isFinite(i) || !rows[i]) return;
       rows[i][t.dataset.field] = t.value;
+      schedulePreview();
     });
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
@@ -329,6 +612,20 @@
   });
 
   // -------------------- Init --------------------
+  // Theme suggestion from cuisine context. Applies once on first
+  // load only — owner can flip themes after; we don't override
+  // their choice on a re-render.
+  try {
+    if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function' && typeof MD_THEMES !== 'undefined') {
+      var ctxInit = MuntinContext.read() || {};
+      if (ctxInit.cuisine) {
+        var suggested = MD_THEMES.suggestTheme(ctxInit.cuisine);
+        if (suggested && MD_THEMES.get(suggested)) themeId = suggested;
+      }
+    }
+  } catch (_) {}
+
+  renderThemePicker();
   render();
   renderCtxPill();
 

@@ -101,6 +101,74 @@
 .md-paste-help code{background:var(--cream-2);padding:1px 5px;border-radius:3px;font-size:11.5px}
 .md-status{margin-top:14px;font-size:13px;color:var(--ink-soft);text-align:center}
 .md-status strong{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.md-themes{margin:24px 0 0}
+.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.md-themes-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none;padding:0;margin:0}
+@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
+.md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
+.md-theme:hover{border-color:var(--teal);transform:translateY(-1px)}
+.md-theme[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
+.md-theme-name{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink);margin:0 0 4px}
+.md-theme-blurb{font-size:11.5px;color:var(--stone);margin:0;line-height:1.5}
+.md-theme-swatches{display:flex;gap:3px;margin-top:8px}
+.md-theme-swatches span{width:10px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.12)}
+.md-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
+@media(max-width:640px){.md-options{grid-template-columns:1fr}}
+.md-option{padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+.md-option-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.md-logo-drop{display:flex;align-items:center;gap:10px;padding:10px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--cream-2);cursor:pointer}
+.md-logo-drop:hover{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,var(--cream-2))}
+.md-logo-drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.md-logo-thumb{width:48px;height:48px;border-radius:6px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 48px;overflow:hidden}
+.md-logo-thumb img{max-width:100%;max-height:100%}
+.md-logo-thumb-empty{font-size:18px;color:var(--stone)}
+.md-logo-meta{flex:1;font-size:13px;color:var(--ink);min-width:0}
+.md-logo-meta-line{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.md-logo-meta-sub{font-size:11.5px;color:var(--stone);margin-top:2px}
+.md-logo-warn{margin-top:6px;font-size:11.5px;color:#b86c0f}
+.md-paper-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.md-paper-row label{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);background:var(--white)}
+.md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
+.md-paper-row input{accent-color:var(--teal)}
+.md-preview-wrap{margin:28px 0 0}
+.md-preview-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
+.md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.md-preview-label-meta{font-size:12px;color:var(--stone)}
+.md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
+.md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
+.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 26px;color:var(--ink);letter-spacing:0}
+.md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}
+.md-preview-paper .md-pp-cols{display:grid;gap:0 32px}
+.md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:8px 0;break-inside:avoid}
+.md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
+.md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
+.md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+.md-preview-paper[data-divider="hand-rule"] h2.md-pp-section{position:relative;padding:0 22px}
+.md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::before,
+.md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::after{content:'';position:absolute;top:50%;width:48px;height:1px;background:var(--ink);opacity:.45}
+.md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::before{right:100%;margin-right:8px}
+.md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::after{left:100%;margin-left:8px}
+.md-preview-paper[data-divider="box"] h2.md-pp-section{display:inline-block;border:1px solid var(--ink);padding:6px 18px;background:transparent;text-align:center;width:auto;margin-left:auto;margin-right:auto;margin-bottom:14px}
+.md-preview-paper[data-divider="ornament"] h2.md-pp-section::before{content:'\2766\2002';color:var(--accent)}
+.md-preview-paper[data-divider="ornament"] h2.md-pp-section::after{content:'\2002\2766';color:var(--accent)}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row::after{content:'';grid-column:1/-1;border-bottom:1.5px dotted var(--muted);margin:-22px 0 0;height:2px;align-self:start;order:2}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row{grid-template-rows:auto auto}
+.md-preview-paper[data-price="right-monospace"] .md-pp-price{font-family:ui-monospace,SFMono-Regular,monospace}
+.md-preview-paper[data-price="tab-aligned"] .md-pp-row{grid-template-columns:1fr 60px;text-align:right}
+.md-preview-paper[data-price="tab-aligned"] .md-pp-name{text-align:left}
+.md-preview-paper[data-cols="2"] .md-pp-cols{grid-template-columns:1fr 1fr}
+.md-preview-paper[data-section-case="uppercase"] h2.md-pp-section{text-transform:uppercase;letter-spacing:.18em}
+.md-preview-paper[data-section-case="small-caps"] h2.md-pp-section{font-variant:small-caps;letter-spacing:.06em}
+.md-preview-paper[data-section-case="capitalize"] h2.md-pp-section{text-transform:none}
+.md-pp-logo{display:block;margin:0 auto 18px;max-height:80px;max-width:240px}
+.md-preview-paper[data-logo-slot="header-left"] .md-pp-logo{margin-left:0}
+.md-preview-paper[data-logo-slot="header-right"] .md-pp-logo{margin-left:auto;margin-right:0}
+.md-preview-paper[data-logo-slot="watermark"] .md-pp-logo{position:absolute;opacity:.06;max-width:340px;max-height:340px;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0}
+.md-preview-paper[data-logo-slot="watermark"]{position:relative}
+.md-preview-paper[data-logo-slot="watermark"] > *{position:relative;z-index:1}
+.md-preview-empty{padding:48px 16px;text-align:center;color:var(--stone);font-size:14px}
+.md-overflow-warn{margin-top:10px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.md-overflow-warn[hidden]{display:none}
 .md-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
 .md-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
 .md-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
@@ -180,6 +248,45 @@
 
     <p class="md-status" id="mdStatus"><strong>0</strong> platos · <strong>0</strong> secciones — tu menú vive solo en este navegador.</p>
 
+    <div class="md-themes">
+      <p class="md-themes-label">Elige un tema</p>
+      <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Tema de menú"></ul>
+    </div>
+
+    <div class="md-options">
+      <div class="md-option">
+        <p class="md-option-label">Logo (opcional)</p>
+        <label class="md-logo-drop" id="mdLogoDrop">
+          <span class="md-logo-thumb" id="mdLogoThumb"><span class="md-logo-thumb-empty" aria-hidden="true">+</span></span>
+          <span class="md-logo-meta">
+            <span class="md-logo-meta-line" id="mdLogoLine">Elegir foto o tomar una nueva</span>
+            <span class="md-logo-meta-sub">PNG, JPG, o SVG. Se queda en este dispositivo.</span>
+          </span>
+          <input type="file" id="mdLogoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" capture="environment" />
+        </label>
+        <p class="md-logo-warn" id="mdLogoWarn" hidden></p>
+      </div>
+      <div class="md-option">
+        <p class="md-option-label">Papel</p>
+        <div class="md-paper-row" id="mdPaperRow" role="radiogroup" aria-label="Tamaño de papel">
+          <label><input type="radio" name="md-paper" value="letter" checked /> Carta</label>
+          <label><input type="radio" name="md-paper" value="a4" /> A4</label>
+          <label><input type="radio" name="md-paper" value="half-page" /> Media página</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="md-preview-wrap">
+      <div class="md-preview-label">
+        <span class="md-preview-label-text">Vista previa en vivo</span>
+        <span class="md-preview-label-meta" id="mdPreviewMeta"></span>
+      </div>
+      <div class="md-preview-frame" id="mdPreviewFrame">
+        <article class="md-preview-paper" id="mdPaper" aria-live="polite"></article>
+      </div>
+      <div class="md-overflow-warn" id="mdOverflow" hidden></div>
+    </div>
+
     <div class="md-honesty">
       <h3>Qué es, y qué no es.</h3>
       <p><strong>Es:</strong> un motor de acomodo automático para cualquier cantidad de platos, cuatro temas tipográficos, salida en carta / A4 / media / tríptico / mesa, CMYK + sangrado para imprenta, RGB para compartir.</p>
@@ -196,6 +303,7 @@
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="/tools/menu-design/menu-design.js?v=20260501-a1"></script>
+<script src="/tools/menu-design/themes.js?v=20260501-a2"></script>
+<script src="/tools/menu-design/menu-design.js?v=20260501-a2"></script>
 </body>
 </html>
