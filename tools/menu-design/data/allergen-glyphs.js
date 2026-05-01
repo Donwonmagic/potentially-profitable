@@ -157,12 +157,17 @@
     },
     // LO — Locally sourced. Map pin outline with a small star inset
     // marking the pin's center. Reads as "this came from somewhere
-    // specific".
+    // specific". Path uses only M/L/C/Z so the tiny PDF parser
+    // handles it correctly (W21 review item #1).
     LO: {
       title_en: 'Locally sourced',
       title_es: 'Origen local',
       paths: [
-        { d: 'M12 22S5 14 5 9C5 5.7 8.1 3 12 3C15.9 3 19 5.7 19 9C19 14 12 22 12 22Z' },
+        // Pin outline: bottom point at (12,22) -> right curve up to
+        // (19,9) -> down-and-left to (12,3) -> down-and-left back to
+        // start. Mirror left side via a second cubic.
+        { d: 'M12 22C12 22 5 14 5 9C5 5.7 8.1 3 12 3C15.9 3 19 5.7 19 9C19 14 12 22 12 22Z' },
+        // Inset 5-point star (literal coords; parser supports L/Z).
         { d: 'M12 6.5L13.2 8.6L15.5 9L13.7 10.7L14.2 13L12 11.9L9.8 13L10.3 10.7L8.5 9L10.8 8.6Z' }
       ]
     }

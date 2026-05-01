@@ -304,22 +304,28 @@
     pushLine('');
     if (opts.title) { pushLine(brfText(opts.title)); pushLine(''); }
     if (opts.tagline) { pushLine(brfText(opts.tagline)); pushLine(''); }
+    // W21 fix #8 — guard with .trim() so whitespace-only names don't
+    // emit an empty banner (matches the Markdown / plain-text / SSML
+    // / PDF emitters' behavior).
     rows.forEach(function (r) {
       if (!r) return;
-      if (r.kind === 'section' && r.name) {
+      var rName = (r.name || '').trim();
+      if (r.kind === 'section' && rName) {
         pushLine('');
-        pushLine(',,' + r.name.toLowerCase());
-        pushLine(repeat('-', Math.min(lineW, r.name.length)));
-      } else if (r.kind === 'dish' && r.name) {
-        var line = brfText(r.name);
-        if (r.price) {
-          var priceStr = brfText(r.price);
+        pushLine(',,' + rName.toLowerCase());
+        pushLine(repeat('-', Math.min(lineW, rName.length)));
+      } else if (r.kind === 'dish' && rName) {
+        var line = brfText(rName);
+        var rPrice = (r.price || '').trim();
+        if (rPrice) {
+          var priceStr = brfText(rPrice);
           var pad = lineW - line.length - priceStr.length;
           if (pad > 1) line = line + repeat(' ', pad) + priceStr;
           else line = line + ' ' + priceStr;
         }
         pushLine(line);
-        if (r.desc) pushLine('  ' + brfText(r.desc));
+        var rDesc = (r.desc || '').trim();
+        if (rDesc) pushLine('  ' + brfText(rDesc));
       }
     });
     // Pad pages to 25 lines and join with form-feed separators.

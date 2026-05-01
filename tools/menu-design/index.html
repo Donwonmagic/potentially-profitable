@@ -381,9 +381,9 @@
 .md-vibequiz-results button strong{color:var(--ink);font-weight:600}
 .md-vibequiz-results button span{font-size:11.5px;color:var(--stone);margin-left:auto}
 
-/* W12-4 — Cmd-K command palette. Centered modal with searchable */
+/* W12-4 — Cmd-K command palette. Centered modal with searchable
    action list. Handles up/down/Enter/Esc keys. Linear/Notion-style
-   productivity for power users. */
+   productivity for the operator. */
 .md-palette{position:fixed;inset:0;z-index:1400;display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 0}
 .md-palette[hidden]{display:none}
 .md-palette-backdrop{position:absolute;inset:0;background:rgba(20,30,30,.5);animation:md-palette-fade .15s ease}
@@ -921,7 +921,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <!-- W9-3 — Menu-level metadata: tagline + chef's note / story.
          Both render on the printed deliverable. Empty by default;
          no required field. Wraps in a collapsed <details> so the
-         editor surface stays calm for first-time users. -->
+         editor surface stays calm for first-time operators. -->
     <details class="md-meta" id="mdMeta">
       <summary class="md-meta-summary">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -1194,7 +1194,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
     </div>
 
-    <!-- Download — the deliverable. PDF lands in the user's Downloads. -->
+    <!-- Download — the deliverable. PDF lands in the operator's Downloads. -->
     <div class="md-download">
       <p class="md-download-text"><strong>Ready when you are.</strong> Tap Download to save your menu as a PDF. The file is generated in your browser — nothing uploads.</p>
       <div class="md-download-row">
@@ -1349,7 +1349,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      MD_I18N globals at parse time. -->
 <script src="./data/allergens.js?v=20260501-w18"></script>
 <script src="./data/badges.js?v=20260501-w18"></script>
-<script src="./data/allergen-glyphs.js?v=20260501-w19"></script>
+<script src="./data/allergen-glyphs.js?v=20260501-w23"></script>
 <script src="./data/quiz-tiles.js?v=20260501-w22"></script>
 <script src="./data/templates.js?v=20260501-w22"></script>
 <script src="./infra/dom.js?v=20260501-w18"></script>
@@ -1357,9 +1357,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="./state/draft.js?v=20260501-w22"></script>
 <script src="./state/history.js?v=20260501-w22"></script>
 <script src="./themes.js?v=20260501-w15"></script>
-<script src="./menu-render-pdf.js?v=20260501-w19"></script>
-<script src="./menu-render-html.js?v=20260501-w19"></script>
-<script src="./menu-render-text.js?v=20260501-w16"></script>
-<script src="./menu-design.js?v=20260501-w19"></script>
+<script src="./menu-render-pdf.js?v=20260501-w23"></script>
+<script src="./menu-render-html.js?v=20260501-w23"></script>
+<script src="./menu-render-text.js?v=20260501-w23"></script>
+<script src="./menu-design.js?v=20260501-w23"></script>
 </body>
 </html>

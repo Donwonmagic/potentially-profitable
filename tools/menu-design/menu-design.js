@@ -7,7 +7,7 @@
  *
  * Privacy posture: zero fetch, zero localStorage writes from this
  * file. All state is in-memory; MuntinContext writes happen only
- * when the user explicitly taps "Use these" (and even then we read,
+ * when the operator explicitly taps "Use these" (and even then we read,
  * not write — Wave A3 starts writing menuHistory). The build-time
  * check-tool-no-fetch.mjs invariant must remain satisfied.
  */
@@ -421,8 +421,10 @@
       }
     });
     if (!rows.length) {
+      // W21 fix #6 — empty-menu copy now respects locale.
       html = '<tr><td colspan="5" style="padding:32px 16px;text-align:center;color:var(--stone);font-size:13.5px;">' +
-        'Your menu is empty. Tap <strong>Add a dish</strong>, paste a spreadsheet above, or load the sample.' +
+        tt('Your menu is empty. Tap <strong>Add a dish</strong>, paste a spreadsheet above, or load the sample.',
+           'Tu menú está vacío. Toca <strong>Agregar plato</strong>, pega una hoja arriba, o carga la muestra.') +
         '</td></tr>';
     }
     rowsEl.innerHTML = html;
@@ -748,12 +750,21 @@
   function readCustomDims() {
     if (!paperCustomW || !paperCustomH || !paperCustomU) return;
     var w = parseFloat(paperCustomW.value); var h = parseFloat(paperCustomH.value);
-    if (isFinite(w) && isFinite(h) && w > 0 && h > 0) {
-      customDims = { w: w, h: h, unit: paperCustomU.value || 'in' };
-      paperKey = 'custom';
-      renderPreview();
-      scheduleSaveDraft();
-    }
+    if (!(isFinite(w) && isFinite(h) && w > 0 && h > 0)) return;
+    // W21 fix #5 — explicit per-unit clamp. The HTML inputs declare
+    // min=2 max=50 but those are unit-relative (an operator who
+    // pastes a value or switches unit can land outside the safe
+    // range). Mirror resolvePaper()'s 2"-50" bounds in mm/cm/pt too.
+    var unit = paperCustomU.value || 'in';
+    var bounds = unit === 'mm' ? { min: 50,  max: 1270 }
+              : unit === 'cm' ? { min: 5,   max: 127  }
+              : unit === 'pt' ? { min: 144, max: 3600 }
+              : { min: 2, max: 50 }; // inches default
+    if (w < bounds.min || w > bounds.max || h < bounds.min || h > bounds.max) return;
+    customDims = { w: w, h: h, unit: unit };
+    paperKey = 'custom';
+    renderPreview();
+    scheduleSaveDraft();
   }
   if (paperCustomW) paperCustomW.addEventListener('input', readCustomDims);
   if (paperCustomH) paperCustomH.addEventListener('input', readCustomDims);
@@ -1439,9 +1450,22 @@
   if (paletteBackdrop) paletteBackdrop.addEventListener('click', hidePalette);
 
   // Cmd-K / Ctrl-K opens the palette.
+  // W21 fix #4 — gate behind active-modal check so the palette
+  // doesn't stack on top of the celebration overlay, the Vibe quiz,
+  // or the first-run cuisine quiz. Two stacked modals trap focus
+  // and break Esc behavior.
+  function anotherModalOpen() {
+    if (document.getElementById('mdCelebrate')) return true;
+    var quiz = document.getElementById('mdQuiz');
+    if (quiz && !quiz.hidden) return true;
+    var vibe = document.getElementById('mdVibeQuiz');
+    if (vibe && !vibe.hidden) return true;
+    return false;
+  }
   document.addEventListener('keydown', function (e) {
     var mod = e.metaKey || e.ctrlKey;
     if (mod && (e.key === 'k' || e.key === 'K')) {
+      if (anotherModalOpen()) return; // let the other modal own focus
       e.preventDefault();
       showPalette();
     }
@@ -1904,7 +1928,9 @@
 
   if (clearBtn) clearBtn.addEventListener('click', function () {
     if (!rows.length) return;
-    if (!confirm('Clear every row? This can\'t be undone.')) return;
+    // W21 fix #7 — clear-confirm now translates per locale.
+    if (!confirm(tt('Clear every row? This can\'t be undone.',
+                    '¿Borrar todas las filas? No se puede deshacer.'))) return;
     pushUndo();
     rows = [];
     render();
@@ -2103,7 +2129,7 @@
     }
     setPasteError('');
     pushUndo();
-    // Append to existing rows, preserving the user's prior typing.
+    // Append to existing rows, preserving the operator's prior typing.
     rows = rows.concat(parsed);
     render();
     pasteArea.value = '';
@@ -2240,8 +2266,13 @@
         desc: ''
       };
     });
+    // W21 fix #3 — push undo before mutation, autosave after, so
+    // the imported batch is reversible via Cmd-Z and survives a
+    // tab close before the operator interacts further.
+    pushUndo();
     rows = rows.concat(imported);
     render();
+    scheduleSaveDraft();
     if (window.plausible) window.plausible('Menu Design Ctx Used', { props: { dishes: String(imported.length) } });
   });
 
