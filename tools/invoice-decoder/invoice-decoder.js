@@ -89,7 +89,37 @@
     // For Wave B1 we preview the FIRST page only; multi-page sweep
     // (and per-page status) ships with B2 alongside the OCR loop.
     var file = fileList[0];
+    // Wave 5.3 — auto-resize oversized photos via canvas downsample
+    // before failing. Operator's own camera-roll image gets handled
+    // gracefully without forcing them to manually shrink.
     if (file.size > 12 * 1024 * 1024) {
+      showStatus(
+        tt('Photo is large — shrinking it for you…', 'Foto grande — la achicamos por ti…'),
+        tt('Down-sampling to 6 MP. Most invoices read fine at this resolution.',
+           'Reduciendo a 6 MP. La mayoría de facturas se leen bien a esta resolución.')
+      );
+      try {
+        if (typeof MID_PREPROCESS !== 'undefined' && MID_PREPROCESS.fileToCanvas) {
+          MID_PREPROCESS.fileToCanvas(file, 1800).then(function (canvas) {
+            return new Promise(function (res) {
+              canvas.toBlob(function (blob) { res(blob); }, 'image/jpeg', 0.9);
+            });
+          }).then(function (blob) {
+            if (!blob) throw new Error('resize failed');
+            var resized = new File([blob], 'resized.jpg', { type: 'image/jpeg' });
+            var rest = Array.prototype.slice.call(fileList, 1);
+            handlePhotoFiles([resized].concat(rest));
+          }).catch(function () {
+            showStatus(
+              tt('Photo too large', 'Foto muy grande'),
+              tt('Auto-resize failed. Try a lower-resolution shot — most invoices read fine at 4–6 MP.',
+                 'Falló el auto-redimensionado. Intenta una foto de menor resolución — la mayoría se leen bien con 4–6 MP.'),
+              'error'
+            );
+          });
+          return;
+        }
+      } catch (_) {}
       showStatus(
         tt('Photo too large', 'Foto muy grande'),
         tt('That photo is over 12 MB. Try a lower-resolution shot — most invoices read fine at 4–6 MP.',
@@ -196,6 +226,18 @@
       }
       if (comingEl) comingEl.hidden = false;
       if (readBtn) readBtn.hidden = false;
+      // Wave 5.5 — persist an abandonment-resume record. We only
+      // store metadata (page count, vendor hint), never the raw
+      // photo bytes. On next load, onboarding.js offers to resume.
+      try {
+        if (typeof MID_ONBOARDING !== 'undefined' && MID_ONBOARDING.saveResumeRecord) {
+          MID_ONBOARDING.saveResumeRecord({
+            pageCount: pendingPages.length,
+            qualityHint: worstHint,
+            stage: 'preprocessed'
+          });
+        }
+      } catch (_) {}
       if (window.plausible) {
         window.plausible('Invoice Decoder Preprocess', { props: {
           skew_bucket: Math.abs(first.skewAngle) >= 5 ? 'high' : Math.abs(first.skewAngle) >= 1 ? 'low' : 'none',
@@ -265,11 +307,21 @@
       readBtn.innerHTML = tt('Reading…', 'Leyendo…');
     }
     showStatus(
-      tt('Reading the invoice…', 'Leyendo la factura…'),
-      tt('First load also fetches the reader (about 4 MB). After this it\'s cached and instant.',
-         'La primera carga también descarga el lector (unos 4 MB). Después queda en caché y es instantánea.')
+      tt('Reading the invoice…', 'Leyendo the invoice…').replace('the invoice', 'the invoice'),
+      tt('First time only: we download the reader (about 4 MB). After this it\'s saved for next time.',
+         'Solo la primera vez: bajamos el lector (unos 4 MB). Queda guardado para la próxima.')
     );
     setProgress(2);
+    // Wave 5.2 — phase ladder + ETA + rotating tips.
+    showPhaseLadder([
+      tt('Cleaning up the photo', 'Limpiando la foto'),
+      tt('Reading the lines', 'Leyendo las líneas'),
+      tt('Sorting into categories', 'Ordenando en categorías'),
+      tt('Looking up vendor shape', 'Buscando la forma del proveedor')
+    ], pendingPages.length * 12);
+    advancePhase(1);
+    // Wave 3.4 — skeleton rows so the operator sees structure forming.
+    showSkeleton(8);
 
     var pageShare = 92 / pendingPages.length;
     var doneShare = 0;
@@ -356,6 +408,7 @@
       });
     }, Promise.resolve()).then(function () {
       setProgress(96);
+      advancePhase(2);  // Wave 5.2 — sorting now
       var parsed = MID_PARSE.parseLines(allLines, fullText);
       // Wave B3 — vendor detection. When detect() crosses
       // threshold the rows get a confidence boost (knowing the
@@ -379,9 +432,16 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
+      advancePhase(3);  // Wave 5.2 — vendor lookup done
+      // Wave 5.3 — preserve raw OCR text so the operator can debug
+      // when the parsed-row count is unexpectedly low.
+      parsed._rawOcrText = fullText;
       renderParsed(parsed);
+      clearPhaseLadder();
       setProgress(100);
       hideStatus();
       if (window.plausible) {
@@ -394,17 +454,69 @@
         } });
       }
     }).catch(function (err) {
+      clearPhaseLadder();
       showStatus(
         tt('OCR failed', 'OCR falló'),
         tt('The reader couldn\'t process this image. ' + (err && err.message ? '(' + err.message + ')' : ''),
            'El lector no pudo procesar esta imagen. ' + (err && err.message ? '(' + err.message + ')' : '')),
         'error'
       );
+      // Wave 5.3 — actionable error recovery. Tesseract CDN failures
+      // tend to be the most common one; offer a retry path + the
+      // manual-entry fallback so the operator isn't stuck.
+      renderErrorActions(err);
     }).then(function () {
       if (readBtn) {
         readBtn.disabled = false;
         readBtn.innerHTML = tt('Read this invoice', 'Leer esta factura');
       }
+    });
+  }
+
+  // Wave 5.3 — error-recovery action buttons. Renders inside the
+  // status panel; each button gives the operator a clear next step.
+  function renderErrorActions(err) {
+    if (!statusEl) return;
+    var existing = document.getElementById('idErrorActions');
+    if (existing) existing.parentNode.removeChild(existing);
+    var wrap = document.createElement('div');
+    wrap.id = 'idErrorActions';
+    wrap.className = 'id-error-actions';
+    var msg = String(err && err.message || '');
+    var isCdnFail = /Tesseract|network|fetch/i.test(msg);
+    var html = '';
+    if (isCdnFail) {
+      html += '<button type="button" id="idRetryReader">' + escHtml(tt('Retry reader', 'Reintentar lector')) + '</button>';
+    }
+    html += '<button type="button" id="idTypeManually">' + escHtml(tt('Type one row manually', 'Escribir un renglón a mano')) + '</button>';
+    html += '<button type="button" id="idShowRawOcr">' + escHtml(tt('Show raw OCR', 'Ver OCR crudo')) + '</button>';
+    wrap.innerHTML = html;
+    var rawHost = document.createElement('pre');
+    rawHost.id = 'idRawOcr';
+    rawHost.className = 'id-raw-ocr';
+    rawHost.textContent = (lastReadParsed && lastReadParsed._rawOcrText) || tt('(no raw text yet — run a read first)', '(sin texto crudo todavía)');
+    statusEl.appendChild(wrap);
+    statusEl.appendChild(rawHost);
+    var retryBtn = document.getElementById('idRetryReader');
+    if (retryBtn) retryBtn.addEventListener('click', function () { readPendingInvoice(); });
+    var manualBtn = document.getElementById('idTypeManually');
+    if (manualBtn) manualBtn.addEventListener('click', function () {
+      // Synthesize a single empty row the operator can edit into.
+      var stub = {
+        rows: [{
+          name: '', qty: 1, unit: 'ea', unitPrice: 0, lineTotal: 0,
+          confidence: 50, fieldConf: { name: 50, qty: 50, price: 50, category: 50 },
+          raw: '', kind: 'item'
+        }],
+        vendor: null, totalParsed: null, sumParsed: 0, deltaPct: null, mathFix: null,
+        kindCounts: { item: 1 }, _manualEntry: true
+      };
+      renderParsed(stub);
+      hideStatus();
+    });
+    var rawBtn = document.getElementById('idShowRawOcr');
+    if (rawBtn) rawBtn.addEventListener('click', function () {
+      rawHost.classList.toggle('show');
     });
   }
 
@@ -434,8 +546,13 @@
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
     row.ownerConfirmed = true;
+    // Wave 3.4 — color-rise animation on the row that just got
+    // confirmed; rerenderRows wipes the DOM so we mark the row idx
+    // and apply the class on the next render.
+    __riseIdx = rowIdx;
     rerenderRows();
   }
+  var __riseIdx = -1;
 
   // W4-1 — verification filter state. After fresh OCR we land on
   // 'needReview' so the operator's eyes go straight to amber/red
@@ -505,9 +622,85 @@
     });
   }
 
+  // Wave 2.4 — smart-order sort. Riskiest rows first:
+  //   risk = (1 - minFieldConfidence) × max(lineTotal, 1) ×
+  //          (categoryFallback ? 1.4 : 1) × (anomaly ? 1.6 : 1)
+  // Toggle persisted via MuntinContext.invoiceDecoder.sortByRisk.
+  var __sortByRisk = (function () {
+    try {
+      if (typeof MuntinContext === 'undefined') return false;
+      var stored = MuntinContext.get('invoiceDecoder');
+      return !!(stored && stored.sortByRisk);
+    } catch (_) { return false; }
+  })();
+  function setSortByRisk(on) {
+    __sortByRisk = !!on;
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({ invoiceDecoder: { sortByRisk: __sortByRisk } });
+      }
+    } catch (_) {}
+  }
+  function applySmartSort(visible) {
+    if (!__sortByRisk) return visible;
+    function risk(r) {
+      var fc = r.fieldConf || { name: r.confidence, qty: r.confidence, price: r.confidence, category: r.categoryConfidence || r.confidence };
+      var minConf = Math.min(fc.name, fc.qty, fc.price, fc.category);
+      var weight = Math.max(r.lineTotal || 0, 1);
+      var fallbackBoost = r.categoryTier === 'heuristic' || r.categoryTier === 'fuzzy' ? 1.4 : 1;
+      var anomalyBoost = 1;
+      try {
+        if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.summarizeRow) {
+          var s = MID_SKU_HISTORY.summarizeRow(r);
+          if (s && s.isAnomaly) anomalyBoost = 1.6;
+        }
+      } catch (_) {}
+      return (1 - minConf / 100) * weight * fallbackBoost * anomalyBoost;
+    }
+    return visible.slice().sort(function (a, b) { return risk(b) - risk(a); });
+  }
+
+  // Wave 1.1 — toggleable mini-history sparkline under a row.
+  function toggleRowHistory(rowEl, idx) {
+    if (!rowEl || !isFinite(idx)) return;
+    var existing = rowEl.querySelector('.id-row-history');
+    if (existing) { existing.parentNode.removeChild(existing); return; }
+    if (typeof MID_SKU_HISTORY === 'undefined' || !MID_SKU_HISTORY.lookupHistory) return;
+    var row = parsedRowsState[idx];
+    if (!row) return;
+    var history = MID_SKU_HISTORY.lookupHistory(row);
+    if (!history.length) return;
+    var values = history.slice().reverse().map(function (h) { return h.unitPrice; });
+    var sparkSvg = '';
+    try {
+      if (typeof MuntinSparkline !== 'undefined' && MuntinSparkline.render) {
+        sparkSvg = MuntinSparkline.render(values, {
+          width: 200, height: 40,
+          ariaLabel: tt('Price history for ' + row.name, 'Histórico de precio para ' + row.name)
+        });
+      }
+    } catch (_) {}
+    var wrap = document.createElement('div');
+    wrap.className = 'id-row-history';
+    var lastN = history.slice(0, 5).map(function (h) {
+      var d = new Date(h.ts);
+      return '<li><span>' + d.toLocaleDateString() + '</span> · $' + h.unitPrice.toFixed(4) + (h.unit ? '/' + h.unit : '') + (h.vendor ? ' · ' + h.vendor : '') + '</li>';
+    }).join('');
+    wrap.innerHTML =
+      '<p class="id-row-history-label"><strong>' +
+      escHtml(tt('Last ' + history.length + ' observations', 'Últimas ' + history.length + ' observaciones')) +
+      '</strong></p>' +
+      sparkSvg +
+      '<ul class="id-row-history-list">' + lastN + '</ul>' +
+      '<button type="button" class="id-row-history-contract" data-idx="' + idx + '">' +
+      escHtml(tt('Set contract price', 'Fijar precio de contrato')) + '</button>';
+    rowEl.appendChild(wrap);
+  }
+
   function rerenderRows() {
     if (!parsedList) return;
     var visible = applyRowFilter(parsedRowsState);
+    visible = applySmartSort(visible);
     if (!visible.length && parsedRowsState.length) {
       parsedList.innerHTML = '<li class="id-parsed-empty">' +
         tt('No rows match this filter — switch to "All" to see everything.',
@@ -517,6 +710,12 @@
       parsedList.innerHTML = visible.map(function (r) {
         return rowToHtml(r, parsedRowsState.indexOf(r));
       }).join('');
+      // Wave 3.4 — color-rise on the just-edited row.
+      if (__riseIdx !== -1) {
+        var riseEl = parsedList.querySelector('[data-idx="' + __riseIdx + '"]');
+        if (riseEl) riseEl.classList.add('is-confirmed-rise');
+        __riseIdx = -1;
+      }
     }
     // W4-5 — fire verify-speed metric when needReview filter empties.
     maybeFireVerifySpeed(visible.length);
@@ -859,6 +1058,10 @@
   // by the parser at OCR time) vs. the current sum of editable
   // rows. >5% delta → amber warning; missing printed total →
   // grey "couldn't verify yourself" line.
+  //
+  // Wave 1.3 — when math is off, also render a candidate-fix card
+  // beneath the totals line so the operator can fix it in one tap.
+  // Wave 3.2 — plain-language microcopy ("Numbers don't match").
   var lastPrintedTotal = null;
   function rerenderTotals() {
     if (!parsedTotals) return;
@@ -869,23 +1072,163 @@
       var deltaWarn = delta > 5;
       parsedTotals.classList.toggle('warn', !!deltaWarn);
       parsedTotals.innerHTML = tt(
-        '<strong>Parsed sum:</strong> $' + sum.toFixed(2) + ' · <strong>Invoice prints:</strong> $' + lastPrintedTotal.toFixed(2) +
+        '<strong>Read sum:</strong> $' + sum.toFixed(2) + ' · <strong>Printed:</strong> $' + lastPrintedTotal.toFixed(2) +
           ' (' + delta.toFixed(1) + '% off) — ' +
-          (deltaWarn ? 'verify before saving.' : 'looks consistent.'),
-        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' · <strong>Total impreso:</strong> $' + lastPrintedTotal.toFixed(2) +
+          (deltaWarn ? 'numbers don\'t match. Check them.' : 'looks consistent.'),
+        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' · <strong>Impreso:</strong> $' + lastPrintedTotal.toFixed(2) +
           ' (' + delta.toFixed(1) + '% de diferencia) — ' +
-          (deltaWarn ? 'verifica antes de guardar.' : 'se ve consistente.')
+          (deltaWarn ? 'los números no cuadran. Revísalos.' : 'se ve consistente.')
       );
+      // Candidate-fix card — only when delta exceeds 1¢.
+      try {
+        if (deltaWarn && typeof MID_PARSE !== 'undefined' && MID_PARSE.suggestMathFix) {
+          var fix = MID_PARSE.suggestMathFix(parsedRowsState, lastPrintedTotal);
+          renderMathFixCard(fix);
+        } else {
+          renderMathFixCard(null);
+        }
+      } catch (_) {}
     } else {
       parsedTotals.classList.remove('warn');
       parsedTotals.innerHTML = tt(
-        '<strong>Parsed sum:</strong> $' + sum.toFixed(2) + ' — couldn\'t find a printed total to verify against. Sanity-check yourself.',
-        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' — no se encontró un total impreso para comparar. Revísalo tú.'
+        '<strong>Read sum:</strong> $' + sum.toFixed(2) + ' — no printed total to compare against. Sanity-check yourself.',
+        '<strong>Suma leída:</strong> $' + sum.toFixed(2) + ' — sin total impreso para comparar. Revísalo tú.'
       );
+      renderMathFixCard(null);
     }
     parsedTotals.hidden = false;
   }
 
+  // Wave 1.3 — math fix card. Renders inside #idMathFix when active,
+  // hidden otherwise. Buttons: "Apply this fix" for digit-flip,
+  // "Re-OCR last rows" for missing-line, "I'll fix it manually" always.
+  function renderMathFixCard(fix) {
+    var host = document.getElementById('idMathFix');
+    if (!host) return;
+    if (!fix) { host.hidden = true; host.innerHTML = ''; return; }
+    var html = '<div class="id-mathfix-inner">';
+    html += '<p class="id-mathfix-msg">' + escHtml(fix.message);
+    if (fix.kind === 'digit-flip' && typeof fix.rowIdx === 'number') {
+      html += '</p><p class="id-mathfix-actions">' +
+        '<button type="button" class="id-mathfix-apply" data-row="' + fix.rowIdx + '" data-to="' + fix.to + '">' +
+        escHtml(tt('Apply this fix', 'Aplicar este arreglo')) + '</button>' +
+        '<button type="button" class="id-mathfix-dismiss">' + escHtml(tt("I'll fix it manually", 'Lo arreglo a mano')) + '</button>' +
+        '</p>';
+    } else if (fix.kind === 'rounding') {
+      html += '</p><p class="id-mathfix-actions">' +
+        '<button type="button" class="id-mathfix-dismiss">' + escHtml(tt('Got it', 'Entendido')) + '</button>' +
+        '</p>';
+    } else {
+      html += '</p><p class="id-mathfix-actions">' +
+        '<button type="button" class="id-mathfix-dismiss">' + escHtml(tt("I'll fix it manually", 'Lo arreglo a mano')) + '</button>' +
+        '</p>';
+    }
+    html += '</div>';
+    host.innerHTML = html;
+    host.hidden = false;
+    var apply = host.querySelector('.id-mathfix-apply');
+    if (apply) {
+      apply.addEventListener('click', function () {
+        var rIdx = parseInt(apply.getAttribute('data-row'), 10);
+        var to = parseFloat(apply.getAttribute('data-to'));
+        if (isFinite(rIdx) && isFinite(to)) {
+          commitCellEdit(rIdx, 'lineTotal', to);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Math Fix Applied', { props: { kind: 'digit-flip' } }); } catch (_) {}
+          }
+        }
+      });
+    }
+    var dismiss = host.querySelector('.id-mathfix-dismiss');
+    if (dismiss) {
+      dismiss.addEventListener('click', function () {
+        host.hidden = true;
+        host.innerHTML = '';
+      });
+    }
+  }
+
+  // Wave 2.3 — Vendor Pulse Strip. One line per visible invoice:
+  //   "Sysco · Tue Apr 28 · 41 lines · $1,842.10"
+  //   then up to three pill-deltas (top movers via sku-history).
+  function renderVendorPulse(parsed) {
+    var host = document.getElementById('idVendorPulse');
+    if (!host) return;
+    if (!parsed || !parsed.rows || !parsed.rows.length) { host.hidden = true; return; }
+    var vendor = parsed.vendor ? parsed.vendor.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }) : tt('No vendor detected', 'Sin proveedor');
+    var date = new Date().toLocaleDateString();
+    var sumStr = '$' + (parsed.sumParsed || 0).toFixed(2);
+    var pills = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.topMovers) {
+        var movers = MID_SKU_HISTORY.topMovers(parsed.rows, { max: 3, minPct: 5 });
+        movers.forEach(function (m) {
+          var sign = m.deltaPct > 0 ? '+' : '';
+          var dir = m.deltaPct > 0 ? 'up' : 'down';
+          pills += '<span class="id-pulse-pill" data-dir="' + dir + '">' +
+            escHtml(m.name) + ' ' + escHtml(sign + m.deltaPct.toFixed(1) + '%') +
+            '</span>';
+        });
+      }
+    } catch (_) {}
+    if (!pills) {
+      pills = '<span class="id-pulse-empty">' +
+        escHtml(tt('First invoice from this vendor — saving starts your baseline.', 'Primera factura de este proveedor — al guardar empieza tu base.')) +
+        '</span>';
+    }
+    host.innerHTML =
+      '<div class="id-pulse-row">' +
+        '<span class="id-pulse-vendor">' + escHtml(vendor) + '</span>' +
+        '<span class="id-pulse-meta">· ' + escHtml(date) + ' · ' +
+          (parsed.rows.length) + ' ' + escHtml(tt('lines', 'líneas')) + ' · ' + escHtml(sumStr) +
+        '</span>' +
+      '</div>' +
+      '<div class="id-pulse-pills">' + pills + '</div>';
+    host.hidden = false;
+  }
+
+  // Wave 2.6 — margin-impact callout in the handoff panel.
+  function renderMarginImpact(parsed) {
+    var host = document.getElementById('idMarginImpact');
+    if (!host) return;
+    var impacts = [];
+    try {
+      if (typeof MID_MARGIN !== 'undefined' && MID_MARGIN.computeImpacts) {
+        impacts = MID_MARGIN.computeImpacts(parsed.rows || [], { minPp: 0.5 });
+      }
+    } catch (_) {}
+    if (!impacts.length) { host.hidden = true; host.innerHTML = ''; return; }
+    var top = impacts.slice(0, 3);
+    var lines = top.map(function (i) {
+      var sign = i.deltaPp > 0 ? '+' : '';
+      var dir = i.deltaPp > 0 ? 'up' : 'down';
+      return '<li class="id-margin-line" data-dir="' + dir + '"><strong>' + escHtml(i.dishName) + '</strong> ' +
+        escHtml(sign + i.deltaPp.toFixed(1) + ' pp') + ' (' + escHtml(i.oldPct.toFixed(1) + '% → ' + i.newPct.toFixed(1) + '%') + ')</li>';
+    }).join('');
+    host.innerHTML =
+      '<p class="id-margin-label">' + escHtml(tt('Margin shift on saved dishes', 'Cambio de margen en platos guardados')) + '</p>' +
+      '<ul class="id-margin-list">' + lines + '</ul>';
+    host.hidden = false;
+  }
+
+  // Wave 2.5 — confidence glyph (shape + color, not color alone).
+  // Colorblind users and monochrome printers still parse meaning.
+  function confGlyph(band) {
+    if (band === 'green') return '<svg class="id-row-glyph" data-band="green" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="#E6F4EC" stroke="#1f6e3a" stroke-width="1"/><path d="M3.8 7.2 L6 9.4 L10.2 5" stroke="#1f6e3a" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    if (band === 'amber') return '<svg class="id-row-glyph" data-band="amber" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="#FFFBEC" stroke="#9A6A12" stroke-width="1"/><path d="M7 3.4 V8" stroke="#9A6A12" stroke-width="1.6" stroke-linecap="round"/><circle cx="7" cy="10.3" r="0.85" fill="#9A6A12"/></svg>';
+    if (band === 'red')   return '<svg class="id-row-glyph" data-band="red" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="#FCE0DA" stroke="#7a2419" stroke-width="1"/><path d="M4.5 4.5 L9.5 9.5 M9.5 4.5 L4.5 9.5" stroke="#7a2419" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    return '';
+  }
+
+  // Wave 1.7 — per-field dot. Filled / half / empty maps to the
+  // field's confidence band. Hover/long-press surfaces a rationale.
+  function fieldDot(label, conf, rationale) {
+    var band = confBand(conf || 0);
+    var ttip = rationale || (label + ': ' + Math.round(conf || 0) + '%');
+    return '<span class="id-field-dot" data-field="' + escHtml(label) + '" data-band="' + band + '" title="' + escHtml(ttip) + '" aria-label="' + escHtml(ttip) + '"></span>';
+  }
+
+  // Wave 1.7 + 2.5 + 1.1 + 1.2 — full reimagined row layout.
   function rowToHtml(r, idx) {
     var qtyParts = [];
     if (r.qty != null) qtyParts.push(r.qty);
@@ -895,18 +1238,113 @@
     var chip = r.category
       ? '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '">' + escHtml(catLabel(r.category)) + '</span>'
       : '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
-    var confPct = Math.round(r.confidence || 0);
-    var confChip = '<span class="id-parsed-conf" data-conf="' + confBand(r.confidence) + '">' + confPct + '%</span>';
-    return '<li class="id-parsed-row" data-conf="' + confBand(r.confidence) + '" data-idx="' + idx + '" title="' + escHtml(r.raw || '') + '">' +
-      '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' + escHtml(r.name) + chip + confChip + '</span>' +
+    var band = confBand(r.confidence);
+    var glyph = confGlyph(band);
+
+    // Per-field dots (Wave 1.7).
+    var fc = r.fieldConf || { name: r.confidence, qty: r.confidence, price: r.confidence, category: r.categoryConfidence || r.confidence };
+    var dots =
+      fieldDot(tt('name', 'nombre'), fc.name, tt('Name read', 'Lectura del nombre')) +
+      fieldDot(tt('qty', 'cant.'), fc.qty, tt('Quantity', 'Cantidad')) +
+      fieldDot(tt('price', 'precio'), fc.price, tt('Price', 'Precio')) +
+      fieldDot(tt('category', 'categoría'), r.categoryConfidence || fc.category, tt('Category', 'Categoría'));
+
+    // Wave 1.1 — per-row drift / anomaly chip from sku-history.
+    var driftChip = '';
+    var anomalyAttr = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.summarizeRow) {
+        var s = MID_SKU_HISTORY.summarizeRow(r);
+        if (s && s.medianDelta != null && s.observations >= 3) {
+          var sign = s.medianDelta > 0 ? '+' : '';
+          var dir = s.medianDelta > 0 ? 'up' : (s.medianDelta < 0 ? 'down' : 'flat');
+          var drClass = s.isAnomaly ? 'id-row-drift id-row-drift--anomaly' : 'id-row-drift';
+          var label = sign + s.medianDelta.toFixed(1) + '% ' + tt('vs your typical', 'vs tu típico');
+          driftChip = '<span class="' + drClass + '" data-dir="' + dir + '" title="' + escHtml(label) + '">' + escHtml(sign + s.medianDelta.toFixed(1) + '%') + '</span>';
+          if (s.isAnomaly) anomalyAttr = ' data-anomaly="true"';
+        }
+      }
+    } catch (_) {}
+
+    // Wave 1.2 — contract-price overcharge badge.
+    var contractBadge = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.checkRow) {
+        var ck = MID_SKU_HISTORY.checkRow(r);
+        if (ck && ck.isOver) {
+          contractBadge = '<span class="id-row-contract id-row-contract--over" title="' +
+            escHtml(tt('Over your contract by $' + ck.diffPerUnit.toFixed(4) + '/unit', 'Sobre el contrato por $' + ck.diffPerUnit.toFixed(4) + '/unidad')) +
+            '">⚠ ' + escHtml(tt('over contract', 'sobre contrato')) + '</span>';
+        }
+      }
+    } catch (_) {}
+
+    // Wave 1.5 — kind tag for non-item lines.
+    var kindTag = '';
+    if (r.kind && r.kind !== 'item') {
+      var kindLabel = {
+        credit:    tt('credit', 'crédito'),
+        deposit:   tt('deposit', 'depósito'),
+        surcharge: tt('surcharge', 'recargo'),
+        backorder: tt('backorder', 'pendiente')
+      }[r.kind] || r.kind;
+      kindTag = '<span class="id-row-kind" data-kind="' + escHtml(r.kind) + '">' + escHtml(kindLabel) + '</span>';
+    }
+
+    // Wave 4.5 — "auto-applied" trust chip when the categorization
+    // came from a previous operator override. Surfaces tier + source
+    // (direct, stem, bilingual) so the operator knows where the
+    // signal came from.
+    var learnedChip = '';
+    if (r.categoryTier === 'learned') {
+      var src = r.categorySource || 'direct';
+      var lbl = src === 'bilingual'
+        ? tt('auto · ES/EN match', 'auto · coincidencia ES/EN')
+        : src === 'stem'
+        ? tt('auto · pack variant', 'auto · variante de empaque')
+        : tt('auto · your prior fix', 'auto · tu corrección previa');
+      learnedChip = '<span class="id-row-learned" data-source="' + escHtml(src) + '" title="' + escHtml(lbl) + '">' + escHtml(lbl) + '</span>';
+    }
+
+    // Visible Y/N quick action buttons (Wave 3.1 — keyboard-or-pointer).
+    var actions = '<span class="id-row-actions" role="group" aria-label="' + escHtml(tt('Row actions', 'Acciones del renglón')) + '">' +
+      '<button type="button" class="id-row-act id-row-act-yes" data-act="confirm" data-idx="' + idx + '" aria-label="' + escHtml(tt('Confirm row', 'Confirmar renglón')) + '" title="Y">✓</button>' +
+      '<button type="button" class="id-row-act id-row-act-no"  data-act="ignore"  data-idx="' + idx + '" aria-label="' + escHtml(tt('Flag and remove', 'Marcar y quitar')) + '" title="N">✕</button>' +
+      '</span>';
+
+    return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
+      '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
+      '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge +
+      '</span>' +
       '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
       '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
+      '<span class="id-row-fielddots" aria-label="' + escHtml(tt('Per-field confidence', 'Confianza por campo')) + '">' + dots + '</span>' +
+      actions +
     '</li>';
   }
 
   // Click delegation — turn a span into an <input> on tap.
   if (parsedList) {
     parsedList.addEventListener('click', function (e) {
+      // Wave 3.1 — visible Y/N action buttons (per-pointer alt to swipe).
+      var actBtn = e.target.closest && e.target.closest('.id-row-act');
+      if (actBtn) {
+        e.preventDefault();
+        var actIdx = parseInt(actBtn.getAttribute('data-idx'), 10);
+        if (!isFinite(actIdx)) return;
+        if (actBtn.getAttribute('data-act') === 'confirm') confirmRowAt(actIdx);
+        else if (actBtn.getAttribute('data-act') === 'ignore') ignoreRowAt(actIdx);
+        return;
+      }
+      // Wave 1.1 — tapping the drift chip opens the row's mini-history.
+      var drift = e.target.closest && e.target.closest('.id-row-drift');
+      if (drift) {
+        e.preventDefault();
+        var rowEl = drift.closest('.id-parsed-row');
+        if (rowEl) toggleRowHistory(rowEl, parseInt(rowEl.dataset.idx, 10));
+        return;
+      }
       var span = e.target.closest && e.target.closest('[data-edit]');
       if (!span) return;
       // Don't restart edit when user clicked the chip inside the name span.
@@ -978,7 +1416,125 @@
     });
   }
 
+  // ============================================================
+  // Wave 3.4 — skeleton-row loader. Renders 8 placeholder rows in
+  // the parsed list while OCR runs so the operator sees structure
+  // forming, not a spinner of doom. Cleared on first real render.
+  // ============================================================
+  function showSkeleton(count) {
+    if (!parsedList) return;
+    if (parsedEl) parsedEl.hidden = false;
+    var n = Math.max(3, Math.min(12, count || 8));
+    var html = '';
+    for (var i = 0; i < n; i++) {
+      html += '<li class="id-parsed-skel" aria-hidden="true">' +
+        '<span></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--md"></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--xs"></span>' +
+        '<span class="id-parsed-skel-bar id-parsed-skel-bar--sm"></span>' +
+        '</li>';
+    }
+    parsedList.innerHTML = html;
+  }
+
+  // ============================================================
+  // Wave 5.2 — phase ladder + ETA + tip carousel during the wait.
+  // The status panel renders a four-step ladder; the active phase
+  // pulses, completed phases get a check, the tip carousel rotates
+  // every 6s with restaurant-flavored pro-tips.
+  // ============================================================
+  var TIPS_EN = [
+    'Did you know? PDFs read in 1s instead of 30. Ask your distributor to email you one.',
+    'You can paste a CSV from Sysco\'s order-history page directly — skip the photo entirely.',
+    'Tap a row to edit — your corrections train the categorizer for next time.',
+    'Y / N / J / K / 1-9 keyboard shortcuts speed up review on a laptop.',
+    'Switch tabs while we work — a Workshop badge will pop up when ready.'
+  ];
+  var TIPS_ES = [
+    '¿Sabías? Los PDF se leen en 1s en lugar de 30. Pide a tu distribuidor que te envíe uno.',
+    'Puedes pegar un CSV de la página de historial de órdenes de Sysco — sáltate la foto.',
+    'Toca un renglón para editar — tus correcciones entrenan al categorizador.',
+    'Y / N / J / K / 1-9 son atajos de teclado que aceleran la revisión.',
+    'Cambia de pestaña mientras trabajamos — verás una insignia en Workshop cuando esté listo.'
+  ];
+  var __tipTimer = null;
+  function showPhaseLadder(phaseLabels, etaSeconds) {
+    if (!statusEl) return;
+    var ladderId = 'idPhaseLadder';
+    var existing = document.getElementById(ladderId);
+    if (existing) existing.parentNode.removeChild(existing);
+    var ul = document.createElement('ul');
+    ul.id = ladderId;
+    ul.className = 'id-phase-ladder';
+    phaseLabels.forEach(function (lbl, i) {
+      var li = document.createElement('li');
+      li.dataset.state = i === 0 ? 'active' : 'pending';
+      li.textContent = lbl;
+      ul.appendChild(li);
+    });
+    statusEl.appendChild(ul);
+    if (etaSeconds && etaSeconds > 0) {
+      var p = document.createElement('p');
+      p.id = 'idPhaseEta';
+      p.className = 'id-phase-eta';
+      p.textContent = tt('about ' + etaSeconds + 's left', 'unos ' + etaSeconds + 's restantes');
+      statusEl.appendChild(p);
+    }
+    // Tip carousel.
+    var tipEl = document.createElement('div');
+    tipEl.className = 'id-tip-carousel';
+    tipEl.id = 'idTipCarousel';
+    statusEl.appendChild(tipEl);
+    var tips = LOCALE === 'es' ? TIPS_ES : TIPS_EN;
+    var tipIdx = Math.floor(Math.random() * tips.length);
+    var rotate = function () {
+      tipEl.innerHTML = '<strong>' + tt('Tip:', 'Sugerencia:') + '</strong> ' + tips[tipIdx % tips.length];
+      tipIdx++;
+    };
+    rotate();
+    if (__tipTimer) clearInterval(__tipTimer);
+    __tipTimer = setInterval(rotate, 6000);
+  }
+  function advancePhase(idx) {
+    var ladder = document.getElementById('idPhaseLadder');
+    if (!ladder) return;
+    var lis = ladder.querySelectorAll('li');
+    for (var i = 0; i < lis.length; i++) {
+      if (i < idx) lis[i].dataset.state = 'done';
+      else if (i === idx) lis[i].dataset.state = 'active';
+      else lis[i].dataset.state = 'pending';
+    }
+  }
+  function clearPhaseLadder() {
+    var ladder = document.getElementById('idPhaseLadder');
+    if (ladder) ladder.parentNode.removeChild(ladder);
+    var eta = document.getElementById('idPhaseEta');
+    if (eta) eta.parentNode.removeChild(eta);
+    var tip = document.getElementById('idTipCarousel');
+    if (tip) tip.parentNode.removeChild(tip);
+    if (__tipTimer) { clearInterval(__tipTimer); __tipTimer = null; }
+  }
+
+  // Wave 4.6 — keep the latest parsed object so the accountant
+  // export can read vendor + savedAt without round-tripping through
+  // the saved envelope.
+  var lastReadParsed = null;
+
+  // Wave 5 — expose renderParsed to onboarding.js so the sample
+  // demo can drive the live pipeline without re-implementing it.
+  if (typeof window !== 'undefined') {
+    window.MID_DECODER_RENDER = function (parsed) { renderParsed(parsed); };
+  }
+
   function renderParsed(parsed) {
+    lastReadParsed = parsed;
+    // Wave 5 — record that the operator has run something so the
+    // first-run banner stops showing on subsequent visits.
+    try {
+      if (typeof MID_ONBOARDING !== 'undefined' && MID_ONBOARDING.markFirstRun) {
+        MID_ONBOARDING.markFirstRun();
+      }
+    } catch (_) {}
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
       parsedList.innerHTML = '<li class="id-parsed-empty">' +
@@ -1032,6 +1588,24 @@
       filterBar.hidden = false;
       wireFilterBar();
     }
+    // Wave 2.4 — sort toggle.
+    var sortToggle = document.getElementById('idSortToggle');
+    if (sortToggle && !sortToggle.dataset.wired) {
+      sortToggle.dataset.wired = '1';
+      var sortLbl = sortToggle.querySelector('.id-sort-toggle-label');
+      var refresh = function () {
+        sortToggle.setAttribute('aria-pressed', __sortByRisk ? 'true' : 'false');
+        if (sortLbl) sortLbl.textContent = __sortByRisk
+          ? tt('Riskiest first', 'Más riesgo primero')
+          : tt('Order seen', 'En orden');
+      };
+      refresh();
+      sortToggle.addEventListener('click', function () {
+        setSortByRisk(!__sortByRisk);
+        refresh();
+        rerenderRows();
+      });
+    }
     // W4-3 — wire touch swipe gestures on the parsed list. Idempotent.
     wireSwipeGestures();
     // W4-4 — wire keyboard shortcuts (Y/N, J/K, 1-9, /). Idempotent.
@@ -1048,6 +1622,21 @@
     // exactly once. Pulls chipLabel + a one-sentence framing from
     // MuntinDifferentiators (single source of truth, see W1-9).
     renderDiffStripOnce();
+    // Wave 2.3 — vendor pulse strip with this invoice's top movers.
+    renderVendorPulse(parsed);
+    // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
+    renderMarginImpact(parsed);
+    // Wave 2.7 — diff-strip volume gating: only render when drift is
+    // material (≥15% per cost-trend's threshold). Otherwise hide.
+    var diffStrip = document.getElementById('idDiffStrip');
+    if (diffStrip && typeof MuntinCostTrend !== 'undefined' && MuntinCostTrend.detectDrift) {
+      try {
+        var trend = (typeof MuntinContext !== 'undefined' && MuntinContext.readTrend) ? MuntinContext.readTrend() : [];
+        var drifts = MuntinCostTrend.detectDrift(trend, { thresholdPct: 15 });
+        diffStrip.dataset.magnitude = drifts.length ? 'high' : 'low';
+        if (!drifts.length) diffStrip.hidden = true;
+      } catch (_) {}
+    }
   }
 
   function renderDiffStripOnce() {
@@ -1132,8 +1721,30 @@
           '<strong>' + tt('Menu Engineering', 'Menu Engineering') + ' →</strong>' +
           '<span>' + tt('Update food-cost %', 'Actualizar % de costo') + '</span>' +
         '</a>' +
-      '</div>';
+      '</div>' +
+      // Wave 2.6 margin-impact mount lives inside the handoff panel.
+      '<div id="idMarginImpact" class="id-margin-impact" hidden></div>' +
+      // Wave 4.6 — accountant export drawer. One-tap CSV/IIF for
+      // the operator's bookkeeper. Generated entirely client-side.
+      '<details class="id-export-drawer">' +
+        '<summary>' + tt('Export for your accountant', 'Exportar para tu contador') + '</summary>' +
+        '<p class="id-export-blurb">' +
+          tt('One-click CSV your accountant imports into the four most-common platforms. Your data never leaves your device.',
+             'CSV de un clic que tu contador importa en las cuatro plataformas más comunes. Tus datos no salen de tu dispositivo.') +
+        '</p>' +
+        '<div class="id-export-row">' +
+          '<button type="button" class="id-export-btn" data-fmt="qbo">QuickBooks Online</button>' +
+          '<button type="button" class="id-export-btn" data-fmt="qbd">QuickBooks Desktop</button>' +
+          '<button type="button" class="id-export-btn" data-fmt="xero">Xero</button>' +
+          '<button type="button" class="id-export-btn" data-fmt="contpaqi">ContPaqi / Aspel</button>' +
+          '<button type="button" class="id-export-btn" data-fmt="generic">' + tt('Generic ledger CSV', 'CSV genérico') + '</button>' +
+        '</div>' +
+      '</details>';
     host.hidden = false;
+    // Wave 2.6 — recompute margin impact now that the host exists.
+    if (typeof renderMarginImpact === 'function') {
+      try { renderMarginImpact({ rows: parsedRowsState }); } catch (_) {}
+    }
   }
 
   // -------------------- Save flow (B6-3) --------------------
@@ -1285,6 +1896,27 @@
               });
             }
           } catch (_) {}
+          // Wave 1.1 — record per-SKU price observations so the next
+          // invoice can show drift chips and the vendor pulse strip
+          // can compute top movers. Aggregates only (price/qty/unit
+          // by stem); no row text, no descriptions, no raw OCR.
+          try {
+            if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.recordObservations) {
+              MID_SKU_HISTORY.recordObservations(parsedRowsState, payload.vendor || null);
+            }
+          } catch (_) {}
+          // Wave 5.6 — accuracy sample: confirmed-without-edit ratio.
+          try {
+            if (typeof MID_ONBOARDING !== 'undefined') {
+              var firstReadOk = parsedRowsState.filter(function (r) {
+                return !r.ownerConfirmed && confBand(r.confidence) === 'green';
+              }).length;
+              var rate = parsedRowsState.length ? (firstReadOk / parsedRowsState.length) : 0;
+              MID_ONBOARDING.recordAccuracySample(rate);
+              MID_ONBOARDING.recordSave();
+              MID_ONBOARDING.clearResumeRecord();
+            }
+          } catch (_) {}
           // W3-4 (was B6-4): write a slim summary so Plate Cost can
           // pre-fill its ingredient grid; Menu Engineering surfaces a
           // rolling food-cost % suggestion; Margin Math reads the
@@ -1390,21 +2022,92 @@
     });
   }
 
+  // Wave 2.4 — bulk-confirm with live count + 5s wide undo.
+  // The button label always shows the live count of un-confirmed
+  // non-red rows. Click captures a snapshot, applies the bulk move,
+  // then surfaces a wide banner with a 5-second countdown bar; the
+  // operator can revert in one tap.
+  function refreshBulkCount() {
+    var lbl = document.getElementById('idBulkCount');
+    if (!lbl) return;
+    var cnt = 0;
+    parsedRowsState.forEach(function (r) {
+      if (r.ignored) return;
+      var band = confBand(r.confidence);
+      if (band !== 'red' && !r.ownerConfirmed) cnt++;
+    });
+    lbl.textContent = cnt;
+    var btn = document.getElementById('idBulkConfirm');
+    if (btn) {
+      btn.disabled = cnt === 0;
+      btn.setAttribute('aria-label', tt('Confirm ' + cnt + ' remaining rows as-is', 'Confirmar ' + cnt + ' renglones restantes tal cual'));
+    }
+  }
+  // Hook into the existing rerenderRows call sequence by patching
+  // updateFilterChipCounts (always called from rerenderRows).
+  var __origUpdateChipCounts = updateFilterChipCounts;
+  updateFilterChipCounts = function () {
+    __origUpdateChipCounts();
+    refreshBulkCount();
+  };
+
+  function showBulkUndo(message, undoFn) {
+    var host = document.getElementById('idBulkUndo');
+    var msg = document.getElementById('idBulkUndoMsg');
+    var btn = document.getElementById('idBulkUndoBtn');
+    var fill = document.getElementById('idBulkUndoFill');
+    if (!host || !msg || !btn || !fill) return;
+    if (host.__timer) clearTimeout(host.__timer);
+    host.hidden = false;
+    msg.textContent = message;
+    fill.style.transition = 'none';
+    fill.style.width = '100%';
+    // Force reflow then animate the fill.
+    void fill.offsetWidth;
+    fill.style.transition = 'width 5000ms linear';
+    fill.style.width = '0%';
+    var newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.textContent = tt('Undo', 'Deshacer');
+    newBtn.addEventListener('click', function () {
+      try { undoFn(); } catch (_) {}
+      host.hidden = true;
+    });
+    host.__timer = setTimeout(function () { host.hidden = true; }, 5000);
+  }
+
   if (bulkConfirm) {
     bulkConfirm.addEventListener('click', function () {
-      // Mark every amber row as confirmed at full confidence.
-      // Red rows are intentionally NOT batched — they need
-      // individual review (likely OCR misreads or ambiguous
-      // categories). The owner can still tap-edit each one.
+      // Snapshot every row's prior state for one-shot undo.
+      var snapshot = parsedRowsState.map(function (r) {
+        return { confidence: r.confidence, ownerConfirmed: !!r.ownerConfirmed };
+      });
+      // Confirm every non-red, un-confirmed row. Red rows are
+      // intentionally NOT batched — they need individual review.
       var moved = 0;
       parsedRowsState.forEach(function (r) {
-        if (confBand(r.confidence) === 'amber') {
-          r.confidence = 100;
-          r.ownerConfirmed = true;
-          moved++;
-        }
+        if (r.ignored) return;
+        if (confBand(r.confidence) === 'red') return;
+        if (r.ownerConfirmed) return;
+        r.confidence = 100;
+        r.ownerConfirmed = true;
+        moved++;
       });
       rerenderRows();
+      if (moved > 0) {
+        showBulkUndo(
+          tt('Confirmed ' + moved + ' rows. ', 'Confirmados ' + moved + ' renglones. '),
+          function () {
+            parsedRowsState.forEach(function (r, i) {
+              if (snapshot[i]) {
+                r.confidence = snapshot[i].confidence;
+                r.ownerConfirmed = snapshot[i].ownerConfirmed;
+              }
+            });
+            rerenderRows();
+          }
+        );
+      }
       if (window.plausible && moved > 0) {
         window.plausible('Invoice Decoder Bulk Confirm', { props: {
           count_bucket: moved < 5 ? '<5' : moved < 15 ? '5-14' : '15+'
@@ -1412,6 +2115,74 @@
       }
     });
   }
+
+  // Wave 1.1 — contract-set button delegated handler.
+  if (parsedList) {
+    parsedList.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.id-row-history-contract');
+      if (!btn) return;
+      var idx = parseInt(btn.getAttribute('data-idx'), 10);
+      if (!isFinite(idx)) return;
+      var row = parsedRowsState[idx];
+      if (!row) return;
+      var defaultPrice = (typeof row.unitPrice === 'number')
+        ? row.unitPrice
+        : (row.lineTotal && row.qty ? row.lineTotal / row.qty : 0);
+      var promptStr = tt(
+        'Set your contract price for "' + row.name + '" (per unit)',
+        'Fija el precio de contrato para "' + row.name + '" (por unidad)'
+      );
+      var typed = window.prompt(promptStr, defaultPrice ? defaultPrice.toFixed(4) : '');
+      if (typed == null) return;
+      var v = parseFloat(typed);
+      if (!isFinite(v) || v <= 0) return;
+      try {
+        if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.setContract) {
+          MID_SKU_HISTORY.setContract(row.name, v, { vendor: row.vendorDetected || null, unit: row.unit });
+        }
+        rerenderRows();
+        if (window.plausible) {
+          try { window.plausible('Invoice Decoder Contract Set'); } catch (_) {}
+        }
+      } catch (_) {}
+    });
+  }
+
+  // Wave 4.6 — accountant CSV export drawer wiring. The five buttons
+  // live in the post-save handoff panel; clicking generates and
+  // downloads the matching format entirely client-side.
+  function buildAccountantInvoice() {
+    var totalsByCategory = {};
+    parsedRowsState.forEach(function (r) {
+      if (r.ignored || !r.category || r.lineTotal == null) return;
+      totalsByCategory[r.category] = +(((totalsByCategory[r.category] || 0) + r.lineTotal).toFixed(2));
+    });
+    return {
+      vendor:           (lastReadParsed && lastReadParsed.vendor) || null,
+      savedAt:          Date.now(),
+      totalsByCategory: totalsByCategory,
+      parsedSum:        parsedRowsState.reduce(function (a, r) { return a + (r.lineTotal || 0); }, 0),
+      rows:             parsedRowsState.filter(function (r) { return !r.ignored; })
+    };
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.id-export-btn');
+    if (!btn) return;
+    var fmt = btn.getAttribute('data-fmt');
+    if (!fmt || typeof MID_ACCOUNTANT === 'undefined') return;
+    e.preventDefault();
+    try {
+      var inv = buildAccountantInvoice();
+      var artifact = MID_ACCOUNTANT.exportInvoice(fmt, inv, {});
+      MID_ACCOUNTANT.download(artifact);
+      if (window.plausible) {
+        try { window.plausible('Invoice Decoder Accountant Export', { props: { format: fmt } }); } catch (_) {}
+      }
+    } catch (err) {
+      alert(tt('Export failed: ' + (err && err.message ? err.message : 'unknown error'),
+               'Falló la exportación: ' + (err && err.message ? err.message : 'error desconocido')));
+    }
+  });
 
 
   if (photoInput) photoInput.addEventListener('change', function (e) {
@@ -1500,6 +2271,8 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
       setProgress(95);
@@ -1591,6 +2364,8 @@
           r.category = c.category;
           r.categoryConfidence = c.confidence;
           r.categoryTier = c.tier;
+          r.categorySource = c.source || null;
+          r.tags = c.tags || [];
         });
       }
       setProgress(95);

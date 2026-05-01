@@ -174,6 +174,7 @@
           '<label class="midpass-label" for="midpass-input">' + tt('Your secret', 'Tu secreto') + '</label>' +
           '<input id="midpass-input" class="midpass-input" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" />' +
           '<button type="button" class="midpass-reveal" data-act="reveal" aria-pressed="false">' + tt('show', 'ver') + '</button>' +
+          (mode === 'create' ? '<button type="button" class="midpass-generate" id="midpass-generate" aria-label="' + tt('Generate a memorable passphrase', 'Generar una contraseña memorable') + '">' + tt('Suggest one', 'Sugerir una') + '</button>' : '') +
           (mode === 'create' ? '<div class="midpass-meter" data-score="0"><span></span><span></span><span></span><span></span></div>' +
                                '<p class="midpass-meter-label" id="midpass-meter-label">' + tt('strength: empty', 'fuerza: vacío') + '</p>' : '') +
         '</div>' +
@@ -263,6 +264,30 @@
       input.addEventListener('input', update);
       if (confirm) confirm.addEventListener('input', update);
       submit.addEventListener('click', attemptSubmit);
+      // Wave 5.4 — passphrase generator: 4 random words + a number
+      // suffix from a 64-word EN+ES list. Operator can keep it,
+      // tweak it, or generate again. Words are intentionally simple
+      // so the operator can rehearse them out loud.
+      var GEN_WORDS_EN = ['apple','river','quiet','tiger','garden','copper','meadow','silver','candle','lantern','harbor','willow','marble','pepper','cobalt','feather','autumn','velvet','nebula','sapphire','octopus','citrus','cinnamon','marigold','penguin','lighthouse','pumpkin','blueberry','timber','clover','salmon','almond','cobra','bramble','ginger','beacon','thunder','ember','frost','breeze','horizon','glacier','mosaic','peridot','tangerine','obsidian','tundra','quartz','blossom','radiance','chestnut','dahlia','jasmine','rosewood','seafoam','ironwood','sandstone','dewdrop','ironclad','lotus','prism','solstice','equinox','vesper'];
+      var GEN_WORDS_ES = ['manzana','rio','silencio','tigre','jardin','cobre','prado','plata','vela','farol','bahia','sauce','marmol','pimienta','cobalto','pluma','otono','terciopelo','nebula','zafiro','pulpo','citrus','canela','cempasuchil','pinguino','faro','calabaza','arandano','viga','trebol','salmon','almendra','cobra','zarza','jengibre','baliza','trueno','ascua','escarcha','brisa','horizonte','glaciar','mosaico','peridoto','mandarina','obsidiana','tundra','cuarzo','flor','radiancia','castano','dalia','jazmin','palorrosa','espuma','hierro','arenisca','rocio','blindado','loto','prisma','solsticio','equinoccio','vespertino'];
+      var generate = document.getElementById('midpass-generate');
+      if (generate) {
+        generate.addEventListener('click', function () {
+          var words = (locale() === 'es') ? GEN_WORDS_ES : GEN_WORDS_EN;
+          var pick = [];
+          for (var i = 0; i < 4; i++) pick.push(words[Math.floor(Math.random() * words.length)]);
+          var phrase = pick.join('-') + (Math.floor(Math.random() * 90) + 10);
+          input.value = phrase;
+          if (confirm) confirm.value = phrase;
+          input.type = 'text';
+          if (confirm) confirm.type = 'text';
+          reveal.setAttribute('aria-pressed', 'true');
+          reveal.textContent = tt('hide', 'ocultar');
+          update();
+          input.focus();
+          input.select();
+        });
+      }
       cancel.addEventListener('click', function () { cleanup(null); });
       back.addEventListener('click', function (e) { if (e.target === back) cleanup(null); });
       reveal.addEventListener('click', function () {

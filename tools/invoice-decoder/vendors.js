@@ -194,7 +194,305 @@
     ]
   };
 
-  var REGISTRY = [SYSCO, US_FOODS, GFS, REST_DEPOT, SHAMROCK, SYGMA, PFG];
+  // ===================================================================
+  // Wave 4.2 — additional priority vendors
+  // ===================================================================
+
+  // Cheney Brothers — FL/GA/SC/AL/TN/NC dominant broadliner. The "Sysco
+  // of the Southeast" for indie restaurants — biggest single coverage
+  // gap before this addition.
+  var CHENEY = {
+    id: 'cheney-brothers',
+    label_en: 'Cheney Brothers',
+    label_es: 'Cheney Brothers',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bcheney\s+brothers\b/.test(top)) score += 0.6;
+      if (/\bcbi\s+invoice\b/.test(top)) score += 0.3;
+      if (/\bcheney\b/.test(top)) score += 0.3;
+      if (/riviera\s+beach|ocala|punta\s+gorda|north\s+carolina/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: CHENEY.label_en };
+    },
+    confidenceBoost: 11,
+    headerLines: [/^cbi\s+item/i, /^pack\s+brand\s+description/i]
+  };
+
+  // Ben E. Keith Foods — TX/OK/AR/NM/LA/MS broadliner; covers most
+  // TexMex independents and BBQ shops Sysco doesn't lock up.
+  var BEN_E_KEITH = {
+    id: 'ben-e-keith',
+    label_en: 'Ben E. Keith Foods',
+    label_es: 'Ben E. Keith Foods',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/ben\s*e\.?\s*keith/.test(top)) score += 0.6;
+      if (/\bbek\s+invoice\b/.test(top)) score += 0.3;
+      if (/dallas|fort\s+worth|houston|san\s+antonio|amarillo|albuquerque/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: BEN_E_KEITH.label_en };
+    },
+    confidenceBoost: 11
+  };
+
+  // Imperial Dade — paper / chemical / disposables across NE+FL+CA
+  // after rolling up >70 regionals. Almost every restaurant orders
+  // weekly. Distinct because everything is paper/cleaning category.
+  var IMPERIAL_DADE = {
+    id: 'imperial-dade',
+    label_en: 'Imperial Dade',
+    label_es: 'Imperial Dade',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/imperial\s+dade/.test(top)) score += 0.6;
+      if (/\bimp\s+dade\b/.test(top)) score += 0.3;
+      // Their invoices are almost always paper/cleaning — strong signal.
+      if (/janitorial|disposables|packaging|food\s*service\s+supplies/.test(top)) score += 0.1;
+      return { score: Math.min(1, score), label: IMPERIAL_DADE.label_en };
+    },
+    confidenceBoost: 9,
+    // Hint to the categorizer: bias toward paper/cleaning when this
+    // vendor matches; consumed by Wave 4.2 categorization pipeline.
+    categoryBias: { paper: 1.2, cleaning: 1.2 }
+  };
+
+  // KeHE Distributors — natural / specialty grocery; feeds plant-
+  // forward, gluten-free, and Whole-Foods-style cafés.
+  var KEHE = {
+    id: 'kehe',
+    label_en: 'KeHE Distributors',
+    label_es: 'KeHE Distributors',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bkehe\b/.test(top)) score += 0.6;
+      if (/kehe\s+distributors|kehe\s+specialty/.test(top)) score += 0.2;
+      if (/natural\s+foods|specialty\s+foods|organic\s+grocery/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: KEHE.label_en };
+    },
+    confidenceBoost: 9
+  };
+
+  // UNFI (United Natural Foods) — same niche as KeHE plus organic
+  // produce. Together they cover ~80% of independent natural cafés.
+  var UNFI = {
+    id: 'unfi',
+    label_en: 'UNFI',
+    label_es: 'UNFI',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bunfi\b/.test(top)) score += 0.6;
+      if (/united\s+natural\s+foods/.test(top)) score += 0.4;
+      if (/super\s*valu|supervalu/.test(top)) score += 0.1;
+      return { score: Math.min(1, score), label: UNFI.label_en };
+    },
+    confidenceBoost: 9
+  };
+
+  // Baldor Specialty Foods — NYC/Boston/DC/Philly/Miami specialty
+  // produce + protein. THE vendor for fine-dining and farm-to-table.
+  var BALDOR = {
+    id: 'baldor',
+    label_en: 'Baldor Specialty Foods',
+    label_es: 'Baldor Specialty Foods',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bbaldor\b/.test(top)) score += 0.6;
+      if (/baldor\s+specialty/.test(top)) score += 0.3;
+      if (/bronx|the\s+bronx|ny|new\s+york/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: BALDOR.label_en };
+    },
+    confidenceBoost: 11,
+    categoryBias: { produce: 1.15, seafood: 1.1, protein: 1.1 }
+  };
+
+  // FreshPoint — Sysco produce subsidiary with distinct invoice
+  // format despite Sysco ownership.
+  var FRESHPOINT = {
+    id: 'freshpoint',
+    label_en: 'FreshPoint',
+    label_es: 'FreshPoint',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bfreshpoint\b/.test(top)) score += 0.6;
+      if (/fresh\s+point/.test(top)) score += 0.4;
+      if (/produce\s+invoice|produce\s+order/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: FRESHPOINT.label_en };
+    },
+    confidenceBoost: 12,
+    categoryBias: { produce: 1.25 }
+  };
+
+  // Maines Paper & Food — Northeast broadliner; indie pizza/diner core.
+  var MAINES = {
+    id: 'maines',
+    label_en: 'Maines Paper & Food',
+    label_es: 'Maines Paper & Food',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bmaines\b/.test(top)) score += 0.55;
+      if (/maines\s+paper\s+(and|&)\s+food/.test(top)) score += 0.3;
+      if (/conklin|broome\s+county/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: MAINES.label_en };
+    },
+    confidenceBoost: 10
+  };
+
+  // H Mart Wholesale + Asian wholesalers — frequently bilingual EN/KO/ZH.
+  var ASIAN_WHOLESALE = {
+    id: 'asian-wholesale',
+    label_en: 'Asian wholesale (H Mart / 99 Ranch / Restaurant Depot Asia)',
+    label_es: 'Mayorista asiático',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bh\s*mart\b|hmart/.test(top)) score += 0.6;
+      if (/99\s*ranch/.test(top)) score += 0.6;
+      if (/restaurant\s+depot\s+asia|rd\s+asia/.test(top)) score += 0.5;
+      if (/asian\s+wholesale|korean\s+market|chinese\s+market/.test(top)) score += 0.2;
+      return { score: Math.min(1, score), label: ASIAN_WHOLESALE.label_en };
+    },
+    confidenceBoost: 8
+  };
+
+  // Mexican wholesalers — TX/AZ/CA Mexican-cuisine indies; bilingual.
+  var MEXICAN_WHOLESALE = {
+    id: 'mexican-wholesale',
+    label_en: 'Mexican wholesaler',
+    label_es: 'Mayorista mexicano',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/la\s+michoacana\s+meat/.test(top)) score += 0.55;
+      if (/northgate\s+market\s+foodservice|northgate\s+gonzalez/.test(top)) score += 0.5;
+      if (/mariscos\s+linares/.test(top)) score += 0.5;
+      if (/carniceria\s+|carnicería\s+/.test(top)) score += 0.2;
+      if (/abarrotes\s+y\s+mas|abarrotes\s+y\s+más/.test(top)) score += 0.2;
+      if (/proveedor\s+mexicano|distribuidor\s+latino/.test(top)) score += 0.2;
+      return { score: Math.min(1, score), label: MEXICAN_WHOLESALE.label_en };
+    },
+    confidenceBoost: 8
+  };
+
+  // Wave 4.2 (final batch) — receipt/thermal + specialty vendors.
+
+  // Costco Business Center — thermal-receipt format. Detect the
+  // characteristic store header + tax-line shape.
+  var COSTCO_BC = {
+    id: 'costco-business',
+    label_en: 'Costco Business Center',
+    label_es: 'Costco Business Center',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/costco\s+business\s+center/.test(top)) score += 0.6;
+      if (/\bcostco\s+wholesale\b/.test(top))     score += 0.4;
+      if (/business\s+member|gold\s+star\s+business/.test(top)) score += 0.15;
+      if (/\bsubtotal\b[\s\S]{0,80}\btax\b/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: COSTCO_BC.label_en };
+    },
+    confidenceBoost: 8,
+    format: 'thermal'
+  };
+
+  // WebstaurantStore — equipment + smallwares + paper goods. PDF
+  // invoice with consistent layout.
+  var WEBSTAURANT = {
+    id: 'webstaurantstore',
+    label_en: 'WebstaurantStore',
+    label_es: 'WebstaurantStore',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/webstaurant\s*store/.test(top)) score += 0.6;
+      if (/\bwebstaurant\b/.test(top))     score += 0.4;
+      if (/clark\s+associates/.test(top))  score += 0.15;
+      if (/order\s+confirmation\s+#/.test(top)) score += 0.05;
+      return { score: Math.min(1, score), label: WEBSTAURANT.label_en };
+    },
+    confidenceBoost: 9,
+    categoryBias: { paper: 1.1, cleaning: 1.05 }
+  };
+
+  // Veritiv — paper / packaging across PNW + Midwest where Imperial
+  // Dade isn't dominant.
+  var VERITIV = {
+    id: 'veritiv',
+    label_en: 'Veritiv',
+    label_es: 'Veritiv',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bveritiv\b/.test(top))         score += 0.6;
+      if (/veritiv\s+corporation/.test(top)) score += 0.3;
+      if (/packaging\s+&?\s*facility/.test(top)) score += 0.15;
+      return { score: Math.min(1, score), label: VERITIV.label_en };
+    },
+    confidenceBoost: 9,
+    categoryBias: { paper: 1.2, cleaning: 1.1 }
+  };
+
+  // Dairy / DSD route trucks — Hiland, Borden DSD, Producers, Crystal,
+  // Dean. Receipt-style narrow column layouts; treat as a single
+  // shape since the per-brand differences are small.
+  var DAIRY_DSD = {
+    id: 'dairy-dsd',
+    label_en: 'Dairy / DSD route delivery',
+    label_es: 'Lácteos / entrega ruta DSD',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/hiland\s+dairy/.test(top))       score += 0.55;
+      if (/borden\s+dairy|dean\s+foods/.test(top)) score += 0.5;
+      if (/producers\s+dairy/.test(top))    score += 0.5;
+      if (/crystal\s+creamery/.test(top))   score += 0.5;
+      if (/route\s+\d+|driver\s+\d+/.test(top)) score += 0.1;
+      if (/route\s+invoice|dsd\s+invoice/.test(top)) score += 0.15;
+      return { score: Math.min(1, score), label: DAIRY_DSD.label_en };
+    },
+    confidenceBoost: 9,
+    format: 'thermal',
+    categoryBias: { dairy: 1.3 }
+  };
+
+  // Beer / wine distributors. Different invoice grammar (case + bottle
+  // counts, alcohol-tax line items). High value for any bar program.
+  var BEER_WINE_DIST = {
+    id: 'beer-wine-distributor',
+    label_en: 'Beer / wine distributor',
+    label_es: 'Distribuidor de cerveza / vino',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/republic\s+national\s+distributing/.test(top)) score += 0.55;
+      if (/\brndc\b/.test(top))                            score += 0.3;
+      if (/southern\s+glazer/.test(top))                   score += 0.55;
+      if (/reyes\s+beverage/.test(top))                    score += 0.55;
+      if (/breakthru\s+beverage/.test(top))                score += 0.55;
+      if (/empire\s+merchants/.test(top))                  score += 0.55;
+      if (/ben\s+arnold|wirtz\s+beverage/.test(top))       score += 0.45;
+      if (/\balcohol\s+tax|excise\s+tax|state\s+liquor\s+tax\b/.test(top)) score += 0.15;
+      if (/case\s+price|bottle\s+price|keg\s+price/.test(top)) score += 0.1;
+      return { score: Math.min(1, score), label: BEER_WINE_DIST.label_en };
+    },
+    confidenceBoost: 10,
+    alcoholTax: true,
+    categoryBias: { beverage: 1.4 }
+  };
+
+  var REGISTRY = [
+    SYSCO, US_FOODS, GFS, REST_DEPOT, SHAMROCK, SYGMA, PFG,
+    // Wave 4.2 additions
+    CHENEY, BEN_E_KEITH, IMPERIAL_DADE, KEHE, UNFI, BALDOR,
+    FRESHPOINT, MAINES, ASIAN_WHOLESALE, MEXICAN_WHOLESALE,
+    // Wave 4.2 final batch
+    COSTCO_BC, WEBSTAURANT, VERITIV, DAIRY_DSD, BEER_WINE_DIST
+  ];
 
   // detectVendor returns highest-scoring vendor with score >=
   // threshold (0.5), or null when none match. Caller falls

@@ -147,17 +147,339 @@
   LEXICON.cleaning.push(
     { en: ['peroxide', 'hydrogen peroxide', 'oxiclean', 'ammonia', 'hood degreaser', 'drain cleaner', 'lime remover', 'scale remover'], es: ['peróxido', 'oxiclean', 'amoniaco', 'desengrasante de campana', 'destapacaños'] },
     { en: ['urinal block', 'urinal cake', 'carpet shampoo', 'enzyme cleaner', 'grill cleaner', 'salamander cleaner'], es: ['pastilla para urinal', 'shampoo para alfombra', 'limpiador enzimático'] },
-    { en: ['ajax', 'fabuloso', 'pinesol', 'pine sol', 'mr clean', 'mr. clean', 'comet', 'lysol'], es: ['ajax', 'fabuloso', 'pinesol', 'comet', 'lysol'] }
+    { en: ['ajax', 'fabuloso', 'pinesol', 'pine sol', 'mr clean', 'mr. clean', 'comet', 'lysol'], es: ['ajax', 'fabuloso', 'pinesol', 'comet', 'lysol'] },
+    // Wave 4.4 — restaurant-grade specialty chemicals
+    { en: ['ecolab', 'diversey', 'p&g pro', 'p and g pro', 'dawn pro', 'simple green', 'spartan', '3m brand'], es: ['ecolab', 'diversey', 'p&g pro', 'simple green', 'spartan'] }
   );
 
+  // ===================================================================
+  // Wave 4.4 — Lexicon expansion across cuisines beyond US-default.
+  //
+  // 200+ entries spanning Asian aromatics, Mexican/Latin specialty,
+  // Middle Eastern + Mediterranean, Indian + South Asian, Halal/Kosher
+  // specifics, distributor SKU stems, beverage gaps, paper/cleaning
+  // brand names, and modern packaging stems. Bilingual where the term
+  // crosses languages; ES-only when truly culture-specific.
+  // ===================================================================
+
+  // Asian aromatics + pantry — pho/banh-mi, Korean, Japanese, Thai,
+  // Chinese, Filipino kitchens.
+  LEXICON.produce.push(
+    { en: ['lemongrass', 'galangal', 'kaffir lime leaf', 'makrut lime leaf', 'thai basil', 'holy basil', 'shiso', 'perilla', 'curry leaf'], es: ['hierba limón', 'galanga', 'hoja de lima kaffir', 'albahaca tailandesa'] },
+    { en: ['daikon', 'napa cabbage', 'napa', 'bok choy', 'gai lan', 'choy sum', 'yu choy', 'mizuna', 'tatsoi'], es: ['daikon', 'col napa', 'bok choy', 'gai lan'] },
+    { en: ['nopal', 'nopales', 'tomatillo', 'tomatillos', 'jicama', 'plantain', 'plantano', 'plátano macho', 'chayote'], es: ['nopal', 'nopales', 'tomatillo', 'jícama', 'plátano macho', 'chayote'] },
+    { en: ['hoja santa', 'epazote', 'huacatay', 'culantro', 'recao'], es: ['hoja santa', 'epazote', 'huacatay', 'culantro'] }
+  );
+  LEXICON['herbs-spices'].push(
+    { en: ['gochugaru', 'gochujang', 'doubanjiang', 'sichuan peppercorn', 'szechuan peppercorn', 'five spice', '5 spice', 'star anise', 'lemongrass paste'], es: ['gochugaru', 'gochujang', 'doubanjiang', 'pimienta de sichuan', 'cinco especias', 'anís estrella'] },
+    { en: ['baharat', 'dukkah', 'ras el hanout', 'sumac', 'za atar', 'zaatar', "za'atar", 'aleppo pepper', 'urfa biber', 'maras pepper'], es: ['baharat', 'dukkah', 'ras el hanout', 'zumaque', 'zaatar'] },
+    { en: ['garam masala', 'tikka masala', 'tandoori masala', 'panch phoron', 'kasuri methi', 'curry powder', 'amchur', 'asafoetida', 'hing'], es: ['garam masala', 'masala', 'curry en polvo', 'asafétida'] },
+    { en: ['chile de arbol', 'chile de árbol', 'chile morita', 'chile mulato', 'cascabel', 'piquin', 'piquín', 'chiltepin', 'chamoy', 'tajin', 'tajín'], es: ['chile de árbol', 'morita', 'mulato', 'cascabel', 'piquín', 'chiltepín', 'chamoy', 'tajín'] },
+    { en: ['everything bagel seasoning', 'lemon pepper', 'cajun seasoning', 'creole seasoning', 'old bay', 'lawrys', "lawry's", 'adobo', 'sazon', 'sazón'], es: ['adobo', 'sazón', 'condimento cajún'] }
+  );
+  LEXICON['dry-goods'].push(
+    // Asian pantry
+    { en: ['miso', 'red miso', 'white miso', 'shiro miso', 'aka miso', 'awase miso', 'mirin', 'sake cooking', 'cooking sake'], es: ['miso', 'mirin', 'sake para cocinar'] },
+    { en: ['dashi', 'kombu', 'nori', 'wakame', 'hijiki', 'bonito', 'katsuobushi', 'ajitsuke', 'furikake'], es: ['dashi', 'kombu', 'nori', 'wakame', 'bonito'] },
+    { en: ['hoisin', 'hoisin sauce', 'oyster sauce', 'fish sauce', 'nuoc mam', 'nuoc cham', 'tamari', 'shoyu', 'kecap manis', 'sweet soy', 'ponzu', 'yuzu', 'yuzu kosho'], es: ['salsa hoisin', 'salsa de ostión', 'salsa de pescado', 'tamari'] },
+    { en: ['chili oil', 'chile oil', 'chili crisp', 'lao gan ma', 'sesame paste', 'tahini', 'doubanjiang', 'gochujang', 'sambal oelek', 'sambal'], es: ['aceite de chile', 'tahini', 'sambal'] },
+    { en: ['shaoxing wine', 'rice wine', 'rice vinegar', 'black vinegar', 'chinkiang', 'mushroom soy', 'dark soy', 'light soy'], es: ['vino de arroz', 'vinagre de arroz'] },
+    { en: ['tapioca', 'tapioca starch', 'tapioca pearl', 'boba', 'sago', 'rice noodle', 'rice noodles', 'banh pho', 'pad thai noodle', 'udon', 'soba', 'somen', 'ramen noodle', 'mein', 'lo mein', 'chow mein', 'cellophane noodle', 'glass noodle', 'mung bean noodle'], es: ['tapioca', 'fideo de arroz', 'fideo'] },
+    // Mexican/Latin pantry
+    { en: ['masa', 'masa harina', 'maseca', 'nixtamal', 'achiote', 'achiote paste', 'recado', 'recado rojo', 'mole', 'mole poblano', 'mole negro', 'mole verde'], es: ['masa', 'masa harina', 'maseca', 'nixtamal', 'achiote', 'recado', 'mole', 'mole poblano'] },
+    { en: ['adobo sauce', 'salsa verde', 'salsa roja', 'pico de gallo', 'mole sauce', 'enchilada sauce'], es: ['salsa verde', 'salsa roja', 'pico de gallo', 'salsa enchilada'] },
+    { en: ['queso fundido base', 'crema de cacahuate', 'leche evaporada', 'leche condensada', 'condensed milk', 'evaporated milk'], es: ['leche evaporada', 'leche condensada'] },
+    // Middle Eastern / Mediterranean
+    { en: ['preserved lemon', 'pomegranate molasses', 'rose water', 'orange blossom water', 'tamarind', 'tamarind paste', 'tamarind concentrate'], es: ['limón en conserva', 'melaza de granada', 'agua de rosas', 'tamarindo'] },
+    { en: ['freekeh', 'bulgur', 'couscous', 'pearl couscous', 'mograbieh', 'fregola', 'kataifi', 'phyllo', 'filo', 'halva'], es: ['freekeh', 'bulgur', 'cuscús'] },
+    { en: ['harissa', 'chermoula', 'amba'], es: ['harissa'] },
+    // Indian / South Asian
+    { en: ['paneer', 'ghee', 'urad dal', 'toor dal', 'chana dal', 'moong dal', 'moong bean', 'mung bean', 'besan', 'gram flour', 'atta', 'chapati flour', 'naan', 'pappadam', 'papadam', 'idli rice'], es: ['paneer', 'ghee', 'lenteja urad', 'lenteja toor', 'frijol mungo', 'harina de garbanzo'] }
+  );
+  LEXICON.protein.push(
+    { en: ['halal chicken', 'halal beef', 'halal lamb', 'zabiha', 'zabihah'], es: ['pollo halal', 'res halal', 'cordero halal'] },
+    { en: ['kosher chicken', 'kosher beef', 'glatt', 'glatt kosher'], es: ['pollo kosher', 'res kosher'] },
+    { en: ['cab beef', 'certified angus', 'usda prime', 'usda choice', 'usda select', 'wagyu', 'wagyu beef', 'a5 wagyu', 'kobe', 'iberico', 'jamon iberico', 'jamón ibérico', 'serrano ham', 'jamon serrano', 'jamón serrano', 'mortadella', 'salami', 'soppressata', 'capicola', 'coppa'], es: ['wagyu', 'jamón ibérico', 'jamón serrano', 'mortadela', 'salami'] },
+    { en: ['oxtail', 'beef cheek', 'short rib bone-in', 'flat iron', 'tri tip', 'tri-tip', 'denver steak', 'culotte', 'picanha', 'bavette', 'machaca', 'chorizo verde'], es: ['rabo de res', 'cachete de res', 'arrachera', 'picaña', 'machaca', 'chorizo verde'] },
+    { en: ['pork tenderloin', 'pork shoulder boston butt', 'boston butt', 'pork ribs', 'baby back rib', 'st louis rib', 'spare rib', 'pork jowl', 'cheek meat'], es: ['lomo de cerdo', 'paleta de cerdo', 'costilla de cerdo'] }
+  );
+  LEXICON.seafood.push(
+    { en: ['sushi grade', 'sushi-grade', 'sashimi grade', 'sashimi-grade', 'no 1 tuna', '#1 tuna', 'otoro', 'chutoro', 'hamachi', 'yellowtail', 'kanpachi', 'masago', 'tobiko', 'ikura', 'uni', 'sea urchin'], es: ['atún sushi', 'hamachi', 'cola amarilla', 'erizo de mar'] },
+    { en: ['monkfish', 'rockfish', 'pollock', 'mackerel', 'sardine', 'anchovy', 'anchovies', 'octopus tentacle', 'eel', 'unagi', 'conch', 'abalone', 'sea cucumber', 'jellyfish', 'fish cake'], es: ['rape', 'corvina', 'caballa', 'sardina', 'anchoa', 'pulpo', 'anguila', 'caracol'] },
+    { en: ['imitation crab', 'surimi', 'fish roe', 'salmon roe', 'caviar', 'fish stock'], es: ['surimi', 'caviar'] }
+  );
+  LEXICON.dairy.push(
+    { en: ['oat milk', 'soy milk', 'almond milk', 'coconut milk drink', 'macadamia milk', 'cashew milk', 'lactose free milk', 'lactose-free', 'a2 milk', 'kefir', 'labneh', 'halloumi', 'paneer', 'queso oaxaca', 'queso panela', 'queso chihuahua', 'queso asadero', 'cotija', 'requesón', 'queso de cabra', 'crema mexicana', 'crema centroamericana'], es: ['leche de avena', 'leche de soya', 'leche de almendra', 'leche de coco', 'leche sin lactosa', 'kéfir', 'queso oaxaca', 'queso panela', 'queso chihuahua', 'queso asadero', 'requesón', 'queso de cabra', 'crema mexicana'] },
+    { en: ['burrata', 'stracciatella', 'taleggio', 'gouda', 'gruyere', 'gruyère', 'comte', 'comté', 'fontina', 'manchego', 'idiazabal', 'mahon', 'mahón', 'asiago', 'havarti', 'munster', 'edam', 'emmental'], es: ['burrata', 'gouda', 'manchego'] }
+  );
+  LEXICON.beverage.push(
+    // Wave 4.4 — modern non-alcoholic + craft beverage
+    { en: ['cold brew', 'cold brew concentrate', 'nitro coffee', 'nitro keg', 'cold press juice', 'kombucha', 'switchel', 'shrub', 'horchata', 'agua fresca', 'hibiscus tea', 'jamaica', 'tamarind drink', 'tamarindo'], es: ['cold brew', 'café frío', 'horchata', 'agua fresca', 'jamaica', 'tamarindo'] },
+    { en: ['rtd cocktail', 'ready to drink cocktail', 'canned cocktail', 'high noon', 'on the rocks', 'cutwater'], es: ['coctel enlatado', 'coctel ready to drink'] },
+    { en: ['amaro', 'aperol', 'campari', 'fernet', 'chartreuse', 'st germain', 'st-germain', 'cointreau', 'grand marnier', 'angostura', 'orange bitters', 'peychaud', 'falernum', 'orgeat', 'vermouth', 'dry vermouth', 'sweet vermouth'], es: ['vermut', 'angostura'] },
+    { en: ['mead', 'cider', 'hard cider', 'sake brewing', 'soju', 'baijiu', 'shochu', 'ouzo', 'pastis', 'absinthe', 'arak', 'raki', 'jenever', 'aquavit'], es: ['sidra', 'sake', 'soju'] }
+  );
+  LEXICON.paper.push(
+    // Wave 4.4 — takeout + delivery operations
+    { en: ['parchment sheet', 'parchment quarter sheet', 'parchment half sheet', 'pan grate liner', 'sheet pan liner', 'butcher twine', 'pizza box 16in', 'pizza box 14in', 'pizza box 12in', 'pizza saver', 'pizza saver tripod'], es: ['papel pergamino', 'forro de charola'] },
+    { en: ['portion bag', 'vacuum bag', 'cryovac', 'cryovac bag', 'sous vide bag', 'shopper bag', 'thank you bag', 'thank-you bag', 't-shirt bag', 'tshirt bag', 'kraft bag'], es: ['bolsa al vacío', 'bolsa kraft'] },
+    { en: ['catering tray', 'half pan tray', 'full pan tray', 'aluminum pan', 'aluminum lid', 'foil lid', 'steam table pan'], es: ['charola para catering', 'charola de aluminio'] }
+  );
+
+  // ===================================================================
+  // Wave 4.4 — Brand index (single name → category mapping).
+  //
+  // Brand-name SKUs win as Tier-1 with high confidence because the brand
+  // disambiguates the category (Stella Artois → beverage:alcoholic;
+  // Lay's → would be a snack but rare on restaurant invoices). 150
+  // entries cover the most-common SKUs hitting independent restaurants.
+  // ===================================================================
+  var BRAND_INDEX = {
+    // Beverage
+    'stella artois': 'beverage', 'stella': 'beverage', 'budweiser': 'beverage', 'bud light': 'beverage',
+    'miller lite': 'beverage', 'coors light': 'beverage', 'coors banquet': 'beverage',
+    'modelo': 'beverage', 'modelo especial': 'beverage', 'modelo negra': 'beverage',
+    'corona': 'beverage', 'corona extra': 'beverage', 'corona light': 'beverage',
+    'heineken': 'beverage', 'guinness': 'beverage', 'pacifico': 'beverage', 'tecate': 'beverage',
+    'dos equis': 'beverage', 'xx amber': 'beverage', 'xx lager': 'beverage', 'sol cerveza': 'beverage',
+    'white claw': 'beverage', 'truly': 'beverage', 'high noon': 'beverage',
+    'rockstar': 'beverage', 'monster': 'beverage', 'monster energy': 'beverage', 'red bull': 'beverage', 'redbull': 'beverage',
+    'celsius': 'beverage', 'bang energy': 'beverage', 'reign': 'beverage', 'ghost energy': 'beverage',
+    'gatorade': 'beverage', 'powerade': 'beverage', 'snapple': 'beverage', 'arizona tea': 'beverage', 'arizona': 'beverage',
+    'gt kombucha': 'beverage', 'pure leaf': 'beverage', 'lipton tea': 'beverage',
+    'smartwater': 'beverage', 'smart water': 'beverage', 'dasani': 'beverage', 'aquafina': 'beverage',
+    'fiji water': 'beverage', 'fiji': 'beverage', 'evian': 'beverage', 'voss': 'beverage',
+    'la croix': 'beverage', 'lacroix': 'beverage', 'perrier': 'beverage', 'san pellegrino': 'beverage', 'pellegrino': 'beverage',
+    'topo chico': 'beverage', 'topochico': 'beverage', 'jarritos': 'beverage', 'sidral': 'beverage',
+    'fanta': 'beverage', 'sprite': 'beverage', 'mountain dew': 'beverage', 'dr pepper': 'beverage', 'dr. pepper': 'beverage',
+    'coca cola': 'beverage', 'coke': 'beverage', 'pepsi': 'beverage', 'diet pepsi': 'beverage',
+    'red bull sugar free': 'beverage', '7up': 'beverage', '7-up': 'beverage', 'sierra mist': 'beverage',
+    'lavazza': 'beverage', 'illy': 'beverage', 'starbucks coffee': 'beverage', 'peets': 'beverage', "peet's": 'beverage',
+    // Spirits
+    'absolut': 'beverage', 'tito': 'beverage', "tito's": 'beverage', 'grey goose': 'beverage', 'belvedere': 'beverage',
+    'tanqueray': 'beverage', 'bombay sapphire': 'beverage', 'hendricks': 'beverage', "hendrick's": 'beverage',
+    'bacardi': 'beverage', 'captain morgan': 'beverage', 'malibu': 'beverage',
+    'jose cuervo': 'beverage', 'patron': 'beverage', 'patrón': 'beverage', 'don julio': 'beverage', 'casamigos': 'beverage', 'herradura': 'beverage',
+    'jack daniels': 'beverage', "jack daniel's": 'beverage', 'makers mark': 'beverage', "maker's mark": 'beverage',
+    'jameson': 'beverage', 'crown royal': 'beverage', 'johnnie walker': 'beverage', 'jim beam': 'beverage', 'wild turkey': 'beverage',
+    'hennessy': 'beverage', 'remy martin': 'beverage', 'rémy martin': 'beverage', 'courvoisier': 'beverage',
+    // Wines (generic varieties stay in lexicon; specific big-name producers here)
+    'kendall jackson': 'beverage', 'la marca': 'beverage', 'mionetto': 'beverage', 'veuve clicquot': 'beverage', 'moet': 'beverage', 'moët': 'beverage',
+    // Protein
+    'tyson': 'protein', 'perdue': 'protein', 'butterball': 'protein', 'jennie o': 'protein', "jennie-o": 'protein',
+    'foster farms': 'protein', 'bell evans': 'protein', "bell & evans": 'protein',
+    'oscar mayer': 'protein', 'hormel': 'protein', 'jimmy dean': 'protein', 'johnsonville': 'protein', 'applegate': 'protein',
+    'boars head': 'protein', "boar's head": 'protein', 'dietz watson': 'protein', 'dietz & watson': 'protein',
+    // Dairy
+    'kerrygold': 'dairy', 'land o lakes': 'dairy', "land o' lakes": 'dairy', 'plugra': 'dairy', 'plugrá': 'dairy',
+    'philadelphia': 'dairy', 'philadelphia cream cheese': 'dairy',
+    'organic valley': 'dairy', 'horizon organic': 'dairy', 'fairlife': 'dairy', 'lactaid': 'dairy',
+    'silk milk': 'dairy', 'oatly': 'dairy', 'so delicious': 'dairy',
+    'chobani': 'dairy', 'fage': 'dairy', 'siggis': 'dairy', "siggi's": 'dairy', 'stonyfield': 'dairy', 'yoplait': 'dairy',
+    'kraft singles': 'dairy', 'tillamook': 'dairy', 'cabot': 'dairy', 'cracker barrel cheese': 'dairy',
+    // Dry goods
+    'heinz': 'dry-goods', 'hellmanns': 'dry-goods', "hellmann's": 'dry-goods', 'best foods': 'dry-goods',
+    'french s': 'dry-goods', "french's": 'dry-goods', 'grey poupon': 'dry-goods',
+    'cattlemans': 'dry-goods', "cattleman's": 'dry-goods', 'sweet baby rays': 'dry-goods', "sweet baby ray's": 'dry-goods',
+    'kc masterpiece': 'dry-goods', 'stubbs': 'dry-goods', "stubb's": 'dry-goods',
+    'hidden valley': 'dry-goods', 'kens': 'dry-goods', "ken's": 'dry-goods',
+    'kikkoman': 'dry-goods', 'la choy': 'dry-goods', 'lee kum kee': 'dry-goods', 'huy fong': 'dry-goods', 'sriracha': 'dry-goods',
+    'tabasco': 'dry-goods', 'cholula': 'dry-goods', 'el yucateco': 'dry-goods', 'valentina': 'dry-goods', 'tapatio': 'dry-goods', 'tapatío': 'dry-goods',
+    'gold medal flour': 'dry-goods', 'king arthur': 'dry-goods', 'king arthur flour': 'dry-goods', 'caputo': 'dry-goods', 'caputo 00': 'dry-goods',
+    'domino sugar': 'dry-goods', 'c&h sugar': 'dry-goods', 'c and h sugar': 'dry-goods',
+    'mccormick': 'herbs-spices', 'frontier coop': 'herbs-spices', 'frontier': 'herbs-spices', 'simply organic': 'herbs-spices',
+    'morton salt': 'herbs-spices', 'diamond crystal': 'herbs-spices', 'diamond crystal kosher': 'herbs-spices', 'maldon': 'herbs-spices',
+    // Paper / packaging brands
+    'solo cup': 'paper', 'solo': 'paper', 'georgia pacific': 'paper', 'gp pro': 'paper',
+    'dixie': 'paper', 'reynolds': 'paper', 'reynolds wrap': 'paper', 'glad': 'paper', 'saran wrap': 'paper',
+    'ziploc': 'paper', 'eco-products': 'paper', 'world centric': 'paper',
+    // Cleaning brands (already partially in lexicon push — extra here)
+    'dawn': 'cleaning', 'dawn pro': 'cleaning', 'dawn ultra': 'cleaning', 'palmolive': 'cleaning',
+    'cascade': 'cleaning', 'finish': 'cleaning', 'jet dry': 'cleaning',
+    'clorox': 'cleaning', 'clorox bleach': 'cleaning', 'pinesol': 'cleaning', 'pine-sol': 'cleaning',
+    'mr clean': 'cleaning', 'lysol': 'cleaning', 'spic span': 'cleaning', 'spic and span': 'cleaning'
+  };
+
+  // ===================================================================
+  // Wave 4.4 — Abbreviation expansion table.
+  //
+  // Distributors print "CHX BRST 10LB" not "CHICKEN BREAST"; we expand
+  // before tier-1 substring search so the lexicon catches it.
+  // Bilingual; keep additions conservative — false expansions are
+  // worse than missed ones.
+  // ===================================================================
+  var ABBREV = {
+    // Proteins
+    'chx':       'chicken',
+    'chkn':      'chicken',
+    'bf':        'beef',
+    'grnd':      'ground',
+    'gr':        'ground',
+    'brst':      'breast',
+    'brsts':     'breasts',
+    'thi':       'thigh',
+    'thgh':      'thigh',
+    'tndr':      'tender',
+    'tndrloin':  'tenderloin',
+    'tndrln':    'tenderloin',
+    'sirl':      'sirloin',
+    'rbeye':     'ribeye',
+    'wgyu':      'wagyu',
+    'mtbll':     'meatball',
+    'mtblls':    'meatballs',
+    'sasg':      'sausage',
+    'ssg':       'sausage',
+    'brgr':      'burger',
+    'hbg':       'burger',
+    'hdg':       'hot dog',
+    'hd':        'hot dog',
+    // Seafood
+    'shrmp':     'shrimp',
+    'shrm':      'shrimp',
+    'p&d':       'peeled deveined',
+    'iqf':       'iqf',
+    // Produce
+    'lett':      'lettuce',
+    'rom':       'romaine',
+    'tom':       'tomato',
+    'cuc':       'cucumber',
+    'jal':       'jalapeño',
+    'asparag':   'asparagus',
+    'asp':       'asparagus',
+    'mush':      'mushroom',
+    'mshrm':     'mushroom',
+    'avo':       'avocado',
+    'cilan':     'cilantro',
+    'pars':      'parsley',
+    // Pantry
+    'flr':       'flour',
+    'sgr':       'sugar',
+    'butt':      'butter',
+    'olv':       'olive',
+    'evoo':      'extra virgin olive oil',
+    // Frozen / temperature
+    'frzn':      'frozen',
+    'frz':       'frozen',
+    'rfg':       'refrigerated',
+    'amb':       'ambient',
+    'fzn':       'frozen',
+    // Sizes
+    'lg':        'large',
+    'md':        'medium',
+    'sm':        'small',
+    'xlg':       'extra large',
+    'xtra':      'extra',
+    'asst':      'assorted',
+    'prem':      'premium',
+    'orig':      'original',
+    'ind':       'individual',
+    'spc':       'special',
+    // Bilingual
+    'pollo':     'pollo',
+    'res':       'res',
+    'pasta':     'pasta',
+    'cab':       'angus'
+  };
+
+  function expandTokens(s) {
+    var tokens = String(s || '').split(/\s+/);
+    return tokens.map(function (t) {
+      // Strip punctuation when looking up abbreviations.
+      var bare = t.toLowerCase().replace(/[^a-z0-9&]+/g, '');
+      if (ABBREV[bare]) return ABBREV[bare];
+      // Plural-stripper for -s and -es and -ies
+      if (bare.length >= 5 && bare.endsWith('ies')) {
+        var stem = bare.slice(0, -3) + 'y';
+        if (ABBREV[stem]) return ABBREV[stem];
+      }
+      return t;
+    }).join(' ');
+  }
+
+  // ===================================================================
+  // Wave 4.7 — Orthogonal tags layer.
+  //
+  // Tags are additive: a row can be `protein` AND `frozen` AND
+  // `allergen-major`. Drives advanced filtering (4.7) and the
+  // accountant-CSV's freezer-vs-ambient column without splitting
+  // the 9-bucket taxonomy.
+  // ===================================================================
+  var TAG_PATTERNS = {
+    'frozen':         /\b(frozen|frzn|fzn|frz|iqf|deep\s+frozen|congelado|congelados)\b/i,
+    'perishable':     null, // applied by category — protein/seafood/produce/dairy default
+    'organic':        /\b(organic|org|organico|orgánico)\b/i,
+    'local':          /\b(local|locally\s+grown|farm\s+to\s+table|farm-to-table)\b/i,
+    'house-made':     /\b(house\s+made|house-made|housemade|hecho\s+en\s+casa)\b/i,
+    'allergen-nuts':  /\b(peanut|tree\s*nut|almond|walnut|pecan|pistachio|cashew|hazelnut|nuez|almendra|cacahuate)\b/i,
+    'allergen-dairy': /\b(milk|cream|butter|cheese|yogurt|leche|crema|mantequilla|queso)\b/i,
+    'allergen-egg':   /\b(egg|huevo)\b/i,
+    'allergen-wheat': /\b(wheat|flour|pasta|bread|trigo|harina|pan)\b/i,
+    'allergen-soy':   /\b(soy|tofu|soya|edamame)\b/i,
+    'allergen-fish':  /\b(fish|salmon|tuna|cod|halibut|tilapia|pescado|salm[oó]n|at[uú]n|bacalao)\b/i,
+    'allergen-shellfish': /\b(shrimp|crab|lobster|scallop|oyster|mussel|clam|prawn|camar[oó]n|cangrejo|langosta)\b/i,
+    'allergen-sesame': /\b(sesame|tahini|aj[oo]nj[oo]l[ií]|s[eé]samo)\b/i,
+    // Alcoholic — direct vocabulary plus the well-known beer / spirit
+    // brand names. Matches case-insensitively against the row's raw
+    // text (which includes the brand spelling).
+    'alcoholic':      /\b(beer|wine|vodka|gin|rum|tequila|whiskey|whisky|bourbon|scotch|mezcal|brandy|cognac|champagne|prosecco|cerveza|vino|ron|stella\s+artois|budweiser|bud\s+light|miller\s+lite|coors|modelo|corona|heineken|guinness|pacifico|tecate|dos\s+equis|white\s+claw|truly|jack\s+daniel|jameson|crown\s+royal|absolut|grey\s+goose|patron|patrón|don\s+julio|herradura|hennessy|courvoisier)\b/i,
+    'gluten-free':    /\b(gluten\s*free|gf|sin\s+gluten)\b/i,
+    'vegan':          /\b(vegan|vegano|vegana|plant\s+based|plant-based)\b/i
+  };
+
+  // Categories that are perishable by default.
+  var PERISHABLE_CATS = { protein: 1, seafood: 1, produce: 1, dairy: 1 };
+
+  function deriveTags(row, category) {
+    var raw = String((row && row.name) || '');
+    if (row && row.raw) raw += ' ' + row.raw;
+    var tags = [];
+    if (PERISHABLE_CATS[category]) tags.push('perishable');
+    Object.keys(TAG_PATTERNS).forEach(function (tag) {
+      var re = TAG_PATTERNS[tag];
+      if (re && re.test(raw)) tags.push(tag);
+    });
+    // Pack-derived tag: a `pack.unit === '#'` or 'cs' suggests bulk
+    // foodservice rather than individually-packaged retail.
+    if (row && row.pack && (row.pack.unit === '#' || row.pack.unit === 'cs' || row.pack.unit === 'case')) {
+      tags.push('bulk');
+    }
+    return tags;
+  }
+
   function normalize(s) {
-    return String(s || '')
+    var raw = String(s || '')
       .toLowerCase()
       .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
       .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n')
-      .replace(/[^a-z0-9 ]+/g, ' ')
+      .replace(/[^a-z0-9 &]+/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+    // Wave 4.4 — abbreviation expansion runs at normalize time so
+    // every tier sees the expanded form. "CHX BRST" → "chicken breast".
+    return expandTokens(raw);
+  }
+
+  // Wave 4.4 — brand-name index Tier-1 fast path. A line containing
+  // "STELLA ARTOIS" gets categorized with high confidence regardless
+  // of the rest of the line shape. Substring-match (case-insensitive
+  // via normalize) — the brand name being present is sufficient.
+  function tier1Brand(rowName) {
+    var name = normalize(rowName);
+    if (!name) return null;
+    var bestKey = null;
+    Object.keys(BRAND_INDEX).forEach(function (k) {
+      var nk = normalize(k);
+      if (!nk || nk.length < 4) return;
+      if (name.indexOf(nk) === -1) return;
+      if (!bestKey || nk.length > normalize(bestKey).length) bestKey = k;
+    });
+    if (!bestKey) return null;
+    return {
+      category:   BRAND_INDEX[bestKey],
+      confidence: 92,
+      tier:       'brand',
+      matched:    bestKey
+    };
   }
 
   // Tier 1 — exact substring match. Walks every term in every
@@ -303,27 +625,36 @@
   }
 
   function classify(row) {
-    if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none' };
+    if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none', tags: [] };
     // Tier 0 — operator's own past corrections (W7-8). Wins over
     // lexicon because the operator has already told us what THIS
     // SKU means in their kitchen. Browser-only check; safe in Node.
+    var hit = null;
     if (typeof root !== 'undefined' && root && root.MID_LEARNINGS &&
         typeof root.MID_LEARNINGS.lookupOverride === 'function') {
-      var t0 = root.MID_LEARNINGS.lookupOverride(row.name);
-      if (t0) return t0;
+      hit = root.MID_LEARNINGS.lookupOverride(row.name);
     }
-    var t1 = tier1Exact(row.name);
-    if (t1) return t1;
-    var t2 = tier2Fuzzy(row.name);
-    if (t2) return t2;
-    var t3 = tier3Heuristic(row);
-    if (t3) return t3;
-    return { category: null, confidence: 0, tier: 'none' };
+    // Tier 1 brand — wins over generic lexicon when a recognized
+    // brand name is present.
+    if (!hit) hit = tier1Brand(row.name);
+    if (!hit) hit = tier1Exact(row.name);
+    if (!hit) hit = tier2Fuzzy(row.name);
+    if (!hit) hit = tier3Heuristic(row);
+    if (!hit) hit = { category: null, confidence: 0, tier: 'none' };
+    // Wave 4.7 — derive tags regardless of which tier won. Tags are
+    // additive and never block categorization.
+    hit.tags = deriveTags(row, hit.category);
+    return hit;
   }
 
   var api = {
-    classify: classify,
-    LEXICON: LEXICON
+    classify:    classify,
+    LEXICON:     LEXICON,
+    BRAND_INDEX: BRAND_INDEX,
+    ABBREV:      ABBREV,
+    expandTokens: expandTokens,
+    deriveTags:  deriveTags,
+    tier1Brand:  tier1Brand
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_CATEGORIZE = api;

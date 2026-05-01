@@ -337,5 +337,201 @@ for (const fx of QUALITY_FIXTURES) {
 const totalNew = csvFail + pdfFail + qualityFail;
 console.log(`\nW2-6 extended fixtures: ${csvPass} CSV / ${pdfPass} PDF / ${qualityPass} quality passed.`);
 
-const grandFail = totalFail + totalNew;
+// =====================================================================
+// Wave 8 — new fixture suites for kind classification, brand index,
+// pack notation, math reconciliation, sku-history, accountant export,
+// and contract-price watch. All must pass to merge.
+// =====================================================================
+
+let kindPass = 0, kindFail = 0;
+console.log(`\nKind classification (Wave 1.5):`);
+const KIND_FIXTURES = [
+  { line: 'CREDIT 12345 ROMAINE 24CT 1 CS -$24.00', expectKind: 'credit' },
+  { line: '0123456 MILK CRV BTL DEPOSIT $12.00',     expectKind: 'deposit' },
+  { line: 'FUEL SURCHARGE $4.50',                    expectKind: 'surcharge' },
+  { line: 'CHICKEN BREAST 5LB B/O',                  expectKind: 'backorder' },
+  { line: '0123456 ROMAINE HEARTS 24CT 2 CS $48.00', expectKind: 'item' }
+];
+for (const fx of KIND_FIXTURES) {
+  const k = PARSE.classifyKind(fx.line);
+  const ok = k === fx.expectKind;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.expectKind.padEnd(10)} ${fx.line.slice(0, 60)}`);
+  if (ok) kindPass++; else kindFail++;
+}
+
+let packPass = 0, packFail = 0;
+console.log(`\nPack notation extraction (Wave 1.5):`);
+const PACK_FIXTURES = [
+  { line: 'STELLA ARTOIS 24/12OZ BTL CASE $42.00', expectCaseQty: 24, expectUnit: 'oz' },
+  { line: 'TOMATO PASTE 6#10 CASE $48.00',         expectCaseQty: 6,  expectUnit: '#' },
+  { line: 'NAPKIN 5000CT $32.00',                  expectCaseQty: 5000, expectUnit: 'ct' }
+];
+for (const fx of PACK_FIXTURES) {
+  const p = PARSE.extractPack(fx.line);
+  const ok = p && p.caseQty === fx.expectCaseQty && p.unit === fx.expectUnit;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.line.slice(0, 60)}  →  ${p ? JSON.stringify(p) : 'null'}`);
+  if (ok) packPass++; else packFail++;
+}
+
+let mathPass = 0, mathFail = 0;
+console.log(`\nMath reconciliation candidates (Wave 1.3):`);
+const MATH_FIXTURES = [
+  {
+    label: 'digit-flip on a single line', expectKind: 'digit-flip',
+    // Sum reads 18.00 + 30.00 = 48.00; printed is 108.00 — flipping
+    // the leading 1→7 on the first line gives 78.00 → balanced.
+    rows: [{ lineTotal: 18.00 }, { lineTotal: 30.00 }],
+    printedTotal: 108.00
+  },
+  {
+    label: 'rounding only',  expectKind: 'rounding',
+    rows: [{ lineTotal: 10.005 }, { lineTotal: 20.005 }],
+    printedTotal: 30.02
+  },
+  {
+    label: 'no fix candidate found (fall back to unknown)', expectKind: 'unknown',
+    rows: [{ lineTotal: 10.00 }, { lineTotal: 20.00 }],
+    printedTotal: 999.99
+  }
+];
+for (const fx of MATH_FIXTURES) {
+  const fix = PARSE.suggestMathFix(fx.rows, fx.printedTotal);
+  const ok = fix && fix.kind === fx.expectKind;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.label.padEnd(50)}  →  ${fix ? fix.kind : 'null'}`);
+  if (ok) mathPass++; else mathFail++;
+}
+
+let brandPass = 0, brandFail = 0;
+console.log(`\nBrand index Tier-1 (Wave 4.4):`);
+const BRAND_FIXTURES = [
+  { name: 'STELLA ARTOIS 24/12 BTL', expectCat: 'beverage' },
+  { name: 'KERRYGOLD UNSALTED BUTTER 1LB', expectCat: 'dairy' },
+  { name: 'TYSON CHICKEN TENDER FROZEN', expectCat: 'protein' },
+  { name: 'HEINZ KETCHUP 1GAL', expectCat: 'dry-goods' },
+  { name: 'CLOROX REGULAR BLEACH 121OZ', expectCat: 'cleaning' }
+];
+for (const fx of BRAND_FIXTURES) {
+  const c = CATEGORIZE.classify({ name: fx.name });
+  const ok = c.category === fx.expectCat;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.expectCat.padEnd(11)} ${fx.name}  →  ${c.category} (${c.tier}, ${c.confidence}%)`);
+  if (ok) brandPass++; else brandFail++;
+}
+
+let abbrPass = 0, abbrFail = 0;
+console.log(`\nAbbreviation expansion (Wave 4.4):`);
+const ABBR_FIXTURES = [
+  { name: 'CHX BRST 5LB',        expectCat: 'protein' },
+  { name: 'GRND BF 10LB FRZN',   expectCat: 'protein' },
+  { name: 'FRZN SHRMP U-15 5LB', expectCat: 'seafood' }
+];
+for (const fx of ABBR_FIXTURES) {
+  const c = CATEGORIZE.classify({ name: fx.name });
+  const ok = c.category === fx.expectCat;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.expectCat.padEnd(11)} ${fx.name}  →  ${c.category} (${c.tier}, ${c.confidence}%)`);
+  if (ok) abbrPass++; else abbrFail++;
+}
+
+let tagPass = 0, tagFail = 0;
+console.log(`\nTag derivation (Wave 4.7):`);
+const TAG_FIXTURES = [
+  { name: 'FROZEN GROUND BEEF 10LB', expectTags: ['perishable', 'frozen'] },
+  { name: 'STELLA ARTOIS 24/12 BTL', expectTags: ['alcoholic'] },
+  { name: 'ALMOND MILK 1GAL',        expectTags: ['allergen-nuts'] }
+];
+for (const fx of TAG_FIXTURES) {
+  const c = CATEGORIZE.classify({ name: fx.name });
+  const got = c.tags || [];
+  const ok = fx.expectTags.every(function (t) { return got.indexOf(t) !== -1; });
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.name.padEnd(30)}  →  [${got.join(',')}]`);
+  if (ok) tagPass++; else tagFail++;
+}
+
+let vendorPass = 0, vendorFail = 0;
+console.log(`\nNew vendor detection (Wave 4.2):`);
+const VENDOR_FIXTURES = [
+  { text: 'CHENEY BROTHERS INC\nCBI Item Description Pack Qty Unit\n', expectVendor: 'cheney-brothers' },
+  { text: 'BEN E. KEITH FOODS\nDallas Distribution Center\n',          expectVendor: 'ben-e-keith' },
+  { text: 'IMPERIAL DADE\nJanitorial & Disposables\n',                  expectVendor: 'imperial-dade' },
+  { text: 'KEHE Distributors\nSpecialty Foods\n',                       expectVendor: 'kehe' },
+  { text: 'BALDOR Specialty Foods\nBronx NY\n',                         expectVendor: 'baldor' },
+  { text: 'FRESHPOINT\nProduce Order\n',                                expectVendor: 'freshpoint' },
+  // Wave 4.2 final batch
+  { text: 'COSTCO BUSINESS CENTER\nGold Star Business Member\n',        expectVendor: 'costco-business' },
+  { text: 'WEBSTAURANTSTORE.COM\nClark Associates Order Confirmation #88123\n', expectVendor: 'webstaurantstore' },
+  { text: 'VERITIV CORPORATION\nPackaging & Facility Solutions\n',      expectVendor: 'veritiv' },
+  { text: 'HILAND DAIRY\nRoute 14 Driver 7 DSD INVOICE\n',               expectVendor: 'dairy-dsd' },
+  { text: 'SOUTHERN GLAZER\'S WINE & SPIRITS\nState Liquor Tax\nCase Price\n', expectVendor: 'beer-wine-distributor' }
+];
+for (const fx of VENDOR_FIXTURES) {
+  const m = VENDORS.detectVendor(fx.text);
+  const ok = m && m.id === fx.expectVendor;
+  console.log(`  ${ok ? '✓' : '✗'} ${fx.expectVendor.padEnd(20)}  →  ${m ? m.id + ' (' + (m.score*100|0) + '%)' : 'none'}`);
+  if (ok) vendorPass++; else vendorFail++;
+}
+
+// SKU history + contract-price tests (require a stub MuntinContext +
+// MID_LEARNINGS so the module's optional integrations resolve).
+let skuPass = 0, skuFail = 0;
+console.log(`\nSKU history + contract-price (Waves 1.1 + 1.2):`);
+{
+  // Stub a minimal MuntinContext + MID_LEARNINGS for sku-history.
+  const stubStore = { skuHistory: {}, contractPrices: {} };
+  global.window = global.window || {};
+  global.window.MuntinContext = {
+    read: () => stubStore,
+    merge: (patch) => { Object.keys(patch).forEach(k => { stubStore[k] = patch[k]; }); return true; }
+  };
+  global.window.MID_LEARNINGS = {
+    extractStem: (s) => String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\b\d+\b/g, '').replace(/\s+/g, ' ').trim()
+  };
+  const SKU = await import(path.join(repoRoot, 'tools/invoice-decoder/sku-history.js')).then(m => m.default || m);
+
+  // Record several observations for "ground beef".
+  SKU.recordObservation({ name: 'GROUND BEEF 10LB', unitPrice: 4.20, qty: 1, unit: 'lb' }, 'sysco');
+  SKU.recordObservation({ name: 'GROUND BEEF 10LB', unitPrice: 4.30, qty: 1, unit: 'lb' }, 'sysco');
+  SKU.recordObservation({ name: 'GROUND BEEF 10LB', unitPrice: 4.25, qty: 1, unit: 'lb' }, 'sysco');
+  SKU.recordObservation({ name: 'GROUND BEEF 10LB', unitPrice: 4.20, qty: 1, unit: 'lb' }, 'sysco');
+
+  // New invoice has same SKU at 5.00 — should flag anomaly.
+  const summary = SKU.summarizeRow({ name: 'GROUND BEEF 10LB', unitPrice: 5.00, qty: 1, unit: 'lb' });
+  const sumOk = summary && summary.isAnomaly && summary.medianDelta > 0;
+  console.log(`  ${sumOk ? '✓' : '✗'} drift summary fires anomaly when current price is +18% off median  →  ${summary ? summary.medianDelta + '%' : 'null'}`);
+  if (sumOk) skuPass++; else skuFail++;
+
+  // Contract layer: set $4.20 contract; flag overcharge at $5.00.
+  SKU.setContract('GROUND BEEF 10LB', 4.20, { vendor: 'sysco', unit: 'lb' });
+  const check = SKU.checkRow({ name: 'GROUND BEEF 10LB', unitPrice: 5.00, qty: 10, unit: 'lb' });
+  const contractOk = check && check.isOver && check.overcharge > 7.5;
+  console.log(`  ${contractOk ? '✓' : '✗'} contract overcharge fires (10 LB × $0.80 = $8.00)  →  ${check ? '$' + check.overcharge : 'null'}`);
+  if (contractOk) skuPass++; else skuFail++;
+
+  delete global.window;
+}
+
+let exportPass = 0, exportFail = 0;
+console.log(`\nAccountant export (Wave 4.6):`);
+{
+  const ACCT = await import(path.join(repoRoot, 'tools/invoice-decoder/accountant-export.js')).then(m => m.default || m);
+  const invoice = {
+    vendor: 'sysco',
+    savedAt: 1700000000000,
+    parsedSum: 168.50,
+    rows: [
+      { name: 'Romaine Hearts', qty: 2, unit: 'cs', lineTotal: 48.00, category: 'produce', kind: 'item' },
+      { name: 'Ground Chuck',   qty: 2, unit: 'cs', lineTotal: 58.00, category: 'protein', kind: 'item' },
+      { name: 'Salmon Fillet',  qty: 1, unit: 'cs', lineTotal: 62.50, category: 'seafood', kind: 'item' }
+    ]
+  };
+  const formats = ['qbo', 'qbd', 'xero', 'contpaqi', 'generic'];
+  for (const fmt of formats) {
+    const art = ACCT.exportInvoice(fmt, invoice, {});
+    const ok = art && art.body && art.body.length > 50 && art.filename;
+    console.log(`  ${ok ? '✓' : '✗'} ${fmt.padEnd(10)} ${art.filename}  ${art.body.length} bytes`);
+    if (ok) exportPass++; else exportFail++;
+  }
+}
+
+console.log(`\nWave 8 fixtures: ${kindPass} kind / ${packPass} pack / ${mathPass} math / ${brandPass} brand / ${abbrPass} abbr / ${tagPass} tag / ${vendorPass} vendor / ${skuPass} sku / ${exportPass} export passed.`);
+
+const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail;
 process.exit(grandFail === 0 ? 0 : 1);

@@ -126,6 +126,83 @@
     return imageData;
   }
 
+  // -------------------- Wave 1.6: Sauvola adaptive threshold --------------------
+  // Otsu's global threshold breaks on photos with shadow/glare: half
+  // the page goes black, the other half white. Sauvola computes a
+  // per-pixel threshold from a local window's mean + std-dev:
+  //
+  //   T(x,y) = mean(x,y) * (1 + k * (std(x,y) / R - 1))
+  //
+  // where k≈0.34 controls sensitivity and R=128 normalizes std.
+  // Using a 21px window via integral images for O(1) per-pixel mean.
+  // Result: text remains crisp under uneven lighting at the cost of
+  // ~2× compute on the gentle preset.
+  //
+  // Used only on the 'gentle' preset; aggressive keeps Otsu so the
+  // multipass merge has two genuinely-different binarizations.
+  function sauvolaInPlace(imageData, opts) {
+    opts = opts || {};
+    var w = imageData.width, h = imageData.height;
+    var d = imageData.data;
+    var window = Math.max(7, Math.min(41, opts.window || 21)) | 0;
+    if (window % 2 === 0) window++;
+    var k = (opts.k != null) ? opts.k : 0.34;
+    var R = opts.R || 128;
+    var radius = (window - 1) >> 1;
+
+    // Build integral image + integral-of-squares (numeric uint32 cap
+    // is fine — even a 4000×3000 image at value 255 hits 3·10^9 max).
+    var area = w * h;
+    var integral = new Float64Array(area);
+    var integralSq = new Float64Array(area);
+    for (var y = 0; y < h; y++) {
+      var rowSum = 0, rowSumSq = 0;
+      for (var x = 0; x < w; x++) {
+        var idx = y * w + x;
+        var v = d[idx * 4];
+        rowSum += v; rowSumSq += v * v;
+        integral[idx]   = rowSum   + (y > 0 ? integral[idx - w]   : 0);
+        integralSq[idx] = rowSumSq + (y > 0 ? integralSq[idx - w] : 0);
+      }
+    }
+
+    function rect(x0, y0, x1, y1) {
+      // Sum within inclusive rect [x0,y0]-[x1,y1].
+      var a = (x0 > 0 && y0 > 0) ? integral[(y0 - 1) * w + (x0 - 1)] : 0;
+      var b = (y0 > 0)            ? integral[(y0 - 1) * w + x1]      : 0;
+      var c = (x0 > 0)            ? integral[y1 * w + (x0 - 1)]      : 0;
+      var dd = integral[y1 * w + x1];
+      return dd - b - c + a;
+    }
+    function rectSq(x0, y0, x1, y1) {
+      var a = (x0 > 0 && y0 > 0) ? integralSq[(y0 - 1) * w + (x0 - 1)] : 0;
+      var b = (y0 > 0)            ? integralSq[(y0 - 1) * w + x1]      : 0;
+      var c = (x0 > 0)            ? integralSq[y1 * w + (x0 - 1)]      : 0;
+      var dd = integralSq[y1 * w + x1];
+      return dd - b - c + a;
+    }
+
+    for (var yy = 0; yy < h; yy++) {
+      for (var xx = 0; xx < w; xx++) {
+        var x0 = Math.max(0, xx - radius);
+        var y0 = Math.max(0, yy - radius);
+        var x1 = Math.min(w - 1, xx + radius);
+        var y1 = Math.min(h - 1, yy + radius);
+        var n = (x1 - x0 + 1) * (y1 - y0 + 1);
+        var s = rect(x0, y0, x1, y1);
+        var s2 = rectSq(x0, y0, x1, y1);
+        var mean = s / n;
+        var variance = (s2 / n) - (mean * mean);
+        var std = Math.sqrt(Math.max(0, variance));
+        var T = mean * (1 + k * (std / R - 1));
+        var pIdx = (yy * w + xx) * 4;
+        var v2 = d[pIdx] >= T ? 255 : 0;
+        d[pIdx] = d[pIdx + 1] = d[pIdx + 2] = v2;
+      }
+    }
+    return imageData;
+  }
+
   // -------------------- Median 3×3 denoise --------------------
   // Skip when the binarized image is already clean (low pixel-flip
   // count). Used on the gentle preset only — the aggressive preset
@@ -243,19 +320,30 @@
     var blurScore = laplacianVariance(img);
     var t = otsuThreshold(img);
     var bimodalityScore = otsuBetweenClassVariance(img, t);
-    // Aggressive preset shifts the threshold up by 8 to favor
-    // crisp text (ink stays black; faded ink becomes white). Good
-    // for clean print-shop invoices.
-    if (preset === 'aggressive') t = Math.min(255, t + 8);
-    if (preset === 'gentle')     t = Math.max(0, t - 4);
-    applyThresholdInPlace(img, t);
-    // 3. Denoise on gentle only.
-    if (preset === 'gentle') median3x3InPlace(img);
+    // Wave 1.6 — Aggressive preset keeps Otsu (best on flat-lit clean
+    // photos). Gentle preset switches to Sauvola when the photo shows
+    // signs of uneven lighting (low bimodality + decent blur score
+    // suggests the histogram is washed out by shadow/glare, not by
+    // motion blur). Pure Otsu falls back when bimodality is high
+    // since Sauvola adds compute we don't need.
+    var thresholdMethod = 'otsu';
+    if (preset === 'aggressive') {
+      t = Math.min(255, t + 8);
+      applyThresholdInPlace(img, t);
+    } else if (preset === 'gentle' && bimodalityScore < 1500 && blurScore > 60) {
+      sauvolaInPlace(img, { window: 21, k: 0.34 });
+      thresholdMethod = 'sauvola';
+    } else if (preset === 'gentle') {
+      t = Math.max(0, t - 4);
+      applyThresholdInPlace(img, t);
+      median3x3InPlace(img);
+    }
     ctx.putImageData(img, 0, 0);
     return {
       canvas: deskewed,
       skewAngle: skew,
       threshold: t,
+      thresholdMethod: thresholdMethod,
       blurScore: blurScore,
       bimodalityScore: bimodalityScore,
       qualityHint: classifyQuality(blurScore, bimodalityScore)
@@ -363,6 +451,7 @@
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,
     otsuThreshold:     otsuThreshold,
+    sauvolaInPlace:    sauvolaInPlace,
     classifyQuality:   classifyQuality
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
