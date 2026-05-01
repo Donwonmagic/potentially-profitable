@@ -1756,6 +1756,146 @@ console.log(`\nMulti-device pairing (Wave 6.3 second half):`);
 
 console.log(`\nWave 6.3 pairing fixtures: ${pairPass} passed.`);
 
+// =====================================================================
+// Domain-expert layer — pack-aware unit pricing.
+// Restaurant purchasing pros compare $/oz, $/lb, $/ct — not $/case.
+// =====================================================================
+
+let ppPass = 0, ppFail = 0;
+console.log(`\nPack-aware unit pricing (domain-expert layer):`);
+{
+  const PP = await import(path.join(repoRoot, 'tools/invoice-decoder/pack-pricing.js')).then(m => m.default || m);
+
+  // Stella Artois 24/12oz beer case at $42 → 288 fl oz total → $0.146/fl_oz.
+  const stella = PP.computeComparable({
+    name:     'Stella Artois 24/12 BTL',
+    pack:     { caseQty: 24, unitSize: 12, unit: 'oz' },
+    qty:      1,
+    unit:     'cs',
+    lineTotal: 42.00,
+    category: 'beverage'
+  });
+  const okStella = stella && stella.baseUnit === 'fl_oz' &&
+                   Math.abs(stella.perBaseUnit - 42 / 288) < 1e-4 &&
+                   stella.basis === 'pack';
+  console.log(`  ${okStella ? '✓' : '✗'} 24/12oz Stella @ $42/case → $${stella ? stella.perBaseUnit.toFixed(4) : 'null'}/fl_oz`);
+  if (okStella) ppPass++; else ppFail++;
+
+  // Modelo 30/12oz at $42 (different pack size, same brand category) →
+  // 360 fl oz → ~$0.117/fl_oz. Operator can compare across vendors.
+  const modelo = PP.computeComparable({
+    pack:     { caseQty: 30, unitSize: 12, unit: 'oz' },
+    qty:      1, unit: 'cs',
+    lineTotal: 42.00,
+    category: 'beverage'
+  });
+  const okModelo = modelo && modelo.baseUnit === 'fl_oz' &&
+                   Math.abs(modelo.perBaseUnit - 42 / 360) < 1e-4;
+  console.log(`  ${okModelo ? '✓' : '✗'} 30/12oz Modelo @ $42/case → $${modelo ? modelo.perBaseUnit.toFixed(4) : 'null'}/fl_oz (cheaper per oz than Stella)`);
+  if (okModelo) ppPass++; else ppFail++;
+
+  // Pattern E weight-count rows: GROUND CHUCK 10LB 2CS @ $58 →
+  // total weight 20 lb → $2.90/lb.
+  const groundChuck = PP.computeComparable({
+    name:     'Ground Chuck',
+    weight:   10, weightUnit: 'lb',
+    qty:      2, unit: 'ct',
+    lineTotal: 58.00,
+    category: 'protein'
+  });
+  const okGroundChuck = groundChuck && groundChuck.baseUnit === 'lb' &&
+                        Math.abs(groundChuck.perBaseUnit - 58 / 20) < 1e-4 &&
+                        groundChuck.basis === 'weight';
+  console.log(`  ${okGroundChuck ? '✓' : '✗'} 10LB×2CS Ground Chuck @ $58 → $${groundChuck ? groundChuck.perBaseUnit.toFixed(2) : 'null'}/lb`);
+  if (okGroundChuck) ppPass++; else ppFail++;
+
+  // #10 cans of tomato paste: 6#10 @ $48 → 6 × 110 fl oz = 660 → $0.073/fl_oz.
+  const tomatoPaste = PP.computeComparable({
+    name:     'Tomato Paste',
+    pack:     { caseQty: 6, unitSize: 10, unit: '#' },
+    qty:      1, unit: 'cs',
+    lineTotal: 48.00,
+    category: 'dry-goods'
+  });
+  const okTomato = tomatoPaste && tomatoPaste.baseUnit === 'fl_oz' &&
+                   Math.abs(tomatoPaste.perBaseUnit - 48 / 660) < 1e-4;
+  console.log(`  ${okTomato ? '✓' : '✗'} 6#10 Tomato Paste @ $48 → $${tomatoPaste ? tomatoPaste.perBaseUnit.toFixed(4) : 'null'}/fl_oz`);
+  if (okTomato) ppPass++; else ppFail++;
+
+  // 'oz' disambiguation: dry-goods category should use weight oz,
+  // not fl_oz. Bag of flour 4/5LB @ $24 → 20 lb → $1.20/lb. Wait,
+  // this is direct lb units, not pack notation. Let me test the
+  // dry-goods 'oz' interpretation instead.
+  const flour = PP.computeComparable({
+    name:     'Bread Flour',
+    pack:     { caseQty: 4, unitSize: 8, unit: 'oz' },   // 4 × 8oz packs
+    qty:      1, unit: 'cs',
+    lineTotal: 16.00,
+    category: 'dry-goods'
+  });
+  // 4 × 8 = 32 oz weight (not fl_oz!) → $0.50/oz
+  const okFlour = flour && flour.baseUnit === 'lb' &&  // 32 oz weight → reported as lb
+                  Math.abs(flour.perBaseUnit - 16 / (32 / 16)) < 1e-3;  // $/lb
+  console.log(`  ${okFlour ? '✓' : '✗'} dry-goods 4/8oz Flour @ $16 → reported as $${flour ? flour.perBaseUnit.toFixed(2) : 'null'}/lb (weight, not fl_oz)`);
+  if (okFlour) ppPass++; else ppFail++;
+
+  // Plain unit-priced row: 5LB chicken @ $20 → $4/lb.
+  const chicken = PP.computeComparable({
+    name:     'Chicken Breast',
+    qty:      5, unit: 'lb',
+    lineTotal: 20.00,
+    category: 'protein'
+  });
+  const okChicken = chicken && chicken.baseUnit === 'lb' &&
+                    Math.abs(chicken.perBaseUnit - 4) < 1e-4 &&
+                    chicken.basis === 'unit-price';
+  console.log(`  ${okChicken ? '✓' : '✗'} plain 5LB Chicken @ $20 → $${chicken ? chicken.perBaseUnit.toFixed(2) : 'null'}/lb`);
+  if (okChicken) ppPass++; else ppFail++;
+
+  // Count-only rows return null (no unit comparable).
+  const countOnly = PP.computeComparable({
+    name:      'Coffee Cups',
+    qty:       1, unit: 'cs',
+    lineTotal: 32.00,
+    category:  'paper'
+  });
+  console.log(`  ${countOnly === null ? '✓' : '✗'} count-only row with no pack info returns null`);
+  if (countOnly === null) ppPass++; else ppFail++;
+
+  // Format helper.
+  const fmt = PP.formatComparable({ perBaseUnit: 0.146, baseUnit: 'fl_oz' });
+  const okFmt = fmt === '$0.146/fl oz';
+  console.log(`  ${okFmt ? '✓' : '✗'} formatComparable($0.146/fl_oz) → "${fmt}"`);
+  if (okFmt) ppPass++; else ppFail++;
+
+  // Comparator: same base unit produces a delta.
+  const cmp = PP.compareComparables(
+    { perBaseUnit: 0.146, baseUnit: 'fl_oz' },   // current
+    { perBaseUnit: 0.117, baseUnit: 'fl_oz' }    // baseline
+  );
+  const okCmp = cmp && Math.abs(cmp.deltaPct - 24.8) < 0.5 && cmp.direction === 'up';
+  console.log(`  ${okCmp ? '✓' : '✗'} compareComparables fl_oz → fl_oz: ${cmp ? cmp.deltaPct + '% ' + cmp.direction : 'null'}`);
+  if (okCmp) ppPass++; else ppFail++;
+
+  // Comparator: cross-base-unit comparison rejects (you can't compare $/lb to $/fl_oz).
+  const cmpBad = PP.compareComparables(
+    { perBaseUnit: 0.146, baseUnit: 'fl_oz' },
+    { perBaseUnit: 4.00,  baseUnit: 'lb' }
+  );
+  console.log(`  ${cmpBad === null ? '✓' : '✗'} compareComparables refuses cross-base-unit comparisons`);
+  if (cmpBad === null) ppPass++; else ppFail++;
+
+  // Unit normalization handles common alternates.
+  const okNorm = PP.normalizeUnitToken('LBS') === 'lb' &&
+                 PP.normalizeUnitToken('Ounces') === 'oz' &&
+                 PP.normalizeUnitToken('GAL.') === 'gal' &&
+                 PP.normalizeUnitToken('UNKNOWN') === null;
+  console.log(`  ${okNorm ? '✓' : '✗'} normalizeUnitToken handles common alternates (lbs/Ounces/GAL.)`);
+  if (okNorm) ppPass++; else ppFail++;
+}
+
+console.log(`\nPack-pricing fixtures: ${ppPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -1766,5 +1906,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + coachFail
   + v42Fail
   + lgFail
-  + pairFail;
+  + pairFail
+  + ppFail;
 process.exit(grandFail === 0 ? 0 : 1);

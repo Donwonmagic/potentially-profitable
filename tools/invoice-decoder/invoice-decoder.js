@@ -265,6 +265,34 @@
     });
   }
 
+  // Shared helper used by the OCR / PDF / CSV / share-target paths.
+  // Runs MID_CATEGORIZE.classify on each row, stamps the standard
+  // category fields, then runs MID_PACK_PRICING to attach the
+  // pack-aware comparable price (domain-expert layer). Mutates rows
+  // in place.
+  function classifyRows(rows) {
+    if (!Array.isArray(rows)) return;
+    if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+      for (var i = 0; i < rows.length; i++) {
+        var c = MID_CATEGORIZE.classify(rows[i]);
+        rows[i].category           = c.category;
+        rows[i].categoryConfidence = c.confidence;
+        rows[i].categoryTier       = c.tier;
+        rows[i].categorySource     = c.source || null;
+        rows[i].tags               = c.tags || [];
+      }
+    }
+    // Pack-aware unit pricing (domain-expert layer). Categorization
+    // runs first so pack-pricing can disambiguate 'oz' between
+    // fl_oz (beverage) and weight-oz (dry-goods).
+    if (typeof MID_PACK_PRICING !== 'undefined' && MID_PACK_PRICING.computeComparable) {
+      for (var j = 0; j < rows.length; j++) {
+        var comp = MID_PACK_PRICING.computeComparable(rows[j]);
+        if (comp) rows[j].comparable = comp;
+      }
+    }
+  }
+
   // -------------------- OCR + parse (Wave B2) --------------------
   // Runs multi-pass OCR on every captured page in sequence, parses
   // the merged line set, then renders the read-only parsed-rows
@@ -455,16 +483,7 @@
       // categoryConfidence + categoryTier on each row so the
       // verification UX (B5) can render chips, group totals, and
       // sort review priority.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
       advancePhase(3);  // Wave 5.2 — vendor lookup done
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
@@ -1347,8 +1366,28 @@
           var sign = s.medianDelta > 0 ? '+' : '';
           var dir = s.medianDelta > 0 ? 'up' : (s.medianDelta < 0 ? 'down' : 'flat');
           var drClass = s.isAnomaly ? 'id-row-drift id-row-drift--anomaly' : 'id-row-drift';
-          var label = sign + s.medianDelta.toFixed(1) + '% ' + tt('vs your typical', 'vs tu típico');
-          driftChip = '<span class="' + drClass + '" data-dir="' + dir + '" title="' + escHtml(label) + '">' + escHtml(sign + s.medianDelta.toFixed(1) + '%') + '</span>';
+          // Pack-aware tooltip: when summarizeRow used the
+          // comparable price (basis === 'pack'), surface the unit
+          // so the operator sees "vs your typical $/oz" instead of
+          // the generic "vs your typical." This is the operator's
+          // actual purchasing question.
+          var basisLabel;
+          if (s.basis === 'pack' && s.comparableUnit && typeof MID_PACK_PRICING !== 'undefined') {
+            var unitDisp = ({
+              'fl_oz': tt('per fl oz', 'por oz líq'),
+              'oz':    tt('per oz', 'por oz'),
+              'lb':    tt('per lb', 'por lb'),
+              'kg':    tt('per kg', 'por kg'),
+              'l':     tt('per l',  'por litro'),
+              'ct':    tt('per ct', 'por unidad')
+            })[s.comparableUnit] || tt('per unit', 'por unidad');
+            basisLabel = sign + s.medianDelta.toFixed(1) + '% ' + unitDisp + ' ' +
+                         tt('vs your typical ($' + s.comparablePrice + ' median)',
+                            'vs tu típico ($' + s.comparablePrice + ' mediana)');
+          } else {
+            basisLabel = sign + s.medianDelta.toFixed(1) + '% ' + tt('vs your typical', 'vs tu típico');
+          }
+          driftChip = '<span class="' + drClass + '" data-dir="' + dir + '" title="' + escHtml(basisLabel) + '">' + escHtml(sign + s.medianDelta.toFixed(1) + '%') + '</span>';
           if (s.isAnomaly) anomalyAttr = ' data-anomaly="true"';
         }
       }
@@ -1679,16 +1718,7 @@
                     parsedShared.vendor = vMatchShared.id;
                   }
                 }
-                if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-                  parsedShared.rows.forEach(function (r) {
-                    var c = MID_CATEGORIZE.classify(r);
-                    r.category = c.category;
-                    r.categoryConfidence = c.confidence;
-                    r.categoryTier = c.tier;
-                    r.categorySource = c.source || null;
-                    r.tags = c.tags || [];
-                  });
-                }
+                classifyRows(parsedShared.rows);
                 renderParsed(parsedShared);
                 hideStatus();
               });
@@ -2641,17 +2671,7 @@
           parsed.vendor = vMatch.id;
         }
       }
-      // Categorize.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
       // Wave 4.3 — preserve PDF text so auto-learn can fingerprint
       // unrecognized vendors from the PDF path too.
       parsed._rawOcrText = result.fullText || '';
@@ -2737,17 +2757,7 @@
           parsed.vendor = vMatch.id;
         }
       }
-      // Categorize.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
       setProgress(95);
       renderParsed(parsed);
       hideStatus();

@@ -78,6 +78,9 @@
 
   // Append a price observation for one row. Returns the stem key
   // used so callers can group multi-row updates without re-stemming.
+  // Pack-aware: when row.comparable carries a per-base-unit price,
+  // we record it alongside raw unitPrice so cross-vendor + pack-
+  // change drift detection can use the more meaningful metric.
   function recordObservation(row, vendor) {
     if (!row || typeof row !== 'object') return null;
     if (typeof row.unitPrice !== 'number' && typeof row.lineTotal !== 'number') return null;
@@ -89,13 +92,18 @@
     if (unitPrice == null || !isFinite(unitPrice) || unitPrice <= 0) return null;
     var s = readStore();
     var list = Array.isArray(s.skuHistory[stem]) ? s.skuHistory[stem].slice() : [];
-    list.unshift({
+    var entry = {
       vendor:    vendor || row.vendorDetected || null,
       ts:        Date.now(),
       qty:       (typeof row.qty === 'number') ? row.qty : null,
       unit:      row.unit || null,
       unitPrice: +unitPrice.toFixed(4)
-    });
+    };
+    if (row.comparable && typeof row.comparable.perBaseUnit === 'number') {
+      entry.comparablePrice = row.comparable.perBaseUnit;
+      entry.comparableUnit  = row.comparable.baseUnit;
+    }
+    list.unshift(entry);
     if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
     s.skuHistory[stem] = list;
     // Cap total stems — drop stems with the oldest single newest entry.
@@ -126,13 +134,18 @@
         : (row.lineTotal && row.qty ? row.lineTotal / row.qty : null);
       if (unitPrice == null || !isFinite(unitPrice) || unitPrice <= 0) return;
       var list = Array.isArray(s.skuHistory[stem]) ? s.skuHistory[stem].slice() : [];
-      list.unshift({
+      var entry = {
         vendor:    vendor || row.vendorDetected || null,
         ts:        Date.now(),
         qty:       (typeof row.qty === 'number') ? row.qty : null,
         unit:      row.unit || null,
         unitPrice: +unitPrice.toFixed(4)
-      });
+      };
+      if (row.comparable && typeof row.comparable.perBaseUnit === 'number') {
+        entry.comparablePrice = row.comparable.perBaseUnit;
+        entry.comparableUnit  = row.comparable.baseUnit;
+      }
+      list.unshift(entry);
       if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
       s.skuHistory[stem] = list;
       stems.push(stem);
@@ -186,43 +199,77 @@
   // Wave 1.1 — per-row drift summary. Returns null when the row has
   // no comparable history (first time we've seen this stem).
   //
+  // Pack-aware: when the current row + history both carry
+  // comparablePrice (via pack-pricing.js), the drift metric uses
+  // the comparable per-base-unit price. This means a vendor changing
+  // from 12-pack to 24-pack of the same beer doesn't show as a
+  // "+100%" anomaly — the per-oz price is what actually moved.
+  // Falls back to raw unitPrice when comparable data isn't present
+  // (older history entries, ambiguous packs, count-only items).
+  //
   //   {
-  //     unitPrice, lastPrice, median90, median90Vs,
-  //     deltaPct, direction: 'up' | 'down' | 'flat',
-  //     isAnomaly,
-  //     observations
+  //     unitPrice, lastPrice, median90, deltaPct, medianDelta,
+  //     direction: 'up' | 'down' | 'flat',
+  //     isAnomaly, observations,
+  //     // when pack-aware:
+  //     comparablePrice, comparableUnit, basis: 'pack' | 'unit'
   //   }
   function summarizeRow(row) {
     if (!row || (typeof row.unitPrice !== 'number' && (typeof row.lineTotal !== 'number' || !row.qty))) return null;
-    var unitPrice = (typeof row.unitPrice === 'number')
+    var rawUnitPrice = (typeof row.unitPrice === 'number')
       ? row.unitPrice
       : row.lineTotal / row.qty;
-    if (!isFinite(unitPrice) || unitPrice <= 0) return null;
+    if (!isFinite(rawUnitPrice) || rawUnitPrice <= 0) return null;
     var history = lookupHistory(row);
-    if (!history.length) return { unitPrice: +unitPrice.toFixed(4), observations: 0 };
-    var lastPrice = history[0] ? history[0].unitPrice : null;
-    var med = rollingMedian(history, { skipLatest: false, window: 90 });
+    if (!history.length) return { unitPrice: +rawUnitPrice.toFixed(4), observations: 0 };
+
+    // Pack-aware path: prefer comparablePrice when the current row
+    // AND ≥half of the recent history share the SAME base unit.
+    // This avoids comparing $/lb to $/oz when a row's pack notation
+    // changes shape between weeks.
+    var currentComp = (row.comparable && typeof row.comparable.perBaseUnit === 'number')
+      ? { perBaseUnit: row.comparable.perBaseUnit, baseUnit: row.comparable.baseUnit }
+      : null;
+    var compHistory = history.filter(function (h) {
+      return typeof h.comparablePrice === 'number' && h.comparableUnit === (currentComp && currentComp.baseUnit);
+    });
+    var usingComparable = currentComp && compHistory.length >= Math.max(2, Math.floor(history.length / 2));
+
+    var price       = usingComparable ? currentComp.perBaseUnit : rawUnitPrice;
+    var lastPriceEntry = usingComparable ? compHistory[0] : history[0];
+    var lastPrice   = usingComparable
+      ? (lastPriceEntry && lastPriceEntry.comparablePrice)
+      : (lastPriceEntry && lastPriceEntry.unitPrice);
+    var medSource   = usingComparable
+      ? compHistory.map(function (h) { return { unitPrice: h.comparablePrice, ts: h.ts }; })
+      : history;
+    var med = rollingMedian(medSource, { skipLatest: false, window: 90 });
+
     var deltaPct = (lastPrice && lastPrice > 0)
-      ? ((unitPrice - lastPrice) / lastPrice) * 100
+      ? ((price - lastPrice) / lastPrice) * 100
       : null;
     var medianDelta = (med && med > 0)
-      ? ((unitPrice - med) / med) * 100
+      ? ((price - med) / med) * 100
       : null;
     var dir = 'flat';
     if (deltaPct != null) {
       if (deltaPct > 1) dir = 'up';
       else if (deltaPct < -1) dir = 'down';
     }
-    var isAnomaly = (medianDelta != null && Math.abs(medianDelta) >= ANOMALY_THRESHOLD_PCT && history.length >= MIN_OBSERVATIONS_FOR_ANOMALY);
+    var observationsCount = usingComparable ? compHistory.length : history.length;
+    var isAnomaly = (medianDelta != null && Math.abs(medianDelta) >= ANOMALY_THRESHOLD_PCT && observationsCount >= MIN_OBSERVATIONS_FOR_ANOMALY);
     return {
-      unitPrice:    +unitPrice.toFixed(4),
-      lastPrice:    lastPrice != null ? +lastPrice.toFixed(4) : null,
-      median90:     med != null ? +med.toFixed(4) : null,
-      deltaPct:     deltaPct != null ? +deltaPct.toFixed(1) : null,
-      medianDelta:  medianDelta != null ? +medianDelta.toFixed(1) : null,
-      direction:    dir,
-      isAnomaly:    !!isAnomaly,
-      observations: history.length
+      unitPrice:        +rawUnitPrice.toFixed(4),
+      lastPrice:        lastPrice != null ? +lastPrice.toFixed(4) : null,
+      median90:         med != null ? +med.toFixed(4) : null,
+      deltaPct:         deltaPct != null ? +deltaPct.toFixed(1) : null,
+      medianDelta:      medianDelta != null ? +medianDelta.toFixed(1) : null,
+      direction:        dir,
+      isAnomaly:        !!isAnomaly,
+      observations:     observationsCount,
+      comparablePrice:  usingComparable ? +price.toFixed(4) : null,
+      comparableUnit:   usingComparable ? currentComp.baseUnit : null,
+      basis:            usingComparable ? 'pack' : 'unit'
     };
   }
 
