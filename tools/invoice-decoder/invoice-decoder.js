@@ -519,9 +519,41 @@
     rerenderTotals();
     parsedEl.hidden = false;
     if (comingEl) comingEl.hidden = true;
+    // B5-4 — reveal the sticky bulk-action bar once we have rows.
+    var bulkBarEl = document.getElementById('idBulkbar');
+    if (bulkBarEl) bulkBarEl.hidden = !parsedRowsState.length;
   }
 
   if (readBtn) readBtn.addEventListener('click', readPendingInvoice);
+
+  // -------------------- Bulk actions (B5-4) --------------------
+  var bulkBar     = document.getElementById('idBulkbar');
+  var bulkConfirm = document.getElementById('idBulkConfirm');
+  var bulkSave    = document.getElementById('idBulkSave');
+
+  if (bulkConfirm) {
+    bulkConfirm.addEventListener('click', function () {
+      // Mark every amber row as confirmed at full confidence.
+      // Red rows are intentionally NOT batched — they need
+      // individual review (likely OCR misreads or ambiguous
+      // categories). The owner can still tap-edit each one.
+      var moved = 0;
+      parsedRowsState.forEach(function (r) {
+        if (confBand(r.confidence) === 'amber') {
+          r.confidence = 100;
+          r.ownerConfirmed = true;
+          moved++;
+        }
+      });
+      rerenderRows();
+      if (window.plausible && moved > 0) {
+        window.plausible('Invoice Decoder Bulk Confirm', { props: {
+          count_bucket: moved < 5 ? '<5' : moved < 15 ? '5-14' : '15+'
+        } });
+      }
+    });
+  }
+
 
   if (photoInput) photoInput.addEventListener('change', function (e) {
     handlePhotoFiles(e.target.files);
