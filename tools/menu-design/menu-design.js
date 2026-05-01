@@ -25,6 +25,10 @@
   function blankDish() { return { kind: 'dish', name: '', price: '', desc: '' }; }
   function blankSection(name) { return { kind: 'section', name: name || '' }; }
 
+  // W5-1 — track whether the current rows[] are demo (ghost) rows
+  // seeded for empty-state anchoring. Cleared by clearGhostRows().
+  var __ghostActive = false;
+
   // -------------------- DOM --------------------
   var rowsEl    = document.getElementById('mdRows');
   var addRowBtn = document.getElementById('mdAddRow');
@@ -76,8 +80,9 @@
     if (!rowsEl) return;
     var html = '';
     rows.forEach(function (r, i) {
+      var ghostAttr = r.ghost ? ' data-ghost="1"' : '';
       if (r.kind === 'section') {
-        html += '<tr class="md-row-section" data-i="' + i + '">' +
+        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + '>' +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" /></td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
@@ -95,7 +100,7 @@
             tt('Need help describing? Open Menu Copy Inspector →', '¿Ayuda para describir? Abrir Inspector de Copy →') +
             '</a>';
         }
-        html += '<tr data-i="' + i + '">' +
+        html += '<tr data-i="' + i + '"' + ghostAttr + '>' +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
@@ -420,6 +425,7 @@
 
   function persistDraft() {
     if (!__saveDraftEnabled) return;
+    if (__ghostActive) return;        // W5-1: never save demo rows as the operator's draft
     var ls = safeLs();
     if (!ls) return;
     try {
@@ -516,6 +522,28 @@
       if (!t || !t.dataset || !t.dataset.field) return;
       var i = parseInt(t.dataset.i, 10);
       if (!isFinite(i) || !rows[i]) return;
+      // W5-1 — first keystroke on a ghost row clears the entire
+      // demo and lets the operator's typing land on a fresh blank.
+      if (rows[i].ghost) {
+        var typedField = t.dataset.field;
+        var typedValue = t.value;
+        clearGhostRows();
+        rows.push(blankDish());
+        var newIdx = rows.length - 1;
+        rows[newIdx][typedField] = typedValue;
+        render();
+        // Restore focus + caret on the freshly-rendered input.
+        var fresh = rowsEl.querySelector('[data-field="' + typedField + '"][data-i="' + newIdx + '"]');
+        if (fresh) {
+          fresh.focus();
+          try {
+            var pos = typedValue.length;
+            if (fresh.setSelectionRange) fresh.setSelectionRange(pos, pos);
+          } catch (_) {}
+        }
+        scheduleSaveDraft();
+        return;
+      }
       rows[i][t.dataset.field] = t.value;
       schedulePreview();
       scheduleSaveDraft();    // W5-8
@@ -702,6 +730,61 @@
     { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.' },
     { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.' }
   ];
+
+  // ----------------------------------------------------------------
+  // W5-1 — ghost preview empty state.
+  //
+  // First impression problem: a Menu Design Suite with an empty
+  // editor + empty preview is "I don't know what this thing does."
+  // We seed the editor with SAMPLE_MENU clones flagged ghost=true
+  // and a floating overlay that says "this is a demo — tap any
+  // dish to start your real menu." The first input/click on a
+  // ghost row clears ALL ghost rows in one move so the operator
+  // never has to delete demo rows individually.
+  // ----------------------------------------------------------------
+  function seedGhostRows() {
+    if (rows.length) return false;     // operator already has work
+    if (loadDraft())  return false;    // draft will be offered
+    rows = SAMPLE_MENU.map(function (r) {
+      return Object.assign({}, r, { ghost: true });
+    });
+    __ghostActive = true;
+    return true;
+  }
+
+  function clearGhostRows() {
+    if (!__ghostActive) return;
+    rows = rows.filter(function (r) { return !r.ghost; });
+    __ghostActive = false;
+    var ov = document.getElementById('mdGhostOverlay');
+    if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+    render();
+    if (window.plausible) {
+      try { window.plausible('Menu Design Ghost Cleared'); } catch (_) {}
+    }
+  }
+
+  function renderGhostOverlay() {
+    if (!__ghostActive) return;
+    if (document.getElementById('mdGhostOverlay')) return;
+    if (!rowsEl || !rowsEl.parentNode) return;
+    var ov = document.createElement('div');
+    ov.id = 'mdGhostOverlay';
+    ov.className = 'md-ghost-overlay';
+    ov.innerHTML = '<strong>' +
+      tt('This is a demo.', 'Esto es una demostración.') +
+      '</strong> ' +
+      tt('Tap any dish or "Start fresh" to begin your real menu — the demo will clear instantly.',
+         'Toca cualquier plato o "Empezar de nuevo" para iniciar tu menú real — la demo se borra al instante.') +
+      ' <button type="button" data-act="ghost-start" class="md-ghost-start">' +
+      tt('Start fresh', 'Empezar de nuevo') + '</button>';
+    rowsEl.parentNode.insertBefore(ov, rowsEl);
+    ov.addEventListener('click', function (e) {
+      if (e.target && e.target.getAttribute('data-act') === 'ghost-start') {
+        clearGhostRows();
+      }
+    });
+  }
 
   // -------------------- "We remember" pill (MuntinContext) --------------------
   // Read-only at A1 — surfaces what other tools have already saved
@@ -935,6 +1018,16 @@
   // and the operator hasn't started fresh yet. Runs after the
   // initial render so the banner sits above an empty editor.
   try { offerDraftRestore(); } catch (_) {}
+  // W5-1 — if no draft exists and the editor is still empty after
+  // restore-offer, seed ghost preview rows. First keystroke clears.
+  try {
+    if (!rows.length && !loadDraft()) {
+      if (seedGhostRows()) {
+        render();
+        renderGhostOverlay();
+      }
+    }
+  } catch (_) {}
 
   // Subscribe so changes in another tab (e.g. saving from Menu
   // Engineering) refresh the pill without a manual reload.
