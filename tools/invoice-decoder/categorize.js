@@ -234,12 +234,54 @@
     return { category: winner, confidence: confidence, tier: 'fuzzy', matched: match.term, dist: match.dist };
   }
 
+  // Tier 3 — unit + price-band heuristic for lines neither tier 1
+  // nor tier 2 caught. Restaurant invoices have tight unit-price
+  // distributions per category; e.g. /lb at $4-25 is almost always
+  // protein, /gal at $3-8 with a beverage keyword is beverage.
+  // These rules are conservative: they only fire when both unit
+  // and price-band agree, and confidence stays in the lower amber
+  // band so the verification UX still asks the owner to confirm.
+  // Unit-less lines or lines with no price get null.
+  function tier3Heuristic(row) {
+    if (!row) return null;
+    var unit = String(row.unit || '').toLowerCase();
+    var unitPrice = (typeof row.unitPrice === 'number') ? row.unitPrice : null;
+    if (unitPrice == null && row.lineTotal != null && row.qty) {
+      unitPrice = row.lineTotal / row.qty;
+    }
+    if (unit === 'lb' || unit === 'kg') {
+      if (unitPrice == null) return null;
+      if (unitPrice >= 4 && unitPrice <= 25) return { category: 'protein', confidence: 60, tier: 'heuristic', matched: 'lb $4-25 band' };
+      if (unitPrice >= 8 && unitPrice <= 40) return { category: 'seafood', confidence: 55, tier: 'heuristic', matched: 'lb $8-40 band' };
+      if (unitPrice <  4)                    return { category: 'produce', confidence: 55, tier: 'heuristic', matched: 'lb sub-$4 band' };
+    }
+    if (unit === 'gal' || unit === 'jug') {
+      if (unitPrice == null) return null;
+      if (unitPrice >= 3 && unitPrice <= 12) return { category: 'beverage', confidence: 55, tier: 'heuristic', matched: 'gal $3-12 band' };
+      if (unitPrice >= 5 && unitPrice <= 30) return { category: 'cleaning', confidence: 50, tier: 'heuristic', matched: 'gal $5-30 band' };
+    }
+    if (unit === 'case' || unit === 'cs' || unit === 'bx' || unit === 'box' || unit === 'sleeve') {
+      if (unitPrice == null) return null;
+      // Case-priced items are almost always paper / dry-goods on
+      // restaurant invoices when no name match fired. Bias gently
+      // toward dry-goods since paper has stronger lexicon coverage.
+      if (unitPrice >= 8 && unitPrice <= 80) return { category: 'dry-goods', confidence: 50, tier: 'heuristic', matched: 'case $8-80 band' };
+    }
+    if (unit === 'ea' || unit === 'each' || unit === 'ct' || unit === 'count') {
+      if (unitPrice == null) return null;
+      if (unitPrice >= 0.10 && unitPrice <= 1.50) return { category: 'produce', confidence: 50, tier: 'heuristic', matched: 'each $0.10-1.50 band' };
+    }
+    return null;
+  }
+
   function classify(row) {
     if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none' };
     var t1 = tier1Exact(row.name);
     if (t1) return t1;
     var t2 = tier2Fuzzy(row.name);
     if (t2) return t2;
+    var t3 = tier3Heuristic(row);
+    if (t3) return t3;
     return { category: null, confidence: 0, tier: 'none' };
   }
 
