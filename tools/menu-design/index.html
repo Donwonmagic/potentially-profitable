@@ -509,6 +509,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 @keyframes md-celebrate-rise{from{transform:translateY(20px) scale(.95);opacity:.5}to{transform:none;opacity:1}}
 .md-celebrate-card h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px}
 .md-celebrate-card p{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 20px}
+/* W11-5 — cross-tool nudge in the celebration overlay. Hangs above
+   the action button row; only renders when an unvisited related
+   tool is the natural next step. */
+.md-celebrate-nudge{display:block;margin:0 0 16px;padding:12px 16px;border:1px dashed var(--accent,#1f6f6a);border-radius:10px;background:color-mix(in srgb,var(--accent,#1f6f6a) 5%,var(--cream,#FAF6EE));text-decoration:none;color:var(--ink);text-align:left;transition:background var(--t-fast)}
+.md-celebrate-nudge:hover{background:color-mix(in srgb,var(--accent,#1f6f6a) 10%,var(--cream,#FAF6EE))}
+.md-celebrate-nudge-label{display:block;font-weight:600;color:var(--accent,#1f6f6a);font-size:14px;line-height:1.3;margin-bottom:2px}
+.md-celebrate-nudge-sub{display:block;font-size:12px;color:var(--ink-soft);line-height:1.45}
+
 .md-celebrate-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .md-celebrate-actions button{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;font-weight:500}
 .md-celebrate-actions button[data-act="print"]{background:var(--accent,#1f6f6a);color:#fff}
@@ -998,6 +1006,6 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="./menu-render-pdf.js?v=20260501-w11-4"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w11-4"></script>
+<script src="./menu-design.js?v=20260501-w11-5"></script>
 </body>
 </html>

@@ -2330,6 +2330,63 @@
     try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
     catch (_) { return false; }
   }
+  // W11-5 — Cross-tool nudge selector. Looks at MuntinContext to
+  // figure out which tool the operator hasn't visited yet that would
+  // be the natural next step after generating their menu. Returns
+  // null if no nudge is appropriate (operator has visited all
+  // related tools, or context is empty).
+  function pickCrossToolNudge() {
+    var visited = {};
+    try {
+      if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+        var ctx = MuntinContext.read() || {};
+        if (Array.isArray(ctx.toolsVisited)) {
+          ctx.toolsVisited.forEach(function (t) { visited[t] = true; });
+        }
+      }
+    } catch (_) {}
+    var dishCount = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); }).length;
+    var withDesc = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.desc || '').trim(); }).length;
+    // 1) If many dishes lack descriptions -> Menu Copy Inspector
+    if (dishCount >= 4 && withDesc < dishCount * 0.6 && !visited['menu-copy']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/menu-copy/' : '/tools/menu-copy/',
+        label: tt('Polish your descriptions →', 'Pule las descripciones →'),
+        sub:   tt('Menu Copy Inspector grades and rewrites every line.',
+                  'El Inspector de Copy califica y reescribe cada línea.')
+      };
+    }
+    // 2) If operator has prices on most items -> Menu Engineering
+    var withPrice = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.price || '').trim(); }).length;
+    if (dishCount >= 6 && withPrice >= dishCount * 0.8 && !visited['menu-engineering']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/menu-engineering/' : '/tools/menu-engineering/',
+        label: tt('Score profitability →', 'Califica rentabilidad →'),
+        sub:   tt('Menu Engineering rates each dish on margin + popularity.',
+                  'Menu Engineering puntúa margen + popularidad por plato.')
+      };
+    }
+    // 3) If no logo uploaded -> Brand Suite
+    if (!logoUrl && !visited['brand-suite']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/brand-suite/' : '/tools/brand-suite/',
+        label: tt('Build a brand kit →', 'Crea tu kit de marca →'),
+        sub:   tt('Brand Suite makes a logo + palette + typography you can reuse here.',
+                  'Brand Suite arma logo + paleta + tipografía para reutilizar aquí.')
+      };
+    }
+    // 4) Default -> GBP Grader
+    if (!visited['gbp-grader']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/gbp-grader/' : '/tools/gbp-grader/',
+        label: tt('Update your Google Business Profile →', 'Actualiza tu Perfil de Google →'),
+        sub:   tt('GBP Grader checks if your menu URL + photos are public.',
+                  'GBP Grader revisa si tu URL de menú + fotos son públicas.')
+      };
+    }
+    return null;
+  }
+
   function surfaceDownloadCelebration(filename, pages) {
     if (document.getElementById('mdCelebrate')) return;
     var ov = document.createElement('div');
@@ -2337,6 +2394,12 @@
     ov.className = 'md-celebrate';
     ov.setAttribute('role', 'status');
     ov.setAttribute('aria-live', 'polite');
+    var nudge = pickCrossToolNudge();
+    var nudgeHtml = nudge ?
+      '<a class="md-celebrate-nudge" href="' + escHtml(nudge.url) + '">' +
+        '<span class="md-celebrate-nudge-label">' + escHtml(nudge.label) + '</span>' +
+        '<span class="md-celebrate-nudge-sub">' + escHtml(nudge.sub) + '</span>' +
+      '</a>' : '';
     ov.innerHTML =
       '<div class="md-celebrate-card">' +
         '<h2>' + tt('Your menu is ready.', 'Tu menú está listo.') + '</h2>' +
@@ -2344,6 +2407,7 @@
           pages + (pages === 1 ? ' page' : ' pages') + ' downloaded as ' + filename + '.',
           pages + (pages === 1 ? ' página' : ' páginas') + ' descargadas como ' + filename + '.'
         ) + '</p>' +
+        nudgeHtml +
         '<div class="md-celebrate-actions">' +
           '<button type="button" data-act="print">' + tt('Print from your Mac/PC', 'Imprimir desde tu Mac/PC') + '</button>' +
           '<button type="button" data-act="email">' + tt('Email to your printer', 'Enviar por correo a tu impresor') + '</button>' +
