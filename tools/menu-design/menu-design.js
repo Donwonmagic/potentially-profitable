@@ -118,7 +118,8 @@
   var logoMeta = null;       // { name, w, h } or null
   // W9-3 — menu-level metadata (tagline + chef's note). Both render
   // on the deliverable; both empty by default; both persist to draft.
-  var meta = { tagline: '', story: '' };
+  // W11-3 — coverPage flag on meta for the dedicated cover-page render.
+  var meta = { tagline: '', story: '', coverPage: false };
 
   // W7-3 — paperKey migration. Old drafts wrote 'trifold' / 'tabletent';
   // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
@@ -621,6 +622,7 @@
   // W9-3 — menu-level meta input wiring.
   var metaTaglineEl = document.getElementById('mdMetaTagline');
   var metaStoryEl   = document.getElementById('mdMetaStory');
+  var metaCoverEl   = document.getElementById('mdMetaCoverPage');
   if (metaTaglineEl) metaTaglineEl.addEventListener('input', function () {
     meta.tagline = metaTaglineEl.value || '';
     schedulePreview();
@@ -629,6 +631,12 @@
   if (metaStoryEl) metaStoryEl.addEventListener('input', function () {
     meta.story = metaStoryEl.value || '';
     schedulePreview();
+    scheduleSaveDraft();
+  });
+  // W11-3 — cover-page toggle. Lives on meta so it persists with
+  // the rest of the menu-level metadata.
+  if (metaCoverEl) metaCoverEl.addEventListener('change', function () {
+    meta.coverPage = !!metaCoverEl.checked;
     scheduleSaveDraft();
   });
 
@@ -997,7 +1005,7 @@
         themeId: themeId,
         paperKey: paperKey,
         customDims: paperKey === 'custom' ? customDims : null,
-        meta: { tagline: meta.tagline, story: meta.story },
+        meta: { tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -1072,9 +1080,11 @@
         if (d.meta) {
           meta.tagline = d.meta.tagline || '';
           meta.story   = d.meta.story   || '';
+          meta.coverPage = !!d.meta.coverPage;
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
-          if (meta.tagline || meta.story) {
+          if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+          if (meta.tagline || meta.story || meta.coverPage) {
             var metaEl = document.getElementById('mdMeta');
             if (metaEl) metaEl.open = true;
           }
@@ -1829,6 +1839,7 @@
         title:        title,
         tagline:      meta.tagline,
         story:        meta.story,
+        coverPage:    !!meta.coverPage,
         logoDataUrl:  logoUrl,
         logoMeta:     logoMeta,
         filename:     printVendor ? filename + '-press' : filename,

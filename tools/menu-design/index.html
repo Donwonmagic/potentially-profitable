@@ -93,6 +93,10 @@
 .md-meta-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
 .md-meta-field input,.md-meta-field textarea{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
 .md-meta-field input:focus,.md-meta-field textarea:focus{border-color:var(--teal);outline:none}
+/* W11-3 — cover-page toggle row */
+.md-meta-toggle{margin-top:6px}
+.md-meta-toggle-row{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);min-height:44px;line-height:1.45}
+.md-meta-toggle-row input{margin-top:2px;flex:0 0 auto;accent-color:var(--teal);width:18px;height:18px;cursor:pointer}
 
 /* "We remember" pill — fed by MuntinContext on returning visits. */
 .md-ctx{margin:18px 0 0;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -737,6 +741,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <label for="mdMetaStory">Chef's note / story</label>
           <textarea id="mdMetaStory" rows="3" maxlength="600" placeholder="A short paragraph that opens the menu — your sourcing, your story, your dedication. Renders as italic pull-quote."></textarea>
         </div>
+        <!-- W11-3 — Cover-page toggle. Adds a dedicated first page
+             with a large display title + tagline + ornament. -->
+        <div class="md-meta-field md-meta-toggle">
+          <label class="md-meta-toggle-row">
+            <input type="checkbox" id="mdMetaCoverPage" />
+            <span><strong>Add a cover page</strong> <span class="md-meta-hint">— large display title + tagline + ornament. Recommended for upmarket / fine-dining themes.</span></span>
+          </label>
+        </div>
       </div>
     </details>
 
@@ -965,9 +977,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w10-1"></script>
+<script src="./menu-render-pdf.js?v=20260501-w11-3"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w11-2"></script>
+<script src="./menu-design.js?v=20260501-w11-3"></script>
 </body>
 </html>

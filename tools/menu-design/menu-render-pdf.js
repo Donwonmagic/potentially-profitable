@@ -296,11 +296,145 @@
   // theme)` returning {width, height} and a `draw(x, y, doc, theme)`
   // mutating the page. This shape lets us swap in a column packer
   // later (Wave A4) without touching block draw code.
+  // W11-3 — Per-cuisine vector ornament library. Each ornament is a
+  // small drawing routine that paints into the doc at (x, y, size).
+  // Programmatic vectors keep the bundle small (no SVG ornaments to
+  // ship) while delivering theme-coherent decorative marks.
+  var CUISINE_ORNAMENTS = {
+    'olive-branch': function (doc, x, y, size, color) {
+      // A simple olive branch — stem with three ovals.
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setFillColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.5);
+      doc.line(x - size * 0.5, y, x + size * 0.5, y);
+      // Three olive-shaped fills above/below the stem
+      var leaves = [[-0.35, -0.25], [0.05, 0.3], [0.35, -0.2]];
+      leaves.forEach(function (p) {
+        doc.ellipse(x + size * p[0], y + size * p[1], size * 0.1, size * 0.18, 'F');
+      });
+    },
+    'agave': function (doc, x, y, size, color) {
+      // Agave fronds radiating from a center point.
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setFillColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.6);
+      for (var i = 0; i < 7; i++) {
+        var ang = (Math.PI / 6) * (i - 3);
+        var fx = x + Math.cos(ang) * size * 0.5;
+        var fy = y - Math.sin(ang) * size * 0.45;
+        doc.line(x, y, fx, fy);
+      }
+    },
+    'fish': function (doc, x, y, size, color) {
+      // Tiny fish silhouette — two arcs + tail.
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setFillColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.5);
+      doc.ellipse(x, y, size * 0.4, size * 0.15, 'S');
+      // Tail
+      doc.triangle(x + size * 0.4, y, x + size * 0.6, y - size * 0.18, x + size * 0.6, y + size * 0.18, 'S');
+    },
+    'wheat': function (doc, x, y, size, color) {
+      // Wheat sheaf — central stem with grains.
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.5);
+      doc.line(x, y - size * 0.45, x, y + size * 0.4);
+      // Grains
+      for (var g = 0; g < 4; g++) {
+        var gy = y - size * 0.3 + g * size * 0.18;
+        doc.setFillColor(color.r, color.g, color.b);
+        doc.ellipse(x - size * 0.18, gy, size * 0.06, size * 0.1, 'F');
+        doc.ellipse(x + size * 0.18, gy, size * 0.06, size * 0.1, 'F');
+      }
+    },
+    'wine-glass': function (doc, x, y, size, color) {
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.6);
+      // Bowl
+      doc.ellipse(x, y - size * 0.15, size * 0.25, size * 0.18, 'S');
+      // Stem
+      doc.line(x, y, x, y + size * 0.35);
+      // Foot
+      doc.line(x - size * 0.18, y + size * 0.35, x + size * 0.18, y + size * 0.35);
+    },
+    'coffee-bean': function (doc, x, y, size, color) {
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setFillColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.5);
+      doc.ellipse(x, y, size * 0.3, size * 0.18, 'F');
+      doc.setDrawColor(255, 255, 255);
+      doc.setLineWidth(0.4);
+      doc.line(x - size * 0.2, y, x + size * 0.2, y);
+    },
+    'flame': function (doc, x, y, size, color) {
+      // BBQ flame — three vertical strokes
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setLineWidth(0.6);
+      doc.line(x - size * 0.18, y + size * 0.2, x - size * 0.05, y - size * 0.3);
+      doc.line(x, y + size * 0.2, x, y - size * 0.4);
+      doc.line(x + size * 0.18, y + size * 0.2, x + size * 0.05, y - size * 0.3);
+    },
+    'lemon': function (doc, x, y, size, color) {
+      doc.setDrawColor(color.r, color.g, color.b);
+      doc.setFillColor(color.r, color.g, color.b);
+      doc.ellipse(x, y, size * 0.25, size * 0.18, 'F');
+    },
+    'fleuron': function (doc, x, y, size, color) {
+      // Stylized fleur-de-lis style ornament: three diamonds.
+      doc.setFillColor(color.r, color.g, color.b);
+      var s = size * 0.18;
+      doc.triangle(x, y - s * 1.4, x - s, y - s * 0.4, x + s, y - s * 0.4, 'F');
+      doc.triangle(x, y - s * 1.4, x - s, y - s * 0.4, x + s, y - s * 0.4, 'F');
+      doc.triangle(x - s * 1.2, y, x - s * 0.4, y + s * 0.4, x - s * 0.4, y - s * 0.4, 'F');
+      doc.triangle(x + s * 1.2, y, x + s * 0.4, y + s * 0.4, x + s * 0.4, y - s * 0.4, 'F');
+    },
+    'diamond': function (doc, x, y, size, color) {
+      doc.setFillColor(color.r, color.g, color.b);
+      var s = size * 0.18;
+      doc.triangle(x, y - s, x - s, y, x + s, y, 'F');
+      doc.triangle(x, y + s, x - s, y, x + s, y, 'F');
+    }
+  };
+  function ornamentForTheme(themeId) {
+    // Map theme -> ornament token. Falls back to 'diamond' for any
+    // theme without an explicit pairing.
+    var map = {
+      trattoria:           'olive-branch',
+      cantina:             'agave',
+      'coastal-raw-bar':   'fish',
+      'bistro-paris':      'fleuron',
+      brasserie:           'fleuron',
+      'wine-list-formal':  'wine-glass',
+      'cocktail-deco':     'wine-glass',
+      'cafe-counter':      'coffee-bean',
+      'bakery-coffee':     'wheat',
+      'dessert-only':      'lemon',
+      steakhouse:          'flame',
+      'bbq-smoke':         'flame',
+      'tapas-rustic':      'olive-branch',
+      'gastropub-oak':     'wheat',
+      'plant-forward':     'olive-branch'
+    };
+    return map[themeId] || 'diamond';
+  }
+  function drawCuisineOrnament(doc, themeId, x, y, size, color) {
+    var token = ornamentForTheme(themeId);
+    var fn = CUISINE_ORNAMENTS[token] || CUISINE_ORNAMENTS.diamond;
+    fn(doc, x, y, size, color);
+  }
+
   function buildBlocks(rows, title, logoDataUrl, opts) {
     opts = opts || {};
     var blocks = [];
+    // W11-3 — cover page block. Rendered when opts.coverPage === true
+    // OR when we detect the menu will multi-page. Adds a dedicated
+    // first page with large display-face title, tagline, and an
+    // ornament. The dish flow starts on page 2.
+    if (opts.coverPage) {
+      blocks.push({ kind: 'cover', text: title || 'Menu', tagline: opts.tagline || '', logoSrc: logoDataUrl, themeId: opts.themeId });
+    }
     blocks.push({ kind: 'title', text: title || 'Menu', tagline: opts.tagline || '' });
-    if (logoDataUrl) blocks.push({ kind: 'logo', src: logoDataUrl });
+    if (logoDataUrl && !opts.coverPage) blocks.push({ kind: 'logo', src: logoDataUrl });
     // W9-3 — story block (chef's note / opening blurb). Renders as
     // an italic indented pull-quote between the title and the first
     // section. Operator-supplied via opts.story; empty by default.
@@ -341,6 +475,10 @@
     // very bottom. Renderer no-ops if seenAllergens is empty.
     var keys = Object.keys(seenAllergens);
     if (keys.length) blocks.push({ kind: 'allergen-key', codes: keys });
+    // W11-3 — cuisine ornament closer at the very bottom. Frame-
+    // closing decorative mark at 40% opacity so the menu doesn't
+    // simply trail off after the last dish.
+    blocks.push({ kind: 'footer-ornament', themeId: opts.themeId });
     return blocks;
   }
 
@@ -369,6 +507,11 @@
   // wrapText is jsPDF's splitTextToSize; we measure with doc on a
   // throwaway font/size to honor descender + leading.
   function measureBlock(block, doc, theme, contentWidth) {
+    // W11-3 — Cover-page block consumes the entire page (forces a
+    // page break after rendering). Measurer returns a sentinel
+    // height that always exceeds the available page space so the
+    // paginator addPages a fresh content page after.
+    if (block.kind === 'cover') return Number.MAX_SAFE_INTEGER;
     if (block.kind === 'title') {
       var titleH = theme.h1Pt * 1.4 + 22;
       // W9-3 — tagline adds ~14pt line below the title.
@@ -405,6 +548,9 @@
       }
       return nameH + descH + 6;
     }
+    // W11-3 — footer ornament block. Closes the menu visually with
+    // a small cuisine-specific mark at center, ~40% opacity.
+    if (block.kind === 'footer-ornament') return 36;
     // W7-2 — allergen-key legend block. Wraps onto multiple lines if
     // many codes present; reuse splitTextToSize with the rendered
     // string to get an honest height.
@@ -427,6 +573,44 @@
     var inkRgb     = hexToRgb(theme.ink);
     var mutedRgb   = hexToRgb(theme.muted);
     var accentRgb  = hexToRgb(theme.accent);
+    // W11-3 — Cover page draw routine. Consumes the full page:
+    // top-third logo (if supplied), middle big display title at
+    // 1.8x h1, italic tagline, centered cuisine ornament. Caller
+    // (paginate) detects the sentinel height and triggers addPage()
+    // after to start the dish flow on page 2.
+    if (block.kind === 'cover') {
+      var pageW = doc.internal.pageSize.getWidth();
+      var pageH = doc.internal.pageSize.getHeight();
+      var coverY = pageH * 0.32;
+      // Optional logo
+      if (block.logoSrc && block.logoSrc.indexOf('data:image/svg') !== 0) {
+        try {
+          var lW = Math.min(180, pageW * 0.4);
+          var lH = lW * 0.55;
+          doc.addImage(block.logoSrc, 'PNG', (pageW - lW) / 2, coverY - lH - 16, lW, lH);
+        } catch (_) {}
+      }
+      // Restaurant name in display face at 1.8x h1Pt
+      doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
+      doc.setFontSize(theme.h1Pt * 1.8);
+      doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      doc.text(block.text, pageW / 2, coverY, { align: 'center' });
+      // Tagline (italic accent)
+      if (block.tagline) {
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'italic');
+        doc.setFontSize(theme.descPt * 1.15);
+        doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
+        doc.text(block.tagline, pageW / 2, coverY + 28, { align: 'center' });
+      }
+      // Centered cuisine ornament at the bottom-third
+      drawCuisineOrnament(doc, block.themeId || theme.id, pageW / 2, pageH * 0.72, 36, accentRgb);
+      // Subtle bottom rule
+      doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
+      doc.setLineWidth(0.4);
+      doc.line(pageW * 0.3, pageH * 0.78, pageW * 0.7, pageH * 0.78);
+      // Force the paginator to addPage after this block.
+      return Number.MAX_SAFE_INTEGER;
+    }
     if (block.kind === 'title') {
       doc.setFont(pickPdfFont(theme.displayFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.h1Pt);
@@ -711,6 +895,19 @@
       }
       return nextY + 6;
     }
+    // W11-3 — footer ornament: cuisine-specific mark at 40% opacity,
+    // centered. Frame-closer for the menu.
+    if (block.kind === 'footer-ornament') {
+      var ornY = y + 18;
+      try {
+        if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.4 }));
+      } catch (_) {}
+      drawCuisineOrnament(doc, block.themeId || theme.id, x + contentWidth / 2, ornY, 22, accentRgb);
+      try {
+        if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 }));
+      } catch (_) {}
+      return ornY + 18;
+    }
     // W7-2 — allergen-key legend at the menu footer. Top rule + small
     // wrapped text listing each code = label. Code is rendered in
     // the accent color so it visually echoes the inline glyphs.
@@ -766,6 +963,15 @@
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
+      // W11-3 — Cover page consumes the whole sheet; render then
+      // addPage so the dish flow starts on page 2.
+      if (block.kind === 'cover') {
+        drawBlock(block, contentX, contentY, doc, theme, contentWidth, block._logoMeta);
+        doc.addPage();
+        pageCount++;
+        contentY = margin + bleedOff;
+        return;
+      }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
       // page.
@@ -992,8 +1198,10 @@
         doc.rect(fillX, fillY, fillW, fillH, 'F');
       }
       var blocks = buildBlocks(opts.rows || [], opts.title, opts.logoDataUrl, {
-        tagline: opts.tagline || '',
-        story:   opts.story   || ''
+        tagline:   opts.tagline   || '',
+        story:     opts.story     || '',
+        themeId:   (opts.theme && opts.theme.id) || '',
+        coverPage: !!opts.coverPage
       });
       // Forward logoMeta + locale onto the relevant blocks.
       blocks.forEach(function (b) {
