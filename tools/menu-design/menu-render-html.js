@@ -52,6 +52,28 @@
       .replace(/"/g, '&quot;');
   }
 
+  // W7-2 — allergen catalog mirror. Same shape as the editor catalog
+  // and the PDF renderer, kept minimal here: code → {en, es} label.
+  // Glyph rendering uses the code itself inside a styled pill so we
+  // don't depend on emoji fonts on the operator's host.
+  var HTML_ALLERGENS = {
+    V:  { en: 'Vegan',           es: 'Vegano' },
+    VG: { en: 'Vegetarian',      es: 'Vegetariano' },
+    GF: { en: 'Gluten-free',     es: 'Sin gluten' },
+    DF: { en: 'Dairy-free',      es: 'Sin lácteos' },
+    N:  { en: 'Contains nuts',   es: 'Frutos secos' },
+    E:  { en: 'Contains eggs',   es: 'Huevos' },
+    SO: { en: 'Contains soy',    es: 'Soya' },
+    SF: { en: 'Shellfish',       es: 'Mariscos' },
+    FI: { en: 'Contains fish',   es: 'Pescado' },
+    SE: { en: 'Sesame',          es: 'Sésamo' },
+    LO: { en: 'Locally sourced', es: 'Origen local' }
+  };
+  function allergenLabelHtml(code, locale) {
+    var a = HTML_ALLERGENS[code]; if (!a) return code;
+    return locale === 'es' ? a.es : a.en;
+  }
+
   // -------------------- HTML emitter --------------------
   // Returns a self-contained HTML string. Theme tokens become CSS
   // custom properties; logo (when supplied) is inlined as
@@ -66,6 +88,7 @@
     var allergens = opts.allergens || null; // future-proofed for W6-6
 
     var sectionsHtml = '';
+    var seenCodes = {};
     rows.forEach(function (r) {
       if (!r) return;
       if (r.kind === 'section') {
@@ -74,14 +97,48 @@
         var name  = escHtml(r.name || '');
         var price = escHtml(r.price || '');
         var desc  = escHtml(r.desc || '');
-        var allergenStr = '';
-        if (Array.isArray(r.allergens) && r.allergens.length) {
-          allergenStr = ' <span class="ml-allergens">(' + r.allergens.map(escHtml).join(' · ') + ')</span>';
+        // W7-2 — render allergen + spice glyphs as accessible pill
+        // chips after the dish name. Each chip carries an explicit
+        // aria-label so screen readers announce the full word, not
+        // just the code letters.
+        // W16 — EU FIC Reg. 1169/2011 mandates inline bold uppercase
+        // allergen marks within the description. Triggered when
+        // opts.euAllergenStyle === true OR locale === 'es' (heuristic
+        // for EU/Latam markets).
+        var euAllergens = !!opts.euAllergenStyle || locale === 'es';
+        var glyphHtml = '';
+        var validAllergens = (Array.isArray(r.allergens) ? r.allergens : [])
+          .filter(function (c) { return !!HTML_ALLERGENS[c]; });
+        var spice = (typeof r.spice === 'number' && r.spice > 0 && r.spice <= 3) ? r.spice : 0;
+        if (validAllergens.length || spice) {
+          glyphHtml = ' <span class="ml-glyphs" role="list">';
+          validAllergens.forEach(function (code) {
+            seenCodes[code] = true;
+            var lbl = allergenLabelHtml(code, locale);
+            if (euAllergens) {
+              // Bold uppercase code, no rounded chip — EU convention.
+              glyphHtml += '<strong class="ml-glyph-eu" role="listitem" aria-label="' + escHtml(lbl) + '">' + escHtml(code.toUpperCase()) + '</strong>';
+            } else {
+              // W19 — bespoke SVG glyph in the QR-menu HTML; falls
+              // back to the letter code when MD_GLYPHS isn't available.
+              var inner = (root && root.MD_GLYPHS && root.MD_GLYPHS.has(code))
+                ? root.MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+                : escHtml(code);
+              glyphHtml += '<span class="ml-glyph ml-glyph-svg" role="listitem" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
+            }
+          });
+          if (spice) {
+            var sLbl = (locale === 'es' ? 'Picante nivel ' : 'Spicy level ') + spice;
+            var fire = '';
+            for (var sf = 0; sf < spice; sf++) fire += '🌶';
+            glyphHtml += '<span class="ml-glyph ml-glyph-spice" role="listitem" aria-label="' + escHtml(sLbl) + '">' + fire + '</span>';
+          }
+          glyphHtml += '</span>';
         }
         sectionsHtml +=
           '<div class="ml-dish">' +
             '<div class="ml-row">' +
-              '<div class="ml-name">' + name + allergenStr + '</div>' +
+              '<div class="ml-name">' + name + glyphHtml + '</div>' +
               '<div class="ml-leader" aria-hidden="true"></div>' +
               '<div class="ml-price">' + price + '</div>' +
             '</div>' +
@@ -89,6 +146,31 @@
           '</div>';
       }
     });
+
+    // W7-2 — auto-generated allergen/dietary key legend. Rendered as
+    // a definition list at the menu footer; only appears when at
+    // least one dish carries a code.
+    var keyHtml = '';
+    var seenList = Object.keys(seenCodes);
+    if (seenList.length) {
+      var ordered = ['V','VG','GF','DF','N','E','SO','SF','FI','SE','LO']
+        .filter(function (c) { return seenCodes[c]; });
+      var keyTitle = (locale === 'es') ? 'Clave de alérgenos / dieta' : 'Allergen / dietary key';
+      keyHtml = '<section class="ml-allergen-key" aria-label="' + escHtml(keyTitle) + '">' +
+        '<h2 class="ml-allergen-key-title">' + escHtml(keyTitle) + '</h2>' +
+        '<dl class="ml-allergen-key-list">';
+      ordered.forEach(function (code) {
+        var lbl = allergenLabelHtml(code, locale);
+        var inner = (root && root.MD_GLYPHS && root.MD_GLYPHS.has(code))
+          ? root.MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+          : escHtml(code);
+        keyHtml += '<div class="ml-allergen-key-row">' +
+          '<dt class="ml-allergen-key-glyph ml-allergen-key-glyph-svg">' + inner + '</dt>' +
+          '<dd>' + escHtml(lbl) + '</dd>' +
+          '</div>';
+      });
+      keyHtml += '</dl></section>';
+    }
 
     var bodyFamily    = theme.bodyFamily    || 'Georgia, "Times New Roman", serif';
     var displayFamily = theme.displayFamily || bodyFamily;
@@ -125,6 +207,23 @@
 '  .ml-price{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500}\n' +
 '  .ml-desc{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.5}\n' +
 '  .ml-allergens{font-size:12px;color:var(--accent);font-weight:400;text-transform:lowercase;letter-spacing:.04em}\n' +
+/* W7-2 allergen/spice glyph chips — same monogram pattern as the editor. */
+'  .ml-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}\n' +
+'  .ml-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:16px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1;background:transparent}\n' +
+'  .ml-glyph-svg{padding:1px;width:18px;min-width:18px;height:18px;border-radius:50%}\n' +
+'  .ml-glyph-svg svg{width:14px;height:14px;display:block;stroke:currentColor;fill:none}\n' +
+'  .ml-allergen-key-glyph-svg{padding:1px;width:22px;min-width:22px;height:22px;border-radius:50%}\n' +
+'  .ml-allergen-key-glyph-svg svg{width:14px;height:14px;display:block;stroke:currentColor;fill:none}\n' +
+'  .ml-glyph-spice{border:0;color:inherit;font-size:11.5px;letter-spacing:0;padding:0}\n' +
+/* W16 — EU FIC bold-uppercase allergen mark */
+'  .ml-glyph-eu{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);margin-left:4px;font-size:0.92em}\n' +
+/* W7-2 footer allergen-key block — small two-column list of code → label. */
+'  .ml-allergen-key{margin-top:36px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--accent) 24%,transparent)}\n' +
+'  .ml-allergen-key-title{font-family:var(--display);font-size:14px;font-weight:500;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;text-align:left;border:0;padding:0}\n' +
+'  .ml-allergen-key-list{margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px 14px}\n' +
+'  .ml-allergen-key-row{display:flex;align-items:center;gap:8px;margin:0}\n' +
+'  .ml-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;margin:0;flex:0 0 auto}\n' +
+'  .ml-allergen-key-row dd{margin:0;font-size:13px;color:var(--ink)}\n' +
 '  .ml-foot{text-align:center;font-size:12px;color:var(--muted);padding-top:32px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);margin-top:40px}\n' +
 '</style>\n' +
 '</head>\n' +
@@ -135,6 +234,7 @@
 '    <h1 class="ml-title">' + escHtml(title) + '</h1>\n' +
 '  </header>\n' +
 '  ' + sectionsHtml + '\n' +
+   keyHtml + '\n' +
 '  <footer class="ml-foot">' +
     (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') +
     new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +
@@ -225,11 +325,38 @@
     });
   }
 
+  // -------------------- W16 tablet variant --------------------
+  // Front-of-house tablet display HTML. Locked-zoom 1024x768 layout,
+  // larger type (20pt body), no hover effects, fully kiosk-friendly.
+  // Restaurants pin this on a tablet on the table or near the entry
+  // for guest reference. Reuses the standard exportHtml emitter
+  // with a fixed `display: 'tablet'` flag we honor by injecting an
+  // additional <style> block.
+  function exportHtmlTablet(opts) {
+    opts = opts || {};
+    var standard = exportHtml(opts);
+    var tabletCss = '\n<style>\n' +
+      '@viewport { user-zoom: fixed; }\n' +
+      'html,body{height:100%}\n' +
+      'body{font-size:20px;line-height:1.7;padding:48px 32px;max-width:1024px;margin:0 auto}\n' +
+      '.ml-page{max-width:none}\n' +
+      '.ml-title{font-size:48px}\n' +
+      'h2{font-size:28px;margin-top:48px}\n' +
+      '.ml-name{font-size:22px;font-weight:600}\n' +
+      '.ml-price{font-size:22px}\n' +
+      '.ml-desc{font-size:18px;line-height:1.6}\n' +
+      '.ml-glyph{height:22px;font-size:14px;min-width:32px}\n' +
+      '@media (prefers-color-scheme: dark){body{filter:invert(0.92) hue-rotate(180deg)}.ml-logo,.ml-thumb,img{filter:invert(1) hue-rotate(180deg)}}\n' +
+      '</style>\n</body>';
+    return standard.replace('</body>', tabletCss);
+  }
+
   var api = {
-    exportHtml:    exportHtml,
-    exportQrPng:   exportQrPng,
-    exportZip:     exportZip,
-    loadQrCode:    loadQrCode
+    exportHtml:       exportHtml,
+    exportHtmlTablet: exportHtmlTablet,
+    exportQrPng:      exportQrPng,
+    exportZip:        exportZip,
+    loadQrCode:       loadQrCode
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MD_HTML = api;

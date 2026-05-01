@@ -51,6 +51,61 @@
 .md-walkaway{margin:14px auto 0;max-width:520px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
 .md-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
 
+/* W11-2 — First-run cuisine quiz card. Calm centered card with
+   six large tappable tiles. Disappears once any choice is made
+   or skipped; never re-appears for the same browser unless the
+   draft is fully cleared. */
+.md-quiz{margin:18px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--teal) 4%,var(--white)) 0%,var(--white) 100%);box-shadow:var(--elev-1)}
+.md-quiz[hidden]{display:none}
+.md-quiz-inner{max-width:680px;margin:0 auto}
+.md-quiz-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px;text-align:center}
+.md-quiz-sub{font-size:13px;color:var(--ink-soft);margin:0 0 16px;text-align:center}
+.md-quiz-tiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.md-quiz-tiles{grid-template-columns:repeat(2,1fr)}}
+.md-quiz-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:18px 12px;border:1px solid var(--line);border-radius:12px;background:var(--white);cursor:pointer;font:inherit;font-size:13.5px;color:var(--ink);min-height:96px;transition:transform var(--t-fast),border-color var(--t-fast)}
+.md-quiz-tile:hover{border-color:var(--teal);transform:translateY(-2px);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.md-quiz-tile:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-quiz-tile-glyph{font-size:28px;line-height:1}
+.md-quiz-tile-label{font-weight:600;color:var(--ink)}
+.md-quiz-tile-hint{font-size:11.5px;color:var(--stone);text-align:center;line-height:1.3}
+.md-quiz-skip{display:block;margin:14px auto 0;padding:8px 14px;border:0;background:transparent;color:var(--stone);font:inherit;font-size:12.5px;cursor:pointer;text-decoration:underline}
+.md-quiz-skip:hover{color:var(--teal)}
+
+/* W11-2 — Theme-thumbnail upgrade. Replaces the abstract 4-color
+   swatches with a small canvas-rendered preview that mirrors the
+   operator's actual rows[] in each theme. The picker now reads
+   like Canva's template gallery. */
+.md-theme-thumb{display:block;width:100%;height:120px;margin:8px 0 0;border-radius:6px;background:var(--cream-2);border:1px solid var(--line)}
+.md-theme[data-thumb-loaded="1"] .md-theme-swatches{display:none}
+
+/* W9-3 — menu-level meta block (tagline + chef's note). Calm
+   collapsed surface above the dish grid. */
+.md-meta{margin:18px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--white);overflow:hidden}
+.md-meta[open]{border-color:var(--teal);background:var(--surface-1,var(--white))}
+.md-meta-summary{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);list-style:none;min-height:44px}
+.md-meta-summary::-webkit-details-marker{display:none}
+.md-meta-summary:hover{color:var(--teal)}
+.md-meta[open] .md-meta-summary{color:var(--teal);border-bottom:1px solid var(--line)}
+.md-meta-hint{color:var(--stone);font-weight:400;font-size:12px}
+.md-meta-body{padding:14px 16px}
+.md-meta-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.md-meta-field:last-child{margin-bottom:0}
+.md-meta-field label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.md-meta-field input,.md-meta-field textarea{padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
+.md-meta-field input:focus,.md-meta-field textarea:focus{border-color:var(--teal);outline:none}
+/* W14-2 — nested meta-sub block (address/hours/footer fields) */
+.md-meta-sub{margin-top:8px;border-top:1px dashed var(--line);padding-top:10px}
+.md-meta-sub summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;padding:6px 0;min-height:36px}
+.md-meta-sub summary::-webkit-details-marker{display:none}
+.md-meta-sub summary::before{content:'+ ';color:var(--ink-soft)}
+.md-meta-sub[open] summary::before{content:'\2212  '}
+.md-meta-sub-body{padding:8px 0 0}
+
+/* W11-3 — cover-page toggle row */
+.md-meta-toggle{margin-top:6px}
+.md-meta-toggle-row{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:var(--ink);min-height:44px;line-height:1.45}
+.md-meta-toggle-row input{margin-top:2px;flex:0 0 auto;accent-color:var(--teal);width:18px;height:18px;cursor:pointer}
+
 /* "We remember" pill — fed by MuntinContext on returning visits. */
 .md-ctx{margin:18px 0 0;padding:10px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .md-ctx[hidden]{display:none}
@@ -62,6 +117,24 @@
 .md-ctx-use{margin-left:auto;padding:6px 12px;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .md-ctx-use:hover{background:var(--teal)}
 
+/* W8-1 — Editor toolbar: saved indicator, undo/redo buttons, dish
+   search input. Calm visual weight; left-cluster has the Saved
+   pill, right-cluster has the action chips. */
+.md-toolbar{margin:18px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.md-saved{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-weight:600}
+.md-saved svg{color:var(--stone-2)}
+.md-saved.is-saved svg{color:var(--status-good,#1F6B3A)}
+.md-saved.is-saving svg{color:var(--teal)}
+.md-toolbar-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+.md-tb-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast),color var(--t-fast)}
+.md-tb-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal)}
+.md-tb-btn[disabled]{opacity:.4;cursor:not-allowed}
+.md-tb-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-tb-search{padding:8px 12px;border:1px solid var(--line);border-radius:999px;font:inherit;font-size:13px;width:180px;background:var(--white);color:var(--ink)}
+.md-tb-search:focus{border-color:var(--teal);outline:none}
+.md-tb-search::-webkit-search-cancel-button{cursor:pointer}
+@media(max-width:540px){.md-tb-search{flex:1;min-width:0}}
+
 /* Dish list grid — table on desktop, card-stack on mobile (mirrors plate-cost data-label pattern). */
 .md-grid{margin-top:18px;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden;background:var(--white)}
 .md-grid table{width:100%;border-collapse:collapse}
@@ -69,17 +142,60 @@
 .md-grid th,.md-grid td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 .md-grid input,.md-grid textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
 .md-grid input:focus,.md-grid textarea:focus{border-color:var(--teal);outline:none}
+/* W7-2 — description visibility upgrade. rows="2" baseline grows
+   to ~80px; the two-line placeholder now reads as a real prompt
+   instead of a single-line afterthought. */
+.md-grid textarea.md-input-desc{min-height:54px;line-height:1.45;resize:vertical}
+.md-grid textarea.md-input-desc:focus{min-height:84px}
+.md-cell-desc{position:relative}
 .md-grid .md-row-section td{background:#F7F2E5;border-bottom:1px solid var(--line)}
 .md-grid .md-row-section input{font-family:var(--font-display);font-weight:500;font-size:15px;color:var(--ink);border-color:transparent;background:transparent}
-.md-grid .md-remove{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;border-radius:50%;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center}
+/* W10-2 — bumped touch target from 36x36 to 44x44 to satisfy SC 2.5.5 (AAA) and 2.5.8 (AA, 24x24 minimum). */
+/* W11-1 — drag-handle column. Renders as a 2x4 grip icon at left
+   of each row; HTML5 drag-and-drop on desktop, up/down arrow
+   buttons (rendered next to the handle) for touch / keyboard. */
+.md-grid .md-handle{flex:0 0 auto;width:24px;height:32px;background:transparent;border:0;color:var(--stone-2);cursor:grab;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;padding:0}
+.md-grid .md-handle:hover{color:var(--teal);background:var(--cream-2)}
+.md-grid .md-handle:active,.md-grid .md-handle.is-dragging{cursor:grabbing;color:var(--teal)}
+.md-grid .md-handle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-grid tr[draggable="true"]{cursor:default}
+.md-grid tr.md-drag-over{outline:2px dashed var(--teal);outline-offset:-2px;background:color-mix(in srgb,var(--teal) 6%,var(--white))}
+.md-grid tr.md-drag-source{opacity:.4}
+.md-handle-cell{padding:4px 0 4px 6px !important;width:36px}
+@media(max-width:640px){.md-handle-cell{display:none}}
+
+/* W11-1 — touch reorder buttons (mobile fallback for HTML5 drag). */
+.md-touch-reorder{display:none}
+@media(max-width:640px){
+  .md-touch-reorder{display:flex;gap:4px;justify-content:flex-end;margin-top:6px}
+  .md-touch-reorder button{width:36px;height:36px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font-size:14px}
+  .md-touch-reorder button:hover{border-color:var(--teal);color:var(--teal)}
+  .md-touch-reorder button[disabled]{opacity:.3;cursor:not-allowed}
+}
+
+.md-grid .md-remove{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;border-radius:50%;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
 .md-grid .md-remove:hover{background:var(--cream-2);color:var(--rust)}
 .md-grid-actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line);align-items:center}
-.md-add-row,.md-add-section,.md-clear,.md-sample{padding:7px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent}
+.md-add-row,.md-add-section,.md-clear,.md-sample{padding:11px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent;min-height:44px}
 .md-add-row{border:1px dashed var(--line-dark);color:var(--stone)}
 .md-add-row:hover{border-color:var(--teal);color:var(--teal)}
 .md-add-section{border:1px solid var(--teal);color:var(--teal);background:var(--white)}
 .md-add-section:hover{background:var(--teal);color:var(--cream)}
 .md-sample{border:1px solid var(--line-dark);background:var(--white);color:var(--ink)}
+/* W11-1 — Templates dropdown. <details> reveals a small popover
+   list of cuisine starter packs the operator can load with one tap. */
+.md-templates{position:relative}
+.md-templates summary{padding:11px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent;border:1px solid var(--line-dark);color:var(--ink);list-style:none;min-height:44px;display:inline-flex;align-items:center}
+.md-templates summary::-webkit-details-marker{display:none}
+.md-templates summary::after{content:' ▾';color:var(--stone);margin-left:4px}
+.md-templates[open] summary{border-color:var(--teal);color:var(--teal);background:var(--cream-2)}
+.md-templates-list{position:absolute;top:calc(100% + 4px);left:0;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:var(--elev-2,0 8px 24px rgba(0,0,0,.10));padding:6px;margin:0;list-style:none;z-index:10;width:max(240px,100%)}
+.md-templates-list li{margin:0}
+.md-templates-list button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:8px 10px;border:0;background:transparent;cursor:pointer;border-radius:6px;font:inherit;font-size:13px;color:var(--ink);text-align:left}
+.md-templates-list button:hover{background:var(--cream-2)}
+.md-templates-list button strong{font-weight:600;color:var(--ink)}
+.md-templates-list button span{font-size:11.5px;color:var(--stone)}
+
 .md-clear{border:1px solid var(--line);background:var(--white);color:var(--stone);margin-left:auto}
 .md-clear:hover{border-color:var(--rust);color:var(--rust)}
 
@@ -130,11 +246,44 @@
 @media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
 .md-theme:hover{border-color:var(--teal);transform:translateY(-1px)}
-.md-theme[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
+/* W10-2 — bumped active-state contrast from 22% to a full-opacity
+   ring so SC 1.4.11 (3:1 non-text contrast) passes. */
+.md-theme[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal)}
 .md-theme-name{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink);margin:0 0 4px}
 .md-theme-blurb{font-size:11.5px;color:var(--stone);margin:0;line-height:1.5}
 .md-theme-swatches{display:flex;gap:3px;margin-top:8px}
 .md-theme-swatches span{width:10px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.12)}
+
+/* W12-3 — Theme customizer. Color pickers + paper-texture toggle.
+   Collapsed by default to keep the editor calm. */
+.md-customize{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+.md-customize[open]{border-color:var(--teal)}
+.md-customize-summary{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;min-height:44px}
+.md-customize-summary::-webkit-details-marker{display:none}
+.md-customize-summary:hover{color:var(--teal)}
+.md-customize[open] .md-customize-summary{color:var(--teal);border-bottom:1px solid var(--line)}
+.md-customize-hint{color:var(--stone);font-weight:400;font-size:11.5px}
+.md-customize-body{padding:12px 14px}
+.md-customize-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.md-customize-field{display:flex;flex-direction:column;gap:4px}
+.md-customize-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-customize-field input[type="color"]{width:100%;height:36px;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:2px}
+.md-customize-toggles{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);cursor:pointer;flex:1 1 auto}
+.md-customize-toggle input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
+.md-customize-reset{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
+.md-customize-reset:hover{border-color:var(--rust);color:var(--rust)}
+/* W15 — modifier dropdowns + JSON tools */
+.md-customize-modifiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-mod-field{display:flex;flex-direction:column;gap:4px}
+.md-customize-mod-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-customize-mod-field select{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:var(--white);color:var(--ink)}
+.md-customize-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tool{padding:8px 14px;border:1px solid var(--line-dark);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:12px;font-weight:600;min-height:36px;display:inline-flex;align-items:center;gap:6px}
+.md-customize-tool:hover{border-color:var(--teal);color:var(--teal)}
+.md-customize-tool-import{position:relative;overflow:hidden}
+.md-customize-tool-import input{position:absolute;inset:0;opacity:0;cursor:pointer}
+@media(max-width:640px){.md-customize-modifiers{grid-template-columns:1fr}}
 
 /* Logo + paper-size row. Two compact controls side by side. */
 .md-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
@@ -156,6 +305,49 @@
 .md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
 .md-paper-row input{accent-color:var(--teal)}
 
+/* W7-3 — Paper category-pill + card-grid picker. Replaces the
+   3-radio row. Five horizontal scrollable category pills sit
+   above a responsive grid of paper cards. */
+.md-paper-tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-bottom:10px;scrollbar-width:thin}
+.md-paper-tab{flex:0 0 auto;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color var(--t-fast),color var(--t-fast)}
+.md-paper-tab:hover{border-color:var(--teal);color:var(--teal)}
+.md-paper-tab[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.md-paper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.md-paper-card{position:relative;display:flex;flex-direction:column;gap:4px;padding:10px 12px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);cursor:pointer;font-size:12.5px;color:var(--ink);min-height:88px;transition:border-color var(--t-fast),transform var(--t-fast)}
+.md-paper-card:hover{border-color:var(--teal);transform:translateY(-1px)}
+.md-paper-card[aria-checked="true"]{border-color:var(--teal);box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 24%,transparent)}
+.md-paper-card-name{font-weight:600;color:var(--ink);font-size:12.5px;line-height:1.3}
+.md-paper-card-thumb{margin-top:auto;align-self:flex-start;border:1px solid var(--line-dark);background:var(--cream-2);max-width:48px;max-height:32px}
+.md-paper-card-stock{font-size:10.5px;color:var(--stone);line-height:1.4}
+.md-paper-card-orient{position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--stone-2);text-transform:uppercase}
+.md-paper-custom{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;padding:10px 12px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--cream-2)}
+.md-paper-custom[hidden]{display:none}
+.md-paper-custom label{font-size:12px;color:var(--ink-soft);font-weight:600}
+.md-paper-custom input{width:64px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px}
+.md-paper-custom select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:var(--white)}
+
+/* W10-1 — Print-vendor toggle + readiness checklist. Calm tone;
+   becomes more prominent only when the operator opts in. */
+.md-print-mode{margin:18px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+.md-print-mode-toggle{display:flex;gap:12px;cursor:pointer;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--ink);min-height:44px}
+.md-print-mode-toggle input{margin:2px 0 0;flex:0 0 auto;accent-color:var(--teal);width:18px;height:18px;cursor:pointer}
+.md-print-mode-label{display:flex;flex-direction:column;gap:2px}
+.md-print-mode-label strong{color:var(--ink);font-weight:600}
+.md-print-mode-hint{color:var(--stone);font-size:12.5px}
+.md-print-mode:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.md-print-checklist{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.md-print-checklist[hidden]{display:none}
+.md-print-checklist summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--ink-soft);list-style:none;padding:6px 0}
+.md-print-checklist summary::-webkit-details-marker{display:none}
+.md-print-checklist summary::before{content:'+ ';color:var(--ink-soft)}
+.md-print-checklist[open] summary::before{content:'\2212  '}
+.md-print-checklist ul{list-style:none;margin:6px 0 0;padding:0;font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+.md-print-checklist li{display:flex;gap:8px;align-items:baseline}
+.md-print-checklist li::before{flex:0 0 auto;content:''}
+.md-print-checklist li.ok::before{content:'\2713 ';color:var(--status-good)}
+.md-print-checklist li.warn::before{content:'\26A0 ';color:var(--status-warn-deep,#8A3E16)}
+.md-print-checklist li.fail::before{content:'\2717 ';color:var(--rust)}
+
 /* Preview — HTML/CSS rendering. The PDF renderer (Wave A3) will
    read the same theme tokens; the HTML preview is the canonical
    on-screen representation. The PDF aims to match this 1:1. */
@@ -165,13 +357,75 @@
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
-.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 26px;color:var(--ink);letter-spacing:0}
+/* W15 — Vibe quiz modal. Four-radio-group form that recommends 3 themes. */
+.md-vibequiz{position:fixed;inset:0;z-index:1500;display:flex;align-items:flex-start;justify-content:center;padding:60px 16px}
+.md-vibequiz[hidden]{display:none}
+.md-vibequiz-backdrop{position:absolute;inset:0;background:rgba(20,30,30,.5)}
+.md-vibequiz-card{position:relative;background:var(--white);border-radius:14px;box-shadow:0 28px 64px rgba(0,0,0,.32);width:100%;max-width:520px;padding:24px 26px;animation:md-palette-rise .2s ease}
+.md-vibequiz-card h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px}
+.md-vibequiz-card p{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+.md-vibequiz-form fieldset{border:0;padding:0;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.md-vibequiz-form legend{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin-right:8px;width:100%;padding:0;margin-bottom:4px}
+.md-vibequiz-form label{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);min-height:36px}
+.md-vibequiz-form label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 8%,var(--white));color:var(--teal);font-weight:600}
+.md-vibequiz-form input[type="radio"]{accent-color:var(--teal);width:14px;height:14px}
+.md-vibequiz-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.md-vibequiz-submit{padding:10px 18px;border:0;border-radius:6px;background:var(--ink);color:var(--cream);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.md-vibequiz-submit:hover{background:var(--teal)}
+.md-vibequiz-cancel{padding:10px 14px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);font:inherit;font-size:13px;cursor:pointer}
+.md-vibequiz-results{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.md-vibequiz-results h3{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 10px;text-transform:uppercase}
+.md-vibequiz-results ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.md-vibequiz-results button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);cursor:pointer;font:inherit;font-size:13.5px;color:var(--ink);text-align:left}
+.md-vibequiz-results button:hover{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 5%,var(--white))}
+.md-vibequiz-results button strong{color:var(--ink);font-weight:600}
+.md-vibequiz-results button span{font-size:11.5px;color:var(--stone);margin-left:auto}
+
+/* W12-4 — Cmd-K command palette. Centered modal with searchable
+   action list. Handles up/down/Enter/Esc keys. Linear/Notion-style
+   productivity for the operator. */
+.md-palette{position:fixed;inset:0;z-index:1400;display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 0}
+.md-palette[hidden]{display:none}
+.md-palette-backdrop{position:absolute;inset:0;background:rgba(20,30,30,.5);animation:md-palette-fade .15s ease}
+@keyframes md-palette-fade{from{opacity:0}to{opacity:1}}
+.md-palette-card{position:relative;background:var(--white);border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.32);width:100%;max-width:560px;overflow:hidden;animation:md-palette-rise .2s ease}
+@keyframes md-palette-rise{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+.md-palette-input{width:100%;padding:16px 20px;border:0;border-bottom:1px solid var(--line);font:inherit;font-size:16px;color:var(--ink);background:var(--white);box-sizing:border-box;outline:none}
+.md-palette-list{list-style:none;margin:0;padding:6px;max-height:320px;overflow-y:auto}
+.md-palette-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:6px;cursor:pointer;font-size:14px;color:var(--ink);min-height:40px}
+.md-palette-item.is-active,.md-palette-item:hover{background:var(--cream-2)}
+.md-palette-item-label{flex:1;font-weight:500}
+.md-palette-item-shortcut{font-size:11px;color:var(--stone);background:var(--cream-2);padding:2px 6px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,monospace}
+.md-palette-foot{padding:8px 16px;font-size:11px;color:var(--stone);border-top:1px solid var(--line);text-align:center;margin:0}
+
+/* W12-3 — paper-texture overlay (linen grain) via two crossed
+   hairline-stripe gradients at 4% opacity. Subtle, not pictorial. */
+.md-preview-paper.md-pp-texture{background-image:
+  repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
+  repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);
+  background-color:var(--paper)}
+.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 6px;color:var(--ink);letter-spacing:0}
+/* W9-3 — Tagline + chef's-note story block render between title and first section. */
+.md-preview-paper .md-pp-tagline{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--accent);margin:0 0 18px;font-size:0.86em;letter-spacing:.04em}
+.md-preview-paper .md-pp-story{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--ink);margin:0 auto 28px;padding:14px 0;font-size:0.9em;line-height:1.6;border-top:0.5px solid var(--muted);border-bottom:0.5px solid var(--muted);max-width:80%}
 .md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}
 .md-preview-paper .md-pp-cols{display:grid;gap:0 32px}
 .md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:8px 0;break-inside:avoid}
 .md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
 .md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
 .md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+/* W12-2 — pairing italic line in accent color, modifier muted, half-price inline tag */
+.md-preview-paper .md-pp-pairing{grid-column:1/-1;color:var(--accent);font-size:0.78em;font-style:italic;margin-top:2px;line-height:1.45}
+.md-preview-paper .md-pp-pairing::before{content:'\2737  ';opacity:.7}
+.md-preview-paper .md-pp-modifier{grid-column:1/-1;color:var(--muted);font-size:0.78em;margin-top:1px;line-height:1.45;font-style:normal}
+/* W14-1 — portion + calories suffix */
+.md-preview-paper .md-pp-portion{grid-column:1/-1;color:var(--muted);font-size:0.74em;margin-top:1px;line-height:1.45;letter-spacing:.02em}
+.md-preview-paper .md-pp-half-price{font-size:0.86em;color:var(--muted);font-weight:400}
+/* W12-2 — section enrichments in preview */
+.md-preview-paper .md-pp-section-glyph{font-size:0.85em;color:var(--accent);margin-right:6px;font-weight:400}
+.md-preview-paper .md-pp-section-avail{display:inline-block;margin-left:10px;font-size:0.6em;color:var(--muted);font-weight:400;font-style:italic;vertical-align:middle;letter-spacing:.04em}
+.md-preview-paper .md-pp-section-blurb{text-align:center;font-style:italic;font-size:0.82em;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.md-preview-paper .md-pp-section-specials{border:1px solid var(--accent);padding:6px 14px;background:color-mix(in srgb,var(--accent) 8%,transparent)}
 /* Theme-specific dividers + price styles. */
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section{position:relative;padding:0 22px}
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::before,
@@ -219,6 +473,168 @@
 .md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
 .md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
 @media(max-width:640px){.md-help-desc{display:block;text-align:center}}
+
+/* ==================== W7-2 Allergen + spice UI ====================
+   Per-dish dropdown that lets the operator tag dietary / allergen
+   codes + a 0-3 spice level. Selected codes render as pill chips
+   inline with the dish name in the live preview, the PDF, and the
+   QR-menu HTML. The auto-generated key legend appears at the menu
+   footer when at least one dish carries a code. */
+
+/* Trigger row — sits under the description textarea. Stays unobtrusive
+   until the operator opens it; the chip strip on the right summarizes
+   what's already tagged so the popover is rarely the first stop. */
+.md-allergen-pop{margin-top:8px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--white);overflow:hidden}
+.md-allergen-pop[open]{border-style:solid;border-color:var(--teal);background:var(--cream-2)}
+.md-allergen-trigger{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;min-height:44px;line-height:1.3}
+.md-allergen-trigger::-webkit-details-marker{display:none}
+.md-allergen-pop[open] .md-allergen-trigger{color:var(--teal);border-bottom:1px solid var(--line)}
+.md-allergen-trigger:hover{color:var(--teal)}
+.md-allergen-trigger:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-allergen-icon{flex:0 0 14px;color:currentColor}
+.md-allergen-summary-text{flex:0 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.md-allergen-chip-strip{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:auto}
+/* The chip — small monogram badge. Same shape across editor and
+   preview output; theme tokens override the colors there. */
+.md-chip{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border:1px solid var(--teal);border-radius:999px;background:color-mix(in srgb,var(--teal) 8%,var(--white));color:var(--teal);font-size:10.5px;font-weight:700;letter-spacing:.04em;line-height:1}
+.md-chip-spice{border-color:var(--rust);background:color-mix(in srgb,var(--rust) 8%,var(--white));color:var(--rust);padding:0 4px;letter-spacing:0;font-size:11px}
+/* W19 — SVG-glyph chip variant. Tighter padding + circular shape
+   when the chip carries a bespoke icon instead of a letter. */
+.md-chip-glyph{padding:2px;width:22px;min-width:22px;height:22px;border-radius:50%}
+.md-chip-glyph svg{width:14px;height:14px;display:block}
+
+/* Allergen panel — checkbox grid + spice stepper. Auto-fills the
+   popover width; on mobile it stretches edge-to-edge inside the
+   description cell. */
+.md-allergen-panel{padding:12px 14px 14px}
+.md-allergen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}
+.md-allergen-opt{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--white);font-size:12.5px;color:var(--ink);line-height:1.3;min-height:44px}
+.md-allergen-opt:hover{border-color:var(--teal)}
+.md-allergen-opt.is-on{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 8%,var(--white))}
+.md-allergen-opt input{flex:0 0 auto;width:14px;height:14px;margin:0;accent-color:var(--teal);cursor:pointer}
+.md-allergen-glyph{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:18px;padding:0 5px;border:1px solid currentColor;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--teal)}
+.md-allergen-opt.is-on .md-allergen-glyph{background:var(--teal);color:var(--cream)}
+/* W19 — SVG variant of the allergen-grid glyph slot. Keeps the
+   pill shape but enlarges + centers the icon. */
+.md-allergen-glyph-svg{padding:2px;width:24px;min-width:24px;height:24px;border-radius:50%}
+.md-allergen-glyph-svg svg{width:18px;height:18px;display:block}
+.md-allergen-opt.is-on .md-allergen-glyph-svg{background:var(--teal);color:var(--cream)}
+.md-allergen-label{flex:1 1 auto;display:flex;flex-direction:column;gap:1px;font-weight:600}
+.md-allergen-hint{font-size:11px;font-weight:400;color:var(--stone);line-height:1.4}
+
+/* Spice stepper — 0/1/2/3. Operators tap a level; tapping the same
+   level toggles back to 0. ARIA-pressed mirrors the visual state. */
+.md-spice-row{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-spice-label{font-size:12.5px;color:var(--ink-soft);font-weight:600}
+.md-spice-dot{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-size:14px;cursor:pointer;color:var(--stone);transition:transform var(--t-fast),border-color var(--t-fast)}
+.md-spice-dot:hover{transform:translateY(-1px);border-color:var(--rust)}
+.md-spice-dot.is-on{background:color-mix(in srgb,var(--rust) 12%,var(--white));border-color:var(--rust);color:var(--rust)}
+.md-spice-dot.md-spice-zero{font-size:12px;color:var(--stone-2)}
+.md-spice-dot.md-spice-zero.is-on{background:var(--cream-2);border-color:var(--ink-soft);color:var(--ink-soft)}
+.md-spice-dot:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* W13-2 — dish badges (new / chef pick / seasonal / popular).
+   Toggle pills in the editor; small accent-colored badges on the
+   live preview + PDF deliverable. */
+.md-badges-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-badge-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600;transition:border-color var(--t-fast);min-height:36px}
+.md-badge-pill:hover{border-color:var(--teal);color:var(--teal)}
+.md-badge-pill.is-on{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.md-badge-pill-glyph{font-size:11px;letter-spacing:.04em}
+.md-badge-pill:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Preview + PDF mirror — small chip after the dish name. */
+.md-preview-paper .md-pp-badges{display:inline-flex;gap:4px;margin-right:6px;vertical-align:middle}
+.md-preview-paper .md-pp-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:14px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--paper);font-size:8.5px;font-weight:700;letter-spacing:.06em;line-height:1;text-transform:uppercase}
+.md-preview-paper .md-pp-badge[data-badge="chef"]{background:#C29B5E;color:#1A1814}
+.md-preview-paper .md-pp-badge[data-badge="seasonal"]{background:#4F6B36;color:#FBFAF0}
+.md-preview-paper .md-pp-badge[data-badge="popular"]{background:#B42A23;color:#FAF6EE}
+
+/* W11-4 — per-dish photo controls. Thumbnail in the trigger, full
+   pick/preview/remove inside the popup panel. */
+.md-photo-thumb-mini{display:inline-flex;width:28px;height:20px;border-radius:3px;overflow:hidden;border:1px solid var(--line-dark);margin-left:6px}
+.md-photo-thumb-mini img{width:100%;height:100%;object-fit:cover}
+.md-photo-row{display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-photo-label{font-size:12.5px;color:var(--ink-soft);font-weight:600}
+.md-photo-thumb{display:inline-flex;width:64px;height:48px;border-radius:6px;overflow:hidden;border:1px solid var(--line-dark)}
+.md-photo-thumb img{width:100%;height:100%;object-fit:cover}
+.md-photo-remove{width:32px;height:32px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--stone);cursor:pointer;font-size:18px;line-height:1}
+.md-photo-remove:hover{border-color:var(--rust);color:var(--rust)}
+.md-photo-pick{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--white);cursor:pointer;font-size:12.5px;color:var(--ink-soft);font-weight:600;min-height:44px}
+.md-photo-pick:hover{border-color:var(--teal);color:var(--teal)}
+.md-photo-pick input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+
+/* W13-2 — section hero-image controls in the section-extras body. */
+.md-section-hero{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px dashed var(--line);margin-top:6px}
+.md-section-hero-label{font-size:12px;color:var(--ink-soft);font-weight:600}
+.md-section-hero-thumb{display:inline-flex;width:96px;height:24px;border-radius:4px;overflow:hidden;border:1px solid var(--line-dark)}
+.md-section-hero-thumb img{width:100%;height:100%;object-fit:cover}
+
+/* Preview hero band — full-width 4:1 ratio image at top of section. */
+.md-preview-paper .md-pp-section-hero{display:block;width:100%;aspect-ratio:4/1;object-fit:cover;margin:0 0 14px;border-radius:2px;grid-column:1/-1}
+
+/* W11-4 — preview-side dish photo: 56x56 thumb left of the dish name. */
+.md-preview-paper .md-pp-dish-thumb{display:inline-block;width:56px;height:56px;border-radius:4px;overflow:hidden;margin-right:10px;vertical-align:middle;border:0.5px solid color-mix(in srgb,var(--ink) 16%,transparent)}
+.md-preview-paper .md-pp-dish-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* W12-2 — extra dish/section input fields. Live inside the popover
+   panel for dishes; inside a <details> disclosure for sections. */
+.md-extra-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-extra-field{display:flex;flex-direction:column;gap:3px}
+.md-extra-field-half{grid-column:auto}
+.md-extra-field label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-extra-field input{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;color:var(--ink);background:var(--white);box-sizing:border-box}
+.md-extra-field input:focus{border-color:var(--teal);outline:none}
+@media(max-width:640px){.md-extra-fields{grid-template-columns:1fr}}
+
+/* W12-2 — section-row disclosure for blurb/glyph/availability/specials. */
+.md-section-extras{margin-top:6px;border-top:1px dashed var(--line-dark)}
+.md-section-extras summary{cursor:pointer;font-size:12px;color:var(--ink-soft);font-weight:600;list-style:none;padding:6px 0;min-height:36px;display:flex;align-items:center;gap:6px}
+.md-section-extras summary::-webkit-details-marker{display:none}
+.md-section-extras summary::before{content:'+ ';color:var(--ink-soft)}
+.md-section-extras[open] summary::before{content:'\2212  '}
+.md-section-extras-badge{font-size:11px;color:var(--teal);background:var(--cream-2);padding:2px 8px;border-radius:999px}
+.md-section-extras-body{display:grid;grid-template-columns:1fr 80px 1fr;gap:8px;padding:8px 0}
+@media(max-width:640px){.md-section-extras-body{grid-template-columns:1fr}}
+.md-section-specials{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);cursor:pointer;padding:6px 0;min-height:36px}
+.md-section-specials input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
+
+/* Mobile — popover stays full-width inside the dish card. */
+@media(max-width:640px){
+  .md-allergen-grid{grid-template-columns:1fr}
+  .md-allergen-trigger{flex-wrap:wrap}
+  .md-allergen-chip-strip{margin-left:0;flex-basis:100%;margin-top:4px}
+}
+
+/* ===== Live-preview + PDF-mirroring chip styles ===== */
+/* The preview-paper renders chips after the dish name. They inherit
+   the theme accent so they match the overall palette without a
+   contrast hit on dark stocks. */
+.md-preview-paper .md-pp-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}
+.md-preview-paper .md-pp-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 5px;border:0.6px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);font-size:8.5px;font-weight:700;letter-spacing:.04em;line-height:1;font-family:var(--bodyFamily)}
+/* W19 — SVG variant of the preview chip. Circular border, sized
+   so the icon reads at the menu's body-text scale. */
+.md-preview-paper .md-pp-glyph-svg{padding:1px;width:16px;min-width:16px;height:16px;border-radius:50%}
+.md-preview-paper .md-pp-glyph-svg svg{width:12px;height:12px;display:block}
+.md-preview-paper .md-pp-glyph-spice{border:0;background:transparent;color:inherit;font-size:9.5px;letter-spacing:0;padding:0}
+
+/* Auto-generated allergen key legend at the menu footer. Renders only
+   when at least one dish carries a code. */
+/* W14-2 — restaurant footer (address, hours, sourcing, disclaimer). */
+.md-preview-paper .md-pp-footer{margin-top:30px;padding-top:14px;border-top:0.5px solid color-mix(in srgb,var(--ink) 22%,transparent);text-align:center;font-size:0.74em;color:var(--muted);line-height:1.6}
+.md-preview-paper .md-pp-footer p{margin:0 0 4px}
+.md-preview-paper .md-pp-footer-prompt{font-style:italic;color:var(--accent);font-size:0.92em}
+.md-preview-paper .md-pp-footer-contact{font-weight:600;color:var(--ink);font-size:0.96em}
+.md-preview-paper .md-pp-footer-note{font-size:0.92em}
+.md-preview-paper .md-pp-footer-disclaimer{font-size:0.86em;font-style:italic;margin-top:6px}
+
+.md-preview-paper .md-pp-allergen-key{margin-top:32px;padding-top:14px;border-top:0.6px solid color-mix(in srgb,var(--accent) 24%,transparent);font-size:0.78em;color:var(--muted);line-height:1.7}
+.md-preview-paper .md-pp-allergen-key-label{font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;font-size:0.92em;margin-right:8px}
+.md-preview-paper .md-pp-allergen-key-item{white-space:nowrap}
+.md-preview-paper .md-pp-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 5px;border:0.6px solid var(--accent);border-radius:999px;color:var(--accent);font-weight:700;font-size:0.86em;letter-spacing:.04em;margin-right:2px}
+.md-preview-paper .md-pp-allergen-key-glyph-svg{padding:1px;width:18px;min-width:18px;height:18px;border-radius:50%}
+.md-preview-paper .md-pp-allergen-key-glyph-svg svg{width:12px;height:12px;display:block}
+.md-preview-paper .md-pp-allergen-key-sep{color:var(--muted);opacity:.6}
 /* Last-3-menus history (Wave A4). Quiet card under download. */
 .md-history{margin:18px 0 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
 .md-history[hidden]{display:none}
@@ -262,6 +678,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 @keyframes md-celebrate-rise{from{transform:translateY(20px) scale(.95);opacity:.5}to{transform:none;opacity:1}}
 .md-celebrate-card h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px}
 .md-celebrate-card p{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 20px}
+/* W11-5 — cross-tool nudge in the celebration overlay. Hangs above
+   the action button row; only renders when an unvisited related
+   tool is the natural next step. */
+.md-celebrate-nudge{display:block;margin:0 0 16px;padding:12px 16px;border:1px dashed var(--accent,#1f6f6a);border-radius:10px;background:color-mix(in srgb,var(--accent,#1f6f6a) 5%,var(--cream,#FAF6EE));text-decoration:none;color:var(--ink);text-align:left;transition:background var(--t-fast)}
+.md-celebrate-nudge:hover{background:color-mix(in srgb,var(--accent,#1f6f6a) 10%,var(--cream,#FAF6EE))}
+.md-celebrate-nudge-label{display:block;font-weight:600;color:var(--accent,#1f6f6a);font-size:14px;line-height:1.3;margin-bottom:2px}
+.md-celebrate-nudge-sub{display:block;font-size:12px;color:var(--ink-soft);line-height:1.45}
+
 .md-celebrate-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .md-celebrate-actions button{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;font-weight:500}
 .md-celebrate-actions button[data-act="print"]{background:var(--accent,#1f6f6a);color:#fff}
@@ -470,9 +894,22 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Canva templates assume 12 dishes. Real restaurants have 14, 27, or 53. Type your dishes, pick a theme, drop your logo — we lay it out onto a printable PDF that fits whatever count you have. No design software, no template fight.</p>
-      <p class="md-walkaway"><strong>You leave with:</strong> A printable PDF of your menu — your dishes, your prices, your logo, laid out for whatever count you have.</p>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Canva templates assume 12 dishes. Real restaurants have 14, 27, or 53. Type your dishes, tag allergens, pick a theme, drop your logo — we lay it out onto a printable PDF that fits whatever count you have. No design software, no template fight.</p>
+      <p class="md-walkaway"><strong>You leave with:</strong> A printable PDF of your menu — your dishes, your prices, your logo, dietary &amp; allergen glyphs next to each dish, and an auto-generated allergen key at the footer.</p>
     </div>
+
+    <!-- W11-2 — First-run cuisine quiz. Shown only when the editor
+         is empty AND no draft exists. Six large tiles; one tap
+         picks a fitting theme + suggests a starter template.
+         Replaces the older ghost-rows + overlay pattern. -->
+    <aside class="md-quiz" id="mdQuiz" hidden role="region" aria-labelledby="mdQuizTitle">
+      <div class="md-quiz-inner">
+        <h2 class="md-quiz-title" id="mdQuizTitle">What kind of restaurant is this?</h2>
+        <p class="md-quiz-sub">Pick one — we'll suggest a fitting theme and a starter menu. You can change it later.</p>
+        <ul class="md-quiz-tiles" role="list" id="mdQuizTiles"></ul>
+        <button type="button" class="md-quiz-skip" id="mdQuizSkip">Skip — I'll start from scratch</button>
+      </div>
+    </aside>
 
     <!-- "We remember" pill — populated by MuntinContext from prior tool sessions. -->
     <aside class="md-ctx" id="mdCtx" hidden role="status" aria-live="polite">
@@ -481,15 +918,96 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <button type="button" class="md-ctx-use" id="mdCtxUse">Use these</button>
     </aside>
 
+    <!-- W9-3 — Menu-level metadata: tagline + chef's note / story.
+         Both render on the printed deliverable. Empty by default;
+         no required field. Wraps in a collapsed <details> so the
+         editor surface stays calm for first-time operators. -->
+    <details class="md-meta" id="mdMeta">
+      <summary class="md-meta-summary">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Tagline &amp; chef's note <span class="md-meta-hint">(optional, prints on the deliverable)</span></span>
+      </summary>
+      <div class="md-meta-body">
+        <div class="md-meta-field">
+          <label for="mdMetaTagline">Tagline</label>
+          <input type="text" id="mdMetaTagline" maxlength="100" placeholder="A neighborhood Italian table since 1998." autocomplete="off" />
+        </div>
+        <div class="md-meta-field">
+          <label for="mdMetaStory">Chef's note / story</label>
+          <textarea id="mdMetaStory" rows="3" maxlength="600" placeholder="A short paragraph that opens the menu — your sourcing, your story, your dedication. Renders as italic pull-quote."></textarea>
+        </div>
+        <!-- W11-3 — Cover-page toggle. Adds a dedicated first page
+             with a large display title + tagline + ornament. -->
+        <div class="md-meta-field md-meta-toggle">
+          <label class="md-meta-toggle-row">
+            <input type="checkbox" id="mdMetaCoverPage" />
+            <span><strong>Add a cover page</strong> <span class="md-meta-hint">— large display title + tagline + ornament. Recommended for upmarket / fine-dining themes.</span></span>
+          </label>
+        </div>
+
+        <!-- W14-2 — Restaurant contact + footer fields. All optional;
+             render at the very bottom of the menu when present. -->
+        <details class="md-meta-sub">
+          <summary>Address, hours, footer notes</summary>
+          <div class="md-meta-sub-body">
+            <div class="md-meta-field">
+              <label for="mdMetaAddress">Address</label>
+              <input type="text" id="mdMetaAddress" maxlength="200" placeholder="123 Main St · Anytown, USA · 555-0100" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaHours">Hours</label>
+              <input type="text" id="mdMetaHours" maxlength="200" placeholder="Tue–Sun · 5pm – 10pm · closed Mon" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaServiceCharge">Service / gratuity note</label>
+              <input type="text" id="mdMetaServiceCharge" maxlength="200" placeholder="20% gratuity included on parties of 6+" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaSourcing">Sourcing / origin note</label>
+              <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Sourced from farms within 100 miles of our kitchen" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaDisclaimer">Pricing / allergen disclaimer</label>
+              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Prices subject to change. Please notify your server of any allergies." autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaAskYourServer">Ask-your-server prompt</label>
+              <input type="text" id="mdMetaAskYourServer" maxlength="120" placeholder="Ask your server about today's market fish" autocomplete="off" />
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- W8-1 — toolbar: saved indicator, undo/redo, dish search.
+         Sits above the dish grid so it's the first thing operators
+         see on a populated editor. Quiet visual weight. -->
+    <div class="md-toolbar" id="mdToolbar" role="toolbar" aria-label="Menu editor toolbar">
+      <span class="md-saved" id="mdSaved" aria-live="polite" aria-atomic="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="md-saved-text">Not saved yet</span>
+      </span>
+      <div class="md-toolbar-actions">
+        <button type="button" class="md-tb-btn" id="mdUndoBtn" aria-label="Undo (Cmd-Z)" title="Undo (⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+        </button>
+        <button type="button" class="md-tb-btn" id="mdRedoBtn" aria-label="Redo (Cmd-Shift-Z)" title="Redo (⇧⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></svg>
+        </button>
+        <input type="search" class="md-tb-search" id="mdSearch" placeholder="Search dishes…" aria-label="Filter dishes" autocomplete="off" />
+      </div>
+    </div>
+
     <!-- Dish list (canonical input). Mobile collapses to card-stack via data-label. -->
     <div class="md-grid table-scroll" id="mdGrid">
       <table>
         <thead>
           <tr>
-            <th scope="col" style="width:32%;">Dish</th>
-            <th scope="col" style="width:18%;">Price</th>
+            <th scope="col" style="width:36px;" aria-label="Reorder"></th>
+            <th scope="col" style="width:30%;">Dish</th>
+            <th scope="col" style="width:16%;">Price</th>
             <th scope="col">Description</th>
-            <th scope="col" style="width:36px;"></th>
+            <th scope="col" style="width:44px;"></th>
           </tr>
         </thead>
         <tbody id="mdRows"></tbody>
@@ -498,6 +1016,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <button type="button" class="md-add-row" id="mdAddRow">+ Add a dish</button>
         <button type="button" class="md-add-section" id="mdAddSection">+ Add a section</button>
         <button type="button" class="md-sample" id="mdSample">Load a sample menu</button>
+        <!-- W11-1 — Templates dropdown. Reveals a curated list of
+             cuisine starter packs (Brunch, Wine list, Tasting menu,
+             Cocktail, Kids menu, Dessert) that pre-fill rows[]
+             with realistic shape so operators learn the data model
+             from a working starting point. -->
+        <details class="md-templates">
+          <summary class="md-templates-trigger">Templates</summary>
+          <ul class="md-templates-list" id="mdTemplatesList" role="menu" aria-label="Cuisine starter templates"></ul>
+        </details>
         <button type="button" class="md-clear" id="mdClear">Clear</button>
       </div>
     </div>
@@ -521,6 +1048,81 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <div class="md-themes">
       <p class="md-themes-label">Pick a theme</p>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Menu theme"></ul>
+      <!-- W12-3 — Theme customizer. Collapsed by default; reveals
+           accent/paper color overrides + paper-texture toggle. -->
+      <details class="md-customize" id="mdCustomize">
+        <summary class="md-customize-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          <span>Customize colors &amp; texture <span class="md-customize-hint">(optional)</span></span>
+        </summary>
+        <div class="md-customize-body">
+          <div class="md-customize-grid">
+            <label class="md-customize-field">
+              <span>Accent</span>
+              <input type="color" id="mdCustomAccent" value="#1F4E5B" />
+            </label>
+            <label class="md-customize-field">
+              <span>Paper</span>
+              <input type="color" id="mdCustomPaper" value="#FAF6EE" />
+            </label>
+            <label class="md-customize-field">
+              <span>Ink</span>
+              <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <div class="md-customize-toggles">
+            <label class="md-customize-toggle">
+              <input type="checkbox" id="mdPaperTexture" />
+              <span>Paper texture <span class="md-customize-hint">— subtle linen grain across the menu background</span></span>
+            </label>
+            <button type="button" id="mdCustomizeReset" class="md-customize-reset">Reset to theme default</button>
+          </div>
+          <!-- W15 — modifier dropdowns: seasonal palette, daypart,
+               occasion event. Sparse overrides on top of the active
+               theme's tokens; each dropdown defaults to "None" -->
+          <div class="md-customize-modifiers">
+            <label class="md-customize-mod-field">
+              <span>Season</span>
+              <select id="mdModSeason">
+                <option value="none">None</option>
+                <option value="summer">Summer</option>
+                <option value="autumn">Autumn</option>
+                <option value="winter">Winter</option>
+                <option value="holiday">Holiday</option>
+                <option value="spring">Spring</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Daypart</span>
+              <select id="mdModDaypart">
+                <option value="none">None</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="late-night">Late-night</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Occasion</span>
+              <select id="mdModEvent">
+                <option value="none">None</option>
+                <option value="valentines">Valentine's</option>
+                <option value="mothers-day">Mother's Day</option>
+                <option value="pride">Pride</option>
+                <option value="nye">NYE</option>
+                <option value="halloween">Halloween</option>
+              </select>
+            </label>
+          </div>
+          <!-- W15 — Theme JSON export / import + Vibe quiz launcher -->
+          <div class="md-customize-tools">
+            <button type="button" id="mdThemeExport" class="md-customize-tool">Export theme JSON</button>
+            <label class="md-customize-tool md-customize-tool-import">Import theme JSON
+              <input type="file" id="mdThemeImport" accept="application/json,.json" />
+            </label>
+            <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Vibe quiz →</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- Logo + paper-size row. -->
@@ -539,12 +1141,45 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       </div>
       <div class="md-option">
         <p class="md-option-label">Paper</p>
-        <div class="md-paper-row" id="mdPaperRow" role="radiogroup" aria-label="Paper size">
-          <label><input type="radio" name="md-paper" value="letter" checked /> Letter</label>
-          <label><input type="radio" name="md-paper" value="a4" /> A4</label>
-          <label><input type="radio" name="md-paper" value="half-page" /> Half-page</label>
+        <!-- W7-3 — Category pills above a card grid. The picker
+             scales to 18 paper sizes + custom without overwhelming
+             the viewport. -->
+        <div class="md-paper-tabs" id="mdPaperTabs" role="tablist" aria-label="Paper categories">
+          <button type="button" class="md-paper-tab" role="tab" data-cat="sheet"   aria-selected="true">Sheet</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="folded"  aria-selected="false">Folded</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="table"   aria-selected="false">Table</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="board"   aria-selected="false">Poster / board</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="digital" aria-selected="false">Digital screen</button>
+          <button type="button" class="md-paper-tab" role="tab" data-cat="custom"  aria-selected="false">Custom</button>
+        </div>
+        <div class="md-paper-grid" id="mdPaperRow" role="radiogroup" aria-label="Paper size"></div>
+        <div class="md-paper-custom" id="mdPaperCustom" hidden>
+          <label for="mdPaperCustomW">W</label>
+          <input type="number" id="mdPaperCustomW" min="2" max="50" step="0.25" value="8.5" />
+          <label for="mdPaperCustomH">H</label>
+          <input type="number" id="mdPaperCustomH" min="2" max="50" step="0.25" value="11" />
+          <select id="mdPaperCustomUnit" aria-label="Unit"><option value="in">in</option><option value="mm">mm</option><option value="cm">cm</option><option value="pt">pt</option></select>
         </div>
       </div>
+    </div>
+
+    <!-- W10-1 — Print-vendor mode toggle. Enables 0.125" bleed +
+         crop marks + PDF/X-3 metadata for output the operator can
+         hand to a local print shop. RGB stays tagged sRGB; we don't
+         simulate CMYK in-browser (the press converts using their
+         profile, more accurate than guessing). -->
+    <div class="md-print-mode" id="mdPrintMode">
+      <label class="md-print-mode-toggle">
+        <input type="checkbox" id="mdPrintVendor" />
+        <span class="md-print-mode-label">
+          <strong>Print-vendor mode</strong>
+          <span class="md-print-mode-hint">Adds 0.125&Prime; bleed + crop marks + sRGB tag for your local print shop. Off for screen sharing.</span>
+        </span>
+      </label>
+      <details class="md-print-checklist" id="mdPrintChecklist" hidden>
+        <summary>Press-readiness checklist</summary>
+        <ul id="mdPrintChecklistItems"></ul>
+      </details>
     </div>
 
     <!-- Live preview — same theme tokens the PDF renderer (Wave A3) will read. -->
@@ -559,7 +1194,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
     </div>
 
-    <!-- Download — the deliverable. PDF lands in the user's Downloads. -->
+    <!-- Download — the deliverable. PDF lands in the operator's Downloads. -->
     <div class="md-download">
       <p class="md-download-text"><strong>Ready when you are.</strong> Tap Download to save your menu as a PDF. The file is generated in your browser — nothing uploads.</p>
       <div class="md-download-row">
@@ -575,6 +1210,29 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Large-print version
         </button>
+        <!-- W12-4 — High-contrast variant (yellow-on-black) for low-vision patrons. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Download high-contrast accessibility version">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12c-3 0-5-2-5-5s2-5 5-5z" fill="currentColor"/></svg>
+          High-contrast
+        </button>
+        <!-- W10-2 — accessible / screen-reader-friendly variants. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Download plain text + Markdown">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Plain text / Markdown
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportSsml" aria-label="Download SSML for text-to-speech">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          SSML (audio-ready)
+        </button>
+        <!-- W16 — Braille Ready Format + tablet kiosk HTML. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Download Braille Ready Format (Grade 1)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+          Braille (BRF)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Download tablet kiosk HTML">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Tablet kiosk HTML
+        </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
     </div>
@@ -585,8 +1243,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <!-- What this is / what this isn't — the honesty card. -->
     <div class="md-honesty">
       <h3>What this is, and what it isn't.</h3>
-      <p><strong>Is:</strong> an auto-layout engine for any dish count, four typeset themes, letter / A4 / half-page / trifold / table-tent output, CMYK + bleed for print vendors, RGB for sharing.</p>
-      <p><strong>Isn't:</strong> a copywriter (<a href="/tools/menu-copy/">Menu Copy Inspector</a> grades and rewrites descriptions), a dish-photo generator (<a href="/tools/photo-brief/">Photo Brief</a> handles the shoot), a translator, a profitability rater (<a href="/tools/menu-engineering/">Menu Engineering</a> scores margin), or InDesign. Themes are intentionally constrained so output can't look amateur.</p>
+      <p><strong>Is:</strong> an auto-layout engine for any dish count, 25 typeset themes, 22 paper sizes (letter / A4 / legal / tabloid / half-page / postcard / bi-fold / tri-fold Z / tri-fold gate / table-tent / table-card / placemat / wine-list / A2 board / A1 board / digital screen / custom). Two output flavors: a <strong>Share PDF</strong> (RGB, screen-friendly, sub-1MB) and a <strong>Print-vendor PDF</strong> (0.125&Prime; bleed + crop marks + sRGB-tagged + PDF metadata) — your local print shop will accept this directly. Plus large-print (WCAG AAA at 18pt), QR-menu HTML, plain-text, and SSML accessible variants.</p>
+      <p><strong>Isn't:</strong> a true CMYK separator (commercial offset presses may want CMYK separations from a prepress service — we&rsquo;ll show you how to ask), a copywriter (<a href="/tools/menu-copy/">Menu Copy Inspector</a> grades and rewrites descriptions), a dish-photo generator (<a href="/tools/photo-brief/">Photo Brief</a> handles the shoot), a translator, a profitability rater (<a href="/tools/menu-engineering/">Menu Engineering</a> scores margin), or InDesign. Themes are intentionally constrained so output can't look amateur.</p>
       <p><strong>Privacy posture:</strong> Open DevTools → Network. Type a dish, paste your menu, change theme. The Network tab stays empty. The page is static HTML plus one unminified JavaScript file you can read directly.</p>
     </div>
 
@@ -630,13 +1288,78 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <!-- /tool-knit -->
 </main>
 
+<!-- W15 — Vibe quiz modal. Four short questions; submits a theme
+     recommendation. Replaces the "is your restaurant ___?" abstraction
+     with concrete vibe descriptors. -->
+<div class="md-vibequiz" id="mdVibeQuiz" hidden role="dialog" aria-modal="true" aria-label="Vibe quiz">
+  <div class="md-vibequiz-backdrop" id="mdVibeQuizBackdrop"></div>
+  <div class="md-vibequiz-card">
+    <h2>What's the vibe?</h2>
+    <p>Four quick questions. We'll suggest 3 themes that fit.</p>
+    <form id="mdVibeQuizForm" class="md-vibequiz-form">
+      <fieldset>
+        <legend>Service style</legend>
+        <label><input type="radio" name="vq-service" value="counter" /> Counter / quick</label>
+        <label><input type="radio" name="vq-service" value="table" checked /> Table service</label>
+        <label><input type="radio" name="vq-service" value="fine" /> Fine dining</label>
+      </fieldset>
+      <fieldset>
+        <legend>Feel</legend>
+        <label><input type="radio" name="vq-feel" value="light" checked /> Light / airy</label>
+        <label><input type="radio" name="vq-feel" value="rich" /> Rich / dark</label>
+      </fieldset>
+      <fieldset>
+        <legend>Era</legend>
+        <label><input type="radio" name="vq-era" value="modern" checked /> Modern</label>
+        <label><input type="radio" name="vq-era" value="traditional" /> Traditional</label>
+      </fieldset>
+      <fieldset>
+        <legend>Cuisine bucket</legend>
+        <label><input type="radio" name="vq-cuisine" value="european" /> European</label>
+        <label><input type="radio" name="vq-cuisine" value="american" checked /> American</label>
+        <label><input type="radio" name="vq-cuisine" value="latin" /> Latin / Mexican</label>
+        <label><input type="radio" name="vq-cuisine" value="asian" /> Asian</label>
+      </fieldset>
+      <div class="md-vibequiz-actions">
+        <button type="submit" class="md-vibequiz-submit">Get recommendations</button>
+        <button type="button" class="md-vibequiz-cancel" id="mdVibeQuizCancel">Cancel</button>
+      </div>
+    </form>
+    <div class="md-vibequiz-results" id="mdVibeQuizResults" hidden></div>
+  </div>
+</div>
+
+<!-- W12-4 — Cmd-K command palette. Hidden until invoked. Modal sits
+     above all other content; ESC or backdrop click dismisses. -->
+<div class="md-palette" id="mdPalette" hidden role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="md-palette-backdrop" id="mdPaletteBackdrop"></div>
+  <div class="md-palette-card">
+    <input type="text" class="md-palette-input" id="mdPaletteInput" placeholder="Run a command…" aria-label="Command search" autocomplete="off" />
+    <ul class="md-palette-list" id="mdPaletteList" role="listbox"></ul>
+    <p class="md-palette-foot">↑ ↓ to navigate · Enter to run · Esc to dismiss</p>
+  </div>
+</div>
+
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="./themes.js?v=20260501-a2"></script>
-<script src="./menu-render-pdf.js?v=20260501-a4"></script>
-<script src="./menu-render-html.js?v=20260501-w6-1"></script>
-<script src="./menu-design.js?v=20260501-w6-1"></script>
+<!-- W18 — extracted modules. Load order matters: data + infra first
+     so the orchestrator can read MD_ALLERGENS / MD_BADGES / MD_DOM /
+     MD_I18N globals at parse time. -->
+<script src="./data/allergens.js?v=20260501-w18"></script>
+<script src="./data/badges.js?v=20260501-w18"></script>
+<script src="./data/allergen-glyphs.js?v=20260501-w23"></script>
+<script src="./data/quiz-tiles.js?v=20260501-w22"></script>
+<script src="./data/templates.js?v=20260501-w22"></script>
+<script src="./infra/dom.js?v=20260501-w18"></script>
+<script src="./infra/i18n.js?v=20260501-w18"></script>
+<script src="./state/draft.js?v=20260501-w22"></script>
+<script src="./state/history.js?v=20260501-w22"></script>
+<script src="./themes.js?v=20260501-w15"></script>
+<script src="./menu-render-pdf.js?v=20260501-w23"></script>
+<script src="./menu-render-html.js?v=20260501-w23"></script>
+<script src="./menu-render-text.js?v=20260501-w23"></script>
+<script src="./menu-design.js?v=20260501-w23"></script>
 </body>
 </html>

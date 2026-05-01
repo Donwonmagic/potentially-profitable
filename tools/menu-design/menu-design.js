@@ -7,7 +7,7 @@
  *
  * Privacy posture: zero fetch, zero localStorage writes from this
  * file. All state is in-memory; MuntinContext writes happen only
- * when the user explicitly taps "Use these" (and even then we read,
+ * when the operator explicitly taps "Use these" (and even then we read,
  * not write — Wave A3 starts writing menuHistory). The build-time
  * check-tool-no-fetch.mjs invariant must remain satisfied.
  */
@@ -19,15 +19,64 @@
   // section header rows. The render function projects this into the
   // grid; every interaction mutates this array, then re-renders.
   // Section rows: { kind: 'section', name: string }
-  // Dish rows:    { kind: 'dish', name, price, desc }
+  // Dish rows:    { kind: 'dish', name, price, desc, allergens?, spice? }
+  //
+  // schemaVersion lives on the persisted draft (state/draft) so v1
+  // drafts (lacking allergens) restore cleanly under Object.assign.
   var rows = [];
+  var SCHEMA_VERSION = 2;
 
-  function blankDish() { return { kind: 'dish', name: '', price: '', desc: '' }; }
-  function blankSection(name) { return { kind: 'section', name: name || '' }; }
+  // W12-2 + W13-2 — extended dish + section schemas. New per-dish
+  // fields (pairing, modifier, halfPrice, badges) and per-section
+  // enrichments (blurb, glyph, availability, hero image) all default
+  // to empty so existing drafts continue to round-trip. The renderer
+  // no-ops on empty values.
+  function blankDish() {
+    // W14-1 — additive completionist fields:
+    //   portion: "8 oz", "2 tacos" (free text)
+    //   calories: numeric (FDA-style)
+    //   altName / altDesc: multilingual mirror (renders when locale
+    //                      switches OR when the operator wants to
+    //                      ship a bilingual menu in one PDF)
+    return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
+             pairing: '', modifier: '', halfPrice: '', badges: [],
+             portion: '', calories: '', altName: '', altDesc: '' };
+  }
+  function blankSection(name) {
+    return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '', hero: null };
+  }
+
+  // W18 — Dish badge catalog extracted to data/badges.js.
+  var DISH_BADGES = (typeof MD_BADGES !== 'undefined' && MD_BADGES.BADGES) || [];
+  function badgeById(id) {
+    return (typeof MD_BADGES !== 'undefined') ? MD_BADGES.byId(id) : null;
+  }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
   // seeded for empty-state anchoring. Cleared by clearGhostRows().
   var __ghostActive = false;
+
+  // -------------------- Allergen catalog --------------------
+  // W18 — extracted to data/allergens.js. Read through MD_ALLERGENS
+  // global; fall back to an empty list only if the module didn't
+  // load (which would already block the page).
+  var ALLERGEN_CODES = (typeof MD_ALLERGENS !== 'undefined' && MD_ALLERGENS.CODES) || [];
+  function allergenById(id) {
+    return (typeof MD_ALLERGENS !== 'undefined') ? MD_ALLERGENS.byId(id) : null;
+  }
+  function allergenLabel(id) {
+    return (typeof MD_ALLERGENS !== 'undefined') ? MD_ALLERGENS.label(id, LOCALE) : id;
+  }
+  // Aggregate every code present across rows[] — drives the auto-
+  // generated key legend at the bottom of the menu.
+  function activeAllergenCodes() {
+    var seen = {};
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !Array.isArray(r.allergens)) return;
+      r.allergens.forEach(function (c) { if (allergenById(c)) seen[c] = true; });
+    });
+    return ALLERGEN_CODES.filter(function (a) { return seen[a.id]; }).map(function (a) { return a.id; });
+  }
 
   // -------------------- DOM --------------------
   var rowsEl    = document.getElementById('mdRows');
@@ -69,12 +118,55 @@
   var paperKey = 'letter';
   var logoUrl  = null;       // data: URL string or SVG-text
   var logoMeta = null;       // { name, w, h } or null
+  // W9-3 + W11-3 + W14-2 — menu-level metadata. Renders on the
+  // printed deliverable. All fields optional; renderer no-ops on
+  // empty. Persists in the draft via meta.* keys.
+  var meta = {
+    tagline: '', story: '', coverPage: false,
+    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: ''
+  };
+
+  // W12-3 — theme customizer state. Each field is null when the
+  // operator hasn't customized; otherwise an explicit hex. The
+  // PDF + preview applyCustomizer() helper merges these onto the
+  // active theme tokens before render. paperTexture flag enables
+  // a subtle linen-grain background overlay.
+  var customize = { accent: null, paper: null, ink: null, paperTexture: false };
+
+  function applyCustomizer(theme) {
+    if (!theme) return theme;
+    var out = Object.assign({}, theme);
+    // W15 — apply modifiers FIRST (sparse seasonal/daypart/event
+    // overrides), then layer the operator's explicit color picks
+    // on top so manual overrides always win.
+    if (customize.mods && typeof MD_THEMES !== 'undefined' && typeof MD_THEMES.applyModifier === 'function') {
+      out = MD_THEMES.applyModifier(out, customize.mods);
+    }
+    if (customize.accent) out.accent = customize.accent;
+    if (customize.paper)  out.paper  = customize.paper;
+    if (customize.ink)    out.ink    = customize.ink;
+    return out;
+  }
+
+  // W7-3 — paperKey migration. Old drafts wrote 'trifold' / 'tabletent';
+  // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
+  // Returns a known-good key, falling back to 'letter'.
+  function migratePaperKey(k) {
+    if (typeof MD_PDF === 'undefined' || !MD_PDF.PAPERS) return k;
+    if (k === 'trifold')   return 'trifold-letter-z';
+    if (k === 'tabletent') return 'table-tent';
+    return MD_PDF.PAPERS[k] ? k : 'letter';
+  }
 
   // -------------------- Helpers --------------------
+  // W18 — escHtml extracted to infra/dom.js. Read through the
+  // global MD_DOM module so a single definition serves the whole
+  // tool (was duplicated across 3 files before this wave).
   function escHtml(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    return (typeof MD_DOM !== 'undefined') ? MD_DOM.escHtml(s)
+      : String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
   }
 
   // -------------------- Render --------------------
@@ -83,10 +175,69 @@
     var html = '';
     rows.forEach(function (r, i) {
       var ghostAttr = r.ghost ? ' data-ghost="1"' : '';
+      var draggable = r.ghost ? '' : ' draggable="true"';
+      // W11-1 — drag handle cell + touch up/down arrows.
+      var handleCell = '<td class="md-handle-cell"><button type="button" class="md-handle" data-act="grip" data-i="' + i + '" aria-label="' + tt('Drag to reorder', 'Arrastra para reordenar') + '" tabindex="0">⋮⋮</button></td>';
+      var touchUp = i > 0 ? '' : ' disabled';
+      var touchDn = i < rows.length - 1 ? '' : ' disabled';
+      var touchReorder =
+        '<div class="md-touch-reorder" aria-hidden="false">' +
+          '<button type="button" data-act="moveup" data-i="' + i + '" aria-label="' + tt('Move up', 'Mover arriba') + '"' + touchUp + '>↑</button>' +
+          '<button type="button" data-act="movedn" data-i="' + i + '" aria-label="' + tt('Move down', 'Mover abajo') + '"' + touchDn + '>↓</button>' +
+        '</div>';
       if (r.kind === 'section') {
-        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + '>' +
+        // W12-2 — section enrichments (blurb / glyph / availability)
+        // live behind a "+ details" disclosure so the basic flow
+        // stays simple. Each is optional; renderer no-ops on empty.
+        var hasSecExtras = !!(r.blurb || r.glyph || r.availability);
+        var secExtras =
+          '<details class="md-section-extras" data-i="' + i + '"' + (hasSecExtras ? ' open' : '') + '>' +
+            '<summary class="md-section-extras-trigger">' +
+              tt('Section details', 'Detalles de sección') + ' ' +
+              (hasSecExtras ? '<span class="md-section-extras-badge">' + (r.blurb ? '✎ ' : '') + (r.glyph ? r.glyph + ' ' : '') + (r.availability ? '⏱ ' : '') + '</span>' : '') +
+            '</summary>' +
+            '<div class="md-section-extras-body">' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-blurb-' + i + '">' + tt('Section blurb', 'Descripción de sección') + '</label>' +
+                '<input type="text" id="md-sec-blurb-' + i + '" data-field="blurb" data-i="' + i +
+                  '" value="' + escHtml(r.blurb || '') + '" placeholder="' +
+                  tt('Hand-rolled, made to order', 'Hechos a mano, al momento') + '" />' +
+              '</div>' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-glyph-' + i + '">' + tt('Glyph', 'Símbolo') + '</label>' +
+                '<input type="text" id="md-sec-glyph-' + i + '" data-field="glyph" data-i="' + i +
+                  '" value="' + escHtml(r.glyph || '') + '" placeholder="◆" maxlength="2" />' +
+              '</div>' +
+              '<div class="md-extra-field">' +
+                '<label for="md-sec-avail-' + i + '">' + tt('Availability', 'Disponibilidad') + '</label>' +
+                '<input type="text" id="md-sec-avail-' + i + '" data-field="availability" data-i="' + i +
+                  '" value="' + escHtml(r.availability || '') + '" placeholder="' +
+                  tt('After 5pm · Weekends', 'Después de 5pm · Fines de semana') + '" />' +
+              '</div>' +
+              '<label class="md-section-specials">' +
+                '<input type="checkbox" data-field="specials" data-i="' + i + '"' + (r.specials ? ' checked' : '') + ' />' +
+                ' ' + tt('Treat as a "Today\'s specials" callout', 'Tratar como recuadro de "Especiales de hoy"') +
+              '</label>' +
+              // W13-2 — Hero image per section. Renders as a 4:1 ratio
+              // band above the section's dish flow. Optional upload.
+              '<div class="md-section-hero">' +
+                '<span class="md-section-hero-label">' + tt('Section hero image', 'Imagen hero de sección') + ':</span>' +
+                ((r.hero && r.hero.dataUrl)
+                  ? '<span class="md-section-hero-thumb"><img src="' + escHtml(r.hero.dataUrl) + '" alt="" /></span>' +
+                    '<button type="button" class="md-photo-remove" data-act="hero-remove" data-i="' + i + '" aria-label="' + tt('Remove hero image', 'Quitar imagen') + '">&times;</button>'
+                  : '<label class="md-photo-pick">' +
+                      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> ' +
+                      tt('Add hero image', 'Agregar hero') +
+                      '<input type="file" accept="image/png,image/jpeg,image/webp" data-act="hero-pick" data-i="' + i + '" />' +
+                    '</label>') +
+              '</div>' +
+            '</div>' +
+          '</details>';
+        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + draggable + '>' +
+          handleCell +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
-          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" /></td>' +
+          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" />' +
+          secExtras + touchReorder + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
           '</tr>';
       } else {
@@ -102,21 +253,178 @@
             tt('Need help describing? Open Menu Copy Inspector →', '¿Ayuda para describir? Abrir Inspector de Copy →') +
             '</a>';
         }
-        html += '<tr data-i="' + i + '"' + ghostAttr + '>' +
+        // W7-2 — allergen dropdown trigger + chip strip + spice stepper.
+        // Sits BELOW the description in the same cell so the table
+        // stays a 4-column layout. <details> manages its own open/
+        // close state; we delegate change events on the checkbox grid.
+        var dishAllergens = Array.isArray(r.allergens) ? r.allergens : [];
+        var dishSpice = (typeof r.spice === 'number' && r.spice >= 0 && r.spice <= 3) ? r.spice : 0;
+        // W19 — render the bespoke SVG glyph instead of the letter
+        // monogram inside each chip when the glyph module is loaded.
+        var chipsHtml = dishAllergens.map(function (code) {
+          var a = allergenById(code); if (!a) return '';
+          var lbl = allergenLabel(code);
+          var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+            ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.6 })
+            : escHtml(code);
+          return '<span class="md-chip md-chip-glyph" data-code="' + escHtml(code) + '" title="' + escHtml(lbl) + '" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
+        }).join('');
+        var spiceChip = '';
+        if (dishSpice > 0) {
+          var fire = '';
+          for (var sp = 0; sp < dishSpice; sp++) fire += '🌶';
+          spiceChip = '<span class="md-chip md-chip-spice" aria-label="' + tt('Spicy level ' + dishSpice, 'Picante nivel ' + dishSpice) + '">' + fire + '</span>';
+        }
+        var summary = (dishAllergens.length || dishSpice)
+          ? tt(dishAllergens.length + ' tag' + (dishAllergens.length === 1 ? '' : 's'),
+               dishAllergens.length + ' etiqueta' + (dishAllergens.length === 1 ? '' : 's'))
+          : tt('Add allergens / dietary tags', 'Agregar alérgenos / etiquetas dietarias');
+        var allergenGrid = ALLERGEN_CODES.map(function (a) {
+          var checked = dishAllergens.indexOf(a.id) !== -1 ? ' checked' : '';
+          var label = LOCALE === 'es' ? a.label_es : a.label_en;
+          var hint  = LOCALE === 'es' ? a.hint_es  : a.hint_en;
+          // W19 — bespoke SVG glyph in each option tile, falling back
+          // to the letter code if the glyph module isn't loaded.
+          var glyphInner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(a.id))
+            ? MD_GLYPHS.inlineSvg(a.id, { size: 18, title: label, strokeWidth: 1.6 })
+            : escHtml(a.id);
+          return '<label class="md-allergen-opt' + (checked ? ' is-on' : '') + '" data-code="' + escHtml(a.id) + '">' +
+            '<input type="checkbox" data-act="allergen" data-i="' + i + '" data-code="' + escHtml(a.id) + '"' + checked + ' />' +
+            '<span class="md-allergen-glyph md-allergen-glyph-svg" aria-hidden="true">' + glyphInner + '</span>' +
+            '<span class="md-allergen-label">' + escHtml(label) +
+            (hint ? '<span class="md-allergen-hint">' + escHtml(hint) + '</span>' : '') +
+            '</span></label>';
+        }).join('');
+        var spiceDots = '';
+        for (var sd = 1; sd <= 3; sd++) {
+          spiceDots += '<button type="button" class="md-spice-dot' + (sd <= dishSpice ? ' is-on' : '') +
+            '" data-act="spice" data-i="' + i + '" data-level="' + sd + '" aria-label="' +
+            tt('Spice level ' + sd, 'Picante nivel ' + sd) + '" aria-pressed="' + (sd <= dishSpice) + '">🌶</button>';
+        }
+        // W11-4 — per-dish photo. The thumbnail preview lives inside
+        // the allergen popup panel along with the file input. Drives
+        // both the live preview and the PDF embed (downscaled to
+        // 320px, capped at 80KB before persistence).
+        var photoUrl = (r.photo && r.photo.dataUrl) ? r.photo.dataUrl : null;
+        var photoTrigger = photoUrl
+          ? '<span class="md-photo-thumb-mini" aria-hidden="true"><img src="' + escHtml(photoUrl) + '" alt="" /></span>'
+          : '';
+        var photoBlock =
+          '<div class="md-photo-row">' +
+            '<span class="md-photo-label">' + tt('Photo', 'Foto') + ':</span>' +
+            (photoUrl
+              ? '<span class="md-photo-thumb"><img src="' + escHtml(photoUrl) + '" alt="" /></span><button type="button" class="md-photo-remove" data-act="photo-remove" data-i="' + i + '" aria-label="' + tt('Remove photo', 'Quitar foto') + '">&times;</button>'
+              : '<label class="md-photo-pick">' +
+                  '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> ' +
+                  tt('Add a photo', 'Agregar foto') +
+                  '<input type="file" accept="image/png,image/jpeg,image/webp" data-act="photo-pick" data-i="' + i + '" />' +
+                '</label>'
+            ) +
+          '</div>';
+        var allergenPop =
+          '<details class="md-allergen-pop" data-i="' + i + '">' +
+            '<summary class="md-allergen-trigger">' +
+              '<svg class="md-allergen-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>' +
+              '<span class="md-allergen-summary-text">' + escHtml(summary) + '</span>' +
+              photoTrigger +
+              (chipsHtml ? '<span class="md-allergen-chip-strip">' + chipsHtml + spiceChip + '</span>' : (spiceChip ? '<span class="md-allergen-chip-strip">' + spiceChip + '</span>' : '')) +
+            '</summary>' +
+            '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens, photo, and dietary tags', 'Alérgenos, foto y etiquetas') + '">' +
+              '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
+              '<div class="md-spice-row">' +
+                '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
+                '<button type="button" class="md-spice-dot md-spice-zero' + (dishSpice === 0 ? ' is-on' : '') +
+                  '" data-act="spice" data-i="' + i + '" data-level="0" aria-label="' +
+                  tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
+                spiceDots +
+              '</div>' +
+              photoBlock +
+              // W13-2 — dish badges (new / chef pick / seasonal / popular).
+              // Toggle-pill UI; selected badges render at-a-glance on
+              // the live preview + PDF deliverable.
+              '<div class="md-badges-row">' +
+                '<span class="md-spice-label">' + tt('Badges', 'Etiquetas') + ':</span>' +
+                DISH_BADGES.map(function (b) {
+                  var on = Array.isArray(r.badges) && r.badges.indexOf(b.id) !== -1;
+                  var bLabel = LOCALE === 'es' ? b.label_es : b.label_en;
+                  return '<button type="button" class="md-badge-pill' + (on ? ' is-on' : '') +
+                    '" data-act="badge" data-i="' + i + '" data-badge="' + escHtml(b.id) + '" aria-pressed="' + on + '">' +
+                    '<span class="md-badge-pill-glyph" aria-hidden="true">' + escHtml(b.glyph) + '</span> ' +
+                    escHtml(bLabel) + '</button>';
+                }).join('') +
+              '</div>' +
+              // W12-2 — pairing, modifier, half-price fields. All
+              // optional; renderer no-ops on empty.
+              '<div class="md-extra-fields">' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-pair-' + i + '">' + tt('Pairing', 'Maridaje') + '</label>' +
+                  '<input type="text" id="md-pair-' + i + '" data-field="pairing" data-i="' + i +
+                    '" value="' + escHtml(r.pairing || '') + '" placeholder="' +
+                    tt('Pair with: Sancerre 2022', 'Marida con: Sancerre 2022') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-mod-' + i + '">' + tt('Modifier', 'Modificador') + '</label>' +
+                  '<input type="text" id="md-mod-' + i + '" data-field="modifier" data-i="' + i +
+                    '" value="' + escHtml(r.modifier || '') + '" placeholder="' +
+                    tt('+$3 add chicken · +$2 GF bun', '+$3 con pollo · +$2 pan SG') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-half-' + i + '">' + tt('Half portion', 'Media porción') + '</label>' +
+                  '<input type="text" id="md-half-' + i + '" data-field="halfPrice" data-i="' + i +
+                    '" value="' + escHtml(r.halfPrice || '') + '" placeholder="$8" />' +
+                '</div>' +
+                // W14-1 — portion, calories, altName / altDesc.
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-port-' + i + '">' + tt('Portion', 'Porción') + '</label>' +
+                  '<input type="text" id="md-port-' + i + '" data-field="portion" data-i="' + i +
+                    '" value="' + escHtml(r.portion || '') + '" placeholder="' +
+                    tt('8 oz · 2 tacos', '8 oz · 2 tacos') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field md-extra-field-half">' +
+                  '<label for="md-cal-' + i + '">' + tt('Calories', 'Calorías') + '</label>' +
+                  '<input type="number" id="md-cal-' + i + '" data-field="calories" data-i="' + i +
+                    '" value="' + escHtml(r.calories || '') + '" placeholder="' +
+                    tt('480', '480') + '" min="0" max="9999" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-alt-name-' + i + '">' +
+                    (LOCALE === 'es' ? 'Name (English)' : 'Name (Spanish)') +
+                  '</label>' +
+                  '<input type="text" id="md-alt-name-' + i + '" data-field="altName" data-i="' + i +
+                    '" value="' + escHtml(r.altName || '') + '" placeholder="' +
+                    (LOCALE === 'es' ? 'House bread' : 'Pan de la casa') + '" />' +
+                '</div>' +
+                '<div class="md-extra-field">' +
+                  '<label for="md-alt-desc-' + i + '">' +
+                    (LOCALE === 'es' ? 'Description (English)' : 'Description (Spanish)') +
+                  '</label>' +
+                  '<input type="text" id="md-alt-desc-' + i + '" data-field="altDesc" data-i="' + i +
+                    '" value="' + escHtml(r.altDesc || '') + '" placeholder="' +
+                    tt('Translated description', 'Descripción traducida') + '" />' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</details>';
+
+        html += '<tr data-i="' + i + '"' + ghostAttr + draggable + '>' +
+          handleCell +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
           '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="' + tt('Price', 'Precio') + '" autocomplete="off" /></td>' +
-          '<td data-label="' + tt('Description', 'Descripción') + '"><textarea class="md-input" data-field="desc" data-i="' + i +
-          '" rows="1" placeholder="' + tt('Crisp little gems, buttermilk dressing', 'Hojas tiernas, aderezo de buttermilk') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
-          helpHtml + '</td>' +
+          '<td data-label="' + tt('Description', 'Descripción') + '" class="md-cell-desc"><textarea class="md-input md-input-desc" data-field="desc" data-i="' + i +
+          '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          allergenPop +
+          helpHtml + touchReorder + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
           '</tr>';
       }
     });
     if (!rows.length) {
-      html = '<tr><td colspan="4" style="padding:32px 16px;text-align:center;color:var(--stone);font-size:13.5px;">' +
-        'Your menu is empty. Tap <strong>Add a dish</strong>, paste a spreadsheet above, or load the sample.' +
+      // W21 fix #6 — empty-menu copy now respects locale.
+      html = '<tr><td colspan="5" style="padding:32px 16px;text-align:center;color:var(--stone);font-size:13.5px;">' +
+        tt('Your menu is empty. Tap <strong>Add a dish</strong>, paste a spreadsheet above, or load the sample.',
+           'Tu menú está vacío. Toca <strong>Agregar plato</strong>, pega una hoja arriba, o carga la muestra.') +
         '</td></tr>';
     }
     rowsEl.innerHTML = html;
@@ -207,7 +515,7 @@
       var swatches = [t.paper, t.ink, t.accent, t.muted].map(function (c) {
         return '<span style="background:' + c + '"></span>';
       }).join('');
-      return '<li class="md-theme" role="radio" tabindex="0" aria-checked="' + (id === themeId) + '" data-active="' + (id === themeId) + '" data-id="' + id + '">' +
+      return '<li class="md-theme" role="radio" tabindex="' + (id === themeId ? '0' : '-1') + '" aria-checked="' + (id === themeId) + '" data-active="' + (id === themeId) + '" data-id="' + id + '">' +
         '<p class="md-theme-name">' + escHtml(label) + '</p>' +
         '<p class="md-theme-blurb">' + escHtml(blurb) + '</p>' +
         '<div class="md-theme-swatches">' + swatches + '</div>' +
@@ -221,20 +529,72 @@
       if (!li) return;
       themeId = li.dataset.id;
       renderThemePicker();
+      // W12-3 — when changing theme, sync customizer pickers to the
+      // new theme's defaults (unless operator has already overridden).
+      if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
       renderPreview();
       scheduleSaveDraft();
     });
+    // W10-2 — full keyboard support per APG radiogroup pattern.
+    // Enter / Space = select; ArrowLeft/Right/Up/Down = move focus
+    // and select; Home / End = first / last. Roving tabindex
+    // means only the active radio carries tabindex="0".
     themesEl.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
       var li = e.target.closest('.md-theme');
       if (!li) return;
-      e.preventDefault();
-      themeId = li.dataset.id;
+      var allLis = Array.prototype.slice.call(themesEl.querySelectorAll('.md-theme'));
+      var idx = allLis.indexOf(li);
+      var nextIdx = idx;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        themeId = li.dataset.id;
+        renderThemePicker();
+        renderPreview();
+        scheduleSaveDraft();
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); nextIdx = (idx + 1) % allLis.length; }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); nextIdx = (idx - 1 + allLis.length) % allLis.length; }
+      else if (e.key === 'Home') { e.preventDefault(); nextIdx = 0; }
+      else if (e.key === 'End')  { e.preventDefault(); nextIdx = allLis.length - 1; }
+      else return;
+      themeId = allLis[nextIdx].dataset.id;
       renderThemePicker();
       renderPreview();
       scheduleSaveDraft();
+      // Restore focus to the newly-active radio (renderThemePicker
+      // recreates the list).
+      var freshLis = themesEl.querySelectorAll('.md-theme');
+      if (freshLis[nextIdx]) freshLis[nextIdx].focus();
     });
   }
+  // W10-2 — global keyboard shortcuts: Cmd/Ctrl-S = manual save toast,
+  // Cmd/Ctrl-D = trigger download, Esc = close any open <details>
+  // (allergen popovers, draft banner, paste drawer, meta block).
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      persistDraft();
+      setDownloadMsg(tt('Draft saved.', 'Borrador guardado.'), 'success');
+      return;
+    }
+    if (mod && (e.key === 'd' || e.key === 'D')) {
+      e.preventDefault();
+      if (downloadBtn && !downloadBtn.disabled) downloadBtn.click();
+      return;
+    }
+    if (e.key === 'Escape') {
+      // Close any open details (popovers, banners) — non-destructive.
+      var openDetails = document.querySelectorAll('details[open]');
+      openDetails.forEach(function (d) {
+        if (d.classList.contains('md-allergen-pop') || d.classList.contains('md-meta') ||
+            d.classList.contains('md-paste') || d.classList.contains('md-print-checklist')) {
+          d.open = false;
+        }
+      });
+    }
+  });
 
   // -------------------- Logo upload --------------------
   function setLogoWarn(msg) {
@@ -272,6 +632,12 @@
     scheduleSaveDraft();
   }
 
+  // W18 — downscaleImage extracted to infra/dom.js.
+  function downscaleImage(file, maxDim, quality, cb) {
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.downscaleImage(file, maxDim, quality, cb);
+    return cb && cb(null);
+  }
+
   function readLogoFile(file) {
     if (!file) return;
     if (file.size > 4 * 1024 * 1024) {
@@ -287,6 +653,9 @@
       // SVG: read as text + embed without rasterizing.
       if (file.type === 'image/svg+xml') {
         applyLogo(dataUrl, file.name, null, null);
+        // W13-1 — pre-warm svg2pdf so the first PDF export doesn't
+        // pay a 80KB CDN load on the user-initiated click.
+        try { if (typeof MD_PDF !== 'undefined' && MD_PDF.preloadSvg2Pdf) MD_PDF.preloadSvg2Pdf(); } catch (_) {}
         return;
       }
       // Raster: load to inspect dimensions, then keep as data URL.
@@ -312,16 +681,182 @@
     });
   }
 
-  // -------------------- Paper size --------------------
-  if (paperRow) {
-    paperRow.addEventListener('change', function (e) {
-      if (e.target && e.target.name === 'md-paper') {
-        paperKey = e.target.value;
-        renderPreview();
-        scheduleSaveDraft();
+  // -------------------- Paper size (W7-3) --------------------
+  // Category-pill + card-grid picker driven by the PAPERS catalog
+  // shipped on MD_PDF.PAPERS. Each category renders cards for the
+  // papers whose `cat` matches; clicking a card sets paperKey and
+  // re-renders. Custom dimensions live in their own panel.
+  var paperTabs = document.getElementById('mdPaperTabs');
+  var paperCustom = document.getElementById('mdPaperCustom');
+  var paperCustomW = document.getElementById('mdPaperCustomW');
+  var paperCustomH = document.getElementById('mdPaperCustomH');
+  var paperCustomU = document.getElementById('mdPaperCustomUnit');
+  var customDims = { w: 8.5, h: 11, unit: 'in' };
+  var activePaperCat = 'sheet';
+
+  function renderPaperGrid() {
+    if (!paperRow || typeof MD_PDF === 'undefined') return;
+    var paperRegistry = MD_PDF.PAPERS || {};
+    var keys = Object.keys(paperRegistry);
+    var inCat = keys.filter(function (k) {
+      var p = paperRegistry[k];
+      return (p.cat || 'sheet') === activePaperCat;
+    });
+    if (activePaperCat === 'custom') {
+      paperRow.innerHTML = '';
+      if (paperCustom) paperCustom.hidden = false;
+      return;
+    }
+    if (paperCustom) paperCustom.hidden = true;
+    paperRow.innerHTML = inCat.map(function (k) {
+      var p = paperRegistry[k];
+      var checked = (k === paperKey) ? 'true' : 'false';
+      // Tiny SVG silhouette (proportional to paper).
+      var thumbW = 48; var thumbH = Math.round(thumbW * (p.h / p.w));
+      if (thumbH > 32) { thumbH = 32; thumbW = Math.round(thumbH * (p.w / p.h)); }
+      var thumb = '<svg class="md-paper-card-thumb" width="' + thumbW + '" height="' + thumbH + '" viewBox="0 0 ' + thumbW + ' ' + thumbH + '" aria-hidden="true"><rect x="0.5" y="0.5" width="' + (thumbW - 1) + '" height="' + (thumbH - 1) + '" fill="#FAF7F2" stroke="#9A958B"/></svg>';
+      var orient = p.orient === 'landscape' ? 'LAND' : (p.orient === 'portrait' ? 'PORT' : '');
+      var stockLabel = p.stock ? ('<span class="md-paper-card-stock">' + escHtml(p.stock) + '</span>') : '';
+      return '<button type="button" class="md-paper-card" role="radio" aria-checked="' + checked + '" data-key="' + escHtml(k) + '">' +
+        '<span class="md-paper-card-name">' + escHtml(p.label || k) + '</span>' +
+        stockLabel +
+        '<span class="md-paper-card-orient" aria-hidden="true">' + orient + '</span>' +
+        thumb +
+        '</button>';
+    }).join('');
+  }
+
+  if (paperTabs) {
+    paperTabs.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-cat]'); if (!t) return;
+      activePaperCat = t.dataset.cat;
+      var siblings = paperTabs.querySelectorAll('[data-cat]');
+      for (var i = 0; i < siblings.length; i++) {
+        siblings[i].setAttribute('aria-selected', siblings[i] === t ? 'true' : 'false');
       }
+      renderPaperGrid();
     });
   }
+  if (paperRow) {
+    paperRow.addEventListener('click', function (e) {
+      var card = e.target.closest('[data-key]'); if (!card) return;
+      paperKey = card.dataset.key;
+      var sibs = paperRow.querySelectorAll('[data-key]');
+      for (var i = 0; i < sibs.length; i++) sibs[i].setAttribute('aria-checked', sibs[i] === card ? 'true' : 'false');
+      renderPreview();
+      scheduleSaveDraft();
+    });
+  }
+  function readCustomDims() {
+    if (!paperCustomW || !paperCustomH || !paperCustomU) return;
+    var w = parseFloat(paperCustomW.value); var h = parseFloat(paperCustomH.value);
+    if (!(isFinite(w) && isFinite(h) && w > 0 && h > 0)) return;
+    // W21 fix #5 — explicit per-unit clamp. The HTML inputs declare
+    // min=2 max=50 but those are unit-relative (an operator who
+    // pastes a value or switches unit can land outside the safe
+    // range). Mirror resolvePaper()'s 2"-50" bounds in mm/cm/pt too.
+    var unit = paperCustomU.value || 'in';
+    var bounds = unit === 'mm' ? { min: 50,  max: 1270 }
+              : unit === 'cm' ? { min: 5,   max: 127  }
+              : unit === 'pt' ? { min: 144, max: 3600 }
+              : { min: 2, max: 50 }; // inches default
+    if (w < bounds.min || w > bounds.max || h < bounds.min || h > bounds.max) return;
+    customDims = { w: w, h: h, unit: unit };
+    paperKey = 'custom';
+    renderPreview();
+    scheduleSaveDraft();
+  }
+  if (paperCustomW) paperCustomW.addEventListener('input', readCustomDims);
+  if (paperCustomH) paperCustomH.addEventListener('input', readCustomDims);
+  if (paperCustomU) paperCustomU.addEventListener('change', readCustomDims);
+
+  // Initial render once MD_PDF is available (script loads after PDF
+  // module so this runs at end-of-script init).
+
+  // W10-1 — print-vendor mode state + readiness checklist.
+  var printVendor = false;
+  var printVendorEl = document.getElementById('mdPrintVendor');
+  var printChecklistEl = document.getElementById('mdPrintChecklist');
+  var printChecklistItems = document.getElementById('mdPrintChecklistItems');
+  function renderPrintChecklist() {
+    if (!printChecklistItems) return;
+    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    var paperLabel = (paperInfo && paperInfo.label) || paperKey;
+    var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+    var logoDpiState = 'ok';
+    var logoDpiNote = 'no logo';
+    if (logoUrl && logoMeta && logoMeta.w && logoMeta.h) {
+      var maxDim = Math.max(logoMeta.w, logoMeta.h);
+      if (maxDim < 600) { logoDpiState = 'warn'; logoDpiNote = 'low DPI (' + logoMeta.w + '×' + logoMeta.h + ') — may print soft'; }
+      else { logoDpiNote = 'high DPI (' + logoMeta.w + '×' + logoMeta.h + ')'; }
+    }
+    var items = [
+      { state: 'ok',  text: tt('Paper size: ' + paperLabel,                'Tamaño de papel: ' + paperLabel) },
+      { state: 'ok',  text: tt('Bleed: 0.125" all sides',                  'Sangrado: 0.125\" todos los lados') },
+      { state: 'ok',  text: tt('Crop marks: enabled',                      'Marcas de corte: activas') },
+      { state: 'ok',  text: tt('Color profile: sRGB IEC61966-2.1 (vendor converts to CMYK)',
+                                'Perfil de color: sRGB IEC61966-2.1 (el impresor convierte a CMYK)') },
+      { state: logoDpiState, text: tt('Logo DPI: ' + logoDpiNote, 'DPI del logo: ' + logoDpiNote) },
+      { state: 'ok',  text: tt('Fonts: Fraunces + Inter embedded (or PDF base-14 fallback)',
+                                'Tipos: Fraunces + Inter incrustados (o fallback PDF base-14)') },
+      { state: 'ok',  text: tt('Dish count: ' + dishCount + ' — paginates cleanly',
+                                'Platos: ' + dishCount + ' — pagina limpio') }
+    ];
+    printChecklistItems.innerHTML = items.map(function (it) {
+      return '<li class="' + it.state + '">' + escHtml(it.text) + '</li>';
+    }).join('');
+  }
+  if (printVendorEl) {
+    printVendorEl.addEventListener('change', function () {
+      printVendor = !!printVendorEl.checked;
+      if (printChecklistEl) {
+        printChecklistEl.hidden = !printVendor;
+        printChecklistEl.open = printVendor;
+      }
+      if (printVendor) renderPrintChecklist();
+      scheduleSaveDraft();
+    });
+  }
+
+  // W9-3 — menu-level meta input wiring.
+  var metaTaglineEl = document.getElementById('mdMetaTagline');
+  var metaStoryEl   = document.getElementById('mdMetaStory');
+  var metaCoverEl   = document.getElementById('mdMetaCoverPage');
+  if (metaTaglineEl) metaTaglineEl.addEventListener('input', function () {
+    meta.tagline = metaTaglineEl.value || '';
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+  if (metaStoryEl) metaStoryEl.addEventListener('input', function () {
+    meta.story = metaStoryEl.value || '';
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+  // W11-3 — cover-page toggle. Lives on meta so it persists with
+  // the rest of the menu-level metadata.
+  if (metaCoverEl) metaCoverEl.addEventListener('change', function () {
+    meta.coverPage = !!metaCoverEl.checked;
+    scheduleSaveDraft();
+  });
+  // W14-2 — wire the address/hours/footer fields. Each writes to a
+  // meta.* key, debounces preview + draft save.
+  var metaFooterFields = [
+    ['mdMetaAddress',       'address'],
+    ['mdMetaHours',         'hours'],
+    ['mdMetaServiceCharge', 'serviceCharge'],
+    ['mdMetaSourcing',      'sourcing'],
+    ['mdMetaDisclaimer',    'disclaimer'],
+    ['mdMetaAskYourServer', 'askYourServer']
+  ];
+  metaFooterFields.forEach(function (pair) {
+    var el = document.getElementById(pair[0]);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      meta[pair[1]] = el.value || '';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  });
 
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper
@@ -341,6 +876,8 @@
         if (Array.isArray(ctx.palette) && ctx.palette.length) theme = MD_THEMES.applyPalette(theme, ctx.palette);
       }
     } catch (_) {}
+    // W12-3 — operator overrides from the customizer panel.
+    theme = applyCustomizer(theme);
 
     // Empty state.
     var dishes = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
@@ -365,6 +902,9 @@
     paper.style.setProperty('--ink', theme.ink);
     paper.style.setProperty('--accent', theme.accent);
     paper.style.setProperty('--muted', theme.muted);
+    // W12-3 — paper-texture overlay class
+    if (customize.paperTexture) paper.classList.add('md-pp-texture');
+    else paper.classList.remove('md-pp-texture');
     paper.style.setProperty('--bodyFamily', theme.bodyFamily);
     paper.style.setProperty('--displayFamily', theme.displayFamily);
     paper.style.setProperty('--h1px', theme.h1Pt + 'px');
@@ -380,11 +920,19 @@
     // Group rows[] into [section, dish[]] pairs. Dishes before any
     // section header land in an unnamed group at the top.
     var groups = [];
-    var current = { name: null, dishes: [] };
+    var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false, hero: null };
     rows.forEach(function (r) {
       if (r.kind === 'section') {
         if (current.name !== null || current.dishes.length) groups.push(current);
-        current = { name: (r.name || '').trim(), dishes: [] };
+        current = {
+          name: (r.name || '').trim(),
+          dishes: [],
+          blurb: (r.blurb || '').trim(),
+          glyph: (r.glyph || '').trim(),
+          availability: (r.availability || '').trim(),
+          specials: !!r.specials,
+          hero: r.hero || null
+        };
       } else if ((r.name || '').trim()) {
         current.dishes.push(r);
       }
@@ -405,45 +953,170 @@
     } catch (_) {}
     if (!title) title = tt('Menu', 'Menú');
     html += '<h1 class="md-pp-title">' + escHtml(title) + '</h1>';
+    // W9-3 — tagline + story render between title and first section.
+    if (meta.tagline) {
+      html += '<p class="md-pp-tagline">' + escHtml(meta.tagline) + '</p>';
+    }
+    if (meta.story) {
+      html += '<blockquote class="md-pp-story">' + escHtml(meta.story) + '</blockquote>';
+    }
 
     // Two-column theme: render dishes inside grid, sections span both columns.
     var isTwoCol = theme.columns === 2;
     if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
     groups.forEach(function (g) {
+      // W13-2 — hero band renders before the section header.
+      if (g.hero && g.hero.dataUrl) {
+        html += '<img class="md-pp-section-hero"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') +
+                ' src="' + escHtml(g.hero.dataUrl) + '" alt="" />';
+      }
       if (g.name) {
-        html += '<h2 class="md-pp-section"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' + escHtml(g.name) + '</h2>';
+        var sectionClasses = 'md-pp-section' + (g.specials ? ' md-pp-section-specials' : '');
+        var glyphPrefix = g.glyph ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> ' : '';
+        var availTag = g.availability ? '<span class="md-pp-section-avail">' + escHtml(g.availability) + '</span>' : '';
+        html += '<h2 class="' + sectionClasses + '"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' +
+                glyphPrefix + escHtml(g.name) + availTag +
+                '</h2>';
+        if (g.blurb) {
+          html += '<p class="md-pp-section-blurb"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' + escHtml(g.blurb) + '</p>';
+        }
       }
       g.dishes.forEach(function (d) {
         var name  = (d.name || '').trim();
         var price = (d.price || '').trim();
         var desc  = (d.desc || '').trim();
+        // W7-2 — render allergen + spice glyphs inline after the
+        // dish name. Each chip carries an aria-label so screen
+        // readers say "Vegan" not just "V".
+        var dAllergens = Array.isArray(d.allergens) ? d.allergens : [];
+        var dSpice = (typeof d.spice === 'number' && d.spice > 0) ? d.spice : 0;
+        var glyphsHtml = '';
+        if (dAllergens.length || dSpice) {
+          glyphsHtml = ' <span class="md-pp-glyphs" role="list">';
+          dAllergens.forEach(function (code) {
+            var a = allergenById(code); if (!a) return;
+            var lbl = allergenLabel(code);
+            // W19 — bespoke SVG glyph in preview, fallback to letter.
+            var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+              ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.4 })
+              : escHtml(code);
+            glyphsHtml += '<span class="md-pp-glyph md-pp-glyph-svg" role="listitem" aria-label="' + escHtml(lbl) + '">' + inner + '</span>';
+          });
+          if (dSpice) {
+            var fireGlyph = '';
+            for (var fg = 0; fg < dSpice; fg++) fireGlyph += '🌶';
+            glyphsHtml += '<span class="md-pp-glyph md-pp-glyph-spice" role="listitem" aria-label="' + escHtml(tt('Spicy level ' + dSpice, 'Picante nivel ' + dSpice)) + '">' + fireGlyph + '</span>';
+          }
+          glyphsHtml += '</span>';
+        }
+        // W11-4 — dish photo thumbnail
+        var thumbHtml = (d.photo && d.photo.dataUrl)
+          ? '<span class="md-pp-dish-thumb" aria-hidden="true"><img src="' + escHtml(d.photo.dataUrl) + '" alt="" /></span>'
+          : '';
+        // W13-2 — dish badges rendered inline before the dish name.
+        var badgesHtml = '';
+        if (Array.isArray(d.badges) && d.badges.length) {
+          badgesHtml = '<span class="md-pp-badges">';
+          d.badges.forEach(function (bcode) {
+            var b = badgeById(bcode); if (!b) return;
+            var bL = LOCALE === 'es' ? b.label_es : b.label_en;
+            badgesHtml += '<span class="md-pp-badge" data-badge="' + escHtml(bcode) + '" aria-label="' + escHtml(bL) + '">' + escHtml(b.glyph) + '</span>';
+          });
+          badgesHtml += '</span>';
+        }
+        // W12-2 — pairing / modifier / halfPrice render below desc.
+        var pairing  = (d.pairing  || '').trim();
+        var modifier = (d.modifier || '').trim();
+        var halfPrice = (d.halfPrice || '').trim();
+        var priceHtml = escHtml(price);
+        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' + escHtml(halfPrice) + '</span>';
         html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + escHtml(name) + '</div>';
-        html += '<div class="md-pp-price">' + escHtml(price) + '</div>';
+        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
+        html += '<div class="md-pp-price">' + priceHtml + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        // W14-1 — portion + calories rendered as a small muted suffix.
+        var portionBits = [];
+        if (d.portion)  portionBits.push(escHtml(d.portion));
+        if (d.calories) portionBits.push(escHtml(d.calories) + ' cal');
+        if (portionBits.length) {
+          html += '<div class="md-pp-portion">' + portionBits.join(' &middot; ') + '</div>';
+        }
+        if (pairing)  html += '<div class="md-pp-pairing">' + escHtml(pairing) + '</div>';
+        if (modifier) html += '<div class="md-pp-modifier">' + escHtml(modifier) + '</div>';
         html += '</div>';
       });
     });
     if (isTwoCol) html += '</div>';
 
+    // W14-2 — restaurant contact + footer notes block. Renders before
+    // the allergen-key legend so the legal/sourcing/disclaimer copy
+    // sits below the menu but above the dietary key.
+    var hasFooter = meta.address || meta.hours || meta.serviceCharge || meta.sourcing || meta.disclaimer || meta.askYourServer;
+    if (hasFooter) {
+      html += '<footer class="md-pp-footer">';
+      if (meta.askYourServer) html += '<p class="md-pp-footer-prompt">' + escHtml(meta.askYourServer) + '</p>';
+      var contactBits = [];
+      if (meta.address) contactBits.push(escHtml(meta.address));
+      if (meta.hours)   contactBits.push(escHtml(meta.hours));
+      if (contactBits.length) html += '<p class="md-pp-footer-contact">' + contactBits.join(' &middot; ') + '</p>';
+      var noteBits = [];
+      if (meta.serviceCharge) noteBits.push(escHtml(meta.serviceCharge));
+      if (meta.sourcing)      noteBits.push(escHtml(meta.sourcing));
+      if (noteBits.length) html += '<p class="md-pp-footer-note">' + noteBits.join(' &middot; ') + '</p>';
+      if (meta.disclaimer) html += '<p class="md-pp-footer-disclaimer">' + escHtml(meta.disclaimer) + '</p>';
+      html += '</footer>';
+    }
+
+    // W7-2 — auto-generated allergen-key legend at the menu footer.
+    // Surfaces only when at least one dish carries a code; collects
+    // the unique codes used and prints a comma-separated key. The
+    // legend respects locale (EN/ES labels).
+    var activeCodes = activeAllergenCodes();
+    if (activeCodes.length) {
+      html += '<div class="md-pp-allergen-key" aria-label="' +
+        tt('Allergen and dietary key', 'Clave de alérgenos y dieta') + '">' +
+        '<span class="md-pp-allergen-key-label">' +
+        tt('Allergen / dietary key', 'Clave de alérgenos / dieta') + ':</span> ';
+      activeCodes.forEach(function (code, ai) {
+        var a = allergenById(code); if (!a) return;
+        var lbl = LOCALE === 'es' ? a.label_es : a.label_en;
+        // W19 — render the bespoke SVG in the legend too so editor /
+        // preview / PDF all read with the same iconography.
+        var inner = (typeof MD_GLYPHS !== 'undefined' && MD_GLYPHS.has(code))
+          ? MD_GLYPHS.inlineSvg(code, { size: 14, title: lbl, strokeWidth: 1.5 })
+          : escHtml(code);
+        html += '<span class="md-pp-allergen-key-item">' +
+          '<span class="md-pp-allergen-key-glyph md-pp-allergen-key-glyph-svg">' + inner + '</span>' +
+          ' = ' + escHtml(lbl) + '</span>';
+        if (ai < activeCodes.length - 1) html += '<span class="md-pp-allergen-key-sep" aria-hidden="true"> · </span>';
+      });
+      html += '</div>';
+    }
+
     paper.innerHTML = html;
 
     if (previewMeta) {
-      var paperLabel = paperKey === 'a4' ? 'A4' : paperKey === 'half-page' ? tt('Half-page', 'Media') : tt('Letter', 'Carta');
+      var paperLabel = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey] && MD_PDF.PAPERS[paperKey].label) || paperKey;
       previewMeta.textContent = paperLabel + ' · ' + dishes.length + ' ' + tt('dishes', 'platos');
     }
 
-    // Heuristic overflow warn — purely advisory at A2; PDF renderer
-    // does the real flow check in Wave A3. Trigger when dish count
-    // > a threshold for the chosen theme + paper.
+    // Heuristic overflow warn — purely advisory; the PDF renderer
+    // does the real flow check on export. Threshold scales with
+    // paper area and column count.
     var threshold = (theme.columns === 2) ? 32 : 18;
-    if (paperKey === 'half-page') threshold = Math.round(threshold * 0.55);
+    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    if (paperInfo) {
+      var areaRatio = (paperInfo.w * paperInfo.h) / (612 * 792); // vs Letter
+      threshold = Math.max(6, Math.round(threshold * Math.max(0.45, areaRatio)));
+      if (paperInfo.flow === 'panel') threshold = (paperInfo.panels || 6) * 5; // ~5 dishes per inside panel
+    }
     if (overflowEl) {
       if (dishes.length > threshold) {
         overflowEl.hidden = false;
+        var ovLabel = (paperInfo && paperInfo.label) || paperKey;
         overflowEl.textContent = tt(
-          'Your menu has ' + dishes.length + ' dishes — likely two pages on ' + paperLabel + '. The PDF will paginate cleanly when you export.',
-          'Tu menú tiene ' + dishes.length + ' platos — probablemente dos páginas en ' + paperLabel + '. El PDF paginará limpio al exportar.'
+          'Your menu has ' + dishes.length + ' dishes — may overflow on ' + ovLabel + '. The PDF will paginate cleanly when you export.',
+          'Tu menú tiene ' + dishes.length + ' platos — puede desbordarse en ' + ovLabel + '. El PDF paginará limpio al exportar.'
         );
       } else {
         overflowEl.hidden = true;
@@ -475,13 +1148,17 @@
   // dismissable "Pick up where you left off?" affordance instead of
   // overwriting silently.
   // ----------------------------------------------------------------
-  var DRAFT_KEY = 'mtn:menu-design:draft';
-  var LOGO_KEY  = 'mtn:menu-design:logo';
+  // W22 — draft persistence + safeLs probe extracted to state/draft.js.
+  // Keep these constants for back-compat with any helpers that still
+  // reference them inline (they alias the same keys).
+  var DRAFT_KEY = (typeof MD_DRAFT !== 'undefined') ? MD_DRAFT.DRAFT_KEY : 'mtn:menu-design:draft';
+  var LOGO_KEY  = (typeof MD_DRAFT !== 'undefined') ? MD_DRAFT.LOGO_KEY  : 'mtn:menu-design:logo';
   var LOGO_BUDGET = 200 * 1024; // 200KB
   var __saveTimer = null;
   var __saveDraftEnabled = true;
 
   function safeLs() {
+    if (typeof MD_DRAFT !== 'undefined') return MD_DRAFT.safeLs();
     try {
       var probe = '__md_probe__';
       localStorage.setItem(probe, probe); // h8-exempt: storage probe
@@ -490,16 +1167,382 @@
     } catch (_) { return null; }
   }
 
+  // W8-1 — saved-state indicator UI driven by the autosave cycle.
+  var savedEl = document.getElementById('mdSaved');
+  var savedText = savedEl ? savedEl.querySelector('.md-saved-text') : null;
+  var __lastSavedTs = 0;
+  function updateSavedIndicator(state) {
+    if (!savedEl || !savedText) return;
+    savedEl.classList.remove('is-saved', 'is-saving');
+    if (state === 'saving') {
+      savedEl.classList.add('is-saving');
+      savedText.textContent = tt('Saving…', 'Guardando…');
+    } else if (state === 'saved') {
+      __lastSavedTs = Date.now();
+      savedEl.classList.add('is-saved');
+      savedText.textContent = tt('Saved just now', 'Guardado ahora');
+    } else if (state === 'tick') {
+      // Periodic refresh — show "Saved 12s ago" / "Saved 3m ago".
+      if (!__lastSavedTs) return;
+      savedEl.classList.add('is-saved');
+      var ago = Math.max(1, Math.round((Date.now() - __lastSavedTs) / 1000));
+      var label;
+      if (ago < 60) label = tt('Saved ' + ago + 's ago', 'Guardado hace ' + ago + 's');
+      else if (ago < 3600) label = tt('Saved ' + Math.round(ago/60) + 'm ago', 'Guardado hace ' + Math.round(ago/60) + 'm');
+      else label = tt('Saved a while ago', 'Guardado hace rato');
+      savedText.textContent = label;
+    }
+  }
+  // Periodic refresher every 15s so the "Saved Xs ago" string ages.
+  setInterval(function () { updateSavedIndicator('tick'); }, 15000);
+
+  // W8-1 — undo/redo stack. Snapshot rows + key UI state on every
+  // committed mutation; cap at 50. Cmd-Z / Cmd-Shift-Z bound at the
+  // document keydown handler from W10-2.
+  var __undoStack = [];
+  var __redoStack = [];
+  var UNDO_CAP = 50;
+  var undoBtn = document.getElementById('mdUndoBtn');
+  var redoBtn = document.getElementById('mdRedoBtn');
+  function snapshot() {
+    return {
+      rows: rows.map(function (r) { return Object.assign({}, r); }),
+      themeId: themeId,
+      paperKey: paperKey,
+      meta: { tagline: meta.tagline, story: meta.story }
+    };
+  }
+  function applySnapshot(snap) {
+    if (!snap) return;
+    rows = (snap.rows || []).map(function (r) { return Object.assign({}, r); });
+    themeId = snap.themeId || themeId;
+    paperKey = snap.paperKey || paperKey;
+    meta.tagline = (snap.meta && snap.meta.tagline) || '';
+    meta.story   = (snap.meta && snap.meta.story)   || '';
+    if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+    if (metaStoryEl)   metaStoryEl.value   = meta.story;
+    render();
+    renderThemePicker();
+    renderPaperGrid();
+  }
+  function pushUndo() {
+    if (__ghostActive) return;
+    __undoStack.push(snapshot());
+    if (__undoStack.length > UNDO_CAP) __undoStack.shift();
+    __redoStack.length = 0;
+    refreshUndoRedoBtns();
+  }
+  function refreshUndoRedoBtns() {
+    if (undoBtn) undoBtn.disabled = !__undoStack.length;
+    if (redoBtn) redoBtn.disabled = !__redoStack.length;
+  }
+  function doUndo() {
+    if (!__undoStack.length) return;
+    __redoStack.push(snapshot());
+    applySnapshot(__undoStack.pop());
+    refreshUndoRedoBtns();
+    scheduleSaveDraft();
+  }
+  function doRedo() {
+    if (!__redoStack.length) return;
+    __undoStack.push(snapshot());
+    applySnapshot(__redoStack.pop());
+    refreshUndoRedoBtns();
+    scheduleSaveDraft();
+  }
+  if (undoBtn) undoBtn.addEventListener('click', doUndo);
+  if (redoBtn) redoBtn.addEventListener('click', doRedo);
+  // Wire Cmd-Z / Cmd-Shift-Z (Z key with mod) to undo/redo. The
+  // existing global keydown handler from W10-2 already catches
+  // Cmd-S / Cmd-D / Esc — we add Z handling next to it.
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 'z' || e.key === 'Z')) {
+      e.preventDefault();
+      if (e.shiftKey) doRedo(); else doUndo();
+    }
+  });
+
+  // ----------------------------------------------------------------
+  // W12-4 — Cmd-K command palette. Modal launcher with fuzzy search
+  // over registered commands. Linear/Notion pattern; power-user
+  // productivity. Trapped focus while open; ESC dismisses; Enter
+  // runs the highlighted command; Up/Down navigates.
+  // ----------------------------------------------------------------
+  var paletteEl = document.getElementById('mdPalette');
+  var paletteInput = document.getElementById('mdPaletteInput');
+  var paletteList = document.getElementById('mdPaletteList');
+  var paletteBackdrop = document.getElementById('mdPaletteBackdrop');
+  var paletteActiveIdx = 0;
+  var paletteFiltered = [];
+
+  function paletteCommands() {
+    return [
+      { label: tt('Add a dish',                'Agregar plato'),                run: function () { if (addRowBtn) addRowBtn.click(); }, hot: '⌘ ⇧ A' },
+      { label: tt('Add a section',             'Agregar sección'),              run: function () { if (addSecBtn) addSecBtn.click(); } },
+      { label: tt('Load sample menu',          'Cargar muestra'),                run: function () { if (sampleBtn) sampleBtn.click(); } },
+      { label: tt('Download PDF',              'Descargar PDF'),                run: function () { if (downloadBtn) downloadBtn.click(); }, hot: '⌘ D' },
+      { label: tt('Download large-print PDF',  'Descargar PDF letra grande'),   run: function () { if (largePrintBtn) largePrintBtn.click(); } },
+      { label: tt('Download high-contrast PDF','Descargar PDF alto contraste'), run: function () { if (highContrastBtn) highContrastBtn.click(); } },
+      { label: tt('Export QR menu (HTML + QR)','Exportar menú QR'),              run: function () { if (exportQrBtn) exportQrBtn.click(); } },
+      { label: tt('Export plain text + Markdown','Exportar texto plano + Markdown'), run: function () { if (exportTextBtn) exportTextBtn.click(); } },
+      { label: tt('Export SSML for TTS',       'Exportar SSML para TTS'),        run: function () { if (exportSsmlBtn) exportSsmlBtn.click(); } },
+      { label: tt('Undo',                      'Deshacer'),                      run: function () { doUndo(); }, hot: '⌘ Z' },
+      { label: tt('Redo',                      'Rehacer'),                       run: function () { doRedo(); }, hot: '⇧ ⌘ Z' },
+      { label: tt('Save draft now',            'Guardar borrador'),              run: function () { persistDraft(); setDownloadMsg(tt('Draft saved.', 'Borrador guardado.'), 'success'); }, hot: '⌘ S' },
+      { label: tt('Toggle print-vendor mode',  'Modo imprenta'),                 run: function () { if (printVendorEl) { printVendorEl.checked = !printVendorEl.checked; printVendorEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Toggle paper texture',      'Textura de papel'),              run: function () { if (paperTextureEl) { paperTextureEl.checked = !paperTextureEl.checked; paperTextureEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Toggle cover page',         'Portada'),                       run: function () { if (metaCoverEl) { metaCoverEl.checked = !metaCoverEl.checked; metaCoverEl.dispatchEvent(new Event('change')); } } },
+      { label: tt('Clear menu',                'Limpiar menú'),                  run: function () { if (clearBtn) clearBtn.click(); } },
+      { label: tt('Open templates',            'Abrir plantillas'),              run: function () { var d = document.querySelector('.md-templates'); if (d) d.open = true; } },
+      { label: tt('Search dishes…',            'Buscar platos…'),                run: function () { if (searchEl) searchEl.focus(); } },
+      // W12-4 — bulk actions via the palette. Cleaner than adding
+      // multi-select checkboxes to already-busy dish rows.
+      { label: tt('Bulk: increase all prices by 10%', 'Lote: subir precios 10%'),
+        run: function () { bulkPriceAdjust(1.10); } },
+      { label: tt('Bulk: increase all prices by 5%', 'Lote: subir precios 5%'),
+        run: function () { bulkPriceAdjust(1.05); } },
+      { label: tt('Bulk: round all prices to nearest dollar', 'Lote: redondear precios al dólar'),
+        run: function () { bulkPriceRound(); } },
+      { label: tt('Bulk: tag all dishes as locally sourced', 'Lote: etiquetar todo como local'),
+        run: function () { bulkTagAllergen('LO'); } },
+      { label: tt('Bulk: clear all photos',     'Lote: quitar todas las fotos'),
+        run: function () { bulkClearPhotos(); } }
+    ];
+  }
+  // ----------------------------------------------------------------
+  // W12-4 — Bulk-action helpers. Each pushes a single undo snapshot
+  // before mutating, so a misfire can be reverted with Cmd-Z.
+  // Price parsing is lenient: strips currency symbols, parses the
+  // numeric portion, multiplies, then re-prefixes the original
+  // currency mark if any.
+  // ----------------------------------------------------------------
+  function bulkPriceAdjust(multiplier) {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.price) return;
+      var match = String(r.price).match(/^([^\d.,-]*)([\d.,-]+)([^\d]*)$/);
+      if (!match) return;
+      var prefix = match[1] || '';
+      var raw    = match[2].replace(/,/g, '');
+      var suffix = match[3] || '';
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return;
+      var adjusted = (n * multiplier);
+      // Round to 2 decimals, then drop trailing .00 for whole dollars.
+      var newStr = (Math.round(adjusted * 100) / 100).toFixed(2).replace(/\.00$/, '');
+      r.price = prefix + newStr + suffix;
+      changed++;
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt('Updated ' + changed + ' price' + (changed === 1 ? '' : 's') + '.',
+                      'Actualizados ' + changed + ' precio' + (changed === 1 ? '' : 's') + '.'), 'success');
+  }
+  function bulkPriceRound() {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.price) return;
+      var match = String(r.price).match(/^([^\d.,-]*)([\d.,-]+)([^\d]*)$/);
+      if (!match) return;
+      var prefix = match[1] || '';
+      var raw    = match[2].replace(/,/g, '');
+      var suffix = match[3] || '';
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return;
+      r.price = prefix + Math.round(n) + suffix;
+      changed++;
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt('Rounded ' + changed + ' price' + (changed === 1 ? '' : 's') + '.',
+                      'Redondeados ' + changed + ' precio' + (changed === 1 ? '' : 's') + '.'), 'success');
+  }
+  function bulkTagAllergen(code) {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish' || !r.name) return;
+      if (!Array.isArray(r.allergens)) r.allergens = [];
+      if (r.allergens.indexOf(code) === -1) {
+        r.allergens.push(code);
+        changed++;
+      }
+    });
+    render();
+    scheduleSaveDraft();
+    var label = (function () { var a = allergenById(code); return a ? (LOCALE === 'es' ? a.label_es : a.label_en) : code; })();
+    setDownloadMsg(tt(
+      'Tagged ' + changed + ' dish' + (changed === 1 ? '' : 'es') + ' as ' + label + '.',
+      'Etiquetados ' + changed + ' plato' + (changed === 1 ? '' : 's') + ' como ' + label + '.'
+    ), 'success');
+  }
+  function bulkClearPhotos() {
+    var changed = 0;
+    pushUndo();
+    rows.forEach(function (r) {
+      if (r.kind === 'dish' && r.photo) { r.photo = null; changed++; }
+    });
+    render();
+    scheduleSaveDraft();
+    setDownloadMsg(tt(
+      'Cleared ' + changed + ' photo' + (changed === 1 ? '' : 's') + '.',
+      'Quitadas ' + changed + ' foto' + (changed === 1 ? '' : 's') + '.'
+    ), 'success');
+  }
+  function renderPalette(query) {
+    if (!paletteList) return;
+    var all = paletteCommands();
+    var q = (query || '').toLowerCase().trim();
+    paletteFiltered = q
+      ? all.filter(function (c) { return c.label.toLowerCase().indexOf(q) !== -1; })
+      : all;
+    paletteActiveIdx = 0;
+    paletteList.innerHTML = paletteFiltered.map(function (c, i) {
+      return '<li class="md-palette-item' + (i === paletteActiveIdx ? ' is-active' : '') + '" data-i="' + i + '" role="option">' +
+        '<span class="md-palette-item-label">' + escHtml(c.label) + '</span>' +
+        (c.hot ? '<span class="md-palette-item-shortcut">' + c.hot + '</span>' : '') +
+        '</li>';
+    }).join('');
+  }
+  function showPalette() {
+    if (!paletteEl) return;
+    paletteEl.hidden = false;
+    if (paletteInput) { paletteInput.value = ''; paletteInput.focus(); }
+    renderPalette('');
+  }
+  function hidePalette() {
+    if (!paletteEl) return;
+    paletteEl.hidden = true;
+  }
+  function runActiveCommand() {
+    var cmd = paletteFiltered[paletteActiveIdx];
+    if (cmd && typeof cmd.run === 'function') {
+      hidePalette();
+      try { cmd.run(); } catch (_) {}
+    }
+  }
+  if (paletteInput) {
+    paletteInput.addEventListener('input', function () { renderPalette(paletteInput.value); });
+    paletteInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); paletteActiveIdx = Math.min(paletteFiltered.length - 1, paletteActiveIdx + 1); refreshActive(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); paletteActiveIdx = Math.max(0, paletteActiveIdx - 1); refreshActive(); }
+      else if (e.key === 'Enter') { e.preventDefault(); runActiveCommand(); }
+      else if (e.key === 'Escape') { e.preventDefault(); hidePalette(); }
+    });
+  }
+  function refreshActive() {
+    if (!paletteList) return;
+    var items = paletteList.querySelectorAll('.md-palette-item');
+    items.forEach(function (it, i) {
+      it.classList.toggle('is-active', i === paletteActiveIdx);
+    });
+    var active = items[paletteActiveIdx];
+    if (active) active.scrollIntoView({ block: 'nearest' });
+  }
+  if (paletteList) paletteList.addEventListener('click', function (e) {
+    var item = e.target.closest('.md-palette-item'); if (!item) return;
+    paletteActiveIdx = parseInt(item.dataset.i, 10);
+    runActiveCommand();
+  });
+  if (paletteBackdrop) paletteBackdrop.addEventListener('click', hidePalette);
+
+  // Cmd-K / Ctrl-K opens the palette.
+  // W21 fix #4 — gate behind active-modal check so the palette
+  // doesn't stack on top of the celebration overlay, the Vibe quiz,
+  // or the first-run cuisine quiz. Two stacked modals trap focus
+  // and break Esc behavior.
+  function anotherModalOpen() {
+    if (document.getElementById('mdCelebrate')) return true;
+    var quiz = document.getElementById('mdQuiz');
+    if (quiz && !quiz.hidden) return true;
+    var vibe = document.getElementById('mdVibeQuiz');
+    if (vibe && !vibe.hidden) return true;
+    return false;
+  }
+  document.addEventListener('keydown', function (e) {
+    var mod = e.metaKey || e.ctrlKey;
+    if (mod && (e.key === 'k' || e.key === 'K')) {
+      if (anotherModalOpen()) return; // let the other modal own focus
+      e.preventDefault();
+      showPalette();
+    }
+  });
+
+  // W8-1 — search filter. Hides rows whose name+desc don't match.
+  // Section headers stay visible if any child dish matches; if not,
+  // the section is also hidden so the operator sees a clean filter.
+  var searchEl = document.getElementById('mdSearch');
+  function applySearchFilter() {
+    if (!rowsEl || !searchEl) return;
+    var q = (searchEl.value || '').toLowerCase().trim();
+    var trs = rowsEl.querySelectorAll('tr[data-i]');
+    if (!q) {
+      trs.forEach(function (tr) { tr.style.display = ''; });
+      return;
+    }
+    // Determine which sections retain at least one matching dish.
+    var keepSections = {};
+    var lastSec = null;
+    rows.forEach(function (r, i) {
+      if (r.kind === 'section') { lastSec = i; return; }
+      if (r.kind === 'dish') {
+        var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
+        if (hay.indexOf(q) !== -1) keepSections[lastSec] = true;
+      }
+    });
+    trs.forEach(function (tr) {
+      var i = parseInt(tr.dataset.i, 10);
+      if (!isFinite(i) || !rows[i]) return;
+      var r = rows[i];
+      if (r.kind === 'section') {
+        tr.style.display = keepSections[i] ? '' : 'none';
+      } else {
+        var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
+        tr.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+      }
+    });
+  }
+  if (searchEl) searchEl.addEventListener('input', applySearchFilter);
+
   function persistDraft() {
     if (!__saveDraftEnabled) return;
     if (__ghostActive) return;        // W5-1: never save demo rows as the operator's draft
+    updateSavedIndicator('saving');
     var ls = safeLs();
-    if (!ls) return;
+    if (!ls) { updateSavedIndicator('saved'); return; }
     try {
+      // W11-4 — strip dish photos before draft persistence. A 30-
+      // dish menu × ~80KB photos would push past the 5MB localStorage
+      // budget. Photos are treated as transient session content;
+      // operators re-upload on restore. This is the conservative v1
+      // trade-off (IndexedDB storage of photos is queued for later).
       var draft = {
-        rows: rows.map(function (r) { return Object.assign({}, r); }),
+        version: SCHEMA_VERSION,
+        rows: rows.map(function (r) {
+          var copy = Object.assign({}, r);
+          if (copy.kind === 'dish' && copy.photo) {
+            copy.photo = { name: copy.photo.name || null, w: copy.photo.w || 0, h: copy.photo.h || 0 };
+          }
+          // W13-2 — same rationale: section hero images aren't
+          // persisted in localStorage; metadata only. Operator
+          // re-uploads on restore.
+          if (copy.kind === 'section' && copy.hero) {
+            copy.hero = { name: copy.hero.name || null, w: copy.hero.w || 0, h: copy.hero.h || 0 };
+          }
+          return copy;
+        }),
         themeId: themeId,
         paperKey: paperKey,
+        customDims: paperKey === 'custom' ? customDims : null,
+        meta: {
+          tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage,
+          address: meta.address, hours: meta.hours, serviceCharge: meta.serviceCharge,
+          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer
+        },
+        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -509,7 +1552,8 @@
       } else if (!logoUrl) {
         ls.removeItem(LOGO_KEY);
       }
-    } catch (_) { /* quota — silent */ }
+      updateSavedIndicator('saved');
+    } catch (_) { /* quota — silent */ updateSavedIndicator('saved'); }
   }
 
   function scheduleSaveDraft() {
@@ -566,8 +1610,56 @@
         __saveDraftEnabled = false;  // pause autosave during hydrate
         rows = d.rows.map(function (r) { return Object.assign({}, r); });
         themeId = d.themeId || themeId;
-        paperKey = d.paperKey || paperKey;
+        paperKey = migratePaperKey(d.paperKey || paperKey);
         logoMeta = d.logoMeta || null;
+        if (d.customDims) customDims = d.customDims;
+        // W9-3 — meta restore + UI hydrate
+        if (d.meta) {
+          meta.tagline = d.meta.tagline || '';
+          meta.story   = d.meta.story   || '';
+          meta.coverPage = !!d.meta.coverPage;
+          // W14-2 — restore the new footer fields too.
+          meta.address       = d.meta.address       || '';
+          meta.hours         = d.meta.hours         || '';
+          meta.serviceCharge = d.meta.serviceCharge || '';
+          meta.sourcing      = d.meta.sourcing      || '';
+          meta.disclaimer    = d.meta.disclaimer    || '';
+          meta.askYourServer = d.meta.askYourServer || '';
+          if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+          if (metaStoryEl)   metaStoryEl.value   = meta.story;
+          if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+          metaFooterFields.forEach(function (pair) {
+            var fEl = document.getElementById(pair[0]);
+            if (fEl) fEl.value = meta[pair[1]] || '';
+          });
+          var hasMeta = meta.tagline || meta.story || meta.coverPage ||
+                        meta.address || meta.hours || meta.serviceCharge ||
+                        meta.sourcing || meta.disclaimer || meta.askYourServer;
+          if (hasMeta) {
+            var metaEl = document.getElementById('mdMeta');
+            if (metaEl) metaEl.open = true;
+          }
+        }
+        // W12-3 — restore customizer overrides
+        if (d.customize) {
+          customize.accent = d.customize.accent || null;
+          customize.paper  = d.customize.paper  || null;
+          customize.ink    = d.customize.ink    || null;
+          customize.paperTexture = !!d.customize.paperTexture;
+          customize.mods   = d.customize.mods   || { season: 'none', daypart: 'none', event: 'none' };
+          if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
+          if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
+          if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
+          if (paperTextureEl) paperTextureEl.checked = customize.paperTexture;
+          if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
+          if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
+          if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+          var anyMod = customize.mods.season !== 'none' || customize.mods.daypart !== 'none' || customize.mods.event !== 'none';
+          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod) {
+            var custEl = document.getElementById('mdCustomize');
+            if (custEl) custEl.open = true;
+          }
+        }
         if (savedLogo) { logoUrl = savedLogo; }
         render();
         renderPreview();
@@ -615,18 +1707,201 @@
       schedulePreview();
       scheduleSaveDraft();    // W5-8
     });
+    // W11-1 — HTML5 drag-and-drop reorder. The drag handle <button>
+    // is the source; the entire <tr> is draggable. dragover targets
+    // any other row; drop swaps positions and re-renders.
+    var __dragSrcIdx = -1;
+    rowsEl.addEventListener('dragstart', function (e) {
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || tr.dataset.ghost === '1') { e.preventDefault(); return; }
+      __dragSrcIdx = parseInt(tr.dataset.i, 10);
+      tr.classList.add('md-drag-source');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(__dragSrcIdx)); } catch (_) {}
+    });
+    rowsEl.addEventListener('dragend', function () {
+      var s = rowsEl.querySelector('.md-drag-source');
+      if (s) s.classList.remove('md-drag-source');
+      var o = rowsEl.querySelectorAll('.md-drag-over');
+      o.forEach(function (el) { el.classList.remove('md-drag-over'); });
+      __dragSrcIdx = -1;
+    });
+    rowsEl.addEventListener('dragover', function (e) {
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || __dragSrcIdx === -1) return;
+      e.preventDefault();
+      var prev = rowsEl.querySelector('.md-drag-over');
+      if (prev && prev !== tr) prev.classList.remove('md-drag-over');
+      if (tr !== rowsEl.querySelector('.md-drag-source')) tr.classList.add('md-drag-over');
+    });
+    rowsEl.addEventListener('drop', function (e) {
+      e.preventDefault();
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || __dragSrcIdx === -1) return;
+      var dst = parseInt(tr.dataset.i, 10);
+      if (!isFinite(dst) || dst === __dragSrcIdx) return;
+      pushUndo();
+      var moved = rows.splice(__dragSrcIdx, 1)[0];
+      rows.splice(dst, 0, moved);
+      __dragSrcIdx = -1;
+      render();
+      scheduleSaveDraft();
+    });
+
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
-      if (!t || t.dataset.act !== 'del') return;
+      if (!t) return;
+      // W13-2 — badge toggle click.
+      var badgeBtn = t.closest && t.closest('[data-act="badge"]');
+      if (badgeBtn) {
+        var bi = parseInt(badgeBtn.dataset.i, 10);
+        var bcode = badgeBtn.dataset.badge;
+        if (!isFinite(bi) || !rows[bi] || !bcode) return;
+        if (!Array.isArray(rows[bi].badges)) rows[bi].badges = [];
+        var bidx = rows[bi].badges.indexOf(bcode);
+        if (bidx === -1) rows[bi].badges.push(bcode);
+        else rows[bi].badges.splice(bidx, 1);
+        render();
+        var pop2 = rowsEl.querySelector('.md-allergen-pop[data-i="' + bi + '"]');
+        if (pop2) pop2.open = true;
+        scheduleSaveDraft();
+        return;
+      }
+      // W11-1 — touch up/down reorder buttons.
+      var moveBtn = t.closest && t.closest('[data-act="moveup"], [data-act="movedn"]');
+      if (moveBtn) {
+        var mi = parseInt(moveBtn.dataset.i, 10);
+        if (!isFinite(mi)) return;
+        var dir = moveBtn.dataset.act === 'moveup' ? -1 : 1;
+        var ndx = mi + dir;
+        if (ndx < 0 || ndx >= rows.length) return;
+        pushUndo();
+        var tmp = rows[mi]; rows[mi] = rows[ndx]; rows[ndx] = tmp;
+        render();
+        scheduleSaveDraft();
+        return;
+      }
+      // W7-2 — spice stepper. Clicking the same level toggles off
+      // back to 0; clicking a higher level sets it.
+      var spiceBtn = t.closest && t.closest('[data-act="spice"]');
+      if (spiceBtn) {
+        var si = parseInt(spiceBtn.dataset.i, 10);
+        var level = parseInt(spiceBtn.dataset.level, 10);
+        if (!isFinite(si) || !rows[si]) return;
+        rows[si].spice = (rows[si].spice === level) ? 0 : level;
+        render();
+        // Reopen the popover so the operator stays in context.
+        var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + si + '"]');
+        if (pop) pop.open = true;
+        scheduleSaveDraft();
+        return;
+      }
+      var act = t.dataset && t.dataset.act;
+      if (act === 'del') {
+        var i = parseInt(t.dataset.i, 10);
+        if (!isFinite(i)) return;
+        pushUndo();
+        rows.splice(i, 1);
+        render();
+        scheduleSaveDraft();
+        return;
+      }
+      // W13-2 — remove section hero image
+      if (act === 'hero-remove') {
+        var hri = parseInt(t.dataset.i, 10);
+        if (!isFinite(hri) || !rows[hri]) return;
+        pushUndo();
+        rows[hri].hero = null;
+        render();
+        scheduleSaveDraft();
+        return;
+      }
+      // W11-4 — remove dish photo
+      if (act === 'photo-remove') {
+        var pri = parseInt(t.dataset.i, 10);
+        if (!isFinite(pri) || !rows[pri]) return;
+        pushUndo();
+        rows[pri].photo = null;
+        render();
+        var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + pri + '"]');
+        if (pop) pop.open = true;
+        scheduleSaveDraft();
+        return;
+      }
+    });
+    // W7-2 — allergen checkbox change. Lives on 'change' so it fires
+    // for both mouse + keyboard (Space toggles a checkbox).
+    // W11-4 — also handles photo file picker change events.
+    rowsEl.addEventListener('change', function (e) {
+      var t = e.target;
+      if (!t) return;
+      // W12-2 — section "specials" checkbox change handler.
+      if (t.type === 'checkbox' && t.dataset.field === 'specials') {
+        var spi = parseInt(t.dataset.i, 10);
+        if (!isFinite(spi) || !rows[spi]) return;
+        rows[spi].specials = !!t.checked;
+        schedulePreview();
+        scheduleSaveDraft();
+        return;
+      }
+      if (t.dataset.act === 'photo-pick') {
+        var pi = parseInt(t.dataset.i, 10);
+        var file = t.files && t.files[0];
+        if (!isFinite(pi) || !rows[pi] || !file) return;
+        downscaleImage(file, 320, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          // Cap at 80KB so localStorage doesn't fill up — operators
+          // with bigger images get warned via the success toast.
+          if (dataUrl.length > 110000) {
+            // ~80KB after base64 -> binary
+            setDownloadMsg(tt('Image is large; we kept the highest-quality version that fits the device storage budget.',
+                              'La imagen es grande; guardamos la mejor versión que cabe en el presupuesto de almacenamiento.'), 'success');
+          }
+          pushUndo();
+          rows[pi].photo = { dataUrl: dataUrl, w: w, h: h, name: file.name };
+          render();
+          var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + pi + '"]');
+          if (pop) pop.open = true;
+          scheduleSaveDraft();
+        });
+        return;
+      }
+      // W13-2 — section hero image upload. Higher max-dim (480) than
+      // dish photos because hero strips render full-width on the
+      // deliverable.
+      if (t.dataset.act === 'hero-pick') {
+        var hi = parseInt(t.dataset.i, 10);
+        var hfile = t.files && t.files[0];
+        if (!isFinite(hi) || !rows[hi] || !hfile) return;
+        downscaleImage(hfile, 480, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          pushUndo();
+          rows[hi].hero = { dataUrl: dataUrl, w: w, h: h, name: hfile.name };
+          render();
+          scheduleSaveDraft();
+        });
+        return;
+      }
+      if (t.dataset.act !== 'allergen') return;
       var i = parseInt(t.dataset.i, 10);
-      if (!isFinite(i)) return;
-      rows.splice(i, 1);
+      var code = t.dataset.code;
+      if (!isFinite(i) || !rows[i] || !code) return;
+      if (!Array.isArray(rows[i].allergens)) rows[i].allergens = [];
+      var idx = rows[i].allergens.indexOf(code);
+      if (t.checked && idx === -1) rows[i].allergens.push(code);
+      else if (!t.checked && idx !== -1) rows[i].allergens.splice(idx, 1);
+      // Update the chip strip + summary inline without a full re-render
+      // so the popover stays open (open state survives a render anyway
+      // because the <details> open attr is stored on the DOM, but a
+      // full re-render is wasteful for a single chip flip).
       render();
-      scheduleSaveDraft();    // W5-8
+      var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + i + '"]');
+      if (pop) pop.open = true;
+      scheduleSaveDraft();
     });
   }
 
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankDish());
     render();
     scheduleSaveDraft();
@@ -634,6 +1909,7 @@
     if (inputs.length) inputs[inputs.length - 1].focus();
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankDish());
     render();
     scheduleSaveDraft();
@@ -642,6 +1918,7 @@
   });
 
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
+    pushUndo();
     rows.push(blankSection());
     render();
     scheduleSaveDraft();
@@ -651,17 +1928,68 @@
 
   if (clearBtn) clearBtn.addEventListener('click', function () {
     if (!rows.length) return;
-    if (!confirm('Clear every row? This can\'t be undone.')) return;
+    // W21 fix #7 — clear-confirm now translates per locale.
+    if (!confirm(tt('Clear every row? This can\'t be undone.',
+                    '¿Borrar todas las filas? No se puede deshacer.'))) return;
+    pushUndo();
     rows = [];
     render();
     clearDraft();
   });
 
   if (sampleBtn) sampleBtn.addEventListener('click', function () {
+    pushUndo();
     rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
     render();
     scheduleSaveDraft();
   });
+
+  // W11-1 + W22 — Cuisine starter templates extracted to
+  // data/templates.js. Read through the MD_TEMPLATES global; the
+  // orchestrator just exposes a TEMPLATES alias for back-compat
+  // with downstream call sites.
+  var TEMPLATES = (typeof MD_TEMPLATES !== 'undefined') ? MD_TEMPLATES.TEMPLATES : {};
+  function renderTemplatesList() {
+    var host = document.getElementById('mdTemplatesList');
+    if (!host) return;
+    host.innerHTML = Object.keys(TEMPLATES).map(function (key) {
+      var t = TEMPLATES[key];
+      var label = LOCALE === 'es' ? t.label_es : t.label_en;
+      var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
+      return '<li role="none"><button type="button" role="menuitem" data-template="' + escHtml(key) + '">' +
+        '<strong>' + escHtml(label) + '</strong><span>' + escHtml(hint) + '</span>' +
+        '</button></li>';
+    }).join('');
+  }
+  renderTemplatesList();
+  var templatesList = document.getElementById('mdTemplatesList');
+  if (templatesList) {
+    templatesList.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-template]'); if (!btn) return;
+      var key = btn.dataset.template;
+      var tpl = TEMPLATES[key]; if (!tpl) return;
+      pushUndo();
+      // If editor has only ghost rows or is empty, REPLACE; else APPEND.
+      var nonGhost = rows.filter(function (r) { return !r.ghost; });
+      if (!nonGhost.length) {
+        rows = tpl.rows.map(function (r) { return Object.assign({}, r); });
+        __ghostActive = false;
+      } else {
+        rows = rows.concat(tpl.rows.map(function (r) { return Object.assign({}, r); }));
+      }
+      // Auto-suggest a fitting theme if the operator is still on the
+      // default 'modern-minimal'.
+      if (tpl.themeHint && (themeId === 'modern-minimal' || !themeId)) {
+        themeId = tpl.themeHint;
+        renderThemePicker();
+      }
+      render();
+      scheduleSaveDraft();
+      var d = document.querySelector('.md-templates');
+      if (d) d.open = false;
+      if (window.plausible) { try { window.plausible('Menu Design Template Loaded', { props: { template: key } }); } catch (_) {} }
+    });
+  }
 
   // -------------------- Paste-CSV ingest --------------------
   // Two paste shapes accepted: (a) header-row CSV/TSV with column
@@ -669,8 +1997,8 @@
   // EN or ES; (b) markdown-shape with `## Section` header lines and
   // `Dish, $price, description` data lines. Both produce the same
   // rows[] shape. Mirrors plate-cost's parseMenuPaste tolerance.
-  var EN_HEADERS = { dish: ['item', 'name', 'dish'], price: ['price'], section: ['section'], desc: ['description', 'desc'] };
-  var ES_HEADERS = { dish: ['plato', 'nombre', 'item'], price: ['precio'], section: ['seccion', 'sección'], desc: ['descripcion', 'descripción'] };
+  var EN_HEADERS = { dish: ['item', 'name', 'dish'], price: ['price'], section: ['section'], desc: ['description', 'desc'], allergens: ['allergens', 'tags', 'dietary'], spice: ['spice', 'heat'] };
+  var ES_HEADERS = { dish: ['plato', 'nombre', 'item'], price: ['precio'], section: ['seccion', 'sección'], desc: ['descripcion', 'descripción'], allergens: ['alergenos', 'alérgenos', 'etiquetas'], spice: ['picante'] };
 
   function detectDelim(text) {
     var firstLine = (text.split(/\r?\n/)[0] || '');
@@ -745,6 +2073,17 @@
           else if (k === 'price')   dish.price = cell;
           else if (k === 'desc')    dish.desc = cell;
           else if (k === 'section' && cell) out.push(blankSection(cell));
+          else if (k === 'allergens' && cell) {
+            // W7-2 — accepts comma/space/slash-delimited codes; only
+            // those matching ALLERGEN_CODES are kept (silent skip).
+            dish.allergens = String(cell).split(/[,\s\/|]+/)
+              .map(function (s) { return s.trim().toUpperCase(); })
+              .filter(function (s) { return !!allergenById(s); });
+          }
+          else if (k === 'spice' && cell) {
+            var n = parseInt(String(cell).replace(/\D/g, ''), 10);
+            if (isFinite(n) && n >= 0 && n <= 3) dish.spice = n;
+          }
         });
       } else {
         // Positional: name, price, description.
@@ -758,14 +2097,39 @@
     return out;
   }
 
+  // W10-2 — inline paste-error banner (replaces blocking alert()).
+  function setPasteError(text) {
+    var host = document.getElementById('mdPaste');
+    if (!host) return;
+    var existing = document.getElementById('mdPasteError');
+    if (text) {
+      var el = existing;
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'mdPasteError';
+        el.setAttribute('role', 'alert');
+        el.style.cssText = 'margin:8px 14px 0;padding:8px 12px;border:1px solid var(--rust);border-left:3px solid var(--rust);border-radius:6px;background:#FBF0EA;color:#7a4408;font-size:12.5px;line-height:1.5';
+        host.appendChild(el);
+      }
+      el.textContent = text;
+    } else if (existing) {
+      existing.parentNode && existing.parentNode.removeChild(existing);
+    }
+  }
+
   if (pasteApply) pasteApply.addEventListener('click', function () {
     if (!pasteArea) return;
     var parsed = parsePaste(pasteArea.value);
     if (!parsed.length) {
-      alert('Could not find any dishes in that paste. Try one row per dish, or use the sample as a template.');
+      setPasteError(tt(
+        'Could not find any dishes in that paste. Try one row per dish, or use the sample as a template.',
+        'No se encontraron platos en el pegado. Prueba un renglón por plato, o usa la muestra como plantilla.'
+      ));
       return;
     }
-    // Append to existing rows, preserving the user's prior typing.
+    setPasteError('');
+    pushUndo();
+    // Append to existing rows, preserving the operator's prior typing.
     rows = rows.concat(parsed);
     render();
     pasteArea.value = '';
@@ -780,22 +2144,22 @@
   // get wrong. Prices stay in the typical American-bistro band.
   var SAMPLE_MENU = [
     blankSection('Starters'),
-    { kind: 'dish', name: 'House bread', price: '$6',  desc: 'Whole-wheat sourdough, cultured butter.' },
-    { kind: 'dish', name: 'Caesar salad', price: '$14', desc: 'Little gems, buttermilk-anchovy, parmesan crisp.' },
-    { kind: 'dish', name: 'Soup of the day', price: '$10', desc: 'Ask your server.' },
-    { kind: 'dish', name: 'Cheese plate', price: '$18', desc: 'Three local cheeses, honey, walnuts.' },
+    { kind: 'dish', name: 'House bread', price: '$6',  desc: 'Whole-wheat sourdough, cultured butter.', allergens: ['VG'], spice: 0 },
+    { kind: 'dish', name: 'Caesar salad', price: '$14', desc: 'Little gems, buttermilk-anchovy, parmesan crisp.', allergens: ['FI', 'E'], spice: 0 },
+    { kind: 'dish', name: 'Soup of the day', price: '$10', desc: 'Ask your server.', allergens: [], spice: 0 },
+    { kind: 'dish', name: 'Cheese plate', price: '$18', desc: 'Three local cheeses, honey, walnuts.', allergens: ['VG', 'N', 'LO'], spice: 0 },
     blankSection('Pasta'),
-    { kind: 'dish', name: 'Tonnarelli al pepe', price: '$22', desc: 'Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.' },
-    { kind: 'dish', name: 'Mushroom rigatoni', price: '$24', desc: 'Cremini and oyster mushrooms, sherry, thyme.' },
+    { kind: 'dish', name: 'Tonnarelli al pepe', price: '$22', desc: 'Hand-rolled tonnarelli with smoky pecorino and cracked black pepper.', allergens: ['VG', 'E'], spice: 1 },
+    { kind: 'dish', name: 'Mushroom rigatoni', price: '$24', desc: 'Cremini and oyster mushrooms, sherry, thyme.', allergens: ['VG'], spice: 0 },
     blankSection('Mains'),
-    { kind: 'dish', name: 'Roast chicken', price: '$28', desc: 'Half a Path Valley chicken, brined overnight, pan jus.' },
-    { kind: 'dish', name: 'Pan-seared salmon', price: '$32', desc: 'Wild king, lemon-caper butter, brown rice.' },
-    { kind: 'dish', name: 'Hanger steak', price: '$34', desc: 'Grass-fed, chimichurri, fingerling potatoes.' },
-    { kind: 'dish', name: 'Cauliflower steak', price: '$22', desc: 'Romesco, smoked almonds, crispy chickpeas.' },
+    { kind: 'dish', name: 'Roast chicken', price: '$28', desc: 'Half a Path Valley chicken, brined overnight, pan jus.', allergens: ['LO'], spice: 0 },
+    { kind: 'dish', name: 'Pan-seared salmon', price: '$32', desc: 'Wild king, lemon-caper butter, brown rice.', allergens: ['FI', 'GF'], spice: 0 },
+    { kind: 'dish', name: 'Hanger steak', price: '$34', desc: 'Grass-fed, chimichurri, fingerling potatoes.', allergens: ['GF', 'DF'], spice: 1 },
+    { kind: 'dish', name: 'Cauliflower steak', price: '$22', desc: 'Romesco, smoked almonds, crispy chickpeas.', allergens: ['V', 'GF', 'N'], spice: 2 },
     blankSection('Dessert'),
-    { kind: 'dish', name: 'Olive-oil cake', price: '$10', desc: 'Citrus glaze, candied zest.' },
-    { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.' },
-    { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.' }
+    { kind: 'dish', name: 'Olive-oil cake', price: '$10', desc: 'Citrus glaze, candied zest.', allergens: ['VG', 'E'], spice: 0 },
+    { kind: 'dish', name: 'Affogato', price: '$9',  desc: 'House gelato, espresso, hazelnut crumble.', allergens: ['VG', 'N'], spice: 0 },
+    { kind: 'dish', name: 'Cheese & honey', price: '$12', desc: 'Local honeycomb, blue cheese, crackers.', allergens: ['VG', 'LO'], spice: 0 }
   ];
 
   // ----------------------------------------------------------------
@@ -902,8 +2266,13 @@
         desc: ''
       };
     });
+    // W21 fix #3 — push undo before mutation, autosave after, so
+    // the imported batch is reversible via Cmd-Z and survives a
+    // tab close before the operator interacts further.
+    pushUndo();
     rows = rows.concat(imported);
     render();
+    scheduleSaveDraft();
     if (window.plausible) window.plausible('Menu Design Ctx Used', { props: { dishes: String(imported.length) } });
   });
 
@@ -984,6 +2353,8 @@
           if (Array.isArray(ctxDl.palette) && ctxDl.palette.length) theme = MD_THEMES.applyPalette(theme, ctxDl.palette);
         }
       } catch (_) {}
+      // W12-3 — apply operator's customizer overrides on top of brand palette.
+      theme = applyCustomizer(theme);
 
       var title = '';
       try {
@@ -1010,13 +2381,29 @@
       setDownloadMsg('');
 
       MD_PDF.exportPdf({
-        rows:        rows,
-        theme:       theme,
-        paperKey:    paperKey,
-        title:       title,
-        logoDataUrl: logoUrl,
-        logoMeta:    logoMeta,
-        filename:    filename
+        rows:         rows,
+        theme:        theme,
+        paperKey:     paperKey,
+        customDims:   paperKey === 'custom' ? customDims : null,
+        title:        title,
+        tagline:      meta.tagline,
+        story:        meta.story,
+        // W14-2 — restaurant footer fields
+        footer: {
+          address:       meta.address,
+          hours:         meta.hours,
+          serviceCharge: meta.serviceCharge,
+          sourcing:      meta.sourcing,
+          disclaimer:    meta.disclaimer,
+          askYourServer: meta.askYourServer
+        },
+        coverPage:    !!meta.coverPage,
+        paperTexture: !!customize.paperTexture,
+        logoDataUrl:  logoUrl,
+        logoMeta:     logoMeta,
+        filename:     printVendor ? filename + '-press' : filename,
+        locale:       LOCALE,
+        printVendor:  printVendor
       }).then(function (result) {
         var pages = result.pageCount || 1;
         var msg = tt(
@@ -1026,6 +2413,11 @@
         if (result.droppedSvgLogo) {
           msg += ' ' + tt('SVG logo couldn\'t be embedded; export a PNG to include it.',
                           'El logo SVG no se pudo incluir; exporta un PNG para añadirlo.');
+        }
+        // W17 — surface PDF/X-3 conformance when post-process succeeded.
+        if (result.pdfX3) {
+          msg += ' ' + tt('PDF/X-3 metadata applied (TrimBox / BleedBox / OutputIntents).',
+                          'Metadatos PDF/X-3 aplicados (TrimBox / BleedBox / OutputIntents).');
         }
         setDownloadMsg(msg, 'success');
         // Wave A4: persist a slim history row to MuntinContext.menuHistory
@@ -1188,11 +2580,13 @@
         rows:        realRows,
         theme:       theme,
         paperKey:    paperKey,
+        customDims:  paperKey === 'custom' ? customDims : null,
         title:       title,
         logoDataUrl: logoUrl,
         logoMeta:    logoMeta,
         filename:    fnameBase,
-        largePrint:  true
+        largePrint:  true,
+        locale:      LOCALE
       }).then(function (result) {
         var pages = result.pageCount || 1;
         setDownloadMsg(tt(
@@ -1213,6 +2607,174 @@
       });
     });
   }
+
+  // ----------------------------------------------------------------
+  // W10-2 — Plain-text + SSML accessible exports. Both build entirely
+  // in-memory using the MD_TEXT module; no fetches, no CDN. The
+  // resulting Blob is downloaded via createObjectURL.
+  // ----------------------------------------------------------------
+  var exportTextBtn = document.getElementById('mdExportText');
+  var exportSsmlBtn = document.getElementById('mdExportSsml');
+  var highContrastBtn = document.getElementById('mdHighContrast');
+
+  // W12-4 — High-contrast PDF variant. Twin of the large-print
+  // export but routed through applyHighContrastOverride.
+  if (highContrastBtn) {
+    highContrastBtn.addEventListener('click', function () {
+      if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt('PDF generator not loaded. Refresh and try again.',
+                          'El generador de PDF no se cargó. Recarga e intenta de nuevo.'), 'error');
+        return;
+      }
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting a high-contrast version.',
+                          'Agrega al menos un plato antes de exportar la versión de alto contraste.'), 'error');
+        return;
+      }
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var title = '';
+      try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) title = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
+      if (!title) title = tt('Menu', 'Menú');
+      var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-high-contrast';
+      highContrastBtn.disabled = true;
+      var origLabel = highContrastBtn.innerHTML;
+      highContrastBtn.textContent = tt('Building high-contrast PDF…', 'Generando alto contraste…');
+      MD_PDF.exportPdf({
+        rows:         realRows,
+        theme:        theme,
+        paperKey:     paperKey,
+        customDims:   paperKey === 'custom' ? customDims : null,
+        title:        title,
+        tagline:      meta.tagline,
+        story:        meta.story,
+        logoDataUrl:  logoUrl,
+        logoMeta:     logoMeta,
+        filename:     fnameBase,
+        highContrast: true,
+        locale:       LOCALE
+      }).then(function (result) {
+        var pages = result.pageCount || 1;
+        setDownloadMsg(tt(
+          'High-contrast version downloaded — ' + pages + ' page' + (pages === 1 ? '' : 's') + '. Yellow-on-black for low-vision patrons.',
+          'Versión de alto contraste descargada — ' + pages + ' página' + (pages === 1 ? '' : 's') + '. Amarillo sobre negro para baja visión.'
+        ), 'success');
+        if (window.plausible) { try { window.plausible('Menu Design High Contrast Exported'); } catch (_) {} }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'High-contrast PDF failed: ' + (err && err.message ? err.message : 'unknown error'),
+          'Falló alto contraste: ' + (err && err.message ? err.message : 'error desconocido')
+        ), 'error');
+      }).then(function () {
+        highContrastBtn.disabled = false;
+        highContrastBtn.innerHTML = origLabel;
+      });
+    });
+  }
+
+  // W18 — downloadBlob extracted to infra/dom.js.
+  function downloadBlob(content, filename, mime) {
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.downloadBlob(content, filename, mime);
+    var blob = new Blob([content], { type: mime });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function buildEmitterOpts() {
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    var titleVal = '';
+    try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
+    if (!titleVal) titleVal = tt('Menu', 'Menú');
+    return {
+      rows:    realRows,
+      theme:   theme,
+      title:   titleVal,
+      tagline: meta.tagline,
+      story:   meta.story,
+      locale:  LOCALE
+    };
+  }
+
+  if (exportTextBtn) {
+    exportTextBtn.addEventListener('click', function () {
+      if (typeof MD_TEXT === 'undefined') return;
+      var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting plain text.', 'Agrega al menos un plato antes de exportar.'), 'error');
+        return;
+      }
+      var opts = buildEmitterOpts();
+      var md  = MD_TEXT.exportMarkdown(opts);
+      var txt = MD_TEXT.exportPlainText(opts);
+      var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      // Download both — operators tend to want either.
+      downloadBlob(md,  slug + '-menu.md',  'text/markdown');
+      setTimeout(function () { downloadBlob(txt, slug + '-menu.txt', 'text/plain'); }, 250);
+      setDownloadMsg(tt('Plain text + Markdown downloaded — screen-reader friendly.',
+                        'Texto plano + Markdown descargados — compatibles con lectores de pantalla.'), 'success');
+      if (window.plausible) { try { window.plausible('Menu Design Text Exported'); } catch (_) {} }
+    });
+  }
+  if (exportSsmlBtn) {
+    exportSsmlBtn.addEventListener('click', function () {
+      if (typeof MD_TEXT === 'undefined') return;
+      var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+      if (!realRows.length) {
+        setDownloadMsg(tt('Add at least one dish before exporting SSML.', 'Agrega al menos un plato antes de exportar SSML.'), 'error');
+        return;
+      }
+      var opts = buildEmitterOpts();
+      var ssml = MD_TEXT.exportSsml(opts);
+      var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      downloadBlob(ssml, slug + '-menu.ssml', 'application/ssml+xml');
+      setDownloadMsg(tt('SSML downloaded — pipe to AWS Polly / Google TTS / Azure Speech.',
+                        'SSML descargado — compatible con AWS Polly / Google TTS / Azure Speech.'), 'success');
+      if (window.plausible) { try { window.plausible('Menu Design SSML Exported'); } catch (_) {} }
+    });
+  }
+  // W16 — BRF Grade-1 export
+  var exportBrfBtn = document.getElementById('mdExportBrf');
+  if (exportBrfBtn) exportBrfBtn.addEventListener('click', function () {
+    if (typeof MD_TEXT === 'undefined' || typeof MD_TEXT.exportBrf !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting Braille.',
+                        'Agrega al menos un plato antes de exportar Braille.'), 'error');
+      return;
+    }
+    var optsB = buildEmitterOpts();
+    var brf = MD_TEXT.exportBrf(optsB);
+    var slug = String(optsB.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+    downloadBlob(brf, slug + '-menu.brf', 'application/x-brf');
+    setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
+                      'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
+    if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
+  });
+  // W16 — Tablet kiosk HTML
+  var exportTabletBtn = document.getElementById('mdExportTablet');
+  if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
+    if (typeof MD_HTML === 'undefined' || typeof MD_HTML.exportHtmlTablet !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting tablet HTML.',
+                        'Agrega al menos un plato antes de exportar HTML para tablet.'), 'error');
+      return;
+    }
+    var optsT = buildEmitterOpts();
+    var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+    optsT.theme = applyCustomizer(theme);
+    optsT.logoDataUrl = logoUrl;
+    var html = MD_HTML.exportHtmlTablet(optsT);
+    var slug = String(optsT.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+    downloadBlob(html, slug + '-menu-tablet.html', 'text/html');
+    setDownloadMsg(tt('Tablet HTML downloaded — drop on a kiosk device for guest reference.',
+                      'HTML para tablet descargado — para uso en kiosko.'), 'success');
+    if (window.plausible) { try { window.plausible('Menu Design Tablet Exported'); } catch (_) {} }
+  });
 
   // ----------------------------------------------------------------
   // W6-1 — QR-menu export. Promps for a destination URL the operator
@@ -1312,10 +2874,68 @@
   // Honors prefers-reduced-motion (skips the canvas, fades in/out).
   // Auto-dismisses after 4s; click anywhere to dismiss earlier.
   // ----------------------------------------------------------------
+  // W18 — reducedMotion extracted to infra/dom.js.
   function reducedMotionMD() {
-    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-    catch (_) { return false; }
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.reducedMotion();
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) { return false; }
   }
+  // W11-5 — Cross-tool nudge selector. Looks at MuntinContext to
+  // figure out which tool the operator hasn't visited yet that would
+  // be the natural next step after generating their menu. Returns
+  // null if no nudge is appropriate (operator has visited all
+  // related tools, or context is empty).
+  function pickCrossToolNudge() {
+    var visited = {};
+    try {
+      if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+        var ctx = MuntinContext.read() || {};
+        if (Array.isArray(ctx.toolsVisited)) {
+          ctx.toolsVisited.forEach(function (t) { visited[t] = true; });
+        }
+      }
+    } catch (_) {}
+    var dishCount = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); }).length;
+    var withDesc = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.desc || '').trim(); }).length;
+    // 1) If many dishes lack descriptions -> Menu Copy Inspector
+    if (dishCount >= 4 && withDesc < dishCount * 0.6 && !visited['menu-copy']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/menu-copy/' : '/tools/menu-copy/',
+        label: tt('Polish your descriptions →', 'Pule las descripciones →'),
+        sub:   tt('Menu Copy Inspector grades and rewrites every line.',
+                  'El Inspector de Copy califica y reescribe cada línea.')
+      };
+    }
+    // 2) If operator has prices on most items -> Menu Engineering
+    var withPrice = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.price || '').trim(); }).length;
+    if (dishCount >= 6 && withPrice >= dishCount * 0.8 && !visited['menu-engineering']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/menu-engineering/' : '/tools/menu-engineering/',
+        label: tt('Score profitability →', 'Califica rentabilidad →'),
+        sub:   tt('Menu Engineering rates each dish on margin + popularity.',
+                  'Menu Engineering puntúa margen + popularidad por plato.')
+      };
+    }
+    // 3) If no logo uploaded -> Brand Suite
+    if (!logoUrl && !visited['brand-suite']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/brand-suite/' : '/tools/brand-suite/',
+        label: tt('Build a brand kit →', 'Crea tu kit de marca →'),
+        sub:   tt('Brand Suite makes a logo + palette + typography you can reuse here.',
+                  'Brand Suite arma logo + paleta + tipografía para reutilizar aquí.')
+      };
+    }
+    // 4) Default -> GBP Grader
+    if (!visited['gbp-grader']) {
+      return {
+        url: LOCALE === 'es' ? '/es/tools/gbp-grader/' : '/tools/gbp-grader/',
+        label: tt('Update your Google Business Profile →', 'Actualiza tu Perfil de Google →'),
+        sub:   tt('GBP Grader checks if your menu URL + photos are public.',
+                  'GBP Grader revisa si tu URL de menú + fotos son públicas.')
+      };
+    }
+    return null;
+  }
+
   function surfaceDownloadCelebration(filename, pages) {
     if (document.getElementById('mdCelebrate')) return;
     var ov = document.createElement('div');
@@ -1323,6 +2943,12 @@
     ov.className = 'md-celebrate';
     ov.setAttribute('role', 'status');
     ov.setAttribute('aria-live', 'polite');
+    var nudge = pickCrossToolNudge();
+    var nudgeHtml = nudge ?
+      '<a class="md-celebrate-nudge" href="' + escHtml(nudge.url) + '">' +
+        '<span class="md-celebrate-nudge-label">' + escHtml(nudge.label) + '</span>' +
+        '<span class="md-celebrate-nudge-sub">' + escHtml(nudge.sub) + '</span>' +
+      '</a>' : '';
     ov.innerHTML =
       '<div class="md-celebrate-card">' +
         '<h2>' + tt('Your menu is ready.', 'Tu menú está listo.') + '</h2>' +
@@ -1330,6 +2956,7 @@
           pages + (pages === 1 ? ' page' : ' pages') + ' downloaded as ' + filename + '.',
           pages + (pages === 1 ? ' página' : ' páginas') + ' descargadas como ' + filename + '.'
         ) + '</p>' +
+        nudgeHtml +
         '<div class="md-celebrate-actions">' +
           '<button type="button" data-act="print">' + tt('Print from your Mac/PC', 'Imprimir desde tu Mac/PC') + '</button>' +
           '<button type="button" data-act="email">' + tt('Email to your printer', 'Enviar por correo a tu impresor') + '</button>' +
@@ -1417,6 +3044,192 @@
     raf = requestAnimationFrame(frame);
   }
 
+  // ----------------------------------------------------------------
+  // W11-2 — First-run cuisine quiz. A six-tile card the operator
+  // sees on a cold load when no draft exists. Replaces the older
+  // ghost-rows + overlay pattern with something cleaner: pick a
+  // cuisine -> theme suggested + matching template loaded.
+  // Time-to-first-output goal: 90 seconds.
+  // ----------------------------------------------------------------
+  // W11-2 + W22 — Quiz tile catalog extracted to data/quiz-tiles.js.
+  var QUIZ_TILES = (typeof MD_QUIZ !== 'undefined') ? MD_QUIZ.TILES : [];
+  function renderQuizTiles() {
+    var host = document.getElementById('mdQuizTiles');
+    if (!host) return;
+    host.innerHTML = QUIZ_TILES.map(function (t) {
+      var label = LOCALE === 'es' ? t.label_es : t.label_en;
+      var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
+      return '<li><button type="button" class="md-quiz-tile" data-cuisine="' + escHtml(t.id) + '">' +
+        '<span class="md-quiz-tile-glyph" aria-hidden="true">' + t.glyph + '</span>' +
+        '<span class="md-quiz-tile-label">' + escHtml(label) + '</span>' +
+        '<span class="md-quiz-tile-hint">' + escHtml(hint) + '</span>' +
+        '</button></li>';
+    }).join('');
+  }
+  function showQuizIfFresh() {
+    var quizEl = document.getElementById('mdQuiz');
+    if (!quizEl) return;
+    // Only show on a truly cold load: no rows, no draft, no ctx menu data.
+    if (rows.filter(function (r) { return !r.ghost; }).length) return;
+    if (loadDraft()) return;
+    renderQuizTiles();
+    quizEl.hidden = false;
+    var skipBtn = document.getElementById('mdQuizSkip');
+    if (skipBtn) skipBtn.addEventListener('click', function () {
+      quizEl.hidden = true;
+      // Fall through to the existing ghost-rows seed for those who
+      // skipped — keeps the empty-state visually anchored.
+      try {
+        if (!rows.length && seedGhostRows()) {
+          render();
+          renderGhostOverlay();
+        }
+      } catch (_) {}
+    });
+    var tilesHost = document.getElementById('mdQuizTiles');
+    if (tilesHost) tilesHost.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-cuisine]'); if (!btn) return;
+      var cuisine = btn.dataset.cuisine;
+      var entry = null;
+      for (var i = 0; i < QUIZ_TILES.length; i++) if (QUIZ_TILES[i].id === cuisine) { entry = QUIZ_TILES[i]; break; }
+      if (!entry) return;
+      // Apply theme suggestion immediately.
+      themeId = entry.theme;
+      // If the tile names a starter template, load it; else seed
+      // the standard SAMPLE_MENU as a working starting point.
+      if (entry.template && TEMPLATES[entry.template]) {
+        rows = TEMPLATES[entry.template].rows.map(function (r) { return Object.assign({}, r); });
+      } else {
+        rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
+      }
+      __ghostActive = false;
+      quizEl.hidden = true;
+      render();
+      renderThemePicker();
+      scheduleSaveDraft();
+      if (window.plausible) {
+        try { window.plausible('Menu Design Quiz Picked', { props: { cuisine: cuisine, theme: entry.theme } }); } catch (_) {}
+      }
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W11-2 — Live theme thumbnails. Replaces the abstract 4-color
+  // swatch strip in each theme card with a canvas-rendered mini-
+  // preview of the operator's actual rows[] in that theme. Lazily
+  // painted on hover/focus via IntersectionObserver-style trigger.
+  // ----------------------------------------------------------------
+  function paintThemeThumb(canvas, themeRef) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = canvas.offsetWidth * 2;  // 2x for retina
+    var H = canvas.height = canvas.offsetHeight * 2;
+    ctx.scale(2, 2);
+    var w = canvas.offsetWidth;
+    var h = canvas.offsetHeight;
+    // Background paper
+    ctx.fillStyle = themeRef.paper || '#FAF6EE';
+    ctx.fillRect(0, 0, w, h);
+    // Title (display family fallback to system)
+    var titleFont = (themeRef.id && themeRef.id.indexOf('counter') !== -1) ||
+                    /helvetica|inter|sans/.test((themeRef.displayFamily || '').toLowerCase())
+      ? 'Inter, system-ui, sans-serif' : 'Georgia, serif';
+    ctx.fillStyle = themeRef.ink || '#14161A';
+    ctx.font = '600 11px ' + titleFont;
+    ctx.textAlign = 'center';
+    ctx.fillText('Menu', w / 2, 14);
+    // Section header
+    ctx.fillStyle = themeRef.accent || '#1F4E5B';
+    ctx.font = '600 7.5px ' + titleFont;
+    ctx.textAlign = 'center';
+    ctx.fillText('STARTERS', w / 2, 30);
+    if (themeRef.dividerStyle === 'hand-rule' || themeRef.dividerStyle === 'whitespace') {
+      ctx.strokeStyle = themeRef.muted || '#7C6F60';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(w * 0.2, 34); ctx.lineTo(w * 0.8, 34); ctx.stroke();
+    } else if (themeRef.dividerStyle === 'box') {
+      ctx.strokeStyle = themeRef.ink || '#14161A';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(w * 0.3, 22, w * 0.4, 14);
+    }
+    // Three dish rows
+    var rowsToShow = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).slice(0, 4);
+    if (!rowsToShow.length) {
+      rowsToShow = [
+        { name: 'Caesar salad',  price: '$14' },
+        { name: 'House bread',    price: '$6'  },
+        { name: 'Roast chicken',  price: '$28' }
+      ];
+    }
+    var bodyFontPx = '7px ' + titleFont;
+    ctx.font = bodyFontPx;
+    ctx.fillStyle = themeRef.ink || '#14161A';
+    var y = 44;
+    rowsToShow.forEach(function (r) {
+      var name = String(r.name || '').slice(0, 22);
+      ctx.textAlign = 'left';
+      ctx.fillText(name, w * 0.08, y);
+      if (r.price) {
+        ctx.textAlign = 'right';
+        ctx.fillText(String(r.price), w * 0.92, y);
+      }
+      // Leader-dots if theme calls for them
+      if (themeRef.priceStyle === 'leader-dots') {
+        ctx.strokeStyle = themeRef.muted || '#9A958B';
+        ctx.lineWidth = 0.4;
+        ctx.setLineDash([0.5, 1.5]);
+        var nameW = ctx.measureText(name).width;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.08 + nameW + 4, y - 1.5);
+        var priceW = r.price ? ctx.measureText(String(r.price)).width : 0;
+        ctx.lineTo(w * 0.92 - priceW - 4, y - 1.5);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      y += 11;
+    });
+  }
+  function paintAllThemeThumbs() {
+    if (typeof MD_THEMES === 'undefined') return;
+    var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+    cards.forEach(function (card) {
+      if (card.dataset.thumbLoaded === '1') return;
+      var id = card.dataset.id;
+      var t = MD_THEMES.get(id);
+      if (!t) return;
+      // Insert canvas if not already
+      var canvas = card.querySelector('.md-theme-thumb');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.className = 'md-theme-thumb';
+        canvas.setAttribute('aria-hidden', 'true');
+        card.appendChild(canvas);
+      }
+      paintThemeThumb(canvas, t);
+      card.dataset.thumbLoaded = '1';
+    });
+  }
+  // Schedule thumbnail repaint when rows change (debounced).
+  var __thumbTimer = null;
+  function scheduleThumbRepaint() {
+    if (__thumbTimer) clearTimeout(__thumbTimer);
+    __thumbTimer = setTimeout(function () {
+      __thumbTimer = null;
+      // Force-clear the loaded flag so paintAllThemeThumbs re-renders
+      var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+      cards.forEach(function (c) { c.dataset.thumbLoaded = '0'; });
+      paintAllThemeThumbs();
+    }, 800);
+  }
+  // Hook into the existing schedulePreview cadence — every 300ms
+  // debounce, we also schedule a thumbnail repaint at the longer
+  // 800ms cadence so thumbnails follow the operator's edits.
+  var __origSchedulePreview = schedulePreview;
+  schedulePreview = function () {
+    __origSchedulePreview();
+    scheduleThumbRepaint();
+  };
+
   // -------------------- Init --------------------
   // Theme suggestion from cuisine context. Applies once on first
   // load only — owner can flip themes after; we don't override
@@ -1432,6 +3245,8 @@
   } catch (_) {}
 
   renderThemePicker();
+  renderPaperGrid();      // W7-3 — populate the new paper-card picker
+  syncCustomizeFromTheme(); // W12-3 — initial customizer pickers in sync
   render();
   renderCtxPill();
   renderHistory();
@@ -1439,15 +3254,223 @@
   // and the operator hasn't started fresh yet. Runs after the
   // initial render so the banner sits above an empty editor.
   try { offerDraftRestore(); } catch (_) {}
-  // W5-1 — if no draft exists and the editor is still empty after
-  // restore-offer, seed ghost preview rows. First keystroke clears.
+  // W12-3 — customizer wiring. Each color picker writes to its
+  // override; reset clears all three. The paper-texture flag is
+  // an additional class toggled on the preview paper element.
+  var customAccentEl = document.getElementById('mdCustomAccent');
+  var customPaperEl  = document.getElementById('mdCustomPaper');
+  var customInkEl    = document.getElementById('mdCustomInk');
+  var customResetEl  = document.getElementById('mdCustomizeReset');
+  var paperTextureEl = document.getElementById('mdPaperTexture');
+
+  function syncCustomizeFromTheme() {
+    // When the operator switches theme without explicitly overriding
+    // a color, sync the picker values to the theme's defaults so
+    // the visible "current" matches reality.
+    if (typeof MD_THEMES === 'undefined') return;
+    var t = MD_THEMES.get(themeId);
+    if (!t) return;
+    if (customAccentEl && !customize.accent) customAccentEl.value = t.accent || '#1F4E5B';
+    if (customPaperEl  && !customize.paper)  customPaperEl.value  = t.paper  || '#FAF6EE';
+    if (customInkEl    && !customize.ink)    customInkEl.value    = t.ink    || '#14161A';
+  }
+  if (customAccentEl) customAccentEl.addEventListener('input', function () {
+    customize.accent = customAccentEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customPaperEl) customPaperEl.addEventListener('input', function () {
+    customize.paper = customPaperEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customInkEl) customInkEl.addEventListener('input', function () {
+    customize.ink = customInkEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customResetEl) customResetEl.addEventListener('click', function () {
+    customize.accent = customize.paper = customize.ink = null;
+    syncCustomizeFromTheme();
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+  if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
+    customize.paperTexture = !!paperTextureEl.checked;
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+
+  // W15 — seasonal / daypart / event modifier dropdowns. Each
+  // writes to customize.mods and triggers a preview re-render.
+  customize.mods = customize.mods || { season: 'none', daypart: 'none', event: 'none' };
+  var modSeasonEl  = document.getElementById('mdModSeason');
+  var modDaypartEl = document.getElementById('mdModDaypart');
+  var modEventEl   = document.getElementById('mdModEvent');
+  function wireMod(el, key) {
+    if (!el) return;
+    el.addEventListener('change', function () {
+      customize.mods[key] = el.value || 'none';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+  wireMod(modSeasonEl,  'season');
+  wireMod(modDaypartEl, 'daypart');
+  wireMod(modEventEl,   'event');
+
+  // W15 — Theme JSON export. Writes a self-contained snapshot of
+  // the operator's current theme + customizer overrides + modifiers.
+  // Re-importable on a later session via the Import button.
+  var themeExportBtn = document.getElementById('mdThemeExport');
+  var themeImportInput = document.getElementById('mdThemeImport');
+  if (themeExportBtn) themeExportBtn.addEventListener('click', function () {
+    var snapshot = {
+      version: 1,
+      themeId: themeId,
+      customize: customize,
+      meta: { tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage }
+    };
+    var blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'menu-theme-' + themeId + '.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+    setDownloadMsg(tt('Theme JSON downloaded.', 'JSON de tema descargado.'), 'success');
+  });
+  if (themeImportInput) themeImportInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        if (!parsed || typeof parsed !== 'object') return;
+        pushUndo();
+        if (parsed.themeId && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(parsed.themeId)) {
+          themeId = parsed.themeId;
+        }
+        if (parsed.customize) {
+          customize.accent = parsed.customize.accent || null;
+          customize.paper  = parsed.customize.paper  || null;
+          customize.ink    = parsed.customize.ink    || null;
+          customize.paperTexture = !!parsed.customize.paperTexture;
+          customize.mods = parsed.customize.mods || { season:'none', daypart:'none', event:'none' };
+        }
+        if (parsed.meta) {
+          meta.tagline = parsed.meta.tagline || '';
+          meta.story   = parsed.meta.story   || '';
+          meta.coverPage = !!parsed.meta.coverPage;
+        }
+        // Sync UI
+        if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
+        if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
+        if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
+        if (paperTextureEl) paperTextureEl.checked = customize.paperTexture;
+        if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
+        if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
+        if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+        if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
+        if (metaStoryEl)   metaStoryEl.value   = meta.story;
+        if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+        renderThemePicker();
+        renderPreview();
+        scheduleSaveDraft();
+        setDownloadMsg(tt('Theme imported successfully.', 'Tema importado correctamente.'), 'success');
+      } catch (_) {
+        setDownloadMsg(tt('Could not parse that JSON.', 'No se pudo leer el JSON.'), 'error');
+      }
+    };
+    reader.readAsText(file);
+    themeImportInput.value = '';
+  });
+
+  // W15 — Vibe quiz. Maps 4-question radio answers to 3 theme
+  // recommendations. Operator picks one, theme is applied + quiz
+  // closes.
+  var vibeQuizBtn = document.getElementById('mdVibeQuizBtn');
+  var vibeQuizEl  = document.getElementById('mdVibeQuiz');
+  var vibeQuizCancelEl = document.getElementById('mdVibeQuizCancel');
+  var vibeQuizBackdropEl = document.getElementById('mdVibeQuizBackdrop');
+  var vibeQuizForm = document.getElementById('mdVibeQuizForm');
+  var vibeQuizResults = document.getElementById('mdVibeQuizResults');
+
+  function vibeRecommend(answers) {
+    // Heuristic mapping: service+feel+era+cuisine -> 3 ranked themes.
+    var pool = [];
+    if (answers.cuisine === 'european') {
+      if (answers.era === 'traditional') pool.push('trattoria', 'brasserie', 'tapas-rustic');
+      else                                pool.push('bistro-paris', 'modern-minimal', 'wine-list-formal');
+    } else if (answers.cuisine === 'latin') {
+      pool.push('cantina', 'tapas-rustic', 'food-truck');
+    } else if (answers.cuisine === 'asian') {
+      pool.push('asian-table', 'ramen-counter', 'dim-sum-rose');
+    } else {
+      // american
+      if (answers.service === 'fine')   pool.push('tasting-omakase', 'steakhouse', 'wine-list-formal');
+      else if (answers.service === 'counter') pool.push('diner-counter', 'pizza-counter', 'food-truck');
+      else                              pool.push('gastropub-oak', 'brewpub-slate', 'modern-minimal');
+    }
+    if (answers.feel === 'rich') {
+      pool = ['steakhouse', 'cocktail-deco', 'brasserie'].concat(pool.filter(function (p) {
+        return ['steakhouse','cocktail-deco','brasserie'].indexOf(p) === -1;
+      }));
+    }
+    return pool.slice(0, 3);
+  }
+  function showVibeQuiz() {
+    if (!vibeQuizEl) return;
+    vibeQuizEl.hidden = false;
+    if (vibeQuizResults) { vibeQuizResults.hidden = true; vibeQuizResults.innerHTML = ''; }
+  }
+  function hideVibeQuiz() { if (vibeQuizEl) vibeQuizEl.hidden = true; }
+  if (vibeQuizBtn) vibeQuizBtn.addEventListener('click', showVibeQuiz);
+  if (vibeQuizCancelEl) vibeQuizCancelEl.addEventListener('click', hideVibeQuiz);
+  if (vibeQuizBackdropEl) vibeQuizBackdropEl.addEventListener('click', hideVibeQuiz);
+  if (vibeQuizForm) vibeQuizForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var fd = new FormData(vibeQuizForm);
+    var answers = {
+      service: fd.get('vq-service'),
+      feel:    fd.get('vq-feel'),
+      era:     fd.get('vq-era'),
+      cuisine: fd.get('vq-cuisine')
+    };
+    var recs = vibeRecommend(answers);
+    if (vibeQuizResults && typeof MD_THEMES !== 'undefined') {
+      vibeQuizResults.hidden = false;
+      vibeQuizResults.innerHTML = '<h3>' + tt('Recommended for you', 'Recomendados para ti') + '</h3><ul>' +
+        recs.map(function (id) {
+          var t = MD_THEMES.get(id); if (!t) return '';
+          var lab = LOCALE === 'es' ? t.label_es : t.label_en;
+          var bl  = LOCALE === 'es' ? t.blurb_es : t.blurb_en;
+          return '<li><button type="button" data-theme="' + escHtml(id) + '"><strong>' + escHtml(lab) + '</strong> <span>' + escHtml(bl || '') + '</span></button></li>';
+        }).join('') + '</ul>';
+      vibeQuizResults.querySelectorAll('button[data-theme]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          themeId = b.dataset.theme;
+          renderThemePicker();
+          renderPreview();
+          scheduleSaveDraft();
+          hideVibeQuiz();
+        });
+      });
+    }
+  });
+
+  // W11-2 — first-run cuisine quiz takes priority over the older
+  // ghost-rows + overlay pattern. Skip path falls through to the
+  // ghost-rows path so the empty-state still feels alive.
   try {
     if (!rows.length && !loadDraft()) {
-      if (seedGhostRows()) {
-        render();
-        renderGhostOverlay();
-      }
+      showQuizIfFresh();
     }
+  } catch (_) {}
+  // W11-2 — paint theme thumbnails on initial load (the operator's
+  // current rows[] = sample on first visit; their actual data on
+  // revisit). Defer behind requestIdleCallback when available so
+  // page-load isn't blocked.
+  try {
+    var paintThumbs = function () { paintAllThemeThumbs(); };
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(paintThumbs, { timeout: 1500 });
+    else setTimeout(paintThumbs, 200);
   } catch (_) {}
 
   // Subscribe so changes in another tab (e.g. saving from Menu
