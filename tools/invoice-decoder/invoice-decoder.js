@@ -1759,6 +1759,58 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // W4-8 — drift banner above the parsed panel.
+  //
+  // When MuntinContext has at least 2 trend entries, run the drift
+  // detector. If any category drifted >15% vs the rolling median,
+  // render a banner above the result panel naming the worst offender
+  // and pointing at a coaching hint. Operator can dismiss it (per-
+  // session). Banner re-renders only when MuntinContext changes
+  // (cross-tab subscribe).
+  // ----------------------------------------------------------------
+  function renderDriftBanner() {
+    if (typeof MuntinCostTrend === 'undefined') return;
+    if (typeof MuntinContext === 'undefined') return;
+    var host = document.getElementById('idDriftBanner');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'idDriftBanner';
+      host.className = 'id-drift-banner';
+      host.hidden = true;
+      // Mount above the result panel.
+      if (parsedEl && parsedEl.parentNode) {
+        parsedEl.parentNode.insertBefore(host, parsedEl);
+      }
+    }
+    var trend = MuntinContext.readTrend();
+    if (!trend || trend.length < 2) { host.hidden = true; return; }
+    var drifts = MuntinCostTrend.detectDrift(trend, { thresholdPct: 15, weeks: 4 });
+    if (!drifts.length) { host.hidden = true; return; }
+    var top = drifts[0];
+    var sign = top.direction === 'up' ? '+' : '';
+    var hint = MuntinCostTrend.hintForDrift(top.category, top.direction, LOCALE);
+    host.hidden = false;
+    host.innerHTML = '';
+    var head = document.createElement('strong');
+    head.textContent = tt(
+      catLabel(top.category) + ' moved ' + sign + top.deltaPct + '% vs your last few invoices.',
+      catLabel(top.category) + ' se movió ' + sign + top.deltaPct + '% vs tus últimas facturas.'
+    );
+    var body = document.createElement('span');
+    body.textContent = ' ' + hint;
+    var dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.className = 'id-drift-dismiss';
+    dismiss.setAttribute('aria-label', tt('Dismiss', 'Cerrar'));
+    dismiss.textContent = '×';
+    dismiss.addEventListener('click', function () { host.hidden = true; });
+    host.appendChild(head);
+    host.appendChild(body);
+    host.appendChild(dismiss);
+  }
+  try { renderDriftBanner(); } catch (_) {}
+
   // W3-3 — render comparison-vs-vendors table from MuntinDifferentiators.
   // Static HTML can't host this without locale duplication, so we
   // render once at boot into the #idCompareMount placeholder. The

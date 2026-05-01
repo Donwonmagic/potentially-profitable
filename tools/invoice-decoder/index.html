@@ -229,6 +229,12 @@
 .id-parsed-done{background:#eef7f4;border:1px solid #bfe2d6;border-left:3px solid var(--accent,#1f6f6a);padding:12px 14px;border-radius:8px;margin-top:6px;font-size:13.5px;color:var(--ink)}
 .id-parsed-done strong{color:var(--accent,#1f6f6a)}
 
+/* W4-8 — drift banner above the result panel. */
+.id-drift-banner{position:relative;margin:14px 0;padding:12px 40px 12px 16px;background:#fbf2e1;border:1px solid #e6cf9b;border-left:3px solid var(--rust,#B25C2A);border-radius:8px;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.id-drift-banner strong{color:var(--ink);font-weight:600;display:inline}
+.id-drift-dismiss{position:absolute;top:6px;right:8px;background:transparent;border:0;font-size:22px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:4px}
+.id-drift-dismiss:hover{background:rgba(0,0,0,.06);color:var(--ink)}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -421,8 +427,9 @@
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
-<script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
 <script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
+<script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="./preprocess.js?v=20260501-b2"></script>
 <script src="./ocr.js?v=20260501-b2"></script>
 <script src="./parse.js?v=20260501-b2"></script>
