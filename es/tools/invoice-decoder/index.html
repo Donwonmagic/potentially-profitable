@@ -68,6 +68,32 @@
 .id-preview-meta{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
 .id-preview-meta strong{color:var(--ink);font-weight:600}
 .id-coming{margin:18px 0 0;padding:14px 16px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:8px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.id-parsed{margin:18px 0 0}
+.id-parsed[hidden]{display:none}
+.id-parsed-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin:0 0 12px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px}
+.id-parsed-count{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
+.id-parsed-meta{font-size:12.5px;color:var(--ink-soft)}
+.id-parsed-vendor{padding:3px 10px;font-size:11.5px;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:999px;color:var(--ink)}
+.id-parsed-list{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--white)}
+.id-parsed-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.id-parsed-row:last-child{border-bottom:0}
+.id-parsed-row[data-conf="green"]{border-left:3px solid var(--status-good)}
+.id-parsed-row[data-conf="amber"]{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-row[data-conf="red"]  {border-left:3px solid var(--rust);background:#FFF6F0}
+.id-parsed-row .id-parsed-name{font-weight:500;color:var(--ink)}
+.id-parsed-row .id-parsed-qty{color:var(--stone);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id-parsed-row .id-parsed-price{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:540px){
+  .id-parsed-row{grid-template-columns:1fr;gap:2px}
+  .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
+}
+.id-parsed-totals{margin:10px 0 0;padding:10px 14px;background:var(--white);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-soft);line-height:1.55}
+.id-parsed-totals strong{color:var(--ink);font-weight:600}
+.id-parsed-totals.warn{border-left:3px solid #c89a3c;background:#FFFBF0}
+.id-parsed-empty{padding:24px 16px;text-align:center;color:var(--stone);font-size:13px}
+.id-read-btn{margin-top:14px;padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
+.id-read-btn:hover{background:var(--teal)}
+.id-read-btn[disabled]{opacity:.55;cursor:wait}
 .id-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
 .id-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
 .id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
@@ -146,9 +172,23 @@
         </div>
       </div>
       <p class="id-preview-meta" id="idPreviewMeta"></p>
+      <button type="button" class="id-read-btn" id="idReadBtn" hidden aria-label="Leer esta factura">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+        Leer esta factura
+      </button>
     </div>
 
-    <p class="id-coming" id="idComing" hidden><strong>Próximo:</strong> el lector línea por línea (B2) convertirá esta imagen limpia en filas editables que puedes guardar. Por ahora puedes verificar que tu foto es suficientemente buena — si la versión limpia de la derecha está nítida y legible, el siguiente paso funcionará.</p>
+    <p class="id-coming" id="idComing" hidden><strong>Siguiente paso:</strong> toca "Leer esta factura" para extraer cada línea. Mostraremos categorías, totales, y te dejaremos guardar el resultado en B5.</p>
+
+    <div class="id-parsed" id="idParsed" hidden>
+      <div class="id-parsed-summary">
+        <span class="id-parsed-count" id="idParsedCount">0 partidas</span>
+        <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
+        <span class="id-parsed-meta" id="idParsedMeta"></span>
+      </div>
+      <ul class="id-parsed-list" id="idParsedList"></ul>
+      <p class="id-parsed-totals" id="idParsedTotals" hidden></p>
+    </div>
 
     <div class="id-honesty">
       <h3>Qué es, y qué no es.</h3>
@@ -167,7 +207,9 @@
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="/tools/invoice-decoder/preprocess.js?v=20260501-b1"></script>
-<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-b1"></script>
+<script src="/tools/invoice-decoder/preprocess.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/ocr.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/parse.js?v=20260501-b2"></script>
+<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-b2"></script>
 </body>
 </html>
