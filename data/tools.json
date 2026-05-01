@@ -8,7 +8,7 @@
       "label_es": "Operaciones y Márgenes",
       "blurb_en": "The honest math of running an independent restaurant — food cost, menu mix, and the prices that protect your margin.",
       "blurb_es": "La matemática honesta de un restaurante independiente — costo de comida, mezcla de menú y los precios que protegen tu margen.",
-      "tools": ["margin-math", "menu-engineering", "plate-cost"]
+      "tools": ["margin-math", "menu-engineering", "plate-cost", "invoice-decoder"]
     },
     {
       "id": "local-seo",
@@ -54,6 +54,12 @@
       "label_en": "Refreshing your brand",
       "label_es": "Refrescar tu marca",
       "tools": ["brand-suite", "photo-brief", "menu-copy", "menu-design"]
+    },
+    {
+      "id": "tracking-costs",
+      "label_en": "Track your costs without a spreadsheet",
+      "label_es": "Lleva tus costos sin hoja de cálculo",
+      "tools": ["invoice-decoder", "plate-cost", "margin-math"]
     }
   ],
 
@@ -220,6 +226,21 @@
       "url_en": "/tools/menu-design/",
       "url_es": "/es/tools/menu-design/",
       "cluster": "brand-design",
+      "status": "live",
+      "added": "2026-05-01"
+    },
+    "invoice-decoder": {
+      "title_en": "Advanced Invoice Decoder",
+      "title_es": "Decodificador de Facturas",
+      "summary_en": "Snap a Sysco or produce invoice. Get sorted line items you can drop into Plate Cost — no spreadsheet, no re-typing.",
+      "summary_es": "Saca foto a tu factura de Sysco o de verduras. Obtén partidas ordenadas para pasar al Costo del Plato — sin hoja de cálculo.",
+      "walkaway_en": "Categorized line items saved to your Workshop, ready for Plate Cost.",
+      "walkaway_es": "Partidas categorizadas guardadas en tu Taller, listas para Costo del Plato.",
+      "cta_en": "Open Invoice Decoder",
+      "cta_es": "Abrir Decodificador de Facturas",
+      "url_en": "/tools/invoice-decoder/",
+      "url_es": "/es/tools/invoice-decoder/",
+      "cluster": "operations-margin",
       "status": "live",
       "added": "2026-05-01"
     }
