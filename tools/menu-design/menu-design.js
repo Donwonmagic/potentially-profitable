@@ -2310,6 +2310,201 @@
     raf = requestAnimationFrame(frame);
   }
 
+  // ----------------------------------------------------------------
+  // W11-2 — First-run cuisine quiz. A six-tile card the operator
+  // sees on a cold load when no draft exists. Replaces the older
+  // ghost-rows + overlay pattern with something cleaner: pick a
+  // cuisine -> theme suggested + matching template loaded.
+  // Time-to-first-output goal: 90 seconds.
+  // ----------------------------------------------------------------
+  var QUIZ_TILES = [
+    { id: 'italian',     glyph: '🍝', label_en: 'Italian / pasta',         label_es: 'Italiana / pasta',     hint_en: 'Trattoria, pizza, neighborhood',  hint_es: 'Trattoria, pizza, vecindario',     theme: 'trattoria',     template: null },
+    { id: 'french',      glyph: '🥖', label_en: 'French / bistro',          label_es: 'Francesa / bistró',    hint_en: 'Brasserie, weeknight tablecloth',  hint_es: 'Brasserie, mantel entre semana',   theme: 'bistro-paris',  template: null },
+    { id: 'mexican',     glyph: '🌮', label_en: 'Mexican / cantina',        label_es: 'Mexicana / cantina',   hint_en: 'Cantina, taquería, family-run',    hint_es: 'Cantina, taquería, familiar',      theme: 'cantina',       template: null },
+    { id: 'cafe',        glyph: '☕', label_en: 'Café / brunch',            label_es: 'Café / brunch',        hint_en: 'Coffee, sandwiches, brunch',       hint_es: 'Café, sándwiches, brunch',          theme: 'cafe-counter',  template: 'brunch' },
+    { id: 'asian',       glyph: '🍣', label_en: 'Asian fusion',             label_es: 'Asiática',             hint_en: 'Ramen, sushi, dim sum, Thai',      hint_es: 'Ramen, sushi, dim sum, tailandesa',theme: 'asian-table',   template: null },
+    { id: 'pizza',       glyph: '🍕', label_en: 'Pizza counter',            label_es: 'Pizzería',             hint_en: 'Slice joint, takeaway',            hint_es: 'Pizzería, para llevar',            theme: 'pizza-counter', template: null },
+    { id: 'bbq',         glyph: '🔥', label_en: 'BBQ / smokehouse',         label_es: 'BBQ / asador',         hint_en: 'Pit, ribs, brisket, sides',         hint_es: 'Pit, costillas, brisket, guarniciones', theme: 'bbq-smoke', template: null },
+    { id: 'wine-bar',    glyph: '🍷', label_en: 'Wine bar / cellar',        label_es: 'Bar de vinos',         hint_en: 'Wine list, small plates',          hint_es: 'Carta de vinos, raciones',          theme: 'wine-list-formal', template: 'wine-list' },
+    { id: 'modern',      glyph: '◯', label_en: 'Modern / something else',   label_es: 'Moderno / otro',       hint_en: 'Minimalist, generous whitespace',  hint_es: 'Minimalista, mucho espacio',        theme: 'modern-minimal', template: null }
+  ];
+  function renderQuizTiles() {
+    var host = document.getElementById('mdQuizTiles');
+    if (!host) return;
+    host.innerHTML = QUIZ_TILES.map(function (t) {
+      var label = LOCALE === 'es' ? t.label_es : t.label_en;
+      var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
+      return '<li><button type="button" class="md-quiz-tile" data-cuisine="' + escHtml(t.id) + '">' +
+        '<span class="md-quiz-tile-glyph" aria-hidden="true">' + t.glyph + '</span>' +
+        '<span class="md-quiz-tile-label">' + escHtml(label) + '</span>' +
+        '<span class="md-quiz-tile-hint">' + escHtml(hint) + '</span>' +
+        '</button></li>';
+    }).join('');
+  }
+  function showQuizIfFresh() {
+    var quizEl = document.getElementById('mdQuiz');
+    if (!quizEl) return;
+    // Only show on a truly cold load: no rows, no draft, no ctx menu data.
+    if (rows.filter(function (r) { return !r.ghost; }).length) return;
+    if (loadDraft()) return;
+    renderQuizTiles();
+    quizEl.hidden = false;
+    var skipBtn = document.getElementById('mdQuizSkip');
+    if (skipBtn) skipBtn.addEventListener('click', function () {
+      quizEl.hidden = true;
+      // Fall through to the existing ghost-rows seed for those who
+      // skipped — keeps the empty-state visually anchored.
+      try {
+        if (!rows.length && seedGhostRows()) {
+          render();
+          renderGhostOverlay();
+        }
+      } catch (_) {}
+    });
+    var tilesHost = document.getElementById('mdQuizTiles');
+    if (tilesHost) tilesHost.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-cuisine]'); if (!btn) return;
+      var cuisine = btn.dataset.cuisine;
+      var entry = null;
+      for (var i = 0; i < QUIZ_TILES.length; i++) if (QUIZ_TILES[i].id === cuisine) { entry = QUIZ_TILES[i]; break; }
+      if (!entry) return;
+      // Apply theme suggestion immediately.
+      themeId = entry.theme;
+      // If the tile names a starter template, load it; else seed
+      // the standard SAMPLE_MENU as a working starting point.
+      if (entry.template && TEMPLATES[entry.template]) {
+        rows = TEMPLATES[entry.template].rows.map(function (r) { return Object.assign({}, r); });
+      } else {
+        rows = SAMPLE_MENU.map(function (r) { return Object.assign({}, r); });
+      }
+      __ghostActive = false;
+      quizEl.hidden = true;
+      render();
+      renderThemePicker();
+      scheduleSaveDraft();
+      if (window.plausible) {
+        try { window.plausible('Menu Design Quiz Picked', { props: { cuisine: cuisine, theme: entry.theme } }); } catch (_) {}
+      }
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W11-2 — Live theme thumbnails. Replaces the abstract 4-color
+  // swatch strip in each theme card with a canvas-rendered mini-
+  // preview of the operator's actual rows[] in that theme. Lazily
+  // painted on hover/focus via IntersectionObserver-style trigger.
+  // ----------------------------------------------------------------
+  function paintThemeThumb(canvas, themeRef) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = canvas.offsetWidth * 2;  // 2x for retina
+    var H = canvas.height = canvas.offsetHeight * 2;
+    ctx.scale(2, 2);
+    var w = canvas.offsetWidth;
+    var h = canvas.offsetHeight;
+    // Background paper
+    ctx.fillStyle = themeRef.paper || '#FAF6EE';
+    ctx.fillRect(0, 0, w, h);
+    // Title (display family fallback to system)
+    var titleFont = (themeRef.id && themeRef.id.indexOf('counter') !== -1) ||
+                    /helvetica|inter|sans/.test((themeRef.displayFamily || '').toLowerCase())
+      ? 'Inter, system-ui, sans-serif' : 'Georgia, serif';
+    ctx.fillStyle = themeRef.ink || '#14161A';
+    ctx.font = '600 11px ' + titleFont;
+    ctx.textAlign = 'center';
+    ctx.fillText('Menu', w / 2, 14);
+    // Section header
+    ctx.fillStyle = themeRef.accent || '#1F4E5B';
+    ctx.font = '600 7.5px ' + titleFont;
+    ctx.textAlign = 'center';
+    ctx.fillText('STARTERS', w / 2, 30);
+    if (themeRef.dividerStyle === 'hand-rule' || themeRef.dividerStyle === 'whitespace') {
+      ctx.strokeStyle = themeRef.muted || '#7C6F60';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(w * 0.2, 34); ctx.lineTo(w * 0.8, 34); ctx.stroke();
+    } else if (themeRef.dividerStyle === 'box') {
+      ctx.strokeStyle = themeRef.ink || '#14161A';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(w * 0.3, 22, w * 0.4, 14);
+    }
+    // Three dish rows
+    var rowsToShow = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).slice(0, 4);
+    if (!rowsToShow.length) {
+      rowsToShow = [
+        { name: 'Caesar salad',  price: '$14' },
+        { name: 'House bread',    price: '$6'  },
+        { name: 'Roast chicken',  price: '$28' }
+      ];
+    }
+    var bodyFontPx = '7px ' + titleFont;
+    ctx.font = bodyFontPx;
+    ctx.fillStyle = themeRef.ink || '#14161A';
+    var y = 44;
+    rowsToShow.forEach(function (r) {
+      var name = String(r.name || '').slice(0, 22);
+      ctx.textAlign = 'left';
+      ctx.fillText(name, w * 0.08, y);
+      if (r.price) {
+        ctx.textAlign = 'right';
+        ctx.fillText(String(r.price), w * 0.92, y);
+      }
+      // Leader-dots if theme calls for them
+      if (themeRef.priceStyle === 'leader-dots') {
+        ctx.strokeStyle = themeRef.muted || '#9A958B';
+        ctx.lineWidth = 0.4;
+        ctx.setLineDash([0.5, 1.5]);
+        var nameW = ctx.measureText(name).width;
+        ctx.beginPath();
+        ctx.moveTo(w * 0.08 + nameW + 4, y - 1.5);
+        var priceW = r.price ? ctx.measureText(String(r.price)).width : 0;
+        ctx.lineTo(w * 0.92 - priceW - 4, y - 1.5);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      y += 11;
+    });
+  }
+  function paintAllThemeThumbs() {
+    if (typeof MD_THEMES === 'undefined') return;
+    var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+    cards.forEach(function (card) {
+      if (card.dataset.thumbLoaded === '1') return;
+      var id = card.dataset.id;
+      var t = MD_THEMES.get(id);
+      if (!t) return;
+      // Insert canvas if not already
+      var canvas = card.querySelector('.md-theme-thumb');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.className = 'md-theme-thumb';
+        canvas.setAttribute('aria-hidden', 'true');
+        card.appendChild(canvas);
+      }
+      paintThemeThumb(canvas, t);
+      card.dataset.thumbLoaded = '1';
+    });
+  }
+  // Schedule thumbnail repaint when rows change (debounced).
+  var __thumbTimer = null;
+  function scheduleThumbRepaint() {
+    if (__thumbTimer) clearTimeout(__thumbTimer);
+    __thumbTimer = setTimeout(function () {
+      __thumbTimer = null;
+      // Force-clear the loaded flag so paintAllThemeThumbs re-renders
+      var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+      cards.forEach(function (c) { c.dataset.thumbLoaded = '0'; });
+      paintAllThemeThumbs();
+    }, 800);
+  }
+  // Hook into the existing schedulePreview cadence — every 300ms
+  // debounce, we also schedule a thumbnail repaint at the longer
+  // 800ms cadence so thumbnails follow the operator's edits.
+  var __origSchedulePreview = schedulePreview;
+  schedulePreview = function () {
+    __origSchedulePreview();
+    scheduleThumbRepaint();
+  };
+
   // -------------------- Init --------------------
   // Theme suggestion from cuisine context. Applies once on first
   // load only — owner can flip themes after; we don't override
@@ -2333,15 +2528,22 @@
   // and the operator hasn't started fresh yet. Runs after the
   // initial render so the banner sits above an empty editor.
   try { offerDraftRestore(); } catch (_) {}
-  // W5-1 — if no draft exists and the editor is still empty after
-  // restore-offer, seed ghost preview rows. First keystroke clears.
+  // W11-2 — first-run cuisine quiz takes priority over the older
+  // ghost-rows + overlay pattern. Skip path falls through to the
+  // ghost-rows path so the empty-state still feels alive.
   try {
     if (!rows.length && !loadDraft()) {
-      if (seedGhostRows()) {
-        render();
-        renderGhostOverlay();
-      }
+      showQuizIfFresh();
     }
+  } catch (_) {}
+  // W11-2 — paint theme thumbnails on initial load (the operator's
+  // current rows[] = sample on first visit; their actual data on
+  // revisit). Defer behind requestIdleCallback when available so
+  // page-load isn't blocked.
+  try {
+    var paintThumbs = function () { paintAllThemeThumbs(); };
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(paintThumbs, { timeout: 1500 });
+    else setTimeout(paintThumbs, 200);
   } catch (_) {}
 
   // Subscribe so changes in another tab (e.g. saving from Menu
