@@ -127,6 +127,16 @@
 .id-bulk-save{margin-left:auto;padding:11px 20px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-fast)}
 .id-bulk-save:hover{background:var(--teal)}
 .id-bulk-save[disabled]{opacity:.55;cursor:not-allowed}
+/* B6-4: cross-tool handoff panel — three big tappable cards. */
+.id-handoff{margin-top:18px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.id-handoff[hidden]{display:none}
+.id-handoff-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.id-handoff-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.id-handoff-row{grid-template-columns:1fr}}
+.id-handoff-btn{display:flex;flex-direction:column;gap:4px;padding:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);transition:border-color var(--t-fast),transform var(--t-fast)}
+.id-handoff-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,22,26,.06)}
+.id-handoff-btn strong{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink)}
+.id-handoff-btn span{font-size:12.5px;color:var(--stone)}
 @media(max-width:540px){
   .id-parsed-row{grid-template-columns:1fr;gap:2px}
   .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
@@ -249,6 +259,7 @@
         <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Mark amber as verified</button>
         <button type="button" class="id-bulk-save" id="idBulkSave" disabled>Save to my Workshop →</button>
       </div>
+      <div class="id-handoff" id="idHandoff" hidden></div>
     </div>
 
     <div class="id-honesty">

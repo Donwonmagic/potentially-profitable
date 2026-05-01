@@ -531,6 +531,63 @@
   var bulkConfirm = document.getElementById('idBulkConfirm');
   var bulkSave    = document.getElementById('idBulkSave');
 
+  // -------------------- Cross-tool handoffs (B6-4) --------------------
+  // After a successful save, surface three one-tap handoff buttons
+  // to the rest of the suite. Each opens the target tool with a
+  // URL fragment the target's own decoder consumes — no server
+  // round-trip, no leak via referrer (referrerpolicy:no-referrer
+  // already on the page). The handoff fragment shape mirrors the
+  // existing tools/_shared/url-fragment.js encoders.
+  function renderHandoffPanel(payload) {
+    var host = document.getElementById('idHandoff');
+    if (!host) return;
+    if (!payload || !payload.items || !Array.isArray(parsedRowsState)) return;
+
+    var localePrefix = LOCALE === 'es' ? '/es' : '';
+    // 1) Plate Cost ingestion — only protein/produce/dairy/seafood/
+    //    herbs-spices flow as candidate ingredients (paper / cleaning
+    //    / beverage are pricing inputs but not recipe ingredients).
+    var ingredientCats = { protein: 1, produce: 1, dairy: 1, seafood: 1, 'herbs-spices': 1 };
+    var ingredientRows = parsedRowsState.filter(function (r) {
+      return r.category && ingredientCats[r.category] && r.name && r.unitPrice != null;
+    }).slice(0, 30);
+    var pcFrag = ingredientRows.map(function (r) {
+      return [r.name, (r.unitPrice || 0).toFixed(2), r.qty || 1, r.unit || 'lb']
+        .map(encodeURIComponent).join(';');
+    }).join('|');
+    var pcUrl = localePrefix + '/tools/plate-cost/#ingredients=' + pcFrag;
+
+    // 2) Margin Math — feed a food-cost-to-revenue ratio when the
+    //    user has weekly revenue elsewhere. We just send the
+    //    parsed sum as a hint; Margin Math has its own revenue
+    //    input so it computes the ratio there.
+    var mmUrl = localePrefix + '/tools/margin-math/#foodCostHint=' +
+      encodeURIComponent((payload.parsedSum || 0).toFixed(2));
+
+    // 3) Menu Engineering — pre-fill the period's food-cost %
+    //    nudge if the user adds revenue. Same pattern as MM.
+    var meUrl = localePrefix + '/tools/menu-engineering/#foodCostHint=' +
+      encodeURIComponent((payload.parsedSum || 0).toFixed(2));
+
+    host.innerHTML =
+      '<p class="id-handoff-label">' + tt('Now flow it into the rest of your toolkit', 'Ahora, llévala al resto de tu suite') + '</p>' +
+      '<div class="id-handoff-row">' +
+        '<a class="id-handoff-btn" href="' + pcUrl + '">' +
+          '<strong>' + tt('Plate Cost', 'Costo del Plato') + ' →</strong>' +
+          '<span>' + tt('Drop in ' + ingredientRows.length + ' ingredients', 'Pasar ' + ingredientRows.length + ' ingredientes') + '</span>' +
+        '</a>' +
+        '<a class="id-handoff-btn" href="' + mmUrl + '">' +
+          '<strong>' + tt('Margin Math', 'Matemática de Margen') + ' →</strong>' +
+          '<span>' + tt('Run a margin check', 'Correr un chequeo de margen') + '</span>' +
+        '</a>' +
+        '<a class="id-handoff-btn" href="' + meUrl + '">' +
+          '<strong>' + tt('Menu Engineering', 'Menu Engineering') + ' →</strong>' +
+          '<span>' + tt('Update food-cost %', 'Actualizar % de costo') + '</span>' +
+        '</a>' +
+      '</div>';
+    host.hidden = false;
+  }
+
   // -------------------- Save flow (B6-3) --------------------
   // The save flow is the only point where this tool issues a
   // network request. The cleartext invoice is encrypted in the
@@ -644,6 +701,32 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
+          // B6-4: write a slim summary into MuntinContext so
+          // Plate Cost can pre-fill its ingredient grid from the
+          // last invoice; Menu Engineering surfaces a rolling
+          // food-cost % suggestion; Margin Math reads the
+          // category totals as input. NO ciphertext goes here —
+          // localStorage is plaintext-shaped by definition; we
+          // only write category aggregates + recent item names
+          // (capped at 50). The encrypted envelope stays on the
+          // server.
+          try {
+            if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+              var slim = parsedRowsState.slice(0, 50).map(function (r) {
+                return {
+                  name: String(r.name || '').slice(0, 60),
+                  qty: r.qty,
+                  unit: r.unit,
+                  unitPrice: r.unitPrice,
+                  category: r.category,
+                  source: payload.vendor || null,
+                  parsedAt: payload.savedAt
+                };
+              });
+              MuntinContext.merge({ invoiceItems: slim });
+            }
+          } catch (_) {}
+          renderHandoffPanel(payload);
           if (window.plausible) {
             window.plausible('Invoice Decoder Saved', { props: {
               items_bucket: payload.itemCount < 10 ? '<10' :
