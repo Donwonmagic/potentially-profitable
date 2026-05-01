@@ -1329,10 +1329,17 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
+<!-- W18 — extracted modules. Load order matters: data + infra first
+     so the orchestrator can read MD_ALLERGENS / MD_BADGES / MD_DOM /
+     MD_I18N globals at parse time. -->
+<script src="./data/allergens.js?v=20260501-w18"></script>
+<script src="./data/badges.js?v=20260501-w18"></script>
+<script src="./infra/dom.js?v=20260501-w18"></script>
+<script src="./infra/i18n.js?v=20260501-w18"></script>
 <script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w17"></script>
 <script src="./menu-render-html.js?v=20260501-w16"></script>
 <script src="./menu-render-text.js?v=20260501-w16"></script>
-<script src="./menu-design.js?v=20260501-w17"></script>
+<script src="./menu-design.js?v=20260501-w18"></script>
 </body>
 </html>

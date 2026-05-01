@@ -46,54 +46,26 @@
     return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '', hero: null };
   }
 
-  // W13-2 — Per-dish badge catalog. Distinct from allergens (which
-  // are dietary / safety) — badges advertise menu-marketing signals.
-  var DISH_BADGES = [
-    { id: 'new',      label_en: 'New',          label_es: 'Nuevo',         glyph: 'NEW' },
-    { id: 'chef',     label_en: "Chef's pick",   label_es: 'Recomendado',   glyph: '★' },
-    { id: 'seasonal', label_en: 'Seasonal',     label_es: 'De temporada',  glyph: '◐' },
-    { id: 'popular',  label_en: 'Popular',      label_es: 'Popular',       glyph: '♥' }
-  ];
+  // W18 — Dish badge catalog extracted to data/badges.js.
+  var DISH_BADGES = (typeof MD_BADGES !== 'undefined' && MD_BADGES.BADGES) || [];
   function badgeById(id) {
-    for (var bi = 0; bi < DISH_BADGES.length; bi++) if (DISH_BADGES[bi].id === id) return DISH_BADGES[bi];
-    return null;
+    return (typeof MD_BADGES !== 'undefined') ? MD_BADGES.byId(id) : null;
   }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
   // seeded for empty-state anchoring. Cleared by clearGhostRows().
   var __ghostActive = false;
 
-  // -------------------- Allergen catalog (W7-2) --------------------
-  // Industry-standard codes used by independent restaurants. The
-  // glyph is a 1-2 letter monogram rendered inside a pill — works
-  // in jsPDF base-14 (Times Roman) without needing emoji fonts, and
-  // stays legible on every theme (dark Steakhouse stock included).
-  // Spice is a separate 0-3 stepper, rendered as chili glyphs.
-  //
-  // All output paths (preview, PDF, QR-HTML, large-print) consume
-  // this catalog. Adding a code here automatically extends the
-  // dropdown UI, the chip rendering, and the footer legend.
-  var ALLERGEN_CODES = [
-    { id: 'V',  label_en: 'Vegan',         label_es: 'Vegano',         hint_en: 'No animal products',     hint_es: 'Sin productos animales' },
-    { id: 'VG', label_en: 'Vegetarian',    label_es: 'Vegetariano',    hint_en: 'No meat',                hint_es: 'Sin carne' },
-    { id: 'GF', label_en: 'Gluten-free',   label_es: 'Sin gluten',     hint_en: 'No wheat, barley, rye',  hint_es: 'Sin trigo, cebada, centeno' },
-    { id: 'DF', label_en: 'Dairy-free',    label_es: 'Sin lácteos',    hint_en: 'No milk products',       hint_es: 'Sin lácteos' },
-    { id: 'N',  label_en: 'Contains nuts', label_es: 'Frutos secos',   hint_en: 'Tree nuts',              hint_es: 'Nueces de árbol' },
-    { id: 'E',  label_en: 'Contains eggs', label_es: 'Huevos',         hint_en: '',                       hint_es: '' },
-    { id: 'SO', label_en: 'Contains soy',  label_es: 'Soya',           hint_en: '',                       hint_es: '' },
-    { id: 'SF', label_en: 'Shellfish',     label_es: 'Mariscos',       hint_en: 'Crab, lobster, shrimp',  hint_es: 'Cangrejo, langosta, camarón' },
-    { id: 'FI', label_en: 'Contains fish', label_es: 'Pescado',        hint_en: '',                       hint_es: '' },
-    { id: 'SE', label_en: 'Sesame',        label_es: 'Sésamo',         hint_en: '',                       hint_es: '' },
-    { id: 'LO', label_en: 'Locally sourced', label_es: 'Origen local', hint_en: '',                       hint_es: '' }
-  ];
+  // -------------------- Allergen catalog --------------------
+  // W18 — extracted to data/allergens.js. Read through MD_ALLERGENS
+  // global; fall back to an empty list only if the module didn't
+  // load (which would already block the page).
+  var ALLERGEN_CODES = (typeof MD_ALLERGENS !== 'undefined' && MD_ALLERGENS.CODES) || [];
   function allergenById(id) {
-    for (var i = 0; i < ALLERGEN_CODES.length; i++) if (ALLERGEN_CODES[i].id === id) return ALLERGEN_CODES[i];
-    return null;
+    return (typeof MD_ALLERGENS !== 'undefined') ? MD_ALLERGENS.byId(id) : null;
   }
   function allergenLabel(id) {
-    var a = allergenById(id);
-    if (!a) return id;
-    return LOCALE === 'es' ? a.label_es : a.label_en;
+    return (typeof MD_ALLERGENS !== 'undefined') ? MD_ALLERGENS.label(id, LOCALE) : id;
   }
   // Aggregate every code present across rows[] — drives the auto-
   // generated key legend at the bottom of the menu.
@@ -187,10 +159,14 @@
   }
 
   // -------------------- Helpers --------------------
+  // W18 — escHtml extracted to infra/dom.js. Read through the
+  // global MD_DOM module so a single definition serves the whole
+  // tool (was duplicated across 3 files before this wave).
   function escHtml(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    return (typeof MD_DOM !== 'undefined') ? MD_DOM.escHtml(s)
+      : String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
   }
 
   // -------------------- Render --------------------
@@ -643,41 +619,10 @@
     scheduleSaveDraft();
   }
 
-  // W11-4 — downscale a File to a max-dimension data URL via canvas.
-  // Used by per-dish photos so each image stays small enough to
-  // persist in localStorage and embed in PDF without blowing the
-  // page weight. Returns dataUrl + final dimensions via callback.
+  // W18 — downscaleImage extracted to infra/dom.js.
   function downscaleImage(file, maxDim, quality, cb) {
-    if (!file || !cb) return cb && cb(null);
-    var reader = new FileReader();
-    reader.onload = function () {
-      var img = new Image();
-      img.onload = function () {
-        var ratio = img.naturalWidth / img.naturalHeight;
-        var tw, th;
-        if (img.naturalWidth <= maxDim && img.naturalHeight <= maxDim) {
-          tw = img.naturalWidth; th = img.naturalHeight;
-        } else if (ratio >= 1) {
-          tw = maxDim; th = Math.round(maxDim / ratio);
-        } else {
-          th = maxDim; tw = Math.round(maxDim * ratio);
-        }
-        var canvas = document.createElement('canvas');
-        canvas.width = tw; canvas.height = th;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, tw, th);
-        try {
-          // Use JPEG for photo content (smaller); PNG for transparent.
-          var mime = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
-          var url = canvas.toDataURL(mime, quality || 0.82);
-          cb(url, tw, th);
-        } catch (_) { cb(null); }
-      };
-      img.onerror = function () { cb(null); };
-      img.src = String(reader.result);
-    };
-    reader.onerror = function () { cb(null); };
-    reader.readAsDataURL(file);
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.downscaleImage(file, maxDim, quality, cb);
+    return cb && cb(null);
   }
 
   function readLogoFile(file) {
@@ -2789,17 +2734,16 @@
     });
   }
 
+  // W18 — downloadBlob extracted to infra/dom.js.
   function downloadBlob(content, filename, mime) {
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.downloadBlob(content, filename, mime);
     var blob = new Blob([content], { type: mime });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    setTimeout(function () {
-      if (a.parentNode) a.parentNode.removeChild(a);
-      URL.revokeObjectURL(a.href);
-    }, 4000);
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
   }
   function buildEmitterOpts() {
     var realRows = rows.filter(function (r) { return !r.ghost; });
@@ -2992,9 +2936,10 @@
   // Honors prefers-reduced-motion (skips the canvas, fades in/out).
   // Auto-dismisses after 4s; click anywhere to dismiss earlier.
   // ----------------------------------------------------------------
+  // W18 — reducedMotion extracted to infra/dom.js.
   function reducedMotionMD() {
-    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-    catch (_) { return false; }
+    if (typeof MD_DOM !== 'undefined') return MD_DOM.reducedMotion();
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) { return false; }
   }
   // W11-5 — Cross-tool nudge selector. Looks at MuntinContext to
   // figure out which tool the operator hasn't visited yet that would
