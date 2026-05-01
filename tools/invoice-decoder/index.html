@@ -197,6 +197,16 @@
 .id-diff-strip-text strong{color:#fff;font-weight:600}
 @media(max-width:540px){.id-diff-strip{font-size:12px;padding:8px 12px}.id-diff-strip-chip{font-size:10px}}
 
+/* W4-1 — filter chip bar above the parsed list. Reduces 40-line invoices to the ~8 amber rows that need eyeballing. */
+.id-filter-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:6px}
+.id-filter-chip{font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:background .12s,color .12s,border-color .12s}
+.id-filter-chip:hover{background:#f3efe7;color:var(--ink)}
+.id-filter-chip[aria-selected="true"]{background:var(--ink,#14161A);color:#fff;border-color:var(--ink,#14161A)}
+.id-filter-chip[aria-selected="true"] .id-filter-count{color:rgba(255,255,255,.75)}
+.id-filter-count{font-size:11px;color:var(--ink-soft);font-weight:400;font-variant-numeric:tabular-nums}
+.id-filter-cat{margin-left:auto;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+@media(max-width:540px){.id-filter-bar{gap:5px}.id-filter-chip{font-size:12px;padding:4px 9px}.id-filter-cat{margin-left:0;flex:1 1 100%;margin-top:4px}}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -326,6 +336,15 @@
         <span class="id-parsed-count" id="idParsedCount">0 items</span>
         <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
         <span class="id-parsed-meta" id="idParsedMeta"></span>
+      </div>
+      <div class="id-filter-bar" id="idFilterBar" hidden role="tablist" aria-label="Filter parsed rows">
+        <button type="button" class="id-filter-chip" data-filter="all"        role="tab" aria-selected="false">All <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="needReview" role="tab" aria-selected="true">Need review <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="confirmed"  role="tab" aria-selected="false">Confirmed <span class="id-filter-count">0</span></button>
+        <button type="button" class="id-filter-chip" data-filter="red"        role="tab" aria-selected="false">Red <span class="id-filter-count">0</span></button>
+        <select class="id-filter-cat" id="idFilterCat" aria-label="Filter by category">
+          <option value="">All categories</option>
+        </select>
       </div>
       <ul class="id-parsed-list" id="idParsedList"></ul>
       <p class="id-parsed-totals" id="idParsedTotals" hidden></p>

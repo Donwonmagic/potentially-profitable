@@ -432,9 +432,47 @@
     rerenderRows();
   }
 
+  // W4-1 — verification filter state. After fresh OCR we land on
+  // 'needReview' so the operator's eyes go straight to amber/red
+  // rows instead of scanning all 47 lines. Last-chosen filter
+  // persists across sessions via MuntinContext so a power user can
+  // change their default once and have it stick.
+  var __activeFilter = (function () {
+    try {
+      if (typeof MuntinContext === 'undefined') return 'needReview';
+      var stored = MuntinContext.get('invoiceDecoder');
+      if (stored && typeof stored.defaultFilter === 'string') return stored.defaultFilter;
+    } catch (_) {}
+    return 'needReview';
+  })();
+  var __activeCategory = '';
+
+  function applyRowFilter(rows) {
+    return rows.filter(function (r) {
+      if (__activeCategory && r.category !== __activeCategory) return false;
+      if (__activeFilter === 'all') return true;
+      var band = confBand(r.confidence);
+      if (__activeFilter === 'needReview') return (band !== 'green') && !r.ownerConfirmed;
+      if (__activeFilter === 'confirmed') return !!r.ownerConfirmed || band === 'green';
+      if (__activeFilter === 'red')       return band === 'red';
+      return true;
+    });
+  }
+
   function rerenderRows() {
     if (!parsedList) return;
-    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
+    var visible = applyRowFilter(parsedRowsState);
+    if (!visible.length && parsedRowsState.length) {
+      parsedList.innerHTML = '<li class="id-parsed-empty">' +
+        tt('No rows match this filter — switch to "All" to see everything.',
+           'Ningún renglón coincide — cambia a "Todas" para ver todo.') +
+        '</li>';
+    } else {
+      parsedList.innerHTML = visible.map(function (r) {
+        return rowToHtml(r, parsedRowsState.indexOf(r));
+      }).join('');
+    }
+    updateFilterChipCounts();
     // Re-emit summary count.
     if (parsedMeta) {
       var bands = { green: 0, amber: 0, red: 0 };
@@ -449,6 +487,76 @@
     // LIVE parsed-sum so owner edits are reflected in the
     // delta-vs-printed-total reading.
     rerenderTotals();
+  }
+
+  function updateFilterChipCounts() {
+    var bar = document.getElementById('idFilterBar');
+    if (!bar) return;
+    var counts = { all: 0, needReview: 0, confirmed: 0, red: 0 };
+    parsedRowsState.forEach(function (r) {
+      counts.all++;
+      var band = confBand(r.confidence);
+      if (band === 'red') counts.red++;
+      if ((band !== 'green') && !r.ownerConfirmed) counts.needReview++;
+      else                                          counts.confirmed++;
+    });
+    Array.prototype.forEach.call(bar.querySelectorAll('.id-filter-chip'), function (chip) {
+      var k = chip.getAttribute('data-filter');
+      var c = chip.querySelector('.id-filter-count');
+      if (c) c.textContent = counts[k] != null ? counts[k] : 0;
+      var selected = (k === __activeFilter);
+      chip.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    // Populate the per-category select.
+    var sel = document.getElementById('idFilterCat');
+    if (sel) {
+      var seen = {};
+      parsedRowsState.forEach(function (r) {
+        if (r.category) seen[r.category] = (seen[r.category] || 0) + 1;
+      });
+      var cats = Object.keys(seen).sort();
+      // Preserve existing selection if still present.
+      var prev = sel.value || __activeCategory || '';
+      sel.innerHTML = '<option value="">' +
+        tt('All categories', 'Todas las categorías') +
+        '</option>' + cats.map(function (k) {
+          return '<option value="' + escHtml(k) + '"' + (k === prev ? ' selected' : '') + '>' +
+            escHtml(catLabel(k)) + ' (' + seen[k] + ')</option>';
+        }).join('');
+    }
+  }
+
+  function setActiveFilter(name) {
+    if (name === __activeFilter) return;
+    __activeFilter = name;
+    try {
+      if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+        MuntinContext.merge({ invoiceDecoder: { defaultFilter: name } });
+      }
+    } catch (_) {}
+    rerenderRows();
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Filter Used', { props: { filter: name } }); } catch (_) {}
+    }
+  }
+
+  // Wire filter chips + per-category select once the bar is in DOM.
+  function wireFilterBar() {
+    var bar = document.getElementById('idFilterBar');
+    if (!bar || bar.dataset.wired === '1') return;
+    bar.dataset.wired = '1';
+    bar.addEventListener('click', function (e) {
+      var chip = e.target && e.target.closest && e.target.closest('.id-filter-chip');
+      if (!chip) return;
+      setActiveFilter(chip.getAttribute('data-filter') || 'all');
+    });
+    var sel = document.getElementById('idFilterCat');
+    if (sel) {
+      sel.addEventListener('change', function () {
+        __activeCategory = sel.value || '';
+        rerenderRows();
+      });
+    }
   }
 
   // Live total reconciliation — printed invoice total (extracted
@@ -617,10 +725,17 @@
     // save flow (B6) will encrypt + persist.
     parsedRowsState = parsed.rows.map(function (r) { return Object.assign({}, r); });
     lastPrintedTotal = (typeof parsed.totalParsed === 'number') ? parsed.totalParsed : null;
-    parsedList.innerHTML = parsedRowsState.map(rowToHtml).join('');
-    // B5-3 — totals reconciliation now reads the live state every
-    // re-render so owner edits flip the delta number in real time.
-    rerenderTotals();
+    // W4-1 — reveal + wire the filter chip bar; rerenderRows now
+    // applies the active filter so the operator lands on amber rows
+    // instead of staring down the full 47.
+    var filterBar = document.getElementById('idFilterBar');
+    if (filterBar) {
+      filterBar.hidden = false;
+      wireFilterBar();
+    }
+    // rerenderRows handles list innerHTML, filter chip counts, the
+    // band summary, and the totals banner.
+    rerenderRows();
     parsedEl.hidden = false;
     if (comingEl) comingEl.hidden = true;
     // B5-4 — reveal the sticky bulk-action bar once we have rows.
