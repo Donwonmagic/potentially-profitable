@@ -1659,14 +1659,90 @@
     });
   }
 
+  // W17 — pdf-lib lazy-loader for post-process TrimBox/BleedBox/
+  // MediaBox injection. Only loaded when print-vendor mode is on
+  // (saves ~360KB on the typical Share PDF flow).
+  var PDFLIB_CDN = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+  var __pdfLibPromise2 = null;
+  function loadPdfLib() {
+    if (root.PDFLib) return Promise.resolve(root.PDFLib);
+    if (__pdfLibPromise2) return __pdfLibPromise2;
+    __pdfLibPromise2 = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = PDFLIB_CDN;
+      s.crossOrigin = 'anonymous';
+      s.referrerPolicy = 'no-referrer';
+      s.onload = function () {
+        if (root.PDFLib) resolve(root.PDFLib);
+        else { __pdfLibPromise2 = null; reject(new Error('pdf-lib loaded but global missing')); }
+      };
+      s.onerror = function () { __pdfLibPromise2 = null; reject(new Error('pdf-lib load failed')); };
+      document.head.appendChild(s);
+    });
+    return __pdfLibPromise2;
+  }
+
+  // Post-process a jsPDF-generated array buffer with pdf-lib so each
+  // page carries a /TrimBox + /BleedBox set per the PDF/X-3 spec.
+  // jsPDF doesn't expose these page-dict entries directly. Returns
+  // a new ArrayBuffer; original input is untouched.
+  function injectTrimBleedBoxes(arrayBuffer, paper, bleed) {
+    return loadPdfLib().then(function (PDFLib) {
+      return PDFLib.PDFDocument.load(arrayBuffer).then(function (pdfDoc) {
+        var pages = pdfDoc.getPages();
+        // TrimBox = inset by bleed on every side relative to MediaBox.
+        // BleedBox = MediaBox in our output (we sized the doc to
+        // include the bleed already).
+        pages.forEach(function (page) {
+          var mb = page.getMediaBox();
+          // Acrobat reads boxes as [left, bottom, right, top].
+          var trim = [mb.x + bleed, mb.y + bleed, mb.x + mb.width - bleed, mb.y + mb.height - bleed];
+          var bleedBox = [mb.x, mb.y, mb.x + mb.width, mb.y + mb.height];
+          // pdf-lib doesn't expose setTrimBox helpers natively for
+          // older versions; use the underlying PDFArray + page.node.
+          page.node.set(PDFLib.PDFName.of('TrimBox'),
+            pdfDoc.context.obj([
+              PDFLib.PDFNumber.of(trim[0]),
+              PDFLib.PDFNumber.of(trim[1]),
+              PDFLib.PDFNumber.of(trim[2]),
+              PDFLib.PDFNumber.of(trim[3])
+            ]));
+          page.node.set(PDFLib.PDFName.of('BleedBox'),
+            pdfDoc.context.obj([
+              PDFLib.PDFNumber.of(bleedBox[0]),
+              PDFLib.PDFNumber.of(bleedBox[1]),
+              PDFLib.PDFNumber.of(bleedBox[2]),
+              PDFLib.PDFNumber.of(bleedBox[3])
+            ]));
+        });
+        // Also patch the catalog with /OutputIntents per PDF/X-3
+        // (sRGB with subtype /GTS_PDFX). Embed sRGB ICC profile is
+        // out of scope for v1 (would add 600KB); the OutputIntent
+        // dict alone signals intent and most RIPs accept it.
+        var catalog = pdfDoc.catalog;
+        var oi = pdfDoc.context.obj({
+          Type: PDFLib.PDFName.of('OutputIntent'),
+          S: PDFLib.PDFName.of('GTS_PDFX'),
+          OutputConditionIdentifier: PDFLib.PDFString.of('sRGB IEC61966-2.1'),
+          Info: PDFLib.PDFString.of('sRGB IEC61966-2.1 — vendor converts using press profile')
+        });
+        catalog.set(PDFLib.PDFName.of('OutputIntents'), pdfDoc.context.obj([oi]));
+        return pdfDoc.save();
+      });
+    });
+  }
+
   function exportPdf(opts) {
     opts = opts || {};
     // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
     // W13-1 — also load svg2pdf when the operator's logo is SVG so
     // the doc.svg() call in the logo drawer has the plugin available.
+    // W17 — also load pdf-lib when print-vendor mode is on so the
+    // post-process step has the library ready.
     var hasSvgLogo = opts.logoDataUrl && typeof opts.logoDataUrl === 'string' && opts.logoDataUrl.indexOf('data:image/svg') === 0;
     var loaders = [loadJsPdf(), loadBrandFonts()];
     if (hasSvgLogo) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
+    if (opts.printVendor) loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
       var jsPDF = results[0];
       var brandFonts = results[1]; // null on failure
@@ -1775,6 +1851,31 @@
         }
       }
       setPdfXMetadata(doc, paper, opts);
+      // W17 — when print-vendor mode is on AND pdf-lib loaded, post-
+      // process the saved buffer to inject TrimBox/BleedBox/
+      // OutputIntents so the PDF is genuinely PDF/X-3-flavored.
+      if (opts.printVendor && root.PDFLib && bleed > 0) {
+        try {
+          var ab = doc.output('arraybuffer');
+          return injectTrimBleedBoxes(ab, paper, bleed).then(function (uint8) {
+            var blob = new Blob([uint8], { type: 'application/pdf' });
+            var fname = (opts.filename || 'menu') + '.pdf';
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fname;
+            document.body.appendChild(a); a.click();
+            setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+            return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo, pdfX3: true };
+          }).catch(function () {
+            // Fallback to standard doc.save on post-process failure.
+            var fname2 = (opts.filename || 'menu') + '.pdf';
+            doc.save(fname2);
+            return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo, pdfX3: false };
+          });
+        } catch (_) {
+          // Any unexpected failure -> fall through to standard save.
+        }
+      }
       var fname = (opts.filename || 'menu') + '.pdf';
       doc.save(fname);
       return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo };

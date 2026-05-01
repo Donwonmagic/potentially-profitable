@@ -2531,6 +2531,11 @@
           msg += ' ' + tt('SVG logo couldn\'t be embedded; export a PNG to include it.',
                           'El logo SVG no se pudo incluir; exporta un PNG para añadirlo.');
         }
+        // W17 — surface PDF/X-3 conformance when post-process succeeded.
+        if (result.pdfX3) {
+          msg += ' ' + tt('PDF/X-3 metadata applied (TrimBox / BleedBox / OutputIntents).',
+                          'Metadatos PDF/X-3 aplicados (TrimBox / BleedBox / OutputIntents).');
+        }
         setDownloadMsg(msg, 'success');
         // Wave A4: persist a slim history row to MuntinContext.menuHistory
         // (capped at 3 most recent) so returning visits can show "Last
