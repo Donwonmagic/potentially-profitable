@@ -984,6 +984,9 @@
           theme: themeId, paper: paperKey, pages: String(pages),
           dishCount_bucket: dishes.length < 12 ? '<12' : dishes.length < 25 ? '12-24' : dishes.length < 40 ? '25-39' : '40+'
         } });
+        // W5-7 — peak-end celebration moment. Replaces the bare
+        // success toast. Honors prefers-reduced-motion.
+        try { surfaceDownloadCelebration(filename, pages); } catch (_) {}
       }).catch(function (err) {
         setDownloadMsg(tt(
           'PDF generation failed: ' + (err && err.message ? err.message : 'unknown error'),
@@ -994,6 +997,121 @@
         downloadBtn.innerHTML = originalLabel;
       });
     });
+  }
+
+  // ----------------------------------------------------------------
+  // W5-7 — download-moment celebration (peak-end engineering).
+  //
+  // Replaces the bare success-toast with a 3-second fullscreen
+  // overlay + a 40-particle confetti canvas. Three follow-up cards
+  // slide in: print-from-Mac / email-to-printer / share-with-team.
+  //
+  // Honors prefers-reduced-motion (skips the canvas, fades in/out).
+  // Auto-dismisses after 4s; click anywhere to dismiss earlier.
+  // ----------------------------------------------------------------
+  function reducedMotionMD() {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    catch (_) { return false; }
+  }
+  function surfaceDownloadCelebration(filename, pages) {
+    if (document.getElementById('mdCelebrate')) return;
+    var ov = document.createElement('div');
+    ov.id = 'mdCelebrate';
+    ov.className = 'md-celebrate';
+    ov.setAttribute('role', 'status');
+    ov.setAttribute('aria-live', 'polite');
+    ov.innerHTML =
+      '<div class="md-celebrate-card">' +
+        '<h2>' + tt('Your menu is ready.', 'Tu menú está listo.') + '</h2>' +
+        '<p>' + tt(
+          pages + (pages === 1 ? ' page' : ' pages') + ' downloaded as ' + filename + '.',
+          pages + (pages === 1 ? ' página' : ' páginas') + ' descargadas como ' + filename + '.'
+        ) + '</p>' +
+        '<div class="md-celebrate-actions">' +
+          '<button type="button" data-act="print">' + tt('Print from your Mac/PC', 'Imprimir desde tu Mac/PC') + '</button>' +
+          '<button type="button" data-act="email">' + tt('Email to your printer', 'Enviar por correo a tu impresor') + '</button>' +
+          '<button type="button" data-act="dismiss">' + tt('Close', 'Cerrar') + '</button>' +
+        '</div>' +
+      '</div>' +
+      (reducedMotionMD() ? '' : '<canvas class="md-celebrate-canvas"></canvas>');
+    document.body.appendChild(ov);
+    function close() { if (ov.parentNode) ov.parentNode.removeChild(ov); }
+    ov.addEventListener('click', function (e) {
+      var act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
+      if (act === 'dismiss' || e.target === ov) { close(); return; }
+      if (act === 'print') {
+        // Open the freshly-downloaded file in a new tab — operators
+        // can use the browser print dialog from there. We don't have
+        // a handle on the blob URL anymore (it's already revoked by
+        // jsPDF's save flow), so we surface guidance instead.
+        ov.querySelector('.md-celebrate-card').innerHTML =
+          '<h2>' + tt('Print on a Mac', 'Imprimir en Mac') + '</h2>' +
+          '<p>' + tt(
+            'Open ' + filename + ' in Preview (it\'s in your Downloads). Press ⌘P. Pick "Letter" paper. Print.',
+            'Abre ' + filename + ' en Preview (está en Descargas). Presiona ⌘P. Elige "Carta". Imprime.'
+          ) + '</p>' +
+          '<button type="button" data-act="dismiss" class="md-celebrate-back">' +
+          tt('Got it', 'Entendido') + '</button>';
+      } else if (act === 'email') {
+        var subject = encodeURIComponent(tt('Menu PDF for printing', 'PDF de menú para imprimir'));
+        var body = encodeURIComponent(tt(
+          'Hi — please print 100 copies of the attached menu (' + filename + ') on 24-lb letter paper. Bleeds: none. Thanks.',
+          'Hola — por favor imprime 100 copias del menú adjunto (' + filename + ') en papel carta 24-lb. Sin sangrado. Gracias.'
+        ));
+        window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+        close();
+      }
+    });
+    setTimeout(close, 4500);
+    if (!reducedMotionMD()) startConfetti(ov.querySelector('.md-celebrate-canvas'));
+  }
+
+  // ~40 particles, ~2.5s playtime. Uses requestAnimationFrame and
+  // stops on its own; doesn't keep the canvas alive after the tail
+  // particle settles.
+  function startConfetti(canvas) {
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width = window.innerWidth;
+    var H = canvas.height = window.innerHeight;
+    var COLORS = ['#1F4E5B', '#7A2E1F', '#C29B5E', '#3E6B6F', '#9F2D1F', '#FAF6EE'];
+    var parts = [];
+    for (var i = 0; i < 42; i++) {
+      parts.push({
+        x: W / 2 + (Math.random() - 0.5) * 160,
+        y: H * 0.35,
+        vx: (Math.random() - 0.5) * 8,
+        vy: -8 - Math.random() * 4,
+        c: COLORS[i % COLORS.length],
+        rot: Math.random() * Math.PI,
+        rotV: (Math.random() - 0.5) * 0.2,
+        life: 0,
+        maxLife: 100 + Math.random() * 30
+      });
+    }
+    var raf;
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      var alive = false;
+      parts.forEach(function (p) {
+        p.life++;
+        if (p.life > p.maxLife) return;
+        alive = true;
+        p.vy += 0.3;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.rot += p.rotV;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-4, -3, 8, 6);
+        ctx.restore();
+      });
+      if (alive) raf = requestAnimationFrame(frame);
+      else if (raf) cancelAnimationFrame(raf);
+    }
+    raf = requestAnimationFrame(frame);
   }
 
   // -------------------- Init --------------------

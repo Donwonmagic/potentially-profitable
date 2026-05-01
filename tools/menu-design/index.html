@@ -242,6 +242,21 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 .md-ghost-start:hover{filter:brightness(1.05)}
 @media(max-width:540px){.md-ghost-start{margin-left:0;width:100%}}
 
+/* W5-7 — download-moment celebration. */
+.md-celebrate{position:fixed;inset:0;background:rgba(20,30,30,.6);display:flex;align-items:center;justify-content:center;z-index:1300;animation:md-celebrate-fade .25s ease}
+@keyframes md-celebrate-fade{from{opacity:0}to{opacity:1}}
+.md-celebrate-canvas{position:fixed;inset:0;pointer-events:none}
+.md-celebrate-card{position:relative;z-index:1;background:var(--cream,#FAF6EE);border:1px solid var(--line);border-radius:16px;padding:32px 28px;max-width:460px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.32);animation:md-celebrate-rise .35s ease}
+@keyframes md-celebrate-rise{from{transform:translateY(20px) scale(.95);opacity:.5}to{transform:none;opacity:1}}
+.md-celebrate-card h2{font-family:var(--font-display);font-size:24px;font-weight:500;color:var(--ink);margin:0 0 8px}
+.md-celebrate-card p{font-size:14px;color:var(--ink-soft);line-height:1.55;margin:0 0 20px}
+.md-celebrate-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.md-celebrate-actions button{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;font-weight:500}
+.md-celebrate-actions button[data-act="print"]{background:var(--accent,#1f6f6a);color:#fff}
+.md-celebrate-actions button:hover{filter:brightness(1.05)}
+.md-celebrate-back{margin-top:12px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+@media(prefers-reduced-motion:reduce){.md-celebrate,.md-celebrate-card{animation:none}}
+
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebApplication","@id":"https://muntin.digital/tools/menu-design/#tool","name":"Menu Design Suite","description":"Auto-layout printable menus for independent restaurants from a typed dish list, four typeset themes, the operator's logo, and four paper sizes. Mechanical layout only — no AI rewriting.","url":"https://muntin.digital/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
