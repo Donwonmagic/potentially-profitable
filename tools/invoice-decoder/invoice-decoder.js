@@ -447,6 +447,46 @@
   })();
   var __activeCategory = '';
 
+  // ----------------------------------------------------------------
+  // W4-5 — verify-speed Plausible metric.
+  //
+  // Defends the "review takes 90 seconds" claim publicly. We start
+  // the timer the first time renderParsed populates rows and stop
+  // when the active filter (default 'needReview') first transitions
+  // to empty. Bucketed: <60s | 60-180s | 180-360s | 360s+. Fires
+  // exactly once per OCR session.
+  // ----------------------------------------------------------------
+  var __verifyStartTs = 0;
+  var __verifyFired = false;
+  function markVerifyStart() {
+    __verifyStartTs = Date.now();
+    __verifyFired = false;
+  }
+  function maybeFireVerifySpeed(visibleCount) {
+    if (__verifyFired || !__verifyStartTs) return;
+    if (__activeFilter !== 'needReview') return;
+    if (visibleCount > 0) return;
+    var elapsed = Math.round((Date.now() - __verifyStartTs) / 1000);
+    var bucket = elapsed < 60 ? '<60s' :
+                 elapsed < 180 ? '60-180s' :
+                 elapsed < 360 ? '180-360s' : '360s+';
+    __verifyFired = true;
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Verify Speed', { props: { bucket: bucket } }); } catch (_) {}
+    }
+    // Surface the celebratory "all reviewed" state inline so the
+    // operator sees they actually finished — not just an empty list.
+    if (parsedList && parsedRowsState.length) {
+      var done = document.createElement('li');
+      done.className = 'id-parsed-empty id-parsed-done';
+      done.innerHTML = '<strong>' +
+        tt('All amber rows reviewed in ' + elapsed + 's.', 'Todas las amber revisadas en ' + elapsed + 's.') +
+        '</strong> ' +
+        tt('Save this invoice now to keep it.', 'Guarda esta factura para conservarla.');
+      parsedList.appendChild(done);
+    }
+  }
+
   function applyRowFilter(rows) {
     return rows.filter(function (r) {
       if (r.ignored) return false; // W4-3: swipe-left removes from view
@@ -473,6 +513,8 @@
         return rowToHtml(r, parsedRowsState.indexOf(r));
       }).join('');
     }
+    // W4-5 — fire verify-speed metric when needReview filter empties.
+    maybeFireVerifySpeed(visible.length);
     updateFilterChipCounts();
     // Re-emit summary count.
     if (parsedMeta) {
@@ -974,6 +1016,9 @@
     // save flow (B6) will encrypt + persist.
     parsedRowsState = parsed.rows.map(function (r) { return Object.assign({}, r); });
     lastPrintedTotal = (typeof parsed.totalParsed === 'number') ? parsed.totalParsed : null;
+    // W4-5 — start the verify-speed clock. Stops when needReview
+    // filter first empties.
+    markVerifyStart();
     // W4-1 — reveal + wire the filter chip bar; rerenderRows now
     // applies the active filter so the operator lands on amber rows
     // instead of staring down the full 47.
