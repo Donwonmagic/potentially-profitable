@@ -48,6 +48,8 @@
   var paper     = document.getElementById('mdPaper');
   var previewMeta = document.getElementById('mdPreviewMeta');
   var overflowEl  = document.getElementById('mdOverflow');
+  var downloadBtn = document.getElementById('mdDownload');
+  var downloadMsg = document.getElementById('mdDownloadMsg');
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -610,6 +612,98 @@
     render();
     if (window.plausible) window.plausible('Menu Design Ctx Used', { props: { dishes: String(imported.length) } });
   });
+
+  // -------------------- Download (Wave A3) --------------------
+  // Button is enabled at all times — even with zero dishes. The
+  // PDF renderer handles the empty case (it'll emit a one-page
+  // "Menu" title and exit gracefully). Empty-state UX still
+  // surfaces a status message, but we don't gate the artifact —
+  // owners want a tangible download in their hand.
+  function setDownloadMsg(text, kind) {
+    if (!downloadMsg) return;
+    downloadMsg.classList.remove('error', 'success');
+    if (kind) downloadMsg.classList.add(kind);
+    downloadMsg.textContent = text || '';
+  }
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function () {
+      if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt('PDF library failed to load. Refresh the page and try again.',
+                          'No se pudo cargar la biblioteca PDF. Recarga la página e intenta de nuevo.'), 'error');
+        return;
+      }
+      var dishes = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
+      if (!dishes.length) {
+        setDownloadMsg(tt('Add at least one dish before downloading.', 'Añade al menos un plato antes de descargar.'), 'error');
+        return;
+      }
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      try {
+        if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+          var ctxDl = MuntinContext.read() || {};
+          if (Array.isArray(ctxDl.palette) && ctxDl.palette.length) theme = MD_THEMES.applyPalette(theme, ctxDl.palette);
+        }
+      } catch (_) {}
+
+      var title = '';
+      try {
+        if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.read === 'function') {
+          title = (MuntinContext.read() || {}).businessName || '';
+        }
+      } catch (_) {}
+      if (!title) title = tt('Menu', 'Menú');
+
+      // Filename: businessName-menu-yyyy-mm-dd.pdf, fallback "menu".
+      var slug = String(title || 'menu').toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+      var ymd = (function () {
+        var d = new Date();
+        return d.getFullYear() + '-' +
+          String(d.getMonth() + 1).padStart(2, '0') + '-' +
+          String(d.getDate()).padStart(2, '0');
+      })();
+      var filename = slug + '-menu-' + ymd;
+
+      downloadBtn.disabled = true;
+      var originalLabel = downloadBtn.innerHTML;
+      downloadBtn.innerHTML = tt('Building PDF…', 'Generando PDF…');
+      setDownloadMsg('');
+
+      MD_PDF.exportPdf({
+        rows:        rows,
+        theme:       theme,
+        paperKey:    paperKey,
+        title:       title,
+        logoDataUrl: logoUrl,
+        logoMeta:    logoMeta,
+        filename:    filename
+      }).then(function (result) {
+        var pages = result.pageCount || 1;
+        var msg = tt(
+          'Downloaded — ' + pages + ' page' + (pages === 1 ? '' : 's') + '. Your menu lives only in this browser.',
+          'Descargado — ' + pages + ' página' + (pages === 1 ? '' : 's') + '. Tu menú vive solo en este navegador.'
+        );
+        if (result.droppedSvgLogo) {
+          msg += ' ' + tt('SVG logo couldn\'t be embedded; export a PNG to include it.',
+                          'El logo SVG no se pudo incluir; exporta un PNG para añadirlo.');
+        }
+        setDownloadMsg(msg, 'success');
+        if (window.plausible) window.plausible('Menu Design Downloaded', { props: {
+          theme: themeId, paper: paperKey, pages: String(pages),
+          dishCount_bucket: dishes.length < 12 ? '<12' : dishes.length < 25 ? '12-24' : dishes.length < 40 ? '25-39' : '40+'
+        } });
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'PDF generation failed: ' + (err && err.message ? err.message : 'unknown error'),
+          'Falló la generación del PDF: ' + (err && err.message ? err.message : 'error desconocido')
+        ), 'error');
+      }).then(function () {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = originalLabel;
+      });
+    });
+  }
 
   // -------------------- Init --------------------
   // Theme suggestion from cuisine context. Applies once on first

@@ -193,6 +193,17 @@
 .md-overflow-warn{margin-top:10px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
 .md-overflow-warn[hidden]{display:none}
 
+/* Download row — primary CTA for the print-ready PDF. */
+.md-download{margin:18px 0 0;padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.md-download-text{font-size:13.5px;color:var(--ink);line-height:1.5;flex:1 1 96px;margin:0}
+.md-download-text strong{color:var(--ink);font-weight:600}
+.md-download-btn{padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
+.md-download-btn:hover{background:var(--teal)}
+.md-download-btn[disabled]{opacity:.55;cursor:wait}
+.md-download-msg{font-size:12.5px;color:var(--ink-soft);margin:0;flex-basis:100%}
+.md-download-msg.error{color:var(--rust)}
+.md-download-msg.success{color:var(--status-good)}
+
 /* What you leave with / What this is + isn't card. */
 .md-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
 .md-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
@@ -317,6 +328,16 @@
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
     </div>
 
+    <!-- Download — the deliverable. PDF lands in the user's Downloads. -->
+    <div class="md-download">
+      <p class="md-download-text"><strong>Ready when you are.</strong> Tap Download to save your menu as a PDF. The file is generated in your browser — nothing uploads.</p>
+      <button type="button" class="md-download-btn" id="mdDownload" aria-label="Download menu as PDF">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </button>
+      <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
+    </div>
+
     <!-- What this is / what this isn't — the honesty card. -->
     <div class="md-honesty">
       <h3>What this is, and what it isn't.</h3>
@@ -335,6 +356,7 @@
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-a2"></script>
-<script src="./menu-design.js?v=20260501-a2"></script>
+<script src="./menu-render-pdf.js?v=20260501-a3"></script>
+<script src="./menu-design.js?v=20260501-a3"></script>
 </body>
 </html>
