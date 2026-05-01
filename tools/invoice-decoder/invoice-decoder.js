@@ -253,6 +253,18 @@
     }, Promise.resolve()).then(function () {
       setProgress(96);
       var parsed = MID_PARSE.parseLines(allLines, fullText);
+      // Wave B3 — vendor detection. When detect() crosses
+      // threshold the rows get a confidence boost (knowing the
+      // column layout removes a chunk of OCR uncertainty) and
+      // the result panel shows a "Read as <Vendor>" pill.
+      var vendorMatch = null;
+      if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
+        vendorMatch = MID_VENDORS.detectVendor(fullText);
+        if (vendorMatch) {
+          MID_VENDORS.applyVendorBoost(parsed.rows, vendorMatch);
+          parsed.vendor = vendorMatch.id;
+        }
+      }
       // Wave B4 — classify every parsed row. Stamps category +
       // categoryConfidence + categoryTier on each row so the
       // verification UX (B5) can render chips, group totals, and
