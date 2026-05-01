@@ -128,7 +128,13 @@
             aggressive: results[0].canvas,
             gentle: results[1].canvas,
             skewAngle: results[0].skewAngle,
-            threshold: results[0].threshold
+            threshold: results[0].threshold,
+            // W2-3: store quality metrics so the controller can
+            // coach a retake BEFORE OCR runs (pre-empts wasted
+            // 30s of OCR time on a blurry shot).
+            blurScore: results[0].blurScore,
+            bimodalityScore: results[0].bimodalityScore,
+            qualityHint: results[0].qualityHint
           });
           doneFiles++;
           setProgress(15 + perFileShare * doneFiles);
@@ -157,18 +163,43 @@
              'Si la versión limpia se ve borrosa o cortada, prueba una foto más plana y brillante.');
       }
       setProgress(100);
-      showStatus(
-        tt('Photo ready.', 'Foto lista.'),
-        tt(files.length === 1 ? 'Cleaned up. Tap "Read this invoice" to extract every line.' :
-                                'Cleaned up ' + files.length + ' pages. Tap "Read this invoice" to extract every line.',
-           files.length === 1 ? 'Limpia. Toca "Leer esta factura" para extraer cada línea.' :
-                                'Limpias ' + files.length + ' páginas. Toca "Leer esta factura" para extraer cada línea.')
-      );
+      // W2-3: image-quality coaching. When ANY page returns
+      // 'blurry' or 'low-contrast', surface a soft chip BEFORE
+      // OCR so the operator can retake the photo (pre-empts
+      // ~30s of wasted OCR time + ~5min of cleanup-after-the-
+      // fact). 'good' pages flow through silently.
+      var worstHint = 'good';
+      pendingPages.forEach(function (p) {
+        if (p.qualityHint === 'blurry') worstHint = 'blurry';
+        else if (p.qualityHint === 'low-contrast' && worstHint === 'good') worstHint = 'low-contrast';
+      });
+      if (worstHint === 'blurry') {
+        showStatus(
+          tt('This photo looks blurry.', 'Esta foto se ve borrosa.'),
+          tt('Reading it anyway will give you ~70% accuracy. A flatter, brighter shot will give you ~95%. Want to retake?',
+             'Leerla de todos modos te dará ~70% de precisión. Una foto más plana y brillante te dará ~95%. ¿Quieres re-tomar?')
+        );
+      } else if (worstHint === 'low-contrast') {
+        showStatus(
+          tt('Photo ready — but contrast is faded.', 'Foto lista — pero el contraste es bajo.'),
+          tt('We\'ll read it, but expect a few extra amber rows to verify. A photo in brighter light reads sharper.',
+             'La leeremos, pero espera algunas filas en ámbar para verificar. Una foto con más luz se lee más nítida.')
+        );
+      } else {
+        showStatus(
+          tt('Photo ready.', 'Foto lista.'),
+          tt(files.length === 1 ? 'Cleaned up. Tap "Read this invoice" to extract every line.' :
+                                  'Cleaned up ' + files.length + ' pages. Tap "Read this invoice" to extract every line.',
+             files.length === 1 ? 'Limpia. Toca "Leer esta factura" para extraer cada línea.' :
+                                  'Limpias ' + files.length + ' páginas. Toca "Leer esta factura" para extraer cada línea.')
+        );
+      }
       if (comingEl) comingEl.hidden = false;
       if (readBtn) readBtn.hidden = false;
       if (window.plausible) {
         window.plausible('Invoice Decoder Preprocess', { props: {
           skew_bucket: Math.abs(first.skewAngle) >= 5 ? 'high' : Math.abs(first.skewAngle) >= 1 ? 'low' : 'none',
+          quality: worstHint,
           pages: String(files.length)
         } });
       }

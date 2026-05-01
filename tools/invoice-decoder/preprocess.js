@@ -235,7 +235,14 @@
     var ctx = deskewed.getContext('2d');
     var img = ctx.getImageData(0, 0, deskewed.width, deskewed.height);
     grayscaleInPlace(img);
+    // W2-3: compute quality metrics on the GRAYSCALE buffer
+    // BEFORE binarization. Laplacian variance reads blur;
+    // Otsu's between-class variance (already computed inside
+    // otsuThreshold) reads contrast bimodality. Surface both
+    // so the controller can offer retake-coaching before OCR.
+    var blurScore = laplacianVariance(img);
     var t = otsuThreshold(img);
+    var bimodalityScore = otsuBetweenClassVariance(img, t);
     // Aggressive preset shifts the threshold up by 8 to favor
     // crisp text (ink stays black; faded ink becomes white). Good
     // for clean print-shop invoices.
@@ -245,7 +252,84 @@
     // 3. Denoise on gentle only.
     if (preset === 'gentle') median3x3InPlace(img);
     ctx.putImageData(img, 0, 0);
-    return { canvas: deskewed, skewAngle: skew, threshold: t };
+    return {
+      canvas: deskewed,
+      skewAngle: skew,
+      threshold: t,
+      blurScore: blurScore,
+      bimodalityScore: bimodalityScore,
+      qualityHint: classifyQuality(blurScore, bimodalityScore)
+    };
+  }
+
+  // -------------------- W2-3: image-quality metrics --------------------
+  // Laplacian variance — convolve grayscale with a 3x3 Laplacian
+  // kernel [0,1,0; 1,-4,1; 0,1,0], measure variance of the
+  // response. Sharp text-heavy images score 200-1000+; blurry
+  // photos score <60 (research-backed threshold for OCR
+  // unusability — Pertuz et al. focus measure surveys).
+  function laplacianVariance(imageData) {
+    var w = imageData.width, h = imageData.height;
+    if (w < 30 || h < 30) return 0;
+    var d = imageData.data;
+    // Sample a centered region (avoid edge artifacts from camera
+    // borders / page borders). 60% × 60% center crop, stride 2 to
+    // halve compute on large images.
+    var x0 = Math.floor(w * 0.20), x1 = Math.floor(w * 0.80);
+    var y0 = Math.floor(h * 0.20), y1 = Math.floor(h * 0.80);
+    var responses = [];
+    for (var y = y0 + 1; y < y1 - 1; y += 2) {
+      for (var x = x0 + 1; x < x1 - 1; x += 2) {
+        var i = (y * w + x) * 4;
+        var center  = d[i];
+        var up      = d[i - w * 4];
+        var down    = d[i + w * 4];
+        var left    = d[i - 4];
+        var right   = d[i + 4];
+        responses.push(up + down + left + right - 4 * center);
+      }
+    }
+    if (!responses.length) return 0;
+    var mean = 0;
+    for (var k = 0; k < responses.length; k++) mean += responses[k];
+    mean /= responses.length;
+    var variance = 0;
+    for (var k2 = 0; k2 < responses.length; k2++) {
+      var dev = responses[k2] - mean;
+      variance += dev * dev;
+    }
+    return variance / responses.length;
+  }
+
+  // Otsu's between-class variance at the chosen threshold —
+  // honest bimodality indicator. Faded / washed-out invoices
+  // score below ~1500. Crisp print-shop invoices score 5000+.
+  function otsuBetweenClassVariance(imageData, threshold) {
+    var hist = new Array(256).fill(0);
+    var d = imageData.data;
+    var total = 0;
+    for (var i = 0; i < d.length; i += 4) { hist[d[i]]++; total++; }
+    var sumAll = 0;
+    for (var t = 0; t < 256; t++) sumAll += t * hist[t];
+    var wB = 0, sumB = 0;
+    for (var t2 = 0; t2 <= threshold; t2++) {
+      wB += hist[t2];
+      sumB += t2 * hist[t2];
+    }
+    var wF = total - wB;
+    if (wB === 0 || wF === 0) return 0;
+    var mB = sumB / wB;
+    var mF = (sumAll - sumB) / wF;
+    return (wB * wF * (mB - mF) * (mB - mF)) / (total * total);
+  }
+
+  // Bands the two metrics into a single hint string the controller
+  // can chain on. 'good' — proceed silently. 'low-contrast' —
+  // soft warning. 'blurry' — hard recommendation to retake.
+  function classifyQuality(blurScore, bimodalityScore) {
+    if (blurScore < 60) return 'blurry';
+    if (bimodalityScore < 1500) return 'low-contrast';
+    return 'good';
   }
 
   // Public entry: takes a File, returns a preprocessed canvas plus
