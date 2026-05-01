@@ -54,6 +54,7 @@
   var overflowEl  = document.getElementById('mdOverflow');
   var downloadBtn = document.getElementById('mdDownload');
   var downloadMsg = document.getElementById('mdDownloadMsg');
+  var exportQrBtn = document.getElementById('mdExportQr');
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -1060,6 +1061,94 @@
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // W6-1 — QR-menu export. Promps for a destination URL the operator
+  // controls (their Wix Media path, GitHub Pages root, etc), then
+  // downloads a zip with menu.html + menu-qr.png. The HTML is self-
+  // contained — they drop it in once and the QR points at it.
+  // ----------------------------------------------------------------
+  if (exportQrBtn) {
+    exportQrBtn.addEventListener('click', function () {
+      if (typeof MD_HTML === 'undefined' || typeof MD_THEMES === 'undefined') {
+        setDownloadMsg(tt(
+          'QR exporter not loaded. Refresh and try again.',
+          'El exportador QR no se cargó. Recarga e intenta de nuevo.'
+        ), 'error');
+        return;
+      }
+      // Don't include ghost rows in the export.
+      var realRows = rows.filter(function (r) { return !r.ghost; });
+      if (!realRows.length) {
+        setDownloadMsg(tt(
+          'Add at least one dish before exporting your QR menu.',
+          'Agrega al menos un plato antes de exportar tu menú QR.'
+        ), 'error');
+        return;
+      }
+      var defaultUrl = 'https://yourrestaurant.com/menu.html';
+      var url = prompt(tt(
+        'Where will menu.html live? Type the full URL — that\'s what the QR will point to.\n(e.g. https://yourrestaurant.com/menu.html)',
+        '¿Dónde va a vivir menu.html? Escribe la URL completa — a eso apuntará el QR.\n(p.ej. https://turestaurante.com/menu.html)'
+      ), defaultUrl);
+      if (!url || !/^https?:\/\//i.test(url.trim())) {
+        if (url !== null) {
+          setDownloadMsg(tt(
+            'That doesn\'t look like a URL. Cancelled.',
+            'Eso no parece una URL. Cancelado.'
+          ), 'error');
+        }
+        return;
+      }
+      url = url.trim();
+      var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+      var palette = (typeof MuntinContext !== 'undefined' && MuntinContext.read)
+        ? (MuntinContext.read() || {}).palette : null;
+      if (Array.isArray(palette) && palette.length && MD_THEMES.applyPalette) {
+        theme = MD_THEMES.applyPalette(theme, palette);
+      }
+      var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
+      exportQrBtn.disabled = true;
+      var origLabel = exportQrBtn.innerHTML;
+      exportQrBtn.textContent = tt('Building zip…', 'Empacando zip…');
+      setDownloadMsg('', 'success');
+      MD_HTML.exportZip({
+        rows:         realRows,
+        theme:        theme,
+        title:        title,
+        locale:       LOCALE,
+        logoDataUrl:  logoUrl,
+        targetUrl:    url
+      }).then(function (blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-qr-bundle.zip';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'Zip downloaded. Drop menu.html into your hosting root, then print menu-qr.png and stick it on the table.',
+          'Zip descargado. Sube menu.html a tu hosting, luego imprime menu-qr.png y pégalo en la mesa.'
+        ), 'success');
+        if (window.plausible) {
+          try { window.plausible('Menu Design QR Exported', { props: { theme: themeId, dishCount_bucket:
+            realRows.length < 12 ? '<12' : realRows.length < 25 ? '12-24' : '25+'
+          } }); } catch (_) {}
+        }
+      }).catch(function (err) {
+        setDownloadMsg(tt(
+          'Couldn\'t build the zip — check your network and try again.',
+          'No se pudo armar el zip — revisa tu red e intenta de nuevo.'
+        ), 'error');
+      }).then(function () {
+        exportQrBtn.disabled = false;
+        exportQrBtn.innerHTML = origLabel;
       });
     });
   }
