@@ -96,6 +96,16 @@
       "verify_en": "DevTools → Network. Click Print this report — no new requests. Click Add to calendar — still no new requests; a .ics download appears. Open it with a text editor: every field in the event is plain text.",
       "verify_es": "DevTools → Network. Haz clic en Imprimir reporte — no hay nuevos requests. Haz clic en Añadir al calendario — siguen sin nuevos requests; aparece una descarga .ics. Ábrelo con un editor de texto: cada campo del evento es texto plano.",
       "build_invariant": "client-side-exports"
+    },
+    {
+      "id": 10,
+      "headline_en": "Saved cost data isn't sold, shared, or trained on.",
+      "headline_es": "Los datos de costos guardados no se venden, comparten ni usan para entrenar IA.",
+      "claim_en": "Invoices saved through Advanced Invoice Decoder are encrypted in your browser before they leave your device — AES-GCM 256, key derived via PBKDF2 from a passphrase you choose. We won't sell aggregated cost data, share it with vendors, include it in marketing, train ML on it, or backfill historical invoices into a future benchmark dataset. The server stores ciphertext + IV; it has no decryption capability and no path to plaintext.",
+      "claim_es": "Las facturas guardadas con el Decodificador de Facturas se encriptan en tu navegador antes de salir de tu dispositivo — AES-GCM 256, llave derivada vía PBKDF2 de un secreto que tú eliges. No vendemos datos agregados de costos, no los compartimos con proveedores, no los incluimos en marketing, no entrenamos IA con ellos, y no se rellenan retroactivamente si más adelante hay un opt-in. El servidor guarda solo ciphertext + IV; no puede desencriptar.",
+      "verify_en": "Save an invoice. View source of /tools/invoice-decoder/encrypt.js — only SubtleCrypto, no third-party SDK, no analytics export. View the saved KV row via the workbench API: the payload field contains an envelope { v:1, salt, iv, ct, aad } where ct is opaque base64. The server-side worker has no decryption key.",
+      "verify_es": "Guarda una factura. Ve el código fuente de /tools/invoice-decoder/encrypt.js — solo SubtleCrypto, sin SDK de terceros, sin exportación a analítica. Mira la fila guardada vía la API del workbench: el campo payload contiene un sobre { v:1, salt, iv, ct, aad } donde ct es base64 opaco. El worker del servidor no tiene la llave de desencriptación.",
+      "build_invariant": "no-invoice-egress"
     }
   ],
 
