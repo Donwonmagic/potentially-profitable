@@ -56,7 +56,79 @@
     ]
   };
 
-  var REGISTRY = [SYSCO];
+  // Vendor: US Foods. Letterhead almost always says "US Foods"
+  // verbatim (with or without "Inc"); pack-size column ("12/16OZ"
+  // shape) is a high-precision signature when present.
+  var US_FOODS = {
+    id: 'us-foods',
+    label_en: 'US Foods',
+    label_es: 'US Foods',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/\bus\s*foods\b/.test(top)) score += 0.6;
+      if (/\busfoods\b/.test(top)) score += 0.5;
+      if (/\busf\b/.test(top)) score += 0.15;
+      if (/pack\s*\/\s*size/.test(top)) score += 0.15;
+      if (/\d+\s*\/\s*\d+\s*(oz|lb|ct|ea)/i.test(top)) score += 0.15;
+      if (/division\s+of\s+us\s*foods/i.test(top)) score += 0.2;
+      return { score: Math.min(1, score), label: US_FOODS.label_en };
+    },
+    confidenceBoost: 12,
+    headerLines: [
+      /^pack\s*\/\s*size/i,
+      /^prod\s+id/i
+    ]
+  };
+
+  // Vendor: Gordon Food Service (GFS). Item-class codes (PRD,
+  // PRO, DRY, PAP, FRZ) printed right of SKU are a high-precision
+  // signal — those exact 3-letter abbreviations rarely appear
+  // elsewhere on an invoice.
+  var GFS = {
+    id: 'gfs',
+    label_en: 'Gordon Food Service',
+    label_es: 'Gordon Food Service',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/gordon\s+food\s+service/.test(top)) score += 0.6;
+      if (/\bgfs\b/.test(top)) score += 0.4;
+      if (/\bgfs\s+marketplace/.test(top)) score += 0.2;
+      // Item-class codes — when several appear in the body text
+      // it's almost certainly GFS.
+      var classCodes = top.match(/\b(prd|pro|dry|pap|frz|bev|jan|sml|equ)\b/g);
+      if (classCodes && classCodes.length >= 3) score += 0.25;
+      return { score: Math.min(1, score), label: GFS.label_en };
+    },
+    confidenceBoost: 14, // GFS gives free category labels — bias higher
+    headerLines: [
+      /^item\s+class/i,
+      /^prd\s+pro\s+dry/i
+    ]
+  };
+
+  // Vendor: Restaurant Depot. Often bilingual EN+ES; printed
+  // header includes the warehouse number stamp. Members-only
+  // pricing notation ("MEMBER PRICE") is distinctive.
+  var REST_DEPOT = {
+    id: 'restaurant-depot',
+    label_en: 'Restaurant Depot',
+    label_es: 'Restaurant Depot',
+    detect: function (ocrText) {
+      var top = topText(ocrText, 800);
+      var score = 0;
+      if (/restaurant\s+depot/.test(top)) score += 0.6;
+      if (/\brdmember\b|member\s+price/.test(top)) score += 0.2;
+      if (/jetro\s+cash\s+&\s+carry/.test(top)) score += 0.5; // sister brand
+      if (/warehouse\s*#?\s*\d{2,3}/.test(top)) score += 0.15;
+      if (/cash\s+and\s+carry/.test(top)) score += 0.1;
+      return { score: Math.min(1, score), label: REST_DEPOT.label_en };
+    },
+    confidenceBoost: 10
+  };
+
+  var REGISTRY = [SYSCO, US_FOODS, GFS, REST_DEPOT];
 
   // detectVendor returns highest-scoring vendor with score >=
   // threshold (0.5), or null when none match. Caller falls
