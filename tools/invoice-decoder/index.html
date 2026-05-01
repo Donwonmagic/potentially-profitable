@@ -155,6 +155,41 @@
 .id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
 .id-honesty p:last-child{margin-bottom:0}
 .id-honesty strong{color:var(--ink);font-weight:600}
+
+/* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
+.mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
+@keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
+.mid-pf-sheet{position:relative;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.28);max-width:680px;width:100%;padding:24px 22px 22px;display:grid;gap:18px;animation:mid-pf-rise .35s ease}
+@keyframes mid-pf-rise{from{transform:translateY(8px);opacity:.7}to{transform:none;opacity:1}}
+.mid-pf-close{position:absolute;top:8px;right:10px;background:transparent;border:0;font-size:28px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:4px 8px;border-radius:6px}
+.mid-pf-close:hover{background:rgba(0,0,0,.06);color:var(--ink)}
+.mid-pf-card{background:var(--surface-2,#f9f7f1);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.mid-pf-h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.35}
+.mid-pf-label{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.mid-pf-row-plain{font-size:13.5px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin-bottom:4px;font-variant-numeric:tabular-nums}
+.mid-pf-arrow{margin:8px 0;font-size:11px;color:var(--ink-soft);text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.mid-pf-after{background:#0c1817;border:1px solid #2b3a3a;border-radius:8px;padding:10px 12px}
+.mid-pf-after .mid-pf-label{color:#9ad6cd}
+.mid-pf-ct{display:block;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:#7be0d4;word-break:break-all;line-height:1.45}
+.mid-pf-algo{font-size:11.5px;color:#7c9590;margin-top:8px}
+.mid-pf-pre{background:#0c1817;color:#cfe5e1;border-radius:8px;padding:12px 14px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;line-height:1.55;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0}
+.mid-pf-note{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.5}
+.mid-pf-tryrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mid-pf-tryinput{flex:1 1 160px;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+.mid-pf-trybtn{font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer}
+.mid-pf-trybtn:hover{filter:brightness(1.06)}
+.mid-pf-tryout{margin-top:10px;font-size:13px;line-height:1.5;padding:8px 10px;border-radius:6px;min-height:1.4em}
+.mid-pf-tryout--neutral{background:#f3efe7;color:var(--ink-soft)}
+.mid-pf-tryout--proof{background:#1f3a37;color:#a8e6dd}
+.mid-pf-tryout--ok{background:#2a4a2a;color:#cfeacb}
+.mid-pf-diff{font-size:14px;color:var(--ink);line-height:1.55;margin:0 0 14px}
+.mid-pf-diff strong{color:var(--ink);font-weight:600}
+.mid-pf-actions{display:flex;flex-wrap:wrap;gap:8px}
+.mid-pf-cta{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer;font-weight:500}
+.mid-pf-cta--quiet{background:#fff;color:var(--accent,#1f6f6a)}
+.mid-pf-cta:hover{filter:brightness(1.05)}
+@media(prefers-reduced-motion:reduce){.mid-pf-backdrop,.mid-pf-sheet{animation:none}}
+@media(max-width:540px){.mid-pf-sheet{padding:20px 14px 18px}.mid-pf-card{padding:14px}}
 </style>
 
 <script type="application/ld+json">
@@ -288,6 +323,7 @@
 <script src="./passphrase-modal.js?v=20260501-w1-6"></script>
 <script src="./pdf-extract.js?v=20260501-w2-1"></script>
 <script src="./csv-extract.js?v=20260501-w2-2"></script>
-<script src="./invoice-decoder.js?v=20260501-w2-2"></script>
+<script src="./proof-flyout.js?v=20260501-w3-1"></script>
+<script src="./invoice-decoder.js?v=20260501-w3-1"></script>
 </body>
 </html>

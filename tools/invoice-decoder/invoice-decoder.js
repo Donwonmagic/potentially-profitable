@@ -778,6 +778,10 @@
         return;
       }
       // W1-6: pickPassphrase now returns a Promise (modal-driven).
+      // W3-1: capture the envelope + aad in this closure so the
+      // proof flyout can show the real ciphertext after success.
+      var savedEnvelope = null;
+      var savedAad = null;
       pickPassphrase().then(function (pp) {
         if (!pp) return; // owner cancelled — silent.
         setSaveStatus(null, 'busy');
@@ -787,7 +791,9 @@
         // KV id on save. The server can't decrypt anyway, but AAD
         // is good hygiene.
         var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
+        savedAad = aad;
         return MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
+        savedEnvelope = envelope;
         var body = new URLSearchParams();
         body.set('kind', 'invoice-decoder');
         body.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
@@ -845,6 +851,27 @@
                             payload.itemCount < 50 ? '25-49' : '50+',
               vendor_detected: payload.vendor ? 'true' : 'false'
             } });
+          }
+          // W3-1: surface the proof flyout. Shows the actual
+          // ciphertext, the actual outgoing POST shape, and a
+          // try-to-break demo that uses MID_ENCRYPT.decryptPayload
+          // against operator-typed wrong passphrases. Privacy
+          // claim becomes verifiable from the UI, not a footnote.
+          if (savedEnvelope && typeof MID_PROOF !== 'undefined' && MID_PROOF.show) {
+            try {
+              var sampleNames = parsedRowsState.slice(0, 3).map(function (r) {
+                var bits = [String(r.name || '').slice(0, 40)];
+                if (r.lineTotal != null) bits.push('$' + r.lineTotal.toFixed(2));
+                return bits.join(' · ');
+              });
+              MID_PROOF.show({
+                envelope: savedEnvelope,
+                payload: { itemCount: payload.itemCount, sampleNames: sampleNames },
+                decrypt: function (env, tryPp) {
+                  return MID_ENCRYPT.decryptPayload(env, tryPp, savedAad);
+                }
+              });
+            } catch (_) { /* flyout is purely decorative — never block save */ }
           }
         } else {
           throw new Error(j.error || 'unknown server error');
