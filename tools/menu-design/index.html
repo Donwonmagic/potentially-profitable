@@ -479,6 +479,23 @@
 .md-spice-dot.md-spice-zero.is-on{background:var(--cream-2);border-color:var(--ink-soft);color:var(--ink-soft)}
 .md-spice-dot:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
+/* W13-2 — dish badges (new / chef pick / seasonal / popular).
+   Toggle pills in the editor; small accent-colored badges on the
+   live preview + PDF deliverable. */
+.md-badges-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-badge-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600;transition:border-color var(--t-fast);min-height:36px}
+.md-badge-pill:hover{border-color:var(--teal);color:var(--teal)}
+.md-badge-pill.is-on{background:var(--teal);border-color:var(--teal);color:var(--cream)}
+.md-badge-pill-glyph{font-size:11px;letter-spacing:.04em}
+.md-badge-pill:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Preview + PDF mirror — small chip after the dish name. */
+.md-preview-paper .md-pp-badges{display:inline-flex;gap:4px;margin-right:6px;vertical-align:middle}
+.md-preview-paper .md-pp-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:14px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--paper);font-size:8.5px;font-weight:700;letter-spacing:.06em;line-height:1;text-transform:uppercase}
+.md-preview-paper .md-pp-badge[data-badge="chef"]{background:#C29B5E;color:#1A1814}
+.md-preview-paper .md-pp-badge[data-badge="seasonal"]{background:#4F6B36;color:#FBFAF0}
+.md-preview-paper .md-pp-badge[data-badge="popular"]{background:#B42A23;color:#FAF6EE}
+
 /* W11-4 — per-dish photo controls. Thumbnail in the trigger, full
    pick/preview/remove inside the popup panel. */
 .md-photo-thumb-mini{display:inline-flex;width:28px;height:20px;border-radius:3px;overflow:hidden;border:1px solid var(--line-dark);margin-left:6px}
@@ -492,6 +509,15 @@
 .md-photo-pick{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--white);cursor:pointer;font-size:12.5px;color:var(--ink-soft);font-weight:600;min-height:44px}
 .md-photo-pick:hover{border-color:var(--teal);color:var(--teal)}
 .md-photo-pick input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+
+/* W13-2 — section hero-image controls in the section-extras body. */
+.md-section-hero{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px dashed var(--line);margin-top:6px}
+.md-section-hero-label{font-size:12px;color:var(--ink-soft);font-weight:600}
+.md-section-hero-thumb{display:inline-flex;width:96px;height:24px;border-radius:4px;overflow:hidden;border:1px solid var(--line-dark)}
+.md-section-hero-thumb img{width:100%;height:100%;object-fit:cover}
+
+/* Preview hero band — full-width 4:1 ratio image at top of section. */
+.md-preview-paper .md-pp-section-hero{display:block;width:100%;aspect-ratio:4/1;object-fit:cover;margin:0 0 14px;border-radius:2px;grid-column:1/-1}
 
 /* W11-4 — preview-side dish photo: 56x56 thumb left of the dish name. */
 .md-preview-paper .md-pp-dish-thumb{display:inline-block;width:56px;height:56px;border-radius:4px;overflow:hidden;margin-right:10px;vertical-align:middle;border:0.5px solid color-mix(in srgb,var(--ink) 16%,transparent)}
@@ -1125,9 +1151,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w12-4"></script>
+<script src="./menu-render-pdf.js?v=20260501-w13-2"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w12-4"></script>
+<script src="./menu-design.js?v=20260501-w13-2"></script>
 </body>
 </html>

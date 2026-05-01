@@ -487,6 +487,12 @@
     var firstDishOfSection = true;
     rows.forEach(function (r) {
       if (r.kind === 'section' && (r.name || '').trim()) {
+        // W13-2 — section hero image renders as a 4:1 band BEFORE
+        // the section header. Distinct block kind so the paginator
+        // can include it in width/height calculations.
+        if (r.hero && r.hero.dataUrl) {
+          blocks.push({ kind: 'section-hero', src: r.hero.dataUrl, w: r.hero.w || 0, h: r.hero.h || 0 });
+        }
         // W9-3 — sections can be flagged as a "specials" callout via
         // a `specials: true` token. The renderer draws a boxed
         // accent-tint background instead of a plain header.
@@ -510,6 +516,7 @@
           : [];
         allergens.forEach(function (c) { seenAllergens[c] = true; });
         var spice = (typeof r.spice === 'number' && r.spice > 0 && r.spice <= 3) ? r.spice : 0;
+        var badges = Array.isArray(r.badges) ? r.badges.filter(function (b) { return typeof b === 'string'; }) : [];
         blocks.push({
           kind: 'dish',
           name:     (r.name || '').trim(),
@@ -517,6 +524,7 @@
           desc:     (r.desc || '').trim(),
           allergens: allergens,
           spice: spice,
+          badges: badges,                     // W13-2 — propagate badges
           photo: r.photo || null,             // W11-4 — propagate dish photo
           pairing:  (r.pairing  || '').trim(), // W12-2
           modifier: (r.modifier || '').trim(), // W12-2
@@ -593,6 +601,10 @@
       // W12-2 — blurb adds an italic line below the header.
       if (block.blurb) secH += theme.descPt * 1.45 + 6;
       return secH;
+    }
+    // W13-2 — section hero band: 4:1 ratio of content width.
+    if (block.kind === 'section-hero') {
+      return contentWidth * 0.25 + 14; // 4:1 ratio + bottom padding
     }
     if (block.kind === 'dish') {
       var nameH  = theme.bodyPt * 1.25;
@@ -938,6 +950,43 @@
       x = x + photoOff;
       contentWidth = contentWidth - photoOff;
       nameWidth = contentWidth - priceWidth - 8;
+      // W13-2 — badges drawn inline before the dish name. Small
+      // filled pills in accent color (with semantic-color overrides
+      // for chef/seasonal/popular).
+      var badgeOff = 0;
+      if (Array.isArray(block.badges) && block.badges.length) {
+        var badgeFontPt = Math.max(5.5, theme.bodyPt * 0.55);
+        doc.setFontSize(badgeFontPt);
+        var badgePalette = {
+          'new':      accentRgb,
+          'chef':     { r: 0xC2, g: 0x9B, b: 0x5E }, // gold
+          'seasonal': { r: 0x4F, g: 0x6B, b: 0x36 }, // sage
+          'popular':  { r: 0xB4, g: 0x2A, b: 0x23 }  // red
+        };
+        var badgeLabels = { 'new': 'NEW', 'chef': 'CHEF', 'seasonal': 'SEASONAL', 'popular': 'POPULAR' };
+        var bx = x;
+        var by = y + theme.bodyPt - badgeFontPt * 1.6;
+        var bh = badgeFontPt * 1.5;
+        for (var bbi = 0; bbi < block.badges.length; bbi++) {
+          var bcode = block.badges[bbi];
+          var bLabel = badgeLabels[bcode] || bcode.toUpperCase();
+          var bColor = badgePalette[bcode] || accentRgb;
+          var bw = doc.getStringUnitWidth(bLabel) * badgeFontPt / doc.internal.scaleFactor + 8;
+          doc.setFillColor(bColor.r, bColor.g, bColor.b);
+          doc.roundedRect(bx, by, bw, bh, bh / 2, bh / 2, 'F');
+          // White text on the pill (high contrast on every accent).
+          doc.setTextColor(255, 255, 255);
+          doc.text(bLabel, bx + bw / 2, by + bh * 0.78, { align: 'center' });
+          bx += bw + 4;
+        }
+        badgeOff = bx - x;
+        // Restore body font / color for the dish name.
+        doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
+        doc.setFontSize(theme.bodyPt);
+        doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
+      }
+      x = x + badgeOff;
+      contentWidth = contentWidth - badgeOff;
       // W9-3 — drop cap for the first dish of each section on
       // ornament-friendly themes. Renders the first character of
       // the dish name in the display face, ~1.8x body size, in
@@ -1077,6 +1126,16 @@
       }
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       return nextY + 6;
+    }
+    // W13-2 — section hero band. 4:1 ratio image at full content
+    // width, 14pt of breathing room below.
+    if (block.kind === 'section-hero') {
+      var heroH = contentWidth * 0.25;
+      try {
+        var fmt = (typeof block.src === 'string' && block.src.indexOf('data:image/png') === 0) ? 'PNG' : 'JPEG';
+        doc.addImage(block.src, fmt, x, y, contentWidth, heroH);
+      } catch (_) {}
+      return y + heroH + 14;
     }
     // W11-3 — footer ornament: cuisine-specific mark at 40% opacity,
     // centered. Frame-closer for the menu.
@@ -1239,6 +1298,7 @@
       // Blocks that always span full width.
       if (block.kind === 'title' || block.kind === 'logo' ||
           block.kind === 'story' || block.kind === 'section' ||
+          block.kind === 'section-hero' ||
           block.kind === 'allergen-key' || block.kind === 'footer-ornament') {
         return 'both';
       }

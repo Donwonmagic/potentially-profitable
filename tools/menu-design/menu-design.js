@@ -26,16 +26,30 @@
   var rows = [];
   var SCHEMA_VERSION = 2;
 
-  // W12-2 — extended dish + section schemas. New per-dish fields
-  // (pairing, modifier, halfPrice) and per-section enrichments
-  // (blurb, glyph, availability) all default to empty so existing
-  // drafts continue to round-trip. The renderer no-ops on empty.
+  // W12-2 + W13-2 — extended dish + section schemas. New per-dish
+  // fields (pairing, modifier, halfPrice, badges) and per-section
+  // enrichments (blurb, glyph, availability, hero image) all default
+  // to empty so existing drafts continue to round-trip. The renderer
+  // no-ops on empty values.
   function blankDish() {
     return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
-             pairing: '', modifier: '', halfPrice: '' };
+             pairing: '', modifier: '', halfPrice: '', badges: [] };
   }
   function blankSection(name) {
-    return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '' };
+    return { kind: 'section', name: name || '', blurb: '', glyph: '', availability: '', hero: null };
+  }
+
+  // W13-2 — Per-dish badge catalog. Distinct from allergens (which
+  // are dietary / safety) — badges advertise menu-marketing signals.
+  var DISH_BADGES = [
+    { id: 'new',      label_en: 'New',          label_es: 'Nuevo',         glyph: 'NEW' },
+    { id: 'chef',     label_en: "Chef's pick",   label_es: 'Recomendado',   glyph: '★' },
+    { id: 'seasonal', label_en: 'Seasonal',     label_es: 'De temporada',  glyph: '◐' },
+    { id: 'popular',  label_en: 'Popular',      label_es: 'Popular',       glyph: '♥' }
+  ];
+  function badgeById(id) {
+    for (var bi = 0; bi < DISH_BADGES.length; bi++) if (DISH_BADGES[bi].id === id) return DISH_BADGES[bi];
+    return null;
   }
 
   // W5-1 — track whether the current rows[] are demo (ghost) rows
@@ -212,6 +226,19 @@
                 '<input type="checkbox" data-field="specials" data-i="' + i + '"' + (r.specials ? ' checked' : '') + ' />' +
                 ' ' + tt('Treat as a "Today\'s specials" callout', 'Tratar como recuadro de "Especiales de hoy"') +
               '</label>' +
+              // W13-2 — Hero image per section. Renders as a 4:1 ratio
+              // band above the section's dish flow. Optional upload.
+              '<div class="md-section-hero">' +
+                '<span class="md-section-hero-label">' + tt('Section hero image', 'Imagen hero de sección') + ':</span>' +
+                ((r.hero && r.hero.dataUrl)
+                  ? '<span class="md-section-hero-thumb"><img src="' + escHtml(r.hero.dataUrl) + '" alt="" /></span>' +
+                    '<button type="button" class="md-photo-remove" data-act="hero-remove" data-i="' + i + '" aria-label="' + tt('Remove hero image', 'Quitar imagen') + '">&times;</button>'
+                  : '<label class="md-photo-pick">' +
+                      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> ' +
+                      tt('Add hero image', 'Agregar hero') +
+                      '<input type="file" accept="image/png,image/jpeg,image/webp" data-act="hero-pick" data-i="' + i + '" />' +
+                    '</label>') +
+              '</div>' +
             '</div>' +
           '</details>';
         html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + draggable + '>' +
@@ -309,6 +336,20 @@
                 spiceDots +
               '</div>' +
               photoBlock +
+              // W13-2 — dish badges (new / chef pick / seasonal / popular).
+              // Toggle-pill UI; selected badges render at-a-glance on
+              // the live preview + PDF deliverable.
+              '<div class="md-badges-row">' +
+                '<span class="md-spice-label">' + tt('Badges', 'Etiquetas') + ':</span>' +
+                DISH_BADGES.map(function (b) {
+                  var on = Array.isArray(r.badges) && r.badges.indexOf(b.id) !== -1;
+                  var bLabel = LOCALE === 'es' ? b.label_es : b.label_en;
+                  return '<button type="button" class="md-badge-pill' + (on ? ' is-on' : '') +
+                    '" data-act="badge" data-i="' + i + '" data-badge="' + escHtml(b.id) + '" aria-pressed="' + on + '">' +
+                    '<span class="md-badge-pill-glyph" aria-hidden="true">' + escHtml(b.glyph) + '</span> ' +
+                    escHtml(bLabel) + '</button>';
+                }).join('') +
+              '</div>' +
               // W12-2 — pairing, modifier, half-price fields. All
               // optional; renderer no-ops on empty.
               '<div class="md-extra-fields">' +
@@ -848,7 +889,7 @@
     // Group rows[] into [section, dish[]] pairs. Dishes before any
     // section header land in an unnamed group at the top.
     var groups = [];
-    var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false };
+    var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false, hero: null };
     rows.forEach(function (r) {
       if (r.kind === 'section') {
         if (current.name !== null || current.dishes.length) groups.push(current);
@@ -858,7 +899,8 @@
           blurb: (r.blurb || '').trim(),
           glyph: (r.glyph || '').trim(),
           availability: (r.availability || '').trim(),
-          specials: !!r.specials
+          specials: !!r.specials,
+          hero: r.hero || null
         };
       } else if ((r.name || '').trim()) {
         current.dishes.push(r);
@@ -892,6 +934,11 @@
     var isTwoCol = theme.columns === 2;
     if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
     groups.forEach(function (g) {
+      // W13-2 — hero band renders before the section header.
+      if (g.hero && g.hero.dataUrl) {
+        html += '<img class="md-pp-section-hero"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') +
+                ' src="' + escHtml(g.hero.dataUrl) + '" alt="" />';
+      }
       if (g.name) {
         var sectionClasses = 'md-pp-section' + (g.specials ? ' md-pp-section-specials' : '');
         var glyphPrefix = g.glyph ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> ' : '';
@@ -930,6 +977,17 @@
         var thumbHtml = (d.photo && d.photo.dataUrl)
           ? '<span class="md-pp-dish-thumb" aria-hidden="true"><img src="' + escHtml(d.photo.dataUrl) + '" alt="" /></span>'
           : '';
+        // W13-2 — dish badges rendered inline before the dish name.
+        var badgesHtml = '';
+        if (Array.isArray(d.badges) && d.badges.length) {
+          badgesHtml = '<span class="md-pp-badges">';
+          d.badges.forEach(function (bcode) {
+            var b = badgeById(bcode); if (!b) return;
+            var bL = LOCALE === 'es' ? b.label_es : b.label_en;
+            badgesHtml += '<span class="md-pp-badge" data-badge="' + escHtml(bcode) + '" aria-label="' + escHtml(bL) + '">' + escHtml(b.glyph) + '</span>';
+          });
+          badgesHtml += '</span>';
+        }
         // W12-2 — pairing / modifier / halfPrice render below desc.
         var pairing  = (d.pairing  || '').trim();
         var modifier = (d.modifier || '').trim();
@@ -937,7 +995,7 @@
         var priceHtml = escHtml(price);
         if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' + escHtml(halfPrice) + '</span>';
         html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + thumbHtml + escHtml(name) + glyphsHtml + '</div>';
+        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
         if (pairing)  html += '<div class="md-pp-pairing">' + escHtml(pairing) + '</div>';
@@ -1384,6 +1442,12 @@
           if (copy.kind === 'dish' && copy.photo) {
             copy.photo = { name: copy.photo.name || null, w: copy.photo.w || 0, h: copy.photo.h || 0 };
           }
+          // W13-2 — same rationale: section hero images aren't
+          // persisted in localStorage; metadata only. Operator
+          // re-uploads on restore.
+          if (copy.kind === 'section' && copy.hero) {
+            copy.hero = { name: copy.hero.name || null, w: copy.hero.w || 0, h: copy.hero.h || 0 };
+          }
           return copy;
         }),
         themeId: themeId,
@@ -1579,6 +1643,22 @@
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
       if (!t) return;
+      // W13-2 — badge toggle click.
+      var badgeBtn = t.closest && t.closest('[data-act="badge"]');
+      if (badgeBtn) {
+        var bi = parseInt(badgeBtn.dataset.i, 10);
+        var bcode = badgeBtn.dataset.badge;
+        if (!isFinite(bi) || !rows[bi] || !bcode) return;
+        if (!Array.isArray(rows[bi].badges)) rows[bi].badges = [];
+        var bidx = rows[bi].badges.indexOf(bcode);
+        if (bidx === -1) rows[bi].badges.push(bcode);
+        else rows[bi].badges.splice(bidx, 1);
+        render();
+        var pop2 = rowsEl.querySelector('.md-allergen-pop[data-i="' + bi + '"]');
+        if (pop2) pop2.open = true;
+        scheduleSaveDraft();
+        return;
+      }
       // W11-1 — touch up/down reorder buttons.
       var moveBtn = t.closest && t.closest('[data-act="moveup"], [data-act="movedn"]');
       if (moveBtn) {
@@ -1614,6 +1694,16 @@
         if (!isFinite(i)) return;
         pushUndo();
         rows.splice(i, 1);
+        render();
+        scheduleSaveDraft();
+        return;
+      }
+      // W13-2 — remove section hero image
+      if (act === 'hero-remove') {
+        var hri = parseInt(t.dataset.i, 10);
+        if (!isFinite(hri) || !rows[hri]) return;
+        pushUndo();
+        rows[hri].hero = null;
         render();
         scheduleSaveDraft();
         return;
@@ -1664,6 +1754,22 @@
           render();
           var pop = rowsEl.querySelector('.md-allergen-pop[data-i="' + pi + '"]');
           if (pop) pop.open = true;
+          scheduleSaveDraft();
+        });
+        return;
+      }
+      // W13-2 — section hero image upload. Higher max-dim (480) than
+      // dish photos because hero strips render full-width on the
+      // deliverable.
+      if (t.dataset.act === 'hero-pick') {
+        var hi = parseInt(t.dataset.i, 10);
+        var hfile = t.files && t.files[0];
+        if (!isFinite(hi) || !rows[hi] || !hfile) return;
+        downscaleImage(hfile, 480, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          pushUndo();
+          rows[hi].hero = { dataUrl: dataUrl, w: w, h: h, name: hfile.name };
+          render();
           scheduleSaveDraft();
         });
         return;
