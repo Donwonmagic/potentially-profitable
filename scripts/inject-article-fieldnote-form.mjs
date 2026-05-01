@@ -34,8 +34,8 @@ const SENTINEL_RE = /<!-- field-notes-submit:start -->[\s\S]*?<!-- field-notes-s
 const COPY = {
   en: {
     pause:    'Field notes are paused this season.',
-    headline: 'Have you tried this in your kitchen?',
-    subhead:  '100–400 words, your name on it, Don reads every one.',
+    headline: 'Be the first field note on this piece.',
+    subhead:  'Tried this in your own restaurant? 100–400 words, your name on it. Don reads every one. Your note shows up here once approved.',
     nameLabel:    'Your name',
     namePlaceholder: 'How you want to be credited',
     bodyLabel:    'Your note',
@@ -46,8 +46,8 @@ const COPY = {
   },
   es: {
     pause:    'Los apuntes están en pausa esta temporada.',
-    headline: '¿Lo has probado en tu cocina?',
-    subhead:  '100–400 palabras, con tu nombre, Don lee cada una.',
+    headline: 'Sé el primer apunte de campo en este artículo.',
+    subhead:  '¿Lo probaste en tu propio restaurante? 100–400 palabras, con tu nombre. Don lee cada una. Tu apunte aparece aquí una vez aprobado.',
     nameLabel:    'Tu nombre',
     namePlaceholder: 'Cómo quieres aparecer',
     bodyLabel:    'Tu apunte',
