@@ -130,6 +130,22 @@
   // W11-3 — coverPage flag on meta for the dedicated cover-page render.
   var meta = { tagline: '', story: '', coverPage: false };
 
+  // W12-3 — theme customizer state. Each field is null when the
+  // operator hasn't customized; otherwise an explicit hex. The
+  // PDF + preview applyCustomizer() helper merges these onto the
+  // active theme tokens before render. paperTexture flag enables
+  // a subtle linen-grain background overlay.
+  var customize = { accent: null, paper: null, ink: null, paperTexture: false };
+
+  function applyCustomizer(theme) {
+    if (!theme) return theme;
+    var out = Object.assign({}, theme);
+    if (customize.accent) out.accent = customize.accent;
+    if (customize.paper)  out.paper  = customize.paper;
+    if (customize.ink)    out.ink    = customize.ink;
+    return out;
+  }
+
   // W7-3 — paperKey migration. Old drafts wrote 'trifold' / 'tabletent';
   // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
   // Returns a known-good key, falling back to 'letter'.
@@ -438,6 +454,9 @@
       if (!li) return;
       themeId = li.dataset.id;
       renderThemePicker();
+      // W12-3 — when changing theme, sync customizer pickers to the
+      // new theme's defaults (unless operator has already overridden).
+      if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
       renderPreview();
       scheduleSaveDraft();
     });
@@ -782,6 +801,8 @@
         if (Array.isArray(ctx.palette) && ctx.palette.length) theme = MD_THEMES.applyPalette(theme, ctx.palette);
       }
     } catch (_) {}
+    // W12-3 — operator overrides from the customizer panel.
+    theme = applyCustomizer(theme);
 
     // Empty state.
     var dishes = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
@@ -806,6 +827,9 @@
     paper.style.setProperty('--ink', theme.ink);
     paper.style.setProperty('--accent', theme.accent);
     paper.style.setProperty('--muted', theme.muted);
+    // W12-3 — paper-texture overlay class
+    if (customize.paperTexture) paper.classList.add('md-pp-texture');
+    else paper.classList.remove('md-pp-texture');
     paper.style.setProperty('--bodyFamily', theme.bodyFamily);
     paper.style.setProperty('--displayFamily', theme.displayFamily);
     paper.style.setProperty('--h1px', theme.h1Pt + 'px');
@@ -1168,6 +1192,7 @@
         paperKey: paperKey,
         customDims: paperKey === 'custom' ? customDims : null,
         meta: { tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage },
+        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -1249,6 +1274,21 @@
           if (meta.tagline || meta.story || meta.coverPage) {
             var metaEl = document.getElementById('mdMeta');
             if (metaEl) metaEl.open = true;
+          }
+        }
+        // W12-3 — restore customizer overrides
+        if (d.customize) {
+          customize.accent = d.customize.accent || null;
+          customize.paper  = d.customize.paper  || null;
+          customize.ink    = d.customize.ink    || null;
+          customize.paperTexture = !!d.customize.paperTexture;
+          if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
+          if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
+          if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
+          if (paperTextureEl) paperTextureEl.checked = customize.paperTexture;
+          if (customize.accent || customize.paper || customize.ink || customize.paperTexture) {
+            var custEl = document.getElementById('mdCustomize');
+            if (custEl) custEl.open = true;
           }
         }
         if (savedLogo) { logoUrl = savedLogo; }
@@ -2013,6 +2053,8 @@
           if (Array.isArray(ctxDl.palette) && ctxDl.palette.length) theme = MD_THEMES.applyPalette(theme, ctxDl.palette);
         }
       } catch (_) {}
+      // W12-3 — apply operator's customizer overrides on top of brand palette.
+      theme = applyCustomizer(theme);
 
       var title = '';
       try {
@@ -2047,6 +2089,7 @@
         tagline:      meta.tagline,
         story:        meta.story,
         coverPage:    !!meta.coverPage,
+        paperTexture: !!customize.paperTexture,
         logoDataUrl:  logoUrl,
         logoMeta:     logoMeta,
         filename:     printVendor ? filename + '-press' : filename,
@@ -2803,6 +2846,7 @@
 
   renderThemePicker();
   renderPaperGrid();      // W7-3 — populate the new paper-card picker
+  syncCustomizeFromTheme(); // W12-3 — initial customizer pickers in sync
   render();
   renderCtxPill();
   renderHistory();
@@ -2810,6 +2854,50 @@
   // and the operator hasn't started fresh yet. Runs after the
   // initial render so the banner sits above an empty editor.
   try { offerDraftRestore(); } catch (_) {}
+  // W12-3 — customizer wiring. Each color picker writes to its
+  // override; reset clears all three. The paper-texture flag is
+  // an additional class toggled on the preview paper element.
+  var customAccentEl = document.getElementById('mdCustomAccent');
+  var customPaperEl  = document.getElementById('mdCustomPaper');
+  var customInkEl    = document.getElementById('mdCustomInk');
+  var customResetEl  = document.getElementById('mdCustomizeReset');
+  var paperTextureEl = document.getElementById('mdPaperTexture');
+
+  function syncCustomizeFromTheme() {
+    // When the operator switches theme without explicitly overriding
+    // a color, sync the picker values to the theme's defaults so
+    // the visible "current" matches reality.
+    if (typeof MD_THEMES === 'undefined') return;
+    var t = MD_THEMES.get(themeId);
+    if (!t) return;
+    if (customAccentEl && !customize.accent) customAccentEl.value = t.accent || '#1F4E5B';
+    if (customPaperEl  && !customize.paper)  customPaperEl.value  = t.paper  || '#FAF6EE';
+    if (customInkEl    && !customize.ink)    customInkEl.value    = t.ink    || '#14161A';
+  }
+  if (customAccentEl) customAccentEl.addEventListener('input', function () {
+    customize.accent = customAccentEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customPaperEl) customPaperEl.addEventListener('input', function () {
+    customize.paper = customPaperEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customInkEl) customInkEl.addEventListener('input', function () {
+    customize.ink = customInkEl.value;
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customResetEl) customResetEl.addEventListener('click', function () {
+    customize.accent = customize.paper = customize.ink = null;
+    syncCustomizeFromTheme();
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+  if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
+    customize.paperTexture = !!paperTextureEl.checked;
+    schedulePreview();
+    scheduleSaveDraft();
+  });
+
   // W11-2 — first-run cuisine quiz takes priority over the older
   // ghost-rows + overlay pattern. Skip path falls through to the
   // ghost-rows path so the empty-state still feels alive.

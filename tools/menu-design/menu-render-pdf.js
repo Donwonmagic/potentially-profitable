@@ -1463,6 +1463,23 @@
         doc.setFillColor(paperRgb.r, paperRgb.g, paperRgb.b);
         doc.rect(fillX, fillY, fillW, fillH, 'F');
       }
+      // W12-3 — paper texture overlay. Subtle 4% opacity dot grid
+      // stamped in the ink color across the page surface.
+      if (opts.paperTexture) {
+        try {
+          if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.045 }));
+        } catch (_) {}
+        var inkColor = hexToRgb(opts.theme.ink);
+        doc.setFillColor(inkColor.r, inkColor.g, inkColor.b);
+        for (var tx = 8; tx < pageW; tx += 6) {
+          for (var ty = 8; ty < pageH; ty += 6) {
+            doc.circle(tx, ty, 0.35, 'F');
+          }
+        }
+        try {
+          if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 }));
+        } catch (_) {}
+      }
       var blocks = buildBlocks(opts.rows || [], opts.title, opts.logoDataUrl, {
         tagline:   opts.tagline   || '',
         story:     opts.story     || '',

@@ -246,6 +246,26 @@
 .md-theme-swatches{display:flex;gap:3px;margin-top:8px}
 .md-theme-swatches span{width:10px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.12)}
 
+/* W12-3 — Theme customizer. Color pickers + paper-texture toggle.
+   Collapsed by default to keep the editor calm. */
+.md-customize{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--white)}
+.md-customize[open]{border-color:var(--teal)}
+.md-customize-summary{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none;min-height:44px}
+.md-customize-summary::-webkit-details-marker{display:none}
+.md-customize-summary:hover{color:var(--teal)}
+.md-customize[open] .md-customize-summary{color:var(--teal);border-bottom:1px solid var(--line)}
+.md-customize-hint{color:var(--stone);font-weight:400;font-size:11.5px}
+.md-customize-body{padding:12px 14px}
+.md-customize-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.md-customize-field{display:flex;flex-direction:column;gap:4px}
+.md-customize-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
+.md-customize-field input[type="color"]{width:100%;height:36px;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:2px}
+.md-customize-toggles{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);cursor:pointer;flex:1 1 auto}
+.md-customize-toggle input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
+.md-customize-reset{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
+.md-customize-reset:hover{border-color:var(--rust);color:var(--rust)}
+
 /* Logo + paper-size row. Two compact controls side by side. */
 .md-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
 @media(max-width:640px){.md-options{grid-template-columns:1fr}}
@@ -318,6 +338,12 @@
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
+/* W12-3 — paper-texture overlay (linen grain) via two crossed
+   hairline-stripe gradients at 4% opacity. Subtle, not pictorial. */
+.md-preview-paper.md-pp-texture{background-image:
+  repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
+  repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);
+  background-color:var(--paper)}
 .md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 6px;color:var(--ink);letter-spacing:0}
 /* W9-3 — Tagline + chef's-note story block render between title and first section. */
 .md-preview-paper .md-pp-tagline{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--accent);margin:0 0 18px;font-size:0.86em;letter-spacing:.04em}
@@ -879,6 +905,37 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <div class="md-themes">
       <p class="md-themes-label">Pick a theme</p>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Menu theme"></ul>
+      <!-- W12-3 — Theme customizer. Collapsed by default; reveals
+           accent/paper color overrides + paper-texture toggle. -->
+      <details class="md-customize" id="mdCustomize">
+        <summary class="md-customize-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          <span>Customize colors &amp; texture <span class="md-customize-hint">(optional)</span></span>
+        </summary>
+        <div class="md-customize-body">
+          <div class="md-customize-grid">
+            <label class="md-customize-field">
+              <span>Accent</span>
+              <input type="color" id="mdCustomAccent" value="#1F4E5B" />
+            </label>
+            <label class="md-customize-field">
+              <span>Paper</span>
+              <input type="color" id="mdCustomPaper" value="#FAF6EE" />
+            </label>
+            <label class="md-customize-field">
+              <span>Ink</span>
+              <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <div class="md-customize-toggles">
+            <label class="md-customize-toggle">
+              <input type="checkbox" id="mdPaperTexture" />
+              <span>Paper texture <span class="md-customize-hint">— subtle linen grain across the menu background</span></span>
+            </label>
+            <button type="button" id="mdCustomizeReset" class="md-customize-reset">Reset to theme default</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- Logo + paper-size row. -->
@@ -1035,9 +1092,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
 <script src="./themes.js?v=20260501-w8-2"></script>
-<script src="./menu-render-pdf.js?v=20260501-w12-2"></script>
+<script src="./menu-render-pdf.js?v=20260501-w12-3"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w12-2"></script>
+<script src="./menu-design.js?v=20260501-w12-3"></script>
 </body>
 </html>
