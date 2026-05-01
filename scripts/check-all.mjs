@@ -91,6 +91,7 @@ const CHECKS = [
   ['Security page schema (idem)','inject-security-page-schema.mjs','--check'],
   ['Tool data-promise (idem)','inject-tool-data-promise.mjs','--check'],
   ['Tool no-fetch invariant','check-tool-no-fetch.mjs'],
+  ['Menu-Design consistency','check-menu-design.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
