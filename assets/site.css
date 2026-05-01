@@ -2482,6 +2482,95 @@ br.br-lg{display:none}
   border-top:1px dashed var(--line);
   flex:1;
 }
+
+/* Spotlight section — Phase 7 W1-3. Two flagship tools (Menu
+   Design Suite + Advanced Invoice Decoder) rendered as large,
+   high-weight cards above the existing 4-cluster grid on
+   /tools/. The "vs Canva" / "vs Restaurant365" chip is the
+   centerpiece-elevation move: every card admits in the corner
+   what it beats, so the differentiator never has to be hunted
+   for. Reads from tools/_shared/differentiators.js (mirrored
+   in build-tools-index.mjs at build time). */
+.tool-spotlight{
+  margin:48px 0 56px;
+  padding:32px 32px 36px;
+  background:linear-gradient(135deg, var(--cream) 0%, var(--cream-2) 100%);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+}
+.tool-spotlight__heading{
+  font-family:var(--font-display);
+  font-size:clamp(26px, 3vw, 36px);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  margin:8px 0 24px;
+  color:var(--ink);
+}
+.tool-spotlight__grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+@media (max-width:840px){.tool-spotlight__grid{grid-template-columns:1fr}}
+.tool-card-spotlight{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding:32px 32px 28px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  text-decoration:none;
+  color:inherit;
+  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast);
+  overflow:hidden;
+}
+.tool-card-spotlight:hover{
+  transform:translateY(-4px);
+  box-shadow:0 24px 48px rgba(20,22,26,0.10);
+  border-color:var(--teal);
+}
+.tool-card-spotlight__chip{
+  align-self:flex-start;
+  padding:6px 14px;
+  background:var(--teal-tint, color-mix(in srgb, var(--teal) 12%, transparent));
+  color:var(--teal);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--teal) 30%, transparent);
+}
+.tool-card-spotlight__title{
+  font-family:var(--font-display);
+  font-size:clamp(28px, 3.4vw, 36px);
+  font-weight:500;
+  letter-spacing:-0.012em;
+  color:var(--ink);
+  margin:0;
+  line-height:1.1;
+}
+.tool-card-spotlight__headline{
+  font-size:16px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  margin:0;
+  flex:1;
+}
+.tool-card-spotlight__cta{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--teal);
+  letter-spacing:0.01em;
+}
+.tool-card-spotlight:hover .tool-card-spotlight__cta{ color:var(--ink); }
+@media (max-width:560px){
+  .tool-spotlight{ padding:24px 20px 28px; }
+  .tool-card-spotlight{ padding:24px 22px 22px; gap:12px; }
+}
 .tool-card__walkaway-label{
   font-weight:600;
   color:var(--ink);

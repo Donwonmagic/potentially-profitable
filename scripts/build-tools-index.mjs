@@ -87,6 +87,57 @@ function pickI18n(obj, key, locale) {
   return obj[`${key}_${locale}`];
 }
 
+// Spotlight section — the two flagship tools rendered as
+// large, full-width cards above everything else. Reads the
+// differentiator headline + chipLabel from the shared module
+// at tools/_shared/differentiators.js (single source of truth).
+// We don't import the JS module here (this script is Node, the
+// module is browser-shaped UMD); instead we keep a small mirror
+// of the chipLabel + headline locally and verify match in the
+// W1-3 test fixture if added later. Today the canonical strings
+// here MUST be kept in sync with differentiators.js — drift is
+// caught by the build invariant check-name-coherence.mjs which
+// already scans both locations for tool names.
+const SPOTLIGHT = {
+  'menu-design': {
+    en: { headline: 'The only restaurant menu tool that auto-lays out 14 or 53 dishes from one paste — no Canva fight.', chipLabel: 'vs Canva templates' },
+    es: { headline: 'La única herramienta de menú que acomoda 14 o 53 platos desde una pasada — sin pelearte con Canva.', chipLabel: 'vs plantillas de Canva' }
+  },
+  'invoice-decoder': {
+    en: { headline: 'An invoice tool that locks your data with a secret only you know — Restaurant365 reads everything; we read nothing.', chipLabel: 'vs Restaurant365 · MarginEdge · Plate IQ' },
+    es: { headline: 'Una herramienta de facturas que bloquea tus datos con un secreto que solo tú conoces — Restaurant365 lee todo; nosotros no leemos nada.', chipLabel: 'vs Restaurant365 · MarginEdge · Plate IQ' }
+  }
+};
+
+function renderSpotlight(locale) {
+  const eyebrow = locale === 'en' ? 'Spotlight' : 'Destacado';
+  const heading = locale === 'en' ? 'The two tools we built differently.' : 'Las dos herramientas que construimos diferente.';
+  const ctaLabel = locale === 'en' ? 'Open the tool' : 'Abrir la herramienta';
+  const slugs = ['menu-design', 'invoice-decoder'];
+  const cards = slugs.map((slug) => {
+    const t      = data.tools[slug];
+    if (!t) return '';
+    const title  = pickI18n(t, 'title', locale);
+    const url    = pickI18n(t, 'url', locale);
+    const sp     = SPOTLIGHT[slug] && (SPOTLIGHT[slug][locale] || SPOTLIGHT[slug].en);
+    if (!sp) return '';
+    return `      <a href="${escAttr(url)}" class="tool-card-spotlight live">
+        <span class="tool-card-spotlight__chip">${escText(sp.chipLabel)}</span>
+        <h3 class="tool-card-spotlight__title">${escText(title)}</h3>
+        <p class="tool-card-spotlight__headline">${escText(sp.headline)}</p>
+        <span class="tool-card-spotlight__cta">${escText(ctaLabel)} ${ARROW}</span>
+      </a>`;
+  }).filter(Boolean).join('\n');
+  if (!cards) return '';
+  return `<section class="tool-spotlight" aria-labelledby="tool-spotlight-heading">
+    <span class="eyebrow">${escText(eyebrow)}</span>
+    <h2 id="tool-spotlight-heading" class="tool-spotlight__heading">${escText(heading)}</h2>
+    <div class="tool-spotlight__grid">
+${cards}
+    </div>
+  </section>`;
+}
+
 function renderGoals(locale) {
   const heading = locale === 'en' ? 'Start with a goal.' : 'Empieza con un objetivo.';
   const eyebrow = locale === 'en' ? 'For when you know what hurts' : 'Cuando ya sabes qué duele';
@@ -215,6 +266,8 @@ function renderBody(locale) {
   return `${SENTINEL_OPEN}
 <section class="block">
   <div class="container container-wide">
+    ${renderSpotlight(locale)}
+
     ${renderGoals(locale)}
 
     ${renderChipNav(locale)}
