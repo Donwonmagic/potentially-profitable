@@ -31,7 +31,7 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="manifest" href="/tools/invoice-decoder/manifest.webmanifest" />
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -465,6 +465,14 @@
       </label>
     </div>
 
+    <!-- Wave 6.8 — PWA update / install affordances. ES copy. -->
+    <div class="id-update" id="idUpdate" hidden role="status" aria-live="polite">
+      <p class="id-update-msg"><strong>Hay una actualización.</strong> Una nueva versión está lista. <button type="button" class="id-update-btn" id="idUpdateBtn">Recargar</button> <button type="button" class="id-update-dismiss" id="idUpdateDismiss" aria-label="Cerrar">×</button></p>
+    </div>
+    <div class="id-install" id="idInstall" hidden>
+      <p class="id-install-msg">Agregar al inicio — funciona sin internet una vez instalado. <button type="button" class="id-install-btn" id="idInstallBtn">Instalar</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Cerrar">×</button></p>
+    </div>
+
     <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
       <p class="id-status-title" id="idStatusTitle">Leyendo la foto…</p>
       <p class="id-status-msg" id="idStatusMsg">Limpiando la imagen para que el siguiente paso (lectura línea por línea) tenga la mejor base.</p>
@@ -613,6 +621,64 @@
 <script src="/tools/invoice-decoder/accountant-export.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/telemetry.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/onboarding.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w8-1"></script>
+<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w8-2"></script>
+
+<!-- Wave 6.8 — PWA registration, identical to the EN page. -->
+<script>
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  var swUrl = '/tools/invoice-decoder/sw.js';
+  navigator.serviceWorker.register(swUrl, { scope: '/tools/invoice-decoder/' })
+    .then(function (registration) {
+      window.__MID_SW_REG = registration;
+      registration.addEventListener('updatefound', function () {
+        var newWorker = registration.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', function () {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            var host = document.getElementById('idUpdate');
+            var btn  = document.getElementById('idUpdateBtn');
+            var dis  = document.getElementById('idUpdateDismiss');
+            if (host && btn) {
+              host.hidden = false;
+              btn.addEventListener('click', function () { newWorker.postMessage({ type: 'SKIP_WAITING' }); });
+              if (dis) dis.addEventListener('click', function () { host.hidden = true; });
+            }
+          }
+        });
+      });
+    })
+    .catch(function () { /* SW registration failed — degrade silently. */ });
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var host = document.getElementById('idInstall');
+    var btn  = document.getElementById('idInstallBtn');
+    var dis  = document.getElementById('idInstallDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { host.hidden = true; deferredPrompt = null; });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; deferredPrompt = null; });
+  });
+  window.addEventListener('appinstalled', function () {
+    var host = document.getElementById('idInstall');
+    if (host) host.hidden = true;
+    if (window.plausible) { try { window.plausible('Invoice Decoder Installed'); } catch (_) {} }
+  });
+})();
+</script>
 </body>
 </html>

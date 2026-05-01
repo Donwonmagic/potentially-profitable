@@ -38,7 +38,9 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<!-- Tool-scoped manifest with share_target. Falls back to the site
+     manifest on browsers that ignore tool-scoped manifests. -->
+<link rel="manifest" href="/tools/invoice-decoder/manifest.webmanifest" />
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -435,6 +437,20 @@
 .id-firstrun-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
 .id-firstrun-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
 
+/* Wave 6.8 — PWA update + install prompts. Slim banners that sit
+   between the input chips and the result panel; never sticky, never
+   block scrolling. */
+.id-update,.id-install{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
+.id-install{background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border-color:var(--line);border-left-color:var(--accent,#1f6f6a)}
+.id-update[hidden],.id-install[hidden]{display:none}
+.id-update-msg,.id-install-msg{margin:0;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-update-msg strong,.id-install-msg strong{color:var(--ink);font-weight:600}
+.id-update-btn,.id-install-btn,.id-update-dismiss,.id-install-dismiss{font:inherit;font-size:13px;padding:5px 12px;margin-left:6px;border-radius:6px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer}
+.id-update-btn,.id-install-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-update-btn:hover,.id-install-btn:hover{background:var(--accent,#1f6f6a)}
+.id-update-dismiss,.id-install-dismiss{padding:3px 9px;font-weight:600}
+.id-update-dismiss:hover,.id-install-dismiss:hover{border-color:var(--ink);color:var(--ink)}
+
 /* Wave 5 — abandonment resume banner */
 .id-resume{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
 .id-resume[hidden]{display:none}
@@ -783,6 +799,19 @@
       <p class="id-resume-msg">You had an invoice in progress yesterday. <button type="button" class="id-resume-btn">Pick it up</button> · <button type="button" class="id-resume-dismiss">Dismiss</button></p>
     </div>
 
+    <!-- Wave 6.8 — PWA update prompt. Surfaced by the SW registration
+         script below when a new version of the tool is available. -->
+    <div class="id-update" id="idUpdate" hidden role="status" aria-live="polite">
+      <p class="id-update-msg"><strong>Update available.</strong> A new version is ready. <button type="button" class="id-update-btn" id="idUpdateBtn">Refresh</button> <button type="button" class="id-update-dismiss" id="idUpdateDismiss" aria-label="Dismiss">×</button></p>
+    </div>
+
+    <!-- Wave 6.8 — install prompt. Browsers that fire beforeinstallprompt
+         (Chrome on Android, Edge on Windows) get a one-tap install affordance.
+         iOS Safari users get an unobtrusive instruction; the rest get nothing. -->
+    <div class="id-install" id="idInstall" hidden>
+      <p class="id-install-msg">Add to home screen — works offline once installed. <button type="button" class="id-install-btn" id="idInstallBtn">Install</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Dismiss">×</button></p>
+    </div>
+
     <!-- Status / progress strip. Shown once a file is chosen. -->
     <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
       <p class="id-status-title" id="idStatusTitle">Reading the photo…</p>
@@ -979,6 +1008,94 @@
 <script src="./accountant-export.js?v=20260501-w8-1"></script>
 <script src="./telemetry.js?v=20260501-w8-1"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
-<script src="./invoice-decoder.js?v=20260501-w8-1"></script>
+<script src="./invoice-decoder.js?v=20260501-w8-2"></script>
+
+<!--
+  Wave 6.8 — PWA registration + update prompt + install affordance.
+  Inline so it runs before any other tool script; checks support
+  defensively so older browsers (Safari <11.1, Chrome <40) silently
+  no-op. Honors the no-fetch invariant: navigator.serviceWorker.register
+  is not a fetch() — it tells the browser to fetch a same-origin SW
+  on its own.
+-->
+<script>
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  // Skip on file:// and http:// — SW only works over HTTPS or localhost.
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+
+  var swUrl = '/tools/invoice-decoder/sw.js';
+  navigator.serviceWorker.register(swUrl, { scope: '/tools/invoice-decoder/' })
+    .then(function (registration) {
+      window.__MID_SW_REG = registration;
+
+      // Detect a new SW being installed → trigger the update prompt
+      // when it transitions to "installed" with an active controller
+      // already on the page.
+      registration.addEventListener('updatefound', function () {
+        var newWorker = registration.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', function () {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdatePrompt(newWorker);
+          }
+        });
+      });
+    })
+    .catch(function () { /* SW registration failed — degrade silently. */ });
+
+  // Reload on controller change so the new SW takes over cleanly.
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  function showUpdatePrompt(newWorker) {
+    var host = document.getElementById('idUpdate');
+    var btn  = document.getElementById('idUpdateBtn');
+    var dis  = document.getElementById('idUpdateDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      newWorker.postMessage({ type: 'SKIP_WAITING' });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; });
+  }
+
+  // Install prompt — Chromium browsers fire beforeinstallprompt; we
+  // stash the event so the operator can trigger install on demand.
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var host = document.getElementById('idInstall');
+    var btn  = document.getElementById('idInstallBtn');
+    var dis  = document.getElementById('idInstallDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () {
+        host.hidden = true;
+        deferredPrompt = null;
+      });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; deferredPrompt = null; });
+  });
+
+  // Hide the install affordance once installed.
+  window.addEventListener('appinstalled', function () {
+    var host = document.getElementById('idInstall');
+    if (host) host.hidden = true;
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Installed'); } catch (_) {}
+    }
+  });
+})();
+</script>
 </body>
 </html>

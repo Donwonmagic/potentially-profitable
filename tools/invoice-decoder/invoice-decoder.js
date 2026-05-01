@@ -1536,6 +1536,120 @@
     window.MID_DECODER_RENDER = function (parsed) { renderParsed(parsed); };
   }
 
+  // ============================================================
+  // Wave 6.8 — PWA deeplinks + Web Share Target intake.
+  //
+  // ?shared=<token> — service worker stashed an incoming share in
+  //   /tools/invoice-decoder/_shared_inbox/<token>. We pull it back
+  //   out (as a Blob), sniff its MIME, and route into the existing
+  //   photo / PDF / CSV handlers. Same code paths as a direct file
+  //   pick, so the entire downstream pipeline is reused.
+  //
+  // ?action=photo — manifest shortcut that opens the camera. Fires
+  //   a click on the photo input so the OS file/camera picker
+  //   appears immediately. (iOS won't trigger the camera without a
+  //   user gesture; on those browsers the click no-ops gracefully.)
+  // ============================================================
+  function handlePwaIntents() {
+    if (typeof URLSearchParams === 'undefined') return;
+    var params = new URLSearchParams(window.location.search || '');
+    var sharedToken = params.get('shared');
+    if (sharedToken && sharedToken !== 'error' && typeof caches !== 'undefined') {
+      var stashUrl = '/tools/invoice-decoder/_shared_inbox/' + sharedToken;
+      caches.open('id-share-inbox').then(function (cache) {
+        return cache.match(stashUrl);
+      }).then(function (resp) {
+        if (!resp) return;
+        return resp.blob().then(function (blob) {
+          // Build a File so the existing handlers don't need to care
+          // about Blob vs File distinctions.
+          var name = 'shared-invoice';
+          try {
+            var hdr = resp.headers.get('X-Mid-Shared-Name');
+            if (hdr) name = decodeURIComponent(hdr);
+          } catch (_) {}
+          var file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
+          // Route by MIME.
+          if (file.type.indexOf('image/') === 0) {
+            handlePhotoFiles([file]);
+          } else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
+            // Fake a change-event-style invocation against the PDF input.
+            if (typeof MID_PDF_EXTRACT !== 'undefined' && MID_PDF_EXTRACT.extractPdf) {
+              setActiveChip('pdf');
+              showStatus(
+                tt('Reading the shared PDF…', 'Leyendo el PDF compartido…'),
+                tt('From your Share Sheet — runs the same way as a direct upload.',
+                   'Desde tu menú compartir — funciona igual que subirlo directo.')
+              );
+              setProgress(15);
+              MID_PDF_EXTRACT.extractPdf(file).then(function (result) {
+                if (result.imageOnly) {
+                  showStatus(
+                    tt('This PDF is a scanned image, not a text document.',
+                       'Este PDF es una imagen escaneada, no un documento de texto.'),
+                    tt('Try the photo path with each page snapped separately.',
+                       'Usa la ruta de foto con cada página por separado.'),
+                    'error'
+                  );
+                  return;
+                }
+                var parsedShared = MID_PARSE.parseLines(result.lines, result.fullText);
+                if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
+                  var vMatchShared = MID_VENDORS.detectVendor(result.fullText);
+                  if (vMatchShared) {
+                    MID_VENDORS.applyVendorBoost(parsedShared.rows, vMatchShared);
+                    parsedShared.vendor = vMatchShared.id;
+                  }
+                }
+                if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+                  parsedShared.rows.forEach(function (r) {
+                    var c = MID_CATEGORIZE.classify(r);
+                    r.category = c.category;
+                    r.categoryConfidence = c.confidence;
+                    r.categoryTier = c.tier;
+                    r.categorySource = c.source || null;
+                    r.tags = c.tags || [];
+                  });
+                }
+                renderParsed(parsedShared);
+                hideStatus();
+              });
+            }
+          }
+          // Clean up the stashed file so it's not reusable.
+          return cache.delete(stashUrl);
+        });
+      }).catch(function () { /* missing or expired share; user re-shares */ });
+      // Strip ?shared= from the URL so a refresh doesn't re-trigger.
+      try {
+        history.replaceState({}, '', window.location.pathname);
+      } catch (_) {}
+      if (window.plausible) {
+        try { window.plausible('Invoice Decoder Share Received'); } catch (_) {}
+      }
+    } else if (sharedToken === 'error') {
+      showStatus(
+        tt('Couldn\'t read the shared file', 'No se pudo leer el archivo compartido'),
+        tt('Try sharing it again, or pick the file directly with the photo or PDF buttons above.',
+           'Intenta compartirlo de nuevo o selecciónalo con los botones arriba.'),
+        'error'
+      );
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
+    // ?action=photo — open the photo picker.
+    if (params.get('action') === 'photo' && photoInput) {
+      try { photoInput.click(); } catch (_) {}
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
+  }
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handlePwaIntents);
+    } else {
+      handlePwaIntents();
+    }
+  }
+
   function renderParsed(parsed) {
     lastReadParsed = parsed;
     // Wave 5 — record that the operator has run something so the
