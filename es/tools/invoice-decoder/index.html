@@ -136,6 +136,22 @@
 .id-honesty p:last-child{margin-bottom:0}
 .id-honesty strong{color:var(--ink);font-weight:600}
 
+/* W3-2 — verify-it-yourself disclosure inside the honesty card. */
+.id-verify{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.id-verify summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.id-verify summary::-webkit-details-marker{display:none}
+.id-verify summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-verify[open] summary::before{transform:rotate(90deg)}
+.id-verify-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+.id-verify-steps{margin:10px 0 8px 22px;padding:0;font-size:13.5px;color:var(--ink);line-height:1.6}
+.id-verify-steps li{margin:0 0 8px}
+.id-verify-steps strong{color:var(--ink);font-weight:600}
+.id-verify-steps code{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;background:#f3efe7;padding:1px 4px;border-radius:3px;color:var(--ink)}
+.id-verify-foot{font-size:13px;color:var(--ink-soft);font-style:italic;margin:8px 0 6px}
+.id-verify-measure{font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;margin-top:6px}
+.id-verify-measure:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-verify-measure-out{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -272,6 +288,19 @@
       <p><strong>No es:</strong> tu contabilidad. No se sincroniza con QuickBooks, Restaurant365 ni Toast. No detecta cada error de precio — úsalo como segundo par de ojos, no un auditor. Los costos de plato sólo se actualizan cuando tú confirmas.</p>
       <p><strong>vs. Restaurant365:</strong> tus facturas se quedan en tu dispositivo hasta que decidas guardar. Las guardadas se encriptan con una llave derivada de tu sesión. No hay benchmark, no hay pool de proveedores, no entrenamos IA con tus costos — y nunca se rellenan retroactivamente si más adelante hay un opt-in.</p>
       <p><strong>Postura de privacidad:</strong> Abre DevTools → Network. Elige una foto. La versión limpia se renderiza aquí. La pestaña Network sigue vacía. Los bytes de la imagen nunca salen de tu dispositivo.</p>
+
+      <details class="id-verify">
+        <summary>Verifícalo tú mismo: abre DevTools → Network <span class="id-verify-badge">2 minutos</span></summary>
+        <ol class="id-verify-steps">
+          <li><strong>Abre DevTools en Chrome / Firefox / Safari.</strong> Click derecho en cualquier parte de la página → <em>Inspeccionar</em>. (En iPhone o Android, conecta a un navegador de escritorio y usa inspección remota — DevTools del teléfono es ilegible.)</li>
+          <li><strong>Cambia a la pestaña Network y marca "Preserve log".</strong> Eso mantiene la lista de peticiones visible entre acciones.</li>
+          <li><strong>Elige una foto y léela.</strong> Mira el Network mientras corre el OCR. Las únicas peticiones son el WASM de Tesseract + paquetes de idioma (cacheados después del primer uso) — y cero peticiones llevando los bytes de tu imagen. La imagen vive en un <code>&lt;canvas&gt;</code> de esta pestaña.</li>
+          <li><strong>Guarda en tu Taller.</strong> Ahora el Network muestra UN POST a <code>/api/workbench/save</code>. Click → Payload. El cuerpo trae un campo <code>envelope.ct</code> con bytes base64 — eso es el ciphertext AES-GCM. Busca en el cuerpo cualquier nombre de tus platos. No los encontrarás.</li>
+        </ol>
+        <p class="id-verify-foot">Si en algún paso ves algo que parece contenido de tu factura saliendo de la página, avísanos — sería un bug que arreglaríamos de inmediato.</p>
+        <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Medir el tamaño del último guardado</button>
+        <p id="idVerifyMeasureOut" class="id-verify-measure-out" role="status" aria-live="polite"></p>
+      </details>
     </div>
 
   </div>

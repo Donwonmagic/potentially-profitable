@@ -156,6 +156,22 @@
 .id-honesty p:last-child{margin-bottom:0}
 .id-honesty strong{color:var(--ink);font-weight:600}
 
+/* W3-2 — verify-it-yourself disclosure inside the honesty card. */
+.id-verify{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.id-verify summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.id-verify summary::-webkit-details-marker{display:none}
+.id-verify summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-verify[open] summary::before{transform:rotate(90deg)}
+.id-verify-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+.id-verify-steps{margin:10px 0 8px 22px;padding:0;font-size:13.5px;color:var(--ink);line-height:1.6}
+.id-verify-steps li{margin:0 0 8px}
+.id-verify-steps strong{color:var(--ink);font-weight:600}
+.id-verify-steps code{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;background:#f3efe7;padding:1px 4px;border-radius:3px;color:var(--ink)}
+.id-verify-foot{font-size:13px;color:var(--ink-soft);font-style:italic;margin:8px 0 6px}
+.id-verify-measure{font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;margin-top:6px}
+.id-verify-measure:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-verify-measure-out{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -303,6 +319,19 @@
       <p><strong>Isn't:</strong> your books. Won't sync to QuickBooks, Restaurant365, or Toast. Won't catch every pricing error — treat the sanity check as a second pair of eyes, not an auditor. Plate costs only update on tap-confirm.</p>
       <p><strong>vs. Restaurant365:</strong> your invoices stay on your device until you explicitly save. Saved invoices are encrypted with a key derived from your sign-in. No benchmark dataset, no vendor pool, no ML training on your cost data — and never backfilled retroactively if a future opt-in arrives.</p>
       <p><strong>Privacy posture:</strong> Open DevTools → Network. Pick a photo. Cleaned-up version renders in this page. Network panel stays empty. Image bytes never leave your device.</p>
+
+      <details class="id-verify">
+        <summary>Verify it yourself: open DevTools → Network <span class="id-verify-badge">2-minute walk-through</span></summary>
+        <ol class="id-verify-steps">
+          <li><strong>Open Chrome / Firefox / Safari DevTools.</strong> Right-click anywhere on this page → <em>Inspect</em>. (On iPhone or Android, plug into a desktop browser and use remote inspection — phone DevTools is too cramped to read.)</li>
+          <li><strong>Switch to the Network tab and check "Preserve log."</strong> That keeps the request list visible across page actions instead of clearing.</li>
+          <li><strong>Pick a photo, then read it.</strong> Watch the Network tab as the OCR runs. The only requests are the Tesseract WASM + language packs (cached after the first load) — and zero requests carrying your image bytes. The image lives in a <code>&lt;canvas&gt;</code> in this tab.</li>
+          <li><strong>Save to your Workshop.</strong> Now the Network tab shows ONE POST to <code>/api/workbench/save</code>. Click it → Payload. The body contains an <code>envelope.ct</code> field of base64 bytes — that's the AES-GCM ciphertext. Search the body for any of your dish names. You won't find them.</li>
+        </ol>
+        <p class="id-verify-foot">If at any step you see something that looks like your invoice contents leaving the page, tell us — that would be a bug worth fixing immediately.</p>
+        <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Measure my last save's transfer size</button>
+        <p id="idVerifyMeasureOut" class="id-verify-measure-out" role="status" aria-live="polite"></p>
+      </details>
     </div>
 
   </div>

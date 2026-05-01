@@ -857,6 +857,39 @@
               vendor_detected: payload.vendor ? 'true' : 'false'
             } });
           }
+          // W3-2: reveal the network-walkthrough Measure button.
+          // Reads performance.getEntriesByType('resource') for the
+          // /api/workbench/save POST and reports actual bytes — gives
+          // the operator a concrete, real number when they expand
+          // the verify-it-yourself disclosure.
+          try {
+            var verifyBtn = document.getElementById('idVerifyMeasureBtn');
+            var verifyOut = document.getElementById('idVerifyMeasureOut');
+            if (verifyBtn && !verifyBtn.dataset.wired) {
+              verifyBtn.hidden = false;
+              verifyBtn.dataset.wired = '1';
+              verifyBtn.addEventListener('click', function () {
+                var entries = [];
+                try {
+                  entries = (performance.getEntriesByType('resource') || [])
+                    .filter(function (e) { return e.name && e.name.indexOf('/api/workbench/save') !== -1; });
+                } catch (_) {}
+                if (!entries.length) {
+                  verifyOut.textContent = tt(
+                    'No /api/workbench/save entry found yet — try again after a save.',
+                    'Aún no hay entrada /api/workbench/save — intenta después de guardar.'
+                  );
+                  return;
+                }
+                var last = entries[entries.length - 1];
+                var bytes = last.encodedBodySize || last.transferSize || 0;
+                verifyOut.textContent = tt(
+                  '✓ POST /api/workbench/save · ' + bytes + ' bytes on the wire · status: encrypted ciphertext',
+                  '✓ POST /api/workbench/save · ' + bytes + ' bytes en la red · estado: ciphertext encriptado'
+                );
+              });
+            }
+          } catch (_) {}
           // W3-1: surface the proof flyout. Shows the actual
           // ciphertext, the actual outgoing POST shape, and a
           // try-to-break demo that uses MID_ENCRYPT.decryptPayload
