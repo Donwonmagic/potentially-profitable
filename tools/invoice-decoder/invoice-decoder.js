@@ -626,6 +626,32 @@
     // B5-4 — reveal the sticky bulk-action bar once we have rows.
     var bulkBarEl = document.getElementById('idBulkbar');
     if (bulkBarEl) bulkBarEl.hidden = !parsedRowsState.length;
+    // W3-7 — render the differentiator strip above the result panel
+    // exactly once. Pulls chipLabel + a one-sentence framing from
+    // MuntinDifferentiators (single source of truth, see W1-9).
+    renderDiffStripOnce();
+  }
+
+  function renderDiffStripOnce() {
+    var strip = document.getElementById('idDiffStrip');
+    if (!strip || strip.dataset.rendered === '1') return;
+    if (typeof MuntinDifferentiators === 'undefined') return;
+    var data = MuntinDifferentiators.vsAlternative('invoice-decoder', LOCALE);
+    if (!data) return;
+    var chip = document.createElement('span');
+    chip.className = 'id-diff-strip-chip';
+    chip.textContent = data.chipLabel || tt('vs paid alternatives', 'vs alternativas pagadas');
+    var text = document.createElement('span');
+    text.className = 'id-diff-strip-text';
+    text.innerHTML = '<strong>' +
+      tt('Restaurant-grade and your data stays yours.',
+         'Calidad de restaurante y tus datos siguen siendo tuyos.') + '</strong> ' +
+      tt('No subscription, no benchmark dataset, no ML training on your costs.',
+         'Sin suscripción, sin set de benchmark, sin entrenar IA con tus costos.');
+    strip.appendChild(chip);
+    strip.appendChild(text);
+    strip.hidden = false;
+    strip.dataset.rendered = '1';
   }
 
   if (readBtn) readBtn.addEventListener('click', readPendingInvoice);

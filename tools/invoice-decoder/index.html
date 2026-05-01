@@ -190,6 +190,13 @@
 .id-compare-foot{font-size:13px;color:var(--ink-soft);line-height:1.55;font-style:italic;margin:8px 0 0}
 @media(max-width:540px){.id-compare-table th:first-child,.id-compare-table td.id-compare-axis{width:auto}.id-compare-table th,.id-compare-table td{font-size:12.5px;padding:7px 8px}}
 
+/* W3-7 — differentiator strip pinned above the result panel. Reads chipLabel + headline from MuntinDifferentiators. */
+.id-diff-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:10px 10px 0 0;font-size:13px;line-height:1.4;margin:0 0 -1px}
+.id-diff-strip-chip{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:10px;white-space:nowrap}
+.id-diff-strip-text{flex:1 1 200px;font-size:13px;color:#e0f3ef}
+.id-diff-strip-text strong{color:#fff;font-weight:600}
+@media(max-width:540px){.id-diff-strip{font-size:12px;padding:8px 12px}.id-diff-strip-chip{font-size:10px}}
+
 /* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
 .mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
 @keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
@@ -314,6 +321,7 @@
     <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <div class="id-diff-strip" id="idDiffStrip" hidden></div>
       <div class="id-parsed-summary">
         <span class="id-parsed-count" id="idParsedCount">0 items</span>
         <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
