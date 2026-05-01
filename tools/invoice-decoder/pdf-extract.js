@@ -26,25 +26,32 @@
 (function (root) {
   'use strict';
 
-  var PDFJS_VERSION = '4.5.136';
-  var PDFJS_CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + PDFJS_VERSION + '/build/pdf.min.mjs';
-  var PDFJS_WORKER_CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' + PDFJS_VERSION + '/build/pdf.worker.min.mjs';
-
+  // Wave 6.4 — PDF.js loads from same-origin via the vendor-config
+  // resolver. Native ESM dynamic imports don't yet support SRI, but
+  // we still get same-origin enforcement via CSP + the build-time
+  // SHA-384 verification baked into vendor-pin.mjs. (Once Import
+  // Maps' integrity proposal lands across browsers we'll switch.)
   var __pdfjsLoadPromise = null;
 
   function loadPdfjs() {
     if (root.pdfjsLib) return Promise.resolve(root.pdfjsLib);
     if (__pdfjsLoadPromise) return __pdfjsLoadPromise;
+    if (typeof root.MID_VENDORS_CFG === 'undefined' || !root.MID_VENDORS_CFG.importModule) {
+      return Promise.reject(new Error('vendor-config module missing'));
+    }
     __pdfjsLoadPromise = (async function () {
-      // ESM dynamic import. PDF.js 4.x ships ESM-only.
-      var mod = await import(/* @vite-ignore */ /* webpackIgnore: true */ PDFJS_CDN);
+      var cfg = root.MID_VENDORS_CFG;
+      var mod = await cfg.importModule('pdfjs');
       var pdfjsLib = mod && (mod.default || mod);
       if (!pdfjsLib || !pdfjsLib.getDocument) {
         __pdfjsLoadPromise = null;
         throw new Error('PDF.js loaded but getDocument missing');
       }
-      // Set worker URL — required by PDF.js 4.x. Same CDN origin.
-      try { pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_CDN; } catch (_) {}
+      // Set worker URL via the resolver too; same-origin path.
+      try {
+        var wkr = await cfg.resolve('pdfjsWorker');
+        if (wkr && wkr.url) pdfjsLib.GlobalWorkerOptions.workerSrc = wkr.url;
+      } catch (_) {}
       root.pdfjsLib = pdfjsLib;
       return pdfjsLib;
     })().catch(function (err) {

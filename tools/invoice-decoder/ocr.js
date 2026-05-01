@@ -20,28 +20,27 @@
 (function (root) {
   'use strict';
 
-  var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  // Wave 6.4 — load Tesseract.js from same-origin with SRI when the
+  // build-time vendor-pin step has populated /assets/vendor/. Falls
+  // back to the legacy jsdelivr URL without SRI for transitional
+  // builds where vendor-pin didn't run.
   var __tessLoadPromise = null;
   var __workerCache = null;
 
   function loadTesseract() {
     if (root.Tesseract) return Promise.resolve(root.Tesseract);
     if (__tessLoadPromise) return __tessLoadPromise;
-    __tessLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = TESSERACT_CDN;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.Tesseract) resolve(root.Tesseract);
-        else { __tessLoadPromise = null; reject(new Error('Tesseract loaded but global missing')); }
-      };
-      s.onerror = function () {
-        __tessLoadPromise = null;
-        reject(new Error('Could not load Tesseract.js — check your network'));
-      };
-      document.head.appendChild(s);
+    if (typeof root.MID_VENDORS_CFG === 'undefined' || !root.MID_VENDORS_CFG.loadScript) {
+      __tessLoadPromise = null;
+      return Promise.reject(new Error('vendor-config module missing'));
+    }
+    __tessLoadPromise = root.MID_VENDORS_CFG.loadScript('tesseract').then(function () {
+      if (root.Tesseract) return root.Tesseract;
+      __tessLoadPromise = null;
+      throw new Error('Tesseract loaded but global missing');
+    }).catch(function (err) {
+      __tessLoadPromise = null;
+      throw err;
     });
     return __tessLoadPromise;
   }
@@ -54,11 +53,20 @@
   function getWorker(Tesseract, lang, psm) {
     var key = (lang || 'eng+spa') + ':' + (psm || 6);
     if (__workerCache && __workerCache.key === key) return Promise.resolve(__workerCache.worker);
-    return Tesseract.createWorker(lang || 'eng+spa', 1, {
-      // Tesseract logger fires roughly 4-12 events per page;
-      // forwarded to the caller via opts.logger so the UI can
-      // animate a progress bar.
-    }).then(function (worker) {
+    // Wave 6.4 — point Tesseract's internal asset paths at the
+    // self-hosted vendor directory so the WASM core, worker, and
+    // language data all load from our origin. Falls back to the
+    // library defaults (CDN) when the manifest isn't available.
+    var workerOpts = {};
+    try {
+      if (root.MID_VENDORS_CFG) {
+        var cfg = root.MID_VENDORS_CFG;
+        workerOpts.corePath   = cfg.SELF.tessCorePath;
+        workerOpts.langPath   = cfg.SELF.tessLangPath;
+        workerOpts.workerPath = cfg.SELF.tesseractWorker;
+      }
+    } catch (_) {}
+    return Tesseract.createWorker(lang || 'eng+spa', 1, workerOpts).then(function (worker) {
       // Whitelist invoice glyphs only — improves accuracy by
       // suppressing OCR's wilder character guesses on textured
       // backgrounds. Spanish ñ/accents covered.

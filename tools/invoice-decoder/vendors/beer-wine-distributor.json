@@ -1,0 +1,67 @@
+{
+  "id": "beer-wine-distributor",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Beer / wine distributor",
+    "es": "Distribuidor de cerveza / vino"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "republic\\s+national\\s+distributing",
+        "weight": 0.55
+      },
+      {
+        "pattern": "\\brndc\\b",
+        "weight": 0.3
+      },
+      {
+        "pattern": "southern\\s+glazer",
+        "weight": 0.55
+      },
+      {
+        "pattern": "reyes\\s+beverage",
+        "weight": 0.55
+      },
+      {
+        "pattern": "breakthru\\s+beverage",
+        "weight": 0.55
+      },
+      {
+        "pattern": "empire\\s+merchants",
+        "weight": 0.55
+      },
+      {
+        "pattern": "ben\\s+arnold|wirtz\\s+beverage",
+        "weight": 0.45
+      },
+      {
+        "pattern": "\\balcohol\\s+tax|excise\\s+tax|state\\s+liquor\\s+tax\\b",
+        "weight": 0.15
+      },
+      {
+        "pattern": "case\\s+price|bottle\\s+price|keg\\s+price",
+        "weight": 0.1
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10,
+  "categoryBias": {
+    "beverage": 1.4
+  },
+  "alcoholTax": true,
+  "lineGrammar": {
+    "_doc": "Per-vendor line shape patterns. taxPatterns[] mark a line's kind as 'tax' so it's excluded from cost-of-goods aggregations and routed to a tax GL on accountant export. discountPatterns[] mark 'discount' (negative line totals not from credits).",
+    "taxPatterns": [
+      "\\b(state\\s+liquor\\s+tax|state\\s+excise\\s+tax|federal\\s+excise\\s+tax|alcohol\\s+tax|excise\\s+tax|liquor\\s+tax|sales\\s+tax|tab\\s+tax|abv\\s+tax)\\b",
+      "\\b(twcc|abc|ttb|tabc)\\s*(tax|fee|surcharge)\\b",
+      "\\b\\d+%\\s+(?:state|federal)\\s+(?:liquor|excise|alcohol)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume\\s+discount|case\\s+discount|promo|promotional\\s+rebate|loyalty\\s+rebate|mvp\\s+discount)\\b\\s*[-(]?\\s*\\$?\\d+",
+      "\\bquantity\\s+rebate\\b\\s*[-(]?\\s*\\$?\\d+"
+    ]
+  }
+}

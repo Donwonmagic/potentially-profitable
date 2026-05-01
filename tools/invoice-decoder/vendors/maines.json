@@ -1,0 +1,38 @@
+{
+  "id": "maines",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Maines Paper & Food",
+    "es": "Maines Paper & Food"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bmaines\\b",
+        "weight": 0.55
+      },
+      {
+        "pattern": "maines\\s+paper\\s+(and|&)\\s+food",
+        "weight": 0.3
+      },
+      {
+        "pattern": "conklin|broome\\s+county",
+        "weight": 0.05
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 10,
+  "lineGrammar": {
+    "_doc": "Maines — Northeast broadliner with strong paper/disposables emphasis. Paper goods are taxable in most NE states.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b"
+    ]
+  }
+}

@@ -31,17 +31,20 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<link rel="manifest" href="/tools/invoice-decoder/manifest.webmanifest" />
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <link rel="stylesheet" href="/assets/site.css?v=20260430-cohesion" />
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
+/* === Invoice Decoder tool-scoped styles. Page-prefix .id-*. === */
 .id-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
 .id-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
 .id-walkaway{margin:14px auto 0;max-width:540px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
 .id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
+
+/* Three input chips above the fold. Single-column on phones. */
 .id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
 @media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
 .id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
@@ -52,6 +55,8 @@
 .id-input-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0}
 .id-input-blurb{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
 .id-input-tag{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--cream-2);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
+
+/* Status / progress bar surfaced once an input is chosen. */
 .id-status{margin:18px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
 .id-status[hidden]{display:none}
 .id-status-title{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
@@ -60,6 +65,9 @@
 .id-progress-fill{height:100%;background:var(--teal);width:0;transition:width 220ms ease}
 .id-status.error .id-progress-bar{display:none}
 .id-status.error .id-status-msg{color:var(--rust)}
+
+/* Cleaned-up image preview — proves preprocessing landed before
+   B2 wires OCR. Side-by-side raw + cleaned thumbs. */
 .id-preview-wrap{margin:18px 0 0}
 .id-preview-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:540px){.id-preview-row{grid-template-columns:1fr}}
@@ -68,7 +76,10 @@
 .id-preview-tile img{max-width:100%;max-height:280px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .id-preview-meta{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
 .id-preview-meta strong{color:var(--ink);font-weight:600}
+
 .id-coming{margin:18px 0 0;padding:14px 16px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:8px;font-size:12.5px;color:#7a4408;line-height:1.55}
+/* Parsed-rows panel — Wave B2's read-only proof. B5 will turn this
+   into the editable verification card-stack. */
 .id-parsed{margin:18px 0 0}
 .id-parsed[hidden]{display:none}
 .id-parsed-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin:0 0 12px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px}
@@ -99,11 +110,17 @@
 .id-parsed-conf[data-conf="green"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
 .id-parsed-conf[data-conf="amber"]{background:#FFF1D7;color:#8a5e0c;border:1px solid #ecd6a8}
 .id-parsed-conf[data-conf="red"]{background:#FCE0DA;color:#7a2419;border:1px solid #f0c0b3}
+/* B5-2: inline cell editors. Tap-to-edit replaces the span with
+   a styled input; Enter or blur commits, Escape reverts. */
 .id-parsed-row [data-edit]{cursor:text;border-radius:4px;padding:2px 4px}
 .id-parsed-row [data-edit]:hover{background:rgba(31,78,91,.06)}
 .id-parsed-input{font:inherit;font-size:13.5px;padding:4px 6px;border:1px solid var(--teal);border-radius:4px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box;min-width:60px}
 .id-parsed-input:focus{outline:2px solid color-mix(in srgb,var(--teal) 35%,transparent);outline-offset:1px}
 .id-parsed-cat-select{font:inherit;font-size:11px;padding:2px 6px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--ink)}
+/* B5-4: bulk-action sticky bar. Sits at the bottom of the parsed
+   panel; sticky so the Save CTA follows the scroll on long
+   invoices. The Save button activates in Wave B6 — until then
+   it stays disabled with a "Save lands in next sprint" tooltip. */
 .id-bulkbar{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-top:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:0 -4px 14px rgba(20,22,26,.06);z-index:5}
 .id-bulkbar[hidden]{display:none}
 .id-bulk-confirm{padding:9px 16px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
@@ -111,6 +128,7 @@
 .id-bulk-save{margin-left:auto;padding:11px 20px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-fast)}
 .id-bulk-save:hover{background:var(--teal)}
 .id-bulk-save[disabled]{opacity:.55;cursor:not-allowed}
+/* B6-4: cross-tool handoff panel — three big tappable cards. */
 .id-handoff{margin-top:18px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
 .id-handoff[hidden]{display:none}
 .id-handoff-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
@@ -131,6 +149,8 @@
 .id-read-btn{margin-top:14px;padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
 .id-read-btn:hover{background:var(--teal)}
 .id-read-btn[disabled]{opacity:.55;cursor:wait}
+
+/* Honesty card. */
 .id-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
 .id-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
 .id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
@@ -178,7 +198,7 @@
 .id-diff-strip-text strong{color:#fff;font-weight:600}
 @media(max-width:540px){.id-diff-strip{font-size:12px;padding:8px 12px}.id-diff-strip-chip{font-size:10px}}
 
-/* W4-1 — filter chip bar above the parsed list. */
+/* W4-1 — filter chip bar above the parsed list. Reduces 40-line invoices to the ~8 amber rows that need eyeballing. */
 .id-filter-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:6px}
 .id-filter-chip{font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:background .12s,color .12s,border-color .12s}
 .id-filter-chip:hover{background:#f3efe7;color:var(--ink)}
@@ -265,6 +285,420 @@
 .mid-pf-cta:hover{filter:brightness(1.05)}
 @media(prefers-reduced-motion:reduce){.mid-pf-backdrop,.mid-pf-sheet{animation:none}}
 @media(max-width:540px){.mid-pf-sheet{padding:20px 14px 18px}.mid-pf-card{padding:14px}}
+
+/* ======================================================================
+   Wave 8 — upgraded row layout, per-field dots, drift chips,
+   contract badges, Vendor Pulse, math-fix card, accountant export,
+   margin-impact callout, sort toggle, row history, action buttons.
+   ====================================================================== */
+
+/* Row grid — disciplined columns, leading glyph, fielddots + actions on right. */
+.id-parsed-row{display:grid;grid-template-columns:24px 1fr auto 88px auto auto;align-items:center;column-gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px;transition:background .12s ease,box-shadow .12s ease}
+.id-row-glyph-cell{display:flex;align-items:center;justify-content:center;width:24px}
+.id-row-glyph{width:18px;height:18px;flex:none}
+@media(prefers-reduced-motion:reduce){.id-parsed-row{transition:none}}
+.id-parsed-row[data-anomaly="true"]{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}
+.id-parsed-row[data-kind="credit"]{background:#FBF1E5}
+.id-parsed-row[data-kind="deposit"]{background:#F1F4FB}
+.id-parsed-row[data-kind="surcharge"]{background:#FAF1F4}
+.id-parsed-row[data-kind="backorder"]{background:#F4F4F4;opacity:.85}
+
+.id-row-kind{display:inline-block;margin-left:8px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;background:#F1ECE0;color:#6a4a14;border:1px solid #d9c5a3}
+.id-row-kind[data-kind="credit"]{background:#FBE9E0;color:#7a3019;border-color:#e9bfaa}
+.id-row-kind[data-kind="deposit"]{background:#E0EAF9;color:#1f3a6e;border-color:#b8c8e0}
+.id-row-kind[data-kind="surcharge"]{background:#F9E0F2;color:#5a1f4a;border-color:#dfb8d0}
+
+/* Wave 1.7 — per-field dots */
+.id-row-fielddots{display:inline-flex;gap:5px;align-items:center;justify-content:flex-end}
+.id-field-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink-soft);background:transparent}
+.id-field-dot[data-band="green"]{background:#1f6e3a;border-color:#1f6e3a}
+.id-field-dot[data-band="amber"]{background:#D9A93B;border-color:#9A6A12}
+.id-field-dot[data-band="red"]{background:transparent;border-color:#7a2419;box-shadow:inset 0 0 0 2px #7a2419}
+
+/* Wave 1.1 — drift chip + Wave 1.2 — contract badge */
+.id-row-drift{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:999px;font-variant-numeric:tabular-nums;cursor:pointer}
+.id-row-drift[data-dir="up"]{background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
+.id-row-drift[data-dir="down"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
+.id-row-drift[data-dir="flat"]{background:#F1ECE0;color:#5a4a30;border:1px solid #d9c5a3}
+.id-row-drift--anomaly{outline:2px solid var(--rust,#B25C2A);outline-offset:1px}
+.id-row-contract{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
+.id-row-contract--over{background:#7a3019;color:#fff;border-color:#7a3019}
+
+/* Cross-vendor savings chip — domain-expert layer. Surfaced when
+   the operator could save by switching suppliers for this stem. */
+.id-row-crossvendor{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2;cursor:help;font-variant-numeric:tabular-nums}
+.id-row-crossvendor:hover{background:#1f6e3a;color:#fff;border-color:#1f6e3a}
+
+/* Substitution chip — looks like a sub for what you usually buy. */
+.id-row-sub{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E5EAF6;color:#1f3a6e;border:1px solid #B0BFE0;cursor:help}
+
+/* Volume-weighted invoice drift line in the Vendor Pulse strip. */
+.id-pulse-drift{margin-top:6px;font-size:13px;color:rgba(255,255,255,0.92);font-variant-numeric:tabular-nums}
+.id-pulse-drift[data-dir="up"]{color:#fcd0c0}
+.id-pulse-drift[data-dir="down"]{color:#aee7d4}
+
+/* Wave 1.1 — toggleable mini-history */
+.id-row-history{grid-column:1 / -1;margin-top:8px;padding:10px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.id-row-history-label{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
+.id-row-history-list{margin:6px 0 0;padding:0;list-style:none;font-size:11.5px;color:var(--ink-soft);line-height:1.55;font-variant-numeric:tabular-nums}
+.id-row-history-list li{padding:2px 0}
+.id-row-history-contract{margin-top:8px;padding:6px 11px;font-size:12px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);border-radius:6px;cursor:pointer}
+.id-row-history-contract:hover{background:var(--accent,#1f6f6a);color:#fff}
+
+/* Wave 3.1 — visible Y/N action buttons on each row (single-pointer
+   alternative to swipe; 32×32 hit target meets WCAG 2.5.8 24×24 min). */
+.id-row-actions{display:inline-flex;gap:6px;align-items:center}
+.id-row-act{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.id-row-act-yes:hover{border-color:#1f6e3a;color:#1f6e3a;background:#E6F4EC}
+.id-row-act-no:hover{border-color:#7a2419;color:#7a2419;background:#FCE0DA}
+.id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 2.3 — Vendor Pulse Strip */
+.id-vendor-pulse{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0c2826 0%,#1f4e5b 100%);color:#fff;border-radius:10px}
+.id-vendor-pulse[hidden]{display:none}
+.id-pulse-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;font-size:14px}
+.id-pulse-vendor{font-family:var(--font-display);font-weight:500;font-size:16px}
+.id-pulse-meta{font-size:12.5px;color:rgba(255,255,255,0.78)}
+.id-pulse-pills{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.id-pulse-pill{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,0.16);color:#fff;font-variant-numeric:tabular-nums}
+.id-pulse-pill[data-dir="up"]{background:rgba(252,224,215,0.95);color:#7a2e1f}
+.id-pulse-pill[data-dir="down"]{background:rgba(199,228,212,0.92);color:#0c4a26}
+.id-pulse-empty{font-size:12.5px;color:rgba(255,255,255,0.86);font-style:italic}
+
+/* Wave 1.3 — math-fix card */
+.id-mathfix{margin:0 0 12px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px;color:var(--ink)}
+.id-mathfix[hidden]{display:none}
+.id-mathfix-msg{margin:0 0 8px;font-size:13.5px;line-height:1.55}
+.id-mathfix-actions{margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.id-mathfix-apply,.id-mathfix-dismiss{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line-dark,#7d7d7d);background:#fff;color:var(--ink);cursor:pointer}
+.id-mathfix-apply{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-mathfix-apply:hover{background:var(--accent,#1f6f6a)}
+.id-mathfix-dismiss:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+
+/* Wave 2.4 — sort toggle */
+.id-sort-toggle{font:inherit;font-size:12px;padding:4px 10px;margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.id-sort-toggle:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+.id-sort-toggle[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Wave 2.6 — margin-impact callout inside handoff */
+.id-margin-impact{margin-top:14px;padding:12px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #B25C2A;border-radius:8px;font-size:13px;color:var(--ink);line-height:1.55}
+.id-margin-impact[hidden]{display:none}
+.id-margin-label{margin:0 0 6px;font-size:11.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.id-margin-list{margin:0;padding:0;list-style:none}
+.id-margin-line{padding:3px 0}
+.id-margin-line[data-dir="up"]{color:#7a3019}
+.id-margin-line[data-dir="down"]{color:#1f6e3a}
+
+/* Wave 4.6 — accountant export drawer */
+.id-export-drawer{margin-top:14px;padding:8px 12px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.id-export-drawer summary{cursor:pointer;font-weight:500;font-size:13.5px;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.id-export-drawer summary::-webkit-details-marker{display:none}
+.id-export-drawer summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-export-drawer[open] summary::before{transform:rotate(90deg)}
+.id-export-blurb{margin:8px 0 10px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.id-export-row{display:flex;flex-wrap:wrap;gap:6px}
+.id-export-btn{font:inherit;font-size:12.5px;padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.id-export-btn:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a);background:#f0f9f7}
+.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 3.1 — focus rings + larger tap targets across the board */
+.id-input-chip:focus-within{border-color:var(--accent,#1f6f6a);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#1f6f6a) 22%,transparent)}
+.id-bulk-confirm:focus-visible,.id-bulk-save:focus-visible,.id-handoff-btn:focus-visible,.id-read-btn:focus-visible,.id-filter-chip:focus-visible,.mid-pf-close:focus-visible,.id-drift-dismiss:focus-visible,.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:6px}
+[data-edit]:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:4px}
+[data-edit]{min-height:32px;display:inline-block;padding:4px 6px}
+
+@media(max-width:540px){
+  .id-parsed-row{grid-template-columns:24px 1fr auto auto;column-gap:6px}
+  .id-row-fielddots{display:none}
+  .id-row-act{width:28px;height:28px;font-size:12px}
+  .id-vendor-pulse{padding:11px 13px}
+  .id-pulse-vendor{font-size:14px}
+}
+
+/* Wave 3.5 — honesty card accordion. Each declarative claim opens to
+   reveal the detail behind it. First claim opens by default. */
+.id-honesty-fact{padding:12px 14px;margin:0 0 8px;background:var(--white);border:1px solid var(--line);border-radius:8px}
+.id-honesty-fact summary{cursor:pointer;font-size:14.5px;color:var(--ink);padding:2px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.id-honesty-fact summary::-webkit-details-marker{display:none}
+.id-honesty-fact summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
+.id-honesty-fact[open] summary::before{transform:rotate(90deg)}
+.id-honesty-fact summary strong{font-weight:500;color:var(--ink)}
+.id-honesty-fact p{margin:8px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+
+/* Wave 3.3 — compact keyboard legend pinned in bottom corner */
+.id-kbd-compact{margin:8px 0 0;font-size:11px;color:var(--ink-soft);text-align:right}
+.id-kbd-compact kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:10.5px;padding:1px 4px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink)}
+
+/* ======================================================================
+   Wave 6.10 — desktop split-pane layout.
+   ====================================================================== */
+
+/* Default (mobile + tablet): existing block flow. The wrapper is
+   transparent — no extra padding, no visual chrome. */
+.id-result-area{display:block}
+
+/* Above 1024px, the wrapper becomes a 2-column CSS grid.
+   .id-parsed uses display:contents so its children participate
+   directly in the parent grid; we then assign each child to the
+   left rail or main column via grid-column rules. */
+@media (min-width: 1024px){
+  .id-result-area{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    column-gap:28px;
+    align-items:start;
+    margin-top:18px;
+  }
+  /* `display:contents` flattens .id-parsed so its children are
+     grid items of .id-result-area. Hidden state still hides via
+     [hidden] (display:none has higher specificity). */
+  .id-parsed{display:contents}
+  .id-parsed[hidden]{display:none}
+
+  /* LEFT RAIL — sticky so it follows the page scroll while the
+     parsed list grows. Top offset accounts for the site header. */
+  .id-preview-wrap,
+  .id-filter-bar,
+  .id-kbd-compact,
+  .id-kbd-legend{
+    grid-column:1;
+    align-self:start;
+  }
+  .id-preview-wrap{
+    position:sticky;
+    top:96px;
+    margin-top:0;
+    /* Compact the preview tiles into a single-column rail-friendly
+       stack. Smaller thumb height; meta wraps cleanly. */
+  }
+  .id-preview-wrap .id-preview-row{grid-template-columns:1fr;gap:8px}
+  .id-preview-wrap .id-preview-tile img{max-height:160px}
+  .id-preview-wrap .id-read-btn{width:100%;justify-content:center}
+  .id-filter-bar{
+    position:sticky;
+    top:340px;          /* below the sticky preview block */
+    z-index:2;
+    background:var(--cream,#FAF6EE);
+    margin:0 -8px;
+    padding:10px 8px;
+  }
+  .id-kbd-compact{margin-top:6px;text-align:left}
+  .id-kbd-legend{margin-top:0}
+
+  /* MAIN COLUMN — everything else. */
+  .id-vendor-pulse,
+  .id-diff-strip,
+  .id-mathfix,
+  .id-learn-vendor,
+  .id-parsed-summary,
+  .id-parsed-list,
+  .id-parsed-totals,
+  .id-bulkbar,
+  .id-bulk-undo,
+  .id-handoff{
+    grid-column:2;
+  }
+  /* The bulkbar's sticky-bottom positioning still works inside the
+     grid main column thanks to position:sticky operating relative
+     to the nearest scrolling ancestor. */
+
+  /* The "coming next" banner stays full-width within the grid
+     since it appears in the pre-result phase. (#idStatus is
+     positioned outside .id-result-area entirely.) */
+  .id-coming{
+    grid-column:1 / -1;
+  }
+
+  /* Pre-OCR phase: when only the preview-wrap is visible (parsed
+     panel hidden), the main column is empty. Suppress the grid
+     in that intermediate state to avoid an awkward 300px-wide
+     image floating with empty whitespace. We do this by detecting
+     the ".id-parsed[hidden]" sibling — if the result panel is
+     hidden, fall back to single-column. */
+  .id-result-area:has(.id-parsed[hidden]){
+    grid-template-columns:1fr;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap{
+    position:static;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-row{grid-template-columns:1fr 1fr}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-tile img{max-height:280px}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-read-btn{width:auto}
+
+  /* Wider container above 1100px so the split has room to breathe. */
+}
+@media (min-width: 1100px){
+  .block .container{max-width:1100px !important}
+  .id-hero,
+  .id-honesty,
+  .id-result-area .id-status{max-width:760px;margin-left:auto;margin-right:auto}
+}
+
+/* Tablet (720–1023) — single column with a slightly relaxed max
+   width so the parsed list isn't cramped. */
+@media (min-width: 720px) and (max-width: 1023px){
+  .id-result-area{margin-top:14px}
+}
+
+/* Wave 3.1 — visually-hidden utility for SR-only headings */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Wave 5 — first-run sample strip */
+.id-firstrun{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-firstrun[hidden]{display:none}
+.id-firstrun-msg{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-firstrun-row{display:flex;flex-wrap:wrap;gap:8px}
+.id-firstrun-btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.id-firstrun-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-firstrun-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 4.3 — Auto-learn vendor prompt. Sits above the parsed list
+   when the operator has run 3 invoices from the same unrecognized
+   letterhead. Friendly name input + save/dismiss. */
+.id-learn-vendor{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-learn-vendor[hidden]{display:none}
+.id-learn-msg{margin:0 0 8px;font-size:14px;color:var(--ink);line-height:1.55}
+.id-learn-msg--saved{color:var(--accent,#1f6f6a);font-weight:500}
+.id-learn-sample{margin:0 0 10px;padding:6px 10px;background:#f3efe7;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.id-learn-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.id-learn-input{flex:1 1 220px;font:inherit;font-size:13.5px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box}
+.id-learn-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
+.id-learn-save{font:inherit;font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;font-weight:500}
+.id-learn-save:hover{background:var(--accent,#1f6f6a);border-color:var(--accent,#1f6f6a)}
+.id-learn-dismiss{font:inherit;font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer}
+.id-learn-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
+
+/* Wave 6.8 — PWA update + install prompts. Slim banners that sit
+   between the input chips and the result panel; never sticky, never
+   block scrolling. */
+.id-update,.id-install{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
+.id-install{background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border-color:var(--line);border-left-color:var(--accent,#1f6f6a)}
+.id-update[hidden],.id-install[hidden]{display:none}
+.id-update-msg,.id-install-msg{margin:0;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-update-msg strong,.id-install-msg strong{color:var(--ink);font-weight:600}
+.id-update-btn,.id-install-btn,.id-update-dismiss,.id-install-dismiss{font:inherit;font-size:13px;padding:5px 12px;margin-left:6px;border-radius:6px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer}
+.id-update-btn,.id-install-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-update-btn:hover,.id-install-btn:hover{background:var(--accent,#1f6f6a)}
+.id-update-dismiss,.id-install-dismiss{padding:3px 9px;font-weight:600}
+.id-update-dismiss:hover,.id-install-dismiss:hover{border-color:var(--ink);color:var(--ink)}
+
+/* Wave 5 — abandonment resume banner */
+.id-resume{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
+.id-resume[hidden]{display:none}
+.id-resume-msg{margin:0;font-size:13px;color:var(--ink);line-height:1.5}
+.id-resume-btn,.id-resume-dismiss{font:inherit;font-size:13px;padding:4px 10px;border-radius:4px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer;margin-left:6px}
+.id-resume-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-resume-btn:hover{background:var(--accent,#1f6f6a)}
+
+/* Wave 2.4 — bulk-count badge + wide undo banner */
+.id-bulk-count{display:inline-block;margin-left:6px;padding:1px 7px;font-size:11px;font-weight:600;border-radius:999px;background:rgba(31,111,106,.18);color:var(--accent,#1f6f6a);min-width:20px;text-align:center}
+.id-bulk-confirm[disabled]{opacity:.55;cursor:not-allowed}
+.id-bulk-undo{position:sticky;bottom:0;display:flex;align-items:center;gap:12px;padding:11px 14px;margin-top:0;background:var(--ink,#14161A);color:var(--cream,#FAF6EE);border-radius:0 0 10px 10px;box-shadow:0 -4px 14px rgba(20,22,26,.18);z-index:6;overflow:hidden}
+.id-bulk-undo[hidden]{display:none}
+.id-bulk-undo-msg{flex:1 1 auto;font-size:13.5px}
+.id-bulk-undo-btn{font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid var(--accent-on-ink,#7be0d4);background:transparent;color:var(--accent-on-ink,#7be0d4);cursor:pointer}
+.id-bulk-undo-btn:hover{background:var(--accent-on-ink,#7be0d4);color:var(--ink,#14161A)}
+.id-bulk-undo-bar{position:absolute;left:0;bottom:0;width:100%;height:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.id-bulk-undo-fill{display:block;height:100%;background:var(--accent-on-ink,#7be0d4)}
+
+/* Wave 3.4 — skeleton loading + edit-commit color rise + save underline */
+.id-parsed-skel{padding:10px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:24px 1fr auto 88px;column-gap:12px;align-items:center}
+.id-parsed-skel-bar{height:12px;background:linear-gradient(90deg,#f3efe7 0%,#fdf9f1 50%,#f3efe7 100%);background-size:200% 100%;border-radius:6px;animation:id-shimmer 1.6s infinite linear}
+.id-parsed-skel-bar--sm{height:10px;width:60%}
+.id-parsed-skel-bar--md{height:12px;width:100%}
+.id-parsed-skel-bar--xs{height:10px;width:40%}
+@keyframes id-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.id-parsed-skel-bar{animation:none;background:#f3efe7}}
+.id-parsed-row.is-confirmed-rise{animation:id-conf-rise .48s ease}
+@keyframes id-conf-rise{0%{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}50%{box-shadow:inset 3px 0 0 #c89a3c}100%{box-shadow:inset 3px 0 0 var(--status-good,#1f6e3a)}}
+.id-save-underline{display:inline-block;height:2px;width:0;background:var(--accent,#1f6f6a);transition:width .48s ease;vertical-align:middle;margin-left:8px}
+.id-save-underline.show{width:42px}
+
+/* Wave 5.2 — phase ladder + tip carousel inside id-status */
+.id-phase-ladder{margin:8px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.id-phase-ladder li{padding:1px 0;display:flex;align-items:center;gap:6px}
+.id-phase-ladder li::before{content:'○';color:var(--ink-soft);font-size:11px}
+.id-phase-ladder li[data-state="active"]{color:var(--ink);font-weight:500}
+.id-phase-ladder li[data-state="active"]::before{content:'●';color:var(--accent,#1f6f6a)}
+.id-phase-ladder li[data-state="done"]::before{content:'✓';color:var(--status-good,#1f6e3a)}
+.id-phase-eta{margin-top:4px;font-size:11.5px;color:var(--ink-soft);font-style:italic}
+.id-tip-carousel{margin-top:8px;padding:8px 12px;background:var(--white);border:1px dashed var(--line);border-radius:6px;font-size:12px;color:var(--ink-soft);min-height:1.5em;line-height:1.55}
+.id-tip-carousel strong{color:var(--ink);font-weight:600}
+
+/* Wave 4.5 — auto-applied trust chip on learned rows */
+.id-row-learned{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.04em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2}
+.id-row-learned[data-source="bilingual"]{background:#F0E5FA;color:#4a1f6a;border-color:#C9B0E5}
+.id-row-learned[data-source="stem"]{background:#F4ECE0;color:#5A4A30;border-color:#D9C5A3}
+
+/* Wave 5.3 — error-recovery panel */
+.id-error-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.id-error-actions button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.id-error-actions button:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
+.id-raw-ocr{margin-top:10px;padding:8px 10px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;display:none}
+.id-raw-ocr.show{display:block}
+
+/* Wave 5.5 — returning-visitor banner */
+.id-returning{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,var(--cream-2) 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-returning[hidden]{display:none}
+.id-returning-msg{margin:0;font-size:14px;color:var(--ink);line-height:1.55}
+.id-returning-msg strong{color:var(--ink);font-weight:600}
+.id-returning-stat{display:inline-block;margin-right:8px;padding:1px 8px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:999px;background:var(--accent,#1f6f6a);color:#fff;text-transform:uppercase}
+
+/* Wave 5.4 — passphrase generator chip */
+.midpass-generate{margin-top:6px;padding:5px 10px;font-size:12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.midpass-generate:hover{background:var(--accent,#1f6f6a);color:#fff}
+
+/* Wave 3.3 — Cmd-K command palette */
+.id-cmdk-backdrop{position:fixed;inset:0;background:rgba(20,22,26,.45);display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 40px;z-index:1300}
+.id-cmdk-backdrop[hidden]{display:none}
+.id-cmdk-sheet{width:100%;max-width:520px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.28);padding:14px 16px}
+.id-cmdk-input{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);box-sizing:border-box}
+.id-cmdk-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
+.id-cmdk-list{margin:10px 0 0;padding:0;list-style:none;max-height:50vh;overflow-y:auto}
+.id-cmdk-item{padding:9px 12px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.id-cmdk-item:hover,.id-cmdk-item[aria-selected="true"]{background:var(--cream-2)}
+.id-cmdk-item kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;padding:1px 5px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink-soft)}
+.id-cmdk-empty{padding:14px 12px;color:var(--ink-soft);font-size:13px;font-style:italic}
+
+/* Wave 6.6 — Privacy Self-Check panel */
+.id-selfcheck{margin-top:14px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
+.id-selfcheck-btn{padding:9px 16px;font:inherit;font-size:13px;font-weight:600;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
+.id-selfcheck-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
+.id-selfcheck-out{margin-top:10px;padding:10px 12px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;line-height:1.55;white-space:pre-wrap;display:none}
+.id-selfcheck-out.show{display:block}
+
+/* Wave 6.11 — dark-mode Stage 1. Honors prefers-color-scheme so
+   kitchens with dim lighting + auto-dark phones get a readable
+   surface without a manual toggle. Only the tool-scoped surfaces
+   are themed here; the sitewide design system handles the rest. */
+@media (prefers-color-scheme: dark){
+  .id-vendor-pulse{background:linear-gradient(135deg,#0c1817 0%,#1f3a37 100%)}
+  .id-honesty-fact{background:#1B1E23;border-color:#2C3036}
+  .id-honesty-fact summary{color:#F0EBE0}
+  .id-honesty-fact p{color:#C8C2B6}
+  .id-mathfix{background:#2A2418;border-color:#5A4A30;color:#F0EBE0}
+  .id-mathfix-msg{color:#F0EBE0}
+  .id-mathfix-apply{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
+  .id-mathfix-dismiss{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-export-drawer{background:#1B1E23;border-color:#2C3036}
+  .id-export-btn{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-export-btn:hover{background:#2C3036;color:#F0EBE0}
+  .id-firstrun{background:linear-gradient(135deg,#1B1E23 0%,#2C3036 100%);border-color:#2C3036}
+  .id-firstrun-msg{color:#F0EBE0}
+  .id-firstrun-btn{background:#1B1E23;color:#7be0d4;border-color:#7be0d4}
+  .id-firstrun-btn:hover{background:#7be0d4;color:#0c1817}
+  .id-row-history{background:#1B1E23;border-color:#2C3036}
+  .id-row-history-label{color:#C8C2B6}
+  .id-row-history-list{color:#C8C2B6}
+  .id-resume{background:#2A2418;border-color:#5A4A30}
+  .id-resume-msg{color:#F0EBE0}
+  .id-resume-btn{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
+  .id-row-act{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
+  .id-row-act-yes:hover{background:#1f3a37;color:#7be0d4;border-color:#7be0d4}
+  .id-row-act-no:hover{background:#3a1f1f;color:#f5b8a8;border-color:#7a2419}
+}
 </style>
 
 <script type="application/ld+json">
@@ -465,11 +899,27 @@
       </label>
     </div>
 
+    <!-- Wave 5 — abandonment-resume banner. ES mirror. -->
+    <div class="id-resume" id="idResume" hidden role="status" aria-live="polite">
+      <p class="id-resume-msg">Tenías una factura en proceso ayer. <button type="button" class="id-resume-btn">Continuar</button> · <button type="button" class="id-resume-dismiss">Cerrar</button></p>
+    </div>
+
+    <!-- Wave 6.8 — PWA update / install affordances. ES copy. -->
+    <div class="id-update" id="idUpdate" hidden role="status" aria-live="polite">
+      <p class="id-update-msg"><strong>Hay una actualización.</strong> Una nueva versión está lista. <button type="button" class="id-update-btn" id="idUpdateBtn">Recargar</button> <button type="button" class="id-update-dismiss" id="idUpdateDismiss" aria-label="Cerrar">×</button></p>
+    </div>
+    <div class="id-install" id="idInstall" hidden>
+      <p class="id-install-msg">Agregar al inicio — funciona sin internet una vez instalado. <button type="button" class="id-install-btn" id="idInstallBtn">Instalar</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Cerrar">×</button></p>
+    </div>
+
     <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
       <p class="id-status-title" id="idStatusTitle">Leyendo la foto…</p>
       <p class="id-status-msg" id="idStatusMsg">Limpiando la imagen para que el siguiente paso (lectura línea por línea) tenga la mejor base.</p>
       <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
     </div>
+
+    <!-- Wave 6.10 — desktop split-pane wrapper (ES mirror). -->
+    <div class="id-result-area">
 
     <div class="id-preview-wrap" id="idPreview" hidden>
       <div class="id-preview-row">
@@ -492,7 +942,17 @@
     <p class="id-coming" id="idComing" hidden><strong>Siguiente paso:</strong> toca "Leer esta factura" para extraer cada línea. Mostraremos categorías, totales, y te dejaremos guardar el resultado en B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <!-- Wave 2.3 — Vendor Pulse Strip. ES mirror. -->
+      <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Pulso del proveedor"></aside>
+
       <div class="id-diff-strip" id="idDiffStrip" hidden></div>
+
+      <!-- Wave 1.3 — Math reconciliation candidate-fix card. ES mirror. -->
+      <div class="id-mathfix" id="idMathFix" hidden role="region" aria-label="Reconciliación de totales"></div>
+
+      <!-- Wave 4.3 — Auto-learn vendor prompt. ES mirror. -->
+      <div class="id-learn-vendor" id="idLearnVendor" hidden role="region" aria-label="Guardar este formato de proveedor"></div>
+
       <div class="id-parsed-summary">
         <span class="id-parsed-count" id="idParsedCount">0 partidas</span>
         <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
@@ -525,6 +985,7 @@
       </div>
       <div class="id-handoff" id="idHandoff" hidden></div>
     </div>
+    </div><!-- /.id-result-area (Wave 6.10) -->
 
     <div class="id-honesty">
       <h3>Qué es, y qué no es.</h3>
@@ -596,23 +1057,89 @@
 <script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
+<script src="/tools/invoice-decoder/vendor-config.js?v=20260501-w8-4"></script>
 <script src="/tools/invoice-decoder/preprocess.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/ocr.js?v=20260501-w8-1"></script>
+<script src="/tools/invoice-decoder/capture-coach.js?v=20260501-w8-6"></script>
+<script src="/tools/invoice-decoder/ocr.js?v=20260501-w8-4"></script>
 <script src="/tools/invoice-decoder/parse.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/learnings.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/categorize.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/vendors.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/encrypt.js?v=20260501-b6"></script>
-<script src="/tools/invoice-decoder/passphrase-modal.js?v=20260501-w3-5"></script>
-<script src="/tools/invoice-decoder/pdf-extract.js?v=20260501-w2-1"></script>
-<script src="/tools/invoice-decoder/csv-extract.js?v=20260501-w2-2"></script>
+<script src="/tools/invoice-decoder/pack-pricing.js?v=20260501-w8-8"></script>
+<script src="/tools/invoice-decoder/auto-learn.js?v=20260501-w8-3"></script>
+<script src="/tools/invoice-decoder/vendors.js?v=20260501-w8-3"></script>
+<script src="/tools/invoice-decoder/kdf.js?v=20260501-w8-5"></script>
+<script src="/tools/invoice-decoder/encrypt.js?v=20260501-w8-5"></script>
+<script src="/tools/invoice-decoder/recovery.js?v=20260501-w8-5"></script>
+<script src="/tools/invoice-decoder/pairing.js?v=20260501-w8-7"></script>
+<script src="/tools/invoice-decoder/passphrase-modal.js?v=20260501-w8-5"></script>
+<script src="/tools/invoice-decoder/pdf-extract.js?v=20260501-w8-4"></script>
+<script src="/tools/invoice-decoder/csv-extract.js?v=20260501-w8-4"></script>
 <script src="/tools/invoice-decoder/proof-flyout.js?v=20260501-w3-1"></script>
 <script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
-<script src="/tools/invoice-decoder/sku-history.js?v=20260501-w8-1"></script>
+<script src="/tools/invoice-decoder/sku-history.js?v=20260501-w8-9"></script>
+<script src="/tools/invoice-decoder/substitution.js?v=20260501-w8-9"></script>
 <script src="/tools/invoice-decoder/margin-impact.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/accountant-export.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/telemetry.js?v=20260501-w8-1"></script>
 <script src="/tools/invoice-decoder/onboarding.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w8-1"></script>
+<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w8-9"></script>
+
+<!-- Wave 6.8 — PWA registration, identical to the EN page. -->
+<script>
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  var swUrl = '/tools/invoice-decoder/sw.js';
+  navigator.serviceWorker.register(swUrl, { scope: '/tools/invoice-decoder/' })
+    .then(function (registration) {
+      window.__MID_SW_REG = registration;
+      registration.addEventListener('updatefound', function () {
+        var newWorker = registration.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', function () {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            var host = document.getElementById('idUpdate');
+            var btn  = document.getElementById('idUpdateBtn');
+            var dis  = document.getElementById('idUpdateDismiss');
+            if (host && btn) {
+              host.hidden = false;
+              btn.addEventListener('click', function () { newWorker.postMessage({ type: 'SKIP_WAITING' }); });
+              if (dis) dis.addEventListener('click', function () { host.hidden = true; });
+            }
+          }
+        });
+      });
+    })
+    .catch(function () { /* SW registration failed — degrade silently. */ });
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var host = document.getElementById('idInstall');
+    var btn  = document.getElementById('idInstallBtn');
+    var dis  = document.getElementById('idInstallDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { host.hidden = true; deferredPrompt = null; });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; deferredPrompt = null; });
+  });
+  window.addEventListener('appinstalled', function () {
+    var host = document.getElementById('idInstall');
+    if (host) host.hidden = true;
+    if (window.plausible) { try { window.plausible('Invoice Decoder Installed'); } catch (_) {} }
+  });
+})();
+</script>
 </body>
 </html>

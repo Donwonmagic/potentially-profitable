@@ -259,6 +259,20 @@
         if (fileInput) fileInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (_) {}
     });
+    // Wave 6.3 second half — pair another device. Visible when the
+    // controller passed in a callbacks.openPairing handler (which it
+    // does when a v=2 envelope + the operator's passphrase are
+    // available in scope). Pre-flight check on each render so a
+    // future page that doesn't pass openPairing doesn't surface
+    // the button.
+    if (typeof callbacks.openPairing === 'function') {
+      var pairBtn = el('button', { type: 'button', class: 'mid-pf-cta mid-pf-cta--quiet' },
+                       [tt('Pair another device', 'Vincular otro dispositivo')]);
+      pairBtn.addEventListener('click', function () {
+        try { callbacks.openPairing(); } catch (_) {}
+      });
+      actions.appendChild(pairBtn);
+    }
     var doneBtn = el('button', { type: 'button', class: 'mid-pf-cta mid-pf-cta--quiet' },
                       [tt('Close this proof', 'Cerrar esta prueba')]);
     doneBtn.addEventListener('click', callbacks.close);

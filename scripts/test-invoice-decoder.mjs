@@ -31,6 +31,7 @@
  */
 
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -533,5 +534,1721 @@ console.log(`\nAccountant export (Wave 4.6):`);
 
 console.log(`\nWave 8 fixtures: ${kindPass} kind / ${packPass} pack / ${mathPass} math / ${brandPass} brand / ${abbrPass} abbr / ${tagPass} tag / ${vendorPass} vendor / ${skuPass} sku / ${exportPass} export passed.`);
 
-const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail;
+// =====================================================================
+// Wave 2.2 — perspective rectification math tests.
+//
+// Tests run against the pure-function exports of preprocess.js. They
+// don't need a real <canvas>; ImageData is just {data, width, height}
+// where data is a Uint8ClampedArray of RGBA bytes.
+// =====================================================================
+
+let homPass = 0, homFail = 0;
+console.log(`\nHomography math (Wave 2.2):`);
+{
+  // Identity case: src = dst → H should map any point to itself.
+  const id = PREP.solveHomography(
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}],
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}]
+  );
+  const idOk = id && Math.abs(id[0] - 1) < 1e-6 && Math.abs(id[4] - 1) < 1e-6 && Math.abs(id[2]) < 1e-6 && Math.abs(id[5]) < 1e-6;
+  console.log(`  ${idOk ? '✓' : '✗'} identity homography returns near-identity matrix`);
+  if (idOk) homPass++; else homFail++;
+
+  // Perspective case: a known forward H should map source corners
+  // to destination corners exactly.
+  const src = [{x:10,y:20},{x:200,y:30},{x:210,y:180},{x:5,y:170}];
+  const dst = [{x:0,y:0},{x:200,y:0},{x:200,y:150},{x:0,y:150}];
+  const H = PREP.solveHomography(src, dst);
+  let mapOk = !!H;
+  if (H) {
+    for (let k = 0; k < 4 && mapOk; k++) {
+      const p = PREP.applyHomography(H, src[k].x, src[k].y);
+      if (!p || Math.abs(p.x - dst[k].x) > 0.01 || Math.abs(p.y - dst[k].y) > 0.01) mapOk = false;
+    }
+  }
+  console.log(`  ${mapOk ? '✓' : '✗'} solveHomography: each src corner maps to its dst corner within 0.01 px`);
+  if (mapOk) homPass++; else homFail++;
+
+  // Inverse: H · H⁻¹ should map any point back to itself.
+  const Hinv = PREP.invertHomography(H);
+  let invOk = !!Hinv;
+  if (Hinv) {
+    for (let k = 0; k < 4 && invOk; k++) {
+      const p = PREP.applyHomography(H, src[k].x, src[k].y);
+      const back = PREP.applyHomography(Hinv, p.x, p.y);
+      if (!back || Math.abs(back.x - src[k].x) > 0.01 || Math.abs(back.y - src[k].y) > 0.01) invOk = false;
+    }
+  }
+  console.log(`  ${invOk ? '✓' : '✗'} invertHomography: round-trip H · H⁻¹ returns the source corner within 0.01 px`);
+  if (invOk) homPass++; else homFail++;
+
+  // Singular system (3 collinear src points) should return null.
+  const sing = PREP.solveHomography(
+    [{x:0,y:0},{x:50,y:0},{x:100,y:0},{x:0,y:50}],   // 3 points on y=0
+    [{x:0,y:0},{x:50,y:0},{x:100,y:0},{x:0,y:50}]
+  );
+  // Note: identical src and dst is technically not singular here;
+  // build a genuinely singular system.
+  const sing2 = PREP.solveHomography(
+    [{x:0,y:0},{x:0,y:0},{x:100,y:0},{x:0,y:100}],   // duplicate corner
+    [{x:0,y:0},{x:100,y:0},{x:100,y:100},{x:0,y:100}]
+  );
+  const singOk = sing2 === null;
+  console.log(`  ${singOk ? '✓' : '✗'} singular system returns null gracefully`);
+  if (singOk) homPass++; else homFail++;
+}
+
+let warpPass = 0, warpFail = 0;
+console.log(`\nWarp + bilinear sample (Wave 2.2):`);
+{
+  // Build a 20×20 RGBA buffer with a vertical color gradient
+  // (red ramp 0→255). Identity warp should reproduce it.
+  const W = 20, H = 20;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      data[i] = Math.round(x / (W - 1) * 255);     // R ramps with x
+      data[i + 1] = Math.round(y / (H - 1) * 255); // G ramps with y
+      data[i + 2] = 128;
+      data[i + 3] = 255;
+    }
+  }
+  const srcImg = { data, width: W, height: H };
+  // Identity homography
+  const idH = PREP.solveHomography(
+    [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}],
+    [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}]
+  );
+  const out = PREP.warpPerspective(srcImg, idH, W, H);
+  let okIdentity = !!out;
+  if (out) {
+    // Compare every pixel — identity should be exact (or off by ≤1 due to bilinear edge clamping).
+    let maxDiff = 0;
+    for (let y = 1; y < H - 1; y++) {
+      for (let x = 1; x < W - 1; x++) {
+        const i = (y * W + x) * 4;
+        for (let ch = 0; ch < 3; ch++) {
+          const d = Math.abs(out.data[i + ch] - data[i + ch]);
+          if (d > maxDiff) maxDiff = d;
+        }
+      }
+    }
+    okIdentity = maxDiff <= 1;
+  }
+  console.log(`  ${okIdentity ? '✓' : '✗'} identity warp reproduces source within ±1 channel value`);
+  if (okIdentity) warpPass++; else warpFail++;
+
+  // Bilinear sample at exact integer points returns the pixel value.
+  const r0 = PREP.bilinearSample(data, W, H, 5, 5);
+  const ix = (5 * W + 5) * 4;
+  const okExact = r0[0] === data[ix] && r0[1] === data[ix + 1] && r0[2] === data[ix + 2];
+  console.log(`  ${okExact ? '✓' : '✗'} bilinearSample at integer (5,5) matches source pixel exactly`);
+  if (okExact) warpPass++; else warpFail++;
+
+  // Bilinear sample at midpoint between two pixels is ~average.
+  const mid = PREP.bilinearSample(data, W, H, 5.5, 5);
+  // Expected R ≈ avg of (5/19)*255 and (6/19)*255
+  const expectedR = ((5 / 19) * 255 + (6 / 19) * 255) / 2;
+  const okMid = Math.abs(mid[0] - expectedR) < 1;
+  console.log(`  ${okMid ? '✓' : '✗'} bilinearSample at half-pixel returns interpolated value (got ${mid[0]}, expected ~${expectedR.toFixed(1)})`);
+  if (okMid) warpPass++; else warpFail++;
+
+  // Out-of-bounds returns white.
+  const oob = PREP.bilinearSample(data, W, H, -5, -5);
+  const okOob = oob[0] === 255 && oob[1] === 255 && oob[2] === 255;
+  console.log(`  ${okOob ? '✓' : '✗'} bilinearSample out-of-bounds returns white background`);
+  if (okOob) warpPass++; else warpFail++;
+
+  // Round-trip: forward-warp source through a known perspective,
+  // then inverse-warp the result. Final output should match source.
+  const skewSrc = [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}];
+  const skewDst = [{x:2,y:1},{x:W-1,y:3},{x:W-3,y:H-1},{x:1,y:H-2}];
+  const fwd = PREP.solveHomography(skewSrc, skewDst);
+  const fwdImg = PREP.warpPerspective(srcImg, fwd, W, H);
+  const inv = PREP.solveHomography(skewDst, skewSrc);
+  const back = PREP.warpPerspective(fwdImg, inv, W, H);
+  let roundTripErr = 0;
+  let roundTripCount = 0;
+  // Skip a 4px border; bilinear sampling can't fully recover those.
+  for (let y = 4; y < H - 4; y++) {
+    for (let x = 4; x < W - 4; x++) {
+      const i = (y * W + x) * 4;
+      for (let ch = 0; ch < 3; ch++) {
+        roundTripErr += Math.abs(back.data[i + ch] - data[i + ch]);
+        roundTripCount++;
+      }
+    }
+  }
+  const meanErr = roundTripErr / roundTripCount;
+  const okRoundTrip = meanErr < 12;
+  console.log(`  ${okRoundTrip ? '✓' : '✗'} forward+inverse warp round-trip mean channel error = ${meanErr.toFixed(2)} (need <12)`);
+  if (okRoundTrip) warpPass++; else warpFail++;
+}
+
+let quadPass = 0, quadFail = 0;
+console.log(`\nQuad picker (Wave 2.2):`);
+{
+  // Build synthetic Hough peaks for a simple rectangle of corners
+  // at (10,20)-(190,20)-(190,180)-(10,180). The 4 lines:
+  //   top:    y = 20    →  Hough form: 0*x + 1*y = 20  →  theta=90, rho=20
+  //   bottom: y = 180   →  theta=90, rho=180
+  //   left:   x = 10    →  theta=0,  rho=10
+  //   right:  x = 190   →  theta=0,  rho=190
+  const peaks = [
+    { theta: 0,  rho: 10,  votes: 200 },
+    { theta: 0,  rho: 190, votes: 200 },
+    { theta: 90, rho: 20,  votes: 180 },
+    { theta: 90, rho: 180, votes: 180 }
+  ];
+  const quad = PREP.pickQuad(peaks, 200, 200);
+  const ok = !!quad;
+  let cornersOk = false;
+  if (quad) {
+    const expected = [
+      { x: 10, y: 20 },
+      { x: 190, y: 20 },
+      { x: 190, y: 180 },
+      { x: 10, y: 180 }
+    ];
+    cornersOk = quad.corners.every((c, i) =>
+      Math.abs(c.x - expected[i].x) < 0.5 && Math.abs(c.y - expected[i].y) < 0.5
+    );
+  }
+  console.log(`  ${ok && cornersOk ? '✓' : '✗'} pickQuad returns the expected corner set for a simple rectangle`);
+  if (ok && cornersOk) quadPass++; else quadFail++;
+
+  // Reject when only 3 lines are present.
+  const peaks3 = peaks.slice(0, 3);
+  const quad3 = PREP.pickQuad(peaks3, 200, 200);
+  const okReject = quad3 === null;
+  console.log(`  ${okReject ? '✓' : '✗'} pickQuad rejects when fewer than 4 lines available`);
+  if (okReject) quadPass++; else quadFail++;
+
+  // Reject when area coverage <25%.
+  const tinyPeaks = [
+    { theta: 0,  rho: 90,  votes: 200 },
+    { theta: 0,  rho: 110, votes: 200 },
+    { theta: 90, rho: 90,  votes: 200 },
+    { theta: 90, rho: 110, votes: 200 }
+  ];
+  const tinyQuad = PREP.pickQuad(tinyPeaks, 200, 200);
+  const okTinyReject = tinyQuad === null;
+  console.log(`  ${okTinyReject ? '✓' : '✗'} pickQuad rejects quads covering <25% of frame`);
+  if (okTinyReject) quadPass++; else quadFail++;
+
+  // Reject opposite-side angle parity violation (a parallelogram
+  // tilted hard one way).
+  const skewedPeaks = [
+    { theta: 0,   rho: 10,  votes: 200 },
+    { theta: 0,   rho: 190, votes: 200 },
+    { theta: 95,  rho: 20,  votes: 180 },  // 5° from horizontal
+    { theta: 75,  rho: 180, votes: 180 }   // 15° from horizontal — 20° apart
+  ];
+  const skQuad = PREP.pickQuad(skewedPeaks, 200, 200);
+  const okSkewReject = skQuad === null;
+  console.log(`  ${okSkewReject ? '✓' : '✗'} pickQuad rejects when opposite-side angle parity exceeds 12°`);
+  if (okSkewReject) quadPass++; else quadFail++;
+}
+
+let sobelPass = 0, sobelFail = 0;
+console.log(`\nSobel edge magnitude (Wave 2.2):`);
+{
+  // Build a 10×10 image with a sharp vertical line at x=5.
+  const W = 10, H = 10;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      const v = x < 5 ? 0 : 255;
+      data[i] = data[i + 1] = data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  }
+  const edges = PREP.sobelMagnitude({ data, width: W, height: H });
+  // The vertical line should produce strong edge response at x=5.
+  let maxEdge = 0, maxX = -1;
+  for (let y = 1; y < H - 1; y++) {
+    for (let x = 1; x < W - 1; x++) {
+      const v = edges[y * W + x];
+      if (v > maxEdge) { maxEdge = v; maxX = x; }
+    }
+  }
+  const ok = maxEdge >= 200 && (maxX === 4 || maxX === 5);
+  console.log(`  ${ok ? '✓' : '✗'} Sobel: vertical line at x=5 produces strong edge at x=${maxX} (mag=${maxEdge})`);
+  if (ok) sobelPass++; else sobelFail++;
+}
+
+console.log(`\nWave 2.2 fixtures: ${homPass} homography / ${warpPass} warp / ${quadPass} quad / ${sobelPass} sobel passed.`);
+
+// End-to-end pipeline test: build a synthetic edge buffer with a
+// rectangular border, run Hough → pickQuad, verify the quad matches
+// the synthetic rectangle within a few pixels.
+let pipePass = 0, pipeFail = 0;
+console.log(`\nEnd-to-end Hough → pickQuad pipeline (Wave 2.2):`);
+{
+  const W = 100, H = 80;
+  const edges = new Uint8ClampedArray(W * H);
+  // Rectangle edges: top y=10, bottom y=70, left x=15, right x=85
+  function paintLineH(y, intensity) { for (let x = 0; x < W; x++) edges[y * W + x] = intensity; }
+  function paintLineV(x, intensity) { for (let y = 0; y < H; y++) edges[y * W + x] = intensity; }
+  paintLineH(10, 200);
+  paintLineH(70, 200);
+  paintLineV(15, 200);
+  paintLineV(85, 200);
+  const peaks = PREP.houghLines(edges, W, H, { threshold: 100, topK: 12 });
+  const ok = peaks.length >= 4;
+  console.log(`  ${ok ? '✓' : '✗'} houghLines extracts ≥4 peaks from a rectangular edge buffer (got ${peaks.length})`);
+  if (ok) pipePass++; else pipeFail++;
+
+  const quad = PREP.pickQuad(peaks, W, H);
+  const okQuad = !!quad;
+  let cornersClose = false;
+  if (quad) {
+    const exp = [{x:15,y:10},{x:85,y:10},{x:85,y:70},{x:15,y:70}];
+    cornersClose = quad.corners.every((c, i) =>
+      Math.abs(c.x - exp[i].x) < 2 && Math.abs(c.y - exp[i].y) < 2
+    );
+  }
+  console.log(`  ${okQuad && cornersClose ? '✓' : '✗'} pipeline maps 4 strongest Hough peaks to the source rectangle within ±2 px`);
+  if (okQuad && cornersClose) pipePass++; else pipeFail++;
+}
+
+console.log(`\nWave 2.2 totals: ${homPass + warpPass + quadPass + sobelPass + pipePass} of ${homPass + warpPass + quadPass + sobelPass + pipePass + homFail + warpFail + quadFail + sobelFail + pipeFail} math + pipeline tests passed.`);
+
+// =====================================================================
+// Wave 4.3 — auto-learn (vendor template induction) tests.
+// =====================================================================
+
+let alPass = 0, alFail = 0;
+console.log(`\nAuto-learn — letterhead hashing + induction (Wave 4.3):`);
+{
+  // Stub MuntinContext so the module's storage helpers work.
+  const stubStore = { learnedVendorObservations: [], learnedVendors: [] };
+  global.window = global.window || {};
+  global.window.MuntinContext = {
+    read: () => stubStore,
+    merge: (patch) => { Object.keys(patch).forEach(k => { stubStore[k] = patch[k]; }); return true; }
+  };
+  const AL = await import(path.join(repoRoot, 'tools/invoice-decoder/auto-learn.js')).then(m => m.default || m);
+
+  // Hash stability: same letterhead text → same hash.
+  const lh1 = AL.normalize('LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX 75201\nCustomer Number: 4421');
+  const lh2 = AL.normalize('LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX 75201\nCustomer Number: 9988');  // different invoice number
+  const h1 = AL.fnv1a(lh1);
+  const h2 = AL.fnv1a(lh2);
+  const okStable = h1 === h2;
+  console.log(`  ${okStable ? '✓' : '✗'} fnv1a hash is stable across invoice-number variation (${h1} === ${h2})`);
+  if (okStable) alPass++; else alFail++;
+
+  // Bigram Jaccard: identical text → 1.0; different text → low.
+  const j1 = AL.bigramJaccard(lh1, lh1);
+  const okIdentJ = Math.abs(j1 - 1.0) < 0.001;
+  console.log(`  ${okIdentJ ? '✓' : '✗'} bigramJaccard(self, self) === 1.0 (got ${j1.toFixed(3)})`);
+  if (okIdentJ) alPass++; else alFail++;
+
+  const j2 = AL.bigramJaccard('the quick brown fox', 'a totally different sentence');
+  const okDiffJ = j2 < 0.4;
+  console.log(`  ${okDiffJ ? '✓' : '✗'} bigramJaccard distinguishes unrelated text (got ${j2.toFixed(3)} < 0.4)`);
+  if (okDiffJ) alPass++; else alFail++;
+
+  // Bigram Jaccard tolerates light OCR noise.
+  const noisy = AL.normalize('LA MICH0ACANA MEAT MAREKT\nWHOLESALE F00DS\nDalls TX 75201');
+  const jNoisy = AL.bigramJaccard(lh1, noisy);
+  const okNoiseTol = jNoisy >= 0.5;
+  console.log(`  ${okNoiseTol ? '✓' : '✗'} bigramJaccard tolerates light OCR noise (got ${jNoisy.toFixed(3)} ≥ 0.5)`);
+  if (okNoiseTol) alPass++; else alFail++;
+
+  // induceDetectTokens picks the long distinctive words.
+  const tokens = AL.induceDetectTokens(lh1);
+  const okTokens = tokens.length >= 3 && tokens.includes('michoacana');
+  console.log(`  ${okTokens ? '✓' : '✗'} induceDetectTokens picks distinctive words (got ${JSON.stringify(tokens)})`);
+  if (okTokens) alPass++; else alFail++;
+
+  // Header-skip induction: lines appearing in 2 of 3 samples become headers.
+  const samples = [
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '0123 RIBEYE 5LB $48.00'] },
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '4567 CARNITAS 10LB $58.00'] },
+    { topLines: ['LA MICHOACANA MEAT MARKET', 'Dallas TX 75201', 'Item Description Qty Unit', '8910 CHORIZO 5LB $32.00'] }
+  ];
+  const headers = AL.induceHeaderSkip(samples);
+  const okHeaders = headers.length >= 2 && headers.some(h => /michoacana/i.test(h));
+  console.log(`  ${okHeaders ? '✓' : '✗'} induceHeaderSkip extracts ≥2 recurring header lines (got ${headers.length})`);
+  if (okHeaders) alPass++; else alFail++;
+
+  // Total-regex induction: needs the same total phrasing in ≥2 samples.
+  const totalSamples = [
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $168.50'] },
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $284.00'] },
+    { topLines: ['HEADER LINE', 'GRAND TOTAL: $112.75'] }
+  ];
+  const totalRe = AL.induceTotalRegex(totalSamples);
+  const okTotalRe = totalRe && totalRe.indexOf('grand') !== -1;
+  console.log(`  ${okTotalRe ? '✓' : '✗'} induceTotalRegex extracts the recurring total phrasing (got ${totalRe})`);
+  if (okTotalRe) alPass++; else alFail++;
+
+  // Full flow: 3 observations → shouldPromptToLearn returns the bucket;
+  // build template; save; detectLearnedVendor finds it.
+  AL.clearAll();
+  const sampleText = 'LA MICHOACANA MEAT MARKET\nWHOLESALE FOODS\nDallas TX\nItem Description Qty Unit Price\n0123 RIBEYE 5LB $48.00';
+  AL.recordObservation(sampleText, [], null);
+  AL.recordObservation(sampleText.replace('0123', '4567').replace('48.00', '58.00'), [], null);
+  AL.recordObservation(sampleText.replace('0123', '8910').replace('48.00', '32.00'), [], null);
+  const ready = AL.shouldPromptToLearn(sampleText);
+  const okReady = ready && ready.samples && ready.samples.length === 3;
+  console.log(`  ${okReady ? '✓' : '✗'} shouldPromptToLearn returns bucket after 3 observations`);
+  if (okReady) alPass++; else alFail++;
+
+  if (ready) {
+    const tmpl = AL.buildLearnedTemplate(ready.letterhead, ready.samples, 'La Michoacana');
+    const okBuild = tmpl && tmpl.label === 'La Michoacana' && tmpl.detectTokens.length >= 3;
+    console.log(`  ${okBuild ? '✓' : '✗'} buildLearnedTemplate constructs a complete template`);
+    if (okBuild) alPass++; else alFail++;
+
+    const okSave = AL.saveLearnedTemplate(tmpl);
+    console.log(`  ${okSave ? '✓' : '✗'} saveLearnedTemplate persists the template`);
+    if (okSave) alPass++; else alFail++;
+
+    const detected = AL.detectLearnedVendor(sampleText);
+    const okDetect = detected && detected.id === tmpl.id && detected.score >= 0.55;
+    console.log(`  ${okDetect ? '✓' : '✗'} detectLearnedVendor matches the saved template (score ${detected ? detected.score.toFixed(3) : 'null'})`);
+    if (okDetect) alPass++; else alFail++;
+
+    // After save, observations for this letterhead are cleared.
+    const clearedReady = AL.shouldPromptToLearn(sampleText);
+    const okClear = clearedReady === null;
+    console.log(`  ${okClear ? '✓' : '✗'} shouldPromptToLearn returns null once template is saved`);
+    if (okClear) alPass++; else alFail++;
+
+    // Recognized template should not re-trigger the prompt for a new
+    // invoice from the same vendor.
+    AL.recordObservation(sampleText.replace('0123', '9999'), [], null);
+    const stillCleared = AL.shouldPromptToLearn(sampleText.replace('0123', '9999'));
+    const okStillCleared = stillCleared === null;
+    console.log(`  ${okStillCleared ? '✓' : '✗'} learned letterhead does not re-prompt on future invoices`);
+    if (okStillCleared) alPass++; else alFail++;
+  } else {
+    alFail += 4;
+  }
+
+  // Cleanup global stub.
+  delete global.window;
+}
+
+console.log(`\nWave 4.3 fixtures: ${alPass} passed.`);
+
+// =====================================================================
+// Wave 6.4 — vendor-config + vendor-pin tests.
+// =====================================================================
+
+let vcPass = 0, vcFail = 0;
+console.log(`\nVendor pin manifest + URL config (Wave 6.4):`);
+{
+  // Verify the integrity manifest parses + has the expected entries.
+  const integrityPath = path.join(repoRoot, 'dist/assets/vendor/_integrity.json');
+  let manifest = null;
+  try {
+    manifest = JSON.parse(await fs.promises.readFile(integrityPath, 'utf8'));
+  } catch (_) { /* might not be present in CI without build */ }
+  if (manifest && manifest.files) {
+    const expectedKeys = [
+      '/assets/vendor/tesseract.js@5.1.1/tesseract.min.js',
+      '/assets/vendor/tesseract.js@5.1.1/worker.min.js',
+      '/assets/vendor/pdfjs-dist@4.5.136/pdf.min.mjs',
+      '/assets/vendor/pdfjs-dist@4.5.136/pdf.worker.min.mjs',
+      '/assets/vendor/xlsx@0.20.3/xlsx.mjs'
+    ];
+    for (const k of expectedKeys) {
+      const hit = manifest.files[k];
+      const ok = hit && /^sha384-/.test(hit.sha384) && hit.bytes > 0;
+      console.log(`  ${ok ? '✓' : '✗'} ${k.padEnd(60)} ${hit ? hit.sha384.slice(0, 24) + '...' : 'MISSING'}`);
+      if (ok) vcPass++; else vcFail++;
+    }
+  } else {
+    console.log('  · manifest not present in dist/ (run `node scripts/vendor-pin.mjs --allow-offline`); skipping these checks');
+  }
+
+  // Static analysis: vendor-config exposes the right URLs.
+  const cfg = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/vendor-config.js'), 'utf8');
+  const okSelfTesseract = cfg.indexOf("/assets/vendor/tesseract.js@") !== -1;
+  const okSelfPdfjs     = cfg.indexOf("/assets/vendor/pdfjs-dist@")    !== -1;
+  const okSelfXlsx      = cfg.indexOf("/assets/vendor/xlsx@")          !== -1;
+  console.log(`  ${okSelfTesseract ? '✓' : '✗'} vendor-config.js declares tesseract self-hosted path`);
+  console.log(`  ${okSelfPdfjs     ? '✓' : '✗'} vendor-config.js declares pdfjs self-hosted path`);
+  console.log(`  ${okSelfXlsx      ? '✓' : '✗'} vendor-config.js declares xlsx self-hosted path`);
+  if (okSelfTesseract) vcPass++; else vcFail++;
+  if (okSelfPdfjs)     vcPass++; else vcFail++;
+  if (okSelfXlsx)      vcPass++; else vcFail++;
+
+  // Static analysis: ocr / pdf / csv no longer reference jsdelivr.
+  const ocr  = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/ocr.js'), 'utf8');
+  const pdfx = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/pdf-extract.js'), 'utf8');
+  const csvx = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/csv-extract.js'), 'utf8');
+  // The vendor-config module legitimately keeps LEGACY entries with jsdelivr;
+  // the consumer modules should not embed those URLs themselves anymore.
+  const okOcrClean  = !/cdn\.jsdelivr\.net/.test(ocr);
+  const okPdfClean  = !/cdn\.jsdelivr\.net/.test(pdfx);
+  const okCsvClean  = !/cdn\.jsdelivr\.net/.test(csvx);
+  console.log(`  ${okOcrClean ? '✓' : '✗'} ocr.js no longer hard-codes jsdelivr URLs`);
+  console.log(`  ${okPdfClean ? '✓' : '✗'} pdf-extract.js no longer hard-codes jsdelivr URLs`);
+  console.log(`  ${okCsvClean ? '✓' : '✗'} csv-extract.js no longer hard-codes jsdelivr URLs`);
+  if (okOcrClean) vcPass++; else vcFail++;
+  if (okPdfClean) vcPass++; else vcFail++;
+  if (okCsvClean) vcPass++; else vcFail++;
+
+  // Static analysis: CSP no longer allows jsdelivr in script-src.
+  const headers = await fs.promises.readFile(path.join(repoRoot, '_headers'), 'utf8');
+  const cspMatch = headers.match(/Content-Security-Policy:\s*([^\n]+)/);
+  if (cspMatch) {
+    const csp = cspMatch[1];
+    const scriptSrc = csp.match(/script-src([^;]+);/);
+    const okCspClean = scriptSrc && !/cdn\.jsdelivr\.net/.test(scriptSrc[1]);
+    console.log(`  ${okCspClean ? '✓' : '✗'} CSP script-src no longer allows cdn.jsdelivr.net`);
+    if (okCspClean) vcPass++; else vcFail++;
+  }
+}
+
+console.log(`\nWave 6.4 fixtures: ${vcPass} passed.`);
+
+// =====================================================================
+// Wave 6.1 + 6.3 — KDF dispatcher + dual-wrap envelope + recovery.
+//
+// Tests run in Node with WebCrypto polyfill (Node 18+ has it built-in
+// at globalThis.crypto.subtle). Argon2id requires the WASM module
+// which isn't available in pure Node — we exercise the PBKDF2 path
+// with low iterations so the round-trips finish quickly.
+// =====================================================================
+
+let kdfPass = 0, kdfFail = 0;
+console.log(`\nKDF + envelope v=2 dual-wrap (Waves 6.1, 6.3):`);
+{
+  // Stub the browser globals the modules expect.
+  global.window = global.window || {};
+  global.window.crypto = global.crypto;
+  global.window.MuntinContext = global.window.MuntinContext || {
+    read: () => ({}),
+    merge: () => true
+  };
+
+  const KDF     = await import(path.join(repoRoot, 'tools/invoice-decoder/kdf.js'))     .then(m => m.default || m);
+  global.window.MID_KDF = KDF;
+  const ENC     = await import(path.join(repoRoot, 'tools/invoice-decoder/encrypt.js')) .then(m => m.default || m);
+  global.window.MID_ENCRYPT = ENC;
+
+  // PBKDF2 is identical given the same salt + iterations.
+  const salt = new Uint8Array([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+  const k1 = await KDF.deriveKeyPbkdf2('hunter2-supersafe', salt, 1000);
+  const k2 = await KDF.deriveKeyPbkdf2('hunter2-supersafe', salt, 1000);
+  const okDeterministic = k1.length === 32 && k1.every((b, i) => b === k2[i]);
+  console.log(`  ${okDeterministic ? '✓' : '✗'} deriveKeyPbkdf2 is deterministic (32-byte output, identical for same input)`);
+  if (okDeterministic) kdfPass++; else kdfFail++;
+
+  // Different salt → different key.
+  const salt2 = new Uint8Array([16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]);
+  const k3 = await KDF.deriveKeyPbkdf2('hunter2-supersafe', salt2, 1000);
+  const different = !k1.every((b, i) => b === k3[i]);
+  console.log(`  ${different ? '✓' : '✗'} deriveKeyPbkdf2 with different salt yields different key`);
+  if (different) kdfPass++; else kdfFail++;
+
+  // Round-trip a v=2 envelope using PBKDF2 (Argon2id requires WASM).
+  const payload = { rows: [{ name: 'Romaine Hearts', qty: 2, lineTotal: 48 }], totalParsed: 48 };
+  const passphrase = 'correct-horse-battery-staple-99';
+  const aad = 'invoice:test:001';
+  const lowParams = { kdf: 'pbkdf2', iter: 5000 };  // fast for tests
+  const env = await ENC.encryptPayload(payload, passphrase, aad, { kdfParams: lowParams });
+  const okShape = env.v === 2 && Array.isArray(env.wraps) && env.wraps.length === 1 && env.wraps[0].kind === 'passphrase';
+  console.log(`  ${okShape ? '✓' : '✗'} encryptPayload emits v=2 envelope with one passphrase wrap`);
+  if (okShape) kdfPass++; else kdfFail++;
+
+  // Decrypt with correct passphrase.
+  const got = await ENC.decryptPayload(env, passphrase, aad);
+  const okRoundtrip = got && got.totalParsed === 48 && got.rows[0].name === 'Romaine Hearts';
+  console.log(`  ${okRoundtrip ? '✓' : '✗'} decryptPayload recovers the exact payload with the right passphrase`);
+  if (okRoundtrip) kdfPass++; else kdfFail++;
+
+  // Wrong passphrase rejects.
+  let okReject = false;
+  try {
+    await ENC.decryptPayload(env, 'wrong-pass', aad);
+  } catch (_) { okReject = true; }
+  console.log(`  ${okReject ? '✓' : '✗'} decryptPayload rejects on wrong passphrase`);
+  if (okReject) kdfPass++; else kdfFail++;
+
+  // Wrong AAD rejects (tamper protection).
+  let okAadReject = false;
+  try {
+    await ENC.decryptPayload(env, passphrase, 'invoice:test:DIFFERENT');
+  } catch (_) { okAadReject = true; }
+  console.log(`  ${okAadReject ? '✓' : '✗'} decryptPayload rejects on tampered AAD`);
+  if (okAadReject) kdfPass++; else kdfFail++;
+
+  // Dual-wrap: encrypt with passphrase + recovery, decrypt with EITHER.
+  const recoveryPhrase = 'apple banana cherry date echo fig grape honey ink jam kiwi lemon mango note olive pear quince rose silk tea ugli vine water yew';
+  const dual = await ENC.encryptPayload(payload, passphrase, aad, {
+    kdfParams: lowParams,
+    recoveryPhrase: recoveryPhrase
+  });
+  const okDualShape = dual.v === 2 && dual.wraps.length === 2 &&
+                      dual.wraps[0].kind === 'passphrase' &&
+                      dual.wraps[1].kind === 'recovery';
+  console.log(`  ${okDualShape ? '✓' : '✗'} encryptPayload with recoveryPhrase emits two wraps`);
+  if (okDualShape) kdfPass++; else kdfFail++;
+
+  const viaPass = await ENC.decryptPayload(dual, passphrase, aad);
+  const okViaPass = viaPass && viaPass.totalParsed === 48;
+  console.log(`  ${okViaPass ? '✓' : '✗'} dual-wrap envelope decrypts with the passphrase`);
+  if (okViaPass) kdfPass++; else kdfFail++;
+
+  const viaRecovery = await ENC.decryptPayload(dual, recoveryPhrase, aad);
+  const okViaRecovery = viaRecovery && viaRecovery.totalParsed === 48;
+  console.log(`  ${okViaRecovery ? '✓' : '✗'} dual-wrap envelope decrypts with the recovery phrase`);
+  if (okViaRecovery) kdfPass++; else kdfFail++;
+
+  // addWrap on a single-wrap envelope yields a dual-wrap envelope
+  // that still decrypts with the original passphrase AND with the
+  // newly added recovery phrase.
+  const upgraded = await ENC.addWrap(env, passphrase, recoveryPhrase, 'recovery', lowParams);
+  const okUpgraded = upgraded.wraps.length === 2 &&
+                     upgraded.wraps[1].kind === 'recovery';
+  console.log(`  ${okUpgraded ? '✓' : '✗'} addWrap appends a recovery wrap to a single-wrap envelope`);
+  if (okUpgraded) kdfPass++; else kdfFail++;
+
+  const upgradedViaRec = await ENC.decryptPayload(upgraded, recoveryPhrase, aad);
+  const okUpgradedRec = upgradedViaRec && upgradedViaRec.totalParsed === 48;
+  console.log(`  ${okUpgradedRec ? '✓' : '✗'} upgraded envelope decrypts with the new recovery phrase`);
+  if (okUpgradedRec) kdfPass++; else kdfFail++;
+
+  // Backward compat: v=1 envelopes still decrypt.
+  // Build a v=1 manually using the legacy path. The encrypt module
+  // doesn't expose a v=1 builder anymore, so we hand-construct the
+  // shape and let decryptV1 do its job.
+  const enc = new TextEncoder();
+  const v1Salt = global.crypto.getRandomValues(new Uint8Array(16));
+  const v1Iv   = global.crypto.getRandomValues(new Uint8Array(12));
+  const baseKey = await global.crypto.subtle.importKey('raw', enc.encode(passphrase), 'PBKDF2', false, ['deriveKey']);
+  const v1Key = await global.crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: v1Salt, iterations: 250000, hash: 'SHA-256' },
+    baseKey,
+    { name: 'AES-GCM', length: 256 },
+    false,
+    ['encrypt', 'decrypt']
+  );
+  const v1Ct = await global.crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv: v1Iv, additionalData: enc.encode(aad) },
+    v1Key,
+    enc.encode(JSON.stringify(payload))
+  );
+  function b64(buf) {
+    const bytes = new Uint8Array(buf);
+    let s = '';
+    for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return Buffer.from(s, 'binary').toString('base64');
+  }
+  const v1Env = {
+    v: 1,
+    salt: b64(v1Salt),
+    iv:   b64(v1Iv),
+    ct:   b64(v1Ct),
+    aad:  aad
+  };
+  const v1Result = await ENC.decryptPayload(v1Env, passphrase, aad);
+  const okV1 = v1Result && v1Result.totalParsed === 48;
+  console.log(`  ${okV1 ? '✓' : '✗'} legacy v=1 envelope still decrypts (backward compat)`);
+  if (okV1) kdfPass++; else kdfFail++;
+
+  delete global.window.MID_KDF;
+  delete global.window.MID_ENCRYPT;
+  delete global.window.MuntinContext;
+  // Wave 4.1 — release the global.window stub so the next test
+  // block (vendor template runtime) sees `typeof window ===
+  // 'undefined'` and falls through to its file-system loader.
+  delete global.window;
+}
+
+let recPass = 0, recFail = 0;
+console.log(`\nRecovery phrase generation + validation (Wave 6.3):`);
+{
+  // Recovery module reads the BIP39 wordlist via fetch — that's
+  // browser-only. We test the pure functions (normalize,
+  // looksLikePhrase) plus the wordlist file's shape directly.
+  const wordlistPath = path.join(repoRoot, 'tools/invoice-decoder/data/bip39-en.txt');
+  const words = (await fs.promises.readFile(wordlistPath, 'utf8')).split(/\r?\n/).filter(Boolean);
+  const okWordCount = words.length === 2048;
+  console.log(`  ${okWordCount ? '✓' : '✗'} BIP39 wordlist contains 2048 words (got ${words.length})`);
+  if (okWordCount) recPass++; else recFail++;
+
+  // Sample words match the canonical list.
+  const okSamples = words[0] === 'abandon' && words[2047] === 'zoo' && words[1] === 'ability';
+  console.log(`  ${okSamples ? '✓' : '✗'} BIP39 wordlist matches canonical first/last entries (abandon, zoo)`);
+  if (okSamples) recPass++; else recFail++;
+
+  // No duplicates.
+  const seen = new Set(words);
+  const okUnique = seen.size === words.length;
+  console.log(`  ${okUnique ? '✓' : '✗'} BIP39 wordlist has no duplicates`);
+  if (okUnique) recPass++; else recFail++;
+
+  // All lowercase.
+  const okLower = words.every(w => w === w.toLowerCase());
+  console.log(`  ${okLower ? '✓' : '✗'} BIP39 wordlist is all-lowercase`);
+  if (okLower) recPass++; else recFail++;
+}
+
+console.log(`\nWave 6.1+6.3 fixtures: ${kdfPass} kdf+envelope / ${recPass} recovery passed.`);
+
+// =====================================================================
+// Wave 4.1 — JSON-per-vendor schema + template runtime tests.
+// =====================================================================
+
+let v41Pass = 0, v41Fail = 0;
+console.log(`\nVendor JSON schema + template runtime (Wave 4.1):`);
+{
+  const vendorsDir = path.join(repoRoot, 'tools/invoice-decoder/vendors');
+  const indexPath = path.join(vendorsDir, '_index.json');
+  const indexRaw = await fs.promises.readFile(indexPath, 'utf8');
+  const index = JSON.parse(indexRaw);
+
+  // Schema sanity: every entry has id, label, detect.tokens.
+  let schemaOk = Array.isArray(index.vendors) && index.vendors.length >= 22;
+  for (const v of (index.vendors || [])) {
+    if (!v.id || !v.label || !v.detect || !Array.isArray(v.detect.tokens)) {
+      schemaOk = false;
+    }
+    for (const t of (v.detect.tokens || [])) {
+      if (!t.pattern || typeof t.weight !== 'number') schemaOk = false;
+    }
+  }
+  console.log(`  ${schemaOk ? '✓' : '✗'} _index.json contains ≥22 vendors with well-formed detect.tokens`);
+  if (schemaOk) v41Pass++; else v41Fail++;
+
+  // Each per-vendor JSON file exists, parses, and matches its index entry.
+  let perFileOk = true;
+  let missing = [];
+  for (const v of (index.vendors || [])) {
+    const p = path.join(vendorsDir, v.id + '.json');
+    if (!fs.existsSync(p)) { perFileOk = false; missing.push(v.id); continue; }
+    try {
+      const j = JSON.parse(await fs.promises.readFile(p, 'utf8'));
+      if (j.id !== v.id) perFileOk = false;
+      if (!j.label || typeof j.label.en !== 'string') perFileOk = false;
+      if (!Array.isArray(j.detect.tokens) || j.detect.tokens.length === 0) perFileOk = false;
+    } catch (_) { perFileOk = false; }
+  }
+  console.log(`  ${perFileOk ? '✓' : '✗'} every index entry has a corresponding <id>.json file (missing: ${missing.join(',') || 'none'})`);
+  if (perFileOk) v41Pass++; else v41Fail++;
+
+  // Detection token regexes all compile.
+  let regexOk = true;
+  for (const v of index.vendors) {
+    for (const t of v.detect.tokens) {
+      try { new RegExp(t.pattern, 'i'); } catch (_) { regexOk = false; }
+    }
+  }
+  console.log(`  ${regexOk ? '✓' : '✗'} every detection token regex compiles cleanly`);
+  if (regexOk) v41Pass++; else v41Fail++;
+
+  // Template runtime — token-based scoring.
+  const RT = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors/template-runtime.js')).then(m => m.default || m);
+  RT._resetForTests();
+
+  const detected = await RT.detectVendor('SYSCO HOUSTON\nCustomer Number: 1842371\nSUPC Pack Description');
+  const okSysco = detected && detected.id === 'sysco' && detected.score >= 0.5;
+  console.log(`  ${okSysco ? '✓' : '✗'} runtime.detectVendor identifies Sysco from canonical letterhead text`);
+  if (okSysco) v41Pass++; else v41Fail++;
+
+  // The lazy template fetch returns rich data (headerSkip etc.).
+  const okHeaderSkip = detected && detected.template && Array.isArray(detected.template.headerSkip) && detected.template.headerSkip.length >= 3;
+  console.log(`  ${okHeaderSkip ? '✓' : '✗'} matched template carries headerSkip patterns from the per-vendor JSON`);
+  if (okHeaderSkip) v41Pass++; else v41Fail++;
+
+  // No-match path returns null cleanly.
+  const noMatch = await RT.detectVendor('GIBBERISH HEADER\nNot a real distributor invoice');
+  const okNoMatch = noMatch === null;
+  console.log(`  ${okNoMatch ? '✓' : '✗'} runtime returns null for unrecognized letterhead`);
+  if (okNoMatch) v41Pass++; else v41Fail++;
+
+  // Vendor facade compatibility — the legacy fields are populated.
+  if (detected) {
+    const facade = detected.vendor;
+    const okFacade = facade && facade.id === 'sysco' &&
+                     facade.label_en === 'Sysco' &&
+                     typeof facade.confidenceBoost === 'number' &&
+                     Array.isArray(facade.headerLines);
+    console.log(`  ${okFacade ? '✓' : '✗'} runtime builds a legacy-compatible vendor facade for matched template`);
+    if (okFacade) v41Pass++; else v41Fail++;
+  }
+
+  // Inline STUBS array in vendors.js mirrors _index.json count.
+  const VENDORS_REFACTORED = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors.js')).then(m => m.default || m);
+  const stubMatchesIndex = VENDORS_REFACTORED.STUBS && VENDORS_REFACTORED.STUBS.length === index.vendors.length;
+  console.log(`  ${stubMatchesIndex ? '✓' : '✗'} vendors.js inline STUBS count matches _index.json (${VENDORS_REFACTORED.STUBS && VENDORS_REFACTORED.STUBS.length} vs ${index.vendors.length})`);
+  if (stubMatchesIndex) v41Pass++; else v41Fail++;
+
+  // Inline detection still works synchronously (back-compat).
+  const sync = VENDORS_REFACTORED.detectVendor('SYSCO HOUSTON\nCustomer Number: 1842371');
+  const okSync = sync && sync.id === 'sysco';
+  console.log(`  ${okSync ? '✓' : '✗'} legacy synchronous detectVendor() still works after refactor`);
+  if (okSync) v41Pass++; else v41Fail++;
+}
+
+console.log(`\nWave 4.1 fixtures: ${v41Pass} passed.`);
+
+// =====================================================================
+// Wave 6.10 — desktop split-pane layout. Static checks against the
+// HTML + CSS to confirm the wrapper is in place and the grid rules
+// activate at 1024px.
+// =====================================================================
+
+let splitPass = 0, splitFail = 0;
+console.log(`\nDesktop split-pane (Wave 6.10):`);
+{
+  const enHtml = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/index.html'), 'utf8');
+  const esHtml = await fs.promises.readFile(path.join(repoRoot, 'es/tools/invoice-decoder/index.html'), 'utf8');
+
+  // Wrapper present in both pages.
+  const okEnWrap = /<div class="id-result-area">[\s\S]+\/\.id-result-area/.test(enHtml);
+  const okEsWrap = /<div class="id-result-area">[\s\S]+\/\.id-result-area/.test(esHtml);
+  console.log(`  ${okEnWrap ? '✓' : '✗'} EN page wraps the result region in .id-result-area`);
+  console.log(`  ${okEsWrap ? '✓' : '✗'} ES page wraps the result region in .id-result-area`);
+  if (okEnWrap) splitPass++; else splitFail++;
+  if (okEsWrap) splitPass++; else splitFail++;
+
+  // Grid CSS at 1024px present.
+  const cssGridEn = /@media \(min-width:\s*1024px\)\{[^@]*\.id-result-area\s*\{\s*display:\s*grid/.test(enHtml.replace(/\s+/g, ' '));
+  const cssGridEs = /@media \(min-width:\s*1024px\)\{[^@]*\.id-result-area\s*\{\s*display:\s*grid/.test(esHtml.replace(/\s+/g, ' '));
+  console.log(`  ${cssGridEn ? '✓' : '✗'} EN page activates 2-column grid above 1024px`);
+  console.log(`  ${cssGridEs ? '✓' : '✗'} ES page activates 2-column grid above 1024px`);
+  if (cssGridEn) splitPass++; else splitFail++;
+  if (cssGridEs) splitPass++; else splitFail++;
+
+  // display:contents on .id-parsed so children participate in grid.
+  const okContents = /\.id-parsed\{display:contents\}/.test(enHtml.replace(/\s+/g, ''));
+  console.log(`  ${okContents ? '✓' : '✗'} EN page applies display:contents to .id-parsed inside the breakpoint`);
+  if (okContents) splitPass++; else splitFail++;
+
+  // Sticky preview rail.
+  const okSticky = /\.id-preview-wrap\{position:sticky/.test(enHtml.replace(/\s+/g, ''));
+  console.log(`  ${okSticky ? '✓' : '✗'} EN page makes .id-preview-wrap sticky in the rail`);
+  if (okSticky) splitPass++; else splitFail++;
+
+  // The :has() guard for hidden parsed panel — fallback to single column pre-OCR.
+  const okHas = /\.id-result-area:has\(\.id-parsed\[hidden\]\)/.test(enHtml);
+  console.log(`  ${okHas ? '✓' : '✗'} EN page falls back to single-column when .id-parsed is hidden (pre-OCR)`);
+  if (okHas) splitPass++; else splitFail++;
+
+  // Wider container at 1100px.
+  const okWide = /@media \(min-width:\s*1100px\)\{[^@]*max-width:\s*1100px/.test(enHtml.replace(/\s+/g, ' '));
+  console.log(`  ${okWide ? '✓' : '✗'} EN page widens the container at 1100px+`);
+  if (okWide) splitPass++; else splitFail++;
+}
+
+console.log(`\nWave 6.10 fixtures: ${splitPass} passed.`);
+
+// =====================================================================
+// Wave 2.1 — live capture coach. Tests the pure-function pieces that
+// run in the browser: state-machine debouncing, glare scoring, and
+// laplacian-variance blur scoring. The video / getUserMedia / overlay
+// rendering are exercised manually in a real browser; out of scope here.
+// =====================================================================
+
+let coachPass = 0, coachFail = 0;
+console.log(`\nLive capture coach state machine + metrics (Wave 2.1):`);
+{
+  const COACH = await import(path.join(repoRoot, 'tools/invoice-decoder/capture-coach.js')).then(m => m.default || m);
+
+  // State machine — sustained-signal debouncing.
+  const evaluators = COACH._makeEvaluators();
+  let state = COACH._makeCoachState();
+  // Frame 1: all good (no rule fires) → candidate is allGood.
+  let id = COACH._tickCoach(state, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1000);
+  // After exactly 0ms, candidate just set; activeId still null → tick returns null
+  // We set the timestamp to 1000; threshold is 400ms; activeId not yet flipped.
+  console.log(`  ${id === null ? '✓' : '✗'} no rule firing within sustain window leaves activeId unset (got ${id})`);
+  if (id === null) coachPass++; else coachFail++;
+
+  // Frame 2: 500ms later, still all good → activeId becomes allGood.
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1500);
+  console.log(`  ${id === 'allGood' ? '✓' : '✗'} sustained no-rule for ≥400ms transitions to allGood (got ${id})`);
+  if (id === 'allGood') coachPass++; else coachFail++;
+
+  // Frame 3: glare appears, but only briefly → state should NOT flip yet.
+  state = COACH._makeCoachState();
+  state.activeId = 'allGood';
+  state.candidateId = 'allGood';
+  state.candidateAt = 1000;
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 1100);
+  // Glare just started 100ms ago; sustain is 400ms → activeId still allGood.
+  console.log(`  ${id === 'allGood' ? '✓' : '✗'} glare flicker shorter than sustain window keeps activeId stable (got ${id})`);
+  if (id === 'allGood') coachPass++; else coachFail++;
+
+  // Frame 4: glare sustained → flip to glare.
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 1500);
+  console.log(`  ${id === 'glare' ? '✓' : '✗'} glare sustained ≥400ms transitions to glare (got ${id})`);
+  if (id === 'glare') coachPass++; else coachFail++;
+
+  // Glare > Blur > Fill-frame priority order. When multiple rules
+  // fire at once, glare wins.
+  state = COACH._makeCoachState();
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 30, quadArea: 0.2 }, 1000);
+  id = COACH._tickCoach(state, evaluators, { glareScore: 0.5, blur: 30, quadArea: 0.2 }, 1500);
+  console.log(`  ${id === 'glare' ? '✓' : '✗'} priority order glare > blur > fillFrame (got ${id})`);
+  if (id === 'glare') coachPass++; else coachFail++;
+
+  // Glare scoring on a synthetic image: a 40×40 image with a 10×10
+  // blob of pure-white pixels in the center should score > 0.25 in
+  // ONE of the 4×4 grid cells.
+  const W = 40, H = 40;
+  const data = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4;
+      const inBlob = x >= 15 && x < 25 && y >= 15 && y < 25;
+      const v = inBlob ? 255 : 50;
+      data[i] = data[i + 1] = data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  }
+  const score = COACH._computeGlareScore({ data, width: W, height: H });
+  console.log(`  ${score >= 0.25 ? '✓' : '✗'} computeGlareScore detects a focused white blob (got ${score.toFixed(3)} ≥ 0.25)`);
+  if (score >= 0.25) coachPass++; else coachFail++;
+
+  // Glare scoring on a uniformly mid-gray image: low score.
+  const dataGray = new Uint8ClampedArray(W * H * 4);
+  for (let i = 0; i < dataGray.length; i += 4) { dataGray[i] = dataGray[i + 1] = dataGray[i + 2] = 120; dataGray[i + 3] = 255; }
+  const grayScore = COACH._computeGlareScore({ data: dataGray, width: W, height: H });
+  console.log(`  ${grayScore < 0.05 ? '✓' : '✗'} computeGlareScore returns near-zero for a uniformly gray image (got ${grayScore.toFixed(3)})`);
+  if (grayScore < 0.05) coachPass++; else coachFail++;
+
+  // Laplacian variance: a sharp edge should produce non-zero variance,
+  // a uniform gray image should produce ~zero.
+  const lvSharp = COACH._computeLaplacianVariance({ data, width: W, height: H });
+  const lvFlat  = COACH._computeLaplacianVariance({ data: dataGray, width: W, height: H });
+  const okLvOrder = lvSharp > lvFlat;
+  console.log(`  ${okLvOrder ? '✓' : '✗'} laplacian variance higher on sharp edges (sharp ${lvSharp.toFixed(1)} > flat ${lvFlat.toFixed(1)})`);
+  if (okLvOrder) coachPass++; else coachFail++;
+}
+
+console.log(`\nWave 2.1 fixtures: ${coachPass} passed.`);
+
+// =====================================================================
+// Wave 4.2 evolution — vendor categoryHints (Tier 0.5).
+// =====================================================================
+
+let v42Pass = 0, v42Fail = 0;
+console.log(`\nVendor categoryHints — Tier 0.5 (Wave 4.2 evolution):`);
+{
+  // Stub MID_VENDORS with the cached-enrichment shape categorize.js
+  // expects. We're testing that tier05VendorHints reads the
+  // _enrichment fields and short-circuits to the mapped category.
+  global.window = global.window || {};
+  global.window.MID_VENDORS = {
+    STUBS: [
+      {
+        id: 'sysco',
+        _enrichment: {
+          categoryHints: {
+            skuPrefixMap: { '01': 'produce', '02': 'protein', '05': 'seafood' }
+          }
+        }
+      },
+      {
+        id: 'gfs',
+        _enrichment: {
+          categoryHints: {
+            classCodeRegex: '\\b(PRD|PRO|DRY|PAP|FRZ|BEV|JAN|SML|EQU|SEA|DAI|HRB)\\b',
+            classCodeMap: { 'PRD': 'produce', 'PRO': 'protein', 'DRY': 'dry-goods', 'PAP': 'paper' }
+          }
+        }
+      }
+    ]
+  };
+
+  // Fresh import of categorize so the new global.window.MID_VENDORS
+  // is visible. (Node module-cache means a re-import reuses the
+  // first-load — but the IIFE captures `root` once at module load.
+  // We're stubbing AFTER first-load above; tier05VendorHints
+  // re-reads root.MID_VENDORS each call, so the stub still works.)
+  // Re-importing also avoids cross-test pollution from earlier
+  // stubs that stuffed root.MuntinContext etc.
+  const CAT = await import(path.join(repoRoot, 'tools/invoice-decoder/categorize.js')).then(m => m.default || m);
+
+  // GFS class-code path: row.raw contains "PRD" → produce.
+  const gfsRow = {
+    name:           'Romaine Hearts 24ct',
+    raw:            '0123456 PRD ROMAINE HEARTS 24CT 2 CS $48.00',
+    vendorDetected: 'gfs'
+  };
+  const gfsHit = CAT.tier05VendorHints(gfsRow);
+  const okGfs = gfsHit && gfsHit.category === 'produce' && gfsHit.tier === 'vendor-class-code' && gfsHit.matched === 'PRD';
+  console.log(`  ${okGfs ? '✓' : '✗'} GFS classCodeRegex matches PRD on row.raw → produce (got ${gfsHit ? gfsHit.category : 'null'})`);
+  if (okGfs) v42Pass++; else v42Fail++;
+
+  // GFS class-code: PRO → protein.
+  const gfsRow2 = {
+    name:           'Ground Chuck 10lb',
+    raw:            '0234567 PRO GROUND CHUCK 10LB 2 CS $58.00',
+    vendorDetected: 'gfs'
+  };
+  const gfsHit2 = CAT.tier05VendorHints(gfsRow2);
+  const okGfs2 = gfsHit2 && gfsHit2.category === 'protein';
+  console.log(`  ${okGfs2 ? '✓' : '✗'} GFS PRO class-code → protein (got ${gfsHit2 ? gfsHit2.category : 'null'})`);
+  if (okGfs2) v42Pass++; else v42Fail++;
+
+  // Sysco SKU-prefix path: row.sku starts with '01' → produce.
+  const syscoRow = {
+    name:           'Whatever',
+    sku:            '0123456',
+    vendorDetected: 'sysco'
+  };
+  const syscoHit = CAT.tier05VendorHints(syscoRow);
+  const okSysco = syscoHit && syscoHit.category === 'produce' && syscoHit.tier === 'vendor-sku-prefix' && syscoHit.matched === '01';
+  console.log(`  ${okSysco ? '✓' : '✗'} Sysco skuPrefixMap matches '01' → produce (got ${syscoHit ? syscoHit.category : 'null'})`);
+  if (okSysco) v42Pass++; else v42Fail++;
+
+  // Sysco SKU '02' → protein
+  const syscoRow2 = { name: 'Beef', sku: '0234567', vendorDetected: 'sysco' };
+  const syscoHit2 = CAT.tier05VendorHints(syscoRow2);
+  const okSysco2 = syscoHit2 && syscoHit2.category === 'protein';
+  console.log(`  ${okSysco2 ? '✓' : '✗'} Sysco skuPrefixMap matches '02' → protein (got ${syscoHit2 ? syscoHit2.category : 'null'})`);
+  if (okSysco2) v42Pass++; else v42Fail++;
+
+  // Unknown SKU prefix returns null (no false positive).
+  const unknownPrefix = CAT.tier05VendorHints({ name: 'X', sku: '999XXXX', vendorDetected: 'sysco' });
+  const okUnknown = unknownPrefix === null;
+  console.log(`  ${okUnknown ? '✓' : '✗'} unknown SKU prefix returns null (no false positive)`);
+  if (okUnknown) v42Pass++; else v42Fail++;
+
+  // No vendor detected → null.
+  const noVendor = CAT.tier05VendorHints({ name: 'X', sku: '0123456' });
+  console.log(`  ${noVendor === null ? '✓' : '✗'} no vendorDetected returns null cleanly`);
+  if (noVendor === null) v42Pass++; else v42Fail++;
+
+  // Confidence is 88-90 (vendor-printed signals are essentially
+  // ground truth; we want them to outrank brand index at 92 only
+  // when learned-overrides haven't fired).
+  const okConfRange = gfsHit.confidence >= 88 && gfsHit.confidence <= 95 &&
+                      syscoHit.confidence >= 88 && syscoHit.confidence <= 95;
+  console.log(`  ${okConfRange ? '✓' : '✗'} categoryHints confidence in 88-95 band (class-code ${gfsHit.confidence}, sku-prefix ${syscoHit.confidence})`);
+  if (okConfRange) v42Pass++; else v42Fail++;
+
+  // The full classify() pipeline routes through tier05 BEFORE the
+  // brand index, so a row that matches both should pick the vendor
+  // signal. Build a row that has both a brand name AND a class code.
+  const dualRow = {
+    name:           'STELLA ARTOIS 24/12 BTL',
+    raw:            'BEV STELLA ARTOIS 24/12 BTL CASE $42.00',
+    vendorDetected: 'gfs'
+  };
+  // GFS classCodeMap doesn't include BEV in our test stub — the
+  // brand-index path should win. Add BEV to the stub map first.
+  global.window.MID_VENDORS.STUBS[1]._enrichment.categoryHints.classCodeMap.BEV = 'beverage';
+  const dual = CAT.classify(dualRow);
+  const okDual = dual.tier === 'vendor-class-code' && dual.category === 'beverage';
+  console.log(`  ${okDual ? '✓' : '✗'} classify() routes through tier05 before brand-index when both match (got tier=${dual.tier}, cat=${dual.category})`);
+  if (okDual) v42Pass++; else v42Fail++;
+
+  delete global.window.MID_VENDORS;
+  delete global.window;
+}
+
+console.log(`\nWave 4.2 evolution fixtures: ${v42Pass} passed.`);
+
+// =====================================================================
+// Wave 4.2 line-grammar — alcohol-tax line splitting + accountant
+// GL routing for kind:'tax' / kind:'discount'.
+// =====================================================================
+
+let lgPass = 0, lgFail = 0;
+console.log(`\nPer-vendor line grammar — tax + discount classification (Wave 4.2):`);
+{
+  const RT = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors/template-runtime.js')).then(m => m.default || m);
+  RT._resetForTests();
+
+  // Real beer/wine template (loaded from the JSON file we just
+  // updated). Verifies the runtime applies the patterns correctly.
+  const tmpl = await RT.loadTemplate('beer-wine-distributor');
+  const okTemplate = tmpl && tmpl.lineGrammar && Array.isArray(tmpl.lineGrammar.taxPatterns) && tmpl.lineGrammar.taxPatterns.length > 0;
+  console.log(`  ${okTemplate ? '✓' : '✗'} beer-wine-distributor.json carries lineGrammar.taxPatterns (got ${tmpl && tmpl.lineGrammar ? tmpl.lineGrammar.taxPatterns.length : 'none'})`);
+  if (okTemplate) lgPass++; else lgFail++;
+
+  // Build a row set covering the typical beer/wine invoice shapes.
+  const rows = [
+    { name: 'Stella Artois 24/12 BTL', raw: 'STELLA ARTOIS 24/12 BTL CASE $42.00', lineTotal: 42.00, kind: 'item' },
+    { name: 'State Liquor Tax',         raw: 'STATE LIQUOR TAX 12% $5.04',         lineTotal:  5.04, kind: 'item' },
+    { name: 'Federal Excise Tax',       raw: 'FEDERAL EXCISE TAX $1.20',           lineTotal:  1.20, kind: 'item' },
+    { name: 'Volume Discount',          raw: 'VOLUME DISCOUNT -$2.50',             lineTotal: -2.50, kind: 'item' },
+    { name: 'Modelo 24/12',             raw: 'MODELO 24/12 BTL CASE $38.00',       lineTotal: 38.00, kind: 'item' },
+    { name: 'Credit return',            raw: 'CREDIT 12345 BUDWEISER -$24.00',     lineTotal: -24.00, kind: 'credit' }   // pre-set credit
+  ];
+
+  RT.applyLineGrammar(rows, tmpl);
+
+  const okStella = rows[0].kind === 'item';
+  const okStateLiquor = rows[1].kind === 'tax';
+  const okFedExcise = rows[2].kind === 'tax';
+  const okDiscount = rows[3].kind === 'discount';
+  const okModelo = rows[4].kind === 'item';
+  const okCreditPreserved = rows[5].kind === 'credit';   // existing credit kind not overwritten
+
+  console.log(`  ${okStella ? '✓' : '✗'} normal item line stays kind='item' (got ${rows[0].kind})`);
+  console.log(`  ${okStateLiquor ? '✓' : '✗'} STATE LIQUOR TAX line classified as kind='tax' (got ${rows[1].kind})`);
+  console.log(`  ${okFedExcise ? '✓' : '✗'} FEDERAL EXCISE TAX line classified as kind='tax' (got ${rows[2].kind})`);
+  console.log(`  ${okDiscount ? '✓' : '✗'} VOLUME DISCOUNT line classified as kind='discount' (got ${rows[3].kind})`);
+  console.log(`  ${okModelo ? '✓' : '✗'} another item line stays kind='item' (got ${rows[4].kind})`);
+  console.log(`  ${okCreditPreserved ? '✓' : '✗'} pre-existing credit kind is NOT overwritten (got ${rows[5].kind})`);
+  if (okStella) lgPass++; else lgFail++;
+  if (okStateLiquor) lgPass++; else lgFail++;
+  if (okFedExcise) lgPass++; else lgFail++;
+  if (okDiscount) lgPass++; else lgFail++;
+  if (okModelo) lgPass++; else lgFail++;
+  if (okCreditPreserved) lgPass++; else lgFail++;
+
+  // No-op when template lacks lineGrammar.
+  const noLg = [{ name: 'Tax Line', raw: 'STATE LIQUOR TAX', kind: 'item' }];
+  RT.applyLineGrammar(noLg, { id: 'no-grammar' });
+  const okNoOp = noLg[0].kind === 'item';
+  console.log(`  ${okNoOp ? '✓' : '✗'} no-op when template lacks lineGrammar (got ${noLg[0].kind})`);
+  if (okNoOp) lgPass++; else lgFail++;
+
+  // Accountant export GL maps include _tax + _discount keys.
+  const ACCT = await import(path.join(repoRoot, 'tools/invoice-decoder/accountant-export.js')).then(m => m.default || m);
+  const okGlTax = ACCT.suggestGL('qbo', { kind: 'tax', category: null }).includes('Tax');
+  console.log(`  ${okGlTax ? '✓' : '✗'} QBO accountant-export routes kind='tax' to a Tax GL`);
+  if (okGlTax) lgPass++; else lgFail++;
+  const okGlDisc = ACCT.suggestGL('qbo', { kind: 'discount' }).includes('Discount');
+  console.log(`  ${okGlDisc ? '✓' : '✗'} QBO accountant-export routes kind='discount' to a Discount GL`);
+  if (okGlDisc) lgPass++; else lgFail++;
+
+  // Generic ledger preserves kind='tax' in the row output for the bookkeeper.
+  const invoice = {
+    vendor: 'beer-wine-distributor',
+    savedAt: 1700000000000,
+    parsedSum: 84.74,
+    rows: [
+      { name: 'Stella Artois', qty: 1, unit: 'cs', lineTotal: 42, category: 'beverage', kind: 'item' },
+      { name: 'State Liquor Tax', qty: 1, unit: '', lineTotal: 5.04, category: null, kind: 'tax' },
+      { name: 'Volume Discount', qty: 1, unit: '', lineTotal: -2.50, category: null, kind: 'discount' }
+    ]
+  };
+  const generic = ACCT.exportGenericLedger(invoice, {});
+  const okGenericTax = generic && generic.body && /,tax,/.test(generic.body) && /,discount,/.test(generic.body);
+  console.log(`  ${okGenericTax ? '✓' : '✗'} generic ledger CSV contains 'tax' and 'discount' kinds in the Kind column`);
+  if (okGenericTax) lgPass++; else lgFail++;
+}
+
+console.log(`\nWave 4.2 line-grammar fixtures: ${lgPass} passed.`);
+
+// =====================================================================
+// Wave 6.3 second half — multi-device pairing.
+// Tests the pairing module + the encrypt.addWrap label/addedAt
+// fields + encrypt.removeWrap with the safety guard.
+// =====================================================================
+
+let pairPass = 0, pairFail = 0;
+console.log(`\nMulti-device pairing (Wave 6.3 second half):`);
+{
+  // Stub the browser globals the modules expect.
+  global.window = global.window || {};
+  global.window.crypto = global.crypto;
+  global.window.MuntinContext = global.window.MuntinContext || {
+    read: () => ({}),
+    merge: () => true
+  };
+
+  const KDF = await import(path.join(repoRoot, 'tools/invoice-decoder/kdf.js'))    .then(m => m.default || m);
+  global.window.MID_KDF = KDF;
+  const ENC = await import(path.join(repoRoot, 'tools/invoice-decoder/encrypt.js')).then(m => m.default || m);
+  global.window.MID_ENCRYPT = ENC;
+
+  // Build a baseline v=2 envelope with a passphrase-only wrap.
+  const payload = { rows: [{ name: 'Coffee Beans', qty: 5, lineTotal: 60 }], totalParsed: 60 };
+  const passphrase = 'master-pass-correct-horse-99';
+  const aad = 'invoice:pair-test:001';
+  const lowParams = { kdf: 'pbkdf2', iter: 5000 };
+  const env = await ENC.encryptPayload(payload, passphrase, aad, { kdfParams: lowParams });
+
+  // 1. addWrap accepts a meta object with kind + label + addedAt.
+  const env2 = await ENC.addWrap(env, passphrase, 'phone-token-secret', { kind: 'paired-device', label: 'My Phone', addedAt: 1700000000000 }, lowParams);
+  const pairWrap = env2.wraps.find(w => w.kind === 'paired-device');
+  const okMeta = pairWrap && pairWrap.label === 'My Phone' && pairWrap.addedAt === 1700000000000;
+  console.log(`  ${okMeta ? '✓' : '✗'} addWrap stores label + addedAt on the new wrap`);
+  if (okMeta) pairPass++; else pairFail++;
+
+  // 2. Decrypt with the device-specific token.
+  const got = await ENC.decryptPayload(env2, 'phone-token-secret', aad);
+  const okDevTok = got && got.totalParsed === 60;
+  console.log(`  ${okDevTok ? '✓' : '✗'} envelope decrypts with the paired-device token`);
+  if (okDevTok) pairPass++; else pairFail++;
+
+  // 3. Backward-compat: addWrap accepts a string kind (legacy callers).
+  const env3 = await ENC.addWrap(env, passphrase, 'recovery-words-here-yes', 'recovery', lowParams);
+  const recWrap = env3.wraps.find(w => w.kind === 'recovery');
+  const okLegacy = recWrap && !recWrap.label;
+  console.log(`  ${okLegacy ? '✓' : '✗'} addWrap legacy string-kind shape still works (no label set)`);
+  if (okLegacy) pairPass++; else pairFail++;
+
+  // 4. Add two paired-device wraps with distinct labels; both unlock.
+  let envMulti = env;
+  envMulti = await ENC.addWrap(envMulti, passphrase, 'phone-token-secret', { kind: 'paired-device', label: 'Phone' }, lowParams);
+  envMulti = await ENC.addWrap(envMulti, passphrase, 'laptop-token-secret', { kind: 'paired-device', label: 'Laptop' }, lowParams);
+  const pairs = envMulti.wraps.filter(w => w.kind === 'paired-device');
+  const okMulti = pairs.length === 2 && pairs[0].label === 'Phone' && pairs[1].label === 'Laptop';
+  console.log(`  ${okMulti ? '✓' : '✗'} envelope holds multiple paired-device wraps with distinct labels`);
+  if (okMulti) pairPass++; else pairFail++;
+  const phoneOk = await ENC.decryptPayload(envMulti, 'phone-token-secret', aad);
+  const laptopOk = await ENC.decryptPayload(envMulti, 'laptop-token-secret', aad);
+  const masterOk = await ENC.decryptPayload(envMulti, passphrase, aad);
+  const allUnlock = phoneOk && phoneOk.totalParsed === 60 && laptopOk && laptopOk.totalParsed === 60 && masterOk && masterOk.totalParsed === 60;
+  console.log(`  ${allUnlock ? '✓' : '✗'} all three secrets (master, Phone, Laptop) unlock the same envelope`);
+  if (allUnlock) pairPass++; else pairFail++;
+
+  // 5. removeWrap by kind+label revokes only the matching wrap.
+  const revoked = ENC.removeWrap(envMulti, 'paired-device', 'Phone');
+  const okRevoke = revoked && revoked.wraps.length === envMulti.wraps.length - 1 &&
+                   !revoked.wraps.some(w => w.kind === 'paired-device' && w.label === 'Phone') &&
+                   revoked.wraps.some(w => w.kind === 'paired-device' && w.label === 'Laptop');
+  console.log(`  ${okRevoke ? '✓' : '✗'} removeWrap revokes only the matching label`);
+  if (okRevoke) pairPass++; else pairFail++;
+
+  // Phone token no longer unlocks; laptop still does; master still does.
+  let phoneStillWorks = false;
+  try { await ENC.decryptPayload(revoked, 'phone-token-secret', aad); phoneStillWorks = true; } catch (_) {}
+  console.log(`  ${!phoneStillWorks ? '✓' : '✗'} revoked Phone token no longer unlocks`);
+  if (!phoneStillWorks) pairPass++; else pairFail++;
+
+  const laptopStillOk = await ENC.decryptPayload(revoked, 'laptop-token-secret', aad);
+  const okLaptopStill = laptopStillOk && laptopStillOk.totalParsed === 60;
+  console.log(`  ${okLaptopStill ? '✓' : '✗'} surviving Laptop token still unlocks after revoke`);
+  if (okLaptopStill) pairPass++; else pairFail++;
+
+  // 6. removeWrap refuses to leave the envelope without any wraps.
+  const stripBoth = ENC.removeWrap(env2, 'paired-device', 'My Phone');     // removes the only paired wrap
+  const stripPass = ENC.removeWrap(stripBoth, 'passphrase');               // tries to remove the last wrap
+  const okGuard = stripPass === null;
+  console.log(`  ${okGuard ? '✓' : '✗'} removeWrap refuses to leave an envelope without any unlock paths`);
+  if (okGuard) pairPass++; else pairFail++;
+
+  // 7. listDevices via the pairing module (uses encrypt.addWrap
+  // internally, exercises the labeled-wrap shape end-to-end). The
+  // pairing module pulls the BIP39 wordlist via fetch, which we
+  // can't run in pure Node — so we just sanity-check listDevices
+  // against an envelope we hand-build.
+  const PAIRING = await import(path.join(repoRoot, 'tools/invoice-decoder/pairing.js')).then(m => m.default || m);
+  global.window.MID_PAIRING = PAIRING;
+  const devices = PAIRING.listDevices(envMulti);
+  const okList = devices.length === 2 && devices[0].label === 'Phone' && devices[1].label === 'Laptop' && devices.every(d => typeof d.addedAt === 'number');
+  console.log(`  ${okList ? '✓' : '✗'} listDevices enumerates labeled paired-device wraps in order`);
+  if (okList) pairPass++; else pairFail++;
+
+  // removeDevice via the pairing module wraps removeWrap + null guard.
+  const afterRemove = PAIRING.removeDevice(envMulti, 'Phone');
+  const okPairRemove = afterRemove && PAIRING.listDevices(afterRemove).length === 1 &&
+                       PAIRING.listDevices(afterRemove)[0].label === 'Laptop';
+  console.log(`  ${okPairRemove ? '✓' : '✗'} pairing.removeDevice removes by label and preserves siblings`);
+  if (okPairRemove) pairPass++; else pairFail++;
+
+  delete global.window.MID_KDF;
+  delete global.window.MID_ENCRYPT;
+  delete global.window.MID_PAIRING;
+  delete global.window.MuntinContext;
+  delete global.window;
+}
+
+console.log(`\nWave 6.3 pairing fixtures: ${pairPass} passed.`);
+
+// =====================================================================
+// Domain-expert layer — pack-aware unit pricing.
+// Restaurant purchasing pros compare $/oz, $/lb, $/ct — not $/case.
+// =====================================================================
+
+let ppPass = 0, ppFail = 0;
+console.log(`\nPack-aware unit pricing (domain-expert layer):`);
+{
+  const PP = await import(path.join(repoRoot, 'tools/invoice-decoder/pack-pricing.js')).then(m => m.default || m);
+
+  // Stella Artois 24/12oz beer case at $42 → 288 fl oz total → $0.146/fl_oz.
+  const stella = PP.computeComparable({
+    name:     'Stella Artois 24/12 BTL',
+    pack:     { caseQty: 24, unitSize: 12, unit: 'oz' },
+    qty:      1,
+    unit:     'cs',
+    lineTotal: 42.00,
+    category: 'beverage'
+  });
+  const okStella = stella && stella.baseUnit === 'fl_oz' &&
+                   Math.abs(stella.perBaseUnit - 42 / 288) < 1e-4 &&
+                   stella.basis === 'pack';
+  console.log(`  ${okStella ? '✓' : '✗'} 24/12oz Stella @ $42/case → $${stella ? stella.perBaseUnit.toFixed(4) : 'null'}/fl_oz`);
+  if (okStella) ppPass++; else ppFail++;
+
+  // Modelo 30/12oz at $42 (different pack size, same brand category) →
+  // 360 fl oz → ~$0.117/fl_oz. Operator can compare across vendors.
+  const modelo = PP.computeComparable({
+    pack:     { caseQty: 30, unitSize: 12, unit: 'oz' },
+    qty:      1, unit: 'cs',
+    lineTotal: 42.00,
+    category: 'beverage'
+  });
+  const okModelo = modelo && modelo.baseUnit === 'fl_oz' &&
+                   Math.abs(modelo.perBaseUnit - 42 / 360) < 1e-4;
+  console.log(`  ${okModelo ? '✓' : '✗'} 30/12oz Modelo @ $42/case → $${modelo ? modelo.perBaseUnit.toFixed(4) : 'null'}/fl_oz (cheaper per oz than Stella)`);
+  if (okModelo) ppPass++; else ppFail++;
+
+  // Pattern E weight-count rows: GROUND CHUCK 10LB 2CS @ $58 →
+  // total weight 20 lb → $2.90/lb.
+  const groundChuck = PP.computeComparable({
+    name:     'Ground Chuck',
+    weight:   10, weightUnit: 'lb',
+    qty:      2, unit: 'ct',
+    lineTotal: 58.00,
+    category: 'protein'
+  });
+  const okGroundChuck = groundChuck && groundChuck.baseUnit === 'lb' &&
+                        Math.abs(groundChuck.perBaseUnit - 58 / 20) < 1e-4 &&
+                        groundChuck.basis === 'weight';
+  console.log(`  ${okGroundChuck ? '✓' : '✗'} 10LB×2CS Ground Chuck @ $58 → $${groundChuck ? groundChuck.perBaseUnit.toFixed(2) : 'null'}/lb`);
+  if (okGroundChuck) ppPass++; else ppFail++;
+
+  // #10 cans of tomato paste: 6#10 @ $48 → 6 × 110 fl oz = 660 → $0.073/fl_oz.
+  const tomatoPaste = PP.computeComparable({
+    name:     'Tomato Paste',
+    pack:     { caseQty: 6, unitSize: 10, unit: '#' },
+    qty:      1, unit: 'cs',
+    lineTotal: 48.00,
+    category: 'dry-goods'
+  });
+  const okTomato = tomatoPaste && tomatoPaste.baseUnit === 'fl_oz' &&
+                   Math.abs(tomatoPaste.perBaseUnit - 48 / 660) < 1e-4;
+  console.log(`  ${okTomato ? '✓' : '✗'} 6#10 Tomato Paste @ $48 → $${tomatoPaste ? tomatoPaste.perBaseUnit.toFixed(4) : 'null'}/fl_oz`);
+  if (okTomato) ppPass++; else ppFail++;
+
+  // 'oz' disambiguation: dry-goods category should use weight oz,
+  // not fl_oz. Bag of flour 4/5LB @ $24 → 20 lb → $1.20/lb. Wait,
+  // this is direct lb units, not pack notation. Let me test the
+  // dry-goods 'oz' interpretation instead.
+  const flour = PP.computeComparable({
+    name:     'Bread Flour',
+    pack:     { caseQty: 4, unitSize: 8, unit: 'oz' },   // 4 × 8oz packs
+    qty:      1, unit: 'cs',
+    lineTotal: 16.00,
+    category: 'dry-goods'
+  });
+  // 4 × 8 = 32 oz weight (not fl_oz!) → $0.50/oz
+  const okFlour = flour && flour.baseUnit === 'lb' &&  // 32 oz weight → reported as lb
+                  Math.abs(flour.perBaseUnit - 16 / (32 / 16)) < 1e-3;  // $/lb
+  console.log(`  ${okFlour ? '✓' : '✗'} dry-goods 4/8oz Flour @ $16 → reported as $${flour ? flour.perBaseUnit.toFixed(2) : 'null'}/lb (weight, not fl_oz)`);
+  if (okFlour) ppPass++; else ppFail++;
+
+  // Plain unit-priced row: 5LB chicken @ $20 → $4/lb.
+  const chicken = PP.computeComparable({
+    name:     'Chicken Breast',
+    qty:      5, unit: 'lb',
+    lineTotal: 20.00,
+    category: 'protein'
+  });
+  const okChicken = chicken && chicken.baseUnit === 'lb' &&
+                    Math.abs(chicken.perBaseUnit - 4) < 1e-4 &&
+                    chicken.basis === 'unit-price';
+  console.log(`  ${okChicken ? '✓' : '✗'} plain 5LB Chicken @ $20 → $${chicken ? chicken.perBaseUnit.toFixed(2) : 'null'}/lb`);
+  if (okChicken) ppPass++; else ppFail++;
+
+  // Count-only rows return null (no unit comparable).
+  const countOnly = PP.computeComparable({
+    name:      'Coffee Cups',
+    qty:       1, unit: 'cs',
+    lineTotal: 32.00,
+    category:  'paper'
+  });
+  console.log(`  ${countOnly === null ? '✓' : '✗'} count-only row with no pack info returns null`);
+  if (countOnly === null) ppPass++; else ppFail++;
+
+  // Format helper.
+  const fmt = PP.formatComparable({ perBaseUnit: 0.146, baseUnit: 'fl_oz' });
+  const okFmt = fmt === '$0.146/fl oz';
+  console.log(`  ${okFmt ? '✓' : '✗'} formatComparable($0.146/fl_oz) → "${fmt}"`);
+  if (okFmt) ppPass++; else ppFail++;
+
+  // Comparator: same base unit produces a delta.
+  const cmp = PP.compareComparables(
+    { perBaseUnit: 0.146, baseUnit: 'fl_oz' },   // current
+    { perBaseUnit: 0.117, baseUnit: 'fl_oz' }    // baseline
+  );
+  const okCmp = cmp && Math.abs(cmp.deltaPct - 24.8) < 0.5 && cmp.direction === 'up';
+  console.log(`  ${okCmp ? '✓' : '✗'} compareComparables fl_oz → fl_oz: ${cmp ? cmp.deltaPct + '% ' + cmp.direction : 'null'}`);
+  if (okCmp) ppPass++; else ppFail++;
+
+  // Comparator: cross-base-unit comparison rejects (you can't compare $/lb to $/fl_oz).
+  const cmpBad = PP.compareComparables(
+    { perBaseUnit: 0.146, baseUnit: 'fl_oz' },
+    { perBaseUnit: 4.00,  baseUnit: 'lb' }
+  );
+  console.log(`  ${cmpBad === null ? '✓' : '✗'} compareComparables refuses cross-base-unit comparisons`);
+  if (cmpBad === null) ppPass++; else ppFail++;
+
+  // Unit normalization handles common alternates.
+  const okNorm = PP.normalizeUnitToken('LBS') === 'lb' &&
+                 PP.normalizeUnitToken('Ounces') === 'oz' &&
+                 PP.normalizeUnitToken('GAL.') === 'gal' &&
+                 PP.normalizeUnitToken('UNKNOWN') === null;
+  console.log(`  ${okNorm ? '✓' : '✗'} normalizeUnitToken handles common alternates (lbs/Ounces/GAL.)`);
+  if (okNorm) ppPass++; else ppFail++;
+}
+
+console.log(`\nPack-pricing fixtures: ${ppPass} passed.`);
+
+// =====================================================================
+// Domain-expert layer #2 — cross-vendor comparison + invoice-level
+// volume-weighted drift + contract-watch in comparable unit +
+// substitution detection.
+// =====================================================================
+
+let dxPass = 0, dxFail = 0;
+console.log(`\nCross-vendor + invoice-drift + comparable-contract + substitution:`);
+{
+  // Fresh stub MuntinContext that the modules can read/write.
+  const stubStore = { skuHistory: {}, contractPrices: {} };
+  global.window = global.window || {};
+  global.window.MuntinContext = {
+    read: () => stubStore,
+    merge: (patch) => { Object.keys(patch).forEach(k => { stubStore[k] = patch[k]; }); return true; }
+  };
+  global.window.MID_LEARNINGS = {
+    extractStem: (s) => String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\b\d+\b/g, '').replace(/\s+/g, ' ').trim()
+  };
+  const SKU = await import(path.join(repoRoot, 'tools/invoice-decoder/sku-history.js')).then(m => m.default || m);
+  global.window.MID_SKU_HISTORY = SKU;
+
+  // Seed: 5 observations of Stella Artois — 3 from Sysco at $0.146/fl_oz,
+  // 2 more from a craft-beer distributor at $0.117/fl_oz. After 3 samples
+  // each we expect compareAcrossVendors to fire (with the >=3 threshold
+  // hitting on Sysco; we add a 3rd craft observation to clear the bar).
+  function seedObs(stem, vendor, comparable) {
+    if (!stubStore.skuHistory[stem]) stubStore.skuHistory[stem] = [];
+    stubStore.skuHistory[stem].unshift({
+      vendor: vendor, ts: Date.now(),
+      qty: 1, unit: 'cs', unitPrice: 42.0,
+      comparablePrice: comparable, comparableUnit: 'fl_oz'
+    });
+  }
+  seedObs('stella artois', 'sysco', 0.146);
+  seedObs('stella artois', 'sysco', 0.148);
+  seedObs('stella artois', 'sysco', 0.147);
+  seedObs('stella artois', 'craft-distributor', 0.117);
+  seedObs('stella artois', 'craft-distributor', 0.118);
+  seedObs('stella artois', 'craft-distributor', 0.116);
+
+  // 1. compareAcrossVendors finds both vendors and computes gap%.
+  const cmp = SKU.compareAcrossVendors({
+    name: 'Stella Artois 24/12',
+    comparable: { perBaseUnit: 0.146, baseUnit: 'fl_oz' }
+  });
+  const okCmp = cmp && cmp.length === 2 &&
+                cmp[0].vendor === 'craft-distributor' &&
+                cmp[1].vendor === 'sysco' &&
+                cmp[0].gapPctVsCheapest === 0 &&
+                cmp[1].gapPctVsCheapest > 20 && cmp[1].gapPctVsCheapest < 30;
+  console.log(`  ${okCmp ? '✓' : '✗'} compareAcrossVendors finds 2 vendors, sorted ascending, with gap% (got ${cmp ? cmp.map(c => c.vendor + ': ' + c.gapPctVsCheapest + '%').join(' / ') : 'null'})`);
+  if (okCmp) dxPass++; else dxFail++;
+
+  // 2. Single vendor → null (no comparison).
+  const singleVendor = SKU.compareAcrossVendors({ name: 'unknown item' });
+  console.log(`  ${singleVendor === null ? '✓' : '✗'} compareAcrossVendors returns null for stem with no history`);
+  if (singleVendor === null) dxPass++; else dxFail++;
+
+  // 3. Cross-base-unit reject — adding a $/lb observation under the
+  // same stem should NOT contaminate the fl_oz comparison.
+  seedObs('stella artois', 'weird-vendor', 99);   // wrong unit (we'll spoof it)
+  stubStore.skuHistory['stella artois'][0].comparableUnit = 'lb';
+  const cmpAfterContamination = SKU.compareAcrossVendors({
+    name: 'Stella Artois 24/12',
+    comparable: { perBaseUnit: 0.146, baseUnit: 'fl_oz' }
+  });
+  // The lb observation should be filtered out; result still has 2 fl_oz vendors.
+  const okIsolation = cmpAfterContamination && cmpAfterContamination.length === 2 &&
+                      cmpAfterContamination.every(v => v.comparableUnit === 'fl_oz');
+  console.log(`  ${okIsolation ? '✓' : '✗'} compareAcrossVendors filters out cross-base-unit observations`);
+  if (okIsolation) dxPass++; else dxFail++;
+  // Clean up
+  stubStore.skuHistory['stella artois'].shift();
+
+  // 4. Volume-weighted invoice drift. Build rows where a $4 row at
+  // +20% and a $200 row at +5% should result in a drift weighted
+  // toward the $200 line. Add seed history for both stems first.
+  function seedFor(stem, prices) {
+    stubStore.skuHistory[stem] = prices.map((p, i) => ({
+      vendor: 'sysco', ts: Date.now() - i * 86400000,
+      qty: 1, unit: 'cs', unitPrice: p,
+      comparablePrice: p, comparableUnit: 'fl_oz'
+    }));
+  }
+  seedFor('cilantro bunch', [3.50, 3.40, 3.60, 3.50, 3.50]);   // baseline ~$3.50/cs
+  seedFor('beef tenderloin', [200, 198, 202, 200, 200]);
+
+  const invoiceRows = [
+    { name: 'Cilantro Bunch',  lineTotal: 4.20, qty: 1, unit: 'cs', unitPrice: 4.20, comparable: { perBaseUnit: 4.20, baseUnit: 'fl_oz', totalQuantity: 1 }, kind: 'item' },   // +20%
+    { name: 'Beef Tenderloin', lineTotal: 210,  qty: 1, unit: 'cs', unitPrice: 210,  comparable: { perBaseUnit: 210,  baseUnit: 'fl_oz', totalQuantity: 1 }, kind: 'item' },   // +5%
+    { name: 'Tax line', lineTotal: 12, kind: 'tax' }
+  ];
+  const drift = SKU.computeInvoiceDrift(invoiceRows);
+  // Baseline: cilantro 4.20/1.20 = 3.50; beef 210/1.05 = 200; total baseline = 203.50
+  // Drift dollars: cilantro 0.70 + beef 10 = 10.70; pct = 10.70/203.50 = ~5.26%
+  const okDrift = drift && drift.ratedRows === 2 &&
+                  Math.abs(drift.totalDriftDollars - 10.70) < 0.05 &&
+                  Math.abs(drift.totalDriftPct - 5.3) < 0.3 &&
+                  drift.topDrivers[0].name === 'Beef Tenderloin';
+  console.log(`  ${okDrift ? '✓' : '✗'} computeInvoiceDrift: $${drift ? drift.totalDriftDollars : 'null'} over $${drift ? drift.baselineDollars : 'null'} (${drift ? drift.totalDriftPct + '%' : ''}); top driver = ${drift && drift.topDrivers[0] ? drift.topDrivers[0].name : 'none'}`);
+  if (okDrift) dxPass++; else dxFail++;
+
+  // Tax line excluded from rated rows.
+  const okTaxExcluded = drift && drift.ratedRows === 2 &&
+                        !drift.topDrivers.some(d => d.name === 'Tax line');
+  console.log(`  ${okTaxExcluded ? '✓' : '✗'} invoice-drift excludes kind:'tax' rows from drivers`);
+  if (okTaxExcluded) dxPass++; else dxFail++;
+
+  // 5. Comparable-aware contract-watch. Set a $/lb contract and
+  // verify a row at higher $/lb fires the overcharge. Use the same
+  // SKU name on both sides so stemOf produces a consistent key.
+  const chickenName = 'Chicken Thigh 10LB CS';
+  SKU.setContract(chickenName, 32.00, {
+    vendor: 'sysco', unit: 'cs',
+    comparablePrice: 3.20, comparableUnit: 'lb'
+  });
+  const ctxCheck = SKU.checkRow({
+    name: chickenName,
+    qty: 1, unit: 'cs', lineTotal: 35.00, unitPrice: 35.00,
+    comparable: { perBaseUnit: 3.50, baseUnit: 'lb', totalQuantity: 10 }
+  });
+  const okComparableContract = ctxCheck && ctxCheck.basis === 'comparable' &&
+                               ctxCheck.isOver &&
+                               ctxCheck.actualComparableUnit === 'lb' &&
+                               Math.abs(ctxCheck.diffPerUnit - 0.30) < 0.001 &&
+                               Math.abs(ctxCheck.overcharge - 3.00) < 0.05;   // 0.30/lb × 10 lb = 3.00
+  console.log(`  ${okComparableContract ? '✓' : '✗'} comparable-aware contract-watch: $0.30/lb over → $${ctxCheck ? ctxCheck.overcharge : 'null'} overcharge on 10-lb case`);
+  if (okComparableContract) dxPass++; else dxFail++;
+
+  // Legacy unit-based contract still works when row has no comparable.
+  SKU.setContract('rice 50lb bag', 24.00, { vendor: 'sysco', unit: 'bag' });
+  const legacyCheck = SKU.checkRow({
+    name: 'Rice 50LB Bag', qty: 1, unit: 'bag', lineTotal: 26.00, unitPrice: 26.00
+  });
+  const okLegacy = legacyCheck && legacyCheck.basis === 'unit' && legacyCheck.isOver;
+  console.log(`  ${okLegacy ? '✓' : '✗'} legacy unit-price contract-watch still works for rows without comparable`);
+  if (okLegacy) dxPass++; else dxFail++;
+
+  // 6. Substitution detection. Seed 4 observations under the operator's
+  // usual stem ("jumbo shrimp p d 5lb") at ~$14/lb. The truck arrives
+  // with a different SKU — "JUMBO SHRIMP HEAD-ON 5LB" — at $13.50/lb.
+  // Different stem (HEAD-ON tokens replace P&D), high similarity,
+  // close price → fires as a substitution candidate.
+  const usualStem = global.window.MID_LEARNINGS.extractStem('JUMBO SHRIMP P&D 5LB');
+  seedFor(usualStem, [14.10, 14.00, 13.95, 14.05]);
+  stubStore.skuHistory[usualStem].forEach(e => { e.comparableUnit = 'lb'; });
+
+  const SUB = await import(path.join(repoRoot, 'tools/invoice-decoder/substitution.js')).then(m => m.default || m);
+  global.window.MID_SUBSTITUTION = SUB;
+
+  const newShrimp = {
+    name: 'JUMBO SHRIMP HEAD-ON 5LB',
+    qty:  1, unit: 'cs', lineTotal: 67.50,
+    comparable: { perBaseUnit: 13.50, baseUnit: 'lb', totalQuantity: 5 }
+  };
+  const subResult = SUB.detectSubstitution(newShrimp);
+  const okSub = subResult && subResult.candidateStem.indexOf('shrimp') !== -1 &&
+                subResult.similarity >= 0.55 &&
+                subResult.observations >= 3 &&
+                subResult.confidence === 'medium';
+  console.log(`  ${okSub ? '✓' : '✗'} substitution flags JUMBO SHRIMP HEAD-ON as sub for JUMBO SHRIMP P&D family (sim ${subResult ? subResult.similarity : 'null'}, conf ${subResult ? subResult.confidence : 'null'})`);
+  if (okSub) dxPass++; else dxFail++;
+
+  // Substitution suppressed when own-stem already has many observations
+  // (it's the operator's own SKU, not a sub).
+  const ownStem = global.window.MID_LEARNINGS.extractStem('JUMBO SHRIMP HEAD-ON 5LB');
+  seedFor(ownStem, [13.50, 13.45, 13.55, 13.52, 13.48]);
+  stubStore.skuHistory[ownStem].forEach(e => { e.comparableUnit = 'lb'; });
+  const notSub = SUB.detectSubstitution(newShrimp);
+  console.log(`  ${notSub === null ? '✓' : '✗'} substitution suppressed when own-stem has many observations`);
+  if (notSub === null) dxPass++; else dxFail++;
+
+  // Substitution price-gap guard: if the price is wildly off from
+  // the candidate's median, skip.
+  delete stubStore.skuHistory[ownStem];     // remove the new-stem own-history
+  const cheapShrimp = {
+    name: 'JUMBO SHRIMP HEAD-ON 5LB',
+    qty:  1, unit: 'cs', lineTotal: 25.00,
+    comparable: { perBaseUnit: 5.00, baseUnit: 'lb', totalQuantity: 5 }   // $5/lb is way off $14
+  };
+  const noSub2 = SUB.detectSubstitution(cheapShrimp);
+  console.log(`  ${noSub2 === null ? '✓' : '✗'} substitution price-gap guard rejects when row price is >25% off candidate median`);
+  if (noSub2 === null) dxPass++; else dxFail++;
+
+  delete global.window.MID_SKU_HISTORY;
+  delete global.window.MID_LEARNINGS;
+  delete global.window.MID_SUBSTITUTION;
+  delete global.window.MuntinContext;
+  delete global.window;
+}
+
+console.log(`\nDomain-expert layer #2 fixtures: ${dxPass} passed.`);
+
+// =====================================================================
+// Wave 8.1 — Edge-case hardening:
+//   - capture-coach auto-capture timer
+//   - preprocess illumination/shadow correction
+//   - parse OCR numeric repair (0/O, 1/l/I, 5/S, 8/B)
+//   - parse multi-line description merger (wrapped product names)
+//   - preprocess confidence-triggered retry
+// =====================================================================
+
+let edgePass = 0, edgeFail = 0;
+console.log(`\nEdge-case hardening (Wave 8.1):`);
+{
+  const COACH = await import(path.join(repoRoot, 'tools/invoice-decoder/capture-coach.js')).then(m => m.default || m);
+  const PARSE = await import(path.join(repoRoot, 'tools/invoice-decoder/parse.js')).then(m => m.default || m);
+  const PREP  = await import(path.join(repoRoot, 'tools/invoice-decoder/preprocess.js')).then(m => m.default || m);
+
+  // 1. Auto-capture timer: needs allGood held for AUTO_CAPTURE_MS.
+  const evaluators = COACH._makeEvaluators();
+  let cstate = COACH._makeCoachState();
+  const auto = COACH._AUTO_CAPTURE_MS;
+  // First two ticks at t=1000 and t=1500 → activeId='allGood', goodSince=1500.
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1000);
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0, blur: 200, quadArea: 0.6 }, 1500);
+  const tooSoon = COACH._shouldAutoCapture(cstate, 1500 + auto - 100);
+  console.log(`  ${tooSoon === false ? '✓' : '✗'} shouldAutoCapture is false before AUTO_CAPTURE_MS elapses`);
+  if (tooSoon === false) edgePass++; else edgeFail++;
+
+  const ready = COACH._shouldAutoCapture(cstate, 1500 + auto + 10);
+  console.log(`  ${ready === true ? '✓' : '✗'} shouldAutoCapture fires after AUTO_CAPTURE_MS continuous good`);
+  if (ready === true) edgePass++; else edgeFail++;
+
+  // Glare interruption resets the goodSince timer.
+  COACH._tickCoach(cstate, evaluators, { glareScore: 0.5, blur: 200, quadArea: 0.6 }, 2500);
+  const noFire = COACH._shouldAutoCapture(cstate, 2500 + auto + 100);
+  console.log(`  ${noFire === false ? '✓' : '✗'} shouldAutoCapture stays false when state leaves allGood`);
+  if (noFire === false) edgePass++; else edgeFail++;
+
+  // 2. OCR numeric repair: $48.OO → $48.00 (price-cluster) but 10lb stays.
+  const r1 = PARSE.repairOcrNumerics('ROMAINE 24CT  2 CS $48.OO');
+  const okR1 = r1.indexOf('$48.00') !== -1;
+  console.log(`  ${okR1 ? '✓' : '✗'} repairOcrNumerics fixes $48.OO → $48.00 (got "${r1}")`);
+  if (okR1) edgePass++; else edgeFail++;
+
+  const r2 = PARSE.repairOcrNumerics('GROUND CHUCK 10lb 2 CT $58.00');
+  const okR2 = r2.indexOf('10lb') !== -1;
+  console.log(`  ${okR2 ? '✓' : '✗'} repairOcrNumerics leaves "10lb" intact (no false-positive on unit suffix)`);
+  if (okR2) edgePass++; else edgeFail++;
+
+  const r3 = PARSE.repairOcrNumerics('Boss salesman delivered $S6.5O');
+  const okR3 = r3.indexOf('$56.50') !== -1 && r3.indexOf('Boss') !== -1;
+  console.log(`  ${okR3 ? '✓' : '✗'} repairOcrNumerics fixes $S6.5O → $56.50 but leaves "Boss" alone (got "${r3}")`);
+  if (okR3) edgePass++; else edgeFail++;
+
+  // Repaired line then becomes parseable end-to-end.
+  const parsedRepaired = PARSE.parseLine('ROMAINE HEARTS 24CT  2 CS $48.OO', 78);
+  const okParsedRepair = parsedRepaired && parsedRepaired.lineTotal === 48.00;
+  console.log(`  ${okParsedRepair ? '✓' : '✗'} parseLine accepts a $48.OO line after repair (got lineTotal=${parsedRepaired ? parsedRepaired.lineTotal : 'null'})`);
+  if (okParsedRepair) edgePass++; else edgeFail++;
+
+  // 3. Wrapped-line merger.
+  const wrapped = [
+    { text: 'ROMAINE HEARTS GREEN', confidence: 80 },
+    { text: 'LEAF ORGANIC 24CT  2 CS $48.00', confidence: 82 },
+    { text: '', confidence: 0 },
+    { text: 'GROUND CHUCK 80/20', confidence: 70 },
+    { text: '10LB 2 CT $58.00', confidence: 75 }
+  ];
+  const merged = PARSE.mergeWrappedLines(wrapped);
+  const okMerged = merged.length === 2 &&
+                   merged[0].text.indexOf('ROMAINE HEARTS GREEN LEAF ORGANIC') !== -1 &&
+                   merged[1].text.indexOf('GROUND CHUCK 80/20 10LB') !== -1;
+  console.log(`  ${okMerged ? '✓' : '✗'} mergeWrappedLines re-joins continuation rows (got ${merged.length} merged rows)`);
+  if (okMerged) edgePass++; else edgeFail++;
+
+  // Headers do NOT join (they flush pending).
+  const withHeader = [
+    { text: 'PRODUCT INFO', confidence: 80 },
+    { text: 'invoice', confidence: 60 },              // header
+    { text: 'CHEDDAR CHUNKS 1 CS $32.00', confidence: 78 }
+  ];
+  const mergedH = PARSE.mergeWrappedLines(withHeader);
+  const headerWins = mergedH.length === 1 && mergedH[0].text === 'CHEDDAR CHUNKS 1 CS $32.00';
+  console.log(`  ${headerWins ? '✓' : '✗'} mergeWrappedLines flushes pending when a header line appears`);
+  if (headerWins) edgePass++; else edgeFail++;
+
+  // End-to-end: parseLines on wrapped rows produces full names.
+  const parsed = PARSE.parseLines(wrapped, wrapped.map(l => l.text).join('\n'));
+  const e2eOk = parsed.rows.length === 2 &&
+                parsed.rows[0].name.indexOf('ROMAINE HEARTS GREEN LEAF ORGANIC') !== -1 &&
+                parsed.rows[0].merged === true;
+  console.log(`  ${e2eOk ? '✓' : '✗'} parseLines emits merged rows with the full description (rows: ${parsed.rows.map(r => r.name).join(' | ')})`);
+  if (e2eOk) edgePass++; else edgeFail++;
+
+  // 4. Illumination correction: a synthetic 60×60 grayscale with a
+  // diagonal brightness gradient should be flatter after correction.
+  function makeGradient(w, h) {
+    const data = new Uint8ClampedArray(w * h * 4);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4;
+        // Gradient from ~80 (top-left) to ~220 (bottom-right) — emulates
+        // shadow on one corner of the page.
+        const v = 80 + Math.round((x + y) / (w + h) * 140);
+        data[i] = data[i + 1] = data[i + 2] = v;
+        data[i + 3] = 255;
+      }
+    }
+    return { data, width: w, height: h };
+  }
+  function spread(img) {
+    let mn = 255, mx = 0;
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = img.data[i];
+      if (v < mn) mn = v;
+      if (v > mx) mx = v;
+    }
+    return mx - mn;
+  }
+  const grad = makeGradient(60, 60);
+  const spreadBefore = spread(grad);
+  PREP.correctIlluminationInPlace(grad);
+  const spreadAfter = spread(grad);
+  const flatter = spreadAfter < spreadBefore * 0.6;
+  console.log(`  ${flatter ? '✓' : '✗'} correctIlluminationInPlace flattens a brightness gradient (spread ${spreadBefore} → ${spreadAfter})`);
+  if (flatter) edgePass++; else edgeFail++;
+
+  // Tiny image short-circuit (no-op) — should not throw.
+  let threw = false;
+  try { PREP.correctIlluminationInPlace({ data: new Uint8ClampedArray(16 * 16 * 4), width: 16, height: 16 }); }
+  catch (_) { threw = true; }
+  console.log(`  ${!threw ? '✓' : '✗'} correctIlluminationInPlace short-circuits on tiny images without throwing`);
+  if (!threw) edgePass++; else edgeFail++;
+
+  // 5. Confidence-triggered retry: build a stub canvas-y object that the
+  // helpers can treat as input. We can't easily run preprocessCanvas
+  // headless (depends on Canvas/2D context), so we test the qualityScore
+  // helper's monotonicity via classifyQuality.
+  const goodHint   = PREP.classifyQuality(200, 3000);   // good
+  const lowContrast = PREP.classifyQuality(200, 800);   // low-contrast
+  const blurry      = PREP.classifyQuality(40, 3000);   // blurry
+  const okQual = goodHint === 'good' && lowContrast === 'low-contrast' && blurry === 'blurry';
+  console.log(`  ${okQual ? '✓' : '✗'} classifyQuality monotonic across blur + bimodality (good/low-contrast/blurry)`);
+  if (okQual) edgePass++; else edgeFail++;
+}
+
+console.log(`\nWave 8.1 edge-case fixtures: ${edgePass} passed.`);
+
+const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
+  + homFail + warpFail + quadFail + sobelFail + pipeFail
+  + alFail
+  + vcFail
+  + kdfFail + recFail
+  + v41Fail
+  + splitFail
+  + coachFail
+  + v42Fail
+  + lgFail
+  + pairFail
+  + ppFail
+  + dxFail
+  + edgeFail;
 process.exit(grandFail === 0 ? 0 : 1);

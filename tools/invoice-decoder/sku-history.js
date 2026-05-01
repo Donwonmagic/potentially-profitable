@@ -38,16 +38,26 @@
   var MIN_OBSERVATIONS_FOR_ANOMALY = 3;
   var STALE_CONTRACT_DAYS = 90;
 
+  // Resolve at-call (not at IIFE-capture) so test harnesses that
+  // re-seed `global.window` between blocks see the new MuntinContext.
+  function getRoot() {
+    var g = (typeof globalThis !== 'undefined') ? globalThis : null;
+    if (g && g.window) return g.window;
+    if (typeof window !== 'undefined') return window;
+    return g;
+  }
   function ctx() {
-    if (typeof root === 'undefined' || !root || !root.MuntinContext) return null;
-    return root.MuntinContext;
+    var r = getRoot();
+    if (!r || !r.MuntinContext) return null;
+    return r.MuntinContext;
   }
 
   // Stem extraction lives in learnings.js; reuse to keep the
   // normalization rule identical across modules.
   function stemOf(name) {
-    if (root && root.MID_LEARNINGS && typeof root.MID_LEARNINGS.extractStem === 'function') {
-      return root.MID_LEARNINGS.extractStem(name);
+    var r = getRoot();
+    if (r && r.MID_LEARNINGS && typeof r.MID_LEARNINGS.extractStem === 'function') {
+      return r.MID_LEARNINGS.extractStem(name);
     }
     // Fallback when learnings.js hasn't loaded (e.g. unit tests).
     return String(name || '')
@@ -78,6 +88,9 @@
 
   // Append a price observation for one row. Returns the stem key
   // used so callers can group multi-row updates without re-stemming.
+  // Pack-aware: when row.comparable carries a per-base-unit price,
+  // we record it alongside raw unitPrice so cross-vendor + pack-
+  // change drift detection can use the more meaningful metric.
   function recordObservation(row, vendor) {
     if (!row || typeof row !== 'object') return null;
     if (typeof row.unitPrice !== 'number' && typeof row.lineTotal !== 'number') return null;
@@ -89,13 +102,18 @@
     if (unitPrice == null || !isFinite(unitPrice) || unitPrice <= 0) return null;
     var s = readStore();
     var list = Array.isArray(s.skuHistory[stem]) ? s.skuHistory[stem].slice() : [];
-    list.unshift({
+    var entry = {
       vendor:    vendor || row.vendorDetected || null,
       ts:        Date.now(),
       qty:       (typeof row.qty === 'number') ? row.qty : null,
       unit:      row.unit || null,
       unitPrice: +unitPrice.toFixed(4)
-    });
+    };
+    if (row.comparable && typeof row.comparable.perBaseUnit === 'number') {
+      entry.comparablePrice = row.comparable.perBaseUnit;
+      entry.comparableUnit  = row.comparable.baseUnit;
+    }
+    list.unshift(entry);
     if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
     s.skuHistory[stem] = list;
     // Cap total stems — drop stems with the oldest single newest entry.
@@ -126,13 +144,18 @@
         : (row.lineTotal && row.qty ? row.lineTotal / row.qty : null);
       if (unitPrice == null || !isFinite(unitPrice) || unitPrice <= 0) return;
       var list = Array.isArray(s.skuHistory[stem]) ? s.skuHistory[stem].slice() : [];
-      list.unshift({
+      var entry = {
         vendor:    vendor || row.vendorDetected || null,
         ts:        Date.now(),
         qty:       (typeof row.qty === 'number') ? row.qty : null,
         unit:      row.unit || null,
         unitPrice: +unitPrice.toFixed(4)
-      });
+      };
+      if (row.comparable && typeof row.comparable.perBaseUnit === 'number') {
+        entry.comparablePrice = row.comparable.perBaseUnit;
+        entry.comparableUnit  = row.comparable.baseUnit;
+      }
+      list.unshift(entry);
       if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
       s.skuHistory[stem] = list;
       stems.push(stem);
@@ -186,43 +209,77 @@
   // Wave 1.1 — per-row drift summary. Returns null when the row has
   // no comparable history (first time we've seen this stem).
   //
+  // Pack-aware: when the current row + history both carry
+  // comparablePrice (via pack-pricing.js), the drift metric uses
+  // the comparable per-base-unit price. This means a vendor changing
+  // from 12-pack to 24-pack of the same beer doesn't show as a
+  // "+100%" anomaly — the per-oz price is what actually moved.
+  // Falls back to raw unitPrice when comparable data isn't present
+  // (older history entries, ambiguous packs, count-only items).
+  //
   //   {
-  //     unitPrice, lastPrice, median90, median90Vs,
-  //     deltaPct, direction: 'up' | 'down' | 'flat',
-  //     isAnomaly,
-  //     observations
+  //     unitPrice, lastPrice, median90, deltaPct, medianDelta,
+  //     direction: 'up' | 'down' | 'flat',
+  //     isAnomaly, observations,
+  //     // when pack-aware:
+  //     comparablePrice, comparableUnit, basis: 'pack' | 'unit'
   //   }
   function summarizeRow(row) {
     if (!row || (typeof row.unitPrice !== 'number' && (typeof row.lineTotal !== 'number' || !row.qty))) return null;
-    var unitPrice = (typeof row.unitPrice === 'number')
+    var rawUnitPrice = (typeof row.unitPrice === 'number')
       ? row.unitPrice
       : row.lineTotal / row.qty;
-    if (!isFinite(unitPrice) || unitPrice <= 0) return null;
+    if (!isFinite(rawUnitPrice) || rawUnitPrice <= 0) return null;
     var history = lookupHistory(row);
-    if (!history.length) return { unitPrice: +unitPrice.toFixed(4), observations: 0 };
-    var lastPrice = history[0] ? history[0].unitPrice : null;
-    var med = rollingMedian(history, { skipLatest: false, window: 90 });
+    if (!history.length) return { unitPrice: +rawUnitPrice.toFixed(4), observations: 0 };
+
+    // Pack-aware path: prefer comparablePrice when the current row
+    // AND ≥half of the recent history share the SAME base unit.
+    // This avoids comparing $/lb to $/oz when a row's pack notation
+    // changes shape between weeks.
+    var currentComp = (row.comparable && typeof row.comparable.perBaseUnit === 'number')
+      ? { perBaseUnit: row.comparable.perBaseUnit, baseUnit: row.comparable.baseUnit }
+      : null;
+    var compHistory = history.filter(function (h) {
+      return typeof h.comparablePrice === 'number' && h.comparableUnit === (currentComp && currentComp.baseUnit);
+    });
+    var usingComparable = currentComp && compHistory.length >= Math.max(2, Math.floor(history.length / 2));
+
+    var price       = usingComparable ? currentComp.perBaseUnit : rawUnitPrice;
+    var lastPriceEntry = usingComparable ? compHistory[0] : history[0];
+    var lastPrice   = usingComparable
+      ? (lastPriceEntry && lastPriceEntry.comparablePrice)
+      : (lastPriceEntry && lastPriceEntry.unitPrice);
+    var medSource   = usingComparable
+      ? compHistory.map(function (h) { return { unitPrice: h.comparablePrice, ts: h.ts }; })
+      : history;
+    var med = rollingMedian(medSource, { skipLatest: false, window: 90 });
+
     var deltaPct = (lastPrice && lastPrice > 0)
-      ? ((unitPrice - lastPrice) / lastPrice) * 100
+      ? ((price - lastPrice) / lastPrice) * 100
       : null;
     var medianDelta = (med && med > 0)
-      ? ((unitPrice - med) / med) * 100
+      ? ((price - med) / med) * 100
       : null;
     var dir = 'flat';
     if (deltaPct != null) {
       if (deltaPct > 1) dir = 'up';
       else if (deltaPct < -1) dir = 'down';
     }
-    var isAnomaly = (medianDelta != null && Math.abs(medianDelta) >= ANOMALY_THRESHOLD_PCT && history.length >= MIN_OBSERVATIONS_FOR_ANOMALY);
+    var observationsCount = usingComparable ? compHistory.length : history.length;
+    var isAnomaly = (medianDelta != null && Math.abs(medianDelta) >= ANOMALY_THRESHOLD_PCT && observationsCount >= MIN_OBSERVATIONS_FOR_ANOMALY);
     return {
-      unitPrice:    +unitPrice.toFixed(4),
-      lastPrice:    lastPrice != null ? +lastPrice.toFixed(4) : null,
-      median90:     med != null ? +med.toFixed(4) : null,
-      deltaPct:     deltaPct != null ? +deltaPct.toFixed(1) : null,
-      medianDelta:  medianDelta != null ? +medianDelta.toFixed(1) : null,
-      direction:    dir,
-      isAnomaly:    !!isAnomaly,
-      observations: history.length
+      unitPrice:        +rawUnitPrice.toFixed(4),
+      lastPrice:        lastPrice != null ? +lastPrice.toFixed(4) : null,
+      median90:         med != null ? +med.toFixed(4) : null,
+      deltaPct:         deltaPct != null ? +deltaPct.toFixed(1) : null,
+      medianDelta:      medianDelta != null ? +medianDelta.toFixed(1) : null,
+      direction:        dir,
+      isAnomaly:        !!isAnomaly,
+      observations:     observationsCount,
+      comparablePrice:  usingComparable ? +price.toFixed(4) : null,
+      comparableUnit:   usingComparable ? currentComp.baseUnit : null,
+      basis:            usingComparable ? 'pack' : 'unit'
     };
   }
 
@@ -255,11 +312,169 @@
   }
 
   // ---------------------------------------------------------------
-  // Wave 1.2 — Contract-price watch.
+  // Cross-vendor SKU comparison (domain-expert layer).
+  //
+  // For a given row stem, group every observation by vendor and
+  // return { vendor, medianComparable, comparableUnit, observations,
+  // gapPctVsCheapest } per vendor — sorted by price ascending. The
+  // operator instantly sees "you buy this from 2 vendors; the
+  // cheapest charges $0.117/fl_oz vs $0.146/fl_oz here."
+  //
+  // Conservative requirements to avoid noise:
+  //   - Each vendor needs ≥3 observations before we report it.
+  //   - All reported observations must share the same comparableUnit
+  //     (we never compare $/lb to $/fl_oz).
+  //   - Returns null when only one vendor exists or none have enough
+  //     observations.
+  // ---------------------------------------------------------------
+  function compareAcrossVendors(rowOrName) {
+    var stem = stemOf((rowOrName && rowOrName.name) || rowOrName);
+    if (!stem) return null;
+    var s = readStore();
+    var list = s.skuHistory[stem] || [];
+    if (!list.length) return null;
+    // Bucket per vendor, only keep entries with comparablePrice in
+    // the same unit. Use the row's own comparableUnit if provided,
+    // otherwise pick whichever comparableUnit is most common.
+    var rowUnit = rowOrName && rowOrName.comparable && rowOrName.comparable.baseUnit;
+    if (!rowUnit) {
+      var unitCounts = {};
+      for (var i = 0; i < list.length; i++) {
+        var u = list[i].comparableUnit;
+        if (u) unitCounts[u] = (unitCounts[u] || 0) + 1;
+      }
+      var bestUnit = null, bestCount = 0;
+      Object.keys(unitCounts).forEach(function (u) {
+        if (unitCounts[u] > bestCount) { bestUnit = u; bestCount = unitCounts[u]; }
+      });
+      rowUnit = bestUnit;
+    }
+    if (!rowUnit) return null;
+    var perVendor = {};
+    list.forEach(function (e) {
+      if (!e.vendor || typeof e.comparablePrice !== 'number') return;
+      if (e.comparableUnit !== rowUnit) return;
+      (perVendor[e.vendor] = perVendor[e.vendor] || []).push(e.comparablePrice);
+    });
+    var vendors = Object.keys(perVendor);
+    if (vendors.length < 2) return null;
+    // Compute median per vendor, drop vendors with <3 samples.
+    var rows = [];
+    vendors.forEach(function (v) {
+      var pool = perVendor[v];
+      if (pool.length < 3) return;
+      var sorted = pool.slice().sort(function (a, b) { return a - b; });
+      var mid = Math.floor(sorted.length / 2);
+      var med = sorted.length % 2 === 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+      rows.push({
+        vendor:           v,
+        medianComparable: +med.toFixed(4),
+        comparableUnit:   rowUnit,
+        observations:     pool.length
+      });
+    });
+    if (rows.length < 2) return null;
+    rows.sort(function (a, b) { return a.medianComparable - b.medianComparable; });
+    var cheapest = rows[0].medianComparable;
+    rows.forEach(function (r) {
+      r.gapPctVsCheapest = cheapest > 0
+        ? +(((r.medianComparable - cheapest) / cheapest) * 100).toFixed(1)
+        : 0;
+    });
+    return rows;
+  }
+
+  // ---------------------------------------------------------------
+  // Volume-weighted invoice drift (domain-expert layer).
+  //
+  // Per-row drift × row dollar value, summed across the invoice.
+  // Operator's actual question is "is THIS invoice expensive vs my
+  // typical?" — not "are 12 rows up by some unweighted average?"
+  // A row that's +20% on a $4 line moves the answer less than a row
+  // that's +8% on a $200 line.
+  //
+  // Returns:
+  //   {
+  //     totalDriftDollars,         // sum of per-row drift in $
+  //     totalDriftPct,             // weighted % vs baseline cost
+  //     baselineDollars,           // sum of (line at median price)
+  //     ratedRows,                 // count of rows with usable history
+  //     byCategory: { protein: { drift, baseline, pct }, ... },
+  //     topDrivers: [{ name, deltaPct, lineTotal, deltaDollars }, ...]
+  //   }
+  // ---------------------------------------------------------------
+  function computeInvoiceDrift(rows) {
+    if (!Array.isArray(rows)) return null;
+    var totalDelta   = 0;
+    var totalBaseline = 0;
+    var ratedRows   = 0;
+    var byCategory  = {};
+    var drivers     = [];
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      if (!r) continue;
+      // Skip non-item rows (tax, credit, deposit, discount, surcharge).
+      if (r.kind && r.kind !== 'item') continue;
+      if (typeof r.lineTotal !== 'number' || r.lineTotal <= 0) continue;
+      var summary = summarizeRow(r);
+      if (!summary || summary.medianDelta == null || summary.observations < MIN_OBSERVATIONS_FOR_ANOMALY) continue;
+      var deltaFraction = summary.medianDelta / 100;
+      // Baseline cost = lineTotal / (1 + deltaFraction). Keeps the
+      // rollup comparable: total today vs total at the median price.
+      var baseline = r.lineTotal / (1 + deltaFraction);
+      var deltaDollars = r.lineTotal - baseline;
+      totalDelta    += deltaDollars;
+      totalBaseline += baseline;
+      ratedRows++;
+      var cat = r.category || 'uncategorized';
+      var bucket = byCategory[cat] || { drift: 0, baseline: 0, lines: 0 };
+      bucket.drift    += deltaDollars;
+      bucket.baseline += baseline;
+      bucket.lines    += 1;
+      byCategory[cat] = bucket;
+      drivers.push({
+        name:         r.name,
+        category:     r.category,
+        deltaPct:     summary.medianDelta,
+        lineTotal:    r.lineTotal,
+        deltaDollars: +deltaDollars.toFixed(2)
+      });
+    }
+    if (!ratedRows) return null;
+    drivers.sort(function (a, b) { return Math.abs(b.deltaDollars) - Math.abs(a.deltaDollars); });
+    var perCatOut = {};
+    Object.keys(byCategory).forEach(function (k) {
+      var b = byCategory[k];
+      perCatOut[k] = {
+        drift:    +b.drift.toFixed(2),
+        baseline: +b.baseline.toFixed(2),
+        pct:      b.baseline > 0 ? +((b.drift / b.baseline) * 100).toFixed(1) : 0,
+        lines:    b.lines
+      };
+    });
+    return {
+      totalDriftDollars: +totalDelta.toFixed(2),
+      totalDriftPct:     totalBaseline > 0 ? +((totalDelta / totalBaseline) * 100).toFixed(1) : 0,
+      baselineDollars:   +totalBaseline.toFixed(2),
+      ratedRows:         ratedRows,
+      byCategory:        perCatOut,
+      topDrivers:        drivers.slice(0, 5)
+    };
+  }
+
+  // ---------------------------------------------------------------
+  // Wave 1.2 — Contract-price watch (extended for comparable units).
   //
   // Operator types a negotiated price for one SKU; future invoices
   // flag any line where the actual price exceeds the contract.
   // Reconciliation report sums total $ overcharged across the period.
+  //
+  // Pack-aware extension: when opts.comparablePrice + opts.comparableUnit
+  // are provided, we store them. checkRow() compares in the comparable
+  // unit when both row + contract carry compatible comparables — so
+  // an operator who negotiated "$3.20/lb chicken thigh" gets correctly
+  // flagged whether the next invoice prices it as $/lb or as a 5LB
+  // case at $16.
   // ---------------------------------------------------------------
   function setContract(rowName, unitPrice, opts) {
     if (typeof unitPrice !== 'number' || unitPrice <= 0) return false;
@@ -267,12 +482,17 @@
     if (!stem) return false;
     var s = readStore();
     var contracts = s.contractPrices || {};
-    contracts[stem] = {
+    var entry = {
       unitPrice: +unitPrice.toFixed(4),
       vendor:    (opts && opts.vendor) || null,
       unit:      (opts && opts.unit) || null,
       setAt:     Date.now()
     };
+    if (opts && typeof opts.comparablePrice === 'number' && opts.comparableUnit) {
+      entry.comparablePrice = +opts.comparablePrice.toFixed(4);
+      entry.comparableUnit  = opts.comparableUnit;
+    }
+    contracts[stem] = entry;
     var keys = Object.keys(contracts);
     if (keys.length > CONTRACT_CAP) {
       // Drop oldest by setAt
@@ -302,20 +522,61 @@
     var c = s.contractPrices && s.contractPrices[stem];
     if (!c) return null;
     var staleMs = STALE_CONTRACT_DAYS * 86400000;
-    return {
+    var out = {
       unitPrice: c.unitPrice,
       vendor:    c.vendor,
       unit:      c.unit,
       setAt:     c.setAt,
       isStale:   (Date.now() - (c.setAt || 0)) > staleMs
     };
+    // Pack-aware fields propagate so checkRow can do unit-correct math.
+    if (typeof c.comparablePrice === 'number' && c.comparableUnit) {
+      out.comparablePrice = c.comparablePrice;
+      out.comparableUnit  = c.comparableUnit;
+    }
+    return out;
   }
 
   // For one parsed-row, compute "did we overpay vs contract?" Returns
   // null when no contract exists for the stem, an object otherwise.
+  //
+  // Pack-aware: when BOTH the contract and the row carry compatible
+  // comparable prices (same baseUnit), compare in that unit. The
+  // overcharge $ is computed off the row's totalQuantity in the
+  // comparable unit so it stays accurate across pack-size changes.
+  // Falls back to raw unitPrice when comparable data is missing on
+  // either side.
   function checkRow(row) {
     var contract = lookupContract(row && row.name);
     if (!contract) return null;
+    // Pack-aware path.
+    if (contract.comparablePrice != null && contract.comparableUnit &&
+        row && row.comparable &&
+        row.comparable.baseUnit === contract.comparableUnit &&
+        typeof row.comparable.perBaseUnit === 'number') {
+      var cDiff = row.comparable.perBaseUnit - contract.comparablePrice;
+      var cDiffPct = contract.comparablePrice > 0
+        ? (cDiff / contract.comparablePrice) * 100
+        : 0;
+      var totalQ = row.comparable.totalQuantity || 0;
+      return {
+        contractPrice:        contract.unitPrice,
+        contractComparable:   contract.comparablePrice,
+        contractComparableUnit: contract.comparableUnit,
+        actualPrice:          +(row.comparable.perBaseUnit).toFixed(4),
+        actualComparable:     +(row.comparable.perBaseUnit).toFixed(4),
+        actualComparableUnit: row.comparable.baseUnit,
+        diffPerUnit:          +cDiff.toFixed(4),
+        diffPct:              +cDiffPct.toFixed(1),
+        overcharge:           +((cDiff * totalQ)).toFixed(2),
+        isOver:               cDiff > (contract.comparablePrice * 0.005),
+        isUnder:              cDiff < -(contract.comparablePrice * 0.005),
+        isStale:              contract.isStale,
+        vendor:               contract.vendor,
+        basis:                'comparable'
+      };
+    }
+    // Legacy unit-price path.
     var unitPrice = (typeof row.unitPrice === 'number')
       ? row.unitPrice
       : (row.lineTotal && row.qty ? row.lineTotal / row.qty : null);
@@ -332,7 +593,8 @@
       isOver:        diff > 0.005,
       isUnder:       diff < -0.005,
       isStale:       contract.isStale,
-      vendor:        contract.vendor
+      vendor:        contract.vendor,
+      basis:         'unit'
     };
   }
 
@@ -374,6 +636,9 @@
     lookupContract:     lookupContract,
     checkRow:           checkRow,
     reconcileInvoice:   reconcileInvoice,
+    // Domain-expert layer (cross-vendor + invoice-level drift)
+    compareAcrossVendors: compareAcrossVendors,
+    computeInvoiceDrift:  computeInvoiceDrift,
     // utility
     stemOf:             stemOf,
     clearAll:           clearAll,

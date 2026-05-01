@@ -38,7 +38,9 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<!-- Tool-scoped manifest with share_target. Falls back to the site
+     manifest on browsers that ignore tool-scoped manifests. -->
+<link rel="manifest" href="/tools/invoice-decoder/manifest.webmanifest" />
 <link rel="preconnect" href="https://plausible.io" crossorigin />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
@@ -331,6 +333,19 @@
 .id-row-contract{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
 .id-row-contract--over{background:#7a3019;color:#fff;border-color:#7a3019}
 
+/* Cross-vendor savings chip — domain-expert layer. Surfaced when
+   the operator could save by switching suppliers for this stem. */
+.id-row-crossvendor{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2;cursor:help;font-variant-numeric:tabular-nums}
+.id-row-crossvendor:hover{background:#1f6e3a;color:#fff;border-color:#1f6e3a}
+
+/* Substitution chip — looks like a sub for what you usually buy. */
+.id-row-sub{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E5EAF6;color:#1f3a6e;border:1px solid #B0BFE0;cursor:help}
+
+/* Volume-weighted invoice drift line in the Vendor Pulse strip. */
+.id-pulse-drift{margin-top:6px;font-size:13px;color:rgba(255,255,255,0.92);font-variant-numeric:tabular-nums}
+.id-pulse-drift[data-dir="up"]{color:#fcd0c0}
+.id-pulse-drift[data-dir="down"]{color:#aee7d4}
+
 /* Wave 1.1 — toggleable mini-history */
 .id-row-history{grid-column:1 / -1;margin-top:8px;padding:10px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
 .id-row-history-label{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
@@ -423,6 +438,119 @@
 .id-kbd-compact{margin:8px 0 0;font-size:11px;color:var(--ink-soft);text-align:right}
 .id-kbd-compact kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:10.5px;padding:1px 4px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink)}
 
+/* ======================================================================
+   Wave 6.10 — desktop split-pane layout.
+   ====================================================================== */
+
+/* Default (mobile + tablet): existing block flow. The wrapper is
+   transparent — no extra padding, no visual chrome. */
+.id-result-area{display:block}
+
+/* Above 1024px, the wrapper becomes a 2-column CSS grid.
+   .id-parsed uses display:contents so its children participate
+   directly in the parent grid; we then assign each child to the
+   left rail or main column via grid-column rules. */
+@media (min-width: 1024px){
+  .id-result-area{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    column-gap:28px;
+    align-items:start;
+    margin-top:18px;
+  }
+  /* `display:contents` flattens .id-parsed so its children are
+     grid items of .id-result-area. Hidden state still hides via
+     [hidden] (display:none has higher specificity). */
+  .id-parsed{display:contents}
+  .id-parsed[hidden]{display:none}
+
+  /* LEFT RAIL — sticky so it follows the page scroll while the
+     parsed list grows. Top offset accounts for the site header. */
+  .id-preview-wrap,
+  .id-filter-bar,
+  .id-kbd-compact,
+  .id-kbd-legend{
+    grid-column:1;
+    align-self:start;
+  }
+  .id-preview-wrap{
+    position:sticky;
+    top:96px;
+    margin-top:0;
+    /* Compact the preview tiles into a single-column rail-friendly
+       stack. Smaller thumb height; meta wraps cleanly. */
+  }
+  .id-preview-wrap .id-preview-row{grid-template-columns:1fr;gap:8px}
+  .id-preview-wrap .id-preview-tile img{max-height:160px}
+  .id-preview-wrap .id-read-btn{width:100%;justify-content:center}
+  .id-filter-bar{
+    position:sticky;
+    top:340px;          /* below the sticky preview block */
+    z-index:2;
+    background:var(--cream,#FAF6EE);
+    margin:0 -8px;
+    padding:10px 8px;
+  }
+  .id-kbd-compact{margin-top:6px;text-align:left}
+  .id-kbd-legend{margin-top:0}
+
+  /* MAIN COLUMN — everything else. */
+  .id-vendor-pulse,
+  .id-diff-strip,
+  .id-mathfix,
+  .id-learn-vendor,
+  .id-parsed-summary,
+  .id-parsed-list,
+  .id-parsed-totals,
+  .id-bulkbar,
+  .id-bulk-undo,
+  .id-handoff{
+    grid-column:2;
+  }
+  /* The bulkbar's sticky-bottom positioning still works inside the
+     grid main column thanks to position:sticky operating relative
+     to the nearest scrolling ancestor. */
+
+  /* The "coming next" banner stays full-width within the grid
+     since it appears in the pre-result phase. (#idStatus is
+     positioned outside .id-result-area entirely.) */
+  .id-coming{
+    grid-column:1 / -1;
+  }
+
+  /* Pre-OCR phase: when only the preview-wrap is visible (parsed
+     panel hidden), the main column is empty. Suppress the grid
+     in that intermediate state to avoid an awkward 300px-wide
+     image floating with empty whitespace. We do this by detecting
+     the ".id-parsed[hidden]" sibling — if the result panel is
+     hidden, fall back to single-column. */
+  .id-result-area:has(.id-parsed[hidden]){
+    grid-template-columns:1fr;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap{
+    position:static;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-row{grid-template-columns:1fr 1fr}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-tile img{max-height:280px}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-read-btn{width:auto}
+
+  /* Wider container above 1100px so the split has room to breathe. */
+}
+@media (min-width: 1100px){
+  .block .container{max-width:1100px !important}
+  .id-hero,
+  .id-honesty,
+  .id-result-area .id-status{max-width:760px;margin-left:auto;margin-right:auto}
+}
+
+/* Tablet (720–1023) — single column with a slightly relaxed max
+   width so the parsed list isn't cramped. */
+@media (min-width: 720px) and (max-width: 1023px){
+  .id-result-area{margin-top:14px}
+}
+
 /* Wave 3.1 — visually-hidden utility for SR-only headings */
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
@@ -434,6 +562,36 @@
 .id-firstrun-btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
 .id-firstrun-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
 .id-firstrun-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+
+/* Wave 4.3 — Auto-learn vendor prompt. Sits above the parsed list
+   when the operator has run 3 invoices from the same unrecognized
+   letterhead. Friendly name input + save/dismiss. */
+.id-learn-vendor{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
+.id-learn-vendor[hidden]{display:none}
+.id-learn-msg{margin:0 0 8px;font-size:14px;color:var(--ink);line-height:1.55}
+.id-learn-msg--saved{color:var(--accent,#1f6f6a);font-weight:500}
+.id-learn-sample{margin:0 0 10px;padding:6px 10px;background:#f3efe7;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.id-learn-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.id-learn-input{flex:1 1 220px;font:inherit;font-size:13.5px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box}
+.id-learn-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
+.id-learn-save{font:inherit;font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;font-weight:500}
+.id-learn-save:hover{background:var(--accent,#1f6f6a);border-color:var(--accent,#1f6f6a)}
+.id-learn-dismiss{font:inherit;font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer}
+.id-learn-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
+
+/* Wave 6.8 — PWA update + install prompts. Slim banners that sit
+   between the input chips and the result panel; never sticky, never
+   block scrolling. */
+.id-update,.id-install{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
+.id-install{background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border-color:var(--line);border-left-color:var(--accent,#1f6f6a)}
+.id-update[hidden],.id-install[hidden]{display:none}
+.id-update-msg,.id-install-msg{margin:0;font-size:13.5px;color:var(--ink);line-height:1.5}
+.id-update-msg strong,.id-install-msg strong{color:var(--ink);font-weight:600}
+.id-update-btn,.id-install-btn,.id-update-dismiss,.id-install-dismiss{font:inherit;font-size:13px;padding:5px 12px;margin-left:6px;border-radius:6px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer}
+.id-update-btn,.id-install-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+.id-update-btn:hover,.id-install-btn:hover{background:var(--accent,#1f6f6a)}
+.id-update-dismiss,.id-install-dismiss{padding:3px 9px;font-weight:600}
+.id-update-dismiss:hover,.id-install-dismiss:hover{border-color:var(--ink);color:var(--ink)}
 
 /* Wave 5 — abandonment resume banner */
 .id-resume{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
@@ -783,12 +941,32 @@
       <p class="id-resume-msg">You had an invoice in progress yesterday. <button type="button" class="id-resume-btn">Pick it up</button> · <button type="button" class="id-resume-dismiss">Dismiss</button></p>
     </div>
 
+    <!-- Wave 6.8 — PWA update prompt. Surfaced by the SW registration
+         script below when a new version of the tool is available. -->
+    <div class="id-update" id="idUpdate" hidden role="status" aria-live="polite">
+      <p class="id-update-msg"><strong>Update available.</strong> A new version is ready. <button type="button" class="id-update-btn" id="idUpdateBtn">Refresh</button> <button type="button" class="id-update-dismiss" id="idUpdateDismiss" aria-label="Dismiss">×</button></p>
+    </div>
+
+    <!-- Wave 6.8 — install prompt. Browsers that fire beforeinstallprompt
+         (Chrome on Android, Edge on Windows) get a one-tap install affordance.
+         iOS Safari users get an unobtrusive instruction; the rest get nothing. -->
+    <div class="id-install" id="idInstall" hidden>
+      <p class="id-install-msg">Add to home screen — works offline once installed. <button type="button" class="id-install-btn" id="idInstallBtn">Install</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Dismiss">×</button></p>
+    </div>
+
     <!-- Status / progress strip. Shown once a file is chosen. -->
     <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
       <p class="id-status-title" id="idStatusTitle">Reading the photo…</p>
       <p class="id-status-msg" id="idStatusMsg">Cleaning up the image so the next step (line-by-line reading) gets the best shot.</p>
       <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
     </div>
+
+    <!-- Wave 6.10 — desktop split-pane wrapper. Above 1024px, the
+         result region becomes a 2-column grid (320px sticky rail +
+         1fr main panel). Below 1024px, normal block flow. The CSS
+         uses display:contents on .id-parsed so its children
+         participate in the parent grid without restructuring HTML. -->
+    <div class="id-result-area">
 
     <!-- Preview tiles — proves preprocessing landed before B2 wires OCR. -->
     <div class="id-preview-wrap" id="idPreview" hidden>
@@ -823,6 +1001,10 @@
 
       <!-- Wave 1.3 — Math reconciliation candidate-fix card. -->
       <div class="id-mathfix" id="idMathFix" hidden role="region" aria-label="Math reconciliation"></div>
+
+      <!-- Wave 4.3 — Auto-learn vendor prompt. Surfaced after a 3rd
+           invoice from a previously-unrecognized letterhead. -->
+      <div class="id-learn-vendor" id="idLearnVendor" hidden role="region" aria-label="Save this vendor layout"></div>
 
       <div class="id-parsed-summary">
         <span class="id-parsed-count" id="idParsedCount">0 items</span>
@@ -871,6 +1053,8 @@
       </div>
       <div class="id-handoff" id="idHandoff" hidden></div>
     </div>
+
+    </div><!-- /.id-result-area (Wave 6.10) -->
 
     <div class="id-honesty">
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">What this is, and what it isn't.</h2>
@@ -962,23 +1146,119 @@
 <script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
+<script src="./vendor-config.js?v=20260501-w8-4"></script>
 <script src="./preprocess.js?v=20260501-w8-1"></script>
-<script src="./ocr.js?v=20260501-w8-1"></script>
+<script src="./capture-coach.js?v=20260501-w8-6"></script>
+<script src="./ocr.js?v=20260501-w8-4"></script>
 <script src="./parse.js?v=20260501-w8-1"></script>
 <script src="./learnings.js?v=20260501-w8-1"></script>
 <script src="./categorize.js?v=20260501-w8-1"></script>
-<script src="./vendors.js?v=20260501-w8-1"></script>
-<script src="./encrypt.js?v=20260501-b6"></script>
-<script src="./passphrase-modal.js?v=20260501-w3-5"></script>
-<script src="./pdf-extract.js?v=20260501-w2-1"></script>
-<script src="./csv-extract.js?v=20260501-w2-2"></script>
+<script src="./pack-pricing.js?v=20260501-w8-8"></script>
+<script src="./auto-learn.js?v=20260501-w8-3"></script>
+<script src="./vendors.js?v=20260501-w8-3"></script>
+<script src="./kdf.js?v=20260501-w8-5"></script>
+<script src="./encrypt.js?v=20260501-w8-5"></script>
+<script src="./recovery.js?v=20260501-w8-5"></script>
+<script src="./pairing.js?v=20260501-w8-7"></script>
+<script src="./passphrase-modal.js?v=20260501-w8-5"></script>
+<script src="./pdf-extract.js?v=20260501-w8-4"></script>
+<script src="./csv-extract.js?v=20260501-w8-4"></script>
 <script src="./proof-flyout.js?v=20260501-w3-1"></script>
 <script src="./device-key.js?v=20260501-w3-4"></script>
-<script src="./sku-history.js?v=20260501-w8-1"></script>
+<script src="./sku-history.js?v=20260501-w8-9"></script>
+<script src="./substitution.js?v=20260501-w8-9"></script>
 <script src="./margin-impact.js?v=20260501-w8-1"></script>
 <script src="./accountant-export.js?v=20260501-w8-1"></script>
 <script src="./telemetry.js?v=20260501-w8-1"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
-<script src="./invoice-decoder.js?v=20260501-w8-1"></script>
+<script src="./invoice-decoder.js?v=20260501-w8-9"></script>
+
+<!--
+  Wave 6.8 — PWA registration + update prompt + install affordance.
+  Inline so it runs before any other tool script; checks support
+  defensively so older browsers (Safari <11.1, Chrome <40) silently
+  no-op. Honors the no-fetch invariant: navigator.serviceWorker.register
+  is not a fetch() — it tells the browser to fetch a same-origin SW
+  on its own.
+-->
+<script>
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  // Skip on file:// and http:// — SW only works over HTTPS or localhost.
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+
+  var swUrl = '/tools/invoice-decoder/sw.js';
+  navigator.serviceWorker.register(swUrl, { scope: '/tools/invoice-decoder/' })
+    .then(function (registration) {
+      window.__MID_SW_REG = registration;
+
+      // Detect a new SW being installed → trigger the update prompt
+      // when it transitions to "installed" with an active controller
+      // already on the page.
+      registration.addEventListener('updatefound', function () {
+        var newWorker = registration.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', function () {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdatePrompt(newWorker);
+          }
+        });
+      });
+    })
+    .catch(function () { /* SW registration failed — degrade silently. */ });
+
+  // Reload on controller change so the new SW takes over cleanly.
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  function showUpdatePrompt(newWorker) {
+    var host = document.getElementById('idUpdate');
+    var btn  = document.getElementById('idUpdateBtn');
+    var dis  = document.getElementById('idUpdateDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      newWorker.postMessage({ type: 'SKIP_WAITING' });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; });
+  }
+
+  // Install prompt — Chromium browsers fire beforeinstallprompt; we
+  // stash the event so the operator can trigger install on demand.
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var host = document.getElementById('idInstall');
+    var btn  = document.getElementById('idInstallBtn');
+    var dis  = document.getElementById('idInstallDismiss');
+    if (!host || !btn) return;
+    host.hidden = false;
+    btn.addEventListener('click', function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () {
+        host.hidden = true;
+        deferredPrompt = null;
+      });
+    });
+    if (dis) dis.addEventListener('click', function () { host.hidden = true; deferredPrompt = null; });
+  });
+
+  // Hide the install affordance once installed.
+  window.addEventListener('appinstalled', function () {
+    var host = document.getElementById('idInstall');
+    if (host) host.hidden = true;
+    if (window.plausible) {
+      try { window.plausible('Invoice Decoder Installed'); } catch (_) {}
+    }
+  });
+})();
+</script>
 </body>
 </html>

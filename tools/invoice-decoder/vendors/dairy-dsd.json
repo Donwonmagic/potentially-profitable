@@ -1,0 +1,53 @@
+{
+  "id": "dairy-dsd",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Dairy / DSD route delivery",
+    "es": "Lácteos / entrega ruta DSD"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "hiland\\s+dairy",
+        "weight": 0.55
+      },
+      {
+        "pattern": "borden\\s+dairy|dean\\s+foods",
+        "weight": 0.5
+      },
+      {
+        "pattern": "producers\\s+dairy",
+        "weight": 0.5
+      },
+      {
+        "pattern": "crystal\\s+creamery",
+        "weight": 0.5
+      },
+      {
+        "pattern": "route\\s+\\d+|driver\\s+\\d+",
+        "weight": 0.1
+      },
+      {
+        "pattern": "route\\s+invoice|dsd\\s+invoice",
+        "weight": 0.15
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9,
+  "categoryBias": {
+    "dairy": 1.3
+  },
+  "format": "thermal",
+  "lineGrammar": {
+    "_doc": "Dairy DSD — route delivery. Most dairy is tax-exempt; bottle deposits / case deposits are caught by parser's DEPOSIT_RE so we don't double-tag them. Route discounts (loyalty / volume) are common.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|route|loyalty)\\s+(allowance|discount|rebate)\\b",
+      "\\bdairy\\s+(rebate|allowance|reward)\\b"
+    ]
+  }
+}

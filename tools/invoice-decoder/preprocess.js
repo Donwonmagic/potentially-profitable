@@ -203,6 +203,129 @@
     return imageData;
   }
 
+  // -------------------- Illumination / shadow correction --------------------
+  // Subtracts a low-frequency "background" map from the grayscale
+  // image so binarization sees an evenly-lit page. This is the secret
+  // sauce behind clean phone-camera scans: a restaurant's overhead
+  // lighting almost always casts uneven brightness across an invoice
+  // (one corner shadowed by the operator's hand, the other lit by a
+  // ceiling can-light), and Otsu picks a single global threshold that
+  // can't recover both halves at once.
+  //
+  // Algorithm (Wave 8.1):
+  //   1. Downsample grayscale to a thumbnail (~96 px on long edge) —
+  //      this collapses the text strokes into the "background" plane
+  //      so they don't leak into the illumination estimate.
+  //   2. Box-blur the thumbnail 3× — a cheap Gaussian approximation.
+  //   3. Compute the thumbnail's global mean (= "what should white be").
+  //   4. For each full-resolution pixel, look up the corresponding
+  //      thumbnail value (bilinear), subtract it, add the global mean,
+  //      clamp 0..255. The text (which is well below local background)
+  //      stays dark; uneven lighting flattens out.
+  //
+  // Compute budget: 96×128 thumbnail blur is cheap; the bilinear
+  // upsample is the dominant cost (one read + four interp lookups
+  // per pixel — a few ms even on 2000×3000).
+  //
+  // Used by the gentle preset right before Sauvola when the bimodality
+  // score is low, signaling the histogram is washed out.
+  function correctIlluminationInPlace(imageData, opts) {
+    opts = opts || {};
+    var w = imageData.width, h = imageData.height;
+    if (w < 32 || h < 32) return imageData;
+    var d = imageData.data;
+    var thumbLong = Math.max(48, Math.min(192, opts.thumbLong || 96)) | 0;
+    // Compute thumbnail dims preserving aspect.
+    var tw, th;
+    if (w >= h) { tw = thumbLong; th = Math.max(8, Math.round(h * tw / w)); }
+    else        { th = thumbLong; tw = Math.max(8, Math.round(w * th / h)); }
+    // 1. Downsample (box-average) into Float32 so we can blur in place.
+    var thumb = new Float32Array(tw * th);
+    var sx = w / tw, sy = h / th;
+    for (var ty = 0; ty < th; ty++) {
+      var y0 = Math.floor(ty * sy);
+      var y1 = Math.max(y0 + 1, Math.floor((ty + 1) * sy));
+      if (y1 > h) y1 = h;
+      for (var tx = 0; tx < tw; tx++) {
+        var x0 = Math.floor(tx * sx);
+        var x1 = Math.max(x0 + 1, Math.floor((tx + 1) * sx));
+        if (x1 > w) x1 = w;
+        var sum = 0, n = 0;
+        // Sample stride 1 — windows are small.
+        for (var yy = y0; yy < y1; yy++) {
+          var rowOff = yy * w;
+          for (var xx = x0; xx < x1; xx++) {
+            sum += d[(rowOff + xx) * 4];
+            n++;
+          }
+        }
+        thumb[ty * tw + tx] = n > 0 ? sum / n : 0;
+      }
+    }
+    // 2. Box-blur 3 times (separable horizontal + vertical) — emulates
+    //    Gaussian. Use a fixed 5-wide window (effective σ ≈ 2 over 3 passes).
+    var win = 5;
+    var halfW = win >> 1;
+    var tmp = new Float32Array(tw * th);
+    for (var pass = 0; pass < 3; pass++) {
+      // Horizontal
+      for (var yh = 0; yh < th; yh++) {
+        for (var xh = 0; xh < tw; xh++) {
+          var sH = 0, cH = 0;
+          for (var kx = -halfW; kx <= halfW; kx++) {
+            var ix = xh + kx;
+            if (ix < 0 || ix >= tw) continue;
+            sH += thumb[yh * tw + ix];
+            cH++;
+          }
+          tmp[yh * tw + xh] = cH > 0 ? sH / cH : thumb[yh * tw + xh];
+        }
+      }
+      // Vertical
+      for (var yv = 0; yv < th; yv++) {
+        for (var xv = 0; xv < tw; xv++) {
+          var sV = 0, cV = 0;
+          for (var ky = -halfW; ky <= halfW; ky++) {
+            var iy = yv + ky;
+            if (iy < 0 || iy >= th) continue;
+            sV += tmp[iy * tw + xv];
+            cV++;
+          }
+          thumb[yv * tw + xv] = cV > 0 ? sV / cV : tmp[yv * tw + xv];
+        }
+      }
+    }
+    // 3. Global mean of the smoothed thumbnail = where "white" should sit.
+    var meanBg = 0;
+    for (var i = 0; i < thumb.length; i++) meanBg += thumb[i];
+    meanBg /= thumb.length;
+    // 4. Bilinear-upsample lookup + subtract + add meanBg + clamp.
+    for (var y = 0; y < h; y++) {
+      var fy = (y / h) * (th - 1);
+      var y0i = fy | 0;
+      var y1i = Math.min(th - 1, y0i + 1);
+      var fyf = fy - y0i;
+      for (var x = 0; x < w; x++) {
+        var fx = (x / w) * (tw - 1);
+        var x0i = fx | 0;
+        var x1i = Math.min(tw - 1, x0i + 1);
+        var fxf = fx - x0i;
+        var b00 = thumb[y0i * tw + x0i];
+        var b01 = thumb[y0i * tw + x1i];
+        var b10 = thumb[y1i * tw + x0i];
+        var b11 = thumb[y1i * tw + x1i];
+        var bgTop = b00 * (1 - fxf) + b01 * fxf;
+        var bgBot = b10 * (1 - fxf) + b11 * fxf;
+        var bg = bgTop * (1 - fyf) + bgBot * fyf;
+        var pIdx = (y * w + x) * 4;
+        var v = d[pIdx] - bg + meanBg;
+        if (v < 0) v = 0; else if (v > 255) v = 255;
+        d[pIdx] = d[pIdx + 1] = d[pIdx + 2] = v | 0;
+      }
+    }
+    return imageData;
+  }
+
   // -------------------- Median 3×3 denoise --------------------
   // Skip when the binarized image is already clean (low pixel-flip
   // count). Used on the gentle preset only — the aggressive preset
@@ -226,6 +349,510 @@
       }
     }
     return imageData;
+  }
+
+  // ====================================================================
+  // Wave 2.2 — Four-corner perspective rectification.
+  //
+  // The single biggest accuracy win for real-world phone-tilted
+  // photos. Given the document's four corners, we solve an 8-DOF
+  // homography that maps the skewed quadrilateral to a clean
+  // rectangle, then bilinear-sample the input through the inverse
+  // transform to produce the rectified output.
+  //
+  // Math summary:
+  //   For each corner pair (sx,sy) → (dx,dy), the homography H gives
+  //     dx = (h0*sx + h1*sy + h2) / (h6*sx + h7*sy + 1)
+  //     dy = (h3*sx + h4*sy + h5) / (h6*sx + h7*sy + 1)
+  //   With 4 corner pairs we get 8 linear equations in {h0..h7};
+  //   solving with Gaussian elimination yields H. We use the inverse
+  //   of H to back-sample the source so output pixels stay aligned.
+  //
+  // Robustness:
+  //   - Quad detection fails open: when confidence < 0.4 we return
+  //     null and the controller falls through to today's deskew.
+  //   - We require: ≥25% area coverage, all four sides ≥40px in the
+  //     downsampled image, opposite-side angle parity within 12°.
+  //   - Confidence comes from edge-vote totals; tunable threshold.
+  //
+  // Privacy / no-fetch: pure math, all in-canvas. Safe to ship.
+  // ====================================================================
+
+  // Pure-function helpers — testable in Node by passing plain
+  // ImageData-shaped objects ({ data, width, height }).
+
+  // Solve a 3x3 perspective transform from 4 source points to 4
+  // destination points. Returns an 8-entry array [h0..h7] where the
+  // 9th entry is implicitly 1. Returns null on a degenerate system.
+  //
+  // System (per corner pair, two rows):
+  //   [sx, sy, 1, 0, 0, 0, -sx*dx, -sy*dx] * [h0..h7]^T = dx
+  //   [0, 0, 0, sx, sy, 1, -sx*dy, -sy*dy] * [h0..h7]^T = dy
+  function solveHomography(srcQuad, dstQuad) {
+    if (!srcQuad || srcQuad.length !== 4 || !dstQuad || dstQuad.length !== 4) return null;
+    var A = [];
+    var b = [];
+    for (var i = 0; i < 4; i++) {
+      var sx = srcQuad[i].x, sy = srcQuad[i].y;
+      var dx = dstQuad[i].x, dy = dstQuad[i].y;
+      A.push([sx, sy, 1, 0, 0, 0, -sx * dx, -sy * dx]);
+      A.push([0, 0, 0, sx, sy, 1, -sx * dy, -sy * dy]);
+      b.push(dx);
+      b.push(dy);
+    }
+    // Gaussian elimination with partial pivoting, in-place on the
+    // augmented matrix [A | b].
+    for (var col = 0; col < 8; col++) {
+      // Find pivot row.
+      var pivot = col;
+      var maxAbs = Math.abs(A[col][col]);
+      for (var r = col + 1; r < 8; r++) {
+        var v = Math.abs(A[r][col]);
+        if (v > maxAbs) { maxAbs = v; pivot = r; }
+      }
+      if (maxAbs < 1e-9) return null; // singular
+      if (pivot !== col) {
+        var tmp = A[col]; A[col] = A[pivot]; A[pivot] = tmp;
+        var tb = b[col]; b[col] = b[pivot]; b[pivot] = tb;
+      }
+      // Eliminate below.
+      for (var r2 = col + 1; r2 < 8; r2++) {
+        var factor = A[r2][col] / A[col][col];
+        if (factor === 0) continue;
+        for (var c2 = col; c2 < 8; c2++) A[r2][c2] -= factor * A[col][c2];
+        b[r2] -= factor * b[col];
+      }
+    }
+    // Back-substitute.
+    var h = new Array(8).fill(0);
+    for (var i2 = 7; i2 >= 0; i2--) {
+      var sum = b[i2];
+      for (var j = i2 + 1; j < 8; j++) sum -= A[i2][j] * h[j];
+      h[i2] = sum / A[i2][i2];
+    }
+    return h;
+  }
+
+  // Apply a homography matrix to a source point. For our use we want
+  // the INVERSE map (sample source from output coordinates), so the
+  // caller passes the inverse here.
+  function applyHomography(h, x, y) {
+    var w = h[6] * x + h[7] * y + 1;
+    if (Math.abs(w) < 1e-9) return null;
+    return {
+      x: (h[0] * x + h[1] * y + h[2]) / w,
+      y: (h[3] * x + h[4] * y + h[5] * 1) / w
+    };
+  }
+
+  // Invert a 3x3 homography (with implicit h8=1) by inverting the
+  // 3x3 then re-normalizing. Returns 8 entries with h8 implicit.
+  function invertHomography(h) {
+    // 3x3 matrix
+    var m = [
+      [h[0], h[1], h[2]],
+      [h[3], h[4], h[5]],
+      [h[6], h[7], 1]
+    ];
+    // Cofactor / adjugate / det
+    var c00 =  m[1][1]*m[2][2] - m[1][2]*m[2][1];
+    var c01 = -(m[1][0]*m[2][2] - m[1][2]*m[2][0]);
+    var c02 =  m[1][0]*m[2][1] - m[1][1]*m[2][0];
+    var c10 = -(m[0][1]*m[2][2] - m[0][2]*m[2][1]);
+    var c11 =  m[0][0]*m[2][2] - m[0][2]*m[2][0];
+    var c12 = -(m[0][0]*m[2][1] - m[0][1]*m[2][0]);
+    var c20 =  m[0][1]*m[1][2] - m[0][2]*m[1][1];
+    var c21 = -(m[0][0]*m[1][2] - m[0][2]*m[1][0]);
+    var c22 =  m[0][0]*m[1][1] - m[0][1]*m[1][0];
+    var det = m[0][0]*c00 + m[0][1]*c01 + m[0][2]*c02;
+    if (Math.abs(det) < 1e-9) return null;
+    // Inverse = adjugate^T / det
+    var inv = [
+      [c00/det, c10/det, c20/det],
+      [c01/det, c11/det, c21/det],
+      [c02/det, c12/det, c22/det]
+    ];
+    // Normalize so [2][2] is 1
+    var k = inv[2][2];
+    if (Math.abs(k) < 1e-9) return null;
+    return [
+      inv[0][0]/k, inv[0][1]/k, inv[0][2]/k,
+      inv[1][0]/k, inv[1][1]/k, inv[1][2]/k,
+      inv[2][0]/k, inv[2][1]/k
+    ];
+  }
+
+  // Bilinear-sample a source ImageData at (x, y). Returns {r,g,b,a}.
+  // Out-of-bounds returns white (so we don't smear edge artifacts
+  // across the rectified rectangle).
+  function bilinearSample(srcData, srcW, srcH, x, y) {
+    if (x < 0 || y < 0 || x >= srcW - 1 || y >= srcH - 1) return [255, 255, 255, 255];
+    var x0 = Math.floor(x), y0 = Math.floor(y);
+    var x1 = x0 + 1, y1 = y0 + 1;
+    var fx = x - x0, fy = y - y0;
+    var i00 = (y0 * srcW + x0) * 4;
+    var i10 = (y0 * srcW + x1) * 4;
+    var i01 = (y1 * srcW + x0) * 4;
+    var i11 = (y1 * srcW + x1) * 4;
+    var out = [0, 0, 0, 255];
+    for (var ch = 0; ch < 3; ch++) {
+      var v00 = srcData[i00 + ch];
+      var v10 = srcData[i10 + ch];
+      var v01 = srcData[i01 + ch];
+      var v11 = srcData[i11 + ch];
+      var top = v00 * (1 - fx) + v10 * fx;
+      var bot = v01 * (1 - fx) + v11 * fx;
+      out[ch] = Math.round(top * (1 - fy) + bot * fy);
+    }
+    return out;
+  }
+
+  // Apply a forward homography to an input ImageData buffer and
+  // produce an output ImageData buffer of size (outW × outH).
+  // The forward `h` maps source→destination; we invert it for
+  // back-sampling so each output pixel pulls from the correct
+  // source location.
+  //
+  // Operates on plain {data, width, height} objects; works with
+  // both browser ImageData and synthetic Uint8ClampedArray buffers.
+  function warpPerspective(srcImg, h, outW, outH) {
+    var hInv = invertHomography(h);
+    if (!hInv) return null;
+    var src = srcImg.data;
+    var srcW = srcImg.width;
+    var srcH = srcImg.height;
+    var out = new Uint8ClampedArray(outW * outH * 4);
+    for (var y = 0; y < outH; y++) {
+      for (var x = 0; x < outW; x++) {
+        var p = applyHomography(hInv, x, y);
+        var sample = p ? bilinearSample(src, srcW, srcH, p.x, p.y) : [255, 255, 255, 255];
+        var oi = (y * outW + x) * 4;
+        out[oi]     = sample[0];
+        out[oi + 1] = sample[1];
+        out[oi + 2] = sample[2];
+        out[oi + 3] = sample[3];
+      }
+    }
+    return { data: out, width: outW, height: outH };
+  }
+
+  // ----- Document quad detection -----
+  //
+  // Strategy: downsample → Sobel edge magnitude → threshold to top
+  // edge pixels → Hough line accumulator → pick top 2 horizontal +
+  // top 2 vertical lines → intersect for 4 corners → verify.
+  //
+  // The detector operates on a downsampled grayscale buffer for
+  // speed (target: complete in <120ms on a phone). Caller passes
+  // the canvas; we map quadrilaterals back to full-res coordinates.
+
+  // Sobel edge magnitude on a grayscale ImageData buffer. Writes
+  // magnitude into a fresh Uint8ClampedArray and returns it.
+  function sobelMagnitude(srcImg) {
+    var w = srcImg.width, h = srcImg.height;
+    var d = srcImg.data;
+    var out = new Uint8ClampedArray(w * h);
+    for (var y = 1; y < h - 1; y++) {
+      for (var x = 1; x < w - 1; x++) {
+        // Read R channel only (assume grayscale-fed image).
+        var i = (y * w + x) * 4;
+        var tl = d[i - w * 4 - 4],   tm = d[i - w * 4],   tr = d[i - w * 4 + 4];
+        var ml = d[i - 4],                               mr = d[i + 4];
+        var bl = d[i + w * 4 - 4],   bm = d[i + w * 4],   br = d[i + w * 4 + 4];
+        var gx = -tl + tr - 2 * ml + 2 * mr - bl + br;
+        var gy = -tl - 2 * tm - tr + bl + 2 * bm + br;
+        var mag = Math.sqrt(gx * gx + gy * gy);
+        out[y * w + x] = mag > 255 ? 255 : mag | 0;
+      }
+    }
+    return out;
+  }
+
+  // Hough line accumulator. Returns top-K lines as [{theta, rho, votes}, ...]
+  // theta in degrees [-90..90), rho in pixels.
+  // edgeBuf is a (w*h) magnitude buffer.
+  function houghLines(edgeBuf, w, h, opts) {
+    opts = opts || {};
+    var threshold = opts.threshold || 80;
+    var thetaStepDeg = opts.thetaStep || 1;
+    var nTheta = Math.round(180 / thetaStepDeg);
+    var diag = Math.ceil(Math.sqrt(w * w + h * h));
+    var nRho = 2 * diag;
+    var acc = new Int32Array(nTheta * nRho);
+    // Precompute sin/cos tables.
+    var sinT = new Float32Array(nTheta);
+    var cosT = new Float32Array(nTheta);
+    for (var t = 0; t < nTheta; t++) {
+      var rad = (t * thetaStepDeg - 90) * Math.PI / 180;
+      sinT[t] = Math.sin(rad);
+      cosT[t] = Math.cos(rad);
+    }
+    for (var y = 0; y < h; y++) {
+      for (var x = 0; x < w; x++) {
+        if (edgeBuf[y * w + x] < threshold) continue;
+        for (var t2 = 0; t2 < nTheta; t2++) {
+          var rho = Math.round(x * cosT[t2] + y * sinT[t2]) + diag;
+          if (rho >= 0 && rho < nRho) acc[t2 * nRho + rho]++;
+        }
+      }
+    }
+    // Find peaks: any (theta, rho) with votes >= maxVotes * 0.4 and
+    // local-max in a ±3 neighborhood. Keep top K.
+    var topK = opts.topK || 12;
+    var maxVotes = 0;
+    for (var i = 0; i < acc.length; i++) if (acc[i] > maxVotes) maxVotes = acc[i];
+    if (maxVotes === 0) return [];
+    var minVotes = Math.max(15, maxVotes * 0.35);
+    var peaks = [];
+    for (var t3 = 0; t3 < nTheta; t3++) {
+      for (var r = 0; r < nRho; r++) {
+        var v = acc[t3 * nRho + r];
+        if (v < minVotes) continue;
+        // Local-max test in 3x3.
+        var isMax = true;
+        for (var dt = -2; dt <= 2 && isMax; dt++) {
+          for (var dr = -2; dr <= 2; dr++) {
+            if (dt === 0 && dr === 0) continue;
+            var tt = t3 + dt, rr = r + dr;
+            if (tt < 0 || tt >= nTheta || rr < 0 || rr >= nRho) continue;
+            if (acc[tt * nRho + rr] > v) { isMax = false; break; }
+          }
+        }
+        if (isMax) {
+          peaks.push({
+            theta: t3 * thetaStepDeg - 90,  // degrees
+            rho: r - diag,                  // px (signed)
+            votes: v
+          });
+        }
+      }
+    }
+    peaks.sort(function (a, b) { return b.votes - a.votes; });
+    return peaks.slice(0, topK);
+  }
+
+  // Intersect two Hough-form lines. Each line: x*cos(theta) + y*sin(theta) = rho.
+  // Returns {x, y} or null when nearly parallel.
+  function intersectHoughLines(la, lb) {
+    var rA = la.theta * Math.PI / 180, rB = lb.theta * Math.PI / 180;
+    var ca = Math.cos(rA), sa = Math.sin(rA);
+    var cb = Math.cos(rB), sb = Math.sin(rB);
+    var det = ca * sb - cb * sa;
+    if (Math.abs(det) < 1e-6) return null;
+    return {
+      x: (la.rho * sb - lb.rho * sa) / det,
+      y: (lb.rho * ca - la.rho * cb) / det
+    };
+  }
+
+  // Pick the document quad from a set of Hough peaks. Returns
+  // { corners: [tl, tr, br, bl], confidence } or null.
+  //
+  // Heuristic: the document's four sides are the top-2 strongest
+  // ~horizontal lines and the top-2 strongest ~vertical lines.
+  // After computing intersections, we reject if (a) any corner is
+  // off-frame, (b) the area is < 25% of the frame, (c) opposite-side
+  // angle parity exceeds 12°, (d) any side is shorter than 40px.
+  function pickQuad(peaks, w, h) {
+    if (!peaks || peaks.length < 4) return null;
+    // Bucket into "horizontal" (theta near ±90) and "vertical" (near 0).
+    // Hough convention: theta=0 → vertical line (x = rho); theta=±90 → horizontal.
+    function isHorizontal(p) {
+      var a = Math.abs(Math.abs(p.theta) - 90);
+      return a < 25;
+    }
+    function isVertical(p) {
+      return Math.abs(p.theta) < 25;
+    }
+    var h0 = peaks.filter(isHorizontal);
+    var v0 = peaks.filter(isVertical);
+    if (h0.length < 2 || v0.length < 2) return null;
+    // Take strongest 2 of each (peaks are pre-sorted by votes desc).
+    var top    = h0[0];
+    var bot    = null;
+    var minRhoSep = 30; // require at least 30px separation between parallel lines
+    for (var i = 1; i < h0.length; i++) {
+      if (Math.abs(h0[i].rho - top.rho) >= minRhoSep) { bot = h0[i]; break; }
+    }
+    if (!bot) return null;
+    // Order top vs. bot by image-y of their midpoint at x=w/2.
+    function lineYAtX(line, x) {
+      var rad = line.theta * Math.PI / 180;
+      var s = Math.sin(rad);
+      if (Math.abs(s) < 1e-6) return null;
+      return (line.rho - x * Math.cos(rad)) / s;
+    }
+    var topY = lineYAtX(top, w / 2);
+    var botY = lineYAtX(bot, w / 2);
+    if (topY == null || botY == null) return null;
+    if (topY > botY) { var swap = top; top = bot; bot = swap; }
+
+    var left = v0[0];
+    var right = null;
+    for (var j = 1; j < v0.length; j++) {
+      if (Math.abs(v0[j].rho - left.rho) >= minRhoSep) { right = v0[j]; break; }
+    }
+    if (!right) return null;
+    function lineXAtY(line, y) {
+      var rad = line.theta * Math.PI / 180;
+      var c = Math.cos(rad);
+      if (Math.abs(c) < 1e-6) return null;
+      return (line.rho - y * Math.sin(rad)) / c;
+    }
+    var leftX = lineXAtY(left, h / 2);
+    var rightX = lineXAtY(right, h / 2);
+    if (leftX == null || rightX == null) return null;
+    if (leftX > rightX) { var swp = left; left = right; right = swp; }
+
+    // 4 corners
+    var tl = intersectHoughLines(top, left);
+    var tr = intersectHoughLines(top, right);
+    var br = intersectHoughLines(bot, right);
+    var bl = intersectHoughLines(bot, left);
+    if (!tl || !tr || !br || !bl) return null;
+    var corners = [tl, tr, br, bl];
+    // Verify all corners on or near frame.
+    var pad = 8;
+    for (var k = 0; k < 4; k++) {
+      if (corners[k].x < -pad || corners[k].x > w + pad ||
+          corners[k].y < -pad || corners[k].y > h + pad) return null;
+    }
+    // Verify minimum side lengths.
+    function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+    if (dist(tl, tr) < 40 || dist(tr, br) < 40 || dist(br, bl) < 40 || dist(bl, tl) < 40) return null;
+    // Verify area >= 25% of frame.
+    function quadArea(q) {
+      // Shoelace
+      var s = 0;
+      for (var ii = 0; ii < 4; ii++) {
+        var a = q[ii], b = q[(ii + 1) % 4];
+        s += a.x * b.y - b.x * a.y;
+      }
+      return Math.abs(s) / 2;
+    }
+    var area = quadArea(corners);
+    var frame = w * h;
+    if (area / frame < 0.25) return null;
+    // Verify opposite-side angle parity within 12°.
+    function lineAngle(a, b) { return Math.atan2(b.y - a.y, b.x - a.x); }
+    var aTop = lineAngle(tl, tr);
+    var aBot = lineAngle(bl, br);
+    var aLeft = lineAngle(tl, bl);
+    var aRight = lineAngle(tr, br);
+    function angleDiff(a, b) {
+      var d = Math.abs(a - b) * 180 / Math.PI;
+      while (d > 180) d -= 180;
+      return Math.min(d, 180 - d);
+    }
+    if (angleDiff(aTop, aBot) > 12) return null;
+    if (angleDiff(aLeft, aRight) > 12) return null;
+    // Confidence: average of the 4 line votes, normalized by max.
+    var voteSum = top.votes + bot.votes + left.votes + right.votes;
+    var maxLine = Math.max(top.votes, bot.votes, left.votes, right.votes);
+    var conf = (voteSum / 4) / Math.max(maxLine, 1);
+    // Bound 0..1; we'll also blend area-coverage weight.
+    var areaConf = Math.min(1, area / frame * 1.6);
+    return {
+      corners: corners,
+      confidence: Math.min(1, conf * 0.5 + areaConf * 0.5),
+      voteSum: voteSum
+    };
+  }
+
+  // High-level: detect the document quad in a canvas. Downsamples,
+  // grayscales, runs Sobel + Hough, picks the quad. Maps coordinates
+  // back to canvas-space. Returns null when confidence < 0.4.
+  function findDocumentQuad(canvas, opts) {
+    opts = opts || {};
+    var w = canvas.width, h = canvas.height;
+    if (w < 80 || h < 80) return null;
+    var maxEdge = opts.maxEdge || 480;
+    var scale = Math.max(w, h) > maxEdge ? maxEdge / Math.max(w, h) : 1;
+    var dw = Math.round(w * scale);
+    var dh = Math.round(h * scale);
+    var down = document.createElement('canvas');
+    down.width = dw; down.height = dh;
+    var ctx = down.getContext('2d');
+    if (!ctx) return null;
+    ctx.drawImage(canvas, 0, 0, dw, dh);
+    var img = ctx.getImageData(0, 0, dw, dh);
+    // Grayscale in-place (Rec. 601).
+    var d = img.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var y = (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) | 0;
+      d[i] = d[i + 1] = d[i + 2] = y;
+    }
+    var edges = sobelMagnitude(img);
+    var peaks = houghLines(edges, dw, dh, { threshold: opts.edgeThreshold || 80, topK: 12 });
+    var quad = pickQuad(peaks, dw, dh);
+    if (!quad) return null;
+    var minConf = (opts.minConfidence != null) ? opts.minConfidence : 0.4;
+    if (quad.confidence < minConf) return null;
+    // Map corners back to full-res coordinates.
+    quad.corners = quad.corners.map(function (c) {
+      return { x: c.x / scale, y: c.y / scale };
+    });
+    quad.scale = scale;
+    return quad;
+  }
+
+  // Rectify a canvas given a quad. Computes the output rectangle's
+  // size from average side lengths (preserves aspect roughly), solves
+  // the homography, runs warpPerspective, and writes back into a
+  // fresh canvas.
+  function rectifyCanvas(canvas, quad) {
+    if (!quad || !quad.corners) return null;
+    var c = quad.corners;
+    var topLen   = Math.hypot(c[0].x - c[1].x, c[0].y - c[1].y);
+    var botLen   = Math.hypot(c[3].x - c[2].x, c[3].y - c[2].y);
+    var leftLen  = Math.hypot(c[0].x - c[3].x, c[0].y - c[3].y);
+    var rightLen = Math.hypot(c[1].x - c[2].x, c[1].y - c[2].y);
+    var outW = Math.round((topLen + botLen) / 2);
+    var outH = Math.round((leftLen + rightLen) / 2);
+    // Cap to a reasonable range so we don't blow memory.
+    var cap = 2400;
+    if (Math.max(outW, outH) > cap) {
+      var s = cap / Math.max(outW, outH);
+      outW = Math.round(outW * s);
+      outH = Math.round(outH * s);
+    }
+    var dst = [
+      { x: 0,     y: 0 },
+      { x: outW, y: 0 },
+      { x: outW, y: outH },
+      { x: 0,     y: outH }
+    ];
+    var hMat = solveHomography(c, dst);
+    if (!hMat) return null;
+    // Pull source ImageData.
+    var sctx = canvas.getContext('2d');
+    if (!sctx) return null;
+    var srcImg = sctx.getImageData(0, 0, canvas.width, canvas.height);
+    var warped = warpPerspective(srcImg, hMat, outW, outH);
+    if (!warped) return null;
+    var out = document.createElement('canvas');
+    out.width = outW; out.height = outH;
+    var octx = out.getContext('2d');
+    if (!octx) return null;
+    var outImg = octx.createImageData(outW, outH);
+    outImg.data.set(warped.data);
+    octx.putImageData(outImg, 0, 0);
+    return out;
+  }
+
+  // Top-level: detect quad and rectify in one call. Returns
+  // { canvas, confidence, corners } on success, null on failure
+  // (caller falls back to today's deskew + threshold).
+  function rectifyDocument(canvas, opts) {
+    var quad = findDocumentQuad(canvas, opts);
+    if (!quad) return null;
+    var rect = rectifyCanvas(canvas, quad);
+    if (!rect) return null;
+    return {
+      canvas: rect,
+      confidence: quad.confidence,
+      corners: quad.corners
+    };
   }
 
   // -------------------- Deskew (Hough-style scoring) --------------------
@@ -304,8 +931,28 @@
   // result per cell.
   function preprocessCanvas(canvas, preset) {
     preset = preset || 'aggressive';
-    // 1. Deskew first (operates on the colored canvas; rotation
-    //    artifacts are easier to clean afterward).
+    // Wave 2.2 — perspective rectification first. When the photo
+    // is angled enough that we can detect the document's four
+    // corners with confidence ≥0.4, we warp it to a clean rectangle
+    // before any other step. Deskew + threshold + denoise then
+    // operate on the rectified surface (where they're MORE
+    // effective, because text rows are now genuinely parallel).
+    //
+    // Failure mode: rectifyDocument returns null when confidence
+    // is low; we silently fall through to today's deskew. The
+    // operator's experience is unchanged on hard photos.
+    var rectified = null;
+    var rectConf = null;
+    try {
+      var rect = rectifyDocument(canvas, { minConfidence: 0.4 });
+      if (rect && rect.canvas) {
+        rectified = rect.canvas;
+        rectConf = rect.confidence;
+        canvas = rectified;
+      }
+    } catch (_) { /* never block on rectification failure */ }
+    // 1. Deskew (operates on the rectified canvas if rectification
+    //    succeeded — usually a small residual angle ≤2°).
     var skew = detectSkewAngle(canvas);
     var deskewed = rotateCanvas(canvas, -skew);
     // 2. Grayscale + Otsu binarize.
@@ -327,10 +974,23 @@
     // motion blur). Pure Otsu falls back when bimodality is high
     // since Sauvola adds compute we don't need.
     var thresholdMethod = 'otsu';
+    var illuminationCorrected = false;
     if (preset === 'aggressive') {
       t = Math.min(255, t + 8);
       applyThresholdInPlace(img, t);
     } else if (preset === 'gentle' && bimodalityScore < 1500 && blurScore > 60) {
+      // Wave 8.1 — when the histogram is washed-out (low bimodality)
+      // but the image is sharp, the culprit is almost always uneven
+      // lighting (shadows/glare). Subtract the background-illumination
+      // map first; Sauvola then operates on a near-evenly-lit page
+      // and produces a much cleaner binary surface for OCR.
+      correctIlluminationInPlace(img);
+      illuminationCorrected = true;
+      // Re-Otsu so the surfaced threshold reflects the corrected image
+      // (downstream callers — and the bimodality-trigger for retake
+      // coaching — read this value).
+      t = otsuThreshold(img);
+      bimodalityScore = otsuBetweenClassVariance(img, t);
       sauvolaInPlace(img, { window: 21, k: 0.34 });
       thresholdMethod = 'sauvola';
     } else if (preset === 'gentle') {
@@ -346,7 +1006,10 @@
       thresholdMethod: thresholdMethod,
       blurScore: blurScore,
       bimodalityScore: bimodalityScore,
-      qualityHint: classifyQuality(blurScore, bimodalityScore)
+      qualityHint: classifyQuality(blurScore, bimodalityScore),
+      rectified: !!rectified,
+      rectifyConfidence: rectConf,
+      illuminationCorrected: illuminationCorrected
     };
   }
 
@@ -420,6 +1083,52 @@
     return 'good';
   }
 
+  // Wave 8.1 — Confidence-triggered preprocess retry.
+  //
+  // The preprocessCanvas pipeline uses fixed preset paths. When the
+  // first pass scores poorly (low contrast / low bimodality), a SECOND
+  // pass with the alternate preset frequently recovers most of the
+  // accuracy gap on hard photos. We don't ship multipass for free in
+  // the controller — that's the OCR layer's job — but for callers who
+  // want a single best-effort canvas (e.g. unit tests, Workshop), this
+  // wrapper picks the better of two passes.
+  //
+  // Decision: pick by `qualityHint` first (good > low-contrast > blurry),
+  // then by bimodalityScore as a tiebreaker. Blur can't be fixed in
+  // software so we never re-pass on blur; we just surface the hint.
+  function qualityScoreFor(r) {
+    if (!r) return 0;
+    if (r.qualityHint === 'good') return 100;
+    if (r.qualityHint === 'low-contrast') return 40 + Math.min(40, r.bimodalityScore / 40);
+    if (r.qualityHint === 'blurry') return 0 + Math.min(35, (r.blurScore || 0) / 2);
+    return 25;
+  }
+  function preprocessCanvasWithRetry(canvas, opts) {
+    opts = opts || {};
+    var firstPreset = opts.preset || 'aggressive';
+    var altPreset = (firstPreset === 'gentle') ? 'aggressive' : 'gentle';
+    var first = preprocessCanvas(canvas, firstPreset);
+    if (first.qualityHint === 'good' || opts.skipRetry) {
+      first.retried = false;
+      first.preset = firstPreset;
+      return first;
+    }
+    // Re-pass on the original input canvas so we get a clean rectify.
+    var second = preprocessCanvas(canvas, altPreset);
+    var firstScore = qualityScoreFor(first);
+    var secondScore = qualityScoreFor(second);
+    if (secondScore > firstScore + 5) {
+      second.retried = true;
+      second.retryPreset = altPreset;
+      second.firstQualityHint = first.qualityHint;
+      second.preset = altPreset;
+      return second;
+    }
+    first.retried = false;
+    first.preset = firstPreset;
+    return first;
+  }
+
   // Public entry: takes a File, returns a preprocessed canvas plus
   // metadata. The caller (Wave B2) feeds the canvas to Tesseract.
   function preprocessFile(file, opts) {
@@ -427,14 +1136,18 @@
     var maxEdge = opts.maxEdge || 2000;
     var preset = opts.preset || 'aggressive';
     return fileToCanvas(file, maxEdge).then(function (raw) {
-      var result = preprocessCanvas(raw, preset);
+      var result = opts.retryOnLowQuality
+        ? preprocessCanvasWithRetry(raw, { preset: preset })
+        : preprocessCanvas(raw, preset);
       return {
         canvas: result.canvas,
         rawWidth:  raw.width,
         rawHeight: raw.height,
         skewAngle: result.skewAngle,
         threshold: result.threshold,
-        preset: preset
+        preset:    result.preset || preset,
+        retried:   !!result.retried,
+        qualityHint: result.qualityHint
       };
     });
   }
@@ -447,12 +1160,27 @@
   var api = {
     preprocessFile:    preprocessFile,
     preprocessCanvas:  preprocessCanvas,
+    preprocessCanvasWithRetry: preprocessCanvasWithRetry,
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,
     otsuThreshold:     otsuThreshold,
     sauvolaInPlace:    sauvolaInPlace,
-    classifyQuality:   classifyQuality
+    correctIlluminationInPlace: correctIlluminationInPlace,
+    classifyQuality:   classifyQuality,
+    // Wave 2.2 — perspective rectification suite. Pure-function
+    // helpers exposed for testing in Node.
+    findDocumentQuad:  findDocumentQuad,
+    rectifyDocument:   rectifyDocument,
+    rectifyCanvas:     rectifyCanvas,
+    solveHomography:   solveHomography,
+    invertHomography:  invertHomography,
+    applyHomography:   applyHomography,
+    warpPerspective:   warpPerspective,
+    sobelMagnitude:    sobelMagnitude,
+    houghLines:        houghLines,
+    pickQuad:          pickQuad,
+    bilinearSample:    bilinearSample
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_PREPROCESS = api;

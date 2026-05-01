@@ -111,13 +111,19 @@
   }
 
   // -------------------- XLSX (SheetJS) --------------------
-  var XLSX_CDN = 'https://cdn.jsdelivr.net/npm/xlsx@0.20.3/xlsx.mjs';
+  // Wave 6.4 — load from same-origin via vendor-config. The pinned
+  // vendor file is the @e965/xlsx fork at the same 0.20.3 version
+  // (functionally identical to the legacy unscoped xlsx package);
+  // we serve it under /assets/vendor/xlsx@0.20.3/xlsx.mjs.
   var __xlsxLoadPromise = null;
   function loadXlsx() {
     if (root.XLSX) return Promise.resolve(root.XLSX);
     if (__xlsxLoadPromise) return __xlsxLoadPromise;
+    if (typeof root.MID_VENDORS_CFG === 'undefined' || !root.MID_VENDORS_CFG.importModule) {
+      return Promise.reject(new Error('vendor-config module missing'));
+    }
     __xlsxLoadPromise = (async function () {
-      var mod = await import(/* @vite-ignore */ /* webpackIgnore: true */ XLSX_CDN);
+      var mod = await root.MID_VENDORS_CFG.importModule('xlsx');
       var XLSX = mod && (mod.default || mod);
       if (!XLSX || !XLSX.read) {
         __xlsxLoadPromise = null;

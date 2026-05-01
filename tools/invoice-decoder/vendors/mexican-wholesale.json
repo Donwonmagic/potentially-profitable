@@ -1,0 +1,52 @@
+{
+  "id": "mexican-wholesale",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Mexican wholesaler",
+    "es": "Mayorista mexicano"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "la\\s+michoacana\\s+meat",
+        "weight": 0.55
+      },
+      {
+        "pattern": "northgate\\s+market\\s+foodservice|northgate\\s+gonzalez",
+        "weight": 0.5
+      },
+      {
+        "pattern": "mariscos\\s+linares",
+        "weight": 0.5
+      },
+      {
+        "pattern": "carniceria\\s+|carnicería\\s+",
+        "weight": 0.2
+      },
+      {
+        "pattern": "abarrotes\\s+y\\s+mas|abarrotes\\s+y\\s+más",
+        "weight": 0.2
+      },
+      {
+        "pattern": "proveedor\\s+mexicano|distribuidor\\s+latino",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 8,
+  "lineGrammar": {
+    "_doc": "Mexican wholesale — La Michoacana, Northgate Foodservice, Mariscos Linares. Spanish tax footers (IVA / impuesto) plus standard sales tax for US-located distributors.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\biva\\b",
+      "\\bimpuesto(s)?\\s+(al\\s+)?valor\\s+agregado\\b",
+      "\\bimpuesto\\s+sobre\\s+ventas\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|loyalty|member)\\s+(discount|rebate|allowance)\\b",
+      "\\b(descuento|promoci[oó]n|rebaja)\\s+(por\\s+)?(volumen|cantidad|caja)\\b"
+    ]
+  }
+}

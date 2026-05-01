@@ -1,0 +1,42 @@
+{
+  "id": "veritiv",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Veritiv",
+    "es": "Veritiv"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "\\bveritiv\\b",
+        "weight": 0.6
+      },
+      {
+        "pattern": "veritiv\\s+corporation",
+        "weight": 0.3
+      },
+      {
+        "pattern": "packaging\\s+&?\\s*facility",
+        "weight": 0.15
+      }
+    ]
+  },
+  "headerSkip": [],
+  "confidenceBoost": 9,
+  "categoryBias": {
+    "paper": 1.2,
+    "cleaning": 1.1
+  },
+  "lineGrammar": {
+    "_doc": "Veritiv — packaging + facility supplies. Universal sales tax; freight surcharge is captured by parser's SURCHARGE_RE.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\btax\\s+on\\s+(merchandise|goods)\\b"
+    ],
+    "discountPatterns": [
+      "\\b(quantity|tier|contract)\\s+(discount|allowance|rebate)\\b",
+      "\\b(promo|seasonal|veritiv)\\s+(allowance|rebate)\\b"
+    ]
+  }
+}

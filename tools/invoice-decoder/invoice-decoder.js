@@ -164,7 +164,11 @@
             // 30s of OCR time on a blurry shot).
             blurScore: results[0].blurScore,
             bimodalityScore: results[0].bimodalityScore,
-            qualityHint: results[0].qualityHint
+            qualityHint: results[0].qualityHint,
+            // Wave 2.2 — surface rectification result so the preview
+            // meta can report "We straightened the page perspective".
+            rectified: !!results[0].rectified,
+            rectifyConfidence: results[0].rectifyConfidence || null
           });
           doneFiles++;
           setProgress(15 + perFileShare * doneFiles);
@@ -179,9 +183,15 @@
       var first = pendingPages[0];
       if (previewEl) previewEl.hidden = false;
       if (previewMeta) {
+        // Wave 2.2 — when perspective rectification fired we lead
+        // with that signal; skew becomes informational.
+        var rectLabel = first.rectified
+          ? tt('Page perspective fixed · ', 'Perspectiva de página corregida · ')
+          : '';
         var skewLabel = Math.abs(first.skewAngle) >= 1
           ? tt('Straightened by ' + first.skewAngle + '° · ', 'Enderezada ' + first.skewAngle + '° · ')
-          : tt('Already straight · ', 'Ya estaba derecha · ');
+          : (first.rectified ? '' : tt('Already straight · ', 'Ya estaba derecha · '));
+        skewLabel = rectLabel + skewLabel;
         var pageNote = files.length > 1
           ? tt(' · ' + files.length + ' pages ready', ' · ' + files.length + ' páginas listas')
           : '';
@@ -253,6 +263,34 @@
         'error'
       );
     });
+  }
+
+  // Shared helper used by the OCR / PDF / CSV / share-target paths.
+  // Runs MID_CATEGORIZE.classify on each row, stamps the standard
+  // category fields, then runs MID_PACK_PRICING to attach the
+  // pack-aware comparable price (domain-expert layer). Mutates rows
+  // in place.
+  function classifyRows(rows) {
+    if (!Array.isArray(rows)) return;
+    if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+      for (var i = 0; i < rows.length; i++) {
+        var c = MID_CATEGORIZE.classify(rows[i]);
+        rows[i].category           = c.category;
+        rows[i].categoryConfidence = c.confidence;
+        rows[i].categoryTier       = c.tier;
+        rows[i].categorySource     = c.source || null;
+        rows[i].tags               = c.tags || [];
+      }
+    }
+    // Pack-aware unit pricing (domain-expert layer). Categorization
+    // runs first so pack-pricing can disambiguate 'oz' between
+    // fl_oz (beverage) and weight-oz (dry-goods).
+    if (typeof MID_PACK_PRICING !== 'undefined' && MID_PACK_PRICING.computeComparable) {
+      for (var j = 0; j < rows.length; j++) {
+        var comp = MID_PACK_PRICING.computeComparable(rows[j]);
+        if (comp) rows[j].comparable = comp;
+      }
+    }
   }
 
   // -------------------- OCR + parse (Wave B2) --------------------
@@ -422,20 +460,30 @@
           parsed.vendor = vendorMatch.id;
         }
       }
+      // Wave 4.2 evolution — wait for the vendor enrichment fetch so
+      // categorize.tier05VendorHints can read the categoryHints (SKU
+      // prefix maps, class-code maps) from the per-vendor JSON.
+      // Falls through with no enrichment when fetch fails or when no
+      // vendor matched. Cache-first; subsequent invoices from the
+      // same vendor see no delay.
+      var enrichmentPromise = (vendorMatch && MID_VENDORS.loadEnrichment)
+        ? MID_VENDORS.loadEnrichment(vendorMatch.id)
+        : Promise.resolve(null);
+      return enrichmentPromise.then(function (enrichment) {
+        // Wave 4.2 evolution — apply per-vendor line grammar
+        // patterns (tax / discount line classification) BEFORE
+        // categorization. This keeps tax-coded rows out of the
+        // ingredient-categorization pipeline and routes them to the
+        // right GL on accountant export.
+        if (enrichment && typeof MID_VENDOR_RUNTIME !== 'undefined' &&
+            MID_VENDOR_RUNTIME.applyLineGrammar) {
+          try { MID_VENDOR_RUNTIME.applyLineGrammar(parsed.rows, enrichment); } catch (_) {}
+        }
       // Wave B4 — classify every parsed row. Stamps category +
       // categoryConfidence + categoryTier on each row so the
       // verification UX (B5) can render chips, group totals, and
       // sort review priority.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
       advancePhase(3);  // Wave 5.2 — vendor lookup done
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
@@ -453,6 +501,7 @@
           delta_known: parsed.deltaPct != null ? 'true' : 'false'
         } });
       }
+      });   // close enrichmentPromise.then
     }).catch(function (err) {
       clearPhaseLadder();
       showStatus(
@@ -1176,6 +1225,30 @@
         escHtml(tt('First invoice from this vendor — saving starts your baseline.', 'Primera factura de este proveedor — al guardar empieza tu base.')) +
         '</span>';
     }
+    // Volume-weighted invoice drift (domain-expert layer). When a
+    // quorum of rows have history, surface "this invoice is up
+    // 8% ($112 over baseline)" — the actual operator question.
+    var driftLine = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.computeInvoiceDrift) {
+        var drift = MID_SKU_HISTORY.computeInvoiceDrift(parsed.rows);
+        if (drift && drift.ratedRows >= 3 && Math.abs(drift.totalDriftPct) >= 1) {
+          var dr = drift.totalDriftPct > 0 ? 'up' : 'down';
+          var sign = drift.totalDriftDollars >= 0 ? '+' : '−';
+          var absD = Math.abs(drift.totalDriftDollars).toFixed(2);
+          driftLine = '<div class="id-pulse-drift" data-dir="' + dr + '">' +
+            escHtml(tt(
+              'This invoice ' + (drift.totalDriftPct > 0 ? 'up' : 'down') + ' ' +
+                Math.abs(drift.totalDriftPct).toFixed(1) + '% vs your baseline ' +
+                '(' + sign + '$' + absD + ' across ' + drift.ratedRows + ' rows with history)',
+              'Esta factura ' + (drift.totalDriftPct > 0 ? 'sube' : 'baja') + ' ' +
+                Math.abs(drift.totalDriftPct).toFixed(1) + '% vs tu base ' +
+                '(' + sign + '$' + absD + ' en ' + drift.ratedRows + ' renglones con historial)'
+            )) +
+          '</div>';
+        }
+      }
+    } catch (_) {}
     host.innerHTML =
       '<div class="id-pulse-row">' +
         '<span class="id-pulse-vendor">' + escHtml(vendor) + '</span>' +
@@ -1183,8 +1256,67 @@
           (parsed.rows.length) + ' ' + escHtml(tt('lines', 'líneas')) + ' · ' + escHtml(sumStr) +
         '</span>' +
       '</div>' +
+      driftLine +
       '<div class="id-pulse-pills">' + pills + '</div>';
     host.hidden = false;
+  }
+
+  // Wave 4.3 — render the "save this layout?" prompt when the
+  // auto-learner has accumulated 3+ observations of a previously-
+  // unrecognized letterhead. Operator types a friendly name, taps
+  // Save, and the template lands in MuntinContext.learnedVendors
+  // for use on the next invoice.
+  function renderLearnVendorPrompt(fullText) {
+    var host = document.getElementById('idLearnVendor');
+    if (!host) return;
+    if (typeof MID_AUTOLEARN === 'undefined') return;
+    var ready = MID_AUTOLEARN.shouldPromptToLearn(fullText);
+    if (!ready) { host.hidden = true; host.innerHTML = ''; return; }
+    var sample = (ready.samples && ready.samples[0] && ready.samples[0].topLines && ready.samples[0].topLines[0]) || '';
+    host.innerHTML =
+      '<p class="id-learn-msg"><strong>' +
+        escHtml(tt('We\'ve seen 3 invoices from this vendor.', 'Hemos visto 3 facturas de este proveedor.')) +
+      '</strong> ' +
+        escHtml(tt('Save this layout so the next one parses cleaner.', 'Guarda este formato para que el próximo se lea mejor.')) +
+      '</p>' +
+      '<p class="id-learn-sample">' + escHtml(sample) + '</p>' +
+      '<form class="id-learn-form" id="idLearnForm">' +
+        '<label for="idLearnLabel" class="visually-hidden">' + escHtml(tt('Vendor name', 'Nombre del proveedor')) + '</label>' +
+        '<input type="text" id="idLearnLabel" class="id-learn-input" maxlength="60" ' +
+          'placeholder="' + escHtml(tt('e.g. My Local Produce Co', 'ej. Mi Verdulería Local')) + '" />' +
+        '<button type="submit" class="id-learn-save">' + escHtml(tt('Save layout', 'Guardar formato')) + '</button>' +
+        '<button type="button" class="id-learn-dismiss" id="idLearnDismiss">' + escHtml(tt('Not yet', 'Aún no')) + '</button>' +
+      '</form>';
+    host.hidden = false;
+    var form = document.getElementById('idLearnForm');
+    var input = document.getElementById('idLearnLabel');
+    var dis = document.getElementById('idLearnDismiss');
+    if (form && input) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var label = (input.value || '').trim();
+        if (!label) { input.focus(); return; }
+        try {
+          var template = MID_AUTOLEARN.buildLearnedTemplate(MID_AUTOLEARN.normalize(fullText), ready.samples, label);
+          if (template && MID_AUTOLEARN.saveLearnedTemplate(template)) {
+            host.innerHTML = '<p class="id-learn-msg id-learn-msg--saved"><strong>' +
+              escHtml(tt('Saved as ' + label, 'Guardado como ' + label)) + '.</strong> ' +
+              escHtml(tt('Next invoice from this vendor will be auto-detected.',
+                         'La próxima factura de este proveedor se detectará sola.')) +
+              '</p>';
+            if (window.plausible) {
+              try { window.plausible('Invoice Decoder Vendor Learned'); } catch (_) {}
+            }
+            setTimeout(function () { host.hidden = true; }, 4000);
+          } else {
+            input.focus();
+          }
+        } catch (_) {}
+      });
+    }
+    if (dis) {
+      dis.addEventListener('click', function () { host.hidden = true; });
+    }
   }
 
   // Wave 2.6 — margin-impact callout in the handoff panel.
@@ -1259,22 +1391,111 @@
           var sign = s.medianDelta > 0 ? '+' : '';
           var dir = s.medianDelta > 0 ? 'up' : (s.medianDelta < 0 ? 'down' : 'flat');
           var drClass = s.isAnomaly ? 'id-row-drift id-row-drift--anomaly' : 'id-row-drift';
-          var label = sign + s.medianDelta.toFixed(1) + '% ' + tt('vs your typical', 'vs tu típico');
-          driftChip = '<span class="' + drClass + '" data-dir="' + dir + '" title="' + escHtml(label) + '">' + escHtml(sign + s.medianDelta.toFixed(1) + '%') + '</span>';
+          // Pack-aware tooltip: when summarizeRow used the
+          // comparable price (basis === 'pack'), surface the unit
+          // so the operator sees "vs your typical $/oz" instead of
+          // the generic "vs your typical." This is the operator's
+          // actual purchasing question.
+          var basisLabel;
+          if (s.basis === 'pack' && s.comparableUnit && typeof MID_PACK_PRICING !== 'undefined') {
+            var unitDisp = ({
+              'fl_oz': tt('per fl oz', 'por oz líq'),
+              'oz':    tt('per oz', 'por oz'),
+              'lb':    tt('per lb', 'por lb'),
+              'kg':    tt('per kg', 'por kg'),
+              'l':     tt('per l',  'por litro'),
+              'ct':    tt('per ct', 'por unidad')
+            })[s.comparableUnit] || tt('per unit', 'por unidad');
+            basisLabel = sign + s.medianDelta.toFixed(1) + '% ' + unitDisp + ' ' +
+                         tt('vs your typical ($' + s.comparablePrice + ' median)',
+                            'vs tu típico ($' + s.comparablePrice + ' mediana)');
+          } else {
+            basisLabel = sign + s.medianDelta.toFixed(1) + '% ' + tt('vs your typical', 'vs tu típico');
+          }
+          driftChip = '<span class="' + drClass + '" data-dir="' + dir + '" title="' + escHtml(basisLabel) + '">' + escHtml(sign + s.medianDelta.toFixed(1) + '%') + '</span>';
           if (s.isAnomaly) anomalyAttr = ' data-anomaly="true"';
         }
       }
     } catch (_) {}
 
     // Wave 1.2 — contract-price overcharge badge.
+    // Pack-aware: when checkRow returned a 'comparable' basis, the
+    // tooltip surfaces the per-unit delta in the comparable unit so
+    // operators see "Over $0.05/lb on your contract" instead of the
+    // ambiguous "$0.05/unit."
     var contractBadge = '';
     try {
       if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.checkRow) {
         var ck = MID_SKU_HISTORY.checkRow(r);
         if (ck && ck.isOver) {
+          var unitWord = tt('unit', 'unidad');
+          if (ck.basis === 'comparable' && ck.actualComparableUnit) {
+            unitWord = ({
+              'fl_oz': tt('fl oz', 'oz líq'),
+              'oz':    'oz', 'lb': 'lb', 'kg': 'kg', 'l': tt('l', 'litro'), 'ct': tt('ct', 'unidad')
+            })[ck.actualComparableUnit] || unitWord;
+          }
           contractBadge = '<span class="id-row-contract id-row-contract--over" title="' +
-            escHtml(tt('Over your contract by $' + ck.diffPerUnit.toFixed(4) + '/unit', 'Sobre el contrato por $' + ck.diffPerUnit.toFixed(4) + '/unidad')) +
+            escHtml(tt('Over your contract by $' + ck.diffPerUnit.toFixed(4) + '/' + unitWord +
+                       ' (overcharge ~$' + ck.overcharge.toFixed(2) + ' on this line)',
+                       'Sobre el contrato por $' + ck.diffPerUnit.toFixed(4) + '/' + unitWord +
+                       ' (sobreprecio ~$' + ck.overcharge.toFixed(2) + ' en esta línea)')) +
             '">⚠ ' + escHtml(tt('over contract', 'sobre contrato')) + '</span>';
+        }
+      }
+    } catch (_) {}
+
+    // Cross-vendor savings chip (domain-expert layer). Surfaced
+    // when the operator's history shows ≥2 vendors selling the
+    // same stem and the cheapest charges noticeably less than the
+    // current row's vendor. Operators see "buy from X — saves
+    // 22% per fl oz" inline.
+    var crossVendorChip = '';
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.compareAcrossVendors && r.comparable) {
+        var cmp = MID_SKU_HISTORY.compareAcrossVendors(r);
+        if (cmp && cmp.length >= 2) {
+          var cheapestVendor = cmp[0];
+          var currentRowVendor = r.vendorDetected || null;
+          if (currentRowVendor && cheapestVendor.vendor !== currentRowVendor) {
+            var thisOne = cmp.find(function (x) { return x.vendor === currentRowVendor; });
+            if (thisOne && thisOne.gapPctVsCheapest >= 8) {
+              var unitDispCV = ({
+                'fl_oz': tt('per fl oz', 'por oz líq'), 'oz': tt('per oz', 'por oz'),
+                'lb': tt('per lb', 'por lb'), 'kg': tt('per kg', 'por kg'),
+                'l': tt('per l', 'por litro'), 'ct': tt('per ct', 'por unidad')
+              })[cheapestVendor.comparableUnit] || tt('per unit', 'por unidad');
+              var label = tt(
+                'Saves ' + thisOne.gapPctVsCheapest.toFixed(0) + '% ' + unitDispCV +
+                  ' if you buy from ' + cheapestVendor.vendor +
+                  ' ($' + cheapestVendor.medianComparable + ' vs $' + thisOne.medianComparable + ' here)',
+                'Ahorra ' + thisOne.gapPctVsCheapest.toFixed(0) + '% ' + unitDispCV +
+                  ' si lo compras a ' + cheapestVendor.vendor +
+                  ' ($' + cheapestVendor.medianComparable + ' vs $' + thisOne.medianComparable + ' aquí)'
+              );
+              crossVendorChip = '<span class="id-row-crossvendor" title="' + escHtml(label) +
+                '">↓ ' + escHtml(cheapestVendor.vendor) + ' ' +
+                escHtml('-' + thisOne.gapPctVsCheapest.toFixed(0) + '%') + '</span>';
+            }
+          }
+        }
+      }
+    } catch (_) {}
+
+    // Substitution detection (domain-expert layer). When the row's
+    // own stem has ≤2 prior observations but a similar stem with
+    // ≥3 observations exists at a comparable per-unit price, hint
+    // that this looks like a sub for what the operator usually
+    // buys. Conservative — only fires on high-similarity matches.
+    var subChip = '';
+    try {
+      if (typeof MID_SUBSTITUTION !== 'undefined' && MID_SUBSTITUTION.detectSubstitution) {
+        var sub = MID_SUBSTITUTION.detectSubstitution(r);
+        if (sub && sub.similarity >= 0.55) {
+          subChip = '<span class="id-row-sub" title="' + escHtml(tt(
+            'Looks like a substitute for "' + sub.candidateStem + '" — you usually buy that one (' + sub.observations + ' prior orders, $' + sub.medianComparable + '/' + sub.comparableUnit + ')',
+            'Parece sustitución de "' + sub.candidateStem + '" — usualmente compras esa (' + sub.observations + ' órdenes previas, $' + sub.medianComparable + '/' + sub.comparableUnit + ')'
+          )) + '">↻ ' + escHtml(tt('looks like sub', 'parece sub')) + '</span>';
         }
       }
     } catch (_) {}
@@ -1315,7 +1536,7 @@
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip +
       '</span>' +
       '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
       '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
@@ -1526,6 +1747,111 @@
     window.MID_DECODER_RENDER = function (parsed) { renderParsed(parsed); };
   }
 
+  // ============================================================
+  // Wave 6.8 — PWA deeplinks + Web Share Target intake.
+  //
+  // ?shared=<token> — service worker stashed an incoming share in
+  //   /tools/invoice-decoder/_shared_inbox/<token>. We pull it back
+  //   out (as a Blob), sniff its MIME, and route into the existing
+  //   photo / PDF / CSV handlers. Same code paths as a direct file
+  //   pick, so the entire downstream pipeline is reused.
+  //
+  // ?action=photo — manifest shortcut that opens the camera. Fires
+  //   a click on the photo input so the OS file/camera picker
+  //   appears immediately. (iOS won't trigger the camera without a
+  //   user gesture; on those browsers the click no-ops gracefully.)
+  // ============================================================
+  function handlePwaIntents() {
+    if (typeof URLSearchParams === 'undefined') return;
+    var params = new URLSearchParams(window.location.search || '');
+    var sharedToken = params.get('shared');
+    if (sharedToken && sharedToken !== 'error' && typeof caches !== 'undefined') {
+      var stashUrl = '/tools/invoice-decoder/_shared_inbox/' + sharedToken;
+      caches.open('id-share-inbox').then(function (cache) {
+        return cache.match(stashUrl);
+      }).then(function (resp) {
+        if (!resp) return;
+        return resp.blob().then(function (blob) {
+          // Build a File so the existing handlers don't need to care
+          // about Blob vs File distinctions.
+          var name = 'shared-invoice';
+          try {
+            var hdr = resp.headers.get('X-Mid-Shared-Name');
+            if (hdr) name = decodeURIComponent(hdr);
+          } catch (_) {}
+          var file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
+          // Route by MIME.
+          if (file.type.indexOf('image/') === 0) {
+            handlePhotoFiles([file]);
+          } else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
+            // Fake a change-event-style invocation against the PDF input.
+            if (typeof MID_PDF_EXTRACT !== 'undefined' && MID_PDF_EXTRACT.extractPdf) {
+              setActiveChip('pdf');
+              showStatus(
+                tt('Reading the shared PDF…', 'Leyendo el PDF compartido…'),
+                tt('From your Share Sheet — runs the same way as a direct upload.',
+                   'Desde tu menú compartir — funciona igual que subirlo directo.')
+              );
+              setProgress(15);
+              MID_PDF_EXTRACT.extractPdf(file).then(function (result) {
+                if (result.imageOnly) {
+                  showStatus(
+                    tt('This PDF is a scanned image, not a text document.',
+                       'Este PDF es una imagen escaneada, no un documento de texto.'),
+                    tt('Try the photo path with each page snapped separately.',
+                       'Usa la ruta de foto con cada página por separado.'),
+                    'error'
+                  );
+                  return;
+                }
+                var parsedShared = MID_PARSE.parseLines(result.lines, result.fullText);
+                if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
+                  var vMatchShared = MID_VENDORS.detectVendor(result.fullText);
+                  if (vMatchShared) {
+                    MID_VENDORS.applyVendorBoost(parsedShared.rows, vMatchShared);
+                    parsedShared.vendor = vMatchShared.id;
+                  }
+                }
+                classifyRows(parsedShared.rows);
+                renderParsed(parsedShared);
+                hideStatus();
+              });
+            }
+          }
+          // Clean up the stashed file so it's not reusable.
+          return cache.delete(stashUrl);
+        });
+      }).catch(function () { /* missing or expired share; user re-shares */ });
+      // Strip ?shared= from the URL so a refresh doesn't re-trigger.
+      try {
+        history.replaceState({}, '', window.location.pathname);
+      } catch (_) {}
+      if (window.plausible) {
+        try { window.plausible('Invoice Decoder Share Received'); } catch (_) {}
+      }
+    } else if (sharedToken === 'error') {
+      showStatus(
+        tt('Couldn\'t read the shared file', 'No se pudo leer el archivo compartido'),
+        tt('Try sharing it again, or pick the file directly with the photo or PDF buttons above.',
+           'Intenta compartirlo de nuevo o selecciónalo con los botones arriba.'),
+        'error'
+      );
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
+    // ?action=photo — open the photo picker.
+    if (params.get('action') === 'photo' && photoInput) {
+      try { photoInput.click(); } catch (_) {}
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
+  }
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handlePwaIntents);
+    } else {
+      handlePwaIntents();
+    }
+  }
+
   function renderParsed(parsed) {
     lastReadParsed = parsed;
     // Wave 5 — record that the operator has run something so the
@@ -1626,6 +1952,21 @@
     renderVendorPulse(parsed);
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
+    // Wave 4.3 — auto-learn observation. When no vendor matched
+    // (neither a hard-coded one nor a previously-learned one),
+    // record a fingerprint of the letterhead so a 3rd unrecognized
+    // run can trigger the "save this layout?" prompt.
+    try {
+      if (typeof MID_AUTOLEARN !== 'undefined' && MID_AUTOLEARN.recordObservation) {
+        if (!parsed.vendor) {
+          var fullText = (parsed && parsed._rawOcrText) || '';
+          if (fullText) {
+            MID_AUTOLEARN.recordObservation(fullText, parsed.rows || [], parsed.totalParsed || null);
+            renderLearnVendorPrompt(fullText);
+          }
+        }
+      }
+    } catch (_) {}
     // Wave 2.7 — diff-strip volume gating: only render when drift is
     // material (≥15% per cost-trend's threshold). Otherwise hide.
     var diffStrip = document.getElementById('idDiffStrip');
@@ -1675,6 +2016,64 @@
   // round-trip, no leak via referrer (referrerpolicy:no-referrer
   // already on the page). The handoff fragment shape mirrors the
   // existing tools/_shared/url-fragment.js encoders.
+  // ============================================================
+  // Wave 6.3 second half — multi-device pairing flow.
+  //
+  // Asks the operator for a friendly device label, generates a
+  // 24-word pair token, adds a `paired-device` wrap to the envelope
+  // via MID_PAIRING.addDevice, re-saves the envelope to the server
+  // (one extra POST), then surfaces the token via MID_PASS
+  // .showRecoveryPhrase (reusing the same word-grid + copy/print
+  // affordances). Operator transcribes the token to Device B and
+  // unlocks via the existing recovery-phrase path.
+  // ============================================================
+  function runPairingFlow(envelope, passphrase, aad, payload) {
+    if (typeof MID_PAIRING === 'undefined' || !MID_PAIRING.addDevice) return;
+    var label = window.prompt(
+      tt('What\'s a name for the device you\'re pairing? (e.g. "My Laptop")',
+         '¿Qué nombre le pones al dispositivo que vas a vincular? (ej. "Mi Laptop")'),
+      tt('My laptop', 'Mi laptop')
+    );
+    if (!label) return;
+    label = String(label).trim().slice(0, 60);
+    if (!label) return;
+    MID_PAIRING.addDevice(envelope, passphrase, label).then(function (result) {
+      if (!result || !result.envelope || !result.token) return;
+      // Re-save the envelope with the new wrap. The server stores
+      // ciphertext only — the new wrap is just a few hundred extra
+      // bytes added to the existing envelope.
+      var body = new FormData();
+      body.set('kind',    'invoice-decoder');
+      body.set('title',   tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
+      body.set('aad',     aad);
+      body.set('payload', JSON.stringify({
+        envelope:  result.envelope,
+        aad:       aad,
+        items:     payload.itemCount,
+        parsedSum: payload.parsedSum
+      }));
+      return fetch('/api/workbench/save', { // h8-exempt:workshop-save — same encrypted-only POST, adds paired-device wrap
+        method:      'POST',
+        credentials: 'same-origin',
+        body:        body
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function () {
+        // Show the token to the operator. We reuse showRecoveryPhrase
+        // because the UX shape (24-word grid + copy/print) is the
+        // same — just relabel the heading via a wrapper helper.
+        if (typeof MID_PASS !== 'undefined' && MID_PASS.showRecoveryPhrase) {
+          return MID_PASS.showRecoveryPhrase(result.token).then(function () {
+            if (window.plausible) {
+              try { window.plausible('Invoice Decoder Device Paired'); } catch (_) {}
+            }
+          });
+        }
+      });
+    }).catch(function () {
+      alert(tt('Pairing failed. Try again — or write to Don if it keeps happening.',
+               'Falló la vinculación. Intenta de nuevo — o escríbele a Don si sigue pasando.'));
+    });
+  }
+
   function renderHandoffPanel(payload) {
     var host = document.getElementById('idHandoff');
     if (!host) return;
@@ -1837,8 +2236,13 @@
       // proof flyout can show the real ciphertext after success.
       var savedEnvelope = null;
       var savedAad = null;
+      // Wave 6.3 — capture the passphrase in the save closure so the
+      // post-save recovery-phrase setup can call MID_ENCRYPT.addWrap
+      // without re-prompting. We never expose this to globals.
+      var savedPassphrase = null;
       pickPassphrase().then(function (pp) {
         if (!pp) return; // owner cancelled — silent.
+        savedPassphrase = pp;
         setSaveStatus(null, 'busy');
         var payload = buildSavePayload();
         // AAD binds this ciphertext to a logical-id; we use a
@@ -2006,10 +2410,70 @@
                 payload: { itemCount: payload.itemCount, sampleNames: sampleNames },
                 decrypt: function (env, tryPp) {
                   return MID_ENCRYPT.decryptPayload(env, tryPp, savedAad);
+                },
+                // Wave 6.3 second half — give the proof flyout a
+                // pairing handler. The flyout shows a "Pair another
+                // device" button only when this callback is present
+                // (i.e., we have an unlocked passphrase + envelope
+                // in scope). Operator clicks → openPairingModal()
+                // generates a labeled 24-word token, calls addDevice,
+                // re-saves the envelope, displays the token.
+                openPairing: function () {
+                  if (savedEnvelope && savedPassphrase &&
+                      typeof MID_PAIRING !== 'undefined' && MID_PAIRING.addDevice) {
+                    runPairingFlow(savedEnvelope, savedPassphrase, savedAad, payload);
+                  }
                 }
               });
             } catch (_) { /* flyout is purely decorative — never block save */ }
           }
+          // Wave 6.3 — offer the recovery-phrase setup AFTER the
+          // save has succeeded. We only ask the very first time:
+          // once the operator sets up a recovery phrase OR explicitly
+          // skips, we don't pester. The recovery wrap is added to
+          // the existing envelope via MID_ENCRYPT.addWrap, then
+          // re-saved. Failures are non-fatal — the original save
+          // already succeeded, the operator can try again later.
+          try {
+            if (savedEnvelope && savedEnvelope.v === 2 &&
+                typeof MID_RECOVERY !== 'undefined' &&
+                typeof MID_PASS !== 'undefined' && MID_PASS.showRecoveryPhrase &&
+                savedPassphrase) {
+              var alreadyHasRecovery = (savedEnvelope.wraps || []).some(function (w) { return w.kind === 'recovery'; });
+              var alreadyOffered = !!(MID_RECOVERY.readGenerated && MID_RECOVERY.readGenerated());
+              if (!alreadyHasRecovery && !alreadyOffered) {
+                MID_RECOVERY.generatePhrase().then(function (phrase) {
+                  return MID_PASS.showRecoveryPhrase(phrase).then(function (confirmed) {
+                    if (!confirmed) {
+                      // Operator dismissed; mark "offered" so we don't
+                      // re-prompt every save. They can re-trigger from
+                      // a future settings panel.
+                      MID_RECOVERY.markGenerated();
+                      return;
+                    }
+                    return MID_ENCRYPT.addWrap(savedEnvelope, savedPassphrase, phrase, 'recovery').then(function (newEnv) {
+                      // Re-save the envelope with the additional wrap.
+                      var retryBody = new FormData();
+                      retryBody.set('kind', 'invoice-decoder');
+                      retryBody.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
+                      retryBody.set('aad', savedAad);
+                      retryBody.set('payload', JSON.stringify({ envelope: newEnv, aad: savedAad, items: payload.itemCount, parsedSum: payload.parsedSum }));
+                      return fetch('/api/workbench/save', { // h8-exempt:workshop-save — same encrypted-only POST, now adds recovery wrap
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body: retryBody
+                      }).then(function (r) { return r.ok ? r.json() : null; }).then(function () {
+                        MID_RECOVERY.markGenerated();
+                        if (window.plausible) {
+                          try { window.plausible('Invoice Decoder Recovery Set'); } catch (_) {}
+                        }
+                      });
+                    });
+                  });
+                }).catch(function () { /* never block on recovery setup */ });
+              }
+            }
+          } catch (_) {}
         } else {
           throw new Error(j.error || 'unknown server error');
         }
@@ -2190,6 +2654,43 @@
     e.target.value = '';
   });
 
+  // Wave 2.1 — intercept the photo chip click. When the live capture
+  // coach is supported (HTTPS + getUserMedia available + camera
+  // grantable) we open it INSTEAD of the OS file/camera picker. The
+  // coach gives the operator a real-time edge-overlay + coaching
+  // prompts before capture; on "Done" we feed its captured Files
+  // into the same handlePhotoFiles pipeline. On unsupported browsers,
+  // permission denied, or operator dismissal, we fall through to the
+  // native picker by clicking photoInput directly.
+  var photoChip = document.querySelector('.id-input-chip[data-input="photo"]');
+  if (photoChip && photoInput && typeof MID_CAPTURE_COACH !== 'undefined' && MID_CAPTURE_COACH.isSupported && MID_CAPTURE_COACH.isSupported()) {
+    photoChip.addEventListener('click', function (e) {
+      // Don't intercept clicks on the inner <input> — that's the
+      // browser's own file-picker bubble; let it proceed normally.
+      // We're after the label-click that bubbles up here.
+      if (e.target === photoInput) return;
+      // Don't intercept when the operator already opened a picker
+      // (modifier keys, right-click, etc).
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      e.stopPropagation();
+      MID_CAPTURE_COACH.open().then(function (files) {
+        if (files && files.length) {
+          handlePhotoFiles(files);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Coach Done', { props: { pages: files.length } }); } catch (_) {}
+          }
+        } else {
+          // Operator dismissed or permission denied. Fall back to
+          // the native picker so they can still pick from camera roll.
+          if (photoInput) {
+            try { photoInput.click(); } catch (_) {}
+          }
+        }
+      });
+    }, { capture: true });
+  }
+
   // -------------------- PDF + CSV (B2 will wire fully) --------------------
   if (pdfInput) pdfInput.addEventListener('change', function (e) {
     var f = e.target.files && e.target.files[0];
@@ -2264,17 +2765,10 @@
           parsed.vendor = vMatch.id;
         }
       }
-      // Categorize.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
+      // Wave 4.3 — preserve PDF text so auto-learn can fingerprint
+      // unrecognized vendors from the PDF path too.
+      parsed._rawOcrText = result.fullText || '';
       setProgress(95);
       renderParsed(parsed);
       hideStatus();
@@ -2357,17 +2851,7 @@
           parsed.vendor = vMatch.id;
         }
       }
-      // Categorize.
-      if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
-        parsed.rows.forEach(function (r) {
-          var c = MID_CATEGORIZE.classify(r);
-          r.category = c.category;
-          r.categoryConfidence = c.confidence;
-          r.categoryTier = c.tier;
-          r.categorySource = c.source || null;
-          r.tags = c.tags || [];
-        });
-      }
+      classifyRows(parsed.rows);
       setProgress(95);
       renderParsed(parsed);
       hideStatus();

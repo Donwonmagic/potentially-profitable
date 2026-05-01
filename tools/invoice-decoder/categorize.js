@@ -624,6 +624,88 @@
     return null;
   }
 
+  // Wave 4.2 evolution — vendor categoryHints. When a vendor's JSON
+  // template carries a categoryHints block, two paths apply BEFORE
+  // the brand index + lexicon:
+  //
+  //   1. classCodeRegex / classCodeMap (e.g., GFS PRD/PRO/DRY) —
+  //      scans the row's raw text for an explicit class code printed
+  //      on the invoice line itself; high-confidence categorization
+  //      that needs no lexicon.
+  //   2. skuPrefixMap (e.g., Sysco SUPC stem) — when row.sku is
+  //      present, maps its leading 2 chars to a category.
+  //
+  // Both paths land in Tier 0.5: above the brand index but below
+  // the operator's own learned overrides (Tier 0). Confidence is
+  // 90 because vendor-printed signals are essentially ground truth
+  // for the categorization question.
+  function tier05VendorHints(row) {
+    if (!row || !row.vendorDetected) return null;
+    var hints = null;
+    try {
+      // Read from globalThis so this works in both browser
+      // (window.MID_VENDORS) and Node tests (which stub
+      // globalThis.window.MID_VENDORS or set globalThis.MID_VENDORS
+      // directly). The module's `root` was captured at IIFE load
+      // time and may be null in Node CommonJS contexts.
+      var g = (typeof globalThis !== 'undefined') ? globalThis : null;
+      var vendors = null;
+      if (g) {
+        vendors = (g.MID_VENDORS) || (g.window && g.window.MID_VENDORS) || null;
+      }
+      // Read the lazily-loaded enrichment cache exposed by vendors.js
+      // (Wave 4.1). We prefer the cached enrichment over the inline
+      // STUB because the JSON file is the source of truth for
+      // categoryHints.
+      if (vendors) {
+        var stub = (vendors.STUBS || []).find(function (s) { return s.id === row.vendorDetected; });
+        var cached = stub && stub._enrichment;
+        if (cached && cached.categoryHints) hints = cached.categoryHints;
+      }
+    } catch (_) {}
+    if (!hints) return null;
+
+    // Path 1: classCodeRegex on the row's raw text.
+    if (hints.classCodeRegex && hints.classCodeMap && row.raw) {
+      try {
+        var re = new RegExp(hints.classCodeRegex);
+        var m = String(row.raw).match(re);
+        if (m && m[1]) {
+          var code = m[1].toUpperCase();
+          var cat = hints.classCodeMap[code];
+          if (cat) {
+            return {
+              category:   cat,
+              confidence: 90,
+              tier:       'vendor-class-code',
+              matched:    code
+            };
+          }
+        }
+      } catch (_) {}
+    }
+
+    // Path 2: skuPrefixMap on row.sku (parsed by parse.js Pattern D).
+    if (hints.skuPrefixMap && row.sku) {
+      var sku = String(row.sku);
+      // Try 2-char then 3-char prefixes (some vendors use longer stems).
+      var prefixes = [sku.slice(0, 2), sku.slice(0, 3)];
+      for (var i = 0; i < prefixes.length; i++) {
+        var p = prefixes[i];
+        if (hints.skuPrefixMap[p]) {
+          return {
+            category:   hints.skuPrefixMap[p],
+            confidence: 88,
+            tier:       'vendor-sku-prefix',
+            matched:    p
+          };
+        }
+      }
+    }
+
+    return null;
+  }
+
   function classify(row) {
     if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none', tags: [] };
     // Tier 0 — operator's own past corrections (W7-8). Wins over
@@ -634,6 +716,11 @@
         typeof root.MID_LEARNINGS.lookupOverride === 'function') {
       hit = root.MID_LEARNINGS.lookupOverride(row.name);
     }
+    // Tier 0.5 — vendor categoryHints (Wave 4.2 evolution).
+    // Vendor-printed class codes (GFS PRD/PRO/DRY) and structured
+    // SKU stems (Sysco SUPC) are essentially ground truth for the
+    // categorization question — we trust them over the lexicon.
+    if (!hit) hit = tier05VendorHints(row);
     // Tier 1 brand — wins over generic lexicon when a recognized
     // brand name is present.
     if (!hit) hit = tier1Brand(row.name);
@@ -654,7 +741,8 @@
     ABBREV:      ABBREV,
     expandTokens: expandTokens,
     deriveTags:  deriveTags,
-    tier1Brand:  tier1Brand
+    tier1Brand:  tier1Brand,
+    tier05VendorHints: tier05VendorHints
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_CATEGORIZE = api;

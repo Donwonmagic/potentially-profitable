@@ -1,0 +1,60 @@
+{
+  "id": "gfs",
+  "schemaVersion": 1,
+  "label": {
+    "en": "Gordon Food Service",
+    "es": "Gordon Food Service"
+  },
+  "detect": {
+    "minScore": 0.5,
+    "tokens": [
+      {
+        "pattern": "gordon\\s+food\\s+service",
+        "weight": 0.6
+      },
+      {
+        "pattern": "\\bgfs\\b",
+        "weight": 0.4
+      },
+      {
+        "pattern": "\\bgfs\\s+marketplace",
+        "weight": 0.2
+      }
+    ]
+  },
+  "headerSkip": [
+    "^item\\s+class",
+    "^prd\\s+pro\\s+dry"
+  ],
+  "confidenceBoost": 14,
+  "categoryHints": {
+    "_doc": "GFS prints a 3-letter item-class code on each line, immediately after the SKU. PRD/PRO/DRY/PAP/FRZ/BEV/JAN are the canonical set; we map them to our 9-bucket taxonomy. classCodeRegex matches the code against the row's raw text.",
+    "classCodeRegex": "\\b(PRD|PRO|DRY|PAP|FRZ|BEV|JAN|SML|EQU|SEA|DAI|HRB)\\b",
+    "classCodeMap": {
+      "PRD": "produce",
+      "PRO": "protein",
+      "SEA": "seafood",
+      "DAI": "dairy",
+      "DRY": "dry-goods",
+      "HRB": "herbs-spices",
+      "PAP": "paper",
+      "JAN": "cleaning",
+      "BEV": "beverage",
+      "FRZ": "produce",
+      "SML": "paper",
+      "EQU": "paper"
+    }
+  },
+  "lineGrammar": {
+    "_doc": "GFS sales tax + Marketplace promo allowances.",
+    "taxPatterns": [
+      "\\b(sales|state|local|city|county)\\s+tax\\b",
+      "\\b(non[- ]?food|paper|chemical|jan)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume|case|seasonal|promo|promotional)\\s+(allowance|discount|rebate)\\b",
+      "\\b(mcb|manufacturer\\s+chargeback|deal\\s+allowance)\\b",
+      "\\bgfs\\s+marketplace\\s+rebate\\b"
+    ]
+  }
+}

@@ -36,6 +36,8 @@
       _credit:        '5990 Vendor Credits',
       _deposit:       '5995 Bottle Deposits',
       _surcharge:     '5070 Delivery & Surcharges',
+      _tax:           '6010 State & Local Taxes',
+      _discount:      '5985 Vendor Discounts',
       _none:          '5099 Cost of Sales: Other'
     },
     qbd: {
@@ -51,6 +53,8 @@
       _credit:        'Vendor Credits',
       _deposit:       'Bottle Deposits',
       _surcharge:     'Delivery Surcharge',
+      _tax:           'State Taxes:Liquor',
+      _discount:      'Vendor Discounts',
       _none:          'Cost of Sales:Other'
     },
     xero: {
@@ -66,6 +70,8 @@
       _credit:        '399',
       _deposit:       '398',
       _surcharge:     '325',
+      _tax:           '826',
+      _discount:      '397',
       _none:          '300'
     },
     contpaqi: {
@@ -81,6 +87,8 @@
       _credit:        '5990-001-000',
       _deposit:       '5995-001-000',
       _surcharge:     '5070-001-000',
+      _tax:           '6010-001-000',
+      _discount:      '5985-001-000',
       _none:          '5099-001-000'
     }
   };
