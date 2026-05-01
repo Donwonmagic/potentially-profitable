@@ -112,6 +112,28 @@
 .md-grid .md-row-section td{background:#F7F2E5;border-bottom:1px solid var(--line)}
 .md-grid .md-row-section input{font-family:var(--font-display);font-weight:500;font-size:15px;color:var(--ink);border-color:transparent;background:transparent}
 /* W10-2 — bumped touch target from 36x36 to 44x44 to satisfy SC 2.5.5 (AAA) and 2.5.8 (AA, 24x24 minimum). */
+/* W11-1 — drag-handle column. Renders as a 2x4 grip icon at left
+   of each row; HTML5 drag-and-drop on desktop, up/down arrow
+   buttons (rendered next to the handle) for touch / keyboard. */
+.md-grid .md-handle{flex:0 0 auto;width:24px;height:32px;background:transparent;border:0;color:var(--stone-2);cursor:grab;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;padding:0}
+.md-grid .md-handle:hover{color:var(--teal);background:var(--cream-2)}
+.md-grid .md-handle:active,.md-grid .md-handle.is-dragging{cursor:grabbing;color:var(--teal)}
+.md-grid .md-handle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-grid tr[draggable="true"]{cursor:default}
+.md-grid tr.md-drag-over{outline:2px dashed var(--teal);outline-offset:-2px;background:color-mix(in srgb,var(--teal) 6%,var(--white))}
+.md-grid tr.md-drag-source{opacity:.4}
+.md-handle-cell{padding:4px 0 4px 6px !important;width:36px}
+@media(max-width:640px){.md-handle-cell{display:none}}
+
+/* W11-1 — touch reorder buttons (mobile fallback for HTML5 drag). */
+.md-touch-reorder{display:none}
+@media(max-width:640px){
+  .md-touch-reorder{display:flex;gap:4px;justify-content:flex-end;margin-top:6px}
+  .md-touch-reorder button{width:36px;height:36px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font-size:14px}
+  .md-touch-reorder button:hover{border-color:var(--teal);color:var(--teal)}
+  .md-touch-reorder button[disabled]{opacity:.3;cursor:not-allowed}
+}
+
 .md-grid .md-remove{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;border-radius:50%;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
 .md-grid .md-remove:hover{background:var(--cream-2);color:var(--rust)}
 .md-grid-actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line);align-items:center}
@@ -121,6 +143,20 @@
 .md-add-section{border:1px solid var(--teal);color:var(--teal);background:var(--white)}
 .md-add-section:hover{background:var(--teal);color:var(--cream)}
 .md-sample{border:1px solid var(--line-dark);background:var(--white);color:var(--ink)}
+/* W11-1 — Templates dropdown. <details> reveals a small popover
+   list of cuisine starter packs the operator can load with one tap. */
+.md-templates{position:relative}
+.md-templates summary{padding:11px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent;border:1px solid var(--line-dark);color:var(--ink);list-style:none;min-height:44px;display:inline-flex;align-items:center}
+.md-templates summary::-webkit-details-marker{display:none}
+.md-templates summary::after{content:' ▾';color:var(--stone);margin-left:4px}
+.md-templates[open] summary{border-color:var(--teal);color:var(--teal);background:var(--cream-2)}
+.md-templates-list{position:absolute;top:calc(100% + 4px);left:0;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:var(--elev-2,0 8px 24px rgba(0,0,0,.10));padding:6px;margin:0;list-style:none;z-index:10;min-width:240px}
+.md-templates-list li{margin:0}
+.md-templates-list button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:8px 10px;border:0;background:transparent;cursor:pointer;border-radius:6px;font:inherit;font-size:13px;color:var(--ink);text-align:left}
+.md-templates-list button:hover{background:var(--cream-2)}
+.md-templates-list button strong{font-weight:600;color:var(--ink)}
+.md-templates-list button span{font-size:11.5px;color:var(--stone)}
+
 .md-clear{border:1px solid var(--line);background:var(--white);color:var(--stone);margin-left:auto}
 .md-clear:hover{border-color:var(--rust);color:var(--rust)}
 
@@ -688,10 +724,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <table>
         <thead>
           <tr>
-            <th scope="col" style="width:32%;">Dish</th>
-            <th scope="col" style="width:18%;">Price</th>
+            <th scope="col" style="width:36px;" aria-label="Reorder"></th>
+            <th scope="col" style="width:30%;">Dish</th>
+            <th scope="col" style="width:16%;">Price</th>
             <th scope="col">Description</th>
-            <th scope="col" style="width:36px;"></th>
+            <th scope="col" style="width:44px;"></th>
           </tr>
         </thead>
         <tbody id="mdRows"></tbody>
@@ -700,6 +737,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <button type="button" class="md-add-row" id="mdAddRow">+ Add a dish</button>
         <button type="button" class="md-add-section" id="mdAddSection">+ Add a section</button>
         <button type="button" class="md-sample" id="mdSample">Load a sample menu</button>
+        <!-- W11-1 — Templates dropdown. Reveals a curated list of
+             cuisine starter packs (Brunch, Wine list, Tasting menu,
+             Cocktail, Kids menu, Dessert) that pre-fill rows[]
+             with realistic shape so operators learn the data model
+             from a working starting point. -->
+        <details class="md-templates">
+          <summary class="md-templates-trigger">Templates</summary>
+          <ul class="md-templates-list" id="mdTemplatesList" role="menu" aria-label="Cuisine starter templates"></ul>
+        </details>
         <button type="button" class="md-clear" id="mdClear">Clear</button>
       </div>
     </div>
@@ -882,6 +928,6 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="./menu-render-pdf.js?v=20260501-w10-1"></script>
 <script src="./menu-render-html.js?v=20260501-w7-2"></script>
 <script src="./menu-render-text.js?v=20260501-w10-2"></script>
-<script src="./menu-design.js?v=20260501-w8-1"></script>
+<script src="./menu-design.js?v=20260501-w11-1"></script>
 </body>
 </html>

@@ -143,10 +143,21 @@
     var html = '';
     rows.forEach(function (r, i) {
       var ghostAttr = r.ghost ? ' data-ghost="1"' : '';
+      var draggable = r.ghost ? '' : ' draggable="true"';
+      // W11-1 — drag handle cell + touch up/down arrows.
+      var handleCell = '<td class="md-handle-cell"><button type="button" class="md-handle" data-act="grip" data-i="' + i + '" aria-label="' + tt('Drag to reorder', 'Arrastra para reordenar') + '" tabindex="0">⋮⋮</button></td>';
+      var touchUp = i > 0 ? '' : ' disabled';
+      var touchDn = i < rows.length - 1 ? '' : ' disabled';
+      var touchReorder =
+        '<div class="md-touch-reorder" aria-hidden="false">' +
+          '<button type="button" data-act="moveup" data-i="' + i + '" aria-label="' + tt('Move up', 'Mover arriba') + '"' + touchUp + '>↑</button>' +
+          '<button type="button" data-act="movedn" data-i="' + i + '" aria-label="' + tt('Move down', 'Mover abajo') + '"' + touchDn + '>↓</button>' +
+        '</div>';
       if (r.kind === 'section') {
-        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + '>' +
+        html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + draggable + '>' +
+          handleCell +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
-          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" /></td>' +
+          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" />' + touchReorder + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
           '</tr>';
       } else {
@@ -218,7 +229,8 @@
             '</div>' +
           '</details>';
 
-        html += '<tr data-i="' + i + '"' + ghostAttr + '>' +
+        html += '<tr data-i="' + i + '"' + ghostAttr + draggable + '>' +
+          handleCell +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Dish name', 'Nombre del plato') + '" aria-label="' + tt('Dish name', 'Nombre del plato') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Price', 'Precio') + '"><input type="text" inputmode="decimal" class="md-input" data-field="price" data-i="' + i +
@@ -226,13 +238,13 @@
           '<td data-label="' + tt('Description', 'Descripción') + '" class="md-cell-desc"><textarea class="md-input md-input-desc" data-field="desc" data-i="' + i +
           '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
           allergenPop +
-          helpHtml + '</td>' +
+          helpHtml + touchReorder + '</td>' +
           '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
           '</tr>';
       }
     });
     if (!rows.length) {
-      html = '<tr><td colspan="4" style="padding:32px 16px;text-align:center;color:var(--stone);font-size:13.5px;">' +
+      html = '<tr><td colspan="5" style="padding:32px 16px;text-align:center;color:var(--stone);font-size:13.5px;">' +
         'Your menu is empty. Tap <strong>Add a dish</strong>, paste a spreadsheet above, or load the sample.' +
         '</td></tr>';
     }
@@ -1114,9 +1126,63 @@
       schedulePreview();
       scheduleSaveDraft();    // W5-8
     });
+    // W11-1 — HTML5 drag-and-drop reorder. The drag handle <button>
+    // is the source; the entire <tr> is draggable. dragover targets
+    // any other row; drop swaps positions and re-renders.
+    var __dragSrcIdx = -1;
+    rowsEl.addEventListener('dragstart', function (e) {
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || tr.dataset.ghost === '1') { e.preventDefault(); return; }
+      __dragSrcIdx = parseInt(tr.dataset.i, 10);
+      tr.classList.add('md-drag-source');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(__dragSrcIdx)); } catch (_) {}
+    });
+    rowsEl.addEventListener('dragend', function () {
+      var s = rowsEl.querySelector('.md-drag-source');
+      if (s) s.classList.remove('md-drag-source');
+      var o = rowsEl.querySelectorAll('.md-drag-over');
+      o.forEach(function (el) { el.classList.remove('md-drag-over'); });
+      __dragSrcIdx = -1;
+    });
+    rowsEl.addEventListener('dragover', function (e) {
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || __dragSrcIdx === -1) return;
+      e.preventDefault();
+      var prev = rowsEl.querySelector('.md-drag-over');
+      if (prev && prev !== tr) prev.classList.remove('md-drag-over');
+      if (tr !== rowsEl.querySelector('.md-drag-source')) tr.classList.add('md-drag-over');
+    });
+    rowsEl.addEventListener('drop', function (e) {
+      e.preventDefault();
+      var tr = e.target.closest('tr[data-i]');
+      if (!tr || __dragSrcIdx === -1) return;
+      var dst = parseInt(tr.dataset.i, 10);
+      if (!isFinite(dst) || dst === __dragSrcIdx) return;
+      pushUndo();
+      var moved = rows.splice(__dragSrcIdx, 1)[0];
+      rows.splice(dst, 0, moved);
+      __dragSrcIdx = -1;
+      render();
+      scheduleSaveDraft();
+    });
+
     rowsEl.addEventListener('click', function (e) {
       var t = e.target;
       if (!t) return;
+      // W11-1 — touch up/down reorder buttons.
+      var moveBtn = t.closest && t.closest('[data-act="moveup"], [data-act="movedn"]');
+      if (moveBtn) {
+        var mi = parseInt(moveBtn.dataset.i, 10);
+        if (!isFinite(mi)) return;
+        var dir = moveBtn.dataset.act === 'moveup' ? -1 : 1;
+        var ndx = mi + dir;
+        if (ndx < 0 || ndx >= rows.length) return;
+        pushUndo();
+        var tmp = rows[mi]; rows[mi] = rows[ndx]; rows[ndx] = tmp;
+        render();
+        scheduleSaveDraft();
+        return;
+      }
       // W7-2 — spice stepper. Clicking the same level toggles off
       // back to 0; clicking a higher level sets it.
       var spiceBtn = t.closest && t.closest('[data-act="spice"]');
@@ -1207,6 +1273,171 @@
     render();
     scheduleSaveDraft();
   });
+
+  // W11-1 — Cuisine starter templates. Each template is a curated
+  // dataset that demonstrates the data shape for a specific menu
+  // type. Selecting a template appends its rows to the current
+  // editor (or replaces if empty). Pairs with auto-suggested theme.
+  var TEMPLATES = {
+    brunch: {
+      label_en: 'Brunch', label_es: 'Brunch',
+      hint_en: '8 sections · 24 dishes · cafe-counter theme',
+      hint_es: '8 secciones · 24 platos · tema cafe-counter',
+      themeHint: 'cafe-counter',
+      rows: [
+        { kind: 'section', name: 'Eggs & toast' },
+        { kind: 'dish', name: 'Avocado toast',     price: '$14', desc: 'Sourdough, smashed avocado, soft-boiled egg, chili oil.', allergens: ['VG','E'], spice: 1 },
+        { kind: 'dish', name: 'Eggs Benedict',     price: '$18', desc: 'Toasted English muffin, ham, hollandaise.',                allergens: ['E','DF'] },
+        { kind: 'dish', name: 'Shakshuka',         price: '$16', desc: 'Stewed tomato, bell pepper, two baked eggs, feta.',         allergens: ['VG','E'], spice: 2 },
+        { kind: 'section', name: 'Sweets' },
+        { kind: 'dish', name: 'Buttermilk pancakes', price: '$13', desc: 'Stack of three with maple syrup and butter.',             allergens: ['VG','E'] },
+        { kind: 'dish', name: 'French toast',      price: '$15', desc: 'Brioche, vanilla custard, berry compote.',                  allergens: ['VG','E'] },
+        { kind: 'section', name: 'Breakfast plates' },
+        { kind: 'dish', name: 'The Big Plate',     price: '$22', desc: 'Two eggs, bacon, sausage, hash browns, toast.',             allergens: ['E'] },
+        { kind: 'dish', name: 'Veggie scramble',   price: '$17', desc: 'Three eggs, spinach, mushroom, tomato, goat cheese.',       allergens: ['VG','E'] },
+        { kind: 'section', name: 'Drinks' },
+        { kind: 'dish', name: 'Drip coffee',       price: '$4',  desc: 'Local roaster, refills included.' },
+        { kind: 'dish', name: 'Cappuccino',        price: '$5',  desc: 'Double shot, steamed milk, dry foam.', allergens: ['VG'] },
+        { kind: 'dish', name: 'Fresh OJ',          price: '$6',  desc: 'Squeezed to order.', allergens: ['V'] }
+      ]
+    },
+    'wine-list': {
+      label_en: 'Wine list', label_es: 'Carta de vinos',
+      hint_en: '4 sections · 18 wines · wine-list-formal theme',
+      hint_es: '4 secciones · 18 vinos · tema wine-list-formal',
+      themeHint: 'wine-list-formal',
+      rows: [
+        { kind: 'section', name: 'White' },
+        { kind: 'dish', name: 'Sancerre, Henri Bourgeois 2022',   price: '$58',  desc: 'Loire Valley, France · sauvignon blanc' },
+        { kind: 'dish', name: 'Albariño, Bodegas Fillaboa 2021',  price: '$48',  desc: 'Rías Baixas, Spain · saline minerality' },
+        { kind: 'dish', name: 'Riesling, Dr. Loosen 2021',        price: '$42',  desc: 'Mosel, Germany · off-dry, peach' },
+        { kind: 'section', name: 'Red' },
+        { kind: 'dish', name: 'Chianti Classico, Felsina 2019',   price: '$72',  desc: 'Tuscany, Italy · sangiovese' },
+        { kind: 'dish', name: 'Pinot Noir, Au Bon Climat 2020',   price: '$68',  desc: 'Santa Barbara, USA · cherry, earth' },
+        { kind: 'dish', name: 'Côtes du Rhône, Guigal 2020',      price: '$54',  desc: 'Southern Rhône, France · GSM blend' },
+        { kind: 'section', name: 'Sparkling' },
+        { kind: 'dish', name: 'Champagne brut, Pol Roger NV',     price: '$110', desc: 'Épernay, France · Pinot-Chardonnay' },
+        { kind: 'dish', name: 'Cava brut, Raventós i Blanc NV',   price: '$42',  desc: 'Penedès, Spain · biodynamic', allergens: ['LO'] },
+        { kind: 'section', name: 'By the glass' },
+        { kind: 'dish', name: 'House white',                       price: '$11',  desc: 'Ask your server.' },
+        { kind: 'dish', name: 'House red',                         price: '$11',  desc: 'Ask your server.' }
+      ]
+    },
+    tasting: {
+      label_en: 'Tasting menu', label_es: 'Menú de degustación',
+      hint_en: '5 courses · single column · tasting-omakase theme',
+      hint_es: '5 cursos · una columna · tema tasting-omakase',
+      themeHint: 'tasting-omakase',
+      rows: [
+        { kind: 'section', name: 'I' },
+        { kind: 'dish', name: 'Oyster',   price: '',  desc: 'Hama Hama, mignonette of pickled green strawberry.', allergens: ['SF','GF'] },
+        { kind: 'section', name: 'II' },
+        { kind: 'dish', name: 'Crudo',    price: '',  desc: 'Spotted prawn, tomato water, sea bean, lemon oil.', allergens: ['SF','GF','DF'] },
+        { kind: 'section', name: 'III' },
+        { kind: 'dish', name: 'Pasta',    price: '',  desc: 'Hand-cut tagliatelle, brown butter, koji, parmigiano.', allergens: ['VG','E'] },
+        { kind: 'section', name: 'IV' },
+        { kind: 'dish', name: 'Main',     price: '',  desc: 'Aged duck, beet, chrysanthemum, port reduction.', allergens: ['DF'] },
+        { kind: 'section', name: 'V' },
+        { kind: 'dish', name: 'Dessert',  price: '',  desc: 'Brown butter cake, miso caramel, bay leaf ice cream.', allergens: ['VG','E','DF'] }
+      ]
+    },
+    cocktails: {
+      label_en: 'Cocktail menu', label_es: 'Carta de cócteles',
+      hint_en: '3 sections · 12 cocktails · cocktail-deco theme',
+      hint_es: '3 secciones · 12 cócteles · tema cocktail-deco',
+      themeHint: 'cocktail-deco',
+      rows: [
+        { kind: 'section', name: 'Stirred' },
+        { kind: 'dish', name: 'Old Fashioned',  price: '$16', desc: 'Bourbon, demerara, Angostura, orange peel.', allergens: ['GF','DF'] },
+        { kind: 'dish', name: 'Manhattan',      price: '$16', desc: 'Rye, sweet vermouth, Angostura, cherry.', allergens: ['GF','DF'] },
+        { kind: 'dish', name: 'Negroni',        price: '$15', desc: 'Gin, Campari, sweet vermouth, orange.', allergens: ['GF','DF'] },
+        { kind: 'section', name: 'Shaken' },
+        { kind: 'dish', name: 'Margarita',      price: '$14', desc: 'Tequila, lime, agave, salt rim.', allergens: ['GF','DF'] },
+        { kind: 'dish', name: 'Daiquiri',       price: '$14', desc: 'Rum, lime, demerara.', allergens: ['GF','DF'] },
+        { kind: 'dish', name: 'Whiskey sour',   price: '$15', desc: 'Bourbon, lemon, demerara, egg white.', allergens: ['E','DF'] },
+        { kind: 'section', name: 'House' },
+        { kind: 'dish', name: 'Smoke & Mirror', price: '$18', desc: 'Mezcal, lime, ancho, Tajín rim.', allergens: ['GF','DF'], spice: 2 },
+        { kind: 'dish', name: 'Garden Party',   price: '$16', desc: 'Gin, cucumber, mint, elderflower.', allergens: ['GF','DF','V'] }
+      ]
+    },
+    kids: {
+      label_en: 'Kids menu', label_es: 'Menú infantil',
+      hint_en: '4 sections · friendly portions · kids-bright theme',
+      hint_es: '4 secciones · porciones amigables · tema kids-bright',
+      themeHint: 'kids-bright',
+      rows: [
+        { kind: 'section', name: 'Mains' },
+        { kind: 'dish', name: 'Mac & cheese',     price: '$8',  desc: 'Cavatappi pasta, three-cheese sauce.', allergens: ['VG','E'] },
+        { kind: 'dish', name: 'Chicken tenders',  price: '$9',  desc: 'Crispy chicken with ketchup or honey mustard.', allergens: ['DF'] },
+        { kind: 'dish', name: 'Cheese pizza',     price: '$8',  desc: '6-inch personal pizza.', allergens: ['VG'] },
+        { kind: 'section', name: 'Sides' },
+        { kind: 'dish', name: 'French fries',     price: '$4',  desc: '', allergens: ['V','GF'] },
+        { kind: 'dish', name: 'Apple slices',     price: '$3',  desc: 'With caramel dip.', allergens: ['V','GF'] },
+        { kind: 'section', name: 'Drinks' },
+        { kind: 'dish', name: 'Lemonade',         price: '$3',  desc: '', allergens: ['V'] },
+        { kind: 'dish', name: 'Chocolate milk',   price: '$3',  desc: '', allergens: ['VG'] },
+        { kind: 'section', name: 'Sweets' },
+        { kind: 'dish', name: 'Vanilla ice cream',price: '$5',  desc: 'One scoop, sprinkles on request.', allergens: ['VG','E'] }
+      ]
+    },
+    dessert: {
+      label_en: 'Dessert menu', label_es: 'Menú de postres',
+      hint_en: '2 sections · 8 desserts · dessert-only theme',
+      hint_es: '2 secciones · 8 postres · tema dessert-only',
+      themeHint: 'dessert-only',
+      rows: [
+        { kind: 'section', name: 'House desserts' },
+        { kind: 'dish', name: 'Olive-oil cake',   price: '$11', desc: 'Citrus glaze, candied zest, crème fraîche.', allergens: ['VG','E'] },
+        { kind: 'dish', name: 'Tiramisu',         price: '$13', desc: 'Mascarpone, espresso-soaked savoiardi, cocoa.', allergens: ['VG','E'] },
+        { kind: 'dish', name: 'Panna cotta',      price: '$10', desc: 'Vanilla bean, seasonal berries.', allergens: ['VG','GF'] },
+        { kind: 'dish', name: 'Chocolate torte',  price: '$12', desc: 'Single-origin 70%, sea salt, olive oil.', allergens: ['VG','GF','E'] },
+        { kind: 'section', name: 'Ice cream & gelato' },
+        { kind: 'dish', name: 'Affogato',         price: '$9',  desc: 'House gelato, espresso pour, hazelnut crumble.', allergens: ['VG','N','E'] },
+        { kind: 'dish', name: 'Gelato trio',      price: '$11', desc: 'Three scoops · ask about today.', allergens: ['VG','E'] }
+      ]
+    }
+  };
+  function renderTemplatesList() {
+    var host = document.getElementById('mdTemplatesList');
+    if (!host) return;
+    host.innerHTML = Object.keys(TEMPLATES).map(function (key) {
+      var t = TEMPLATES[key];
+      var label = LOCALE === 'es' ? t.label_es : t.label_en;
+      var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
+      return '<li role="none"><button type="button" role="menuitem" data-template="' + escHtml(key) + '">' +
+        '<strong>' + escHtml(label) + '</strong><span>' + escHtml(hint) + '</span>' +
+        '</button></li>';
+    }).join('');
+  }
+  renderTemplatesList();
+  var templatesList = document.getElementById('mdTemplatesList');
+  if (templatesList) {
+    templatesList.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-template]'); if (!btn) return;
+      var key = btn.dataset.template;
+      var tpl = TEMPLATES[key]; if (!tpl) return;
+      pushUndo();
+      // If editor has only ghost rows or is empty, REPLACE; else APPEND.
+      var nonGhost = rows.filter(function (r) { return !r.ghost; });
+      if (!nonGhost.length) {
+        rows = tpl.rows.map(function (r) { return Object.assign({}, r); });
+        __ghostActive = false;
+      } else {
+        rows = rows.concat(tpl.rows.map(function (r) { return Object.assign({}, r); }));
+      }
+      // Auto-suggest a fitting theme if the operator is still on the
+      // default 'modern-minimal'.
+      if (tpl.themeHint && (themeId === 'modern-minimal' || !themeId)) {
+        themeId = tpl.themeHint;
+        renderThemePicker();
+      }
+      render();
+      scheduleSaveDraft();
+      var d = document.querySelector('.md-templates');
+      if (d) d.open = false;
+      if (window.plausible) { try { window.plausible('Menu Design Template Loaded', { props: { template: key } }); } catch (_) {} }
+    });
+  }
 
   // -------------------- Paste-CSV ingest --------------------
   // Two paste shapes accepted: (a) header-row CSV/TSV with column
