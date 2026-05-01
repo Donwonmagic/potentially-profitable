@@ -304,6 +304,14 @@
 
   function classify(row) {
     if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none' };
+    // Tier 0 — operator's own past corrections (W7-8). Wins over
+    // lexicon because the operator has already told us what THIS
+    // SKU means in their kitchen. Browser-only check; safe in Node.
+    if (typeof root !== 'undefined' && root && root.MID_LEARNINGS &&
+        typeof root.MID_LEARNINGS.lookupOverride === 'function') {
+      var t0 = root.MID_LEARNINGS.lookupOverride(row.name);
+      if (t0) return t0;
+    }
     var t1 = tier1Exact(row.name);
     if (t1) return t1;
     var t2 = tier2Fuzzy(row.name);

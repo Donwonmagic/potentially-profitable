@@ -425,6 +425,11 @@
     else if (field === 'category') {
       row.category = value || null;
       row.categoryConfidence = 100; // owner-confirmed
+      // W7-8 — record this override so the same SKU on a future
+      // invoice classifies correctly without owner intervention.
+      if (typeof MID_LEARNINGS !== 'undefined' && MID_LEARNINGS.recordOverride && row.name) {
+        try { MID_LEARNINGS.recordOverride(row.name, value); } catch (_) {}
+      }
     }
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
