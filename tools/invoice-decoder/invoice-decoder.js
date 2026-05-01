@@ -221,6 +221,19 @@
   function escHtml(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+
+  // W2-5: dedup-key normalizer. Lower-cased, whitespace-collapsed,
+  // OCR-noise tolerant (drops the leading/trailing punctuation
+  // that frequently flips between page reads). Empty strings
+  // return '' so the caller can skip them.
+  function normalizeForDedup(s) {
+    if (!s) return '';
+    var n = String(s).toLowerCase()
+      .replace(/[^\w\s]/g, ' ')   // collapse punctuation
+      .replace(/\s+/g, ' ')
+      .trim();
+    return (n.length >= 4) ? n : '';
+  }
   function confBand(c) { return c >= 80 ? 'green' : c >= 60 ? 'amber' : 'red'; }
   // Restaurant-real category labels, EN + ES. The lexicon keys
   // are stable identifiers; these are the user-facing strings.
@@ -276,7 +289,39 @@
             );
           }
         }).then(function (ocrResult) {
-          allLines = allLines.concat(ocrResult.lines || []);
+          // W2-5: multi-page footer-repeat dedup. A 2-page Sysco
+          // invoice repeats the SYSCO HOUSTON / Customer Number /
+          // column-header band on page 2; the previous concat
+          // would treat each repeat as a new line and the parser
+          // would silently inflate row count. We hash each
+          // incoming line and skip when it matches a line already
+          // present from an earlier page (whole-document window —
+          // header/footer repeats can land anywhere relative to
+          // the invoice body).
+          var newLines = ocrResult.lines || [];
+          if (pageIdx === 0) {
+            // First page: trust everything.
+            allLines = allLines.concat(newLines);
+          } else {
+            var seenHashes = new Set();
+            allLines.forEach(function (l) { seenHashes.add(normalizeForDedup(l.text)); });
+            var droppedRepeats = 0;
+            newLines.forEach(function (l) {
+              var h = normalizeForDedup(l.text);
+              if (h && seenHashes.has(h)) {
+                droppedRepeats++;
+                return;
+              }
+              allLines.push(l);
+              if (h) seenHashes.add(h);
+            });
+            if (droppedRepeats > 0 && window.plausible) {
+              window.plausible('Invoice Decoder Page Dedup', { props: {
+                page: String(pageIdx + 1),
+                dropped_bucket: droppedRepeats < 3 ? '<3' : droppedRepeats < 8 ? '3-7' : '8+'
+              } });
+            }
+          }
           fullText += '\n' + (ocrResult.text || '');
           doneShare += pageShare;
         });
