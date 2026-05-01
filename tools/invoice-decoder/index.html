@@ -425,6 +425,119 @@
 .id-kbd-compact{margin:8px 0 0;font-size:11px;color:var(--ink-soft);text-align:right}
 .id-kbd-compact kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:10.5px;padding:1px 4px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink)}
 
+/* ======================================================================
+   Wave 6.10 — desktop split-pane layout.
+   ====================================================================== */
+
+/* Default (mobile + tablet): existing block flow. The wrapper is
+   transparent — no extra padding, no visual chrome. */
+.id-result-area{display:block}
+
+/* Above 1024px, the wrapper becomes a 2-column CSS grid.
+   .id-parsed uses display:contents so its children participate
+   directly in the parent grid; we then assign each child to the
+   left rail or main column via grid-column rules. */
+@media (min-width: 1024px){
+  .id-result-area{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    column-gap:28px;
+    align-items:start;
+    margin-top:18px;
+  }
+  /* `display:contents` flattens .id-parsed so its children are
+     grid items of .id-result-area. Hidden state still hides via
+     [hidden] (display:none has higher specificity). */
+  .id-parsed{display:contents}
+  .id-parsed[hidden]{display:none}
+
+  /* LEFT RAIL — sticky so it follows the page scroll while the
+     parsed list grows. Top offset accounts for the site header. */
+  .id-preview-wrap,
+  .id-filter-bar,
+  .id-kbd-compact,
+  .id-kbd-legend{
+    grid-column:1;
+    align-self:start;
+  }
+  .id-preview-wrap{
+    position:sticky;
+    top:96px;
+    margin-top:0;
+    /* Compact the preview tiles into a single-column rail-friendly
+       stack. Smaller thumb height; meta wraps cleanly. */
+  }
+  .id-preview-wrap .id-preview-row{grid-template-columns:1fr;gap:8px}
+  .id-preview-wrap .id-preview-tile img{max-height:160px}
+  .id-preview-wrap .id-read-btn{width:100%;justify-content:center}
+  .id-filter-bar{
+    position:sticky;
+    top:340px;          /* below the sticky preview block */
+    z-index:2;
+    background:var(--cream,#FAF6EE);
+    margin:0 -8px;
+    padding:10px 8px;
+  }
+  .id-kbd-compact{margin-top:6px;text-align:left}
+  .id-kbd-legend{margin-top:0}
+
+  /* MAIN COLUMN — everything else. */
+  .id-vendor-pulse,
+  .id-diff-strip,
+  .id-mathfix,
+  .id-learn-vendor,
+  .id-parsed-summary,
+  .id-parsed-list,
+  .id-parsed-totals,
+  .id-bulkbar,
+  .id-bulk-undo,
+  .id-handoff{
+    grid-column:2;
+  }
+  /* The bulkbar's sticky-bottom positioning still works inside the
+     grid main column thanks to position:sticky operating relative
+     to the nearest scrolling ancestor. */
+
+  /* The "coming next" banner stays full-width within the grid
+     since it appears in the pre-result phase. (#idStatus is
+     positioned outside .id-result-area entirely.) */
+  .id-coming{
+    grid-column:1 / -1;
+  }
+
+  /* Pre-OCR phase: when only the preview-wrap is visible (parsed
+     panel hidden), the main column is empty. Suppress the grid
+     in that intermediate state to avoid an awkward 300px-wide
+     image floating with empty whitespace. We do this by detecting
+     the ".id-parsed[hidden]" sibling — if the result panel is
+     hidden, fall back to single-column. */
+  .id-result-area:has(.id-parsed[hidden]){
+    grid-template-columns:1fr;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap{
+    position:static;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-row{grid-template-columns:1fr 1fr}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-tile img{max-height:280px}
+  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-read-btn{width:auto}
+
+  /* Wider container above 1100px so the split has room to breathe. */
+}
+@media (min-width: 1100px){
+  .block .container{max-width:1100px !important}
+  .id-hero,
+  .id-honesty,
+  .id-result-area .id-status{max-width:760px;margin-left:auto;margin-right:auto}
+}
+
+/* Tablet (720–1023) — single column with a slightly relaxed max
+   width so the parsed list isn't cramped. */
+@media (min-width: 720px) and (max-width: 1023px){
+  .id-result-area{margin-top:14px}
+}
+
 /* Wave 3.1 — visually-hidden utility for SR-only headings */
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
@@ -835,6 +948,13 @@
       <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
     </div>
 
+    <!-- Wave 6.10 — desktop split-pane wrapper. Above 1024px, the
+         result region becomes a 2-column grid (320px sticky rail +
+         1fr main panel). Below 1024px, normal block flow. The CSS
+         uses display:contents on .id-parsed so its children
+         participate in the parent grid without restructuring HTML. -->
+    <div class="id-result-area">
+
     <!-- Preview tiles — proves preprocessing landed before B2 wires OCR. -->
     <div class="id-preview-wrap" id="idPreview" hidden>
       <div class="id-preview-row">
@@ -920,6 +1040,8 @@
       </div>
       <div class="id-handoff" id="idHandoff" hidden></div>
     </div>
+
+    </div><!-- /.id-result-area (Wave 6.10) -->
 
     <div class="id-honesty">
       <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">What this is, and what it isn't.</h2>

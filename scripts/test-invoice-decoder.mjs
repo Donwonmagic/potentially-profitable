@@ -1293,10 +1293,62 @@ console.log(`\nVendor JSON schema + template runtime (Wave 4.1):`);
 
 console.log(`\nWave 4.1 fixtures: ${v41Pass} passed.`);
 
+// =====================================================================
+// Wave 6.10 — desktop split-pane layout. Static checks against the
+// HTML + CSS to confirm the wrapper is in place and the grid rules
+// activate at 1024px.
+// =====================================================================
+
+let splitPass = 0, splitFail = 0;
+console.log(`\nDesktop split-pane (Wave 6.10):`);
+{
+  const enHtml = await fs.promises.readFile(path.join(repoRoot, 'tools/invoice-decoder/index.html'), 'utf8');
+  const esHtml = await fs.promises.readFile(path.join(repoRoot, 'es/tools/invoice-decoder/index.html'), 'utf8');
+
+  // Wrapper present in both pages.
+  const okEnWrap = /<div class="id-result-area">[\s\S]+\/\.id-result-area/.test(enHtml);
+  const okEsWrap = /<div class="id-result-area">[\s\S]+\/\.id-result-area/.test(esHtml);
+  console.log(`  ${okEnWrap ? '✓' : '✗'} EN page wraps the result region in .id-result-area`);
+  console.log(`  ${okEsWrap ? '✓' : '✗'} ES page wraps the result region in .id-result-area`);
+  if (okEnWrap) splitPass++; else splitFail++;
+  if (okEsWrap) splitPass++; else splitFail++;
+
+  // Grid CSS at 1024px present.
+  const cssGridEn = /@media \(min-width:\s*1024px\)\{[^@]*\.id-result-area\s*\{\s*display:\s*grid/.test(enHtml.replace(/\s+/g, ' '));
+  const cssGridEs = /@media \(min-width:\s*1024px\)\{[^@]*\.id-result-area\s*\{\s*display:\s*grid/.test(esHtml.replace(/\s+/g, ' '));
+  console.log(`  ${cssGridEn ? '✓' : '✗'} EN page activates 2-column grid above 1024px`);
+  console.log(`  ${cssGridEs ? '✓' : '✗'} ES page activates 2-column grid above 1024px`);
+  if (cssGridEn) splitPass++; else splitFail++;
+  if (cssGridEs) splitPass++; else splitFail++;
+
+  // display:contents on .id-parsed so children participate in grid.
+  const okContents = /\.id-parsed\{display:contents\}/.test(enHtml.replace(/\s+/g, ''));
+  console.log(`  ${okContents ? '✓' : '✗'} EN page applies display:contents to .id-parsed inside the breakpoint`);
+  if (okContents) splitPass++; else splitFail++;
+
+  // Sticky preview rail.
+  const okSticky = /\.id-preview-wrap\{position:sticky/.test(enHtml.replace(/\s+/g, ''));
+  console.log(`  ${okSticky ? '✓' : '✗'} EN page makes .id-preview-wrap sticky in the rail`);
+  if (okSticky) splitPass++; else splitFail++;
+
+  // The :has() guard for hidden parsed panel — fallback to single column pre-OCR.
+  const okHas = /\.id-result-area:has\(\.id-parsed\[hidden\]\)/.test(enHtml);
+  console.log(`  ${okHas ? '✓' : '✗'} EN page falls back to single-column when .id-parsed is hidden (pre-OCR)`);
+  if (okHas) splitPass++; else splitFail++;
+
+  // Wider container at 1100px.
+  const okWide = /@media \(min-width:\s*1100px\)\{[^@]*max-width:\s*1100px/.test(enHtml.replace(/\s+/g, ' '));
+  console.log(`  ${okWide ? '✓' : '✗'} EN page widens the container at 1100px+`);
+  if (okWide) splitPass++; else splitFail++;
+}
+
+console.log(`\nWave 6.10 fixtures: ${splitPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
   + vcFail
   + kdfFail + recFail
-  + v41Fail;
+  + v41Fail
+  + splitFail;
 process.exit(grandFail === 0 ? 0 : 1);
