@@ -480,7 +480,11 @@
       items.forEach(function (item) {
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/es/tools/';
-        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        // Phase 7 W1-8 — invoice-decoder cards route to ?reload=
+        var openUrl = (item.kind === 'invoice-decoder')
+          ? openBase + '?reload=' + encodeURIComponent(item.id)
+          : openBase + '?saved=' + encodeURIComponent(item.id);
+        var isInvoice = item.kind === 'invoice-decoder';
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);
@@ -503,14 +507,20 @@
         row.className = 'wsh-item';
         row.setAttribute('data-id', item.id);
         row.setAttribute('data-kind', item.kind);
+        // Phase 7 W1-8 — encrypted-row indicator on invoices.
+        var encryptedChip = isInvoice
+          ? '<span class="status-chip" data-band="solid" data-size="xs" style="background:#E6F4EC;color:#1f6e3a;border-color:#c4e3cf;margin-left:6px;">🔒 Encriptada</span>'
+          : '';
+        var dateLabel = isInvoice ? 'Bloqueada ' : (isSubmission ? 'Enviado ' : 'Guardado ');
         row.innerHTML =
           '<div class="wsh-item-body">' +
             '<div class="wsh-item-meta">' +
               '<span class="status-chip" data-band="solid" data-size="xs">' + escapeHtml(label) + '</span>' +
+              encryptedChip +
               statusPillHtml +
             '</div>' +
             '<h3 class="wsh-item-title">' + escapeHtml(item.title) + '</h3>' +
-            '<p class="wsh-item-date">' + (isSubmission ? 'Enviado ' : 'Guardado ') + fmtDate(item.createdAt) + '</p>' +
+            '<p class="wsh-item-date">' + dateLabel + fmtDate(item.createdAt) + (isInvoice ? ' · toca Abrir y desbloquea con tu secreto' : '') + '</p>' +
           '</div>' +
           '<div class="wsh-item-actions">' +
             actionsHtml +
