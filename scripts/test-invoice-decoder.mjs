@@ -1553,6 +1553,91 @@ console.log(`\nVendor categoryHints — Tier 0.5 (Wave 4.2 evolution):`);
 
 console.log(`\nWave 4.2 evolution fixtures: ${v42Pass} passed.`);
 
+// =====================================================================
+// Wave 4.2 line-grammar — alcohol-tax line splitting + accountant
+// GL routing for kind:'tax' / kind:'discount'.
+// =====================================================================
+
+let lgPass = 0, lgFail = 0;
+console.log(`\nPer-vendor line grammar — tax + discount classification (Wave 4.2):`);
+{
+  const RT = await import(path.join(repoRoot, 'tools/invoice-decoder/vendors/template-runtime.js')).then(m => m.default || m);
+  RT._resetForTests();
+
+  // Real beer/wine template (loaded from the JSON file we just
+  // updated). Verifies the runtime applies the patterns correctly.
+  const tmpl = await RT.loadTemplate('beer-wine-distributor');
+  const okTemplate = tmpl && tmpl.lineGrammar && Array.isArray(tmpl.lineGrammar.taxPatterns) && tmpl.lineGrammar.taxPatterns.length > 0;
+  console.log(`  ${okTemplate ? '✓' : '✗'} beer-wine-distributor.json carries lineGrammar.taxPatterns (got ${tmpl && tmpl.lineGrammar ? tmpl.lineGrammar.taxPatterns.length : 'none'})`);
+  if (okTemplate) lgPass++; else lgFail++;
+
+  // Build a row set covering the typical beer/wine invoice shapes.
+  const rows = [
+    { name: 'Stella Artois 24/12 BTL', raw: 'STELLA ARTOIS 24/12 BTL CASE $42.00', lineTotal: 42.00, kind: 'item' },
+    { name: 'State Liquor Tax',         raw: 'STATE LIQUOR TAX 12% $5.04',         lineTotal:  5.04, kind: 'item' },
+    { name: 'Federal Excise Tax',       raw: 'FEDERAL EXCISE TAX $1.20',           lineTotal:  1.20, kind: 'item' },
+    { name: 'Volume Discount',          raw: 'VOLUME DISCOUNT -$2.50',             lineTotal: -2.50, kind: 'item' },
+    { name: 'Modelo 24/12',             raw: 'MODELO 24/12 BTL CASE $38.00',       lineTotal: 38.00, kind: 'item' },
+    { name: 'Credit return',            raw: 'CREDIT 12345 BUDWEISER -$24.00',     lineTotal: -24.00, kind: 'credit' }   // pre-set credit
+  ];
+
+  RT.applyLineGrammar(rows, tmpl);
+
+  const okStella = rows[0].kind === 'item';
+  const okStateLiquor = rows[1].kind === 'tax';
+  const okFedExcise = rows[2].kind === 'tax';
+  const okDiscount = rows[3].kind === 'discount';
+  const okModelo = rows[4].kind === 'item';
+  const okCreditPreserved = rows[5].kind === 'credit';   // existing credit kind not overwritten
+
+  console.log(`  ${okStella ? '✓' : '✗'} normal item line stays kind='item' (got ${rows[0].kind})`);
+  console.log(`  ${okStateLiquor ? '✓' : '✗'} STATE LIQUOR TAX line classified as kind='tax' (got ${rows[1].kind})`);
+  console.log(`  ${okFedExcise ? '✓' : '✗'} FEDERAL EXCISE TAX line classified as kind='tax' (got ${rows[2].kind})`);
+  console.log(`  ${okDiscount ? '✓' : '✗'} VOLUME DISCOUNT line classified as kind='discount' (got ${rows[3].kind})`);
+  console.log(`  ${okModelo ? '✓' : '✗'} another item line stays kind='item' (got ${rows[4].kind})`);
+  console.log(`  ${okCreditPreserved ? '✓' : '✗'} pre-existing credit kind is NOT overwritten (got ${rows[5].kind})`);
+  if (okStella) lgPass++; else lgFail++;
+  if (okStateLiquor) lgPass++; else lgFail++;
+  if (okFedExcise) lgPass++; else lgFail++;
+  if (okDiscount) lgPass++; else lgFail++;
+  if (okModelo) lgPass++; else lgFail++;
+  if (okCreditPreserved) lgPass++; else lgFail++;
+
+  // No-op when template lacks lineGrammar.
+  const noLg = [{ name: 'Tax Line', raw: 'STATE LIQUOR TAX', kind: 'item' }];
+  RT.applyLineGrammar(noLg, { id: 'no-grammar' });
+  const okNoOp = noLg[0].kind === 'item';
+  console.log(`  ${okNoOp ? '✓' : '✗'} no-op when template lacks lineGrammar (got ${noLg[0].kind})`);
+  if (okNoOp) lgPass++; else lgFail++;
+
+  // Accountant export GL maps include _tax + _discount keys.
+  const ACCT = await import(path.join(repoRoot, 'tools/invoice-decoder/accountant-export.js')).then(m => m.default || m);
+  const okGlTax = ACCT.suggestGL('qbo', { kind: 'tax', category: null }).includes('Tax');
+  console.log(`  ${okGlTax ? '✓' : '✗'} QBO accountant-export routes kind='tax' to a Tax GL`);
+  if (okGlTax) lgPass++; else lgFail++;
+  const okGlDisc = ACCT.suggestGL('qbo', { kind: 'discount' }).includes('Discount');
+  console.log(`  ${okGlDisc ? '✓' : '✗'} QBO accountant-export routes kind='discount' to a Discount GL`);
+  if (okGlDisc) lgPass++; else lgFail++;
+
+  // Generic ledger preserves kind='tax' in the row output for the bookkeeper.
+  const invoice = {
+    vendor: 'beer-wine-distributor',
+    savedAt: 1700000000000,
+    parsedSum: 84.74,
+    rows: [
+      { name: 'Stella Artois', qty: 1, unit: 'cs', lineTotal: 42, category: 'beverage', kind: 'item' },
+      { name: 'State Liquor Tax', qty: 1, unit: '', lineTotal: 5.04, category: null, kind: 'tax' },
+      { name: 'Volume Discount', qty: 1, unit: '', lineTotal: -2.50, category: null, kind: 'discount' }
+    ]
+  };
+  const generic = ACCT.exportGenericLedger(invoice, {});
+  const okGenericTax = generic && generic.body && /,tax,/.test(generic.body) && /,discount,/.test(generic.body);
+  console.log(`  ${okGenericTax ? '✓' : '✗'} generic ledger CSV contains 'tax' and 'discount' kinds in the Kind column`);
+  if (okGenericTax) lgPass++; else lgFail++;
+}
+
+console.log(`\nWave 4.2 line-grammar fixtures: ${lgPass} passed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -1561,5 +1646,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + v41Fail
   + splitFail
   + coachFail
-  + v42Fail;
+  + v42Fail
+  + lgFail;
 process.exit(grandFail === 0 ? 0 : 1);

@@ -51,5 +51,17 @@
   "categoryBias": {
     "beverage": 1.4
   },
-  "alcoholTax": true
+  "alcoholTax": true,
+  "lineGrammar": {
+    "_doc": "Per-vendor line shape patterns. taxPatterns[] mark a line's kind as 'tax' so it's excluded from cost-of-goods aggregations and routed to a tax GL on accountant export. discountPatterns[] mark 'discount' (negative line totals not from credits).",
+    "taxPatterns": [
+      "\\b(state\\s+liquor\\s+tax|state\\s+excise\\s+tax|federal\\s+excise\\s+tax|alcohol\\s+tax|excise\\s+tax|liquor\\s+tax|sales\\s+tax|tab\\s+tax|abv\\s+tax)\\b",
+      "\\b(twcc|abc|ttb|tabc)\\s*(tax|fee|surcharge)\\b",
+      "\\b\\d+%\\s+(?:state|federal)\\s+(?:liquor|excise|alcohol)\\s+tax\\b"
+    ],
+    "discountPatterns": [
+      "\\b(volume\\s+discount|case\\s+discount|promo|promotional\\s+rebate|loyalty\\s+rebate|mvp\\s+discount)\\b\\s*[-(]?\\s*\\$?\\d+",
+      "\\bquantity\\s+rebate\\b\\s*[-(]?\\s*\\$?\\d+"
+    ]
+  }
 }

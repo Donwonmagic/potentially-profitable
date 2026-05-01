@@ -221,6 +221,52 @@
     return Promise.all((ids || []).map(loadTemplate));
   }
 
+  // ---------------------------------------------------------------
+  // Wave 4.2 evolution — per-vendor line grammar.
+  //
+  // applyLineGrammar(rows, template) runs after parse.parseLines but
+  // before categorize.classify. For each row, we scan its raw text
+  // against the matched vendor's `lineGrammar.taxPatterns[]` and
+  // `lineGrammar.discountPatterns[]`. When a pattern fires, we
+  // override the row's `kind` so the downstream pipeline:
+  //   - excludes tax lines from the cost-of-goods aggregation in
+  //     the trend / margin-impact computations (already handled by
+  //     the existing `kind !== 'item'` filter).
+  //   - routes tax lines to a different GL account on accountant
+  //     export (handled by the existing _credit/_deposit/_surcharge
+  //     map — we add a _tax key here).
+  //
+  // Idempotent + cheap: ~5-10 rows per invoice, ~3 patterns per
+  // vendor, sub-millisecond. Returns the rows array (mutated).
+  // ---------------------------------------------------------------
+  function applyLineGrammar(rows, template) {
+    if (!Array.isArray(rows) || !template || !template.lineGrammar) return rows;
+    var lg = template.lineGrammar;
+    var taxRes = (lg.taxPatterns || []).map(function (p) {
+      try { return new RegExp(p, 'i'); } catch (_) { return null; }
+    }).filter(Boolean);
+    var discRes = (lg.discountPatterns || []).map(function (p) {
+      try { return new RegExp(p, 'i'); } catch (_) { return null; }
+    }).filter(Boolean);
+    if (!taxRes.length && !discRes.length) return rows;
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      if (!r || !r.raw) continue;
+      // Skip rows that already have a non-item kind (credit, deposit
+      // already classified by parse.classifyKind).
+      if (r.kind && r.kind !== 'item') continue;
+      var matched = false;
+      for (var j = 0; j < taxRes.length; j++) {
+        if (taxRes[j].test(r.raw)) { r.kind = 'tax'; matched = true; break; }
+      }
+      if (matched) continue;
+      for (var k = 0; k < discRes.length; k++) {
+        if (discRes[k].test(r.raw)) { r.kind = 'discount'; break; }
+      }
+    }
+    return rows;
+  }
+
   function listIndex() {
     return loadIndex();
   }
@@ -240,6 +286,7 @@
     preloadTemplates:   preloadTemplates,
     scoreVendor:        scoreVendor,
     buildVendorFacade:  buildVendorFacade,
+    applyLineGrammar:   applyLineGrammar,
     listIndex:          listIndex,
     _resetForTests:     _resetForTests
   };

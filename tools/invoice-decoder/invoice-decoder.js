@@ -441,7 +441,16 @@
       var enrichmentPromise = (vendorMatch && MID_VENDORS.loadEnrichment)
         ? MID_VENDORS.loadEnrichment(vendorMatch.id)
         : Promise.resolve(null);
-      return enrichmentPromise.then(function () {
+      return enrichmentPromise.then(function (enrichment) {
+        // Wave 4.2 evolution — apply per-vendor line grammar
+        // patterns (tax / discount line classification) BEFORE
+        // categorization. This keeps tax-coded rows out of the
+        // ingredient-categorization pipeline and routes them to the
+        // right GL on accountant export.
+        if (enrichment && typeof MID_VENDOR_RUNTIME !== 'undefined' &&
+            MID_VENDOR_RUNTIME.applyLineGrammar) {
+          try { MID_VENDOR_RUNTIME.applyLineGrammar(parsed.rows, enrichment); } catch (_) {}
+        }
       // Wave B4 — classify every parsed row. Stamps category +
       // categoryConfidence + categoryTier on each row so the
       // verification UX (B5) can render chips, group totals, and
