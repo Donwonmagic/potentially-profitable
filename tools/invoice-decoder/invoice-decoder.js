@@ -594,17 +594,17 @@
   // browser via MID_ENCRYPT before the POST. The server stores
   // the ciphertext envelope unchanged.
   function pickPassphrase() {
-    // Owner sets a passphrase per save. We could cache it per
-    // session for follow-up saves, but the first-save explicit
-    // ask is the trust moment. ESL-friendly copy avoids "key" /
-    // "passphrase" jargon — uses "secret you'll remember".
-    var promptText = tt(
-      'Pick a secret you\'ll remember (4+ characters). We\'ll use it to lock this invoice. We never see this secret — without it the saved invoice is unreadable, even by us.',
-      'Elige un secreto que recuerdes (4+ caracteres). Lo usaremos para bloquear esta factura. Nunca vemos este secreto — sin él, la factura guardada es ilegible, incluso para nosotros.'
-    );
-    var pp = window.prompt(promptText, '');
-    if (!pp || pp.length < 4) return null;
-    return pp;
+    // W1-6: returns a Promise<string|null> from MID_PASS.ask. The
+    // synchronous window.prompt path was retired — too many trust-
+    // breaking gaps (no strength meter, no confirm field, no in-
+    // context "we never see this" framing). Callers must `await`
+    // or `.then(pp => ...)`. Falls back to null when the modal
+    // module didn't load (extremely rare; loaded via HTML script
+    // tag at page start, same as encrypt.js).
+    if (typeof MID_PASS === 'undefined' || !MID_PASS.ask) {
+      return Promise.resolve(null);
+    }
+    return MID_PASS.ask({ mode: 'create' });
   }
 
   function buildSavePayload() {
@@ -667,16 +667,17 @@
                  'Falta el módulo de encriptación. Recarga e intenta de nuevo.'));
         return;
       }
-      var pp = pickPassphrase();
-      if (!pp) return; // owner cancelled — silent.
-      setSaveStatus(null, 'busy');
-      var payload = buildSavePayload();
-      // AAD binds this ciphertext to a logical-id; we use a
-      // session-random itemId since the server assigns the real
-      // KV id on save. The server can't decrypt anyway, but AAD
-      // is good hygiene.
-      var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
-      MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
+      // W1-6: pickPassphrase now returns a Promise (modal-driven).
+      pickPassphrase().then(function (pp) {
+        if (!pp) return; // owner cancelled — silent.
+        setSaveStatus(null, 'busy');
+        var payload = buildSavePayload();
+        // AAD binds this ciphertext to a logical-id; we use a
+        // session-random itemId since the server assigns the real
+        // KV id on save. The server can't decrypt anyway, but AAD
+        // is good hygiene.
+        var aad = 'invoice:' + Date.now() + ':' + Math.random().toString(36).slice(2, 8);
+        return MID_ENCRYPT.encryptPayload(payload, pp, aad).then(function (envelope) {
         var body = new URLSearchParams();
         body.set('kind', 'invoice-decoder');
         body.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
@@ -738,10 +739,11 @@
         } else {
           throw new Error(j.error || 'unknown server error');
         }
-      }).catch(function (err) {
-        setSaveStatus(null, 'error');
-        alert(tt('Save failed: ' + (err.message || 'unknown error'),
-                 'Falló el guardado: ' + (err.message || 'error desconocido')));
+        }).catch(function (err) {
+          setSaveStatus(null, 'error');
+          alert(tt('Save failed: ' + (err.message || 'unknown error'),
+                   'Falló el guardado: ' + (err.message || 'error desconocido')));
+        });
       });
     });
   }

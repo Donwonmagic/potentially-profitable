@@ -70,7 +70,7 @@
   // (sub + itemId). Returns the wire-format object.
   function encryptPayload(payload, passphrase, aadString) {
     if (!payload || typeof payload !== 'object') return Promise.reject(new Error('payload required'));
-    if (!passphrase || passphrase.length < 4) return Promise.reject(new Error('passphrase too short'));
+    if (!passphrase || passphrase.length < 8) return Promise.reject(new Error('passphrase too short — needs ≥8 chars'));
     if (typeof crypto === 'undefined' || !crypto.subtle) return Promise.reject(new Error('SubtleCrypto unavailable'));
     var salt = crypto.getRandomValues(new Uint8Array(16));
     var iv   = crypto.getRandomValues(new Uint8Array(12));
