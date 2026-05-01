@@ -818,17 +818,17 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
-          // B6-4: write a slim summary into MuntinContext so
-          // Plate Cost can pre-fill its ingredient grid from the
-          // last invoice; Menu Engineering surfaces a rolling
-          // food-cost % suggestion; Margin Math reads the
-          // category totals as input. NO ciphertext goes here —
-          // localStorage is plaintext-shaped by definition; we
-          // only write category aggregates + recent item names
-          // (capped at 50). The encrypted envelope stays on the
-          // server.
+          // W3-4 (was B6-4): write a slim summary so Plate Cost can
+          // pre-fill its ingredient grid; Menu Engineering surfaces a
+          // rolling food-cost % suggestion; Margin Math reads the
+          // category totals. The earlier shape wrote these rows to
+          // localStorage in plaintext, contradicting the privacy
+          // claim. Now wrapped via MID_DEVICE_KEY (per-device AES-GCM)
+          // so the localStorage value is opaque ciphertext — readers
+          // call MuntinContext.readInvoiceItems() which decrypts.
           try {
-            if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
+            if (typeof MuntinContext !== 'undefined' &&
+                typeof MuntinContext.writeInvoiceItems === 'function') {
               var slim = parsedRowsState.slice(0, 50).map(function (r) {
                 return {
                   name: String(r.name || '').slice(0, 60),
@@ -840,7 +840,12 @@
                   parsedAt: payload.savedAt
                 };
               });
-              MuntinContext.merge({ invoiceItems: slim });
+              MuntinContext.writeInvoiceItems(slim).catch(function () {
+                // Never fall back to plaintext on failure — that
+                // would silently re-introduce the contradiction.
+                // The handoff just doesn't happen this run; the
+                // server-side encrypted envelope still saved fine.
+              });
             }
           } catch (_) {}
           renderHandoffPanel(payload);
@@ -1261,5 +1266,12 @@
 
   // Run on page load.
   handleReloadParam();
+  // W3-4 — one-shot scrub of any plaintext invoiceItems left over
+  // from earlier saves (pre-encrypted-handoff). No-op when MID_DEVICE_KEY
+  // hasn't loaded yet or there's nothing to scrub.
+  if (typeof MID_DEVICE_KEY !== 'undefined' &&
+      typeof MID_DEVICE_KEY.migratePlaintextInvoiceItems === 'function') {
+    try { MID_DEVICE_KEY.migratePlaintextInvoiceItems(); } catch (_) {}
+  }
 
 })();
