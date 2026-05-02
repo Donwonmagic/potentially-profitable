@@ -308,6 +308,22 @@
 
       <div class="changelog-entry" style="margin-bottom:32px">
         <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 6 &mdash; entity graph, sitemap, CTA canon CI guard</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          Homepage <code>LocalBusiness</code> JSON-LD now ships <code>telephone</code> on the entity itself plus a structured <code>contactPoint</code> array (support + sales). <code>sameAs</code> expanded from 1 entry to 10 (LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, GBP, Bing Places, Apple Maps) &mdash; the threshold Google&rsquo;s Knowledge Panel checks before rendering. Sitemap regenerated to include all 11 pages added in phases 1&ndash;5 (the studio hub, three productized offers, five DMV cities, /never/, /ai/, /studio/compare/, /library/, three new research notes). New CI script <code>scripts/check-cta-canon.mjs</code> guards the locked CTA verb set from <a href="/methods/#voice-contract">/methods/#voice-contract</a> &mdash; first run found 21 drift hits across 18 files; all swept. Three more high-traffic articles cross-link the productized offers in the further-reading aside.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phases 1&ndash;5 &mdash; what shipped</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          A consultancy-grade refresh executed against the 12-week launch plan. <strong>Phase 1:</strong> three new trust pages (<a href="/never/">/never/</a>, <a href="/ai/">/ai/</a>, <a href="/studio/compare/">/studio/compare/</a>), the voice contract appended to <a href="/methods/#voice-contract">/methods/</a>, three signature stances on the homepage, footer trust cluster (4 &rarr; 5 columns), 247 escaped count sentinels restored. <strong>Phase 2:</strong> three productized offers (<a href="/services/audit/">$499 audit</a>, <a href="/services/menu-drop-in/">$1,500 menu drop-in</a>, <a href="/services/care-plan-light/">$99/mo Care Plan Light</a>), five DMV city subpages, ES mirrors of all phase-1 pages, mega-menu a11y rebuild (button + ARIA + keyboard), Cal.com onramp on /window/. <strong>Phase 3:</strong> productized offers wired into <a href="/services/#offers">/services/</a>, AI-search corpus (<code>/llms-full.txt</code>, <code>/feed-llm.json</code>, EN + ES), 404 redesign with search box, six-message operator drip in <code>/docs/email-drip/</code>, project-manager hire scope, the DoorDash math op-ed. <strong>Phase 4:</strong> <a href="/studio/">/studio/</a> canonical hub (EN + ES), mobile sticky bottom CTA bar, sync-includes idempotency fix (collapsed 4 &rarr; 1 trailing scripts across 429 pages), <code>lighthouserc.js</code> with the 7-URL gate set, Conversation + App shells named in <a href="/methods/">design-system.md</a>, <code>--gradient-hero</code> retired, DMV GBP audit research note. <strong>Phase 5:</strong> <a href="/library/">/library/</a> three-doors hub (EN + ES), /studio/contact/ + /library/* alias redirects, WCAG 2.2 AA standardization, the 1% margin audit research note, productized offers cross-linked from two high-traffic articles.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
         <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">End-of-article author cards + LocalBusiness contactPoint</h3>
         <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
           Every blog article (EN + ES) now closes with an "About the author" card &mdash; lettermark D, name, two-sentence bio, credentials line, links to <a href="/about/">/about/</a> and the Window. The homepage <code>LocalBusiness</code> JSON-LD got a <code>contactPoint</code> with email, business hours, supported languages, and area served &mdash; so Google's knowledge panel has structured contact data even without a published phone number.
