@@ -818,10 +818,15 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    the existing mobile menu — see the .mobile-library rules near the
    bottom of this file. */
 .nav-library-wrap{position:relative;display:inline-flex;align-items:center}
-.nav-library-trigger{display:inline-flex;align-items:center;gap:6px}
+/* The trigger ships as a <button> for proper a11y — reset default
+   button chrome so it sits flush with the surrounding <a> nav links. */
+.nav-library-trigger{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;letter-spacing:inherit}
+.nav-library-trigger:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:2px}
 .nav-library-chevron{width:11px;height:7px;color:var(--stone);transition:transform var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
 .nav-library-trigger:hover .nav-library-chevron,
+.nav-library-trigger[aria-expanded="true"] .nav-library-chevron,
 .nav-library-wrap:focus-within .nav-library-chevron{color:var(--teal);transform:translateY(1px)}
+.nav-library-trigger[aria-expanded="true"] .nav-library-chevron{transform:rotate(180deg)}
 .nav-library-menu{
   position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(-4px);
   min-width:280px;max-width:320px;
@@ -836,7 +841,8 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
   z-index:80;
 }
 .nav-library-wrap:hover .nav-library-menu,
-.nav-library-wrap:focus-within .nav-library-menu{
+.nav-library-wrap:focus-within .nav-library-menu,
+.nav-library-trigger[aria-expanded="true"] + .nav-library-menu{
   opacity:1;visibility:visible;pointer-events:auto;
   transform:translateX(-50%) translateY(0);
   transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease),visibility 0s linear 0s;
@@ -5531,6 +5537,9 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-onramp{padding:6px 14px;border:1px solid var(--line-dark);background:transparent;border-radius:999px;font-size:12px;color:var(--ink-soft);cursor:pointer;letter-spacing:0.04em;text-transform:uppercase;font-weight:500;transition:border-color var(--t-fast) var(--ease),color var(--t-fast) var(--ease)}
 .window-onramp:hover{border-color:var(--teal);color:var(--teal)}
 .window-composer__reassurance{font-size:13px;color:var(--stone);margin:14px 0 0;text-align:center;font-style:italic}
+.window-composer__alt{font-size:13px;color:var(--stone);margin:8px 0 0;text-align:center}
+.window-composer__alt a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none}
+.window-composer__alt a:hover,.window-composer__alt a:focus-visible{border-bottom-style:solid}
 
 .window-signin{text-align:center;margin-top:24px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}

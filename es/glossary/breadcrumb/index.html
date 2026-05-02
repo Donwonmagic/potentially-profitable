@@ -143,8 +143,8 @@
       <a href="/es/services/">Servicios</a>
       <a href="/es/for/restaurants/">Restaurantes</a>
       <div class="nav-library-wrap">
-        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
+        <button type="button" class="nav-library-trigger" id="navLibraryTrigger" aria-expanded="false" aria-controls="navLibraryMenu" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <nav class="nav-library-menu nav-library-menu--mega" id="navLibraryMenu" aria-label="Secciones de la biblioteca" aria-labelledby="navLibraryTrigger">
           <a class="nav-library-menu__home" href="/es/learn/">
             <strong>Inicio de la biblioteca</strong>
             <span>El centro de todo lo de abajo &rarr;</span>
@@ -219,6 +219,57 @@
     <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/glossary/breadcrumb/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Mega-menu keyboard + click controller. The trigger is a
+       button with aria-expanded; click toggles the panel, ArrowDown
+       opens it, Escape closes it. Hover still opens for mouse users
+       via existing CSS. Same controller as the EN nav. -->
+  <script>
+    (function () {
+      var trigger = document.getElementById('navLibraryTrigger');
+      var menu    = document.getElementById('navLibraryMenu');
+      if (!trigger || !menu) return;
+      var open = function () {
+        if (trigger.getAttribute('aria-expanded') === 'true') return;
+        trigger.setAttribute('aria-expanded', 'true');
+        document.addEventListener('click', onOutsideClick, true);
+      };
+      var close = function (refocus) {
+        if (trigger.getAttribute('aria-expanded') === 'false') return;
+        trigger.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', onOutsideClick, true);
+        if (refocus) trigger.focus();
+      };
+      var onOutsideClick = function (e) {
+        if (menu.contains(e.target) || trigger.contains(e.target)) return;
+        close(false);
+      };
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (trigger.getAttribute('aria-expanded') === 'true') close(false);
+        else open();
+      });
+      trigger.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'Down') {
+          e.preventDefault(); open();
+          var first = menu.querySelector('a');
+          if (first) first.focus();
+        } else if (e.key === 'Escape' || e.key === 'Esc') {
+          close(true);
+        }
+      });
+      menu.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          e.preventDefault(); close(true);
+        }
+      });
+      var wrap = trigger.parentElement;
+      wrap.addEventListener('focusout', function (e) {
+        if (wrap.contains(e.relatedTarget)) return;
+        close(false);
+      });
+    })();
+  </script>
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
@@ -452,6 +503,12 @@
     </div>
   </div>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>

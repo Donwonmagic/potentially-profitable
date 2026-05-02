@@ -338,8 +338,8 @@
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
       <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Library sections">
+        <button type="button" class="nav-library-trigger" id="navLibraryTrigger" aria-expanded="false" aria-controls="navLibraryMenu" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <nav class="nav-library-menu nav-library-menu--mega" id="navLibraryMenu" aria-label="Library sections" aria-labelledby="navLibraryTrigger">
           <a class="nav-library-menu__home" href="/learn/">
             <strong>Library home</strong>
             <span>The hub of everything below &rarr;</span>
@@ -431,6 +431,68 @@
       </button>
     </div>
   </aside>
+
+  <!-- Mega-menu keyboard + click controller. The trigger is a
+       button with aria-expanded; click toggles the panel, ArrowDown
+       opens it and lands focus on the first menu item, Escape closes
+       and returns focus to the trigger, click-outside closes. Hover
+       still opens for mouse users via existing CSS — this script
+       handles the keyboard + tap path the CSS-only version missed. -->
+  <script>
+    (function () {
+      var trigger = document.getElementById('navLibraryTrigger');
+      var menu    = document.getElementById('navLibraryMenu');
+      if (!trigger || !menu) return;
+
+      var open = function () {
+        if (trigger.getAttribute('aria-expanded') === 'true') return;
+        trigger.setAttribute('aria-expanded', 'true');
+        document.addEventListener('click', onOutsideClick, true);
+      };
+      var close = function (refocus) {
+        if (trigger.getAttribute('aria-expanded') === 'false') return;
+        trigger.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', onOutsideClick, true);
+        if (refocus) trigger.focus();
+      };
+      var onOutsideClick = function (e) {
+        if (menu.contains(e.target) || trigger.contains(e.target)) return;
+        close(false);
+      };
+      trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (trigger.getAttribute('aria-expanded') === 'true') {
+          close(false);
+        } else {
+          open();
+        }
+      });
+      trigger.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'Down') {
+          e.preventDefault();
+          open();
+          var first = menu.querySelector('a');
+          if (first) first.focus();
+        } else if (e.key === 'Escape' || e.key === 'Esc') {
+          close(true);
+        }
+      });
+      menu.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          e.preventDefault();
+          close(true);
+        }
+      });
+      // When focus leaves the wrap entirely (Tab past the last item),
+      // close the menu so subsequent Tab moves through the rest of
+      // the nav as expected.
+      var wrap = trigger.parentElement;
+      wrap.addEventListener('focusout', function (e) {
+        if (wrap.contains(e.relatedTarget)) return;
+        close(false);
+      });
+    })();
+  </script>
 
   <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
        Calls /api/auth/me and reveals either the "Sign in" or
@@ -790,6 +852,12 @@
     </div>
   </div>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
