@@ -48,6 +48,13 @@
   .err-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin: 0 0 4px; color: var(--ink); }
   .err-card p { font-size: 14px; color: var(--stone); margin: 0; line-height: 1.5; }
   .err-cta { text-align: center; margin: 56px 0 96px; }
+  .err-search { display: flex; align-items: center; gap: 0; max-width: 560px; margin: 0 auto; padding: 6px 6px 6px 16px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--elev-1); }
+  .err-search:focus-within { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(31,78,91,0.12); }
+  .err-search__icon { width: 18px; height: 18px; flex-shrink: 0; color: var(--stone); }
+  .err-search input[type="search"] { flex: 1; min-width: 0; padding: 12px 12px; border: 0; outline: none; background: transparent; font: inherit; color: var(--ink); font-size: 16px; }
+  .err-search input[type="search"]::placeholder { color: var(--stone); }
+  .err-search__submit { padding: 10px 20px; font-size: 14px; border-radius: 999px; flex-shrink: 0; }
+  @media (max-width: 540px) { .err-search { border-radius: 12px; flex-wrap: wrap; padding: 12px; } .err-search input[type="search"] { width: 100%; padding: 8px 0; } .err-search__submit { width: 100%; } }
 </style>
 <!-- Phase G.1 (Growth) — fire a Plausible event with the 404'd path
      so the dashboard surfaces broken inbound links weekly. Bounded
@@ -291,7 +298,38 @@
     </div>
     <p class="err-code">4<span class="slash">0</span>4</p>
     <h1>That page isn&rsquo;t here.</h1>
-    <p>Either the URL has a typo, or the page moved. Happens to the best of us. Here&rsquo;s what people usually land on when they end up here by mistake.</p>
+    <p>Either the URL has a typo, or the page moved. Happens to the best of us. Search the library, or pick up where most visitors end up below.</p>
+
+    <!-- Search-the-library form. Submitting opens the existing
+         site-wide search modal (.js-open-search trigger in site.js)
+         with the typed query pre-loaded. JS-disabled fallback: form
+         submits to /?q=... which lands the user on the home with the
+         query as a hash so site.js can read it. -->
+    <form class="err-search" id="errSearch" role="search" aria-label="Search the library" action="/" method="get">
+      <label class="sr-only" for="errSearchInput">Search the library</label>
+      <svg class="err-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <input id="errSearchInput" name="q" type="search" placeholder="Try DoorDash, schema, or menu prices&hellip;" autocomplete="off" autocapitalize="off" autocorrect="off" />
+      <button type="submit" class="btn btn-primary err-search__submit">Search</button>
+    </form>
+    <script>
+      (function () {
+        var form = document.getElementById('errSearch');
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+          var q = (form.querySelector('input[name="q"]').value || '').trim();
+          if (!q) return; // let the form submit empty? no — block.
+          var trigger = document.querySelector('.js-open-search');
+          if (!trigger) return; // fall back to native GET to /
+          e.preventDefault();
+          // The search modal reads from a hash bus on open.
+          window.location.hash = '#search=' + encodeURIComponent(q);
+          trigger.click();
+        });
+      })();
+    </script>
   </section>
 
   <section class="container">
@@ -425,6 +463,9 @@
     </div>
   </div>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
