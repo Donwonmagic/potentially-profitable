@@ -68,14 +68,19 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   const readLabel  = locale === 'es' ? 'Lee' : 'Read';
   const tryLabel   = locale === 'es' ? 'Prueba' : 'Try';
   const noteLabel  = locale === 'es' ? 'O escríbele a Don' : 'Or send Don a note';
+  // Link-text strings localized too — the verb labels were already
+  // translated; the link bodies were leaking English into ES articles.
+  const readLink = locale === 'es' ? 'el término del glosario relacionado →' : 'the related glossary term →';
+  const tryLink  = locale === 'es' ? 'la herramienta que acompaña este artículo →' : 'the tool that pairs with this article →';
+  const noteLink = locale === 'es' ? 'La Ventana →' : 'The Window →';
   const fallbackTool = locale === 'es' ? '/es/tools/audits/restaurant/' : '/tools/audits/restaurant/';
   const tool = toolUrl || fallbackTool;
   const fallbackGlossary = locale === 'es' ? '/es/glossary/' : '/glossary/';
   const gloss = glossaryUrl || fallbackGlossary;
   const items = [
-    `        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">${readLabel}:</span> <a href="${escAttr(gloss)}">the related glossary term →</a></li>`,
-    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=blog/${slug}&intent=watch">the tool that pairs with this article →</a></li>`,
-    `        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">${noteLabel}:</span> <a href="${escAttr(windowHref)}">The Window →</a></li>`,
+    `        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">${readLabel}:</span> <a href="${escAttr(gloss)}">${readLink}</a></li>`,
+    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=blog/${slug}&intent=watch">${tryLink}</a></li>`,
+    `        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">${noteLabel}:</span> <a href="${escAttr(windowHref)}">${noteLink}</a></li>`,
   ].join('\n');
   return [
     '<!-- smart-next:start -->',
