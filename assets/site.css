@@ -5977,3 +5977,26 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
      should not stick on touch. Color/border changes are fine. */
   *:hover { transition-duration: 0ms !important; }
 }
+
+/* ============================================================
+   Hero mobile reorder — phones first, primary CTA above the fold.
+   The accessibility audit flagged that on a 667-tall phone, the
+   stack of eyebrow → h1 → tagline → sub → counts → CTAs pushes
+   the primary action far below the visible viewport. On mobile,
+   reorder via CSS `order` so the CTAs sit immediately after the
+   subhead, with the counts + secondary copy below.
+   ============================================================ */
+@media (max-width: 640px) {
+  .hero-grid > div:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-grid > div:first-child > .eyebrow      { order: 1; }
+  .hero-grid > div:first-child > h1            { order: 2; }
+  .hero-grid > div:first-child > .hero-tagline { order: 3; }
+  .hero-grid > div:first-child > .hero-sub     { order: 4; }
+  .hero-grid > div:first-child > .hero-ctas    { order: 5; margin-top: 24px; }
+  .hero-grid > div:first-child > .hero-counts  { order: 6; margin-top: 22px; }
+  .hero-grid > div:first-child > .hero-note    { order: 7; }
+  .hero-grid > div:first-child > .hero-meta-note { order: 8; }
+}
