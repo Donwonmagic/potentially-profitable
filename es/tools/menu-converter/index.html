@@ -1,25 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Menu Converter &mdash; paste menu text, get HTML + JSON-LD schema | Muntin Digital</title>
-<meta name="description" content="Paste your menu as plain text. Walk away with semantic HTML for your website and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions, all parsed in your browser. Nothing uploaded; your menu never leaves the page." />
+<title>Conversor de men&uacute; &mdash; pega texto, recibe HTML + JSON-LD schema | Muntin Digital</title>
+<meta name="description" content="Pega tu men&uacute; en texto plano. Lleva HTML sem&aacute;ntico para tu sitio y un bloque JSON-LD Menu schema indexable por Google. Secciones, &iacute;tems, precios y descripciones, todo parseado en tu navegador. Nada se sube; tu men&uacute; nunca sale de la p&aacute;gina." />
 <meta name="theme-color" content="#1F4E5B" />
-<link rel="canonical" href="https://muntin.digital/tools/menu-converter/" />
-<!-- i18n:hreflang START -->
+<link rel="canonical" href="https://muntin.digital/es/tools/menu-converter/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/tools/menu-converter/" />
 <link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/menu-converter/" />
 <link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/menu-converter/" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
-<!-- i18n:hreflang END -->
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Menu Converter &mdash; Muntin Digital" />
-<meta property="og:description" content="Paste menu text, walk away with semantic HTML and JSON-LD Menu schema. In-browser; nothing leaves the page." />
-<meta property="og:url" content="https://muntin.digital/tools/menu-converter/" />
+<meta property="og:title" content="Conversor de men&uacute; &mdash; Muntin Digital" />
+<meta property="og:description" content="Pega texto del men&uacute;, lleva HTML sem&aacute;ntico y JSON-LD Menu schema. En tu navegador; nada sale de la p&aacute;gina." />
+<meta property="og:url" content="https://muntin.digital/es/tools/menu-converter/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
@@ -33,23 +31,24 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "@id": "https://muntin.digital/tools/menu-converter/#tool",
-      "name": "Menu Converter",
-      "description": "Convert pasted menu text into semantic HTML and JSON-LD Menu schema for an independent restaurant. All in-browser; no inputs leave the page.",
-      "url": "https://muntin.digital/tools/menu-converter/",
+      "@id": "https://muntin.digital/es/tools/menu-converter/#tool",
+      "name": "Conversor de menú",
+      "description": "Convierte texto pegado de un menú en HTML semántico y JSON-LD Menu schema para un restaurante independiente. Todo en el navegador; ningún dato sale de la página.",
+      "url": "https://muntin.digital/es/tools/menu-converter/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "browserRequirements": "Requires JavaScript",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "publisher": { "@id": "https://muntin.digital/#business" }
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "inLanguage": "es-US"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/" },
-        { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://muntin.digital/tools/" },
-        { "@type": "ListItem", "position": 3, "name": "Menu Converter", "item": "https://muntin.digital/tools/menu-converter/" }
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Herramientas", "item": "https://muntin.digital/es/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Conversor de menú", "item": "https://muntin.digital/es/tools/menu-converter/" }
       ]
     }
   ]
@@ -100,11 +99,17 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to main content</a>
+<a class="skip-link" href="#main">Saltar al contenido</a>
 
 <header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital home">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -114,98 +119,67 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <!-- Phase 7: 5-item nav, per launch plan Part II.
-         Library / Tools / Work / Studio / Sign in.
-         Library now points at the canonical /library/ hub (the
-         three-doors page). Tools is promoted from the old Library
-         mega-menu to a top-level item. Studio replaces Services +
-         Restaurants + About — they all live under /studio/ now,
-         either as anchored sections (#pricing, #offers, #cities,
-         #process, #about) or as full child pages (/studio/compare/,
-         /studio/silver-spring/, etc.). The old Services and
-         Restaurants pages remain reachable via /studio/ and the
-         _redirects table; /about/ is unchanged. The mega-menu is
-         retired (the hub IS the menu now); the controller script
-         is gone too. -->
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/library/">Library</a>
-      <a href="/tools/">Tools</a>
-      <a href="/work/">Work</a>
-      <a href="/studio/">Studio</a>
-      <!-- Both sign-in / workshop ship hidden by default; the
-           auth-state JS at the bottom of this file calls
-           /api/auth/me and reveals exactly one. No-JS visitors see
-           neither, which is acceptable: the library and tools work
-           fully without sign-in (Workshop is the only auth surface). -->
-      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
-      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Search</span>
+      <span class="nav-search-label">Buscar</span>
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
-    <nav class="lang-switch" aria-label="Language">
-      <a href="/es/tools/menu-converter/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
-      <span class="lang-switch-current" aria-current="true">EN</span>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/menu-converter/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Email Don CTA. The auth-state JS below
-       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/library/">Library</a>
-    <a href="/tools/">Tools</a>
-    <a href="/work/">Work</a>
-    <a href="/studio/">Studio</a>
-    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
-    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Search the library</span>
+      <span>Buscar en la biblioteca</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
-    <a href="/es/tools/menu-converter/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
+    <a href="/tools/menu-converter/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
-  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
-       removes the hidden attribute only when (a) the reader's browser
-       lists Spanish in navigator.languages, (b) no md_locale cookie
-       has been set yet, and (c) the banner hasn't been dismissed.
-       Speaks directly in Spanish because its audience, by definition,
-       is a Spanish-speaking visitor. Link target is the page's own
-       hreflang="es" alternate from <head>, read at runtime. -->
-  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
-    <div class="container lang-hint-inner">
-      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/es/tools/menu-converter/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
-      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-    </div>
-  </aside>
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
-  <!-- Mega-menu controller retired in Phase 7: Library is a single
-       link to /library/ now (the canonical three-doors hub IS the
-       menu). The CSS rules in site.css for .nav-library-* remain in
-       place defensively so any future mega-menu reuses the pattern. -->
-
-  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
-       Calls /api/auth/me and reveals either the "Sign in" or
-       "Workshop" link based on the response. Both links ship hidden
-       so anonymous visitors with JS disabled see neither (the
-       library + tools work fully without sign-in, so the missing
-       affordance is acceptable). The script runs once, fire-and-
-       forget; no observable side effects on a 401. -->
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
   <script>
     (function () {
       var signin   = document.querySelectorAll('.js-nav-signin');
@@ -216,7 +190,6 @@
         .then(function (r) {
           if (r.status === 200) {
             show(workshop);
-            // Phase G.10 — append (N) badge with the user's save count.
             fetch('/api/workbench/count', { credentials: 'same-origin' })
               .then(function (r2) { return r2.ok ? r2.json() : null; })
               .then(function (j) {
@@ -229,7 +202,7 @@
                   n.appendChild(b);
                 });
               })
-              .catch(function () { /* silent */ });
+              .catch(function () {});
             return;
           }
           show(signin);
@@ -240,122 +213,121 @@
 </header>
 
 <main id="main">
-  <nav class="breadcrumb container" aria-label="Breadcrumb" style="margin-top:90px">
+  <nav class="breadcrumb container" aria-label="Ruta" style="margin-top:90px">
     <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
-      <li><a href="/" style="color:var(--teal)">Home</a></li>
+      <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
       <li aria-hidden="true">&rsaquo;</li>
-      <li><a href="/tools/" style="color:var(--teal)">Tools</a></li>
+      <li><a href="/es/tools/" style="color:var(--teal)">Herramientas</a></li>
       <li aria-hidden="true">&rsaquo;</li>
-      <li aria-current="page">Menu Converter</li>
+      <li aria-current="page">Conversor de men&uacute;</li>
     </ol>
   </nav>
 
   <article class="container" style="max-width:880px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:24px">
-      <p class="eyebrow">Free tool &middot; stays in your browser</p>
+      <p class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.2vw,52px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 16px">
-        Paste your menu. <span class="serif-italic">Get clean HTML and schema.</span>
+        Pega tu men&uacute;. <span class="serif-italic">Lleva HTML limpio y schema.</span>
       </h1>
       <p style="font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0">
-        Drop your menu text into the box. The tool parses sections, items, prices, and descriptions and walks you out with three things: a live preview, semantic HTML you can paste into your site, and a JSON-LD <code>Menu</code> schema block Google can index. All in your browser. Your menu never leaves the page.
+        Suelta el texto de tu men&uacute; en el cuadro. La herramienta detecta secciones, &iacute;tems, precios y descripciones, y te entrega tres cosas: una vista previa en vivo, HTML sem&aacute;ntico que pegas en tu sitio, y un bloque JSON-LD <code>Menu</code> schema que Google puede indexar. Todo en tu navegador. Tu men&uacute; nunca sale de la p&aacute;gina.
       </p>
     </header>
 
     <details class="mc-help">
-      <summary style="cursor:pointer;font-weight:600">Format guide &mdash; what the parser expects</summary>
+      <summary style="cursor:pointer;font-weight:600">Gu&iacute;a de formato &mdash; lo que el parser espera</summary>
       <div style="margin-top:14px">
-        <p style="margin:0 0 8px"><strong>Section headings</strong> &mdash; one line, all caps OR ending with a colon. <code>STARTERS</code>, <code>Mains:</code>, <code>DESSERTS</code> all work.</p>
-        <p style="margin:0 0 8px"><strong>Items</strong> &mdash; name first, then a price ending the line. The parser reads anything matching <code>$12</code>, <code>$12.50</code>, or <code>12.50</code> at end of line as the price. Two-word names work; multi-word names work; em-dashes between name and description work.</p>
-        <p style="margin:0 0 8px"><strong>Descriptions</strong> &mdash; the line directly under an item is treated as its description. Leave blank for items without one.</p>
-        <p style="margin:0">A worked example:</p>
-        <pre style="background:var(--white);padding:12px;border-radius:6px;border:1px solid var(--line);font-size:12.5px;line-height:1.5;margin:8px 0 0;overflow-x:auto">STARTERS
-Crispy Brussels Sprouts                    $12
-Maple-glazed, lemon, parmesan, chili crisp.
+        <p style="margin:0 0 8px"><strong>Encabezados de secci&oacute;n</strong> &mdash; una l&iacute;nea, en MAY&Uacute;SCULAS o terminando en dos puntos. <code>ENTRADAS</code>, <code>Principales:</code>, <code>POSTRES</code> funcionan.</p>
+        <p style="margin:0 0 8px"><strong>&Iacute;tems</strong> &mdash; nombre primero, despu&eacute;s el precio al final de la l&iacute;nea. El parser lee <code>$12</code>, <code>$12.50</code>, o <code>12.50</code> al final como precio.</p>
+        <p style="margin:0 0 8px"><strong>Descripciones</strong> &mdash; la l&iacute;nea directamente debajo de un &iacute;tem se trata como su descripci&oacute;n. Deja en blanco para los que no la tienen.</p>
+        <p style="margin:0">Un ejemplo:</p>
+        <pre style="background:var(--white);padding:12px;border-radius:6px;border:1px solid var(--line);font-size:12.5px;line-height:1.5;margin:8px 0 0;overflow-x:auto">ENTRADAS
+Coles de Bruselas crocantes                $12
+Glaseadas con miel de maple, lim&oacute;n, parmesano.
 
 Caesar                                     $14
-Little gem, white anchovy, parmesan crouton.
+Lechuga little gem, anchoa blanca, croton de parmesano.
 
-MAINS
-Bavette Steak                              $34
-8oz, peppercorn jus, hand-cut frites.
+PRINCIPALES
+Bavette                                    $34
+8oz, jugo de pimienta, papas a la francesa.
 
 Bucatini Cacio e Pepe                      $26
-Tellicherry pepper, pecorino romano, finished tableside.</pre>
+Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
       </div>
     </details>
 
     <form id="mcForm" class="mc-form" autocomplete="off">
       <fieldset class="mc-restaurant" style="border:0;padding:18px 20px">
-        <label>Restaurant name<small>Used inside the JSON-LD <code>Menu</code> object.</small>
+        <label>Nombre del restaurante<small>Aparece dentro del objeto JSON-LD <code>Menu</code>.</small>
           <input type="text" id="mcName" placeholder="The Irish Inn at Glen Echo" />
         </label>
-        <label>Menu name<small>e.g. &ldquo;Dinner&rdquo;, &ldquo;Brunch&rdquo;, &ldquo;Spring 2026&rdquo;.</small>
-          <input type="text" id="mcMenuName" placeholder="Dinner" value="Dinner" />
+        <label>Nombre del men&uacute;<small>p.&nbsp;ej. &laquo;Cena&raquo;, &laquo;Brunch&raquo;, &laquo;Primavera 2026&raquo;.</small>
+          <input type="text" id="mcMenuName" placeholder="Cena" value="Cena" />
         </label>
-        <label>Currency<small>Used in JSON-LD prices.</small>
+        <label>Moneda<small>Usada en los precios JSON-LD.</small>
           <select id="mcCurrency"><option>USD</option><option>EUR</option><option>GBP</option><option>CAD</option><option>MXN</option></select>
         </label>
       </fieldset>
 
-      <label for="mcInput" style="font-size:13px;color:var(--ink-soft);margin:8px 0 -4px">Paste your menu text</label>
-      <textarea id="mcInput" class="mc-textarea" spellcheck="false" placeholder="STARTERS&#10;Crispy Brussels Sprouts                    $12&#10;Maple-glazed, lemon, parmesan, chili crisp.&#10;&#10;MAINS&#10;Bavette Steak                              $34&#10;8oz, peppercorn jus, hand-cut frites."></textarea>
+      <label for="mcInput" style="font-size:13px;color:var(--ink-soft);margin:8px 0 -4px">Pega el texto de tu men&uacute;</label>
+      <textarea id="mcInput" class="mc-textarea" spellcheck="false" placeholder="ENTRADAS&#10;Coles de Bruselas crocantes                $12&#10;Glaseadas con miel de maple, lim&oacute;n, parmesano.&#10;&#10;PRINCIPALES&#10;Bavette                                    $34&#10;8oz, jugo de pimienta, papas a la francesa."></textarea>
 
       <div class="mc-actions">
-        <button type="button" id="mcGenerate" class="btn btn-primary">Convert menu</button>
-        <button type="button" id="mcSample" class="btn btn-ghost">Load a sample</button>
-        <button type="button" id="mcReset" class="btn btn-ghost">Clear</button>
+        <button type="button" id="mcGenerate" class="btn btn-primary">Convertir men&uacute;</button>
+        <button type="button" id="mcSample" class="btn btn-ghost">Cargar ejemplo</button>
+        <button type="button" id="mcReset" class="btn btn-ghost">Limpiar</button>
       </div>
     </form>
 
     <section class="mc-result" aria-labelledby="mcResultH" id="mcResultRegion" tabindex="-1">
-      <h2 id="mcResultH">Your three outputs.</h2>
+      <h2 id="mcResultH">Tus tres resultados.</h2>
       <p class="mc-summary" id="mcSummary" hidden>
-        <span><strong id="mcCntSec">0</strong> sections</span>
-        <span><strong id="mcCntItm">0</strong> items</span>
-        <span><strong id="mcCntPrice">0</strong> with prices</span>
-        <span><strong id="mcCntDesc">0</strong> with descriptions</span>
+        <span><strong id="mcCntSec">0</strong> secciones</span>
+        <span><strong id="mcCntItm">0</strong> &iacute;tems</span>
+        <span><strong id="mcCntPrice">0</strong> con precio</span>
+        <span><strong id="mcCntDesc">0</strong> con descripci&oacute;n</span>
       </p>
 
-      <div class="mc-tabs" role="tablist" aria-label="Output format">
-        <button type="button" class="mc-tab" id="mcTabPreview" role="tab" aria-controls="mcOutPreview" aria-selected="true">Preview</button>
+      <div class="mc-tabs" role="tablist" aria-label="Formato del resultado">
+        <button type="button" class="mc-tab" id="mcTabPreview" role="tab" aria-controls="mcOutPreview" aria-selected="true">Vista previa</button>
         <button type="button" class="mc-tab" id="mcTabHtml" role="tab" aria-controls="mcOutHtml" aria-selected="false">HTML</button>
         <button type="button" class="mc-tab" id="mcTabSchema" role="tab" aria-controls="mcOutSchema" aria-selected="false">JSON-LD schema</button>
       </div>
 
-      <div id="mcEmpty" class="mc-empty">Paste your menu text above and hit <strong>Convert menu</strong>.</div>
+      <div id="mcEmpty" class="mc-empty">Pega el texto del men&uacute; arriba y pulsa <strong>Convertir men&uacute;</strong>.</div>
 
       <div id="mcOutPreview" class="mc-preview" role="tabpanel" aria-labelledby="mcTabPreview" hidden></div>
       <div class="mc-output" id="mcOutHtml" role="tabpanel" aria-labelledby="mcTabHtml" hidden>
-        <button type="button" class="mc-copy" data-target="mcOutHtmlBody">Copy</button>
+        <button type="button" class="mc-copy" data-target="mcOutHtmlBody">Copiar</button>
         <div id="mcOutHtmlBody"></div>
       </div>
       <div class="mc-output" id="mcOutSchema" role="tabpanel" aria-labelledby="mcTabSchema" hidden>
-        <button type="button" class="mc-copy" data-target="mcOutSchemaBody">Copy</button>
+        <button type="button" class="mc-copy" data-target="mcOutSchemaBody">Copiar</button>
         <div id="mcOutSchemaBody"></div>
       </div>
 
       <p style="font-size:13.5px;color:var(--stone);margin:14px 0 0;font-style:italic">
-        Want the menu page styled, mobile-fast, schema-validated, and bilingual EN/ES &mdash; without the rebuild? <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">$1,500 menu drop-in &rarr;</a>
+        &iquest;Quieres la p&aacute;gina del men&uacute; estilada, r&aacute;pida en m&oacute;vil, con schema validado y biling&uuml;e EN/ES &mdash; sin reconstrucci&oacute;n? <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Drop-in de men&uacute; $1.500 &rarr;</a>
       </p>
     </section>
 
     <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">What this tool does NOT do.</h2>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">Lo que esta herramienta NO hace.</h2>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
-        <li style="margin-bottom:8px">It doesn&rsquo;t parse PDFs. The honest version is: PDFs vary too much (columns, tables, embedded fonts) for in-browser parsing to be reliable. Copy-paste the menu text and the parser does the rest in two seconds.</li>
-        <li style="margin-bottom:8px">It doesn&rsquo;t style the page. The HTML is semantic and unstyled; drop your own brand styles on top, or use the <a href="/services/menu-drop-in/" style="color:var(--teal)">$1,500 menu drop-in</a> if you want the styled version delivered to you.</li>
-        <li>It doesn&rsquo;t translate. The output preserves whatever language you pasted; for an EN/ES bilingual page, run it twice and stack the results.</li>
+        <li style="margin-bottom:8px">No parsea PDFs. Los PDFs var&iacute;an demasiado (columnas, tablas, fuentes embebidas) para que el parsing en navegador sea confiable. Copia y pega el texto del men&uacute;.</li>
+        <li style="margin-bottom:8px">No estiliza la p&aacute;gina. El HTML es sem&aacute;ntico y sin estilos; ponle tus propios estilos de marca encima, o usa el <a href="/services/menu-drop-in/" style="color:var(--teal)">drop-in de men&uacute;</a> para la versi&oacute;n estilada entregada.</li>
+        <li>No traduce. La salida preserva el idioma que pegaste; para una p&aacute;gina biling&uuml;e EN/ES, c&oacute;rrelo dos veces y apila los resultados.</li>
       </ul>
     </section>
 
     <section class="mc-deeplinks">
-      <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
+      <p class="eyebrow" style="margin-bottom:10px">Sigue</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/tools/menu-design/">Menu Design Suite</a> &mdash; layout the printed/PDF version after the HTML one</li>
-        <li><a href="/tools/menu-engineering/">Menu Engineering</a> &mdash; star/plowhorse/puzzle/dog analysis on your menu</li>
-        <li><a href="/glossary/menu-schema/">Glossary: Menu schema</a></li>
-        <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google actually uses</a></li>
-        <li><a href="/services/menu-drop-in/">$1,500 menu drop-in</a> &mdash; the studio-built version</li>
+        <li><a href="/es/tools/menu-design/">Suite de Dise&ntilde;o de Men&uacute;</a> &mdash; el layout para PDF/impresi&oacute;n</li>
+        <li><a href="/es/tools/menu-engineering/">Ingenier&iacute;a de Men&uacute;</a> &mdash; an&aacute;lisis estrella/caballo/puzzle/perro</li>
+        <li><a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/">Los 6 tipos de schema que Google usa</a></li>
+        <li><a href="/services/menu-drop-in/">Drop-in de men&uacute; $1.500</a> &mdash; la versi&oacute;n estilada por el estudio</li>
       </ul>
     </section>
   </article>
@@ -364,113 +336,96 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
 <footer>
   <div class="container">
     <div class="foot-cta">
-      <div class="foot-cta-text">Got a question? The Window is open.</div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+      <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
-        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Studio</p>
+        <p class="foot-heading" id="foot-explore">Explorar</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services &amp; pricing</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/studio/compare/">Compare options</a></li>
-          <li><a href="/work/">Case studies</a></li>
-          <li><a href="/about/">About Don</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-labelledby="foot-trust">
-        <p class="foot-heading" id="foot-trust">Trust</p>
-        <ul class="foot-links">
-          <li><a href="/never/">Never</a></li>
-          <li><a href="/ai/">AI policy</a></li>
-          <li><a href="/security/">Data &amp; security</a></li>
-          <li><a href="/methods/">Methods</a></li>
-          <li><a href="/receipts/">Receipts</a></li>
-          <li><a href="/changelog/">Changelog</a></li>
-          <li><a href="/system/">The system</a></li>
+          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Library</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <p class="foot-heading" id="foot-contact">Contact</p>
+        <p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Email Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="/es/window/">Escríbele a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+        <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
       </nav>
     </div>
 
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
-      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
-        <label class="sr-only" for="foot-news-email">Your email</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
-        <input type="hidden" name="locale" value="en" />
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
-        <button type="submit">Subscribe</button>
+        <button type="submit">Suscribirme</button>
       </form>
     </div>
     <!-- newsletter-capture:end -->
 
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/security/">Data &amp; security</a>
-        <a href="/accessibility.html">Accessibility</a>
-        <a href="/cookies.html">Cookies</a>
-        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
-  <!-- Mobile sticky bottom action bar. Phones only (max-width: 720px),
-       coarse pointer required so a tablet with a mouse doesn't get it.
-       Hidden when <body data-hide-sticky-bar> is set (set on /window/,
-       /sign-in/, /account/, and tool-result pages where a sticky bottom
-       would compete with the page's own bottom UI). Lives inside the
-       <footer> so sync-includes captures it as part of the canonical
-       footer block and stays idempotent across re-syncs. -->
-  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-      Run free audit
+      Auditor&iacute;a gratis
     </a>
-    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Email Don
+      Escr&iacute;bele a Don
     </a>
   </aside>
   <script>
@@ -490,62 +445,45 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
 <script src="/assets/js/share-hydrate.js" defer></script>
 
 <script>
-// Menu Converter — all client-side. The pasted text never leaves the page.
-//
-// Parser strategy:
-//   1. Split into lines, trim trailing whitespace, drop blank-line runs.
-//   2. Heuristic for section heading: the line is in ALL CAPS *or* ends
-//      with a colon, and contains no `$` and no digits-only suffix.
-//   3. Heuristic for item: line ends with a price token (matching
-//      /\$?\d+(?:[.,]\d{2})?\s*$/). The price is everything from the
-//      last $ or last numeric run to end-of-line; the name is what's
-//      to its left, with trailing space + dot-leader stripped.
-//   4. Heuristic for description: the line directly after an item that
-//      is not itself another section/item.
-//   5. Output rendering: a Schema.org Menu graph (Menu → MenuSection
-//      → MenuItem with Offer.price) plus a parallel HTML rendering
-//      with <h3>/<dl>/<dt>/<dd>-style structure for the visible page.
+// Conversor de menú — todo en el navegador. El texto pegado nunca sale de la página.
+// Mismo motor que /tools/menu-converter/. Heurísticas idénticas (ALL CAPS / dos
+// puntos para encabezados, precio al final de línea para ítems, línea siguiente
+// como descripción). Las cadenas de UI son ES; el parser es agnóstico al idioma.
 (function () {
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  function escapeJson(s) {
-    return JSON.stringify(s).slice(1, -1);
-  }
 
-  // Lines with no $ and no digits at end and either ALL CAPS or end-with-colon.
-  var SECTION_RE = /^[A-Z0-9 &'\-—\/\.]{2,}$/; // all caps + a few punct.
+  // Encabezado: línea sin $, sin dígitos al final, en MAYÚSCULAS o terminando en :
+  // Acepta caracteres acentuados (ñ, á, é, í, ó, ú, Ñ, Á, etc.).
+  var SECTION_RE = /^[A-ZÁÉÍÓÚÜÑ0-9 &'\-—\/\.]{2,}$/;
   function isSection(line) {
     var t = line.trim();
     if (!t) return false;
     if (/[$]/.test(t)) return false;
     if (t.endsWith(':')) {
       var inner = t.slice(0, -1).trim();
-      // a colon-terminated line longer than 60 chars is probably a sentence, not a heading
       return inner.length > 0 && inner.length <= 60;
     }
     if (SECTION_RE.test(t) && t.length <= 60 && t.split(' ').length <= 6) {
-      // letters-only test to skip "12.50" (which can pass the regex if all digits/punctuation)
-      return /[A-Z]{2,}/.test(t);
+      return /[A-ZÁÉÍÓÚÜÑ]{2,}/.test(t);
     }
     return false;
   }
 
-  // Match a trailing price like  $12   $12.50   12.50   $1,200
-  var PRICE_RE = /\s*\$?(\d{1,3}(?:,\d{3})*|\d+)(?:[.,](\d{1,2}))?\s*$/;
+  var PRICE_RE = /\s*\$?(\d{1,3}(?:[.,]\d{3})*|\d+)(?:[.,](\d{1,2}))?\s*$/;
   function parseItemLine(line) {
     var t = line.trim();
     var m = t.match(PRICE_RE);
     if (!m) return null;
-    var integer = m[1].replace(/,/g, '');
+    var integer = m[1].replace(/[.,]/g, '');
     var fraction = m[2] || '00';
     if (fraction.length === 1) fraction += '0';
     var priceNum = parseFloat(integer + '.' + fraction);
     if (!isFinite(priceNum) || priceNum <= 0) return null;
     var name = t.slice(0, t.length - m[0].length).trim();
-    // Strip trailing dot-leader, em-dash, hyphen padding.
     name = name.replace(/[.…—–\-]+$/, '').trim();
     if (!name || name.length < 2) return null;
     return { name: name, priceNum: priceNum, priceStr: priceNum.toFixed(2) };
@@ -553,63 +491,39 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
 
   function parseMenu(raw) {
     var lines = raw.replace(/\r\n/g, '\n').split('\n');
-    // Collapse runs of blank lines but keep one as a separator.
-    var clean = [];
-    var lastBlank = true;
+    var clean = []; var lastBlank = true;
     lines.forEach(function (l) {
       var trimmed = l.replace(/\s+$/, '');
-      if (trimmed.trim() === '') {
-        if (!lastBlank) clean.push('');
-        lastBlank = true;
-      } else {
-        clean.push(trimmed);
-        lastBlank = false;
-      }
+      if (trimmed.trim() === '') { if (!lastBlank) clean.push(''); lastBlank = true; }
+      else { clean.push(trimmed); lastBlank = false; }
     });
-
-    var sections = [];
-    var current = { name: 'Menu', items: [] };
-    var lastItem = null;
-    var seenSection = false;
+    var sections = []; var current = { name: 'Menú', items: [] };
+    var lastItem = null; var seenSection = false;
     for (var i = 0; i < clean.length; i++) {
       var line = clean[i];
       if (line === '') { lastItem = null; continue; }
-
       if (isSection(line)) {
-        if (current.items.length > 0 || seenSection) {
-          sections.push(current);
-        }
+        if (current.items.length > 0 || seenSection) sections.push(current);
         current = { name: line.replace(/:$/, '').trim(), items: [] };
-        seenSection = true;
-        lastItem = null;
-        continue;
+        seenSection = true; lastItem = null; continue;
       }
-
       var item = parseItemLine(line);
       if (item) {
         current.items.push({ name: item.name, price: item.priceStr, priceNum: item.priceNum, description: '' });
         lastItem = current.items[current.items.length - 1];
         continue;
       }
-
-      // Description: previous line was an item, current line has no price.
       if (lastItem && !lastItem.description) {
-        // Don't treat the next item-with-price as a description.
         lastItem.description = line.trim();
         continue;
       }
-
-      // Otherwise: an orphan line. Attach to the next item as description seed?
-      // Better: drop. Operators tend to wrap descriptions; if it's an orphan,
-      // we'd rather not pollute.
     }
     if (current.items.length > 0 || sections.length === 0) sections.push(current);
-    // Drop empty sections.
     return sections.filter(function (s) { return s.items.length > 0; });
   }
 
   function renderHtml(sections) {
-    var out = ['<section class="menu" aria-label="Menu">'];
+    var out = ['<section class="menu" aria-label="Menú">'];
     sections.forEach(function (sec) {
       out.push('  <section class="menu-section">');
       out.push('    <h3 class="menu-section__name">' + escapeHtml(sec.name) + '</h3>');
@@ -620,9 +534,7 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
         out.push('          <span class="menu-item__name">' + escapeHtml(it.name) + '</span>');
         out.push('          <span class="menu-item__price">$' + it.price + '</span>');
         out.push('        </div>');
-        if (it.description) {
-          out.push('        <p class="menu-item__desc">' + escapeHtml(it.description) + '</p>');
-        }
+        if (it.description) out.push('        <p class="menu-item__desc">' + escapeHtml(it.description) + '</p>');
         out.push('      </li>');
       });
       out.push('    </ul>');
@@ -652,8 +564,8 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     var menu = {
       '@context': 'https://schema.org',
       '@type': 'Menu',
-      'name': menuName || 'Menu',
-      'inLanguage': document.documentElement.lang || 'en',
+      'name': menuName || 'Menú',
+      'inLanguage': 'es',
       'hasMenuSection': sections.map(function (sec) {
         return {
           '@type': 'MenuSection',
@@ -662,11 +574,7 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
             var item = {
               '@type': 'MenuItem',
               'name': it.name,
-              'offers': {
-                '@type': 'Offer',
-                'price': it.price,
-                'priceCurrency': currency || 'USD'
-              }
+              'offers': { '@type': 'Offer', 'price': it.price, 'priceCurrency': currency || 'USD' }
             };
             if (it.description) item.description = it.description;
             return item;
@@ -686,41 +594,38 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     return JSON.stringify(menu, null, 2);
   }
 
-  var SAMPLE = "STARTERS\n"
-    + "Crispy Brussels Sprouts                    $12\n"
-    + "Maple-glazed, lemon, parmesan, chili crisp.\n"
+  var SAMPLE = "ENTRADAS\n"
+    + "Coles de Bruselas crocantes                $12\n"
+    + "Glaseadas con miel de maple, limón, parmesano, chili crisp.\n"
     + "\n"
     + "Burrata                                    $16\n"
-    + "Heirloom tomato, torn basil, sourdough toast.\n"
+    + "Tomate heirloom, albahaca rota, tostada de masa madre.\n"
     + "\n"
     + "Caesar                                     $14\n"
-    + "Little gem, white anchovy, parmesan crouton.\n"
+    + "Lechuga little gem, anchoa blanca, croton de parmesano.\n"
     + "\n"
-    + "MAINS\n"
-    + "Bavette Steak                              $34\n"
-    + "8oz, peppercorn jus, hand-cut frites.\n"
+    + "PRINCIPALES\n"
+    + "Bavette                                    $34\n"
+    + "8oz, jugo de pimienta, papas a la francesa cortadas a mano.\n"
     + "\n"
     + "Bucatini Cacio e Pepe                      $26\n"
-    + "Tellicherry pepper, pecorino romano, finished tableside.\n"
+    + "Pimienta Tellicherry, pecorino romano, terminado en mesa.\n"
     + "\n"
-    + "Half Roast Chicken                         $28\n"
-    + "Lemon and thyme jus, fingerling potatoes.\n"
+    + "Medio pollo asado                          $28\n"
+    + "Limón y tomillo, papas fingerling.\n"
     + "\n"
-    + "DESSERTS\n"
-    + "Olive Oil Cake                             $11\n"
-    + "Maldon, mascarpone, candied lemon zest.\n"
+    + "POSTRES\n"
+    + "Pastel de aceite de oliva                  $11\n"
+    + "Maldon, mascarpone, ralladura de limón confitada.\n"
     + "\n"
     + "Affogato                                   $9\n"
-    + "Vanilla bean gelato, single-shot espresso.";
+    + "Gelato de vainilla, espresso single-shot.";
 
   function generate() {
     var raw = document.getElementById('mcInput').value;
-    if (!raw.trim()) {
-      alert('Paste your menu text first.');
-      return;
-    }
+    if (!raw.trim()) { alert('Pega el texto de tu menú primero.'); return; }
     var name = (document.getElementById('mcName').value || '').trim();
-    var menuName = (document.getElementById('mcMenuName').value || 'Menu').trim();
+    var menuName = (document.getElementById('mcMenuName').value || 'Menú').trim();
     var currency = document.getElementById('mcCurrency').value || 'USD';
     var sections = parseMenu(raw);
     var totalItems = sections.reduce(function (a, s) { return a + s.items.length; }, 0);
@@ -731,15 +636,13 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     document.getElementById('mcCntPrice').textContent = withPrice;
     document.getElementById('mcCntDesc').textContent = withDesc;
     document.getElementById('mcSummary').hidden = false;
-
     document.getElementById('mcOutPreview').innerHTML = renderPreview(sections);
     document.getElementById('mcOutHtmlBody').textContent = renderHtml(sections);
     document.getElementById('mcOutSchemaBody').textContent = renderSchema(sections, name, menuName, currency);
-
     document.getElementById('mcEmpty').hidden = true;
     showTab('mcOutPreview');
     document.getElementById('mcResultRegion').focus();
-    if (window.plausible) window.plausible('tool-result', { props: { tool: 'menu-converter' } });
+    if (window.plausible) window.plausible('tool-result', { props: { tool: 'menu-converter-es' } });
   }
 
   function showTab(id) {
@@ -754,13 +657,13 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
   document.getElementById('mcGenerate').addEventListener('click', generate);
   document.getElementById('mcSample').addEventListener('click', function () {
     document.getElementById('mcInput').value = SAMPLE;
-    if (!document.getElementById('mcName').value) document.getElementById('mcName').value = 'Sample Restaurant';
+    if (!document.getElementById('mcName').value) document.getElementById('mcName').value = 'Restaurante de ejemplo';
     generate();
   });
   document.getElementById('mcReset').addEventListener('click', function () {
     document.getElementById('mcInput').value = '';
     document.getElementById('mcName').value = '';
-    document.getElementById('mcMenuName').value = 'Dinner';
+    document.getElementById('mcMenuName').value = 'Cena';
     document.getElementById('mcSummary').hidden = true;
     document.getElementById('mcEmpty').hidden = false;
     ['mcOutPreview','mcOutHtml','mcOutSchema'].forEach(function (id) { document.getElementById(id).hidden = true; });
@@ -772,9 +675,9 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     btn.addEventListener('click', function () {
       var text = document.getElementById(btn.dataset.target).textContent || '';
       var done = function () {
-        btn.textContent = 'Copied';
+        btn.textContent = 'Copiado';
         btn.dataset.copied = 'true';
-        setTimeout(function () { btn.textContent = 'Copy'; delete btn.dataset.copied; }, 1500);
+        setTimeout(function () { btn.textContent = 'Copiar'; delete btn.dataset.copied; }, 1500);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done).catch(done);
