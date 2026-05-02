@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>Generador de horarios festivos &mdash; horarios de restaurante para sitio, GBP, schema | Muntin Digital</title>
+<meta name="description" content="Genera los tres resultados de horarios festivos que tu restaurante necesita cada noviembre y diciembre: bloque de texto plano para el sitio, override JSON-LD OpeningHoursSpecification para schema, y un bloque listo para Google Business Profile. Gratis, en tu navegador, tus horarios nunca salen de la página." />
+<meta name="theme-color" content="#1F4E5B" />
+<link rel="canonical" href="https://muntin.digital/es/tools/holiday-hours/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/holiday-hours/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/holiday-hours/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/holiday-hours/" />
+<meta property="og:locale" content="es_US" />
+<meta property="og:locale:alternate" content="en_US" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Generador de horarios festivos &mdash; Muntin Digital" />
+<meta property="og:description" content="Texto plano para tu sitio, JSON-LD para schema, y un bloque para Google Business Profile. Gratis, en tu navegador." />
+<meta property="og:url" content="https://muntin.digital/es/tools/holiday-hours/" />
+<meta property="og:site_name" content="Muntin Digital" />
+
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://muntin.digital/es/tools/holiday-hours/#tool",
+      "name": "Generador de horarios festivos",
+      "description": "Genera resultados en texto plano, JSON-LD OpeningHoursSpecification y Google Business Profile para los horarios festivos de un restaurante independiente. Todo en el navegador; ningún dato sale de la página.",
+      "url": "https://muntin.digital/es/tools/holiday-hours/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@id": "https://muntin.digital/#business" },
+      "inLanguage": "es-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Herramientas", "item": "https://muntin.digital/es/tools/" },
+        { "@type": "ListItem", "position": 3, "name": "Generador de horarios festivos", "item": "https://muntin.digital/es/tools/holiday-hours/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.breadcrumb{visibility:hidden;padding-top:100px}
+.hh-form{display:grid;gap:14px;margin:24px 0}
+.hh-row{display:grid;grid-template-columns:1.4fr 0.6fr 1fr 1fr;gap:10px;align-items:center;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+@media (max-width:780px){.hh-row{grid-template-columns:1fr;gap:8px}}
+.hh-row__name{font-family:var(--font-display);font-weight:500;color:var(--ink);font-size:15px;display:flex;flex-direction:column;gap:2px}
+.hh-row__name small{font-size:12px;font-weight:400;color:var(--stone);font-family:var(--font-body)}
+.hh-row select,.hh-row input[type=time]{font:inherit;font-size:14.5px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);min-height:36px;width:100%}
+.hh-row select:focus,.hh-row input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.hh-row[data-status="closed"] input[type=time]{opacity:0.4;pointer-events:none}
+.hh-row[data-status="normal"] input[type=time]{opacity:0.4;pointer-events:none}
+.hh-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
+.hh-restaurant{padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px;margin:0 0 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:780px){.hh-restaurant{grid-template-columns:1fr}}
+.hh-restaurant label{display:flex;flex-direction:column;font-size:13px;color:var(--ink-soft);gap:4px}
+.hh-restaurant label small{color:var(--stone);font-size:12px}
+.hh-restaurant input{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink)}
+.hh-result{margin:32px 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.hh-result h2{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 12px}
+.hh-tabs{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
+.hh-tab{padding:8px 14px;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;transition:background var(--t-fast) var(--ease)}
+.hh-tab[aria-selected=true]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.hh-tab:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.hh-output{position:relative;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;font-family:var(--font-mono,Menlo,Consolas,monospace);font-size:13.5px;line-height:1.5;color:var(--ink);white-space:pre;overflow-x:auto;max-height:520px}
+.hh-output[hidden]{display:none}
+.hh-copy{position:absolute;top:10px;right:10px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;background:var(--ink);color:var(--cream);border:0;border-radius:6px;cursor:pointer;transition:background var(--t-fast) var(--ease)}
+.hh-copy:hover{background:var(--ink-soft)}
+.hh-copy[data-copied=true]{background:var(--teal)}
+.hh-note{font-size:13.5px;color:var(--stone);margin:10px 0 0;font-style:italic}
+.hh-empty{padding:24px;background:var(--cream-2);border:1px dashed var(--line);border-radius:8px;font-size:14.5px;color:var(--ink-soft);text-align:center}
+.hh-deeplinks{margin:48px 0 0;padding-top:32px;border-top:1px solid var(--line)}
+</style>
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
+
+<link rel="preconnect" href="https://plausible.io" crossorigin />
+<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  <div class="container nav-inner">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
+      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
+          <rect x="18" y="18" width="92" height="92"/>
+          <line x1="64" y1="18" x2="64" y2="110"/>
+          <line x1="18" y1="49" x2="110" y2="49"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
+    </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Buscar</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/tools/holiday-hours/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
+    </nav>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Buscar en la biblioteca</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
+    <a href="/tools/holiday-hours/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+  </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
+
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
+</header>
+
+<main id="main">
+  <nav class="breadcrumb container" aria-label="Ruta" style="margin-top:90px">
+    <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
+      <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
+      <li aria-hidden="true">&rsaquo;</li>
+      <li><a href="/es/tools/" style="color:var(--teal)">Herramientas</a></li>
+      <li aria-hidden="true">&rsaquo;</li>
+      <li aria-current="page">Generador de horarios festivos</li>
+    </ol>
+  </nav>
+
+  <article class="container" style="max-width:840px;margin:32px auto 80px;padding:0 var(--pad-x)">
+    <header style="margin-bottom:24px">
+      <p class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.2vw,52px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 16px">
+        Horarios festivos, <span class="serif-italic">de tres maneras.</span>
+      </h1>
+      <p style="font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0">
+        Define tus horarios para los próximos ocho días festivos de restaurantes en EE.UU. La herramienta te entrega tres resultados: un bloque de texto plano para tu sitio, un override JSON-LD <code>OpeningHoursSpecification</code> para tu schema, y un bloque con formato Google Business Profile que pegas directo en el dashboard. Todo corre en tu navegador; nada sale de la página.
+      </p>
+    </header>
+
+    <form id="hhForm" class="hh-form" autocomplete="off">
+      <fieldset class="hh-restaurant" style="border:0;padding:18px 20px">
+        <label>Nombre del restaurante<small>Aparece dentro del JSON-LD y del bloque GBP.</small>
+          <input type="text" id="hhName" name="hhName" placeholder="The Irish Inn at Glen Echo" />
+        </label>
+        <label>Año<small>Pre-cargado con 2026. Cámbialo para recalcular.</small>
+          <input type="number" id="hhYear" name="hhYear" value="2026" min="2024" max="2030" />
+        </label>
+      </fieldset>
+
+      <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--teal);margin:8px 0 0">Ocho festivos. Elige el estado de cada uno.</p>
+
+      <div id="hhRows"></div>
+
+      <div class="hh-actions">
+        <button type="button" id="hhGenerate" class="btn btn-primary">Generar resultados</button>
+        <button type="button" id="hhReset" class="btn btn-ghost">Restablecer</button>
+      </div>
+    </form>
+
+    <section class="hh-result" aria-labelledby="hhResultH" id="hhResultRegion" tabindex="-1">
+      <h2 id="hhResultH">Tus tres resultados.</h2>
+      <p class="hh-note">Elige una pestaña. Pulsa Copiar. Pega en la superficie que la pidió. Genera de nuevo cuando cambies una fila.</p>
+
+      <div class="hh-tabs" role="tablist" aria-label="Formato del resultado">
+        <button type="button" class="hh-tab" id="hhTabText" role="tab" aria-controls="hhOutText" aria-selected="true">Texto plano</button>
+        <button type="button" class="hh-tab" id="hhTabSchema" role="tab" aria-controls="hhOutSchema" aria-selected="false">JSON-LD schema</button>
+        <button type="button" class="hh-tab" id="hhTabGbp" role="tab" aria-controls="hhOutGbp" aria-selected="false">Google Business Profile</button>
+      </div>
+
+      <div id="hhEmpty" class="hh-empty">Pulsa <strong>Generar resultados</strong> para ver tus tres bloques.</div>
+
+      <div class="hh-output" id="hhOutText" role="tabpanel" aria-labelledby="hhTabText" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutText">Copiar</button>
+        <div id="hhOutTextBody"></div>
+      </div>
+      <div class="hh-output" id="hhOutSchema" role="tabpanel" aria-labelledby="hhTabSchema" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutSchema">Copiar</button>
+        <div id="hhOutSchemaBody"></div>
+      </div>
+      <div class="hh-output" id="hhOutGbp" role="tabpanel" aria-labelledby="hhTabGbp" hidden>
+        <button type="button" class="hh-copy" data-target="hhOutGbp">Copiar</button>
+        <div id="hhOutGbpBody"></div>
+      </div>
+
+      <p class="hh-note" style="margin-top:14px">
+        ¿Quieres que mantenga estos al día cada mes, además de la misma pasada de higiene en tus fichas de Yelp y Apple Maps? <a href="/services/care-plan-light/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">Care Plan Light $99/mes &rarr;</a>
+      </p>
+    </section>
+
+    <section style="margin-top:48px;padding-top:32px;border-top:1px solid var(--line)">
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 14px">Lo que esta herramienta NO hace.</h2>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li style="margin-bottom:8px">No sube los horarios automáticamente a tu GBP. Google requiere que pegues en Business Profile Manager tú mismo; eso es una característica, no un bug — el dashboard es la pista de auditoría.</li>
+        <li style="margin-bottom:8px">No maneja festivos fuera de EE.UU. ni observancias religiosas. Los ocho festivos de restaurantes en EE.UU. son los que mueven cubiertos; escríbeme si tu concepto necesita más.</li>
+        <li>No verifica que de hecho actualizaste los horarios. Si quieres verificación mensual en sitio + GBP + Yelp + Apple Maps, eso lo cubre el <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan Light</a>.</li>
+      </ul>
+    </section>
+
+    <section class="hh-deeplinks">
+      <p class="eyebrow" style="margin-bottom:10px">Sigue</p>
+      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
+        <li><a href="/es/tools/open-hours/">Horario Abierto</a> &mdash; la versión de horarios regulares</li>
+        <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Cómo configurar Google Business Profile (el campo de horarios festivos es el más olvidado)</a></li>
+        <li><a href="/services/care-plan-light/">Care Plan Light $99/mes</a> &mdash; higiene mensual de horarios en sitio + GBP + Yelp + Apple Maps</li>
+      </ul>
+    </section>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-cta">
+      <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
+          <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
+          <sup class="tm" aria-hidden="true">&#8482;</sup>
+        </a>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="foot-explore">
+        <p class="foot-heading" id="foot-explore">Explorar</p>
+        <ul class="foot-links">
+          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-learn">
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
+        <ul class="foot-links">
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
+        <p class="foot-heading" id="foot-contact">Contacto</p>
+        <ul class="foot-links">
+          <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
+          <li><a href="/es/window/">Escríbele a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+        </ul>
+        <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
+      </nav>
+    </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
+    <div class="foot-bottom">
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
+      </nav>
+    </div>
+  </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
+</footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
+
+<script>
+// Mismo motor que /tools/holiday-hours/. Inputs nunca salen de la página.
+(function () {
+  var HOLIDAYS = [
+    { id: 'memorial-day',   name: "Día de los Caídos (Memorial Day)",   rule: { type: 'nthDow',  month: 5,  dow: 1, n: -1 } },
+    { id: 'jul-4',          name: "Día de la Independencia (4 de julio)", rule: { type: 'fixed',   month: 7,  day: 4 } },
+    { id: 'labor-day',      name: "Día del Trabajo (Labor Day)",        rule: { type: 'nthDow',  month: 9,  dow: 1, n: 1 } },
+    { id: 'thanksgiving',   name: "Acción de Gracias",                  rule: { type: 'nthDow',  month: 11, dow: 4, n: 4 } },
+    { id: 'black-friday',   name: "Black Friday (día siguiente)",       rule: { type: 'thanksgivingPlus', days: 1 } },
+    { id: 'christmas-eve',  name: "Nochebuena (24 de diciembre)",       rule: { type: 'fixed',   month: 12, day: 24 } },
+    { id: 'christmas-day',  name: "Navidad (25 de diciembre)",          rule: { type: 'fixed',   month: 12, day: 25 } },
+    { id: 'new-years-eve',  name: "Fin de Año (31 de diciembre)",       rule: { type: 'fixed',   month: 12, day: 31 } }
+  ];
+  var DOW_LABEL = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+  function nthDow(year, month, dow, n) {
+    if (n === -1) {
+      var lastDay = new Date(year, month, 0).getDate();
+      for (var d = lastDay; d >= 1; d--) {
+        if (new Date(year, month - 1, d).getDay() === dow) return d;
+      }
+    }
+    var count = 0;
+    for (var i = 1; i <= 31; i++) {
+      var dt = new Date(year, month - 1, i);
+      if (dt.getMonth() !== month - 1) break;
+      if (dt.getDay() === dow) {
+        count++;
+        if (count === n) return i;
+      }
+    }
+    return null;
+  }
+  function dateForRule(rule, year) {
+    if (rule.type === 'fixed')              return new Date(year, rule.month - 1, rule.day);
+    if (rule.type === 'nthDow')             return new Date(year, rule.month - 1, nthDow(year, rule.month, rule.dow, rule.n));
+    if (rule.type === 'thanksgivingPlus') {
+      var thx = new Date(year, 10, nthDow(year, 11, 4, 4));
+      thx.setDate(thx.getDate() + rule.days);
+      return thx;
+    }
+    return null;
+  }
+  function fmtDate(d) {
+    return d.getDate() + ' de ' + MONTHS[d.getMonth()] + ' de ' + d.getFullYear();
+  }
+  function fmtIso(d) {
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+  function fmt12(t) {
+    if (!t) return '';
+    var p = t.split(':');
+    var h = parseInt(p[0], 10);
+    var mm = p[1];
+    var ap = h >= 12 ? 'pm' : 'am';
+    h = h % 12 || 12;
+    return h + (mm === '00' ? '' : ':' + mm) + ap;
+  }
+
+  var rowsEl = document.getElementById('hhRows');
+  var yearEl = document.getElementById('hhYear');
+  function renderRows() {
+    var year = parseInt(yearEl.value, 10) || new Date().getFullYear();
+    rowsEl.innerHTML = '';
+    HOLIDAYS.forEach(function (h) {
+      var d = dateForRule(h.rule, year);
+      var row = document.createElement('div');
+      row.className = 'hh-row';
+      row.dataset.id = h.id;
+      row.dataset.iso = fmtIso(d);
+      row.dataset.status = 'closed';
+      row.innerHTML = ''
+        + '<div class="hh-row__name">' + h.name + '<small>' + DOW_LABEL[d.getDay()] + ' &middot; ' + fmtDate(d) + '</small></div>'
+        + '<select aria-label="Estado para ' + h.name + '" data-field="status">'
+        + '  <option value="closed">Cerrado</option>'
+        + '  <option value="normal">Horario regular</option>'
+        + '  <option value="custom">Horario especial</option>'
+        + '</select>'
+        + '<input type="time" aria-label="Hora de apertura para ' + h.name + '" data-field="open"  value="11:00" />'
+        + '<input type="time" aria-label="Hora de cierre para ' + h.name + '" data-field="close" value="22:00" />';
+      row.querySelector('select').addEventListener('change', function (e) { row.dataset.status = e.target.value; });
+      rowsEl.appendChild(row);
+    });
+  }
+  renderRows();
+  yearEl.addEventListener('change', renderRows);
+
+  function getRowData() {
+    var rows = rowsEl.querySelectorAll('.hh-row');
+    var out = [];
+    rows.forEach(function (row) {
+      var holiday = HOLIDAYS.find(function (h) { return h.id === row.dataset.id; });
+      out.push({
+        id: row.dataset.id,
+        name: holiday ? holiday.name : row.dataset.id,
+        iso: row.dataset.iso,
+        status: row.dataset.status,
+        open: row.querySelector('input[data-field=open]').value,
+        close: row.querySelector('input[data-field=close]').value
+      });
+    });
+    return out;
+  }
+
+  function buildText(name, items) {
+    var lines = [];
+    if (name) lines.push(name + ' — Horarios festivos');
+    items.forEach(function (it) {
+      var d = new Date(it.iso + 'T12:00:00');
+      var label = fmtDate(d) + ' (' + it.name + ')';
+      if (it.status === 'closed')      lines.push(label + ': Cerrado');
+      else if (it.status === 'normal') lines.push(label + ': Horario regular');
+      else                              lines.push(label + ': ' + fmt12(it.open) + '–' + fmt12(it.close));
+    });
+    return lines.join('\n');
+  }
+  function buildSchema(name, items) {
+    var spec = items
+      .filter(function (it) { return it.status !== 'normal'; })
+      .map(function (it) {
+        var base = {
+          '@type': 'OpeningHoursSpecification',
+          'validFrom': it.iso,
+          'validThrough': it.iso
+        };
+        if (it.status === 'closed') { base.opens = '00:00'; base.closes = '00:00'; }
+        else                         { base.opens = it.open; base.closes = it.close; }
+        base.description = it.name;
+        return base;
+      });
+    var graph = {
+      '@context': 'https://schema.org',
+      '@type': 'Restaurant',
+      'name': name || 'Tu restaurante',
+      'specialOpeningHoursSpecification': spec
+    };
+    return JSON.stringify(graph, null, 2);
+  }
+  function buildGbp(items) {
+    var lines = [];
+    items.forEach(function (it) {
+      var d = new Date(it.iso + 'T12:00:00');
+      var line = fmtDate(d) + ' — ';
+      if (it.status === 'closed')      line += 'Cerrado';
+      else if (it.status === 'normal') line += 'Horario regular';
+      else                              line += fmt12(it.open).toUpperCase() + ' a ' + fmt12(it.close).toUpperCase();
+      lines.push(line);
+    });
+    return lines.join('\n');
+  }
+  function showTab(id) {
+    var tabs = ['hhOutText','hhOutSchema','hhOutGbp'];
+    var triggers = { hhOutText: 'hhTabText', hhOutSchema: 'hhTabSchema', hhOutGbp: 'hhTabGbp' };
+    tabs.forEach(function (t) {
+      document.getElementById(t).hidden = (t !== id);
+      document.getElementById(triggers[t]).setAttribute('aria-selected', t === id ? 'true' : 'false');
+    });
+  }
+  function generate() {
+    var name = (document.getElementById('hhName').value || '').trim();
+    var items = getRowData();
+    document.getElementById('hhOutTextBody').textContent = buildText(name, items);
+    document.getElementById('hhOutSchemaBody').textContent = buildSchema(name, items);
+    document.getElementById('hhOutGbpBody').textContent = buildGbp(items);
+    document.getElementById('hhEmpty').hidden = true;
+    showTab('hhOutText');
+    document.getElementById('hhResultRegion').focus();
+    if (window.plausible) window.plausible('tool-result', { props: { tool: 'holiday-hours-es' } });
+  }
+  document.getElementById('hhGenerate').addEventListener('click', generate);
+  document.getElementById('hhReset').addEventListener('click', function () {
+    document.getElementById('hhName').value = '';
+    document.getElementById('hhYear').value = '2026';
+    renderRows();
+    document.getElementById('hhEmpty').hidden = false;
+    ['hhOutText','hhOutSchema','hhOutGbp'].forEach(function (id) { document.getElementById(id).hidden = true; });
+  });
+  document.querySelectorAll('.hh-tab').forEach(function (t) {
+    t.addEventListener('click', function () { showTab(t.getAttribute('aria-controls')); });
+  });
+  document.querySelectorAll('.hh-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.dataset.target);
+      var body = target.querySelector('div');
+      var text = body ? body.textContent : '';
+      var done = function () {
+        btn.textContent = 'Copiado';
+        btn.dataset.copied = 'true';
+        setTimeout(function () { btn.textContent = 'Copiar'; delete btn.dataset.copied; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text;
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        ta.remove(); done();
+      }
+    });
+  });
+})();
+</script>
+
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
+</body>
+</html>

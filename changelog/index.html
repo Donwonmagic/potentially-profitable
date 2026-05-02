@@ -233,6 +233,30 @@
 
       <div class="changelog-entry" style="margin-bottom:32px">
         <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 9 &mdash; Menu Converter, ES Holiday Hours, terms rewrite</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          Second of the two new launch+30 tools shipped: <a href="/tools/menu-converter/">/tools/menu-converter/</a>. Paste your menu text, walk away with a live preview, semantic HTML, and a JSON-LD <code>Menu</code> schema block. Heuristic parser picks up sections (ALL CAPS or colon-terminated), items (price-trailing line), and descriptions (line directly under an item). Tool count 14 &rarr; 15. The Holiday Hours generator from phase 8 now has a fluent ES mirror at <a href="/es/tools/holiday-hours/">/es/tools/holiday-hours/</a> &mdash; the eight US holiday names translated, the date format localized (&ldquo;25 de diciembre de 2026&rdquo;), the result tabs labeled in Spanish. EN hreflang updated to point at it. <a href="/terms.html">/terms.html</a> rewritten to ~1,300 words: voice-contract first-person, Maryland courts (no arbitration, no class-action waiver), CC BY-NC 4.0 explicitly licensing library content while exempting tools, brand, and codebase. Twelve numbered sections, each with a one-paragraph plain-English explanation.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 8 &mdash; Holiday Hours Generator, privacy + cookies rewrites</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          First of the two new tools the plan flagged for launch+30: <a href="/tools/holiday-hours/">/tools/holiday-hours/</a>. Pre-loaded with the eight US restaurant holidays that move covers (floating ones computed from the year input). Three outputs per run: plain text for the website, JSON-LD <code>specialOpeningHoursSpecification</code> for schema, GBP-formatted block for paste into Business Profile Manager. <a href="/privacy.html">/privacy.html</a> rewritten to ~700 words, first-person Don, four sections (what I collect / what I never do / your rights / vendors). <a href="/cookies.html">/cookies.html</a> rewritten with the three actual functional cookies in a typed table (<code>md_locale</code>, <code>lang_hint_dismissed</code>, <code>md_session</code>) plus a &ldquo;why no banner&rdquo; paragraph naming the position. Maryland PIPA breach-notification window named explicitly.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 7 &mdash; 5-item nav rewrite, AI crawler robots.txt</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          The deferred IA bet from Part II ships. Primary nav goes from 8 items + mega-menu to five: <strong>Library &middot; Tools &middot; Work &middot; Studio &middot; Sign in</strong>. Library now points at the canonical <a href="/library/">/library/</a> hub; Tools is promoted from inside the old mega-menu; Studio replaces Services + Restaurants + About (those pages remain reachable). The mega-menu is retired, controller script gone too. Mobile menu mirrors the desktop 5-item structure. <code>/robots.txt</code> extended with explicit per-agent stanzas: <strong>allowed</strong> &mdash; GPTBot, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Google-Extended, Bytespider, Applebot-Extended; <strong>disallowed</strong> (training-only, no retrieval-time citation) &mdash; CCBot, Omgilibot, ImagesiftBot. <a href="/llms.txt">/llms.txt</a> and <a href="/es/llms.txt">/es/llms.txt</a> now cross-link the full-body corpus (<a href="/llms-full.txt">/llms-full.txt</a>, <a href="/es/llms-full.txt">/es/llms-full.txt</a>, <a href="/feed-llm.json">/feed-llm.json</a>) at the top so AI crawlers find the citation surface immediately.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
         <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 6 &mdash; entity graph, sitemap, CTA canon CI guard</h3>
         <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
           Homepage <code>LocalBusiness</code> JSON-LD now ships <code>telephone</code> on the entity itself plus a structured <code>contactPoint</code> array (support + sales). <code>sameAs</code> expanded from 1 entry to 10 (LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, GBP, Bing Places, Apple Maps) &mdash; the threshold Google&rsquo;s Knowledge Panel checks before rendering. Sitemap regenerated to include all 11 pages added in phases 1&ndash;5 (the studio hub, three productized offers, five DMV cities, /never/, /ai/, /studio/compare/, /library/, three new research notes). New CI script <code>scripts/check-cta-canon.mjs</code> guards the locked CTA verb set from <a href="/methods/#voice-contract">/methods/#voice-contract</a> &mdash; first run found 21 drift hits across 18 files; all swept. Three more high-traffic articles cross-link the productized offers in the further-reading aside.

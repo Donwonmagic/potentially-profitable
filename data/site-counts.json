@@ -1,7 +1,7 @@
 {
   "_doc": "Single source of truth for the counts that appear in nav, footer, and library copy. Built by scripts/build-site-counts.mjs from the filesystem; injected into HTML by scripts/inject-site-counts.mjs via <!-- count:KEY -->VALUE<!-- /count --> sentinels.",
   "tools": {
-    "live": 14,
+    "live": 15,
     "coming": 7
   },
   "glossary": {
