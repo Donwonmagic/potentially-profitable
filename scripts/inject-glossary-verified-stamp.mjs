@@ -40,11 +40,20 @@ const VOLATILE_SLUGS = new Set([
   'aggregaterating', 'reservation-schema',
 ]);
 
-function gitMtime(dir) {
+// Fallback chain: git history → existing <time datetime="..."> in the
+// file → today. The file fallback keeps this idempotent in build
+// environments without git history (e.g. Cloudflare Workers Builds
+// shallow clone): two consecutive invocations within the same build
+// read back the same value, so the "would update" check stays clean.
+function gitMtime(dir, src) {
   try {
     const out = execSync(`git log --reverse --format=%cI -- "${dir}"`, { cwd: repoRoot, encoding: 'utf8' }).split('\n')[0].trim();
     if (out) return out.slice(0, 10);
   } catch (_) { /* fall through */ }
+  if (src) {
+    const m = src.match(/<!-- glossary-verified:start -->[\s\S]*?datetime="(\d{4}-\d{2}-\d{2})"/);
+    if (m) return m[1];
+  }
   return new Date().toISOString().slice(0, 10);
 }
 
@@ -75,7 +84,7 @@ for (const root of [['en', 'glossary'], ['es', 'es/glossary']]) {
     const file = path.join(fullDir, slug, 'index.html');
     if (!fs.existsSync(file)) { skipped++; continue; }
     const src = fs.readFileSync(file, 'utf8');
-    const dateIso = gitMtime(path.join(fullDir, slug));
+    const dateIso = gitMtime(path.join(fullDir, slug), src);
     const block = buildBlock(dateIso, locale);
     let next;
     if (SENTINEL_RE.test(src)) {

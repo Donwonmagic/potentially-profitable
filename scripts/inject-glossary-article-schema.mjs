@@ -57,11 +57,22 @@ function gitMtime(dir) {
 // First-commit timestamp for the term — stable across subsequent
 // rewrites (avoids the feedback loop where each commit bumps git
 // mtime and the next --check finds the schema "stale").
-function gitFirstSeen(dir) {
+//
+// Fallback chain: git history → existing datePublished in the file →
+// Date.now(). The file fallback is what keeps this idempotent in
+// build environments without git history (e.g. Cloudflare Workers
+// Builds shallow clone): two consecutive invocations within the
+// same build read back the same value, so the "would update" check
+// stays clean.
+function gitFirstSeen(dir, src) {
   try {
     const out = execSync(`git log --reverse --format=%cI -- "${dir}"`, { cwd: repoRoot, encoding: 'utf8' }).split('\n')[0].trim();
     if (out) return out;
   } catch (_) { /* fall through */ }
+  if (src) {
+    const m = src.match(/"datePublished":\s*"([^"]+)"/);
+    if (m) return m[1];
+  }
   return new Date().toISOString();
 }
 
@@ -77,14 +88,14 @@ function parseDefinedTerm(src) {
   return null;
 }
 
-function buildBlock({ slug, locale, term, sameAs }) {
+function buildBlock({ slug, locale, term, sameAs, src }) {
   const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/glossary/${slug}/`;
   const ogSuffix = locale === 'es' ? '-es' : '';
   const ogUrl = `${SITE}/brand/og/glossary-${slug}${ogSuffix}.png`;
   // datePublished uses first-commit timestamp (stable). dateModified
   // omitted: it would create a self-bumping feedback loop where each
   // commit invalidates the next --check.
-  const datePublished = gitFirstSeen(path.join(repoRoot, locale === 'es' ? 'es/glossary' : 'glossary', slug));
+  const datePublished = gitFirstSeen(path.join(repoRoot, locale === 'es' ? 'es/glossary' : 'glossary', slug), src);
 
   const graph = [
     {
@@ -166,7 +177,7 @@ for (const { code, dir } of LOCALES) {
       continue;
     }
     const sameAs = sameAsMap[slug] || [];
-    const block = buildBlock({ slug, locale: code, term, sameAs });
+    const block = buildBlock({ slug, locale: code, term, sameAs, src });
 
     let next;
     if (SENTINEL_RE.test(src)) {
