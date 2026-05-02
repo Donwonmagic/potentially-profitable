@@ -1276,8 +1276,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    block but doesn't break layout. Acceptable degradation (B3.3). */
 body:has(.block.final) .foot-cta{display:none}
 
-/* Main 3-column grid */
-.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.1fr;gap:clamp(28px,4vw,56px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+/* Main grid — 5 columns at desktop (brand + Studio + Trust + Library + Contact) */
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
+@media (max-width:1100px){.foot-grid{grid-template-columns:1fr 1fr 1fr 1fr;gap:36px}.foot-brand{grid-column:1 / -1}}
 @media (max-width:960px){.foot-grid{grid-template-columns:1fr 1fr 1fr;gap:40px}.foot-brand{grid-column:1 / -1}}
 @media (max-width:640px){.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1 / -1}}
 @media (max-width:420px){.foot-grid{grid-template-columns:1fr}.foot-brand{grid-column:auto}}

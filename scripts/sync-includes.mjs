@@ -37,11 +37,13 @@ const NON_DEFAULT_LOCALES = LOCALES.filter((l) => l !== 'en');
 // The footer's "Free tools" column diverges on the tool-utility pages
 // (/tools/compare/, /tools/speed-test/, etc.) which cross-link inside
 // the tool ecosystem. Nav sync on these pages is still safe; footer
-// sync is not. The self-selecting signal is reliable enough: a page's
-// existing footer that already links to the restaurant checklist is
-// using the canonical main-funnel footer; anything else is a tool
-// utility page and gets left alone.
-const FOOTER_MAIN_FUNNEL_MARKER = '/learn/checklists/restaurant-website-checklist/';
+// sync is not. The self-selecting signal: main-funnel pages render the
+// "Library" column with id="foot-learn"; tool-utility pages render a
+// "Free tools" column with id="foot-tools" instead. Pages whose
+// existing footer matches id="foot-learn" get the canonical footer
+// synced; anything else (tool-utility footers, custom variants) is
+// left alone.
+const FOOTER_MAIN_FUNNEL_MARKER = 'id="foot-learn"';
 
 // The nav block: <header class="nav" id="nav">...</header>.
 // Single occurrence per page; anchored by the unique id.

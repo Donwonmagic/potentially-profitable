@@ -1688,8 +1688,8 @@
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
-      <a class="btn btn-primary js-window" href="/window/">Write to Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -1704,12 +1704,25 @@
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explore</p>
+        <p class="foot-heading" id="foot-explore">Studio</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services</a></li>
+          <li><a href="/services/">Services &amp; pricing</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
+          <li><a href="/studio/compare/">Compare options</a></li>
+          <li><a href="/work/">Case studies</a></li>
           <li><a href="/about/">About Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Trust</p>
+        <ul class="foot-links">
+          <li><a href="/never/">Never</a></li>
+          <li><a href="/ai/">AI policy</a></li>
+          <li><a href="/security/">Data &amp; security</a></li>
+          <li><a href="/methods/">Methods</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/changelog/">Changelog</a></li>
           <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
@@ -1739,17 +1752,37 @@
       </nav>
     </div>
 
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
+        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
+        <label class="sr-only" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+        <input type="hidden" name="locale" value="en" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
+        <a href="/security/">Data &amp; security</a>
         <a href="/accessibility.html">Accessibility</a>
         <a href="/cookies.html">Cookies</a>
+        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
