@@ -225,68 +225,74 @@
   </aside>
 
   <article class="legal legal-cookies">
-    <h1>Cookie Policy</h1>
-    <p class="meta">Effective May 2026 &middot; Last reviewed 2026&#8209;05&#8209;01</p>
+    <h1>Cookies</h1>
+    <p class="meta">Effective May 2026 &middot; Last reviewed 2026&#8209;05&#8209;02</p>
 
     <aside class="callout" style="margin:0 0 28px;padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;font-size:15.5px;line-height:1.65">
-      <strong>The short version.</strong> Plausible (our analytics) doesn&rsquo;t use cookies. We do set a small functional cookie (<code>md_locale</code>) when you choose Spanish or English so we remember your choice. If you sign in to the Workshop, a session cookie keeps you signed in. We don&rsquo;t set advertising cookies. We don&rsquo;t embed third-party widgets that set cookies.
+      <strong>The short version.</strong> This site sets three functional cookies. None of them track you. None of them follow you to other sites. There&rsquo;s no banner because there&rsquo;s nothing to consent to that&rsquo;s optional &mdash; the cookies below are the ones that make the site usable. Plausible, the analytics, is cookieless.
     </aside>
 
-    <h2>What Are Cookies?</h2>
-    <p>Cookies are small text files that are stored on your device when you visit a website. They help websites remember information about you and your preferences, making your experience better on repeat visits.</p>
-    <p>There are two main types of cookies: session cookies, which expire when you close your browser, and persistent cookies, which remain on your device for a longer period. Cookies can be set by the website you're visiting (first-party cookies) or by third-party services that the site uses.</p>
+    <h2>The three cookies</h2>
+    <p>Each line names the cookie, what it does, when it&rsquo;s set, when it expires, and the one-line argument for why it&rsquo;s necessary.</p>
 
-    <h2>Cookies We Use</h2>
-    <p>We use cookies to provide essential functionality, understand how visitors use our site, and improve our service. Here's what we use them for:</p>
+    <table style="width:100%;border-collapse:collapse;font-size:14.5px;margin:14px 0 28px">
+      <thead>
+        <tr>
+          <th scope="col" style="padding:10px 12px;border-bottom:2px solid var(--ink);background:var(--cream-2);text-align:left;font-family:var(--font-display);font-weight:500;font-size:13px;letter-spacing:0.04em;text-transform:uppercase">Cookie</th>
+          <th scope="col" style="padding:10px 12px;border-bottom:2px solid var(--ink);background:var(--cream-2);text-align:left;font-family:var(--font-display);font-weight:500;font-size:13px;letter-spacing:0.04em;text-transform:uppercase">Purpose</th>
+          <th scope="col" style="padding:10px 12px;border-bottom:2px solid var(--ink);background:var(--cream-2);text-align:left;font-family:var(--font-display);font-weight:500;font-size:13px;letter-spacing:0.04em;text-transform:uppercase">Lifespan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top"><code>md_locale</code></td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">Remembers whether you chose English or Spanish so your language preference persists as you click around. Set when you switch via the language toggle in the nav.</td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">1 year</td>
+        </tr>
+        <tr>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top"><code>lang_hint_dismissed</code></td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">Remembers that you closed the &ldquo;&iquest;Prefieres este sitio en espa&ntilde;ol?&rdquo; banner so it doesn&rsquo;t reappear on every page. Set only if you click the dismiss button.</td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">90 days</td>
+        </tr>
+        <tr>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top"><code>md_session</code></td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">Keeps you signed in to the Workshop after you click a magic-link. Required for the optional account; never set for anonymous visitors. HttpOnly + Secure + SameSite=Lax.</td>
+          <td style="padding:12px;border-bottom:1px solid var(--line);vertical-align:top">30 days, sliding</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h3>Essential Cookies</h3>
-    <p>These cookies are necessary for the core functionality of our website. They enable basic functions like page navigation and access to secure areas. Without these cookies, our site cannot function properly.</p>
+    <p>Three cookies. That&rsquo;s the entire list. There is no fourth, no advertising cookie, no third-party cookie set by an embedded widget. If a fourth ever ships, this page is the place where you find out.</p>
+
+    <h2>Local storage</h2>
+    <p>Some tools save your work in your browser&rsquo;s local storage so you can come back to it later (audit history, plate-cost recipes, menu-engineering inputs, the Workshop save buffer). Local storage isn&rsquo;t a cookie &mdash; it stays on your device, never makes a network request, and is per-origin. The keys are namespaced under <code>md_*</code> and <code>workbench_*</code>; you can clear them via your browser&rsquo;s site-data controls.</p>
+
+    <h2>Analytics doesn&rsquo;t use cookies</h2>
+    <p>The site uses <a href="https://plausible.io/privacy-focused-web-analytics" target="_blank" rel="noopener">Plausible Analytics</a>, which is <strong>cookieless by design</strong>. Plausible counts page views in aggregate (URL, referrer, country, device type) without setting any cookie or persistent identifier. No cross-site tracking, no remarketing pixel, no Google Analytics, no Meta pixel, no LinkedIn Insight, no anything-else &mdash; this is a position the site won&rsquo;t change. See <a href="/never/">/never/ #4</a> for the public commitment.</p>
+
+    <h2>Opting out</h2>
+    <p>The three cookies above are functional &mdash; they make the site work. There&rsquo;s no &ldquo;optional&rdquo; bucket to consent away. If you want to opt out anyway, you have three real options:</p>
     <ul>
-      <li><strong>Language preference:</strong> We use a functional cookie (<code>md_locale</code>) to remember whether you chose to view the site in English or Spanish, so your choice persists as you navigate between pages.</li>
-      <li><strong>Session Management:</strong> We use session cookies to keep you logged in and maintain the state of your visit.</li>
-      <li><strong>Security:</strong> Cookies help us prevent fraud and protect the security of our site and your information.</li>
+      <li><strong>Use the site without signing in.</strong> The library and all the tools work fully without an account; <code>md_session</code> never gets set if you don&rsquo;t use the Workshop.</li>
+      <li><strong>Don&rsquo;t use the language switcher.</strong> If you don&rsquo;t click the EN/ES toggle, <code>md_locale</code> is never set; the site renders in your browser&rsquo;s locale on every visit.</li>
+      <li><strong>Block cookies entirely in your browser.</strong> The site degrades gracefully &mdash; you&rsquo;ll re-pick your language each visit and the Workshop won&rsquo;t persist your sign-in, but every other surface still works.</li>
     </ul>
+    <p>Browser controls if you want them: <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a> &middot; <a href="https://support.apple.com/en-us/105082" target="_blank" rel="noopener">Safari</a> &middot; <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener">Firefox</a> &middot; <a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies" target="_blank" rel="noopener">Edge</a>.</p>
 
-    <h3>Analytics — No Cookies Used</h3>
-    <p>We use <a href="https://plausible.io/privacy-focused-web-analytics" target="_blank" rel="noopener">Plausible Analytics</a>, a privacy-friendly analytics service, to understand how visitors interact with our website in aggregate. Plausible is <strong>cookieless</strong> — it does not set any cookies and does not collect personal data or cross-site identifiers. No data is shared with third parties or used for advertising.</p>
-    <p>Plausible reports basic, anonymous information such as the page you visited, the referring site, the device type, and the country of origin. You can review their data policy at <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a>.</p>
+    <h2>Why no banner</h2>
+    <p>Cookie banners exist because some sites use cookies for purposes you have to consent to (advertising, cross-site tracking, profiling). This site doesn&rsquo;t. The three cookies above are functional, the analytics is cookieless, and there&rsquo;s no advertising surface. Adding a banner would be theatre that hurts trust without changing your data posture.</p>
 
-    <h3>Third-Party Cookies</h3>
-    <p>We do not embed third-party scripts or widgets that set cookies on this site. Plausible Analytics is cookieless. Forms submit to our own Cloudflare Worker, not to a third-party form host. If we ever introduce a vendor that sets cookies, this page will be updated and the vendor named here.</p>
+    <h2>Changes</h2>
+    <p>If a new cookie ships, this page changes and the change appears in the <a href="/changelog/">changelog</a>. Material changes (new cookie, new vendor) get a paragraph; cosmetic edits just bump the date.</p>
 
-    <h2>How to Control Cookies</h2>
-    <p>You have control over cookie settings in your browser. Most browsers allow you to refuse cookies or alert you when a cookie is being set. You can also delete cookies that have already been set.</p>
-    <p>Here are links to cookie control settings for major browsers:</p>
-    <ul>
-      <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Google Chrome</a></li>
-      <li><a href="https://support.apple.com/en-us/105082" target="_blank" rel="noopener">Apple Safari</a></li>
-      <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener">Mozilla Firefox</a></li>
-      <li><a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies" target="_blank" rel="noopener">Microsoft Edge</a></li>
-    </ul>
-    <p>Please note that disabling cookies may affect the functionality of our website. Some features may not work as intended if cookies are blocked.</p>
-
-    <h2>Impact of Disabling Cookies</h2>
-    <p>If you choose to disable cookies, you should be aware of the following potential impacts:</p>
-    <ul>
-      <li>You may not be able to use all features of our website.</li>
-      <li>Your experience may be less personalized, and you may see repeated content or have to re-enter information.</li>
-      <li>Your language preference won't be remembered between visits; you'll have to re-choose English or Spanish each session.</li>
-      <li>If you sign in to the Workshop, you'll be signed out when the session cookie is blocked; magic-link sign-in will not work without it.</li>
-      <li>Analytics on this site do not use cookies, so disabling cookies has no effect on analytics.</li>
-    </ul>
-    <p>Essential cookies cannot be disabled, as they're required for the website to function.</p>
-
-    <h2>Changes to This Policy</h2>
-    <p>We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of material changes by updating the "Effective" date at the top of this policy.</p>
-    <p>Your continued use of our website after any changes indicates your acceptance of the updated Cookie Policy.</p>
-
-    <h2>Contact Information</h2>
+    <h2>Contact</h2>
     <div class="contact-box">
-      <p>If you have questions about our use of cookies or this policy, please contact us:</p>
-      <p><strong>Email:</strong> <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-      <p><strong>Website:</strong> <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
-      <p>We're happy to answer your questions and address any concerns about how we use cookies.</p>
+      <p>Questions about cookies or any of the above?</p>
+      <p>Email: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
+      <p>Reply within four business hours, Mon&ndash;Fri.</p>
     </div>
+
+    <p style="margin-top:36px"><strong>Sister surfaces:</strong> <a href="/privacy.html">/privacy.html</a> (the data policy) &middot; <a href="/security/">/security/</a> (nine claims about how data is handled) &middot; <a href="/never/">/never/</a> (five things this studio will not do) &middot; <a href="/ai/">/ai/</a> (how AI is used in the studio).</p>
   </article>
 </main>
 

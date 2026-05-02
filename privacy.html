@@ -231,100 +231,66 @@
   </aside>
 
   <article class="legal legal-privacy">
-    <h1>Privacy Policy</h1>
-    <p class="meta">Effective May 2026 &middot; Last reviewed 2026&#8209;05&#8209;01</p>
+    <h1>Privacy</h1>
+    <p class="meta">Effective May 2026 &middot; Last reviewed 2026&#8209;05&#8209;02</p>
 
     <aside class="callout" style="margin:0 0 28px;padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;font-size:15.5px;line-height:1.65">
-      <strong>The short version.</strong> I collect your name and email when you write in, sign in to the Workshop, or submit a form. I use cookieless analytics (Plausible) to count page views &mdash; no cookies, no cross-site tracking. I don&rsquo;t sell your data. I don&rsquo;t run ads. I don&rsquo;t share your data with third parties except to deliver the service you asked for (e.g.&nbsp;Resend for email). You can delete everything tied to your account at <a href="/account/">/account/</a>; deletion takes effect within minutes. The legal version is below if you need it.
+      <strong>The short version.</strong> I collect your name and email when you write in. I use cookieless analytics (Plausible) to count page views &mdash; no cookies, no cross-site tracking, no remarketing pixel on the library. I don&rsquo;t sell your data. I don&rsquo;t share it with anyone except the few vendors who deliver the service you asked for (Resend for email, Cloudflare for hosting). You can delete everything tied to your account at <a href="/account/">/account/</a>; deletion takes effect within minutes. The full version is below.
     </aside>
 
-    <p>Muntin Digital&#8482; ("we," "us," "our," or "Company") respects your privacy. This Privacy Policy explains how we collect, use, share, and protect your personal information when you visit our website, use our services, or interact with us.</p>
-
-    <h2>Information We Collect</h2>
-    <p>We collect information in a few different ways:</p>
+    <h2>What I collect</h2>
+    <p>I&rsquo;m Don, a one-person studio in Silver Spring, MD. I collect personal information in five places, all visible to you when it happens:</p>
     <ul>
-      <li><strong>From your inquiries:</strong> When you submit our intake form, write to us through The Window, or contact us via email, we collect your name, email address, company information, project details, and any other information you choose to share with us. Form submissions are processed by a Cloudflare Worker we operate; no third-party form host receives your data.</li>
-      <li><strong>From the Workshop (optional account):</strong> If you sign in to save tool results, we collect your email address and a session identifier. Saved items, watches, and storefront-health properties are stored in a Cloudflare KV namespace tied to your account and are deletable individually or via the full account-delete flow at <a href="/account/">/account/</a>.</li>
-      <li><strong>From The Window:</strong> When you write to Don through The Window, your message body, email, and thread metadata are stored in our Cloudflare KV namespace and processed only by the Worker we operate. Threads are kept until you request deletion.</li>
-      <li><strong>From field-note submissions:</strong> If you submit a field note on an article, we collect the body, your display name, and a one-way SHA-256 hash of your IP address (used only for abuse triage). Approved notes are published with attribution.</li>
-      <li><strong>Website analytics:</strong> We use Plausible Analytics &#8212; a privacy-friendly, cookieless analytics service &#8212; to understand aggregate site usage: pages visited, referring sites, device type, and country-level location. No personally identifying information or cross-site tracking is collected.</li>
-      <li><strong>Cookies and local storage:</strong> See the "Cookies &amp; Tracking" section below. Our own analytics do not use cookies.</li>
+      <li><strong>The Window.</strong> When you write to me at <a href="/window/">/window/</a>, your name, email, and message body are stored in a Cloudflare KV namespace I operate. Threads stay until you ask me to delete them. No third-party chat or scheduler sees your message.</li>
+      <li><strong>The Workshop (optional account).</strong> If you sign in to save tool results, I store your email and a session identifier. Saved items, watches, and storefront-health properties live in a Cloudflare KV namespace tied to your account.</li>
+      <li><strong>Forms.</strong> The contact, checklist, and audit forms post to a Cloudflare Worker I operate. Submissions are delivered by Resend so the email reaches my inbox and your confirmation reaches yours.</li>
+      <li><strong>Field notes.</strong> If you submit a field note on an article, I store the body, your display name, and a one-way SHA-256 hash of your IP for abuse triage. Approved notes are published with attribution; the IP hash is dropped at 90 days.</li>
+      <li><strong>Analytics.</strong> Plausible Analytics counts page views in aggregate. No cookies, no identifiers, no cross-site tracking. Reports go up to 2 years.</li>
     </ul>
 
-    <h2>How We Use Your Information</h2>
-    <p>We use the information we collect for legitimate business purposes:</p>
+    <h2>What I never do</h2>
+    <p>The list of things I won&rsquo;t do is the more useful part of this page. The full version is at <a href="/never/">/never/</a>; the data-relevant subset:</p>
     <ul>
-      <li>To respond to your inquiries and provide the services you've requested</li>
-      <li>To schedule and conduct meetings or consultations</li>
-      <li>To send you relevant updates about our services (only if you've opted in)</li>
-      <li>To understand how people use our website and improve its design and functionality</li>
-      <li>To comply with legal obligations and protect against fraud or misuse</li>
+      <li><strong>I never sell your data.</strong> Not to advertisers, not to lead brokers, not to data resellers. There is no &ldquo;legitimate interest&rdquo; loophole that ever results in a payment.</li>
+      <li><strong>I never run a remarketing pixel on the library.</strong> No Meta pixel, no Google Ads tag, no LinkedIn Insight, no third-party retargeting on any page that exists to teach &mdash; that&rsquo;s articles, glossary, research, tools.</li>
+      <li><strong>I never train AI on your data.</strong> Tools run in your browser; their inputs never reach a server. Where I use AI in the studio (drafts, alt text, search cross-links), the providers I use are configured with the &ldquo;no training&rdquo; setting on. Full policy at <a href="/ai/">/ai/</a>.</li>
+      <li><strong>I never aggregate or resell what you typed into a tool.</strong> Margin Math, Plate Cost, Invoice Decoder &mdash; everything stays in your browser. The site has no server-side telemetry on any tool input.</li>
     </ul>
 
-    <h2>Third-Party Services</h2>
-    <p>We use the following trusted third-party services to deliver our offerings. These services have their own privacy policies:</p>
+    <h2>Your rights</h2>
+    <p>Maryland is my home jurisdiction; depending on where you live, you may have additional rights under the GDPR (EU/UK), CCPA (California), or other state privacy laws. The four that matter most:</p>
     <ul>
-      <li><strong>Resend:</strong> When you submit a form on our site (contact, checklist, or audit report), the form data is processed by a Cloudflare Worker we operate and then delivered via <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend</a>, a transactional email service, so the submission reaches our inbox and you receive a confirmation email. Resend processes your name and email address as part of this delivery. See <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend's privacy policy</a> for details.</li>
-      <li><strong>The Window:</strong> When you write to Don through The Window, your name, email, and message are stored in our Cloudflare KV namespace and processed only by the Worker we operate. No third-party scheduling or chat platform receives your data.</li>
-      <li><strong>Plausible Analytics:</strong> We use Plausible to track anonymized, aggregate website usage. Plausible does not use cookies, does not collect personal data, and does not share data with advertisers. Review <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">Plausible's data policy</a> for details.</li>
-      <li><strong>Hosting Provider:</strong> Our website is hosted on a secure server. Your data in transit is protected by SSL encryption.</li>
+      <li><strong>Access.</strong> Email <a href="mailto:don@muntin.digital">don@muntin.digital</a> and I&rsquo;ll send you a copy of everything tied to your name or email within 30 days.</li>
+      <li><strong>Correction.</strong> Same channel; I&rsquo;ll fix anything inaccurate within five business days.</li>
+      <li><strong>Deletion.</strong> Workshop accounts can self-serve at <a href="/account/">/account/</a>; deletion takes effect within minutes. For Window threads or form submissions, email me &mdash; I delete on request, no questions asked, within five business days.</li>
+      <li><strong>Opt-out of marketing.</strong> The Library Letter and the Operator Drip both have an unsubscribe link in every message. One click. The list is in Buttondown, the unsubscribe is permanent.</li>
+    </ul>
+    <p>If something on the data side feels wrong, write to <a href="mailto:don@muntin.digital">don@muntin.digital</a> &mdash; same business day, always inside two. If a security incident ever exposes your data, I notify affected operators within 72 hours and file with Maryland&rsquo;s Attorney General within the 45-day PIPA window.</p>
+
+    <h2>Vendors</h2>
+    <p>Four third parties touch the data tied to this site. Each has its own privacy policy linked below. The principle is data-minimization: each vendor sees only what it needs to deliver the service you asked for.</p>
+    <ul>
+      <li><strong>Cloudflare</strong> &mdash; hosting (Pages), Workers, KV namespace, R2 backups. Standard log retention; no analytics. <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></li>
+      <li><strong>Resend</strong> &mdash; transactional email delivery for forms, the Window, and the operator drip. Sees your email address and the body of the message you sent. <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">resend.com/legal/privacy-policy</a></li>
+      <li><strong>Plausible</strong> &mdash; cookieless aggregate analytics. Sees the URL you viewed and your country-level location. No cookies, no identifiers. <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a></li>
+      <li><strong>Buttondown</strong> &mdash; newsletter delivery for the Library Letter and the operator drip. Sees your email address and which list you&rsquo;re on. <a href="https://buttondown.com/privacy" target="_blank" rel="noopener">buttondown.com/privacy</a></li>
     </ul>
 
-    <h2>Cookies &amp; Tracking</h2>
-    <p>We keep cookie usage to an absolute minimum:</p>
-    <ul>
-      <li><strong>Our analytics do not use cookies.</strong> Plausible Analytics is cookieless and does not set any first-party or third-party cookies.</li>
-      <li><strong>Local storage:</strong> Some interactive tools save your work in your browser's local storage so you can come back to it later (for example, audit history, plate-cost recipes, menu-engineering inputs). Local storage stays on your device and is not sent to our servers. The Cookies page below lists every key.</li>
-    </ul>
-    <p>Most web browsers allow you to control cookies through your browser settings. Because our core analytics do not rely on cookies, blocking cookies has no effect on our ability to understand aggregate site usage.</p>
+    <h2>Children</h2>
+    <p>This site isn&rsquo;t directed at children under 13 and I don&rsquo;t knowingly collect data from them. If I find out I have, I delete it. Email me if you believe a child&rsquo;s data was collected.</p>
 
-    <h2>Data Retention</h2>
-    <p>We keep your personal information only as long as necessary:</p>
-    <ul>
-      <li><strong>Form submissions:</strong> We retain contact and inquiry information for up to 3 years to follow up on potential projects and for record-keeping purposes.</li>
-      <li><strong>Workshop saves and properties:</strong> Saved tool results, watches, and storefront-health properties are kept until you delete them or until you delete your Workshop account at <a href="/account/">/account/</a>. Deletion takes effect within minutes of email confirmation.</li>
-      <li><strong>The Window:</strong> Threads are kept until you ask us to delete them. Email Don to request thread deletion.</li>
-      <li><strong>Field-note moderation records:</strong> The decision trail for any submitted field note (approved, declined, or revised) is retained for moderation transparency and abuse review. The hashed IP is not retained beyond 90 days.</li>
-      <li><strong>Analytics data:</strong> Plausible Analytics data is aggregated and anonymized by design. We retain general analytics reports for up to 2 years for business analysis.</li>
-      <li><strong>Email communications:</strong> We may retain email correspondence related to projects or inquiries for business and legal purposes.</li>
-    </ul>
+    <h2>Changes</h2>
+    <p>If I update this policy, the date at the top changes and the change appears in the <a href="/changelog/">changelog</a>. Material changes (new vendor, new data type) get a paragraph; cosmetic edits (typo fixes) just bump the date.</p>
 
-    <h2>Your Rights</h2>
-    <p>Depending on your location, you may have rights regarding your personal data:</p>
-    <ul>
-      <li><strong>Right to access:</strong> You can request a copy of the personal information we hold about you.</li>
-      <li><strong>Right to correction:</strong> You can request that we correct inaccurate or incomplete information.</li>
-      <li><strong>Right to deletion:</strong> You can request that we delete your personal information, subject to certain legal obligations.</li>
-      <li><strong>Right to opt-out:</strong> You can opt out of marketing communications at any time by replying to emails with your request or contacting us directly.</li>
-    </ul>
-    <p>To exercise these rights, please contact us using the information in the "Contact Us" section below. We will respond to reasonable requests within 30 days.</p>
-
-    <h2>Data Security</h2>
-    <p>We take the security of your personal information seriously. We implement reasonable technical and organizational measures to protect your data, including:</p>
-    <ul>
-      <li>SSL encryption for data transmitted between your browser and our website</li>
-      <li>Secure, password-protected access to our systems</li>
-      <li>Regular reviews of our security practices</li>
-      <li>Limitations on who within our organization can access personal data</li>
-    </ul>
-    <p>While we strive to protect your information, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security, but we are committed to safeguarding your data.</p>
-
-    <h2>Children's Privacy</h2>
-    <p>Our website and services are not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If we learn that we have collected personal information from a child under 13 without parental consent, we will promptly delete that information. Please contact us if you believe we have inadvertently collected information from a child.</p>
-
-    <h2>Changes to This Privacy Policy</h2>
-    <p>Muntin Digital&#8482; may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of any material changes by updating the "Effective" date at the top of this policy. Your continued use of our website following the posting of changes constitutes your acceptance of the updated policy.</p>
-
-    <h2>Contact Us</h2>
+    <h2>Contact</h2>
     <div class="contact-box">
-      <p><strong>Muntin Digital&#8482;</strong></p>
-      <p>Maryland LLC &middot; Fully-remote digital studio</p>
+      <p><strong>Don Goldstein, Muntin Digital</strong>&trade;</p>
+      <p>Maryland LLC &middot; Silver Spring, MD</p>
       <p>Email: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-      <p>Website: <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
-      <p>If you have any questions about this Privacy Policy or how we handle your personal information, please don't hesitate to reach out.</p>
+      <p>Reply within four business hours, Mon&ndash;Fri.</p>
     </div>
 
-    <p>Thank you for trusting Muntin Digital&#8482; with your information. We're committed to being transparent about how we work with your data.</p>
+    <p style="margin-top:36px"><strong>Sister surfaces:</strong> <a href="/security/">/security/</a> (data &amp; security &mdash; nine claims, five tests) &middot; <a href="/never/">/never/</a> (five things this studio will not do) &middot; <a href="/ai/">/ai/</a> (how AI is used in the studio) &middot; <a href="/cookies.html">/cookies.html</a> (the three functional cookies, listed) &middot; <a href="/methods/">/methods/</a> (where every claim on the site comes from).</p>
   </article>
 </main>
 
