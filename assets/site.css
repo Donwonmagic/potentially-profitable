@@ -6000,3 +6000,78 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .hero-grid > div:first-child > .hero-note    { order: 7; }
   .hero-grid > div:first-child > .hero-meta-note { order: 8; }
 }
+
+/* ============================================================
+   KnitRail — unified four-lane "what's next" component for
+   articles. Replaces the smart-next 3-line CTA with a 4-column
+   structured grid: Apply (a tool) · Read (next article in topic) ·
+   Define (a key glossary term) · Talk (Email Don).
+   The component is sentinel-bracketed and stamped at build time
+   by scripts/inject-knit-rail.mjs.
+   ============================================================ */
+.knit-rail {
+  max-width: 720px;
+  margin: 32px 0 36px;
+  padding: 22px 24px 24px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+.knit-rail__h {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+}
+.knit-rail__cols {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.knit-rail__col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.knit-rail__verb {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.knit-rail__col a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14.5px;
+  line-height: 1.45;
+  border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+  transition: border-color var(--t-fast) var(--ease);
+  /* Word-break so long term names like "Third-party marketplace"
+     don't overflow narrow columns on tablet widths. */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.knit-rail__col a:hover {
+  border-bottom-color: var(--teal);
+}
+@media (max-width: 720px) {
+  .knit-rail__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+  }
+}
+@media (max-width: 420px) {
+  .knit-rail__cols {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}

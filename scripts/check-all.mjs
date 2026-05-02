@@ -58,6 +58,7 @@ const CHECKS = [
   ['Article HowTo schema (idem)','inject-article-howto-schema.mjs','--check'],
   ['Article abstract+mentions (idem)','inject-article-abstract-mentions.mjs','--check'],
   ['Smart-next CTA (idem)','inject-smart-next-cta.mjs',     '--check'],
+  ['KnitRail (idem)',     'inject-knit-rail.mjs',           '--check'],
   ['Glossary term-example (idem)','inject-glossary-term-examples.mjs','--check'],
   ['Glossary article backlinks (idem)','inject-glossary-article-backlinks.mjs','--check'],
   ['Glossary deep anchors (idem)','inject-glossary-deep-anchors.mjs','--check'],

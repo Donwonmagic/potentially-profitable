@@ -109,9 +109,22 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   ].join('\n');
 }
 
+// Detect a populated KnitRail block. If the article carries one,
+// the smart-next sentinel stays collapsed — KnitRail is the
+// canonical four-lane rail and this 3-line variant is retired
+// per the design review's consolidation recommendation.
+const KNIT_RAIL_POPULATED_RE = /<!-- knit-rail:start -->\s*<aside class="knit-rail"/;
+
 let changed = 0;
 for (const { file, slug, locale } of articleFiles()) {
   const src = fs.readFileSync(file, 'utf8');
+
+  // Skip articles where KnitRail has populated the unified rail.
+  // The smart-next sentinel may still exist in those files but
+  // should remain empty. inject-knit-rail.mjs is responsible for
+  // collapsing it.
+  if (KNIT_RAIL_POPULATED_RE.test(src)) continue;
+
   const override = (READ_OVERRIDE[slug] || {})[locale];
   const glossaryUrl = override || firstGlossaryHrefIn(src);
   const toolUrl = loadPostEndCtaTool(slug, locale);
