@@ -630,11 +630,11 @@
       <p class="hero-sub">
         Free articles, tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary &mdash; the same playbook I use with paying clients. No signup, no email gate.
       </p>
-      <ul class="hero-counts" aria-label="Library at a glance" style="display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)">
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;free tools</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:articles -->17<!-- /count --></strong>&nbsp;articles</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))">All free</li>
+      <ul class="hero-counts" aria-label="Library at a glance">
+        <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;free tools</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->17<!-- /count --></strong>&nbsp;articles</li>
+        <li class="hero-counts__chip">All free</li>
       </ul>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="/tools/">See free articles &amp; tools
@@ -730,17 +730,17 @@
      ownership, jurisdiction) anchored as a row instead of buried in
      hero-meta-note. Each item is a hard constraint, not a benefit.
 ================================================================== -->
-<section class="trust-strip" aria-label="Quick facts about the studio" style="padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)">
+<section class="trust-strip" aria-label="Quick facts about the studio">
   <div class="container">
-    <ul style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5">
+    <ul class="trust-strip__list">
       <li><strong>Reply within 4 hrs</strong>, Mon&ndash;Fri</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>2 active builds at a time</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>No retainer required</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>You own your site outright</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>Maryland LLC &middot; Silver Spring, MD</li>
     </ul>
   </div>
@@ -763,36 +763,36 @@
       <h2 id="compare-heading">Three ways to put a restaurant<br><span class="serif-italic">on the web.</span></h2>
       <p class="final-sub">A template you fight, an agency that bills the room you walk into, or one person who builds, ships, and stays. Each works for someone &mdash; this just helps you see where you are.</p>
     </div>
-    <ul class="compare-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;padding:0;margin:36px 0 0">
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Patchwork</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">Wix or Squarespace.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$23&ndash;39/mo &middot; DIY, with templates</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Fast to start.</strong> Pick a template, swap photos, ship in a weekend.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Hard ceiling.</strong> Mobile speed, menu structure, and SEO live inside the template&rsquo;s limits.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Rented.</strong> Stop paying and the site goes away.</li>
+    <ul class="compare-grid">
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Patchwork</p>
+        <h3 class="compare-card__h">Wix or Squarespace.</h3>
+        <p class="compare-card__price">$23&ndash;39/mo &middot; DIY, with templates</p>
+        <ul class="compare-card__list">
+          <li><strong>Fast to start.</strong> Pick a template, swap photos, ship in a weekend.</li>
+          <li><strong>Hard ceiling.</strong> Mobile speed, menu structure, and SEO live inside the template&rsquo;s limits.</li>
+          <li><strong>Rented.</strong> Stop paying and the site goes away.</li>
         </ul>
       </li>
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Agency</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">A full creative shop.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$15&ndash;60K+ build &middot; multi-discipline team</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Real craft.</strong> Custom design, brand strategy, sometimes great work.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Layered cost.</strong> The PM, the strategist, the AD, the dev &mdash; all billed.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Slow follow-through.</strong> Edits route through three people; weeks become months.</li>
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Agency</p>
+        <h3 class="compare-card__h">A full creative shop.</h3>
+        <p class="compare-card__price">$15&ndash;60K+ build &middot; multi-discipline team</p>
+        <ul class="compare-card__list">
+          <li><strong>Real craft.</strong> Custom design, brand strategy, sometimes great work.</li>
+          <li><strong>Layered cost.</strong> The PM, the strategist, the AD, the dev &mdash; all billed.</li>
+          <li><strong>Slow follow-through.</strong> Edits route through three people; weeks become months.</li>
         </ul>
       </li>
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:2px solid var(--teal);border-radius:12px;background:var(--white);position:relative">
-        <span class="compare-card__badge" style="position:absolute;top:-12px;left:24px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);background:var(--teal);padding:4px 10px;border-radius:999px">Where Muntin sits</span>
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px">Muntin Digital</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">One person, end to end.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$2,500&ndash;15,000+ build &middot; Don ships, Don stays</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Real custom, no agency layer.</strong> Same person designs, builds, and replies.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Owned outright.</strong> Yours from day one &mdash; code, copy, domain.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Reply within 4 hrs.</strong> Care Plan optional; not the lock-in.</li>
+      <li class="compare-card compare-card--featured">
+        <span class="compare-card__badge">Where Muntin sits</span>
+        <p class="compare-card__eyebrow">Muntin Digital</p>
+        <h3 class="compare-card__h">One person, end to end.</h3>
+        <p class="compare-card__price">$2,500&ndash;15,000+ build &middot; Don ships, Don stays</p>
+        <ul class="compare-card__list">
+          <li><strong>Real custom, no agency layer.</strong> Same person designs, builds, and replies.</li>
+          <li><strong>Owned outright.</strong> Yours from day one &mdash; code, copy, domain.</li>
+          <li><strong>Reply within 4 hrs.</strong> Care Plan optional; not the lock-in.</li>
         </ul>
       </li>
     </ul>
@@ -801,14 +801,6 @@
     </div>
   </div>
 </section>
-
-<style>
-@media (max-width:780px){
-  .compare-grid{grid-template-columns:1fr !important}
-  .compare-card{order:0}
-  .compare-card[style*="border:2px solid"]{order:-1}
-}
-</style>
 
 <!-- ============ LIBRARY ============ -->
 <!-- Sits between the Problem section and Services teaser on purpose:

@@ -374,11 +374,11 @@
       <p class="hero-sub">
         Art&iacute;culos, herramientas, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos &mdash; gratis. La misma gu&iacute;a que uso con clientes que pagan. Sin registro, sin pedir tu correo.
       </p>
-      <ul class="hero-counts" aria-label="La biblioteca en cifras" style="display:flex;flex-wrap:wrap;gap:10px 14px;list-style:none;padding:0;margin:18px 0 22px;font-size:13.5px;font-weight:600;letter-spacing:0.02em;color:var(--ink-soft)">
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;t&eacute;rminos</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;herramientas gratis</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))"><strong style="color:var(--teal)"><!-- count:articles -->17<!-- /count --></strong>&nbsp;art&iacute;culos</li>
-        <li style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface-1, var(--cream-2))">Todo gratis</li>
+      <ul class="hero-counts" aria-label="La biblioteca en cifras">
+        <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;t&eacute;rminos</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;herramientas gratis</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->17<!-- /count --></strong>&nbsp;art&iacute;culos</li>
+        <li class="hero-counts__chip">Todo gratis</li>
       </ul>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="/es/tools/">Ver herramientas y art&iacute;culos
@@ -452,17 +452,17 @@
 </section>
 
 <!-- ============ TRUST STRIP ============ -->
-<section class="trust-strip" aria-label="Datos r&aacute;pidos sobre el estudio" style="padding:18px 0;background:var(--cream-2);border-block:1px solid var(--line)">
+<section class="trust-strip" aria-label="Datos r&aacute;pidos sobre el estudio">
   <div class="container">
-    <ul style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.5">
+    <ul class="trust-strip__list">
       <li><strong>Respuesta en menos de 4 hrs</strong>, lun&ndash;vie</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>2 proyectos abiertos a la vez</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>Sin retainer obligatorio</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>Tu sitio es tuyo</li>
-      <li aria-hidden="true" style="color:var(--stone)">&middot;</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
       <li>LLC de Maryland &middot; Silver Spring, MD</li>
     </ul>
   </div>
@@ -481,36 +481,36 @@
       <h2 id="compare-heading">Tres formas de poner un restaurante<br><span class="serif-italic">en la web.</span></h2>
       <p class="final-sub">Una plantilla con la que peleas, una agencia que te factura cada cuarto que pisa, o una persona que construye, lanza y se queda. Cada opción funciona para alguien &mdash; esto solo te ayuda a verte.</p>
     </div>
-    <ul class="compare-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;padding:0;margin:36px 0 0">
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Mosaico</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">Wix o Squarespace.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">USD 23&ndash;39/mes &middot; DIY con plantillas</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Empieza r&aacute;pido.</strong> Eliges plantilla, cambias fotos, lanzas en un fin de semana.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Techo duro.</strong> Velocidad m&oacute;vil, estructura del men&uacute; y SEO viven dentro de los l&iacute;mites de la plantilla.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Alquilado.</strong> Si dejas de pagar, el sitio desaparece.</li>
+    <ul class="compare-grid">
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Mosaico</p>
+        <h3 class="compare-card__h">Wix o Squarespace.</h3>
+        <p class="compare-card__price">USD 23&ndash;39/mes &middot; DIY con plantillas</p>
+        <ul class="compare-card__list">
+          <li><strong>Empieza r&aacute;pido.</strong> Eliges plantilla, cambias fotos, lanzas en un fin de semana.</li>
+          <li><strong>Techo duro.</strong> Velocidad m&oacute;vil, estructura del men&uacute; y SEO viven dentro de los l&iacute;mites de la plantilla.</li>
+          <li><strong>Alquilado.</strong> Si dejas de pagar, el sitio desaparece.</li>
         </ul>
       </li>
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Agencia</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">Una agencia creativa.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">USD 15&ndash;60K+ build &middot; equipo multidisciplinario</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Oficio real.</strong> Dise&ntilde;o a medida, estrategia de marca, a veces gran trabajo.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Costo por capas.</strong> El PM, el estratega, el AD, el dev &mdash; todo se factura.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Seguimiento lento.</strong> Una edici&oacute;n pasa por tres personas; semanas se vuelven meses.</li>
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Agencia</p>
+        <h3 class="compare-card__h">Una agencia creativa.</h3>
+        <p class="compare-card__price">USD 15&ndash;60K+ build &middot; equipo multidisciplinario</p>
+        <ul class="compare-card__list">
+          <li><strong>Oficio real.</strong> Dise&ntilde;o a medida, estrategia de marca, a veces gran trabajo.</li>
+          <li><strong>Costo por capas.</strong> El PM, el estratega, el AD, el dev &mdash; todo se factura.</li>
+          <li><strong>Seguimiento lento.</strong> Una edici&oacute;n pasa por tres personas; semanas se vuelven meses.</li>
         </ul>
       </li>
-      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:2px solid var(--teal);border-radius:12px;background:var(--white);position:relative">
-        <span class="compare-card__badge" style="position:absolute;top:-12px;left:24px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);background:var(--teal);padding:4px 10px;border-radius:999px">D&oacute;nde encaja Muntin</span>
-        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px">Muntin Digital</p>
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">Una persona, de punta a punta.</h3>
-        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">USD 2,500&ndash;15,000+ build &middot; Don construye, Don se queda</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Trabajo real, sin capa de agencia.</strong> La misma persona dise&ntilde;a, construye y responde.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Tuyo de verdad.</strong> Tuyo desde el d&iacute;a uno &mdash; c&oacute;digo, copy, dominio.</li>
-          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Respuesta en menos de 4 hrs.</strong> Plan de cuidado opcional; no es la trampa.</li>
+      <li class="compare-card compare-card--featured">
+        <span class="compare-card__badge">D&oacute;nde encaja Muntin</span>
+        <p class="compare-card__eyebrow">Muntin Digital</p>
+        <h3 class="compare-card__h">Una persona, de punta a punta.</h3>
+        <p class="compare-card__price">USD 2,500&ndash;15,000+ build &middot; Don construye, Don se queda</p>
+        <ul class="compare-card__list">
+          <li><strong>Trabajo real, sin capa de agencia.</strong> La misma persona dise&ntilde;a, construye y responde.</li>
+          <li><strong>Tuyo de verdad.</strong> Tuyo desde el d&iacute;a uno &mdash; c&oacute;digo, copy, dominio.</li>
+          <li><strong>Respuesta en menos de 4 hrs.</strong> Plan de cuidado opcional; no es la trampa.</li>
         </ul>
       </li>
     </ul>
@@ -519,14 +519,6 @@
     </div>
   </div>
 </section>
-
-<style>
-@media (max-width:780px){
-  .compare-grid{grid-template-columns:1fr !important}
-  .compare-card{order:0}
-  .compare-card[style*="border:2px solid"]{order:-1}
-}
-</style>
 
 <!-- ============ BIBLIOTECA ============ -->
 <!-- Se coloca entre la sección de Problema y el teaser de Servicios:
