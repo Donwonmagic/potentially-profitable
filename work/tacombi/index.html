@@ -176,6 +176,11 @@
   }
   .gallery-pack img {
     width: 100%; height: auto; display: block;
+    /* aspect-ratio reserves intrinsic vertical space before the
+       image loads, killing layout shift. `auto 4/3` means: use the
+       natural ratio if/when known, fall back to 4/3 (approximates
+       most postcards and flyers in this gallery). */
+    aspect-ratio: auto 4 / 3;
     border-radius: 10px; border: 1px solid var(--line);
   }
   .gallery-caption {
