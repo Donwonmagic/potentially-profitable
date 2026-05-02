@@ -4,69 +4,84 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<title>Declaración de accesibilidad | Muntin Digital™</title>
-<meta name="description" content="Declaración de accesibilidad de Muntin Digital, un estudio digital totalmente remoto comprometido con los estándares WCAG 2.2 AA." />
+<title>La biblioteca &mdash; lee, busca, haz | Muntin Digital</title>
+<meta name="description" content="El hub &uacute;nico para la biblioteca de Muntin Digital. 18 art&iacute;culos, 139 t&eacute;rminos del glosario, 13 herramientas gratis, notas de investigaci&oacute;n, y el recorrido guiado de 60 minutos. Tres puertas: Lee, Busca, Haz." />
 <meta name="theme-color" content="#1F4E5B" />
-<link rel="canonical" href="https://muntin.digital/es/accessibility.html" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/accessibility.html" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/accessibility.html" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/accessibility.html" />
-
+<link rel="canonical" href="https://muntin.digital/es/library/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/library/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/library/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/library/" />
 <meta property="og:locale" content="es_US" />
 <meta property="og:locale:alternate" content="en_US" />
 
-<link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
-<link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/brand/favicons/favicon-16x16.png" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="La biblioteca &mdash; Muntin Digital" />
+<meta property="og:description" content="Tres puertas: Lee, Busca, Haz. 18 art&iacute;culos, 139 t&eacute;rminos, 13 herramientas, investigaci&oacute;n." />
+<meta property="og:url" content="https://muntin.digital/es/library/" />
+<meta property="og:site_name" content="Muntin Digital" />
+
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<link rel="shortcut icon" href="/favicon.ico" />
-
-<meta name="application-name" content="Muntin Digital" />
-<meta name="apple-mobile-web-app-title" content="Muntin Digital" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
-      "@id": "https://muntin.digital/es/accessibility.html#webpage",
-      "name": "Declaración de accesibilidad",
-      "description": "Declaración de accesibilidad de Muntin Digital, un estudio digital totalmente remoto comprometido con los estándares WCAG 2.2 AA.",
-      "url": "https://muntin.digital/es/accessibility.html",
-      "inLanguage": "es",
+      "@type": "CollectionPage",
+      "@id": "https://muntin.digital/es/library/#webpage",
+      "name": "La biblioteca — Muntin Digital",
+      "description": "El hub único para la biblioteca de Muntin Digital. Tres puertas: Lee, Busca, Haz.",
+      "url": "https://muntin.digital/es/library/",
+      "inLanguage": "es-US",
       "isPartOf": { "@id": "https://muntin.digital/#website" },
       "publisher": { "@id": "https://muntin.digital/#business" },
-      "dateModified": "2026-05-01"
+      "dateModified": "2026-05-02"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Muntin Digital", "item": "https://muntin.digital/es/" },
-        { "@type": "ListItem", "position": 2, "name": "Declaración de accesibilidad", "item": "https://muntin.digital/es/accessibility.html" }
+        { "@type": "ListItem", "position": 2, "name": "Biblioteca", "item": "https://muntin.digital/es/library/" }
       ]
     }
   ]
 }
 </script>
 
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<style>
+.breadcrumb{visibility:hidden;padding-top:100px}
+.lib-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:32px 0 0}
+@media (max-width:780px){.lib-three{grid-template-columns:1fr}}
+.lib-door{display:block;padding:28px 28px 24px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.lib-door:hover{border-color:var(--teal);transform:translateY(-2px)}
+.lib-door__verb{font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.lib-door h2{font-family:var(--font-display);font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
+.lib-door p.lead{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
+.lib-door__list{list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.65}
+.lib-door__list li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink)}
+.lib-door__list li:first-child{border-top:0}
+.lib-door__list li strong{font-weight:500}
+.lib-door__list li small{color:var(--stone);font-size:12.5px;flex-shrink:0;white-space:nowrap}
+.lib-door__cta{display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:var(--teal);border-bottom:1px dashed currentColor}
+.lib-strip{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;list-style:none;font-size:13px}
+.lib-strip li{padding:6px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;color:var(--ink-soft)}
+.lib-strip strong{color:var(--ink);font-weight:600}
+.lib-section{margin:64px 0 0;padding-top:32px;border-top:1px solid var(--line)}
+.lib-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
+@media (max-width:780px){.lib-pillars{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.lib-pillars{grid-template-columns:1fr}}
+.lib-pillars li a{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;transition:border-color var(--t-fast) var(--ease)}
+.lib-pillars li a:hover{border-color:var(--teal);color:var(--teal)}
+.lib-pillars span{display:block;font-size:12.5px;color:var(--stone);font-weight:400;margin-top:4px}
+</style>
+<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 
-<!-- i18n:preconnect START (generated by scripts/enrich-post-seo-v2.py) -->
 <link rel="preconnect" href="https://plausible.io" crossorigin />
-<link rel="dns-prefetch" href="https://plausible.io" />
-<!-- i18n:preconnect END -->
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-<link rel="preload" as="style" href="/assets/site.css?v=20260501-engagement">
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement" fetchpriority="high">
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 </head>
 <body>
 
@@ -130,7 +145,7 @@
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
-      <a href="/accessibility.html" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <a href="/library/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
@@ -168,7 +183,7 @@
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
     <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
     <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
-    <a href="/accessibility.html" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
+    <a href="/library/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
   <!-- Mega-menu keyboard + click controller. The trigger is a
@@ -261,49 +276,90 @@
 </header>
 
 <main id="main">
-  <article class="legal legal-accessibility">
-    <h1>Declaración de accesibilidad</h1>
-    <p class="meta">Vigente desde mayo de 2026 &middot; Última revisi&oacute;n 2026&#8209;05&#8209;01 &middot; Objetivo de conformidad: WCAG 2.2 AA</p>
+  <nav class="breadcrumb container" aria-label="Ruta" style="margin-top:90px">
+    <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
+      <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
+      <li aria-hidden="true">&rsaquo;</li>
+      <li aria-current="page">Biblioteca</li>
+    </ol>
+  </nav>
 
-    <aside class="callout" style="margin:0 0 28px;padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;font-size:15.5px;line-height:1.65">
-      <strong>La versi&oacute;n corta.</strong> Si algo en este sitio es dif&iacute;cil de usar &mdash; por cualquier raz&oacute;n, dispositivo o capacidad &mdash; escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a>. Respondo en menos de 2 d&iacute;as h&aacute;biles y lo arreglo lo m&aacute;s r&aacute;pido posible. El sitio busca cumplir <strong>WCAG 2.2 AA</strong>; las brechas conocidas est&aacute;n abajo. La declaraci&oacute;n completa sigue.
-    </aside>
+  <article class="container" style="max-width:980px;margin:32px auto 80px;padding:0 var(--pad-x)">
+    <header style="margin-bottom:8px">
+      <p class="eyebrow">Una obra de referencia gratuita para operadores de restaurantes</p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
+        L&eacute;ela. Busca algo. <span class="serif-italic">O haz algo con ella.</span>
+      </h1>
+      <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:720px">
+        La biblioteca es la parte del estudio que es gratis para todos, sin captura de correo, y sin trackers en el cuerpo del art&iacute;culo. Tres verbos de entrada, nombrados como los operadores realmente hablan. Elige el que coincida con lo que viniste a buscar.
+      </p>
+      <ul class="lib-strip" aria-label="La biblioteca de un vistazo">
+        <li><strong><!-- count:articles -->18<!-- /count --></strong> art&iacute;culos</li>
+        <li><strong><!-- count:glossary.terms -->139<!-- /count --></strong> t&eacute;rminos del glosario</li>
+        <li><strong><!-- count:tools.live -->13<!-- /count --></strong> herramientas gratis</li>
+        <li><strong><!-- count:topics -->7<!-- /count --></strong> pilares tem&aacute;ticos</li>
+        <li>4 notas de investigaci&oacute;n trimestrales</li>
+      </ul>
+    </header>
 
-    <h2>Nuestro compromiso</h2>
-    <p>Muntin Digital™ está comprometido a garantizar la accesibilidad digital para las personas con discapacidad. El sitio apunta a las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.2 Nivel AA, la referencia internacional vigente (la actualización 2.2 se publicó como Recomendación W3C en octubre de 2023). Donde 2.2 introduce nuevos criterios sobre 2.1 (apariencia del foco, movimientos de arrastre, tamaño del objetivo, autenticación accesible), este sitio también los cumple.</p>
-    <p>Este compromiso aplica a nuestro propio sitio, a todo el trabajo que entregamos a nuestros clientes y a los servicios que prestamos. Creemos que un diseño accesible beneficia a todo el mundo: hace que el contenido sea más claro, más usable y más inclusivo.</p>
+    <section class="lib-three" aria-label="Tres puertas de entrada">
+      <a class="lib-door" href="/es/blog/">
+        <p class="lib-door__verb">Lee</p>
+        <h2>Art&iacute;culos e investigaci&oacute;n.</h2>
+        <p class="lead">Piezas largas y notas de investigaci&oacute;n con fecha &mdash; la forma en la que escribo una respuesta una vez para que no se tenga que volver a preguntar.</p>
+        <ul class="lib-door__list">
+          <li><strong>Art&iacute;culos</strong><small><!-- count:articles -->18<!-- /count --> &middot; semanal</small></li>
+          <li><strong>Notas de investigaci&oacute;n</strong><small>4 &middot; trimestral</small></li>
+          <li><strong>Temas</strong><small><!-- count:topics -->7<!-- /count --> pilares</small></li>
+        </ul>
+        <span class="lib-door__cta">Explorar art&iacute;culos &rarr;</span>
+      </a>
 
-    <h2>Qué hacemos</h2>
-    <p>La accesibilidad está integrada en nuestro proceso de diseño y desarrollo desde el principio. Así la trabajamos:</p>
-    <ul>
-      <li><strong>HTML semántico</strong>: usamos jerarquías de encabezados correctas, regiones de referencia y elementos semánticos para que las tecnologías de asistencia puedan entender la estructura de las páginas.</li>
-      <li><strong>Navegación por teclado</strong>: todos los elementos interactivos son accesibles mediante teclado. Los usuarios pueden navegar e interactuar con nuestros sitios sin ratón.</li>
-      <li><strong>Contraste de color</strong>: el texto cumple los estándares WCAG AA de contraste, lo que asegura la legibilidad para personas con baja visión o daltonismo.</li>
-      <li><strong>Texto alternativo en imágenes</strong>: ofrecemos descripciones útiles en todas las imágenes para que quienes usan lectores de pantalla comprendan el contenido.</li>
-      <li><strong>Diseño responsivo</strong>: nuestros sitios funcionan bien en cualquier tamaño de pantalla, desde el celular hasta el monitor de escritorio.</li>
-      <li><strong>Indicadores de foco</strong>: los estados de foco son claros y visibles, para que quienes navegan con teclado o lector de pantalla sepan dónde están en la página.</li>
-      <li><strong>Formularios accesibles</strong>: los formularios incluyen etiquetas claras, mensajes de error e instrucciones asociadas a sus campos de entrada.</li>
-      <li><strong>Subtítulos en video y audio</strong>: cuando usamos multimedia, incluimos subtítulos y transcripciones donde hacen falta.</li>
-    </ul>
+      <a class="lib-door" href="/es/glossary/">
+        <p class="lib-door__verb">Busca</p>
+        <h2>Glosario y temas.</h2>
+        <p class="lead">Definiciones en lenguaje claro para cada t&eacute;rmino de tu auditor&iacute;a. Navega alfab&eacute;ticamente o por tema; cada entrada tiene fecha de verificaci&oacute;n.</p>
+        <ul class="lib-door__list">
+          <li><strong>Glosario</strong><small><!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos</small></li>
+          <li><strong>Por tema</strong><small><!-- count:topics -->7<!-- /count --> pilares</small></li>
+          <li><strong>B&uacute;squeda</strong><small>Cmd K desde cualquier lugar</small></li>
+        </ul>
+        <span class="lib-door__cta">Abrir el glosario &rarr;</span>
+      </a>
 
-    <h2>Lo que construimos para nuestros clientes</h2>
-    <p>Aplicamos los mismos estándares de accesibilidad a todo el trabajo que construimos para nuestros clientes. Ya sea diseñar un sitio, crear contenido digital o construir una aplicación web, la accesibilidad es un requisito base, no un detalle que se agrega al final.</p>
-    <p>Trabajamos con nuestros clientes para entender a su público y asegurarnos de que las experiencias digitales que creamos sean utilizables por todo el mundo, sin importar su capacidad.</p>
+      <a class="lib-door" href="/es/tools/">
+        <p class="lib-door__verb">Haz</p>
+        <h2>Herramientas y listas.</h2>
+        <p class="lead">Cosas que corres en tu propio sitio. Cada herramienta corre en tu navegador; nada se sube a un servidor. Cinco pruebas para auditar la herramienta antes de confiar en ella.</p>
+        <ul class="lib-door__list">
+          <li><strong>Herramientas gratis</strong><small><!-- count:tools.live -->13<!-- /count --> activas</small></li>
+          <li><strong>Pr&oacute;ximamente</strong><small><!-- count:tools.coming -->7<!-- /count --> en pipeline</small></li>
+          <li><strong>Listas</strong><small>Workbooks que puedes guardar</small></li>
+        </ul>
+        <span class="lib-door__cta">Abrir la caja de herramientas &rarr;</span>
+      </a>
+    </section>
 
-    <h2>Limitaciones conocidas</h2>
-    <p>Trabajamos de manera continua para mejorar nuestra accesibilidad. Si encuentras contenido que no cumple con nuestros estándares, dinos. Nos comprometemos a atender los problemas de accesibilidad lo más rápido posible.</p>
-    <p>Algunas herramientas y servicios de terceros que usamos (como el agendamiento por calendario o los servicios de formularios) tienen sus propias características de accesibilidad. Elegimos proveedores que priorizan la accesibilidad, pero no siempre podemos controlar todos los aspectos del contenido de terceros.</p>
+    <section class="lib-section" aria-labelledby="start-h">
+      <p class="eyebrow" style="color:var(--teal)">No sabes por d&oacute;nde empezar</p>
+      <h2 id="start-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 14px">El recorrido guiado de 60 minutos.</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Una secuencia curada de art&iacute;culos + herramientas que cubre lo que la mayor&iacute;a de los due&ntilde;os de restaurante independientes necesita saber sobre su sitio web &mdash; en aproximadamente una hora, en el orden en que lo ense&ntilde;ar&iacute;a.</p>
+      <p><a class="btn btn-primary" href="/es/learn/start-here/">Empezar el recorrido
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      </a></p>
+    </section>
 
-    <h2>Comentarios y contacto</h2>
-    <div class="contact-box">
-      <p>Si tienes dificultad para acceder a alguna parte de este sitio, o si tienes sugerencias para mejorarlo, por favor contáctanos:</p>
-      <p><strong>Correo:</strong> <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-      <p>Nos comprometemos a revisar los comentarios de accesibilidad dentro de 2 días hábiles y a trabajar contigo para encontrar una solución.</p>
-    </div>
-
-    <h2>Mejora continua</h2>
-    <p>La accesibilidad es un proceso continuo. Auditamos con regularidad nuestro trabajo contra el estándar WCAG 2.2 AA, nos mantenemos al día con las mejores prácticas, y actualizamos nuestros sitios y procesos para reflejar el nuevo conocimiento y las nuevas tecnologías de accesibilidad.</p>
-    <p>También participamos con la comunidad de accesibilidad para aprender de otros y contribuir al esfuerzo más amplio de hacer la web más inclusiva.</p>
+    <section class="lib-section" aria-labelledby="trust-h">
+      <p class="eyebrow">C&oacute;mo funciona la biblioteca</p>
+      <h2 id="trust-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Cinco cosas que no cambian.</h2>
+      <ol style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li style="margin-bottom:8px">Sin captura de correo, nunca. Art&iacute;culos, herramientas, glosario, investigaci&oacute;n &mdash; todo gratis, siempre.</li>
+        <li style="margin-bottom:8px">Sin pixel de remarketing en ninguna p&aacute;gina de la biblioteca. Solo Plausible, sin cookies. <a href="/es/never/" style="color:var(--teal)">/es/never/ #4</a>.</li>
+        <li style="margin-bottom:8px">Cada afirmaci&oacute;n tiene fuente. Cada nota de investigaci&oacute;n tiene fecha. <a href="/es/methods/" style="color:var(--teal)">/es/methods/</a>.</li>
+        <li style="margin-bottom:8px">Las herramientas corren en tu navegador. Tus n&uacute;meros nunca salen de la p&aacute;gina. <a href="/es/security/" style="color:var(--teal)">/es/security/</a>.</li>
+        <li>Si ves algo desactualizado, <a href="mailto:don@muntin.digital" style="color:var(--teal)">don@muntin.digital</a> &mdash; las correcciones llegan al <a href="/es/changelog/" style="color:var(--teal)">/es/changelog/</a> dentro de dos d&iacute;as h&aacute;biles.</li>
+      </ol>
+    </section>
   </article>
 </main>
 
@@ -418,6 +474,6 @@
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
 
-<script src="/assets/site.js?v=20260422-cohesion" defer></script>
+<script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>
 </html>
