@@ -114,11 +114,32 @@
         "addressRegion": "MD",
         "addressCountry": "US"
       },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "don@muntin.digital",
+        "availableLanguage": ["en", "es"],
+        "areaServed": "US",
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      },
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": 38.9907,
         "longitude": -77.0261
       },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
       "logo": "https://muntin.digital/brand/mark/mark-square-ink.svg",
       "image": "https://muntin.digital/brand/og/home.png",
       "founder": {
@@ -462,29 +483,29 @@
       <a href="/services/">Services</a>
       <a href="/for/restaurants/">Restaurants</a>
       <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger" aria-haspopup="true">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <div class="nav-library-menu nav-library-menu--mega" role="menu" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/" role="menuitem">
+        <a href="/learn/" class="nav-library-trigger">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Library sections">
+          <a class="nav-library-menu__home" href="/learn/">
             <strong>Library home</strong>
             <span>The hub of everything below &rarr;</span>
           </a>
           <div class="nav-library-menu__col">
             <h4>Learn</h4>
-            <a href="/learn/start-here/" role="menuitem"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/" role="menuitem"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/" role="menuitem"><strong>Glossary</strong><span><!-- count:glossary.terms -->135<!-- /count --> terms in plain English</span></a>
+            <a href="/learn/start-here/"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
+            <a href="/learn/topics/"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
+            <a href="/glossary/"><strong>Glossary</strong><span><!-- count:glossary.terms -->139<!-- /count --> terms in plain English</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Read</h4>
-            <a href="/blog/" role="menuitem"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/" role="menuitem"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
+            <a href="/blog/"><strong>Articles</strong><span>The how-to playbooks</span></a>
+            <a href="/learn/research/"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
           </div>
           <div class="nav-library-menu__col">
             <h4>Do</h4>
-            <a href="/tools/" role="menuitem"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/" role="menuitem"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
+            <a href="/tools/"><strong>Free tools</strong><span>Run a check on your own site</span></a>
+            <a href="/learn/checklists/"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
           </div>
-        </div>
+        </nav>
       </div>
       <a href="/work/">Work</a>
       <a href="/about/">About</a>
@@ -503,7 +524,7 @@
     </nav>
     <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
     <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -533,7 +554,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
     <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
     <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
@@ -602,43 +623,39 @@
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">A restaurant web library &amp; studio</span>
+      <span class="eyebrow">Built for independent restaurants &middot; Silver Spring, MD</span>
       <h1>
-        Learn the web <span class="serif-italic">that sells.</span>
+        Plain-English answers for restaurant owners. <span class="serif-italic">And a studio that builds the site, when you want one.</span>
       </h1>
-      <p class="hero-tagline" style="display:flex;align-items:center;gap:14px;margin:16px 0 24px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(24px,4.2vw,36px);line-height:1.15;letter-spacing:-0.5px;color:var(--gold);">
-        <span aria-hidden="true" style="flex:0 0 auto;width:40px;height:2px;background:currentColor;display:inline-block;"></span>
-        The window in.<sup style="font-size:0.42em;font-style:normal;vertical-align:super;margin-left:2px;letter-spacing:0;">&trade;</sup>
-      </p>
       <p class="hero-sub">
-        A free library of articles, tools, and research for independent restaurants. And the studio that makes them, when you&rsquo;re ready.
+        Free articles, tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary &mdash; the same playbook I use with paying clients. No signup, no email gate.
       </p>
+      <ul class="hero-counts" aria-label="Library at a glance">
+        <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;free tools</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->17<!-- /count --></strong>&nbsp;articles</li>
+        <li class="hero-counts__chip">All free</li>
+      </ul>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="/learn/start-here/">Start in the library
+        <a class="btn btn-primary" href="/tools/">See free articles &amp; tools
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost" href="#services">Work with Don</a>
+        <a class="btn btn-ghost" href="/window/">Email Don</a>
         <!-- Phase 4 (Workshop) — Continue-your-work reveal. The
              js-nav-workshop class is already toggled by the nav's
              /api/auth/me lookup (lives in _includes/nav.html); a
              logged-out visitor sees no change to the hero, a
              logged-in operator sees a third soft CTA back to their
-             saved work. The only homepage change in the entire plan. -->
+             saved work. -->
         <a class="btn btn-ghost js-nav-workshop" href="/workbench/" hidden>Continue your work
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
       <p class="hero-note">
-        <strong>What&rsquo;s inside:</strong> a library of <a href="/blog/">articles</a> and <a href="/learn/research/">research</a>, a <a href="/glossary/">glossary</a> in plain English, and a restaurant-specific <a href="/tools/">audit</a>. All free, no signup &mdash; or take the <a href="/learn/start-here/">60-minute guided tour</a>.
+        New here? Try the 30-second restaurant <a href="/tools/audits/restaurant/">website audit</a>, or take the <a href="/learn/start-here/">60-minute guided tour</a>.
       </p>
-      <!-- Phase 5 (Workshop) — Don's "same person" line repositioned
-           as a quieter italicized post-script. Specific counts moved
-           to the relevant shelf intros (/glossary/, /tools/) so the
-           hero meets visitors with a stance, not a feature list. The
-           D avatar lettermark retired from above-the-fold; About is
-           where Don's warmth belongs. -->
       <p class="hero-meta-note">
-        <em>Same person who wrote the library builds your site, when you&rsquo;re ready.</em>
+        <em>Built by Don Goldstein, manager at two DMV restaurants.</em>
         <span class="hero-meta-sub">Reply time: under 4 hours, Mon&ndash;Fri &middot; 2 projects open per month.</span>
       </p>
     </div>
@@ -688,7 +705,7 @@
         <span class="tool-card-flagship__chip">vs Canva templates</span>
         <h3 class="tool-card-flagship__title">Menu Design Suite</h3>
         <p class="tool-card-flagship__headline">The only restaurant menu tool that auto-lays out 14 or 53 dishes from one paste &mdash; no Canva fight with templates that assume 12.</p>
-        <span class="tool-card-flagship__cta">Open the tool
+        <span class="tool-card-flagship__cta">Try it free
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
@@ -696,7 +713,7 @@
         <span class="tool-card-flagship__chip">vs Restaurant365 &middot; MarginEdge &middot; Plate IQ</span>
         <h3 class="tool-card-flagship__title">Advanced Invoice Decoder</h3>
         <p class="tool-card-flagship__headline">An invoice tool that locks your data with a secret only you know &mdash; Restaurant365 reads everything; we read nothing.</p>
-        <span class="tool-card-flagship__cta">Open the tool
+        <span class="tool-card-flagship__cta">Try it free
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
@@ -707,11 +724,83 @@
   </div>
 </section>
 
-<!-- The Patchwork-vs-Agency-vs-Muntin comparison was retired from
-     the homepage during the library-first repositioning (it's a
-     sales-funnel artifact from the services-first era). The full
-     three-card comparison still lives at /services/ where it's
-     contextually correct — visitors who already decided to hire. -->
+<!-- ============ TRUST STRIP ============
+     A single thin band immediately under the flagship-tools section,
+     ahead of the library. Operator-language facts (reply time, capacity,
+     ownership, jurisdiction) anchored as a row instead of buried in
+     hero-meta-note. Each item is a hard constraint, not a benefit.
+================================================================== -->
+<section class="trust-strip" aria-label="Quick facts about the studio">
+  <div class="container">
+    <ul class="trust-strip__list">
+      <li><strong>Reply within 4 hrs</strong>, Mon&ndash;Fri</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>2 active builds at a time</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>No retainer required</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>You own your site outright</li>
+      <li class="trust-strip__sep" aria-hidden="true">&middot;</li>
+      <li>Maryland LLC &middot; Silver Spring, MD</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ POSITIONING ============
+     A leaner three-card "Patchwork / Agency / Muntin" comparison.
+     Reinstated from a retired sales-funnel block per the design
+     review's positioning recommendation: small businesses comparing
+     a template, a full agency, and an independent studio benefit
+     from seeing the three side-by-side ahead of the library.
+     Three terse rows per column. No big "vs" headline. The library
+     still leads next; this just gives a stressed owner a quick
+     mental map of where Muntin sits.
+================================================================== -->
+<section class="block compare" aria-labelledby="compare-heading" style="background:var(--cream)">
+  <div class="container">
+    <div class="section-header reveal section-center">
+      <span class="eyebrow">Where Muntin sits</span>
+      <h2 id="compare-heading">Three ways to put a restaurant<br><span class="serif-italic">on the web.</span></h2>
+      <p class="final-sub">A template you fight, an agency that bills the room you walk into, or one person who builds, ships, and stays. Each works for someone &mdash; this just helps you see where you are.</p>
+    </div>
+    <ul class="compare-grid">
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Patchwork</p>
+        <h3 class="compare-card__h">Wix or Squarespace.</h3>
+        <p class="compare-card__price">$23&ndash;39/mo &middot; DIY, with templates</p>
+        <ul class="compare-card__list">
+          <li><strong>Fast to start.</strong> Pick a template, swap photos, ship in a weekend.</li>
+          <li><strong>Hard ceiling.</strong> Mobile speed, menu structure, and SEO live inside the template&rsquo;s limits.</li>
+          <li><strong>Rented.</strong> Stop paying and the site goes away.</li>
+        </ul>
+      </li>
+      <li class="compare-card">
+        <p class="compare-card__eyebrow">Agency</p>
+        <h3 class="compare-card__h">A full creative shop.</h3>
+        <p class="compare-card__price">$15&ndash;60K+ build &middot; multi-discipline team</p>
+        <ul class="compare-card__list">
+          <li><strong>Real craft.</strong> Custom design, brand strategy, sometimes great work.</li>
+          <li><strong>Layered cost.</strong> The PM, the strategist, the AD, the dev &mdash; all billed.</li>
+          <li><strong>Slow follow-through.</strong> Edits route through three people; weeks become months.</li>
+        </ul>
+      </li>
+      <li class="compare-card compare-card--featured">
+        <span class="compare-card__badge">Where Muntin sits</span>
+        <p class="compare-card__eyebrow">Muntin Digital</p>
+        <h3 class="compare-card__h">One person, end to end.</h3>
+        <p class="compare-card__price">$2,500&ndash;15,000+ build &middot; Don ships, Don stays</p>
+        <ul class="compare-card__list">
+          <li><strong>Real custom, no agency layer.</strong> Same person designs, builds, and replies.</li>
+          <li><strong>Owned outright.</strong> Yours from day one &mdash; code, copy, domain.</li>
+          <li><strong>Reply within 4 hrs.</strong> Care Plan optional; not the lock-in.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px;justify-content:center">
+      <a class="btn btn-ghost" href="/services/">See the full pricing</a>
+    </div>
+  </div>
+</section>
 
 <!-- ============ LIBRARY ============ -->
 <!-- Sits between the Problem section and Services teaser on purpose:
@@ -744,7 +833,7 @@
         <span class="learn-tool-kicker">Free tools · no signup</span>
         <h3><!-- count:tools.live -->13<!-- /count --> free tools across <!-- count:topics -->7<!-- /count --> topics — pricing, SEO, brand, hours, content, ops.</h3>
         <p>Restaurant-aware audits, calculators, generators &mdash; pricing, menu mix, plate cost, brand palette, photo brief, hours, GBP grading, and more. Every tool runs in your browser, groups under the same six topics as the rest of the library, and links back to the research that justifies it.</p>
-        <span class="learn-tool-cta">Open the toolkit →</span>
+        <span class="learn-tool-cta">Browse the toolkit &rarr;</span>
       </a>
       <a class="learn-tool" href="/learn/research/">
         <span class="learn-tool-kicker">Research · the evidence</span>
@@ -1039,7 +1128,7 @@
             </div>
             <div class="form-group">
               <label for="f-website">Current website <span class="opt">(optional)</span></label>
-              <input type="url" id="f-website" name="website" placeholder="https://example.com">
+              <input type="url" id="f-website" name="website" autocomplete="url" placeholder="https://example.com">
             </div>
           </div>
 
@@ -1120,7 +1209,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->135<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
@@ -1153,7 +1242,7 @@
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
           <li><a href="/window/">Write to Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
       </nav>

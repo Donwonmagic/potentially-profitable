@@ -50,7 +50,7 @@
   <section class="window-paused" id="windowPaused" hidden>
     <div class="window-paused__inner">
       <p class="window-paused__eyebrow">The Window</p>
-      <h1 class="window-paused__headline">On a brief pause.</h1>
+      <h2 class="window-paused__headline">On a brief pause.</h2>
       <p class="window-paused__sub">I'll be back the week of <span data-bind="next-return-date">soon</span>. In the meantime, the rest of the library is open — start at <a href="/learn/start-here/">the guided tour</a> or browse the <a href="/glossary/">glossary</a>.</p>
     </div>
   </section>
@@ -88,7 +88,8 @@
   <section class="window-composer" id="windowComposer" aria-label="Write to Don">
     <form class="window-composer__form" id="windowForm" autocomplete="off">
       <span class="window-composer__caption" aria-hidden="true">Don —</span>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere. A URL helps if you have one." maxlength="4000" required></textarea>
+      <label for="windowBody" class="sr-only">Your message to Don</label>
+      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere. A URL helps if you have one." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
       <div class="window-composer__row">
         <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
         <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send it over</button>
@@ -100,7 +101,7 @@
       <button type="button" class="window-onramp" data-prepend="A second look at mine — here's the URL: ">A second look at mine</button>
       <button type="button" class="window-onramp" data-prepend="">Something else</button>
     </div>
-    <p class="window-composer__reassurance">I reply within 2 business days. Usually the same day. No commitment, no pitch.</p>
+    <p class="window-composer__reassurance" id="windowReassurance">I reply within 2 business days. Usually the same day. No commitment, no pitch.</p>
   </section>
 
   <!-- Sign-in CTA: shown when /api/auth/me returns 401. -->

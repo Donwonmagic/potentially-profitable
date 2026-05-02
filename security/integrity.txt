@@ -1,0 +1,18 @@
+# Muntin Digital — production bundle integrity
+#
+# SHA-256 of the public, render-load-bearing bundle on this domain.
+# Recomputed on every deploy. If you can hash the same file on disk
+# and the digests match below, you're running the same code we shipped.
+#
+# Inspect any file referenced below in your browser's View Source
+# (every line of CSS/JS is in the open) and re-hash with:
+#   curl -sL https://muntin.digital/<path> | shasum -a 256
+#
+# Generated: 2026-05-02T16:08:42Z
+
+43db91fa87049bf89ff0d85c03fa492e6e0878ae7c9fe7c6d10184ce7c223ec7  /assets/site.css
+2dbb027b7c31782c08e8103f19ab76438e137ab468ad007d225f9e0cdc97c4ec  /assets/site.js
+7d00b504ec5f56b19525194e93779b612050463f0b938f1ebc3032c8d283c249  /assets/workbench-save.js
+eadf1c4f16a7380f3f156d8d292fa7c6a60f09a0348ca16caa1e52ae1c514f3e  /_includes/nav.html
+bb22b901990a6eaaf48dff0c97c35bccf0ff8a77d9550bcce1c868a0bf45f097  /_includes/footer.html
+681cac784b584b54df0063ff435e32f61391f9037fc78a45255ebc811fae2e01  /src/worker.js

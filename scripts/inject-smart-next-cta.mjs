@@ -62,20 +62,40 @@ function firstGlossaryHrefIn(src) {
   return link ? link[1] : null;
 }
 
+// Slug-specific overrides for articles whose body doesn't contain
+// any glossary autolinks. Without this, the smart-next "Read" CTA
+// falls back to the glossary index — which is what the auditor
+// flagged as a generic, ungrounded next step.
+const READ_OVERRIDE = {
+  'does-my-restaurant-need-a-website':                       { en: '/glossary/owned-channel/',           es: '/es/glossary/owned-channel/' },
+  'can-chatgpt-write-your-restaurant-website':               { en: '/glossary/cuisine-pitch/',           es: '/es/glossary/cuisine-pitch/' },
+  'what-should-be-on-a-restaurant-website':                  { en: '/glossary/above-the-fold/',          es: '/es/glossary/above-the-fold/' },
+  'como-saber-si-una-herramienta-de-restaurante-es-segura':  { es: '/es/glossary/client-side-tool/' },
+  'como-salir-de-doordash-mi-restaurante':                   { es: '/es/glossary/owned-channel/' },
+  'cuanto-cuesta-una-pagina-web-para-restaurante-2026':      { es: '/es/glossary/care-plan/' },
+  'mi-restaurante-no-aparece-en-google-maps':                { es: '/es/glossary/gbp/' },
+  'schema-markup-para-restaurante-ejemplo':                  { es: '/es/glossary/schema/' },
+};
+
 function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   const windowHref = locale === 'es' ? `/es/window/?topic=${encodeURIComponent(slug)}` : `/window/?topic=${encodeURIComponent(slug)}`;
   const eyebrow = locale === 'es' ? 'Qué hacer ahora' : 'What to do next';
   const readLabel  = locale === 'es' ? 'Lee' : 'Read';
   const tryLabel   = locale === 'es' ? 'Prueba' : 'Try';
   const noteLabel  = locale === 'es' ? 'O escríbele a Don' : 'Or send Don a note';
+  // Link-text strings localized too — the verb labels were already
+  // translated; the link bodies were leaking English into ES articles.
+  const readLink = locale === 'es' ? 'el término del glosario relacionado →' : 'the related glossary term →';
+  const tryLink  = locale === 'es' ? 'la herramienta que acompaña este artículo →' : 'the tool that pairs with this article →';
+  const noteLink = locale === 'es' ? 'La Ventana →' : 'The Window →';
   const fallbackTool = locale === 'es' ? '/es/tools/audits/restaurant/' : '/tools/audits/restaurant/';
   const tool = toolUrl || fallbackTool;
   const fallbackGlossary = locale === 'es' ? '/es/glossary/' : '/glossary/';
   const gloss = glossaryUrl || fallbackGlossary;
   const items = [
-    `        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">${readLabel}:</span> <a href="${escAttr(gloss)}">the related glossary term →</a></li>`,
-    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=blog/${slug}&intent=watch">the tool that pairs with this article →</a></li>`,
-    `        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">${noteLabel}:</span> <a href="${escAttr(windowHref)}">The Window →</a></li>`,
+    `        <li class="smart-next__item smart-next__read"><span class="smart-next__verb">${readLabel}:</span> <a href="${escAttr(gloss)}">${readLink}</a></li>`,
+    `        <li class="smart-next__item smart-next__try"><span class="smart-next__verb">${tryLabel}:</span> <a href="${escAttr(tool)}?from=blog/${slug}&intent=watch">${tryLink}</a></li>`,
+    `        <li class="smart-next__item smart-next__note"><span class="smart-next__verb">${noteLabel}:</span> <a href="${escAttr(windowHref)}">${noteLink}</a></li>`,
   ].join('\n');
   return [
     '<!-- smart-next:start -->',
@@ -89,10 +109,24 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   ].join('\n');
 }
 
+// Detect a populated KnitRail block. If the article carries one,
+// the smart-next sentinel stays collapsed — KnitRail is the
+// canonical four-lane rail and this 3-line variant is retired
+// per the design review's consolidation recommendation.
+const KNIT_RAIL_POPULATED_RE = /<!-- knit-rail:start -->\s*<aside class="knit-rail"/;
+
 let changed = 0;
 for (const { file, slug, locale } of articleFiles()) {
   const src = fs.readFileSync(file, 'utf8');
-  const glossaryUrl = firstGlossaryHrefIn(src);
+
+  // Skip articles where KnitRail has populated the unified rail.
+  // The smart-next sentinel may still exist in those files but
+  // should remain empty. inject-knit-rail.mjs is responsible for
+  // collapsing it.
+  if (KNIT_RAIL_POPULATED_RE.test(src)) continue;
+
+  const override = (READ_OVERRIDE[slug] || {})[locale];
+  const glossaryUrl = override || firstGlossaryHrefIn(src);
   const toolUrl = loadPostEndCtaTool(slug, locale);
   const block = buildBlock({ slug, locale, glossaryUrl, toolUrl });
 

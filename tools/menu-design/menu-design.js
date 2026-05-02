@@ -236,9 +236,9 @@
         html += '<tr class="md-row-section" data-i="' + i + '"' + ghostAttr + draggable + '>' +
           handleCell +
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
-          '" value="' + escHtml(r.name) + '" placeholder="Section name (e.g. Starters)" aria-label="Section name" />' +
+          '" value="' + escHtml(r.name) + '" placeholder="' + tt('Section name (e.g. Starters)', 'Nombre de sección (ej. Entradas)') + '" aria-label="' + tt('Section name', 'Nombre de sección') + '" />' +
           secExtras + touchReorder + '</td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="Remove section">&times;</button></td>' +
+          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove section', 'Eliminar sección') + '">&times;</button></td>' +
           '</tr>';
       } else {
         // "Need help describing?" link — only shows when the dish

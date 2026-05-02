@@ -107,7 +107,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-commission-es.png",
-      "datePublished": "2026-05-01T02:03:41+00:00",
+      "datePublished": "2026-05-01T01:16:34+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -122,8 +122,14 @@
 <a class="skip-link" href="#main">Skip to main content</a>
 
 <header class="nav" id="nav">
+  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
+             Placed inside <header> so sync-includes replaces it atomically
+             along with the rest of the nav block on every build, keeping
+             the partial strictly idempotent. Valid HTML5: <script> may
+             appear in any flow-content context. */
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital home">
+    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
@@ -133,55 +139,123 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
-      <a href="/learn/">Learn</a>
-      <a href="/work/">Work</a>
-      <a href="/about/">About</a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="/es/services/">Servicios</a>
+      <a href="/es/for/restaurants/">Restaurantes</a>
+      <div class="nav-library-wrap">
+        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
+          <a class="nav-library-menu__home" href="/es/learn/">
+            <strong>Inicio de la biblioteca</strong>
+            <span>El centro de todo lo de abajo &rarr;</span>
+          </a>
+          <div class="nav-library-menu__col">
+            <h4>Aprende</h4>
+            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
+            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
+            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Lee</h4>
+            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
+            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
+          </div>
+          <div class="nav-library-menu__col">
+            <h4>Haz</h4>
+            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
+            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
+          </div>
+        </nav>
+      </div>
+      <a href="/es/work/">Proyectos</a>
+      <a href="/es/about/">Sobre Don</a>
     </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
-      <span class="nav-search-label">Search</span>
+      <span class="nav-search-label">Buscar</span>
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
-    <nav class="lang-switch" aria-label="Language">
-      <a href="/glossary/commission/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
-      <span class="lang-switch-current" aria-current="true">EN</span>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="/glossary/commission/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
+      <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
-    <a href="/learn/">Learn</a>
-    <a href="/work/">Work</a>
-    <a href="/about/">About</a>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+    <a href="/es/services/">Servicios</a>
+    <a href="/es/for/restaurants/">Restaurantes</a>
+    <details class="mobile-library">
+      <summary>Biblioteca</summary>
+      <a href="/es/learn/">Inicio de la biblioteca</a>
+      <p class="mobile-library__group">Aprende</p>
+      <a href="/es/learn/start-here/">Empieza aquí</a>
+      <a href="/es/learn/topics/">Temas</a>
+      <a href="/es/glossary/">Glosario</a>
+      <p class="mobile-library__group">Lee</p>
+      <a href="/es/blog/">Artículos</a>
+      <a href="/es/learn/research/">Investigación</a>
+      <p class="mobile-library__group">Haz</p>
+      <a href="/es/tools/">Herramientas gratis</a>
+      <a href="/es/learn/checklists/">Listas y recursos</a>
+    </details>
+    <a href="/es/work/">Proyectos</a>
+    <a href="/es/about/">Sobre Don</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Search the library</span>
+      <span>Buscar en la biblioteca</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don</a>
-    <a href="/glossary/commission/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
+    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
+    <a href="/glossary/commission/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
-  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
-    <div class="container lang-hint-inner">
-      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/glossary/commission/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
-      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-    </div>
-  </aside>
+  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
+       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
+       según la respuesta. Ambos enlaces empiezan ocultos para que un
+       visitante anónimo sin JS no vea ninguno (la biblioteca y las
+       herramientas funcionan completas sin acceso, así que la
+       affordance ausente es aceptable). -->
+  <script>
+    (function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () {});
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    })();
+  </script>
 </header>
 
 <main id="main">
@@ -320,7 +394,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->135<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">

@@ -40,7 +40,7 @@
   <section class="window-paused" id="windowPaused" hidden>
     <div class="window-paused__inner">
       <p class="window-paused__eyebrow">La Ventana</p>
-      <h1 class="window-paused__headline">En pausa breve.</h1>
+      <h2 class="window-paused__headline">En pausa breve.</h2>
       <p class="window-paused__sub">Vuelvo la semana del <span data-bind="next-return-date">pronto</span>. Mientras tanto, el resto de la biblioteca está abierto — empieza por <a href="/es/learn/start-here/">el recorrido guiado</a> o explora el <a href="/es/glossary/">glosario</a>.</p>
     </div>
   </section>
@@ -72,7 +72,8 @@
   <section class="window-composer" id="windowComposer" aria-label="Escríbele a Don">
     <form class="window-composer__form" id="windowForm" autocomplete="off">
       <span class="window-composer__caption" aria-hidden="true">Don —</span>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea. Un enlace ayuda si lo tienes." maxlength="4000" required></textarea>
+      <label for="windowBody" class="sr-only">Tu mensaje a Don</label>
+      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea. Un enlace ayuda si lo tienes." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
       <div class="window-composer__row">
         <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
         <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Enviar a Don</button>
@@ -84,7 +85,7 @@
       <button type="button" class="window-onramp" data-prepend="Una segunda mirada al mío — aquí está el enlace: ">Una segunda mirada al mío</button>
       <button type="button" class="window-onramp" data-prepend="">Otra cosa</button>
     </div>
-    <p class="window-composer__reassurance">Respondo en menos de 2 días hábiles. Normalmente el mismo día. Sin compromiso, sin discurso de venta.</p>
+    <p class="window-composer__reassurance" id="windowReassurance">Respondo en menos de 2 días hábiles. Normalmente el mismo día. Sin compromiso, sin discurso de venta.</p>
   </section>
 
   <section class="window-signin" id="windowSignin" hidden>

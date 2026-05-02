@@ -71,7 +71,8 @@ function listChildren(dir, locale) {
 function buildBlock(hub, locale) {
   const baseUrl = `${SITE}${locale === 'es' ? '/es' : ''}/${hub.path}/`;
   const dir = path.join(repoRoot, locale === 'es' ? 'es' : '', hub.path);
-  const children = listChildren(dir, locale).slice(0, 50); // cap for readability
+  const allChildren = listChildren(dir, locale);
+  const children = allChildren.slice(0, 50); // cap rendered ItemList for readability
   const obj = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -88,7 +89,7 @@ function buildBlock(hub, locale) {
       {
         '@type': 'ItemList',
         '@id': `${baseUrl}#items`,
-        numberOfItems: children.length,
+        numberOfItems: allChildren.length,
         itemListElement: children.map((c, i) => ({
           '@type': 'ListItem',
           position: i + 1,

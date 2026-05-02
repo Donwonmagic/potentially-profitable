@@ -1286,7 +1286,7 @@ body:has(.block.final) .foot-cta{display:none}
 .foot-lockup-wrap{position:relative;display:inline-block}
 .foot-lockup{display:block;width:220px;height:auto;max-width:60vw}
 .foot-tagline{color:var(--cream);font-family:var(--font-display);font-style:italic;font-size:18px;margin:20px 0 14px;font-weight:400}
-.foot-blurb{font-size:14px;line-height:1.65;max-width:440px;color:rgba(250,247,242,0.68);margin:0}
+.foot-blurb{font-size:14px;line-height:1.65;max-width:440px;color:rgba(250,247,242,0.85);margin:0}
 
 .foot-col{min-width:0}
 .foot-heading{color:var(--cream);font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 18px}
@@ -1303,12 +1303,12 @@ body:has(.block.final) .foot-cta{display:none}
 
 /* Bottom row */
 .foot-bottom{display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
-.foot-copy{font-size:12.5px;color:rgba(250,247,242,0.6);letter-spacing:0.01em;margin:0}
+.foot-copy{font-size:12.5px;color:rgba(250,247,242,0.78);letter-spacing:0.01em;margin:0}
 .foot-legal{display:flex;gap:12px;flex-wrap:wrap;margin:0}
 /* Inline padding + negative margin gives legal links a ≥24×24 hit area
    (WCAG 2.5.8 Target Size, Minimum) without changing the visible rhythm
    of the row. */
-.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.6);transition:color var(--t-fast) var(--ease);padding:8px 6px;margin:-8px -6px;border-radius:4px}
+.foot-legal a{font-size:12.5px;color:rgba(250,247,242,0.85);transition:color var(--t-fast) var(--ease);padding:8px 6px;margin:-8px -6px;border-radius:4px}
 .foot-legal a:hover{color:var(--cream)}
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
@@ -2408,7 +2408,7 @@ br.br-lg{display:none}
   margin-bottom:20px;
   align-self:flex-start;
 }
-.tool-card.live .status{ background:#e6f4ec; color:#1f9d55; }
+.tool-card.live .status{ background:var(--status-good-tint); color:var(--status-good); }
 .tool-card.live .status::before{
   content:'';width:7px;height:7px;border-radius:50%;
   background:#1f9d55;
@@ -2445,7 +2445,7 @@ br.br-lg{display:none}
   align-items:center;
   gap:8px;
 }
-.tool-card.soon .cta{ color:var(--stone-2); }
+.tool-card.soon .cta{ color:var(--stone); }
 .tool-card .cta svg{ width:16px; height:16px; }
 
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
@@ -5938,3 +5938,281 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .report-decider__item:last-child summary,.photo-aspect-decoder__item:last-child summary{border-bottom:0}
 .report-decider__item[open]:last-child summary,.photo-aspect-decoder__item[open]:last-child summary{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
+
+/* ============================================================
+   Touch-device hover hygiene — neutralize sticky :hover effects
+   on devices that don't have a hover capability. CSS :hover on
+   touch fires on tap and lingers until another tap elsewhere,
+   leaving cards visually "lifted" until the user dismisses them.
+   This block targets the lift/scale family of effects (transform
+   + box-shadow) while leaving color-only hover rules alone — those
+   are still useful as visited-tap feedback on touch.
+   ============================================================ */
+@media (hover: none), (pointer: coarse) {
+  .btn-primary:hover,
+  .compare .card:hover,
+  .service:hover,
+  .plan:hover,
+  .work-item:hover,
+  .form-submit.ready:hover,
+  .foot-cta .btn-primary:hover,
+  .listen-iconbtn:hover:not(:disabled),
+  .listen-card-play:hover,
+  .listen-dock-play:hover,
+  .listen-select select:hover,
+  .learn-start:hover,
+  .learn-topic:hover,
+  .learn-tool:hover,
+  .gallery-card:hover,
+  .post-card:hover,
+  .tool-card:hover,
+  .tool-card-flagship:hover,
+  .term-page .term-aka:hover,
+  .nav-library-trigger:hover,
+  .topics-hub-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  /* Generic safety net: any small movement effect inside hover
+     should not stick on touch. Color/border changes are fine. */
+  *:hover { transition-duration: 0ms !important; }
+}
+
+/* ============================================================
+   Hero mobile reorder — phones first, primary CTA above the fold.
+   The accessibility audit flagged that on a 667-tall phone, the
+   stack of eyebrow → h1 → tagline → sub → counts → CTAs pushes
+   the primary action far below the visible viewport. On mobile,
+   reorder via CSS `order` so the CTAs sit immediately after the
+   subhead, with the counts + secondary copy below.
+   ============================================================ */
+@media (max-width: 640px) {
+  .hero-grid > div:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-grid > div:first-child > .eyebrow      { order: 1; }
+  .hero-grid > div:first-child > h1            { order: 2; }
+  .hero-grid > div:first-child > .hero-tagline { order: 3; }
+  .hero-grid > div:first-child > .hero-sub     { order: 4; }
+  .hero-grid > div:first-child > .hero-ctas    { order: 5; margin-top: 24px; }
+  .hero-grid > div:first-child > .hero-counts  { order: 6; margin-top: 22px; }
+  .hero-grid > div:first-child > .hero-note    { order: 7; }
+  .hero-grid > div:first-child > .hero-meta-note { order: 8; }
+}
+
+/* ============================================================
+   KnitRail — unified four-lane "what's next" component for
+   articles. Replaces the smart-next 3-line CTA with a 4-column
+   structured grid: Apply (a tool) · Read (next article in topic) ·
+   Define (a key glossary term) · Talk (Email Don).
+   The component is sentinel-bracketed and stamped at build time
+   by scripts/inject-knit-rail.mjs.
+   ============================================================ */
+.knit-rail {
+  max-width: 720px;
+  margin: 32px 0 36px;
+  padding: 22px 24px 24px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+.knit-rail__h {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+}
+.knit-rail__cols {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.knit-rail__col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.knit-rail__verb {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.knit-rail__col a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14.5px;
+  line-height: 1.45;
+  border-bottom: 1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+  transition: border-color var(--t-fast) var(--ease);
+  /* Word-break so long term names like "Third-party marketplace"
+     don't overflow narrow columns on tablet widths. */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.knit-rail__col a:hover {
+  border-bottom-color: var(--teal);
+}
+@media (max-width: 720px) {
+  .knit-rail__cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+  }
+}
+@media (max-width: 420px) {
+  .knit-rail__cols {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* ============================================================
+   Hero count chips — small pill row showing library counts
+   under the homepage subhead. Mobile-first; the per-chip
+   .hero-counts__chip allows individual styling overrides if
+   ever needed (none today).
+   ============================================================ */
+.hero-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+.hero-counts__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-1, var(--cream-2));
+}
+.hero-counts__chip strong {
+  color: var(--teal);
+}
+
+/* ============================================================
+   Trust strip — single thin band immediately under flagship
+   tools, before the library section. Operator-language facts
+   in one row.
+   ============================================================ */
+.trust-strip {
+  padding: 18px 0;
+  background: var(--cream-2);
+  border-block: 1px solid var(--line);
+}
+.trust-strip__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.trust-strip__sep {
+  color: var(--stone);
+}
+
+/* ============================================================
+   Compare cards — three-column Patchwork / Agency / Muntin
+   positioning block. The Muntin card is teal-bordered with a
+   pill badge so visual emphasis matches the positioning intent
+   without screaming "vs."
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  list-style: none;
+  padding: 0;
+  margin: 36px 0 0;
+}
+.compare-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  position: relative;
+}
+.compare-card--featured {
+  border: 2px solid var(--teal);
+}
+.compare-card__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin: 0 0 6px;
+}
+.compare-card--featured .compare-card__eyebrow {
+  color: var(--teal);
+}
+.compare-card__h {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.compare-card__price {
+  font-size: 13.5px;
+  color: var(--stone);
+  margin: 0 0 16px;
+}
+.compare-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.compare-card__list li {
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+.compare-card__badge {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--teal);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+@media (max-width: 780px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+  .compare-card--featured {
+    order: -1;
+  }
+}

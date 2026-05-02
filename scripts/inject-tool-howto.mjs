@@ -38,6 +38,25 @@ const SENTINEL_RE = /<!-- tool-schema:start -->[\s\S]*?<!-- tool-schema:end -->/
 const data = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/tool-howto.json'), 'utf8'));
 const TOOLS = data.tools;
 
+// Load the tool catalog so we can populate name/description/url/offers
+// on the SoftwareApplication node — required by Google's rich-result
+// schema for SoftwareApplication ("offers" or "aggregateRating" must
+// be present, plus name/description/url).
+const TOOLS_CATALOG = (() => {
+  const fp = path.join(repoRoot, 'data/tools.json');
+  if (!fs.existsSync(fp)) return {};
+  try { return JSON.parse(fs.readFileSync(fp, 'utf8')).tools || {}; }
+  catch { return {}; }
+})();
+
+function catalogEntryFor(slug) {
+  // Audit lives at slug "audits/restaurant" in the howto registry but
+  // "restaurant-audit" in tools.json (back-compat from the first
+  // restructure). Fall back to undefined; the SoftwareApplication node
+  // still validates without name/description if absent.
+  return TOOLS_CATALOG[slug] || TOOLS_CATALOG[slug.replace('audits/', '').replace('audits-', '')] || TOOLS_CATALOG['restaurant-audit'];
+}
+
 function ogCardFor(slug) {
   // Sub-tools (audits/restaurant) collapse to tool-audits-restaurant.png
   // matching the pattern in scripts/build-og-cards.mjs.
@@ -58,18 +77,33 @@ function buildBlock({ slug, locale, entry }) {
     url: `${baseUrl}#step-${i + 1}`,
   }));
 
+  const cat = catalogEntryFor(slug);
+  const swApp = {
+    '@type': 'SoftwareApplication',
+    '@id': `${baseUrl}#tool`,
+    applicationCategory: 'BusinessApplication',
+    applicationSubCategory: 'RestaurantOps',
+    operatingSystem: 'Web',
+    screenshot: ogCardFor(slug),
+    url: baseUrl,
+    featureList,
+    // Required for Google rich-result eligibility on SoftwareApplication.
+    // Free for all visitors; this is the truthful Offer.
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+  if (cat) {
+    swApp.name = locale === 'es' ? (cat.title_es || cat.title_en) : (cat.title_en || cat.title_es);
+    swApp.description = locale === 'es' ? (cat.summary_es || cat.summary_en) : (cat.summary_en || cat.summary_es);
+  }
   const obj = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'SoftwareApplication',
-        '@id': `${baseUrl}#tool`,
-        applicationCategory: 'BusinessApplication',
-        applicationSubCategory: 'RestaurantOps',
-        operatingSystem: 'Web',
-        screenshot: ogCardFor(slug),
-        featureList,
-      },
+      swApp,
       {
         '@type': 'HowTo',
         '@id': `${baseUrl}#howto`,
