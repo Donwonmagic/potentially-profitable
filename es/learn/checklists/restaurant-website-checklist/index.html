@@ -1196,36 +1196,21 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
     <nav class="nav-links" aria-label="Principal">
-      <a href="/es/services/">Servicios</a>
-      <a href="/es/for/restaurants/">Restaurantes</a>
-      <div class="nav-library-wrap">
-        <button type="button" class="nav-library-trigger" id="navLibraryTrigger" aria-expanded="false" aria-controls="navLibraryMenu" aria-haspopup="true">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <nav class="nav-library-menu nav-library-menu--mega" id="navLibraryMenu" aria-label="Secciones de la biblioteca" aria-labelledby="navLibraryTrigger">
-          <a class="nav-library-menu__home" href="/es/learn/">
-            <strong>Inicio de la biblioteca</strong>
-            <span>El centro de todo lo de abajo &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Aprende</h4>
-            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Lee</h4>
-            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Haz</h4>
-            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/about/">Sobre Don</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1239,8 +1224,6 @@
       <a href="/learn/checklists/restaurant-website-checklist/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -1249,84 +1232,24 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/services/">Servicios</a>
-    <a href="/es/for/restaurants/">Restaurantes</a>
-    <details class="mobile-library">
-      <summary>Biblioteca</summary>
-      <a href="/es/learn/">Inicio de la biblioteca</a>
-      <p class="mobile-library__group">Aprende</p>
-      <a href="/es/learn/start-here/">Empieza aquí</a>
-      <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/glossary/">Glosario</a>
-      <p class="mobile-library__group">Lee</p>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/learn/research/">Investigación</a>
-      <p class="mobile-library__group">Haz</p>
-      <a href="/es/tools/">Herramientas gratis</a>
-      <a href="/es/learn/checklists/">Listas y recursos</a>
-    </details>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/about/">Sobre Don</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/learn/checklists/restaurant-website-checklist/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
-  <!-- Mega-menu keyboard + click controller. The trigger is a
-       button with aria-expanded; click toggles the panel, ArrowDown
-       opens it, Escape closes it. Hover still opens for mouse users
-       via existing CSS. Same controller as the EN nav. -->
-  <script>
-    (function () {
-      var trigger = document.getElementById('navLibraryTrigger');
-      var menu    = document.getElementById('navLibraryMenu');
-      if (!trigger || !menu) return;
-      var open = function () {
-        if (trigger.getAttribute('aria-expanded') === 'true') return;
-        trigger.setAttribute('aria-expanded', 'true');
-        document.addEventListener('click', onOutsideClick, true);
-      };
-      var close = function (refocus) {
-        if (trigger.getAttribute('aria-expanded') === 'false') return;
-        trigger.setAttribute('aria-expanded', 'false');
-        document.removeEventListener('click', onOutsideClick, true);
-        if (refocus) trigger.focus();
-      };
-      var onOutsideClick = function (e) {
-        if (menu.contains(e.target) || trigger.contains(e.target)) return;
-        close(false);
-      };
-      trigger.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (trigger.getAttribute('aria-expanded') === 'true') close(false);
-        else open();
-      });
-      trigger.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowDown' || e.key === 'Down') {
-          e.preventDefault(); open();
-          var first = menu.querySelector('a');
-          if (first) first.focus();
-        } else if (e.key === 'Escape' || e.key === 'Esc') {
-          close(true);
-        }
-      });
-      menu.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' || e.key === 'Esc') {
-          e.preventDefault(); close(true);
-        }
-      });
-      var wrap = trigger.parentElement;
-      wrap.addEventListener('focusout', function (e) {
-        if (wrap.contains(e.relatedTarget)) return;
-        close(false);
-      });
-    })();
-  </script>
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"

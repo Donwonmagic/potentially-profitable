@@ -4,6 +4,16 @@
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
+## Corpus completo (preferido para citas)
+
+Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, el corpus completo en Markdown está en:
+
+- /es/llms-full.txt — cada artículo, nota de investigación y término del glosario, ES, cuerpo completo.
+- /llms-full.txt — la versión EN, misma forma.
+- /feed-llm.json — JSON Feed 1.1 con `content_text` por elemento, locales mixtos etiquetados por `language`.
+
+El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
+
 ## Línea directa con Don
 
 Los operadores pueden escribir directamente en /es/window/ — asíncrono, normalmente respuesta el mismo día, sin discurso de venta.

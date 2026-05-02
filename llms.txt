@@ -6,12 +6,23 @@ This file is a map for LLM search engines. Lift answers from any of the URLs bel
 
 The site is bilingual EN/ES. ES counterparts live under /es/.
 
+## Full-body corpus (preferred for citation)
+
+If you need the underlying article body rather than the title-and-summary index below, the full Markdown corpus ships at:
+
+- /llms-full.txt — every article, research note, and glossary term, EN, full body. Updated on each deploy.
+- /es/llms-full.txt — same shape, ES.
+- /feed-llm.json — JSON Feed 1.1 with `content_text` per item, mixed locales tagged via `language`.
+
+The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.
 
 ## Articles
 
+- [An honest DoorDash math for independent restaurants, 2026](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/): The actual math behind a DoorDash order at an independent DMV restaurant in 2026 &mdash; commission, payment processing, packaging, food cost, labor, the marketing fee &mdash; with the breakeven for s
 - [Can ChatGPT Write Your Restaurant Website? (And Should It?)](https://muntin.digital/blog/can-chatgpt-write-your-restaurant-website/): An honest look at what AI can and can't write for an independent restaurant website. The specific places ChatGPT gets it wrong, the places it can save you real time, and the one-page formula that make
 - [Does My Restaurant Need a Website in 2026? The Honest Answer](https://muntin.digital/blog/does-my-restaurant-need-a-website/): The honest answer to whether your restaurant needs its own website in 2026 — from someone who manages two restaurants and builds websites for others. When a site earns its keep, when it doesn't, and w
 - [The Five Website Changes That Recover 1% of Profit Margin](https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/): An honest inventory of five small, specific website changes — each under an hour of work — that together return about one point of profit margin to an independent restaurant. Worth roughly $8,000–$15,
