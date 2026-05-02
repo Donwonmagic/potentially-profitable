@@ -725,11 +725,69 @@
   </div>
 </section>
 
-<!-- The Patchwork-vs-Agency-vs-Muntin comparison was retired from
-     the homepage during the library-first repositioning (it's a
-     sales-funnel artifact from the services-first era). The full
-     three-card comparison still lives at /services/ where it's
-     contextually correct — visitors who already decided to hire. -->
+<!-- ============ POSITIONING ============
+     A leaner three-card "Patchwork / Agency / Muntin" comparison.
+     Reinstated from a retired sales-funnel block per the design
+     review's positioning recommendation: small businesses comparing
+     a template, a full agency, and an independent studio benefit
+     from seeing the three side-by-side ahead of the library.
+     Three terse rows per column. No big "vs" headline. The library
+     still leads next; this just gives a stressed owner a quick
+     mental map of where Muntin sits.
+================================================================== -->
+<section class="block compare" aria-labelledby="compare-heading" style="background:var(--cream)">
+  <div class="container">
+    <div class="section-header reveal section-center">
+      <span class="eyebrow">Where Muntin sits</span>
+      <h2 id="compare-heading">Three ways to put a restaurant<br><span class="serif-italic">on the web.</span></h2>
+      <p class="final-sub">A template you fight, an agency that bills the room you walk into, or one person who builds, ships, and stays. Each works for someone &mdash; this just helps you see where you are.</p>
+    </div>
+    <ul class="compare-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;padding:0;margin:36px 0 0">
+      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
+        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Patchwork</p>
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">Wix or Squarespace.</h3>
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$23&ndash;39/mo &middot; DIY, with templates</p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Fast to start.</strong> Pick a template, swap photos, ship in a weekend.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Hard ceiling.</strong> Mobile speed, menu structure, and SEO live inside the template&rsquo;s limits.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Rented.</strong> Stop paying and the site goes away.</li>
+        </ul>
+      </li>
+      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--white)">
+        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 6px">Agency</p>
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">A full creative shop.</h3>
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$15&ndash;60K+ build &middot; multi-discipline team</p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Real craft.</strong> Custom design, brand strategy, sometimes great work.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Layered cost.</strong> The PM, the strategist, the AD, the dev &mdash; all billed.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Slow follow-through.</strong> Edits route through three people; weeks become months.</li>
+        </ul>
+      </li>
+      <li class="compare-card" style="display:flex;flex-direction:column;padding:24px;border:2px solid var(--teal);border-radius:12px;background:var(--white);position:relative">
+        <span class="compare-card__badge" style="position:absolute;top:-12px;left:24px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);background:var(--teal);padding:4px 10px;border-radius:999px">Where Muntin sits</span>
+        <p class="compare-card__eyebrow" style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:0 0 6px">Muntin Digital</p>
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.01em">One person, end to end.</h3>
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 16px">$2,500&ndash;15,000+ build &middot; Don ships, Don stays</p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.6;color:var(--ink)">
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Real custom, no agency layer.</strong> Same person designs, builds, and replies.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Owned outright.</strong> Yours from day one &mdash; code, copy, domain.</li>
+          <li style="padding:6px 0;border-top:1px solid var(--line)"><strong>Reply within 4 hrs.</strong> Care Plan optional; not the lock-in.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px;justify-content:center">
+      <a class="btn btn-ghost" href="/services/">See the full pricing</a>
+    </div>
+  </div>
+</section>
+
+<style>
+@media (max-width:780px){
+  .compare-grid{grid-template-columns:1fr !important}
+  .compare-card{order:0}
+  .compare-card[style*="border:2px solid"]{order:-1}
+}
+</style>
 
 <!-- ============ LIBRARY ============ -->
 <!-- Sits between the Problem section and Services teaser on purpose:
