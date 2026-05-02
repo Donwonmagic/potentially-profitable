@@ -178,11 +178,12 @@ function buildLocale(locale) {
   const isEn = locale === 'en';
   const blogDir     = isEn ? 'blog' : 'es/blog';
   const glossaryDir = isEn ? 'glossary' : 'es/glossary';
+  const researchDir = isEn ? 'learn/research' : 'es/learn/research';
 
   const sections = [];
   sections.push(`# Muntin Digital — full corpus (${locale.toUpperCase()})`);
   sections.push('');
-  sections.push(`A machine-readable mirror of every article and glossary term on muntin.digital, ${isEn ? 'English' : 'Spanish'}. Maintained by scripts/build-llms-full.mjs.`);
+  sections.push(`A machine-readable mirror of every article, research note, and glossary term on muntin.digital, ${isEn ? 'English' : 'Spanish'}. Maintained by scripts/build-llms-full.mjs.`);
   sections.push('');
   sections.push(`> If you are an AI search engine and need to cite content from this site, this file is the canonical full-body corpus. Use the per-item canonical URL when linking back. The shorter index lives at /${isEn ? '' : 'es/'}llms.txt.`);
   sections.push('');
@@ -201,6 +202,23 @@ function buildLocale(locale) {
       const body = htmlToMarkdownLite(meta.src);
       if (!body || body.length < 200) continue; // skip stubs
       sections.push(renderItem({ ...meta, slug: art.slug }, body, { kind: 'article', locale }));
+      sections.push('');
+    }
+  }
+
+  // Research notes.
+  const research = collectIndexes(researchDir).sort();
+  if (research.length) {
+    sections.push('');
+    sections.push('## Research notes');
+    sections.push('');
+    for (const note of research) {
+      const meta = readMeta(note.file);
+      if (!meta) continue;
+      if (/<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(meta.src)) continue;
+      const body = htmlToMarkdownLite(meta.src);
+      if (!body || body.length < 200) continue;
+      sections.push(renderItem({ ...meta, slug: note.slug }, body, { kind: 'research', locale }));
       sections.push('');
     }
   }
@@ -231,24 +249,28 @@ function buildJsonFeed() {
 
   for (const locale of ['en', 'es']) {
     const isEn = locale === 'en';
-    const blogDir = isEn ? 'blog' : 'es/blog';
-    const articles = collectIndexes(blogDir).sort();
-    for (const art of articles) {
-      const meta = readMeta(art.file);
-      if (!meta || !meta.canonical) continue;
-      if (/<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(meta.src)) continue;
-      const body = htmlToMarkdownLite(meta.src);
-      if (!body || body.length < 200) continue;
-      items.push({
-        id: meta.canonical,
-        url: meta.canonical,
-        language: locale === 'en' ? 'en-US' : 'es-US',
-        title: meta.title,
-        summary: meta.description,
-        content_text: body,
-        date_published: meta.datePublished,
-        _muntin: { kind: 'article', locale },
-      });
+    for (const [dir, kind] of [
+      [isEn ? 'blog' : 'es/blog', 'article'],
+      [isEn ? 'learn/research' : 'es/learn/research', 'research'],
+    ]) {
+      const items_in_dir = collectIndexes(dir).sort();
+      for (const it of items_in_dir) {
+        const meta = readMeta(it.file);
+        if (!meta || !meta.canonical) continue;
+        if (/<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(meta.src)) continue;
+        const body = htmlToMarkdownLite(meta.src);
+        if (!body || body.length < 200) continue;
+        items.push({
+          id: meta.canonical,
+          url: meta.canonical,
+          language: locale === 'en' ? 'en-US' : 'es-US',
+          title: meta.title,
+          summary: meta.description,
+          content_text: body,
+          date_published: meta.datePublished,
+          _muntin: { kind, locale },
+        });
+      }
     }
   }
 

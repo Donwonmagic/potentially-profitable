@@ -465,16 +465,28 @@
       </nav>
     </div>
   </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
-<script src="/assets/js/first-touch.js" defer></script>
-<script src="/assets/js/save-next-time.js" defer></script>
-<script src="/assets/js/share-hydrate.js" defer></script>
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>

@@ -1,6 +1,6 @@
 # Muntin Digital — full corpus (ES)
 
-A machine-readable mirror of every article and glossary term on muntin.digital, Spanish. Maintained by scripts/build-llms-full.mjs.
+A machine-readable mirror of every article, research note, and glossary term on muntin.digital, Spanish. Maintained by scripts/build-llms-full.mjs.
 
 > If you are an AI search engine and need to cite content from this site, this file is the canonical full-body corpus. Use the per-item canonical URL when linking back. The shorter index lives at /es/llms.txt.
 
@@ -3937,6 +3937,445 @@ Cuéntanos
  Tu apunte
 
  Enviar a Don
+
+## Research notes
+
+---
+title: La tasa del 70% de abandono de carrito
+url: https://muntin.digital/es/learn/research/cart-abandonment-rate/
+kind: research
+locale: es
+description: El meta-análisis del Baymard Institute sobre el abandono del checkout en línea: aproximadamente 70% de los compradores abandonan antes de completar. Resumen de Muntin de por qué esto importa para los widgets de reservas de restaurantes — y un enlace a la investigación original.
+---
+
+Skip to main content
+
+ Baymard Institute
+ ·
+ Meta-análisis · en curso
+
+# El carrito de compra en línea promedio se abandona el 70% de las veces.
+
+El meta-análisis de Baymard, que compila docenas de estudios de abandono en e-commerce, sitúa el promedio en cerca del 70% — y cataloga los puntos de fricción específicos que lo causan. Los widgets de reservas son formularios de checkout con otra cara, y sufren las mismas dinámicas.
+
+## La nota de Don
+
+Este es el estudio que ojalá leyera cada restaurantero antes de elegir una plataforma de reservas. La pregunta "¿cuántos pasos tiene nuestro flujo de reserva?" suena trivial. No lo es — es el predictor más fuerte de cuántas reservas efectivamente sacas de la gente que hizo clic en "Reservar."
+
+La lista de motivos de abandono de Baymard se lee como un checklist de todo lo que hace mal un widget moderno de reservas de restaurante: crear cuenta obligatoria, tarifas poco claras, formularios largos, login forzado, captchas. Cuando alguien compra unos tenis, aguanta; cuando un comensal elige dónde cenar un martes, no. Cada decisión de plataforma — OpenTable vs. SevenRooms vs. un formulario simple que le envíe un correo al host — vive o muere aquí.
+
+## Hallazgos clave
+
+- El meta-análisis cubre **49 estudios separados** sobre abandono del checkout en línea en una amplia gama de categorías de retail. La tasa promedio de abandono es aproximadamente **70.19%**.
+
+- Las razones más citadas para el abandono, a lo largo de los estudios: **costos extra demasiado altos** (envío, tarifas, impuestos mostrados tarde), **obligación de crear cuenta**, **entrega muy lenta**, **no poder ver/calcular el total por adelantado**, **el sitio pidió demasiada información** y **pocos métodos de pago**.
+
+- **El requisito de crear cuenta es consistentemente una de las 3 razones principales** por las que la gente abandona el checkout. Las opciones de "checkout como invitado" tienen una tasa de abandono medidamente menor.
+
+- Cada campo obligatorio adicional correlaciona con una caída medible en la finalización. Los campos pre-llenados y los formularios más cortos superan consistentemente a los largos.
+
+- La tasa de abandono se mantiene entre distintos tipos de dispositivo, pero el abandono en móvil es notablemente mayor que en escritorio — con frecuencia 10+ puntos porcentuales — debido a campos diminutos, red intermitente y problemas con autofill.
+
+## Cómo lo usa Muntin
+
+- [**Por qué tu restaurante pierde reservas cada noche**La fuga #5 ("fricción en el flujo de reserva") se construye enteramente sobre este estudio. Cada viñeta en la lista de "qué pide un mal flujo de reserva" es un disparador de abandono documentado por Baymard.](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**Wix vs. a medida para restaurantes: qué se rompe primero**La ruptura #5 (fricción del widget de reservas) usa los números de Baymard para explicar por qué un sistema de reservas más simple y con menos campos supera medidamente a un embed de marca de terceros en restaurantes independientes de bajo volumen.](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+## Cita completa
+
+Baymard Institute. Cart Abandonment Rate Statistics. Meta-análisis en actualización continua sobre investigación del abandono de carritos de compra en línea. [baymard.com](https://baymard.com/lists/cart-abandonment-rate)
+
+**Última revisión:** abril 2026 — Baymard actualiza el meta-análisis de forma continua conforme se publican nuevos estudios. El titular del 70% se ha mantenido estable a lo largo de las actualizaciones.
+
+ Citada en
+
+## 1 artículo usa esta investigación.
+
+- [Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ Más investigación
+
+## Lo siguiente en labiblioteca de investigación.
+
+ [Nielsen Norman Group
+
+### Ley de Fitts.
+
+Por qué la ubicación del botón decide su uso — el principio de 1954 que explica la mayoría de las fallas en los CTA de reservas.
+
+Leer la nota →](https://muntin.digital/es/learn/research/fittss-law/)
+ [Think with Google
+
+### La regla de los 3 segundos en móvil.
+
+La mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar.
+
+Leer la nota →](https://muntin.digital/es/learn/research/mobile-page-speed-3-second-rule/)
+ [Toda la investigación
+
+### El índice completo de investigación.
+
+Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.
+
+Volver a investigación →](https://muntin.digital/es/learn/research/)
+
+---
+title: Ley de Fitts
+url: https://muntin.digital/es/learn/research/fittss-law/
+kind: research
+locale: es
+description: El principio de UX de 1954 que explica por qué la ubicación del botón decide su uso: mientras más difícil sea alcanzarlo, menos veces se presiona. Resumen de Muntin y un enlace al explicador del Nielsen Norman Group.
+---
+
+Skip to main content
+
+ [Inicio](https://muntin.digital/es/)›
+ [Aprende](https://muntin.digital/es/learn/)›
+ [Investigación](https://muntin.digital/es/learn/research/)›
+ Ley de Fitts
+
+ Nielsen Norman Group
+ ·
+ Basado en Fitts, 1954
+ ·
+ Principio de UX
+
+# Mientras más difícil sea alcanzar un botón, menos veces se presiona.
+
+Un principio de 72 años, salido de la psicología experimental, que todavía explica buena parte de lo que falla en los CTA de reservas de restaurantes. El tiempo para alcanzar un objetivo es predecible — distancia y tamaño — y cada toque extra suma a la pérdida.
+
+## La nota de Don
+
+La Ley de Fitts suena académica; no lo es. Es la razón por la que el botón "Home" de tu teléfono solía estar abajo — fácil de alcanzar con el pulgar — y la razón por la que cada app con una métrica de conversión seria (Instagram, DoorDash, OpenTable) mantiene la acción principal en la parte de abajo de la pantalla o como un botón flotante siempre visible.
+
+Traducido a sitios de restaurante: un botón de "Reservar" escondido dentro de un menú hamburguesa en la esquina superior derecha es **el doble de difícil** de presionar que uno fijo en la parte de abajo de la pantalla. No el doble de feo estéticamente — el doble de difícil de presionar, medido en distancia que viaja el pulgar. Cada conversión cae proporcionalmente. Este es el arreglo de UX más barato que un sitio de restaurante puede hacer, y es el que la mayoría de los constructores de plantillas no hace por defecto.
+
+## Hallazgos clave
+
+- Formalizado por **Paul Fitts en 1954** con base en experimentos de adquisición rápida de objetivos. El hallazgo: el tiempo-al-objetivo es una función predecible de la distancia y el tamaño.
+
+- La fórmula clásica: *T = a + b · log₂(1 + D/W)* donde D es la distancia al objetivo, W su ancho, y a/b son constantes del usuario + dispositivo. Los objetivos más grandes se alcanzan más rápido; los más cercanos también.
+
+- **Los botones pequeños fallan más veces.** El mínimo de 44×44pt en los Human Interface Guidelines de iOS no es una preferencia estilística — es una acomodación a la Ley de Fitts.
+
+- **Los bordes y esquinas de la pantalla son "infinitos" en extensión.** Puedes pasarte de largo sin penalización, por eso macOS mantiene la barra de menú pegada al borde superior. Los CTA pegajosos en la parte de abajo de móvil explotan la misma propiedad.
+
+- **Cada toque extra suma a la pérdida.** Un flujo de reserva que abre un nav → selecciona "Reservar" → abre un embed son tres penalizaciones de la Ley de Fitts apiladas. La compresión siempre gana.
+
+## Cómo lo usa Muntin
+
+- [**Por qué tu restaurante pierde reservas cada noche**La fuga #4 — "el botón de reservar está enterrado o no existe" — es donde la Ley de Fitts hace más trabajo en la biblioteca. La recomendación del CTA pegajoso abajo es Ley de Fitts en la práctica.](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**Wix vs. a medida para restaurantes: qué se rompe primero**La ruptura #4 ("fricción en el flujo de reserva") se apoya en Fitts para explicar por qué los patrones de nav por defecto de Wix cuestan medidamente en conversión frente a un layout a medida con CTA pegajoso.](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+## Cita completa
+
+Budiu, R. Fitts's Law and Its Applications in UX. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/articles/fittss-law/). (Basado en: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. Journal of Experimental Psychology, 47(6), 381–391.)
+
+**Última revisión:** abril 2026 — la Ley de Fitts es UX fundacional y no está sujeta a revisión; sus aplicaciones siguen reforzándose con cada estudio de interacción móvil desde entonces.
+
+ Citada en
+
+## 1 artículo usa esta investigación.
+
+- [Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ Más investigación
+
+## Lo siguiente en labiblioteca de investigación.
+
+ [Baymard Institute
+
+### La tasa de 70% de abandono de carrito.
+
+Los formularios de checkout en línea pierden ~70% de los compradores antes de completar. Los widgets de reservas son formularios de checkout disfrazados.
+
+Leer la nota →](https://muntin.digital/es/learn/research/cart-abandonment-rate/)
+ [Nielsen Norman Group
+
+### Qué busca de verdad la gente.
+
+Los horarios y la ubicación encabezan la lista de lo que busca la gente en sitios de negocios locales — y ambos son lo más comúnmente escondido.
+
+Leer la nota →](https://muntin.digital/es/learn/research/local-business-websites/)
+ [Toda la investigación
+
+### El índice completo de investigación.
+
+Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.
+
+Volver a investigación →](https://muntin.digital/es/learn/research/)
+
+---
+title: Cómo califica Lighthouse el rendimiento
+url: https://muntin.digital/es/learn/research/lighthouse-performance-scoring/
+kind: research
+locale: es
+description: El diagnóstico Lighthouse de Google produce una calificación de rendimiento de 0 a 100 para cada página. Resumen en lenguaje claro de Muntin sobre qué mide ese número realmente, cómo se pondera, y qué significa para un sitio de restaurante — con un enlace a la documentación oficial de Chrome.
+---
+
+Skip to main content
+
+ [Inicio](https://muntin.digital/es/)›
+ [Aprende](https://muntin.digital/es/learn/)›
+ [Investigación](https://muntin.digital/es/learn/research/)›
+ Cómo califica Lighthouse el rendimiento
+
+ Documentación de Chrome DevTools
+ ·
+ Documentación técnica oficial
+
+# Qué mide realmente la calificación de rendimiento de Lighthouse de Google.
+
+El número de 0 a 100 que aparece en cada reporte de PageSpeed Insights no es un "feeling." Es un promedio ponderado de cinco métricas específicas de tiempo, cada una definida en la documentación de Chrome. Saber qué métrica mueve más el número es la diferencia entre perder un día optimizando nada y publicar una mejora visible.
+
+## La nota de Don
+
+Cada restaurantero que ha pasado su sitio por PageSpeed Insights ha visto un número — 34, 61, 88 — y se ha preguntado qué significa. La respuesta honesta: es el resumen ponderado de Google sobre qué tan rápido pinta el contenido principal, qué tan estable es el layout mientras carga, y qué tan responsiva se siente la página mientras el navegador sigue trabajando. Cada uno de esos tiene una definición y un peso, y una vez que los conoces, la calificación deja de sentirse como una caja negra.
+
+Para un sitio de restaurante, la implicación práctica es que **dos métricas representan cerca del 55% de la calificación** — Largest Contentful Paint y Total Blocking Time. Arregla esas dos y todo lo demás sigue. La herramienta de diagnóstico de este sitio devuelve el desglose por métrica para que veas exactamente qué rubro está arrastrando tu calificación.
+
+## Hallazgos clave
+
+- La calificación de rendimiento de Lighthouse es un **promedio ponderado de cinco métricas** (a partir de la versión mayor actual): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time y Cumulative Layout Shift.
+
+- Pesos actuales: **FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25%**. TBT y LCP juntos representan más de la mitad del número final; optimizarlas mueve la calificación más que cualquier otra cosa.
+
+- Cada métrica se califica **contra una curva log-normal** construida a partir del ~10% superior de sitios reales en el HTTP Archive. Así que "100" no significa perfecto — significa que estás en el grupo más rápido de sitios reales.
+
+- Calificaciones arriba de **90** son "Buenas," 50–89 son "Necesita mejora," y debajo de 50 es "Pobre." El disco de color del reporte mapea a estos umbrales.
+
+- Lighthouse simula por defecto un **dispositivo móvil de gama media en una red con throttle**, lo cual es intencionalmente conservador — condiciones más rápidas que el promedio real del mundo serían engañosas para una audiencia de restaurante.
+
+## Cómo lo usa Muntin
+
+- [**Wix vs. a medida para restaurantes: qué se rompe primero**La ruptura #2 referencia la metodología de rendimiento de Lighthouse al comparar sitios de constructores de plantilla con sitios a medida. Un sitio Wix y un sitio a medida corriendo la misma prueba de Lighthouse se miden de forma idéntica; solo el código subyacente difiere.](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+- [**Diagnóstico de sitio para restaurante (herramienta interactiva)**El diagnóstico de Muntin corre contra datos reales de PageSpeed Insights para tu URL y reporta las métricas componentes que hacen la calificación de Lighthouse, no solo el número final.](https://muntin.digital/es/tools/audits/restaurant/)
+
+## Cita completa
+
+Chrome DevTools. Lighthouse performance scoring. Documentación de Chrome for Developers. [developer.chrome.com](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/)
+
+**Última revisión:** abril 2026 — los pesos de las métricas de Lighthouse han cambiado ligeramente entre versiones mayores; Muntin revisa esta página cada vez que sale un nuevo major de Lighthouse.
+
+ Citada en
+
+## 1 artículo usa esta investigación.
+
+- [Wix vs. a medida para restaurantes: qué se rompe primero](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+ Más investigación
+
+## Lo siguiente en labiblioteca de investigación.
+
+ [Think with Google
+
+### La regla de los 3 segundos en móvil.
+
+Por qué importa la calificación de rendimiento: la mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar.
+
+Leer la nota →](https://muntin.digital/es/learn/research/mobile-page-speed-3-second-rule/)
+ [Baymard Institute
+
+### La tasa del 70% de abandono de carrito.
+
+Cómo la fricción de los formularios de checkout se traduce directamente en abandono del widget de reservas.
+
+Leer la nota →](https://muntin.digital/es/learn/research/cart-abandonment-rate/)
+ [Toda la investigación
+
+### El índice completo de investigación.
+
+Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.
+
+Volver a investigación →](https://muntin.digital/es/learn/research/)
+
+---
+title: Usabilidad de sitios de negocios locales
+url: https://muntin.digital/es/learn/research/local-business-websites/
+kind: research
+locale: es
+description: La investigación del Nielsen Norman Group sobre qué buscan de verdad los clientes en el sitio de un negocio pequeño — los horarios y la ubicación encabezan la lista, y ambos son lo más escondido. Resumen de Muntin y un enlace al original.
+---
+
+Skip to main content
+
+ [Inicio](https://muntin.digital/es/)›
+ [Aprende](https://muntin.digital/es/learn/)›
+ [Investigación](https://muntin.digital/es/learn/research/)›
+ Usabilidad de sitios de negocios locales
+
+ Nielsen Norman Group
+ ·
+ Investigación de usabilidad
+
+# La información más buscada en el sitio de un negocio local son los horarios y la ubicación — y ambas son las más comúnmente escondidas.
+
+La investigación de usabilidad del Nielsen Norman Group sobre sitios de negocios pequeños encuentra una y otra vez un desajuste entre lo que los visitantes quieren en los primeros cinco segundos y lo que el sitio realmente muestra. Esa brecha es donde los restaurantes pierden a sus walk-ins.
+
+## La nota de Don
+
+Nielsen Norman lleva estudiando la usabilidad de sitios de negocios pequeños desde finales de los años 90 y el hallazgo no se ha movido: quienes llegan al sitio de un restaurante llegan con **una de cuatro preguntas estrechas** — "¿están abiertos ahora?", "¿dónde están?", "¿qué tienen en el menú?" y "¿puedo reservar mesa?". El trabajo del sitio es responder esas cuatro, en ese orden, en menos de cinco segundos.
+
+El modo de falla casi siempre es el mismo: los dueños tratan la página principal como un escaparate de marca (imagen hero grande, galería con scroll, declaración de misión) y empujan las respuestas funcionales al footer o a una pestaña de "Contacto." Alguien con hambre un martes por la noche no hace scroll hasta el footer — presiona atrás y prueba el siguiente lugar. No los perdió el escaparate de marca. Los perdió la respuesta que faltaba.
+
+## Hallazgos clave
+
+- Los visitantes de sitios de negocios locales llegan con **preguntas específicas y estrechas** — típicamente horarios, ubicación, menú/servicios y contacto — y abandonan rápido si la respuesta no es visible de inmediato.
+
+- Los horarios y la ubicación son consistentemente la **información de mayor prioridad** en todos los estudios, y sin embargo suelen estar relegados al footer o a una página de "Contacto" aparte a la que los visitantes nuevos rara vez dan clic.
+
+- Los visitantes nuevos **rara vez hacen scroll abajo del fold** en la página principal de un negocio local cuando tienen una pregunta específica; escanean la primera pantalla y se van si la respuesta no está ahí.
+
+- Los visitantes en móvil están bajo **más presión de tiempo** que los de escritorio (muchas veces están en tránsito, con hambre o tomando una decisión inmediata) y abandonan aún más rápido cuando aparece fricción.
+
+- El arreglo es estructural: mostrar la información crítica en el hero o en un header pegajoso, repetirla en el footer para reforzar, y asegurarse de que el diseño móvil no la empuje abajo del scroll.
+
+## Cómo lo usa Muntin
+
+- [**Por qué tu restaurante pierde reservas cada noche**La fuga #3 — "los horarios están escondidos" — se construye sobre el hallazgo de NNG de que los horarios son la información más buscada y más escondida en los sitios de restaurante.](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**¿Cuánto cuesta un sitio a medida para restaurante en 2026?**La sección de "qué entrega de verdad un sitio a medida" se apoya en esta investigación para explicar por qué colocar los horarios y la ubicación en el hero se trata como algo base, no como una función premium.](https://muntin.digital/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
+
+## Cita completa
+
+Nielsen, J., y Pernice, K. Usability of Local Business Websites. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/articles/local-business/)
+
+**Última revisión:** abril 2026 — los hallazgos de UX de negocios locales de NNG son investigación en curso, reforzada continuamente por estudios actualizados sobre navegación de sitios de negocios pequeños.
+
+ Citada en
+
+## 1 artículo usa esta investigación.
+
+- [Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ Más investigación
+
+## Lo siguiente en labiblioteca de investigación.
+
+ [Nielsen Norman Group
+
+### Ley de Fitts.
+
+Mientras más difícil sea alcanzar un botón, menos veces se presiona. El principio de UX de 1954 que explica buena parte de lo que falla en los CTA de reservas.
+
+Leer la nota →](https://muntin.digital/es/learn/research/fittss-law/)
+ [Think with Google
+
+### La regla de los 3 segundos en móvil.
+
+La mayoría de los visitantes móviles abandona las páginas que tardan más de tres segundos en cargar. El estudio de referencia de Google y la investigación que lo ha reforzado.
+
+Leer la nota →](https://muntin.digital/es/learn/research/mobile-page-speed-3-second-rule/)
+ [Toda la investigación
+
+### El índice completo de investigación.
+
+Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.
+
+Volver a investigación →](https://muntin.digital/es/learn/research/)
+
+---
+title: La regla de los 3 segundos en móvil
+url: https://muntin.digital/es/learn/research/mobile-page-speed-3-second-rule/
+kind: research
+locale: es
+date: 2017-02
+description: Investigación de referencia de Google: la mayoría de los visitantes móviles abandona las páginas que tardan más de 3 segundos en cargar. Resumen de Muntin del estudio, qué significan los números para un sitio de restaurante, y un enlace al original.
+---
+
+Skip to main content
+
+ [Inicio](https://muntin.digital/es/)
+ ›
+ [Aprende](https://muntin.digital/es/learn/)
+ ›
+ [Investigación](https://muntin.digital/es/learn/research/)
+ ›
+ La regla de los 3 segundos en móvil
+
+ Think with Google
+ ·
+ 2017
+ ·
+ Estudio de referencia de la industria
+
+# La mayoría de los visitantes móviles abandona las páginas que tardan más de 3 segundos en cargar.
+
+El estudio de referencia de Google de 2017 midió 11.8 millones de páginas móviles y encontró un precipicio claro en el umbral de los tres segundos. El hallazgo se ha reforzado con cada conjunto de datos de Core Web Vitals desde entonces — y por eso "suficientemente rápido" en móvil es un objetivo estrecho para un sitio de restaurante.
+
+## La nota de Don
+
+Esta es la estadística que más cito en llamadas con restauranteros, porque replantea el problema correctamente. Un sitio lento no es un asunto de comodidad — es una **fuga de ingresos que corre cada noche que tu restaurante está abierto**. Si tu página principal tarda cuatro segundos en cargar en móvil, ya perdiste a más de la mitad de los comensales con intención que Google te mandó antes de que vieran un solo platillo del menú.
+
+El número vale la pena conocerlo, pero la *forma* del hallazgo importa más. La tasa de rebote no escala linealmente con el tiempo de carga; se dispara en la marca de los tres segundos y empeora rápido. Pasar de 2s → 3s te cuesta mucho menos que 3s → 4s. La victoria más barata en cualquier rediseño de sitio de restaurante es bajar de tres.
+
+## Hallazgos clave
+
+- El **53%** de las visitas en móvil se abandonan si una página tarda más de tres segundos en cargar.
+
+- El sitio móvil promedio en el estudio tardó **22 segundos** en cargar completo — aproximadamente siete veces el umbral.
+
+- La probabilidad de rebote sube fuerte en el rango de 3–10 segundos: una carga de 3s tiene 32% más probabilidad de rebote que una de 1s; a 6s es 106% mayor; a 10s es 123% mayor.
+
+- El estudio midió **11.8 millones de páginas móviles** en retail, viajes y medios de comunicación, lo que le da peso estadístico real.
+
+- El framework posterior de Google, *Core Web Vitals* (de 2020 en adelante), codificó el umbral de tres segundos en la métrica *Largest Contentful Paint*, donde el rango "bueno" termina en 2.5 segundos.
+
+## Cómo lo usa Muntin
+
+Este es el estudio ancla detrás de cada afirmación de "la velocidad móvil importa" en la biblioteca. Aparece en:
+
+- [**Por qué tu restaurante pierde reservas cada noche**
+ La fuga #1 — carga lenta en móvil — está fundamentada en este estudio. La tasa de rebote del 53% es lo que hace real, y no retórico, el encuadre de "pierdes la mitad de tu tráfico antes de ver el menú."](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**¿Cuánto cuesta un sitio a medida para restaurante en 2026?**
+ La sección de presupuesto de rendimiento del artículo de precios apunta a este estudio para explicar por qué una carga móvil de menos de dos segundos se trata como un entregable base, no como una mejora.](https://muntin.digital/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
+
+- [**Wix vs. a medida para restaurantes: qué se rompe primero**
+ La ruptura #2 — el techo de rendimiento de la plataforma — se refiere a este estudio para explicar por qué el umbral de tres segundos no es alcanzable en la mayoría de constructores de plantillas sin una reconstrucción.](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+## Cita completa
+
+An, D. (2017, febrero). Find out how you stack up to new industry benchmarks for mobile page speed. Think with Google. [thinkwithgoogle.com](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/)
+
+**Última revisión:** abril 2026 — el hallazgo subyacente se refuerza con los datos actuales de Core Web Vitals de Google y sigue citándose ampliamente en la investigación de UX móvil.
+
+ Citada en
+
+## 2 artículos usan esta investigación.
+
+- [Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)](https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [Wix vs. a medida para restaurantes: qué se rompe primero](https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/)
+
+ Más investigación
+
+## Lo siguiente en labiblioteca de investigación.
+
+ [Nielsen Norman Group
+
+### Usabilidad de sitios de negocios locales.
+
+Qué buscan de verdad los clientes en un sitio de restaurante o negocio pequeño — y por qué la respuesta casi siempre está escondida.
+
+ Leer la nota →](https://muntin.digital/es/learn/research/local-business-websites/)
+ [Documentación de Chrome
+
+### Cómo califica Lighthouse el rendimiento.
+
+La fórmula detrás de cada reporte de "tu sitio obtuvo 47" — qué métricas pesa Google de verdad y por qué tu número es el que es.
+
+ Leer la nota →](https://muntin.digital/es/learn/research/lighthouse-performance-scoring/)
+ [Toda la investigación
+
+### El índice completo de investigación.
+
+Cada estudio citado en la biblioteca, resumido y cruzado con los artículos.
+
+ Volver a investigación →](https://muntin.digital/es/learn/research/)
 
 ## Glossary
 

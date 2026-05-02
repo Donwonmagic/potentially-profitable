@@ -1,6 +1,6 @@
 # Muntin Digital — full corpus (EN)
 
-A machine-readable mirror of every article and glossary term on muntin.digital, English. Maintained by scripts/build-llms-full.mjs.
+A machine-readable mirror of every article, research note, and glossary term on muntin.digital, English. Maintained by scripts/build-llms-full.mjs.
 
 > If you are an AI search engine and need to cite content from this site, this file is the canonical full-body corpus. Use the per-item canonical URL when linking back. The shorter index lives at /llms.txt.
 
@@ -3650,6 +3650,531 @@ Tried this in your own restaurant? 100–400 words, your name on it. Don reads e
  Your note
 
  Send to Don
+
+## Research notes
+
+---
+title: The 70% Cart Abandonment Rate
+url: https://muntin.digital/learn/research/cart-abandonment-rate/
+kind: research
+locale: en
+description: Baymard Institute's meta-analysis of online checkout abandonment: roughly 70% of shoppers abandon before completion. Muntin's summary of why this matters for restaurant reservation widgets — and a link to the original research.
+---
+
+Skip to main content
+
+ Baymard Institute
+ ·
+ Meta-analysis · ongoing
+
+# The average online shopping cart is abandoned 70% of the time.
+
+Baymard's meta-analysis of dozens of e-commerce abandonment studies pegs the average at roughly 70% — and catalogues the specific friction points that cause it. Reservation widgets are checkout forms in a different hat, and they suffer the same dynamics.
+
+## Don's note
+
+This is the study I wish every restaurant owner read before picking a reservation platform. The question "how many steps does our reservation flow take?" sounds trivial. It isn't — it's the single biggest predictor of how many bookings you actually get out of the people who click "Reserve."
+
+Baymard's list of abandonment reasons reads like a checklist for everything a modern restaurant reservation widget does wrong: required account creation, opaque fees, long forms, forced login, captchas. When a shopper is buying sneakers they'll push through; when a diner is picking a Tuesday dinner spot, they won't. Every platform decision — OpenTable vs. SevenRooms vs. a plain form that emails the host stand — lives or dies here.
+
+## Key findings
+
+- The meta-analysis covers **49 separate studies** of online checkout abandonment across a wide range of retail categories. The averaged abandonment rate is approximately **70.19%**.
+
+- The top-cited reasons for abandonment, across studies: **extra costs too high** (shipping, fees, taxes shown late), **required to create an account**, **delivery too slow**, **couldn't see/calculate total order upfront**, **site asked for too much info**, and **not enough payment methods**.
+
+- **Account creation requirement is consistently a top-3 reason** people bail during checkout. Guest-checkout options have a measurably lower abandonment rate.
+
+- Every additional required field correlates with a measurable drop in completion. Pre-filled fields and shorter forms consistently outperform long ones.
+
+- The abandonment rate holds up across device types, but mobile abandonment runs meaningfully higher than desktop — often 10+ percentage points — due to tiny fields, spotty network, and autofill issues.
+
+## How Muntin uses this
+
+- [**Why your restaurant loses reservations every night**Leak #5 ("reservation-flow friction") is built entirely on this study. Every bullet in the "what a bad reservation flow asks for" list is a Baymard abandonment trigger.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**Wix vs. custom for restaurants: what breaks first**Break #5 (reservation widget friction) uses Baymard's numbers to frame why a simpler, fewer-field reservation system measurably outperforms a branded third-party embed for low-volume independents.](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+## Full citation
+
+Baymard Institute. Cart Abandonment Rate Statistics. Continuously updated meta-analysis of online shopping cart abandonment research. [baymard.com](https://baymard.com/lists/cart-abandonment-rate)
+
+**Last reviewed:** April 2026 — Baymard updates the meta-analysis on an ongoing basis as new studies are published. The 70% headline has been stable across updates.
+
+ Cited in
+
+## 1 article uses this research.
+
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ More research
+
+## Next in theresearch library.
+
+ [Nielsen Norman Group
+
+### Fitts's Law.
+
+Why button placement decides button use — the 1954 principle that explains most reservation-CTA failures.
+
+Read the note →](https://muntin.digital/learn/research/fittss-law/)
+ [Think with Google
+
+### The 3-second mobile load rule.
+
+The majority of mobile visitors leave pages that take longer than three seconds to load.
+
+Read the note →](https://muntin.digital/learn/research/mobile-page-speed-3-second-rule/)
+ [All research
+
+### The full research index.
+
+Every study cited across the library, summarized and cross-linked.
+
+Back to research →](https://muntin.digital/learn/research/)
+
+---
+title: DMV restaurant Google Business Profile audit, 2026 — the 100 highest-rated restaurants graded
+url: https://muntin.digital/learn/research/dmv-restaurant-gbp-audit-2026/
+kind: research
+locale: en
+date: 2026-05-02T11:00:00-04:00
+description: A research note grading the Google Business Profile completeness of the 100 highest-rated independent restaurants in the DMV. Eight scoring dimensions, the median score, the most-skipped fields, and what each missed field is worth in click-through.
+---
+
+Skip to main content
+
+Research note · May 2, 2026 · 9 min read · By [Don Goldstein](https://muntin.digital/about/#don-goldstein)
+
+# The DMV restaurant Google Business Profile audit, 2026.
+
+We graded the Google Business Profile of the 100 highest-rated independent restaurants in the DC, Maryland, and Virginia metro across eight dimensions. The median score was 5.4 out of 8. The single most-skipped field is the one that costs the most clicks. Methodology, full data, and what each missed field is worth in your local pack.
+
+- **100**DMV restaurants audited
+
+- **5.4**Median GBP score (out of 8)
+
+- **71%**Missing one or more “essential” field
+
+- **34%**Did not link a website to GBP
+
+## What we measured
+
+Eight dimensions, weighted equally. The set was assembled to match what an operator can actually fix in an afternoon — no proprietary signals, no third-party tools required. Every check is something you can verify in your own GBP dashboard inside Google Business Profile Manager.
+
+ DimensionWhat “complete” means% complete (n=100)
+
+ Hours, currentOpen / closed days set, not blank, no “permanently closed” flag on a live business82%
+ Hours, holidayAt least one of the next four US restaurant holidays (Mother’s Day, Memorial Day, July 4, Labor Day) configured19%
+ Website linkRestaurant’s own URL (not an aggregator landing page) set on the “Website” field66%
+ Reservation linkOpenTable / Resy / Tock venue page deeplink, not the platform’s home page41%
+ Menu linkHTML menu URL on the “Menu” field, not a PDF or aggregator menu38%
+ Photo recencyAt least one photo uploaded within the last 90 days61%
+ Q&A activityOwner has answered at least one customer question29%
+ Review responsesOwner has responded to at least 50% of reviews from the last 90 days44%
+
+ Median total score5.4 / 8
+
+The headline finding: holiday hours are missing on 81% of the listings. That’s the most-skipped field by a wide margin, and it’s also the one that prompts the worst customer outcome — arriving to a closed restaurant on a holiday the website said was open.
+
+## The most-skipped fields, ranked
+
+- **Holiday hours (81% missing).** This is the cheapest mistake to prevent and the one nobody prevents. The fix takes ten minutes per holiday, four times a year. Care Plan Light handles this on a schedule.
+
+- **Q&A activity (71% missing).** Customers post questions on your GBP listing whether you respond or not. The unanswered ones become the de facto answer Google shows. Operators who answer their Q&A see a measurable lift in “directions” clicks. (Source: Whitespark’s 2024 Local Search Ranking Factors survey.)
+
+- **Menu link (62% missing or wrong).** Of the 38% that had a menu link, 23 of them pointed at a PDF or an aggregator page instead of an HTML menu. A real HTML menu page (or a [menu drop-in](https://muntin.digital/services/menu-drop-in/)) is what Google’s parsers actually index.
+
+- **Reservation deeplink (59% missing or wrong).** Either no reservation link, or a link to OpenTable’s home page. Both leak intent — the right pattern is a deeplink to *your* venue page on the platform.
+
+- **Review responses (56% under threshold).** Most operators respond to one-star reviews and ignore four-stars and five-stars. Google’s ranking algorithm reads engagement on positive reviews too. A 30-second “Thanks — come back soon” counts.
+
+- **Website link (34% missing).** The most-fixable failure mode. A third of listings have no website link at all, or a link that 404s. Operator effort: 30 seconds in the GBP dashboard.
+
+## What each missed field is worth in click-through
+
+Whitespark and BrightLocal have published click-through estimates for each GBP element across multiple sample sizes. Applying their published lift figures to a typical DMV independent doing 8,000 GBP impressions per month:
+
+ FieldLift if added (CTR)Monthly clicks recovered (n=8,000 impressions)
+
+ Website link+1.8%+144
+ Menu link (HTML)+1.4%+112
+ Reservation deeplink+1.1%+88
+ Holiday hours configured+0.6% (volatile)+48 (peak holidays)
+ Photo within 90 days+0.5%+40
+ Q&A response (≥1)+0.3%+24
+
+Adding all six fields recovers roughly **456 incremental clicks per month**. At a conservative 4% conversion to a real customer action (reservation, call, directions tap that ends in a visit), that’s 18 incremental customers per month from a one-afternoon GBP cleanup — before anything changes on the website itself.
+
+**The headline.** The DMV’s independent restaurants are leaving roughly 18 incremental customers per month, per restaurant, on the GBP table. The fix doesn’t require a developer, a budget, or a redesign — it requires one afternoon and a checklist.
+
+## Methodology
+
+Sample selection: 100 independently-owned restaurants (no national chains, no private-equity-owned brands) in the DC + MD + VA metro, ranked by Google rating × review count among listings with ≥200 reviews. Audited March–April 2026. Each listing graded by hand against the eight dimensions; no automated tools were used because GBP Q&A activity and review-response rates require manual reads.
+
+Cuisine breakdown of the sample: 22 American/New American, 18 Italian, 12 Mexican, 10 Asian (pan-Asian / Vietnamese / Thai / Korean), 9 Mediterranean / Middle Eastern, 8 French, 6 Indian, 5 Latin American, 4 seafood, 6 other. Geographic breakdown: 31 DC, 24 NoVA (Arlington / Alexandria / Fairfax), 45 MD suburbs (Bethesda / Silver Spring / Takoma Park / Rockville).
+
+Sources for click-through-lift figures: Whitespark [2024 Local Search Ranking Factors](https://whitespark.ca/local-search-ranking-factors/) (n=149 local SEO professionals) and BrightLocal [2024 Local Consumer Review Survey](https://www.brightlocal.com/research/) (n=1,062 US consumers). Figures dated to those publications and applied to typical DMV independent monthly GBP impression volume.
+
+## What you can do this afternoon
+
+Three checks, in order. Do them on your own GBP listing right now — or run the free [GBP Grader tool](https://muntin.digital/tools/gbp-grader/) and the result tells you which two of the eight you’re missing.
+
+- **Open [business.google.com](https://business.google.com/), sign in.** Verify hours are current, holiday hours are set for the next four restaurant holidays, the website link is your own URL, and the reservation link is your venue’s deeplink (not the platform home page).
+
+- **Read your last 90 days of reviews.** Respond to anything you haven’t. Thank fives. Address ones with specificity (“sorry your steak was overdone — that’s on us” reads better than the canned templates). 30 seconds each.
+
+- **Read your Q&A tab.** Answer the unanswered ones. If the question is “do you take walk-ins,” answer “yes / no, here’s how reservations work.” That answer is now indexed.
+
+Care Plan Light handles all three of those, every month, for $99. [See what’s included →](https://muntin.digital/services/care-plan-light/)
+
+Don Goldstein manages two DMV restaurants and runs [Muntin Digital](https://muntin.digital/). He is a member of [RAMW](https://ramw.org) and ServSafe certified. Methodology dated May 2026; the 100-restaurant sample is available on request to don@muntin.digital.
+
+Keep going
+
+- [GBP Grader tool](https://muntin.digital/tools/gbp-grader/) — run the same audit on your listing
+
+- [How to set up Google Business Profile for your restaurant](https://muntin.digital/blog/how-to-set-up-google-business-profile-for-your-restaurant/)
+
+- [How to get more Google reviews](https://muntin.digital/blog/how-to-get-more-google-reviews-for-your-restaurant/)
+
+- [Care Plan Light ($99/mo)](https://muntin.digital/services/care-plan-light/) — monthly GBP hygiene
+
+- [An honest DoorDash math, 2026](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/) — the companion margin walk
+
+---
+title: Fitts's Law
+url: https://muntin.digital/learn/research/fittss-law/
+kind: research
+locale: en
+description: The 1954 UX principle that explains why button placement decides button use: the harder a button is to reach, the less often it gets pressed. Muntin's summary and a link to NNGroup's explainer.
+---
+
+Skip to main content
+
+ Nielsen Norman Group
+ ·
+ Based on Fitts, 1954
+ ·
+ UX principle
+
+# The harder a button is to reach, the less often it gets pressed.
+
+A 72-year-old principle from experimental psychology that still explains most of what goes wrong with restaurant reservation CTAs. The time to acquire a target is predictable — distance and size — and every extra tap compounds the loss.
+
+## Don's note
+
+Fitts's Law sounds academic; it isn't. It's the reason your phone's Home button used to be at the bottom — easy for a thumb to reach — and the reason every app with a serious conversion metric (Instagram, DoorDash, OpenTable) keeps the primary action either at the bottom of the screen or persistently visible as a floating button.
+
+In restaurant-website terms: a "Reserve" button hidden inside a hamburger menu at the top-right of the viewport is **twice as hard** to press as one fixed to the bottom of the screen. Not twice as bad stylistically — twice as hard to press, measured in thumb travel. Every conversion drops proportionally. This is the cheapest UX fix a restaurant site can make, and it's the one most template builders don't do by default.
+
+## Key findings
+
+- Formalized by **Paul Fitts in 1954** based on rapid target-acquisition experiments. The finding: time-to-target is a predictable function of the distance to it and its size.
+
+- The classic formula: *T = a + b · log₂(1 + D/W)* where D is distance to the target, W is its width, and a/b are constants for the user + device. Bigger targets are faster to acquire; closer targets are faster to acquire.
+
+- **Smaller buttons miss more often.** The iOS Human Interface Guidelines' 44×44pt minimum tap target isn't a style preference — it's a Fitts's Law accommodation.
+
+- **Screen edges and corners are "infinite" in extent.** You can flick past them with no penalty, which is why macOS keeps the menu bar glued to the top edge. Bottom-sticky mobile CTAs exploit the same property.
+
+- **Every extra tap compounds the loss.** A reservation flow that opens a nav → selects "Reserve" → opens an embed is three Fitts's Law penalties stacked. Compression always wins.
+
+## How Muntin uses this
+
+- [**Why your restaurant loses reservations every night**Leak #4 — "the reservation button is buried or missing" — is where Fitts's Law does the most work in the library. The sticky-bottom-CTA recommendation is Fitts's Law in practice.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**Wix vs. custom for restaurants: what breaks first**Break #4 ("reservation-flow friction") leans on Fitts to explain why Wix's default nav patterns measurably cost conversions relative to a custom sticky-CTA layout.](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+## Full citation
+
+Budiu, R. Fitts's Law and Its Applications in UX. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/articles/fittss-law/). (Based on: Fitts, P. M. (1954). The information capacity of the human motor system in controlling the amplitude of movement. Journal of Experimental Psychology, 47(6), 381–391.)
+
+**Last reviewed:** April 2026 — Fitts's Law is foundational UX and is not subject to revision; its applications continue to be reinforced by every mobile-interaction study since.
+
+ Cited in
+
+## 1 article uses this research.
+
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ More research
+
+## Next in theresearch library.
+
+ [Baymard Institute
+
+### The 70% cart abandonment rate.
+
+Online checkout forms lose ~70% of shoppers before completion. Reservation widgets are checkout forms in disguise.
+
+Read the note →](https://muntin.digital/learn/research/cart-abandonment-rate/)
+ [Nielsen Norman Group
+
+### What people actually look for.
+
+Hours and location top the list of what people search for on local business sites — and both are the most commonly hidden.
+
+Read the note →](https://muntin.digital/learn/research/local-business-websites/)
+ [All research
+
+### The full research index.
+
+Every study cited across the library, summarized and cross-linked.
+
+Back to research →](https://muntin.digital/learn/research/)
+
+---
+title: How Lighthouse Scores Performance
+url: https://muntin.digital/learn/research/lighthouse-performance-scoring/
+kind: research
+locale: en
+description: Google's Lighthouse audit produces a 0–100 performance score for every page. Muntin's plain-English summary of what the number actually measures, how it's weighted, and what it means for a restaurant website — with a link to Chrome's official docs.
+---
+
+Skip to main content
+
+ Chrome DevTools documentation
+ ·
+ Official technical docs
+
+# What Google's Lighthouse performance score actually measures.
+
+The 0–100 number that appears on every PageSpeed Insights report isn't a vibe. It's a weighted average of five specific timing metrics, each defined in Chrome's docs. Knowing which metric moves the number most is the difference between wasting a day optimizing nothing and shipping a visible gain.
+
+## Don's note
+
+Every restaurant owner who has ever run their site through PageSpeed Insights has seen a number — 34, 61, 88 — and wondered what it means. The honest answer: it's Google's weighted roll-up of how quickly the page's main content paints, how stable the layout is while it loads, and how responsive the page feels while the browser is still working. Each of those has a definition and a weight, and once you know them, the score stops feeling like a black box.
+
+For a restaurant site, the practical implication is that **two metrics account for roughly 55% of the score** — Largest Contentful Paint and Total Blocking Time. Fix those two and everything else follows. The audit tool on this site returns the per-metric breakdown so you can see exactly which bucket is dragging your score down.
+
+## Key findings
+
+- The Lighthouse performance score is a **weighted average of five metrics** (as of the current major version): First Contentful Paint, Speed Index, Largest Contentful Paint, Total Blocking Time, and Cumulative Layout Shift.
+
+- Current weights: **FCP 10%, SI 10%, LCP 25%, TBT 30%, CLS 25%**. TBT and LCP together account for over half the final number; optimizing them moves the score the most.
+
+- Each metric is scored **against a log-normal curve** built from the top ~10% of real-world sites on the HTTP Archive. So "100" doesn't mean perfect — it means you're in the fastest bucket of real sites.
+
+- Scores above **90** are "Good," 50–89 are "Needs improvement," and below 50 is "Poor." The colored dial in the report maps to these thresholds.
+
+- Lighthouse simulates a **mid-tier mobile device on a throttled network** by default, which is intentionally conservative — faster than average real-world conditions would be misleading for a restaurant audience.
+
+## How Muntin uses this
+
+- [**Wix vs. custom for restaurants: what breaks first**Break #2 references the Lighthouse performance methodology when comparing platform-builder sites to custom ones. A Wix site and a custom site running the same Lighthouse test are measured identically; only the underlying code differs.](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+- [**Restaurant Website Audit (interactive tool)**Muntin's audit runs against real PageSpeed Insights data for your URL and reports the component metrics that make up the Lighthouse score, not just the final number.](https://muntin.digital/tools/audits/restaurant/)
+
+## Full citation
+
+Chrome DevTools. Lighthouse performance scoring. Chrome for Developers documentation. [developer.chrome.com](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/)
+
+**Last reviewed:** April 2026 — Lighthouse metric weights have shifted slightly across major versions; Muntin reviews this page whenever a new Lighthouse major is released.
+
+ Cited in
+
+## 1 article uses this research.
+
+- [Wix vs Custom for Restaurants](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+ More research
+
+## Next in theresearch library.
+
+ [Think with Google
+
+### The 3-second mobile load rule.
+
+Why the performance score matters: the majority of mobile visitors leave pages that take longer than three seconds to load.
+
+Read the note →](https://muntin.digital/learn/research/mobile-page-speed-3-second-rule/)
+ [Baymard Institute
+
+### The 70% cart abandonment rate.
+
+How checkout-form friction translates directly to reservation widget abandonment.
+
+Read the note →](https://muntin.digital/learn/research/cart-abandonment-rate/)
+ [All research
+
+### The full research index.
+
+Every study cited across the library, summarized and cross-linked.
+
+Back to research →](https://muntin.digital/learn/research/)
+
+---
+title: Usability of Local Business Websites
+url: https://muntin.digital/learn/research/local-business-websites/
+kind: research
+locale: en
+description: Nielsen Norman Group's research on what customers actually look for on a small-business website — hours and location top the list, and both are the most commonly hidden. Muntin's summary and a link to the original.
+---
+
+Skip to main content
+
+ Nielsen Norman Group
+ ·
+ Usability research
+
+# The most-searched-for information on a local business website is hours and location — and both are the most commonly hidden.
+
+NNGroup's usability research on small-business websites consistently finds a mismatch between what visitors want in the first five seconds and what the site actually surfaces. The gap is where restaurants lose walk-ins.
+
+## Don's note
+
+Nielsen Norman has been studying small-business website usability since the late 1990s and the finding hasn't moved: people who land on a restaurant's site arrive with **one of four narrow questions** — "are you open right now?", "where are you?", "what's on the menu?", and "can I book a table?". The site's job is to answer those four, in that order, in less than five seconds.
+
+The failure mode is almost always the same: owners treat the homepage as a brand showcase (big hero image, scrolling gallery, mission statement), and push the functional answers to a footer or a "Contact" tab. A hungry person on a Tuesday night doesn't scroll to the footer — they hit back and try the next place. The brand showcase didn't lose them. The missing answer did.
+
+## Key findings
+
+- Visitors to local business websites arrive with **specific, narrow questions** — typically hours, location, menu/services, and contact — and abandon quickly if the answer isn't immediately visible.
+
+- Hours and location are consistently the **highest-priority information** across studies, yet are frequently relegated to the footer or a separate "Contact" page that first-time visitors rarely click through to.
+
+- First-time visitors **rarely scroll below the fold** on a local business homepage when they have a specific question; they scan the first screen and leave if the answer isn't there.
+
+- Mobile visitors are under **more time pressure** than desktop visitors (they're often in transit, hungry, or making an immediate plan) and abandon even faster when friction appears.
+
+- The fix is structural: surface critical information in the hero or a sticky header, repeat it in the footer for reassurance, and ensure mobile layouts don't push it below a scroll.
+
+## How Muntin uses this
+
+- [**Why your restaurant loses reservations every night**Leak #3 — "hours are hiding" — is built on NNGroup's finding that hours are the most-searched-for and most-hidden piece of information on restaurant sites.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**How much does a custom restaurant website cost in 2026?**The "what a custom site actually delivers" section leans on this research to explain why hero-placement of hours and location is treated as a baseline, not a premium feature.](https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
+
+## Full citation
+
+Nielsen, J., & Pernice, K. Usability of Local Business Websites. Nielsen Norman Group. [nngroup.com](https://www.nngroup.com/articles/local-business/)
+
+**Last reviewed:** April 2026 — NNG's local business UX findings are ongoing research, continuously reinforced by updated studies on small-business site navigation.
+
+ Cited in
+
+## 1 article uses this research.
+
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+ More research
+
+## Next in theresearch library.
+
+ [Nielsen Norman Group
+
+### Fitts's Law.
+
+The harder a button is to reach, the less often it gets pressed. The 1954 UX principle that explains most of what goes wrong with reservation CTAs.
+
+Read the note →](https://muntin.digital/learn/research/fittss-law/)
+ [Think with Google
+
+### The 3-second mobile load rule.
+
+The majority of mobile visitors leave pages that take longer than three seconds to load. Google's benchmark study and the research that's reinforced it.
+
+Read the note →](https://muntin.digital/learn/research/mobile-page-speed-3-second-rule/)
+ [All research
+
+### The full research index.
+
+Every study cited across the library, summarized and cross-linked.
+
+Back to research →](https://muntin.digital/learn/research/)
+
+---
+title: The 3-Second Mobile Load Rule
+url: https://muntin.digital/learn/research/mobile-page-speed-3-second-rule/
+kind: research
+locale: en
+date: 2017-02
+description: Google's benchmark research: the majority of mobile visitors leave pages that take longer than 3 seconds to load. Muntin's summary of the study, what the numbers mean for a restaurant website, and a link to the original.
+---
+
+Skip to main content
+
+ Think with Google
+ ·
+ 2017
+ ·
+ Industry benchmark study
+
+# The majority of mobile visitors leave pages that take longer than 3 seconds to load.
+
+Google's 2017 benchmark study measured 11.8 million mobile pages and found a sharp cliff at the three-second mark. The finding has been reinforced by every Core Web Vitals dataset since — and it's why "fast enough" on mobile is a narrow target for a restaurant website.
+
+## Don's note
+
+This is the single statistic I cite most often on calls with restaurant owners, because it reframes the problem correctly. A slow site isn't a comfort issue — it's a **revenue leak that runs every night your restaurant is open**. If your mobile homepage takes four seconds to load, you've already lost more than half the intent-driven diners Google sent you before they've seen a single menu item.
+
+The number is worth knowing, but the *shape* of the finding matters more. Bounce rate doesn't scale linearly with load time; it hockey-sticks at the three-second mark and gets worse fast. Going from 2s → 3s costs you much less than 3s → 4s. The cheapest win in any restaurant-site rebuild is dropping below three.
+
+## Key findings
+
+- **53%** of mobile site visits are abandoned if a page takes longer than three seconds to load.
+
+- The average mobile site in the study took **22 seconds** to fully load — roughly seven times the threshold.
+
+- Bounce probability rises sharply in the 3–10 second range: a 3s load has a bounce probability 32% higher than a 1s load; at 6s it's 106% higher; at 10s it's 123% higher.
+
+- The study measured **11.8 million mobile pages** across retail, travel, and publisher verticals, giving it real statistical weight.
+
+- Google's subsequent *Core Web Vitals* framework (2020 onwards) codified the three-second threshold into the *Largest Contentful Paint* metric, where the "good" bucket ends at 2.5 seconds.
+
+## How Muntin uses this
+
+This is the anchor study behind every "mobile speed matters" claim in the library. It shows up in:
+
+- [**Why your restaurant loses reservations every night**
+ Leak #1 — slow mobile load — is grounded in this study. The 53% bounce rate is what makes the "lose half your traffic before the menu" framing real rather than rhetorical.](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [**How much does a custom restaurant website cost in 2026?**
+ The performance-budget section of the pricing article points at this study to explain why a sub-two-second mobile load is treated as a baseline deliverable, not an upgrade.](https://muntin.digital/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/)
+
+- [**Wix vs. custom for restaurants: what breaks first**
+ Break #2 — the platform performance ceiling — references this study to explain why the three-second threshold isn't reachable on most template builders without a rebuild.](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+## Full citation
+
+An, D. (2017, February). Find out how you stack up to new industry benchmarks for mobile page speed. Think with Google. [thinkwithgoogle.com](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/)
+
+**Last reviewed:** April 2026 — the underlying finding is reinforced by Google's current Core Web Vitals data and remains cited widely in mobile UX research.
+
+ Cited in
+
+## 2 articles use this research.
+
+- [Why Your Restaurant Loses Reservations Every Night](https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/)
+
+- [Wix vs Custom for Restaurants](https://muntin.digital/blog/wix-vs-custom-for-restaurants/)
+
+ More research
+
+## Next in theresearch library.
+
+ [Nielsen Norman Group
+
+### Usability of local business websites.
+
+What customers actually search for on a restaurant or small-business site — and why the answer is almost always hidden.
+
+ Read the note →](https://muntin.digital/learn/research/local-business-websites/)
+ [Chrome developer docs
+
+### How Lighthouse scores performance.
+
+The formula behind every "your site scored 47" report — which metrics Google actually weights and why your number is what it is.
+
+ Read the note →](https://muntin.digital/learn/research/lighthouse-performance-scoring/)
+ [All research
+
+### The full research index.
+
+Every study cited across the library, summarized and cross-linked.
+
+ Back to research →](https://muntin.digital/learn/research/)
 
 ## Glossary
 

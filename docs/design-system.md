@@ -167,6 +167,74 @@ Components: `.article-body`, `.cite`, `.share-btn`, `.listen-card`,
 `.breadcrumb`. New articles must not introduce per-page CSS
 beyond what's already in `site.css`.
 
+### Conversation shell
+
+`/window/`, `/es/window/`. The intentionally-bare contact surface
+that frames "tell Don what's on your mind" as a conversation, not a
+form. No global nav (a slim `.window-shell` with the lockup and a
+"← muntin.digital" exit). One vertical reading rhythm: hero →
+muntin hairline → thread (initially empty) → composer with onramp
+chips → reassurance line → optional Cal.com link → fieldnotes
+rail at the bottom.
+
+Components live under the `.window-*` namespace in `site.css`:
+`.window-canvas`, `.window-shell`, `.window-shell__lockup`,
+`.window-shell__back`, `.window-hero`, `.window-muntin`,
+`.window-thread`, `.window-composer`, `.window-composer__form`,
+`.window-composer__field`, `.window-composer__row`,
+`.window-composer__counter`, `.window-composer__submit`,
+`.window-composer__msg`, `.window-composer__onramps`,
+`.window-onramp`, `.window-composer__reassurance`,
+`.window-composer__alt`, `.window-fieldnotes-rail`,
+`.window-paused`, `.window-signin`.
+
+Hard rules for the Conversation shell:
+
+- No marketing CTAs, no pricing, no service descriptions inside the
+  shell. The shell exists to receive a message, full stop.
+- The composer onramp chips PREPEND text to the textarea, they don't
+  replace it. The user is always free to rewrite.
+- The field is autofocused **only** if the user arrived from a path
+  that signals intent (`?topic=…`). Default is no autofocus, so the
+  shell can be read without hijacking the typing context.
+- No `data-hide-sticky-bar` is needed here; the path-based
+  suppression in `_includes/footer.html` already hides the mobile
+  sticky CTA bar on `/window/` and `/es/window/`.
+- New conversation surfaces (e.g. an in-flow "ask Don a follow-up"
+  step inside a tool) reuse `.window-composer*` classes; do not
+  fork.
+
+### App shell
+
+`/workbench/`, `/sign-in/`, `/account/`, `/admin/` (and ES
+counterparts). The signed-in / account-state surface that frames
+the site's persistent-state features (saved tool results,
+account settings, login). Different visual register from the
+marketing shell: tighter type, denser layout, no big hero, the
+nav stays but loses the "Email Don" CTA.
+
+Components live under the `.workbench-*` and `.account-*`
+namespaces in `site.css`. New app surfaces:
+
+- Reuse `.workbench-grid`, `.workbench-card`, `.workbench-empty`,
+  `.workbench-action`, `.account-row`, `.account-section`.
+- Body sets `<body class="app-shell" data-hide-sticky-bar>` so
+  the mobile sticky CTA bar suppresses (an account screen has its
+  own primary actions; double UI is noise).
+- The nav still ships, but the auth-state JS in
+  `_includes/nav.html` shows the "Workshop (N)" link instead of
+  "Sign in" once `/api/auth/me` returns 200.
+- App-shell pages do **not** ship the post-end signature, the
+  fieldnotes rail, or the smart-next-CTA. Those are reading-shell
+  conventions — they don't belong in a working surface.
+- Save copy on app-shell pages follows the by-tool-kind contract
+  (scorecard tools vs. calculators vs. artifacts) — see
+  `data/tool-knit.json` and the per-tool save-card patterns.
+
+Hard line: if a new feature mixes "marketing wants to convert" with
+"the user is signed in and managing state", it's two pages. Don't
+ship a hybrid.
+
 ## Learn-back row (Sprint 12 — locked)
 
 A thin, prose-shaped row inside the result region that teaches the

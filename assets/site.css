@@ -30,11 +30,13 @@
   /* Focus affordance — consistent across every interactive element */
   --ring-focus: 0 0 0 3px rgba(31,78,91,.22);
 
-  /* Hero wash — two-stop radial gradient that adds depth without
-     weight. Only applied to .audit-hero; keeps body calm. */
-  --gradient-hero:
-    radial-gradient(1200px 600px at 20% -10%, rgba(31,78,91,.06), transparent 60%),
-    radial-gradient(900px 500px at 110% 10%, rgba(184,84,26,.05), transparent 55%);
+  /* --gradient-hero retired in Phase 4 (launch-plan audit #2).
+     The plan's visual-identity edit calls for restraint above the
+     fold — single teal underline, no radial washes. The token
+     declaration is intentionally removed; if a page reaches for it,
+     CSS will fall back to "none" and the page will render flat,
+     which is the desired behavior. The retirement is irreversible
+     by design so future inline styles can't quietly reintroduce it. */
 
   /* Fluid mid-tier type — h1-h3 already clamp; these cover body
      rhythm so card type doesn't feel frozen against the hero. */
@@ -1281,6 +1283,43 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    rule and render the foot-cta on every page — duplicates the final
    block but doesn't break layout. Acceptable degradation (B3.3). */
 body:has(.block.final) .foot-cta{display:none}
+
+/* Mobile sticky bottom action bar. Renders only on phone-sized
+   viewports with a coarse pointer (so a tablet with a Bluetooth mouse
+   doesn't get it). Suppression handled by the inline JS in
+   _includes/footer.html — paths like /window/, /sign-in/, /account/,
+   /workbench/, /admin/ get hidden because they have their own bottom
+   UI. Lives inside <footer> so sync-includes captures it atomically.
+   Hides under prefers-reduced-data and prefers-reduced-motion: false
+   (reduced-motion only changes transition, not visibility). */
+.mobile-cta-bar{display:none}
+@media (max-width:720px) and (pointer:coarse){
+  .mobile-cta-bar{
+    display:flex;gap:8px;
+    position:fixed;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));
+    padding:8px;border-radius:14px;
+    background:var(--cream);
+    border:1px solid var(--line);
+    box-shadow:0 -8px 24px -12px rgba(20,22,26,0.18),0 2px 8px -2px rgba(20,22,26,0.10);
+    z-index:60;
+  }
+  .mobile-cta-bar[hidden]{display:none}
+  .mobile-cta-bar__btn{
+    flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    min-height:44px;padding:10px 12px;border-radius:10px;
+    font:inherit;font-size:14.5px;font-weight:600;
+    text-decoration:none;letter-spacing:-0.005em;
+    transition:background var(--t-fast) var(--ease);
+  }
+  .mobile-cta-bar__btn svg{width:18px;height:18px;flex-shrink:0}
+  .mobile-cta-bar__btn--primary{background:var(--ink);color:var(--cream)}
+  .mobile-cta-bar__btn--primary:hover,.mobile-cta-bar__btn--primary:focus-visible{background:var(--ink-soft)}
+  .mobile-cta-bar__btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .mobile-cta-bar__btn--ghost:hover,.mobile-cta-bar__btn--ghost:focus-visible{border-color:var(--teal);color:var(--teal)}
+  .mobile-cta-bar__btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  /* Make sure the rest of the page doesn't sit under the bar. */
+  body:not([data-hide-sticky-bar]) main{padding-bottom:96px}
+}
 
 /* Main grid — 5 columns at desktop (brand + Studio + Trust + Library + Contact) */
 .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;gap:clamp(24px,3vw,44px);padding-bottom:48px;margin-bottom:32px;border-bottom:1px solid rgba(250,247,242,0.08)}
