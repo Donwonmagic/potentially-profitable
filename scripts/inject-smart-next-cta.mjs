@@ -62,6 +62,21 @@ function firstGlossaryHrefIn(src) {
   return link ? link[1] : null;
 }
 
+// Slug-specific overrides for articles whose body doesn't contain
+// any glossary autolinks. Without this, the smart-next "Read" CTA
+// falls back to the glossary index — which is what the auditor
+// flagged as a generic, ungrounded next step.
+const READ_OVERRIDE = {
+  'does-my-restaurant-need-a-website':                       { en: '/glossary/owned-channel/',           es: '/es/glossary/owned-channel/' },
+  'can-chatgpt-write-your-restaurant-website':               { en: '/glossary/cuisine-pitch/',           es: '/es/glossary/cuisine-pitch/' },
+  'what-should-be-on-a-restaurant-website':                  { en: '/glossary/above-the-fold/',          es: '/es/glossary/above-the-fold/' },
+  'como-saber-si-una-herramienta-de-restaurante-es-segura':  { es: '/es/glossary/client-side-tool/' },
+  'como-salir-de-doordash-mi-restaurante':                   { es: '/es/glossary/owned-channel/' },
+  'cuanto-cuesta-una-pagina-web-para-restaurante-2026':      { es: '/es/glossary/care-plan/' },
+  'mi-restaurante-no-aparece-en-google-maps':                { es: '/es/glossary/gbp/' },
+  'schema-markup-para-restaurante-ejemplo':                  { es: '/es/glossary/schema/' },
+};
+
 function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
   const windowHref = locale === 'es' ? `/es/window/?topic=${encodeURIComponent(slug)}` : `/window/?topic=${encodeURIComponent(slug)}`;
   const eyebrow = locale === 'es' ? 'Qué hacer ahora' : 'What to do next';
@@ -97,7 +112,8 @@ function buildBlock({ slug, locale, glossaryUrl, toolUrl }) {
 let changed = 0;
 for (const { file, slug, locale } of articleFiles()) {
   const src = fs.readFileSync(file, 'utf8');
-  const glossaryUrl = firstGlossaryHrefIn(src);
+  const override = (READ_OVERRIDE[slug] || {})[locale];
+  const glossaryUrl = override || firstGlossaryHrefIn(src);
   const toolUrl = loadPostEndCtaTool(slug, locale);
   const block = buildBlock({ slug, locale, glossaryUrl, toolUrl });
 
