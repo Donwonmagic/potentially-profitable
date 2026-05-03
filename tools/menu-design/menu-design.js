@@ -1641,8 +1641,33 @@
       // print shop. Class on the preview frame gates the CSS overlay.
       var pf = document.getElementById('mdPreviewFrame');
       if (pf) pf.classList.toggle('md-pp-print-marks', printVendor);
+      // Wave studio-quality (B15) — surface the print-shop deeplinks
+      // rail when print-vendor mode is on. Operators with a press-ready
+      // PDF in hand get a one-click route to a vetted partner.
+      var shopsEl = document.getElementById('mdPrintShops');
+      if (shopsEl) shopsEl.hidden = !printVendor;
       schedulePreview();
       scheduleSaveDraft();
+    });
+  }
+  // Wave studio-quality (B15) — wire each print-shop link with a
+  // Plausible event so we can measure conversion rates per vendor.
+  // Bounded prop set: vendor in {moo, gotprint, vistaprint}. Click
+  // does NOT swallow the navigation — the link still opens normally.
+  var printShopsEl = document.getElementById('mdPrintShops');
+  if (printShopsEl) {
+    printShopsEl.addEventListener('click', function (e) {
+      var link = e.target && e.target.closest && e.target.closest('.md-print-shop');
+      if (!link) return;
+      var vendor = link.dataset && link.dataset.vendor;
+      if (!vendor) return;
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Print Shop', {
+            props: { vendor: vendor }
+          });
+        } catch (_) {}
+      }
     });
   }
 
