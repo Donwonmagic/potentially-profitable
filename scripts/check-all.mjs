@@ -115,6 +115,7 @@ const CHECKS = [
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
   // that link to a service inline without naming the price).
   ['Pricing consistency (warn)','check-pricing-consistency.mjs'],
+  ['Turnstile singleton',   'check-turnstile-singleton.mjs'],
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],
