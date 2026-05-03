@@ -557,7 +557,14 @@
     // are DMV-area today; persisted with the rest of meta. JSON-LD +
     // Studio Brief read this field too so the priceCurrency in the
     // structured-data graph matches.
-    currency: 'USD'
+    currency: 'USD',
+    // Wave studio-quality — Quiet typography mode. When on, the
+    // renderers strip decoration (cuisine motif overlay, section
+    // glyphs, ornaments) and force single-column layout. Targets
+    // cognitive-load needs (ADHD, dyslexia, low literacy) without
+    // compromising the menu content. Operator opt-in; defaults off so
+    // the existing decorative themes look as they do today.
+    quietMode: false
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -1526,6 +1533,23 @@
       scheduleSaveDraft();
     });
   }
+  // Wave studio-quality — Quiet typography mode toggle. Strips
+  // decoration + section glyphs and forces single-column across the
+  // live preview, the printed PDF, and the QR-menu HTML.
+  var metaQuietEl = document.getElementById('mdMetaQuietMode');
+  if (metaQuietEl) {
+    metaQuietEl.checked = !!meta.quietMode;
+    metaQuietEl.addEventListener('change', function () {
+      meta.quietMode = !!metaQuietEl.checked;
+      schedulePreview();
+      scheduleSaveDraft();
+      if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+        MD_DOM.announce(meta.quietMode
+          ? tt('Quiet typography mode on.', 'Modo tipografía calmada activado.')
+          : tt('Quiet typography mode off.', 'Modo tipografía calmada desactivado.'));
+      }
+    });
+  }
   // Wave studio-quality — currency selector. Drives the locale-aware
   // price formatting (formatPriceDisplay) and the JSON-LD priceCurrency
   // field. Updates the live preview + studio brief on change.
@@ -1696,8 +1720,11 @@
     // Tolerant: empty when MD_DECOR isn't loaded or theme has no
     // cuisine match. Two-column / panel themes get a smaller / no
     // decoration so the asymmetric layout doesn't look unbalanced.
+    // Wave studio-quality — quietMode skips decoration entirely so
+    // operators get a calm, distraction-free menu surface.
     try {
-      if (typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
+      if (!meta.quietMode &&
+          typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
         var decorFrag = MD_DECOR.svgFragment(theme, { opacity: 0.10 });
         if (decorFrag) {
           html += '<div class="md-pp-decor" aria-hidden="true">' +
@@ -1728,7 +1755,9 @@
     }
 
     // Two-column theme: render dishes inside grid, sections span both columns.
-    var isTwoCol = theme.columns === 2;
+    // Wave studio-quality — quietMode forces single column for cognitive
+    // calm, even on 2-col themes (operator opted in for that reason).
+    var isTwoCol = !meta.quietMode && theme.columns === 2;
     if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
     groups.forEach(function (g) {
       // W13-2 — hero band renders before the section header.
@@ -1738,7 +1767,11 @@
       }
       if (g.name) {
         var sectionClasses = 'md-pp-section' + (g.specials ? ' md-pp-section-specials' : '');
-        var glyphPrefix = g.glyph ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> ' : '';
+        // Wave studio-quality — quietMode strips section glyph
+        // prefixes (the small cuisine icon before each section name).
+        var glyphPrefix = (!meta.quietMode && g.glyph)
+          ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> '
+          : '';
         var availTag = g.availability ? '<span class="md-pp-section-avail">' + escHtml(g.availability) + '</span>' : '';
         html += '<h2 class="' + sectionClasses + '"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' +
                 glyphPrefix + escHtml(g.name) + availTag +
@@ -2612,7 +2645,13 @@
       { label: tt('Save menu as file',          'Guardar menú como archivo'),
         run: function () { var b = document.getElementById('mdMenuSave'); if (b) b.click(); } },
       { label: tt('Load menu from file',        'Cargar menú desde archivo'),
-        run: function () { var l = document.getElementById('mdMenuLoad'); if (l) l.click(); } }
+        run: function () { var l = document.getElementById('mdMenuLoad'); if (l) l.click(); } },
+      // Wave studio-quality — Quiet typography mode toggle.
+      { label: tt('Toggle quiet typography (calm mode)', 'Alternar tipografía calmada'),
+        run: function () {
+          var q = document.getElementById('mdMetaQuietMode');
+          if (q) { q.checked = !q.checked; q.dispatchEvent(new Event('change')); }
+        } }
     ];
   }
   // ----------------------------------------------------------------
@@ -2871,7 +2910,16 @@
         meta: {
           tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage,
           address: meta.address, hours: meta.hours, serviceCharge: meta.serviceCharge,
-          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer
+          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer,
+          // Wave studio-quality — persist the meta-panel toggles so a
+          // page reload restores them. Previously persistDraft was
+          // missing these fields entirely; the restore handler read
+          // them but they were always undefined.
+          allergenRegime: meta.allergenRegime || 'us-fda9',
+          allowMultiPage: !!meta.allowMultiPage,
+          currency:       meta.currency || 'USD',
+          quietMode:      !!meta.quietMode,
+          businessName:   meta.businessName || ''
         },
         customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
         logoMeta: logoMeta,
@@ -2966,6 +3014,7 @@
           meta.allergenRegime = d.meta.allergenRegime || 'us-fda9';
           meta.allowMultiPage = !!d.meta.allowMultiPage;
           meta.currency       = d.meta.currency || 'USD';
+          meta.quietMode      = !!d.meta.quietMode;
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
@@ -2973,6 +3022,8 @@
           if (regimeRestoreEl) regimeRestoreEl.value = meta.allergenRegime;
           var multiRestoreEl = document.getElementById('mdMetaAllowMultiPage');
           if (multiRestoreEl) multiRestoreEl.checked = !!meta.allowMultiPage;
+          var quietRestoreEl = document.getElementById('mdMetaQuietMode');
+          if (quietRestoreEl) quietRestoreEl.checked = !!meta.quietMode;
           var currencyRestoreEl = document.getElementById('mdMetaCurrency');
           if (currencyRestoreEl && meta.currency) currencyRestoreEl.value = meta.currency;
           metaFooterFields.forEach(function (pair) {
@@ -3834,6 +3885,10 @@
         // into the PDF so the smart 2-page split planner only fires
         // when the operator opted into a 2-page deliverable.
         allowMultiPage: !!(meta && meta.allowMultiPage),
+        // Wave studio-quality — Quiet typography mode. Strips cuisine
+        // decoration + section glyphs and forces single-column in the
+        // printed PDF for cognitive-load accessibility.
+        quietMode: !!(meta && meta.quietMode),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale
@@ -4552,6 +4607,9 @@
         // B2 finish — same effective disclaimer the standard PDF export
         // already uses; the QR-menu HTML emits it below the allergen key.
         disclaimer:   effectiveDisclaimer(),
+        // Wave studio-quality — propagate Quiet typography mode so
+        // QR-menu HTML matches the operator's editor preference.
+        quietMode:    !!(meta && meta.quietMode),
         meta: {
           businessName:    title,
           tagline:         meta.tagline || '',
@@ -5614,6 +5672,12 @@
         if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
         renderThemePicker();
         if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
+        // Wave studio-quality — sync the meta-panel checkboxes so the
+        // restored state is visible (operator can see Quiet mode on).
+        var quietSyncEl = document.getElementById('mdMetaQuietMode');
+        if (quietSyncEl) quietSyncEl.checked = !!meta.quietMode;
+        var multiSyncEl = document.getElementById('mdMetaAllowMultiPage');
+        if (multiSyncEl) multiSyncEl.checked = !!meta.allowMultiPage;
         render();
         scheduleSaveDraft();
         setDownloadMsg(tt(

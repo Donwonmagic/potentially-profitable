@@ -1275,6 +1275,23 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </label>
             </div>
 
+            <!-- Wave studio-quality — Quiet typography mode. Strips
+                 decoration (cuisine motif, section glyphs) and forces
+                 single-column. For patrons with cognitive-load needs
+                 (ADHD, dyslexia, low literacy) or operators who want
+                 a calm distraction-free menu. Off by default. -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaQuietMode" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Quiet typography (calm mode)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Removes decoration and section glyphs, forces a single column. Helpful for patrons with cognitive load needs, dyslexia, or low literacy — and for any menu that just wants the content to speak.
+                  </span>
+                </span>
+              </label>
+            </div>
+
             <!-- Wave studio-quality — display currency. Drives the
                  prefix/suffix on bare-digit prices (operator types
                  "14" → renders as "$14" / "14 €" / "£14" depending

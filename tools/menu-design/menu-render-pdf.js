@@ -51,6 +51,8 @@
   function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, opts) {
     try {
       opts = opts || {};
+      // Wave studio-quality — Quiet typography mode skips decoration.
+      if (opts.quietMode) return;
       var DECOR = root && root.MD_DECOR;
       if (!DECOR || typeof DECOR.svgWrapped !== 'function') return;
       if (!root.svg2pdf || !doc.svg) return;
@@ -965,7 +967,8 @@
         doc.setTextColor(accentRgb.r, accentRgb.g, accentRgb.b);
       }
       // W12-2 — section glyph prefixes the label.
-      if (block.glyph) {
+      // Wave studio-quality — Quiet typography mode strips section glyphs.
+      if (block.glyph && !opts.quietMode) {
         var glyphPt = theme.h2Pt * 0.8;
         doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
         doc.setFontSize(glyphPt);
@@ -1414,7 +1417,8 @@
     // decided that's the best fit for the operator's dish count.
     var minTwoColW = 400;
     var paperWideEnough = (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
-    var twoColumn = paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
+    // Wave studio-quality — Quiet typography mode forces single-column.
+    var twoColumn = !opts.quietMode && paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
     if (twoColumn) return paginateTwoCol(blocks, doc, theme, paper);
 
     // Wave studio-quality — smart 2-page split planning. Mirror of the
@@ -1479,7 +1483,7 @@
     // Wave studio-quality — cuisine decoration on every page. Renders
     // FIRST so dish text + headers draw on top. No-op if MD_DECOR or
     // svg2pdf isn't loaded or the theme has no cuisine match.
-    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol, quietMode: !!opts.quietMode });
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
@@ -1500,7 +1504,7 @@
         doc.addPage();
         pageCount++;
         contentY = margin + bleedOff;
-        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
+        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol, quietMode: !!opts.quietMode });
       }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
@@ -1516,7 +1520,7 @@
           doc.addPage();
           pageCount++;
           contentY = margin + bleedOff;
-          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
+          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol, quietMode: !!opts.quietMode });
         }
       } else if (contentY + h > bottom) {
         doc.addPage();
@@ -1569,7 +1573,7 @@
     // Wave studio-quality — cuisine decoration on the first page,
     // bottom-right (where 2-col content has whitespace below the
     // last dish). Subsequent pages get it via newPage() below.
-    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true, quietMode: !!opts.quietMode });
 
     // First, separate cover blocks (each consumes a full sheet).
     var i = 0;
@@ -1578,7 +1582,7 @@
       doc.addPage();
       pageCount++;
       contentY = margin + bleedOff;
-      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true, quietMode: !!opts.quietMode });
       i++;
     }
 
@@ -1599,7 +1603,7 @@
       contentY = margin + bleedOff;
       // Wave studio-quality — decoration on every page, bottom-right
       // for 2-col layouts.
-      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true, quietMode: !!opts.quietMode });
     }
 
     function drawSpanFull(block) {
@@ -2154,7 +2158,10 @@
         // toggle propagates into PDF so smart 2-page split planner
         // (above paginate()) only fires when the operator actually
         // opted into a 2-page deliverable.
-        allowMultiPage: !!opts.allowMultiPage
+        allowMultiPage: !!opts.allowMultiPage,
+        // Wave studio-quality — Quiet typography mode propagates
+        // through to skip decoration + glyph + force single column.
+        quietMode:      !!opts.quietMode
       });
       // W10-1 — crop marks on every page when print-vendor mode is on.
       if (opts.printVendor) {
@@ -2215,7 +2222,8 @@
     // Mirror of paginate() at line 1305, but record breaks instead
     // of calling drawBlock.
     var minTwoColW = 400;
-    var twoColumn = (theme.columns === 2) && (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    // Wave studio-quality — Quiet typography mode forces single-column.
+    var twoColumn = !opts.quietMode && (theme.columns === 2) && (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
     if (twoColumn) return paginateForCountTwoCol(blocks, doc, theme, paper);
     var margin = paper.margin || 48;
     var contentY = margin;
