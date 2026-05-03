@@ -75,6 +75,7 @@ jobs:
           node scripts/inject-article-listen.mjs
           node scripts/inject-checklist-script.mjs
           node scripts/inject-glossary-script.mjs
+          node scripts/fix-bare-include-sentinels.mjs
           node scripts/build-people-pages.mjs
           node scripts/inject-homepage-fieldnotes-rail.mjs
           node scripts/inject-window-fieldnotes-rail.mjs
