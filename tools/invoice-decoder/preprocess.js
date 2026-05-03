@@ -1224,16 +1224,97 @@
     var second = preprocessCanvas(canvas, { preset: altPreset, profile: profile });
     var firstScore = qualityScoreFor(first);
     var secondScore = qualityScoreFor(second);
+    var winner = first;
     if (secondScore > firstScore + 5) {
       second.retried = true;
       second.retryPreset = altPreset;
       second.firstQualityHint = first.qualityHint;
       second.preset = altPreset;
-      return second;
+      winner = second;
+    } else {
+      first.retried = false;
+      first.preset = firstPreset;
     }
-    first.retried = false;
-    first.preset = firstPreset;
-    return first;
+    return winner;
+  }
+
+  // Wave 2.6 — Sauvola parameter sweep. When the orchestrator sees a
+  // low row-count outcome from the multipass OCR (rows < expected ×
+  // 0.6 from the vendor template), it can call `paramSweep(canvas)` to
+  // try a small grid of k values + skew search ranges and return the
+  // canvas + metadata that scored highest on `qualityScoreFor`. Cost:
+  // ~3-4× a single preprocess; only fires on poor first-pass photos.
+  function preprocessParamSweep(canvas, opts) {
+    opts = opts || {};
+    var profile = opts.profile || 'phone';
+    var preset = opts.preset || 'gentle';
+    var ks = opts.ks || [0.34, 0.40, 0.46, 0.28];
+    var bestResult = null;
+    var bestScore = -Infinity;
+    for (var i = 0; i < ks.length; i++) {
+      var r = _preprocessOnce(canvas, { preset: preset, profile: profile, sauvolaK: ks[i] });
+      var score = qualityScoreFor(r);
+      r.sweepK = ks[i];
+      r.sweepScore = score;
+      if (score > bestScore) {
+        bestScore = score;
+        bestResult = r;
+      }
+    }
+    bestResult.sweep = true;
+    bestResult.preset = preset;
+    return bestResult;
+  }
+
+  // Internal one-shot variant of preprocessCanvas that honors a custom
+  // Sauvola k. Mirrors the gentle-preset path; aggressive ignores k.
+  function _preprocessOnce(canvas, opts) {
+    var preset = opts.preset || 'gentle';
+    var profile = opts.profile || 'phone';
+    var k = (typeof opts.sauvolaK === 'number') ? opts.sauvolaK : 0.34;
+    var doRectify = (profile === 'phone');
+    var allowSauvola = (profile === 'phone' || profile === 'thermal');
+    var rectified = null, rectConf = null;
+    if (doRectify) {
+      try {
+        var rect = rectifyDocument(canvas, { minConfidence: 0.4 });
+        if (rect && rect.canvas) { rectified = rect.canvas; rectConf = rect.confidence; canvas = rectified; }
+      } catch (_) {}
+    }
+    var skew = (profile === 'screenshot') ? 0 : detectSkewAngle(canvas);
+    var deskewed = (profile === 'screenshot') ? canvas : rotateCanvas(canvas, -skew);
+    var ctx = deskewed.getContext('2d');
+    var img = ctx.getImageData(0, 0, deskewed.width, deskewed.height);
+    grayscaleInPlace(img);
+    var blurScore = laplacianVariance(img);
+    var t = otsuThreshold(img);
+    var bimodalityScore = otsuBetweenClassVariance(img, t);
+    var thresholdMethod = 'otsu';
+    if (preset === 'aggressive') {
+      t = Math.min(255, t + 8);
+      applyThresholdInPlace(img, t);
+    } else if (allowSauvola && bimodalityScore < 1500) {
+      if (profile === 'phone') correctIlluminationInPlace(img);
+      sauvolaInPlace(img, { window: profile === 'thermal' ? 15 : 21, k: k });
+      thresholdMethod = 'sauvola';
+    } else {
+      t = Math.max(0, t - 4);
+      applyThresholdInPlace(img, t);
+      if (profile === 'phone') median3x3InPlace(img);
+    }
+    ctx.putImageData(img, 0, 0);
+    return {
+      canvas: deskewed,
+      skewAngle: skew,
+      threshold: t,
+      thresholdMethod: thresholdMethod,
+      blurScore: blurScore,
+      bimodalityScore: bimodalityScore,
+      qualityHint: classifyQuality(blurScore, bimodalityScore),
+      rectified: !!rectified,
+      rectifyConfidence: rectConf,
+      profile: profile
+    };
   }
 
   // Public entry: takes a File, returns a preprocessed canvas plus
@@ -1270,6 +1351,7 @@
     preprocessFile:    preprocessFile,
     preprocessCanvas:  preprocessCanvas,
     preprocessCanvasWithRetry: preprocessCanvasWithRetry,
+    preprocessParamSweep: preprocessParamSweep,
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,

@@ -45,7 +45,11 @@
   // Distributors print these alongside line items but they aren't
   // ingredients; bucketing them as `kind` keeps math reconciliation
   // honest and gives the accountant export a clean line type.
-  var CREDIT_RE   = /\b(credit|cred|cr|return|returned|adjustment|adj|reembolso|devoluci[oó]n|abono|nota\s+de\s+cr[eé]dito)\b/i;
+  // Wave 2.5 — split 'return' (goods physically returned) from 'credit'
+  // (admin credit memo / adjustment) so accountant export can map each
+  // to the right GL account.
+  var RETURN_RE   = /\b(return|returned|return\s+credit|devoluci[oó]n|devuelto|devuelta)\b/i;
+  var CREDIT_RE   = /\b(credit\s+memo|credit\b|cred|cr|adjustment|adj|reembolso|abono|nota\s+de\s+cr[eé]dito)\b/i;
   var DEPOSIT_RE  = /\b(deposit|btl\s*dep|bottle\s+dep|crv|recycl|envase|dep[oó]sito|dep\.?)\b/i;
   var SURCHARGE_RE = /\b(fuel\s+surcharge|fuel\s+adj|surcharge|delivery\s+fee|svc\s+fee|service\s+fee|small\s+order|recargo|combustible|env[ií]o)\b/i;
   var BACKORDER_RE = /\b(b\/o|b\.?o\.?|backorder|back\s*order|sin\s+existencia)\b/i;
@@ -117,6 +121,7 @@
   // 'item'; flips when a credit/deposit/surcharge marker fires.
   function classifyKind(raw) {
     var s = String(raw || '');
+    if (RETURN_RE.test(s)) return 'return';
     if (CREDIT_RE.test(s) || NEG_PRICE_RE.test(s)) return 'credit';
     if (DEPOSIT_RE.test(s)) return 'deposit';
     if (SURCHARGE_RE.test(s)) return 'surcharge';
@@ -229,9 +234,10 @@
       row.kind = classifyKind(line);
       var pack = extractPack(line);
       if (pack) row.pack = pack;
-      // Negative-extended on a credit row: flip the lineTotal sign so
-      // math reconciliation sums correctly.
-      if (row.kind === 'credit' && typeof row.lineTotal === 'number' && row.lineTotal > 0) {
+      // Negative-extended on a credit / return row: flip the lineTotal
+      // sign so math reconciliation sums correctly.
+      if ((row.kind === 'credit' || row.kind === 'return') &&
+          typeof row.lineTotal === 'number' && row.lineTotal > 0) {
         if (NEG_PRICE_RE.test(line)) row.lineTotal = -row.lineTotal;
       }
       row.fieldConf = scoreFields(row, line, ocrConf, pattern);

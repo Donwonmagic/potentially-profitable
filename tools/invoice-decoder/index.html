@@ -424,6 +424,17 @@
 .id-pulse-pill[data-dir="up"]{background:rgba(252,224,215,0.95);color:#7a2e1f}
 .id-pulse-pill[data-dir="down"]{background:rgba(199,228,212,0.92);color:#0c4a26}
 .id-pulse-empty{font-size:12.5px;color:rgba(255,255,255,0.86);font-style:italic}
+/* Wave 2.2 — contract reconciliation strip inside the vendor pulse. */
+.id-pulse-contract{margin-top:10px;padding:10px 12px;background:rgba(252,224,215,0.18);border:1px solid rgba(252,224,215,0.35);border-radius:8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.id-pulse-contract-msg{font-size:13px;color:#fce0d7;flex:1 1 auto}
+.id-pulse-contract-btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);color:#7a2e1f;cursor:pointer;white-space:nowrap}
+.id-pulse-contract-btn:hover{filter:brightness(0.97)}
+.id-pulse-contract-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* Wave 2.3 — inline per-row math-fix accept chip */
+.id-row-mathfix{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;border-radius:6px;background:#FFF6E5;border:1px solid #B25C2A;color:#7a4413;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;font-variant-numeric:tabular-nums}
+.id-row-mathfix:hover{background:#fff0d4;border-color:#7a4413}
+.id-row-mathfix:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 
 /* Wave 1.3 — math-fix card */
 .id-mathfix{margin:0 0 12px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px;color:var(--ink)}
@@ -1238,6 +1249,7 @@
 <script src="./proof-flyout.js?v=20260501-w3-1"></script>
 <script src="./device-key.js?v=20260501-w3-4"></script>
 <script src="./sku-history.js?v=20260501-w8-9"></script>
+<script src="./contract-watch.js?v=20260503-w2-2"></script>
 <script src="./substitution.js?v=20260501-w8-9"></script>
 <script src="./margin-impact.js?v=20260501-w8-1"></script>
 <script src="./accountant-export.js?v=20260501-w8-1"></script>

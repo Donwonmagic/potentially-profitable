@@ -1182,7 +1182,13 @@
   // Wave 1.3 — math fix card. Renders inside #idMathFix when active,
   // hidden otherwise. Buttons: "Apply this fix" for digit-flip,
   // "Re-OCR last rows" for missing-line, "I'll fix it manually" always.
+  // Wave 2.3 — track the active math-fix candidate at module scope so
+  // the per-row renderer can decorate the offending row with an
+  // inline single-tap accept-fix chip alongside the top card. Both
+  // affordances share the same handler.
+  var _currentMathFix = null;
   function renderMathFixCard(fix) {
+    _currentMathFix = (fix && fix.kind === 'digit-flip' && typeof fix.rowIdx === 'number') ? fix : null;
     var host = document.getElementById('idMathFix');
     if (!host) return;
     if (!fix) { host.hidden = true; host.innerHTML = ''; return; }
@@ -1280,6 +1286,29 @@
         }
       }
     } catch (_) {}
+    // Wave 2.2 — surface a one-tap reconciliation note when this
+    // invoice overcharges vs. the operator's contracts.
+    var contractLine = '';
+    try {
+      if (typeof MID_CONTRACT_WATCH !== 'undefined' && MID_CONTRACT_WATCH.buildOveragesFor) {
+        var ov = MID_CONTRACT_WATCH.buildOveragesFor(parsed.rows);
+        if (ov && ov.count) {
+          var label = vendor && vendor !== tt('No vendor detected', 'Sin proveedor') ? vendor : tt('Vendor', 'Proveedor');
+          contractLine =
+            '<div class="id-pulse-contract">' +
+              '<span class="id-pulse-contract-msg">' +
+                escHtml(tt(
+                  label + ' overcharged $' + ov.total.toFixed(2) + ' on ' + ov.count + ' line' + (ov.count === 1 ? '' : 's') + ' vs. your contract.',
+                  label + ' nos cobró de más $' + ov.total.toFixed(2) + ' en ' + ov.count + ' línea' + (ov.count === 1 ? '' : 's') + ' vs. tu contrato.'
+                )) +
+              '</span>' +
+              '<button type="button" class="id-pulse-contract-btn" id="idCopyReconNote">' +
+                escHtml(tt('Copy reconciliation note', 'Copiar nota de conciliación')) +
+              '</button>' +
+            '</div>';
+        }
+      }
+    } catch (_) {}
     host.innerHTML =
       '<div class="id-pulse-row">' +
         '<span class="id-pulse-vendor">' + escHtml(vendor) + '</span>' +
@@ -1288,8 +1317,34 @@
         '</span>' +
       '</div>' +
       driftLine +
+      contractLine +
       '<div class="id-pulse-pills">' + pills + '</div>';
     host.hidden = false;
+    // Wire the copy button. Single click → builds + copies the note,
+    // briefly flips label to "Copied ✓" so the operator gets feedback.
+    var copyBtn = document.getElementById('idCopyReconNote');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        try {
+          var note = MID_CONTRACT_WATCH.buildNoteFor({
+            rows: parsed.rows,
+            vendor: vendor,
+            locale: LOCALE,
+            dateLabel: date
+          });
+          if (!note) return;
+          MID_CONTRACT_WATCH.copyToClipboard(note).then(function (ok) {
+            if (!ok) return;
+            var orig = copyBtn.textContent;
+            copyBtn.textContent = tt('Copied ✓', 'Copiado ✓');
+            setTimeout(function () { copyBtn.textContent = orig; }, 2000);
+            if (window.plausible) {
+              try { window.plausible('Invoice Decoder Recon Note Copied'); } catch (_) {}
+            }
+          });
+        } catch (_) {}
+      });
+    }
   }
 
   // Wave 4.3 — render the "save this layout?" prompt when the
@@ -1531,11 +1586,14 @@
       }
     } catch (_) {}
 
-    // Wave 1.5 — kind tag for non-item lines.
+    // Wave 1.5 / 2.5 — kind tag for non-item lines. Wave 2.5 adds
+    // an explicit 'return' kind separate from 'credit' so accountant
+    // export can map each to a different GL account.
     var kindTag = '';
     if (r.kind && r.kind !== 'item') {
       var kindLabel = {
         credit:    tt('credit', 'crédito'),
+        return:    tt('return', 'devolución'),
         deposit:   tt('deposit', 'depósito'),
         surcharge: tt('surcharge', 'recargo'),
         backorder: tt('backorder', 'pendiente')
@@ -1564,10 +1622,21 @@
       '<button type="button" class="id-row-act id-row-act-no"  data-act="ignore"  data-idx="' + idx + '" aria-label="' + escHtml(tt('Flag and remove', 'Marcar y quitar')) + '" title="N">✕</button>' +
       '</span>';
 
+    // Wave 2.3 — inline math-fix chip on the row the math-reconciliation
+    // engine flagged. One-tap accept commits the lineTotal correction
+    // exactly like the top-card button.
+    var mathFixChip = '';
+    if (_currentMathFix && _currentMathFix.rowIdx === idx && typeof _currentMathFix.to === 'number') {
+      mathFixChip = '<button type="button" class="id-row-mathfix" data-mathfix-row="' + idx + '" data-mathfix-to="' + _currentMathFix.to + '" title="' +
+        escHtml(tt('Tap to accept the math fix on this row', 'Toca para aceptar el arreglo en este renglón')) + '">' +
+        escHtml(tt('Use $' + _currentMathFix.to.toFixed(2) + ' ✓', 'Usar $' + _currentMathFix.to.toFixed(2) + ' ✓')) +
+        '</button>';
+    }
+
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip +
       '</span>' +
       '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
       '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
@@ -1579,6 +1648,21 @@
   // Click delegation — turn a span into an <input> on tap.
   if (parsedList) {
     parsedList.addEventListener('click', function (e) {
+      // Wave 2.3 — inline math-fix chip on the offending row.
+      var mfBtn = e.target.closest && e.target.closest('.id-row-mathfix');
+      if (mfBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var mfIdx = parseInt(mfBtn.getAttribute('data-mathfix-row'), 10);
+        var mfTo = parseFloat(mfBtn.getAttribute('data-mathfix-to'));
+        if (isFinite(mfIdx) && isFinite(mfTo)) {
+          commitCellEdit(mfIdx, 'lineTotal', mfTo);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Math Fix Applied', { props: { kind: 'inline-row' } }); } catch (_) {}
+          }
+        }
+        return;
+      }
       // Wave 3.1 — visible Y/N action buttons (per-pointer alt to swipe).
       var actBtn = e.target.closest && e.target.closest('.id-row-act');
       if (actBtn) {
