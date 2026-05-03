@@ -3449,6 +3449,107 @@
         return;
       }
     });
+    // Wave studio-quality — delegated drag-and-drop for per-dish photo
+    // zones + section hero zones. Each `.md-photo-pick` label is
+    // rendered fresh on every row redraw, so we delegate at the
+    // rowsEl level instead of attaching N listeners. Logo zone has
+    // its own one-off handler at /tools/menu-design/menu-design.js
+    // (search "logoDropEl"); this is the per-row equivalent.
+    function _isImgFile(f) {
+      if (!f) return false;
+      return /^image\/(png|jpeg|jpg|webp)$/i.test(f.type) ||
+             /\.(png|jpe?g|webp)$/i.test(f.name || '');
+    }
+    function _findPickLabel(target) {
+      if (!target || !target.closest) return null;
+      return target.closest('.md-photo-pick');
+    }
+    rowsEl.addEventListener('dragenter', function (e) {
+      var dt = e.dataTransfer; if (!dt) return;
+      var hasFile = false;
+      if (dt.types) {
+        for (var i = 0; i < dt.types.length; i++) {
+          if (dt.types[i] === 'Files') { hasFile = true; break; }
+        }
+      }
+      if (!hasFile) return;
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      e.preventDefault();
+      label.classList.add('is-dragging');
+    });
+    rowsEl.addEventListener('dragover', function (e) {
+      var dt = e.dataTransfer; if (!dt) return;
+      var hasFile = false;
+      if (dt.types) {
+        for (var i = 0; i < dt.types.length; i++) {
+          if (dt.types[i] === 'Files') { hasFile = true; break; }
+        }
+      }
+      if (!hasFile) return;
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      e.preventDefault();
+      try { dt.dropEffect = 'copy'; } catch (_) {}
+    });
+    rowsEl.addEventListener('dragleave', function (e) {
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      // Only clear when leaving the label entirely — child movements
+      // shouldn't kill the highlight.
+      if (e.relatedTarget && label.contains(e.relatedTarget)) return;
+      label.classList.remove('is-dragging');
+    });
+    rowsEl.addEventListener('drop', function (e) {
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      var input = label.querySelector('input[type="file"]');
+      if (!input) return;
+      var dt = e.dataTransfer;
+      if (!dt || !dt.files || !dt.files.length) return;
+      e.preventDefault();
+      label.classList.remove('is-dragging');
+      // Pick the first image file from the drop.
+      var picked = null;
+      for (var j = 0; j < dt.files.length; j++) {
+        if (_isImgFile(dt.files[j])) { picked = dt.files[j]; break; }
+      }
+      if (!picked) {
+        setDownloadMsg(tt(
+          'That doesn\'t look like an image. Drop a PNG, JPG, or WebP.',
+          'Eso no parece una imagen. Suelta un PNG, JPG o WebP.'
+        ), 'error');
+        return;
+      }
+      // Hand the file to the existing input by simulating a "files
+      // were picked" change event. DataTransfer assignment is browser-
+      // gated; safer to fire the same handler the input would.
+      try {
+        var dtList = new DataTransfer();
+        dtList.items.add(picked);
+        input.files = dtList.files;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      } catch (_) {
+        // Browser doesn't allow direct file assignment — manually fire
+        // the same path the change handler would (via the data-act
+        // dispatch logic below).
+        var act = input.dataset && input.dataset.act;
+        var idx = parseInt(input.dataset.i, 10);
+        if (!act || !isFinite(idx) || !rows[idx]) return;
+        downscaleImage(picked, act === 'hero-pick' ? 480 : 320, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          pushUndo();
+          if (act === 'hero-pick') {
+            rows[idx].hero = { dataUrl: dataUrl, w: w, h: h, name: picked.name };
+          } else {
+            rows[idx].photo = { dataUrl: dataUrl, w: w, h: h, name: picked.name };
+          }
+          render();
+          scheduleSaveDraft();
+        });
+      }
+    });
+
     // W7-2 — allergen checkbox change. Lives on 'change' so it fires
     // for both mouse + keyboard (Space toggles a checkbox).
     // W11-4 — also handles photo file picker change events.
