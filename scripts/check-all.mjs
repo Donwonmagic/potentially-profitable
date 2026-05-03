@@ -58,6 +58,13 @@ const CHECKS = [
   // a third-party request and breaks the privacy posture documented
   // on /never/ #4 + /privacy.html + /cookies.html. Fail-CI from day 1.
   ['No 3p Plausible',     'check-no-third-party-plausible.mjs','--check'],
+  // Phase-3B-perf — CSS shell split. Verifies the three shell files
+  // (assets/site-{core,tool,article}.css) are a sound partition of
+  // assets/site.css: round-trip identity (no rule lost or duplicated),
+  // cascade safety (no selector in core AND a supplemental shell),
+  // build freshness (running build-css-shells --check would not
+  // change anything). Fail-CI from day 1.
+  ['CSS shells',          'check-css-shells.mjs',          '--check'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   // for invoice content. Cheap regex check; high-blast-radius bug if
