@@ -512,6 +512,29 @@ header.nav{min-height:64px}
 .md-preview-paper.md-shrink-4 h2.md-pp-section{margin:16px 0 6px}
 .md-preview-paper.md-shrink-4 .md-pp-desc{font-size:0.74em}
 
+/* Wave studio-quality — 2-column auto-promotion. When the cascade
+   decides a 1-column theme would benefit from 2-column flow to fit
+   a single sheet, it adds .md-promote-2col to the paper. CSS column-
+   count flows the children naturally; the title / tagline / story /
+   section headers / allergen key span both columns via column-span.
+   Section-blurb and section-hero also span. The dish rows are what
+   actually flow column-to-column. */
+.md-preview-paper.md-promote-2col{column-count:2;column-gap:32px}
+.md-preview-paper.md-promote-2col h1.md-pp-title,
+.md-preview-paper.md-promote-2col .md-pp-tagline,
+.md-preview-paper.md-promote-2col .md-pp-story,
+.md-preview-paper.md-promote-2col h2.md-pp-section,
+.md-preview-paper.md-promote-2col .md-pp-allergen-key,
+.md-preview-paper.md-promote-2col .md-pp-section-hero,
+.md-preview-paper.md-promote-2col .md-pp-section-blurb,
+.md-preview-paper.md-promote-2col .md-pp-decor,
+.md-preview-paper.md-promote-2col > img.md-pp-logo{column-span:all}
+/* Avoid awkward orphans where a dish row's name lands at the bottom
+   of column 1 and its description starts column 2. break-inside on
+   the row keeps the dish atomic. */
+.md-preview-paper.md-promote-2col .md-pp-row{break-inside:avoid}
+.md-preview-paper.md-promote-2col h2.md-pp-section{break-after:avoid}
+
 .md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
 .md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
 .md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}

@@ -1346,14 +1346,19 @@
   // and digital formats use the simple flow below; panel formats
   // (bifold/trifold/tent) get a panel-aware layout that maps
   // content to logical panels (front/inside/back/address).
-  function paginate(blocks, doc, theme, paper) {
+  function paginate(blocks, doc, theme, paper, opts) {
+    opts = opts || {};
     if (paper.flow === 'panel') return paginatePanel(blocks, doc, theme, paper);
     // W12-1 — two-column flow when theme requests it AND the paper
     // is wide enough to support balanced columns. Half-page and
     // narrow papers (wine-narrow, postcard) stay single-column even
     // if the theme prefers two; otherwise text shrinks to unreadable.
+    // Wave studio-quality — opts.forceTwoCol lets the orchestrator
+    // promote a 1-col theme to 2-col when the live preview's cascade
+    // decided that's the best fit for the operator's dish count.
     var minTwoColW = 400;
-    var twoColumn = (theme.columns === 2) && (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    var paperWideEnough = (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    var twoColumn = paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
     if (twoColumn) return paginateTwoCol(blocks, doc, theme, paper);
     var margin = paper.margin || 48;
     // W10-1 — when print-vendor mode is on, the doc is sized
@@ -1954,7 +1959,7 @@
       };
       // Stamp the bleed offset on the paper so paginate() can read it.
       paper._bleed = bleed;
-      var pageCount = paginate(blocks, doc, opts.theme, paper);
+      var pageCount = paginate(blocks, doc, opts.theme, paper, { forceTwoCol: !!opts.forceTwoCol });
       // W10-1 — crop marks on every page when print-vendor mode is on.
       if (opts.printVendor) {
         var totalPages = doc.internal && doc.internal.pages ? doc.internal.pages.length - 1 : pageCount;

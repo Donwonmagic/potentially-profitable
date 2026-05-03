@@ -195,6 +195,15 @@
     if (paperEl.classList.contains('md-shrink-1')) return 0.96;
     return 1.0;
   }
+  // Sister helper — did the live-preview cascade promote the layout
+  // to 2 columns? PDF export flow uses this to switch from paginate()
+  // to paginateTwoCol() so the printed deliverable matches the
+  // on-screen preview the operator just approved.
+  function effectiveTwoColPromote() {
+    var paperEl = paper;
+    if (!paperEl || !paperEl.classList) return false;
+    return paperEl.classList.contains('md-promote-2col');
+  }
 
   function effectiveDisclaimer() {
     if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
@@ -1399,11 +1408,22 @@
   // Operator opt-in: `meta.allowMultiPage` lets the renderer split
   // freely (back-compat for existing operators with multi-page menus).
   function _measureBuckets(paperEl, contentAreaH) {
+    // Wave studio-quality — 2-column promotion adjusts measurement.
+    // When .md-promote-2col is active, dish rows + dividers consume
+    // ~half the vertical space (they share the column with a sibling
+    // in the other column). Spanning elements (title, tagline, story,
+    // h2, allergen-key, hero, blurb, decor) still consume full height.
+    var twoCol = paperEl.classList.contains('md-promote-2col');
+    var SPAN_SELECTOR = 'h1.md-pp-title, .md-pp-tagline, .md-pp-story, h2.md-pp-section, .md-pp-allergen-key, .md-pp-section-hero, .md-pp-section-blurb, .md-pp-decor, img.md-pp-logo';
     var children = Array.prototype.slice.call(paperEl.children);
     var heights = children.map(function (c) {
       var cs = window.getComputedStyle(c);
       if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
-      return c.getBoundingClientRect().height;
+      var h = c.getBoundingClientRect().height;
+      if (twoCol && c.matches && !c.matches(SPAN_SELECTOR)) {
+        return h / 2;  // shared column space
+      }
+      return h;
     });
     var pageBuckets = [[]];
     var bucketH = 0;
@@ -1440,14 +1460,48 @@
     if (paperInfo.flow !== 'panel') {
       var allowMulti = !!(meta && meta.allowMultiPage);
       var targetPages = allowMulti ? 2 : 1;
-      var SHRINK_STEPS = ['', 'shrink-1', 'shrink-2', 'shrink-3', 'shrink-4'];
-      // Clear any prior shrink class + warning before re-measure.
-      SHRINK_STEPS.forEach(function (cls) { if (cls) paperEl.classList.remove('md-' + cls); });
+      // Wave studio-quality — promote-to-2-column eligibility. A real
+      // designer reaches for 2-column when the menu is dish-heavy AND
+      // the paper is wide enough that two columns of body text both
+      // hit a comfortable measure (~30 chars per column, conservatively
+      // ~360 CSS px at body 11px). Below that 2-col looks crushed.
+      var rectW = paperEl.getBoundingClientRect().width;
+      var twoColEligible = rectW >= 480;
+      // Cascade — interleave 1-col shrink + 2-col promotion. A real
+      // designer prefers slight shrink at 1-col over heavy shrink, and
+      // prefers 2-col at modest shrink over crushing the type. The
+      // order below reflects that hierarchy.
+      var STEPS = [
+        { cls: '',         twoCol: false, label: 'native' },
+        { cls: 'shrink-1', twoCol: false, label: '96%' },
+        { cls: 'shrink-2', twoCol: false, label: '92%' }
+      ];
+      if (twoColEligible) {
+        STEPS.push(
+          { cls: '',         twoCol: true,  label: '2-col native' },
+          { cls: 'shrink-1', twoCol: true,  label: '2-col 96%' },
+          { cls: 'shrink-2', twoCol: true,  label: '2-col 92%' }
+        );
+      }
+      STEPS.push({ cls: 'shrink-3', twoCol: false, label: '88%' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-3', twoCol: true, label: '2-col 88%' });
+      }
+      STEPS.push({ cls: 'shrink-4', twoCol: false, label: '84% (floor)' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-4', twoCol: true, label: '2-col 84%' });
+      }
+      // Clear prior cascade classes before measuring.
+      ['shrink-1','shrink-2','shrink-3','shrink-4','promote-2col'].forEach(function (c) {
+        paperEl.classList.remove('md-' + c);
+      });
       var fitOk = false;
       var firstStepBuckets = null;
-      for (var stepIdx = 0; stepIdx < SHRINK_STEPS.length; stepIdx++) {
-        var cls = SHRINK_STEPS[stepIdx];
-        if (cls) paperEl.classList.add('md-' + cls);
+      var pickedStep = null;
+      for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
+        var step = STEPS[stepIdx];
+        if (step.cls) paperEl.classList.add('md-' + step.cls);
+        if (step.twoCol) paperEl.classList.add('md-promote-2col');
         // Force a reflow before re-measure.
         // eslint-disable-next-line no-unused-expressions
         paperEl.offsetHeight;
@@ -1455,12 +1509,16 @@
         if (stepIdx === 0) firstStepBuckets = buckets;
         if (buckets.length <= targetPages) {
           fitOk = true;
+          pickedStep = step;
           break;
         }
-        // Remove this shrink class before trying the next step (each
-        // step is cumulative-replacement, not stacked).
-        if (cls) paperEl.classList.remove('md-' + cls);
+        // Remove this step's classes before trying the next.
+        if (step.cls) paperEl.classList.remove('md-' + step.cls);
+        if (step.twoCol) paperEl.classList.remove('md-promote-2col');
       }
+      // Stash the picked step on the paper so the export-PDF flow can
+      // mirror it (effectiveShrinkFactor + effectiveTwoColPromote).
+      paperEl.dataset.fitStep = (pickedStep && pickedStep.label) || (fitOk ? 'fit' : 'overflow');
       // If still overflowing at maximum shrink, restore native sizes
       // (no shrink class) and let the legacy multi-page split fire,
       // BUT surface a clear actionable warning so the operator knows
@@ -2941,6 +2999,10 @@
         // preview's effective shrink factor so the PDF ships at the
         // same font sizes the operator just approved on screen.
         shrinkFactor: effectiveShrinkFactor(),
+        // Same parity for 2-column promotion: when the live-preview
+        // cascade promoted a 1-col theme to 2-col to fit a single
+        // sheet, the PDF needs to use paginateTwoCol() to match.
+        forceTwoCol: effectiveTwoColPromote(),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale
