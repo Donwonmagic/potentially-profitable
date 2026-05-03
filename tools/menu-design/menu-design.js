@@ -178,6 +178,28 @@
     try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
   }
 
+  // Wave studio-quality (PWA) — register the service worker so the
+  // tool boots offline after one online visit and operators can
+  // install it as a phone/desktop app. EN-only for now; the ES tool
+  // links shared JS at /tools/menu-design/* paths that an ES-scoped
+  // SW couldn't intercept. Cross-locale offline support is a future
+  // move (requires Service-Worker-Allowed header for higher scope).
+  // Registration is silent, fire-and-forget, deferred 1.5s post-load
+  // so it doesn't compete with first-paint work.
+  if (LOCALE !== 'es' && 'serviceWorker' in navigator) {
+    setTimeout(function () {
+      try {
+        navigator.serviceWorker.register('/tools/menu-design/sw.js', {
+          scope: '/tools/menu-design/'
+        }).catch(function () {
+          // Silent — SW failures shouldn't break the page. Operators
+          // who can't run a SW (Private mode, restrictive policies)
+          // get the fully-functional non-PWA experience.
+        });
+      } catch (_) { /* old browsers without SW support */ }
+    }, 1500);
+  }
+
   // -------------------- Wave B2 finish — effective disclaimer ---------
   // Resolve the disclaimer text the renderers should emit in the
   // footer. Three-state logic:

@@ -43,7 +43,10 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<!-- Wave studio-quality (PWA) — tool-scoped manifest so installing
+     from this URL gives operators a dedicated Menu Design app icon
+     with start_url scoped to /tools/menu-design/. -->
+<link rel="manifest" href="/tools/menu-design/manifest.webmanifest" />
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>
