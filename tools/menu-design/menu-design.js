@@ -3677,75 +3677,388 @@
   // preview of the operator's actual rows[] in that theme. Lazily
   // painted on hover/focus via IntersectionObserver-style trigger.
   // ----------------------------------------------------------------
+  // -------------------- Thumbnail painter (rebuilt) --------------------
+  // Faithful canvas preview of a theme. Honors:
+  //   displayFamily / bodyFamily   — actual font stacks (canvas falls
+  //                                    through them like CSS does)
+  //   sectionCase                  — uppercase / small-caps / capitalize
+  //   letterSpacing                — wide vs normal tracking on headers
+  //   dividerStyle                 — box / hand-rule / ornament / whitespace
+  //   priceStyle                   — leader-dots / right-monospace /
+  //                                    tab-aligned / whitespace
+  //   columns                      — 1 vs 2 column body
+  //   contentType                  — standard / tasting / wine / cocktail /
+  //                                    dessert / kids (drives section name +
+  //                                    sample copy)
+  //   cuisineHint                  — pulls cuisine-specific sample dishes
+  //   paperTexture                 — speckled overlay
+  //   accent / ink / muted / paper — actual theme colors
+  // Plus a small allergen pill in the accent color (positive-only V/VG/GF)
+  // and a cuisine-coherent ornament glyph for ornament-style themes.
+  // The bottom strip carries the theme's human label in muted body type
+  // so picker scanning is still legible at thumb size.
+
+  // Section name by cuisine + contentType. Closed enums keep it scannable.
+  function _thumbSectionFor(theme) {
+    var ct = (theme && theme.contentType) || 'standard';
+    if (ct === 'tasting')  return 'COURSE I';
+    if (ct === 'wine')     return 'BY THE GLASS';
+    if (ct === 'cocktail') return 'CLASSICS';
+    if (ct === 'dessert')  return 'DOLCI';
+    if (ct === 'kids')     return 'FOR THE LITTLES';
+    var ch = (theme && theme.cuisineHint) || [];
+    function has(re) { return ch.some(function (x) { return re.test(String(x)); }); }
+    if (has(/italian|trattor|pasta/i))                    return 'ANTIPASTI';
+    if (has(/mexic|taco|cantina/i))                       return 'ANTOJITOS';
+    if (has(/french|bistro|francesa/i))                   return 'ENTRÉES';
+    if (has(/asian|thai|viet|japan|kor|ramen|sushi/i))    return 'STARTERS';
+    if (has(/seafood|oyster|fish|maris|pesc/i))           return 'RAW BAR';
+    if (has(/bbq|barbec|smoke|brisket/i))                 return 'FROM THE PIT';
+    if (has(/diner|breakfast|burger|sandwich|deli/i))     return 'OPENERS';
+    if (has(/farm|seasonal|garden|plant/i))               return 'FROM THE GARDEN';
+    if (has(/cafe|bakery|patisserie/i))                   return 'PASTRIES';
+    return 'STARTERS';
+  }
+
+  // Cuisine-coherent sample dishes. Three rows per profile so the
+  // thumbnail feels representative without crowding.
+  function _thumbDishesFor(theme) {
+    var ct = (theme && theme.contentType) || 'standard';
+    if (ct === 'tasting') return [
+      { name: 'Course I',         price: '' },
+      { name: 'Course II',        price: '' },
+      { name: 'Course III',       price: '' }
+    ];
+    if (ct === 'wine') return [
+      { name: 'Pinot Noir, 2021', price: '14' },
+      { name: 'Sancerre, 2022',   price: '17' },
+      { name: 'Champagne brut',   price: '22' }
+    ];
+    if (ct === 'cocktail') return [
+      { name: 'Old fashioned',    price: '14' },
+      { name: 'Negroni',          price: '13' },
+      { name: 'French 75',        price: '15' }
+    ];
+    if (ct === 'dessert') return [
+      { name: 'Tiramisu',         price: '11' },
+      { name: 'Crème brûlée',     price: '10' },
+      { name: 'Sorbet trio',      price: '9' }
+    ];
+    if (ct === 'kids') return [
+      { name: 'Mac & cheese',     price: '7' },
+      { name: 'Chicken tenders',  price: '8' },
+      { name: 'PB&J',             price: '5' }
+    ];
+    var ch = (theme && theme.cuisineHint) || [];
+    function has(re) { return ch.some(function (x) { return re.test(String(x)); }); }
+    if (has(/italian|trattor/i)) return [
+      { name: 'Bruschetta',       price: '9'  },
+      { name: 'Caprese',          price: '13' },
+      { name: 'Carbonara',        price: '21' }
+    ];
+    if (has(/mexic|taco/i)) return [
+      { name: 'Guacamole',        price: '12' },
+      { name: 'Tacos al pastor',  price: '14' },
+      { name: 'Pollo asado',      price: '22' }
+    ];
+    if (has(/french|bistro/i)) return [
+      { name: 'Soupe à l’oignon', price: '12' },
+      { name: 'Steak frites',     price: '32' },
+      { name: 'Tarte du jour',    price: '11' }
+    ];
+    if (has(/asian|thai|viet|japan|kor|ramen|sushi/i)) return [
+      { name: 'Spring rolls',     price: '9'  },
+      { name: 'Pad thai',         price: '17' },
+      { name: 'Bibimbap',         price: '19' }
+    ];
+    if (has(/seafood|oyster|fish|maris|pesc/i)) return [
+      { name: 'Oysters, half doz',price: '24' },
+      { name: 'Crab cake',        price: '18' },
+      { name: 'Branzino',         price: '38' }
+    ];
+    if (has(/bbq|barbec|smoke/i)) return [
+      { name: 'Brisket, 1/2 lb',  price: '22' },
+      { name: 'Pulled pork',      price: '17' },
+      { name: 'Cornbread',        price: '6'  }
+    ];
+    if (has(/diner|breakfast|burger/i)) return [
+      { name: 'Pancakes',         price: '11' },
+      { name: 'Eggs benedict',    price: '15' },
+      { name: 'House burger',     price: '17' }
+    ];
+    if (has(/farm|garden|plant/i)) return [
+      { name: 'Beet salad',       price: '14' },
+      { name: 'Duck breast',      price: '34' },
+      { name: 'Lamb tagine',      price: '32' }
+    ];
+    if (has(/cafe|bakery|patisser/i)) return [
+      { name: 'Almond croissant', price: '5'  },
+      { name: 'Pain au chocolat', price: '4'  },
+      { name: 'Quiche du jour',   price: '12' }
+    ];
+    return [
+      { name: 'Caesar salad',     price: '14' },
+      { name: 'House bread',      price: '6'  },
+      { name: 'Roast chicken',    price: '28' }
+    ];
+  }
+
+  // Apply sectionCase enum to a section label.
+  function _applyCase(s, mode) {
+    if (mode === 'capitalize') {
+      return String(s || '').toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+    if (mode === 'small-caps') {
+      // No real small-caps in canvas; use uppercase at slightly smaller weight.
+      return String(s || '').toUpperCase();
+    }
+    return String(s || '').toUpperCase();
+  }
+
+  // Render text with letter-spacing (wide vs normal tracking).
+  function _drawSpacedText(ctx, txt, x, y, spacing, align) {
+    spacing = spacing || 0;
+    if (!spacing) {
+      ctx.textAlign = align || 'left';
+      ctx.fillText(txt, x, y);
+      return;
+    }
+    // Manually space characters (canvas has no letter-spacing).
+    ctx.save();
+    ctx.textAlign = 'left';
+    var w = 0;
+    var chars = String(txt).split('');
+    for (var i = 0; i < chars.length; i++) {
+      w += ctx.measureText(chars[i]).width + (i < chars.length - 1 ? spacing : 0);
+    }
+    var startX = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x;
+    var cur = startX;
+    for (var j = 0; j < chars.length; j++) {
+      ctx.fillText(chars[j], cur, y);
+      cur += ctx.measureText(chars[j]).width + spacing;
+    }
+    ctx.restore();
+  }
+
+  // dividerStyle renderer — rule, box, ornament, whitespace.
+  function _drawSectionDivider(ctx, w, y, theme) {
+    var style = theme.dividerStyle || 'whitespace';
+    var col = theme.muted || theme.accent || '#7C6F60';
+    if (style === 'box') {
+      ctx.strokeStyle = theme.ink || '#14161A';
+      ctx.lineWidth = 0.6;
+      ctx.strokeRect(w * 0.18, y - 12, w * 0.64, 14);
+      return;
+    }
+    if (style === 'hand-rule') {
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.20, y);
+      ctx.lineTo(w * 0.80, y);
+      ctx.stroke();
+      return;
+    }
+    if (style === 'ornament') {
+      // small accent diamond between two short rules
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.20, y); ctx.lineTo(w * 0.42, y);
+      ctx.moveTo(w * 0.58, y); ctx.lineTo(w * 0.80, y);
+      ctx.stroke();
+      ctx.fillStyle = theme.accent || col;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.50, y - 2.5);
+      ctx.lineTo(w * 0.515, y);
+      ctx.lineTo(w * 0.50, y + 2.5);
+      ctx.lineTo(w * 0.485, y);
+      ctx.closePath();
+      ctx.fill();
+      return;
+    }
+    // whitespace — no stroke; the headline + spacing carries the rhythm.
+  }
+
+  // priceStyle renderer — leader-dots, monospace, tab-aligned, whitespace.
+  function _drawDishRow(ctx, dish, x0, x1, y, theme, bodyPx) {
+    var name = String(dish.name || '').slice(0, 22);
+    var price = String(dish.price || '');
+    ctx.fillStyle = theme.ink || '#14161A';
+    ctx.textAlign = 'left';
+    ctx.fillText(name, x0, y);
+    if (!price) return;
+    ctx.textAlign = 'right';
+    ctx.fillText(price, x1, y);
+    if (theme.priceStyle === 'leader-dots') {
+      ctx.strokeStyle = theme.muted || '#9A958B';
+      ctx.lineWidth = 0.4;
+      ctx.setLineDash([0.5, 1.5]);
+      var nameW = ctx.measureText(name).width;
+      var priceW = ctx.measureText(price).width;
+      ctx.beginPath();
+      ctx.moveTo(x0 + nameW + 3, y - bodyPx * 0.32);
+      ctx.lineTo(x1 - priceW - 3, y - bodyPx * 0.32);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Allergen pill — simple rounded chip in accent color with a code letter.
+  function _drawAllergenPill(ctx, x, y, code, theme) {
+    var w = 12, h = 8;
+    ctx.fillStyle = theme.accent || '#1F4E5B';
+    if (typeof ctx.roundRect === 'function') {
+      ctx.beginPath();
+      ctx.roundRect(x, y - h + 2, w, h, 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(x, y - h + 2, w, h);
+    }
+    ctx.fillStyle = theme.paper || '#FAF6EE';
+    ctx.font = '600 5.5px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(code || 'V', x + w / 2, y - h / 2 + 2);
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  // Mix two hex colors at a given ratio (0–1). Used for paper-texture
+  // speckle and for the muted-on-paper preview tint.
+  function _colorMix(c1, c2, ratio) {
+    function p(c) {
+      var s = String(c || '#000000').replace('#', '');
+      if (s.length === 3) s = s.split('').map(function (x) { return x + x; }).join('');
+      return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+    }
+    var a = p(c1), b = p(c2);
+    var r = Math.round(a[0] * (1 - ratio) + b[0] * ratio);
+    var g = Math.round(a[1] * (1 - ratio) + b[1] * ratio);
+    var bl = Math.round(a[2] * (1 - ratio) + b[2] * ratio);
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+
   function paintThemeThumb(canvas, themeRef) {
     if (!canvas || !canvas.getContext) return;
     var ctx = canvas.getContext('2d');
-    var W = canvas.width = canvas.offsetWidth * 2;  // 2x for retina
-    var H = canvas.height = canvas.offsetHeight * 2;
-    ctx.scale(2, 2);
+    var ratio = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+    canvas.width  = canvas.offsetWidth  * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
     var w = canvas.offsetWidth;
     var h = canvas.offsetHeight;
-    // Background paper
-    ctx.fillStyle = themeRef.paper || '#FAF6EE';
+
+    // ===== Background paper + optional speckle texture =====
+    var paper  = themeRef.paper  || '#FAF6EE';
+    var ink    = themeRef.ink    || '#14161A';
+    var accent = themeRef.accent || '#1F4E5B';
+    var muted  = themeRef.muted  || '#7C6F60';
+    ctx.fillStyle = paper;
     ctx.fillRect(0, 0, w, h);
-    // Title (display family fallback to system)
-    var titleFont = (themeRef.id && themeRef.id.indexOf('counter') !== -1) ||
-                    /helvetica|inter|sans/.test((themeRef.displayFamily || '').toLowerCase())
-      ? 'Inter, system-ui, sans-serif' : 'Georgia, serif';
-    ctx.fillStyle = themeRef.ink || '#14161A';
-    ctx.font = '600 11px ' + titleFont;
-    ctx.textAlign = 'center';
-    ctx.fillText('Menu', w / 2, 14);
-    // Section header
-    ctx.fillStyle = themeRef.accent || '#1F4E5B';
-    ctx.font = '600 7.5px ' + titleFont;
-    ctx.textAlign = 'center';
-    ctx.fillText('STARTERS', w / 2, 30);
-    if (themeRef.dividerStyle === 'hand-rule' || themeRef.dividerStyle === 'whitespace') {
-      ctx.strokeStyle = themeRef.muted || '#7C6F60';
-      ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(w * 0.2, 34); ctx.lineTo(w * 0.8, 34); ctx.stroke();
-    } else if (themeRef.dividerStyle === 'box') {
-      ctx.strokeStyle = themeRef.ink || '#14161A';
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(w * 0.3, 22, w * 0.4, 14);
-    }
-    // Three dish rows
-    var rowsToShow = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).slice(0, 4);
-    if (!rowsToShow.length) {
-      rowsToShow = [
-        { name: 'Caesar salad',  price: '$14' },
-        { name: 'House bread',    price: '$6'  },
-        { name: 'Roast chicken',  price: '$28' }
-      ];
-    }
-    var bodyFontPx = '7px ' + titleFont;
-    ctx.font = bodyFontPx;
-    ctx.fillStyle = themeRef.ink || '#14161A';
-    var y = 44;
-    rowsToShow.forEach(function (r) {
-      var name = String(r.name || '').slice(0, 22);
-      ctx.textAlign = 'left';
-      ctx.fillText(name, w * 0.08, y);
-      if (r.price) {
-        ctx.textAlign = 'right';
-        ctx.fillText(String(r.price), w * 0.92, y);
+    if (themeRef.paperTexture) {
+      ctx.fillStyle = _colorMix(paper, ink, 0.06);
+      for (var sx = 1; sx < w; sx += 3) {
+        for (var sy = 1; sy < h; sy += 3) {
+          if (((sx * 7919) ^ (sy * 6151)) % 11 === 0) ctx.fillRect(sx, sy, 1, 1);
+        }
       }
-      // Leader-dots if theme calls for them
-      if (themeRef.priceStyle === 'leader-dots') {
-        ctx.strokeStyle = themeRef.muted || '#9A958B';
-        ctx.lineWidth = 0.4;
-        ctx.setLineDash([0.5, 1.5]);
-        var nameW = ctx.measureText(name).width;
-        ctx.beginPath();
-        ctx.moveTo(w * 0.08 + nameW + 4, y - 1.5);
-        var priceW = r.price ? ctx.measureText(String(r.price)).width : 0;
-        ctx.lineTo(w * 0.92 - priceW - 4, y - 1.5);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-      y += 11;
-    });
+    }
+
+    var displayFamily = themeRef.displayFamily || 'Georgia, "Times New Roman", serif';
+    var bodyFamily    = themeRef.bodyFamily    || displayFamily;
+    var letterSpacing = themeRef.letterSpacing === 'wide' ? 1.2 : 0.4;
+
+    // ===== Title (the operator's first section name OR a generic) =====
+    var firstSection = rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); });
+    var titleText = (firstSection && firstSection.name) ||
+                    (themeRef.label_en || 'Menu');
+    if (titleText.length > 14) titleText = titleText.slice(0, 14) + '…';
+    ctx.fillStyle = ink;
+    var titlePx = (themeRef.contentType === 'kids') ? 14 : 13;
+    ctx.font = '500 ' + titlePx + 'px ' + displayFamily;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(titleText, w / 2, 14);
+
+    var topY = 22;
+
+    // Optional small ornament above the section header on ornament themes
+    if (themeRef.dividerStyle === 'ornament') {
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.moveTo(w / 2 - 3, topY);
+      ctx.lineTo(w / 2,     topY - 3);
+      ctx.lineTo(w / 2 + 3, topY);
+      ctx.lineTo(w / 2,     topY + 3);
+      ctx.closePath();
+      ctx.fill();
+      topY += 6;
+    }
+
+    // ===== Section header =====
+    var sectionRaw = _thumbSectionFor(themeRef);
+    var sectionLabel = _applyCase(sectionRaw, themeRef.sectionCase || 'uppercase');
+    ctx.fillStyle = accent;
+    var headerPx = themeRef.sectionCase === 'small-caps' ? 7 : 8;
+    ctx.font = '600 ' + headerPx + 'px ' + displayFamily;
+    _drawSpacedText(ctx, sectionLabel, w / 2, topY + headerPx, letterSpacing, 'center');
+    topY += headerPx + 6;
+
+    // ===== Section divider =====
+    _drawSectionDivider(ctx, w, topY, themeRef);
+    topY += 8;
+
+    // ===== Body dishes =====
+    var operatorRows = rows.filter(function (r) {
+      return r.kind === 'dish' && !r.ghost && (r.name || '').trim();
+    }).slice(0, 3);
+    var dishes = operatorRows.length ? operatorRows.map(function (r) {
+      return { name: r.name, price: r.price || '' };
+    }) : _thumbDishesFor(themeRef);
+
+    var bodyPx = 7.2;
+    ctx.font = bodyPx + 'px ' + bodyFamily;
+    ctx.textBaseline = 'alphabetic';
+    var x0 = w * 0.10;
+    var x1 = w * 0.90;
+    var rowGap = bodyPx + 4;
+
+    // Two-column themes split the body into a left + right column with
+    // shorter dish lines so each side reads as its own list.
+    if (themeRef.columns === 2 && dishes.length >= 2) {
+      var leftDishes  = dishes.slice(0, Math.ceil(dishes.length / 2));
+      var rightDishes = dishes.slice(Math.ceil(dishes.length / 2));
+      var midGap = w * 0.04;
+      var leftX1  = w / 2 - midGap / 2;
+      var rightX0 = w / 2 + midGap / 2;
+      leftDishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, x0, leftX1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      rightDishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, rightX0, x1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      topY += Math.max(leftDishes.length, rightDishes.length) * rowGap;
+    } else {
+      dishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, x0, x1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      topY += dishes.length * rowGap;
+    }
+
+    // ===== Allergen pill on first dish (positive-only V) =====
+    if (themeRef.contentType !== 'tasting' &&
+        themeRef.contentType !== 'wine' &&
+        themeRef.contentType !== 'cocktail') {
+      _drawAllergenPill(ctx, x0, topY + 2, 'V', themeRef);
+    }
+
+    // ===== Bottom strip — theme name in muted body type =====
+    var label = themeRef.label_en || themeRef.id || '';
+    if (label.length > 24) label = label.slice(0, 24) + '…';
+    ctx.fillStyle = muted;
+    ctx.font = '500 6.5px ' + bodyFamily;
+    ctx.textAlign = 'center';
+    ctx.fillText(label, w / 2, h - 4);
   }
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
