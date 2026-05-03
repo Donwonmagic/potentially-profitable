@@ -178,6 +178,29 @@
         'M13 17 Q14 15 13 13 Q12 14 13 17'
       ],
       extras: []
+    },
+    // Wave studio-quality — Persian eight-pointed star (girih / khatam).
+    // Two squares rotated 45° on each other form the classic 8-point
+    // star at the heart of Persian / Iranian decorative geometry.
+    // Inner small star adds depth without going busy.
+    'persian-star': {
+      paths: [
+        'M12 3 L15 9 L21 12 L15 15 L12 21 L9 15 L3 12 L9 9 Z',
+        'M12 6 L13.5 10.5 L18 12 L13.5 13.5 L12 18 L10.5 13.5 L6 12 L10.5 10.5 Z'
+      ],
+      extras: [
+        '<circle cx="12" cy="12" r="0.6" fill="currentColor"/>'
+      ]
+    },
+    // Wave studio-quality — banana leaf for Filipino kamayan-style
+    // dining. Long tropical leaf shape with veins. Distinct from
+    // leaf-cluster (small abstract foliage).
+    'banana-leaf': {
+      paths: [
+        'M3 12 Q8 4 19 6 Q21 8 19 12 Q15 18 5 18 Q3 16 3 12 Z',
+        'M5 13 Q11 9 18 9 M5 14 Q11 11 18 11 M5 15 Q11 13 17 13 M6 16 Q11 15 16 15'
+      ],
+      extras: []
     }
   };
 
@@ -229,6 +252,33 @@
     // Syrian / Jordanian / Greek / Turkish overlap.
     if (has(/levant|leban|israel|palest|syrian|jordan|mezze|hummus|falafel|shawarma|kebab|greek|turkish|mediterran|aegean/i)) {
       return { key: 'olive-branch', x: 175, y: 38, s: 1.4 };
+    }
+    // Wave studio-quality — Peruvian coastal cuisine. Ceviche-driven,
+    // heavily seafood. Reuses the wave motif (Pacific coastline).
+    // Covers Peruvian / Nikkei / Pisco bar overlap.
+    if (has(/peruvian|peru|nikkei|ceviche|tiradito|pisco|cevicheria|chifa/i)) {
+      return { key: 'wave', x: 0, y: 0, s: 9.2 };
+    }
+    // Wave studio-quality — Persian / Iranian high-end cuisine.
+    // Eight-pointed star (girih / khatam) is classic Persian geometry.
+    if (has(/persian|iran|iranian|saffron|kebab persian|tahdig|fesenjan|ghormeh|persa/i)) {
+      return { key: 'persian-star', x: 178, y: 38, s: 1.4 };
+    }
+    // Wave studio-quality — Filipino cuisine. Banana leaf (kamayan
+    // dining is served on banana leaves). New motif distinct from
+    // leaf-cluster (which is abstract foliage).
+    if (has(/filipino|philippine|kamayan|adobo|sinigang|lechon|lumpia|halo halo|filipina/i)) {
+      return { key: 'banana-leaf', x: 175, y: 36, s: 1.4 };
+    }
+    // Wave studio-quality — Cheese & charcuterie / butcher counter.
+    // Wood-grain reads butcher-paper-adjacent.
+    if (has(/cheese|charcuterie|fromager|fromag|butcher|carniceria|carnicería|cured/i)) {
+      return { key: 'wood-grain', x: 0, y: 28, s: 9.2 };
+    }
+    // Wave studio-quality — Chef's counter prix-fixe (European tasting).
+    // Same brush-stroke as tasting-omakase — both are course-driven.
+    if (has(/chef counter|chef's counter|chefs counter|prix fixe|prix-fixe|tasting menu|degustation|menu degustacion|menú de degustación/i)) {
+      return { key: 'brush-stroke', x: 8, y: 88, s: 1.3 };
     }
     return null;
   }

@@ -1251,7 +1251,79 @@ header.nav{min-height:64px}
               toolLine +
               '</article>';
     });
+    // Wave studio-quality (C9) — Menu Design handoff. After the matrix
+    // surfaces Plowhorses / Stars / Puzzles / Dogs, the next operator
+    // action is often "let me re-lay-out the menu so my Stars get hero
+    // treatment and my Plowhorses don't sit in a dead corner." We push
+    // the canonical item list into MuntinContext (cuisine + dishes
+    // with name / category / price / quadrant tag) then deeplink to
+    // Menu Design where the context-bus banner offers "Load this 12-
+    // item menu — Stars highlighted." Inflection toast appears below
+    // the quadrant cards, copy adapts to highlight the dominant
+    // quadrant when ≥1 Plowhorse or ≥1 Star is present.
+    var allItems = summary.items || [];
+    var hasContent = allItems.length > 0;
+    if (hasContent) {
+      var nPlow = byQ.Plowhorse.length;
+      var nStar = byQ.Star.length;
+      var headline;
+      if (nPlow > 0 && nStar > 0) {
+        headline = nPlow + ' Plowhorse' + (nPlow === 1 ? '' : 's') + ' and ' +
+                   nStar + ' Star' + (nStar === 1 ? '' : 's') +
+                   ' — see how a redesign reframes them';
+      } else if (nPlow > 0) {
+        headline = nPlow + ' Plowhorse' + (nPlow === 1 ? '' : 's') +
+                   ' — see how a redesign reframes ' + (nPlow === 1 ? 'it' : 'them');
+      } else if (nStar > 0) {
+        headline = nStar + ' Star' + (nStar === 1 ? '' : 's') +
+                   ' — give ' + (nStar === 1 ? 'it' : 'them') + ' the layout treatment ' +
+                   (nStar === 1 ? 'it' : 'they') + ' deserve' + (nStar === 1 ? 's' : '');
+      } else {
+        headline = 'Re-lay-out this menu with the data you just gathered';
+      }
+      html += '<aside class="me-handoff-card" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px">' +
+              '<p style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;">' + escHtml(headline) + '.</p>' +
+              '<p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your items + their quadrants so Stars land in hero positions, Puzzles get hero ornaments, and Plowhorses get re-described in the layout.</p>' +
+              '<button type="button" id="meHandoffMenuDesign" class="me-btn" style="font-size:13px;padding:8px 14px;">Open ' + allItems.length + ' item' + (allItems.length === 1 ? '' : 's') + ' in Menu Design Suite &rarr;</button>' +
+              '</aside>';
+    }
     actionsEl.innerHTML = html;
+    // Wire the handoff button (after innerHTML rewrite).
+    var handoffBtn = document.getElementById('meHandoffMenuDesign');
+    if (handoffBtn) {
+      handoffBtn.addEventListener('click', function () {
+        try {
+          if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.merge === 'function') {
+            MuntinContext.merge({
+              dishes: allItems.map(function (it) {
+                return {
+                  name: it.item || '',
+                  category: it.category || '',
+                  price: typeof it.price === 'number' ? it.price : null,
+                  quadrant: it.quadrant || ''
+                };
+              }),
+              menuEngineeringHint: {
+                stars: byQ.Star.length,
+                plowhorses: byQ.Plowhorse.length,
+                puzzles: byQ.Puzzle.length,
+                dogs: byQ.Dog.length,
+                from: 'menu-engineering'
+              }
+            });
+          }
+        } catch (_) { /* best-effort context push */ }
+        if (window.plausible) {
+          try {
+            window.plausible('Menu Engineering Handoff', { props: {
+              to: 'menu-design',
+              itemCount_bucket: allItems.length < 6 ? '<6' : allItems.length < 12 ? '6-11' : allItems.length < 25 ? '12-24' : '25+'
+            }});
+          } catch (_) {}
+        }
+        window.location.href = '/tools/menu-design/?from=menu-engineering';
+      });
+    }
   }
 
   function paintItemTable(items){

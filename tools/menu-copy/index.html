@@ -640,6 +640,18 @@ header.nav{min-height:64px}
     </div>
     <p style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--ink-soft);">The <strong>Copy Card PNG</strong> is a 1200×1500 image with each description’s original copy on the left, the diagnostic gloss on the right, and a teaching legend at the bottom — designed for a chef or copywriter to read without ever opening this URL. Up to 4 items per card; longer menus produce a numbered series. The CSV mirrors per-item scores; the JSON includes full per-item math + thresholds; the ZIP bundles everything plus a README. Composed entirely in your browser — no upload.</p>
   </div>
+  <!-- Wave studio-quality (C9) — Menu Design handoff. After the
+       diagnostic surfaces hedge-heavy or sub-60-score descriptions,
+       the operator's next move is often "let me see how a redesign
+       reframes these on a printable page." Push the canonical menu
+       (items + description + score + verdict) into MuntinContext
+       and deeplink into Menu Design where the dishes pre-load with
+       their copy diagnostics ready for inline visual context. -->
+  <aside class="mc-handoff-card" id="mcHandoffMenuDesign" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
+    <p id="mcHandoffHeadline" style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;"></p>
+    <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your descriptions + their copy scores so high-score items get hero positions, low-score ones get marked for re-description in the layout.</p>
+    <button type="button" id="mcHandoffMenuDesignBtn" class="mc-btn" style="font-size:13px;padding:8px 14px;"></button>
+  </aside>
 </div></section>
 
 <section class="block" id="mcEmptyHint"><div class="container">
@@ -1595,7 +1607,73 @@ header.nav{min-height:64px}
         rewrite_ratio: window.MC.bucketRewriteRatio(summary.summary.itemCount, summary.summary.rewriteCount)
       }});
     }
+    // Wave studio-quality (C9) — Menu Design handoff card. Show once
+    // we have ≥1 item; copy adapts to the dominant verdict.
+    paintMenuDesignHandoff(summary, counts);
     return summary;
+  }
+
+  function paintMenuDesignHandoff(summary, counts) {
+    var card = document.getElementById('mcHandoffMenuDesign');
+    var headlineEl = document.getElementById('mcHandoffHeadline');
+    var btnEl = document.getElementById('mcHandoffMenuDesignBtn');
+    if (!card || !btnEl) return;
+    var n = summary.items.length;
+    if (n === 0) { card.hidden = true; return; }
+    card.hidden = false;
+    var headline;
+    if (counts.rewrite > 0 && counts.polish > 0) {
+      headline = counts.rewrite + ' rewrite' + (counts.rewrite === 1 ? '' : 's') +
+                 ' and ' + counts.polish + ' polish' + (counts.polish === 1 ? '' : 'es') +
+                 ' — see them inline on a printable page';
+    } else if (counts.rewrite > 0) {
+      headline = counts.rewrite + ' description' + (counts.rewrite === 1 ? '' : 's') +
+                 ' worth rewriting — preview the layout while you fix them';
+    } else if (counts.polish > 0) {
+      headline = counts.polish + ' polish-ready item' + (counts.polish === 1 ? '' : 's') +
+                 ' — give them hero treatment in the layout';
+    } else {
+      headline = 'Re-lay-out this menu with your diagnostic data';
+    }
+    headlineEl.textContent = headline + '.';
+    btnEl.textContent = 'Open ' + n + ' item' + (n === 1 ? '' : 's') + ' in Menu Design Suite →';
+    if (btnEl.dataset.wired === '1') return;
+    btnEl.dataset.wired = '1';
+    btnEl.addEventListener('click', function () {
+      var items = (latestSummary && latestSummary.items) || summary.items || [];
+      try {
+        if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.merge === 'function') {
+          MuntinContext.merge({
+            dishes: items.map(function (it) {
+              return {
+                name: it.name || '',
+                desc: it.description || '',
+                copyDiagnostic: {
+                  score: typeof it.score === 'number' ? it.score : null,
+                  verdict: it.verdict || ''
+                }
+              };
+            }),
+            menuCopyHint: {
+              polish:  counts.polish,
+              edit:    counts.edit,
+              rewrite: counts.rewrite,
+              avgScore: typeof summary.summary.avgScore === 'number' ? Math.round(summary.summary.avgScore) : null,
+              from: 'menu-copy'
+            }
+          });
+        }
+      } catch (_) {}
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Copy Handoff', { props: {
+            to: 'menu-design',
+            itemCount_bucket: items.length < 6 ? '<6' : items.length < 12 ? '6-11' : items.length < 25 ? '12-24' : '25+'
+          }});
+        } catch (_) {}
+      }
+      window.location.href = '/tools/menu-design/?from=menu-copy';
+    });
   }
 
   function bulkCard(label, value, sub, kind){

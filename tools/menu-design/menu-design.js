@@ -1234,6 +1234,9 @@
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
       if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
+      // Wave studio-quality — re-run live lint against the new theme's
+      // colors so any warnings reflect the post-switch state.
+      if (typeof updateLintFeedback === 'function') updateLintFeedback();
       renderPreview();
       scheduleSaveDraft();
     });
@@ -3973,6 +3976,38 @@
     if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
     if (Array.isArray(ctx.dishes) && ctx.dishes.length) parts.push({ label: 'Dishes', value: ctx.dishes.length + ' from prior tools' });
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
+    // Wave studio-quality (C9) — surface menu-engineering quadrant
+    // counts when the handoff carried them so the operator sees what
+    // came across without expanding the editor.
+    if (ctx.menuEngineeringHint) {
+      var meh = ctx.menuEngineeringHint;
+      var bits = [];
+      if (meh.stars)       bits.push(meh.stars      + (meh.stars      === 1 ? ' Star'      : ' Stars'));
+      if (meh.plowhorses)  bits.push(meh.plowhorses + (meh.plowhorses === 1 ? ' Plowhorse' : ' Plowhorses'));
+      if (meh.puzzles)     bits.push(meh.puzzles    + (meh.puzzles    === 1 ? ' Puzzle'    : ' Puzzles'));
+      if (meh.dogs)        bits.push(meh.dogs       + (meh.dogs       === 1 ? ' Dog'       : ' Dogs'));
+      if (bits.length) parts.push({ label: 'From Menu Engineering', value: bits.join(' · ') });
+    }
+    // Wave studio-quality (C9) — surface menu-copy verdict counts +
+    // average score when the handoff carried them.
+    if (ctx.menuCopyHint) {
+      var mch = ctx.menuCopyHint;
+      var copyBits = [];
+      if (mch.polish)  copyBits.push(mch.polish  + ' polish');
+      if (mch.edit)    copyBits.push(mch.edit    + ' edit');
+      if (mch.rewrite) copyBits.push(mch.rewrite + ' rewrite');
+      if (mch.avgScore != null) copyBits.push('avg score ' + mch.avgScore);
+      if (copyBits.length) parts.push({ label: 'From Menu Copy', value: copyBits.join(' · ') });
+    }
+    // Wave studio-quality (C9) — surface menu-converter parse counts.
+    if (ctx.menuConverterHint) {
+      var mcvh = ctx.menuConverterHint;
+      var convBits = [];
+      if (mcvh.sections) convBits.push(mcvh.sections + ' section' + (mcvh.sections === 1 ? '' : 's'));
+      if (mcvh.items)    convBits.push(mcvh.items    + ' item'    + (mcvh.items    === 1 ? '' : 's'));
+      if (mcvh.currency) convBits.push(mcvh.currency);
+      if (convBits.length) parts.push({ label: 'From Menu Converter', value: convBits.join(' · ') });
+    }
     if (!parts.length) {
       ctxEl.hidden = true;
       return;
@@ -5728,16 +5763,19 @@
   if (customAccentEl) customAccentEl.addEventListener('input', function () {
     customize.accent = customAccentEl.value;
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customPaperEl) customPaperEl.addEventListener('input', function () {
     customize.paper = customPaperEl.value;
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customInkEl) customInkEl.addEventListener('input', function () {
     customize.ink = customInkEl.value;
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customResetEl) customResetEl.addEventListener('click', function () {
@@ -5755,6 +5793,7 @@
     if (modEventEl)   modEventEl.value   = 'none';
     syncCustomizeFromTheme();
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview();
     scheduleSaveDraft();
   });
@@ -5787,6 +5826,96 @@
         : tt(overrides + ' overrides', overrides + ' cambios');
     }
   }
+
+  // Wave studio-quality — Live taste-floor lint feedback.
+  //
+  // The themes-lint CI gate ships eight refusal rules that every
+  // theme must satisfy. Operators tweaking accent/paper/ink in the
+  // customize panel can violate the same rules — bright yellow
+  // accent on white paper, paper too close to ink in luminance, etc.
+  // Surface a friendly warning inline when their edit drops below
+  // the floor. Educational, not blocking — operators can ignore the
+  // chip and ship anyway.
+  //
+  // Reuses the same contrast math as scripts/check-themes-lint.mjs
+  // so the feedback matches what the CI gate would say if their
+  // values were a permanent theme entry.
+  function _relLuminance(hex) {
+    var m = String(hex).replace('#', '');
+    if (m.length !== 6) return 0.5;
+    var r = parseInt(m.slice(0, 2), 16) / 255;
+    var g = parseInt(m.slice(2, 4), 16) / 255;
+    var b = parseInt(m.slice(4, 6), 16) / 255;
+    function ch(c) { return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+  }
+  function _contrastRatio(a, b) {
+    var la = _relLuminance(a), lb = _relLuminance(b);
+    var hi = Math.max(la, lb), lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function _effectiveColors() {
+    // Resolve effective paper/ink/accent: customize override wins,
+    // otherwise theme default.
+    var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(themeId) : null;
+    return {
+      paper:  customize.paper  || (t && t.paper)  || '#FAF6EE',
+      ink:    customize.ink    || (t && t.ink)    || '#14161A',
+      accent: customize.accent || (t && t.accent) || '#1F4E5B'
+    };
+  }
+  function updateLintFeedback() {
+    var hostEl = document.getElementById('mdCustomizeLint');
+    if (!hostEl) return;
+    var c = _effectiveColors();
+    var warnings = [];
+    var paperInkCr = _contrastRatio(c.paper, c.ink);
+    if (paperInkCr < 7) {
+      warnings.push({
+        severity: paperInkCr < 4.5 ? 'high' : 'med',
+        msg: tt(
+          'Paper ↔ ink contrast is ' + paperInkCr.toFixed(1) + ':1 (theme floor 7:1). Body text may be hard to read on cheap printers.',
+          'Contraste papel ↔ tinta es ' + paperInkCr.toFixed(1) + ':1 (mínimo del tema 7:1). El texto puede ser difícil de leer en impresoras económicas.'
+        )
+      });
+    }
+    var paperAccentCr = _contrastRatio(c.paper, c.accent);
+    if (paperAccentCr < 3) {
+      warnings.push({
+        severity: 'high',
+        msg: tt(
+          'Accent ↔ paper contrast is ' + paperAccentCr.toFixed(1) + ':1 (theme floor 3:1). Section rules and ornaments will be hard to see — try a darker or more saturated accent.',
+          'Contraste acento ↔ papel es ' + paperAccentCr.toFixed(1) + ':1 (mínimo del tema 3:1). Las reglas de sección y los ornamentos se verán mal — prueba un acento más oscuro o saturado.'
+        )
+      });
+    } else if (paperAccentCr < 4.5) {
+      warnings.push({
+        severity: 'low',
+        msg: tt(
+          'Accent ↔ paper contrast is ' + paperAccentCr.toFixed(1) + ':1 — passes the decorative floor (3:1) but won\'t work for accent text. Use it only for rules and ornaments.',
+          'Contraste acento ↔ papel es ' + paperAccentCr.toFixed(1) + ':1 — pasa el mínimo decorativo (3:1) pero no sirve para texto. Úsalo solo para reglas y ornamentos.'
+        )
+      });
+    }
+    if (warnings.length === 0) {
+      hostEl.hidden = true;
+      hostEl.innerHTML = '';
+      return;
+    }
+    var heading = warnings.length === 1
+      ? tt('1 readability warning', '1 advertencia de legibilidad')
+      : tt(warnings.length + ' readability warnings', warnings.length + ' advertencias de legibilidad');
+    var listHtml = warnings.map(function (w) {
+      var cls = w.severity === 'high' ? 'md-lint-high' : (w.severity === 'med' ? 'md-lint-med' : 'md-lint-low');
+      return '<li class="' + cls + '">' + escHtml(w.msg) + '</li>';
+    }).join('');
+    hostEl.hidden = false;
+    hostEl.innerHTML =
+      '<strong>' + escHtml(heading) + '.</strong> ' +
+      escHtml(tt('You can still ship — these are advisory.', 'Puedes seguir — solo son avisos.')) +
+      '<ul>' + listHtml + '</ul>';
+  }
+
   if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
     customize.paperTexture = !!paperTextureEl.checked;
     updateCustomizeBadge();
@@ -5996,6 +6125,7 @@
         }
         // Sync visible UI controls to restored state.
         if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
+        if (typeof updateLintFeedback   === 'function') updateLintFeedback();
         renderThemePicker();
         if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
         // Wave studio-quality — sync the meta-panel checkboxes so the

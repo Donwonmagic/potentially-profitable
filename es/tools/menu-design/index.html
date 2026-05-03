@@ -149,6 +149,13 @@ header.nav{min-height:64px}
 .md-themes-empty[hidden]{display:none}
 .md-customize-badge{margin-left:auto;padding:2px 8px;background:var(--teal);color:#fff;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;line-height:1.4}
 .md-customize-badge[hidden]{display:none}
+.md-customize-lint{margin-top:12px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.md-customize-lint[hidden]{display:none}
+.md-customize-lint ul{margin:6px 0 0 18px;padding:0}
+.md-customize-lint li{margin:0 0 4px}
+.md-customize-lint .md-lint-high{color:#7a2912;font-weight:600}
+.md-customize-lint .md-lint-med{color:#7a4408}
+.md-customize-lint .md-lint-low{color:#3a4654}
 .md-theme[hidden]{display:none}
 .md-theme-group[hidden]{display:none}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
@@ -255,6 +262,28 @@ header.nav{min-height:64px}
 .md-download-msg{font-size:12.5px;color:var(--ink-soft);margin:0;flex-basis:100%}
 .md-download-msg.error{color:var(--rust)}
 .md-download-msg.success{color:var(--status-good)}
+/* Wave studio-quality (A9) — More-formats disclosure (ES). */
+.md-more-formats{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.md-more-formats-summary{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);list-style:none;border-radius:6px}
+.md-more-formats-summary::-webkit-details-marker{display:none}
+.md-more-formats-summary svg{transition:transform var(--t-fast)}
+.md-more-formats[open] .md-more-formats-summary svg{transform:rotate(180deg)}
+.md-more-formats-summary:hover{color:var(--teal);background:var(--cream-2)}
+.md-more-formats-hint{color:var(--stone);font-weight:400;font-size:12px}
+.md-more-formats-body{margin-top:14px;display:flex;flex-direction:column;gap:18px}
+.md-format-group-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.md-format-row{display:flex;align-items:flex-start;gap:14px;padding:8px 0;border-top:1px solid var(--line);flex-direction:column}
+.md-format-row:first-of-type{border-top:0}
+.md-format-btn{flex:0 0 auto;width:100%;justify-content:center}
+.md-format-hint{flex:1;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+@media(min-width:641px){
+  .md-format-row{flex-direction:row}
+  .md-format-btn{width:auto;min-width:240px;justify-content:flex-start}
+  .md-format-hint{align-self:center}
+}
+@media(max-width:640px){
+  .md-more-formats-hint{display:none}
+}
 .md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
 .md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
 @media(max-width:640px){.md-help-desc{display:block;text-align:center}}
@@ -323,8 +352,10 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles para restaurantes independientes a partir de una lista de platos, cuatro temas tipográficos, el logo del operador y cuatro tamaños de papel. Solo acomodo mecánico — sin reescritura por IA.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
-{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Suite de Diseño de Menú","item":"https://muntin.digital/es/tools/menu-design/"}]}
+{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles a partir de una lista de platos. 37 temas tipográficos, 22 tamaños de papel, 17 códigos de alérgenos en 5 regímenes regulatorios (US/EU/UK/CA/AU), bilingüe EN+ES, metadatos PDF accesibles, PWA offline. Gratis, sin registro, todo en tu navegador.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","applicationSubCategory":"Diseño de menú","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"featureList":["37 temas curados","22 tamaños de papel","17 alérgenos × 5 regímenes regulatorios","Bilingüe EN/ES","Metadatos PDF/UA accesibles","JSON-LD Schema.org","PDF para imprenta (PDF/X-3, sangría + marcas de corte)","Versiones letra grande + alto contraste","Texto plano + Markdown + SSML + Braille (BRF)","HTML para QR","HTML para tablet kiosko","Listo para impresora térmica ESC/POS","ZIP bilingüe (EN+ES lado a lado)","Guardar/Cargar menú como JSON","Service worker — funciona offline","PWA instalable"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Suite de Diseño de Menú","item":"https://muntin.digital/es/tools/menu-design/"}]},
+{"@type":"HowTo","name":"Cómo hacer un menú imprimible en 4 pasos","description":"Construye un PDF de menú listo para imprenta a partir de una lista de platos. Sin necesidad de habilidad de diseño.","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"Navegador web"}],"step":[{"@type":"HowToStep","name":"Escribe o pega tus platos","text":"Pega tu menú existente, o escribe tu primer plato en el editor. Los encabezados de sección se detectan automáticamente. Alérgenos, precios y descripciones van en sus propias columnas.","url":"https://muntin.digital/es/tools/menu-design/#mdGrid"},{"@type":"HowToStep","name":"Elige un tema","text":"Elige entre 37 temas curados — Trattoria, Modern Minimal, Brasserie, Steakhouse, Izakaya Lantern, India Moderna, Korean BBQ Counter, Mezze Levantino, Costa Peruana, Azafrán Persa, Banquete Filipino, Mostrador Deli, Quesos + Carnicería, Mostrador del Chef, Servicio a la Habitación, Cuadrícula Bagel, y más. Cada uno está restringido para que el resultado nunca se vea amateur.","url":"https://muntin.digital/es/tools/menu-design/#mdThemes"},{"@type":"HowToStep","name":"Elige un tamaño de papel","text":"22 tamaños incluyendo Carta, A4, Tabloide, media página, postal, plegado, tríptico, mantel individual, lista de vinos, A2, A1, pantalla digital, y dimensiones personalizadas. Promoción automática a 2 columnas cuando hace falta.","url":"https://muntin.digital/es/tools/menu-design/#mdPaperRow"},{"@type":"HowToStep","name":"Descarga el PDF","text":"Toca Descargar PDF. Tu menú se genera en tu navegador; nada se sube. El archivo lleva metadatos de accesibilidad (idioma, título, XMP) para que los lectores de pantalla lo anuncien correctamente. El modo imprenta agrega sangría, marcas de corte y metadatos PDF/X-3.","url":"https://muntin.digital/es/tools/menu-design/#mdDownload"}]},
+{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Es realmente gratis? ¿Cuál es la trampa?","acceptedAnswer":{"@type":"Answer","text":"Es gratis de verdad, sin registro, sin gate de email, sin marca de agua, sin tope de uso. La trampa es que no nos quedamos con tus datos — toda la herramienta corre en tu navegador. Los únicos servicios pagos son menu polish ($249) y menu drop-in ($1,500), y ambos tienen lista de espera."}},{"@type":"Question","name":"¿Mis datos del menú salen de mi computadora?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe un plato, pega un menú, cambia el tema, exporta el PDF. La pestaña Network queda vacía (después de que carga la página). Todo pasa en el navegador. Tu menú se guarda como borrador en localStorage; también puedes guardarlo como archivo JSON en tus descargas."}},{"@type":"Question","name":"¿Por qué no soporta menús de 3 páginas?","acceptedAnswer":{"@type":"Answer","text":"Los menús reales son de 1 o 2 páginas (frente + dorso). Los menús de 3 páginas no existen — confunden a los comensales y suben el costo de impresión. La cascada de auto-ajuste prueba el tamaño nativo, luego cuatro niveles de reducción, luego promoción a 2 columnas. Si tu contenido aun no cabe, surge un aviso claro (quita N platos, activa frente+dorso, elige un papel más grande)."}},{"@type":"Question","name":"¿Para qué sirve el selector de régimen de alérgenos?","acceptedAnswer":{"@type":"Answer","text":"Las reglas varían por región. US-FDA-9 es el predeterminado (Big 9, incluye sésamo). EU-FIC-14 agrega mostaza, apio, lupin, moluscos, sulfitos. UK-PPDS agrega la distinción contiene/puede contener (Ley Natasha). Canadá y Australia/Nueva Zelanda tienen sus propias reglas. El selector cambia el aviso predeterminado y el catálogo de alérgenos para que el PDF coincida con tu régimen regulatorio."}},{"@type":"Question","name":"¿El PDF servirá para mi imprenta?","acceptedAnswer":{"@type":"Answer","text":"Sí. Activa 'Modo imprenta' antes de exportar y el PDF llevará 3mm de sangría, marcas de corte en cada esquina, OutputIntent sRGB, TrimBox y BleedBox según el spec PDF/X-3, y metadatos PDF (Título, Asunto, Creador). Tu imprenta local lo aceptará directamente. También incluimos una plantilla mailto en español plano para enviarlo."}},{"@type":"Question","name":"¿Puedo exportar un menú QR para mi sitio web?","acceptedAnswer":{"@type":"Answer","text":"Sí. Toca 'Exportar menú QR' y proporciona la URL donde alojarás menu.html. La herramienta devuelve un zip con una página HTML autónoma estilizada (con JSON-LD Schema.org Menu para los rich results de Google), un PNG del código QR, e instrucciones. Súbelo a Wix / Squarespace / WordPress / S3 / GitHub Pages — el QR apunta ahí, los clientes escanean, la página carga al instante."}},{"@type":"Question","name":"¿Funciona offline?","acceptedAnswer":{"@type":"Answer","text":"Sí. Después de la primera visita el service worker cachea toda la herramienta. Puedes instalarla como app de teléfono o escritorio desde el affordance del navegador. Editor, vista previa y exportación funcionan sin internet. La biblioteca PDF lazy-cargada se cachea en la primera exportación y luego también funciona offline."}},{"@type":"Question","name":"¿En qué se diferencia de Canva?","acceptedAnswer":{"@type":"Answer","text":"Canva ofrece templates genéricos que no entienden de restaurantes — asumen 12 platos, sin regulación de alérgenos, sin auto-ajuste. Nosotros estamos hechos para restaurantes específicamente: cada constraint, cada palabra. Metadatos de accesibilidad PDF/UA, JSON-LD Schema.org Menu, salida ESC/POS para impresoras térmicas, regímenes regionales de alérgenos, bilingüe EN+ES, totalmente offline. Canva no puede igualar esto porque sus bytes tienen que aterrizar en sus servidores."}},{"@type":"Question","name":"¿Y si quiero mi menú profesionalmente pulido?","acceptedAnswer":{"@type":"Answer","text":"Ofrecemos dos servicios pagos. Menu Polish ($249, entrega en 3 días hábiles, una revisión) toma tu brief exportado y devuelve un PDF listo para imprenta + fuente InDesign. Menu Drop-In ($1,500) es un diseño de menú a medida desde cero con entrevista al operador. Ambos los corre un solo diseñador con 14 años en pisos de restaurante, con cupo de 6 polishes y 1 drop-in por semana."}},{"@type":"Question","name":"¿Soportan idiomas además de inglés y español?","acceptedAnswer":{"@type":"Answer","text":"EN y ES son de primera clase hoy (UI completa, avisos de alérgenos por régimen + locale, formato de moneda por locale). FR, PT-BR, VI, AM, ZH, KO, JA, AR, HE están en el roadmap con tipografía profunda (subset de fuentes CJK, espejo HTML RTL). El contenido del plato se puede escribir en cualquier idioma."}}]}
 ]}
 </script>
 </head>
@@ -707,6 +738,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdCustomizeReset" class="md-customize-reset">Restablecer al tema por defecto</button>
           </div>
+          <!-- Wave studio-quality — feedback de legibilidad en vivo. -->
+          <div class="md-customize-lint" id="mdCustomizeLint" role="status" aria-live="polite" hidden></div>
           <div class="md-customize-modifiers">
             <label class="md-customize-mod-field">
               <span>Estación</span>
@@ -831,6 +864,10 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <details class="md-print-checklist" id="mdPrintChecklist" hidden></details>
     </div>
 
+    <!-- Wave studio-quality (A9) — paridad EN: estructura primary +
+         disclosure. Antes 9 botones con peso visual igual; ahora
+         Descargar PDF + pack como primarios y el resto vive detrás
+         de "Más formatos" con descripciones operativas. -->
     <div class="md-download">
       <p class="md-download-text"><strong>Listo cuando tú quieras.</strong> Toca Descargar para guardar tu menú como PDF. El archivo se genera en tu navegador — nada se sube.</p>
       <div class="md-download-row">
@@ -838,53 +875,83 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar PDF
         </button>
-        <!-- Wave B5 — Send to printer + web dev (Menu Pack ZIP) -->
-        <!-- Wave studio-quality — Pack bilingüe: un clic → EN+ES con
-             todos los artefactos en subcarpetas lado a lado. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportBilingual" aria-label="Exportar pack bilingüe (inglés + español)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Pack bilingüe (EN + ES)
-        </button>
-        <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Enviar un pack completo a tu imprenta, encargado de sitio y staff (un zip)">
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportPack" aria-label="Enviar un pack completo a tu imprenta, encargado de sitio y staff (un zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
           Enviar al impresor + sitio
         </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Exportar menú QR (HTML + PNG con QR, zip)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
-          Exportar menú QR
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdLargePrint" aria-label="Descargar versión letra grande (accesibilidad)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Versión letra grande
-        </button>
-        <!-- Wave A1 — high-contrast accessibility variant -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Descargar versión de alto contraste (accesibilidad baja visión)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3 v18"/><path d="M12 3 a9 9 0 0 1 0 18 z" fill="currentColor"/></svg>
-          Alto contraste
-        </button>
-        <!-- Plain text + Markdown export -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Descargar texto plano + Markdown">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-          Texto plano
-        </button>
-        <!-- Wave studio-quality — paridad ES con EN para SSML/BRF/Tablet.
-             SSML: lectura para TTS (Polly/Azure). BRF: archivo para
-             impresoras Braille. Tablet: HTML autosuficiente para iPad
-             tipo kiosko. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportSsml" aria-label="Descargar SSML para texto-a-voz">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-          SSML (audio)
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Descargar Braille Ready Format (Grade 1)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
-          Braille (BRF)
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Descargar HTML para tablet kiosko">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-          HTML para tablet
-        </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
+      <details class="md-more-formats">
+        <summary class="md-more-formats-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>Más formatos</span>
+          <span class="md-more-formats-hint">(menú QR · letra grande · texto plano · audio · braille · tablet · bilingüe)</span>
+        </summary>
+        <div class="md-more-formats-body">
+          <div class="md-format-group">
+            <p class="md-format-group-label">Web y QR</p>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportBilingual" aria-label="Exportar pack bilingüe (inglés + español)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Pack bilingüe (EN + ES)</span>
+              </button>
+              <span class="md-format-hint">Un clic, tu menú en dos idiomas, en subcarpetas lado a lado. Para staff bilingüe e impresiones bilingües.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportQr" aria-label="Exportar menú QR (HTML + PNG con QR, zip)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
+                <span>Menú QR (HTML + PNG)</span>
+              </button>
+              <span class="md-format-hint">Página HTML autónoma + PNG del QR. Súbelo a tu sitio; el QR apunta ahí. Schema.org Menu JSON-LD incluido.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportTablet" aria-label="Descargar HTML para tablet kiosko">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <span>HTML para tablet</span>
+              </button>
+              <span class="md-format-hint">Un solo archivo HTML para iPad / tablet en la entrada o por si el cliente quiere consultar. Sin internet.</span>
+            </div>
+          </div>
+          <div class="md-format-group">
+            <p class="md-format-group-label">Accesibilidad</p>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdLargePrint" aria-label="Descargar versión letra grande (accesibilidad)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>PDF letra grande</span>
+              </button>
+              <span class="md-format-hint">Para clientes con baja visión; cumple ADA a 18 pt. Mismo contenido, tipo más grande, más espacio.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdHighContrast" aria-label="Descargar versión de alto contraste (accesibilidad baja visión)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3 v18"/><path d="M12 3 a9 9 0 0 1 0 18 z" fill="currentColor"/></svg>
+                <span>PDF alto contraste</span>
+              </button>
+              <span class="md-format-hint">Variante amarillo-sobre-negro AAA. Útil para clientes con baja visión en comedores con poca luz.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportText" aria-label="Descargar texto plano + Markdown">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+                <span>Texto plano + Markdown</span>
+              </button>
+              <span class="md-format-hint">Versión texto compatible con lectores de pantalla. Pega en correos, pega en la pared de la cocina, o aliméntalo a otras herramientas.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportSsml" aria-label="Descargar SSML para texto-a-voz">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <span>SSML (audio)</span>
+              </button>
+              <span class="md-format-hint">Compatible con AWS Polly / Google TTS / Azure Speech para un menú en audio — con pausas marcadas y pronunciación.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportBrf" aria-label="Descargar Braille Ready Format (Grade 1)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+                <span>Braille (BRF)</span>
+              </button>
+              <span class="md-format-hint">Braille Grado 1 (sin contracciones). Mándalo a una impresora Braille; cumple ADA Title III para menús accesibles.</span>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
 
     <div class="md-history" id="mdHistory" hidden></div>

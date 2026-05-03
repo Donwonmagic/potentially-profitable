@@ -326,7 +326,7 @@
       id: 'brewpub-slate', label_en: 'Brewpub', label_es: 'Cervecería',
       blurb_en: 'Slate stock, work-sans body, amber accent. Beer-hall energy.',
       blurb_es: 'Papel pizarra, sans cálido, acento ámbar. Energía de cervecería.',
-      paper: '#F0E7D0', ink: '#1F2630', accent: '#C68A2E', muted: '#5C6470',
+      paper: '#F0E7D0', ink: '#1F2630', accent: '#9C6610', muted: '#5C6470',
       bodyFamily: 'Work Sans, Inter, sans-serif', displayFamily: 'Work Sans, Inter, sans-serif',
       h1Pt: 30, h2Pt: 14, bodyPt: 11, pricePt: 11, descPt: 10,
       priceStyle: 'tab-aligned', dividerStyle: 'box', columns: 2, logoSlot: 'header-left',
@@ -443,7 +443,7 @@
       id: 'kids-bright', label_en: 'Kids Menu', label_es: 'Menú Infantil',
       blurb_en: 'Sky stock, sunshine accent, friendly sans. Family-fun.',
       blurb_es: 'Papel cielo, acento sol, sans amigable. Diversión familiar.',
-      paper: '#FEFBF1', ink: '#1A2740', accent: '#E8AB1F', muted: '#5C6470',
+      paper: '#FEFBF1', ink: '#1A2740', accent: '#C44A14', muted: '#5C6470',
       bodyFamily: 'Work Sans, Inter, sans-serif', displayFamily: 'Work Sans, Inter, sans-serif',
       h1Pt: 30, h2Pt: 14, bodyPt: 12, pricePt: 12, descPt: 11,
       priceStyle: 'tab-aligned', dividerStyle: 'box', columns: 1, logoSlot: 'header-center',
@@ -508,7 +508,7 @@
       id: 'food-truck', label_en: 'Food Truck', label_es: 'Food Truck',
       blurb_en: 'Hot yellow display, condensed caps. Counter and curb energy.',
       blurb_es: 'Display amarillo intenso, mayúsculas condensadas. Energía de mostrador.',
-      paper: '#FFFFFF', ink: '#0F0F0F', accent: '#FFC83D', muted: '#5C6470',
+      paper: '#FFFFFF', ink: '#0F0F0F', accent: '#B47200', muted: '#5C6470',
       bodyFamily: 'Work Sans, Inter, sans-serif', displayFamily: 'Bebas Neue, "Helvetica Neue Condensed", Arial, sans-serif',
       h1Pt: 36, h2Pt: 18, bodyPt: 12, pricePt: 12, descPt: 10,
       priceStyle: 'right-monospace', dividerStyle: 'box', columns: 2, logoSlot: 'header-center',
@@ -632,6 +632,293 @@
                     'libanesa', 'mediterránea', 'mezze levantino']
     },
 
+    // Wave studio-quality (B4 final) — Cheese & Butcher.
+    // Cheese / charcuterie counter and small-batch butcher shops.
+    // Butcher-paper kraft with slab-serif display. Pricing-by-weight
+    // column (operators sell by 100g, lb, oz, etc — different number
+    // formatting than dish menus). Reuses wood-grain motif for
+    // butcher-paper-adjacent texture.
+    'cheese-butcher': {
+      id: 'cheese-butcher',
+      label_en: 'Cheese + Butcher',
+      label_es: 'Quesos + Carnicería',
+      blurb_en: 'Butcher kraft, slab serif, pricing-by-weight column. Counter energy.',
+      blurb_es: 'Kraft de carnicería, slab serif, precios por peso. Energía de mostrador.',
+      paper:    '#E8DDC4',
+      ink:      '#2A1F14',
+      accent:   '#7A2920',
+      muted:    '#6E5E45',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Roboto Slab", Rockwell, "Courier New", monospace',
+      h1Pt:    32,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-left',
+      letterSpacing: 'normal',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'placemat', 'specials'],
+      cuisineHint: ['cheese', 'fromager', 'fromagerie', 'charcuterie', 'butcher',
+                    'carniceria', 'carnicería', 'cured meat', 'whole animal',
+                    'small batch butcher', 'queso', 'quesos']
+    },
+
+    // Wave studio-quality (B4 final) — Chef's Counter.
+    // European prix-fixe variant of tasting-omakase. Course-numbered
+    // single-column, pairing line for wine. For chef's counters in
+    // bistros and small upscale dining rooms. Uses the brush-stroke
+    // motif (same as tasting-omakase — both are course-driven).
+    'chef-counter': {
+      id: 'chef-counter',
+      label_en: 'Chef\'s Counter',
+      label_es: 'Mostrador del Chef',
+      blurb_en: 'European prix-fixe. Course-numbered, pairing line, ample white space.',
+      blurb_es: 'Prix-fixe europeo. Cursos numerados, línea de maridaje, mucho aire.',
+      paper:    '#FAF8F2',
+      ink:      '#1A1A1A',
+      accent:   '#403028',
+      muted:    '#8B7E6E',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    36,
+      h2Pt:    14,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  10,
+      priceStyle:    'price-after-name',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'tasting',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'specials'],
+      cuisineHint: ['chef counter', 'chef\'s counter', 'chefs counter', 'prix fixe',
+                    'prix-fixe', 'european tasting', 'tasting menu', 'degustation',
+                    'menu degustacion', 'menú de degustación', 'mostrador del chef']
+    },
+
+    // Wave studio-quality (B4 final) — Room-service / Hotel F&B.
+    // Bedside in-room menu. Two-column, generous descPt (room-service
+    // descriptions tend to be longer + more genteel), time-window
+    // tags ("served 6–11am", "until 11pm") that the existing
+    // availability field renders. Hotel F&B is a huge segment with
+    // no good theme today. Cream paper, navy ink, brass accent.
+    'room-service-hotel': {
+      id: 'room-service-hotel',
+      label_en: 'Room Service',
+      label_es: 'Servicio a la Habitación',
+      blurb_en: 'Hotel F&B in-room. Cream + navy + brass, two-column with time tags.',
+      blurb_es: 'Hotel F&B en habitación. Crema + marino + latón, dos columnas con horarios.',
+      paper:    '#F4ECDA',
+      ink:      '#1B2336',
+      accent:   '#8C6520',
+      muted:    '#6F6553',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Playfair Display", "Cormorant Garamond", Garamond, serif',
+      h1Pt:    34,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  10,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'table-card', 'placemat'],
+      cuisineHint: ['room service', 'in-room dining', 'hotel f&b', 'hotel restaurant',
+                    'hotel dining', 'bedside menu', 'servicio a la habitación',
+                    'hotel boutique', 'hotel resort']
+    },
+
+    // Wave studio-quality (B4 final) — Bagel Grid.
+    // Fixed-grid pricing card for bagel shops + over-counter signage.
+    // Monospaced columns make the price column align perfectly without
+    // leader dots. White paper, deep blue accent, condensed display.
+    // For shops that hand customers a one-page pricing card or hang
+    // signage above the counter (Tompkins Square, Russ-style).
+    'bagel-grid': {
+      id: 'bagel-grid',
+      label_en: 'Bagel Grid',
+      label_es: 'Cuadrícula Bagel',
+      blurb_en: 'Fixed-grid pricing card. Monospaced columns, over-counter energy.',
+      blurb_es: 'Tarjeta de precios cuadriculada. Columnas monoespaciadas.',
+      paper:    '#FFFFFF',
+      ink:      '#0F1A2A',
+      accent:   '#1F4E5B',
+      muted:    '#5A6A7A',
+      bodyFamily:    '"JetBrains Mono", "Courier New", monospace',
+      displayFamily: '"Bebas Neue", "Helvetica Neue Condensed", Arial, sans-serif',
+      h1Pt:    36,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9,
+      priceStyle:    'right-monospace',
+      dividerStyle:  'box',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'wide',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'a2-board', 'a1-board'],
+      cuisineHint: ['bagel', 'schmear', 'lox', 'cream cheese', 'over-counter signage',
+                    'pricing card', 'bagel shop', 'cuadrícula bagel']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Filipino Feast.
+    // Kamayan-style sharing menus served on banana leaves. Banana-leaf
+    // green paper, bone-cream ink (stays readable), warm red accent
+    // for hero items. Generous 1-column layout because Filipino menus
+    // run dish-rich + descriptor-rich (regional callouts, ulam vs
+    // pulutan distinctions). New banana-leaf motif at page edge.
+    'filipino-feast': {
+      id: 'filipino-feast',
+      label_en: 'Filipino Feast',
+      label_es: 'Banquete Filipino',
+      blurb_en: 'Banana-leaf green, bone ink, warm red accent. Kamayan energy.',
+      blurb_es: 'Verde hoja de plátano, tinta hueso, acento rojo. Energía kamayan.',
+      paper:    '#1F3A26',
+      ink:      '#F5EFD8',
+      accent:   '#FF715B',
+      muted:    '#A8B596',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    34,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'specials', 'table-tent'],
+      cuisineHint: ['filipino', 'philippine', 'kamayan', 'adobo', 'sinigang', 'lechon',
+                    'lumpia', 'halo halo', 'filipina', 'philippines',
+                    'banquete filipino', 'comida filipina']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Deli Counter.
+    // NY-style pastrami / bagel / appetizing counter. Gloss-white
+    // paper, retro red accent, condensed signpainter display. The
+    // class of operator (Russ & Daughters, Katz's, smaller pastrami
+    // shops) currently has no good theme — they default to diner-
+    // counter (too breakfast-coded) or food-truck (wrong context).
+    // Two columns for the dense menu density a real deli has.
+    'deli-counter': {
+      id: 'deli-counter',
+      label_en: 'Deli Counter',
+      label_es: 'Mostrador Deli',
+      blurb_en: 'Gloss white, retro red accent, condensed signpainter caps.',
+      blurb_es: 'Blanco brillante, acento rojo retro, mayúsculas condensadas.',
+      paper:    '#FFFFFF',
+      ink:      '#1A1A1A',
+      accent:   '#C42021',
+      muted:    '#5A6675',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Bebas Neue", "Helvetica Neue Condensed", Arial, sans-serif',
+      h1Pt:    36,
+      h2Pt:    20,
+      bodyPt:  11.5,
+      pricePt: 11.5,
+      descPt:  10,
+      priceStyle:    'right-monospace',
+      dividerStyle:  'box',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'wide',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'a2-board'],
+      cuisineHint: ['deli', 'pastrami', 'bagel', 'appetizing', 'jewish deli',
+                    'kosher deli', 'reuben', 'smoked fish', 'lox', 'cured meat',
+                    'mostrador deli', 'deli neoyorquino']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Peruvian Coastal.
+    // Ceviche, tiradito, Nikkei wave. Cold-stone grey paper, ceviche-
+    // lime accent, Pacific-blue muted. Operators of cevicherias, pisco
+    // bars, and Nikkei restaurants currently have no good theme — they
+    // default to coastal-raw-bar (too oyster-bar) or asian-table
+    // (misses the South-American identity entirely). Reuses the wave
+    // motif since Peruvian coastal cuisine is Pacific-driven.
+    'peruvian-coastal': {
+      id: 'peruvian-coastal',
+      label_en: 'Peruvian Coastal',
+      label_es: 'Costa Peruana',
+      blurb_en: 'Cold-stone grey, ceviche-lime accent. Pacific waves, Nikkei energy.',
+      blurb_es: 'Gris piedra fría, acento lima de ceviche. Olas del Pacífico, energía Nikkei.',
+      paper:    '#EDEFEF',
+      ink:      '#1A2530',
+      accent:   '#4A7D1F',
+      muted:    '#3E6478',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    32,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'placemat', 'specials'],
+      cuisineHint: ['peruvian', 'peru', 'nikkei', 'ceviche', 'tiradito', 'pisco',
+                    'cevicheria', 'chifa', 'costa peruana', 'peruana']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Persian Saffron.
+    // High-end Persian / Iranian dining. Saffron-cream paper with
+    // indigo accent and a calligraphic display face. Eight-pointed
+    // star (girih / khatam) motif at page edge for visual identity.
+    // Persian high-end shops currently default to brasserie (wrong
+    // cuisine entirely) or modern-minimal (no identity). This gives
+    // them a theme that reads like the actual room.
+    'persian-saffron': {
+      id: 'persian-saffron',
+      label_en: 'Persian Saffron',
+      label_es: 'Azafrán Persa',
+      blurb_en: 'Saffron cream paper, indigo accent, eight-pointed star mark.',
+      blurb_es: 'Papel azafrán, acento índigo, estrella de ocho puntas.',
+      paper:    '#FBF3DA',
+      ink:      '#1F2A3A',
+      accent:   '#2B3F8E',
+      muted:    '#A8893E',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Playfair Display", "Cormorant Garamond", Garamond, serif',
+      h1Pt:    34,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'trifold-letter-z'],
+      cuisineHint: ['persian', 'iran', 'iranian', 'saffron', 'tahdig', 'fesenjan',
+                    'ghormeh', 'kebab persian', 'persa', 'iraní']
+    },
+
     'modern-indian': {
       id: 'modern-indian',
       label_en: 'Modern Indian',
@@ -694,13 +981,13 @@
   // with cuisineHint surfaced for the operator-facing chip strip.
   var GROUPS = [
     { id: 'casual',     label_en: 'Casual / quick',          label_es: 'Casual / rápido',
-      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright'] },
+      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright', 'deli-counter', 'bagel-grid'] },
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
-      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze'] },
+      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron', 'filipino-feast', 'room-service-hotel'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
-      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian'] },
+      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian', 'peruvian-coastal'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',
-      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter'] }
+      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter', 'cheese-butcher', 'chef-counter'] }
   ];
   function groups() { return GROUPS; }
 
