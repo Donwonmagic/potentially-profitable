@@ -72,6 +72,7 @@ jobs:
           node scripts/sync-approved-fieldnotes.mjs
           node scripts/inject-article-fieldnotes.mjs
           node scripts/inject-article-fieldnote-form.mjs
+          node scripts/inject-article-listen.mjs
           node scripts/build-people-pages.mjs
           node scripts/inject-homepage-fieldnotes-rail.mjs
           node scripts/inject-window-fieldnotes-rail.mjs
