@@ -41,6 +41,11 @@ const CHECKS = [
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
   ['Analytics vocab',     'check-analytics-vocabulary.mjs','--check'],
+  // Wave A unit-test gate (node:test). Covers menu-schema +
+  // reducer/store + allergens regime math today; new modules
+  // ship their tests next to the source and the runner picks
+  // them up by glob.
+  ['Unit tests',          'check-tests.mjs'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
