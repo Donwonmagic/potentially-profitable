@@ -151,6 +151,22 @@
         'M8 6 Q9 8 8 10 M11 5 Q12 7 11 9 M14 6 Q15 8 14 10'
       ],
       extras: []
+    },
+    // Wave studio-quality — paisley (boteh) + small Mughal arch.
+    // The paisley curl is a classic South-Asian textile motif; the
+    // arch hints at Mughal architecture without being literal. Both
+    // shapes carry the Indian-cuisine identity at low opacity behind
+    // the menu content.
+    'paisley': {
+      paths: [
+        'M5 18 Q3 14 5 11 Q7 8 11 8 Q15 8 17 11 Q18 13 17 16 Q15 19 11 19 Q9 19 7 17 Q9 17 11 16 Q14 14 13 11 Q11 9 8 11 Q5 14 7 17',
+        'M14 5 Q14 3 16 3 Q18 3 18 5 L18 8 L14 8 Z'
+      ],
+      extras: [
+        '<circle cx="11" cy="13" r="1" fill="none" stroke="currentColor" stroke-width="0.4"/>',
+        '<circle cx="9" cy="14" r="0.4" fill="currentColor"/>',
+        '<circle cx="13" cy="13" r="0.4" fill="currentColor"/>'
+      ]
     }
   };
 
@@ -185,6 +201,12 @@
     if (has(/tapas|pinchos|spanish|andaluz/i))               return { key: 'spanish-tile', x: 178, y: 38, s: 1.3 };
     if (has(/diner|breakfast|burger/i))                      return { key: 'coffee-cup',   x: 178, y: 36, s: 1.4 };
     if (has(/dessert|patisserie|dolci/i))                    return { key: 'leaf-cluster', x: 178, y: 36, s: 1.4 };
+    // Wave studio-quality — Indian-cuisine motif (paisley + Mughal
+    // arch). Operators currently default to a wrong theme; this gives
+    // the modern-indian theme its visual identity end-to-end.
+    if (has(/indian|india|mughal|tandoor|biryani|curry|punjab|tamil|bengali|gujarati|kashmir/i)) {
+      return { key: 'paisley', x: 175, y: 38, s: 1.3 };
+    }
     return null;
   }
 

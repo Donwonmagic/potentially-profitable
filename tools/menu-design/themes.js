@@ -515,6 +515,80 @@
       letterSpacing: 'wide', sectionCase: 'uppercase', contentType: 'standard',
       paperFloors: ['letter', 'a4', 'half-page', 'a2-board'],
       cuisineHint: ['food truck', 'ghost kitchen', 'pop-up', 'street food', 'truck']
+    },
+
+    // Wave studio-quality (B4 partial) — Izakaya Lantern.
+    // Late-night Japanese pub. Lantern-red accent on ink-black paper
+    // with a brushed display face. Operators of izakayas, sake bars,
+    // and yakitori counters currently get funneled into asian-table
+    // (too clean) or ramen-counter (too lunch-y). This gives them a
+    // theme that reads like the actual room: warm light, low ink,
+    // one paper lantern overhead.
+    'izakaya-lantern': {
+      id: 'izakaya-lantern',
+      label_en: 'Izakaya Lantern',
+      label_es: 'Izakaya Lantern',
+      blurb_en: 'Late-night Japanese pub. Lantern-red on ink, brushed display.',
+      blurb_es: 'Pub japonés nocturno. Rojo de farol sobre tinta, display de pincel.',
+      paper:    '#15110D',
+      ink:      '#F2EAD8',
+      accent:   '#C84B3F',
+      muted:    '#8A7A66',
+      bodyFamily:    '"Noto Serif JP", Georgia, serif',
+      displayFamily: '"Shippori Mincho", "Noto Serif JP", Georgia, serif',
+      h1Pt:    34,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'normal',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'table-tent', 'specials'],
+      cuisineHint: ['izakaya', 'sake bar', 'yakitori', 'japanese pub', 'late-night japanese',
+                    'tempura bar', 'oden', 'japonesa', 'sake']
+    },
+
+    // Wave studio-quality (B4 partial) — Modern Indian.
+    // Mughal-paper warm cream with deep green accent and saffron
+    // muted. Indian restaurants currently default to amateur Canva
+    // templates (heavy on stock photos) or trattoria (wrong cuisine
+    // shape). This theme reads like a contemporary Indian dining
+    // room — warm, generous spacing, paisley motif rendering at
+    // page edges via the new cuisine-decor entry.
+    'modern-indian': {
+      id: 'modern-indian',
+      label_en: 'Modern Indian',
+      label_es: 'India Moderna',
+      blurb_en: 'Mughal-paper cream, deep green accent, saffron muted, paisley mark.',
+      blurb_es: 'Crema Mughal, acento verde profundo, saffron suave, motivo paisley.',
+      paper:    '#F8F1E0',
+      ink:      '#1F2A1A',
+      accent:   '#1F6F4C',
+      muted:    '#C97B2D',
+      bodyFamily:    'Georgia, "Times New Roman", serif',
+      displayFamily: 'Cormorant Garamond, Garamond, Georgia, serif',
+      h1Pt:    32,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'trifold-letter-z', 'placemat'],
+      cuisineHint: ['indian', 'india', 'mughal', 'tandoor', 'biryani', 'curry',
+                    'punjab', 'tamil', 'bengali', 'gujarati', 'kashmir',
+                    'chaat', 'thali', 'south indian', 'north indian',
+                    'india moderna', 'india del sur']
     }
   };
 
@@ -552,9 +626,9 @@
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
       themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
-      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose'] },
+      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',
-      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate'] }
+      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern'] }
   ];
   function groups() { return GROUPS; }
 
