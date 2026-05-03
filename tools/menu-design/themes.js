@@ -632,6 +632,78 @@
                     'libanesa', 'mediterránea', 'mezze levantino']
     },
 
+    // Wave studio-quality (B4 partial cont.) — Peruvian Coastal.
+    // Ceviche, tiradito, Nikkei wave. Cold-stone grey paper, ceviche-
+    // lime accent, Pacific-blue muted. Operators of cevicherias, pisco
+    // bars, and Nikkei restaurants currently have no good theme — they
+    // default to coastal-raw-bar (too oyster-bar) or asian-table
+    // (misses the South-American identity entirely). Reuses the wave
+    // motif since Peruvian coastal cuisine is Pacific-driven.
+    'peruvian-coastal': {
+      id: 'peruvian-coastal',
+      label_en: 'Peruvian Coastal',
+      label_es: 'Costa Peruana',
+      blurb_en: 'Cold-stone grey, ceviche-lime accent. Pacific waves, Nikkei energy.',
+      blurb_es: 'Gris piedra fría, acento lima de ceviche. Olas del Pacífico, energía Nikkei.',
+      paper:    '#EDEFEF',
+      ink:      '#1A2530',
+      accent:   '#7DB346',
+      muted:    '#3E6478',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    32,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'placemat', 'specials'],
+      cuisineHint: ['peruvian', 'peru', 'nikkei', 'ceviche', 'tiradito', 'pisco',
+                    'cevicheria', 'chifa', 'costa peruana', 'peruana']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Persian Saffron.
+    // High-end Persian / Iranian dining. Saffron-cream paper with
+    // indigo accent and a calligraphic display face. Eight-pointed
+    // star (girih / khatam) motif at page edge for visual identity.
+    // Persian high-end shops currently default to brasserie (wrong
+    // cuisine entirely) or modern-minimal (no identity). This gives
+    // them a theme that reads like the actual room.
+    'persian-saffron': {
+      id: 'persian-saffron',
+      label_en: 'Persian Saffron',
+      label_es: 'Azafrán Persa',
+      blurb_en: 'Saffron cream paper, indigo accent, eight-pointed star mark.',
+      blurb_es: 'Papel azafrán, acento índigo, estrella de ocho puntas.',
+      paper:    '#FBF3DA',
+      ink:      '#1F2A3A',
+      accent:   '#2B3F8E',
+      muted:    '#A8893E',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Playfair Display", "Cormorant Garamond", Garamond, serif',
+      h1Pt:    34,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'trifold-letter-z'],
+      cuisineHint: ['persian', 'iran', 'iranian', 'saffron', 'tahdig', 'fesenjan',
+                    'ghormeh', 'kebab persian', 'persa', 'iraní']
+    },
+
     'modern-indian': {
       id: 'modern-indian',
       label_en: 'Modern Indian',
@@ -696,9 +768,9 @@
     { id: 'casual',     label_en: 'Casual / quick',          label_es: 'Casual / rápido',
       themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright'] },
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
-      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze'] },
+      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
-      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian'] },
+      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian', 'peruvian-coastal'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',
       themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter'] }
   ];

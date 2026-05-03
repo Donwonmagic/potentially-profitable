@@ -178,6 +178,19 @@
         'M13 17 Q14 15 13 13 Q12 14 13 17'
       ],
       extras: []
+    },
+    // Wave studio-quality — Persian eight-pointed star (girih / khatam).
+    // Two squares rotated 45° on each other form the classic 8-point
+    // star at the heart of Persian / Iranian decorative geometry.
+    // Inner small star adds depth without going busy.
+    'persian-star': {
+      paths: [
+        'M12 3 L15 9 L21 12 L15 15 L12 21 L9 15 L3 12 L9 9 Z',
+        'M12 6 L13.5 10.5 L18 12 L13.5 13.5 L12 18 L10.5 13.5 L6 12 L10.5 10.5 Z'
+      ],
+      extras: [
+        '<circle cx="12" cy="12" r="0.6" fill="currentColor"/>'
+      ]
     }
   };
 
@@ -229,6 +242,17 @@
     // Syrian / Jordanian / Greek / Turkish overlap.
     if (has(/levant|leban|israel|palest|syrian|jordan|mezze|hummus|falafel|shawarma|kebab|greek|turkish|mediterran|aegean/i)) {
       return { key: 'olive-branch', x: 175, y: 38, s: 1.4 };
+    }
+    // Wave studio-quality — Peruvian coastal cuisine. Ceviche-driven,
+    // heavily seafood. Reuses the wave motif (Pacific coastline).
+    // Covers Peruvian / Nikkei / Pisco bar overlap.
+    if (has(/peruvian|peru|nikkei|ceviche|tiradito|pisco|cevicheria|chifa/i)) {
+      return { key: 'wave', x: 0, y: 0, s: 9.2 };
+    }
+    // Wave studio-quality — Persian / Iranian high-end cuisine.
+    // Eight-pointed star (girih / khatam) is classic Persian geometry.
+    if (has(/persian|iran|iranian|saffron|kebab persian|tahdig|fesenjan|ghormeh|persa/i)) {
+      return { key: 'persian-star', x: 178, y: 38, s: 1.4 };
     }
     return null;
   }
