@@ -170,6 +170,7 @@
       'Menu Design Tool Loaded',
       'Menu Engineering Analysis',
       'Menu Engineering Export',
+      'Menu Engineering Handoff',
       'Menu Engineering Whatif',
       'Open Hours Export',
       'Open Hours Render',

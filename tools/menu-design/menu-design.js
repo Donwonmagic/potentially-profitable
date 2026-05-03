@@ -3976,6 +3976,18 @@
     if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
     if (Array.isArray(ctx.dishes) && ctx.dishes.length) parts.push({ label: 'Dishes', value: ctx.dishes.length + ' from prior tools' });
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
+    // Wave studio-quality (C9) — surface menu-engineering quadrant
+    // counts when the handoff carried them so the operator sees what
+    // came across without expanding the editor.
+    if (ctx.menuEngineeringHint) {
+      var meh = ctx.menuEngineeringHint;
+      var bits = [];
+      if (meh.stars)       bits.push(meh.stars      + (meh.stars      === 1 ? ' Star'      : ' Stars'));
+      if (meh.plowhorses)  bits.push(meh.plowhorses + (meh.plowhorses === 1 ? ' Plowhorse' : ' Plowhorses'));
+      if (meh.puzzles)     bits.push(meh.puzzles    + (meh.puzzles    === 1 ? ' Puzzle'    : ' Puzzles'));
+      if (meh.dogs)        bits.push(meh.dogs       + (meh.dogs       === 1 ? ' Dog'       : ' Dogs'));
+      if (bits.length) parts.push({ label: 'From Menu Engineering', value: bits.join(' · ') });
+    }
     if (!parts.length) {
       ctxEl.hidden = true;
       return;
