@@ -1141,6 +1141,18 @@
       }
     });
     if (current.name !== null || current.dishes.length) groups.push(current);
+    // Wave studio-quality — prune empty sections from the rendered
+    // output. An operator who created a section header but hasn't
+    // added dishes yet (work-in-progress) shouldn't ship an empty
+    // header to the printer. The data stays in rows[] so they can
+    // keep editing; we just skip it in the visual render. The
+    // unnamed group (dishes before any section header) is always
+    // emitted when it has content.
+    groups = groups.filter(function (g) {
+      if (g.dishes.length > 0) return true;       // section with dishes
+      if (g.name === null) return false;           // empty unnamed group
+      return false;                                // empty named section — prune
+    });
 
     var html = '';
     // Wave studio-quality — cuisine decoration on the live preview.
@@ -1427,11 +1439,58 @@
     });
     var pageBuckets = [[]];
     var bucketH = 0;
+    // Wave studio-quality — widow/orphan control. When a break would
+    // leave a section header alone at the bottom of a page (or with
+    // only its blurb but no dishes), move the header to the next
+    // page so it stays attached to its first dish. Same protection
+    // for the section-blurb element — it should ride with its header.
+    function _isHeaderish(node) {
+      if (!node || !node.matches) return false;
+      return node.matches('h2.md-pp-section, .md-pp-section-blurb, .md-pp-section-hero');
+    }
     children.forEach(function (c, idx) {
       var ch = heights[idx];
       if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
-        pageBuckets.push([c]);
-        bucketH = ch;
+        // Before starting a new bucket, check if the LAST few items
+        // in the current bucket are header-ish — if so, peel them
+        // off and prepend to the new bucket so the header doesn't
+        // strand. Walk backward up to 3 items (enough for hero +
+        // header + blurb stack).
+        var curr = pageBuckets[pageBuckets.length - 1];
+        var peeled = [];
+        for (var lookBack = 0; lookBack < 3 && curr.length > 0; lookBack++) {
+          var lastIdx = curr.length - 1;
+          if (_isHeaderish(curr[lastIdx])) {
+            peeled.unshift(curr.pop());
+          } else {
+            break;
+          }
+        }
+        // Recompute the current bucket's height after peeling.
+        if (peeled.length) {
+          bucketH = 0;
+          curr.forEach(function (n) {
+            var i = children.indexOf(n);
+            if (i >= 0) bucketH += heights[i];
+          });
+          // If peeling emptied the bucket, the page-overflow we just
+          // hit was a one-block-too-large situation. Restore one
+          // peeled item so we don't infinite-loop or emit empty pages.
+          if (curr.length === 0 && peeled.length > 0) {
+            curr.push(peeled.shift());
+            var i0 = children.indexOf(curr[0]);
+            if (i0 >= 0) bucketH = heights[i0];
+          }
+          pageBuckets.push(peeled.concat([c]));
+        } else {
+          pageBuckets.push([c]);
+        }
+        bucketH = 0;
+        var newBucket = pageBuckets[pageBuckets.length - 1];
+        newBucket.forEach(function (n) {
+          var i = children.indexOf(n);
+          if (i >= 0) bucketH += heights[i];
+        });
       } else {
         pageBuckets[pageBuckets.length - 1].push(c);
         bucketH += ch;

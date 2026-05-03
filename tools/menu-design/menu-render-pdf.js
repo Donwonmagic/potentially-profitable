@@ -522,7 +522,30 @@
     }
     var seenAllergens = {};
     var firstDishOfSection = true;
-    rows.forEach(function (r) {
+    // Wave studio-quality — prune empty sections from the PDF block
+    // stream. Same protection as the live preview: an operator who
+    // created a section header but hasn't added dishes yet shouldn't
+    // ship an empty header to the printer. Forward-look from each
+    // section index for at least one dish row before the next
+    // section; skip if none.
+    var prunedRows = (function () {
+      var out = [];
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        if (r.kind === 'section' && (r.name || '').trim()) {
+          var hasDish = false;
+          for (var j = i + 1; j < rows.length; j++) {
+            var n = rows[j];
+            if (n.kind === 'section') break;
+            if (n.kind === 'dish' && (n.name || '').trim()) { hasDish = true; break; }
+          }
+          if (!hasDish) continue;  // empty section — prune
+        }
+        out.push(r);
+      }
+      return out;
+    })();
+    prunedRows.forEach(function (r) {
       if (r.kind === 'section' && (r.name || '').trim()) {
         // W13-2 — section hero image renders as a 4:1 band BEFORE
         // the section header. Distinct block kind so the paginator
