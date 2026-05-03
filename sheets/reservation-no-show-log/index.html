@@ -223,6 +223,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="reservation-no-show-log">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">32-seat tasting-menu spot, Fri+Sat only</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Reservations logged (two-week period)</th><td>48</td></tr><tr><th scope="row">Late-cancels (≤24h)</th><td>3</td></tr><tr><th scope="row">No-shows</th><td>5</td></tr><tr><th scope="row">Average check</th><td>$145</td></tr><tr><th scope="row">Of the 5 no-shows, deposit-protected</th><td>0</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">No-show rate</th><td>10.4% · red</td></tr><tr><th scope="row">Estimated lost revenue</th><td>$725</td></tr><tr><th scope="row">No-show rate among deposit-holders</th><td>0%</td></tr></tbody></table>
+        <p class="swe-punchline">Every single no-show came from a non-deposit reservation. The pattern decides the next move: a two-week test on deposit-required for Fri/Sat parties of 4 or more. The window table at 8pm is what hurts — it's the one nobody walks in for at the last minute.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>

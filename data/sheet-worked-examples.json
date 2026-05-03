@@ -86,6 +86,96 @@
       ],
       "punchline_en": "The channel pencils — but only because their incremental labor estimate is honest. If they were treating delivery orders as 'free' kitchen time, the margin would read closer to 70% and they'd quietly be subsidizing the platform. The next move is the recipe-cost-card on the three SKUs that move 60% of delivery volume — those decide whether the channel stays accretive.",
       "punchline_es": "El canal sale rentable — pero solo porque su estimación de mano de obra incremental es honesta. Si trataran los pedidos de entrega como tiempo 'gratis' en cocina, el margen marcaría cerca de 70% y estarían subsidiando a la plataforma calladamente. El siguiente paso es la tarjeta de costo de receta en los tres SKUs que mueven el 60% del volumen de entrega — esos deciden si el canal sigue siendo acrecentivo."
+    },
+    "monthly-pnl-snapshot": {
+      "subject_en": "80-seat dinner-only restaurant, suburban DC",
+      "subject_es": "Restaurante de 80 asientos solo cena, suburbios de DC",
+      "inputs_en": [
+        ["Total sales (April, 30 days)", "$187,400"],
+        ["COGS — food + beverage", "$58,300"],
+        ["Total labor (hourly + salary + taxes)", "$61,500"],
+        ["Variable costs (cc fees + supplies)", "$11,200"],
+        ["Fixed costs (rent + insurance + utilities)", "$33,400"]
+      ],
+      "inputs_es": [
+        ["Ventas totales (abril, 30 días)", "$187,400"],
+        ["Costo de mercancía — comida + bebida", "$58,300"],
+        ["Mano de obra total (por hora + planilla + impuestos)", "$61,500"],
+        ["Costos variables (comisiones + suministros)", "$11,200"],
+        ["Costos fijos (renta + seguro + servicios)", "$33,400"]
+      ],
+      "result_en": [
+        ["Prime cost", "63.9% · green"],
+        ["Restaurant operating profit", "$23,000"],
+        ["Operating margin", "12.3%"]
+      ],
+      "result_es": [
+        ["Costo principal", "63.9% · verde"],
+        ["Utilidad operativa del restaurante", "$23,000"],
+        ["Margen operativo", "12.3%"]
+      ],
+      "punchline_en": "Green band on prime cost, double-digit operating margin — a healthy month. The watch-line is fixed costs at 17.8% of sales: their lease renews in October, and a single-digit rent bump tips next quarter into yellow. The conversation is rent before it's anything in the kitchen.",
+      "punchline_es": "Banda verde en costo principal, margen operativo de dos dígitos — un mes saludable. La línea a vigilar son los costos fijos al 17.8% de ventas: su contrato se renueva en octubre, y un aumento de renta de un solo dígito empuja el siguiente trimestre a amarillo. La conversación es la renta antes que cualquier cosa en la cocina."
+    },
+    "reservation-no-show-log": {
+      "subject_en": "32-seat tasting-menu spot, Fri+Sat only",
+      "subject_es": "Lugar de menú de degustación de 32 asientos, solo vie+sáb",
+      "inputs_en": [
+        ["Reservations logged (two-week period)", "48"],
+        ["Late-cancels (≤24h)", "3"],
+        ["No-shows", "5"],
+        ["Average check", "$145"],
+        ["Of the 5 no-shows, deposit-protected", "0"]
+      ],
+      "inputs_es": [
+        ["Reservas registradas (período de dos semanas)", "48"],
+        ["Cancelaciones tardías (≤24h)", "3"],
+        ["No-shows", "5"],
+        ["Cuenta promedio", "$145"],
+        ["De los 5 no-shows, con depósito", "0"]
+      ],
+      "result_en": [
+        ["No-show rate", "10.4% · red"],
+        ["Estimated lost revenue", "$725"],
+        ["No-show rate among deposit-holders", "0%"]
+      ],
+      "result_es": [
+        ["Tasa de no-show", "10.4% · rojo"],
+        ["Ingreso perdido estimado", "$725"],
+        ["Tasa de no-show entre quienes pusieron depósito", "0%"]
+      ],
+      "punchline_en": "Every single no-show came from a non-deposit reservation. The pattern decides the next move: a two-week test on deposit-required for Fri/Sat parties of 4 or more. The window table at 8pm is what hurts — it's the one nobody walks in for at the last minute.",
+      "punchline_es": "Cada uno de los no-shows vino de una reserva sin depósito. El patrón decide el siguiente paso: una prueba de dos semanas con depósito requerido para mesas de 4+ los vie/sáb. La mesa de la ventana a las 8pm es la que duele — es la que nadie pide al último momento."
+    },
+    "review-response-log": {
+      "subject_en": "60-seat neighborhood bistro, two weeks of reviews",
+      "subject_es": "Bistró de barrio de 60 asientos, dos semanas de reseñas",
+      "inputs_en": [
+        ["Reviews logged (across Google, Yelp, OpenTable)", "18"],
+        ["Negatives (≤3 stars)", "3"],
+        ["Owner responses", "7"],
+        ["Owner responses to negatives", "1"],
+        ["Repeated theme in negatives", "Dishroom noise (3 of 3)"]
+      ],
+      "inputs_es": [
+        ["Reseñas registradas (Google, Yelp, OpenTable)", "18"],
+        ["Negativas (≤3 estrellas)", "3"],
+        ["Respuestas del operador", "7"],
+        ["Respuestas a negativas", "1"],
+        ["Tema repetido en negativas", "Ruido del fregadero (3 de 3)"]
+      ],
+      "result_en": [
+        ["Response rate", "38.9% · red"],
+        ["Negative response rate", "33.3% · red"],
+        ["Anomaly flag", "Negs unanswered (≥2)"]
+      ],
+      "result_es": [
+        ["Tasa de respuesta", "38.9% · rojo"],
+        ["Tasa de respuesta a negativas", "33.3% · rojo"],
+        ["Bandera de anomalía", "Negativas sin responder (≥2)"]
+      ],
+      "punchline_en": "The unanswered negatives are this Tuesday's first task — three customers named the same dishroom-noise issue with no public response. The pattern is also the punch list: schedule the dishroom acoustic fix that's been on the maintenance log since February. The reply and the fix are the same conversation, three weeks apart.",
+      "punchline_es": "Las negativas sin responder son la primera tarea de este martes — tres clientes nombraron el mismo problema del ruido del fregadero sin respuesta pública. El patrón también es la lista de tareas: agenda el arreglo acústico del fregadero que está en el registro de mantenimiento desde febrero. La respuesta y el arreglo son la misma conversación, separadas por tres semanas."
     }
   }
 }
