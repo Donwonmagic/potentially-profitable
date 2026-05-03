@@ -1794,6 +1794,31 @@
       if (opts.highContrast && opts.theme) {
         opts = Object.assign({}, opts, { theme: applyHighContrastOverride(opts.theme) });
       }
+      // Wave studio-quality — preview/PDF parity. The orchestrator
+      // reads the live preview's effective shrink class (md-shrink-1
+      // ... md-shrink-4) and passes opts.shrinkFactor here so the PDF
+      // ships at the SAME font sizes the operator just approved on
+      // screen. Real menus are 1 page or 2 pages; the preview already
+      // auto-fits to that target. Without this parity step the PDF
+      // would silently render at native theme sizes and spill to N
+      // pages — exactly the problem we're solving.
+      var sf = opts.shrinkFactor;
+      if (typeof sf === 'number' && sf > 0 && sf < 1.0 && opts.theme) {
+        var t = opts.theme;
+        // Body + desc shrink linearly; the section header shrinks more
+        // gently (sqrt) so the visual hierarchy survives the squeeze.
+        // Title (h1) is left alone — it's the page anchor and shouldn't
+        // shrink with the body.
+        var sqrt = Math.sqrt(sf);
+        opts = Object.assign({}, opts, {
+          theme: Object.assign({}, t, {
+            bodyPt:  Math.max(8.5,  (t.bodyPt  || 11) * sf),
+            descPt:  Math.max(7.5,  (t.descPt  || (t.bodyPt || 11) - 1) * sf),
+            pricePt: Math.max(8.5,  (t.pricePt || t.bodyPt || 11) * sf),
+            h2Pt:    Math.max(11,   (t.h2Pt    || 14) * sqrt)
+          })
+        });
+      }
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
       var paper = resolvePaper(paperKey, opts.customDims);
       // W10-1 — Print-vendor mode adds 0.125" bleed all sides; the

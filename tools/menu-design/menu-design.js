@@ -182,6 +182,20 @@
       return r && r.kind === 'dish' && Array.isArray(r.allergens) && r.allergens.length > 0;
     });
   }
+  // Wave studio-quality — read the live preview's active shrink class
+  // so the PDF export ships at the same font sizes the operator
+  // approved on screen. Returns 1.0 (no shrink) when no class is
+  // active OR when the preview paper isn't found.
+  function effectiveShrinkFactor() {
+    var paperEl = paper;
+    if (!paperEl || !paperEl.classList) return 1.0;
+    if (paperEl.classList.contains('md-shrink-4')) return 0.84;
+    if (paperEl.classList.contains('md-shrink-3')) return 0.88;
+    if (paperEl.classList.contains('md-shrink-2')) return 0.92;
+    if (paperEl.classList.contains('md-shrink-1')) return 0.96;
+    return 1.0;
+  }
+
   function effectiveDisclaimer() {
     if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
       return meta.disclaimer;
@@ -2923,6 +2937,10 @@
         title:        title,
         tagline:      meta.tagline,
         story:        meta.story,
+        // Wave studio-quality — preview/PDF parity. Pass the live
+        // preview's effective shrink factor so the PDF ships at the
+        // same font sizes the operator just approved on screen.
+        shrinkFactor: effectiveShrinkFactor(),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale
