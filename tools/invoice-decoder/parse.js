@@ -81,6 +81,92 @@
   // Conservative bias: skip lone-digit clusters with letters (e.g.
   // "B7" — could be a SKU prefix). The .dd-decimal / $-prefix
   // requirement filters out almost all false positives.
+  // -------------------- Wave 4.1: column reconstruction --------------------
+  // Given OCR per-word output with bbox info, project word density
+  // along the X axis and find the gutter valleys that separate the
+  // canonical invoice columns: description / qty / unit / unit price
+  // / line total. Returns an array of {x0, x1, label} objects.
+  //
+  // Inputs are an array of {text, bbox: {x0, y0, x1, y1}, confidence}
+  // (Tesseract.js word-level output). Pages without bbox data return
+  // null — the caller falls through to today's regex-only parse.
+  //
+  // The function is exposed on MID_PARSE.reconstructColumns for the
+  // controller to call when bbox data is available; it's NOT wired
+  // into the default parseLines path because the regression risk on
+  // the existing 100%-accuracy soak fixtures (which lack bbox data)
+  // exceeds the potential lift until a bbox-rich fixture set lands.
+  function reconstructColumns(words, opts) {
+    if (!Array.isArray(words) || !words.length) return null;
+    opts = opts || {};
+    var minColumns = opts.minColumns || 3;
+    var bins = opts.bins || 80;
+    // Derive page width from word bboxes.
+    var maxX = 0, minX = Infinity;
+    for (var i = 0; i < words.length; i++) {
+      var b = words[i].bbox;
+      if (!b) return null;
+      if (b.x1 > maxX) maxX = b.x1;
+      if (b.x0 < minX) minX = b.x0;
+    }
+    var pageW = maxX - minX;
+    if (pageW <= 0) return null;
+    // Project word density: each word increments bins it covers.
+    var density = new Array(bins).fill(0);
+    var binW = pageW / bins;
+    words.forEach(function (w) {
+      var b = w.bbox;
+      var b0 = Math.floor((b.x0 - minX) / binW);
+      var b1 = Math.min(bins - 1, Math.floor((b.x1 - minX) / binW));
+      for (var k = b0; k <= b1; k++) density[k]++;
+    });
+    // Find gutter valleys: contiguous runs where density < threshold.
+    var maxDensity = Math.max.apply(null, density);
+    var threshold = Math.max(1, maxDensity * 0.15);
+    var gutters = [];
+    var inGutter = false;
+    var gStart = 0;
+    for (var k2 = 0; k2 < bins; k2++) {
+      if (density[k2] <= threshold) {
+        if (!inGutter) { gStart = k2; inGutter = true; }
+      } else if (inGutter) {
+        if (k2 - gStart >= 2) gutters.push({ start: gStart, end: k2 - 1 });
+        inGutter = false;
+      }
+    }
+    // Build columns from non-gutter spans.
+    var columns = [];
+    var cursor = 0;
+    gutters.forEach(function (g) {
+      if (g.start > cursor) {
+        columns.push({
+          x0: minX + cursor * binW,
+          x1: minX + g.start * binW
+        });
+      }
+      cursor = g.end + 1;
+    });
+    if (cursor < bins) {
+      columns.push({ x0: minX + cursor * binW, x1: minX + bins * binW });
+    }
+    if (columns.length < minColumns) return null;
+    // Heuristically label columns. Description is the widest leftmost
+    // column; the rightmost is total; second-from-right is unit price;
+    // qty / unit are the narrow columns in between.
+    var widths = columns.map(function (c, i) { return { i: i, w: c.x1 - c.x0 }; });
+    widths.sort(function (a, b) { return b.w - a.w; });
+    var descIdx = widths[0].i;
+    var labels = ['desc', 'qty', 'unit', 'price', 'total'];
+    columns.forEach(function (c, i) {
+      if (i === descIdx) c.label = 'desc';
+      else if (i === columns.length - 1) c.label = 'total';
+      else if (i === columns.length - 2) c.label = 'price';
+      else if (i === descIdx + 1) c.label = 'qty';
+      else c.label = labels[Math.min(i, labels.length - 1)] || ('col-' + i);
+    });
+    return columns;
+  }
+
   // Wave 4.6 — also catch S→$ at cluster start (Tesseract sometimes
   // reads "$48.00" as "S48.00"). Word-boundary anchored and requires
   // 2+ digits immediately after the S so mid-word "SS" sequences in
@@ -605,6 +691,7 @@
     extractPack: extractPack,
     repairOcrNumerics: repairOcrNumerics,
     mergeWrappedLines: mergeWrappedLines,
+    reconstructColumns: reconstructColumns,
     UNITS_RE: UNITS_RE
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

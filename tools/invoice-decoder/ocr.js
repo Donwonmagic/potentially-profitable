@@ -380,11 +380,91 @@
     });
   }
 
+  // -------------------- Wave 4.2: per-region OCR --------------------
+  // Re-runs OCR on a tight crop of the canvas defined by a column
+  // bbox (from MID_PARSE.reconstructColumns) with a column-tuned
+  // character whitelist:
+  //   price columns: '0123456789.,$()-'
+  //   description columns: alpha + space (PSM 7 single-line)
+  //   qty columns: '0123456789.'
+  //
+  // Concurrency bounded by the same worker pool as recognizeCanvas.
+  // Returns { text, lines, meanConfidence } for the cropped region.
+  // Exposed for the orchestrator to call when MID_PARSE.reconstructColumns
+  // returns a column layout; not auto-wired to avoid soak-fixture
+  // regression risk (today's parser path doesn't carry bbox data).
+  var WHITELISTS = {
+    price: '0123456789.,$()-',
+    qty:   '0123456789.',
+    desc:  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .,/-#&()ÁÉÍÓÚÑáéíóúñü',
+    unit:  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./'
+  };
+  function recognizeRegion(canvas, region, opts) {
+    if (!canvas || !region) return Promise.reject(new Error('canvas + region required'));
+    opts = opts || {};
+    var label = region.label || 'desc';
+    var whitelist = opts.whitelist || WHITELISTS[label] || WHITELISTS.desc;
+    var psm = opts.psm || (label === 'desc' ? 7 : 7);
+    // Crop the region into a temporary canvas.
+    var x0 = Math.max(0, Math.floor(region.x0 || 0));
+    var y0 = Math.max(0, Math.floor(region.y0 || 0));
+    var x1 = Math.min(canvas.width, Math.ceil(region.x1 || canvas.width));
+    var y1 = Math.min(canvas.height, Math.ceil(region.y1 || canvas.height));
+    var w = x1 - x0, h = y1 - y0;
+    if (w <= 0 || h <= 0) return Promise.reject(new Error('invalid region'));
+    var crop = document.createElement('canvas');
+    crop.width = w; crop.height = h;
+    crop.getContext('2d').drawImage(canvas, x0, y0, w, h, 0, 0, w, h);
+    return loadTesseract().then(function (Tesseract) {
+      return _leaseWorker(Tesseract, opts.lang || 'eng+spa', psm).then(function (lease) {
+        var worker = lease.slot.worker;
+        return worker.setParameters({
+          tessedit_pageseg_mode: String(psm),
+          tessedit_char_whitelist: whitelist
+        }).then(function () {
+          return worker.recognize(crop, {}, {});
+        }).then(function (result) {
+          var blocks = (result && result.data && result.data.blocks) || [];
+          var lines = [];
+          blocks.forEach(function (b) {
+            (b.paragraphs || []).forEach(function (p) {
+              (p.lines || []).forEach(function (ln) {
+                lines.push({
+                  text: (ln.text || '').replace(/\s+/g, ' ').trim(),
+                  confidence: typeof ln.confidence === 'number' ? ln.confidence : 0
+                });
+              });
+            });
+          });
+          var meanConf = lines.length ? lines.reduce(function (a, b) { return a + b.confidence; }, 0) / lines.length : 0;
+          // Restore PSM 6 + base whitelist for the next pool lease.
+          return worker.setParameters({
+            tessedit_pageseg_mode: '6',
+            tessedit_char_whitelist: BLOCK_WHITELIST
+          }).then(function () {
+            _releaseWorker(lease);
+            return {
+              text: result.data.text || '',
+              lines: lines,
+              meanConfidence: meanConf,
+              region: { x0: x0, y0: y0, x1: x1, y1: y1, label: label }
+            };
+          });
+        }).catch(function (err) {
+          _releaseWorker(lease);
+          throw err;
+        });
+      });
+    });
+  }
+
   var api = {
     loadTesseract:        loadTesseract,
     recognizeCanvas:      recognizeCanvas,
     recognizeMultiPass:   recognizeMultiPass,
-    adaptiveReread:       adaptiveReread
+    adaptiveReread:       adaptiveReread,
+    recognizeRegion:      recognizeRegion,
+    REGION_WHITELISTS:    WHITELISTS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_OCR = api;

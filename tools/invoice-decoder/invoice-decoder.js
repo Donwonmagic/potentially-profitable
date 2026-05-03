@@ -1970,13 +1970,42 @@
         '</button>';
     }
 
+    // Wave 5.4 — smart-defaults ghost-text. For amber cells, propose
+    // a value sourced from operator history / learnings. One-tap
+    // accept commits the suggested value via the same commitCellEdit
+    // path; Esc / clicking elsewhere dismisses.
+    var ghostName = '', ghostQty = '', ghostPrice = '';
+    try {
+      if (typeof MID_PROPOSED_FIX !== 'undefined' && MID_PROPOSED_FIX.fieldFixesFor) {
+        var prop = MID_PROPOSED_FIX.fieldFixesFor(r, { vendor: r.vendorDetected || null });
+        if (prop.name) {
+          ghostName = '<button type="button" class="id-cell-ghost" data-ghost-row="' + idx +
+            '" data-ghost-field="name" data-ghost-value="' + escHtml(String(prop.name.suggested)) +
+            '" title="' + escHtml(tt('Tap to accept: ', 'Toca para aceptar: ') + prop.name.suggested) + '">' +
+            escHtml(MID_PROPOSED_FIX.describe(prop.name)) + '</button>';
+        }
+        if (prop.qty) {
+          ghostQty = '<button type="button" class="id-cell-ghost" data-ghost-row="' + idx +
+            '" data-ghost-field="qty-pack" data-ghost-value="' + escHtml(String(prop.qty.suggested)) +
+            '" title="' + escHtml(tt('Tap to accept: ', 'Toca para aceptar: ') + prop.qty.suggested) + '">' +
+            escHtml(MID_PROPOSED_FIX.describe(prop.qty)) + '</button>';
+        }
+        if (prop.lineTotal) {
+          ghostPrice = '<button type="button" class="id-cell-ghost" data-ghost-row="' + idx +
+            '" data-ghost-field="lineTotal" data-ghost-value="' + prop.lineTotal.suggested +
+            '" title="' + escHtml(tt('Tap to accept: ', 'Toca para aceptar: ') + '$' + prop.lineTotal.suggested.toFixed(2)) + '">' +
+            escHtml(MID_PROPOSED_FIX.describe(prop.lineTotal)) + '</button>';
+        }
+      }
+    } catch (_) {}
+
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip + ghostName +
       '</span>' +
-      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + '</span>' +
-      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + '</span>' +
+      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + ghostQty + '</span>' +
+      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + ghostPrice + '</span>' +
       '<span class="id-row-fielddots" aria-label="' + escHtml(tt('Per-field confidence', 'Confianza por campo')) + '">' + dots + '</span>' +
       actions +
     '</li>';
@@ -1991,6 +2020,33 @@
         e.preventDefault();
         __expandedQuiet = true;
         rerenderRows();
+        return;
+      }
+      // Wave 5.4 — accept a smart-default ghost-text suggestion.
+      var ghostBtn = e.target.closest && e.target.closest('.id-cell-ghost');
+      if (ghostBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var gIdx = parseInt(ghostBtn.getAttribute('data-ghost-row'), 10);
+        var gField = ghostBtn.getAttribute('data-ghost-field');
+        var gValue = ghostBtn.getAttribute('data-ghost-value');
+        if (!isFinite(gIdx) || !gField) return;
+        if (gField === 'qty-pack') {
+          // Pack string like "12 OZ" splits into qty + unit.
+          var parts = String(gValue).split(/\s+/);
+          var qtyVal = parseFloat(parts[0]);
+          if (isFinite(qtyVal)) commitCellEdit(gIdx, 'qty', qtyVal);
+          if (parts[1]) {
+            try { parsedRowsState[gIdx].unit = parts[1].toLowerCase(); } catch (_) {}
+          }
+        } else if (gField === 'lineTotal') {
+          commitCellEdit(gIdx, 'lineTotal', parseFloat(gValue));
+        } else {
+          commitCellEdit(gIdx, gField, gValue);
+        }
+        if (window.plausible) {
+          try { window.plausible('Invoice Decoder Ghost Accepted', { props: { field: gField } }); } catch (_) {}
+        }
         return;
       }
       // Wave 2.3 — inline math-fix chip on the offending row.
@@ -2698,6 +2754,21 @@
         if (!pp) return; // owner cancelled — silent.
         savedPassphrase = pp;
         setSaveStatus(null, 'busy');
+        // Wave 5.7 — optimistic save pill so the operator gets
+        // immediate non-blocking feedback. Cleared by the same flow
+        // on success / failure below.
+        var __saveToken = null;
+        try {
+          if (typeof MID_SAVE_WORKER !== 'undefined' && MID_SAVE_WORKER.start) {
+            __saveToken = MID_SAVE_WORKER.start({
+              label: tt('Saving in the background — keep going.',
+                        'Guardando en segundo plano — sigue trabajando.')
+            });
+          }
+        } catch (_) {}
+        // Stash on the closure so the .then / .catch chains below can
+        // reach it without restructuring the whole handler.
+        window.__midActiveSaveToken = __saveToken;
         var payload = buildSavePayload();
         // AAD binds this ciphertext to a logical-id; we use a
         // session-random itemId since the server assigns the real
@@ -2731,6 +2802,38 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
+          // Wave 5.7 — clear the optimistic save pill with success.
+          try {
+            if (typeof MID_SAVE_WORKER !== 'undefined' && MID_SAVE_WORKER.complete && window.__midActiveSaveToken) {
+              MID_SAVE_WORKER.complete(window.__midActiveSaveToken, {
+                ok: true,
+                label: tt('Saved ✓', 'Guardada ✓')
+              });
+              window.__midActiveSaveToken = null;
+            }
+          } catch (_) {}
+          // Wave 5.8 — record a tombstone so the operator can undo this
+          // save within 7 days. Snapshot is the row state at save time
+          // (no image bytes) and the AAD so a future "remove this save"
+          // can be reconciled with the workshop entry.
+          try {
+            if (typeof MID_TOMBSTONES !== 'undefined' && MID_TOMBSTONES.record) {
+              MID_TOMBSTONES.record({
+                aad: aad,
+                vendor: payload.vendor || null,
+                itemCount: payload.itemCount,
+                parsedSum: payload.parsedSum,
+                rows: parsedRowsState.map(function (r) {
+                  return {
+                    name: r.name, qty: r.qty, unit: r.unit,
+                    lineTotal: r.lineTotal, category: r.category,
+                    confidence: r.confidence, ownerConfirmed: !!r.ownerConfirmed,
+                    autoConfirm: !!r.autoConfirm
+                  };
+                })
+              });
+            }
+          } catch (_) {}
           // Wave 5.1 — bump the invoicesSaved + per-row counters so
           // the auto-confirm gate and personal-accuracy stat see this.
           try {
@@ -2956,6 +3059,17 @@
         }
         }).catch(function (err) {
           setSaveStatus(null, 'error');
+          // Wave 5.7 — surface the failure on the optimistic pill too,
+          // so the operator sees it without an OS alert dialog.
+          try {
+            if (typeof MID_SAVE_WORKER !== 'undefined' && MID_SAVE_WORKER.complete && window.__midActiveSaveToken) {
+              MID_SAVE_WORKER.complete(window.__midActiveSaveToken, {
+                ok: false,
+                label: tt('Save failed — tap retry', 'Falló — toca reintentar')
+              });
+              window.__midActiveSaveToken = null;
+            }
+          } catch (_) {}
           alert(tt('Save failed: ' + (err.message || 'unknown error'),
                    'Falló el guardado: ' + (err.message || 'error desconocido')));
         });
