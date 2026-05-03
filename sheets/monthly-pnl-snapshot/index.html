@@ -353,7 +353,7 @@ header.nav{min-height:64px}
           <span class="sheet-output-value" data-output="breakeven_per_day">$0.00</span>
         </div>
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
-          Type the period numbers above. Independent full-service typically targets prime cost in the 55–65% band; profit lives in the gap below 65%.
+          Type the period numbers above. Independent full-service typically targets <a class="sheet-glossary-popover-link" href="/glossary/prime-cost/" data-glossary-head="Prime cost" data-glossary-aka="Cost of goods sold + labor" data-glossary-blurb="Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in." data-sheet-popover="1">prime cost</a> in the 55–65% band; profit lives in the gap below 65%.
         </p>
       </div>
     </form>
@@ -449,6 +449,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -604,6 +605,11 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(abs * 100) / 100).toFixed(2); }
@@ -801,5 +807,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

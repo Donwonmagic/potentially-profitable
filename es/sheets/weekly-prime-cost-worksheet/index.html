@@ -282,8 +282,36 @@ header.nav{min-height:64px}
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="recommendation">
           Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
         </p>
+        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#B8541A);background:var(--cream-2,#F3EEE3);font-size:13px;line-height:1.5;color:var(--ink,#14161A);"></div>
       </div>
     </form>
+
+    <!-- D8 · What-if sliders. Three small adjustments re-run recalc()
+         against an in-memory snapshot of the form values; the verdict
+         and outputs update without touching the typed numbers. Reset
+         button restores the unadjusted view. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Labor change</span>
+          <input type="range" name="whatif_labor" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Food cost change</span>
+          <input type="range" name="whatif_food" min="-5" max="5" step="0.25" value="0" style="flex:2;" />
+          <output name="whatif_food_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Sales change</span>
+          <input type="range" name="whatif_sales" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_sales_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
 
     <script>
       (function () {
@@ -325,7 +353,7 @@ header.nav{min-height:64px}
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
     <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Martes en la mañana, cerrando la semana anterior. Antes de la nómina. Antes del pedido de produce.</li>
-      <li>Un costo brincó — quieres ver si aterrizó en el costo primo o se absorbió en otro lado.</li>
+      <li>Un costo brincó — quieres ver si aterrizó en el <a class="sheet-glossary-popover-link" href="/es/glossary/prime-cost/" data-glossary-head="Costo primo" data-glossary-aka="Costo de mercancía + mano de obra" data-glossary-blurb="Costo total de comida + bebida más mano de obra cargada, expresado como porcentaje de ventas netas. Banda saludable para full-service independiente: 55–65%. Sobre 65% el modelo se rompe una vez entran los costos fijos." data-sheet-popover="1">costo primo</a> o se absorbió en otro lado.</li>
       <li>Hablas con un socio o prestamista y necesitas una respuesta de un solo número sobre la salud del restaurante.</li></ul>
   </article>
 
@@ -378,6 +406,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -502,16 +531,28 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(v * 100) / 100).toFixed(2); }
         function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
 
+        // D9 · Verdict band uses the centralized Bench.evaluate(metric, value)
+        // when available (built from data/benchmarks.json), with the
+        // pre-Bench band ladder as a graceful fallback. Updating
+        // benchmarks.json's prime_cost_pct thresholds cascades to
+        // every sheet that calls Bench.evaluate('prime_cost_pct', ...).
         function band(pct) {
-          // Independent full-service health bands (sourced from the
-          // existing margin-math tool — the 55-65% range is the
-          // healthy band; 65-70% is "fix this quarter"; 70%+ is bad.
-          if (pct <= 0)  return { band: 'idle', msg: 'Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.' };
+          if (pct <= 0) return { band: 'idle', msg: 'Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.' };
+          if (window.Bench && window.Bench.evaluate) {
+            var verdict = window.Bench.evaluate('prime_cost_pct', pct);
+            if (verdict && verdict.msg) return { band: verdict.band, msg: verdict.msg };
+          }
+          // Fallback ladder (shipped before centralized benchmarks).
           if (pct < 50)  return { band: 'good', msg: 'Below the typical band. Double-check that you included employer taxes and salaried managers in labor — under-counting labor is the most common cause of an artificially low prime cost.' };
           if (pct < 60)  return { band: 'good', msg: 'Healthy. Keep the cadence; this is the number that protects the rest of the P&L.' };
           if (pct < 65)  return { band: 'warn', msg: 'In the upper-healthy band. Watch food cost trend week-over-week; small drift here compounds fast.' };
@@ -519,16 +560,40 @@ header.nav{min-height:64px}
           return { band: 'bad',  msg: 'Margin emergency. At this level, every additional dollar of sales loses you money once fixed costs are in. Cut here is non-optional.' };
         }
 
+        // D8 · Read what-if slider state. Returns {labor, food, sales}
+        // as point/percent deltas applied on top of the typed inputs.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_labor) return { labor: 0, food: 0, sales: 0 };
+          return {
+            labor: n(f.whatif_labor.value),
+            food:  n(f.whatif_food.value),
+            sales: n(f.whatif_sales.value),
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
-          var sales = n(f.sales_dinein.value) + n(f.sales_togo.value) + n(f.sales_other.value);
-          // Used-cost convention: purchases + (opening - closing). The
-          // user enters (closing - opening) directly, so we subtract.
-          var cogs = n(f.cogs_food_purchases.value) + n(f.cogs_bev_purchases.value) - n(f.cogs_inv_adjustment.value);
-          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes_benefits.value);
+          var w = whatif();
+          // D8 — apply scenario deltas on top of the typed numbers.
+          // Labor delta is in PERCENTAGE POINTS of sales; food delta is
+          // in PERCENTAGE POINTS of sales; sales delta is in PERCENT
+          // (multiplicative).
+          var rawSales = n(f.sales_dinein.value) + n(f.sales_togo.value) + n(f.sales_other.value);
+          var sales = rawSales * (1 + w.sales / 100);
+          // Used-cost convention.
+          var rawCogs = n(f.cogs_food_purchases.value) + n(f.cogs_bev_purchases.value) - n(f.cogs_inv_adjustment.value);
+          var cogs = rawCogs + (w.food / 100) * sales;
+          var rawLabor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes_benefits.value);
+          var labor = rawLabor + (w.labor / 100) * sales;
           var prime = cogs + labor;
           var pct = sales > 0 ? (prime / sales) * 100 : 0;
+
+          // Update what-if output labels.
+          if (f.whatif_labor_out) f.whatif_labor_out.value = (w.labor >= 0 ? '+' : '') + w.labor.toFixed(1) + 'pt';
+          if (f.whatif_food_out)  f.whatif_food_out.value  = (w.food  >= 0 ? '+' : '') + w.food.toFixed(2)  + 'pt';
+          if (f.whatif_sales_out) f.whatif_sales_out.value = (w.sales >= 0 ? '+' : '') + w.sales.toFixed(0) + '%';
 
           document.querySelector('[data-output="net_sales"]').textContent  = fmt$(sales);
           document.querySelector('[data-output="cogs_total"]').textContent = fmt$(cogs);
@@ -540,7 +605,35 @@ header.nav{min-height:64px}
           pctEl.dataset.band = b.band;
           var rec = document.querySelector('[data-output="recommendation"]');
           if (rec) rec.textContent = b.msg;
+
+          // D9 · Anomaly flags. Bench.flag(slug, outputs) walks
+          // data/benchmarks.json's anomalies array and returns any
+          // operator-relevant warnings.
+          var anomEl = document.querySelector('[data-output="anomalies"]');
+          if (anomEl && window.Bench && window.Bench.flag) {
+            var flags = window.Bench.flag('weekly-prime-cost-worksheet', { prime_cost_pct: pct });
+            if (flags && flags.length) {
+              anomEl.innerHTML = flags.map(function (f) { return '<p style="margin:0 0 4px;">' + f.replace(/[<>]/g, '') + '</p>'; }).join('');
+              anomEl.hidden = false;
+            } else {
+              anomEl.hidden = true;
+              anomEl.innerHTML = '';
+            }
+          }
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_labor) f.whatif_labor.value = 0;
+            if (f.whatif_food)  f.whatif_food.value  = 0;
+            if (f.whatif_sales) f.whatif_sales.value = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         function collect() {
           var f = document.getElementById('sheet-fields');
@@ -681,5 +774,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

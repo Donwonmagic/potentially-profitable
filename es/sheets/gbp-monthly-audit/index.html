@@ -463,7 +463,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Primer lunes de cada mes — quince minutos, con tu GBP abierto en otra pestaña.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Primer lunes de cada mes — quince minutos, con tu <a class="sheet-glossary-popover-link" href="/es/glossary/gbp/" data-glossary-head="Perfil de Google Business" data-glossary-aka="Ficha de Google" data-glossary-blurb="El producto gratuito de Google que impulsa la apariencia de tu restaurante en Búsqueda y Maps. Horarios, categoría principal, fotos, reseñas, posts y Q&amp;A viven aquí. El activo de marketing de mayor palanca para un restaurante independiente." data-sheet-popover="1">GBP</a> abierto en otra pestaña.</li>
       <li>Cuando bajan las reservas y no cambiaste nada en el sitio.</li>
       <li>Justo después de un cambio de menú, una semana de feriado o una actualización de horarios.</li></ul>
   </article>
@@ -518,6 +518,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -642,5 +643,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

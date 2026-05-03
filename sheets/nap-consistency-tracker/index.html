@@ -282,7 +282,7 @@ header.nav{min-height:64px}
           <span class="sheet-output-value" data-output="fail_count" data-band="idle">0</span>
         </div>
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
-          Mark each row. The fix order: GBP first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.
+          Mark each row. The fix order: <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.
         </p>
       </div>
     </form>
@@ -437,6 +437,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -592,5 +593,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

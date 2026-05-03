@@ -207,7 +207,6 @@ header.nav{min-height:64px}
         <label>
           <span><span>Number of plates this recipe yields</span></span>
           <input type="number" name="plates_yielded" min="1" step="1" value="4" />
-          <span class="field-help">Plates the finished recipe produces. Costs divide across this number.</span>
         </label>
         <label>
           <span><span>Target food-cost percent</span></span>
@@ -385,7 +384,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de costo de comida.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de <a class="sheet-glossary-popover-link" href="/es/glossary/food-cost/" data-glossary-head="Costo de comida" data-glossary-aka="COGS de comida" data-glossary-blurb="Costo de comida vendida como porcentaje de ventas de comida, base costo usado (compras menos ajuste de inventario). Full-service independiente típicamente apunta a 28–32%; pizza y formatos de alto margen corren más bajo." data-sheet-popover="1">costo de comida</a>.</li>
       <li>Subió el precio de una proteína al recibir y quieres saber si el plato sigue rindiendo.</li>
       <li>Tu jefe de cocina pregunta por qué la porción de cordero tiene que bajar un cuarto de onza.</li></ul>
   </article>
@@ -438,6 +437,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -562,6 +562,11 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(v * 100) / 100).toFixed(2); }
@@ -757,5 +762,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

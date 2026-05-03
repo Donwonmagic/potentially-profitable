@@ -396,7 +396,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Weekly — fifteen minutes, with the GBP / Yelp / Tripadvisor inboxes open.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Weekly — fifteen minutes, with the <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> / Yelp / Tripadvisor inboxes open.</li>
       <li>After every 1- or 2-star review — those need a response within 48 hours, every time.</li>
       <li>When a complaint theme repeats — the log surfaces the pattern that one-off reviews hide.</li></ul>
   </article>
@@ -445,6 +445,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -600,5 +601,10 @@ header.nav{min-height:64px}
 <script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
