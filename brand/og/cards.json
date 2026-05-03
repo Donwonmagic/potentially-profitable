@@ -1333,6 +1333,936 @@
       }
     },
     {
+      "slug": "sheet-allergen-matrix",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Menu",
+      "title_italic": "allergen",
+      "title_2": "Matrix.",
+      "dek": "A printable grid for the service line and a digital version for the website.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-allergen-matrix-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Matriz",
+      "title_italic": "de",
+      "title_2": "alérgenos del menú.",
+      "dek": "Una cuadrícula imprimible para la línea de servicio y una versión digital para el sitio.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-brand-asset-inventory",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Brand",
+      "title_italic": "asset",
+      "title_2": "Inventory.",
+      "dek": "A missing-asset list and a license-risk flag list.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-brand-asset-inventory-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Inventario",
+      "title_italic": "de",
+      "title_2": "activos de marca.",
+      "dek": "Una lista de activos faltantes y una lista de riesgos de licencia.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-cash-handling-log",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Cash",
+      "title_italic": "drop",
+      "title_2": "& Deposit Log.",
+      "dek": "Over and short by drawer, by employee, by shift.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-cash-handling-log-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Registro",
+      "title_italic": "de",
+      "title_2": "depósito y entrega de efectivo.",
+      "dek": "Sobrante y faltante por caja, por empleado, por turno.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-complaint-root-cause-tracker",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Complaint",
+      "title_italic": "root-cause",
+      "title_2": "Tracker.",
+      "dek": "Top three recurring causes and who owns each fix.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-complaint-root-cause-tracker-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Seguimiento",
+      "title_italic": "de",
+      "title_2": "causa raíz de quejas.",
+      "dek": "Las tres causas recurrentes principales y quién es dueño de cada arreglo.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-daily-sales-recap",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Daily",
+      "title_italic": "sales",
+      "title_2": "& Cover Recap.",
+      "dek": "Average check, voids as percent of sales, anomaly flag versus your trailing 14-day average.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-daily-sales-recap-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Resumen",
+      "title_italic": "diario",
+      "title_2": "de ventas y cubiertos.",
+      "dek": "Cheque promedio, anulaciones como porcentaje de ventas, alerta versus el promedio móvil de 14 días.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-daypart-traffic-map",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Daypart",
+      "title_italic": "traffic",
+      "title_2": "Map.",
+      "dek": "Sales-per-labor-hour heatmap and the obvious scheduling cuts.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-daypart-traffic-map-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Mapa",
+      "title_italic": "de",
+      "title_2": "tráfico por daypart.",
+      "dek": "Mapa de calor de ventas por hora-empleado y los recortes obvios de horario.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-email-list-growth-log",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Email",
+      "title_italic": "&",
+      "title_2": "SMS List Growth Log.",
+      "dek": "Channel ROI and a list-health score.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-email-list-growth-log-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Registro",
+      "title_italic": "de",
+      "title_2": "crecimiento de lista de correo y SMS.",
+      "dek": "ROI por canal y un puntaje de salud de la lista.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-gbp-monthly-audit",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "GBP",
+      "title_italic": "monthly",
+      "title_2": "Health Check.",
+      "dek": "A monthly punch list: what is current, what drifted, what to fix this week.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-gbp-monthly-audit-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Chequeo",
+      "title_italic": "mensual",
+      "title_2": "de Google Business Profile.",
+      "dek": "Una lista mensual: qué está al día, qué se desfasó, qué arreglar esta semana.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-health-inspection-prep",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Health",
+      "title_italic": "inspection",
+      "title_2": "Prep Checklist.",
+      "dek": "Pass-or-fail per row, ready for an unannounced visit.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-health-inspection-prep-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Lista",
+      "title_italic": "de",
+      "title_2": "preparación para inspección sanitaria.",
+      "dek": "Pasa o falla por fila, listo para una visita sin aviso.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-holiday-hours-planner",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Holiday",
+      "title_italic": "hours",
+      "title_2": "Update Planner.",
+      "dek": "A punch list with deadlines, by holiday, by surface.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-holiday-hours-planner-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Planificador",
+      "title_italic": "de",
+      "title_2": "horarios festivos.",
+      "dek": "Una lista accionable con fechas, por feriado, por superficie.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-incident-report",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Incident",
+      "title_italic": "report",
+      "title_2": "(Slip · Injury · Customer).",
+      "dek": "An ink-signed record your insurer can use.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-incident-report-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Reporte",
+      "title_italic": "de",
+      "title_2": "incidente (resbalón · lesión · cliente).",
+      "dek": "Un registro firmado a mano que tu aseguradora puede usar.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-inventory-count-sheet",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Period-End",
+      "title_italic": "inventory",
+      "title_2": "Count Sheet.",
+      "dek": "Total inventory dollars by category and a variance list versus theoretical use.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-inventory-count-sheet-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Hoja",
+      "title_italic": "de",
+      "title_2": "conteo de inventario fin de periodo.",
+      "dek": "Inventario total en pesos por categoría y una lista de variación contra el uso teórico.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-invoice-receiving-checklist",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Invoice",
+      "title_italic": "receiving",
+      "title_2": "Checklist.",
+      "dek": "A credit-request flag list and a unit-cost change list for your buyer.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-invoice-receiving-checklist-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Lista",
+      "title_italic": "de",
+      "title_2": "recepción de factura.",
+      "dek": "Una lista de solicitudes de crédito y una lista de cambios de costo unitario para el comprador.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-line-check-sheet",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Pre-Service",
+      "title_italic": "line",
+      "title_2": "Check.",
+      "dek": "An 86 list, a prep gap list, and a temp-log paper trail for the health inspector.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-line-check-sheet-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Chequeo",
+      "title_italic": "de",
+      "title_2": "línea pre-servicio.",
+      "dek": "Lista de 86, lista de huecos de prep y un registro impreso de temperaturas para el inspector.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-local-keyword-map",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Local",
+      "title_italic": "keyword",
+      "title_2": "× Page Map.",
+      "dek": "Coverage gaps and cannibalization flags ready for the content calendar.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-local-keyword-map-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Mapa",
+      "title_italic": "de",
+      "title_2": "palabras clave locales por página.",
+      "dek": "Huecos de cobertura y señales de canibalización listas para el calendario de contenido.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-menu-redesign-brief",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Menu",
+      "title_italic": "redesign",
+      "title_2": "Brief.",
+      "dek": "A designer-ready spec, in one page.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-menu-redesign-brief-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Brief",
+      "title_italic": "de",
+      "title_2": "rediseño del menú.",
+      "dek": "Una especificación lista para diseñador, en una página.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-monthly-pnl-snapshot",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Monthly",
+      "title_italic": "P&L",
+      "title_2": "Snapshot.",
+      "dek": "Prime cost percent, contribution margin percent, breakeven sales per day.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-monthly-pnl-snapshot-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Resumen",
+      "title_italic": "mensual",
+      "title_2": "de P&G.",
+      "dek": "Costo primo en porcentaje, margen de contribución en porcentaje, ventas de equilibrio por día.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-nap-consistency-tracker",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "NAP",
+      "title_italic": "consistency",
+      "title_2": "Tracker.",
+      "dek": "A mismatch list and a priority-fix order across 12 citation sources.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-nap-consistency-tracker-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Seguimiento",
+      "title_italic": "de",
+      "title_2": "consistencia NAP.",
+      "dek": "Una lista de inconsistencias y un orden de prioridad de arreglos en 12 fuentes de citación.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-photo-refresh-tracker",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Photo",
+      "title_italic": "refresh",
+      "title_2": "Tracker.",
+      "dek": "Channels overdue for content and a shot-type gap list for the next shoot.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-photo-refresh-tracker-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Seguimiento",
+      "title_italic": "de",
+      "title_2": "actualización de fotos.",
+      "dek": "Canales atrasados de contenido y lista de tipos de toma faltantes para la próxima sesión.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "local-seo"
+    },
+    {
+      "slug": "sheet-photo-shot-list",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Photo",
+      "title_italic": "shoot",
+      "title_2": "Shot List.",
+      "dek": "The photographer's day-of plan with no skipped shots.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-photo-shot-list-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Lista",
+      "title_italic": "de",
+      "title_2": "tomas para sesión de fotos.",
+      "dek": "El plan del día del fotógrafo, sin tomas saltadas.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-recipe-cost-card",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Recipe",
+      "title_italic": "cost",
+      "title_2": "Card.",
+      "dek": "A printed cost card with target price and food-cost percent.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-recipe-cost-card-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Tarjeta",
+      "title_italic": "de",
+      "title_2": "costo de receta.",
+      "dek": "Una tarjeta impresa con precio objetivo y porcentaje de costo de comida.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-reservation-no-show-log",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Reservation",
+      "title_italic": "&",
+      "title_2": "No-Show Log.",
+      "dek": "No-show rate by source and lost revenue per week, priced.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-reservation-no-show-log-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Registro",
+      "title_italic": "de",
+      "title_2": "reservas y no-shows.",
+      "dek": "Tasa de no-show por fuente e ingreso perdido por semana, valorado.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-review-response-log",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Review",
+      "title_italic": "response",
+      "title_2": "Log.",
+      "dek": "Response-rate percent and the top recurring complaint themes.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-review-response-log-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Registro",
+      "title_italic": "de",
+      "title_2": "respuestas a reseñas.",
+      "dek": "Tasa de respuesta en porcentaje y los temas de queja más recurrentes.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-signage-spec-sheet",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Signage",
+      "title_italic": "&",
+      "title_2": "Print Spec Sheet.",
+      "dek": "A print-ready spec with no Pantone-versus-CMYK confusion.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-signage-spec-sheet-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Hoja",
+      "title_italic": "de",
+      "title_2": "especificación de letreros e impresos.",
+      "dek": "Una especificación lista para imprenta, sin confusión Pantone-versus-CMYK.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-social-content-calendar",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Social",
+      "title_italic": "content",
+      "title_2": "Calendar.",
+      "dek": "A 30-day plan that mixes food, people, and place.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-social-content-calendar-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Calendario",
+      "title_italic": "de",
+      "title_2": "contenido social.",
+      "dek": "Un plan de 30 días que mezcla comida, personas y lugar.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-staff-onboarding-checklist",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "ink",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Staff",
+      "title_italic": "onboarding",
+      "title_2": "Checklist (Operational).",
+      "dek": "Day-one readiness for the cook or server who just started.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-staff-onboarding-checklist-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "ink",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Lista",
+      "title_italic": "de",
+      "title_2": "incorporación de personal (operativa).",
+      "dek": "Listo para el primer día del cocinero o mesero que recién entra.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "trust"
+    },
+    {
+      "slug": "sheet-third-party-channel-pnl",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Third-Party",
+      "title_italic": "channel",
+      "title_2": "P&L.",
+      "dek": "True margin per channel and the breakeven menu markup if you keep the channel on.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-third-party-channel-pnl-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "P&G",
+      "title_italic": "por",
+      "title_2": "canal de terceros.",
+      "dek": "Margen real por canal y el margen de menú de equilibrio si mantienes el canal activo.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-vendor-contact-sheet",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "teal",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Vendor",
+      "title_italic": "contact",
+      "title_2": "Sheet.",
+      "dek": "A one-page emergency reference.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-vendor-contact-sheet-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "teal",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Hoja",
+      "title_italic": "de",
+      "title_2": "contacto de proveedores.",
+      "dek": "Una referencia de emergencia de una página.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "brand"
+    },
+    {
+      "slug": "sheet-waste-log",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Waste",
+      "title_italic": "&",
+      "title_2": "Spoilage Log.",
+      "dek": "Weekly waste in dollars, your top 5 offenders, and the reason-code mix.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-waste-log-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Registro",
+      "title_italic": "de",
+      "title_2": "desperdicio y mermas.",
+      "dek": "Desperdicio semanal en pesos, tus 5 ofensores principales y la mezcla de códigos de razón.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-website-conversion-checklist",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "rust",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Website",
+      "title_italic": "conversion",
+      "title_2": "Checklist.",
+      "dek": "Pass-or-fail per row, with fix priority for the developer.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-website-conversion-checklist-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "rust",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Lista",
+      "title_italic": "de",
+      "title_2": "conversión del sitio.",
+      "dek": "Pasa o falla por fila, con prioridad de arreglo para el desarrollador.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "conversions"
+    },
+    {
+      "slug": "sheet-weekly-prime-cost-worksheet",
+      "kind": "tool",
+      "locale": "en",
+      "accent": "gold",
+      "eyebrow": "FREE OPERATOR SHEET · YOUR NUMBERS NEVER LEAVE YOUR BROWSER",
+      "title_1": "Weekly",
+      "title_italic": "prime",
+      "title_2": "Cost Worksheet.",
+      "dek": "Your prime cost percent, week-over-week trend, and distance from a 60 percent target.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
+      "slug": "sheet-weekly-prime-cost-worksheet-es",
+      "kind": "tool",
+      "locale": "es",
+      "accent": "gold",
+      "eyebrow": "HOJA GRATIS DEL OPERADOR · TUS NÚMEROS NUNCA SALEN DEL NAVEGADOR",
+      "title_1": "Hoja",
+      "title_italic": "semanal",
+      "title_2": "de costo primo.",
+      "dek": "Tu costo primo en porcentaje, la tendencia semana a semana y la distancia al objetivo del 60 por ciento.",
+      "focus": {
+        "type": "type"
+      },
+      "glyph": "resources"
+    },
+    {
       "slug": "glossary-es",
       "kind": "page",
       "locale": "es",

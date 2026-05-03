@@ -260,11 +260,11 @@ function buildPage(slug, locale) {
 
   const schemaJson = buildSchema(sheet, locale);
 
-  // OG image — for the initial Operator Sheets layer, every sheet
-  // points at the existing /tools/ hub card. Per-sheet cards can be
-  // added in a follow-on by extending brand/og/cards.json with
-  // sheet-<slug> entries (Phase 4 polish in the rollout plan).
-  const ogImage = isEs ? '/brand/og/tools-es.png' : '/brand/og/tools.png';
+  // OG image — per-sheet card synthesized by sync-sheet-og-cards.mjs
+  // and rendered by build-og-cards.mjs into brand/og/sheet-<slug>(.es).png.
+  // Both must run before build-sheet-pages so the manifest entries
+  // exist; check-og-images verifies the file is on disk at build time.
+  const ogImage = isEs ? `/brand/og/sheet-${slug}-es.png` : `/brand/og/sheet-${slug}.png`;
 
   const pairsToolsHtml = renderPairsCol(labels.pairsTools, sheet.pairsWith?.tools, resolveTool, locale, labels.pairsEmpty);
   const pairsGlossHtml = renderPairsCol(labels.pairsGlossary, sheet.pairsWith?.glossary, resolveGlossary, locale, labels.pairsEmpty);

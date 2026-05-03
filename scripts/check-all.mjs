@@ -155,6 +155,7 @@ const CHECKS = [
   ['Glossary tool sidecar (idem)','inject-glossary-tool-sidecar.mjs','--check'],
   ['Glossary sheet sidecar (idem)','inject-glossary-sheet-sidecar.mjs','--check'],
   ['Topic sheets rail (idem)','inject-topic-sheets-rail.mjs','--check'],
+  ['Sheet OG cards (idem)','sync-sheet-og-cards.mjs','--check'],
   ['Window field-notes rail (idem)','inject-window-fieldnotes-rail.mjs','--check'],
   ['Glossary hub',        'check-glossary-hub.mjs',         '--check'],
   ['Topic pillar essay (idem)','inject-topic-pillar-essay.mjs','--check'],
