@@ -3186,6 +3186,11 @@
         // cascade promoted a 1-col theme to 2-col to fit a single
         // sheet, the PDF needs to use paginateTwoCol() to match.
         forceTwoCol: effectiveTwoColPromote(),
+        // Wave studio-quality — operator's display currency (default
+        // USD). The PDF renderer applies the same locale-aware
+        // formatPriceDisplay so the printed deliverable carries the
+        // right currency symbol on bare-digit prices.
+        currency:    (meta && meta.currency) || 'USD',
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale

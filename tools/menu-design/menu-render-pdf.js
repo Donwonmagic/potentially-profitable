@@ -502,9 +502,27 @@
     fn(doc, x, y, size, color);
   }
 
+  // Wave studio-quality — locale-aware price display in PDF.
+  // Mirrors the orchestrator's formatPriceDisplay so the operator's
+  // "14" renders as "$14" / "14 €" / "£14" / "¥1400" depending on
+  // opts.currency. Already-symboled inputs pass through untouched.
+  function _formatPriceForPdf(raw, currency) {
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return '';
+    if (/[$€£¥₩₹฿]/.test(s)) return s;
+    if (!/^[\d.,]+$/.test(s)) return s;
+    var c = (currency || 'USD').toUpperCase();
+    if (c === 'EUR') return s + ' €';   // narrow no-break space + €
+    if (c === 'GBP') return '£' + s;
+    if (c === 'JPY') return '¥' + s;
+    if (c === 'CHF') return 'CHF ' + s;
+    return '$' + s;
+  }
+
   function buildBlocks(rows, title, logoDataUrl, opts) {
     opts = opts || {};
     var blocks = [];
+    var currency = opts.currency || 'USD';
     // W11-3 — cover page block. Rendered when opts.coverPage === true
     // OR when we detect the menu will multi-page. Adds a dedicated
     // first page with large display-face title, tagline, and an
@@ -580,7 +598,10 @@
         blocks.push({
           kind: 'dish',
           name:     (r.name || '').trim(),
-          price:    (r.price || '').trim(),
+          // Wave studio-quality — apply locale-aware currency
+          // formatting at block-build time so the printed PDF matches
+          // the live preview (which formats via formatPriceDisplay).
+          price:    _formatPriceForPdf((r.price || '').trim(), currency),
           desc:     (r.desc || '').trim(),
           allergens: allergens,
           spice: spice,
@@ -588,7 +609,7 @@
           photo: r.photo || null,             // W11-4 — propagate dish photo
           pairing:  (r.pairing  || '').trim(), // W12-2
           modifier: (r.modifier || '').trim(), // W12-2
-          halfPrice:(r.halfPrice|| '').trim(), // W12-2
+          halfPrice: _formatPriceForPdf((r.halfPrice || '').trim(), currency), // W12-2 + currency
           portion:  (r.portion  || '').trim(), // W14-1 — portion size
           calories: (r.calories || '').trim ? r.calories.trim() : (r.calories ? String(r.calories) : ''),
           altName:  (r.altName  || '').trim(), // W14-1 — multilingual mirror
@@ -1955,7 +1976,11 @@
         tagline:   opts.tagline   || '',
         story:     opts.story     || '',
         themeId:   (opts.theme && opts.theme.id) || '',
-        coverPage: !!opts.coverPage
+        coverPage: !!opts.coverPage,
+        // Wave studio-quality — pipe operator's display currency
+        // through to buildBlocks so dish + halfPrice get formatted
+        // correctly in the PDF (matches the live preview).
+        currency:  opts.currency  || 'USD'
       });
       // Forward logoMeta + locale onto the relevant blocks.
       blocks.forEach(function (b) {
