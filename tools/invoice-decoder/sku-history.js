@@ -113,6 +113,20 @@
       entry.comparablePrice = row.comparable.perBaseUnit;
       entry.comparableUnit  = row.comparable.baseUnit;
     }
+    // Wave C.5 — capture row.pack so future invoices missing pack
+    // notation can fall back to the operator's learned default.
+    // Pack notation drops out on bottom-third distributors who
+    // print short item names ("ROMAINE 24CT" vs the full
+    // "ROMAINE HEARTS 6/24CT FREE-RANGE"). The fallback in
+    // pack-pricing requires ≥3 matching observations; we capture
+    // every one so the floor is reachable.
+    if (row.pack && typeof row.pack.caseQty === 'number' && typeof row.pack.unitSize === 'number' && row.pack.unit) {
+      entry.pack = {
+        caseQty:  row.pack.caseQty,
+        unitSize: row.pack.unitSize,
+        unit:     row.pack.unit
+      };
+    }
     list.unshift(entry);
     if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
     s.skuHistory[stem] = list;
@@ -154,6 +168,14 @@
       if (row.comparable && typeof row.comparable.perBaseUnit === 'number') {
         entry.comparablePrice = row.comparable.perBaseUnit;
         entry.comparableUnit  = row.comparable.baseUnit;
+      }
+      // Wave C.5 — same pack capture as recordObservation; see comment there.
+      if (row.pack && typeof row.pack.caseQty === 'number' && typeof row.pack.unitSize === 'number' && row.pack.unit) {
+        entry.pack = {
+          caseQty:  row.pack.caseQty,
+          unitSize: row.pack.unitSize,
+          unit:     row.pack.unit
+        };
       }
       list.unshift(entry);
       if (list.length > ENTRY_CAP_PER_STEM) list = list.slice(0, ENTRY_CAP_PER_STEM);
@@ -622,6 +644,62 @@
     writeStore({ skuHistory: {}, contractPrices: {} });
   }
 
+  // Wave C.5 — default pack lookup. When a row arrives without pack
+  // notation (common on bottom-third distributors who print short item
+  // names), we can still produce a comparable-price by inferring the
+  // pack from the operator's history of buying that stem. Requires
+  // ≥3 matching observations to fire — below that, the variance is
+  // too high to trust an inference. Returns null when no consensus
+  // pack emerges or when there's not enough history.
+  //
+  // Returns { caseQty, unitSize, unit, observations, total, agreement }
+  // where:
+  //   - observations: count of matching pack entries
+  //   - total: total observations for this stem (any pack)
+  //   - agreement: observations / total (1.0 means every recorded
+  //     observation had this exact pack)
+  // Callers use `agreement` to decide how strongly to surface the
+  // inference (e.g. show in proof flyout vs auto-apply).
+  function lookupDefaultPack(stemOrRow) {
+    var stem = (typeof stemOrRow === 'string')
+      ? stemOf(stemOrRow)
+      : stemOf(stemOrRow && stemOrRow.name);
+    if (!stem || stem.length < 3) return null;
+    var s = readStore();
+    var list = s.skuHistory[stem] || [];
+    if (list.length < 3) return null;
+    // Tally pack signatures. A signature is "caseQty/unitSize/unit"
+    // — exact match. We never average pack notation: 12/16OZ is a
+    // fundamentally different SKU than 24/16OZ, and an averaged
+    // value would be silently wrong.
+    var tallies = {};
+    var total = 0;
+    list.forEach(function (e) {
+      if (!e.pack) return;
+      if (typeof e.pack.caseQty !== 'number' || typeof e.pack.unitSize !== 'number' || !e.pack.unit) return;
+      var key = e.pack.caseQty + '/' + e.pack.unitSize + '/' + String(e.pack.unit).toLowerCase();
+      tallies[key] = (tallies[key] || 0) + 1;
+      total++;
+    });
+    if (total < 3) return null;
+    // Pick the most-tallied signature.
+    var winnerKey = null;
+    var winnerCount = 0;
+    Object.keys(tallies).forEach(function (k) {
+      if (tallies[k] > winnerCount) { winnerKey = k; winnerCount = tallies[k]; }
+    });
+    if (winnerCount < 3) return null;
+    var parts = winnerKey.split('/');
+    return {
+      caseQty:      Number(parts[0]),
+      unitSize:     Number(parts[1]),
+      unit:         parts[2],
+      observations: winnerCount,
+      total:        total,
+      agreement:    +(winnerCount / total).toFixed(3)
+    };
+  }
+
   var api = {
     // Phase 1 — observation
     recordObservation:  recordObservation,
@@ -630,6 +708,7 @@
     rollingMedian:      rollingMedian,
     summarizeRow:       summarizeRow,
     topMovers:          topMovers,
+    lookupDefaultPack:  lookupDefaultPack,
     // Phase 2 — contract
     setContract:        setContract,
     clearContract:      clearContract,

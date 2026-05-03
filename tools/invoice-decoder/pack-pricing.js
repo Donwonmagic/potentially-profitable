@@ -287,28 +287,67 @@
     var qty = (typeof row.qty === 'number' && row.qty > 0) ? row.qty : 1;
     if (lineTotal == null || lineTotal <= 0) return null;
 
+    // Wave C.5 — when the row arrives without pack notation but the
+    // operator has bought this SKU 3+ times before with a consistent
+    // pack, fall back to the learned default. Only fires when:
+    //   (a) row.pack is null/missing AND
+    //   (b) MID_SKU_HISTORY is loaded AND
+    //   (c) lookupDefaultPack returns a tally with ≥3 matching
+    //       observations.
+    // The synthesized row.pack is local to this call (we don't mutate
+    // the caller's row); the resulting comparable carries
+    // basis: 'pack-inferred' so downstream UI can distinguish it
+    // from a directly-observed pack.
+    var inferredPack = null;
+    if (!row.pack || typeof row.pack.caseQty !== 'number' || typeof row.pack.unitSize !== 'number' || !row.pack.unit) {
+      try {
+        var r = (typeof window !== 'undefined') ? window : (typeof global !== 'undefined' ? global : null);
+        if (r && r.MID_SKU_HISTORY && typeof r.MID_SKU_HISTORY.lookupDefaultPack === 'function') {
+          var def = r.MID_SKU_HISTORY.lookupDefaultPack(row.name);
+          if (def && def.caseQty && def.unitSize && def.unit) {
+            inferredPack = {
+              caseQty:  def.caseQty,
+              unitSize: def.unitSize,
+              unit:     def.unit,
+              _inferred: true,
+              _agreement: def.agreement,
+              _observations: def.observations
+            };
+          }
+        }
+      } catch (_) {}
+    }
+    var effectivePack = (row.pack && typeof row.pack.caseQty === 'number') ? row.pack : inferredPack;
+
     // --- Path 1: pack-aware ---
-    if (row.pack && typeof row.pack.caseQty === 'number' && row.pack.unit) {
-      var packUnit = normalizeUnitToken(row.pack.unit);
+    if (effectivePack && typeof effectivePack.caseQty === 'number' && effectivePack.unit) {
+      var packUnit = normalizeUnitToken(effectivePack.unit);
 
       // Special case: #-cans. The unitSize in the pack notation is
       // the #-size enumeration (10 → #10 = 110 fl oz, 5 → #5, etc.),
       // NOT a multiplier. Total volume = caseQty × per-can-volume.
       if (packUnit === '#') {
-        var sizeKey = String(row.pack.unitSize);
+        var sizeKey = String(effectivePack.unitSize);
         var perCan = HASH_CAN_TOBASE[sizeKey] || HASH_CAN_TOBASE['10'];   // default #10
-        var totalHash = row.pack.caseQty * perCan * qty;
+        var totalHash = effectivePack.caseQty * perCan * qty;
         if (totalHash > 0) {
           return {
             perBaseUnit:   +(lineTotal / totalHash).toFixed(6),
             baseUnit:      'fl_oz',
             totalQuantity: +totalHash.toFixed(3),
-            basis:         'pack'
+            basis:         effectivePack._inferred ? 'pack-inferred' : 'pack',
+            inferredPack:  effectivePack._inferred ? {
+              caseQty:      effectivePack.caseQty,
+              unitSize:     effectivePack.unitSize,
+              unit:         effectivePack.unit,
+              observations: effectivePack._observations,
+              agreement:    effectivePack._agreement
+            } : undefined
           };
         }
       }
 
-      if (packUnit && packUnit !== '#' && typeof row.pack.unitSize === 'number') {
+      if (packUnit && packUnit !== '#' && typeof effectivePack.unitSize === 'number') {
         // For 'oz' specifically: disambiguate liquid vs weight by
         // the row's category. Liquids (beverage / cleaning that
         // ships in liquid form) → fl_oz. Dry goods / herbs-spices
@@ -319,18 +358,25 @@
           else if (row.category === 'dry-goods' || row.category === 'herbs-spices') packUnit = 'oz';
           else packUnit = 'fl_oz';
         }
-        var conv = toBaseQuantity(row.pack.unitSize, packUnit);
+        var conv = toBaseQuantity(effectivePack.unitSize, packUnit);
         if (conv) {
           // Total inner-unit volume across the entire line:
           //   caseQty × unitSize-in-base × number-of-cases-bought
-          var totalInBase = row.pack.caseQty * conv.qtyInBase * qty;
+          var totalInBase = effectivePack.caseQty * conv.qtyInBase * qty;
           if (totalInBase > 0) {
             var perBase = lineTotal / totalInBase;
             return {
               perBaseUnit:   +perBase.toFixed(6),
               baseUnit:      BASE_UNIT_BY_FAMILY[conv.family],
               totalQuantity: +totalInBase.toFixed(3),
-              basis:         'pack'
+              basis:         effectivePack._inferred ? 'pack-inferred' : 'pack',
+              inferredPack:  effectivePack._inferred ? {
+                caseQty:      effectivePack.caseQty,
+                unitSize:     effectivePack.unitSize,
+                unit:         effectivePack.unit,
+                observations: effectivePack._observations,
+                agreement:    effectivePack._agreement
+              } : undefined
             };
           }
         }
