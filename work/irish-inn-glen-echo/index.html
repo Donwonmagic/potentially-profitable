@@ -818,7 +818,7 @@
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px;" class="reveal">
       <div>
-        <img src="/work/irish-inn-glen-echo/logo-draft.png" alt="Irish Inn logo draft — gold Irish harp on dark green and black circular medallion" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:auto 4/5; border-radius:10px; border:1px solid var(--line);" width="10000" height="10000">
+        <img src="/work/irish-inn-glen-echo/logo-draft.png" alt="Irish Inn logo draft — gold Irish harp on dark green and black circular medallion" loading="lazy" decoding="async" style="width:100%; height:auto; border-radius:10px; border:1px solid var(--line);" width="800" height="800">
         <p style="font-size:13px; color:var(--stone); margin-top:8px;">Logo draft — Irish harp in gold and green</p>
       </div>
       <div>
@@ -976,9 +976,9 @@
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
-        <label class="sr-only" for="foot-news-email">Your email</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
         <input type="hidden" name="locale" value="en" />
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />

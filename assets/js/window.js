@@ -65,7 +65,57 @@
     msg:        document.getElementById('windowMsg'),
     onramps:    document.getElementById('windowOnramps'),
     signin:     document.getElementById('windowSignin'),
+    // Phase-2 redesign — optional context inputs above the textarea.
+    // Prepended into the body on submit so the worker's payload
+    // schema is unchanged. Persisted in localStorage so a returning
+    // operator doesn't retype.
+    name:       document.getElementById('windowName'),
+    restaurant: document.getElementById('windowRestaurant'),
+    site:       document.getElementById('windowSite'),
   };
+
+  var CONTEXT_STORAGE_KEY = 'md_window_context_v1';
+
+  function loadContextFromStorage() {
+    try {
+      var raw = localStorage.getItem(CONTEXT_STORAGE_KEY);
+      if (!raw) return;
+      var saved = JSON.parse(raw);
+      if (els.name && saved.name) els.name.value = saved.name;
+      if (els.restaurant && saved.restaurant) els.restaurant.value = saved.restaurant;
+      if (els.site && saved.site) els.site.value = saved.site;
+    } catch (_) { /* localStorage may be unavailable; ignore */ }
+  }
+
+  function persistContextToStorage() {
+    try {
+      var snap = {
+        name:       els.name ? els.name.value.trim() : '',
+        restaurant: els.restaurant ? els.restaurant.value.trim() : '',
+        site:       els.site ? els.site.value.trim() : '',
+      };
+      localStorage.setItem(CONTEXT_STORAGE_KEY, JSON.stringify(snap));
+    } catch (_) { /* ignore */ }
+  }
+
+  function buildBodyWithContext(rawBody) {
+    // Prepend the optional context fields as a single header block
+    // above the message. Skipped fields produce no line. Trailing
+    // blank line + horizontal rule separate the context from the
+    // message body so Don's inbox view is scannable.
+    var pieces = [];
+    if (els.name && els.name.value.trim()) {
+      pieces.push('From: ' + els.name.value.trim());
+    }
+    if (els.restaurant && els.restaurant.value.trim()) {
+      pieces.push('Restaurant: ' + els.restaurant.value.trim());
+    }
+    if (els.site && els.site.value.trim()) {
+      pieces.push('Current site: ' + els.site.value.trim());
+    }
+    if (!pieces.length) return rawBody;
+    return pieces.join('\n') + '\n---\n' + rawBody;
+  }
 
   var state = {
     authed: false,
@@ -252,17 +302,19 @@
   function submit(ev) {
     ev.preventDefault();
     if (state.paused) { showMsg(copy.errorPaused, true); return; }
-    var body = els.body.value.trim();
-    if (!body) { showMsg(copy.errorBodyEmpty, true); return; }
-    if (body.length > 4000) { showMsg(copy.errorBodyTooLong, true); return; }
+    var rawBody = els.body.value.trim();
+    if (!rawBody) { showMsg(copy.errorBodyEmpty, true); return; }
+    var bodyWithContext = buildBodyWithContext(rawBody);
+    if (bodyWithContext.length > 4000) { showMsg(copy.errorBodyTooLong, true); return; }
     hideMsg();
+    persistContextToStorage();
     els.submit.disabled = true;
     els.body.disabled = true;
     var origLabel = els.submit.textContent;
     els.submit.textContent = copy.sending;
 
     var params = new URLSearchParams();
-    params.set('body', body);
+    params.set('body', bodyWithContext);
 
     fetch('/api/window/append', {
       method: 'POST',
@@ -340,4 +392,6 @@
   if (els.form) els.form.addEventListener('submit', submit);
   if (els.body) els.body.addEventListener('input', updateCounter);
   bindOnramps();
+  // Phase-2 redesign — boot the optional context fields.
+  loadContextFromStorage();
 })();

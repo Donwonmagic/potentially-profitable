@@ -394,7 +394,7 @@
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
       <h1>Is Google showing your<br><span class="serif-italic">best side?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-02">May 2, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-03">May 3, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -422,7 +422,7 @@
       </div>
 
       <form class="seo-form" id="seoForm" novalidate>
-        <input type="url" id="seoUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+        <input type="url" id="seoUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="seoSubmit">Grade it</button>
       </form>
 
@@ -447,7 +447,7 @@
            classes live in assets/site.css under §Tool states. -->
       <div class="tool-states-slot" id="seoStates" data-state="idle" aria-live="polite"></div>
 
-      <div class="seo-result" id="seoResult" aria-live="polite">
+      <div class="seo-result" id="seoResult" tabindex="-1">
         <!-- Title card -->
         <div class="seo-card" id="titleCard">
           <div class="card-label" id="titleGrade">TITLE TAG</div>
@@ -538,8 +538,8 @@
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">Structure Brings Clarity.</p>
-        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
       <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explore</p>
         <ul class="foot-links"><li><a href="/services/">Services</a></li><li><a href="/for/restaurants/">For restaurants</a></li><li><a href="/work/">Work</a></li><li><a href="/blog/">Articles</a></li><li><a href="/about/">About Don</a></li></ul>
@@ -1005,8 +1005,17 @@
         renderCard('desc', descResult, descResult.desc);
         renderRewriteAndPreview(url, data.title || '', data.description || '');
 
-        if (states) states.setSuccess();
+        // Phase-3A a11y: pass a one-line summary into the shared
+        // sr-only announcer (states.js) and move keyboard focus to
+        // the result region so SR users follow the result reveal.
+        var locStrings = (document.documentElement.lang === 'es')
+          ? { complete: 'Diagn&oacute;stico completo. T&iacute;tulo ' + titleResult.pct + ' de 100. Descripci&oacute;n ' + descResult.pct + ' de 100.' }
+          : { complete: 'Grade complete. Title ' + titleResult.pct + ' out of 100. Description ' + descResult.pct + ' out of 100.' };
+        if (states) states.setSuccess({ summary: locStrings.complete });
         result.classList.add('visible');
+        // Move focus to the result wrapper. tabindex="-1" already on
+        // the wrapper; use preventScroll so we don't double-scroll.
+        try { result.focus({ preventScroll: true }); } catch (_) { result.focus(); }
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         // Phase 2 (Workshop) — surface the Save affordance with the

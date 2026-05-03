@@ -69,28 +69,64 @@
     </div>
   </section>
 
+  <!-- Composer — rediseño Fase 2.
+       Tres chips de entrada agudos reflejan las ofertas productizadas
+       de /es/studio/, prefijando el cuerpo con precio + alcance para
+       que un dueño con poco tiempo elija el camino correcto sin
+       pensar. El compositor lleva campos opcionales de Nombre +
+       Restaurante + Sitio actual sobre el textarea — todos opcionales,
+       solo del lado del cliente, prefijados al cuerpo al enviar. El
+       inicio de sesión ahora se enmarca como mejora ("hilos
+       guardados"), no como puerta. Tres salidas siempre visibles:
+       llamada, correo, Instagram. -->
   <section class="window-composer" id="windowComposer" aria-label="Escríbele a Don">
+
+    <div class="window-composer__onramps" id="windowOnramps" aria-label="¿Qué te trae?">
+      <p class="window-onramps__hint">¿Qué te trae?</p>
+      <button type="button" class="window-onramp" data-prepend="Sitio nuevo — Essentials USD 2,500 / Full Service USD 5–9k / Restaurant Group USD 8–15k+. Esto es lo que estoy pensando: ">Sitio nuevo &middot; <em>USD 2,500&ndash;15k</em></button>
+      <button type="button" class="window-onramp" data-prepend="Diagn&oacute;stico de mi sitio actual (USD 499). Aqu&iacute; va la URL y lo que estoy notando: ">Diagn&oacute;stico de mi sitio &middot; <em>USD 499</em></button>
+      <button type="button" class="window-onramp" data-prepend="Tomar mi Plan de mantenimiento (USD 225/mes, est&aacute;ndar). Aqu&iacute; vive el sitio actualmente: ">Tomar mi Plan de mantenimiento &middot; <em>USD 225/mes</em></button>
+      <button type="button" class="window-onramp" data-prepend="">Otra cosa</button>
+    </div>
+
     <form class="window-composer__form" id="windowForm" autocomplete="off">
-      <span class="window-composer__caption" aria-hidden="true">Don —</span>
-      <label for="windowBody" class="sr-only">Tu mensaje a Don</label>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Empieza por donde sea. Un enlace ayuda si lo tienes." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
+      <span class="window-composer__caption" aria-hidden="true">Don &mdash;</span>
+
+      <div class="window-composer__context">
+        <div class="window-composer__field-pair">
+          <label for="windowName">Tu nombre <span class="window-composer__opt">(opcional)</span></label>
+          <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
+        </div>
+        <div class="window-composer__field-pair">
+          <label for="windowRestaurant">Restaurante + ciudad <span class="window-composer__opt">(opcional)</span></label>
+          <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="ej. El Tesoro, Hyattsville" />
+        </div>
+        <div class="window-composer__field-pair window-composer__field-pair--full">
+          <label for="windowSite">Sitio web actual <span class="window-composer__opt">(opcional)</span></label>
+          <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
+        </div>
+      </div>
+
+      <label for="windowBody" class="window-composer__body-label">Qu&eacute; te tiene escribiendo <span class="window-composer__req" aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span></label>
+      <textarea class="window-composer__field" id="windowBody" name="body" rows="4" placeholder="Empieza por donde sea. Una l&iacute;nea sobre lo que te empuja a escribir &mdash; yo me encargo del resto." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
       <div class="window-composer__row">
         <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
-        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Enviar a Don</button>
+        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Enviar la nota</button>
       </div>
       <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
     </form>
-    <div class="window-composer__onramps" id="windowOnramps" aria-label="On-ramps">
-      <button type="button" class="window-onramp" data-prepend="Un sitio nuevo — busco ayuda con: ">Un sitio nuevo</button>
-      <button type="button" class="window-onramp" data-prepend="Una segunda mirada al mío — aquí está el enlace: ">Una segunda mirada al mío</button>
-      <button type="button" class="window-onramp" data-prepend="">Otra cosa</button>
-    </div>
-    <p class="window-composer__reassurance" id="windowReassurance">Respondo en menos de 2 días hábiles. Normalmente el mismo día. Sin compromiso, sin discurso de venta.</p>
-    <p class="window-composer__alt"><a href="https://cal.com/muntin/intro" rel="noopener" data-event="window-cal-link">O reserva una llamada de 20 min &rarr;</a></p>
+
+    <p class="window-composer__reassurance" id="windowReassurance">Leo cada una. Normalmente te respondo el mismo d&iacute;a h&aacute;bil, siempre dentro de dos. Sin compromiso, sin discurso de venta.</p>
+
+    <ul class="window-composer__alt-row" aria-label="Otras maneras de llegar a Don">
+      <li><a href="/es/studio/call/" rel="noopener" data-event="window-cal-link">Reservar llamada de 20 min &rarr;</a></li>
+      <li><a href="mailto:don@muntin.digital?subject=Hola%20Don" data-event="window-email-link">Correo a <span class="serif-italic">don@muntin.digital</span> &rarr;</a></li>
+      <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">DM en Instagram &rarr;</a></li>
+    </ul>
   </section>
 
   <section class="window-signin" id="windowSignin" hidden>
-    <p>Para enviar una nota y recibir mi respuesta por correo, inicia sesión primero. <a href="/es/sign-in/?return=%2Fes%2Fwindow%2F">Iniciar sesión →</a></p>
+    <p><strong>&iquest;Quieres respuestas en hilo contigo?</strong> <a href="/es/sign-in/?return=%2Fes%2Fwindow%2F">Inicia sesi&oacute;n &rarr;</a> &mdash; un clic por correo, sin contrase&ntilde;a. O env&iacute;a la nota tal cual y respondo a tu correo de arriba.</p>
   </section>
 
 <!-- window-fieldnotes-rail:start -->

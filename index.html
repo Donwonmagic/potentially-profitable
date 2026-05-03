@@ -628,27 +628,28 @@
 <main id="main">
 
 <!-- ============ HERO ============ -->
+<!-- Operator-first three-doors hero (launch refresh).
+     The library is the proof, not the lede; the lede is the studio.
+     Three CTAs in priority order: Run my free audit (primary, the
+     audit is the highest-intent door) → See pricing (secondary, for
+     the operator who already knows they want to hire) → Or take the
+     60-minute tour (tertiary text link, for the researcher). The
+     library count strip survives below as the proof line. -->
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">Built for independent restaurants &middot; Silver Spring, MD</span>
+      <span class="eyebrow">For independent restaurants &middot; Silver Spring, MD</span>
       <h1>
-        Plain-English answers for restaurant owners. <span class="serif-italic">And a studio that builds the site, when you want one.</span>
+        Restaurant websites that pay for themselves. <span class="serif-italic">Built by one person, in one season.</span>
       </h1>
       <p class="hero-sub">
-        Free articles, tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary &mdash; the same playbook I use with paying clients. No signup, no email gate.
+        Built by someone managing two DMV restaurants this week. The library below is the same playbook I use with paying clients &mdash; free, no signup.
       </p>
-      <ul class="hero-counts" aria-label="Library at a glance">
-        <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
-        <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;free tools</li>
-        <li class="hero-counts__chip"><strong><!-- count:articles -->18<!-- /count --></strong>&nbsp;articles</li>
-        <li class="hero-counts__chip">All free</li>
-      </ul>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="/tools/">See free articles &amp; tools
+        <a class="btn btn-primary" href="/tools/audits/restaurant/">Run my free audit
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost" href="/window/">Email Don</a>
+        <a class="btn btn-ghost" href="/studio/#pricing">See pricing</a>
         <!-- Phase 4 (Workshop) — Continue-your-work reveal. The
              js-nav-workshop class is already toggled by the nav's
              /api/auth/me lookup (lives in _includes/nav.html); a
@@ -660,12 +661,18 @@
         </a>
       </div>
       <p class="hero-note">
-        New here? Try the 30-second restaurant <a href="/tools/audits/restaurant/">website audit</a>, or take the <a href="/learn/start-here/">60-minute guided tour</a>.
+        Just researching? <a href="/learn/start-here/">Take the 60-minute guided tour &rarr;</a>
       </p>
       <p class="hero-meta-note">
-        <em>Built by Don Goldstein, manager at two DMV restaurants.</em>
-        <span class="hero-meta-sub">Reply time: under 4 hours, Mon&ndash;Fri &middot; 2 projects open per month.</span>
+        <em>Don Goldstein &mdash; manager at the Irish Inn at Glen Echo and Tacombi DMV. ServSafe certified.</em>
+        <span class="hero-meta-sub">Reply within 4 hours, Mon&ndash;Fri &middot; two builds open per month.</span>
       </p>
+      <ul class="hero-counts" aria-label="Library at a glance">
+        <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;free tools</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->18<!-- /count --></strong>&nbsp;articles</li>
+        <li class="hero-counts__chip">All free</li>
+      </ul>
     </div>
 
     <div>
@@ -1305,9 +1312,9 @@
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
-        <label class="sr-only" for="foot-news-email">Your email</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
         <input type="hidden" name="locale" value="en" />
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />

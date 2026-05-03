@@ -186,6 +186,11 @@
       'Post Listened',
       'Post Listened: Completed',
       'Share',
+      // Phase 3A (launch) — Cal.com booking surface (/studio/call/).
+      // Fires once per page view, ~800ms after load (after the embed
+      // settles). One bounded event, no per-source props — that
+      // discipline matches 'Start Here Path' above.
+      'Call Page View',
     ],
     // Workshop / account — Sprint 15 will rename these in a future
     // pass to drop "Workbench" from the Plausible namespace too.

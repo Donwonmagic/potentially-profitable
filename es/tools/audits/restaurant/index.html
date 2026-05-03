@@ -5258,7 +5258,7 @@
         actually doing?
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-02">2 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -5283,8 +5283,7 @@
           autocomplete="url"
           required
           aria-label="Your restaurant website URL"
-          data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel"
-        />
+          data-tr-attr="placeholder:form.placeholder;aria-label:form.urlLabel" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="auditSubmit">
           <span data-tr="form.submit">Run audit</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -6135,7 +6134,7 @@
           <div class="compare-inputs" id="compareInputs">
             <div class="compare-input-row">
               <label for="compareUrl0" class="sr-only">Competitor 1</label>
-              <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" />
+              <input type="url" id="compareUrl0" name="competitor0" placeholder="competitor1.com" autocomplete="off" spellcheck="false" inputmode="url" enterkeyhint="go" autocapitalize="off" />
             </div>
           </div>
           <div class="compare-actions">
@@ -16196,7 +16195,7 @@
       var labelId = 'compareUrl' + count;
       row.innerHTML =
         '<label for="' + labelId + '" class="sr-only">Competitor ' + (count + 1) + '</label>' +
-        '<input type="url" id="' + labelId + '" name="competitor' + count + '" placeholder="competitor' + (count + 1) + '.com" autocomplete="off" spellcheck="false" />' +
+        '<input type="url" id="' + labelId + '" name="competitor' + count + '" placeholder="competitor' + (count + 1) + '.com" autocomplete="off" spellcheck="false" inputmode="url" enterkeyhint="go" autocapitalize="off" />' +
         '<button type="button" class="compare-remove" aria-label="Remove this competitor">×</button>';
       compareInputs.appendChild(row);
       var removeBtn = row.querySelector('.compare-remove');
@@ -17124,9 +17123,9 @@
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
-        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
-        <label class="sr-only" for="foot-news-email">Tu correo</label>
-        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo &mdash; cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="foot-newsletter-label" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="tu@turestaurante.com" />
         <input type="hidden" name="locale" value="es" />
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />

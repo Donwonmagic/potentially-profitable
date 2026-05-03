@@ -360,7 +360,7 @@
       <span class="eyebrow">Herramienta gratis &middot; 60 segundos</span>
   <h1>Tu storefront,<br><span class="serif-italic">calificado.</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-02">2 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -371,14 +371,14 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Pega tu URL una vez. Recibe una boleta unificada sobre SEO, velocidad, móvil, schema, GBP y una auditoría completa — con el siguiente arreglo enlazado a la herramienta que lo corre.</p>
   <div class="cmp-inputs">
-    <input type="url" id="shUrl" placeholder="https://turestaurante.com" aria-label="URL de tu restaurante" />
+    <input type="url" id="shUrl" placeholder="https://turestaurante.com" aria-label="URL de tu restaurante" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
   </div>
   <button class="cmp-btn" id="shSubmit">Calificar mi storefront</button>
   <p class="cmp-note">Corre los seis chequeos en paralelo. Tarda entre 30 y 60 segundos.</p>
   <p class="cmp-status" id="shStatus" hidden></p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
   <div class="tool-states-slot" id="shStates" data-state="idle" aria-live="polite"></div>
-  <div class="sh-result" id="shResult" aria-live="polite"></div>
+  <div class="sh-result" id="shResult" tabindex="-1"></div>
   <div class="sh-save" id="shSave" hidden>
     <p class="sh-save-text" id="shSaveText">Guarda este storefront en el Taller para que la boleta te siga en todos los dispositivos.</p>
     <button type="button" class="sh-save-btn" id="shSaveBtn" hidden>
@@ -478,7 +478,7 @@
 <footer><div class="container">
   <div class="foot-cta"><div class="foot-cta-text">Got a question? The Window is open.</div><a class="btn btn-primary js-window" href="/es/window/">Email Don<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a></div>
   <div class="foot-grid">
-    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">Structure Brings Clarity.</p><p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p></div>
+    <div class="foot-col foot-brand"><a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home"><img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async"><sup class="tm" aria-hidden="true">&#8482;</sup></a><p class="foot-tagline">La ventana.</p><p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p></div>
     <nav class="foot-col" aria-labelledby="foot-explore"><p class="foot-heading" id="foot-explore">Explore</p><ul class="foot-links"><li><a href="/services/">Services</a></li><li><a href="/for/restaurants/">For restaurants</a></li><li><a href="/work/">Work</a></li><li><a href="/blog/">Articles</a></li><li><a href="/about/">About Don</a></li></ul></nav>
     <nav class="foot-col" aria-labelledby="foot-tools"><p class="foot-heading" id="foot-tools">Free tools</p><ul class="foot-links"><li><a href="/tools/">All tools</a></li><li><a href="/tools/speed-test/">Speed test</a></li><li><a href="/tools/seo-grader/">SEO grader</a></li><li><a href="/tools/mobile-check/">Mobile check</a></li><li><a href="/tools/schema-check/">Schema check</a></li><li><a href="/tools/tech-stack/">Tech stack</a></li><li><a href="/tools/compare/">Compare</a></li></ul></nav>
     <nav class="foot-col foot-contact" aria-labelledby="foot-contact"><p class="foot-heading" id="foot-contact">Contact</p><ul class="foot-links"><li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li><li><a href="/es/window/">Email Don</a></li><li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li></ul><p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&ndash;Fri</p></nav>

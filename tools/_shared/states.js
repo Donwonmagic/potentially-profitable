@@ -122,26 +122,62 @@
       slotEl.appendChild(errEl);
     }
 
-    function setSuccess() {
+    // Phase-3A a11y addition. Tool result wrappers used to carry
+    // aria-live="polite" themselves, which caused screen readers to
+    // re-announce placeholder dashes during render. The fix: a
+    // dedicated sr-only announcer node lives next to the slot, and
+    // setSuccess({ summary }) writes a single one-line summary into
+    // it. The visual result region drops aria-live entirely; pages
+    // that want SRs to follow focus into the result also expose the
+    // result region with tabindex=-1 (host-page concern).
+    var announcerEl = (function () {
+      // Reuse if the host has provided one; otherwise create a
+      // sibling sr-only div right after the slot.
+      if (opts.announcerEl) return opts.announcerEl;
+      var existing = slotEl.parentNode && slotEl.parentNode.querySelector('.tool-result-announcer');
+      if (existing) return existing;
+      var el = document.createElement('div');
+      el.className = 'tool-result-announcer sr-only';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.setAttribute('aria-atomic', 'true');
+      if (slotEl.parentNode) slotEl.parentNode.insertBefore(el, slotEl.nextSibling);
+      return el;
+    })();
+
+    function setSuccess(arg) {
       clear();
       slotEl.setAttribute('data-state', 'idle');
       slotEl.setAttribute('aria-busy', 'false');
+      // Optional summary string speaks one short, human-readable
+      // sentence into the announcer. Tools that don't pass one
+      // simply fall through; SR users still hear focus arriving on
+      // the result region if the host moves focus there.
+      var summary = (arg && typeof arg === 'object' && typeof arg.summary === 'string') ? arg.summary : '';
+      if (announcerEl && summary) {
+        // Clear first so the same string re-announces on a re-run.
+        announcerEl.textContent = '';
+        // Yield a tick so the live region picks up the change.
+        setTimeout(function () { announcerEl.textContent = summary; }, 30);
+      }
     }
 
     function reset() {
       clear();
       slotEl.setAttribute('data-state', 'idle');
       slotEl.setAttribute('aria-busy', 'false');
+      if (announcerEl) announcerEl.textContent = '';
     }
 
     // Initialize to idle.
     reset();
 
     return {
-      setLoading: setLoading,
-      setError:   setError,
-      setSuccess: setSuccess,
-      reset:      reset,
+      setLoading:   setLoading,
+      setError:     setError,
+      setSuccess:   setSuccess,
+      reset:        reset,
+      announcerEl:  announcerEl,
     };
   }
 

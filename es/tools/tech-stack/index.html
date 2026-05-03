@@ -294,7 +294,7 @@
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
   <h1>¿Con qué está hecho<br><span class="serif-italic">tu sitio?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-02">2 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -305,13 +305,13 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Pega tu URL y mira tu CMS, analítica, plataformas de reservas y procesadores de pago — más qué significa eso para tu velocidad, tu SEO y tu flexibilidad.</p>
   <form class="ts-form" id="tsForm" novalidate>
-    <input type="url" id="tsUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+    <input type="url" id="tsUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
     <button type="submit" id="tsSubmit">Detectar</button>
   </form>
   <p class="ts-note">Escanea las URLs y scripts cargados durante una carga móvil de la página. Toma unos treinta segundos. Nota: detecta tecnologías cargadas en la página inicial — los scripts que cargan de forma diferida o tras la interacción del usuario pueden no aparecer.</p>
   <!-- Sprint 6 (cohesión) — estados compartidos. -->
   <div class="tool-states-slot" id="tsStates" data-state="idle" aria-live="polite"></div>
-  <div class="ts-result" id="tsResult" aria-live="polite"></div>
+  <div class="ts-result" id="tsResult" tabindex="-1"></div>
   <div class="ts-save" id="tsSave" hidden>
     <p class="ts-save-text" id="tsSaveText">Guarda este escaneo en tu Taller para que te siga entre dispositivos.</p>
     <button type="button" class="ts-save-btn" id="tsSaveBtn" hidden>

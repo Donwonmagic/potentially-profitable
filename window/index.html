@@ -84,30 +84,78 @@
     </div>
   </section>
 
-  <!-- Composer -->
+  <!-- Composer — Phase-2 redesign.
+       Three sharp on-ramp chips reflect the productized offers on
+       /studio/, prepending sentence stems with the price + scope so
+       a stressed owner picks the right path without thinking. The
+       composer carries optional Name + Restaurant + Current site
+       fields above the textarea — all optional, client-side only,
+       prepended into the body on submit so the worker payload is
+       unchanged. Sign-in is now framed as an upgrade ("keep replies
+       threaded"), not a gate. Email and Cal.com escape hatches are
+       always visible so the "no commitment" promise is structurally
+       true: a visitor can reach Don three ways without signing in. -->
   <section class="window-composer" id="windowComposer" aria-label="Write to Don">
+
+    <!-- Sharp on-ramp chips (productized offers, exact prices). -->
+    <div class="window-composer__onramps" id="windowOnramps" aria-label="What brings you in">
+      <p class="window-onramps__hint">What brings you in?</p>
+      <button type="button" class="window-onramp" data-prepend="New site — Essentials $2,500 / Full Service $5–9k / Restaurant Group $8–15k+. Here's what I'm thinking: ">New site &middot; <em>$2,500&ndash;$15k</em></button>
+      <button type="button" class="window-onramp" data-prepend="Audit my existing site ($499). Here's the URL and what I'm noticing: ">Audit my existing site &middot; <em>$499</em></button>
+      <button type="button" class="window-onramp" data-prepend="Take over my Care Plan ($225/mo standalone). Here's where the site lives now: ">Take over my Care Plan &middot; <em>$225/mo</em></button>
+      <button type="button" class="window-onramp" data-prepend="">Something else</button>
+    </div>
+
     <form class="window-composer__form" id="windowForm" autocomplete="off">
-      <span class="window-composer__caption" aria-hidden="true">Don —</span>
-      <label for="windowBody" class="sr-only">Your message to Don</label>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere. A URL helps if you have one." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
+      <span class="window-composer__caption" aria-hidden="true">Don &mdash;</span>
+
+      <!-- Optional context grid. Fields are prepended to the body on
+           submit (see assets/js/window.js). All optional; the only
+           required field is the message body. localStorage keeps the
+           name/restaurant/URL between visits so a returning operator
+           doesn't retype. -->
+      <div class="window-composer__context">
+        <div class="window-composer__field-pair">
+          <label for="windowName">Your name <span class="window-composer__opt">(optional)</span></label>
+          <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
+        </div>
+        <div class="window-composer__field-pair">
+          <label for="windowRestaurant">Restaurant + city <span class="window-composer__opt">(optional)</span></label>
+          <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="e.g. The Irish Inn, Glen Echo" />
+        </div>
+        <div class="window-composer__field-pair window-composer__field-pair--full">
+          <label for="windowSite">Current website <span class="window-composer__opt">(optional)</span></label>
+          <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
+        </div>
+      </div>
+
+      <label for="windowBody" class="window-composer__body-label">What's on your mind <span class="window-composer__req" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+      <textarea class="window-composer__field" id="windowBody" name="body" rows="4" placeholder="Start anywhere. A line about what's nudging you to write — I'll do the rest." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
       <div class="window-composer__row">
         <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
         <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send it over</button>
       </div>
       <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
     </form>
-    <div class="window-composer__onramps" id="windowOnramps" aria-label="On-ramps">
-      <button type="button" class="window-onramp" data-prepend="A new site — looking for help with: ">A new site</button>
-      <button type="button" class="window-onramp" data-prepend="A second look at mine — here's the URL: ">A second look at mine</button>
-      <button type="button" class="window-onramp" data-prepend="">Something else</button>
-    </div>
-    <p class="window-composer__reassurance" id="windowReassurance">I reply within 2 business days. Usually the same day. No commitment, no pitch.</p>
-    <p class="window-composer__alt"><a href="https://cal.com/muntin/intro" rel="noopener" data-event="window-cal-link">Or book a 20-min call &rarr;</a></p>
+
+    <p class="window-composer__reassurance" id="windowReassurance">I read every one. Usually back to you the same business day, always inside two. No commitment, no pitch.</p>
+
+    <!-- Three escape hatches. The library promises no signup; this
+         row makes that promise structurally true — every path here
+         reaches Don without an account. Sign-in (below) becomes the
+         upgrade, not the gate. -->
+    <ul class="window-composer__alt-row" aria-label="Other ways to reach Don">
+      <li><a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-min call &rarr;</a></li>
+      <li><a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">Email <span class="serif-italic">don@muntin.digital</span> &rarr;</a></li>
+      <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">DM on Instagram &rarr;</a></li>
+    </ul>
   </section>
 
-  <!-- Sign-in CTA: shown when /api/auth/me returns 401. -->
+  <!-- Sign-in CTA: shown when /api/auth/me returns 401. Reframed
+       from a gate ("sign in first") to an upgrade ("keep replies
+       threaded"). The escape hatches above are always reachable. -->
   <section class="window-signin" id="windowSignin" hidden>
-    <p>To send a note and get my reply by email, sign in first. <a href="/sign-in/?return=%2Fwindow%2F">Sign in →</a></p>
+    <p><strong>Want replies threaded with you?</strong> <a href="/sign-in/?return=%2Fwindow%2F">Sign in &rarr;</a> &mdash; one-click via email, no password. Or send the note as-is and I'll reply to your email above.</p>
   </section>
 
 <!-- window-fieldnotes-rail:start -->

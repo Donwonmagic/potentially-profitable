@@ -419,7 +419,7 @@
       <span class="eyebrow">Free tool &middot; 10 seconds</span>
       <h1>How fast is your <span class="serif-italic">website?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-02">May 2, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-03">May 3, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -436,7 +436,7 @@
       </p>
 
       <form class="speed-form" id="speedForm" novalidate>
-        <input type="url" id="speedUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+        <input type="url" id="speedUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="speedSubmit">Test speed</button>
       </form>
       <p class="speed-note">Works on any publicly accessible URL. Takes about thirty seconds.</p>
@@ -445,7 +445,7 @@
       <div class="tool-states-slot" id="speedStates" data-state="idle" aria-live="polite"></div>
 
       <!-- Result -->
-      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
+      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" tabindex="-1">
         <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Speed test results</h2>
         <div class="speed-dial" id="speedDial">
           <svg viewBox="0 0 180 180" aria-hidden="true">
@@ -566,8 +566,8 @@
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">Structure Brings Clarity.</p>
-        <p class="foot-blurb">A one-person studio in Silver Spring, MD, building custom websites, brands, and social media for independent restaurants and lifestyle brands across the DMV and beyond.</p>
+        <p class="foot-tagline">The window in.</p>
+        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
       </div>
       <nav class="foot-col" aria-labelledby="foot-explore">
         <p class="foot-heading" id="foot-explore">Explore</p>
@@ -1097,7 +1097,14 @@
         if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
           try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
         }
-        if (states) states.setSuccess();
+        // Phase-3A a11y: announce result summary into the shared
+        // sr-only live region. Focus is already moved to the result
+        // heading below; the summary speaks the headline number.
+        var lcpSec = (typeof lcp === 'number') ? (Math.round(lcp / 100) / 10) : null;
+        var locStrings = (document.documentElement.lang === 'es')
+          ? { complete: 'Prueba de velocidad completa. Puntaje ' + score + ' de 100' + (lcpSec ? '. LCP ' + lcpSec + ' segundos.' : '.') }
+          : { complete: 'Speed test complete. Score ' + score + ' out of 100' + (lcpSec ? '. LCP ' + lcpSec + ' seconds.' : '.') };
+        if (states) states.setSuccess({ summary: locStrings.complete });
         showSaveAffordance(payload);
 
         // Move focus to the results heading so keyboard + AT users land

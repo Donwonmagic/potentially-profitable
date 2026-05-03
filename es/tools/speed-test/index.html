@@ -415,7 +415,7 @@
       <span class="eyebrow">Herramienta gratis &middot; 10 segundos</span>
       <h1>¿Qué tan rápido es tu <span class="serif-italic">sitio?</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-02">2 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -432,7 +432,7 @@
       </p>
 
       <form class="speed-form" id="speedForm" novalidate>
-        <input type="url" id="speedUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+        <input type="url" id="speedUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="speedSubmit">Probar velocidad</button>
       </form>
       <p class="speed-note">Funciona con cualquier URL pública. Toma unos treinta segundos.</p>
@@ -441,7 +441,7 @@
       <div class="tool-states-slot" id="speedStates" data-state="idle" aria-live="polite"></div>
 
       <!-- Result -->
-      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
+      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" tabindex="-1">
         <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Resultados de la prueba de velocidad</h2>
         <div class="speed-dial" id="speedDial">
           <svg viewBox="0 0 180 180" aria-hidden="true">

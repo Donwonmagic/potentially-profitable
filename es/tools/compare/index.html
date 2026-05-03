@@ -303,7 +303,7 @@
       <span class="eyebrow">Herramienta gratis &middot; 30 segundos</span>
   <h1>Tu sitio vs.<br><span class="serif-italic">el de ellos.</span></h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-02">2 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -314,9 +314,9 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Pega dos URLs y mira quién gana en velocidad, móvil, SEO y accesibilidad — lado a lado, en español claro.</p>
   <div class="cmp-inputs">
-    <input type="url" id="cmpUrl1" placeholder="https://tusitio.com" aria-label="URL de tu sitio" />
+    <input type="url" id="cmpUrl1" placeholder="https://tusitio.com" aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
     <span class="vs">vs.</span>
-    <input type="url" id="cmpUrl2" placeholder="https://competidor.com" aria-label="URL del competidor" />
+    <input type="url" id="cmpUrl2" placeholder="https://competidor.com" aria-label="URL del competidor" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
   </div>
   <button class="cmp-btn" id="cmpSubmit">Comparar</button>
 
@@ -353,7 +353,7 @@
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <!-- Sprint 6 (cohesión) — estados compartidos. -->
   <div class="tool-states-slot" id="cmpStates" data-state="idle" aria-live="polite"></div>
-  <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
+  <div class="cmp-result" id="cmpResult" tabindex="-1"></div>
   <div class="cmp-save" id="cmpSave" hidden>
     <p class="cmp-save-text" id="cmpSaveText">Guarda esta comparación en tu Taller para que te siga entre dispositivos.</p>
     <button type="button" class="cmp-save-btn" id="cmpSaveBtn" hidden>
