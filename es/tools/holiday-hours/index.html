@@ -20,6 +20,11 @@
 <meta property="og:url" content="https://muntin.digital/es/tools/holiday-hours/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
+
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-holiday-hours-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -221,10 +226,20 @@
 
   <article class="container" style="max-width:840px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:24px">
-      <p class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</p>
+      <span class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</span>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.2vw,52px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 16px">
         Horarios festivos, <span class="serif-italic">de tres maneras.</span>
       </h1>
+      <!-- tool-verified:start -->
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
+            <!-- tool-verified:end -->
+      <!-- data-promise:start -->
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            </aside>
+            <!-- data-promise:end -->
       <p style="font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0">
         Define tus horarios para los próximos ocho días festivos de restaurantes en EE.UU. La herramienta te entrega tres resultados: un bloque de texto plano para tu sitio, un override JSON-LD <code>OpeningHoursSpecification</code> para tu schema, y un bloque con formato Google Business Profile que pegas directo en el dashboard. Todo corre en tu navegador; nada sale de la página.
       </p>
@@ -618,7 +633,7 @@
     document.getElementById('hhEmpty').hidden = true;
     showTab('hhOutText');
     document.getElementById('hhResultRegion').focus();
-    if (window.plausible) window.plausible('tool-result', { props: { tool: 'holiday-hours-es' } });
+    if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'holiday-hours-es' } });
   }
   document.getElementById('hhGenerate').addEventListener('click', generate);
   document.getElementById('hhReset').addEventListener('click', function () {

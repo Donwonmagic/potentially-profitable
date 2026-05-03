@@ -20,6 +20,11 @@
 <meta property="og:url" content="https://muntin.digital/es/tools/menu-converter/" />
 <meta property="og:site_name" content="Muntin Digital" />
 
+
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-menu-converter-es.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
@@ -225,10 +230,20 @@
 
   <article class="container" style="max-width:880px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:24px">
-      <p class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</p>
+      <span class="eyebrow">Herramienta gratis &middot; se queda en tu navegador</span>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.2vw,52px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 16px">
         Pega tu men&uacute;. <span class="serif-italic">Lleva HTML limpio y schema.</span>
       </h1>
+      <!-- tool-verified:start -->
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
+            <!-- tool-verified:end -->
+      <!-- data-promise:start -->
+            <aside class="tool-data-promise" aria-label="Promesa de datos">
+              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
+              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
+              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
+            </aside>
+            <!-- data-promise:end -->
       <p style="font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0">
         Suelta el texto de tu men&uacute; en el cuadro. La herramienta detecta secciones, &iacute;tems, precios y descripciones, y te entrega tres cosas: una vista previa en vivo, HTML sem&aacute;ntico que pegas en tu sitio, y un bloque JSON-LD <code>Menu</code> schema que Google puede indexar. Todo en tu navegador. Tu men&uacute; nunca sale de la p&aacute;gina.
       </p>
@@ -679,7 +694,7 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
     document.getElementById('mcEmpty').hidden = true;
     showTab('mcOutPreview');
     document.getElementById('mcResultRegion').focus();
-    if (window.plausible) window.plausible('tool-result', { props: { tool: 'menu-converter-es' } });
+    if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'menu-converter-es' } });
   }
 
   function showTab(id) {
