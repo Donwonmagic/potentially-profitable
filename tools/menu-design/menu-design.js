@@ -97,6 +97,7 @@
   var logoThumb = document.getElementById('mdLogoThumb');
   var logoLine  = document.getElementById('mdLogoLine');
   var logoWarn  = document.getElementById('mdLogoWarn');
+  var logoRemoveBtn = document.getElementById('mdLogoRemove');
   var paperRow  = document.getElementById('mdPaperRow');
   var paper     = document.getElementById('mdPaper');
   var previewMeta = document.getElementById('mdPreviewMeta');
@@ -281,6 +282,189 @@
     }
     body += '</ul>';
     qcEl.innerHTML = body;
+  }
+
+  // Wave studio-quality — Pre-flight "Ready to ship" panel.
+  //
+  // The single, consolidated, last-thing-the-operator-reads check
+  // before clicking Download. A real designer would walk through this
+  // mental list before sending a PDF to a client. We surface it as one
+  // green "Ready to ship" line OR an amber list of concrete items the
+  // operator can address (each is advisory; export is never blocked).
+  //
+  // Pulls from systems already wired:
+  //   - paperEl.dataset.fitStep         (from paginatePreviewDom cascade)
+  //   - _computeDishWarnings()          (already used by quality-check)
+  //   - effectiveDisclaimer()           (regime + auto-fill state)
+  //   - printVendor flag                (print-marks visualization mirror)
+  //   - rows + meta                     (counts, business name, etc.)
+  function _renderPreflight() {
+    var pfEl = document.getElementById('mdPreflight');
+    if (!pfEl) return;
+
+    var paperEl = paper;
+    var fitStep = (paperEl && paperEl.dataset && paperEl.dataset.fitStep) || '';
+    var twoColActive = paperEl && paperEl.classList && paperEl.classList.contains('md-promote-2col');
+    var dishCount = rows.filter(function (r) {
+      return r.kind === 'dish' && (r.name || '').trim();
+    }).length;
+    var sectionCount = rows.filter(function (r) {
+      return r.kind === 'section' && (r.name || '').trim();
+    }).length;
+
+    // No content yet — keep panel hidden so first-run UI is calm.
+    if (dishCount === 0) {
+      pfEl.hidden = true;
+      pfEl.innerHTML = '';
+      return;
+    }
+
+    var warnings = _computeDishWarnings();
+    var highWarnings = warnings.filter(function (w) { return w.severity === 'high'; }).length;
+    var medWarnings = warnings.filter(function (w) { return w.severity === 'med'; }).length;
+
+    var fitOverflow = fitStep === 'overflow';
+    var fitShrunk = /shrink/.test(fitStep) || /84%|88%|92%|96%/.test(fitStep);
+    var fitNative = fitStep === 'native' || fitStep === '' || fitStep === 'fit';
+
+    // Disclaimer state — only meaningful when allergens are tagged.
+    var hasAllergens = (typeof hasAnyAllergenTagged === 'function') && hasAnyAllergenTagged();
+    var disclaimerTyped = !!(meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim());
+    var disclaimerAuto = !disclaimerTyped && hasAllergens && effectiveDisclaimer().length > 0;
+    var disclaimerMissing = hasAllergens && !disclaimerTyped && !disclaimerAuto;
+
+    // Business name — printed deliverables look amateur without it.
+    var hasBusinessName = !!(meta && (meta.businessName || '').trim()) ||
+                          !!(typeof window !== 'undefined' && window.MUNTIN_BUSINESS_NAME);
+
+    // Build the items list.
+    var items = [];
+    if (fitOverflow) {
+      items.push({
+        kind: 'block',
+        label: tt(
+          "Won't fit one page even at minimum type size — see the warning above for ways to make it fit.",
+          'No cabe en una página ni con el tipo más pequeño — mira la advertencia de arriba para ver cómo hacerlo caber.'
+        )
+      });
+    } else if (fitShrunk) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Fit at ' + fitStep + (twoColActive ? '' : '') + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
+          'Cabe a ' + fitStep + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
+        )
+      });
+    }
+    if (highWarnings > 0) {
+      items.push({
+        kind: 'block',
+        label: tt(
+          highWarnings + ' high-severity quality issue' + (highWarnings === 1 ? '' : 's') + ' — see the panel above ($0 prices, very long names).',
+          highWarnings + ' problema' + (highWarnings === 1 ? '' : 's') + ' de calidad importante' + (highWarnings === 1 ? '' : 's') + ' — mira el panel de arriba (precios $0, nombres muy largos).'
+        )
+      });
+    } else if (medWarnings > 0) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          medWarnings + ' medium-severity quality note' + (medWarnings === 1 ? '' : 's') + ' (duplicates, long names) — see the panel above.',
+          medWarnings + ' nota' + (medWarnings === 1 ? '' : 's') + ' de calidad media (duplicados, nombres largos) — mira el panel de arriba.'
+        )
+      });
+    }
+    if (disclaimerMissing) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Allergens are tagged but no disclaimer is set. Add one in the meta panel below, or pick an allergen-labeling regime to auto-fill.',
+          'Hay alérgenos etiquetados pero no hay aviso. Añade uno en el panel de meta abajo, o elige un régimen de etiquetado para autocompletar.'
+        )
+      });
+    }
+    if (!hasBusinessName) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'No business name set — the menu will print without one. Add it in the meta panel below.',
+          'Sin nombre de negocio — el menú se imprimirá sin uno. Añádelo en el panel de meta abajo.'
+        )
+      });
+    }
+    if (sectionCount === 0 && dishCount >= 4) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'No sections — diners read top-to-bottom faster when dishes are grouped (Starters, Mains, Desserts).',
+          'Sin secciones — los diners leen de arriba a abajo más rápido cuando los platos están agrupados (Entradas, Principales, Postres).'
+        )
+      });
+    }
+
+    // Compose UI. Green ready-state when nothing flagged.
+    if (items.length === 0) {
+      var pageWord = (fitNative || fitShrunk)
+        ? (twoColActive ? tt('1 page · 2 columns', '1 página · 2 columnas') : tt('1 page', '1 página'))
+        : tt('1 page', '1 página');
+      // If allowMultiPage + cascade landed on 2 buckets, label it.
+      if (meta && meta.allowMultiPage && paperEl && paperEl.dataset && paperEl.dataset.smartBreakAt) {
+        pageWord = twoColActive
+          ? tt('2 pages · 2 columns', '2 páginas · 2 columnas')
+          : tt('2 pages', '2 páginas');
+      }
+      var summary = dishCount + ' ' + tt('dishes', 'platos') +
+                    (sectionCount > 0 ? ' · ' + sectionCount + ' ' + tt('sections', 'secciones') : '') +
+                    ' · ' + pageWord +
+                    (printVendor ? ' · ' + tt('print-vendor mode', 'modo imprenta') : '') +
+                    (disclaimerAuto || disclaimerTyped ? ' · ' + tt('disclaimer ready', 'aviso listo') : '');
+      pfEl.hidden = false;
+      pfEl.classList.remove('is-attention');
+      pfEl.classList.add('is-ready');
+      pfEl.innerHTML =
+        '<div class="md-pf-row">' +
+          '<svg class="md-pf-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '<div class="md-pf-text">' +
+            '<strong>' + escHtml(tt('Ready to ship.', 'Listo para enviar.')) + '</strong> ' +
+            '<span class="md-pf-summary">' + escHtml(summary) + '</span>' +
+          '</div>' +
+        '</div>';
+      return;
+    }
+
+    // Attention state — list the items.
+    var blockCount = items.filter(function (i) { return i.kind === 'block'; }).length;
+    var heading = blockCount > 0
+      ? tt(items.length + ' item' + (items.length === 1 ? '' : 's') + ' to address before shipping',
+           items.length + ' elemento' + (items.length === 1 ? '' : 's') + ' que revisar antes de enviar')
+      : tt(items.length + ' note' + (items.length === 1 ? '' : 's') + ' to consider',
+           items.length + ' nota' + (items.length === 1 ? '' : 's') + ' que considerar');
+    var listHtml = '<ul>';
+    items.forEach(function (it) {
+      listHtml += '<li>' + escHtml(it.label) + '</li>';
+    });
+    listHtml += '</ul>';
+    pfEl.hidden = false;
+    pfEl.classList.remove('is-ready');
+    pfEl.classList.toggle('is-attention', blockCount > 0);
+    pfEl.classList.toggle('is-notes', blockCount === 0);
+    pfEl.innerHTML =
+      '<div class="md-pf-row md-pf-row-stack">' +
+        '<svg class="md-pf-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          (blockCount > 0
+            ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+            : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>') +
+        '</svg>' +
+        '<div class="md-pf-text">' +
+          '<strong>' + escHtml(heading) + '.</strong> ' +
+          '<span class="md-pf-summary md-pf-summary-block">' +
+            escHtml(tt(
+              'Export still works — these are advisory.',
+              'La exportación sigue funcionando — estos son avisos.'
+            )) +
+          '</span>' +
+          listHtml +
+        '</div>' +
+      '</div>';
   }
 
   // Sister helper — did the live-preview cascade promote the layout
@@ -747,9 +931,18 @@
   // -------------------- Theme picker --------------------
   function renderThemePicker() {
     if (!themesEl || typeof MD_THEMES === 'undefined') return;
-    var ids = MD_THEMES.list();
-    themesEl.innerHTML = ids.map(function (id) {
+    // Wave studio-quality — grouped picker. 25 themes flat is a wall;
+    // operators have to scan everything to find the right one. The
+    // themes.js GROUPS structure already classifies them into Casual /
+    // Classic / Modern / Specialty. Render each group with a small
+    // labeled subhead so picking is intent-driven not exhaustive.
+    var groups = (typeof MD_THEMES.groups === 'function') ? MD_THEMES.groups() : null;
+    var rendered = {};   // track which themes we've placed (defends
+                         // against group registry drift)
+    function renderTheme(id) {
       var t = MD_THEMES.get(id);
+      if (!t) return '';
+      rendered[id] = true;
       var label = LOCALE === 'es' ? t.label_es : t.label_en;
       var blurb = LOCALE === 'es' ? t.blurb_es : t.blurb_en;
       var swatches = [t.paper, t.ink, t.accent, t.muted].map(function (c) {
@@ -760,7 +953,86 @@
         '<p class="md-theme-blurb">' + escHtml(blurb) + '</p>' +
         '<div class="md-theme-swatches">' + swatches + '</div>' +
         '</li>';
-    }).join('');
+    }
+    if (groups && groups.length) {
+      var html = '';
+      groups.forEach(function (g) {
+        var groupLabel = LOCALE === 'es' ? (g.label_es || g.label_en) : g.label_en;
+        var items = (g.themes || []).map(renderTheme).join('');
+        if (!items) return;
+        html += '<li class="md-theme-group" role="presentation" aria-hidden="true">' +
+                  '<span class="md-theme-group-label">' + escHtml(groupLabel) + '</span>' +
+                '</li>' + items;
+      });
+      // Catch any themes the groups missed (defensive — keeps flat
+      // tail so newly-added themes never disappear from the picker).
+      var orphans = MD_THEMES.list().filter(function (id) { return !rendered[id]; });
+      if (orphans.length) {
+        var orphLabel = LOCALE === 'es' ? 'Otros' : 'Other';
+        html += '<li class="md-theme-group" role="presentation" aria-hidden="true">' +
+                  '<span class="md-theme-group-label">' + escHtml(orphLabel) + '</span>' +
+                '</li>' + orphans.map(renderTheme).join('');
+      }
+      themesEl.innerHTML = html;
+    } else {
+      // Legacy fallback when GROUPS isn't exposed (shouldn't happen
+      // post-W15 themes.js but defends against an old themes.js).
+      themesEl.innerHTML = MD_THEMES.list().map(renderTheme).join('');
+    }
+  }
+
+  // Wave studio-quality — theme filter (typeahead). Matches against
+  // theme id, label_en/es, blurb_en/es, and cuisineHint[]. Hides
+  // non-matching cards + their group headers; surfaces an empty-state
+  // line when nothing matches. The active theme stays selected (its
+  // visual swatch is the source of truth for the live preview), even
+  // if the filter hides it — clearing the filter brings it back.
+  function applyThemeFilter() {
+    var input = document.getElementById('mdThemeFilter');
+    var emptyEl = document.getElementById('mdThemesEmpty');
+    if (!themesEl) return;
+    var q = input ? (input.value || '').trim().toLowerCase() : '';
+    var cards = themesEl.querySelectorAll('.md-theme');
+    var groups = themesEl.querySelectorAll('.md-theme-group');
+    if (!q) {
+      cards.forEach(function (c) { c.hidden = false; });
+      groups.forEach(function (g) { g.hidden = false; });
+      if (emptyEl) emptyEl.hidden = true;
+      return;
+    }
+    var anyMatch = false;
+    cards.forEach(function (c) {
+      var id = c.dataset.id || '';
+      var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(id) : null;
+      var hay = id;
+      if (t) {
+        hay += ' ' + (t.label_en || '') + ' ' + (t.label_es || '') +
+               ' ' + (t.blurb_en || '') + ' ' + (t.blurb_es || '') +
+               ' ' + (Array.isArray(t.cuisineHint) ? t.cuisineHint.join(' ') : '');
+      }
+      var match = hay.toLowerCase().indexOf(q) >= 0;
+      c.hidden = !match;
+      if (match) anyMatch = true;
+    });
+    // Hide a group header when ALL its themes (the cards that follow
+    // it until the next group header) are hidden. We walk siblings.
+    groups.forEach(function (g) {
+      var n = g.nextElementSibling;
+      var anyVisible = false;
+      while (n && !n.classList.contains('md-theme-group')) {
+        if (n.classList.contains('md-theme') && !n.hidden) {
+          anyVisible = true;
+          break;
+        }
+        n = n.nextElementSibling;
+      }
+      g.hidden = !anyVisible;
+    });
+    if (emptyEl) emptyEl.hidden = anyMatch;
+  }
+  var themeFilterInputEl = document.getElementById('mdThemeFilter');
+  if (themeFilterInputEl) {
+    themeFilterInputEl.addEventListener('input', applyThemeFilter);
   }
 
   if (themesEl) {
@@ -770,6 +1042,9 @@
       themeId = li.dataset.id;
       fireThemeChanged(themeId);
       renderThemePicker();
+      // Re-apply filter after the picker re-renders (the cards are new
+      // DOM nodes so the previous hidden state was wiped).
+      applyThemeFilter();
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
       if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
@@ -882,6 +1157,30 @@
     } else {
       setLogoWarn('');
     }
+    // Wave studio-quality — surface the explicit "Remove logo" button
+    // once a logo is loaded. Hidden in the empty state so the drop zone
+    // stays clean for first-run operators.
+    if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+    renderPreview();
+    scheduleSaveDraft();
+  }
+
+  // Wave studio-quality — explicit logo removal. Operators can swap a
+  // logo by re-uploading, but had no way to clear back to "no logo"
+  // without nuking the whole menu via Clear All. This restores the
+  // empty drop-zone state without touching dishes/theme/meta.
+  function removeLogo() {
+    logoUrl = null;
+    logoMeta = null;
+    if (logoThumb) {
+      logoThumb.innerHTML = '<span class="md-logo-thumb-empty" aria-hidden="true">+</span>';
+    }
+    if (logoLine) {
+      logoLine.textContent = tt('Choose or take a photo', 'Elige o toma una foto');
+    }
+    setLogoWarn('');
+    if (logoRemoveBtn) logoRemoveBtn.hidden = true;
+    if (logoInput) logoInput.value = '';
     renderPreview();
     scheduleSaveDraft();
   }
@@ -932,6 +1231,18 @@
       readLogoFile(file);
       // Reset input value so re-selecting the same file fires change.
       e.target.value = '';
+    });
+  }
+
+  // Wave studio-quality — wire the Remove-logo button.
+  if (logoRemoveBtn) {
+    logoRemoveBtn.addEventListener('click', function (e) {
+      // The button sits inside the same parent as the file-input <label>;
+      // stop the click from bubbling to the label and re-opening the
+      // file picker on top of the removal.
+      e.preventDefault();
+      e.stopPropagation();
+      removeLogo();
     });
   }
 
@@ -2003,6 +2314,20 @@
       // Wave studio-quality — quality-check warnings render after
       // every preview repaint so they stay current with operator edits.
       try { _renderDishWarnings(); } catch (_) {}
+      // Wave studio-quality — pre-flight panel runs twice: once now
+      // (synchronous estimate from quick-fit + warnings) and once
+      // after rAF settles the cascade (so fitStep + smartBreakAt are
+      // accurate). The first render keeps the panel responsive on
+      // slow keystrokes; the second corrects the page-fit summary
+      // once the DOM has measured.
+      try { _renderPreflight(); } catch (_) {}
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            try { _renderPreflight(); } catch (_) {}
+          });
+        });
+      }
     }, 300);
   }
 
@@ -2341,7 +2666,33 @@
       e.preventDefault();
       showPalette();
     }
+    // Wave studio-quality — bare "?" opens the palette (Vim-style help
+    // affordance). Skip when the focus is in a text input, since "?"
+    // is a legitimate character there.
+    if (e.key === '?' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      var t = e.target;
+      var inEditable = t && (
+        t.tagName === 'INPUT' ||
+        t.tagName === 'TEXTAREA' ||
+        t.tagName === 'SELECT' ||
+        t.isContentEditable
+      );
+      if (inEditable) return;
+      if (anotherModalOpen()) return;
+      e.preventDefault();
+      showPalette();
+    }
   });
+
+  // Wave studio-quality — toolbar shortcut button opens the palette.
+  // Discoverability for the operator who doesn't know about ⌘K.
+  var shortcutsBtnEl = document.getElementById('mdShortcutsBtn');
+  if (shortcutsBtnEl) {
+    shortcutsBtnEl.addEventListener('click', function () {
+      if (anotherModalOpen()) return;
+      showPalette();
+    });
+  }
 
   // W8-1 — search filter. Hides rows whose name+desc don't match.
   // Section headers stay visible if any child dish matches; if not,
@@ -2547,8 +2898,22 @@
             var custEl = document.getElementById('mdCustomize');
             if (custEl) custEl.open = true;
           }
+          // Wave studio-quality — refresh the customize-summary badge
+          // so a returning operator sees their override count carried
+          // across sessions.
+          if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
         }
-        if (savedLogo) { logoUrl = savedLogo; }
+        if (savedLogo) {
+          logoUrl = savedLogo;
+          // Wave studio-quality — surface the logo thumbnail + Remove
+          // affordance after a draft restore. We don't have the original
+          // file name; "Logo" is the honest fallback.
+          if (logoThumb) {
+            logoThumb.innerHTML = '<img src="' + escHtml(savedLogo) + '" alt="" />';
+          }
+          if (logoLine) logoLine.textContent = tt('Logo restored', 'Logo restaurado');
+          if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+        }
         render();
         renderPreview();
         __saveDraftEnabled = true;
@@ -2821,6 +3186,9 @@
                     '¿Borrar todas las filas? No se puede deshacer.'))) return;
     pushUndo();
     rows = [];
+    // Wave studio-quality — clearing all rows should also clear the
+    // logo. Operators expect "clear everything" to mean everything.
+    if (logoUrl) removeLogo();
     render();
     clearDraft();
   });
@@ -4689,24 +5057,69 @@
   }
   if (customAccentEl) customAccentEl.addEventListener('input', function () {
     customize.accent = customAccentEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customPaperEl) customPaperEl.addEventListener('input', function () {
     customize.paper = customPaperEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customInkEl) customInkEl.addEventListener('input', function () {
     customize.ink = customInkEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customResetEl) customResetEl.addEventListener('click', function () {
+    // Wave studio-quality — comprehensive reset. The button label says
+    // "Reset to theme default" so it should mean it: clear colors AND
+    // paper-texture AND all three modifiers (season/daypart/event).
+    // Operators previously had to walk each dropdown back to "None"
+    // by hand after picking a few. Sync the UI controls to match.
     customize.accent = customize.paper = customize.ink = null;
+    customize.paperTexture = false;
+    customize.mods = { season: 'none', daypart: 'none', event: 'none' };
+    if (paperTextureEl) paperTextureEl.checked = false;
+    if (modSeasonEl)  modSeasonEl.value  = 'none';
+    if (modDaypartEl) modDaypartEl.value = 'none';
+    if (modEventEl)   modEventEl.value   = 'none';
     syncCustomizeFromTheme();
+    updateCustomizeBadge();
     schedulePreview();
     scheduleSaveDraft();
   });
+
+  // Wave studio-quality — surface an at-a-glance override count in the
+  // customize panel summary, so operators see whether they've changed
+  // anything from the theme default. Updates after every customize
+  // edit + after reset + after restore-from-draft. Reads through the
+  // existing `customize` state object — no new state.
+  function updateCustomizeBadge() {
+    var badgeEl = document.getElementById('mdCustomizeBadge');
+    if (!badgeEl) return;
+    var overrides = 0;
+    if (customize.accent) overrides++;
+    if (customize.paper) overrides++;
+    if (customize.ink) overrides++;
+    if (customize.paperTexture) overrides++;
+    if (customize.mods) {
+      if (customize.mods.season  && customize.mods.season  !== 'none') overrides++;
+      if (customize.mods.daypart && customize.mods.daypart !== 'none') overrides++;
+      if (customize.mods.event   && customize.mods.event   !== 'none') overrides++;
+    }
+    if (overrides === 0) {
+      badgeEl.hidden = true;
+      badgeEl.textContent = '';
+    } else {
+      badgeEl.hidden = false;
+      badgeEl.textContent = overrides === 1
+        ? tt('1 override', '1 cambio')
+        : tt(overrides + ' overrides', overrides + ' cambios');
+    }
+  }
   if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
     customize.paperTexture = !!paperTextureEl.checked;
+    updateCustomizeBadge();
     schedulePreview();
     scheduleSaveDraft();
   });
@@ -4721,6 +5134,7 @@
     if (!el) return;
     el.addEventListener('change', function () {
       customize.mods[key] = el.value || 'none';
+      updateCustomizeBadge();
       schedulePreview();
       scheduleSaveDraft();
     });
@@ -4784,6 +5198,7 @@
         if (metaStoryEl)   metaStoryEl.value   = meta.story;
         if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
         renderThemePicker();
+        if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
         renderPreview();
         scheduleSaveDraft();
         setDownloadMsg(tt('Theme imported successfully.', 'Tema importado correctamente.'), 'success');

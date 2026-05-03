@@ -133,9 +133,20 @@ header.nav{min-height:64px}
 .md-status{margin-top:14px;font-size:13px;color:var(--ink-soft);text-align:center}
 .md-status strong{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .md-themes{margin:24px 0 0}
-.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.md-themes-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;flex-wrap:wrap}
+.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.md-theme-filter{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);max-width:280px;flex:1 1 220px;transition:border-color var(--t-fast)}
+.md-theme-filter:focus-within{border-color:var(--teal)}
+.md-theme-filter input{flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:12.5px;color:var(--ink);min-width:0;padding:0}
+.md-theme-filter input::-webkit-search-cancel-button{filter:grayscale(1);opacity:.55}
 .md-themes-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none;padding:0;margin:0}
-@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}.md-themes-head{flex-direction:column;align-items:flex-start}.md-theme-filter{max-width:100%;width:100%}}
+.md-themes-empty{margin:10px 0 0;padding:10px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.md-themes-empty[hidden]{display:none}
+.md-customize-badge{margin-left:auto;padding:2px 8px;background:var(--teal);color:#fff;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;line-height:1.4}
+.md-customize-badge[hidden]{display:none}
+.md-theme[hidden]{display:none}
+.md-theme-group[hidden]{display:none}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
 .md-theme:hover{border-color:var(--teal);transform:translateY(-1px)}
 .md-theme[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
@@ -157,6 +168,10 @@ header.nav{min-height:64px}
 .md-logo-meta-line{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .md-logo-meta-sub{font-size:11.5px;color:var(--stone);margin-top:2px}
 .md-logo-warn{margin-top:6px;font-size:11.5px;color:#b86c0f}
+.md-logo-remove{margin-top:6px;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);font-size:11.5px;font-weight:500;cursor:pointer;line-height:1.2;transition:color var(--t-fast),border-color var(--t-fast)}
+.md-logo-remove[hidden]{display:none}
+.md-logo-remove:hover{color:var(--rust,#9b3a2a);border-color:var(--rust,#9b3a2a)}
+.md-logo-remove:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .md-paper-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .md-paper-row label{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);background:var(--white)}
 .md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
@@ -200,6 +215,28 @@ header.nav{min-height:64px}
 .md-preview-empty{padding:48px 16px;text-align:center;color:var(--stone);font-size:14px}
 .md-overflow-warn{margin-top:10px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
 .md-overflow-warn[hidden]{display:none}
+.md-quality-check{margin-top:10px;padding:10px 14px;background:#F0F7F5;border:1px solid #C8E0DA;border-left:3px solid #2A8278;border-radius:6px;font-size:12.5px;color:#1F4E5B;line-height:1.55}
+.md-quality-check[hidden]{display:none}
+.md-quality-check ul{margin:6px 0 0 18px;padding:0}
+.md-quality-check li{margin:0 0 4px}
+.md-quality-check code{background:rgba(31,78,91,.08);padding:1px 5px;border-radius:3px;font-size:11.5px}
+.md-quality-check .md-qc-sev-high{color:#7a4408;font-weight:600}
+.md-preflight{margin-top:12px;padding:12px 16px;border-radius:8px;font-size:13px;line-height:1.55;border:1px solid transparent}
+.md-preflight[hidden]{display:none}
+.md-preflight.is-ready{background:#EEF7F2;border-color:#BFDFCE;color:#1c4d36}
+.md-preflight.is-notes{background:#F4F6F8;border-color:#D7DCE2;color:#3a4654}
+.md-preflight.is-attention{background:#FFF6F0;border-color:#F1D6BC;color:#7a4408}
+.md-pf-row{display:flex;align-items:flex-start;gap:10px}
+.md-pf-row-stack{align-items:flex-start}
+.md-pf-icon{flex:0 0 auto;margin-top:1px}
+.md-preflight.is-ready .md-pf-icon{color:#2A8278}
+.md-preflight.is-notes .md-pf-icon{color:#5b6878}
+.md-preflight.is-attention .md-pf-icon{color:#b86c0f}
+.md-pf-text{flex:1 1 auto}
+.md-pf-summary{opacity:.9}
+.md-pf-summary-block{display:block;margin-top:2px;font-size:12.5px;opacity:.8}
+.md-preflight ul{margin:8px 0 0 18px;padding:0}
+.md-preflight li{margin:0 0 4px}
 .md-download{margin:18px 0 0;padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
 .md-download-text{font-size:13.5px;color:var(--ink);line-height:1.5;flex:1 1 96px;margin:0}
 .md-download-text strong{color:var(--ink);font-weight:600}
@@ -468,11 +505,228 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       </div>
     </details>
 
+    <!-- Wave A1 — toolbar parity. Sits above the dish grid; carries the
+         saved indicator (live region for screen readers), undo / redo,
+         and dish search. The orchestrator JS (in menu-design.js) wires
+         every element by id; locale-neutral. -->
+    <div class="md-toolbar" id="mdToolbar" role="toolbar" aria-label="Barra del editor de menú">
+      <span class="md-saved" id="mdSaved" aria-live="polite" aria-atomic="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="md-saved-text">Sin guardar todavía</span>
+      </span>
+      <div class="md-toolbar-actions">
+        <button type="button" class="md-tb-btn" id="mdUndoBtn" aria-label="Deshacer (Cmd-Z)" title="Deshacer (⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+        </button>
+        <button type="button" class="md-tb-btn" id="mdRedoBtn" aria-label="Rehacer (Cmd-Shift-Z)" title="Rehacer (⇧⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></svg>
+        </button>
+        <input type="search" class="md-tb-search" id="mdSearch" placeholder="Buscar platos…" aria-label="Filtrar platos" autocomplete="off" />
+        <!-- Wave studio-quality — botón de paleta de comandos. -->
+        <button type="button" class="md-tb-btn" id="mdShortcutsBtn" aria-label="Abrir paleta de comandos y atajos (Cmd-K)" title="Comandos y atajos (⌘K)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+      </div>
+    </div>
+
     <p class="md-status" id="mdStatus"><strong>0</strong> platos · <strong>0</strong> secciones — tu menú vive solo en este navegador.</p>
 
+    <!-- Wave studio-quality + B2 + B5 — full meta panel parity with EN.
+         Spanish operators now get the same currency selector, allergen
+         regime selector, page-fit override, and footer fields. The
+         orchestrator JS is locale-neutral and wires every input by
+         element-id, so adding the scaffold here lights up all the
+         Wave-A/B/studio-quality features for ES at once. -->
+    <details class="md-meta" id="mdMeta">
+      <summary class="md-meta-summary">
+        <span>Detalles del menú</span>
+        <span class="md-meta-hint">tagline, historia, contacto, alérgenos, moneda</span>
+      </summary>
+      <div class="md-meta-body">
+        <div class="md-meta-field">
+          <label for="mdMetaTagline">Tagline</label>
+          <input type="text" id="mdMetaTagline" maxlength="100" placeholder="Una mesa italiana de barrio desde 1998." autocomplete="off" />
+        </div>
+        <div class="md-meta-field">
+          <label for="mdMetaStory">Nota del chef / historia</label>
+          <textarea id="mdMetaStory" rows="3" maxlength="600" placeholder="Un párrafo breve que abre el menú — tus proveedores, tu historia, tu dedicación. Renderiza como cita itálica."></textarea>
+        </div>
+        <div class="md-meta-field">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="mdMetaCoverPage" />
+            <span>Añadir una portada con el título a página completa</span>
+          </label>
+        </div>
+        <details class="md-meta-footer">
+          <summary>Pie del menú (dirección, horarios, aviso) — opcional</summary>
+          <div class="md-meta-footer-body">
+            <div class="md-meta-field">
+              <label for="mdMetaAddress">Dirección</label>
+              <input type="text" id="mdMetaAddress" maxlength="200" placeholder="123 Calle Principal · Silver Spring, MD 20910 · 301-555-0100" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaHours">Horarios</label>
+              <input type="text" id="mdMetaHours" maxlength="200" placeholder="Mar–Dom · 5pm – 10pm · cerrado lunes" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaServiceCharge">Cargo por servicio</label>
+              <input type="text" id="mdMetaServiceCharge" maxlength="200" placeholder="20% de propina incluido en grupos de 6+" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaSourcing">Origen / proveedores</label>
+              <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Productos de granjas a 100 millas de nuestra cocina" autocomplete="off" />
+            </div>
+
+            <!-- Wave studio-quality — page-fit override -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaAllowMultiPage" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Permitir frente + dorso (2 páginas)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Los menús reales son de 1 o 2 páginas — nunca 3. Apagado por defecto; ajustamos automáticamente la tipografía. Marca para permitir un frente + dorso.
+                  </span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Wave studio-quality — currency selector -->
+            <div class="md-meta-field">
+              <label for="mdMetaCurrency">Moneda de visualización</label>
+              <select id="mdMetaCurrency" autocomplete="off">
+                <option value="USD">Dólar estadounidense — $14 (predeterminado)</option>
+                <option value="EUR">Euro — 14 €</option>
+                <option value="GBP">Libra esterlina — £14</option>
+                <option value="CAD">Dólar canadiense — $14</option>
+                <option value="MXN">Peso mexicano — $14</option>
+                <option value="AUD">Dólar australiano — $14</option>
+                <option value="CHF">Franco suizo — CHF 14</option>
+                <option value="JPY">Yen japonés — ¥1400</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Solo afecta precios sin símbolo como &ldquo;14&rdquo;. Si tipeaste un símbolo (&ldquo;$14&rdquo;, &ldquo;&euro;8,50&rdquo;), lo respetamos.
+              </small>
+            </div>
+
+            <!-- Wave B2 — allergen regime selector -->
+            <div class="md-meta-field">
+              <label for="mdMetaRegime">Régimen de etiquetado de alérgenos</label>
+              <select id="mdMetaRegime" autocomplete="off">
+                <option value="us-fda9">Estados Unidos — FDA Grupo 9 (predeterminado)</option>
+                <option value="eu-fic14">Unión Europea — FIC 1169/2011 (14 alérgenos)</option>
+                <option value="uk-ppds">Reino Unido — PPDS (Ley Natasha)</option>
+                <option value="ca-health">Canadá — Alérgenos prioritarios de Health Canada</option>
+                <option value="au-fsanz">Australia / Nueva Zelanda — FSANZ Estándar 1.2.3</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Determina el aviso automático en el pie del PDF, HTML del menú QR y exportes de texto cuando dejes en blanco el campo de abajo.
+              </small>
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaDisclaimer">Aviso de precios / alérgenos</label>
+              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Déjalo en blanco — lo rellenaremos automáticamente desde tu régimen de arriba." autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaAskYourServer">Frase &ldquo;pregunta a tu mesero&rdquo;</label>
+              <input type="text" id="mdMetaAskYourServer" maxlength="120" placeholder="Pregunta a tu mesero por el pescado del día" autocomplete="off" />
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
     <div class="md-themes">
-      <p class="md-themes-label">Elige un tema</p>
+      <div class="md-themes-head">
+        <p class="md-themes-label">Elige un tema</p>
+        <!-- Wave studio-quality — filtro typeahead. Operador a las 11pm
+             buscando "italiano" o "vegano" entre 25 temas obtiene
+             coincidencia por palabra clave + cocina. -->
+        <label class="md-theme-filter">
+          <span class="visually-hidden">Filtrar temas por nombre o cocina</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="mdThemeFilter" placeholder="Filtrar (ej. italiano, vegano, dim sum)" autocomplete="off" />
+        </label>
+      </div>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Tema de menú"></ul>
+      <p class="md-themes-empty" id="mdThemesEmpty" hidden>Ningún tema coincide — prueba un término más amplio.</p>
+
+      <!-- Wave A1/W12-3/W15 — customize panel parity. ES operators get
+           per-theme color tuning + paper texture + seasonal/daypart/
+           event modifiers. The orchestrator JS wires every control
+           by element id. -->
+      <details class="md-customize" id="mdCustomize">
+        <summary class="md-customize-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          <span>Personalizar colores y textura <span class="md-customize-hint">(opcional)</span></span>
+          <!-- Wave studio-quality — distintivo de cambios activos. -->
+          <span class="md-customize-badge" id="mdCustomizeBadge" hidden></span>
+        </summary>
+        <div class="md-customize-body">
+          <div class="md-customize-grid">
+            <label class="md-customize-field">
+              <span>Acento</span>
+              <input type="color" id="mdCustomAccent" value="#1F4E5B" />
+            </label>
+            <label class="md-customize-field">
+              <span>Papel</span>
+              <input type="color" id="mdCustomPaper" value="#FAF6EE" />
+            </label>
+            <label class="md-customize-field">
+              <span>Tinta</span>
+              <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <div class="md-customize-toggles">
+            <label class="md-customize-toggle">
+              <input type="checkbox" id="mdPaperTexture" />
+              <span>Textura de papel <span class="md-customize-hint">— grano sutil de lino sobre el fondo del menú</span></span>
+            </label>
+            <button type="button" id="mdCustomizeReset" class="md-customize-reset">Restablecer al tema por defecto</button>
+          </div>
+          <div class="md-customize-modifiers">
+            <label class="md-customize-mod-field">
+              <span>Estación</span>
+              <select id="mdModSeason">
+                <option value="none">Ninguna</option>
+                <option value="summer">Verano</option>
+                <option value="autumn">Otoño</option>
+                <option value="winter">Invierno</option>
+                <option value="holiday">Fiestas</option>
+                <option value="spring">Primavera</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Daypart</span>
+              <select id="mdModDaypart">
+                <option value="none">Ninguno</option>
+                <option value="lunch">Almuerzo</option>
+                <option value="dinner">Cena</option>
+                <option value="late-night">Madrugada</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Ocasión</span>
+              <select id="mdModEvent">
+                <option value="none">Ninguna</option>
+                <option value="valentines">San Valentín</option>
+                <option value="mothers-day">Día de las Madres</option>
+                <option value="pride">Pride</option>
+                <option value="nye">Año Nuevo</option>
+                <option value="halloween">Halloween</option>
+              </select>
+            </label>
+          </div>
+          <!-- Wave studio-quality — paridad con EN para herramientas
+               de tema: exportar/importar JSON + lanzador de vibe quiz. -->
+          <div class="md-customize-tools">
+            <button type="button" id="mdThemeExport" class="md-customize-tool">Exportar JSON del tema</button>
+            <label class="md-customize-tool md-customize-tool-import">Importar JSON del tema
+              <input type="file" id="mdThemeImport" accept="application/json,.json" />
+            </label>
+            <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Quiz de vibe →</button>
+          </div>
+        </div>
+      </details>
     </div>
 
     <div class="md-options">
@@ -486,6 +740,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           </span>
           <input type="file" id="mdLogoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" capture="environment" />
         </label>
+        <!-- Wave studio-quality — botón explícito para quitar el logo. -->
+        <button type="button" class="md-logo-remove" id="mdLogoRemove" hidden aria-label="Quitar logo">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Quitar logo
+        </button>
         <p class="md-logo-warn" id="mdLogoWarn" hidden></p>
       </div>
       <div class="md-option">
@@ -507,6 +766,32 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <article class="md-preview-paper" id="mdPaper" aria-live="polite"></article>
       </div>
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
+      <!-- Wave studio-quality — quality-check panel (verificaciones inline) -->
+      <div class="md-quality-check" id="mdQualityCheck" hidden></div>
+      <!-- Wave studio-quality — Pre-flight "Listo para enviar" panel.
+           Última cosa que el operador lee antes de tocar Descargar.
+           Consolida ajuste a página, alertas de calidad, estado del
+           aviso de alérgenos, modo imprenta y conteos en una sola
+           línea verde lista o lista ámbar de elementos a revisar.
+           Solo informativo — nunca bloquea la exportación. -->
+      <div class="md-preflight" id="mdPreflight" role="status" aria-live="polite" hidden></div>
+    </div>
+
+    <!-- Wave studio-quality — print-vendor toggle. Cuando se activa,
+         la vista previa muestra los marcos de imprenta (bleed +
+         marcas de corte) y el PDF exportado lleva el perfil PDF/X-3
+         listo para la imprenta. -->
+    <div class="md-print-vendor" style="margin-top:14px">
+      <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+        <input type="checkbox" id="mdPrintVendor" style="margin-top:3px" />
+        <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+          PDF listo para imprenta (PDF/X-3 + bleed 3mm + marcas de corte)
+          <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+            Marca para que el PDF salga listo para tu imprenta — sin idas y vueltas.
+          </span>
+        </span>
+      </label>
+      <details class="md-print-checklist" id="mdPrintChecklist" hidden></details>
     </div>
 
     <div class="md-download">
@@ -516,6 +801,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar PDF
         </button>
+        <!-- Wave B5 — Send to printer + web dev (Menu Pack ZIP) -->
+        <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Enviar un pack completo a tu imprenta, encargado de sitio y staff (un zip)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
+          Enviar al impresor + sitio
+        </button>
         <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Exportar menú QR (HTML + PNG con QR, zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
           Exportar menú QR
@@ -523,6 +813,32 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <button type="button" class="md-download-btn md-download-qr" id="mdLargePrint" aria-label="Descargar versión letra grande (accesibilidad)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Versión letra grande
+        </button>
+        <!-- Wave A1 — high-contrast accessibility variant -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Descargar versión de alto contraste (accesibilidad baja visión)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3 v18"/><path d="M12 3 a9 9 0 0 1 0 18 z" fill="currentColor"/></svg>
+          Alto contraste
+        </button>
+        <!-- Plain text + Markdown export -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Descargar texto plano + Markdown">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          Texto plano
+        </button>
+        <!-- Wave studio-quality — paridad ES con EN para SSML/BRF/Tablet.
+             SSML: lectura para TTS (Polly/Azure). BRF: archivo para
+             impresoras Braille. Tablet: HTML autosuficiente para iPad
+             tipo kiosko. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportSsml" aria-label="Descargar SSML para texto-a-voz">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          SSML (audio)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Descargar Braille Ready Format (Grade 1)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+          Braille (BRF)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Descargar HTML para tablet kiosko">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          HTML para tablet
         </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
@@ -539,6 +855,56 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
   </div>
 </section>
+
+<!-- Wave studio-quality — paridad con EN: diálogo del Quiz de vibe.
+     Cuatro preguntas rápidas → 3 temas recomendados. -->
+<div class="md-vibequiz" id="mdVibeQuiz" hidden role="dialog" aria-modal="true" aria-label="Quiz de vibe">
+  <div class="md-vibequiz-backdrop" id="mdVibeQuizBackdrop"></div>
+  <div class="md-vibequiz-card">
+    <h2>¿Cuál es la vibe?</h2>
+    <p>Cuatro preguntas rápidas. Te sugerimos 3 temas que encajan.</p>
+    <form id="mdVibeQuizForm" class="md-vibequiz-form">
+      <fieldset>
+        <legend>Estilo de servicio</legend>
+        <label><input type="radio" name="vq-service" value="counter" /> Mostrador / rápido</label>
+        <label><input type="radio" name="vq-service" value="table" checked /> Servicio en mesa</label>
+        <label><input type="radio" name="vq-service" value="fine" /> Alta cocina</label>
+      </fieldset>
+      <fieldset>
+        <legend>Sensación</legend>
+        <label><input type="radio" name="vq-feel" value="light" checked /> Ligera / luminosa</label>
+        <label><input type="radio" name="vq-feel" value="rich" /> Profunda / oscura</label>
+      </fieldset>
+      <fieldset>
+        <legend>Época</legend>
+        <label><input type="radio" name="vq-era" value="modern" checked /> Moderna</label>
+        <label><input type="radio" name="vq-era" value="traditional" /> Tradicional</label>
+      </fieldset>
+      <fieldset>
+        <legend>Cocina</legend>
+        <label><input type="radio" name="vq-cuisine" value="european" /> Europea</label>
+        <label><input type="radio" name="vq-cuisine" value="american" checked /> Americana</label>
+        <label><input type="radio" name="vq-cuisine" value="latin" /> Latina / mexicana</label>
+        <label><input type="radio" name="vq-cuisine" value="asian" /> Asiática</label>
+      </fieldset>
+      <div class="md-vibequiz-actions">
+        <button type="submit" class="md-vibequiz-submit">Ver recomendaciones</button>
+        <button type="button" class="md-vibequiz-cancel" id="mdVibeQuizCancel">Cancelar</button>
+      </div>
+    </form>
+    <div class="md-vibequiz-results" id="mdVibeQuizResults" hidden></div>
+  </div>
+</div>
+
+<!-- Wave studio-quality — paridad con EN: paleta de comandos (⌘K). -->
+<div class="md-palette" id="mdPalette" hidden role="dialog" aria-modal="true" aria-label="Paleta de comandos">
+  <div class="md-palette-backdrop" id="mdPaletteBackdrop"></div>
+  <div class="md-palette-card">
+    <input type="text" class="md-palette-input" id="mdPaletteInput" placeholder="Ejecuta un comando…" aria-label="Buscar comando" autocomplete="off" />
+    <ul class="md-palette-list" id="mdPaletteList" role="listbox"></ul>
+    <p class="md-palette-foot">↑ ↓ para navegar · Enter para ejecutar · Esc para cerrar</p>
+  </div>
+</div>
 
 <!-- tool-knit -->
 <aside class="tool-knit" aria-labelledby="tool-knit-heading-menu-design">
