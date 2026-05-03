@@ -469,6 +469,110 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
     <p class="md-status" id="mdStatus"><strong>0</strong> platos · <strong>0</strong> secciones — tu menú vive solo en este navegador.</p>
 
+    <!-- Wave studio-quality + B2 + B5 — full meta panel parity with EN.
+         Spanish operators now get the same currency selector, allergen
+         regime selector, page-fit override, and footer fields. The
+         orchestrator JS is locale-neutral and wires every input by
+         element-id, so adding the scaffold here lights up all the
+         Wave-A/B/studio-quality features for ES at once. -->
+    <details class="md-meta" id="mdMeta">
+      <summary class="md-meta-summary">
+        <span>Detalles del menú</span>
+        <span class="md-meta-hint">tagline, historia, contacto, alérgenos, moneda</span>
+      </summary>
+      <div class="md-meta-body">
+        <div class="md-meta-field">
+          <label for="mdMetaTagline">Tagline</label>
+          <input type="text" id="mdMetaTagline" maxlength="100" placeholder="Una mesa italiana de barrio desde 1998." autocomplete="off" />
+        </div>
+        <div class="md-meta-field">
+          <label for="mdMetaStory">Nota del chef / historia</label>
+          <textarea id="mdMetaStory" rows="3" maxlength="600" placeholder="Un párrafo breve que abre el menú — tus proveedores, tu historia, tu dedicación. Renderiza como cita itálica."></textarea>
+        </div>
+        <div class="md-meta-field">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="mdMetaCoverPage" />
+            <span>Añadir una portada con el título a página completa</span>
+          </label>
+        </div>
+        <details class="md-meta-footer">
+          <summary>Pie del menú (dirección, horarios, aviso) — opcional</summary>
+          <div class="md-meta-footer-body">
+            <div class="md-meta-field">
+              <label for="mdMetaAddress">Dirección</label>
+              <input type="text" id="mdMetaAddress" maxlength="200" placeholder="123 Calle Principal · Silver Spring, MD 20910 · 301-555-0100" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaHours">Horarios</label>
+              <input type="text" id="mdMetaHours" maxlength="200" placeholder="Mar–Dom · 5pm – 10pm · cerrado lunes" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaServiceCharge">Cargo por servicio</label>
+              <input type="text" id="mdMetaServiceCharge" maxlength="200" placeholder="20% de propina incluido en grupos de 6+" autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaSourcing">Origen / proveedores</label>
+              <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Productos de granjas a 100 millas de nuestra cocina" autocomplete="off" />
+            </div>
+
+            <!-- Wave studio-quality — page-fit override -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaAllowMultiPage" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Permitir frente + dorso (2 páginas)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Los menús reales son de 1 o 2 páginas — nunca 3. Apagado por defecto; ajustamos automáticamente la tipografía. Marca para permitir un frente + dorso.
+                  </span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Wave studio-quality — currency selector -->
+            <div class="md-meta-field">
+              <label for="mdMetaCurrency">Moneda de visualización</label>
+              <select id="mdMetaCurrency" autocomplete="off">
+                <option value="USD">Dólar estadounidense — $14 (predeterminado)</option>
+                <option value="EUR">Euro — 14 €</option>
+                <option value="GBP">Libra esterlina — £14</option>
+                <option value="CAD">Dólar canadiense — $14</option>
+                <option value="MXN">Peso mexicano — $14</option>
+                <option value="AUD">Dólar australiano — $14</option>
+                <option value="CHF">Franco suizo — CHF 14</option>
+                <option value="JPY">Yen japonés — ¥1400</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Solo afecta precios sin símbolo como &ldquo;14&rdquo;. Si tipeaste un símbolo (&ldquo;$14&rdquo;, &ldquo;&euro;8,50&rdquo;), lo respetamos.
+              </small>
+            </div>
+
+            <!-- Wave B2 — allergen regime selector -->
+            <div class="md-meta-field">
+              <label for="mdMetaRegime">Régimen de etiquetado de alérgenos</label>
+              <select id="mdMetaRegime" autocomplete="off">
+                <option value="us-fda9">Estados Unidos — FDA Grupo 9 (predeterminado)</option>
+                <option value="eu-fic14">Unión Europea — FIC 1169/2011 (14 alérgenos)</option>
+                <option value="uk-ppds">Reino Unido — PPDS (Ley Natasha)</option>
+                <option value="ca-health">Canadá — Alérgenos prioritarios de Health Canada</option>
+                <option value="au-fsanz">Australia / Nueva Zelanda — FSANZ Estándar 1.2.3</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Determina el aviso automático en el pie del PDF, HTML del menú QR y exportes de texto cuando dejes en blanco el campo de abajo.
+              </small>
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaDisclaimer">Aviso de precios / alérgenos</label>
+              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Déjalo en blanco — lo rellenaremos automáticamente desde tu régimen de arriba." autocomplete="off" />
+            </div>
+            <div class="md-meta-field">
+              <label for="mdMetaAskYourServer">Frase &ldquo;pregunta a tu mesero&rdquo;</label>
+              <input type="text" id="mdMetaAskYourServer" maxlength="120" placeholder="Pregunta a tu mesero por el pescado del día" autocomplete="off" />
+            </div>
+          </div>
+        </details>
+      </div>
+    </details>
+
     <div class="md-themes">
       <p class="md-themes-label">Elige un tema</p>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Tema de menú"></ul>
@@ -506,6 +610,25 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <article class="md-preview-paper" id="mdPaper" aria-live="polite"></article>
       </div>
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
+      <!-- Wave studio-quality — quality-check panel (verificaciones inline) -->
+      <div class="md-quality-check" id="mdQualityCheck" hidden></div>
+    </div>
+
+    <!-- Wave studio-quality — print-vendor toggle. Cuando se activa,
+         la vista previa muestra los marcos de imprenta (bleed +
+         marcas de corte) y el PDF exportado lleva el perfil PDF/X-3
+         listo para la imprenta. -->
+    <div class="md-print-vendor" style="margin-top:14px">
+      <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+        <input type="checkbox" id="mdPrintVendor" style="margin-top:3px" />
+        <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+          PDF listo para imprenta (PDF/X-3 + bleed 3mm + marcas de corte)
+          <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+            Marca para que el PDF salga listo para tu imprenta — sin idas y vueltas.
+          </span>
+        </span>
+      </label>
+      <details class="md-print-checklist" id="mdPrintChecklist" hidden></details>
     </div>
 
     <div class="md-download">
@@ -515,6 +638,11 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar PDF
         </button>
+        <!-- Wave B5 — Send to printer + web dev (Menu Pack ZIP) -->
+        <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Enviar un pack completo a tu imprenta, encargado de sitio y staff (un zip)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
+          Enviar al impresor + sitio
+        </button>
         <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Exportar menú QR (HTML + PNG con QR, zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
           Exportar menú QR
@@ -522,6 +650,16 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <button type="button" class="md-download-btn md-download-qr" id="mdLargePrint" aria-label="Descargar versión letra grande (accesibilidad)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Versión letra grande
+        </button>
+        <!-- Wave A1 — high-contrast accessibility variant -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Descargar versión de alto contraste (accesibilidad baja visión)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3 v18"/><path d="M12 3 a9 9 0 0 1 0 18 z" fill="currentColor"/></svg>
+          Alto contraste
+        </button>
+        <!-- Plain text + Markdown export -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Descargar texto plano + Markdown">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          Texto plano
         </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
