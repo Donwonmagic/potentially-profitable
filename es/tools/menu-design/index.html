@@ -148,6 +148,13 @@ header.nav{min-height:64px}
 .md-themes-empty[hidden]{display:none}
 .md-customize-badge{margin-left:auto;padding:2px 8px;background:var(--teal);color:#fff;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;line-height:1.4}
 .md-customize-badge[hidden]{display:none}
+.md-customize-lint{margin-top:12px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.md-customize-lint[hidden]{display:none}
+.md-customize-lint ul{margin:6px 0 0 18px;padding:0}
+.md-customize-lint li{margin:0 0 4px}
+.md-customize-lint .md-lint-high{color:#7a2912;font-weight:600}
+.md-customize-lint .md-lint-med{color:#7a4408}
+.md-customize-lint .md-lint-low{color:#3a4654}
 .md-theme[hidden]{display:none}
 .md-theme-group[hidden]{display:none}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
@@ -708,6 +715,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdCustomizeReset" class="md-customize-reset">Restablecer al tema por defecto</button>
           </div>
+          <!-- Wave studio-quality — feedback de legibilidad en vivo. -->
+          <div class="md-customize-lint" id="mdCustomizeLint" role="status" aria-live="polite" hidden></div>
           <div class="md-customize-modifiers">
             <label class="md-customize-mod-field">
               <span>Estación</span>

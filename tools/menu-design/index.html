@@ -330,6 +330,13 @@ header.nav{min-height:64px}
 .md-customize-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .md-customize-field input[type="color"]{width:100%;height:36px;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:2px}
 .md-customize-toggles{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-lint{margin-top:12px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.md-customize-lint[hidden]{display:none}
+.md-customize-lint ul{margin:6px 0 0 18px;padding:0}
+.md-customize-lint li{margin:0 0 4px}
+.md-customize-lint .md-lint-high{color:#7a2912;font-weight:600}
+.md-customize-lint .md-lint-med{color:#7a4408}
+.md-customize-lint .md-lint-low{color:#3a4654}
 .md-customize-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);cursor:pointer;flex:1 1 auto}
 .md-customize-toggle input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
 .md-customize-reset{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
@@ -1473,6 +1480,12 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdCustomizeReset" class="md-customize-reset">Reset to theme default</button>
           </div>
+          <!-- Wave studio-quality — Live taste-floor lint feedback.
+               When the operator's color picks drop below the readability
+               floor (paper↔ink < 7:1, paper↔accent < 3:1, etc.) we
+               surface a friendly chip with the rule + suggested fix.
+               Educational, not blocking — operator can ship anyway. -->
+          <div class="md-customize-lint" id="mdCustomizeLint" role="status" aria-live="polite" hidden></div>
           <!-- W15 — modifier dropdowns: seasonal palette, daypart,
                occasion event. Sparse overrides on top of the active
                theme's tokens; each dropdown defaults to "None" -->
