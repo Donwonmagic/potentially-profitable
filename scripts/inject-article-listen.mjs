@@ -51,24 +51,29 @@ function listHtmlFiles(dir) {
   return out;
 }
 
+// Canonical shape of the listen-script sentinel block + tag. Used
+// both for the existence check (idempotency) and for emission.
+const canonicalSiteJs    = `<script src="/assets/site.js?v=${CACHE_BUST}" defer></script>`;
+const canonicalListenTag = `<script src="/assets/js/listen.js?v=${CACHE_BUST}" defer></script>`;
+const canonicalListenSentinel = `<!-- listen-script:start -->\n  ${canonicalListenTag}\n  <!-- listen-script:end -->`;
+
 function transform(src) {
   if (!src.includes('id="listen-btn"')) return src;
-  const m = src.match(SITE_JS_RE);
-  if (!m) return src;
+  if (!SITE_JS_RE.test(src)) return src;
 
-  // 1. Drop any existing sentinel block — we re-emit it canonically.
+  // Idempotency: if the site.js tag already has the modsplit cache-bust
+  // AND the canonical listen sentinel exists somewhere after it (any
+  // position is fine — sibling sentinels from other injectors may sit
+  // between them), return the file unchanged. This prevents the three
+  // mod-split injectors (listen, checklist, glossary) from fighting
+  // each other for the position right after site.js.
+  if (src.includes(canonicalSiteJs) && src.includes(canonicalListenSentinel)) return src;
+
+  // Otherwise, normalize: strip any stale listen sentinel, normalize
+  // the site.js tag, then insert the canonical sentinel right after.
   let next = src.replace(SENTINEL_RE, '');
-
-  // 2. Normalize the site.js tag to the canonical form + bump the
-  //    cache-bust to the modsplit tag so the new site.js (without the
-  //    listen-player code) lands at the same time as the new listen.js.
-  //    Avoids a double-init window.
-  const canonicalSiteJs = `<script src="/assets/site.js?v=${CACHE_BUST}" defer></script>`;
   next = next.replace(SITE_JS_RE, canonicalSiteJs);
-
-  // 3. Insert the new sentinel block right after the site.js tag.
-  const withListen = `${canonicalSiteJs}\n  <!-- listen-script:start -->\n  <script src="/assets/js/listen.js?v=${CACHE_BUST}" defer></script>\n  <!-- listen-script:end -->`;
-  next = next.replace(canonicalSiteJs, withListen);
+  next = next.replace(canonicalSiteJs, `${canonicalSiteJs}\n  ${canonicalListenSentinel}`);
 
   return next;
 }
