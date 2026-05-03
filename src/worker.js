@@ -50,6 +50,7 @@ import {
   classifySpam,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
+import { checkTurnstile } from './lib/turnstile.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
@@ -1396,6 +1397,18 @@ async function handleIntake(request, env, ctx) {
     console.warn('intake:spam', { reason: 'timestamp' });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
+  // Layer-2 anti-spam: Turnstile. No-op until TURNSTILE_SECRET_KEY is
+  // bound (skipped: true), so this PR is a true zero-impact change in
+  // production until the owner finishes the dashboard wiring. Failure
+  // is silent (200 OK) to match the rest of the spam-defense surface
+  // — bots get no signal, legitimate humans whose token expired get
+  // an unfortunate silent-drop, but the rate is low and beats UX
+  // friction for everyone else.
+  const turnstile = await checkTurnstile(body, env, request);
+  if (!turnstile.ok && !turnstile.skipped) {
+    console.warn('intake:spam', { reason: 'turnstile', code: turnstile.error });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
   const heuristic = classifySpam(body);
   if (heuristic.spam) {
     console.warn('intake:spam', { reason: 'content', signals: heuristic.reasons });
@@ -1468,6 +1481,14 @@ async function handleChecklist(request, env, ctx) {
   if (!isTimestampSane(body)) {
     console.warn('checklist:spam', { reason: 'timestamp' });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  // Layer-2 anti-spam: Turnstile. Skipped until secret is wired.
+  {
+    const turnstile = await checkTurnstile(body, env, request);
+    if (!turnstile.ok && !turnstile.skipped) {
+      console.warn('checklist:spam', { reason: 'turnstile', code: turnstile.error });
+      return jsonResponse({ ok: true, status: 'sent' }, 200);
+    }
   }
   const checklistHeuristic = classifySpam(body);
   if (checklistHeuristic.spam) {
@@ -4487,6 +4508,14 @@ async function handleAuthMagicLink(request, env, ctx) {
   if (isSpamHoneypot(body))     return SILENT_OK;
   if (!isTimestampSane(body))   return SILENT_OK;
   if (isHighThreatIP(request))  return SILENT_OK;
+  // Layer-2 anti-spam: Turnstile. Skipped until secret is wired.
+  // Magic-link is the highest-value phish/spam target on the site
+  // (every successful submission triggers an outbound email and
+  // mints a session token), so this gate matters most here.
+  {
+    const turnstile = await checkTurnstile(body, env, request);
+    if (!turnstile.ok && !turnstile.skipped) return SILENT_OK;
+  }
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   if (!isValidEmail(email))     return SILENT_OK;
 
@@ -6246,6 +6275,9 @@ async function handleSubscribe(request, env, ctx) {
   if (isSpamHoneypot(body))    return SILENT_OK;
   if (!isTimestampSane(body))  return SILENT_OK;
   if (isHighThreatIP(request)) return SILENT_OK;
+  // Layer-2 anti-spam: Turnstile. Skipped until the secret is wired.
+  const turnstile = await checkTurnstile(body, env, request);
+  if (!turnstile.ok && !turnstile.skipped) return SILENT_OK;
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   if (!isValidEmail(email))    return SILENT_OK;
 
