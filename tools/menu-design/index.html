@@ -539,6 +539,65 @@ header.nav{min-height:64px}
 .md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
 .md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
 .md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}
+/* Wave studio-quality — decoration repositioning when 2-col is active.
+   Top-right would collide with the right column's dish flow; move it
+   to bottom-right where there's typically white space below the last
+   dish row + the allergen key. Same when the theme is natively 2-col. */
+.md-preview-paper.md-promote-2col .md-pp-decor,
+.md-preview-paper[data-cols="2"] .md-pp-decor{top:auto;bottom:8%;right:8%;width:24%;max-width:130px;opacity:.55}
+
+/* Wave studio-quality — print-vendor mode visualization. When the
+   operator ticks "Print-vendor PDF" they're committing to a press-
+   ready file with 3mm bleed + hairline crop marks. The press-ready
+   PDF carries those marks but the live preview previously showed a
+   plain page — operators couldn't tell what the printer would see.
+   This overlay paints faint magenta crop marks at each corner of
+   the paper + a thin bleed-area indicator so the operator visually
+   understands the press-ready geometry. Class is added by the
+   orchestrator's printVendor change handler.
+
+   Magenta is the conventional color for crop marks in pre-press
+   workflows (RGB 255, 0, 255 at low opacity reads as a faint pink
+   that won't be confused with menu content). */
+.md-preview-frame.md-pp-print-marks .md-preview-paper{
+  outline:0.5px dashed rgba(218, 36, 122, .35);
+  outline-offset:6px;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::before,
+.md-preview-frame.md-pp-print-marks .md-preview-paper::after{
+  content:'';position:absolute;width:18px;height:18px;border:0.5px solid rgba(218, 36, 122, .55);pointer-events:none;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::before{
+  top:-13px;left:-13px;border-right:0;border-bottom:0;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::after{
+  bottom:-13px;right:-13px;border-left:0;border-top:0;
+}
+/* Two extra crop-mark corners via a wrapper marker (the existing
+   .md-preview-paper has only ::before + ::after pseudo-elements;
+   we rely on the .md-preview-frame's pseudos for the other two
+   corners so all four show). */
+.md-preview-frame.md-pp-print-marks .md-preview-paper{
+  box-shadow:
+    0 4px 18px rgba(0,0,0,.10),
+    18px 0 0 -17.5px rgba(218, 36, 122, .55),
+    -18px 0 0 -17.5px rgba(218, 36, 122, .55);
+}
+/* "Bleed area" subtle annotation visible on the right side of the
+   preview frame so the operator knows what the marks represent.
+   Hidden when print-vendor is off; shown via the same class gate. */
+.md-preview-frame.md-pp-print-marks::after{
+  content:'PRESS-READY · 3mm BLEED · CROP MARKS';
+  position:absolute;
+  top:8px;right:14px;
+  font-family:Inter,system-ui,sans-serif;
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.12em;
+  color:rgba(218, 36, 122, .8);
+  pointer-events:none;
+  z-index:2;
+}
 .md-preview-paper.md-pp-texture{background-image:
   repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
   repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);
@@ -622,6 +681,20 @@ header.nav{min-height:64px}
 .md-preview-empty{padding:48px 16px;text-align:center;color:var(--stone);font-size:14px}
 .md-overflow-warn{margin-top:10px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
 .md-overflow-warn[hidden]{display:none}
+
+/* Wave studio-quality — quality-check panel. Lists non-fatal
+   issues a real designer would catch before shipping a menu:
+   over-long dish names that'll wrap weirdly, duplicate dish names
+   (operator copy-paste accidents), zero-price typos, and missing
+   descriptions on dish rows that have everything else. Advisory,
+   not blocking — operator can ship anyway. Visually distinct from
+   the orange overflow warning: teal informational chip. */
+.md-quality-check{margin-top:10px;padding:10px 14px;background:#F0F7F5;border:1px solid #C8E0DA;border-left:3px solid #2A8278;border-radius:6px;font-size:12.5px;color:#1F4E5B;line-height:1.55}
+.md-quality-check[hidden]{display:none}
+.md-quality-check ul{margin:6px 0 0 18px;padding:0}
+.md-quality-check li{margin:0 0 4px}
+.md-quality-check code{background:rgba(31,78,91,.08);padding:1px 5px;border-radius:3px;font-size:11.5px}
+.md-quality-check .md-qc-sev-high{color:#7a4408;font-weight:600}
 
 /* Download row — primary CTA for the print-ready PDF. */
 .md-download{margin:18px 0 0;padding:18px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
@@ -1413,6 +1486,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <article class="md-preview-paper" id="mdPaper" aria-live="polite"></article>
       </div>
       <div class="md-overflow-warn" id="mdOverflow" hidden></div>
+      <div class="md-quality-check" id="mdQualityCheck" hidden></div>
     </div>
 
     <!-- Download — the deliverable. PDF lands in the operator's Downloads. -->

@@ -59,9 +59,19 @@ const NAV_RE = /<header class="nav" id="nav">[\s\S]*?<\/header>/;
 // copies introduced by prior buggy syncs and replaces the whole tail
 // with the canonical version.
 //
+// The same applies to the Cloudflare Turnstile block at the end of
+// footer.html (an HTML comment + a gated <script>). Without capturing
+// it here, the original `<script src="https://…/turnstile/v0/api.js">`
+// from the pre-Phase-3B unconditional load survived alongside the new
+// gated loader on every sync — 417 pages were loading Turnstile twice
+// and triggering a console warning on every dev/CI page load. Matching
+// any trailing comment OR script that mentions "Turnstile" /
+// "challenges.cloudflare" lets sync-includes replace the whole tail
+// with whatever the partial currently emits, dedupping in one pass.
+//
 // Discriminator (foot-grid) keeps us from touching <footer> inside an
 // article body (e.g. a blog byline footer), if one ever shows up.
-const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*/;
+const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*(?:\s*(?:<!--[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?-->|<script\b[^>]*>[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?<\/script>|<script\s+src="https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js"[^>]*><\/script>))*/;
 
 // Load one nav + footer partial per locale. English partials live at
 // _includes/nav.html + _includes/footer.html (unchanged for backward

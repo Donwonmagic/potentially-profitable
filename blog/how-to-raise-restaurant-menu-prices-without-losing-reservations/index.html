@@ -1034,69 +1034,6 @@ header.nav{min-height:64px}
      gate the script load instead — Turnstile only matters on real
      production traffic where forms actually submit. -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
-     calls back to challenges.cloudflare.com to validate the host
-     against the Turnstile site's allowlist; localhost isn't in the
-     allowlist (and adding it would weaken the prod gate), so the
-     widget logs a console error on every dev/CI page load. We
-     gate the script load instead — Turnstile only matters on real
-     production traffic where forms actually submit. -->
-<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
-<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
-     newsletter form lives in this footer, which renders on every page.
-     Async + defer so it never blocks render. ~28 KB; one outbound
-     request to challenges.cloudflare.com per cold load. Worker-side
-     verification lives in src/lib/turnstile.js and runs only when
-     env.TURNSTILE_SECRET_KEY is bound. -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script src="/assets/site.js?v=20260503-modsplit" defer></script>
   <!-- glossary-script:start -->

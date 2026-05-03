@@ -48,32 +48,44 @@
   // Tolerant: silent no-op when MD_DECOR or svg2pdf aren't loaded
   // OR when the theme has no cuisine match. Pre-load of svg2pdf is
   // handled by exportPdf() when the theme would benefit.
-  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY) {
+  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, opts) {
     try {
+      opts = opts || {};
       var DECOR = root && root.MD_DECOR;
       if (!DECOR || typeof DECOR.svgWrapped !== 'function') return;
       if (!root.svg2pdf || !doc.svg) return;
+      // Wave studio-quality — when 2-col is active, the decoration's
+      // upper-right position would overlap the right column's dish
+      // flow. Move it to bottom-right where there's typically empty
+      // space, AND make it slightly smaller + softer.
+      var twoColActive = !!opts.twoCol || (theme && theme.columns === 2);
       // Larger opacity than the live preview — the printed page
       // benefits from a faintly heavier mark since paper texture
-      // already softens the impression.
-      var svgText = DECOR.svgWrapped(theme, { opacity: 0.13, width: 220, height: 120 });
+      // already softens the impression. 2-col gets a softer mark
+      // since it sits in the visible body field.
+      var fragOpacity = twoColActive ? 0.10 : 0.13;
+      var gOpacity    = twoColActive ? 0.55 : 0.85;
+      var svgText = DECOR.svgWrapped(theme, { opacity: fragOpacity, width: 220, height: 120 });
       if (!svgText) return;
       var parser = new DOMParser();
       var parsed = parser.parseFromString(svgText, 'image/svg+xml');
       var svgEl = parsed && parsed.documentElement;
       if (!svgEl) return;
-      // Position in the upper-right corner of the page, sized to
-      // ~22% of paper width. Same visual weight as the HTML overlay.
+      // Position: upper-right (1-col) or bottom-right (2-col).
       var pageW = doc.internal.pageSize.getWidth();
-      var w = Math.min(180, pageW * 0.22);
+      var pageH = doc.internal.pageSize.getHeight();
+      var w = Math.min(twoColActive ? 140 : 180, pageW * (twoColActive ? 0.18 : 0.22));
       var h = w * (120 / 220);
-      // Clear margin from the right + top edge.
       var margin = paper && paper.margin ? paper.margin : 48;
+      var bleed  = paper && paper._bleed ? paper._bleed : 0;
       var x = pageW - margin - w;
-      var y = (paper && paper._bleed ? paper._bleed : 0) + Math.max(margin * 0.4, 12);
-      // Set a low GState opacity if the doc supports it (older jsPDF
-      // skips this gracefully).
-      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.85 })); } catch (_) {}
+      var y;
+      if (twoColActive) {
+        y = pageH - margin - h - bleed;
+      } else {
+        y = bleed + Math.max(margin * 0.4, 12);
+      }
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: gOpacity })); } catch (_) {}
       doc.svg(svgEl, { x: x, y: y, width: w, height: h });
       try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 })); } catch (_) {}
     } catch (_) { /* decoration is best-effort; never block the export */ }
@@ -1467,7 +1479,7 @@
     // Wave studio-quality — cuisine decoration on every page. Renders
     // FIRST so dish text + headers draw on top. No-op if MD_DECOR or
     // svg2pdf isn't loaded or the theme has no cuisine match.
-    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
@@ -1488,7 +1500,7 @@
         doc.addPage();
         pageCount++;
         contentY = margin + bleedOff;
-        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
       }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
@@ -1504,7 +1516,7 @@
           doc.addPage();
           pageCount++;
           contentY = margin + bleedOff;
-          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
         }
       } else if (contentY + h > bottom) {
         doc.addPage();
@@ -1554,6 +1566,11 @@
     var colWidth = (contentWidth - gutter) / 2;
     var pageCount = 1;
 
+    // Wave studio-quality — cuisine decoration on the first page,
+    // bottom-right (where 2-col content has whitespace below the
+    // last dish). Subsequent pages get it via newPage() below.
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
+
     // First, separate cover blocks (each consumes a full sheet).
     var i = 0;
     while (i < blocks.length && blocks[i].kind === 'cover') {
@@ -1561,6 +1578,7 @@
       doc.addPage();
       pageCount++;
       contentY = margin + bleedOff;
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
       i++;
     }
 
@@ -1579,6 +1597,9 @@
       doc.addPage();
       pageCount++;
       contentY = margin + bleedOff;
+      // Wave studio-quality — decoration on every page, bottom-right
+      // for 2-col layouts.
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
     }
 
     function drawSpanFull(block) {
@@ -2067,7 +2088,67 @@
       };
       // Stamp the bleed offset on the paper so paginate() can read it.
       paper._bleed = bleed;
-      var pageCount = paginate(blocks, doc, opts.theme, paper, {
+
+      // Wave studio-quality — PDF dry-run measurement pass.
+      // The orchestrator passes shrinkFactor based on the live preview
+      // (CSS-measured against browser fonts). PDF font metrics can
+      // differ slightly (jsPDF embeds Fraunces + Inter; everything
+      // else falls back to Helvetica/Times). For most themes the
+      // drift is negligible, but for menus right at a fit boundary
+      // it could push the PDF from 1 page to 2 pages even though the
+      // preview said it'd fit. Dry-run catches that:
+      //   1. Run paginate's measurement logic against the real doc
+      //      (no drawing — pure measure + count).
+      //   2. If the result exceeds the operator's target page count,
+      //      bump the theme's bodyPt + descPt one notch shrunker
+      //      and retry. Up to 4 attempts (mirrors the live preview
+      //      cascade's 4-step shrink ladder).
+      //   3. Final paginate uses the chosen shrunken theme.
+      var targetPagesForFit = opts.allowMultiPage ? 2 : 1;
+      var workingTheme = opts.theme;
+      var dryAttempts = 0;
+      function _dryMeasurePages(t) {
+        var bw = paper.w - (paper.margin || 48) * 2;
+        var bottom = paper.h - (paper.margin || 48) + (paper._bleed || 0);
+        var contentY = (paper.margin || 48) + (paper._bleed || 0);
+        var pages = 1;
+        for (var bi = 0; bi < blocks.length; bi++) {
+          var blk = blocks[bi];
+          var h = measureBlock(blk, doc, t, bw);
+          if (blk.kind === 'cover') { pages++; contentY = (paper.margin || 48) + (paper._bleed || 0); continue; }
+          if (contentY + h > bottom) {
+            pages++;
+            contentY = (paper.margin || 48) + (paper._bleed || 0);
+          }
+          contentY += h;
+        }
+        return pages;
+      }
+      // Skip dry-run for panel-flow papers (their pagination is fixed
+      // by panel count) and for 2-col-by-theme themes (they have their
+      // own balancing pass).
+      if (paper.flow !== 'panel') {
+        while (dryAttempts < 4) {
+          var measuredPages = _dryMeasurePages(workingTheme);
+          if (measuredPages <= targetPagesForFit) break;
+          // Bump shrink — body+desc by 4%, h2 by sqrt(0.96) so headers
+          // stay legible. Floor at 8.5/7.5/11pt as in the orchestrator.
+          var t2 = workingTheme;
+          var newBody  = Math.max(8.5,  (t2.bodyPt  || 11) * 0.96);
+          var newDesc  = Math.max(7.5,  (t2.descPt  || (t2.bodyPt || 11) - 1) * 0.96);
+          var newPrice = Math.max(8.5,  (t2.pricePt || t2.bodyPt || 11) * 0.96);
+          var newH2    = Math.max(11,   (t2.h2Pt    || 14) * Math.sqrt(0.96));
+          // No-progress check: if floors clipped all values, breaking
+          // out avoids an infinite-loop on a genuinely-too-large menu.
+          if (newBody === t2.bodyPt && newDesc === t2.descPt &&
+              newPrice === t2.pricePt && newH2 === t2.h2Pt) break;
+          workingTheme = Object.assign({}, t2, {
+            bodyPt: newBody, descPt: newDesc, pricePt: newPrice, h2Pt: newH2
+          });
+          dryAttempts++;
+        }
+      }
+      var pageCount = paginate(blocks, doc, workingTheme, paper, {
         forceTwoCol:    !!opts.forceTwoCol,
         // Wave studio-quality — operator's "Allow front + back"
         // toggle propagates into PDF so smart 2-page split planner
