@@ -239,13 +239,25 @@
       return loadPdfjs().then(function (pdfjsLib) {
         return pdfjsLib.getDocument({ data: buf, isEvalSupported: false }).promise;
       }).then(function (doc) {
+        // Zero-page guard. Valid PDFs with 0 pages exist in the wild
+        // (incomplete generators, partial uploads). Surface a clear
+        // error rather than letting the loop iterate over nothing.
+        if (!doc || doc.numPages < 1) {
+          throw new Error('PDF has no pages — re-export from your distributor portal.');
+        }
         var totalPages = Math.min(doc.numPages, maxPages);
         var truncated = doc.numPages > maxPages;
         var files = [];
+        var pageErrors = [];
 
         function renderOne(idx) {
           if (idx > totalPages) {
-            return Promise.resolve({ files: files, totalPages: doc.numPages, truncated: truncated });
+            return Promise.resolve({
+              files: files,
+              totalPages: doc.numPages,
+              truncated: truncated,
+              pageErrors: pageErrors
+            });
           }
           if (onProgress) {
             try { onProgress(idx, totalPages, 'render'); } catch (_) {}
@@ -258,10 +270,22 @@
             var effScale = Math.min(scale, maxLongEdge / longEdge);
             if (!isFinite(effScale) || effScale <= 0) effScale = 1;
             var viewport = page.getViewport({ scale: effScale, rotation: page.rotate || 0 });
+            // Defensive cap on canvas dimensions. Some PDFs claim
+            // absurd page sizes (gigantic posters, malformed
+            // metadata); without a cap, getContext('2d') can throw
+            // OOM on the phone before we ever render.
+            var w = Math.max(1, Math.round(viewport.width));
+            var h = Math.max(1, Math.round(viewport.height));
+            if (w > 8000 || h > 8000) {
+              throw new Error('Page ' + idx + ' renders too large at this DPI; lower the source resolution.');
+            }
             var canvas = document.createElement('canvas');
-            canvas.width = Math.max(1, Math.round(viewport.width));
-            canvas.height = Math.max(1, Math.round(viewport.height));
+            canvas.width = w;
+            canvas.height = h;
             var ctx = canvas.getContext('2d');
+            if (!ctx) {
+              throw new Error('Couldn\'t allocate a canvas for page ' + idx + ' — your device may be low on memory.');
+            }
             // White background — invoices print on white paper, and
             // PDF.js preserves transparency for unpainted regions.
             ctx.fillStyle = '#ffffff';
@@ -286,6 +310,14 @@
                 }, 'image/jpeg', jpegQuality);
               });
             });
+          }).catch(function (err) {
+            // Per-page tolerance: a single corrupted / oversized /
+            // OOM page shouldn't kill a whole 8-page batch. Record
+            // the error and continue. The caller surfaces the
+            // partial-success status; if EVERY page fails the
+            // outer .catch on rasterizeImageOnlyPdf still surfaces
+            // the original message.
+            pageErrors.push({ page: idx, message: (err && err.message) || 'render failed' });
           }).then(function () {
             return renderOne(idx + 1);
           });

@@ -1863,10 +1863,18 @@
     } catch (_) {}
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
-      parsedList.innerHTML = '<li class="id-parsed-empty">' +
-        tt('Couldn\'t find any line items. Try a sharper photo or your distributor\'s PDF if available.',
-           'No se encontraron partidas. Intenta con una foto más nítida o el PDF de tu distribuidor si lo tienes.') +
-        '</li>';
+      // Wave D.7 — when the parse returns nothing AND the source
+      // didn't even look like an invoice (no totals, no $ tokens,
+      // no vendor keywords), give the operator a kinder message
+      // than "couldn't find any line items." A screenshot of a
+      // chat or a photo of the wrong thing is a normal mistake;
+      // we surface it as a coaching hint, not an error state.
+      var emptyMsg = parsed.notInvoiceLikely
+        ? tt('This doesn\'t look like an invoice — maybe a screenshot of something else? Try the file again, or pick a different one.',
+             'Esto no parece una factura — ¿quizás una captura de otra cosa? Inténtalo de nuevo o elige otro archivo.')
+        : tt('Couldn\'t find any line items. Try a sharper photo or your distributor\'s PDF if available.',
+             'No se encontraron partidas. Intenta con una foto más nítida o el PDF de tu distribuidor si lo tienes.');
+      parsedList.innerHTML = '<li class="id-parsed-empty">' + emptyMsg + '</li>';
       parsedEl.hidden = false;
       return;
     }
@@ -2678,22 +2686,114 @@
     if (t.indexOf('image/') === 0) return true;
     return /\.(jpe?g|png|heic|heif|webp|tiff?|bmp|gif)$/i.test(String(f && f.name || ''));
   }
+  function _looksLikeHeic(f) {
+    var t = String(f && f.type || '').toLowerCase();
+    if (t === 'image/heic' || t === 'image/heif') return true;
+    return /\.(heic|heif)$/i.test(String(f && f.name || ''));
+  }
+  function _firefoxLikely() {
+    // Conservative — prefer false negatives. Firefox doesn't decode
+    // HEIC; surfacing a clear early message beats a mid-pipeline
+    // "image decode failed" that the operator can't act on.
+    var ua = String(navigator.userAgent || '');
+    return /Firefox\//i.test(ua) && !/Chrome\/|Edg\//i.test(ua);
+  }
+
+  // Magic-byte sniff for files where MIME and extension can't be
+  // trusted (Android share intents drop type=''; renamed-extension
+  // files; clipboard-paste blobs). Reads the first 16 bytes only;
+  // never the whole file. Returns null when no signature matches —
+  // caller falls back to extension/MIME.
+  function _magicBytesKind(file) {
+    if (!file || typeof file.slice !== 'function') return Promise.resolve(null);
+    return file.slice(0, 16).arrayBuffer().then(function (buf) {
+      var b = new Uint8Array(buf);
+      if (b.length < 4) return null;
+      // %PDF-
+      if (b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46) return 'pdf';
+      // \x89 P N G \r \n \x1A \n
+      if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) return 'image';
+      // \xFF \xD8 \xFF — JPEG
+      if (b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF) return 'image';
+      // I I * \0 — TIFF little-endian
+      if (b[0] === 0x49 && b[1] === 0x49 && b[2] === 0x2A && b[3] === 0x00) return 'image';
+      // M M \0 * — TIFF big-endian
+      if (b[0] === 0x4D && b[1] === 0x4D && b[2] === 0x00 && b[3] === 0x2A) return 'image';
+      // R I F F . . . . W E B P
+      if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+          b.length >= 12 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return 'image';
+      // ftyp box at offset 4 (HEIC / HEIF / MP4 family)
+      if (b.length >= 12 && b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70) {
+        // Brand at bytes 8..11. heic / heix / mif1 / msf1 / hevc → HEIC family.
+        var brand = String.fromCharCode(b[8], b[9], b[10], b[11]).toLowerCase();
+        if (brand === 'heic' || brand === 'heix' || brand === 'mif1' ||
+            brand === 'msf1' || brand === 'hevc' || brand === 'hevx') return 'heic';
+        // Other ftyp brands (jpeg2000, etc.) — treat as image.
+        return 'image';
+      }
+      // P K \x03 \x04 — ZIP container (could be XLSX). Don't claim
+      // image/pdf; fall through to extension-based logic so .xlsx
+      // routes to CSV path and a renamed .docx fails politely.
+      if (b[0] === 0x50 && b[1] === 0x4B && b[2] === 0x03 && b[3] === 0x04) return 'zip';
+      return null;
+    }).catch(function () { return null; });
+  }
+
   function dispatchUnifiedFile(file) {
     if (!file) return;
-    if (_looksLikePdf(file)) {
-      processPdfFile(file);
-    } else if (_looksLikeCsv(file)) {
-      processCsvFile(file);
-    } else if (_looksLikeImage(file)) {
-      handlePhotoFiles([file]);
-    } else {
+    // Empty-file guard. A 0-byte File can result from interrupted
+    // shares, a deleted source, or a drag-cancel that completed.
+    if (typeof file.size === 'number' && file.size === 0) {
+      showStatus(
+        tt('That file is empty.', 'Ese archivo está vacío.'),
+        tt('Try the file again — it may have been interrupted while saving or sharing.',
+           'Inténtalo de nuevo — puede que se haya interrumpido al guardar o compartir.'),
+        'error'
+      );
+      return;
+    }
+    // Fast path: trust MIME and extension. Covers ~99% of real uploads.
+    if (_looksLikeHeic(file) && _firefoxLikely()) {
+      showStatus(
+        tt('Your browser can\'t read HEIC images.', 'Tu navegador no puede leer imágenes HEIC.'),
+        tt('Firefox doesn\'t decode HEIC. Re-save as JPG or PNG, or open this tool in Chrome / Safari / Edge — all of those read HEIC natively.',
+           'Firefox no decodifica HEIC. Vuelve a guardar como JPG o PNG, o abre esta herramienta en Chrome / Safari / Edge — todos leen HEIC de forma nativa.'),
+        'error'
+      );
+      return;
+    }
+    if (_looksLikePdf(file)) { processPdfFile(file); return; }
+    if (_looksLikeCsv(file)) { processCsvFile(file); return; }
+    if (_looksLikeImage(file)) { handlePhotoFiles([file]); return; }
+
+    // Slow path: file has no useful MIME and no recognizable
+    // extension. Read the first 16 bytes and route by signature.
+    // Common reasons we land here: Android share intents (type=''),
+    // clipboard-paste of a screenshot blob with no name, files
+    // renamed to remove their extension.
+    _magicBytesKind(file).then(function (kind) {
+      if (kind === 'pdf') { processPdfFile(file); return; }
+      if (kind === 'image') { handlePhotoFiles([file]); return; }
+      if (kind === 'heic') {
+        if (_firefoxLikely()) {
+          showStatus(
+            tt('Your browser can\'t read HEIC images.', 'Tu navegador no puede leer imágenes HEIC.'),
+            tt('Firefox doesn\'t decode HEIC. Re-save as JPG or PNG, or open this tool in Chrome / Safari / Edge.',
+               'Firefox no decodifica HEIC. Vuelve a guardar como JPG o PNG, o abre esta herramienta en Chrome / Safari / Edge.'),
+            'error'
+          );
+          return;
+        }
+        handlePhotoFiles([file]); return;
+      }
+      // ZIP container with no .xlsx hint, or an unrecognized format.
       showStatus(
         tt('We don\'t recognize this file type.', 'No reconocemos este tipo de archivo.'),
         tt('Try a photo (JPG/PNG/HEIC), a PDF, or a CSV / Excel export.',
            'Prueba una foto (JPG/PNG/HEIC), un PDF, o un CSV / Excel.'),
         'error'
       );
-    }
+    });
   }
   function dispatchUnifiedFileList(fileList) {
     if (!fileList || !fileList.length) return;
@@ -2752,7 +2852,60 @@
         dispatchUnifiedFileList(dt.files);
       }
     });
+    // Keyboard accessibility on the dropzone label. A native <label>
+    // associated with an <input type="file"> is focusable and clicks
+    // the input on Space, but the click-on-Enter behavior is
+    // inconsistent across browsers (and the label may be focused via
+    // tabindex without a directly associated input). Make Enter/Space
+    // explicitly open the picker, with the same effect as a tap.
+    if (anyInput) {
+      // Ensure focus highlights the dropzone, not just the hidden input.
+      try { dropEl.setAttribute('tabindex', '0'); } catch (_) {}
+      dropEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space') {
+          e.preventDefault();
+          try { anyInput.click(); } catch (_) {}
+        }
+      });
+    }
   }
+  // Browser default for a file dropped on a non-droppable element is
+  // "navigate to the file" — which destroys the operator's session
+  // and any unsaved work. Swallow drag/drop events on document.body
+  // so a near-miss outside the dropzone is a no-op instead of a
+  // disaster. Listeners on the dropzone itself stop propagation so
+  // their handlers still receive the event.
+  (function blockGlobalFileDrops() {
+    var swallow = function (e) {
+      // If the event originated inside the dropzone, the dropzone's
+      // own handler runs first; we still call preventDefault here so
+      // the browser doesn't double-handle it on the document level.
+      if (e && e.dataTransfer && e.dataTransfer.types &&
+          Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') !== -1) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('dragover', swallow, false);
+    document.addEventListener('drop', function (e) {
+      // If a file landed outside the dropzone, swallow + tell the
+      // operator where to drop. Don't override an active error
+      // message — that's likely more important.
+      if (!e || !e.dataTransfer || !e.dataTransfer.types) return;
+      if (Array.prototype.indexOf.call(e.dataTransfer.types, 'Files') === -1) return;
+      // Did the dropzone claim it? If so, we're past it now.
+      if (dropEl && (e.target === dropEl || (dropEl.contains && dropEl.contains(e.target)))) return;
+      e.preventDefault();
+      try {
+        if (statusEl && !statusEl.hidden && /error/.test(statusEl.className || '')) return;
+        showStatus(
+          tt('Drop the file on the dotted box at the top.',
+             'Suelta el archivo en el cuadro punteado de arriba.'),
+          tt('Files dropped anywhere else open in a new tab and lose your session — the dropzone is the safe target.',
+             'Los archivos soltados en otro lugar abren en otra pestaña y pierdes tu sesión — el cuadro de arriba es el destino seguro.')
+        );
+      } catch (_) {}
+    }, false);
+  })();
   // Clipboard paste — Ctrl+V a screenshot anywhere on the tool page
   // routes through the same intake. Scoped to ignore pastes inside
   // text inputs / contenteditable so we don't hijack normal typing.
@@ -2874,15 +3027,35 @@
           }
         }).then(function (raster) {
           if (!raster || !raster.files || !raster.files.length) {
+            // Total failure — every page errored or the PDF had no
+            // pages. Surface the most informative page-error if we
+            // have one; otherwise the generic copy.
+            var firstErr = raster && raster.pageErrors && raster.pageErrors[0];
             showStatus(
               tt('Could not read this scanned PDF.', 'No se pudo leer este PDF escaneado.'),
-              tt('Try splitting it into smaller files, or use the photo path on each page.',
-                 'Prueba dividirlo en archivos más pequeños, o usa la ruta de foto por página.'),
+              firstErr && firstErr.message ? firstErr.message :
+                tt('Try splitting it into smaller files, or use the photo path on each page.',
+                   'Prueba dividirlo en archivos más pequeños, o usa la ruta de foto por página.'),
               'error'
             );
             return;
           }
-          if (raster.truncated) {
+          if (raster.pageErrors && raster.pageErrors.length) {
+            // Partial success — some pages rendered, some didn't.
+            // Tell the operator which pages we had to skip so they
+            // can re-add them via the photo path or split the PDF.
+            var skippedNums = raster.pageErrors.map(function (e) { return e.page; }).join(', ');
+            setTimeout(function () {
+              try {
+                showStatus(
+                  tt('Skipped page ' + skippedNums + ' — couldn\'t render.',
+                     'Saltamos la página ' + skippedNums + ' — no se pudo procesar.'),
+                  tt('We\'ll continue with the rest. If you need those pages, snap them with the photo path or split the PDF and try the missing pages on their own.',
+                     'Seguimos con las demás. Si necesitas esas páginas, sácales foto o divide el PDF y prueba con las páginas faltantes por separado.')
+                );
+              } catch (_) {}
+            }, 1500);
+          } else if (raster.truncated) {
             // Soft warning surfaced AFTER kickoff so the operator
             // sees that we're processing the first 8 pages rather
             // than blocking the whole flow.

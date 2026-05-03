@@ -564,6 +564,30 @@
       var k = r.kind || 'item';
       kindCounts[k] = (kindCounts[k] || 0) + 1;
     });
+    // Wave D.7 — looks-not-invoice signal. The OCR pipeline happily
+    // reads any photo (an invoice, a chat screenshot, the side of a
+    // bus). When we get back a result with almost no rows, no
+    // recognized vendor, no printed total, and very few numeric
+    // tokens in the source text, the friendly thing to do is tell
+    // the operator "this doesn't look like an invoice" rather than
+    // make them stare at an empty list and wonder. The flag is
+    // advisory only — the controller decides how to surface it
+    // (typically a soft-warning banner with an "Open anyway" path).
+    var srcText = String(fullText || '');
+    var dollarCount = (srcText.match(/\$\s*\d+(?:[.,]\d{2})/g) || []).length;
+    var decimalCount = (srcText.match(/\b\d+\.\d{2}\b/g) || []).length;
+    var skuCount = (srcText.match(/\b\d{4,8}\b/g) || []).length;
+    var hasInvoiceWord = /\b(invoice|factura|order|pedido|p\.o\.|po\s*#|customer|cliente|distributor|distribuidor|sysco|us\s*foods|gfs|restaurant\s+depot|account|cuenta|total|subtotal)\b/i.test(srcText);
+    // Strong signals: a parsed total OR a vendor match OR ≥3 dollar
+    // tokens — any one of these means it's almost certainly an
+    // invoice / receipt and we shouldn't second-guess the operator.
+    var strongSignal = !!meta.totalParsed || !!meta.vendor || dollarCount >= 3 || skuCount >= 5;
+    var notInvoiceLikely = (
+      capped.length < 3 &&
+      !strongSignal &&
+      decimalCount < 3 &&
+      !hasInvoiceWord
+    );
     return {
       rows: capped,
       vendor: meta.vendor,
@@ -571,7 +595,8 @@
       sumParsed: +sumParsed.toFixed(2),
       deltaPct: deltaPct,
       mathFix: mathFix,
-      kindCounts: kindCounts
+      kindCounts: kindCounts,
+      notInvoiceLikely: notInvoiceLikely
     };
   }
 
