@@ -333,6 +333,16 @@
         rows[i].categoryConfidence = c.confidence;
         rows[i].categoryTier       = c.tier;
         rows[i].categorySource     = c.source || null;
+        // Wave C.8 — capture the matched term so the row's category
+        // chip can explain itself ("matched 'chicken' in lexicon").
+        // Defensive: classify() returns several shapes for `matched`
+        // depending on tier; we coerce to a short string for display.
+        if (c.matched != null) {
+          if (typeof c.matched === 'string') rows[i].categoryMatched = c.matched;
+          else if (typeof c.matched === 'object') {
+            rows[i].categoryMatched = c.matched.term || c.matched.token || c.matched.name || null;
+          }
+        }
         rows[i].tags               = c.tags || [];
       }
     }
@@ -384,6 +394,93 @@
   function catLabel(cat) {
     if (!cat) return tt('uncategorized', 'sin categoría');
     return (LOCALE === 'es' ? CAT_LABEL_ES[cat] : CAT_LABEL_EN[cat]) || cat;
+  }
+
+  // Wave C.8 — explain WHY a row landed in a particular category.
+  // Reads the categoryTier / categorySource / categoryMatched fields
+  // captured during classifyRows. Returns a single short sentence
+  // suitable for a chip title attribute. Locale-aware.
+  //
+  // Tier semantics (from categorize.js):
+  //   tier 0   → operator's own past correction (learnings.js)
+  //   tier 0.5 → vendor-printed class code (Sysco SUPC, GFS PRD/PRO/DRY)
+  //   tier 1   → brand-name match in lexicon (e.g. "stella artois" → beverage)
+  //   tier 1   → exact lexicon term match (e.g. "chicken" → protein)
+  //   tier 2   → fuzzy lexicon match (Levenshtein on stem)
+  //   tier 3   → unit + price-band heuristic
+  //   none     → no match
+  function buildCategoryWhy(r) {
+    if (!r || !r.category) return '';
+    var tier = r.categoryTier;
+    var matched = r.categoryMatched || null;
+    var conf = (typeof r.categoryConfidence === 'number') ? Math.round(r.categoryConfidence) : null;
+    var label = catLabel(r.category);
+    var basis;
+    // Operator-confirmed (categoryConfidence flipped to 100 in
+    // commitCellEdit) — short message is appropriate.
+    if (r.ownerConfirmed && r.category) {
+      return tt(
+        label + ' — you confirmed this row',
+        label + ' — confirmaste esta partida'
+      );
+    }
+    switch (tier) {
+      case 'override':
+      case 'learning':
+      case 0:
+      case '0':
+        basis = tt(
+          'matches a category you set on a past invoice',
+          'coincide con una categoría que asignaste antes'
+        );
+        break;
+      case 'vendor-hint':
+      case 0.5:
+      case '0.5':
+        basis = tt(
+          'vendor printed a class code on this row',
+          'el proveedor imprimió un código de clase en esta línea'
+        );
+        break;
+      case 'brand':
+        basis = matched
+          ? tt('matched brand "' + matched + '" in our lexicon',
+               'marca "' + matched + '" reconocida en nuestro léxico')
+          : tt('matched a brand name in our lexicon',
+               'marca reconocida en nuestro léxico');
+        break;
+      case 'exact':
+      case 1:
+      case '1':
+        basis = matched
+          ? tt('matched the term "' + matched + '" in our lexicon',
+               'coincidió con "' + matched + '" en nuestro léxico')
+          : tt('exact match in our lexicon',
+               'coincidencia exacta en nuestro léxico');
+        break;
+      case 'fuzzy':
+      case 2:
+      case '2':
+        basis = matched
+          ? tt('fuzzy match against "' + matched + '" in our lexicon',
+               'coincidencia aproximada con "' + matched + '" en el léxico')
+          : tt('fuzzy match against the lexicon',
+               'coincidencia aproximada con el léxico');
+        break;
+      case 'heuristic':
+      case 3:
+      case '3':
+        basis = tt(
+          'guessed from the unit and price (no lexicon match)',
+          'inferido por unidad y precio (sin coincidencia en léxico)'
+        );
+        break;
+      default:
+        basis = tt('source unknown — verify if it looks wrong',
+                   'origen desconocido — verifícalo si se ve mal');
+    }
+    var confSuffix = conf != null ? ' · ' + conf + '%' : '';
+    return label + ' — ' + basis + confSuffix;
   }
 
   function readPendingInvoice() {
@@ -1434,8 +1531,16 @@
     if (r.unit) qtyParts.push(r.unit);
     var qtyText = qtyParts.length ? qtyParts.join(' ') : '';
     var priceText = r.lineTotal != null ? '$' + r.lineTotal.toFixed(2) : '';
+    // Wave C.8 — "Why this category?" explanation surfaced through
+    // the chip's title attribute (desktop hover) and aria-label
+    // (screen readers). Long-press also surfaces the title on iOS.
+    // The text is a one-line basis; tier + matched term + confidence.
+    var chipTitle = r.category ? buildCategoryWhy(r) : '';
+    var chipAriaLabel = r.category
+      ? (catLabel(r.category) + (chipTitle ? ' · ' + chipTitle : ''))
+      : tt('uncategorized', 'sin categoría');
     var chip = r.category
-      ? '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '">' + escHtml(catLabel(r.category)) + '</span>'
+      ? '<span class="id-parsed-cat" data-cat="' + escHtml(r.category) + '" title="' + escHtml(chipTitle) + '" aria-label="' + escHtml(chipAriaLabel) + '">' + escHtml(catLabel(r.category)) + '</span>'
       : '<span class="id-parsed-cat id-parsed-cat-none" data-cat="none">' + tt('uncategorized', 'sin categoría') + '</span>';
     var band = confBand(r.confidence);
     var glyph = confGlyph(band);
