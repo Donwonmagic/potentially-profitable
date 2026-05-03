@@ -1,0 +1,46 @@
+{
+  "_comment": "Canonical price for each productized service. Single source of truth used by scripts/check-pricing-consistency.mjs. When a price changes, update HERE first; the guard then surfaces every HTML page that's still on the old number. `price` is the canonical EN string; `price_variants` lists alternate forms permitted in body prose / ES-locale formatting. The guard accepts any of the variants as a valid mention.",
+  "services": [
+    {
+      "slug": "audit",
+      "name": "Restaurant Website Audit",
+      "price": "$499",
+      "price_variants": ["$499", "USD 499"],
+      "page": "/services/audit/",
+      "es_page": "/es/services/audit/"
+    },
+    {
+      "slug": "menu-drop-in",
+      "name": "Menu Drop-In",
+      "price": "$1,500",
+      "price_variants": ["$1,500", "USD 1,500", "$1.500"],
+      "page": "/services/menu-drop-in/",
+      "es_page": "/es/services/menu-drop-in/"
+    },
+    {
+      "slug": "menu-polish",
+      "name": "Menu Polish",
+      "price": "$249",
+      "price_variants": ["$249", "USD 249"],
+      "page": "/services/menu-polish/",
+      "es_page": "/es/services/menu-polish/"
+    },
+    {
+      "slug": "care-plan-light",
+      "name": "Care Plan Light",
+      "price": "$99/mo",
+      "price_variants": ["$99/mo", "USD 99/mes", "$99/mes"],
+      "page": "/services/care-plan-light/",
+      "es_page": "/es/services/care-plan-light/"
+    },
+    {
+      "slug": "care-plan-full",
+      "name": "Standard Care",
+      "price": "$225/mo",
+      "price_variants": ["$225/mo", "USD 225/mes", "$225/mes"],
+      "page": "/services/#care",
+      "es_page": "/es/services/#care",
+      "_comment": "No standalone page yet — sold via /services/ index + /window/?topic=care-plan. Add a dedicated page when productizing further."
+    }
+  ]
+}
