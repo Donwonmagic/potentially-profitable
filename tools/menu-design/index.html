@@ -273,9 +273,18 @@ header.nav{min-height:64px}
 
 /* Theme picker — 4 chips, mobile single-row scrollable. */
 .md-themes{margin:24px 0 0}
-.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.md-themes-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;flex-wrap:wrap}
+.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.md-theme-filter{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);max-width:280px;flex:1 1 220px;transition:border-color var(--t-fast)}
+.md-theme-filter:focus-within{border-color:var(--teal)}
+.md-theme-filter input{flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:12.5px;color:var(--ink);min-width:0;padding:0}
+.md-theme-filter input::-webkit-search-cancel-button{filter:grayscale(1);opacity:.55}
 .md-themes-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none;padding:0;margin:0}
-@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}.md-themes-head{flex-direction:column;align-items:flex-start}.md-theme-filter{max-width:100%;width:100%}}
+.md-themes-empty{margin:10px 0 0;padding:10px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.md-themes-empty[hidden]{display:none}
+.md-theme[hidden]{display:none}
+.md-theme-group[hidden]{display:none}
 /* Wave studio-quality — grouped picker. Each group sub-heading
    spans the full grid width and styles like a small section label
    so the picker reads as Casual / Classic / Modern / Specialty
@@ -1369,10 +1378,22 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
     <p class="md-status" id="mdStatus"><strong>0</strong> dishes · <strong>0</strong> sections — your menu lives in this browser only.</p>
 
-    <!-- Theme picker. Four constrained choices; the menu can't look amateur. -->
+    <!-- Theme picker. 25 constrained choices; the menu can't look amateur. -->
     <div class="md-themes">
-      <p class="md-themes-label">Pick a theme</p>
+      <div class="md-themes-head">
+        <p class="md-themes-label">Pick a theme</p>
+        <!-- Wave studio-quality — typeahead filter. Operator at 11pm
+             scrolling 25 themes for "italian" or "vegan" gets a
+             keyword-and-cuisine match instead of scanning. Accessible
+             label + visible placeholder + clear button. -->
+        <label class="md-theme-filter">
+          <span class="visually-hidden">Filter themes by name or cuisine</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="mdThemeFilter" placeholder="Filter (e.g. italian, vegan, dim sum)" autocomplete="off" />
+        </label>
+      </div>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Menu theme"></ul>
+      <p class="md-themes-empty" id="mdThemesEmpty" hidden>No themes match — try a broader keyword.</p>
       <!-- W12-3 — Theme customizer. Collapsed by default; reveals
            accent/paper color overrides + paper-texture toggle. -->
       <details class="md-customize" id="mdCustomize">

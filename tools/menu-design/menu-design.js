@@ -981,6 +981,60 @@
     }
   }
 
+  // Wave studio-quality — theme filter (typeahead). Matches against
+  // theme id, label_en/es, blurb_en/es, and cuisineHint[]. Hides
+  // non-matching cards + their group headers; surfaces an empty-state
+  // line when nothing matches. The active theme stays selected (its
+  // visual swatch is the source of truth for the live preview), even
+  // if the filter hides it — clearing the filter brings it back.
+  function applyThemeFilter() {
+    var input = document.getElementById('mdThemeFilter');
+    var emptyEl = document.getElementById('mdThemesEmpty');
+    if (!themesEl) return;
+    var q = input ? (input.value || '').trim().toLowerCase() : '';
+    var cards = themesEl.querySelectorAll('.md-theme');
+    var groups = themesEl.querySelectorAll('.md-theme-group');
+    if (!q) {
+      cards.forEach(function (c) { c.hidden = false; });
+      groups.forEach(function (g) { g.hidden = false; });
+      if (emptyEl) emptyEl.hidden = true;
+      return;
+    }
+    var anyMatch = false;
+    cards.forEach(function (c) {
+      var id = c.dataset.id || '';
+      var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(id) : null;
+      var hay = id;
+      if (t) {
+        hay += ' ' + (t.label_en || '') + ' ' + (t.label_es || '') +
+               ' ' + (t.blurb_en || '') + ' ' + (t.blurb_es || '') +
+               ' ' + (Array.isArray(t.cuisineHint) ? t.cuisineHint.join(' ') : '');
+      }
+      var match = hay.toLowerCase().indexOf(q) >= 0;
+      c.hidden = !match;
+      if (match) anyMatch = true;
+    });
+    // Hide a group header when ALL its themes (the cards that follow
+    // it until the next group header) are hidden. We walk siblings.
+    groups.forEach(function (g) {
+      var n = g.nextElementSibling;
+      var anyVisible = false;
+      while (n && !n.classList.contains('md-theme-group')) {
+        if (n.classList.contains('md-theme') && !n.hidden) {
+          anyVisible = true;
+          break;
+        }
+        n = n.nextElementSibling;
+      }
+      g.hidden = !anyVisible;
+    });
+    if (emptyEl) emptyEl.hidden = anyMatch;
+  }
+  var themeFilterInputEl = document.getElementById('mdThemeFilter');
+  if (themeFilterInputEl) {
+    themeFilterInputEl.addEventListener('input', applyThemeFilter);
+  }
+
   if (themesEl) {
     themesEl.addEventListener('click', function (e) {
       var li = e.target.closest('.md-theme');
@@ -988,6 +1042,9 @@
       themeId = li.dataset.id;
       fireThemeChanged(themeId);
       renderThemePicker();
+      // Re-apply filter after the picker re-renders (the cards are new
+      // DOM nodes so the previous hidden state was wiped).
+      applyThemeFilter();
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
       if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();

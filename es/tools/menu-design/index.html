@@ -132,9 +132,18 @@ header.nav{min-height:64px}
 .md-status{margin-top:14px;font-size:13px;color:var(--ink-soft);text-align:center}
 .md-status strong{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
 .md-themes{margin:24px 0 0}
-.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
+.md-themes-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;flex-wrap:wrap}
+.md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0}
+.md-theme-filter{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--ink-soft);max-width:280px;flex:1 1 220px;transition:border-color var(--t-fast)}
+.md-theme-filter:focus-within{border-color:var(--teal)}
+.md-theme-filter input{flex:1;border:0;outline:0;background:transparent;font:inherit;font-size:12.5px;color:var(--ink);min-width:0;padding:0}
+.md-theme-filter input::-webkit-search-cancel-button{filter:grayscale(1);opacity:.55}
 .md-themes-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none;padding:0;margin:0}
-@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}.md-themes-head{flex-direction:column;align-items:flex-start}.md-theme-filter{max-width:100%;width:100%}}
+.md-themes-empty{margin:10px 0 0;padding:10px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.md-themes-empty[hidden]{display:none}
+.md-theme[hidden]{display:none}
+.md-theme-group[hidden]{display:none}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
 .md-theme:hover{border-color:var(--teal);transform:translateY(-1px)}
 .md-theme[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
@@ -620,8 +629,19 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     </details>
 
     <div class="md-themes">
-      <p class="md-themes-label">Elige un tema</p>
+      <div class="md-themes-head">
+        <p class="md-themes-label">Elige un tema</p>
+        <!-- Wave studio-quality — filtro typeahead. Operador a las 11pm
+             buscando "italiano" o "vegano" entre 25 temas obtiene
+             coincidencia por palabra clave + cocina. -->
+        <label class="md-theme-filter">
+          <span class="visually-hidden">Filtrar temas por nombre o cocina</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="mdThemeFilter" placeholder="Filtrar (ej. italiano, vegano, dim sum)" autocomplete="off" />
+        </label>
+      </div>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Tema de menú"></ul>
+      <p class="md-themes-empty" id="mdThemesEmpty" hidden>Ningún tema coincide — prueba un término más amplio.</p>
 
       <!-- Wave A1/W12-3/W15 — customize panel parity. ES operators get
            per-theme color tuning + paper texture + seasonal/daypart/
