@@ -632,6 +632,79 @@
                     'libanesa', 'mediterránea', 'mezze levantino']
     },
 
+    // Wave studio-quality (B4 partial cont.) — Filipino Feast.
+    // Kamayan-style sharing menus served on banana leaves. Banana-leaf
+    // green paper, bone-cream ink (stays readable), warm red accent
+    // for hero items. Generous 1-column layout because Filipino menus
+    // run dish-rich + descriptor-rich (regional callouts, ulam vs
+    // pulutan distinctions). New banana-leaf motif at page edge.
+    'filipino-feast': {
+      id: 'filipino-feast',
+      label_en: 'Filipino Feast',
+      label_es: 'Banquete Filipino',
+      blurb_en: 'Banana-leaf green, bone ink, warm red accent. Kamayan energy.',
+      blurb_es: 'Verde hoja de plátano, tinta hueso, acento rojo. Energía kamayan.',
+      paper:    '#1F3A26',
+      ink:      '#F5EFD8',
+      accent:   '#D9492C',
+      muted:    '#A8B596',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    34,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'specials', 'table-tent'],
+      cuisineHint: ['filipino', 'philippine', 'kamayan', 'adobo', 'sinigang', 'lechon',
+                    'lumpia', 'halo halo', 'filipina', 'philippines',
+                    'banquete filipino', 'comida filipina']
+    },
+
+    // Wave studio-quality (B4 partial cont.) — Deli Counter.
+    // NY-style pastrami / bagel / appetizing counter. Gloss-white
+    // paper, retro red accent, condensed signpainter display. The
+    // class of operator (Russ & Daughters, Katz's, smaller pastrami
+    // shops) currently has no good theme — they default to diner-
+    // counter (too breakfast-coded) or food-truck (wrong context).
+    // Two columns for the dense menu density a real deli has.
+    'deli-counter': {
+      id: 'deli-counter',
+      label_en: 'Deli Counter',
+      label_es: 'Mostrador Deli',
+      blurb_en: 'Gloss white, retro red accent, condensed signpainter caps.',
+      blurb_es: 'Blanco brillante, acento rojo retro, mayúsculas condensadas.',
+      paper:    '#FFFFFF',
+      ink:      '#1A1A1A',
+      accent:   '#C42021',
+      muted:    '#5A6675',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Bebas Neue", "Helvetica Neue Condensed", Arial, sans-serif',
+      h1Pt:    36,
+      h2Pt:    20,
+      bodyPt:  11.5,
+      pricePt: 11.5,
+      descPt:  10,
+      priceStyle:    'right-monospace',
+      dividerStyle:  'box',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'wide',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'a2-board'],
+      cuisineHint: ['deli', 'pastrami', 'bagel', 'appetizing', 'jewish deli',
+                    'kosher deli', 'reuben', 'smoked fish', 'lox', 'cured meat',
+                    'mostrador deli', 'deli neoyorquino']
+    },
+
     // Wave studio-quality (B4 partial cont.) — Peruvian Coastal.
     // Ceviche, tiradito, Nikkei wave. Cold-stone grey paper, ceviche-
     // lime accent, Pacific-blue muted. Operators of cevicherias, pisco
@@ -766,9 +839,9 @@
   // with cuisineHint surfaced for the operator-facing chip strip.
   var GROUPS = [
     { id: 'casual',     label_en: 'Casual / quick',          label_es: 'Casual / rápido',
-      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright'] },
+      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright', 'deli-counter'] },
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
-      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron'] },
+      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron', 'filipino-feast'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
       themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian', 'peruvian-coastal'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',

@@ -191,6 +191,16 @@
       extras: [
         '<circle cx="12" cy="12" r="0.6" fill="currentColor"/>'
       ]
+    },
+    // Wave studio-quality — banana leaf for Filipino kamayan-style
+    // dining. Long tropical leaf shape with veins. Distinct from
+    // leaf-cluster (small abstract foliage).
+    'banana-leaf': {
+      paths: [
+        'M3 12 Q8 4 19 6 Q21 8 19 12 Q15 18 5 18 Q3 16 3 12 Z',
+        'M5 13 Q11 9 18 9 M5 14 Q11 11 18 11 M5 15 Q11 13 17 13 M6 16 Q11 15 16 15'
+      ],
+      extras: []
     }
   };
 
@@ -253,6 +263,12 @@
     // Eight-pointed star (girih / khatam) is classic Persian geometry.
     if (has(/persian|iran|iranian|saffron|kebab persian|tahdig|fesenjan|ghormeh|persa/i)) {
       return { key: 'persian-star', x: 178, y: 38, s: 1.4 };
+    }
+    // Wave studio-quality — Filipino cuisine. Banana leaf (kamayan
+    // dining is served on banana leaves). New motif distinct from
+    // leaf-cluster (which is abstract foliage).
+    if (has(/filipino|philippine|kamayan|adobo|sinigang|lechon|lumpia|halo halo|filipina/i)) {
+      return { key: 'banana-leaf', x: 175, y: 36, s: 1.4 };
     }
     return null;
   }
