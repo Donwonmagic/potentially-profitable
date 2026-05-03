@@ -5784,6 +5784,37 @@
     if (customAccentEl && !customize.accent) customAccentEl.value = t.accent || '#1F4E5B';
     if (customPaperEl  && !customize.paper)  customPaperEl.value  = t.paper  || '#FAF6EE';
     if (customInkEl    && !customize.ink)    customInkEl.value    = t.ink    || '#14161A';
+    // Wave studio-quality (C14) — refresh the theme-story affordance
+    // with the active theme's review-board metadata.
+    updateThemeStory();
+  }
+  function updateThemeStory() {
+    var nameEl = document.getElementById('mdThemeStoryName');
+    var metaEl = document.getElementById('mdThemeStoryMeta');
+    var textEl = document.getElementById('mdThemeStoryText');
+    if (!nameEl || !metaEl || !textEl) return;
+    if (typeof MD_THEME_CREDITS === 'undefined') return;
+    var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(themeId) : null;
+    var label = t ? (LOCALE === 'es' ? t.label_es : t.label_en) : themeId;
+    var c = MD_THEME_CREDITS.get(themeId);
+    if (!c) {
+      nameEl.textContent = label;
+      metaEl.textContent = tt('No story on file for this theme yet.', 'Sin historia registrada para este tema todavía.');
+      textEl.textContent = '';
+      return;
+    }
+    nameEl.textContent = label;
+    var datePart = c.dateAdded
+      ? tt('Added ', 'Añadido ') + c.dateAdded
+      : '';
+    var bits = [];
+    if (c.reviewedBy) bits.push(tt('Reviewed by ', 'Revisado por ') + c.reviewedBy);
+    if (datePart)     bits.push(datePart);
+    metaEl.textContent = bits.join(' · ');
+    var insp = (Array.isArray(c.inspiredBy) && c.inspiredBy.length)
+      ? tt('Inspired by: ', 'Inspirado en: ') + c.inspiredBy.join('; ') + '.\n\n'
+      : '';
+    textEl.textContent = insp + (c.story || '');
   }
   if (customAccentEl) customAccentEl.addEventListener('input', function () {
     customize.accent = customAccentEl.value;
