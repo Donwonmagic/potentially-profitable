@@ -41,6 +41,25 @@
   // invoice" is tapped. Wave B5 will let the user remove pages
   // before reading; for B2 we read all pages in order.
   var pendingPages = [];
+  // Wave 8.7 — wire the Privacy Self-Check button.
+  if (typeof document !== 'undefined') {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || t.id !== 'idSelfCheckRun') return;
+      if (typeof MID_SELF_CHECK === 'undefined' || !MID_SELF_CHECK.run) return;
+      var out = document.getElementById('idSelfCheckOut');
+      if (out) out.innerHTML = '<p class="id-sc-running">Running…</p>';
+      MID_SELF_CHECK.run({ fixtureId: 'sysco', includeOcr: false }).then(function (report) {
+        if (out) MID_SELF_CHECK.renderReport(report, out);
+        if (window.plausible) {
+          try { window.plausible('Invoice Decoder Self Check', { props: { ok: report.ok ? 'true' : 'false' } }); } catch (_) {}
+        }
+      }).catch(function (err) {
+        if (out) out.innerHTML = '<p class="id-sc-fail">Self-check failed to run: ' + (err && err.message || 'unknown error') + '</p>';
+      });
+    });
+  }
+
   // Wave 6.11 — surface the personal-accuracy stat on the verified
   // line once the operator has saved ≥ 3 invoices. Replaces the
   // static "Last verified May 2" copy with their own accuracy.

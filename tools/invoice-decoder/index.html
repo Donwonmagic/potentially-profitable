@@ -443,6 +443,26 @@
 .id-pulse-contract-btn:hover{filter:brightness(0.97)}
 .id-pulse-contract-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
+/* Wave 8.7 — Privacy Self-Check report */
+.id-sc-run{padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--teal);background:var(--teal);color:var(--white);font-family:inherit}
+.id-sc-run:hover{filter:brightness(1.05)}
+.id-sc-run:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-sc-running{font-size:13px;color:var(--ink-soft);font-style:italic;margin:10px 0 0}
+.id-sc-report{margin:14px 0 0;padding:14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;font-size:13px}
+.id-sc-ok{color:#0c4a26;margin:0 0 6px;font-size:14px}
+.id-sc-fail{color:#7a2e1f;margin:0 0 6px;font-size:14px}
+.id-sc-meta{color:var(--ink-soft);font-size:12px;margin:0 0 10px}
+.id-sc-table{width:100%;border-collapse:collapse;font-size:11.5px;font-family:ui-monospace,monospace}
+.id-sc-table th,.id-sc-table td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.id-sc-table th{font-weight:600;color:var(--ink)}
+.id-sc-row-ok td:first-child{color:#0c4a26}
+.id-sc-row-fail td:first-child{color:#7a2e1f}
+.id-sc-row-fail{background:rgba(252,224,215,0.4)}
+.id-sc-table td:nth-child(2){word-break:break-all;max-width:380px}
+.id-sc-actions{margin:10px 0 0}
+.id-sc-download{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);font-size:12.5px;cursor:pointer;font-family:inherit}
+.id-sc-download:hover{border-color:var(--ink-soft)}
+
 /* Wave 5.5 — Trust summary panel above the vendor pulse */
 .id-trust-summary{margin:0 0 12px;padding:14px 16px;background:#f4f7f5;border:1px solid var(--line);border-radius:10px}
 .id-trust-summary[hidden]{display:none}
@@ -1198,6 +1218,15 @@
         <summary><strong>Open DevTools → Network. It stays empty.</strong></summary>
         <p>Until you press Save, no requests carry your image or your line items. After Save, exactly one POST goes out — and its body is base64-encoded ciphertext. Search the body for any of your dish names. You won't find them.</p>
       </details>
+      <!-- Wave 8.7 — one-tap Privacy Self-Check. Runs a synthetic
+           OCR pass, captures every network request in a JSON report,
+           lets the operator download it for their accountant. -->
+      <details class="id-honesty-fact" id="idSelfCheckHost">
+        <summary><strong>Run the Privacy Self-Check yourself.</strong></summary>
+        <p>One tap audits this tab's network traffic during a synthetic invoice run, asserts every resource is on the allowlist, and emits a JSON report you can email to your accountant or franchisee compliance team. Click here to prove our privacy policy:</p>
+        <p><button type="button" class="id-sc-run" id="idSelfCheckRun">Run Privacy Self-Check</button></p>
+        <div id="idSelfCheckOut"></div>
+      </details>
 
       <details class="id-verify" itemscope itemtype="https://schema.org/HowTo">
         <summary>Verify it yourself: open DevTools → Network <span class="id-verify-badge">2-minute walk-through</span></summary>
@@ -1294,6 +1323,7 @@
 <script src="./auto-confirm.js?v=20260503-w5-3"></script>
 <script src="./samples.js?v=20260503-w6-6"></script>
 <script src="./resume.js?v=20260503-w6-10"></script>
+<script src="./self-check.js?v=20260503-w8-7"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
 <script src="./invoice-decoder.js?v=20260501-w8-9"></script>
 
