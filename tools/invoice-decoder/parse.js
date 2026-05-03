@@ -81,10 +81,25 @@
   // Conservative bias: skip lone-digit clusters with letters (e.g.
   // "B7" — could be a SKU prefix). The .dd-decimal / $-prefix
   // requirement filters out almost all false positives.
-  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
+  // Wave 4.6 — also catch S→$ at cluster start (Tesseract sometimes
+  // reads "$48.00" as "S48.00"). Word-boundary anchored and requires
+  // 2+ digits immediately after the S so mid-word "SS" sequences in
+  // names like "RUSSET" / "BRUSSELS" don't get mangled.
+  // T/G expansions and %→9 deferred — they over-fire on real fixtures.
+  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|(?:^|[\s(])S(?=\d{2,}|\d[OoIl|SsBbQq])[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
   function repairOcrNumerics(line) {
     return String(line || '').replace(OCR_CLUSTER_RE, function (m) {
-      return m
+      // Strip the optional leading whitespace/paren the alternation
+      // captured to enforce word-boundary on the S→$ branch.
+      var prefix = '';
+      while (m.length && /[\s(]/.test(m.charAt(0))) {
+        prefix += m.charAt(0);
+        m = m.slice(1);
+      }
+      var head = m.charAt(0);
+      var rest = m.slice(1);
+      if (head === 'S') head = '$';
+      return prefix + (head + rest)
         .replace(/[OoQq]/g, '0')
         .replace(/[lI|]/g,  '1')
         .replace(/[Ss]/g,   '5')
@@ -241,6 +256,33 @@
         if (NEG_PRICE_RE.test(line)) row.lineTotal = -row.lineTotal;
       }
       row.fieldConf = scoreFields(row, line, ocrConf, pattern);
+      // Wave 4.3 — cross-field reinforcement. When qty × unitPrice ≈
+      // lineTotal within 1% (or qty × inferred unit-price hits the
+      // line total exactly), three columns reinforce each other and
+      // we boost the per-field confidence. When they disagree by
+      // > 5%, demote price + qty so the operator catches the bad row.
+      if (typeof row.qty === 'number' && row.qty > 0 &&
+          typeof row.lineTotal === 'number' && row.lineTotal !== 0) {
+        var inferredUnit = row.lineTotal / row.qty;
+        if (typeof row.unitPrice === 'number' && row.unitPrice > 0) {
+          var calc = row.unitPrice * row.qty;
+          var pctOff = Math.abs(calc - row.lineTotal) / Math.abs(row.lineTotal);
+          if (pctOff < 0.01) {
+            row.fieldConf.qty   = Math.min(100, row.fieldConf.qty   + 8);
+            row.fieldConf.price = Math.min(100, row.fieldConf.price + 8);
+            row._twoWayBalanced = true;
+          } else if (pctOff > 0.05) {
+            row.fieldConf.qty   = Math.max(0, row.fieldConf.qty   - 6);
+            row.fieldConf.price = Math.max(0, row.fieldConf.price - 6);
+            row._twoWayBalanced = false;
+          }
+        } else if (isFinite(inferredUnit) && inferredUnit > 0) {
+          // Stash the inferred unit price so renderers + sku-history
+          // see a usable per-unit number even when the OCR'd unit-price
+          // column was missing.
+          row._inferredUnitPrice = +inferredUnit.toFixed(4);
+        }
+      }
       // Roll-up confidence is min(name, qty, price) so the legacy
       // bulk-confirm filter still works. Category fills in later.
       row.confidence = Math.min(row.fieldConf.name, row.fieldConf.qty, row.fieldConf.price);

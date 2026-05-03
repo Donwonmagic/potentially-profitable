@@ -295,8 +295,10 @@
   // category fields, then runs MID_PACK_PRICING to attach the
   // pack-aware comparable price (domain-expert layer). Mutates rows
   // in place.
-  function classifyRows(rows) {
+  function classifyRows(rows, opts) {
     if (!Array.isArray(rows)) return;
+    opts = opts || {};
+    var vendor = opts.vendor || null;
     if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
       for (var i = 0; i < rows.length; i++) {
         var c = MID_CATEGORIZE.classify(rows[i]);
@@ -305,6 +307,31 @@
         rows[i].categoryTier       = c.tier;
         rows[i].categorySource     = c.source || null;
         rows[i].tags               = c.tags || [];
+      }
+    }
+    // Wave 4.5 — same-vendor SKU memory bias. For amber-name rows,
+    // look for a high-confidence stem match in the operator's recent
+    // history with the same vendor; when found, raise the name conf
+    // and tag the row so the proof flyout can show "biased toward
+    // your prior 'Boneless skinless thigh' SKU." Conservative —
+    // requires ≥2 prior observations and edit distance ≤ 2.
+    if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.findClosestVendorMemory) {
+      for (var k = 0; k < rows.length; k++) {
+        var r = rows[k];
+        if (!r || !r.fieldConf || r.fieldConf.name >= 80) continue;
+        if (!r.name || r.name.length < 4) continue;
+        try {
+          var mem = MID_SKU_HISTORY.findClosestVendorMemory(r.name, vendor);
+          if (mem && mem.observations >= 2) {
+            // Boost name confidence proportionally to closeness; we
+            // don't replace the OCR text outright (operator's prior
+            // correction already lives in the learnings module),
+            // we just signal trust.
+            r.fieldConf.name = Math.min(95, r.fieldConf.name + 12 - mem.distance * 3);
+            r._skuMemoryHit = mem;
+            r.confidence = Math.min(r.fieldConf.name, r.fieldConf.qty || 80, r.fieldConf.price || 80);
+          }
+        } catch (_) {}
       }
     }
     // Pack-aware unit pricing (domain-expert layer). Categorization

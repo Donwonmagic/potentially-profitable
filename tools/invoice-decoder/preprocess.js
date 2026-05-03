@@ -191,6 +191,39 @@
     return imageData;
   }
 
+  // -------------------- Wave 4.7: Drop-shadow detection --------------------
+  // Phone-on-table photos commonly carry a linear luminance gradient
+  // (window light from one side, body shadow from the other). The
+  // existing correctIlluminationInPlace already flattens this via a
+  // downsample→blur→subtract pipeline. This detector simply quantifies
+  // the gradient so the controller can surface "we flattened a strong
+  // shadow" in the proof flyout. Returns {slopeX, slopeY, magnitude}.
+  function detectAxisGradient(imageData) {
+    var w = imageData.width, h = imageData.height;
+    if (w < 30 || h < 30) return { slopeX: 0, slopeY: 0, magnitude: 0 };
+    var d = imageData.data;
+    var rowMeans = new Array(h);
+    var colMeans = new Array(w);
+    for (var y = 0; y < h; y++) {
+      var s = 0;
+      for (var x = 0; x < w; x++) s += d[(y * w + x) * 4];
+      rowMeans[y] = s / w;
+    }
+    for (var x2 = 0; x2 < w; x2++) {
+      var s2 = 0;
+      for (var y2 = 0; y2 < h; y2++) s2 += d[(y2 * w + x2) * 4];
+      colMeans[x2] = s2 / h;
+    }
+    // Linear regression slope on each axis (Δmean per pixel).
+    var slopeY = (rowMeans[h - 1] - rowMeans[0]) / (h - 1);
+    var slopeX = (colMeans[w - 1] - colMeans[0]) / (w - 1);
+    return {
+      slopeX: slopeX,
+      slopeY: slopeY,
+      magnitude: Math.max(Math.abs(slopeX), Math.abs(slopeY))
+    };
+  }
+
   // -------------------- Wave 3.3: Glare detect + inpaint --------------------
   // Specular highlights (camera flash bounce, kitchen ceiling LEDs)
   // saturate the page in patches that destroy Otsu binarization. We
@@ -1438,6 +1471,7 @@
     preprocessCanvasWithRetry: preprocessCanvasWithRetry,
     preprocessParamSweep: preprocessParamSweep,
     repairGlareInPlace: repairGlareInPlace,
+    detectAxisGradient: detectAxisGradient,
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,
