@@ -283,6 +283,189 @@
     qcEl.innerHTML = body;
   }
 
+  // Wave studio-quality — Pre-flight "Ready to ship" panel.
+  //
+  // The single, consolidated, last-thing-the-operator-reads check
+  // before clicking Download. A real designer would walk through this
+  // mental list before sending a PDF to a client. We surface it as one
+  // green "Ready to ship" line OR an amber list of concrete items the
+  // operator can address (each is advisory; export is never blocked).
+  //
+  // Pulls from systems already wired:
+  //   - paperEl.dataset.fitStep         (from paginatePreviewDom cascade)
+  //   - _computeDishWarnings()          (already used by quality-check)
+  //   - effectiveDisclaimer()           (regime + auto-fill state)
+  //   - printVendor flag                (print-marks visualization mirror)
+  //   - rows + meta                     (counts, business name, etc.)
+  function _renderPreflight() {
+    var pfEl = document.getElementById('mdPreflight');
+    if (!pfEl) return;
+
+    var paperEl = paper;
+    var fitStep = (paperEl && paperEl.dataset && paperEl.dataset.fitStep) || '';
+    var twoColActive = paperEl && paperEl.classList && paperEl.classList.contains('md-promote-2col');
+    var dishCount = rows.filter(function (r) {
+      return r.kind === 'dish' && (r.name || '').trim();
+    }).length;
+    var sectionCount = rows.filter(function (r) {
+      return r.kind === 'section' && (r.name || '').trim();
+    }).length;
+
+    // No content yet — keep panel hidden so first-run UI is calm.
+    if (dishCount === 0) {
+      pfEl.hidden = true;
+      pfEl.innerHTML = '';
+      return;
+    }
+
+    var warnings = _computeDishWarnings();
+    var highWarnings = warnings.filter(function (w) { return w.severity === 'high'; }).length;
+    var medWarnings = warnings.filter(function (w) { return w.severity === 'med'; }).length;
+
+    var fitOverflow = fitStep === 'overflow';
+    var fitShrunk = /shrink/.test(fitStep) || /84%|88%|92%|96%/.test(fitStep);
+    var fitNative = fitStep === 'native' || fitStep === '' || fitStep === 'fit';
+
+    // Disclaimer state — only meaningful when allergens are tagged.
+    var hasAllergens = (typeof hasAnyAllergenTagged === 'function') && hasAnyAllergenTagged();
+    var disclaimerTyped = !!(meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim());
+    var disclaimerAuto = !disclaimerTyped && hasAllergens && effectiveDisclaimer().length > 0;
+    var disclaimerMissing = hasAllergens && !disclaimerTyped && !disclaimerAuto;
+
+    // Business name — printed deliverables look amateur without it.
+    var hasBusinessName = !!(meta && (meta.businessName || '').trim()) ||
+                          !!(typeof window !== 'undefined' && window.MUNTIN_BUSINESS_NAME);
+
+    // Build the items list.
+    var items = [];
+    if (fitOverflow) {
+      items.push({
+        kind: 'block',
+        label: tt(
+          "Won't fit one page even at minimum type size — see the warning above for ways to make it fit.",
+          'No cabe en una página ni con el tipo más pequeño — mira la advertencia de arriba para ver cómo hacerlo caber.'
+        )
+      });
+    } else if (fitShrunk) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Fit at ' + fitStep + (twoColActive ? '' : '') + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
+          'Cabe a ' + fitStep + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
+        )
+      });
+    }
+    if (highWarnings > 0) {
+      items.push({
+        kind: 'block',
+        label: tt(
+          highWarnings + ' high-severity quality issue' + (highWarnings === 1 ? '' : 's') + ' — see the panel above ($0 prices, very long names).',
+          highWarnings + ' problema' + (highWarnings === 1 ? '' : 's') + ' de calidad importante' + (highWarnings === 1 ? '' : 's') + ' — mira el panel de arriba (precios $0, nombres muy largos).'
+        )
+      });
+    } else if (medWarnings > 0) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          medWarnings + ' medium-severity quality note' + (medWarnings === 1 ? '' : 's') + ' (duplicates, long names) — see the panel above.',
+          medWarnings + ' nota' + (medWarnings === 1 ? '' : 's') + ' de calidad media (duplicados, nombres largos) — mira el panel de arriba.'
+        )
+      });
+    }
+    if (disclaimerMissing) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Allergens are tagged but no disclaimer is set. Add one in the meta panel below, or pick an allergen-labeling regime to auto-fill.',
+          'Hay alérgenos etiquetados pero no hay aviso. Añade uno en el panel de meta abajo, o elige un régimen de etiquetado para autocompletar.'
+        )
+      });
+    }
+    if (!hasBusinessName) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'No business name set — the menu will print without one. Add it in the meta panel below.',
+          'Sin nombre de negocio — el menú se imprimirá sin uno. Añádelo en el panel de meta abajo.'
+        )
+      });
+    }
+    if (sectionCount === 0 && dishCount >= 4) {
+      items.push({
+        kind: 'note',
+        label: tt(
+          'No sections — diners read top-to-bottom faster when dishes are grouped (Starters, Mains, Desserts).',
+          'Sin secciones — los diners leen de arriba a abajo más rápido cuando los platos están agrupados (Entradas, Principales, Postres).'
+        )
+      });
+    }
+
+    // Compose UI. Green ready-state when nothing flagged.
+    if (items.length === 0) {
+      var pageWord = (fitNative || fitShrunk)
+        ? (twoColActive ? tt('1 page · 2 columns', '1 página · 2 columnas') : tt('1 page', '1 página'))
+        : tt('1 page', '1 página');
+      // If allowMultiPage + cascade landed on 2 buckets, label it.
+      if (meta && meta.allowMultiPage && paperEl && paperEl.dataset && paperEl.dataset.smartBreakAt) {
+        pageWord = twoColActive
+          ? tt('2 pages · 2 columns', '2 páginas · 2 columnas')
+          : tt('2 pages', '2 páginas');
+      }
+      var summary = dishCount + ' ' + tt('dishes', 'platos') +
+                    (sectionCount > 0 ? ' · ' + sectionCount + ' ' + tt('sections', 'secciones') : '') +
+                    ' · ' + pageWord +
+                    (printVendor ? ' · ' + tt('print-vendor mode', 'modo imprenta') : '') +
+                    (disclaimerAuto || disclaimerTyped ? ' · ' + tt('disclaimer ready', 'aviso listo') : '');
+      pfEl.hidden = false;
+      pfEl.classList.remove('is-attention');
+      pfEl.classList.add('is-ready');
+      pfEl.innerHTML =
+        '<div class="md-pf-row">' +
+          '<svg class="md-pf-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '<div class="md-pf-text">' +
+            '<strong>' + escHtml(tt('Ready to ship.', 'Listo para enviar.')) + '</strong> ' +
+            '<span class="md-pf-summary">' + escHtml(summary) + '</span>' +
+          '</div>' +
+        '</div>';
+      return;
+    }
+
+    // Attention state — list the items.
+    var blockCount = items.filter(function (i) { return i.kind === 'block'; }).length;
+    var heading = blockCount > 0
+      ? tt(items.length + ' item' + (items.length === 1 ? '' : 's') + ' to address before shipping',
+           items.length + ' elemento' + (items.length === 1 ? '' : 's') + ' que revisar antes de enviar')
+      : tt(items.length + ' note' + (items.length === 1 ? '' : 's') + ' to consider',
+           items.length + ' nota' + (items.length === 1 ? '' : 's') + ' que considerar');
+    var listHtml = '<ul>';
+    items.forEach(function (it) {
+      listHtml += '<li>' + escHtml(it.label) + '</li>';
+    });
+    listHtml += '</ul>';
+    pfEl.hidden = false;
+    pfEl.classList.remove('is-ready');
+    pfEl.classList.toggle('is-attention', blockCount > 0);
+    pfEl.classList.toggle('is-notes', blockCount === 0);
+    pfEl.innerHTML =
+      '<div class="md-pf-row md-pf-row-stack">' +
+        '<svg class="md-pf-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          (blockCount > 0
+            ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+            : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>') +
+        '</svg>' +
+        '<div class="md-pf-text">' +
+          '<strong>' + escHtml(heading) + '.</strong> ' +
+          '<span class="md-pf-summary md-pf-summary-block">' +
+            escHtml(tt(
+              'Export still works — these are advisory.',
+              'La exportación sigue funcionando — estos son avisos.'
+            )) +
+          '</span>' +
+          listHtml +
+        '</div>' +
+      '</div>';
+  }
+
   // Sister helper — did the live-preview cascade promote the layout
   // to 2 columns? PDF export flow uses this to switch from paginate()
   // to paginateTwoCol() so the printed deliverable matches the
@@ -2037,6 +2220,20 @@
       // Wave studio-quality — quality-check warnings render after
       // every preview repaint so they stay current with operator edits.
       try { _renderDishWarnings(); } catch (_) {}
+      // Wave studio-quality — pre-flight panel runs twice: once now
+      // (synchronous estimate from quick-fit + warnings) and once
+      // after rAF settles the cascade (so fitStep + smartBreakAt are
+      // accurate). The first render keeps the panel responsive on
+      // slow keystrokes; the second corrects the page-fit summary
+      // once the DOM has measured.
+      try { _renderPreflight(); } catch (_) {}
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            try { _renderPreflight(); } catch (_) {}
+          });
+        });
+      }
     }, 300);
   }
 
