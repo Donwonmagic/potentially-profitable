@@ -112,6 +112,61 @@
   var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
   function tt(en, es) { return LOCALE === 'es' ? es : en; }
 
+  // -------------------- Funnel events (Wave A6 — synthesis plan) -----
+  // Bounded-cardinality Plausible events that complete the funnel
+  // diagnosis the existing 16 events left undefined. All prop values
+  // come from a closed enum so scripts/check-event-prop-cardinality.mjs
+  // stays green.
+  //
+  //   Menu Design Tool Loaded         — first script run; locale prop
+  //   Menu Design First Dish          — single-fire per session; trigger
+  //                                     prop ∈ paste|template|manual|sample
+  //   Menu Design Theme Changed       — user-initiated theme switch
+  //                                     (NOT history/draft/template loads)
+  //   Menu Design Custom Logo Added   — kind ∈ svg|raster
+  //   Menu Design Disclaimer Read     — honesty card in viewport ≥3s
+  //   Menu Design Outbound Drop-In    — click any /services/menu-drop-in/ link
+  //   Menu Design Outbound Polish     — click any /services/menu-polish/ link
+  //   Menu Design Export Failed       — superset of legacy PDF Failed,
+  //                                     adds {format, reason}; reason enum
+  //                                     ∈ cdn-blocked|cdn-load|oom|
+  //                                       font-missing|worker-unsupported|unknown
+  //
+  // Implementation note: each helper writes the event name as a string
+  // literal in a direct `window.plausible(...)` call so the vocabulary
+  // scanner at scripts/check-analytics-vocabulary.mjs (regex:
+  // /window\.plausible\(/) finds it. A wrapping helper would hide the
+  // event names from that scanner.
+
+  var __firstDishFired = false;
+  function fireFirstDishOnce(trigger) {
+    if (__firstDishFired) return;
+    var hasNonBlank = rows.some(function (r) {
+      return r && r.kind === 'dish' && (r.name || '').trim() !== '';
+    });
+    if (!hasNonBlank) return;
+    __firstDishFired = true;
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design First Dish', { props: { trigger: String(trigger || 'manual') } });
+      } catch (_) {}
+    }
+  }
+
+  function fireThemeChanged(themeId) {
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design Theme Changed', { props: { theme: String(themeId || 'unknown') } });
+      } catch (_) {}
+    }
+  }
+
+  // Fire Tool Loaded immediately — it's the funnel head and must
+  // count both no-action loads and full-flow sessions.
+  if (window.plausible) {
+    try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
+  }
+
   // A2 state — theme id, logo data-URL, paper size key. Lives in
   // the same closure as rows[] so render() can pull everything.
   var themeId  = 'modern-minimal';
@@ -528,6 +583,7 @@
       var li = e.target.closest('.md-theme');
       if (!li) return;
       themeId = li.dataset.id;
+      fireThemeChanged(themeId);
       renderThemePicker();
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
@@ -548,6 +604,7 @@
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         themeId = li.dataset.id;
+        fireThemeChanged(themeId);
         renderThemePicker();
         renderPreview();
         scheduleSaveDraft();
@@ -559,6 +616,7 @@
       else if (e.key === 'End')  { e.preventDefault(); nextIdx = allLis.length - 1; }
       else return;
       themeId = allLis[nextIdx].dataset.id;
+      fireThemeChanged(themeId);
       renderThemePicker();
       renderPreview();
       scheduleSaveDraft();
@@ -607,6 +665,17 @@
   function applyLogo(dataUrl, name, w, h) {
     logoUrl = dataUrl;
     logoMeta = { name: name, w: w, h: h };
+    // Wave A6 funnel — bounded prop so a returning operator who
+    // re-uploads the same logo doesn't double-count (the kind enum
+    // collapses both cases). SVG path passes w=h=null so the kind
+    // discriminator is the data-URL prefix.
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design Custom Logo Added', { props: {
+          kind: (typeof dataUrl === 'string' && dataUrl.indexOf('data:image/svg') === 0) ? 'svg' : 'raster'
+        }});
+      } catch (_) {}
+    }
     if (logoThumb) {
       logoThumb.innerHTML = '<img src="' + escHtml(dataUrl) + '" alt="" />';
       // W5-5 — small bounce so the operator sees the logo land.
@@ -1813,6 +1882,12 @@
   function scheduleSaveDraft() {
     if (__saveTimer) clearTimeout(__saveTimer);
     __saveTimer = setTimeout(function () { __saveTimer = null; persistDraft(); }, 500);
+    // Wave A6 funnel — every state mutation passes through the
+    // autosave path, so this is a single-point hook for the
+    // "First Dish" milestone. The fire helper guards itself
+    // (single-fire per session, only fires when a non-blank dish
+    // exists), so calling it here is cheap.
+    fireFirstDishOnce('manual');
   }
 
   function loadDraft() {
@@ -2242,6 +2317,7 @@
       var d = document.querySelector('.md-templates');
       if (d) d.open = false;
       if (window.plausible) { try { window.plausible('Menu Design Template Loaded', { props: { template: key } }); } catch (_) {} }
+      fireFirstDishOnce('template');
     });
   }
 
@@ -2390,6 +2466,7 @@
     var paste = document.getElementById('mdPaste');
     if (paste) paste.open = false;
     if (window.plausible) window.plausible('Menu Design Paste', { props: { added: String(parsed.length) } });
+    fireFirstDishOnce('paste');
   });
 
   // -------------------- Sample menu --------------------
@@ -2732,6 +2809,17 @@
         }
         if (window.plausible) {
           try { window.plausible('Menu Design PDF Failed'); } catch (_) {}
+          // Wave A6 — superset Export Failed event with bounded
+          // {format, reason} enums. Both stay strict for cardinality:
+          //   format ∈ pdf | large-print | high-contrast | qr | text |
+          //            ssml | brf | tablet | png
+          //   reason ∈ cdn-blocked | cdn-load | oom | font-missing |
+          //            worker-unsupported | unknown
+          // Same call site, two events: legacy stays for back-compat
+          // dashboards; new one carries the diagnostic prop pair.
+          try {
+            window.plausible('Menu Design Export Failed', { props: { format: 'pdf', reason: 'unknown' } });
+          } catch (_) {}
         }
       }).then(function () {
         downloadBtn.disabled = false;
@@ -3700,6 +3788,7 @@
       vibeQuizResults.querySelectorAll('button[data-theme]').forEach(function (b) {
         b.addEventListener('click', function () {
           themeId = b.dataset.theme;
+          fireThemeChanged(themeId);
           renderThemePicker();
           renderPreview();
           scheduleSaveDraft();
@@ -3732,5 +3821,72 @@
   if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.subscribe === 'function') {
     MuntinContext.subscribe(renderCtxPill);
   }
+
+  // -------------------- Wave A6 — outbound CTA tracking ----------
+  // Body-level click delegation so any current OR future link to
+  // the studio's two productized offers gets tracked without us
+  // having to retrofit IDs onto every CTA. Bounded enum on the
+  // `surface` prop discriminates which area of the page sourced
+  // the click (drawer, footer, honesty, header — closed set).
+  function ctaSurfaceFor(el) {
+    if (!el) return 'unknown';
+    if (el.closest('.md-honesty')) return 'honesty';
+    if (el.closest('header, .site-header, .topbar')) return 'header';
+    if (el.closest('footer, .site-footer')) return 'footer';
+    if (el.closest('.md-toolbar, .md-download-row, .md-export')) return 'toolbar';
+    return 'body';
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('/services/menu-drop-in/') >= 0 || href.indexOf('/services/menu-drop-in') === 0) {
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Drop-In', { props: { surface: ctaSurfaceFor(a), locale: LOCALE } });
+        } catch (_) {}
+      }
+      return;
+    }
+    if (href.indexOf('/services/menu-polish/') >= 0 || href.indexOf('/services/menu-polish') === 0) {
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Polish', { props: { surface: ctaSurfaceFor(a), locale: LOCALE } });
+        } catch (_) {}
+      }
+      return;
+    }
+  }, { capture: true });
+
+  // -------------------- Wave A6 — disclaimer-read milestone ----------
+  // The "What this is, and what it isn't." card is the trust anchor
+  // for the privacy + scope claims. Operators who scroll to it and
+  // dwell ≥3s are the qualified-for-Polish-tier population. Fires
+  // once per session; no props (cardinality-safe).
+  (function instrumentDisclaimerRead() {
+    if (typeof IntersectionObserver !== 'function') return;
+    var card = document.querySelector('.md-honesty');
+    if (!card) return;
+    var fired = false;
+    var dwellTimer = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (fired || dwellTimer) return;
+          dwellTimer = setTimeout(function () {
+            if (fired) return;
+            fired = true;
+            if (window.plausible) {
+              try { window.plausible('Menu Design Disclaimer Read'); } catch (_) {}
+            }
+            io.disconnect();
+          }, 3000);
+        } else {
+          if (dwellTimer) { clearTimeout(dwellTimer); dwellTimer = null; }
+        }
+      });
+    }, { threshold: [0, 0.5, 1] });
+    io.observe(card);
+  })();
 
 })();

@@ -140,12 +140,22 @@
       'Menu Copy Inspector Export',
       'Menu Design BRF Exported',
       'Menu Design Ctx Used',
+      // Wave A6 — funnel events added by the empowerment plan to
+      // close the diagnosis gap between Tool Loaded and Outbound CTA
+      // (the studio handoff). Bounded prop sets enforced by
+      // scripts/check-event-prop-cardinality.mjs.
+      'Menu Design Custom Logo Added',
+      'Menu Design Disclaimer Read',
       'Menu Design Downloaded',
       'Menu Design Draft Restored',
       'Menu Design Encouragement',
+      'Menu Design Export Failed',
+      'Menu Design First Dish',
       'Menu Design Ghost Cleared',
       'Menu Design High Contrast Exported',
       'Menu Design Large Print Exported',
+      'Menu Design Outbound Drop-In',
+      'Menu Design Outbound Polish',
       'Menu Design PDF Failed',
       'Menu Design PNG Fallback',
       'Menu Design Paste',
@@ -155,6 +165,8 @@
       'Menu Design Tablet Exported',
       'Menu Design Template Loaded',
       'Menu Design Text Exported',
+      'Menu Design Theme Changed',
+      'Menu Design Tool Loaded',
       'Menu Engineering Analysis',
       'Menu Engineering Export',
       'Menu Engineering Whatif',
