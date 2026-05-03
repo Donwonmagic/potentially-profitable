@@ -276,6 +276,14 @@ header.nav{min-height:64px}
 .md-themes-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
 .md-themes-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;list-style:none;padding:0;margin:0}
 @media(max-width:640px){.md-themes-list{grid-template-columns:1fr 1fr}}
+/* Wave studio-quality — grouped picker. Each group sub-heading
+   spans the full grid width and styles like a small section label
+   so the picker reads as Casual / Classic / Modern / Specialty
+   rather than 25 cards in a wall. */
+.md-theme-group{grid-column:1/-1;display:flex;align-items:baseline;gap:14px;margin:14px 0 -2px;list-style:none}
+.md-theme-group:first-child{margin-top:0}
+.md-theme-group-label{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);white-space:nowrap}
+.md-theme-group::after{content:'';flex:1;height:1px;background:color-mix(in srgb,var(--stone) 25%,transparent)}
 .md-theme{cursor:pointer;padding:14px 14px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);transition:border-color var(--t-fast),transform var(--t-fast)}
 .md-theme:hover{border-color:var(--teal);transform:translateY(-1px)}
 /* W10-2 — bumped active-state contrast from 22% to a full-opacity

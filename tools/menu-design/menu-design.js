@@ -747,9 +747,18 @@
   // -------------------- Theme picker --------------------
   function renderThemePicker() {
     if (!themesEl || typeof MD_THEMES === 'undefined') return;
-    var ids = MD_THEMES.list();
-    themesEl.innerHTML = ids.map(function (id) {
+    // Wave studio-quality — grouped picker. 25 themes flat is a wall;
+    // operators have to scan everything to find the right one. The
+    // themes.js GROUPS structure already classifies them into Casual /
+    // Classic / Modern / Specialty. Render each group with a small
+    // labeled subhead so picking is intent-driven not exhaustive.
+    var groups = (typeof MD_THEMES.groups === 'function') ? MD_THEMES.groups() : null;
+    var rendered = {};   // track which themes we've placed (defends
+                         // against group registry drift)
+    function renderTheme(id) {
       var t = MD_THEMES.get(id);
+      if (!t) return '';
+      rendered[id] = true;
       var label = LOCALE === 'es' ? t.label_es : t.label_en;
       var blurb = LOCALE === 'es' ? t.blurb_es : t.blurb_en;
       var swatches = [t.paper, t.ink, t.accent, t.muted].map(function (c) {
@@ -760,7 +769,32 @@
         '<p class="md-theme-blurb">' + escHtml(blurb) + '</p>' +
         '<div class="md-theme-swatches">' + swatches + '</div>' +
         '</li>';
-    }).join('');
+    }
+    if (groups && groups.length) {
+      var html = '';
+      groups.forEach(function (g) {
+        var groupLabel = LOCALE === 'es' ? (g.label_es || g.label_en) : g.label_en;
+        var items = (g.themes || []).map(renderTheme).join('');
+        if (!items) return;
+        html += '<li class="md-theme-group" role="presentation" aria-hidden="true">' +
+                  '<span class="md-theme-group-label">' + escHtml(groupLabel) + '</span>' +
+                '</li>' + items;
+      });
+      // Catch any themes the groups missed (defensive — keeps flat
+      // tail so newly-added themes never disappear from the picker).
+      var orphans = MD_THEMES.list().filter(function (id) { return !rendered[id]; });
+      if (orphans.length) {
+        var orphLabel = LOCALE === 'es' ? 'Otros' : 'Other';
+        html += '<li class="md-theme-group" role="presentation" aria-hidden="true">' +
+                  '<span class="md-theme-group-label">' + escHtml(orphLabel) + '</span>' +
+                '</li>' + orphans.map(renderTheme).join('');
+      }
+      themesEl.innerHTML = html;
+    } else {
+      // Legacy fallback when GROUPS isn't exposed (shouldn't happen
+      // post-W15 themes.js but defends against an old themes.js).
+      themesEl.innerHTML = MD_THEMES.list().map(renderTheme).join('');
+    }
   }
 
   if (themesEl) {
