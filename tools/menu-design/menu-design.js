@@ -212,7 +212,14 @@
     // is US-FDA-9 (current operator base); selector at #mdMetaRegime
     // lets EU / UK / CA / AU / NZ operators override. Persisted with
     // the rest of meta via state/draft.js.
-    allergenRegime: 'us-fda9'
+    allergenRegime: 'us-fda9',
+    // Wave studio-quality — opt-in to a 2-page (front+back) menu when
+    // the operator's content genuinely needs it. Default false: the
+    // live-preview pagination tries to fit a single sheet by auto-
+    // shrinking type within readable bounds, and surfaces a clear
+    // advisory when even minimum sizes overflow. Real restaurant
+    // menus are 1 or 2 pages — three-page menus aren't a thing.
+    allowMultiPage: false
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -964,6 +971,17 @@
       scheduleSaveDraft();
     });
   });
+  // Wave studio-quality — allow-multi-page checkbox (auto-fit override).
+  var metaAllowMultiPageEl = document.getElementById('mdMetaAllowMultiPage');
+  if (metaAllowMultiPageEl) {
+    metaAllowMultiPageEl.checked = !!meta.allowMultiPage;
+    metaAllowMultiPageEl.addEventListener('change', function () {
+      meta.allowMultiPage = !!metaAllowMultiPageEl.checked;
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+
   // Wave B2 — regime selector (separate wiring; uses `change` instead
   // of `input`). Defaults to us-fda9; menus loaded from a v1/v2 draft
   // that lacks the field default to us-fda9 too. The placeholder hint
@@ -1348,12 +1366,46 @@
     }
   }
 
-  // W24-2 — DOM-measured page split. After the html is rendered into
-  // the first .md-preview-paper, walk children and bin-pack by
-  // measured height vs the paper's content-area height. When a child
-  // would overflow, start a new .md-preview-paper sibling and insert
-  // a .md-page-break shim between. Per-page corner labels are added
-  // last. Returns final page count.
+  // W24-2 + Wave studio-quality — DOM-measured page split with
+  // auto-shrink-to-fit. Real restaurant menus are 1 page (most
+  // common) or 2 pages (front + back). Three-page menus aren't a
+  // thing. Behavior cascade for sheet papers:
+  //
+  //   1. Measure with theme's native font sizes. If it fits the
+  //      target page count (1 by default; 2 if meta.allowMultiPage),
+  //      ship it.
+  //   2. If overflow, progressively shrink the body+desc fonts via
+  //      a CSS scale variable. Floor at 0.78× (so 11pt body → 8.6pt;
+  //      below that menus get unreadable). Re-measure each step.
+  //   3. If still overflow at minimum scale, surface a clear
+  //      actionable warning instead of silently spilling to N pages.
+  //
+  // The shrink applies via the .md-shrink-N CSS class (added/removed
+  // on paperEl) — actual font sizes live in the existing CSS vars.
+  // Operator opt-in: `meta.allowMultiPage` lets the renderer split
+  // freely (back-compat for existing operators with multi-page menus).
+  function _measureBuckets(paperEl, contentAreaH) {
+    var children = Array.prototype.slice.call(paperEl.children);
+    var heights = children.map(function (c) {
+      var cs = window.getComputedStyle(c);
+      if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
+      return c.getBoundingClientRect().height;
+    });
+    var pageBuckets = [[]];
+    var bucketH = 0;
+    children.forEach(function (c, idx) {
+      var ch = heights[idx];
+      if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
+        pageBuckets.push([c]);
+        bucketH = ch;
+      } else {
+        pageBuckets[pageBuckets.length - 1].push(c);
+        bucketH += ch;
+      }
+    });
+    return pageBuckets;
+  }
+
   function paginatePreviewDom(paperEl, frame, paperInfo) {
     if (!paperEl || !frame || !paperInfo) return 1;
     var rect = paperEl.getBoundingClientRect();
@@ -1368,7 +1420,76 @@
       addPageNumLabel(paperEl, 1, 1);
       return 1;
     }
-    // Measure each child once. Skip absolute-positioned siblings.
+
+    // Wave studio-quality — auto-shrink-to-fit for sheet papers.
+    // Panel-flow papers (trifold/tent) stay on their own pagination.
+    if (paperInfo.flow !== 'panel') {
+      var allowMulti = !!(meta && meta.allowMultiPage);
+      var targetPages = allowMulti ? 2 : 1;
+      var SHRINK_STEPS = ['', 'shrink-1', 'shrink-2', 'shrink-3', 'shrink-4'];
+      // Clear any prior shrink class + warning before re-measure.
+      SHRINK_STEPS.forEach(function (cls) { if (cls) paperEl.classList.remove('md-' + cls); });
+      var fitOk = false;
+      var firstStepBuckets = null;
+      for (var stepIdx = 0; stepIdx < SHRINK_STEPS.length; stepIdx++) {
+        var cls = SHRINK_STEPS[stepIdx];
+        if (cls) paperEl.classList.add('md-' + cls);
+        // Force a reflow before re-measure.
+        // eslint-disable-next-line no-unused-expressions
+        paperEl.offsetHeight;
+        var buckets = _measureBuckets(paperEl, contentAreaH);
+        if (stepIdx === 0) firstStepBuckets = buckets;
+        if (buckets.length <= targetPages) {
+          fitOk = true;
+          break;
+        }
+        // Remove this shrink class before trying the next step (each
+        // step is cumulative-replacement, not stacked).
+        if (cls) paperEl.classList.remove('md-' + cls);
+      }
+      // If still overflowing at maximum shrink, restore native sizes
+      // (no shrink class) and let the legacy multi-page split fire,
+      // BUT surface a clear actionable warning so the operator knows
+      // their menu won't ship as a single sheet.
+      if (!fitOk) {
+        // Re-measure children with the now-cleared shrink classes
+        // so the heights variable below uses native sizes.
+        // eslint-disable-next-line no-unused-expressions
+        paperEl.offsetHeight;
+        if (overflowEl && firstStepBuckets) {
+          var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+          var pagesAtNative = firstStepBuckets.length;
+          var avgPerPage = Math.max(1, Math.round(dishCount / pagesAtNative));
+          var trimNeeded = Math.max(3, dishCount - avgPerPage);
+          var paperLabel = paperInfo.label || paperInfo.label_en || 'this paper';
+          overflowEl.hidden = false;
+          overflowEl.innerHTML =
+            '<strong>' + escHtml(tt(
+              "This menu won't fit on one " + paperLabel + ".",
+              'Este menú no cabe en un ' + paperLabel + '.'
+            )) + '</strong> ' +
+            escHtml(tt(
+              'Real restaurant menus are 1 page or 2 pages (front + back). To fit:',
+              'Los menús de restaurante reales son 1 página o 2 páginas (frente + dorso). Para que quepa:'
+            )) +
+            '<ul style="margin:6px 0 0 18px;padding:0">' +
+              '<li>' + escHtml(tt('Trim ' + trimNeeded + ' dishes, OR', 'Quita ' + trimNeeded + ' platos, O')) + '</li>' +
+              '<li>' + escHtml(tt('Enable "Allow front + back (2 pages)" in the meta panel below, OR',
+                                  'Activa "Permitir frente + dorso (2 páginas)" en el panel de meta abajo, O')) + '</li>' +
+              '<li>' + escHtml(tt('Pick a larger paper format (Tabloid 11×17, A3) or a trifold layout',
+                                  'Elige un formato más grande (Tabloide 11×17, A3) o un tríptico')) + '</li>' +
+            '</ul>';
+        }
+      } else if (overflowEl) {
+        // Fit OK — clear any prior warning.
+        overflowEl.hidden = true;
+        overflowEl.textContent = '';
+      }
+    }
+
+    // Final measurement (after any shrink class settled) for the
+    // existing bin-pack into pageBuckets that the rest of the function
+    // consumes. The shrink class remains on paperEl through draw.
     var heights = children.map(function (c) {
       var cs = window.getComputedStyle(c);
       if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
@@ -2030,9 +2151,16 @@
           meta.sourcing      = d.meta.sourcing      || '';
           meta.disclaimer    = d.meta.disclaimer    || '';
           meta.askYourServer = d.meta.askYourServer || '';
+          // Wave B2 — restore allergen regime + studio-quality multi-page flag.
+          meta.allergenRegime = d.meta.allergenRegime || 'us-fda9';
+          meta.allowMultiPage = !!d.meta.allowMultiPage;
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+          var regimeRestoreEl = document.getElementById('mdMetaRegime');
+          if (regimeRestoreEl) regimeRestoreEl.value = meta.allergenRegime;
+          var multiRestoreEl = document.getElementById('mdMetaAllowMultiPage');
+          if (multiRestoreEl) multiRestoreEl.checked = !!meta.allowMultiPage;
           metaFooterFields.forEach(function (pair) {
             var fEl = document.getElementById(pair[0]);
             if (fEl) fEl.value = meta[pair[1]] || '';

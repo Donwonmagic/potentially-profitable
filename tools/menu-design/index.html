@@ -491,6 +491,27 @@ header.nav{min-height:64px}
    via currentColor + the decoration's color attribute. The preview
    paper is position:relative; this layers behind menu content via
    z-index:0 (content sits at z-index:1 by default in stacking ctx). */
+/* Wave studio-quality — auto-shrink-to-fit. Real restaurant menus
+   are 1 page or 2 pages (front+back), never 3+. When the operator's
+   dish count would overflow, paginatePreviewDom progressively adds
+   one of these classes to scale type down by 4–16% (CSS-multiplier
+   on the existing --bodypx / --h2px tokens). Floors at 0.84× of
+   native — below that menus get unreadable. Class added BEFORE
+   final measurement so the bucket pass sees the shrunken sizes. */
+.md-preview-paper.md-shrink-1{font-size:96%}
+.md-preview-paper.md-shrink-1 .md-pp-row{padding:8px 0}
+.md-preview-paper.md-shrink-2{font-size:92%}
+.md-preview-paper.md-shrink-2 .md-pp-row{padding:7px 0}
+.md-preview-paper.md-shrink-2 h2.md-pp-section{margin:24px 0 10px}
+.md-preview-paper.md-shrink-3{font-size:88%}
+.md-preview-paper.md-shrink-3 .md-pp-row{padding:6px 0}
+.md-preview-paper.md-shrink-3 h2.md-pp-section{margin:20px 0 8px}
+.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:0.78em}
+.md-preview-paper.md-shrink-4{font-size:84%}
+.md-preview-paper.md-shrink-4 .md-pp-row{padding:5px 0}
+.md-preview-paper.md-shrink-4 h2.md-pp-section{margin:16px 0 6px}
+.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:0.74em}
+
 .md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
 .md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
 .md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}
@@ -1083,6 +1104,25 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               <label for="mdMetaSourcing">Sourcing / origin note</label>
               <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Sourced from farms within 100 miles of our kitchen" autocomplete="off" />
             </div>
+            <!-- Wave studio-quality — page-fit override. By default the
+                 tool fits every menu to a single sheet (auto-shrinking
+                 type within readable bounds). Operators with genuinely
+                 long menus opt INTO front+back (2-page) mode by ticking
+                 this box. Three-page menus aren't a thing in real
+                 restaurants — the auto-fit + clear advisory protects
+                 the operator from shipping one. -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaAllowMultiPage" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Allow front + back (2 pages)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Real menus are 1 page or 2 pages — never 3. Off by default; we auto-shrink type to fit. Tick to allow a front + back.
+                  </span>
+                </span>
+              </label>
+            </div>
+
             <!-- Wave B2 — allergen regime selector. Default is US FDA Big 9
                  (the operator base today); EU / UK / CA / AU / NZ operators
                  switch to get the regime-correct default disclaimer text
