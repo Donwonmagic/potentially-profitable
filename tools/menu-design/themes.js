@@ -632,6 +632,148 @@
                     'libanesa', 'mediterránea', 'mezze levantino']
     },
 
+    // Wave studio-quality (B4 final) — Cheese & Butcher.
+    // Cheese / charcuterie counter and small-batch butcher shops.
+    // Butcher-paper kraft with slab-serif display. Pricing-by-weight
+    // column (operators sell by 100g, lb, oz, etc — different number
+    // formatting than dish menus). Reuses wood-grain motif for
+    // butcher-paper-adjacent texture.
+    'cheese-butcher': {
+      id: 'cheese-butcher',
+      label_en: 'Cheese + Butcher',
+      label_es: 'Quesos + Carnicería',
+      blurb_en: 'Butcher kraft, slab serif, pricing-by-weight column. Counter energy.',
+      blurb_es: 'Kraft de carnicería, slab serif, precios por peso. Energía de mostrador.',
+      paper:    '#E8DDC4',
+      ink:      '#2A1F14',
+      accent:   '#7A2920',
+      muted:    '#6E5E45',
+      bodyFamily:    'Inter, Helvetica, Arial, sans-serif',
+      displayFamily: '"Roboto Slab", Rockwell, "Courier New", monospace',
+      h1Pt:    32,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-left',
+      letterSpacing: 'normal',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'placemat', 'specials'],
+      cuisineHint: ['cheese', 'fromager', 'fromagerie', 'charcuterie', 'butcher',
+                    'carniceria', 'carnicería', 'cured meat', 'whole animal',
+                    'small batch butcher', 'queso', 'quesos']
+    },
+
+    // Wave studio-quality (B4 final) — Chef's Counter.
+    // European prix-fixe variant of tasting-omakase. Course-numbered
+    // single-column, pairing line for wine. For chef's counters in
+    // bistros and small upscale dining rooms. Uses the brush-stroke
+    // motif (same as tasting-omakase — both are course-driven).
+    'chef-counter': {
+      id: 'chef-counter',
+      label_en: 'Chef\'s Counter',
+      label_es: 'Mostrador del Chef',
+      blurb_en: 'European prix-fixe. Course-numbered, pairing line, ample white space.',
+      blurb_es: 'Prix-fixe europeo. Cursos numerados, línea de maridaje, mucho aire.',
+      paper:    '#FAF8F2',
+      ink:      '#1A1A1A',
+      accent:   '#403028',
+      muted:    '#8B7E6E',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    36,
+      h2Pt:    14,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  10,
+      priceStyle:    'price-after-name',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'tasting',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'specials'],
+      cuisineHint: ['chef counter', 'chef\'s counter', 'chefs counter', 'prix fixe',
+                    'prix-fixe', 'european tasting', 'tasting menu', 'degustation',
+                    'menu degustacion', 'menú de degustación', 'mostrador del chef']
+    },
+
+    // Wave studio-quality (B4 final) — Room-service / Hotel F&B.
+    // Bedside in-room menu. Two-column, generous descPt (room-service
+    // descriptions tend to be longer + more genteel), time-window
+    // tags ("served 6–11am", "until 11pm") that the existing
+    // availability field renders. Hotel F&B is a huge segment with
+    // no good theme today. Cream paper, navy ink, brass accent.
+    'room-service-hotel': {
+      id: 'room-service-hotel',
+      label_en: 'Room Service',
+      label_es: 'Servicio a la Habitación',
+      blurb_en: 'Hotel F&B in-room. Cream + navy + brass, two-column with time tags.',
+      blurb_es: 'Hotel F&B en habitación. Crema + marino + latón, dos columnas con horarios.',
+      paper:    '#F4ECDA',
+      ink:      '#1B2336',
+      accent:   '#B68A3E',
+      muted:    '#6F6553',
+      bodyFamily:    '"EB Garamond", Garamond, Georgia, serif',
+      displayFamily: '"Playfair Display", "Cormorant Garamond", Garamond, serif',
+      h1Pt:    34,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  10,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'table-card', 'placemat'],
+      cuisineHint: ['room service', 'in-room dining', 'hotel f&b', 'hotel restaurant',
+                    'hotel dining', 'bedside menu', 'servicio a la habitación',
+                    'hotel boutique', 'hotel resort']
+    },
+
+    // Wave studio-quality (B4 final) — Bagel Grid.
+    // Fixed-grid pricing card for bagel shops + over-counter signage.
+    // Monospaced columns make the price column align perfectly without
+    // leader dots. White paper, deep blue accent, condensed display.
+    // For shops that hand customers a one-page pricing card or hang
+    // signage above the counter (Tompkins Square, Russ-style).
+    'bagel-grid': {
+      id: 'bagel-grid',
+      label_en: 'Bagel Grid',
+      label_es: 'Cuadrícula Bagel',
+      blurb_en: 'Fixed-grid pricing card. Monospaced columns, over-counter energy.',
+      blurb_es: 'Tarjeta de precios cuadriculada. Columnas monoespaciadas.',
+      paper:    '#FFFFFF',
+      ink:      '#0F1A2A',
+      accent:   '#1F4E5B',
+      muted:    '#5A6A7A',
+      bodyFamily:    '"JetBrains Mono", "Courier New", monospace',
+      displayFamily: '"Bebas Neue", "Helvetica Neue Condensed", Arial, sans-serif',
+      h1Pt:    36,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9,
+      priceStyle:    'right-monospace',
+      dividerStyle:  'box',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'wide',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'placemat', 'a2-board', 'a1-board'],
+      cuisineHint: ['bagel', 'schmear', 'lox', 'cream cheese', 'over-counter signage',
+                    'pricing card', 'bagel shop', 'cuadrícula bagel']
+    },
+
     // Wave studio-quality (B4 partial cont.) — Filipino Feast.
     // Kamayan-style sharing menus served on banana leaves. Banana-leaf
     // green paper, bone-cream ink (stays readable), warm red accent
@@ -839,13 +981,13 @@
   // with cuisineHint surfaced for the operator-facing chip strip.
   var GROUPS = [
     { id: 'casual',     label_en: 'Casual / quick',          label_es: 'Casual / rápido',
-      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright', 'deli-counter'] },
+      themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright', 'deli-counter', 'bagel-grid'] },
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
-      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron', 'filipino-feast'] },
+      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze', 'persian-saffron', 'filipino-feast', 'room-service-hotel'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
       themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian', 'peruvian-coastal'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',
-      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter'] }
+      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter', 'cheese-butcher', 'chef-counter'] }
   ];
   function groups() { return GROUPS; }
 

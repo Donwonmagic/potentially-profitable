@@ -270,6 +270,16 @@
     if (has(/filipino|philippine|kamayan|adobo|sinigang|lechon|lumpia|halo halo|filipina/i)) {
       return { key: 'banana-leaf', x: 175, y: 36, s: 1.4 };
     }
+    // Wave studio-quality — Cheese & charcuterie / butcher counter.
+    // Wood-grain reads butcher-paper-adjacent.
+    if (has(/cheese|charcuterie|fromager|fromag|butcher|carniceria|carnicería|cured/i)) {
+      return { key: 'wood-grain', x: 0, y: 28, s: 9.2 };
+    }
+    // Wave studio-quality — Chef's counter prix-fixe (European tasting).
+    // Same brush-stroke as tasting-omakase — both are course-driven.
+    if (has(/chef counter|chef's counter|chefs counter|prix fixe|prix-fixe|tasting menu|degustation|menu degustacion|menú de degustación/i)) {
+      return { key: 'brush-stroke', x: 8, y: 88, s: 1.3 };
+    }
     return null;
   }
 
