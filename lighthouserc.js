@@ -40,6 +40,10 @@ const PATHS = [
   '/learn/',
   '/blog/why-your-restaurant-loses-reservations-every-night/',
   '/glossary/conversion-rate/',
+  // Operator Sheets — hub + pilot sheet end-to-end gate.
+  '/sheets/',
+  '/sheets/recipe-cost-card/',
+  '/es/sheets/',
 ];
 
 const url = PATHS.map((p) => BASE.replace(/\/+$/, '') + p);

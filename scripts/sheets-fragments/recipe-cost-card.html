@@ -1,0 +1,244 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Recipe</legend>
+        <label>
+          <span><span>Recipe name</span></span>
+          <input type="text" name="recipe_name" placeholder="e.g., Roasted half-chicken" />
+        </label>
+        <label>
+          <span><span>Number of plates this recipe yields</span></span>
+          <input type="number" name="plates_yielded" min="1" step="1" value="4" />
+          <span class="field-help">Plates the finished recipe produces. Costs divide across this number.</span>
+        </label>
+        <label>
+          <span><span>Target food-cost percent</span></span>
+          <input type="number" name="target_food_cost_pct" min="10" max="60" step="0.5" value="30" />
+          <span class="field-help">Independent full-service typically targets 28–32%; pizza and high-margin formats run lower.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Ingredients</legend>
+        <table class="sheet-row-table" data-sheet-table="ingredients">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th class="num">AP $/unit</th>
+              <th class="num">Yield %</th>
+              <th class="num">Line cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" name="ing_name_1" placeholder="e.g., Chicken, whole" /></td>
+              <td><input type="number" name="ing_qty_1" step="0.01" min="0" placeholder="1.5" /></td>
+              <td>
+                <select name="ing_unit_1">
+                  <option value="lb">lb</option><option value="oz">oz</option>
+                  <option value="kg">kg</option><option value="g">g</option>
+                  <option value="ea">ea</option><option value="cup">cup</option>
+                  <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+                  <option value="floz">fl&nbsp;oz</option>
+                </select>
+              </td>
+              <td><input type="number" name="ing_ap_1" step="0.01" min="0" placeholder="3.20" /></td>
+              <td><input type="number" name="ing_yield_1" step="1" min="1" max="100" value="100" /></td>
+              <td class="num"><output name="ing_cost_1">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="ing_name_2" /></td>
+              <td><input type="number" name="ing_qty_2" step="0.01" min="0" /></td>
+              <td>
+                <select name="ing_unit_2">
+                  <option value="lb">lb</option><option value="oz">oz</option>
+                  <option value="kg">kg</option><option value="g">g</option>
+                  <option value="ea">ea</option><option value="cup">cup</option>
+                  <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+                  <option value="floz">fl&nbsp;oz</option>
+                </select>
+              </td>
+              <td><input type="number" name="ing_ap_2" step="0.01" min="0" /></td>
+              <td><input type="number" name="ing_yield_2" step="1" min="1" max="100" value="100" /></td>
+              <td class="num"><output name="ing_cost_2">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="ing_name_3" /></td>
+              <td><input type="number" name="ing_qty_3" step="0.01" min="0" /></td>
+              <td>
+                <select name="ing_unit_3">
+                  <option value="lb">lb</option><option value="oz">oz</option>
+                  <option value="kg">kg</option><option value="g">g</option>
+                  <option value="ea">ea</option><option value="cup">cup</option>
+                  <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+                  <option value="floz">fl&nbsp;oz</option>
+                </select>
+              </td>
+              <td><input type="number" name="ing_ap_3" step="0.01" min="0" /></td>
+              <td><input type="number" name="ing_yield_3" step="1" min="1" max="100" value="100" /></td>
+              <td class="num"><output name="ing_cost_3">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="ing_name_4" /></td>
+              <td><input type="number" name="ing_qty_4" step="0.01" min="0" /></td>
+              <td>
+                <select name="ing_unit_4">
+                  <option value="lb">lb</option><option value="oz">oz</option>
+                  <option value="kg">kg</option><option value="g">g</option>
+                  <option value="ea">ea</option><option value="cup">cup</option>
+                  <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+                  <option value="floz">fl&nbsp;oz</option>
+                </select>
+              </td>
+              <td><input type="number" name="ing_ap_4" step="0.01" min="0" /></td>
+              <td><input type="number" name="ing_yield_4" step="1" min="1" max="100" value="100" /></td>
+              <td class="num"><output name="ing_cost_4">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="ing_name_5" /></td>
+              <td><input type="number" name="ing_qty_5" step="0.01" min="0" /></td>
+              <td>
+                <select name="ing_unit_5">
+                  <option value="lb">lb</option><option value="oz">oz</option>
+                  <option value="kg">kg</option><option value="g">g</option>
+                  <option value="ea">ea</option><option value="cup">cup</option>
+                  <option value="tbsp">tbsp</option><option value="tsp">tsp</option>
+                  <option value="floz">fl&nbsp;oz</option>
+                </select>
+              </td>
+              <td><input type="number" name="ing_ap_5" step="0.01" min="0" /></td>
+              <td><input type="number" name="ing_yield_5" step="1" min="1" max="100" value="100" /></td>
+              <td class="num"><output name="ing_cost_5">—</output></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" style="text-align:right;">Total ingredient cost</td>
+              <td class="num"><output name="total_ingredient_cost">$0.00</output></td>
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align:right;">Cost per plate</td>
+              <td class="num"><output name="cost_per_plate">$0.00</output></td>
+            </tr>
+          </tfoot>
+        </table>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Plate cost</span>
+          <span class="sheet-output-value" data-output="plate_cost">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Target price (at your food-cost goal)</span>
+          <span class="sheet-output-value" data-output="target_price">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Suggested charm price</span>
+          <span class="sheet-output-value" data-output="charm_price">$0.00</span>
+        </div>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        // Unit normalization to a baseline weight (oz) and volume (floz)
+        // for cross-unit math. Items measured in "ea" (each) skip
+        // normalization — qty * ap_per_ea is the line cost directly.
+        var TO_OZ   = { lb: 16, oz: 1, kg: 35.274, g: 0.03527396 };
+        var TO_FLOZ = { cup: 8, floz: 1, tbsp: 0.5, tsp: 0.166667 };
+
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { return '$' + (Math.round(v * 100) / 100).toFixed(2); }
+        function charm(v) {
+          // Round target price up to nearest .95 charm endpoint.
+          if (v <= 0) return 0;
+          var whole = Math.floor(v);
+          var frac  = v - whole;
+          if (frac <= 0.45) return whole + 0.95;
+          if (frac <= 0.95) return whole + 0.95;
+          return whole + 1 + 0.95;
+        }
+
+        function lineCost(qty, unit, ap) {
+          // ap is already $ per the user's chosen unit (e.g., $/lb,
+          // $/oz, $/cup). Line cost = qty * ap. Yield is applied
+          // after; yield reduces effective EP qty available for the
+          // recipe — equivalently, raises the unit cost.
+          return n(qty) * n(ap);
+        }
+
+        function recalc() {
+          var form  = document.getElementById('sheet-fields');
+          if (!form) return;
+          var total = 0;
+          for (var i = 1; i <= 5; i++) {
+            var qty   = n(form['ing_qty_'   + i].value);
+            var ap    = n(form['ing_ap_'    + i].value);
+            var yld   = Math.max(1, n(form['ing_yield_' + i].value));
+            // Yield % expresses what's usable after trim. Effective
+            // unit cost goes UP by the inverse: $/EP = ($/AP) / (yield/100)
+            var line  = (qty * ap) / (yld / 100);
+            total += isFinite(line) ? line : 0;
+            var out = form['ing_cost_' + i];
+            if (out) out.value = qty && ap ? fmt$(line) : '—';
+          }
+          var plates = Math.max(1, n(form.plates_yielded.value));
+          var perPlate = total / plates;
+          var pct = Math.max(1, Math.min(60, n(form.target_food_cost_pct.value))) / 100;
+          var target = pct > 0 ? perPlate / pct : 0;
+          form.total_ingredient_cost.value = fmt$(total);
+          form.cost_per_plate.value        = fmt$(perPlate);
+          var pc = document.querySelector('[data-output="plate_cost"]');
+          if (pc) pc.textContent = fmt$(perPlate);
+          var tp = document.querySelector('[data-output="target_price"]');
+          if (tp) tp.textContent = fmt$(target);
+          var cp = document.querySelector('[data-output="charm_price"]');
+          if (cp) cp.textContent = fmt$(charm(target));
+        }
+
+        // Per-sheet collect: shape rows for CSV export — recipe header,
+        // then ingredients table, then summary outputs. Mirrors what
+        // an operator would paste into Sheets/Excel.
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [];
+          rows.push(['Recipe', f.recipe_name.value || '']);
+          rows.push(['Plates yielded', f.plates_yielded.value || '']);
+          rows.push(['Target food-cost %', f.target_food_cost_pct.value || '']);
+          rows.push([]);
+          rows.push(['Ingredient', 'Qty', 'Unit', 'AP $/unit', 'Yield %', 'Line cost']);
+          for (var i = 1; i <= 5; i++) {
+            var name = f['ing_name_' + i].value;
+            var qty  = f['ing_qty_'  + i].value;
+            if (!name && !qty) continue;
+            rows.push([
+              name || '',
+              qty || '',
+              f['ing_unit_' + i].value || '',
+              f['ing_ap_'   + i].value || '',
+              f['ing_yield_'+ i].value || '',
+              (f['ing_cost_'+ i].value || '').replace(/^—$/, ''),
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Total ingredient cost', f.total_ingredient_cost.value]);
+          rows.push(['Cost per plate',        f.cost_per_plate.value]);
+          var tp = document.querySelector('[data-output="target_price"]');
+          var cp = document.querySelector('[data-output="charm_price"]');
+          if (tp) rows.push(['Target price',  tp.textContent]);
+          if (cp) rows.push(['Charm price',   cp.textContent]);
+          return rows;
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({
+            slug: 'recipe-cost-card',
+            collect: collect,
+            recalc: recalc,
+          });
+        }
+      })();
+    </script>

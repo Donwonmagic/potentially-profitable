@@ -1,0 +1,164 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Channel &amp; period</legend>
+        <label>
+          <span><span>Channel</span></span>
+          <select name="channel">
+            <option value="DoorDash">DoorDash</option>
+            <option value="Uber Eats">Uber Eats</option>
+            <option value="Grubhub">Grubhub</option>
+            <option value="ezCater">ezCater</option>
+            <option value="Other">Other (note in copy)</option>
+          </select>
+        </label>
+        <label>
+          <span><span>Month / period covered</span></span>
+          <input type="text" name="period" placeholder="e.g., April 2026" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Channel statement (paste from their dashboard)</legend>
+        <label>
+          <span><span>Gross sales (before fees)</span></span>
+          <input type="number" name="gross_sales" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">What customers paid you for food + delivery, before any fees come out.</span>
+        </label>
+        <label>
+          <span><span>Commission &amp; service fees the platform charged you</span></span>
+          <input type="number" name="commission" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Marketing fees (sponsored placement, promo subsidies you funded)</span></span>
+          <input type="number" name="marketing_fees" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Refunds &amp; adjustments charged back to you</span></span>
+          <input type="number" name="refunds" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Wrong order, missing item, customer credits the platform extended on your behalf.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your costs (the platform does not show these)</legend>
+        <label>
+          <span><span>Food cost on these orders</span></span>
+          <input type="number" name="food_cost" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Apply your normal food-cost percent to gross sales as a starting estimate.</span>
+        </label>
+        <label>
+          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils)</span></span>
+          <input type="number" name="packaging" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Multiply per-ticket packaging cost (typically $0.60–$1.20) by ticket count for the period.</span>
+        </label>
+        <label>
+          <span><span>Incremental labor (extra expo, packing, delivery handoff)</span></span>
+          <input type="number" name="incremental_labor" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">The hours you would not be paying without this channel. Be honest — under-counting here is the most common error.</span>
+        </label>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Net payout from platform</span>
+          <span class="sheet-output-value" data-output="net_payout">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Total channel cost (food + packaging + labor)</span>
+          <span class="sheet-output-value" data-output="total_costs">$0.00</span>
+        </div>
+        <div class="sheet-output-row" style="border-top:1px solid var(--line,#E5DFD2);padding-top:10px;margin-top:4px;">
+          <span class="sheet-output-label" style="font-weight:700;">Contribution margin (dollars)</span>
+          <span class="sheet-output-value" data-output="contrib_dollars" data-band="idle">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label" style="font-weight:700;">Effective margin on gross</span>
+          <span class="sheet-output-value" data-output="contrib_pct" data-band="idle">0.0%</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="verdict">
+          Type your numbers. A positive contribution margin means the channel earns its keep; negative means each order loses money before fixed costs.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) {
+          var sign = v < 0 ? '-' : '';
+          var abs  = Math.abs(v);
+          return sign + '$' + (Math.round(abs * 100) / 100).toFixed(2);
+        }
+        function fmtPct(v) {
+          var sign = v < 0 ? '-' : '';
+          return sign + (Math.round(Math.abs(v) * 10) / 10).toFixed(1) + '%';
+        }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var gross   = n(f.gross_sales.value);
+          var deducts = n(f.commission.value) + n(f.marketing_fees.value) + n(f.refunds.value);
+          var costs   = n(f.food_cost.value) + n(f.packaging.value) + n(f.incremental_labor.value);
+          var payout  = gross - deducts;
+          var contrib = payout - costs;
+          var pct     = gross > 0 ? (contrib / gross) * 100 : 0;
+
+          document.querySelector('[data-output="net_payout"]').textContent  = fmt$(payout);
+          document.querySelector('[data-output="total_costs"]').textContent = fmt$(costs);
+          var dEl = document.querySelector('[data-output="contrib_dollars"]');
+          dEl.textContent = fmt$(contrib);
+          dEl.dataset.band = contrib > 0 ? 'good' : (contrib < 0 ? 'bad' : 'idle');
+          var pEl = document.querySelector('[data-output="contrib_pct"]');
+          pEl.textContent = fmtPct(pct);
+          pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+
+          var verdict = document.querySelector('[data-output="verdict"]');
+          if (verdict) {
+            if (gross <= 0) {
+              verdict.textContent = 'Type your numbers. A positive contribution margin means the channel earns its keep; negative means each order loses money before fixed costs.';
+            } else if (contrib < 0) {
+              verdict.textContent = 'This channel is losing you money on each order before fixed costs are even applied. Either renegotiate fees, raise menu prices on this channel, or turn it off.';
+            } else if (pct < 5) {
+              verdict.textContent = 'Thin contribution. The channel is not paying for itself once fixed costs (rent, utilities, salaried management) are included. Action: raise menu prices on this channel, or shrink the menu offered through it to higher-margin items only.';
+            } else if (pct < 12) {
+              verdict.textContent = 'In the typical band for third-party delivery — earning some contribution, but not as much as a dine-in dollar. Watch the trend month-over-month.';
+            } else {
+              verdict.textContent = 'Healthy contribution for a third-party channel. Keep an eye on packaging and incremental labor — these are the line items that drift quietly.';
+            }
+          }
+        }
+
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          return [
+            ['Field', 'Value'],
+            ['Channel', f.channel.value],
+            ['Period',  f.period.value || ''],
+            [],
+            ['Gross sales',          f.gross_sales.value      || '0'],
+            ['Commission & service', f.commission.value       || '0'],
+            ['Marketing fees',       f.marketing_fees.value   || '0'],
+            ['Refunds & adjustments',f.refunds.value          || '0'],
+            ['Net payout',           document.querySelector('[data-output="net_payout"]').textContent],
+            [],
+            ['Food cost',            f.food_cost.value        || '0'],
+            ['Packaging',            f.packaging.value        || '0'],
+            ['Incremental labor',    f.incremental_labor.value|| '0'],
+            ['Total channel cost',   document.querySelector('[data-output="total_costs"]').textContent],
+            [],
+            ['Contribution margin ($)',   document.querySelector('[data-output="contrib_dollars"]').textContent],
+            ['Effective margin (%)',      document.querySelector('[data-output="contrib_pct"]').textContent],
+          ];
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({
+            slug: 'third-party-channel-pnl',
+            collect: collect,
+            recalc: recalc,
+          });
+        }
+      })();
+    </script>

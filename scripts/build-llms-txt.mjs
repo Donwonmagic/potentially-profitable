@@ -106,6 +106,7 @@ function buildContent(locale) {
   const articles = listIndexPages(isEs ? 'es/blog' : 'blog', `${baseUrl}/blog/`);
   const glossary = listIndexPages(isEs ? 'es/glossary' : 'glossary', `${baseUrl}/glossary/`);
   const tools    = listToolPages(isEs ? 'es/tools' : 'tools', `${baseUrl}/tools/`);
+  const sheets   = listIndexPages(isEs ? 'es/sheets' : 'sheets', `${baseUrl}/sheets/`);
 
   const headerEn = `# Muntin Digital
 
@@ -157,9 +158,13 @@ Los operadores pueden escribir directamente en /es/window/ — asíncrono, norma
   const h2Articles  = isEs ? '## Artículos'    : '## Articles';
   const h2Glossary  = isEs ? '## Glosario'     : '## Glossary';
   const h2Tools     = isEs ? '## Herramientas' : '## Tools';
+  const h2Sheets    = isEs ? '## Hojas del Operador (papeleo imprimible)' : '## Operator Sheets (printable paperwork)';
   body += `${h2Articles}\n\n${articles.map(renderArticleLine).join('\n')}\n\n`;
   body += `${h2Glossary}\n\n${glossary.map(renderGlossaryLine).join('\n')}\n\n`;
-  body += `${h2Tools}\n\n${tools.map(renderToolLine).join('\n')}\n`;
+  body += `${h2Tools}\n\n${tools.map(renderToolLine).join('\n')}\n\n`;
+  if (sheets.length) {
+    body += `${h2Sheets}\n\n${sheets.map(renderToolLine).join('\n')}\n`;
+  }
   return body;
 }
 

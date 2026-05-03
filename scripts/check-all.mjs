@@ -102,6 +102,22 @@ const CHECKS = [
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
   ['Kind registry',       'check-kind-registry.mjs',       '--check'],
+  // Operator Sheets — parity gate. Warn-only during initial rollout
+  // (FAIL_ON_DRIFT flag in the script); flip to fail-CI once the 30-
+  // sheet catalog reaches steady state and ES coverage is complete.
+  // Note: build-sheet-pages is intentionally NOT in --check mode here.
+  // It full-rewrites pages from the shell template, which conflicts
+  // with the sync-includes pass that runs immediately after it in
+  // the build chain (a second sync-includes pass restores the
+  // canonical nav/footer). Running --check standalone would
+  // (correctly) report "would write" since the on-disk pages have
+  // the sync-includes-stamped chrome, not the empty shell stubs.
+  // The pipeline as a whole is correct; the standalone idempotency
+  // check is not the right gate for this script. The hub renderer
+  // (build-sheets-index) IS idempotent — it stamps between sentinels
+  // and leaves the rest of the file alone.
+  ['Operator Sheets parity','check-sheets-parity.mjs',     '--check'],
+  ['Sheets index (idem)', 'build-sheets-index.mjs',         '--check'],
   ['Intent param targets','check-intent-param-targets.mjs','--check'],
   ['Article fieldnotes (idem)','inject-article-fieldnotes.mjs','--check'],
   ['Article listen (idem)','inject-article-listen.mjs','--check'],

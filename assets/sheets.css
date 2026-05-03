@@ -1,0 +1,359 @@
+/*
+ * Operator Sheets — page-scoped styles. Reuses every token from
+ * site-core.css and every primitive from .mm-* in site.css. Adds only
+ * the small layout pieces the sheet anatomy needs (meta strip, knit
+ * grid, locale-hazard banner, paper-first stay-paper variant).
+ *
+ * Print rules ride on the existing @media print baked into site.css;
+ * this file adds sheet-specific print refinements (page-break inside
+ * tables, hide save panel) and nothing else.
+ */
+
+/* Sheet meta strip — cadence and pack chips under the H1.
+   Reuses .status-chip from site-core.css; this only handles spacing. */
+.sheet-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px auto 0;
+  padding: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* Locale-hazard banner — surfaces the "verify with your local
+   authority" notice on the four flagged sheets. Quiet visually,
+   prints as a gray inline note. */
+.sheet-hazard {
+  margin: 18px auto 0;
+  max-width: 640px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-dark, #C9C2B6);
+  border-left: 3px solid var(--rust, #B8541A);
+  border-radius: var(--r-sm, 6px);
+  background: var(--cream-2, #F3EEE3);
+  color: var(--ink-soft, #2A2D33);
+  font-size: 13.5px;
+  line-height: 1.55;
+  text-align: left;
+}
+.sheet-hazard strong { color: var(--rust, #B8541A); font-weight: 700; }
+
+/* Pairs-with knit — three columns of related tools, glossary terms,
+   and articles. Mirrors the visual rhythm of the existing
+   .tool-knit four-column block but trimmed to three since sheets
+   don't have a "Topic" column of their own. */
+.sheet-knit {
+  margin: 36px 0 0;
+}
+.sheet-knit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 720px) {
+  .sheet-knit-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+.sheet-knit-col {
+  padding: 18px;
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: var(--r-md, 12px);
+  background: var(--white, #FFFFFF);
+}
+.sheet-knit-col h3 {
+  font-family: var(--font-display, "Fraunces", Georgia, serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--teal, #1F4E5B);
+  margin: 0 0 10px;
+  letter-spacing: .02em;
+}
+.sheet-knit-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sheet-knit-col li { font-size: 14px; line-height: 1.5; }
+.sheet-knit-col a {
+  color: var(--ink, #14161A);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--teal, #1F4E5B);
+  padding-bottom: 1px;
+}
+.sheet-knit-col a:hover { color: var(--teal, #1F4E5B); }
+.sheet-knit-col-empty {
+  color: var(--stone, #6B6B6B);
+  font-size: 13.5px;
+  font-style: italic;
+}
+
+/* Form refinements specific to operator sheets. The base .mm-form is
+   centered around small clusters of 3-6 inputs (margin-math style);
+   sheets often want a longer flat list, so we tighten gap. */
+.sheet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0 0;
+}
+.sheet-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft, #2A2D33);
+}
+.sheet-form label > span:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sheet-form input[type="number"],
+.sheet-form input[type="text"],
+.sheet-form input[type="date"],
+.sheet-form select,
+.sheet-form textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--line-dark, #C9C2B6);
+  border-radius: var(--r-sm, 6px);
+  font: inherit;
+  font-size: 15px;
+  background: var(--white, #FFFFFF);
+  color: var(--ink, #14161A);
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 400;
+}
+.sheet-form input[type="number"]:focus,
+.sheet-form input[type="text"]:focus,
+.sheet-form input[type="date"]:focus,
+.sheet-form select:focus,
+.sheet-form textarea:focus {
+  border-color: var(--teal, #1F4E5B);
+  outline: 2px solid var(--teal, #1F4E5B);
+  outline-offset: -1px;
+}
+.sheet-form .field-help {
+  font-size: 12.5px;
+  color: var(--stone, #6B6B6B);
+  font-weight: 400;
+  margin: -2px 0 0;
+}
+.sheet-form fieldset {
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: var(--r-md, 12px);
+  padding: 16px 18px;
+  margin: 0;
+}
+.sheet-form fieldset legend {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--teal, #1F4E5B);
+  padding: 0 6px;
+}
+
+/* Repeating-row tables (recipe ingredients, par sheet rows, audit rows).
+   Reuses .op-table from site.css patterns; this only adjusts for inputs
+   inside cells. */
+.sheet-row-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.sheet-row-table th,
+.sheet-row-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line, #E5DFD2);
+  text-align: left;
+  vertical-align: middle;
+}
+.sheet-row-table th {
+  background: var(--cream-2, #F3EEE3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--stone, #6B6B6B);
+}
+.sheet-row-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.sheet-row-table input,
+.sheet-row-table select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 14px;
+  background: transparent;
+}
+.sheet-row-table input:focus,
+.sheet-row-table select:focus {
+  border-color: var(--teal, #1F4E5B);
+  outline: none;
+  background: var(--white, #FFFFFF);
+}
+.sheet-row-table tfoot td {
+  font-weight: 600;
+  background: var(--cream-2, #F3EEE3);
+  border-bottom: 0;
+  border-top: 2px solid var(--ink, #14161A);
+}
+.sheet-add-row {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal, #1F4E5B);
+  background: transparent;
+  border: 1px dashed var(--teal, #1F4E5B);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.sheet-add-row:hover { background: var(--teal-tint, #E8F1F3); }
+
+/* Results / output strip — calculated values from the inputs.
+   Reuses .mm-results from site.css; this just gives sheet pages a
+   slightly more table-like rhythm. */
+.sheet-output {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: var(--r-input, 8px);
+  background: var(--cream-2, #F3EEE3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sheet-output-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14px;
+}
+.sheet-output-label {
+  font-weight: 600;
+  color: var(--ink-soft, #2A2D33);
+}
+.sheet-output-value {
+  font-family: var(--font-display, "Fraunces", Georgia, serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink, #14161A);
+  font-variant-numeric: tabular-nums;
+}
+.sheet-output-value[data-band="good"] { color: var(--status-good, #1F6B3A); }
+.sheet-output-value[data-band="warn"] { color: var(--status-warn-deep, #8A3E16); }
+.sheet-output-value[data-band="bad"]  { color: var(--rust, #B8541A); }
+
+/* When-to-use and Common-mistakes wrappers — light tweaks on the
+   shared .mm-card so the bullets read clean on mobile. */
+.sheet-when-to-use ul li,
+.sheet-mistakes ul li {
+  margin: 6px 0;
+}
+.sheet-when-to-use {
+  border-left: 3px solid var(--teal, #1F4E5B);
+}
+.sheet-mistakes {
+  border-left: 3px solid var(--rust, #B8541A);
+}
+
+/* Stay-paper sheets — when the sheet's "real" form is the printout.
+   Same chrome on screen, but a slightly muted online experience and
+   "Use this on a clipboard" hint above the actions. */
+[data-page="sheet"][data-sheet-paper="true"] .mm-actions [data-sheet-action="print"] {
+  /* primary action visually leads */
+}
+.sheet-paper-hint {
+  margin: 10px 0 -2px;
+  padding: 8px 12px;
+  background: var(--cream-2, #F3EEE3);
+  border-radius: var(--r-sm, 6px);
+  font-size: 13px;
+  color: var(--stone, #6B6B6B);
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   PRINT — sheets are a printable artifact. Hide all chrome, expand
+   form to use the page, render inputs as plain underlined fields. */
+@media print {
+  .nav,
+  footer,
+  .breadcrumb,
+  .lang-hint,
+  .mobile-cta-bar,
+  .skip-link,
+  .mm-actions,
+  .mm-save,
+  .sheet-paper-hint,
+  .sheet-hazard,
+  .sheet-knit,
+  .sheet-when-to-use,
+  .sheet-mistakes {
+    display: none !important;
+  }
+  body { background: #fff !important; color: #000 !important; font-size: 10pt !important; }
+  main, section, .container, .container-wide { padding: 0 !important; max-width: 100% !important; }
+  .mm-hero { text-align: left !important; max-width: 100% !important; }
+  .mm-hero h1 { font-size: 18pt !important; margin: 4pt 0 !important; }
+  .mm-hero .hero-sub { font-size: 10pt !important; max-width: 100% !important; margin: 4pt 0 !important; }
+  .sheet-meta { font-size: 8.5pt !important; gap: 6pt !important; margin: 4pt 0 !important; }
+  .status-chip { background: #f5f5f5 !important; color: #333 !important; padding: 2pt 6pt !important; }
+  .mm-card { box-shadow: none !important; border: 0.5pt solid #555 !important; padding: 8pt !important; margin: 4pt 0 !important; background: #fff !important; }
+  .mm-card-eyebrow { font-size: 7.5pt !important; color: #555 !important; }
+  .mm-card h2 { font-size: 12pt !important; margin: 0 !important; }
+  .sheet-form { gap: 6pt !important; }
+  .sheet-form label { font-size: 8.5pt !important; gap: 2pt !important; color: #000 !important; }
+  .sheet-form input, .sheet-form select, .sheet-form textarea {
+    border: 0 !important;
+    border-bottom: 0.5pt solid #000 !important;
+    border-radius: 0 !important;
+    padding: 1pt 2pt !important;
+    background: transparent !important;
+    font-size: 9pt !important;
+  }
+  .sheet-row-table { font-size: 8.5pt !important; }
+  .sheet-row-table th, .sheet-row-table td { padding: 3pt 4pt !important; border-bottom: 0.5pt solid #999 !important; }
+  .sheet-row-table th { background: #f0f0f0 !important; font-size: 7.5pt !important; }
+  .sheet-row-table input, .sheet-row-table select {
+    border: 0 !important;
+    border-bottom: 0.25pt dotted #999 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-size: 8.5pt !important;
+    padding: 1pt 2pt !important;
+  }
+  .sheet-row-table tfoot td { background: #fff !important; border-top: 1pt solid #000 !important; }
+  .sheet-add-row { display: none !important; }
+  .sheet-output { background: #f8f8f8 !important; border: 0.5pt solid #999 !important; padding: 6pt !important; }
+  .sheet-output-value { font-size: 13pt !important; }
+  fieldset { border: 0.5pt solid #999 !important; padding: 6pt !important; }
+  fieldset legend { font-size: 7.5pt !important; color: #000 !important; }
+  /* Page-break hygiene */
+  .mm-card { page-break-inside: avoid; break-inside: avoid; }
+  .sheet-row-table { page-break-inside: auto; }
+  .sheet-row-table tr { page-break-inside: avoid; break-inside: avoid; }
+  /* Footer caption: timestamp the printout for later reference */
+  body[data-page="sheet"]::after {
+    content: "Printed from muntin.digital — verify cadence and totals against your own POS / accounting system.";
+    display: block;
+    font-size: 7pt;
+    color: #555;
+    margin: 14pt 0 0;
+    padding: 4pt 0 0;
+    border-top: 0.5pt solid #999;
+  }
+}
