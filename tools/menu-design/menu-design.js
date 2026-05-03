@@ -3191,6 +3191,10 @@
         // formatPriceDisplay so the printed deliverable carries the
         // right currency symbol on bare-digit prices.
         currency:    (meta && meta.currency) || 'USD',
+        // And operator's "Allow front + back" toggle — propagates
+        // into the PDF so the smart 2-page split planner only fires
+        // when the operator opted into a 2-page deliverable.
+        allowMultiPage: !!(meta && meta.allowMultiPage),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale

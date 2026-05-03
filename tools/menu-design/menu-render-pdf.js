@@ -1404,6 +1404,56 @@
     var paperWideEnough = (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
     var twoColumn = paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
     if (twoColumn) return paginateTwoCol(blocks, doc, theme, paper);
+
+    // Wave studio-quality — smart 2-page split planning. Mirror of the
+    // live preview's section-boundary heuristic. When the natural
+    // pagination would land on 2 pages AND the operator opted into
+    // multi-page, pick the section header whose split point is closest
+    // to total/2 and force the page break there (not at arbitrary
+    // mid-section overflow). Result: page 1 reads as appetizers +
+    // entrees, page 2 reads as desserts + drinks.
+    var smartBreakAtIdx = -1;
+    if (opts.allowMultiPage) {
+      // Dry-run measure pass.
+      var margin0 = paper.margin || 48;
+      var contentWidth0 = paper.w - margin0 * 2;
+      var bottom0 = paper.h - margin0;
+      var contentY0 = margin0;
+      var pageCount0 = 1;
+      var blockHeights = blocks.map(function (b) { return measureBlock(b, doc, theme, contentWidth0); });
+      blocks.forEach(function (block, i) {
+        var h = blockHeights[i];
+        if (block.kind === 'cover') { contentY0 = margin0; pageCount0++; return; }
+        if (contentY0 + h > bottom0) {
+          contentY0 = margin0;
+          pageCount0++;
+        }
+        contentY0 += h;
+      });
+      if (pageCount0 === 2) {
+        var sectionIndices = [];
+        blocks.forEach(function (b, i) {
+          if (b.kind === 'section') sectionIndices.push(i);
+        });
+        if (sectionIndices.length >= 2) {
+          var totalH = blockHeights.reduce(function (a, b) { return a + b; }, 0);
+          var halfH = totalH / 2;
+          var bestDelta = Infinity;
+          var cumH = 0;
+          for (var bi = 0; bi < blocks.length; bi++) {
+            cumH += blockHeights[bi];
+            if (sectionIndices.indexOf(bi) >= 0 && bi > 0) {
+              var pageOneH = cumH - blockHeights[bi];
+              var d = Math.abs(pageOneH - halfH);
+              if (d < bestDelta) {
+                bestDelta = d;
+                smartBreakAtIdx = bi;
+              }
+            }
+          }
+        }
+      }
+    }
     var margin = paper.margin || 48;
     // W10-1 — when print-vendor mode is on, the doc is sized
     // bleed+paper+bleed; content origin shifts inward by bleed
@@ -1429,6 +1479,16 @@
         pageCount++;
         contentY = margin + bleedOff;
         return;
+      }
+      // Wave studio-quality — smart 2-page split. When the dry-run
+      // planner picked this block index as the optimal section
+      // boundary for the page break, force the addPage here even if
+      // we wouldn't have naturally overflowed yet.
+      if (smartBreakAtIdx >= 0 && i === smartBreakAtIdx && pageCount === 1) {
+        doc.addPage();
+        pageCount++;
+        contentY = margin + bleedOff;
+        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
       }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
@@ -2007,7 +2067,14 @@
       };
       // Stamp the bleed offset on the paper so paginate() can read it.
       paper._bleed = bleed;
-      var pageCount = paginate(blocks, doc, opts.theme, paper, { forceTwoCol: !!opts.forceTwoCol });
+      var pageCount = paginate(blocks, doc, opts.theme, paper, {
+        forceTwoCol:    !!opts.forceTwoCol,
+        // Wave studio-quality — operator's "Allow front + back"
+        // toggle propagates into PDF so smart 2-page split planner
+        // (above paginate()) only fires when the operator actually
+        // opted into a 2-page deliverable.
+        allowMultiPage: !!opts.allowMultiPage
+      });
       // W10-1 — crop marks on every page when print-vendor mode is on.
       if (opts.printVendor) {
         var totalPages = doc.internal && doc.internal.pages ? doc.internal.pages.length - 1 : pageCount;
