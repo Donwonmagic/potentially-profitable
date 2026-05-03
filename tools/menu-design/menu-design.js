@@ -4248,6 +4248,121 @@
     });
   });
 
+  // Wave studio-quality — Bilingual pack. One click, EN + ES side by
+  // side, all artifacts. The shipped artifacts (README, mailto,
+  // disclaimer text) are locale-aware; dish names + descriptions stay
+  // exactly as the operator typed them in their primary language.
+  // Routes through the same canonical-menu builder + MD_PACK pipeline.
+  var exportBilingualBtn = document.getElementById('mdExportBilingual');
+  if (exportBilingualBtn) exportBilingualBtn.addEventListener('click', function () {
+    if (typeof MD_PACK === 'undefined' ||
+        typeof MD_PACK.exportBilingualPack !== 'function' ||
+        typeof MD_SCHEMA === 'undefined') {
+      setDownloadMsg(tt(
+        'Bilingual pack module not loaded. Refresh and try again.',
+        'El módulo de pack bilingüe no cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    var realRowsBl = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRowsBl.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before exporting the bilingual pack.',
+        'Agrega al menos un plato antes de exportar el pack bilingüe.'
+      ), 'error');
+      return;
+    }
+    var canonicalMenuBl;
+    try {
+      var v2ShapeBl = {
+        rows: rows.filter(function (r) { return !r.ghost; }),
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      canonicalMenuBl = MD_SCHEMA.migrate(v2ShapeBl);
+      canonicalMenuBl = MD_SCHEMA.applyAutoDisclaimer(canonicalMenuBl);
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build canonical menu: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el menú: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var themeBl = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    if (themeBl) themeBl = applyCustomizer(themeBl);
+    var titleValBl = (canonicalMenuBl.meta && canonicalMenuBl.meta.businessName) || tt('Menu', 'Menú');
+    var paperKeyBl = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
+    var paperLabelBl = '';
+    try {
+      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKeyBl]) {
+        paperLabelBl = MD_PDF.PAPERS[paperKeyBl].label_en || MD_PDF.PAPERS[paperKeyBl].label || paperKeyBl;
+      }
+    } catch (_) {}
+    var dishCountBl = canonicalMenuBl.dishes.length;
+    var dishBucketBl = dishCountBl < 12 ? '<12' : dishCountBl < 25 ? '12-24' : dishCountBl < 40 ? '25-39' : '40+';
+
+    exportBilingualBtn.disabled = true;
+    var origLabelBl = exportBilingualBtn.innerHTML;
+    exportBilingualBtn.textContent = tt('Building bilingual pack…', 'Generando pack bilingüe…');
+    setDownloadMsg('', 'success');
+
+    MD_PACK.exportBilingualPack({
+      canonicalMenu: canonicalMenuBl,
+      businessName:  titleValBl,
+      paperLabel:    paperLabelBl,
+      paperKey:      paperKeyBl,
+      themeId:       themeId,
+      cuisine:       (canonicalMenuBl.meta && canonicalMenuBl.meta.cuisine) || '',
+      allergenRegime:(canonicalMenuBl.meta && canonicalMenuBl.meta.allergenRegime) || 'us-fda9',
+      logoDataUrl:   logoUrl,
+      logoMeta:      logoMeta,
+      customDims:    paperKeyBl === 'custom' ? customDims : null,
+      theme:         themeBl,
+      htmlOpts:      { themeId: themeId },
+      pdfOpts:       { paperKey: paperKeyBl }
+    }, ['en', 'es']).then(function (blob) {
+      var slug = String(titleValBl || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = slug + '-menu-pack-bilingual.zip';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(a.href);
+      }, 4000);
+      setDownloadMsg(tt(
+        'Bilingual pack downloaded — open en/ for English, es/ for Spanish.',
+        'Pack bilingüe descargado — abre en/ para inglés, es/ para español.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Pack Exported', { props: {
+            theme:           themeId || 'unknown',
+            dishCount_bucket: dishBucketBl,
+            locale:          'bilingual'
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Bilingual pack failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló el pack bilingüe: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Export Failed', { props: { format: 'pack', reason: 'bilingual' } });
+        } catch (_) {}
+      }
+    }).then(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.innerHTML = origLabelBl;
+    });
+  });
+
   // W16 — Tablet kiosk HTML
   var exportTabletBtn = document.getElementById('mdExportTablet');
   if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
