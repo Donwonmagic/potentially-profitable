@@ -1,0 +1,171 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Shift</legend>
+        <label>
+          <span><span>Date</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Shift</span></span>
+          <select name="shift">
+            <option value="lunch">Lunch</option>
+            <option value="dinner" selected>Dinner</option>
+            <option value="brunch">Brunch</option>
+            <option value="all-day">All-day</option>
+          </select>
+        </label>
+        <label>
+          <span><span>Manager on duty</span></span>
+          <input type="text" name="manager" placeholder="Name or initials" />
+        </label>
+        <label>
+          <span><span>Weather note</span></span>
+          <input type="text" name="weather" placeholder="e.g., clear · 70s · light rain after 8pm" />
+          <span class="field-help">A 30% dip on a clear Saturday means something different than the same dip in a snowstorm.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sales (net of sales tax)</legend>
+        <label>
+          <span><span>Net sales — total</span></span>
+          <input type="number" name="net_sales" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Covers (guests served)</span></span>
+          <input type="number" name="covers" min="0" step="1" placeholder="0" />
+        </label>
+        <label>
+          <span><span>Trailing 14-day average sales (for comparison)</span></span>
+          <input type="number" name="rolling_avg" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Optional. If filled, the recap will flag this shift if it lands more than 20% off the average.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Voids · Comps · Cash</legend>
+        <label>
+          <span><span>Voids ($)</span></span>
+          <input type="number" name="voids" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Comps ($)</span></span>
+          <input type="number" name="comps" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Cash over / short ($)</span></span>
+          <input type="number" name="cash_diff" step="0.01" placeholder="0.00" />
+          <span class="field-help">Positive if drawer was over; negative if short. The field exists for the busy nights.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Notes</legend>
+        <label>
+          <span><span>Anything that mattered tonight</span></span>
+          <textarea name="notes" rows="3" placeholder="86s, equipment issues, complaint themes, no-show parties…"></textarea>
+        </label>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Average check</span>
+          <span class="sheet-output-value" data-output="avg_check">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Voids as % of sales</span>
+          <span class="sheet-output-value" data-output="voids_pct" data-band="idle">0.0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Comps as % of sales</span>
+          <span class="sheet-output-value" data-output="comps_pct" data-band="idle">0.0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Variance vs 14-day average</span>
+          <span class="sheet-output-value" data-output="variance" data-band="idle">—</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Type the numbers above. Voids above 1% of sales is the band where theft hides; comps above 3% is the band where over-comping starts pricing your menu.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { var sign = v < 0 ? '-' : ''; var abs = Math.abs(v); return sign + '$' + (Math.round(abs * 100) / 100).toFixed(2); }
+        function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var sales = n(f.net_sales.value);
+          var covers = n(f.covers.value);
+          var avg = sales > 0 && covers > 0 ? sales / covers : 0;
+          var voidPct = sales > 0 ? (n(f.voids.value) / sales) * 100 : 0;
+          var compPct = sales > 0 ? (n(f.comps.value) / sales) * 100 : 0;
+          var rolling = n(f.rolling_avg.value);
+          var variance = rolling > 0 ? ((sales - rolling) / rolling) * 100 : null;
+
+          document.querySelector('[data-output="avg_check"]').textContent = fmt$(avg);
+          var vEl = document.querySelector('[data-output="voids_pct"]');
+          vEl.textContent = fmtPct(voidPct);
+          vEl.dataset.band = voidPct < 1 ? 'good' : (voidPct < 2 ? 'warn' : 'bad');
+          var cEl = document.querySelector('[data-output="comps_pct"]');
+          cEl.textContent = fmtPct(compPct);
+          cEl.dataset.band = compPct < 2 ? 'good' : (compPct < 4 ? 'warn' : 'bad');
+
+          var varEl = document.querySelector('[data-output="variance"]');
+          if (variance == null) {
+            varEl.textContent = '—';
+            varEl.dataset.band = 'idle';
+          } else {
+            var sign = variance > 0 ? '+' : '';
+            varEl.textContent = sign + fmtPct(variance);
+            varEl.dataset.band = Math.abs(variance) <= 10 ? 'good' : (Math.abs(variance) <= 20 ? 'warn' : 'bad');
+          }
+
+          var callout = document.querySelector('[data-output="callout"]');
+          if (!callout) return;
+          var bits = [];
+          if (sales <= 0)        bits.push('Type the numbers above.');
+          if (voidPct > 1)       bits.push('Voids running above 1% of sales — ' + fmtPct(voidPct) + ' tonight.');
+          if (compPct > 3)       bits.push('Comps running above 3% of sales — review who is comping and why.');
+          if (variance != null && Math.abs(variance) > 20) bits.push('Tonight landed ' + (variance > 0 ? 'above' : 'below') + ' the 14-day average by more than 20%.');
+          if (n(f.cash_diff.value) <= -5) bits.push('Drawer short by ' + fmt$(Math.abs(n(f.cash_diff.value))) + ' — log it tonight, do not let it carry.');
+          callout.textContent = bits.length ? bits.join(' ') : 'A clean recap. File it; pull the trend in next week’s review.';
+        }
+
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          return [
+            ['Field', 'Value'],
+            ['Date',     f.date.value || ''],
+            ['Shift',    f.shift.value || ''],
+            ['Manager',  f.manager.value || ''],
+            ['Weather',  f.weather.value || ''],
+            [],
+            ['Net sales',                f.net_sales.value || '0'],
+            ['Covers',                   f.covers.value || '0'],
+            ['Trailing 14-day average',  f.rolling_avg.value || ''],
+            [],
+            ['Voids',                    f.voids.value || '0'],
+            ['Comps',                    f.comps.value || '0'],
+            ['Cash over/short',          f.cash_diff.value || '0'],
+            [],
+            ['Notes',                    f.notes.value || ''],
+            [],
+            ['Average check',            document.querySelector('[data-output="avg_check"]').textContent],
+            ['Voids %',                  document.querySelector('[data-output="voids_pct"]').textContent],
+            ['Comps %',                  document.querySelector('[data-output="comps_pct"]').textContent],
+            ['Variance vs 14-day avg',   document.querySelector('[data-output="variance"]').textContent],
+            ['Callout',                  document.querySelector('[data-output="callout"]').textContent],
+          ];
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({ slug: 'daily-sales-recap', collect: collect, recalc: recalc });
+        }
+      })();
+    </script>

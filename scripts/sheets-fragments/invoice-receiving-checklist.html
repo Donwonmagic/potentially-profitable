@@ -1,0 +1,84 @@
+    <p class="sheet-paper-hint">Print before the truck arrives. Stand at the back door with this. Sign nothing until every row is checked.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Delivery</legend>
+        <label>
+          <span><span>Date</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Vendor</span></span>
+          <input type="text" name="vendor" />
+        </label>
+        <label>
+          <span><span>PO / order number</span></span>
+          <input type="text" name="po" />
+        </label>
+        <label>
+          <span><span>Driver name</span></span>
+          <input type="text" name="driver" />
+        </label>
+        <label>
+          <span><span>Truck temp on arrival (°F)</span></span>
+          <input type="number" name="truck_temp" step="1" />
+          <span class="field-help">For refrigerated trucks only. ≤ 40°F for cold, ≤ 0°F for frozen.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Line-by-line check</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty ordered</th>
+              <th>Qty received</th>
+              <th>Sub?</th>
+              <th>Last $/unit</th>
+              <th>This $/unit</th>
+              <th>Temp °F</th>
+              <th>OK</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text" name="line_item_1" /></td><td><input type="text" name="line_ord_1" /></td><td><input type="text" name="line_rec_1" /></td><td><input type="checkbox" name="line_sub_1" /></td><td><input type="text" name="line_last_1" /></td><td><input type="text" name="line_now_1" /></td><td><input type="text" name="line_temp_1" /></td><td><input type="checkbox" name="line_ok_1" /></td></tr>
+            <tr><td><input type="text" name="line_item_2" /></td><td><input type="text" name="line_ord_2" /></td><td><input type="text" name="line_rec_2" /></td><td><input type="checkbox" name="line_sub_2" /></td><td><input type="text" name="line_last_2" /></td><td><input type="text" name="line_now_2" /></td><td><input type="text" name="line_temp_2" /></td><td><input type="checkbox" name="line_ok_2" /></td></tr>
+            <tr><td><input type="text" name="line_item_3" /></td><td><input type="text" name="line_ord_3" /></td><td><input type="text" name="line_rec_3" /></td><td><input type="checkbox" name="line_sub_3" /></td><td><input type="text" name="line_last_3" /></td><td><input type="text" name="line_now_3" /></td><td><input type="text" name="line_temp_3" /></td><td><input type="checkbox" name="line_ok_3" /></td></tr>
+            <tr><td><input type="text" name="line_item_4" /></td><td><input type="text" name="line_ord_4" /></td><td><input type="text" name="line_rec_4" /></td><td><input type="checkbox" name="line_sub_4" /></td><td><input type="text" name="line_last_4" /></td><td><input type="text" name="line_now_4" /></td><td><input type="text" name="line_temp_4" /></td><td><input type="checkbox" name="line_ok_4" /></td></tr>
+            <tr><td><input type="text" name="line_item_5" /></td><td><input type="text" name="line_ord_5" /></td><td><input type="text" name="line_rec_5" /></td><td><input type="checkbox" name="line_sub_5" /></td><td><input type="text" name="line_last_5" /></td><td><input type="text" name="line_now_5" /></td><td><input type="text" name="line_temp_5" /></td><td><input type="checkbox" name="line_ok_5" /></td></tr>
+            <tr><td><input type="text" name="line_item_6" /></td><td><input type="text" name="line_ord_6" /></td><td><input type="text" name="line_rec_6" /></td><td><input type="checkbox" name="line_sub_6" /></td><td><input type="text" name="line_last_6" /></td><td><input type="text" name="line_now_6" /></td><td><input type="text" name="line_temp_6" /></td><td><input type="checkbox" name="line_ok_6" /></td></tr>
+            <tr><td><input type="text" name="line_item_7" /></td><td><input type="text" name="line_ord_7" /></td><td><input type="text" name="line_rec_7" /></td><td><input type="checkbox" name="line_sub_7" /></td><td><input type="text" name="line_last_7" /></td><td><input type="text" name="line_now_7" /></td><td><input type="text" name="line_temp_7" /></td><td><input type="checkbox" name="line_ok_7" /></td></tr>
+            <tr><td><input type="text" name="line_item_8" /></td><td><input type="text" name="line_ord_8" /></td><td><input type="text" name="line_rec_8" /></td><td><input type="checkbox" name="line_sub_8" /></td><td><input type="text" name="line_last_8" /></td><td><input type="text" name="line_now_8" /></td><td><input type="text" name="line_temp_8" /></td><td><input type="checkbox" name="line_ok_8" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Issues — flag before signing</legend>
+        <label>
+          <span><span>Short-shipped or substituted items (request credit)</span></span>
+          <textarea name="issues_credit" rows="3"></textarea>
+        </label>
+        <label>
+          <span><span>Items with new unit price (> 5% increase)</span></span>
+          <textarea name="issues_price" rows="2"></textarea>
+        </label>
+        <label>
+          <span><span>Damaged or out-of-temp items (refused)</span></span>
+          <textarea name="issues_damage" rows="2"></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sign-off</legend>
+        <label>
+          <span><span>Receiver signature</span></span>
+          <input type="text" name="receiver" />
+        </label>
+        <label>
+          <span><span>Time signed</span></span>
+          <input type="time" name="signed_time" />
+        </label>
+      </fieldset>
+    </form>

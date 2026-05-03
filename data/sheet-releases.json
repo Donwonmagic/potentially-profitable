@@ -1,0 +1,12 @@
+{
+  "_doc": "Pack-release announcements for /sheets/ — read by scripts/build-rss.mjs into /feed.xml + /es/feed.xml. Mirrors the data/tool-releases.json shape but the slug resolves under sheets/<slug>/ rather than tools/<slug>/. Use the SHEET HUB slug ('') to announce a whole pack landing; use a per-sheet slug to announce a notable single sheet update. note_en/note_es is one line, suitable for a feed reader's <description>.",
+
+  "releases": [
+    {
+      "slug": "",
+      "date": "2026-05-03",
+      "note_en": "Operator Sheets · Pack 1 (Operations & Margin) complete — 9 printable + fillable + saved-as-CSV sheets: recipe cost cards, weekly prime cost, daily sales recap, line check, waste log, invoice receiving, monthly P&L, inventory count, cash handling. Free, no signup, your numbers never leave the page.",
+      "note_es": "Hojas del Operador · Paquete 1 (Operaciones y Márgenes) completo — 9 hojas imprimibles, llenables y exportables: tarjetas de costo de receta, costo primo semanal, resumen diario, chequeo de línea, registro de desperdicio, recepción de facturas, P&G mensual, conteo de inventario, manejo de efectivo. Gratis, sin registro, tus números no salen de la página."
+    }
+  ]
+}

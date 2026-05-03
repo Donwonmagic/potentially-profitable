@@ -1,0 +1,80 @@
+    <p class="sheet-paper-hint">Print one per storage location. Two people walk together. Count by location, not by alphabet.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Period-ending date</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Storage location</span></span>
+          <select name="location">
+            <option value="walkin-cooler">Walk-in cooler</option>
+            <option value="walkin-freezer">Walk-in freezer</option>
+            <option value="dry-storage">Dry storage</option>
+            <option value="bar">Bar / liquor</option>
+            <option value="line-prep">Line / prep area</option>
+            <option value="catering">Catering / off-site</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>
+          <span><span>Counter 1</span></span>
+          <input type="text" name="counter_1" />
+        </label>
+        <label>
+          <span><span>Counter 2 (witness)</span></span>
+          <input type="text" name="counter_2" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Count</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Pack size</th>
+              <th>Sealed cases</th>
+              <th>Open weight / count</th>
+              <th>Unit cost ($)</th>
+              <th class="num">Extended ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text" name="item_1" /></td><td><input type="text" name="pack_1" placeholder="e.g., 12/4oz" /></td><td><input type="text" name="sealed_1" /></td><td><input type="text" name="open_1" /></td><td><input type="text" name="cost_1" /></td><td><input type="text" name="ext_1" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_2" /></td><td><input type="text" name="pack_2" /></td><td><input type="text" name="sealed_2" /></td><td><input type="text" name="open_2" /></td><td><input type="text" name="cost_2" /></td><td><input type="text" name="ext_2" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_3" /></td><td><input type="text" name="pack_3" /></td><td><input type="text" name="sealed_3" /></td><td><input type="text" name="open_3" /></td><td><input type="text" name="cost_3" /></td><td><input type="text" name="ext_3" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_4" /></td><td><input type="text" name="pack_4" /></td><td><input type="text" name="sealed_4" /></td><td><input type="text" name="open_4" /></td><td><input type="text" name="cost_4" /></td><td><input type="text" name="ext_4" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_5" /></td><td><input type="text" name="pack_5" /></td><td><input type="text" name="sealed_5" /></td><td><input type="text" name="open_5" /></td><td><input type="text" name="cost_5" /></td><td><input type="text" name="ext_5" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_6" /></td><td><input type="text" name="pack_6" /></td><td><input type="text" name="sealed_6" /></td><td><input type="text" name="open_6" /></td><td><input type="text" name="cost_6" /></td><td><input type="text" name="ext_6" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_7" /></td><td><input type="text" name="pack_7" /></td><td><input type="text" name="sealed_7" /></td><td><input type="text" name="open_7" /></td><td><input type="text" name="cost_7" /></td><td><input type="text" name="ext_7" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_8" /></td><td><input type="text" name="pack_8" /></td><td><input type="text" name="sealed_8" /></td><td><input type="text" name="open_8" /></td><td><input type="text" name="cost_8" /></td><td><input type="text" name="ext_8" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_9" /></td><td><input type="text" name="pack_9" /></td><td><input type="text" name="sealed_9" /></td><td><input type="text" name="open_9" /></td><td><input type="text" name="cost_9" /></td><td><input type="text" name="ext_9" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_10" /></td><td><input type="text" name="pack_10" /></td><td><input type="text" name="sealed_10" /></td><td><input type="text" name="open_10" /></td><td><input type="text" name="cost_10" /></td><td><input type="text" name="ext_10" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_11" /></td><td><input type="text" name="pack_11" /></td><td><input type="text" name="sealed_11" /></td><td><input type="text" name="open_11" /></td><td><input type="text" name="cost_11" /></td><td><input type="text" name="ext_11" class="num" /></td></tr>
+            <tr><td><input type="text" name="item_12" /></td><td><input type="text" name="pack_12" /></td><td><input type="text" name="sealed_12" /></td><td><input type="text" name="open_12" /></td><td><input type="text" name="cost_12" /></td><td><input type="text" name="ext_12" class="num" /></td></tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" style="text-align:right;">Location subtotal ($)</td>
+              <td class="num"><input type="text" name="location_subtotal" /></td>
+            </tr>
+          </tfoot>
+        </table>
+        <span class="field-help">Total each row by hand (sealed × pack-cost) + (open × unit-cost). Sum the column. The location subtotal feeds the period-end roll-up.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sign-off</legend>
+        <label>
+          <span><span>Counter 1 signature &amp; time</span></span>
+          <input type="text" name="signoff_1" />
+        </label>
+        <label>
+          <span><span>Counter 2 signature &amp; time</span></span>
+          <input type="text" name="signoff_2" />
+        </label>
+      </fieldset>
+    </form>

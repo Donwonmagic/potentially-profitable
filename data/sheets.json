@@ -8,7 +8,7 @@
       "label_es": "Operaciones y Márgenes",
       "blurb_en": "The honest paperwork of running an independent restaurant — daily, weekly, monthly. The sheets that keep prime cost from drifting.",
       "blurb_es": "El papeleo honesto de operar un restaurante independiente — diario, semanal, mensual. Las hojas que evitan que el costo primo se desborde.",
-      "sheets": ["weekly-prime-cost-worksheet", "daily-sales-recap", "line-check-sheet", "waste-log", "invoice-receiving-checklist", "monthly-pnl-snapshot", "inventory-count-sheet", "cash-handling-log"]
+      "sheets": ["recipe-cost-card", "weekly-prime-cost-worksheet", "daily-sales-recap", "line-check-sheet", "waste-log", "invoice-receiving-checklist", "monthly-pnl-snapshot", "inventory-count-sheet", "cash-handling-log"]
     },
     {
       "id": "local-seo",
@@ -188,13 +188,24 @@
       "url_en": "/sheets/daily-sales-recap/",
       "url_es": "/es/sheets/daily-sales-recap/",
       "pack": "operations-margin",
-      "cadence_en": "Daily",
-      "cadence_es": "Diaria",
+      "cadence_en": "Daily · per shift",
+      "cadence_es": "Diaria · por turno",
       "format": "report",
       "stay_paper": false,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["margin-math"], "glossary": ["average-check"], "blog": [] },
-      "status": "queued"
+      "pairsWith": { "tools": ["margin-math", "cost-pulse"], "glossary": ["average-check"], "blog": [] },
+      "when_to_use_en": [
+        "Right at close, before the manager leaves the building.",
+        "Comparing tonight to a typical Tuesday — was the dip weather, schedule, or something else?",
+        "Spotting a void rate that drifts above 1% of sales — that is where theft hides."
+      ],
+      "mistakes_en": [
+        "Logging gross sales instead of net (sales tax included). Use net every time.",
+        "Skipping the cash over/short field on busy nights — the field exists for the busy nights.",
+        "Not noting weather. A 30% dip on a clear Saturday is a different problem than the same dip in a snowstorm."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "line-check-sheet": {
       "title_en": "Pre-Service Line Check",
@@ -212,7 +223,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["plate-cost"], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Twenty minutes before doors open — lunch and dinner separately.",
+        "When the previous shift's manager left a note about a temp-log gap.",
+        "Right after a vendor delivery so you catch a temperature problem before service."
+      ],
+      "mistakes_en": [
+        "Initialing without checking the temps. The walk is the point; the signature is the proof.",
+        "Not dating the printout. Health inspectors want the date, not just the day of the week.",
+        "Putting the 86 list in the manager's pocket instead of expo. The line cannot read your pocket."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "waste-log": {
       "title_en": "Waste & Spoilage Log",
@@ -230,7 +252,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["cost-pulse", "plate-cost"], "glossary": ["yield-percent"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Every time a kitchen lead drops something, throws spoiled prep, or hands off staff meal.",
+        "Tuesday morning, when the weekly review names the top three offenders.",
+        "Any time someone says \"we throw a lot away\" — make them cite the number."
+      ],
+      "mistakes_en": [
+        "Mixing staff-meal with spoilage. Staff meal is a labor benefit; spoilage is a margin leak.",
+        "Skipping the reason code. Without the code, the log just says \"we wasted things.\"",
+        "Not pricing the line. A waste log without dollars is a feelings journal."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "invoice-receiving-checklist": {
       "title_en": "Invoice Receiving Checklist",
@@ -248,7 +281,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["invoice-decoder", "cost-pulse"], "glossary": ["edible-portion"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Standing at the back door while the driver is still there.",
+        "Whenever a substitution shows up that you did not approve in writing.",
+        "Right after a price-increase notice from a vendor — verify the new price hits the line."
+      ],
+      "mistakes_en": [
+        "Signing the slip before counting the boxes. Once it's signed, the credit conversation is uphill.",
+        "Not flagging substitutions in writing. \"They were out\" is not a credit; \"item swap, no approval\" is.",
+        "Skipping the protein temp on cold winter mornings. The truck cooler can fail in any weather."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "monthly-pnl-snapshot": {
       "title_en": "Monthly P&L Snapshot",
@@ -266,7 +310,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["margin-math", "menu-engineering"], "glossary": ["break-even", "contribution-margin", "fixed-costs"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "First week of every month, against the prior month closed by your bookkeeper.",
+        "Before sitting down with a partner, lender, or landlord about the business.",
+        "After a menu change, price raise, or labor reset — see what actually moved."
+      ],
+      "mistakes_en": [
+        "Lumping owner draw into labor. Owner pay is a distribution; labor is the line that pays the staff.",
+        "Forgetting credit-card fees as a variable cost. 2.6% on every dine-in dollar is not rounding error.",
+        "Counting marketing as fixed when half is platform-promo subsidy. The subsidy ends; the cost stays."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "inventory-count-sheet": {
       "title_en": "Period-End Inventory Count Sheet",
@@ -284,7 +339,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["plate-cost"], "glossary": ["food-cost"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Last day of the period, after the close, two people walking together.",
+        "Whenever the prime cost number reads off and you suspect a count miss.",
+        "Before a vendor switch — start the new vendor at a known opening number."
+      ],
+      "mistakes_en": [
+        "Counting sealed cases as open weight. A case of #10 cans is not the same line as opened pulls.",
+        "Counting in random order. The next person who recounts has to do it the same way.",
+        "Skipping the bar walk-in because \"beverage is small.\" Beverage is where the highest-margin theft hides."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "cash-handling-log": {
       "title_en": "Cash Drop & Deposit Log",
@@ -296,13 +362,24 @@
       "url_en": "/sheets/cash-handling-log/",
       "url_es": "/es/sheets/cash-handling-log/",
       "pack": "operations-margin",
-      "cadence_en": "Daily",
-      "cadence_es": "Diaria",
+      "cadence_en": "Per drop · daily review",
+      "cadence_es": "Por entrega · revisión diaria",
       "format": "log",
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Every cash drop. Every drawer change. Every deposit prep.",
+        "Whenever a single drawer reads more than $10 over or short — the trend matters.",
+        "Before any conversation with an employee about a discrepancy — bring the log, not the memory."
+      ],
+      "mistakes_en": [
+        "Single-initial drops. Two pairs of eyes is the entire point of the chain of custody.",
+        "No paid-out receipts attached. Cash that left the drawer needs a paper reason.",
+        "Depositing without recording the slip number. The bank can lose a slip; you cannot lose the number."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
 
     "nap-consistency-tracker": {

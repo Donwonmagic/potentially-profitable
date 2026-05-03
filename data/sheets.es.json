@@ -49,6 +49,90 @@
         "Ignorar las categorías secundarias. Una primaria mal y una secundaria faltante es una brecha de ranking real.",
         "Dejar el Q&A sin respuesta. Google trata el Q&A sin respuesta como señal de baja interacción."
       ]
+    },
+    "daily-sales-recap": {
+      "when_to_use": [
+        "Justo en el cierre, antes de que el gerente salga del local.",
+        "Comparando esta noche con un martes típico — ¿la baja fue por clima, horario u otra cosa?",
+        "Detectando una tasa de anulaciones que sube por encima del 1% — ahí se esconde el robo."
+      ],
+      "mistakes": [
+        "Registrar ventas brutas en vez de netas (con IVA). Usa netas siempre.",
+        "Saltarse el campo de sobrante/faltante en noches ocupadas — ese campo existe para las noches ocupadas.",
+        "No anotar el clima. Una baja del 30% en un sábado despejado es un problema distinto que la misma baja en una nevada."
+      ]
+    },
+    "line-check-sheet": {
+      "when_to_use": [
+        "Veinte minutos antes de abrir — comida y cena por separado.",
+        "Cuando el gerente del turno anterior dejó nota de un hueco en el registro de temperaturas.",
+        "Justo después de una entrega de proveedor para atrapar un problema de temperatura antes del servicio."
+      ],
+      "mistakes": [
+        "Firmar sin revisar las temperaturas. El recorrido es el punto; la firma es la prueba.",
+        "No fechar la impresión. Los inspectores quieren la fecha, no solo el día de la semana.",
+        "Guardar la lista de 86 en el bolsillo del gerente en vez de en expo. La línea no puede leer tu bolsillo."
+      ]
+    },
+    "waste-log": {
+      "when_to_use": [
+        "Cada vez que un cocinero tira algo, descarta prep dañado o entrega comida de personal.",
+        "Martes en la mañana, cuando la revisión semanal nombra los tres principales ofensores.",
+        "Cuando alguien dice \"se tira mucho\" — pídele la cifra."
+      ],
+      "mistakes": [
+        "Mezclar comida de personal con merma. La comida de personal es un beneficio laboral; la merma es una fuga de margen.",
+        "Saltarse el código de razón. Sin código, el registro solo dice \"desperdiciamos cosas\".",
+        "No costear la línea. Un registro de desperdicio sin pesos es un diario de sentimientos."
+      ]
+    },
+    "invoice-receiving-checklist": {
+      "when_to_use": [
+        "Parado en la puerta trasera mientras el chofer sigue ahí.",
+        "Cuando aparece una sustitución que no aprobaste por escrito.",
+        "Justo después de un aviso de aumento de precio de un proveedor — verifica que el nuevo precio aterrice en la línea."
+      ],
+      "mistakes": [
+        "Firmar la nota antes de contar las cajas. Una vez firmada, la conversación de crédito es cuesta arriba.",
+        "No marcar las sustituciones por escrito. \"No tenían\" no es un crédito; \"sustitución sin aprobación\" sí.",
+        "Saltarse la temperatura de la proteína en mañanas frías de invierno. La cámara del camión puede fallar en cualquier clima."
+      ]
+    },
+    "monthly-pnl-snapshot": {
+      "when_to_use": [
+        "Primera semana de cada mes, contra el mes anterior cerrado por tu contador.",
+        "Antes de sentarte con un socio, prestamista o casero a hablar del negocio.",
+        "Después de un cambio de menú, alza de precios o reset de mano de obra — mira qué se movió de verdad."
+      ],
+      "mistakes": [
+        "Sumar el draw del dueño dentro de mano de obra. El pago al dueño es distribución; mano de obra es la línea que paga al staff.",
+        "Olvidar las comisiones de tarjeta como costo variable. 2.6% en cada peso de mesa no es error de redondeo.",
+        "Contar marketing como fijo cuando la mitad es subsidio de promo de plataforma. El subsidio se acaba; el costo se queda."
+      ]
+    },
+    "inventory-count-sheet": {
+      "when_to_use": [
+        "Último día del periodo, después del cierre, dos personas caminando juntas.",
+        "Cuando el costo primo lee mal y sospechas un conteo perdido.",
+        "Antes de cambiar de proveedor — empieza al nuevo proveedor en un número de apertura conocido."
+      ],
+      "mistakes": [
+        "Contar cajas selladas como peso abierto. Una caja de latas #10 no es la misma línea que jalas abiertos.",
+        "Contar en orden aleatorio. La siguiente persona que recuente tiene que hacerlo igual.",
+        "Saltarse la cámara del bar porque \"la bebida es chica\". La bebida es donde se esconde el robo de mayor margen."
+      ]
+    },
+    "cash-handling-log": {
+      "when_to_use": [
+        "Cada entrega de efectivo. Cada cambio de caja. Cada preparación de depósito.",
+        "Cuando una sola caja lee más de $10 sobrante o faltante — la tendencia importa.",
+        "Antes de hablar con un empleado sobre una discrepancia — lleva el registro, no la memoria."
+      ],
+      "mistakes": [
+        "Entregas con una sola firma. Dos pares de ojos es el punto entero de la cadena de custodia.",
+        "Sin recibos de pagos adjuntos. El efectivo que salió de la caja necesita una razón en papel.",
+        "Depositar sin registrar el número de boleta. El banco puede perder una boleta; tú no puedes perder el número."
+      ]
     }
   }
 }

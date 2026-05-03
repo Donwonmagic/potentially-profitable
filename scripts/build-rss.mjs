@@ -140,11 +140,41 @@ function toolItems(locale) {
   return out;
 }
 
+function sheetItems(locale) {
+  const dataPath = path.join(repoRoot, 'data/sheet-releases.json');
+  if (!fs.existsSync(dataPath)) return [];
+  const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const out = [];
+  for (const entry of data.releases || []) {
+    const slug = entry.slug || ''; // empty string targets the hub
+    const file = path.join(repoRoot, locale === 'es' ? 'es/sheets' : 'sheets', slug, 'index.html');
+    if (!fs.existsSync(file)) continue;
+    const meta = readMeta(file);
+    if (!meta.title) continue;
+    const url = slug
+      ? `${SITE}${locale === 'es' ? '/es' : ''}/sheets/${slug}/`
+      : `${SITE}${locale === 'es' ? '/es' : ''}/sheets/`;
+    const blurb = (locale === 'es' ? entry.note_es : entry.note_en) || meta.description;
+    out.push({
+      kind: 'sheet',
+      title: meta.title,
+      description: blurb,
+      url,
+      pubDate: new Date(entry.date + 'T12:00:00Z').toUTCString(),
+      pubDateIso: entry.date,
+      image: meta.ogImage,
+      category: locale === 'es' ? 'Hoja del Operador' : 'Operator Sheet',
+    });
+  }
+  return out;
+}
+
 function buildFeed(locale) {
   const items = [
     ...blogItems(locale),
     ...glossaryItems(locale),
     ...toolItems(locale),
+    ...sheetItems(locale),
   ].sort((a, b) => b.pubDateIso.localeCompare(a.pubDateIso)).slice(0, MAX_ITEMS);
 
   const feedUrl = `${SITE}${locale === 'es' ? '/es' : ''}/feed.xml`;

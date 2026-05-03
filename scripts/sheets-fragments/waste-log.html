@@ -1,0 +1,236 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Week ending</legend>
+        <label>
+          <span><span>Week ending date</span></span>
+          <input type="date" name="week_ending" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Waste entries</legend>
+        <table class="sheet-row-table" data-sheet-table="waste">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Unit cost ($)</th>
+              <th>Reason</th>
+              <th>Day</th>
+              <th class="num">Line $</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" name="item_1" placeholder="e.g., Salmon, 6oz portion" /></td>
+              <td><input type="number" name="qty_1" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_1" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_1">
+                  <option value="">—</option>
+                  <option value="overprep">Overprep</option>
+                  <option value="spoilage">Spoilage</option>
+                  <option value="dropped">Dropped / damaged</option>
+                  <option value="comp">Comped (sent back)</option>
+                  <option value="staff_meal">Staff meal</option>
+                  <option value="trim_loss">Trim / yield loss</option>
+                </select>
+              </td>
+              <td>
+                <select name="day_1">
+                  <option value="">—</option>
+                  <option value="mon">Mon</option><option value="tue">Tue</option>
+                  <option value="wed">Wed</option><option value="thu">Thu</option>
+                  <option value="fri">Fri</option><option value="sat">Sat</option>
+                  <option value="sun">Sun</option>
+                </select>
+              </td>
+              <td class="num"><output name="line_1">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_2" /></td>
+              <td><input type="number" name="qty_2" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_2" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_2"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_2"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_2">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_3" /></td>
+              <td><input type="number" name="qty_3" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_3" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_3"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_3"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_3">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_4" /></td>
+              <td><input type="number" name="qty_4" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_4" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_4"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_4"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_4">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_5" /></td>
+              <td><input type="number" name="qty_5" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_5" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_5"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_5"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_5">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_6" /></td>
+              <td><input type="number" name="qty_6" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_6" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_6"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_6"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_6">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_7" /></td>
+              <td><input type="number" name="qty_7" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_7" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_7"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_7"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_7">—</output></td>
+            </tr>
+            <tr>
+              <td><input type="text" name="item_8" /></td>
+              <td><input type="number" name="qty_8" min="0" step="0.1" /></td>
+              <td><input type="number" name="cost_8" min="0" step="0.01" /></td>
+              <td>
+                <select name="reason_8"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+              </td>
+              <td><select name="day_8"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td class="num"><output name="line_8">—</output></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" style="text-align:right;">Weekly waste total</td>
+              <td class="num"><output name="total">$0.00</output></td>
+            </tr>
+          </tfoot>
+        </table>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Weekly waste total</span>
+          <span class="sheet-output-value" data-output="total_big">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Top reason this week</span>
+          <span class="sheet-output-value" data-output="top_reason">—</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Log every line. The first surprise is usually how much. Tuesday morning, sort by reason and act on the top one.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        var REASON_LABEL = {
+          overprep: 'Overprep',
+          spoilage: 'Spoilage',
+          dropped: 'Dropped / damaged',
+          comp: 'Comped (sent back)',
+          staff_meal: 'Staff meal',
+          trim_loss: 'Trim / yield loss',
+        };
+
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { return '$' + (Math.round(v * 100) / 100).toFixed(2); }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var total = 0;
+          var byReason = {};
+          for (var i = 1; i <= 8; i++) {
+            var qty = n(f['qty_' + i].value);
+            var cost = n(f['cost_' + i].value);
+            var reason = f['reason_' + i].value;
+            var line = qty * cost;
+            var out = f['line_' + i];
+            if (out) out.value = (qty && cost) ? fmt$(line) : '—';
+            if (line > 0) {
+              total += line;
+              if (reason) byReason[reason] = (byReason[reason] || 0) + line;
+            }
+          }
+          f.total.value = fmt$(total);
+          var bigEl = document.querySelector('[data-output="total_big"]');
+          if (bigEl) bigEl.textContent = fmt$(total);
+
+          var top = null, topAmount = 0;
+          for (var k in byReason) {
+            if (byReason[k] > topAmount) { top = k; topAmount = byReason[k]; }
+          }
+          var topEl = document.querySelector('[data-output="top_reason"]');
+          if (topEl) topEl.textContent = top ? (REASON_LABEL[top] || top) + ' · ' + fmt$(topAmount) : '—';
+
+          var callout = document.querySelector('[data-output="callout"]');
+          if (!callout) return;
+          if (total === 0) {
+            callout.textContent = 'Log every line. The first surprise is usually how much. Tuesday morning, sort by reason and act on the top one.';
+          } else if (top === 'overprep') {
+            callout.textContent = 'Overprep is leading. Trim par sheets back, especially for the days where it concentrates.';
+          } else if (top === 'spoilage') {
+            callout.textContent = 'Spoilage is leading. FIFO discipline + dating + cooler-temp logs are the fix; the waste log surfaces the symptom.';
+          } else if (top === 'dropped') {
+            callout.textContent = 'Drops are leading. Check the line layout, the speed-rack heights, and the trainee mix on the busiest shifts.';
+          } else if (top === 'comp') {
+            callout.textContent = 'Comped sends are leading. The fix lives in expo discipline and cook-temperature targets, not in the waste log itself.';
+          } else if (top === 'staff_meal') {
+            callout.textContent = 'Staff meal is leading. That is fine — but it is a labor benefit, not a margin leak. Re-categorize the line for next week.';
+          } else if (top === 'trim_loss') {
+            callout.textContent = 'Trim loss is leading. Yield-test the protein and adjust the recipe-cost card; the leak is upstream of the line.';
+          }
+        }
+
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Week ending', f.week_ending.value || ''],
+            [],
+            ['Item', 'Qty', 'Unit cost', 'Reason', 'Day', 'Line $'],
+          ];
+          for (var i = 1; i <= 8; i++) {
+            if (!f['item_' + i].value && !f['qty_' + i].value) continue;
+            rows.push([
+              f['item_' + i].value || '',
+              f['qty_' + i].value || '',
+              f['cost_' + i].value || '',
+              REASON_LABEL[f['reason_' + i].value] || f['reason_' + i].value || '',
+              f['day_' + i].value || '',
+              (f['line_' + i].value || '').replace(/^—$/, ''),
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Weekly waste total', document.querySelector('[data-output="total_big"]').textContent]);
+          rows.push(['Top reason',          document.querySelector('[data-output="top_reason"]').textContent]);
+          return rows;
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({ slug: 'waste-log', collect: collect, recalc: recalc });
+        }
+      })();
+    </script>
