@@ -167,6 +167,7 @@ header.nav{min-height:64px}
 .md-logo-meta-line{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .md-logo-meta-sub{font-size:11.5px;color:var(--stone);margin-top:2px}
 .md-logo-warn{margin-top:6px;font-size:11.5px;color:#b86c0f}
+.md-logo-drop.is-dragging{border-style:solid;border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--cream-2));box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 18%,transparent)}
 .md-logo-remove{margin-top:6px;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);font-size:11.5px;font-weight:500;cursor:pointer;line-height:1.2;transition:color var(--t-fast),border-color var(--t-fast)}
 .md-logo-remove[hidden]{display:none}
 .md-logo-remove:hover{color:var(--rust,#9b3a2a);border-color:var(--rust,#9b3a2a)}
@@ -735,7 +736,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <span class="md-logo-thumb" id="mdLogoThumb"><span class="md-logo-thumb-empty" aria-hidden="true">+</span></span>
           <span class="md-logo-meta">
             <span class="md-logo-meta-line" id="mdLogoLine">Elegir foto o tomar una nueva</span>
-            <span class="md-logo-meta-sub">PNG, JPG, o SVG. Se queda en este dispositivo.</span>
+            <span class="md-logo-meta-sub">PNG, JPG o SVG — clic o arrastra. Se queda en este dispositivo.</span>
           </span>
           <input type="file" id="mdLogoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" capture="environment" />
         </label>

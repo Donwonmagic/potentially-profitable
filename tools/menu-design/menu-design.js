@@ -1246,6 +1246,70 @@
     });
   }
 
+  // Wave studio-quality — drag-and-drop logo upload. Modern apps let
+  // operators drop a logo onto the zone; the previous tool was click-
+  // only. We accept the first PNG/JPG/SVG/WebP from the drop and route
+  // it through the same readLogoFile() pipeline the file picker uses.
+  // Attach via the label/zone (preferred), fallback to logoInput.
+  var logoDropEl = document.getElementById('mdLogoDrop');
+  if (logoDropEl) {
+    function _isImageFile(f) {
+      if (!f) return false;
+      return /^image\/(png|jpeg|jpg|svg\+xml|webp)$/i.test(f.type) ||
+             /\.(png|jpe?g|svg|webp)$/i.test(f.name || '');
+    }
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      logoDropEl.addEventListener(evt, function (e) {
+        // Only react to file drags; ignore native draggable element drags.
+        var dt = e.dataTransfer;
+        if (!dt) return;
+        var hasFile = false;
+        if (dt.types) {
+          for (var i = 0; i < dt.types.length; i++) {
+            if (dt.types[i] === 'Files') { hasFile = true; break; }
+          }
+        }
+        if (!hasFile) return;
+        e.preventDefault();
+        e.stopPropagation();
+        logoDropEl.classList.add('is-dragging');
+        try { dt.dropEffect = 'copy'; } catch (_) {}
+      });
+    });
+    ['dragleave', 'dragend'].forEach(function (evt) {
+      logoDropEl.addEventListener(evt, function (e) {
+        // Only clear the highlight when the drag actually leaves the
+        // zone (relatedTarget is outside) — child elements firing
+        // dragleave shouldn't kill the highlight.
+        if (evt === 'dragleave' && e.relatedTarget && logoDropEl.contains(e.relatedTarget)) return;
+        logoDropEl.classList.remove('is-dragging');
+      });
+    });
+    logoDropEl.addEventListener('drop', function (e) {
+      var dt = e.dataTransfer;
+      if (!dt || !dt.files || !dt.files.length) return;
+      e.preventDefault();
+      e.stopPropagation();
+      logoDropEl.classList.remove('is-dragging');
+      // Find the first image file in the drop (operators sometimes
+      // drag a folder or a multi-file selection from the OS; we take
+      // the first match instead of refusing).
+      var files = dt.files;
+      var picked = null;
+      for (var j = 0; j < files.length; j++) {
+        if (_isImageFile(files[j])) { picked = files[j]; break; }
+      }
+      if (!picked) {
+        setLogoWarn(tt(
+          'That doesn\'t look like an image. Drop a PNG, JPG, or SVG.',
+          'Eso no parece una imagen. Suelta un PNG, JPG o SVG.'
+        ));
+        return;
+      }
+      readLogoFile(picked);
+    });
+  }
+
   // -------------------- Paper size (W7-3) --------------------
   // Category-pill + card-grid picker driven by the PAPERS catalog
   // shipped on MD_PDF.PAPERS. Each category renders cards for the
