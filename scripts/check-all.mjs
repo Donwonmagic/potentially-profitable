@@ -33,6 +33,12 @@ const CHECKS = [
   // warn-only at first so existing usage can be flagged + fixed
   // before promoting to fail-CI in a later sprint.
   ['Count sentinel escape','check-count-sentinel-escape.mjs','--check'],
+  // Phase-3B cohesion guard. Catches the orphan-hreflang regression
+  // where stamp-hreflang.mjs writes its own sentinel block but legacy
+  // hand-authored <link rel="alternate" hreflang> / <meta og:locale>
+  // lines below it survive — leading to duplicate hreflang triplets
+  // on 161 pages until the cleanup pass landed. Fail-CI from day 1.
+  ['Hreflang orphans',    'check-hreflang-orphans.mjs',    '--check'],
   ['Banned words',        'check-banned-words.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
