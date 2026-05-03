@@ -270,6 +270,9 @@ jsonldHtml +
 '  .ml-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;margin:0;flex:0 0 auto}\n' +
 '  .ml-allergen-key-row dd{margin:0;font-size:13px;color:var(--ink)}\n' +
 '  .ml-foot{text-align:center;font-size:12px;color:var(--muted);padding-top:32px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);margin-top:40px}\n' +
+/* Wave B2 — regime-aware allergen disclaimer. Sits above the
+   last-updated footer; reads as advisory, not decorative. */
+'  .ml-disclaimer{margin:32px 0 0;padding:14px 16px;background:color-mix(in srgb,var(--accent) 6%,transparent);border-left:3px solid var(--accent);color:var(--ink);font-size:13px;line-height:1.55;font-style:italic}\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
@@ -280,6 +283,13 @@ jsonldHtml +
 '  </header>\n' +
 '  ' + sectionsHtml + '\n' +
    keyHtml + '\n' +
+   (opts.disclaimer && String(opts.disclaimer).trim()
+     // Wave B2 — regime-aware allergen disclaimer footer. Caller
+     // resolves the effective text (operator-typed wins, otherwise
+     // regime default). Wraps in role=note so screen readers announce
+     // it as auxiliary, not a heading.
+     ? '  <aside class="ml-disclaimer" role="note">' + escHtml(String(opts.disclaimer).trim()) + '</aside>\n'
+     : '') +
 '  <footer class="ml-foot">' +
     (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') +
     new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +

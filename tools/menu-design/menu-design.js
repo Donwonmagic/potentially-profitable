@@ -167,6 +167,34 @@
     try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
   }
 
+  // -------------------- Wave B2 finish — effective disclaimer ---------
+  // Resolve the disclaimer text the renderers should emit in the
+  // footer. Three-state logic:
+  //   1. Operator typed something  → use their text verbatim (always)
+  //   2. Menu has ≥1 allergen tag  → auto-fill from regime + locale
+  //                                  (synthesis-plan B2 default-on UX)
+  //   3. No allergens, no operator text → empty (renderer no-ops)
+  //
+  // Tolerant of MD_SCHEMA being absent (legacy load path or test
+  // harness) — falls back to operator text or empty.
+  function hasAnyAllergenTagged() {
+    return rows.some(function (r) {
+      return r && r.kind === 'dish' && Array.isArray(r.allergens) && r.allergens.length > 0;
+    });
+  }
+  function effectiveDisclaimer() {
+    if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
+      return meta.disclaimer;
+    }
+    if (!hasAnyAllergenTagged()) return '';
+    if (typeof MD_SCHEMA === 'undefined' ||
+        typeof MD_SCHEMA.autoDisclaimerFor !== 'function') {
+      return '';
+    }
+    var regime = (meta && meta.allergenRegime) || 'us-fda9';
+    return MD_SCHEMA.autoDisclaimerFor(regime, LOCALE) || '';
+  }
+
   // A2 state — theme id, logo data-URL, paper size key. Lives in
   // the same closure as rows[] so render() can pull everything.
   var themeId  = 'modern-minimal';
@@ -2720,12 +2748,15 @@
         tagline:      meta.tagline,
         story:        meta.story,
         // W14-2 — restaurant footer fields
+        // B2 finish — disclaimer routes through effectiveDisclaimer()
+        // so menus with allergens tagged auto-receive the regime + locale
+        // appropriate text when the operator hasn't typed their own.
         footer: {
           address:       meta.address,
           hours:         meta.hours,
           serviceCharge: meta.serviceCharge,
           sourcing:      meta.sourcing,
-          disclaimer:    meta.disclaimer,
+          disclaimer:    effectiveDisclaimer(),
           askYourServer: meta.askYourServer
         },
         coverPage:    !!meta.coverPage,
@@ -3032,12 +3063,27 @@
     try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
     if (!titleVal) titleVal = tt('Menu', 'Menú');
     return {
-      rows:    realRows,
-      theme:   theme,
-      title:   titleVal,
-      tagline: meta.tagline,
-      story:   meta.story,
-      locale:  LOCALE
+      rows:       realRows,
+      theme:      theme,
+      title:      titleVal,
+      tagline:    meta.tagline,
+      story:      meta.story,
+      locale:     LOCALE,
+      // B2 finish — every HTML / text emitter call site now picks up
+      // the regime-aware disclaimer and the canonical-menu meta block.
+      // The HTML emitter renders disclaimer below the allergen key;
+      // the text emitter prints it as a final line.
+      disclaimer: effectiveDisclaimer(),
+      meta:       {
+        businessName:    titleVal,
+        tagline:         meta.tagline || '',
+        cuisine:         (function () {
+          try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
+        })(),
+        currency:        'USD',
+        locale:          LOCALE,
+        allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
+      }
     };
   }
 
@@ -3174,7 +3220,20 @@
         title:        title,
         locale:       LOCALE,
         logoDataUrl:  logoUrl,
-        targetUrl:    url
+        targetUrl:    url,
+        // B2 finish — same effective disclaimer the standard PDF export
+        // already uses; the QR-menu HTML emits it below the allergen key.
+        disclaimer:   effectiveDisclaimer(),
+        meta: {
+          businessName:    title,
+          tagline:         meta.tagline || '',
+          cuisine:         (function () {
+            try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
+          })(),
+          currency:        'USD',
+          locale:          LOCALE,
+          allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
+        }
       }).then(function (blob) {
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);

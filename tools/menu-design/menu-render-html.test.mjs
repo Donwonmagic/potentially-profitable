@@ -184,3 +184,45 @@ test('caller-supplied canonicalMenu is used even when MD_SCHEMA is unavailable',
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /"name":\s*"Pre-migrated"/);
 });
+
+// ============== Wave B2 — disclaimer footer in HTML ==============
+test('exportHtml emits a disclaimer block when opts.disclaimer is supplied', () => {
+  const MD_HTML = loadRenderer();
+  const html = MD_HTML.exportHtml({
+    rows: seedRows(),
+    theme: seedTheme(),
+    title: 'X',
+    locale: 'en',
+    disclaimer: 'Please inform your server of any allergies.'
+  });
+  assert.match(html, /class="ml-disclaimer"/);
+  assert.match(html, /Please inform your server of any allergies/);
+  assert.match(html, /role="note"/);
+});
+
+test('exportHtml omits the disclaimer block when disclaimer is empty', () => {
+  const MD_HTML = loadRenderer();
+  const html = MD_HTML.exportHtml({
+    rows: seedRows(),
+    theme: seedTheme(),
+    title: 'X',
+    locale: 'en'
+  });
+  // The .ml-disclaimer CSS rule lives in the inlined <style> block
+  // unconditionally; what we want to assert is that no <aside> tag
+  // carrying the class is emitted.
+  assert.doesNotMatch(html, /<aside class="ml-disclaimer"/);
+});
+
+test('exportHtml escapes HTML in the disclaimer text', () => {
+  const MD_HTML = loadRenderer();
+  const html = MD_HTML.exportHtml({
+    rows: seedRows(),
+    theme: seedTheme(),
+    title: 'X',
+    locale: 'en',
+    disclaimer: '<script>alert("xss")</script>'
+  });
+  assert.doesNotMatch(html, /<script>alert/);
+  assert.match(html, /&lt;script&gt;alert/);
+});

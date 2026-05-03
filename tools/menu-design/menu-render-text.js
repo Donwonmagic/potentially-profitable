@@ -114,6 +114,14 @@
         lines.push('- **' + k + '** = ' + allergenLabel(k, locale));
       });
     }
+    // Wave B2 — regime-aware allergen disclaimer footer. Renders as
+    // a Markdown blockquote above the last-updated line so the
+    // advisory tone is preserved when pasted into Notion / GitHub.
+    if (opts.disclaimer && String(opts.disclaimer).trim()) {
+      lines.push('');
+      lines.push('---');
+      lines.push('> ' + String(opts.disclaimer).trim());
+    }
     lines.push('');
     var when = new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     lines.push('_' + (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') + when + '_');
@@ -172,6 +180,27 @@
       keys.forEach(function (k) {
         out.push(k + ' = ' + allergenLabel(k, locale));
       });
+    }
+    // Wave B2 — regime-aware allergen disclaimer footer. Caller
+    // resolves the effective text (operator-typed wins; otherwise
+    // regime default). Emitted as a wrapped paragraph so the line
+    // length stays scannable.
+    if (opts.disclaimer && String(opts.disclaimer).trim()) {
+      out.push('');
+      out.push(repeatChar('-', 60));
+      var disc = String(opts.disclaimer).trim();
+      // Manual word-wrap at 60 cols to match the table width above.
+      var words = disc.split(/\s+/);
+      var line = '';
+      words.forEach(function (w) {
+        if ((line + (line ? ' ' : '') + w).length > 60) {
+          out.push(line);
+          line = w;
+        } else {
+          line = line + (line ? ' ' : '') + w;
+        }
+      });
+      if (line) out.push(line);
     }
     out.push('');
     out.push((locale === 'es' ? 'Última actualización: ' : 'Last updated: ') + new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
