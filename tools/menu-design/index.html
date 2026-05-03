@@ -485,6 +485,15 @@ header.nav{min-height:64px}
 
 /* W12-3 — paper-texture overlay (linen grain) via two crossed
    hairline-stripe gradients at 4% opacity. Subtle, not pictorial. */
+/* Wave studio-quality — cuisine decoration on the live preview.
+   Sits in the upper-right corner at low opacity; pointer-events:none
+   so it never intercepts taps. SVG inherits the theme's muted color
+   via currentColor + the decoration's color attribute. The preview
+   paper is position:relative; this layers behind menu content via
+   z-index:0 (content sits at z-index:1 by default in stacking ctx). */
+.md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
+.md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
+.md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}
 .md-preview-paper.md-pp-texture{background-image:
   repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
   repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);

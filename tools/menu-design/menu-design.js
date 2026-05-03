@@ -1102,6 +1102,23 @@
     if (current.name !== null || current.dishes.length) groups.push(current);
 
     var html = '';
+    // Wave studio-quality — cuisine decoration on the live preview.
+    // Same data + same motif as the picker thumbnail and the QR-menu
+    // HTML output. Operator picks Trattoria → instantly sees the
+    // olive-branch in the preview, not just on the final export.
+    // Tolerant: empty when MD_DECOR isn't loaded or theme has no
+    // cuisine match. Two-column / panel themes get a smaller / no
+    // decoration so the asymmetric layout doesn't look unbalanced.
+    try {
+      if (typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
+        var decorFrag = MD_DECOR.svgFragment(theme, { opacity: 0.10 });
+        if (decorFrag) {
+          html += '<div class="md-pp-decor" aria-hidden="true">' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">' + decorFrag + '</svg>' +
+                  '</div>';
+        }
+      }
+    } catch (_) {}
     if (logoUrl) {
       html += '<img class="md-pp-logo" src="' + escHtml(logoUrl) + '" alt="" />';
     }
