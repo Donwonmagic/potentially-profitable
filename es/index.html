@@ -367,12 +367,29 @@
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">Hecho para restaurantes independientes &middot; Silver Spring, MD</span>
+      <span class="eyebrow">Para restaurantes independientes &middot; Silver Spring, MD</span>
       <h1>
-        Respuestas en espa&ntilde;ol claro para due&ntilde;os de restaurantes. <span class="serif-italic">Y un estudio que construye el sitio, cuando lo necesites.</span>
+        Sitios web de restaurante que se pagan solos. <span class="serif-italic">Hechos por una persona, en una temporada.</span>
       </h1>
       <p class="hero-sub">
-        Art&iacute;culos, herramientas, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos &mdash; gratis. La misma gu&iacute;a que uso con clientes que pagan. Sin registro, sin pedir tu correo.
+        Hecho por alguien que esta semana administra dos restaurantes del DMV. La biblioteca de abajo es la misma gu&iacute;a que uso con clientes que pagan &mdash; gratis, sin registro.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="/es/tools/audits/restaurant/">Hacer el diagn&oacute;stico gratis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="/es/services/">Ver precios</a>
+        <!-- Fase 4 (Taller) — Reveal "Continúa tu trabajo". -->
+        <a class="btn btn-ghost js-nav-workshop" href="/es/workbench/" hidden>Continúa tu trabajo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </a>
+      </div>
+      <p class="hero-note">
+        &iquest;S&oacute;lo investigando? <a href="/es/learn/start-here/">Haz el recorrido guiado de 60 minutos &rarr;</a>
+      </p>
+      <p class="hero-meta-note">
+        <em>Don Goldstein &mdash; gerente en el Irish Inn at Glen Echo y Tacombi DMV. Certificado ServSafe.</em>
+        <span class="hero-meta-sub">Respondo en menos de 4 horas, lun&ndash;vie &middot; dos proyectos abiertos por mes &middot; ES + EN.</span>
       </p>
       <ul class="hero-counts" aria-label="La biblioteca en cifras">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;t&eacute;rminos</li>
@@ -380,23 +397,6 @@
         <li class="hero-counts__chip"><strong><!-- count:articles -->17<!-- /count --></strong>&nbsp;art&iacute;culos</li>
         <li class="hero-counts__chip">Todo gratis</li>
       </ul>
-      <div class="hero-ctas">
-        <a class="btn btn-primary" href="/es/tools/">Ver herramientas y art&iacute;culos
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="/es/window/">Escr&iacute;bele a Don</a>
-        <!-- Fase 4 (Taller) — Reveal "Continúa tu trabajo". -->
-        <a class="btn btn-ghost js-nav-workshop" href="/es/workbench/" hidden>Continúa tu trabajo
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
-        </a>
-      </div>
-      <p class="hero-note">
-        &iquest;Primera vez? Prueba el <a href="/es/tools/audits/restaurant/">diagn&oacute;stico del sitio</a> de 30 segundos, o haz el <a href="/es/learn/start-here/">recorrido guiado de 60 minutos</a>.
-      </p>
-      <p class="hero-meta-note">
-        <em>Hecho por Don Goldstein, gerente en dos restaurantes del DMV.</em>
-        <span class="hero-meta-sub">Respuesta: menos de 4 horas, lun&ndash;vie &middot; 2 proyectos abiertos por mes &middot; ES + EN.</span>
-      </p>
     </div>
 
     <div>
@@ -970,13 +970,30 @@
       </nav>
     </div>
 
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Mando una nota corta cuando publico algo &mdash; cuatro al trimestre, sin embudos.</p>
+        <label class="sr-only" for="foot-news-email-es">Tu correo</label>
+        <input id="foot-news-email-es" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/es/terms.html">Términos</a>
         <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
         <a href="/es/accessibility.html">Accesibilidad</a>
         <a href="/es/cookies.html">Cookies</a>
+        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
