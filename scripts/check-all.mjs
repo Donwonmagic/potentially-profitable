@@ -89,6 +89,12 @@ const CHECKS = [
   // allergens.js drifted without a corresponding regen of the
   // /tools/menu-design/llm.md companion.
   ['Menu Design LLM (idem)','build-menu-design-llm.mjs',     '--check'],
+  // Studio-quality push — per-theme SVG thumbnails generated from
+  // themes.js. The picker uses these as <img> instead of canvas
+  // approximations so each theme renders with its real typography
+  // (browser uses whichever @font-face fonts are loaded). Idempotent
+  // check fails if themes drifted without a regen.
+  ['Theme thumbnails (idem)','build-theme-thumbnails.mjs',   '--check'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],

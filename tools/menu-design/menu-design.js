@@ -4068,15 +4068,27 @@
       var id = card.dataset.id;
       var t = MD_THEMES.get(id);
       if (!t) return;
-      // Insert canvas if not already
-      var canvas = card.querySelector('.md-theme-thumb');
-      if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.className = 'md-theme-thumb';
-        canvas.setAttribute('aria-hidden', 'true');
-        card.appendChild(canvas);
+      // Wave studio-quality — switch canvas thumbnails for pre-rendered
+      // SVG <img>s. Each /assets/menu-design-thumbs/<id>.svg is built
+      // from themes.js + cuisine-specific dish samples, uses real theme
+      // displayFamily/bodyFamily strings (browser renders with whatever
+      // @font-face fonts are loaded), and ships a Michelin-style leader-
+      // dot, divider variant, allergen pill, and theme name label. SVG
+      // scales infinitely + costs ~400 bytes gz per theme.
+      // Existing canvas if present is removed so the upgrade is sticky.
+      var oldCanvas = card.querySelector('canvas.md-theme-thumb');
+      if (oldCanvas) oldCanvas.parentNode.removeChild(oldCanvas);
+      var img = card.querySelector('img.md-theme-thumb');
+      if (!img) {
+        img = document.createElement('img');
+        img.className = 'md-theme-thumb';
+        img.setAttribute('aria-hidden', 'true');
+        img.setAttribute('alt', '');
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        card.appendChild(img);
       }
-      paintThemeThumb(canvas, t);
+      img.src = '/assets/menu-design-thumbs/' + id + '.svg?v=20260503-wsq';
       card.dataset.thumbLoaded = '1';
     });
   }
