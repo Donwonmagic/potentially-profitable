@@ -544,6 +544,59 @@ header.nav{min-height:64px}
    dish row + the allergen key. Same when the theme is natively 2-col. */
 .md-preview-paper.md-promote-2col .md-pp-decor,
 .md-preview-paper[data-cols="2"] .md-pp-decor{top:auto;bottom:8%;right:8%;width:24%;max-width:130px;opacity:.55}
+
+/* Wave studio-quality — print-vendor mode visualization. When the
+   operator ticks "Print-vendor PDF" they're committing to a press-
+   ready file with 3mm bleed + hairline crop marks. The press-ready
+   PDF carries those marks but the live preview previously showed a
+   plain page — operators couldn't tell what the printer would see.
+   This overlay paints faint magenta crop marks at each corner of
+   the paper + a thin bleed-area indicator so the operator visually
+   understands the press-ready geometry. Class is added by the
+   orchestrator's printVendor change handler.
+
+   Magenta is the conventional color for crop marks in pre-press
+   workflows (RGB 255, 0, 255 at low opacity reads as a faint pink
+   that won't be confused with menu content). */
+.md-preview-frame.md-pp-print-marks .md-preview-paper{
+  outline:0.5px dashed rgba(218, 36, 122, .35);
+  outline-offset:6px;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::before,
+.md-preview-frame.md-pp-print-marks .md-preview-paper::after{
+  content:'';position:absolute;width:18px;height:18px;border:0.5px solid rgba(218, 36, 122, .55);pointer-events:none;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::before{
+  top:-13px;left:-13px;border-right:0;border-bottom:0;
+}
+.md-preview-frame.md-pp-print-marks .md-preview-paper::after{
+  bottom:-13px;right:-13px;border-left:0;border-top:0;
+}
+/* Two extra crop-mark corners via a wrapper marker (the existing
+   .md-preview-paper has only ::before + ::after pseudo-elements;
+   we rely on the .md-preview-frame's pseudos for the other two
+   corners so all four show). */
+.md-preview-frame.md-pp-print-marks .md-preview-paper{
+  box-shadow:
+    0 4px 18px rgba(0,0,0,.10),
+    18px 0 0 -17.5px rgba(218, 36, 122, .55),
+    -18px 0 0 -17.5px rgba(218, 36, 122, .55);
+}
+/* "Bleed area" subtle annotation visible on the right side of the
+   preview frame so the operator knows what the marks represent.
+   Hidden when print-vendor is off; shown via the same class gate. */
+.md-preview-frame.md-pp-print-marks::after{
+  content:'PRESS-READY · 3mm BLEED · CROP MARKS';
+  position:absolute;
+  top:8px;right:14px;
+  font-family:Inter,system-ui,sans-serif;
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.12em;
+  color:rgba(218, 36, 122, .8);
+  pointer-events:none;
+  z-index:2;
+}
 .md-preview-paper.md-pp-texture{background-image:
   repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
   repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);

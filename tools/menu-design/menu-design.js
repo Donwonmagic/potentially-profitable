@@ -984,6 +984,12 @@
         printChecklistEl.open = printVendor;
       }
       if (printVendor) renderPrintChecklist();
+      // Wave studio-quality — toggle the bleed + crop marks on the
+      // live preview so the operator can SEE what they're sending the
+      // print shop. Class on the preview frame gates the CSS overlay.
+      var pf = document.getElementById('mdPreviewFrame');
+      if (pf) pf.classList.toggle('md-pp-print-marks', printVendor);
+      schedulePreview();
       scheduleSaveDraft();
     });
   }
