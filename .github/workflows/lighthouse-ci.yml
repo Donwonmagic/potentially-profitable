@@ -26,6 +26,7 @@ on:
 permissions:
   contents: read
   pull-requests: write   # for the LHCI status comment
+  statuses: write        # for lhci to post commit status (reports next to other PR checks)
 
 concurrency:
   # One LHCI run per ref; cancel older runs to keep the workflow
