@@ -85,12 +85,30 @@
     },
     "open-hours": {
       "topic": "local-seo",
-      "related_tools": ["gbp-grader", "restaurant-audit"],
+      "related_tools": ["gbp-grader", "restaurant-audit", "holiday-hours"],
       "articles": [
         "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
         "/blog/how-to-recover-reservations-from-googles-find-a-table/"
       ],
       "glossary": ["hours-of-operation", "special-hours", "opening-hours-specification"]
+    },
+    "holiday-hours": {
+      "topic": "local-seo",
+      "related_tools": ["open-hours", "gbp-grader", "restaurant-audit"],
+      "articles": [
+        "/blog/how-to-set-up-google-business-profile-for-your-restaurant/",
+        "/blog/how-to-recover-reservations-from-googles-find-a-table/"
+      ],
+      "glossary": ["holiday-hours", "special-hours", "opening-hours-specification"]
+    },
+    "menu-converter": {
+      "topic": "conversions",
+      "related_tools": ["menu-design", "menu-engineering", "menu-copy"],
+      "articles": [
+        "/blog/what-should-be-on-a-restaurant-website/",
+        "/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/"
+      ],
+      "glossary": ["html-menu", "menu-engineering", "average-check"]
     },
     "margin-math": {
       "topic": "operations-margin",
