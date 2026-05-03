@@ -137,6 +137,12 @@ self.addEventListener('activate', function (event) {
         if (k.indexOf(SW_VERSION) === -1) return caches.delete(k);
         return null;
       }));
+    }).then(function () {
+      // Wave E.6 — opportunistic share-inbox prune on activate.
+      // Catches stale entries left over from a previous SW version
+      // before that version had TTL headers. Best-effort; never
+      // blocks claim().
+      return pruneShareInbox().catch(function () {});
     }).then(function () { return self.clients.claim(); })
   );
 });
@@ -248,19 +254,78 @@ function handleShareTarget(request) {
     var token = 'share-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
     var stashUrl = '/tools/invoice-decoder/_shared_inbox/' + token;
     var contentType = file.type || 'application/octet-stream';
+    var queuedAt = Date.now();
+    var expiresAt = queuedAt + (60 * 60 * 1000); // 1h soft TTL
+    var hardExpiresAt = queuedAt + (24 * 60 * 60 * 1000); // 24h hard cap
     return caches.open(SHARE_INBOX).then(function (cache) {
-      return cache.put(stashUrl, new Response(file, {
-        headers: {
-          'Content-Type': contentType,
-          'X-Mid-Shared-Name': encodeURIComponent(file.name || 'shared'),
-          'X-Mid-Shared-Size': String(file.size)
-        }
-      }));
+      // Wave E.6 — defensive sweep before we add the new entry.
+      // Best-effort; if it fails the existing single-consumption
+      // delete still keeps the inbox bounded.
+      return pruneShareInbox(cache).catch(function () {}).then(function () {
+        return cache.put(stashUrl, new Response(file, {
+          headers: {
+            'Content-Type': contentType,
+            'X-Mid-Shared-Name': encodeURIComponent(file.name || 'shared'),
+            'X-Mid-Shared-Size': String(file.size),
+            // Wave E.6 — share-inbox TTL. Single-consumption deletion
+            // already handles the happy path; the TTL hardens the
+            // case where a share lands but the operator never opens
+            // the tool, or closes the tab before the controller
+            // pulls the blob out. Without a TTL, that file would
+            // sit in same-origin Cache storage indefinitely.
+            'X-Mid-Shared-Expires': String(expiresAt),
+            'X-Mid-Shared-Hard-Expires': String(hardExpiresAt)
+          }
+        }));
+      });
     }).then(function () {
       return Response.redirect('/tools/invoice-decoder/?shared=' + encodeURIComponent(token), 303);
     });
   }).catch(function () {
     return Response.redirect('/tools/invoice-decoder/?shared=error', 303);
+  });
+}
+
+// Wave E.6 — Share-inbox pruning. Walk every cached share entry, drop
+// anything whose soft TTL has passed (1h) without consumption, and
+// drop anything past the 24h hard cap regardless. The hard cap is the
+// belt-and-suspenders defense in the (rare) case the soft TTL is
+// somehow extended by a future code path. Returns the count of
+// dropped entries so the caller can observe.
+function pruneShareInbox(cache) {
+  var openP = cache ? Promise.resolve(cache) : caches.open(SHARE_INBOX);
+  return openP.then(function (c) {
+    return c.keys().then(function (requests) {
+      var now = Date.now();
+      var dropped = 0;
+      return Promise.all(requests.map(function (req) {
+        return c.match(req).then(function (resp) {
+          if (!resp) return null;
+          var soft = parseInt(resp.headers.get('X-Mid-Shared-Expires') || '0', 10);
+          var hard = parseInt(resp.headers.get('X-Mid-Shared-Hard-Expires') || '0', 10);
+          // If we have a hard cap timestamp and it's passed → drop.
+          // Otherwise if we have a soft TTL and it's passed → drop.
+          // Entries with NO expiration headers (legacy, pre-Wave E.6)
+          // are dropped if they're older than the hard cap from the
+          // moment of pruning — we can't tell their age, so we err
+          // on the side of clearing them. This is safe: the
+          // controller treats a missing share as "operator dismissed."
+          var expired = false;
+          if (hard && hard < now) expired = true;
+          else if (soft && soft < now) expired = true;
+          else if (!soft && !hard) {
+            // Legacy: if no headers, drop. Re-shares from the
+            // operator will get the new headers.
+            expired = true;
+          }
+          if (expired) {
+            dropped++;
+            return c.delete(req);
+          }
+          return null;
+        });
+      })).then(function () { return dropped; });
+    });
   });
 }
 
@@ -274,6 +339,12 @@ self.addEventListener('message', function (event) {
   }
   if (event.data.type === 'CLEAR_SHARE_INBOX') {
     caches.delete(SHARE_INBOX);
+  }
+  if (event.data.type === 'PRUNE_SHARE_INBOX') {
+    // Wave E.6 — operator-initiated prune. Triggered from the
+    // controller on tool open so a long-idle browser tab cleans up
+    // even between SW activations.
+    pruneShareInbox().catch(function () {});
   }
   if (event.data.type === 'SW_VERSION') {
     if (event.source && event.source.postMessage) {

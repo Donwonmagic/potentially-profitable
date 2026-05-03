@@ -22,6 +22,7 @@
   var statusTitle = document.getElementById('idStatusTitle');
   var statusMsg   = document.getElementById('idStatusMsg');
   var progressFill= document.getElementById('idProgressFill');
+  var progressBar = document.getElementById('idProgressBar');
   var previewEl   = document.getElementById('idPreview');
   var rawImg      = document.getElementById('idRawImg');
   var cleanImg    = document.getElementById('idCleanImg');
@@ -55,7 +56,15 @@
     if (statusMsg) statusMsg.textContent = msg || '';
   }
   function setProgress(pct) {
-    if (progressFill) progressFill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    var clamped = Math.max(0, Math.min(100, pct));
+    if (progressFill) progressFill.style.width = clamped + '%';
+    // Wave D.9 — keep ARIA live with the visual state so screen-reader
+    // operators hear progress updates as the bar fills. Throttling
+    // happens at the announcement layer (aria-live="polite" debounces
+    // already); we just keep the value in sync.
+    if (progressBar) {
+      try { progressBar.setAttribute('aria-valuenow', String(Math.round(clamped))); } catch (_) {}
+    }
   }
   function hideStatus() { if (statusEl) statusEl.hidden = true; }
   function setActiveChip(input) {
@@ -2486,6 +2495,53 @@
           throw new Error(j.error || 'unknown server error');
         }
         }).catch(function (err) {
+          // Wave D.7 — offline / transient-network save queue. The
+          // worst negative experience this tool can produce is losing
+          // an operator's parsed-and-confirmed invoice because their
+          // kitchen Wi-Fi blipped during Save. The encryption already
+          // happened in-tab (see the chain above); the queued blob is
+          // the same ciphertext we'd have POSTed. Storing it in
+          // localStorage doesn't change the privacy posture — it's
+          // just a delayed POST.
+          //
+          // Heuristic: queue when the tab is offline OR when fetch
+          // threw a TypeError (the standard browser shape for
+          // network failures: "Failed to fetch" / "NetworkError when
+          // attempting to fetch resource" / "Load failed"). HTTP
+          // status errors (5xx) thrown above also qualify — the
+          // operator can't fix those and we shouldn't lose their
+          // work.
+          var isNetworkLike = (
+            (typeof navigator !== 'undefined' && navigator.onLine === false) ||
+            (err && err.name === 'TypeError') ||
+            (err && err.message && /fetch|network|load failed/i.test(err.message)) ||
+            (err && err.message && /^save failed \(5\d\d\)$/.test(err.message))
+          );
+          if (isNetworkLike && savedEnvelope) {
+            try {
+              enqueueOfflineSave({
+                envelope:   savedEnvelope,
+                aad:        savedAad,
+                title:      tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'),
+                items:      payload.itemCount,
+                parsedSum:  payload.parsedSum,
+                vendor:     payload.vendor || null,
+                queuedAt:   Date.now()
+              });
+              setSaveStatus(null, 'ok');
+              showStatus(
+                tt('Saved on this device — we\'ll sync when you\'re back online.',
+                   'Guardado en este dispositivo — sincronizamos cuando vuelvas a estar en línea.'),
+                tt('Encryption already finished. The ciphertext is in your browser; we\'ll POST it as soon as the network comes back. You can close the tab; we\'ll pick it up next time.',
+                   'La encriptación ya terminó. El ciphertext está en tu navegador; lo enviaremos en cuanto vuelva la red. Puedes cerrar la pestaña; retomamos en la próxima visita.')
+              );
+              return;
+            } catch (queueErr) {
+              // localStorage might be full or disabled; fall through
+              // to the original alert path so the operator still gets
+              // a clear failure signal.
+            }
+          }
           setSaveStatus(null, 'error');
           alert(tt('Save failed: ' + (err.message || 'unknown error'),
                    'Falló el guardado: ' + (err.message || 'error desconocido')));
@@ -2493,6 +2549,120 @@
       });
     });
   }
+
+  // Wave D.7 — offline-save queue plumbing.
+  //
+  // Storage key: 'mtn:invoice-decoder:save-queue', value is a JSON
+  // array of { envelope, aad, title, items, parsedSum, vendor, queuedAt }
+  // entries. Entries are removed only after a successful POST.
+  // On every tool open we attempt a flush; the browser online event
+  // also triggers a flush. Hard cap of 8 queued saves keeps a wedged
+  // queue from filling localStorage; older entries beyond the cap are
+  // dropped with a console warning (the encrypted envelope is opaque
+  // — losing it doesn't leak anything, it just means that one invoice
+  // isn't recoverable, same as if the tab had been closed).
+  var SAVE_QUEUE_KEY = 'mtn:invoice-decoder:save-queue';
+  var SAVE_QUEUE_MAX = 8;
+  var __saveQueueFlushing = false;
+
+  function readSaveQueue() {
+    try {
+      var raw = localStorage.getItem(SAVE_QUEUE_KEY);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (_) { return []; }
+  }
+  function writeSaveQueue(arr) {
+    try {
+      localStorage.setItem(SAVE_QUEUE_KEY, JSON.stringify(arr.slice(-SAVE_QUEUE_MAX)));
+    } catch (_) {}
+  }
+  function enqueueOfflineSave(entry) {
+    var q = readSaveQueue();
+    q.push(entry);
+    writeSaveQueue(q);
+  }
+  function flushSaveQueue() {
+    if (__saveQueueFlushing) return Promise.resolve();
+    var q = readSaveQueue();
+    if (!q.length) return Promise.resolve();
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return Promise.resolve();
+    __saveQueueFlushing = true;
+    // Drain serially. If any POST fails we stop and leave the rest
+    // queued; the next online event / tool open will try again.
+    function step(idx) {
+      if (idx >= q.length) {
+        // All flushed — clear the queue.
+        writeSaveQueue([]);
+        return Promise.resolve();
+      }
+      var entry = q[idx];
+      var body = new URLSearchParams();
+      body.set('kind', 'invoice-decoder');
+      body.set('title', entry.title || (tt('Invoice', 'Factura')));
+      body.set('payload', JSON.stringify({
+        envelope:  entry.envelope,
+        aad:       entry.aad,
+        items:     entry.items,
+        parsedSum: entry.parsedSum,
+        // Tag the queued save so the server / observability can
+        // distinguish at-rest delayed POSTs from live ones.
+        queued:    true,
+        queuedAt:  entry.queuedAt || null
+      }));
+      return fetch('/api/workbench/save', { // h8-exempt:workshop-save — encrypted ciphertext only; queued from offline
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      }).then(function (r) {
+        // 401 means the operator signed out between queue + flush.
+        // Stop and leave the rest queued; they'll see the sign-in
+        // prompt next time they Save explicitly.
+        if (r.status === 401) throw new Error('auth required');
+        if (!r.ok) throw new Error('flush failed (' + r.status + ')');
+        return step(idx + 1);
+      });
+    }
+    return step(0).then(function () {
+      __saveQueueFlushing = false;
+      // If anything actually flushed and the operator is on the
+      // tool, surface a confirmation banner. Skip the toast when
+      // q.length was 0 (no-op).
+      if (q.length && statusEl) {
+        try {
+          showStatus(
+            tt('Synced ' + q.length + ' offline ' + (q.length === 1 ? 'save' : 'saves') + '.',
+               'Sincronicé ' + q.length + (q.length === 1 ? ' guardado' : ' guardados') + ' fuera de línea.'),
+            tt('Your queued invoices made it to your Workshop. Network panel: one POST per saved invoice, encrypted ciphertext only.',
+               'Tus facturas en cola llegaron a tu Taller. Panel de red: un POST por factura guardada, solo ciphertext encriptado.')
+          );
+          // Auto-hide after a few seconds so it doesn't block the UI.
+          setTimeout(function () {
+            try {
+              if (statusEl && statusEl.className && !/error/.test(statusEl.className)) {
+                hideStatus();
+              }
+            } catch (_) {}
+          }, 6000);
+        } catch (_) {}
+      }
+    }).catch(function () {
+      // Leave whatever's left in the queue for the next try.
+      __saveQueueFlushing = false;
+    });
+  }
+  // Try once on tool open in case the previous session left items
+  // queued. Wrapped in a microtask so early UI rendering isn't blocked.
+  Promise.resolve().then(function () {
+    try { flushSaveQueue(); } catch (_) {}
+  });
+  // Listen for the network coming back. Browsers fire 'online' on
+  // the window object when transitioning from offline to online.
+  window.addEventListener('online', function () {
+    try { flushSaveQueue(); } catch (_) {}
+  });
 
   // Wave 2.4 — bulk-confirm with live count + 5s wide undo.
   // The button label always shows the live count of un-confirmed

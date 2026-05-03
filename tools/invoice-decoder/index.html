@@ -980,10 +980,10 @@
     </div>
 
     <!-- Status / progress strip. Shown once a file is chosen. -->
-    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
+    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite" aria-atomic="true">
       <p class="id-status-title" id="idStatusTitle">Reading the photo…</p>
       <p class="id-status-msg" id="idStatusMsg">Cleaning up the image so the next step (line-by-line reading) gets the best shot.</p>
-      <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
+      <div class="id-progress-bar" id="idProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Processing progress"><div class="id-progress-fill" id="idProgressFill"></div></div>
     </div>
 
     <!-- Wave 6.10 — desktop split-pane wrapper. Above 1024px, the
@@ -1230,6 +1230,17 @@
           }
         });
       });
+      // Wave E.6 — opportunistic share-inbox prune. Tells the SW to
+      // walk the share inbox and drop any entries past their TTL or
+      // the 24h hard cap. Safe to send even when there's nothing to
+      // prune (the SW returns quickly). Only sends when there's an
+      // active controller — fresh installs have no controller yet,
+      // and the SW's own activate handler will prune in that case.
+      try {
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({ type: 'PRUNE_SHARE_INBOX' });
+        }
+      } catch (_) {}
     })
     .catch(function () { /* SW registration failed — degrade silently. */ });
 

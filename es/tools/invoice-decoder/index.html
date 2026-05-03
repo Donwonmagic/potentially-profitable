@@ -937,10 +937,10 @@
       <p class="id-install-msg">Agregar al inicio — funciona sin internet una vez instalado. <button type="button" class="id-install-btn" id="idInstallBtn">Instalar</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Cerrar">×</button></p>
     </div>
 
-    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
+    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite" aria-atomic="true">
       <p class="id-status-title" id="idStatusTitle">Leyendo la foto…</p>
       <p class="id-status-msg" id="idStatusMsg">Limpiando la imagen para que el siguiente paso (lectura línea por línea) tenga la mejor base.</p>
-      <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
+      <div class="id-progress-bar" id="idProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso del procesamiento"><div class="id-progress-fill" id="idProgressFill"></div></div>
     </div>
 
     <!-- Wave 6.10 — desktop split-pane wrapper (ES mirror). -->
@@ -1135,6 +1135,12 @@
           }
         });
       });
+      // Wave E.6 — share-inbox prune on tool open. See EN mirror for context.
+      try {
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({ type: 'PRUNE_SHARE_INBOX' });
+        }
+      } catch (_) {}
     })
     .catch(function () { /* SW registration failed — degrade silently. */ });
   var refreshing = false;
