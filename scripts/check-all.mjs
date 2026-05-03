@@ -103,6 +103,7 @@ const CHECKS = [
   ['Glossary script (idem)','inject-glossary-script.mjs','--check'],
   ['Include coverage',     'check-include-coverage.mjs'],
   ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
+  ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],

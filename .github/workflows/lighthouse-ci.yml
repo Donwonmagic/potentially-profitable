@@ -107,6 +107,7 @@ jobs:
           node scripts/build-rss.mjs
           node scripts/build-sitemap.mjs
           node scripts/build-css-shells.mjs
+          node scripts/inject-css-shells.mjs
 
       - name: Stage dist/ for serving
         run: |
