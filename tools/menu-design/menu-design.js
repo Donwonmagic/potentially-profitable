@@ -206,7 +206,13 @@
   // empty. Persists in the draft via meta.* keys.
   var meta = {
     tagline: '', story: '', coverPage: false,
-    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: ''
+    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: '',
+    // Wave B2 — allergen regulatory regime. Drives the auto-disclaimer
+    // text in PDF + HTML + text exports + the studio brief. Default
+    // is US-FDA-9 (current operator base); selector at #mdMetaRegime
+    // lets EU / UK / CA / AU / NZ operators override. Persisted with
+    // the rest of meta via state/draft.js.
+    allergenRegime: 'us-fda9'
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -958,6 +964,31 @@
       scheduleSaveDraft();
     });
   });
+  // Wave B2 — regime selector (separate wiring; uses `change` instead
+  // of `input`). Defaults to us-fda9; menus loaded from a v1/v2 draft
+  // that lacks the field default to us-fda9 too. The placeholder hint
+  // on mdMetaDisclaimer updates so operators see live what auto-fill
+  // they'll get.
+  var metaRegimeEl = document.getElementById('mdMetaRegime');
+  var metaDisclaimerEl = document.getElementById('mdMetaDisclaimer');
+  function refreshDisclaimerHint() {
+    if (!metaDisclaimerEl || typeof MD_SCHEMA === 'undefined' ||
+        typeof MD_SCHEMA.autoDisclaimerFor !== 'function') return;
+    var regime = (meta && meta.allergenRegime) || 'us-fda9';
+    var hint = MD_SCHEMA.autoDisclaimerFor(regime, LOCALE);
+    if (hint) metaDisclaimerEl.placeholder = hint;
+  }
+  if (metaRegimeEl) {
+    // Initial sync — restore from already-loaded meta (post-draft load).
+    if (meta.allergenRegime) metaRegimeEl.value = meta.allergenRegime;
+    metaRegimeEl.addEventListener('change', function () {
+      meta.allergenRegime = metaRegimeEl.value || 'us-fda9';
+      refreshDisclaimerHint();
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+  refreshDisclaimerHint();
 
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper

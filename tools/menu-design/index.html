@@ -1014,9 +1014,26 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               <label for="mdMetaSourcing">Sourcing / origin note</label>
               <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Sourced from farms within 100 miles of our kitchen" autocomplete="off" />
             </div>
+            <!-- Wave B2 — allergen regime selector. Default is US FDA Big 9
+                 (the operator base today); EU / UK / CA / AU / NZ operators
+                 switch to get the regime-correct default disclaimer text
+                 on every PDF / HTML / text export + the studio brief. -->
+            <div class="md-meta-field">
+              <label for="mdMetaRegime">Allergen labeling regime</label>
+              <select id="mdMetaRegime" autocomplete="off">
+                <option value="us-fda9">United States — FDA Big 9 (default)</option>
+                <option value="eu-fic14">European Union — FIC 1169/2011 (14 allergens)</option>
+                <option value="uk-ppds">United Kingdom — PPDS (Natasha&rsquo;s Law)</option>
+                <option value="ca-health">Canada — Health Canada priority allergens</option>
+                <option value="au-fsanz">Australia / New Zealand — FSANZ Standard 1.2.3</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Drives the auto-disclaimer footer on PDF, QR-menu HTML, and plain-text exports when you leave the field below blank.
+              </small>
+            </div>
             <div class="md-meta-field">
               <label for="mdMetaDisclaimer">Pricing / allergen disclaimer</label>
-              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Prices subject to change. Please notify your server of any allergies." autocomplete="off" />
+              <input type="text" id="mdMetaDisclaimer" maxlength="240" placeholder="Leave blank — we&rsquo;ll auto-fill from your regime above." autocomplete="off" />
             </div>
             <div class="md-meta-field">
               <label for="mdMetaAskYourServer">Ask-your-server prompt</label>
