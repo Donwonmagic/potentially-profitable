@@ -207,8 +207,106 @@
     return null;
   }
 
+  // ScanSnap and other desktop-scanner PDFs ship as PDF wrappers
+  // around scanned page images — no text layer to extract. Until
+  // this helper landed, the tool gave up on those PDFs and pushed
+  // operators back to the photo path. We now render each page to
+  // a JPEG File using the already-loaded PDF.js worker and hand
+  // the result to handlePhotoFiles(), which runs the same
+  // preprocess + multi-pass OCR pipeline used for camera shots.
+  //
+  // Privacy: rasterization happens entirely in this tab, in the
+  // self-hosted PDF.js worker. No bytes leave the device. Same
+  // posture as the text-layer path.
+  //
+  // Memory: cap at 8 pages (matches the photo-path cap) and
+  // serial render so the canvas pool peaks at one page worth.
+  // Each canvas is released (width=0) after its blob is taken.
+  function rasterizeImageOnlyPdf(file, opts) {
+    if (!file) return Promise.reject(new Error('file required'));
+    opts = opts || {};
+    var maxPages = opts.maxPages || 8;
+    // Target ~220 DPI — legible 8pt invoice text after Otsu without
+    // ballooning the JPEG; 2.0 scale clamped at 2400 long edge keeps
+    // a typical letter page around 2400×3100, ~1.5 MB JPEG @ q=0.92.
+    var scale = opts.scale || 2.0;
+    var maxLongEdge = opts.maxLongEdge || 2400;
+    var jpegQuality = opts.jpegQuality || 0.92;
+    var onProgress = (typeof opts.onProgress === 'function') ? opts.onProgress : null;
+    var baseName = (file.name || 'scan.pdf').replace(/\.pdf$/i, '');
+
+    return file.arrayBuffer().then(function (buf) {
+      return loadPdfjs().then(function (pdfjsLib) {
+        return pdfjsLib.getDocument({ data: buf, isEvalSupported: false }).promise;
+      }).then(function (doc) {
+        var totalPages = Math.min(doc.numPages, maxPages);
+        var truncated = doc.numPages > maxPages;
+        var files = [];
+
+        function renderOne(idx) {
+          if (idx > totalPages) {
+            return Promise.resolve({ files: files, totalPages: doc.numPages, truncated: truncated });
+          }
+          if (onProgress) {
+            try { onProgress(idx, totalPages, 'render'); } catch (_) {}
+          }
+          return doc.getPage(idx).then(function (page) {
+            // Honor any page-level rotation metadata.
+            var baseViewport = page.getViewport({ scale: 1, rotation: page.rotate || 0 });
+            var longEdge = Math.max(baseViewport.width, baseViewport.height);
+            // Don't exceed maxLongEdge after applying the scale.
+            var effScale = Math.min(scale, maxLongEdge / longEdge);
+            if (!isFinite(effScale) || effScale <= 0) effScale = 1;
+            var viewport = page.getViewport({ scale: effScale, rotation: page.rotate || 0 });
+            var canvas = document.createElement('canvas');
+            canvas.width = Math.max(1, Math.round(viewport.width));
+            canvas.height = Math.max(1, Math.round(viewport.height));
+            var ctx = canvas.getContext('2d');
+            // White background — invoices print on white paper, and
+            // PDF.js preserves transparency for unpainted regions.
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+              return new Promise(function (resolve, reject) {
+                canvas.toBlob(function (blob) {
+                  if (!blob) {
+                    reject(new Error('Could not encode page ' + idx + ' as image.'));
+                    return;
+                  }
+                  var pageFile = new File(
+                    [blob],
+                    baseName + '-p' + idx + '.jpg',
+                    { type: 'image/jpeg' }
+                  );
+                  files.push(pageFile);
+                  // Release the canvas backing buffer right away so
+                  // subsequent pages don't pile up on low-memory phones.
+                  try { canvas.width = 0; canvas.height = 0; } catch (_) {}
+                  resolve();
+                }, 'image/jpeg', jpegQuality);
+              });
+            });
+          }).then(function () {
+            return renderOne(idx + 1);
+          });
+        }
+
+        return renderOne(1);
+      });
+    }).catch(function (err) {
+      if (err && (err.name === 'PasswordException' || /password/i.test(err.message || ''))) {
+        throw new Error('Locked PDF — open it, then re-export unlocked.');
+      }
+      if (err && /InvalidPDF/i.test(err.message || '')) {
+        throw new Error('That doesn\'t look like a valid PDF — re-export from your distributor portal.');
+      }
+      throw err;
+    });
+  }
+
   var api = {
     extractPdf: extractPdf,
+    rasterizeImageOnlyPdf: rasterizeImageOnlyPdf,
     loadPdfjs: loadPdfjs,
     _clusterItemsToLines: clusterItemsToLines,
     _vendorHintFromFilename: vendorHintFromFilename

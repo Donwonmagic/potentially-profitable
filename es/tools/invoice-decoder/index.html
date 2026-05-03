@@ -45,7 +45,17 @@
 .id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
 
 /* Three input chips above the fold. Single-column on phones. */
-.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+.id-drop-wrap{margin:28px 0 0}
+.id-drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 22px;background:var(--white);border:2px dashed var(--line);border-radius:14px;cursor:pointer;text-align:center;transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast)}
+.id-drop:hover,.id-drop:focus-within{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.id-drop[data-dragging="true"]{border-color:var(--teal);border-style:solid;background:color-mix(in srgb,var(--teal) 8%,var(--white));transform:translateY(-1px)}
+.id-drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.id-drop-icon{font-size:32px;line-height:1}
+.id-drop-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.id-drop-blurb{font-size:13px;color:var(--stone);margin:0;line-height:1.55;max-width:48ch}
+.id-drop-types{font-size:11px;color:var(--stone);letter-spacing:.06em;text-transform:uppercase;margin:4px 0 0;opacity:.85}
+.id-inputs-label{font-size:12px;color:var(--stone);margin:18px 0 8px;text-align:center;letter-spacing:.04em}
+.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0}
 @media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
 .id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
 .id-input-chip:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,22,26,.08)}
@@ -877,6 +887,21 @@
       <p class="id-walkaway"><strong>Te llevas:</strong> Tu última factura — ordenada por grupos, guardada en tu Taller, lista para pasar al Costo del Plato.</p>
     </div>
 
+    <!-- Wave A — Captura universal. Una sola zona acepta cualquier
+         archivo: foto, PDF escaneado (p.ej. ScanSnap), PDF de texto,
+         CSV o Excel. El despachador en invoice-decoder.js detecta el
+         tipo y enruta al pipeline correcto. -->
+    <h2 id="idInputsHeading" class="visually-hidden">Envía tu factura</h2>
+    <div class="id-drop-wrap">
+      <label class="id-drop" id="idDropzone" for="idAnyInput" role="region" aria-labelledby="idInputsHeading" aria-describedby="idDropBlurb">
+        <span class="id-drop-icon" aria-hidden="true">📥</span>
+        <p class="id-drop-title">Suelta una factura aquí, o toca para elegir</p>
+        <p class="id-drop-blurb" id="idDropBlurb">Foto, PDF (texto o escaneado), CSV o Excel — lo que sea que tu distribuidor envíe. También puedes pegar una captura con Ctrl+V. Todo se procesa en este dispositivo.</p>
+        <p class="id-drop-types">JPG · PNG · HEIC · PDF · PDF escaneado · CSV · TSV · XLSX</p>
+        <input type="file" id="idAnyInput" accept="image/*,application/pdf,.csv,.tsv,.xlsx,text/csv,text/tab-separated-values,text/plain" multiple aria-label="Suelta o elige un archivo de factura" aria-describedby="idDropBlurb" />
+      </label>
+      <p class="id-inputs-label">O elige una fuente específica:</p>
+    </div>
     <div class="id-inputs" id="idInputs">
       <label class="id-input-chip" data-input="photo">
         <span class="id-input-icon" aria-hidden="true">📷</span>
@@ -887,7 +912,7 @@
       <label class="id-input-chip" data-input="pdf">
         <span class="id-input-icon" aria-hidden="true">📄</span>
         <p class="id-input-title">PDF</p>
-        <p class="id-input-blurb">Sube el PDF que tu distribuidor manda por correo. La extracción de texto es &gt;99% precisa — sin OCR.</p>
+        <p class="id-input-blurb">Sube el PDF que tu distribuidor manda por correo, o un PDF escaneado de ScanSnap y similares — ambos se leen en el dispositivo.</p>
         <span class="id-input-tag">Mejor</span>
         <input type="file" id="idPdfInput" accept="application/pdf" />
       </label>

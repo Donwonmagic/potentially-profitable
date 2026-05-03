@@ -2654,6 +2654,120 @@
     e.target.value = '';
   });
 
+  // Wave A — content-aware intake. The unified upload box at the top
+  // of the tool accepts any supported file type; this dispatcher
+  // sniffs each file (MIME + extension) and routes it to the right
+  // pipeline. Multi-file drops process the first matching item now;
+  // a follow-up wave will queue the rest.
+  function _looksLikeCsv(f) {
+    var n = String(f && f.name || '').toLowerCase();
+    if (/\.(csv|tsv|xlsx|xls)$/.test(n)) return true;
+    var t = String(f && f.type || '').toLowerCase();
+    if (t === 'text/csv' || t === 'text/tab-separated-values' ||
+        t === 'application/vnd.ms-excel' ||
+        t === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') return true;
+    return false;
+  }
+  function _looksLikePdf(f) {
+    var t = String(f && f.type || '').toLowerCase();
+    if (t === 'application/pdf') return true;
+    return /\.pdf$/i.test(String(f && f.name || ''));
+  }
+  function _looksLikeImage(f) {
+    var t = String(f && f.type || '').toLowerCase();
+    if (t.indexOf('image/') === 0) return true;
+    return /\.(jpe?g|png|heic|heif|webp|tiff?|bmp|gif)$/i.test(String(f && f.name || ''));
+  }
+  function dispatchUnifiedFile(file) {
+    if (!file) return;
+    if (_looksLikePdf(file)) {
+      processPdfFile(file);
+    } else if (_looksLikeCsv(file)) {
+      processCsvFile(file);
+    } else if (_looksLikeImage(file)) {
+      handlePhotoFiles([file]);
+    } else {
+      showStatus(
+        tt('We don\'t recognize this file type.', 'No reconocemos este tipo de archivo.'),
+        tt('Try a photo (JPG/PNG/HEIC), a PDF, or a CSV / Excel export.',
+           'Prueba una foto (JPG/PNG/HEIC), un PDF, o un CSV / Excel.'),
+        'error'
+      );
+    }
+  }
+  function dispatchUnifiedFileList(fileList) {
+    if (!fileList || !fileList.length) return;
+    var files = Array.prototype.slice.call(fileList);
+    // If all files are images, keep them together so multi-page photo
+    // capture (a typical use case) flows through handlePhotoFiles in
+    // one go. Otherwise dispatch the first file and surface a coaching
+    // chip about the rest — the queue lands in a follow-up.
+    var allImages = files.every(_looksLikeImage);
+    if (allImages) {
+      handlePhotoFiles(files);
+      return;
+    }
+    dispatchUnifiedFile(files[0]);
+    if (files.length > 1) {
+      // Soft notice: we processed one; ask the operator to drop the
+      // rest after this invoice is reviewed.
+      // Don't override the active showStatus — schedule via setTimeout.
+      setTimeout(function () {
+        try {
+          if (statusEl && !statusEl.hidden && /error/.test(statusEl.className || '')) return;
+          showStatus(
+            tt('Processing the first file — drop the others after you review this one.',
+               'Procesando el primer archivo — suelta los demás después de revisar éste.'),
+            tt('Multi-file queueing is coming in a follow-up; for now, one invoice at a time keeps your review focused.',
+               'La cola para varios archivos llegará pronto; por ahora, una factura a la vez mantiene la revisión enfocada.')
+          );
+        } catch (_) {}
+      }, 800);
+    }
+  }
+  // Hook the new unified dropzone input. Backward compat: the
+  // original photo / pdf / csv inputs and chips still work as before.
+  var anyInput = document.getElementById('idAnyInput');
+  if (anyInput) {
+    anyInput.addEventListener('change', function (e) {
+      dispatchUnifiedFileList(e.target.files);
+      e.target.value = '';
+    });
+  }
+  // Drag-and-drop on the dropzone label. The native <label> click
+  // already opens the OS picker; we just intercept drop events.
+  var dropEl = document.getElementById('idDropzone');
+  if (dropEl) {
+    var dragHover = function (on) {
+      try { dropEl.dataset.dragging = on ? 'true' : 'false'; } catch (_) {}
+    };
+    dropEl.addEventListener('dragenter', function (e) { e.preventDefault(); dragHover(true); });
+    dropEl.addEventListener('dragover',  function (e) { e.preventDefault(); dragHover(true); });
+    dropEl.addEventListener('dragleave', function (e) { e.preventDefault(); dragHover(false); });
+    dropEl.addEventListener('drop', function (e) {
+      e.preventDefault();
+      dragHover(false);
+      var dt = e.dataTransfer;
+      if (dt && dt.files && dt.files.length) {
+        dispatchUnifiedFileList(dt.files);
+      }
+    });
+  }
+  // Clipboard paste — Ctrl+V a screenshot anywhere on the tool page
+  // routes through the same intake. Scoped to ignore pastes inside
+  // text inputs / contenteditable so we don't hijack normal typing.
+  document.addEventListener('paste', function (e) {
+    var ae = document.activeElement;
+    if (ae) {
+      var tag = (ae.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || ae.isContentEditable) return;
+    }
+    var cd = e.clipboardData;
+    if (!cd || !cd.files || !cd.files.length) return;
+    e.preventDefault();
+    dispatchUnifiedFileList(cd.files);
+  });
+
   // Wave 2.1 — intercept the photo chip click. When the live capture
   // coach is supported (HTTPS + getUserMedia available + camera
   // grantable) we open it INSTEAD of the OS file/camera picker. The
@@ -2692,8 +2806,11 @@
   }
 
   // -------------------- PDF + CSV (B2 will wire fully) --------------------
-  if (pdfInput) pdfInput.addEventListener('change', function (e) {
-    var f = e.target.files && e.target.files[0];
+  // Extracted to a named function so the unified-intake dispatcher
+  // (Wave A) can route a sniffed PDF here without going through a
+  // synthetic <input> change event. The original pdfInput change
+  // listener simply forwards.
+  function processPdfFile(f) {
     if (!f) return;
     setActiveChip('pdf');
     if (typeof MID_PDF_EXTRACT === 'undefined' || !MID_PDF_EXTRACT.extractPdf) {
@@ -2703,7 +2820,6 @@
            'Recarga la página e intenta de nuevo. Si el problema persiste, usa la ruta de foto.'),
         'error'
       );
-      e.target.value = '';
       return;
     }
     if (f.size > 25 * 1024 * 1024) {
@@ -2713,7 +2829,6 @@
            'Ese PDF pasa de 25 MB. La mayoría de facturas pesan menos de 5 MB — re-exporta del portal o deja solo las páginas de la factura.'),
         'error'
       );
-      e.target.value = '';
       return;
     }
     showStatus(
@@ -2726,19 +2841,75 @@
     MID_PDF_EXTRACT.extractPdf(f).then(function (result) {
       setProgress(70);
       if (result.imageOnly) {
-        // Image-only PDF (scan with no text layer). Honest fallback:
-        // surface a coaching chip suggesting the photo path. The
-        // canvas-render-each-page bridge ships in a follow-up sprint
-        // (W2-3 image-quality coaching unblocks it).
+        // Image-only PDF (scan with no text layer — typical of
+        // ScanSnap and other desktop scanners). Until Wave A landed
+        // we gave up here and pushed the operator to the photo path.
+        // We now rasterize each page to a JPEG and feed the array
+        // through handlePhotoFiles, which already runs the full
+        // preprocess + multi-pass OCR pipeline on photo-source pages.
+        if (!MID_PDF_EXTRACT.rasterizeImageOnlyPdf) {
+          showStatus(
+            tt('This PDF is a scanned image, not a text document.',
+               'Este PDF es una imagen escaneada, no un documento de texto.'),
+            tt('No text layer to read. Try the photo path with each page snapped separately, or ask your distributor to send a text-based PDF.',
+               'No hay capa de texto. Usa la ruta de foto con cada página por separado, o pide a tu distribuidor un PDF basado en texto.'),
+            'error'
+          );
+          return;
+        }
         showStatus(
-          tt('This PDF is a scanned image, not a text document.',
-             'Este PDF es una imagen escaneada, no un documento de texto.'),
-          tt('No text layer to read. Try the photo path with each page snapped separately, or ask your distributor to send a text-based PDF.',
-             'No hay capa de texto. Usa la ruta de foto con cada página por separado, o pide a tu distribuidor un PDF basado en texto.'),
-          'error'
+          tt('Scanned PDF — reading each page like a photo…',
+             'PDF escaneado — leyendo cada página como una foto…'),
+          tt('No text layer here, so we render every page on this device and run the same OCR we use for camera shots. Nothing leaves your tab.',
+             'Sin capa de texto, así que renderizamos cada página en este dispositivo y aplicamos el mismo OCR de las fotos. Nada sale de tu pestaña.')
         );
-        e.target.value = '';
-        return;
+        setProgress(35);
+        return MID_PDF_EXTRACT.rasterizeImageOnlyPdf(f, {
+          onProgress: function (idx, total /*, phase */) {
+            // Show smooth progress between 35–65% across rasterization.
+            try {
+              var pct = 35 + Math.round((idx / total) * 30);
+              setProgress(pct);
+            } catch (_) {}
+          }
+        }).then(function (raster) {
+          if (!raster || !raster.files || !raster.files.length) {
+            showStatus(
+              tt('Could not read this scanned PDF.', 'No se pudo leer este PDF escaneado.'),
+              tt('Try splitting it into smaller files, or use the photo path on each page.',
+                 'Prueba dividirlo en archivos más pequeños, o usa la ruta de foto por página.'),
+              'error'
+            );
+            return;
+          }
+          if (raster.truncated) {
+            // Soft warning surfaced AFTER kickoff so the operator
+            // sees that we're processing the first 8 pages rather
+            // than blocking the whole flow.
+            setTimeout(function () {
+              try {
+                showStatus(
+                  tt('Processing the first 8 pages of this scan.',
+                     'Procesando las primeras 8 páginas de este escaneo.'),
+                  tt('Long scans can run a phone out of memory. Split the PDF and drop the rest after this batch is reviewed.',
+                     'Los escaneos largos pueden agotar la memoria del teléfono. Divide el PDF y suelta el resto después de revisar este lote.')
+                );
+              } catch (_) {}
+            }, 1500);
+          }
+          // Hand off to the existing photo pipeline. handlePhotoFiles
+          // already enforces an 8-page cap, so the rasterize cap and
+          // photo cap line up.
+          handlePhotoFiles(raster.files);
+        }).catch(function (err) {
+          showStatus(
+            tt('Could not read this scanned PDF.', 'No se pudo leer este PDF escaneado.'),
+            (err && err.message) ? err.message :
+              tt('Try splitting it into smaller files, or use the photo path on each page.',
+                 'Prueba dividirlo en archivos más pequeños, o usa la ruta de foto por página.'),
+            'error'
+          );
+        });
       }
       // Feed the extracted lines straight to MID_PARSE.parseLines
       // and the existing render pipeline. Same flow as photo OCR
@@ -2788,13 +2959,15 @@
           tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
         'error'
       );
-    }).then(function () {
-      e.target.value = '';
     });
+  }
+  if (pdfInput) pdfInput.addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (f) processPdfFile(f);
+    e.target.value = '';
   });
 
-  if (csvInput) csvInput.addEventListener('change', function (e) {
-    var f = e.target.files && e.target.files[0];
+  function processCsvFile(f) {
     if (!f) return;
     setActiveChip('csv');
     if (typeof MID_CSV_EXTRACT === 'undefined' || !MID_CSV_EXTRACT.extractFile) {
@@ -2803,7 +2976,6 @@
         tt('Refresh the page and try again.', 'Recarga la página e intenta de nuevo.'),
         'error'
       );
-      e.target.value = '';
       return;
     }
     if (f.size > 10 * 1024 * 1024) {
@@ -2813,7 +2985,6 @@
            'Pasa de 10 MB. Las exportaciones suelen pesar <2 MB; recórtala o re-expórtala del portal.'),
         'error'
       );
-      e.target.value = '';
       return;
     }
     showStatus(
@@ -2832,7 +3003,6 @@
              'Necesitamos al menos 2 de estas columnas nombradas en la primera fila: Producto / Cantidad / Unidad / Precio / Total. Re-exporta con encabezados, o usa la ruta de foto.'),
           'error'
         );
-        e.target.value = '';
         return;
       }
       // Filename vendor hint (CSV often lacks a vendor letterhead).
@@ -2870,9 +3040,12 @@
         (err && err.message) ? err.message : tt('Try the photo path or re-export the file.', 'Usa la ruta de foto o re-exporta el archivo.'),
         'error'
       );
-    }).then(function () {
-      e.target.value = '';
     });
+  }
+  if (csvInput) csvInput.addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (f) processCsvFile(f);
+    e.target.value = '';
   });
 
   // -------------------- Reload-and-decrypt (W1-5 BLOCKER fix) --------------------

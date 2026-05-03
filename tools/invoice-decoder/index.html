@@ -54,7 +54,17 @@
 .id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
 
 /* Three input chips above the fold. Single-column on phones. */
-.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+.id-drop-wrap{margin:28px 0 0}
+.id-drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 22px;background:var(--white);border:2px dashed var(--line);border-radius:14px;cursor:pointer;text-align:center;transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast)}
+.id-drop:hover,.id-drop:focus-within{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.id-drop[data-dragging="true"]{border-color:var(--teal);border-style:solid;background:color-mix(in srgb,var(--teal) 8%,var(--white));transform:translateY(-1px)}
+.id-drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.id-drop-icon{font-size:32px;line-height:1}
+.id-drop-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
+.id-drop-blurb{font-size:13px;color:var(--stone);margin:0;line-height:1.55;max-width:48ch}
+.id-drop-types{font-size:11px;color:var(--stone);letter-spacing:.06em;text-transform:uppercase;margin:4px 0 0;opacity:.85}
+.id-inputs-label{font-size:12px;color:var(--stone);margin:18px 0 8px;text-align:center;letter-spacing:.04em}
+.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0}
 @media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
 .id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
 .id-input-chip:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,22,26,.08)}
@@ -899,10 +909,25 @@
       <p class="id-walkaway"><strong>You leave with:</strong> Your last invoice — sorted into groups, saved to your Workshop, and ready to drop into Plate Cost.</p>
     </div>
 
-    <!-- Three input paths. Photo and PDF lazy-load their workers; CSV
-         needs no extra library. We let the owner pick the path that
-         matches what their distributor actually sends them. -->
-    <h2 id="idInputsHeading" class="visually-hidden">Pick how to send your invoice</h2>
+    <!-- Wave A — Universal intake. One dropzone takes anything the
+         operator throws at it: photo, scanned PDF (e.g. ScanSnap),
+         text-PDF, CSV, Excel, or a clipboard-paste screenshot. The
+         dispatcher in invoice-decoder.js sniffs each file and routes
+         it to the existing pipeline (photo→OCR, text-PDF→PDF.js,
+         scanned PDF→rasterize+OCR, CSV/Excel→column mapper). The
+         original chips below remain as a labeled fallback for
+         operators who want to pick a specific path. -->
+    <h2 id="idInputsHeading" class="visually-hidden">Send your invoice</h2>
+    <div class="id-drop-wrap">
+      <label class="id-drop" id="idDropzone" for="idAnyInput" role="region" aria-labelledby="idInputsHeading" aria-describedby="idDropBlurb">
+        <span class="id-drop-icon" aria-hidden="true">📥</span>
+        <p class="id-drop-title">Drop an invoice here, or tap to choose</p>
+        <p class="id-drop-blurb" id="idDropBlurb">Photo, PDF (text or scanned), CSV, or Excel — anything your distributor sends. Paste a screenshot with Ctrl+V too. All processing on this device.</p>
+        <p class="id-drop-types">JPG · PNG · HEIC · PDF · scanned PDF · CSV · TSV · XLSX</p>
+        <input type="file" id="idAnyInput" accept="image/*,application/pdf,.csv,.tsv,.xlsx,text/csv,text/tab-separated-values,text/plain" multiple aria-label="Drop or pick an invoice file" aria-describedby="idDropBlurb" />
+      </label>
+      <p class="id-inputs-label">Or pick a specific source:</p>
+    </div>
     <div class="id-inputs" id="idInputs" role="group" aria-labelledby="idInputsHeading">
       <label class="id-input-chip" data-input="photo">
         <span class="id-input-icon" aria-hidden="true">📷</span>
@@ -913,7 +938,7 @@
       <label class="id-input-chip" data-input="pdf">
         <span class="id-input-icon" aria-hidden="true">📄</span>
         <p class="id-input-title">PDF</p>
-        <p class="id-input-blurb" id="idPdfBlurb">Drop your distributor's emailed PDF. Text extraction is &gt;99% accurate — no OCR needed.</p>
+        <p class="id-input-blurb" id="idPdfBlurb">Drop your distributor's emailed PDF, or a scanned PDF from ScanSnap and similar — both are read on-device.</p>
         <span class="id-input-tag">Best</span>
         <input type="file" id="idPdfInput" accept="application/pdf" aria-label="Pick your distributor's PDF" aria-describedby="idPdfBlurb" />
       </label>
