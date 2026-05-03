@@ -1,0 +1,150 @@
+# Lighthouse CI — perf + a11y + SEO + best-practices gates
+#
+# Runs the LHCI gate (lighthouserc.js) on every PR to main and on
+# direct pushes. Builds the static site exactly the way the
+# Cloudflare Workers Builds pipeline does, serves it locally, and
+# runs Lighthouse against the 7-URL load-bearing set.
+#
+# Block-merge thresholds (from launch plan Part VII):
+#   perf ≥ 90   ·   a11y ≥ 95   ·   best-practices ≥ 95   ·   SEO = 100
+#   LCP ≤ 2s    ·   CLS ≤ 0.05  ·   TBT ≤ 200ms
+#
+# Status: continue-on-error initially so the workflow doesn't block
+# in-flight PRs while the perf baseline shakes out. Promote to
+# required-check (Settings → Branches → Branch protection → main)
+# once three consecutive PRs land green.
+
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write   # for the LHCI status comment
+
+concurrency:
+  # One LHCI run per ref; cancel older runs to keep the workflow
+  # responsive when a PR receives multiple pushes in quick succession.
+  group: lhci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    continue-on-error: true   # ← remove when perf baseline is locked
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Run the same script chain wrangler.jsonc's "build" command
+      # runs, minus the network-dependent vendor-pin step (vendored
+      # assets aren't load-bearing for Lighthouse and the GH-Actions
+      # runner shouldn't reach Cloudflare R2 for them). Skipping that
+      # one step keeps the workflow self-contained.
+      - name: Run build chain
+        run: |
+          set -e
+          node scripts/seed-glossary-og.mjs
+          node scripts/build-og-cards.mjs
+          node scripts/stamp-es-restaurant-audit.mjs
+          node scripts/sync-includes.mjs
+          node scripts/build-tools-index.mjs
+          node scripts/build-library-recent.mjs
+          node scripts/build-site-counts.mjs
+          node scripts/inject-site-counts.mjs
+          node scripts/inject-tool-knit.mjs
+          node scripts/wire-glossary-topics.mjs
+          node scripts/wire-glossary-knit.mjs
+          node scripts/inject-glossary-fieldnotes.mjs
+          node scripts/sync-approved-fieldnotes.mjs
+          node scripts/inject-article-fieldnotes.mjs
+          node scripts/inject-article-fieldnote-form.mjs
+          node scripts/build-people-pages.mjs
+          node scripts/inject-homepage-fieldnotes-rail.mjs
+          node scripts/inject-window-fieldnotes-rail.mjs
+          node scripts/inject-glossary-og.mjs
+          node scripts/inject-post-end-cta.mjs
+          node scripts/inject-smart-next-cta.mjs
+          node scripts/stamp-hreflang.mjs
+          node scripts/inject-tool-howto.mjs
+          node scripts/inject-tool-storefront-rail.mjs
+          node scripts/inject-tool-data-promise.mjs
+          node scripts/inject-storefront-health-graph.mjs
+          node scripts/inject-security-page-schema.mjs
+          node scripts/inject-article-tldr.mjs
+          node scripts/inject-article-tldr.mjs --es
+          node scripts/inject-article-howto-schema.mjs
+          node scripts/inject-article-abstract-mentions.mjs
+          node scripts/inject-glossary-term-examples.mjs
+          node scripts/inject-glossary-article-backlinks.mjs
+          node scripts/inject-glossary-deep-anchors.mjs
+          node scripts/inject-glossary-verified-stamp.mjs
+          node scripts/inject-glossary-tool-sidecar.mjs
+          node scripts/inject-topic-pillar-essay.mjs
+          node scripts/inject-topic-page-schema.mjs
+          node scripts/inject-hub-collection-schema.mjs
+          node scripts/inject-article-author-chip.mjs
+          node scripts/inject-glossary-article-schema.mjs
+          node scripts/inject-tool-verified-stamp.mjs
+          node scripts/build-llms-txt.mjs
+          node scripts/build-rss.mjs
+          node scripts/build-sitemap.mjs
+
+      - name: Stage dist/ for serving
+        run: |
+          mkdir -p dist
+          tar -cf - \
+            --exclude=dist \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=docs \
+            --exclude=node_modules \
+            --exclude=.wrangler \
+            --exclude='.env*' \
+            --exclude=wrangler.jsonc \
+            --exclude='package*.json' \
+            --exclude=.gitignore \
+            --exclude=README.md \
+            --exclude=src \
+            --exclude=scripts \
+            --exclude=_includes \
+            --exclude=pagefind.yml \
+            . | tar -xf - -C dist
+
+      - name: Serve dist on :8788
+        # http-server with --silent so its access log doesn't spam
+        # the workflow output; --proxy . sends 404s to the SPA-like
+        # behavior the worker uses for /es/ and other directory URLs.
+        run: |
+          npx -y http-server dist -p 8788 --silent &
+          # Wait for the server to actually bind. http-server starts
+          # async; without this LHCI's first request can race a port
+          # that hasn't accepted listen() yet.
+          for i in $(seq 1 20); do
+            if curl -fsS http://localhost:8788/ > /dev/null; then
+              echo "✓ dist server up on :8788"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Run Lighthouse CI
+        env:
+          LHCI_BUILD_BASE_URL: http://localhost:8788
+          # Disable LHCI's GitHub status check posting in this initial
+          # run; we'll re-enable once thresholds are tuned.
+          LHCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx -y @lhci/cli@0.13.x autorun --config=./lighthouserc.js
