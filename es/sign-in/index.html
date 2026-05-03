@@ -193,6 +193,8 @@
       <input type="hidden" name="ts" id="signinTs" />
       <input type="hidden" name="returnTo" id="signinReturnTo" value="/es/workbench/" />
       <input type="hidden" name="locale" value="es" />
+      <!-- Turnstile (Fase 3B). Inyecta cf-turnstile-response automáticamente. -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="signin" data-language="es"></div>
       <button type="submit" class="btn btn-primary" id="signinSubmit">
         <span class="btn-text">Enviar enlace de acceso</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -251,12 +253,15 @@
         return;
       }
       if (submit) submit.disabled = true;
+      // Fase 3B — token de Turnstile. El widget lo inyecta al resolver.
+      var turnstileEl = form.querySelector('input[name="cf-turnstile-response"]');
       var body = {
         email: email,
         returnTo: returnToInput ? returnToInput.value : '/es/workbench/',
         ts: ts ? ts.value : String(Date.now()),
         hp: '',
         locale: 'es',
+        'cf-turnstile-response': turnstileEl ? turnstileEl.value : '',
       };
       try {
         var res = await fetch('/api/auth/magic-link', {

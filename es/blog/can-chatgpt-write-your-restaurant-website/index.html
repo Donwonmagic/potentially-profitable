@@ -618,6 +618,8 @@
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
         <button type="submit">Suscribirme</button>
       </form>
     </div>
@@ -660,6 +662,9 @@
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
+     de newsletter vive en este pie de página y aparece en cada vista. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script defer="" src="/assets/site.js"></script>
 </body>
 </html>

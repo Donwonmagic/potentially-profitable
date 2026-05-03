@@ -1987,6 +1987,9 @@
       <input type="text" id="cl-restaurant" name="restaurant" placeholder="p. ej. Joe's Trattoria, Silver Spring"
              style="padding:14px 18px; border:1px solid var(--line-dark); border-radius:10px; font-size:16px; font-family:inherit; background:var(--white); color:var(--ink);" />
 
+      <!-- Turnstile (Fase 3B). Inyecta cf-turnstile-response automáticamente. -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="checklist" data-language="es" data-size="flexible"></div>
+
       <button type="submit" class="btn btn-primary" style="justify-content:center; margin-top:12px;">
         Envíame el PDF
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -2142,6 +2145,8 @@
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile (Phase 3B). Auto-injects cf-turnstile-response on pass. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-language="es" data-size="flexible"></div>
         <button type="submit">Suscribirme</button>
       </form>
     </div>
@@ -2184,6 +2189,9 @@
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Carga global porque el formulario
+     de newsletter vive en este pie de página y aparece en cada vista. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>

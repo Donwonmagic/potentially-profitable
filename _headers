@@ -157,12 +157,12 @@
 # Content-Security-Policy rationale:
 #   default-src 'self'             — by default, only load from our origin
 #   script-src                     — self for /assets/site.js, plausible.io
-#                                    for analytics, cdn.jsdelivr.net for
-#                                    the lazy-loaded jsPDF library used by
-#                                    the restaurant-audit PDF-CTA flow
-#                                    (Sprint L3), 'unsafe-inline' because
-#                                    we still use inline JSON-LD blocks and
-#                                    the Plausible init shim
+#                                    for analytics, challenges.cloudflare.com
+#                                    for the Turnstile widget on the four
+#                                    public form endpoints (Phase 3B),
+#                                    'unsafe-inline' because we still use
+#                                    inline JSON-LD blocks and the Plausible
+#                                    init shim
 #   style-src                      — self + fonts.googleapis.com (the four
 #                                    pages still on Google Fonts) + inline
 #                                    since we use style attributes and
@@ -175,14 +175,18 @@
 #                                    and various small icons
 #   connect-src                    — self + plausible.io (analytics beacons)
 #                                    + googleapis.com for the PageSpeed
-#                                    Insights API the audit tool calls.
+#                                    Insights API the audit tool calls
+#                                    + challenges.cloudflare.com for the
+#                                    Turnstile token verification roundtrip.
 #                                    Sprint 7d retired formspree.io (forms
 #                                    now submit to our own /api/* endpoints
 #                                    on the same origin via env.ASSETS +
 #                                    src/worker.js)
 #   form-action 'self'             — forms can only submit to us
 #   frame-ancestors 'none'         — reinforces X-Frame-Options: DENY
-#   frame-src 'none'               — we don't embed anything in iframes
+#   frame-src 'self' + cf          — Turnstile renders the visible-challenge
+#                                    fallback inside an iframe from
+#                                    challenges.cloudflare.com
 #   object-src 'none'              — no legacy plugins allowed
 #   base-uri 'self'                — prevents <base href> injection
 #   upgrade-insecure-requests      — auto-upgrade any stray http:// refs
@@ -192,4 +196,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://plausible.io https://www.googleapis.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://plausible.io https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
