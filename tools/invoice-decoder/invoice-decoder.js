@@ -63,9 +63,12 @@
   // Wave 6.11 — surface the personal-accuracy stat on the verified
   // line once the operator has saved ≥ 3 invoices. Replaces the
   // static "Last verified May 2" copy with their own accuracy.
+  // Selector: the auto-generated `.tool-verified` paragraph (kept
+  // canonical by scripts/inject-tool-verified-stamp.mjs); a per-id
+  // hook would be stripped on every build.
   function _maybeSurfacePersonalAccuracy() {
     try {
-      var el = document.getElementById('idToolVerified');
+      var el = document.querySelector('.tool-verified');
       if (!el) return;
       if (typeof MID_TELEMETRY === 'undefined' || !MID_TELEMETRY.getPersonalAccuracy) return;
       var saved = MID_TELEMETRY.get('invoicesSaved') || 0;
