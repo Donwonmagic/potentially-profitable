@@ -58,10 +58,18 @@
     return { min: min, max: max, avg: Math.round(avg * 100) / 100, count: prices.length };
   }
 
+  // Wave studio-quality — locale-aware money formatting that mirrors
+  // the orchestrator's formatPriceDisplay so the studio brief Don
+  // receives carries the operator's chosen currency notation.
+  // Supports the same 8 currencies the meta-panel selector exposes.
   function fmtMoney(n, currency) {
     if (n == null || !isFinite(n)) return '—';
-    var sym = (currency === 'EUR') ? '€' : (currency === 'GBP') ? '£' : '$';
-    return sym + n.toFixed(2);
+    var c = (currency || 'USD').toUpperCase();
+    if (c === 'EUR') return n.toFixed(2) + ' €';     // symbol after, narrow space
+    if (c === 'GBP') return '£' + n.toFixed(2);
+    if (c === 'JPY') return '¥' + Math.round(n);     // yen has no decimals
+    if (c === 'CHF') return 'CHF ' + n.toFixed(2);
+    return '$' + n.toFixed(2);                       // USD / CAD / MXN / AUD default
   }
 
   // ---------- summarize ----------

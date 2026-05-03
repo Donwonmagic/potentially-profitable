@@ -146,8 +146,26 @@ test('toMarkdown uses correct currency symbol per meta.currency', () => {
   const m = seed();
   m.meta.currency = 'EUR';
   const md = BRIEF.toMarkdown(m);
-  assert.match(md, /€8\.00/);
-  assert.match(md, /€18\.00/);
+  // EUR uses symbol-after (European convention): "8.00 €"
+  assert.match(md, /8\.00 €/);
+  assert.match(md, /18\.00 €/);
+});
+
+test('toMarkdown supports JPY (no decimals) and GBP/CHF correctly', () => {
+  const m = seed();
+  m.meta.currency = 'JPY';
+  let md = BRIEF.toMarkdown(m);
+  // JPY rounds to integer (no decimals)
+  assert.match(md, /¥8/);
+  assert.doesNotMatch(md, /¥8\./);
+
+  m.meta.currency = 'GBP';
+  md = BRIEF.toMarkdown(m);
+  assert.match(md, /£8\.00/);
+
+  m.meta.currency = 'CHF';
+  md = BRIEF.toMarkdown(m);
+  assert.match(md, /CHF 8\.00/);
 });
 
 // ============== URL-fragment transport ==============
