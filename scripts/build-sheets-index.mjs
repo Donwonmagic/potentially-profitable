@@ -151,6 +151,7 @@ function renderSheetCard(slug, locale) {
 function renderPack(pack, locale) {
   const label = pickI18n(pack, 'label', locale);
   const blurb = pickI18n(pack, 'blurb', locale);
+  const intro = pickI18n(pack, 'intro', locale);
   const liveSlugs   = pack.sheets.filter((s) => SHEETS.sheets[s] && SHEETS.sheets[s].status === 'live');
   const queuedSlugs = pack.sheets.filter((s) => SHEETS.sheets[s] && SHEETS.sheets[s].status !== 'live');
 
@@ -168,10 +169,18 @@ ${queuedCards}
       </ul>`
     : '';
 
+  // D6 — pack-level editorial preamble. 60-90 word "Reach for / Skip"
+  // framing rendered as a quiet block under the blurb. Optional —
+  // packs without an intro_* field render only the blurb.
+  const introBlock = intro
+    ? `<details class="tool-cluster__intro" open><summary class="tool-cluster__intro-toggle">${locale === 'es' ? 'Cuándo sacar este paquete' : 'When to reach for this pack'}</summary><p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft,#2A2D33);margin:8px 0 0;max-width:760px;">${escText(intro)}</p></details>`
+    : '';
+
   return `<section id="${pack.id}" class="tool-cluster" aria-labelledby="pack-${pack.id}-heading">
     <header class="tool-cluster__head">
       <h2 id="pack-${pack.id}-heading">${escText(label)}</h2>
       <p>${escText(blurb)}</p>
+      ${introBlock}
     </header>
     ${liveBlock}
     ${queuedBlock}

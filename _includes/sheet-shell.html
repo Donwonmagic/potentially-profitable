@@ -53,7 +53,7 @@ header.nav{min-height:64px}
 <noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
-<body data-page="sheet" data-sheet-slug="{{SHEET_SLUG}}" data-sheet-pack="{{PACK_ID}}">
+<body data-page="sheet" data-sheet-slug="{{SHEET_SLUG}}" data-sheet-pack="{{PACK_ID}}" data-pagefind-meta="kind:sheet,pack:{{PACK_ID}}">
 <a class="skip-link" href="#main">{{LABEL_SKIP_TO_MAIN}}</a>
 <header class="nav" id="nav"><!-- stamped by scripts/sync-includes.mjs --></header>
 
@@ -67,7 +67,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">{{LABEL_EYEBROW}}</span>
+  <span class="eyebrow">{{PACK_GLYPH_HTML}}{{LABEL_EYEBROW}}</span>
   <h1>{{H1_HTML}}</h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">{{SUMMARY}}</p>
   <p class="sheet-meta" aria-label="{{LABEL_META}}">
@@ -76,6 +76,7 @@ header.nav{min-height:64px}
     <span class="status-chip" data-band="good">{{LABEL_PRIVATE}}</span>
   </p>
   {{LOCALE_HAZARD_BANNER}}
+  <p class="sheet-progress" id="sheet-progress" hidden></p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -111,8 +112,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="{{SHEET_SLUG}}" data-locale="{{LOCALE}}" hidden>
       <p>{{LABEL_SAVE_PROMPT}}</p>
       <button type="button" class="btn btn-primary js-sheet-save">{{LABEL_SAVE_TO_WORKBENCH}}</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">{{LABEL_KEYBOARD_HINT}}</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -157,7 +161,9 @@ header.nav{min-height:64px}
   </div>
 </footer>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>

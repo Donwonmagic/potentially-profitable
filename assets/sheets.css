@@ -9,6 +9,68 @@
  * tables, hide save panel) and nothing else.
  */
 
+/* ─────────────────────────────────────────────────────────────────
+   PHASE A · DESIGNED-ARTIFACT BASELINE
+   Five layered visual cues that signal "Muntin sheet" without
+   inventing a 4th color or new typographic primitive.
+   ───────────────────────────────────────────────────────────────── */
+
+/* A1 · Pack-coded 2px top hairline on the active sheet card.
+   Five existing tokens, no new colors. Drives the only per-pack
+   visual identity on the page. */
+[data-page="sheet"][data-sheet-pack="operations-margin"] .mm-card.mm-live { border-top: 2px solid var(--gold, #B8901A); }
+[data-page="sheet"][data-sheet-pack="local-seo"]         .mm-card.mm-live { border-top: 2px solid var(--teal, #1F4E5B); }
+[data-page="sheet"][data-sheet-pack="conversions"]       .mm-card.mm-live { border-top: 2px solid var(--rust, #B8541A); }
+[data-page="sheet"][data-sheet-pack="brand-design"]      .mm-card.mm-live { border-top: 2px solid var(--ink-soft, #2A2D33); }
+[data-page="sheet"][data-sheet-pack="trust-reviews"]     .mm-card.mm-live { border-top: 2px solid var(--ink, #14161A); }
+
+/* A2 · Paper rule-lines under fieldset legends and section H2s
+   inside the active card. 1px hairline in cream-2; reads like
+   the rule lines on a printed form pad. */
+[data-page="sheet"] .mm-card.mm-live > h2,
+[data-page="sheet"] .mm-card.mm-live > .mm-card-header h2,
+[data-page="sheet"] .sheet-form fieldset > legend {
+  position: relative;
+  padding-bottom: 4px;
+}
+[data-page="sheet"] .mm-card.mm-live > h2::after,
+[data-page="sheet"] .mm-card.mm-live > .mm-card-header h2::after,
+[data-page="sheet"] .sheet-form fieldset > legend::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--cream-2, #F3EEE3);
+  margin-top: 6px;
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+/* A3 · Pack glyph in the hero eyebrow.
+   The glyph is rendered inline in the eyebrow span by build-sheet-pages
+   for live sheets; this rule positions and tints it. */
+[data-page="sheet"] .mm-hero .eyebrow .sheet-pack-glyph {
+  display: inline-flex;
+  align-items: center;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  opacity: .78;
+}
+[data-page="sheet"] .mm-hero .eyebrow .sheet-pack-glyph svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   ORIGINAL SHEET COMPONENTS (unchanged — preserved for clarity)
+   ───────────────────────────────────────────────────────────────── */
+
 /* Sheet meta strip — cadence and pack chips under the H1.
    Reuses .status-chip from site-core.css; this only handles spacing. */
 .sheet-meta {
@@ -356,4 +418,300 @@
     padding: 4pt 0 0;
     border-top: 0.5pt solid #999;
   }
+  /* A4 · Print masthead refinement — top + bottom hairline rule
+     around the H1, small-caps pack name top-right of the hero. */
+  body[data-page="sheet"] .mm-hero h1 {
+    border-top: 0.5pt solid #555;
+    border-bottom: 0.5pt solid #555;
+    padding: 4pt 0 !important;
+    margin: 0 0 4pt !important;
+  }
+  body[data-page="sheet"] .mm-hero {
+    position: relative;
+  }
+  body[data-page="sheet"] .mm-hero .sheet-meta .status-chip:first-child {
+    /* Pack chip becomes the small-caps label; print it in upper-right
+       of the hero by absolute positioning the meta strip. */
+    background: transparent !important;
+    border: 0 !important;
+    color: #555 !important;
+    font-size: 7pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    padding: 0 !important;
+  }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   PHASE B · COMFORT LAYER
+   Progress strip · keyboard-shortcut hint · viz container · tablet
+   ergonomics. All non-decorative; calmer is better.
+   ───────────────────────────────────────────────────────────────── */
+
+/* B11 · Progress strip — thin, ink-soft, reads like a status bar
+   not a celebration. No percentages, no checkmarks. */
+.sheet-progress {
+  margin: -8px 0 18px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft, #2A2D33);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.sheet-progress[hidden] { display: none; }
+.sheet-progress strong {
+  color: var(--ink, #14161A);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.sheet-progress .sheet-progress__next {
+  color: var(--teal, #1F4E5B);
+}
+
+/* B13 · Keyboard-shortcut hint — single muted line, bottom of form. */
+.sheet-keyboard-hint {
+  margin: 14px 0 0;
+  font-size: 11.5px;
+  color: var(--stone, #6B6B6B);
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+.sheet-keyboard-hint kbd {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  background: var(--cream-2, #F3EEE3);
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+/* B5 · Viz container (sparkline, heatmap) — host class for the
+   shared SVG-only viz helper. Always client-rendered, hidden in
+   print. */
+.sheet-viz {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 12px;
+  color: var(--ink-soft, #2A2D33);
+}
+.sheet-viz svg {
+  display: block;
+}
+.sheet-viz__label {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.sheet-viz--inline {
+  margin: 4px 0 0;
+}
+.sheet-viz-empty {
+  font-size: 12px;
+  color: var(--stone, #6B6B6B);
+  font-style: italic;
+}
+@media print { .sheet-viz, .sheet-viz-empty { display: none !important; } }
+
+/* B10 · Recovery affordances — undo snackbar (8s, plain text). */
+.sheet-undo-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
+  background: var(--ink, #14161A);
+  color: var(--cream, #FAF7F2);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  animation: sheet-undo-rise 200ms ease-out;
+}
+.sheet-undo-bar[hidden] { display: none; }
+.sheet-undo-bar button {
+  background: transparent;
+  border: 0;
+  color: var(--cream, #FAF7F2);
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.sheet-undo-bar button:focus-visible {
+  outline: 2px solid var(--cream, #FAF7F2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+@keyframes sheet-undo-rise {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet-undo-bar { animation: none; }
+}
+@media print { .sheet-undo-bar { display: none !important; } }
+
+/* B10 · Reset confirmation — replaces the destructive Reset button
+   in-place with a two-tap confirm row when the form has any data. */
+.sheet-reset-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-soft, #2A2D33);
+  font-weight: 500;
+}
+.sheet-reset-confirm[hidden] { display: none; }
+.sheet-reset-confirm button {
+  background: var(--cream-2, #F3EEE3);
+  border: 1px solid var(--line, #E5DFD2);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink, #14161A);
+}
+.sheet-reset-confirm button[data-confirm="yes"] {
+  color: var(--rust, #B8541A);
+  border-color: var(--rust, #B8541A);
+}
+.sheet-reset-confirm button:focus-visible {
+  outline: 2px solid var(--teal, #1F4E5B);
+  outline-offset: 2px;
+}
+
+/* B10 · Per-fieldset clear — small ghost link in the legend after
+   the section is touched. */
+.sheet-form fieldset > legend {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+}
+.sheet-form fieldset > legend .sheet-clear-section {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--stone, #6B6B6B);
+  background: transparent;
+  border: 0;
+  padding: 2px 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sheet-form fieldset > legend .sheet-clear-section[hidden] { display: none; }
+.sheet-form fieldset > legend .sheet-clear-section:hover {
+  color: var(--rust, #B8541A);
+}
+.sheet-form fieldset > legend .sheet-clear-section:focus-visible {
+  outline: 2px solid var(--teal, #1F4E5B);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   B12 · TABLET-ON-THE-LINE ERGONOMICS
+   Coarse pointer + ≤900px = an operator on a tablet at 11pm. Stack
+   row tables, beef up tap targets, kill tints (glare). Desktop is
+   unaffected.
+   ───────────────────────────────────────────────────────────────── */
+@media (pointer: coarse) and (max-width: 900px) {
+  /* Larger tap targets on selects + buttons. */
+  .sheet-form select,
+  .sheet-form input[type="number"],
+  .sheet-form input[type="text"],
+  .sheet-form input[type="date"],
+  .sheet-form input[type="time"] {
+    min-height: 48px;
+    font-size: 16px; /* prevent iOS zoom on focus */
+  }
+  .sheet-row-table input,
+  .sheet-row-table select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  /* Sticky bottom action bar — Print/CSV/Save reachable without
+     scrolling past the computed totals. */
+  .mm-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--cream, #FAF7F2);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 0;
+    z-index: 50;
+    border-top: 1px solid var(--line, #E5DFD2);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+  }
+  /* Status chips render in solid fills, not tints (glare). */
+  .status-chip[data-band="good"] {
+    background: var(--status-good, #1F6B3A) !important;
+    color: var(--cream, #FAF7F2) !important;
+  }
+  .status-chip[data-band="warn"] {
+    background: var(--status-warn-deep, #8A3E16) !important;
+    color: var(--cream, #FAF7F2) !important;
+  }
+  .status-chip[data-band="bad"] {
+    background: var(--rust, #B8541A) !important;
+    color: var(--cream, #FAF7F2) !important;
+  }
+}
+
+/* B12 (mobile portrait) · Repeating-row tables collapse to vertical
+   card-rows on narrow viewports. Each <td> stacks with its <th>
+   label rendered as a left-side caption. */
+@media (max-width: 600px) {
+  .sheet-row-table thead {
+    /* Hide the header row; labels come from data-label on cells. */
+    position: absolute;
+    left: -9999px;
+  }
+  .sheet-row-table,
+  .sheet-row-table tbody,
+  .sheet-row-table tr,
+  .sheet-row-table td {
+    display: block;
+    width: 100%;
+  }
+  .sheet-row-table tr {
+    border: 1px solid var(--line, #E5DFD2);
+    border-radius: 8px;
+    margin: 8px 0;
+    padding: 4px 8px;
+    background: var(--white, #FFFFFF);
+  }
+  .sheet-row-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--cream-2, #F3EEE3);
+  }
+  .sheet-row-table td:last-child { border-bottom: 0; }
+  .sheet-row-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft, #2A2D33);
+    letter-spacing: 0.02em;
+  }
+  .sheet-row-table td input,
+  .sheet-row-table td select {
+    flex: 1 1 auto;
+    text-align: right;
+    background: transparent;
+  }
+}
+

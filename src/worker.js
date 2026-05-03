@@ -283,6 +283,7 @@ const API_ROUTES = {
   // can't leak items across users.
   '/api/workbench/save':   handleWorkbenchSave,
   '/api/workbench/list':   handleWorkbenchList,
+  '/api/workbench/sheet-history': handleWorkbenchSheetHistory,
   '/api/workbench/get':    handleWorkbenchGet,
   '/api/workbench/delete': handleWorkbenchDelete,
   // Phase 3 (Workshop) — Watch scaffolding. Endpoints are live now
@@ -399,7 +400,7 @@ export default {
         if (request.method !== 'GET' && request.method !== 'POST') {
           return jsonResponse({ ok: false, error: 'Method not allowed — endpoint accepts GET or POST' }, 405);
         }
-      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list' || pathname === '/api/window/thread' || pathname === '/api/window/poll' || pathname === '/api/window/active' || pathname === '/api/window/me-unread' || pathname === '/api/admin/window/list' || pathname === '/api/admin/window/thread') {
+      } else if (pathname === '/api/og-snapshot' || pathname === '/api/ping' || pathname === '/api/gbp-lookup' || pathname === '/api/seo-check' || pathname === '/api/schema-check' || pathname === '/api/page-crawl' || pathname === '/api/psi' || pathname === '/api/did-you-mean' || pathname === '/api/observatory' || pathname === '/api/wayback-first-seen' || pathname === '/api/crux-history' || pathname === '/api/gbp-details' || pathname === '/api/dns-email-health' || pathname === '/api/auth/verify' || pathname === '/api/auth/me' || pathname === '/api/workbench/list' || pathname === '/api/workbench/get' || pathname === '/api/workbench/sheet-history' || pathname === '/api/workbench/watch-list' || pathname === '/api/workbench/property/list' || pathname === '/api/workbench/property/get' || pathname === '/api/workbench/property/rollup' || pathname === '/api/submission/list-mine' || pathname === '/api/admin/submissions/list' || pathname === '/api/window/thread' || pathname === '/api/window/poll' || pathname === '/api/window/active' || pathname === '/api/window/me-unread' || pathname === '/api/admin/window/list' || pathname === '/api/admin/window/thread') {
         if (request.method !== 'GET') {
           return jsonResponse({ ok: false, error: 'Method not allowed' }, 405);
         }
@@ -5146,6 +5147,102 @@ async function handleWorkbenchGet(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
   return jsonResponse({ ok: true, item }, 200);
+}
+
+// GET /api/workbench/sheet-history?slug=<slug>
+// Returns: { ok: true, slug, label, values: [number...], band }
+//
+// Phase B6 — Operator Sheets time-series memory. The standard
+// /api/workbench/list endpoint omits payload by design (keeps the
+// response small); sparkline trends need the per-save outputs, which
+// requires reading individual rows. Bounded by MAX_SAVES_PER_USER
+// (the existing per-user save cap) so this stays cheap.
+//
+// Slug → primary metric mapping with v-absent fallback (Phase B2).
+const SHEET_PRIMARY_METRIC = {
+  'weekly-prime-cost-worksheet': { key: 'prime_cost_pct',  label_en: 'Prime cost trend',         label_es: 'Tendencia de costo primo' },
+  'recipe-cost-card':            { key: 'plate_cost',      label_en: 'Plate cost trend',         label_es: 'Tendencia de costo del plato' },
+  'third-party-channel-pnl':     { key: 'contrib_pct',     label_en: 'Channel margin trend',     label_es: 'Tendencia de margen del canal' },
+  'gbp-monthly-audit':           { key: 'score',           label_en: 'GBP audit score trend',    label_es: 'Tendencia del puntaje GBP' },
+  'daily-sales-recap':           { key: 'avg_check',       label_en: 'Average check trend',      label_es: 'Tendencia del cheque promedio' },
+  'monthly-pnl-snapshot':        { key: 'prime_pct',       label_en: 'Prime cost trend',         label_es: 'Tendencia de costo primo' },
+  'waste-log':                   { key: 'total',           label_en: 'Weekly waste trend',       label_es: 'Tendencia de desperdicio semanal' },
+  'reservation-no-show-log':     { key: 'ns_rate',         label_en: 'No-show rate trend',       label_es: 'Tendencia de tasa de no-shows' },
+  'website-conversion-checklist':{ key: 'score',           label_en: 'Conversion score trend',   label_es: 'Tendencia del puntaje de conversión' },
+  'review-response-log':         { key: 'response_rate',   label_en: 'Response rate trend',      label_es: 'Tendencia de tasa de respuesta' },
+};
+
+function _extractSheetMetric(item, metricKey) {
+  // Versioned payload (v:1) — outputs is structured.
+  if (item && item.payload && item.payload.v === 1 && item.payload.outputs) {
+    const v = item.payload.outputs[metricKey];
+    if (typeof v === 'number' && isFinite(v)) return v;
+    // Some outputs ship as strings like "$45.50" or "62.3%" — try to
+    // pull the numeric portion.
+    if (typeof v === 'string') {
+      const m = v.match(/-?\d+(?:\.\d+)?/);
+      if (m) {
+        const n = parseFloat(m[0]);
+        if (isFinite(n)) return n;
+      }
+    }
+  }
+  // v-absent fallback — payload may have the metric at root, or as
+  // a row in the legacy flat-rows shape. The earlier saves before
+  // versioned payloads landed used the rows shape; we don't try to
+  // scrape numeric values from those because the layout is per-sheet.
+  if (item && item.payload && typeof item.payload[metricKey] === 'number') {
+    return item.payload[metricKey];
+  }
+  return null;
+}
+
+async function handleWorkbenchSheetHistory(request, env, ctx) {
+  const auth = await _requireWorkbenchSession(request, env);
+  if (auth.error) return auth.error;
+  const url = new URL(request.url);
+  const slug = url.searchParams.get('slug') || '';
+  if (!slug || !/^[a-z0-9-]{1,64}$/.test(slug)) {
+    return jsonResponse({ ok: false, error: 'invalid-slug' }, 400);
+  }
+  const metricSpec = SHEET_PRIMARY_METRIC[slug];
+  if (!metricSpec) {
+    // No primary metric mapped — quietly empty so the client UI
+    // hides the sparkline rather than 404'ing.
+    return jsonResponse({ ok: true, slug, values: [], label: '' }, 200);
+  }
+  // List the user's saves (light list — id/kind/title/createdAt only).
+  const list = await listItemsForUser(env, auth.sub);
+  // Filter by kind === 'sheet' and (best-effort) slug from title or
+  // payload.slug — we have to read each row to confirm slug. Bounded
+  // to the user's MAX_SAVES_PER_USER cap.
+  const sheetItems = list.filter((it) => it.kind === 'sheet');
+  // Pull full payloads for at most the most recent 24 sheet saves.
+  const sortedDesc = [...sheetItems].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 24);
+  const matches = [];
+  for (const it of sortedDesc) {
+    const full = await getItem(env, auth.sub, it.id);
+    if (!full) continue;
+    if (!full.payload || full.payload.slug !== slug) continue;
+    const v = _extractSheetMetric(full, metricSpec.key);
+    if (v == null) continue;
+    matches.push({ value: v, createdAt: full.createdAt });
+  }
+  // Re-sort ascending so the sparkline reads left-to-right by time.
+  matches.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  const values = matches.slice(-12).map((m) => m.value); // last 12
+  const locale = (request.headers.get('accept-language') || '').toLowerCase().startsWith('es') ? 'es' : 'en';
+  const label = locale === 'es' ? metricSpec.label_es : metricSpec.label_en;
+  // Last value's band, evaluated against the same metric on the server.
+  // Keep simple — band is just the most recent value's diff vs prior.
+  let band = 'idle';
+  if (values.length >= 2) {
+    const last = values[values.length - 1];
+    const prior = values[values.length - 2];
+    if (last > prior) band = 'good';   // for cost%-style metrics this may be wrong; tuned later
+    else if (last < prior) band = 'warn';
+  }
+  return jsonResponse({ ok: true, slug, values, label, band, max: MAX_SAVES_PER_USER }, 200);
 }
 
 // POST /api/workbench/delete

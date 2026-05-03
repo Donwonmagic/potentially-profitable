@@ -68,6 +68,7 @@ const LABELS = {
     metaLabel: 'Sheet meta',
     sheetsHubUrl: '/sheets/',
     localeHome: '/',
+    keyboardHint: 'Keyboard: <kbd>⌘P</kbd> print · <kbd>⌘S</kbd> download CSV · <kbd>⌘↵</kbd> save to Workshop',
   },
   es: {
     skipToMain: 'Saltar al contenido principal',
@@ -101,8 +102,28 @@ const LABELS = {
     metaLabel: 'Metadatos de la hoja',
     sheetsHubUrl: '/es/sheets/',
     localeHome: '/es/',
+    keyboardHint: 'Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller',
   },
 };
+
+// Per-pack glyph for the hero eyebrow. Reuses the existing GLYPHS
+// vocabulary in scripts/build-og-cards.mjs; values here are inline
+// SVG path d-strokes (the build-og-cards file has the prose
+// reference). Keeping a small mirror locally avoids importing the
+// renderer and keeps the build script Node-pure.
+const PACK_GLYPHS = {
+  'operations-margin': '<rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/>',
+  'local-seo':         '<path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/><circle cx="12" cy="9" r="2.5"/>',
+  'conversions':       '<line x1="4" y1="6" x2="20" y2="6"/><line x1="6" y1="11" x2="18" y2="11"/><line x1="9" y1="16" x2="15" y2="16"/><polyline points="10 19 12 21 14 19"/>',
+  'brand-design':      '<rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4.5" x2="12" y2="19.5"/><line x1="4.5" y1="10" x2="19.5" y2="10"/>',
+  'trust-reviews':     '<path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/><polyline points="9 12 11.5 14.5 15.5 10"/>',
+};
+
+function renderPackGlyph(packId) {
+  const paths = PACK_GLYPHS[packId];
+  if (!paths) return '';
+  return `<span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24">${paths}</svg></span>`;
+}
 
 function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }
 function escText(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -326,6 +347,8 @@ function buildPage(slug, locale) {
     LABEL_RUNS_IN_BROWSER: escText(labels.runsInBrowser),
     LABEL_META: escAttr(labels.metaLabel),
     LOCALE_HAZARD_BANNER: renderHazardBanner(sheet.es_locale_hazard, locale),
+    LABEL_KEYBOARD_HINT: labels.keyboardHint,
+    PACK_GLYPH_HTML: renderPackGlyph(sheet.pack),
     FRAGMENT_HTML: fragment,
   };
 
