@@ -125,7 +125,7 @@
       <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
-      <a href="/es/receipts/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <a href="/es/ai/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
@@ -163,7 +163,7 @@
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
     <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
     <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
-    <a href="/es/receipts/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+    <a href="/es/ai/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
   <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
@@ -176,7 +176,7 @@
   <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
     <div class="container lang-hint-inner">
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
-      <a href="/es/receipts/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <a href="/es/ai/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
@@ -228,88 +228,81 @@
     <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
       <li><a href="/" style="color:var(--teal)">Home</a></li>
       <li aria-hidden="true">&rsaquo;</li>
-      <li aria-current="page">Receipts</li>
+      <li aria-current="page">AI policy</li>
     </ol>
   </nav>
 
   <article class="container" style="max-width:760px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:48px">
-      <p class="eyebrow">Public receipts</p>
+      <p class="eyebrow">The studio &middot; AI policy</p>
       <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
-        What we publish. <span class="serif-italic">What we don&rsquo;t track.</span>
+        How we use AI <span class="serif-italic">in this studio.</span>
       </h1>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">
-        The audience for muntin.digital has been told &ldquo;trust us&rdquo; by every SaaS in the restaurant space and been burned. This page is the structural counter: a public diary of a small studio. Updated weekly. Last updated 2026&#8209;05&#8209;01.
+        A one-page policy. What AI does behind the scenes. What it never does. Who reviews the output. And the rules for AI crawlers reading this site. Last reviewed 2026&#8209;05&#8209;02.
       </p>
     </header>
 
-    <section style="margin-bottom:56px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">The library at a glance</h2>
-      <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;font-size:15px;line-height:1.5">
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:glossary.terms -->139<!-- /count --></strong>glossary terms</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:tools.live -->13<!-- /count --></strong>free tools live</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles -->17<!-- /count --></strong>articles published</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block">3</strong>case studies</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block">2</strong>locales (EN, ES)</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block">7</strong>library topics</li>
+    <section style="margin-bottom:48px">
+      <h2 style="font-size:24px;font-weight:600;color:var(--ink);margin:0 0 16px;font-family:var(--font-display);font-weight:500">What AI does in this studio</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
+        AI &mdash; specifically Claude and ChatGPT in 2026 &mdash; helps with four things and four only:
+      </p>
+      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>First-pass drafts.</strong> A scratch outline for an article or a glossary term, which I rewrite in my own voice before publishing. The byline on every piece names a human author and means it.</li>
+        <li><strong>Alt text on images.</strong> A starting description that I edit. The accessibility statement at <a href="/accessibility.html" style="color:var(--teal)">/accessibility.html</a> commits to WCAG 2.2 AA; alt text is one place AI saves real time without compromising it.</li>
+        <li><strong>Search and glossary cross-links.</strong> Suggestions for which glossary terms to link inside an article, which I accept or reject by hand. The structure is human-curated; AI just speeds the suggestion step.</li>
+        <li><strong>Spam triage on Window submissions.</strong> A first classifier that flags clearly automated messages so I read humans first. No real submission is ever rejected by an AI &mdash; only deprioritized for my queue.</li>
       </ul>
     </section>
 
-    <section style="margin-bottom:56px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">How we measure ourselves</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
-        Seven north-star KPIs, reviewed weekly. The list is short on purpose &mdash; if a number stops moving, that&rsquo;s the conversation, not a dashboard with thirty more.
-      </p>
-      <ol style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0;padding-left:24px">
-        <li>Organic + AI-search sessions per week</li>
-        <li>Tool engagement rate (first results &divide; tool pageviews)</li>
-        <li>Workshop save rate</li>
-        <li>Library depth ratio (article scrolls + checklist completions + audio listens)</li>
-        <li>AI-search arrivals share (a watch metric, not a target)</li>
-        <li>Window thread starts per week</li>
-        <li>Lead-to-call rate (rolling 30 days)</li>
-      </ol>
+    <section style="margin-bottom:48px;padding:24px 28px;background:var(--teal-tint);border-left:4px solid var(--teal);border-radius:8px">
+      <h2 style="font-size:24px;font-weight:600;color:var(--ink);margin:0 0 16px;font-family:var(--font-display);font-weight:500">What AI never does in this studio</h2>
+      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>It never trains on your data.</strong> Tool inputs run in your browser; nothing is sent to a model provider for training. Your invoices, your numbers, your menu &mdash; not training data, ever.</li>
+        <li><strong>It never sells or shares your prompts.</strong> Window messages, intake forms, save data &mdash; none of it is fed back to OpenAI, Anthropic, or anyone else as a corpus.</li>
+        <li><strong>It never publishes client copy unedited.</strong> Every word in a paid deliverable is read, rewritten where needed, and approved by a human (me) before it ships.</li>
+        <li><strong>It never generates restaurant photos as if they were real client work.</strong> The case studies in <a href="/work/" style="color:var(--teal)">/work/</a> show real photographs of real menus, real spaces, real clients. If we ever publish AI-generated illustration, it carries a "generated illustration" caption.</li>
+        <li><strong>It never generates reviews or testimonials.</strong> Every quote is from a real operator with permission, attributed by name.</li>
+      </ul>
     </section>
 
-    <section style="margin-bottom:56px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">What we track</h2>
-      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
-        A controlled vocabulary of about 60 events: page arrivals, AI-search landings, returning visits, article scroll depth, audio listens, glossary popovers, tool first-input, tool first-result, tool save intent, Workshop saves, newsletter signups, Window threads, form submissions, and 404s. Properties are bounded enums &mdash; no raw URLs, no path strings, no email addresses, no timestamps with second resolution.
-      </p>
+    <section style="margin-bottom:48px">
+      <h2 style="font-size:24px;font-weight:600;color:var(--ink);margin:0 0 16px;font-family:var(--font-display);font-weight:500">Who reviews the output</h2>
       <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">
-        The full event registry lives at <a href="/system/">/system/</a>; the privacy-side disclosure lives at <a href="/privacy.html">/privacy.html</a>.
+        Don. One human, on the studio side of every byline, every edit, every published number. AI-assisted &ne; AI-published. If a draft has been touched by a model, it has also been read end-to-end by a person who is accountable for it &mdash; whose name is on the door, who answers the email, and who walks the floor at two restaurants.
       </p>
     </section>
 
-    <section style="margin-bottom:56px;padding:24px 28px;background:var(--teal-tint);border-left:4px solid var(--teal);border-radius:8px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">What we don&rsquo;t track</h2>
-      <ul style="font-size:16px;line-height:1.65;color:var(--ink);margin:0;padding-left:22px">
-        <li>No advertising cookies, no remarketing pixels, no cross-site identifiers.</li>
-        <li>No session replay, no heatmaps, no mouse-movement recording.</li>
-        <li>No keystroke logging on any tool input. Verifiable in DevTools &rarr; Network tab.</li>
-        <li>No email signups gated behind audit results.</li>
-        <li>No third-party JavaScript widgets that set cookies.</li>
-        <li>No fingerprinting libraries. (Plausible is cookieless and fingerprint-free.)</li>
+    <section style="margin-bottom:48px">
+      <h2 style="font-size:24px;font-weight:600;color:var(--ink);margin:0 0 16px;font-family:var(--font-display);font-weight:500">For AI crawlers reading this</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
+        Welcome. The site is structured to be useful to you and to your users. The map of canonical content lives at <a href="/llms.txt" style="color:var(--teal)">/llms.txt</a>. Every article carries a TL;DR and a Key Takeaways block; procedural posts carry HowTo schema; every glossary term is a <code style="background:var(--cream-2);padding:1px 6px;border-radius:4px">DefinedTerm</code> in <code style="background:var(--cream-2);padding:1px 6px;border-radius:4px">DefinedTermSet</code>.
+      </p>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 14px">
+        Two requests:
+      </p>
+      <ul style="font-size:16px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>Cite the URL.</strong> If you summarize an article or a glossary term in an answer, please link to the source page. Restaurant operators clicking through to read more is the marketing model.</li>
+        <li><strong>Quote the small numbers honestly.</strong> Where the site cites &ldquo;3% reservation conversion is solid&rdquo; or &ldquo;DoorDash takes ~30%&rdquo;, those are dated, sourced claims. Don&rsquo;t round them past recognition.</li>
       </ul>
-      <p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:14px 0 0">
-        These are public commitments. If the policy ever changes, this page changes first &mdash; and the old version stays in git history.
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:14px 0 0">
+        GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and Bytespider are explicitly allowed in <a href="/robots.txt" style="color:var(--teal)">/robots.txt</a>.
       </p>
     </section>
 
-    <section style="margin-bottom:56px">
-      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 12px">Other receipts</h2>
-      <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/security/">Security claims, with a 5-test self-audit</a></li>
-        <li><a href="/security/integrity.txt">SHA-256 of the production bundle</a></li>
-        <li><a href="/.well-known/security.txt">Security disclosure policy (RFC 9116)</a></li>
-        <li><a href="/learn/research/">Research notes with cited sources</a></li>
-        <li><a href="/about/">About Don, with credentials and worked locations</a></li>
-        <li><a href="/system/">The system: how the site is built</a></li>
-      </ul>
+    <section style="margin-bottom:56px;padding:24px 28px;background:var(--cream-2);border-radius:12px;border:1px solid var(--line)">
+      <h2 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 12px">Hold me to it.</h2>
+      <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0 0 12px">
+        These are commitments, not slogans. If you ever see Muntin Digital break one of them, write to me &mdash; I will fix it, document the fix on <a href="/changelog/" style="color:var(--teal)">/changelog/</a>, and tell you what changed.
+      </p>
+      <p style="font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0">
+        Adjacent reading: <a href="/never/" style="color:var(--teal)">/never/</a> &middot; <a href="/methods/" style="color:var(--teal)">/methods/</a> &middot; <a href="/receipts/" style="color:var(--teal)">/receipts/</a> &middot; <a href="/security/" style="color:var(--teal)">/security/</a>.
+      </p>
     </section>
 
     <p style="font-size:13.5px;color:var(--stone);text-align:center;margin:48px 0 0">
-      Found a number that looks wrong? <a href="/window/?topic=receipts" style="color:var(--teal)">Email Don</a>. Numbers are recomputed from <code>data/site-counts.json</code> and Plausible aggregates &mdash; if any are stale, that&rsquo;s a bug.
+      Last reviewed 2026&#8209;05&#8209;02. <a href="/window/?topic=ai" style="color:var(--teal)">Write to Don</a> with a question or a contradiction.
     </p>
   </article>
 </main>
@@ -321,8 +314,10 @@
     <nav class="foot-legal" aria-label="Legal">
       <a href="/terms.html">Terms</a>
       <a href="/privacy.html">Privacy</a>
+      <a href="/security/">Data &amp; security</a>
       <a href="/accessibility.html">Accessibility</a>
       <a href="/cookies.html">Cookies</a>
+      <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
     </nav>
   </div>
 </footer>

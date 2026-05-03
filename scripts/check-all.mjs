@@ -101,6 +101,13 @@ const CHECKS = [
   ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
   ['No fixed min-width',   'check-no-fixed-min-width.mjs'],
   ['Table scroll wrap',    'check-table-scroll-wrap.mjs'],
+  // Phase 1 (Launch refresh) — locked CTA + footer + count cohesion.
+  ['Count sentinel escape','check-count-sentinel-escape.mjs', '--check'],
+  ['CTA canon',            'check-cta-canon.mjs',             '--check'],
+  ['Footer payload',       'check-footer-payload.mjs',        '--check'],
+  // Banned words runs warn-only for now: editorial cleanup of legacy
+  // blog copy is a separate Phase-2 sweep, not a launch blocker.
+  ['Banned words (warn)',  'check-banned-words.mjs'],
 ];
 
 const results = [];
