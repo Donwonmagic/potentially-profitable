@@ -14,6 +14,51 @@
 (function () {
   'use strict';
 
+  // Wave D.7 — browser feature gate. The tool relies on a small set
+  // of relatively recent browser APIs (SubtleCrypto for AES-GCM and
+  // PBKDF2/Argon2id derivation, fetch for save / load, FileReader /
+  // ArrayBuffer for image and PDF intake). Older browsers — or
+  // browsers running in restricted-mode / extension-context where
+  // crypto.subtle is null — would otherwise let the operator parse
+  // an invoice all the way through preprocessing and OCR before
+  // failing at Save with a cryptic error. Detect missing capabilities
+  // up front and surface a clear, actionable message; the file inputs
+  // remain visible so an operator who knows what they're doing can
+  // still try, but we don't pretend everything is fine.
+  (function checkBrowserCapabilities() {
+    var missing = [];
+    try {
+      if (typeof Promise === 'undefined') missing.push('Promise');
+      if (typeof fetch === 'undefined') missing.push('fetch');
+      if (typeof FileReader === 'undefined' && typeof Blob === 'undefined') missing.push('FileReader');
+      if (typeof crypto === 'undefined' || !crypto || !crypto.subtle) missing.push('SubtleCrypto');
+      // Canvas + URL for image preview / blob handling.
+      if (typeof URL === 'undefined' || typeof URL.createObjectURL !== 'function') missing.push('URL.createObjectURL');
+    } catch (_) { /* if this throws the browser is too old to even run the check */ }
+    if (!missing.length) return;
+    // Surface a status banner without breaking the rest of init —
+    // an operator on a private-mode browser where crypto.subtle is
+    // null can still see the dropzone (helps debugging) but knows
+    // up front that Save will fail.
+    try {
+      var s = document.getElementById('idStatus');
+      var t = document.getElementById('idStatusTitle');
+      var m = document.getElementById('idStatusMsg');
+      var lang = (document.documentElement && document.documentElement.lang) || 'en';
+      if (s && t && m) {
+        s.hidden = false;
+        s.className = (s.className || '') + ' error';
+        if (lang.indexOf('es') === 0) {
+          t.textContent = 'Tu navegador no tiene las funciones que esta herramienta necesita.';
+          m.textContent = 'Faltan: ' + missing.join(', ') + '. Funciona en Safari 15+, Chrome 90+, Firefox 95+, Edge 90+. Esta herramienta encripta todo en tu dispositivo, así que necesita estas APIs modernas.';
+        } else {
+          t.textContent = 'Your browser is missing security features this tool needs.';
+          m.textContent = 'Missing: ' + missing.join(', ') + '. Works in Safari 15+, Chrome 90+, Firefox 95+, Edge 90+. This tool encrypts everything on your device, which is why it needs these modern APIs.';
+        }
+      }
+    } catch (_) {}
+  })();
+
   // -------------------- DOM --------------------
   var photoInput  = document.getElementById('idPhotoInput');
   var pdfInput    = document.getElementById('idPdfInput');
@@ -2568,7 +2613,7 @@
           );
           if (isNetworkLike && savedEnvelope) {
             try {
-              enqueueOfflineSave({
+              var queued = enqueueOfflineSave({
                 envelope:        savedEnvelope,
                 aad:             savedAad,
                 title:           tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'),
@@ -2578,12 +2623,30 @@
                 queuedAt:        Date.now(),
                 clientRequestId: __saveRequestId
               });
-              setSaveStatus(null, 'ok');
+              if (queued) {
+                setSaveStatus(null, 'ok');
+                showStatus(
+                  tt('Saved on this device — we\'ll sync when you\'re back online.',
+                     'Guardado en este dispositivo — sincronizamos cuando vuelvas a estar en línea.'),
+                  tt('Encryption already finished. The ciphertext is in your browser; we\'ll POST it as soon as the network comes back. You can close the tab; we\'ll pick it up next time.',
+                     'La encriptación ya terminó. El ciphertext está en tu navegador; lo enviaremos en cuanto vuelva la red. Puedes cerrar la pestaña; retomamos en la próxima visita.')
+                );
+                return;
+              }
+              // Queue at cap. Don't silently drop an older queued
+              // save to make room — the operator should know that
+              // their stack of unsynced invoices is full and decide
+              // for themselves. Show a specific message and fall
+              // through to the error alert so they can take action
+              // (turn Wi-Fi back on, free up the queue by getting
+              // online once, or note the missed save manually).
+              setSaveStatus(null, 'error');
               showStatus(
-                tt('Saved on this device — we\'ll sync when you\'re back online.',
-                   'Guardado en este dispositivo — sincronizamos cuando vuelvas a estar en línea.'),
-                tt('Encryption already finished. The ciphertext is in your browser; we\'ll POST it as soon as the network comes back. You can close the tab; we\'ll pick it up next time.',
-                   'La encriptación ya terminó. El ciphertext está en tu navegador; lo enviaremos en cuanto vuelva la red. Puedes cerrar la pestaña; retomamos en la próxima visita.')
+                tt('Offline-save queue is full (' + SAVE_QUEUE_MAX + ' invoices already waiting).',
+                   'La cola fuera de línea está llena (' + SAVE_QUEUE_MAX + ' facturas ya esperando).'),
+                tt('Get online for a moment to drain the queue, or note this invoice manually for now. We didn\'t lose your existing queued saves.',
+                   'Conéctate un momento para sincronizar la cola, o anota esta factura a mano por ahora. No perdimos tus guardados en cola.'),
+                'error'
               );
               return;
             } catch (queueErr) {
@@ -2625,13 +2688,21 @@
   }
   function writeSaveQueue(arr) {
     try {
-      localStorage.setItem(SAVE_QUEUE_KEY, JSON.stringify(arr.slice(-SAVE_QUEUE_MAX)));
+      localStorage.setItem(SAVE_QUEUE_KEY, JSON.stringify(arr));
     } catch (_) {}
   }
+  // Returns true on success, false when the queue is already at cap.
+  // Refusing-at-cap (rather than silently dropping the oldest entry,
+  // which is what .slice(-MAX) used to do) prevents the operator from
+  // losing one of an existing chain of unsynced invoices when the 9th
+  // attempt happens to fail. The caller surfaces a clearer message
+  // for the at-cap case so the operator knows their work didn't queue.
   function enqueueOfflineSave(entry) {
     var q = readSaveQueue();
+    if (q.length >= SAVE_QUEUE_MAX) return false;
     q.push(entry);
     writeSaveQueue(q);
+    return true;
   }
   function flushSaveQueue() {
     if (__saveQueueFlushing) return Promise.resolve();
