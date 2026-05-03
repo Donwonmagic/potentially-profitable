@@ -160,6 +160,16 @@
         window.plausible('Menu Design Theme Changed', { props: { theme: String(themeId || 'unknown') } });
       } catch (_) {}
     }
+    // Wave studio-quality (WCAG 2.2 AA) — announce theme change to AT.
+    // Theme cards visually highlight on selection but the change is
+    // otherwise silent for screen-reader users.
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce && typeof MD_THEMES !== 'undefined') {
+      var t = MD_THEMES.get(themeId);
+      var label = t ? (LOCALE === 'es' ? t.label_es : t.label_en) : themeId;
+      MD_DOM.announce(LOCALE === 'es'
+        ? 'Tema cambiado a ' + label + '.'
+        : 'Theme changed to ' + label + '.');
+    }
   }
 
   // Fire Tool Loaded immediately — it's the funnel head and must
@@ -2513,6 +2523,9 @@
     applySnapshot(__undoStack.pop());
     refreshUndoRedoBtns();
     scheduleSaveDraft();
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Undone.', 'Deshecho.'));
+    }
   }
   function doRedo() {
     if (!__redoStack.length) return;
@@ -2520,6 +2533,9 @@
     applySnapshot(__redoStack.pop());
     refreshUndoRedoBtns();
     scheduleSaveDraft();
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Redone.', 'Rehecho.'));
+    }
   }
   if (undoBtn) undoBtn.addEventListener('click', doUndo);
   if (redoBtn) redoBtn.addEventListener('click', doRedo);
@@ -3139,10 +3155,17 @@
       if (act === 'del') {
         var i = parseInt(t.dataset.i, 10);
         if (!isFinite(i)) return;
+        var rem = rows[i];
+        var remLabel = rem && rem.kind === 'section'
+          ? tt('Section "' + (rem.name || 'unnamed') + '" removed.',
+               'Sección "' + (rem.name || 'sin nombre') + '" eliminada.')
+          : tt('Dish "' + ((rem && rem.name) || 'unnamed') + '" removed.',
+               'Plato "' + ((rem && rem.name) || 'sin nombre') + '" eliminado.');
         pushUndo();
         rows.splice(i, 1);
         render();
         scheduleSaveDraft();
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) MD_DOM.announce(remLabel);
         return;
       }
       // Wave studio-quality — duplicate dish. Operators making 5
@@ -3181,6 +3204,11 @@
           try { freshName.select(); } catch (_) {}
         }
         scheduleSaveDraft();
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+          MD_DOM.announce(src.kind === 'section'
+            ? tt('Section duplicated.', 'Sección duplicada.')
+            : tt('Dish duplicated.', 'Plato duplicado.'));
+        }
         return;
       }
       // W13-2 — remove section hero image
@@ -3278,6 +3306,16 @@
     });
   }
 
+  // Wave studio-quality (WCAG 2.2 AA) — small announce wrapper that
+  // routes through MD_DOM.announce when available; degrades silently
+  // otherwise. Used at every state transition that changes visible
+  // editor state without focus shift.
+  function srAnnounce(msg) {
+    if (typeof MD_DOM !== 'undefined' && typeof MD_DOM.announce === 'function') {
+      MD_DOM.announce(msg);
+    }
+  }
+
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
     pushUndo();
     rows.push(blankDish());
@@ -3285,6 +3323,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Dish added at row ' + rows.length + '.', 'Plato agregado en fila ' + rows.length + '.'));
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
     pushUndo();
@@ -3293,6 +3332,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Dish added.', 'Plato agregado.'));
   });
 
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
@@ -3302,6 +3342,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('.md-row-section input');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Section added.', 'Sección agregada.'));
   });
 
   if (clearBtn) clearBtn.addEventListener('click', function () {
