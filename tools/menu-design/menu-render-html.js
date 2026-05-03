@@ -56,18 +56,25 @@
   // and the PDF renderer, kept minimal here: code → {en, es} label.
   // Glyph rendering uses the code itself inside a styled pill so we
   // don't depend on emoji fonts on the operator's host.
+  // Wave B2 — extended to cover EU FIC 14 + UK PPDS regimes.
   var HTML_ALLERGENS = {
-    V:  { en: 'Vegan',           es: 'Vegano' },
-    VG: { en: 'Vegetarian',      es: 'Vegetariano' },
-    GF: { en: 'Gluten-free',     es: 'Sin gluten' },
-    DF: { en: 'Dairy-free',      es: 'Sin lácteos' },
-    N:  { en: 'Contains nuts',   es: 'Frutos secos' },
-    E:  { en: 'Contains eggs',   es: 'Huevos' },
-    SO: { en: 'Contains soy',    es: 'Soya' },
-    SF: { en: 'Shellfish',       es: 'Mariscos' },
-    FI: { en: 'Contains fish',   es: 'Pescado' },
-    SE: { en: 'Sesame',          es: 'Sésamo' },
-    LO: { en: 'Locally sourced', es: 'Origen local' }
+    V:  { en: 'Vegan',              es: 'Vegano' },
+    VG: { en: 'Vegetarian',         es: 'Vegetariano' },
+    GF: { en: 'Gluten-free',        es: 'Sin gluten' },
+    DF: { en: 'Dairy-free',         es: 'Sin lácteos' },
+    N:  { en: 'Tree nuts',          es: 'Frutos secos' },
+    E:  { en: 'Contains eggs',      es: 'Huevos' },
+    SO: { en: 'Contains soy',       es: 'Soya' },
+    SF: { en: 'Shellfish',          es: 'Mariscos' },
+    FI: { en: 'Contains fish',      es: 'Pescado' },
+    SE: { en: 'Sesame',             es: 'Sésamo' },
+    LO: { en: 'Locally sourced',    es: 'Origen local' },
+    PE: { en: 'Peanuts',            es: 'Cacahuetes' },
+    MU: { en: 'Mustard',            es: 'Mostaza' },
+    CE: { en: 'Celery',             es: 'Apio' },
+    LU: { en: 'Lupin',              es: 'Altramuz' },
+    MO: { en: 'Molluscs',           es: 'Moluscos' },
+    SU: { en: 'Sulphites ≥10ppm', es: 'Sulfitos ≥10ppm' }
   };
   function allergenLabelHtml(code, locale) {
     var a = HTML_ALLERGENS[code]; if (!a) return code;
@@ -179,6 +186,43 @@
     var accent  = theme.accent || '#1F4E5B';
     var muted   = theme.muted  || '#7C6F60';
 
+    // Wave B6 — inject schema.org Menu JSON-LD into <head> so the
+    // operator's QR-menu HTML emits a Google rich-result when
+    // dropped into a host page. Tolerant: MD_JSONLD or MD_SCHEMA
+    // missing → emits no JSON-LD (Wave A boot order makes this rare,
+    // but the Node test harness exercises both paths).
+    //
+    // Caller provides a v3 canonical menu via opts.canonicalMenu when
+    // available (the orchestrator builds one from its v2 row stream
+    // before calling exportZip); otherwise we synthesize a minimal
+    // one here from rows + theme + meta-like opts.
+    var jsonldHtml = '';
+    try {
+      var hasJsonld = (root && root.MD_JSONLD && typeof root.MD_JSONLD.emitScriptTag === 'function');
+      var hasSchema = (root && root.MD_SCHEMA && typeof root.MD_SCHEMA.migrate === 'function');
+      if (hasJsonld) {
+        var canonicalForLd = opts.canonicalMenu;
+        if (!canonicalForLd && hasSchema) {
+          canonicalForLd = root.MD_SCHEMA.migrate({
+            rows:  rows,
+            theme: (theme && theme.id) || (opts.themeId || ''),
+            meta:  opts.meta || {
+              businessName: title,
+              tagline:      opts.tagline || '',
+              cuisine:      opts.cuisine || '',
+              currency:     opts.currency || 'USD',
+              locale:       locale
+            }
+          });
+        }
+        if (canonicalForLd) {
+          jsonldHtml = root.MD_JSONLD.emitScriptTag(canonicalForLd, {
+            url: opts.publishUrl || ''
+          }) + '\n';
+        }
+      }
+    } catch (_) { /* JSON-LD is best-effort; never block the export */ }
+
     // Self-contained HTML. The operator can drop this single file
     // into any host — no CDN dependency at view-time.
     return '<!doctype html>\n' +
@@ -187,6 +231,7 @@
 '<meta charset="utf-8" />\n' +
 '<meta name="viewport" content="width=device-width,initial-scale=1" />\n' +
 '<title>' + escHtml(title) + '</title>\n' +
+jsonldHtml +
 '<style>\n' +
 '  :root{\n' +
 '    --ink:' + ink + ';--paper:' + paper + ';--accent:' + accent + ';--muted:' + muted + ';\n' +
@@ -225,6 +270,9 @@
 '  .ml-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;margin:0;flex:0 0 auto}\n' +
 '  .ml-allergen-key-row dd{margin:0;font-size:13px;color:var(--ink)}\n' +
 '  .ml-foot{text-align:center;font-size:12px;color:var(--muted);padding-top:32px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);margin-top:40px}\n' +
+/* Wave B2 — regime-aware allergen disclaimer. Sits above the
+   last-updated footer; reads as advisory, not decorative. */
+'  .ml-disclaimer{margin:32px 0 0;padding:14px 16px;background:color-mix(in srgb,var(--accent) 6%,transparent);border-left:3px solid var(--accent);color:var(--ink);font-size:13px;line-height:1.55;font-style:italic}\n' +
 '</style>\n' +
 '</head>\n' +
 '<body>\n' +
@@ -235,6 +283,13 @@
 '  </header>\n' +
 '  ' + sectionsHtml + '\n' +
    keyHtml + '\n' +
+   (opts.disclaimer && String(opts.disclaimer).trim()
+     // Wave B2 — regime-aware allergen disclaimer footer. Caller
+     // resolves the effective text (operator-typed wins, otherwise
+     // regime default). Wraps in role=note so screen readers announce
+     // it as auxiliary, not a heading.
+     ? '  <aside class="ml-disclaimer" role="note">' + escHtml(String(opts.disclaimer).trim()) + '</aside>\n'
+     : '') +
 '  <footer class="ml-foot">' +
     (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') +
     new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +

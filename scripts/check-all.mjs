@@ -79,6 +79,16 @@ const CHECKS = [
   ['OG image refs',       'check-og-images.mjs'],
   ['OG coverage',         'check-og-coverage.mjs',         '--check'],
   ['Analytics vocab',     'check-analytics-vocabulary.mjs','--check'],
+  // Wave A unit-test gate (node:test). Covers menu-schema +
+  // reducer/store + allergens regime math today; new modules
+  // ship their tests next to the source and the runner picks
+  // them up by glob.
+  ['Unit tests',          'check-tests.mjs'],
+  // Wave B13 — LLM citation companion auto-derived from themes +
+  // allergens. Idempotent: --check fails if themes.js or
+  // allergens.js drifted without a corresponding regen of the
+  // /tools/menu-design/llm.md companion.
+  ['Menu Design LLM (idem)','build-menu-design-llm.mjs',     '--check'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],

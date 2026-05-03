@@ -117,6 +117,59 @@
 
 
 # ------------------------------------------------------------
+# Menu Design Suite — tool-scoped JS / CSS / future SW
+# ------------------------------------------------------------
+# Menu Design is the largest tool surface (renderers + themes).
+# Its filenames aren't fingerprinted (we ship `?v=` query stamps
+# in HTML), so we mirror the global /assets/*.js policy: 1-day
+# browser cache + a week of stale-while-revalidate. Rule order
+# matters — the more specific /tools/menu-design/* rules go
+# before any future /tools/* catch-all.
+/tools/menu-design/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/tools/menu-design/*.css
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Future code-split sub-modules (state/, infra/, data/, exports/).
+/tools/menu-design/*/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Service worker — when the menu-design PWA ships, mirror the
+# invoice-decoder posture: never aggressively cache, always
+# revalidate so an update can ship without trapping operators
+# on a stale shell.
+/tools/menu-design/sw.js
+  Cache-Control: no-cache, max-age=0, must-revalidate
+  Content-Type: application/javascript; charset=utf-8
+
+/tools/menu-design/manifest.webmanifest
+  Cache-Control: public, max-age=3600
+  Content-Type: application/manifest+json; charset=utf-8
+
+
+# ------------------------------------------------------------
+# Shared menu-renderers package (planned home for extracted
+# pdf / html / text / themes / lint code; consumed by every menu
+# tool — converter, engineering, copy, design).
+# ------------------------------------------------------------
+/tools/_shared/menu-renderers/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/tools/_shared/*.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+
+# ------------------------------------------------------------
+# Vendored third-party libraries (jsPDF, JSZip, html2canvas,
+# qrcode-generator). Version-pinned in path so the cache can be
+# truly immutable. Mirrors the /assets/fonts/* posture.
+# ------------------------------------------------------------
+/assets/vendor/*
+  Cache-Control: public, max-age=2592000, immutable
+
+
+# ------------------------------------------------------------
 # HTML pages
 # ------------------------------------------------------------
 # Short browser cache (10 min) and a slightly longer edge

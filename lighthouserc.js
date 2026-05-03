@@ -12,16 +12,20 @@
  *   - export LHCI_BUILD_BASE_URL="https://<preview>.pages.dev"
  *   - npx @lhci/cli@latest autorun --config=./lighthouserc.js
  *
- * The 7-URL set covers the load-bearing surfaces:
- *   /                        — homepage (hero + library teaser)
- *   /window/                 — contact, JS-heavy
- *   /tools/                  — tools index (cards, mostly static)
- *   /tools/seo-grader/       — a fetch-light tool result
- *   /library/                — (post-IA migration) library hub; today /learn/
+ * The 9-URL set covers the load-bearing surfaces:
+ *   /                                  — homepage (hero + library teaser)
+ *   /window/                           — contact, JS-heavy
+ *   /tools/                            — tools index (cards, mostly static)
+ *   /tools/seo-grader/                 — a fetch-light tool result
+ *   /tools/menu-design/                — flagship: largest tool surface, gated
+ *                                         to catch the 350KB-on-load regression
+ *                                         we're code-splitting away from
+ *   /es/tools/menu-design/             — bilingual parity gate: ES-mirrored
+ *                                         flagship must hit the same budget
+ *   /library/                          — (post-IA migration) library hub; today /learn/
  *   /blog/why-your-restaurant-loses-reservations-every-night/
- *                            — long-form article body shape
- *   /glossary/conversion-rate/
- *                            — short-form glossary term shape
+ *                                      — long-form article body shape
+ *   /glossary/conversion-rate/         — short-form glossary term shape
  */
 
 const BASE = process.env.LHCI_BUILD_BASE_URL || 'http://localhost:8788';
@@ -31,6 +35,8 @@ const PATHS = [
   '/window/',
   '/tools/',
   '/tools/seo-grader/',
+  '/tools/menu-design/',
+  '/es/tools/menu-design/',
   '/learn/',
   '/blog/why-your-restaurant-loses-reservations-every-night/',
   '/glossary/conversion-rate/',

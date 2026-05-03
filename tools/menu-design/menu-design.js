@@ -112,6 +112,89 @@
   var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
   function tt(en, es) { return LOCALE === 'es' ? es : en; }
 
+  // -------------------- Funnel events (Wave A6 — synthesis plan) -----
+  // Bounded-cardinality Plausible events that complete the funnel
+  // diagnosis the existing 16 events left undefined. All prop values
+  // come from a closed enum so scripts/check-event-prop-cardinality.mjs
+  // stays green.
+  //
+  //   Menu Design Tool Loaded         — first script run; locale prop
+  //   Menu Design First Dish          — single-fire per session; trigger
+  //                                     prop ∈ paste|template|manual|sample
+  //   Menu Design Theme Changed       — user-initiated theme switch
+  //                                     (NOT history/draft/template loads)
+  //   Menu Design Custom Logo Added   — kind ∈ svg|raster
+  //   Menu Design Disclaimer Read     — honesty card in viewport ≥3s
+  //   Menu Design Outbound Drop-In    — click any /services/menu-drop-in/ link
+  //   Menu Design Outbound Polish     — click any /services/menu-polish/ link
+  //   Menu Design Export Failed       — superset of legacy PDF Failed,
+  //                                     adds {format, reason}; reason enum
+  //                                     ∈ cdn-blocked|cdn-load|oom|
+  //                                       font-missing|worker-unsupported|unknown
+  //
+  // Implementation note: each helper writes the event name as a string
+  // literal in a direct `window.plausible(...)` call so the vocabulary
+  // scanner at scripts/check-analytics-vocabulary.mjs (regex:
+  // /window\.plausible\(/) finds it. A wrapping helper would hide the
+  // event names from that scanner.
+
+  var __firstDishFired = false;
+  function fireFirstDishOnce(trigger) {
+    if (__firstDishFired) return;
+    var hasNonBlank = rows.some(function (r) {
+      return r && r.kind === 'dish' && (r.name || '').trim() !== '';
+    });
+    if (!hasNonBlank) return;
+    __firstDishFired = true;
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design First Dish', { props: { trigger: String(trigger || 'manual') } });
+      } catch (_) {}
+    }
+  }
+
+  function fireThemeChanged(themeId) {
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design Theme Changed', { props: { theme: String(themeId || 'unknown') } });
+      } catch (_) {}
+    }
+  }
+
+  // Fire Tool Loaded immediately — it's the funnel head and must
+  // count both no-action loads and full-flow sessions.
+  if (window.plausible) {
+    try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
+  }
+
+  // -------------------- Wave B2 finish — effective disclaimer ---------
+  // Resolve the disclaimer text the renderers should emit in the
+  // footer. Three-state logic:
+  //   1. Operator typed something  → use their text verbatim (always)
+  //   2. Menu has ≥1 allergen tag  → auto-fill from regime + locale
+  //                                  (synthesis-plan B2 default-on UX)
+  //   3. No allergens, no operator text → empty (renderer no-ops)
+  //
+  // Tolerant of MD_SCHEMA being absent (legacy load path or test
+  // harness) — falls back to operator text or empty.
+  function hasAnyAllergenTagged() {
+    return rows.some(function (r) {
+      return r && r.kind === 'dish' && Array.isArray(r.allergens) && r.allergens.length > 0;
+    });
+  }
+  function effectiveDisclaimer() {
+    if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
+      return meta.disclaimer;
+    }
+    if (!hasAnyAllergenTagged()) return '';
+    if (typeof MD_SCHEMA === 'undefined' ||
+        typeof MD_SCHEMA.autoDisclaimerFor !== 'function') {
+      return '';
+    }
+    var regime = (meta && meta.allergenRegime) || 'us-fda9';
+    return MD_SCHEMA.autoDisclaimerFor(regime, LOCALE) || '';
+  }
+
   // A2 state — theme id, logo data-URL, paper size key. Lives in
   // the same closure as rows[] so render() can pull everything.
   var themeId  = 'modern-minimal';
@@ -123,7 +206,13 @@
   // empty. Persists in the draft via meta.* keys.
   var meta = {
     tagline: '', story: '', coverPage: false,
-    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: ''
+    address: '', hours: '', serviceCharge: '', sourcing: '', disclaimer: '', askYourServer: '',
+    // Wave B2 — allergen regulatory regime. Drives the auto-disclaimer
+    // text in PDF + HTML + text exports + the studio brief. Default
+    // is US-FDA-9 (current operator base); selector at #mdMetaRegime
+    // lets EU / UK / CA / AU / NZ operators override. Persisted with
+    // the rest of meta via state/draft.js.
+    allergenRegime: 'us-fda9'
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -528,6 +617,7 @@
       var li = e.target.closest('.md-theme');
       if (!li) return;
       themeId = li.dataset.id;
+      fireThemeChanged(themeId);
       renderThemePicker();
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
@@ -548,6 +638,7 @@
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         themeId = li.dataset.id;
+        fireThemeChanged(themeId);
         renderThemePicker();
         renderPreview();
         scheduleSaveDraft();
@@ -559,6 +650,7 @@
       else if (e.key === 'End')  { e.preventDefault(); nextIdx = allLis.length - 1; }
       else return;
       themeId = allLis[nextIdx].dataset.id;
+      fireThemeChanged(themeId);
       renderThemePicker();
       renderPreview();
       scheduleSaveDraft();
@@ -607,6 +699,17 @@
   function applyLogo(dataUrl, name, w, h) {
     logoUrl = dataUrl;
     logoMeta = { name: name, w: w, h: h };
+    // Wave A6 funnel — bounded prop so a returning operator who
+    // re-uploads the same logo doesn't double-count (the kind enum
+    // collapses both cases). SVG path passes w=h=null so the kind
+    // discriminator is the data-URL prefix.
+    if (window.plausible) {
+      try {
+        window.plausible('Menu Design Custom Logo Added', { props: {
+          kind: (typeof dataUrl === 'string' && dataUrl.indexOf('data:image/svg') === 0) ? 'svg' : 'raster'
+        }});
+      } catch (_) {}
+    }
     if (logoThumb) {
       logoThumb.innerHTML = '<img src="' + escHtml(dataUrl) + '" alt="" />';
       // W5-5 — small bounce so the operator sees the logo land.
@@ -861,6 +964,31 @@
       scheduleSaveDraft();
     });
   });
+  // Wave B2 — regime selector (separate wiring; uses `change` instead
+  // of `input`). Defaults to us-fda9; menus loaded from a v1/v2 draft
+  // that lacks the field default to us-fda9 too. The placeholder hint
+  // on mdMetaDisclaimer updates so operators see live what auto-fill
+  // they'll get.
+  var metaRegimeEl = document.getElementById('mdMetaRegime');
+  var metaDisclaimerEl = document.getElementById('mdMetaDisclaimer');
+  function refreshDisclaimerHint() {
+    if (!metaDisclaimerEl || typeof MD_SCHEMA === 'undefined' ||
+        typeof MD_SCHEMA.autoDisclaimerFor !== 'function') return;
+    var regime = (meta && meta.allergenRegime) || 'us-fda9';
+    var hint = MD_SCHEMA.autoDisclaimerFor(regime, LOCALE);
+    if (hint) metaDisclaimerEl.placeholder = hint;
+  }
+  if (metaRegimeEl) {
+    // Initial sync — restore from already-loaded meta (post-draft load).
+    if (meta.allergenRegime) metaRegimeEl.value = meta.allergenRegime;
+    metaRegimeEl.addEventListener('change', function () {
+      meta.allergenRegime = metaRegimeEl.value || 'us-fda9';
+      refreshDisclaimerHint();
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+  refreshDisclaimerHint();
 
   // -------------------- Live preview --------------------
   // The preview is rendered with CSS variables set on the .md-preview-paper
@@ -1813,6 +1941,12 @@
   function scheduleSaveDraft() {
     if (__saveTimer) clearTimeout(__saveTimer);
     __saveTimer = setTimeout(function () { __saveTimer = null; persistDraft(); }, 500);
+    // Wave A6 funnel — every state mutation passes through the
+    // autosave path, so this is a single-point hook for the
+    // "First Dish" milestone. The fire helper guards itself
+    // (single-fire per session, only fires when a non-blank dish
+    // exists), so calling it here is cheap.
+    fireFirstDishOnce('manual');
   }
 
   function loadDraft() {
@@ -2242,6 +2376,7 @@
       var d = document.querySelector('.md-templates');
       if (d) d.open = false;
       if (window.plausible) { try { window.plausible('Menu Design Template Loaded', { props: { template: key } }); } catch (_) {} }
+      fireFirstDishOnce('template');
     });
   }
 
@@ -2390,6 +2525,7 @@
     var paste = document.getElementById('mdPaste');
     if (paste) paste.open = false;
     if (window.plausible) window.plausible('Menu Design Paste', { props: { added: String(parsed.length) } });
+    fireFirstDishOnce('paste');
   });
 
   // -------------------- Sample menu --------------------
@@ -2643,12 +2779,15 @@
         tagline:      meta.tagline,
         story:        meta.story,
         // W14-2 — restaurant footer fields
+        // B2 finish — disclaimer routes through effectiveDisclaimer()
+        // so menus with allergens tagged auto-receive the regime + locale
+        // appropriate text when the operator hasn't typed their own.
         footer: {
           address:       meta.address,
           hours:         meta.hours,
           serviceCharge: meta.serviceCharge,
           sourcing:      meta.sourcing,
-          disclaimer:    meta.disclaimer,
+          disclaimer:    effectiveDisclaimer(),
           askYourServer: meta.askYourServer
         },
         coverPage:    !!meta.coverPage,
@@ -2732,6 +2871,17 @@
         }
         if (window.plausible) {
           try { window.plausible('Menu Design PDF Failed'); } catch (_) {}
+          // Wave A6 — superset Export Failed event with bounded
+          // {format, reason} enums. Both stay strict for cardinality:
+          //   format ∈ pdf | large-print | high-contrast | qr | text |
+          //            ssml | brf | tablet | png
+          //   reason ∈ cdn-blocked | cdn-load | oom | font-missing |
+          //            worker-unsupported | unknown
+          // Same call site, two events: legacy stays for back-compat
+          // dashboards; new one carries the diagnostic prop pair.
+          try {
+            window.plausible('Menu Design Export Failed', { props: { format: 'pdf', reason: 'unknown' } });
+          } catch (_) {}
         }
       }).then(function () {
         downloadBtn.disabled = false;
@@ -2944,12 +3094,27 @@
     try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
     if (!titleVal) titleVal = tt('Menu', 'Menú');
     return {
-      rows:    realRows,
-      theme:   theme,
-      title:   titleVal,
-      tagline: meta.tagline,
-      story:   meta.story,
-      locale:  LOCALE
+      rows:       realRows,
+      theme:      theme,
+      title:      titleVal,
+      tagline:    meta.tagline,
+      story:      meta.story,
+      locale:     LOCALE,
+      // B2 finish — every HTML / text emitter call site now picks up
+      // the regime-aware disclaimer and the canonical-menu meta block.
+      // The HTML emitter renders disclaimer below the allergen key;
+      // the text emitter prints it as a final line.
+      disclaimer: effectiveDisclaimer(),
+      meta:       {
+        businessName:    titleVal,
+        tagline:         meta.tagline || '',
+        cuisine:         (function () {
+          try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
+        })(),
+        currency:        'USD',
+        locale:          LOCALE,
+        allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
+      }
     };
   }
 
@@ -3008,6 +3173,132 @@
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
   });
+
+  // -------------------- Wave B5 — Menu Pack ZIP ------------------
+  // The handoff packet the UX agent named as the missing primitive.
+  // One click → a single .zip with: print PDF, QR-menu HTML (with
+  // schema.org JSON-LD), plain text, Markdown, standalone JSON-LD,
+  // a plain-English README that walks the print shop, web dev, and
+  // staff through what each file is for, and a pre-written mailto
+  // template for the printer.
+  //
+  // No new lazy-loads — re-uses MD_HTML.loadJsZip and the existing
+  // PDF / HTML / text / JSON-LD emitters. Falls back gracefully when
+  // any one emitter is unavailable (the README declares what shipped
+  // and what didn't).
+  var exportPackBtn = document.getElementById('mdExportPack');
+  if (exportPackBtn) exportPackBtn.addEventListener('click', function () {
+    if (typeof MD_PACK === 'undefined' || typeof MD_SCHEMA === 'undefined') {
+      setDownloadMsg(tt(
+        'Menu pack module not loaded. Refresh and try again.',
+        'El módulo de pack no cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before sending the pack.',
+        'Agrega al menos un plato antes de enviar el pack.'
+      ), 'error');
+      return;
+    }
+    // Build the canonical v3 menu from current orchestrator state.
+    // applyAutoDisclaimer fills meta.disclaimer with the regime + locale
+    // default so the shipped artifacts carry it without the operator
+    // typing one. Operator-typed disclaimer wins.
+    var canonicalMenu;
+    try {
+      var v2Shape = {
+        rows: rows.filter(function (r) { return !r.ghost; }),
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      canonicalMenu = MD_SCHEMA.migrate(v2Shape);
+      canonicalMenu = MD_SCHEMA.applyAutoDisclaimer(canonicalMenu);
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build the canonical menu: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el menú canónico: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    if (theme) theme = applyCustomizer(theme);
+    var titleVal = (canonicalMenu.meta && canonicalMenu.meta.businessName) || tt('Menu', 'Menú');
+    var paperKey = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
+    var paperLabel = '';
+    try {
+      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) {
+        paperLabel = MD_PDF.PAPERS[paperKey].label_en || MD_PDF.PAPERS[paperKey].label || paperKey;
+      }
+    } catch (_) {}
+    var dishCount = canonicalMenu.dishes.length;
+    var dishBucket = dishCount < 12 ? '<12' : dishCount < 25 ? '12-24' : dishCount < 40 ? '25-39' : '40+';
+
+    exportPackBtn.disabled = true;
+    var origLabel = exportPackBtn.innerHTML;
+    exportPackBtn.textContent = tt('Building pack…', 'Generando pack…');
+    setDownloadMsg('', 'success');
+
+    MD_PACK.exportPack({
+      canonicalMenu: canonicalMenu,
+      locale:        LOCALE,
+      businessName:  titleVal,
+      paperLabel:    paperLabel,
+      paperKey:      paperKey,
+      themeId:       themeId,
+      cuisine:       (canonicalMenu.meta && canonicalMenu.meta.cuisine) || '',
+      allergenRegime:(canonicalMenu.meta && canonicalMenu.meta.allergenRegime) || 'us-fda9',
+      logoDataUrl:   logoUrl,
+      logoMeta:      logoMeta,
+      customDims:    paperKey === 'custom' ? customDims : null,
+      theme:         theme,
+      htmlOpts:      { themeId: themeId },
+      pdfOpts:       { paperKey: paperKey }
+    }).then(function (blob) {
+      var slug = String(titleVal || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = slug + '-menu-pack.zip';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(a.href);
+      }, 4000);
+      setDownloadMsg(tt(
+        'Pack downloaded. Open the README inside — it tells your printer, your web dev, and your staff exactly what to use.',
+        'Pack descargado. Abre el README adentro — le dice a tu imprenta, a tu encargado de sitio y al staff qué usar.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Pack Exported', { props: {
+            theme:           themeId || 'unknown',
+            dishCount_bucket: dishBucket,
+            locale:          LOCALE
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Pack export failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló el pack: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Export Failed', { props: { format: 'pack', reason: 'unknown' } });
+        } catch (_) {}
+      }
+    }).then(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.innerHTML = origLabel;
+    });
+  });
+
   // W16 — Tablet kiosk HTML
   var exportTabletBtn = document.getElementById('mdExportTablet');
   if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
@@ -3086,7 +3377,20 @@
         title:        title,
         locale:       LOCALE,
         logoDataUrl:  logoUrl,
-        targetUrl:    url
+        targetUrl:    url,
+        // B2 finish — same effective disclaimer the standard PDF export
+        // already uses; the QR-menu HTML emits it below the allergen key.
+        disclaimer:   effectiveDisclaimer(),
+        meta: {
+          businessName:    title,
+          tagline:         meta.tagline || '',
+          cuisine:         (function () {
+            try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
+          })(),
+          currency:        'USD',
+          locale:          LOCALE,
+          allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
+        }
       }).then(function (blob) {
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -3700,6 +4004,7 @@
       vibeQuizResults.querySelectorAll('button[data-theme]').forEach(function (b) {
         b.addEventListener('click', function () {
           themeId = b.dataset.theme;
+          fireThemeChanged(themeId);
           renderThemePicker();
           renderPreview();
           scheduleSaveDraft();
@@ -3732,5 +4037,134 @@
   if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.subscribe === 'function') {
     MuntinContext.subscribe(renderCtxPill);
   }
+
+  // -------------------- Wave A6 — outbound CTA tracking ----------
+  // Body-level click delegation so any current OR future link to
+  // the studio's two productized offers gets tracked without us
+  // having to retrofit IDs onto every CTA. Bounded enum on the
+  // `surface` prop discriminates which area of the page sourced
+  // the click (drawer, footer, honesty, header — closed set).
+  function ctaSurfaceFor(el) {
+    if (!el) return 'unknown';
+    if (el.closest('.md-honesty')) return 'honesty';
+    if (el.closest('header, .site-header, .topbar')) return 'header';
+    if (el.closest('footer, .site-footer')) return 'footer';
+    if (el.closest('.md-toolbar, .md-download-row, .md-export')) return 'toolbar';
+    return 'body';
+  }
+
+  // Wave B11 — Studio Brief auto-bundler attached to the outbound
+  // CTAs. When the operator clicks "Start a polish" or "Start a
+  // drop-in" with non-trivial menu content in the editor, we encode
+  // the canonical-v3 menu into a base64url URL fragment and append
+  // it to the link href. The receiving page (window) will read
+  // location.hash and pre-fill the form — no round-trip needed.
+  //
+  // Privacy posture stays intact: the brief lives in location.hash,
+  // which is client-side-only (the fragment never leaves the
+  // browser as a query parameter; the operator only "sends" it
+  // when they submit the form). Logos are NOT included (size +
+  // privacy). Empty-menu sessions skip the fragment entirely.
+  function dishCountForBrief() {
+    return rows.filter(function (r) { return r && r.kind === 'dish' && (r.name || '').trim() !== ''; }).length;
+  }
+  function dishCountBucketFor(n) {
+    return n < 12 ? '<12' : n < 25 ? '12-24' : n < 40 ? '25-39' : '40+';
+  }
+  function buildStudioBriefFragment() {
+    if (typeof MD_SCHEMA === 'undefined' || typeof MD_BRIEF === 'undefined') return null;
+    if (dishCountForBrief() === 0) return null;
+    try {
+      var v2Shape = {
+        rows: rows,
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      var menu = MD_SCHEMA.migrate(v2Shape);
+      // Non-mutating disclaimer fill: the canonical menu carries the
+      // regime + locale, so we surface the regime-aware default text
+      // before the brief is encoded. Operator-typed disclaimer wins.
+      menu = MD_SCHEMA.applyAutoDisclaimer(menu);
+      return MD_BRIEF.toUrlFragment(menu);
+    } catch (_) {
+      return null;
+    }
+  }
+  function appendBriefFragmentToHref(a) {
+    if (!a) return;
+    var brief = buildStudioBriefFragment();
+    if (!brief) return;
+    var href = a.getAttribute('href') || '';
+    // Strip any prior #brief=… so re-clicks pick up fresh state.
+    href = href.replace(/(?:#|&)brief=[A-Za-z0-9_-]+/, '');
+    var sep = href.indexOf('#') >= 0 ? '&' : '#';
+    a.setAttribute('href', href + sep + 'brief=' + brief);
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('/services/menu-drop-in/') >= 0 || href.indexOf('/services/menu-drop-in') === 0) {
+      appendBriefFragmentToHref(a);
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Drop-In', { props: {
+            surface: ctaSurfaceFor(a),
+            locale: LOCALE,
+            dishCount_bucket: dishCountBucketFor(dishCountForBrief())
+          }});
+        } catch (_) {}
+      }
+      return;
+    }
+    if (href.indexOf('/services/menu-polish/') >= 0 || href.indexOf('/services/menu-polish') === 0) {
+      appendBriefFragmentToHref(a);
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Polish', { props: {
+            surface: ctaSurfaceFor(a),
+            locale: LOCALE,
+            dishCount_bucket: dishCountBucketFor(dishCountForBrief())
+          }});
+        } catch (_) {}
+      }
+      return;
+    }
+  }, { capture: true });
+
+  // -------------------- Wave A6 — disclaimer-read milestone ----------
+  // The "What this is, and what it isn't." card is the trust anchor
+  // for the privacy + scope claims. Operators who scroll to it and
+  // dwell ≥3s are the qualified-for-Polish-tier population. Fires
+  // once per session; no props (cardinality-safe).
+  (function instrumentDisclaimerRead() {
+    if (typeof IntersectionObserver !== 'function') return;
+    var card = document.querySelector('.md-honesty');
+    if (!card) return;
+    var fired = false;
+    var dwellTimer = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (fired || dwellTimer) return;
+          dwellTimer = setTimeout(function () {
+            if (fired) return;
+            fired = true;
+            if (window.plausible) {
+              try { window.plausible('Menu Design Disclaimer Read'); } catch (_) {}
+            }
+            io.disconnect();
+          }, 3000);
+        } else {
+          if (dwellTimer) { clearTimeout(dwellTimer); dwellTimer = null; }
+        }
+      });
+    }, { threshold: [0, 0.5, 1] });
+    io.observe(card);
+  })();
 
 })();
