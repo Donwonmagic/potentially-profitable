@@ -2088,7 +2088,67 @@
       };
       // Stamp the bleed offset on the paper so paginate() can read it.
       paper._bleed = bleed;
-      var pageCount = paginate(blocks, doc, opts.theme, paper, {
+
+      // Wave studio-quality — PDF dry-run measurement pass.
+      // The orchestrator passes shrinkFactor based on the live preview
+      // (CSS-measured against browser fonts). PDF font metrics can
+      // differ slightly (jsPDF embeds Fraunces + Inter; everything
+      // else falls back to Helvetica/Times). For most themes the
+      // drift is negligible, but for menus right at a fit boundary
+      // it could push the PDF from 1 page to 2 pages even though the
+      // preview said it'd fit. Dry-run catches that:
+      //   1. Run paginate's measurement logic against the real doc
+      //      (no drawing — pure measure + count).
+      //   2. If the result exceeds the operator's target page count,
+      //      bump the theme's bodyPt + descPt one notch shrunker
+      //      and retry. Up to 4 attempts (mirrors the live preview
+      //      cascade's 4-step shrink ladder).
+      //   3. Final paginate uses the chosen shrunken theme.
+      var targetPagesForFit = opts.allowMultiPage ? 2 : 1;
+      var workingTheme = opts.theme;
+      var dryAttempts = 0;
+      function _dryMeasurePages(t) {
+        var bw = paper.w - (paper.margin || 48) * 2;
+        var bottom = paper.h - (paper.margin || 48) + (paper._bleed || 0);
+        var contentY = (paper.margin || 48) + (paper._bleed || 0);
+        var pages = 1;
+        for (var bi = 0; bi < blocks.length; bi++) {
+          var blk = blocks[bi];
+          var h = measureBlock(blk, doc, t, bw);
+          if (blk.kind === 'cover') { pages++; contentY = (paper.margin || 48) + (paper._bleed || 0); continue; }
+          if (contentY + h > bottom) {
+            pages++;
+            contentY = (paper.margin || 48) + (paper._bleed || 0);
+          }
+          contentY += h;
+        }
+        return pages;
+      }
+      // Skip dry-run for panel-flow papers (their pagination is fixed
+      // by panel count) and for 2-col-by-theme themes (they have their
+      // own balancing pass).
+      if (paper.flow !== 'panel') {
+        while (dryAttempts < 4) {
+          var measuredPages = _dryMeasurePages(workingTheme);
+          if (measuredPages <= targetPagesForFit) break;
+          // Bump shrink — body+desc by 4%, h2 by sqrt(0.96) so headers
+          // stay legible. Floor at 8.5/7.5/11pt as in the orchestrator.
+          var t2 = workingTheme;
+          var newBody  = Math.max(8.5,  (t2.bodyPt  || 11) * 0.96);
+          var newDesc  = Math.max(7.5,  (t2.descPt  || (t2.bodyPt || 11) - 1) * 0.96);
+          var newPrice = Math.max(8.5,  (t2.pricePt || t2.bodyPt || 11) * 0.96);
+          var newH2    = Math.max(11,   (t2.h2Pt    || 14) * Math.sqrt(0.96));
+          // No-progress check: if floors clipped all values, breaking
+          // out avoids an infinite-loop on a genuinely-too-large menu.
+          if (newBody === t2.bodyPt && newDesc === t2.descPt &&
+              newPrice === t2.pricePt && newH2 === t2.h2Pt) break;
+          workingTheme = Object.assign({}, t2, {
+            bodyPt: newBody, descPt: newDesc, pricePt: newPrice, h2Pt: newH2
+          });
+          dryAttempts++;
+        }
+      }
+      var pageCount = paginate(blocks, doc, workingTheme, paper, {
         forceTwoCol:    !!opts.forceTwoCol,
         // Wave studio-quality — operator's "Allow front + back"
         // toggle propagates into PDF so smart 2-page split planner
