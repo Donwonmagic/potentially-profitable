@@ -53,6 +53,14 @@
 
     var fieldsRoot = document.getElementById('sheet-fields') || document.getElementById('sheet-form');
 
+    // B3 — local autosave drafts. The form snapshot writes to
+    // localStorage on the same debounced input listener that fires
+    // recalc; on boot, if a draft exists, surface a quiet "Picked up
+    // your draft" line above the form.
+    var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+    var draftKey = 'muntin.sheet-draft.' + slug + '.' + locale;
+    if (fieldsRoot) installDraftPrompt(fieldsRoot, draftKey, locale);
+
     // Recalc on input.
     if (recalc && fieldsRoot) {
       var t = null;
@@ -62,11 +70,21 @@
           try { recalc(collect()); } catch (e) { /* swallow per-sheet errors */ }
           updateProgress();
           updateClearLinks();
+          // B3 — write draft after every input, debounced with the
+          // same 60ms cadence as recalc.
+          saveDraft(fieldsRoot, draftKey);
         }, 60);
       };
       fieldsRoot.addEventListener('input', run);
       fieldsRoot.addEventListener('change', run);
       run(); // initial paint
+    } else if (fieldsRoot) {
+      // No recalc registered (paper-first sheet) — still autosave on input.
+      var t2 = null;
+      fieldsRoot.addEventListener('input', function () {
+        if (t2) clearTimeout(t2);
+        t2 = setTimeout(function () { saveDraft(fieldsRoot, draftKey); updateProgress(); updateClearLinks(); }, 60);
+      });
     }
 
     // B11 — progress: render once on boot, refresh on input.
@@ -374,6 +392,14 @@
         else el.value = '';
       });
       form.dispatchEvent(new Event('input', { bubbles: true }));
+      // B3 — Reset is one of the two ways the draft clears (the
+      // other is "Start fresh" on the prompt). Workshop save does
+      // NOT clear the draft — the operator may want to keep typing.
+      var slug = document.body && document.body.dataset && document.body.dataset.sheetSlug;
+      if (slug && window.__sheetDraft) {
+        var loc = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+        window.__sheetDraft.clear('muntin.sheet-draft.' + slug + '.' + loc);
+      }
       wrap.remove();
       resetBtn.style.display = '';
       pushUndo(function () { restoreFormState(form, snapshot); }, 'Cleared the sheet.');
@@ -487,6 +513,153 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+
+  // ─────────────────────────────────────────────────────────────────
+  // B3 · Local autosave drafts.
+  //
+  // Drafts stay on the device. They clear on Reset, on explicit
+  // "Start fresh" from the prompt, and on a successful Workshop save.
+  //
+  // Voice canon:
+  //   IN:  "Picked up your draft from Saturday 8:42pm. [Start fresh]"
+  //   OUT: "Auto-saved ✓ Your work is safe!"
+  //
+  // The "Saturday" link points at /security/ so the curious operator
+  // can verify in one tap that drafts never leave the device.
+  // ─────────────────────────────────────────────────────────────────
+
+  var DRAFT_COPY = {
+    en: {
+      pickedUp: 'Picked up your draft from ',
+      startFresh: 'Start fresh',
+      verifyLink: 'Stays on your device.',
+      verifyHref: '/security/',
+      quotaWarning: 'Your browser is out of room for drafts. The current sheet still saves on type.',
+    },
+    es: {
+      pickedUp: 'Recogí tu borrador de ',
+      startFresh: 'Empezar de cero',
+      verifyLink: 'Se queda en tu dispositivo.',
+      verifyHref: '/es/security/',
+      quotaWarning: 'Tu navegador se quedó sin espacio para borradores. La hoja actual sigue guardándose al escribir.',
+    },
+  };
+
+  function formatDraftStamp(ts, loc) {
+    if (!ts) return '';
+    var d = new Date(ts);
+    if (isNaN(d.getTime())) return '';
+    var weekday = d.toLocaleString(loc === 'es' ? 'es-US' : 'en-US', { weekday: 'long' });
+    var hours = d.getHours();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    var hh = ((hours + 11) % 12) + 1;
+    var mm = String(d.getMinutes()).padStart(2, '0');
+    return weekday + ' ' + hh + ':' + mm + ampm;
+  }
+
+  function installDraftPrompt(form, key, locale) {
+    var draft = readDraft(key);
+    if (!draft || !draft.state) return;
+    var c = DRAFT_COPY[locale];
+    var stamp = formatDraftStamp(draft.savedAt, locale);
+    var prompt = document.createElement('div');
+    prompt.className = 'sheet-draft-prompt';
+    prompt.style.cssText = 'margin:-8px 0 18px;padding:10px 14px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--teal,#1F4E5B);border-radius:var(--r-sm,6px);background:var(--cream-2,#F3EEE3);font-size:13.5px;line-height:1.5;color:var(--ink-soft,#2A2D33);display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;';
+    var msg = document.createElement('span');
+    msg.innerHTML = c.pickedUp + '<strong>' + escapeHtml(stamp || 'earlier') + '</strong>.';
+    var startFresh = document.createElement('button');
+    startFresh.type = 'button';
+    startFresh.textContent = c.startFresh;
+    startFresh.style.cssText = 'background:transparent;border:0;padding:0;font:inherit;color:var(--rust,#B8541A);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:500;';
+    var verify = document.createElement('a');
+    verify.href = c.verifyHref;
+    verify.textContent = c.verifyLink;
+    verify.style.cssText = 'color:var(--stone,#6B6B6B);font-size:12px;margin-left:auto;text-decoration:underline;text-underline-offset:2px;';
+    prompt.appendChild(msg);
+    prompt.appendChild(startFresh);
+    prompt.appendChild(verify);
+    var hero = document.querySelector('.mm-hero');
+    var insertAfter = document.querySelector('.mm-card.mm-live');
+    if (insertAfter && insertAfter.parentNode) {
+      insertAfter.parentNode.insertBefore(prompt, insertAfter);
+    } else if (hero && hero.parentNode) {
+      hero.parentNode.insertBefore(prompt, hero.nextSibling);
+    } else {
+      form.parentNode && form.parentNode.insertBefore(prompt, form);
+    }
+    // Restore values without firing a save loop.
+    silentRestore(form, draft.state);
+    startFresh.addEventListener('click', function () {
+      clearDraft(key);
+      // Clear all fields without snapshotting (we just discarded the draft).
+      form.querySelectorAll('input, select, textarea').forEach(function (el) {
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+        else if (el.tagName === 'SELECT' && el.options.length) el.selectedIndex = 0;
+        else el.value = '';
+      });
+      form.dispatchEvent(new Event('input', { bubbles: true }));
+      prompt.remove();
+    });
+  }
+
+  function silentRestore(form, state) {
+    var els = form.querySelectorAll('input, select, textarea');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (!el.name) continue;
+      var key = el.name + '__' + el.type;
+      if (!(key in state)) continue;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!state[key];
+      else el.value = state[key];
+    }
+    form.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function readDraft(key) {
+    try {
+      var raw = window.localStorage.getItem(key);
+      if (!raw) return null;
+      var obj = JSON.parse(raw);
+      if (!obj || obj.v !== 1) return null;
+      return obj;
+    } catch (_) { return null; }
+  }
+
+  function saveDraft(form, key) {
+    if (!form || !key) return;
+    if (!hasAnyValue(form)) {
+      // Form is empty; clear any stale draft so the prompt doesn't
+      // surface on the next visit.
+      clearDraft(key);
+      return;
+    }
+    var state = snapshotFormState(form);
+    var payload = { v: 1, savedAt: new Date().toISOString(), state: state };
+    try {
+      window.localStorage.setItem(key, JSON.stringify(payload));
+    } catch (e) {
+      // Quota exceeded or storage disabled. Surface a non-blocking
+      // notice exactly once per page load.
+      if (!window.__sheetDraftQuotaWarned) {
+        window.__sheetDraftQuotaWarned = true;
+        var loc = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+        var msg = DRAFT_COPY[loc].quotaWarning;
+        var notice = document.createElement('div');
+        notice.style.cssText = 'margin:8px 0;padding:8px 12px;border:1px solid var(--line-dark,#C9C2B6);background:var(--cream-2,#F3EEE3);font-size:12.5px;color:var(--ink-soft,#2A2D33);';
+        notice.textContent = msg;
+        var card = document.querySelector('.mm-card.mm-live');
+        if (card && card.parentNode) card.parentNode.insertBefore(notice, card);
+      }
+    }
+  }
+
+  function clearDraft(key) {
+    try { window.localStorage.removeItem(key); } catch (_) { /* ignore */ }
+  }
+
+  // Expose draft helpers so the Reset confirm and Workshop save flows
+  // can invalidate the local copy after their own clears.
+  window.__sheetDraft = { clear: clearDraft };
 
   window.SheetPage = { register: register };
 })();
