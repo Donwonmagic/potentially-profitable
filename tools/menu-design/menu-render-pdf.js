@@ -42,6 +42,43 @@
     });
     return __svg2pdfPromise;
   }
+  // Wave studio-quality — draw the theme's cuisine decoration on a
+  // PDF page via svg2pdf. Same data the picker thumbnail / live
+  // preview / QR-menu HTML use, now in the printed deliverable.
+  // Tolerant: silent no-op when MD_DECOR or svg2pdf aren't loaded
+  // OR when the theme has no cuisine match. Pre-load of svg2pdf is
+  // handled by exportPdf() when the theme would benefit.
+  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY) {
+    try {
+      var DECOR = root && root.MD_DECOR;
+      if (!DECOR || typeof DECOR.svgWrapped !== 'function') return;
+      if (!root.svg2pdf || !doc.svg) return;
+      // Larger opacity than the live preview — the printed page
+      // benefits from a faintly heavier mark since paper texture
+      // already softens the impression.
+      var svgText = DECOR.svgWrapped(theme, { opacity: 0.13, width: 220, height: 120 });
+      if (!svgText) return;
+      var parser = new DOMParser();
+      var parsed = parser.parseFromString(svgText, 'image/svg+xml');
+      var svgEl = parsed && parsed.documentElement;
+      if (!svgEl) return;
+      // Position in the upper-right corner of the page, sized to
+      // ~22% of paper width. Same visual weight as the HTML overlay.
+      var pageW = doc.internal.pageSize.getWidth();
+      var w = Math.min(180, pageW * 0.22);
+      var h = w * (120 / 220);
+      // Clear margin from the right + top edge.
+      var margin = paper && paper.margin ? paper.margin : 48;
+      var x = pageW - margin - w;
+      var y = (paper && paper._bleed ? paper._bleed : 0) + Math.max(margin * 0.4, 12);
+      // Set a low GState opacity if the doc supports it (older jsPDF
+      // skips this gracefully).
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.85 })); } catch (_) {}
+      doc.svg(svgEl, { x: x, y: y, width: w, height: h });
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 })); } catch (_) {}
+    } catch (_) { /* decoration is best-effort; never block the export */ }
+  }
+
   function svgDataUrlToElement(dataUrl) {
     // Decode the data URL to an SVG string, parse with DOMParser.
     var prefix = 'data:image/svg+xml';
@@ -1328,6 +1365,10 @@
     var contentWidth = paper.w - margin * 2;
     var bottom = paper.h - margin + bleedOff;
     var pageCount = 1;
+    // Wave studio-quality — cuisine decoration on every page. Renders
+    // FIRST so dish text + headers draw on top. No-op if MD_DECOR or
+    // svg2pdf isn't loaded or the theme has no cuisine match.
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
@@ -1354,6 +1395,7 @@
           doc.addPage();
           pageCount++;
           contentY = margin + bleedOff;
+          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
         }
       } else if (contentY + h > bottom) {
         doc.addPage();
@@ -1779,8 +1821,15 @@
     // W17 — also load pdf-lib when print-vendor mode is on so the
     // post-process step has the library ready.
     var hasSvgLogo = opts.logoDataUrl && typeof opts.logoDataUrl === 'string' && opts.logoDataUrl.indexOf('data:image/svg') === 0;
+    // Wave studio-quality — also pre-load svg2pdf when the theme
+    // would benefit from a cuisine decoration on the page (so the
+    // printed PDF carries the same Muntin theme identity as the
+    // thumbnail / live preview / QR-menu HTML output).
+    var hasCuisineDecor = !!(root && root.MD_DECOR &&
+                             typeof root.MD_DECOR.decorationFor === 'function' &&
+                             opts.theme && root.MD_DECOR.decorationFor(opts.theme));
     var loaders = [loadJsPdf(), loadBrandFonts()];
-    if (hasSvgLogo) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
+    if (hasSvgLogo || hasCuisineDecor) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
     if (opts.printVendor) loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
       var jsPDF = results[0];
