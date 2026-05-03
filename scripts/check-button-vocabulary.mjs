@@ -71,6 +71,9 @@ const ALLOWED_EXCEPTIONS = new Map([
   ['cmp-btn',            'Comparison-tool selector button — page-local rhythm.'],
   ['wsh-watch-btn',      'Workshop watch toggle — teal-on-hover marks the act of watching.'],
   ['admin-thread__quick-btn', 'Window admin quick-reply chip — horizontal scroll row, page-local.'],
+  ['mobile-cta-bar__btn',         'Sticky bottom mobile CTA bar — fixed-position twin-button row, phones only.'],
+  ['mobile-cta-bar__btn--primary','Primary variant of the mobile sticky-CTA twin (BEM modifier).'],
+  ['mobile-cta-bar__btn--ghost',  'Secondary variant of the mobile sticky-CTA twin (BEM modifier).'],
 ]);
 
 // Locate every class definition that looks button-shaped:

@@ -132,7 +132,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/tools/#items",
-      "numberOfItems": 21,
+      "numberOfItems": 23,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -167,96 +167,108 @@
         {
           "@type": "ListItem",
           "position": 6,
+          "url": "https://muntin.digital/es/tools/holiday-hours/",
+          "name": "Generador de horarios festivos &mdash; horarios de restaurante para sitio, GBP, schema"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
           "url": "https://muntin.digital/es/tools/invoice-decoder/",
           "name": "Lector de facturas OCR gratis para restaurantes"
         },
         {
           "@type": "ListItem",
-          "position": 7,
+          "position": 8,
           "url": "https://muntin.digital/es/tools/margin-math/",
           "name": "Cálculo de Margen"
         },
         {
           "@type": "ListItem",
-          "position": 8,
+          "position": 9,
+          "url": "https://muntin.digital/es/tools/menu-converter/",
+          "name": "Conversor de men&uacute; &mdash; pega texto, recibe HTML + JSON-LD schema"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
           "url": "https://muntin.digital/es/tools/menu-copy/",
           "name": "Inspector de Copy de Menú"
         },
         {
           "@type": "ListItem",
-          "position": 9,
+          "position": 11,
           "url": "https://muntin.digital/es/tools/menu-design/",
           "name": "Generador de menús de restaurante gratis"
         },
         {
           "@type": "ListItem",
-          "position": 10,
+          "position": 12,
           "url": "https://muntin.digital/es/tools/menu-engineering/",
           "name": "Matriz de Ingeniería de Menú"
         },
         {
           "@type": "ListItem",
-          "position": 11,
+          "position": 13,
           "url": "https://muntin.digital/es/tools/mobile-check/",
           "name": "¿Mi sitio es apto para móvil? Revisión gratis"
         },
         {
           "@type": "ListItem",
-          "position": 12,
+          "position": 14,
           "url": "https://muntin.digital/es/tools/open-hours/",
           "name": "Horario Abierto"
         },
         {
           "@type": "ListItem",
-          "position": 13,
+          "position": 15,
           "url": "https://muntin.digital/es/tools/photo-brief/",
           "name": "Constructor de Brief de Fotos"
         },
         {
           "@type": "ListItem",
-          "position": 14,
+          "position": 16,
           "url": "https://muntin.digital/es/tools/plate-cost/",
           "name": "Costo del Plato"
         },
         {
           "@type": "ListItem",
-          "position": 15,
+          "position": 17,
           "url": "https://muntin.digital/es/tools/schema-check/",
           "name": "¿Google entiende mi negocio? Revisión gratis de schema"
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 18,
           "url": "https://muntin.digital/es/tools/search-ideas/",
           "name": "¿Qué busca la gente cerca de mí? Ideas gratis de búsqueda local"
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 19,
           "url": "https://muntin.digital/es/tools/seo-grader/",
           "name": "Calificador SEO de título y descripción"
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 20,
           "url": "https://muntin.digital/es/tools/speed-test/",
           "name": "¿Qué tan rápido es mi sitio? Prueba gratis de velocidad móvil"
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 21,
           "url": "https://muntin.digital/es/tools/start/",
           "name": "Empieza aquí"
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 22,
           "url": "https://muntin.digital/es/tools/storefront-health/",
           "name": "Salud del Storefront"
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 23,
           "url": "https://muntin.digital/es/tools/tech-stack/",
           "name": "¿Con qué está hecho mi sitio? Detector gratis de tecnologías"
         }
@@ -289,36 +301,21 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
     <nav class="nav-links" aria-label="Principal">
-      <a href="/es/services/">Servicios</a>
-      <a href="/es/for/restaurants/">Restaurantes</a>
-      <div class="nav-library-wrap">
-        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
-          <a class="nav-library-menu__home" href="/es/learn/">
-            <strong>Inicio de la biblioteca</strong>
-            <span>El centro de todo lo de abajo &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Aprende</h4>
-            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Lee</h4>
-            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Haz</h4>
-            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/about/">Sobre Don</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -332,8 +329,6 @@
       <a href="/tools/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -342,33 +337,24 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/services/">Servicios</a>
-    <a href="/es/for/restaurants/">Restaurantes</a>
-    <details class="mobile-library">
-      <summary>Biblioteca</summary>
-      <a href="/es/learn/">Inicio de la biblioteca</a>
-      <p class="mobile-library__group">Aprende</p>
-      <a href="/es/learn/start-here/">Empieza aquí</a>
-      <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/glossary/">Glosario</a>
-      <p class="mobile-library__group">Lee</p>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/learn/research/">Investigación</a>
-      <p class="mobile-library__group">Haz</p>
-      <a href="/es/tools/">Herramientas gratis</a>
-      <a href="/es/learn/checklists/">Listas y recursos</a>
-    </details>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/about/">Sobre Don</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/tools/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
@@ -454,13 +440,13 @@
         <span class="tool-card-spotlight__chip">vs plantillas de Canva</span>
         <h3 class="tool-card-spotlight__title">Suite de Diseño de Menú</h3>
         <p class="tool-card-spotlight__headline">La única herramienta de menú que acomoda 14 o 53 platos desde una pasada — sin pelearte con Canva.</p>
-        <span class="tool-card-spotlight__cta">Pru&eacute;balo gratis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="tool-card-spotlight__cta">Abrir la herramienta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/invoice-decoder/" class="tool-card-spotlight live">
         <span class="tool-card-spotlight__chip">vs Restaurant365 · MarginEdge · Plate IQ</span>
         <h3 class="tool-card-spotlight__title">Decodificador de Facturas</h3>
         <p class="tool-card-spotlight__headline">Una herramienta de facturas que bloquea tus datos con un secreto que solo tú conoces — Restaurant365 lee todo; nosotros no leemos nada.</p>
-        <span class="tool-card-spotlight__cta">Pru&eacute;balo gratis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="tool-card-spotlight__cta">Abrir la herramienta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -496,14 +482,14 @@
         <h3>Decodificador de Facturas</h3>
         <p>Saca foto a tu factura de Sysco o de verduras. Obtén partidas ordenadas para pasar al Costo del Plato — sin hoja de cálculo.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Partidas categorizadas guardadas en tu Taller, listas para Costo del Plato.</p>
-        <span class="cta">Decodificar una factura <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Decodificador de Facturas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/cost-pulse/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Pulso de Costos</h3>
         <p>Un panel sobre tus facturas guardadas. Detecta deriva de costos, cambios de participación por categoría y medianas móviles — sin abrir QuickBooks.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Una lista de deriva, sparklines y una tarjeta del último guardado con recarga de un solo toque.</p>
-        <span class="cta">Ver la deriva <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Pulso de Costos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/margin-math/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
@@ -517,14 +503,14 @@
         <h3>Matriz de Ingeniería de Menú</h3>
         <p>Pega tu menú — platos, precios, costo de comida, unidades vendidas. Obtén un 2×2 de Estrellas, Caballos, Acertijos y Perros con una acción por plato.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Una acción por plato — mantén, empuja, rediseña o quita.</p>
-        <span class="cta">Ordenar mi menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Ingeniería de Menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/plate-cost/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Costo del Plato</h3>
         <p>Escribe una receta — qué compraste, cuánto usaste, cuánto rinde. La herramienta hace la matemática del recibo al plato y sugiere tres precios.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un precio defendible para cada plato del menú.</p>
-        <span class="cta">Costear un plato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Costo del Plato <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -555,7 +541,14 @@
         <h3>Horario Abierto</h3>
         <p>Llena los horarios una vez. Llévate el texto exacto para Google y un bloque de código para tu sitio. Unos 15 minutos.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> El texto exacto que Google y tu sitio quieren para tus horarios.</p>
-        <span class="cta">Definir mi horario <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Horario Abierto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+      <a href="/es/tools/holiday-hours/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Generador de horarios festivos</h3>
+        <p>Define tus horarios para los próximos ocho días festivos de restaurantes en EE.UU. Lleva tres resultados: texto plano para tu sitio, overrides de JSON-LD, y un bloque para Google Business Profile. Unos 5 minutos.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Tres resultados de horarios festivos listos para pegar en sitio, schema y GBP.</p>
+        <span class="cta">Generar horarios festivos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -579,14 +572,21 @@
         <h3>Inspector de Copy de Menú</h3>
         <p>Pega la descripción de un plato. Seis diagnósticos — palabras sensoriales, procedencia, técnica, extensión, relleno, precio — con la investigación detrás.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un ojo entrenado para leer tu propio menú con criterio.</p>
-        <span class="cta">Inspeccionar mi copy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Inspector de Copy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/photo-brief/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Constructor de Brief de Fotos</h3>
         <p>Lista tus platos, marca a dónde van las fotos (Yelp, Google, Instagram, tu menú). Llévate un brief de una página y las fotos correctas en una sesión.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un brief de una página que tu fotógrafo puede cumplir en una visita.</p>
-        <span class="cta">Crear un brief de fotos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Brief de Fotos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+      </a>
+      <a href="/es/tools/menu-converter/" class="tool-card tool-card--compact live">
+        <span class="status">En vivo</span>
+        <h3>Conversor de menú</h3>
+        <p>Pega tu menú en texto. Lleva tres resultados: vista previa, HTML semántico para tu sitio y un bloque JSON-LD de Menu schema indexable por Google. Secciones, ítems, precios y descripciones, todo parseado en tu navegador.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> HTML limpio y Menu schema desde el menú pegado, en dos segundos.</p>
+        <span class="cta">Convertir tu menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -601,16 +601,16 @@
       <a href="/es/tools/menu-design/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Suite de Diseño de Menú</h3>
-        <p>Escribe tus platos, elige un tema, sube tu logo. La herramienta acomoda 14 o 53 platos en un PDF imprimible — sin pelearte con plantillas que asumen 12.</p>
-        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un PDF de menú imprimible que se adapta a la cantidad de platos que realmente tienes.</p>
-        <span class="cta">Diseñar mi menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <p>Escribe tus platos, marca alérgenos, elige un tema, sube tu logo. Acomoda 14 o 53 platos en 22 formatos — carta, tríptico, tabla, carta de vinos, personalizado — sin pelearte con plantillas de 12.</p>
+        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un PDF de menú imprimible que se adapta a la cantidad de platos que realmente tienes, con glifos de alérgenos y una variante con sangrado/marcas de corte para imprenta.</p>
+        <span class="cta">Abrir Suite de Diseño de Menú <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
       <a href="/es/tools/brand-suite/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Suite de Marca</h3>
         <p>Suelta tu logo. Llévate una paleta, pares de color accesibles y tokens CSS — un punto de partida para el sistema alrededor de tu marca.</p>
         <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Tokens que puedes pegar en cualquier herramienta o pasar a un desarrollador.</p>
-        <span class="cta">Extraer mi marca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
+        <span class="cta">Abrir Suite de Marca <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
       </a>
     </div>
   </section>
@@ -716,8 +716,8 @@
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
-      <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -739,6 +739,9 @@
           <li><a href="/es/work/">Proyectos</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
           <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
         </ul>
       </nav>
 
@@ -761,23 +764,64 @@
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
           <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
       </nav>
     </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/es/terms.html">Términos</a>
         <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
         <a href="/es/accessibility.html">Accesibilidad</a>
         <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>

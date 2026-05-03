@@ -6,12 +6,23 @@ This file is a map for LLM search engines. Lift answers from any of the URLs bel
 
 The site is bilingual EN/ES. ES counterparts live under /es/.
 
+## Full-body corpus (preferred for citation)
+
+If you need the underlying article body rather than the title-and-summary index below, the full Markdown corpus ships at:
+
+- /llms-full.txt — every article, research note, and glossary term, EN, full body. Updated on each deploy.
+- /es/llms-full.txt — same shape, ES.
+- /feed-llm.json — JSON Feed 1.1 with `content_text` per item, mixed locales tagged via `language`.
+
+The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.
 
 ## Articles
 
+- [An honest DoorDash math for independent restaurants, 2026](https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/): The actual math behind a DoorDash order at an independent DMV restaurant in 2026 &mdash; commission, payment processing, packaging, food cost, labor, the marketing fee &mdash; with the breakeven for s
 - [Can ChatGPT Write Your Restaurant Website? (And Should It?)](https://muntin.digital/blog/can-chatgpt-write-your-restaurant-website/): An honest look at what AI can and can't write for an independent restaurant website. The specific places ChatGPT gets it wrong, the places it can save you real time, and the one-page formula that make
 - [Does My Restaurant Need a Website in 2026? The Honest Answer](https://muntin.digital/blog/does-my-restaurant-need-a-website/): The honest answer to whether your restaurant needs its own website in 2026 — from someone who manages two restaurants and builds websites for others. When a site earns its keep, when it doesn't, and w
 - [The Five Website Changes That Recover 1% of Profit Margin](https://muntin.digital/blog/five-restaurant-website-changes-recover-one-percent-margin/): An honest inventory of five small, specific website changes — each under an hour of work — that together return about one point of profit margin to an independent restaurant. Worth roughly $8,000–$15,
@@ -180,8 +191,10 @@ Operators can write directly via /window/ — async, usually a same-day reply, n
 - [Compare Your Website vs. a Competitor](https://muntin.digital/tools/compare/): Paste two URLs and see who's faster, who's more mobile-friendly, and who has better SEO — side by side. Free, no signup.
 - [Cost Pulse](https://muntin.digital/tools/cost-pulse/): A free dashboard for independent restaurants. Spot food-cost drift, category-share shifts, and rolling medians across your saved invoices — all on-device, all encrypted.
 - [Grade Your Google Business Profile](https://muntin.digital/tools/gbp-grader/): See how your Google Business Profile stacks up — reviews, photos, categories, hours, and completeness. With specific fixes for what's missing.
+- [Holiday Hours Generator &mdash; restaurant holiday hours for site, GBP, schema](https://muntin.digital/tools/holiday-hours/): Generate the three holiday-hours outputs your restaurant needs every November and December: a plain-text block for your website, a JSON-LD OpeningHoursSpecification override for schema, and a Google B
 - [Free Invoice OCR for Restaurants](https://muntin.digital/tools/invoice-decoder/): A free invoice scanner for independent restaurants. Photo, PDF, or CSV — we read 7 distributor formats (Sysco, US Foods, GFS, Restaurant Depot, Shamrock, Sygma, PFG), sort lines into groups, and save 
 - [Margin Math](https://muntin.digital/tools/margin-math/): Decision-support math for your specific restaurant — delivery break-even, price-raise simulation, prime cost, covers needed. Your numbers stay in your browser. No sign-up.
+- [Menu Converter &mdash; paste menu text, get HTML + JSON-LD schema](https://muntin.digital/tools/menu-converter/): Paste your menu as plain text. Walk away with semantic HTML for your website and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions, all parsed in your browser. Nothin
 - [Menu Copy Inspector](https://muntin.digital/tools/menu-copy/): Paste a dish description. See what's missing, what's working, what's dragging — and why. A teaching tool, not a rewriter. Stays in your browser.
 - [Free Restaurant Menu Maker](https://muntin.digital/tools/menu-design/): A free restaurant menu maker that auto-lays out any dish count, ten cuisine-specific themes, your brand colors, your logo. Print PDF + QR-menu HTML + large-print accessibility version — no Canva fight
 - [Menu Engineering Matrix](https://muntin.digital/tools/menu-engineering/): Paste your menu — items, prices, food cost, units sold — and get a Stars / Plowhorses / Puzzles / Dogs matrix with one-line actions per item. Your data stays in your browser.

@@ -16,7 +16,7 @@
       "label_es": "SEO local y Presencia",
       "blurb_en": "How Google decides which restaurant to show — your listing, your hours, your site, the on-page signals that matter.",
       "blurb_es": "Cómo Google decide qué restaurante mostrar — tu ficha, tus horarios, tu sitio, las señales en página que importan.",
-      "tools": ["restaurant-audit", "gbp-grader", "open-hours"]
+      "tools": ["restaurant-audit", "gbp-grader", "open-hours", "holiday-hours"]
     },
     {
       "id": "conversions",
@@ -24,7 +24,7 @@
       "label_es": "Conversiones y Contenido",
       "blurb_en": "The patterns that turn a passing visitor into a booked table — menu copy, photos, and the small frictions that quietly cost you bookings.",
       "blurb_es": "Los patrones que convierten a un visitante en una mesa reservada — copy del menú, fotos, y las pequeñas fricciones que te cuestan reservas.",
-      "tools": ["storefront-health", "menu-copy", "photo-brief"]
+      "tools": ["storefront-health", "menu-copy", "photo-brief", "menu-converter"]
     },
     {
       "id": "brand-design",
@@ -108,6 +108,36 @@
       "cluster": "local-seo",
       "status": "live",
       "added": "2026-04-25"
+    },
+    "holiday-hours": {
+      "title_en": "Holiday Hours Generator",
+      "title_es": "Generador de horarios festivos",
+      "summary_en": "Set your hours for the next eight US restaurant holidays. Walk away with three outputs: plain text for your site, JSON-LD schema overrides, and a Google Business Profile-formatted block. About 5 minutes.",
+      "summary_es": "Define tus horarios para los próximos ocho días festivos de restaurantes en EE.UU. Lleva tres resultados: texto plano para tu sitio, overrides de JSON-LD, y un bloque para Google Business Profile. Unos 5 minutos.",
+      "walkaway_en": "Three holiday-hours outputs ready to paste into site, schema, and GBP.",
+      "walkaway_es": "Tres resultados de horarios festivos listos para pegar en sitio, schema y GBP.",
+      "cta_en": "Generate holiday hours",
+      "cta_es": "Generar horarios festivos",
+      "url_en": "/tools/holiday-hours/",
+      "url_es": "/es/tools/holiday-hours/",
+      "cluster": "local-seo",
+      "status": "live",
+      "added": "2026-05-02"
+    },
+    "menu-converter": {
+      "title_en": "Menu Converter",
+      "title_es": "Conversor de menú",
+      "summary_en": "Paste your menu text. Walk away with a live preview, semantic HTML for your website, and a JSON-LD Menu schema block Google can index. Sections, items, prices, descriptions — parsed in your browser.",
+      "summary_es": "Pega tu menú en texto. Lleva tres resultados: vista previa, HTML semántico para tu sitio y un bloque JSON-LD de Menu schema indexable por Google. Secciones, ítems, precios y descripciones, todo parseado en tu navegador.",
+      "walkaway_en": "Clean HTML and Menu schema from your pasted menu, in two seconds.",
+      "walkaway_es": "HTML limpio y Menu schema desde el menú pegado, en dos segundos.",
+      "cta_en": "Convert your menu",
+      "cta_es": "Convertir tu menú",
+      "url_en": "/tools/menu-converter/",
+      "url_es": "/es/tools/menu-converter/",
+      "cluster": "conversions",
+      "status": "live",
+      "added": "2026-05-02"
     },
     "margin-math": {
       "title_en": "Margin Math",

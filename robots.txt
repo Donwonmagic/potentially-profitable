@@ -25,4 +25,93 @@ Disallow: /sign-in/
 Disallow: /es/sign-in/
 Disallow: /es/blog/drafts/
 
+# Phase 7 (launch plan, Part X — AI search posture).
+#
+# Explicit allows for the AI-search crawlers the plan calls out.
+# Without per-agent stanzas, some of these crawlers (notably
+# GPTBot and Google-Extended) read the wildcard above as opt-in
+# but still benefit from a named allow for citation traceability;
+# others (ClaudeBot, PerplexityBot) use named allows to enable
+# real-time fetch when a user asks a question that maps to one of
+# our pages. The full-body citation corpus lives at /llms-full.txt
+# (and /es/llms-full.txt) — see /llms.txt for the map.
+
+User-agent: GPTBot
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /blog/drafts/
+Disallow: /workbench/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /sign-in/
+
+# Aggressive scrapers we explicitly opt out of. These do not power
+# user-facing AI search; they aggregate content for training without
+# offering retrieval-time citation. Any of these blocks can be
+# removed if the studio later decides otherwise.
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
 Sitemap: https://muntin.digital/sitemap.xml

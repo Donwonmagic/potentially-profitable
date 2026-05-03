@@ -83,36 +83,31 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Work / Studio / Sign in.
+         Library now points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too. -->
     <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
-      <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/">
-            <strong>Library home</strong>
-            <span>The hub of everything below &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Learn</h4>
-            <a href="/learn/start-here/"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/"><strong>Glossary</strong><span><!-- count:glossary.terms -->139<!-- /count --> terms in plain English</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Read</h4>
-            <a href="/blog/"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Do</h4>
-            <a href="/tools/"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/library/">Library</a>
+      <a href="/tools/">Tools</a>
       <a href="/work/">Work</a>
-      <a href="/about/">About</a>
+      <a href="/studio/">Studio</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -126,8 +121,6 @@
       <a href="/es/receipts/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -135,32 +128,21 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Email Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
-    <details class="mobile-library">
-      <summary>Library</summary>
-      <a href="/learn/">Library home</a>
-      <p class="mobile-library__group">Learn</p>
-      <a href="/learn/start-here/">Start here</a>
-      <a href="/learn/topics/">Topics</a>
-      <a href="/glossary/">Glossary</a>
-      <p class="mobile-library__group">Read</p>
-      <a href="/blog/">Articles</a>
-      <a href="/learn/research/">Research</a>
-      <p class="mobile-library__group">Do</p>
-      <a href="/tools/">Free tools</a>
-      <a href="/learn/checklists/">Checklists &amp; guides</a>
-    </details>
+    <a href="/library/">Library</a>
+    <a href="/tools/">Tools</a>
     <a href="/work/">Work</a>
-    <a href="/about/">About</a>
+    <a href="/studio/">Studio</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
-    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/receipts/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -180,6 +162,11 @@
       </button>
     </div>
   </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
 
   <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
        Calls /api/auth/me and reveals either the "Sign in" or
@@ -245,8 +232,8 @@
       <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">The library at a glance</h2>
       <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;font-size:15px;line-height:1.5">
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:glossary.terms -->139<!-- /count --></strong>glossary terms</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:tools.live -->13<!-- /count --></strong>free tools live</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles -->17<!-- /count --></strong>articles published</li>
+        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:tools.live -->15<!-- /count --></strong>free tools live</li>
+        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles -->18<!-- /count --></strong>articles published</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">3</strong>case studies</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">2</strong>locales (EN, ES)</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">7</strong>library topics</li>
@@ -303,6 +290,39 @@
         <li><a href="/learn/research/">Research notes with cited sources</a></li>
         <li><a href="/about/">About Don, with credentials and worked locations</a></li>
         <li><a href="/system/">The system: how the site is built</a></li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom:56px;padding-top:18px;border-top:1px solid var(--line)">
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">Public commitments, in writing</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">The launch-plan refresh added a set of named commitments that are now part of the studio&rsquo;s spec. Each one is a number or an absence operators can hold the studio to:</p>
+      <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>Two builds at a time, no exceptions.</strong> If the calendar can&rsquo;t carry your project, you hear about it on day one with a date you&rsquo;d be next, or a referral. <a href="/never/" style="color:var(--teal)">/never/ #5</a>.</li>
+        <li><strong>Reply within 4 hours, Mon&ndash;Fri.</strong> Posted on every page, measured in Plausible.</li>
+        <li><strong>Three site tiers, posted in writing.</strong> $2,500 Essentials &middot; $5&ndash;9k Full Service &middot; $8&ndash;15k+ Group. <a href="/services/" style="color:var(--teal)">See pricing</a>.</li>
+        <li><strong>Three productized offers, bookable without a sales call.</strong> $499 audit &middot; $1,500 menu drop-in &middot; $99/mo Care Plan Light. <a href="/services/audit/" style="color:var(--teal)">Audit</a> &middot; <a href="/services/menu-drop-in/" style="color:var(--teal)">drop-in</a> &middot; <a href="/services/care-plan-light/" style="color:var(--teal)">Care Plan</a>.</li>
+        <li><strong>Library content licensed CC&nbsp;BY-NC&nbsp;4.0.</strong> Quote, summarize, translate, AI-cite freely. Tools / brand / codebase explicitly not licensed for redistribution. <a href="/terms.html" style="color:var(--teal)">/terms.html &sect;4</a>.</li>
+        <li><strong>Five things this studio will never do.</strong> No lock-in, no data resale, no hidden pricing, no remarketing pixel on the library, no work outside the quoted window. <a href="/never/" style="color:var(--teal)">/never/</a>.</li>
+        <li><strong>Three functional cookies, no banner.</strong> <code>md_locale</code>, <code>lang_hint_dismissed</code>, <code>md_session</code>. Plausible is cookieless. <a href="/cookies.html" style="color:var(--teal)">/cookies.html</a>.</li>
+        <li><strong>Maryland courts, no mandatory arbitration.</strong> Disputes go to a real courtroom in Maryland. <a href="/terms.html" style="color:var(--teal)">/terms.html &sect;10</a>.</li>
+        <li><strong>WCAG 2.2 AA target, 0 critical violations.</strong> Audited with axe-core + pa11y-ci. <a href="/accessibility.html" style="color:var(--teal)">/accessibility.html</a>.</li>
+        <li><strong>72-hour breach notification, 45-day Maryland PIPA filing window.</strong> If your data is ever exposed in an incident, you hear within 72 hours. <a href="/privacy.html" style="color:var(--teal)">/privacy.html</a>.</li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom:56px;padding-top:18px;border-top:1px solid var(--line)">
+      <h2 style="font-size:22px;font-weight:600;color:var(--ink);margin:0 0 16px">What shipped, in numbers</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px">The May 2026 launch-plan refresh shipped across ten phases. The visible-side totals:</p>
+      <ul style="font-size:15px;line-height:1.7;color:var(--ink);margin:0;padding-left:22px">
+        <li><strong>15 free tools live</strong> (was 13). New: Holiday Hours Generator and Menu Converter, both EN + ES.</li>
+        <li><strong>18 articles</strong> (was 17). New op-ed: <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/" style="color:var(--teal)">An honest DoorDash math, 2026</a>.</li>
+        <li><strong>4 quarterly research notes</strong> (was 2). New: <a href="/learn/research/dmv-restaurant-gbp-audit-2026/" style="color:var(--teal)">DMV GBP audit, 2026</a> and <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/" style="color:var(--teal)">The 1% margin audit, 50 sites</a>.</li>
+        <li><strong>3 new productized offer pages</strong> at <a href="/services/audit/" style="color:var(--teal)">/services/audit/</a>, <a href="/services/menu-drop-in/" style="color:var(--teal)">/services/menu-drop-in/</a>, <a href="/services/care-plan-light/" style="color:var(--teal)">/services/care-plan-light/</a>.</li>
+        <li><strong>5 DMV city subpages</strong> at <a href="/studio/silver-spring/" style="color:var(--teal)">/studio/silver-spring/</a>, <a href="/studio/bethesda/" style="color:var(--teal)">/bethesda/</a>, <a href="/studio/takoma-park/" style="color:var(--teal)">/takoma-park/</a>, <a href="/studio/dc/" style="color:var(--teal)">/dc/</a>, <a href="/studio/arlington/" style="color:var(--teal)">/arlington/</a>.</li>
+        <li><strong>4 new trust pages</strong>: <a href="/never/" style="color:var(--teal)">/never/</a>, <a href="/ai/" style="color:var(--teal)">/ai/</a>, <a href="/library/" style="color:var(--teal)">/library/</a>, <a href="/studio/" style="color:var(--teal)">/studio/</a> (plus <a href="/studio/compare/" style="color:var(--teal)">/studio/compare/</a>). Every one has an ES mirror.</li>
+        <li><strong>2 build scripts and 1 CI guard</strong>: <code>build-llms-full.mjs</code>, <code>check-cta-canon.mjs</code>, plus the existing <code>sync-includes.mjs</code> idempotency fix.</li>
+        <li><strong>454 URLs in the sitemap</strong> (was 430). 232 EN + 222 ES.</li>
+        <li><strong>10 entries in <code>sameAs</code></strong> (was 1). LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, Google Maps, Bing Places, Apple Maps, plus Instagram.</li>
       </ul>
     </section>
 

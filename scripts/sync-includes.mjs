@@ -37,20 +37,31 @@ const NON_DEFAULT_LOCALES = LOCALES.filter((l) => l !== 'en');
 // The footer's "Free tools" column diverges on the tool-utility pages
 // (/tools/compare/, /tools/speed-test/, etc.) which cross-link inside
 // the tool ecosystem. Nav sync on these pages is still safe; footer
-// sync is not. The self-selecting signal is reliable enough: a page's
-// existing footer that already links to the restaurant checklist is
-// using the canonical main-funnel footer; anything else is a tool
-// utility page and gets left alone.
-const FOOTER_MAIN_FUNNEL_MARKER = '/learn/checklists/restaurant-website-checklist/';
+// sync is not. The self-selecting signal: main-funnel pages render the
+// "Library" column with id="foot-learn"; tool-utility pages render a
+// "Free tools" column with id="foot-tools" instead. Pages whose
+// existing footer matches id="foot-learn" get the canonical footer
+// synced; anything else (tool-utility footers, custom variants) is
+// left alone.
+const FOOTER_MAIN_FUNNEL_MARKER = 'id="foot-learn"';
 
 // The nav block: <header class="nav" id="nav">...</header>.
 // Single occurrence per page; anchored by the unique id.
 const NAV_RE = /<header class="nav" id="nav">[\s\S]*?<\/header>/;
 
-// The site footer: <footer> that contains <div class="foot-grid">.
-// This discriminator keeps us from touching any <footer> inside an article
-// body (e.g. a blog post byline footer), if one ever shows up.
-const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>/;
+// The site footer: <footer> that contains <div class="foot-grid">,
+// plus any trailing canonical script tags (first-touch, save-next-time,
+// share-hydrate) that ship together with the footer template. Capturing
+// the trailing scripts as part of the same block keeps re-syncs strictly
+// idempotent — without them, each sync APPENDED another copy of the
+// scripts onto the page, since the footer-internal regex couldn't reach
+// them. Matching them as a (\s*<script ...>)* tail soaks up any duplicate
+// copies introduced by prior buggy syncs and replaces the whole tail
+// with the canonical version.
+//
+// Discriminator (foot-grid) keeps us from touching <footer> inside an
+// article body (e.g. a blog byline footer), if one ever shows up.
+const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*/;
 
 // Load one nav + footer partial per locale. English partials live at
 // _includes/nav.html + _includes/footer.html (unchanged for backward

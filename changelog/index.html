@@ -83,36 +83,31 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Work / Studio / Sign in.
+         Library now points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too. -->
     <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
-      <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/">
-            <strong>Library home</strong>
-            <span>The hub of everything below &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Learn</h4>
-            <a href="/learn/start-here/"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/"><strong>Glossary</strong><span><!-- count:glossary.terms -->139<!-- /count --> terms in plain English</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Read</h4>
-            <a href="/blog/"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Do</h4>
-            <a href="/tools/"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/library/">Library</a>
+      <a href="/tools/">Tools</a>
       <a href="/work/">Work</a>
-      <a href="/about/">About</a>
+      <a href="/studio/">Studio</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -126,8 +121,6 @@
       <a href="/es/changelog/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -135,32 +128,21 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Email Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
-    <details class="mobile-library">
-      <summary>Library</summary>
-      <a href="/learn/">Library home</a>
-      <p class="mobile-library__group">Learn</p>
-      <a href="/learn/start-here/">Start here</a>
-      <a href="/learn/topics/">Topics</a>
-      <a href="/glossary/">Glossary</a>
-      <p class="mobile-library__group">Read</p>
-      <a href="/blog/">Articles</a>
-      <a href="/learn/research/">Research</a>
-      <p class="mobile-library__group">Do</p>
-      <a href="/tools/">Free tools</a>
-      <a href="/learn/checklists/">Checklists &amp; guides</a>
-    </details>
+    <a href="/library/">Library</a>
+    <a href="/tools/">Tools</a>
     <a href="/work/">Work</a>
-    <a href="/about/">About</a>
+    <a href="/studio/">Studio</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
-    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/changelog/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -180,6 +162,11 @@
       </button>
     </div>
   </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
 
   <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
        Calls /api/auth/me and reveals either the "Sign in" or
@@ -243,6 +230,46 @@
 
     <section style="margin-bottom:56px">
       <h2 style="font-size:14px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--stone);margin:0 0 18px;padding-top:18px;border-top:1px solid var(--line)">May 2026 &middot; Refresh push</h2>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 9 &mdash; Menu Converter, ES Holiday Hours, terms rewrite</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          Second of the two new launch+30 tools shipped: <a href="/tools/menu-converter/">/tools/menu-converter/</a>. Paste your menu text, walk away with a live preview, semantic HTML, and a JSON-LD <code>Menu</code> schema block. Heuristic parser picks up sections (ALL CAPS or colon-terminated), items (price-trailing line), and descriptions (line directly under an item). Tool count 14 &rarr; 15. The Holiday Hours generator from phase 8 now has a fluent ES mirror at <a href="/es/tools/holiday-hours/">/es/tools/holiday-hours/</a> &mdash; the eight US holiday names translated, the date format localized (&ldquo;25 de diciembre de 2026&rdquo;), the result tabs labeled in Spanish. EN hreflang updated to point at it. <a href="/terms.html">/terms.html</a> rewritten to ~1,300 words: voice-contract first-person, Maryland courts (no arbitration, no class-action waiver), CC BY-NC 4.0 explicitly licensing library content while exempting tools, brand, and codebase. Twelve numbered sections, each with a one-paragraph plain-English explanation.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 8 &mdash; Holiday Hours Generator, privacy + cookies rewrites</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          First of the two new tools the plan flagged for launch+30: <a href="/tools/holiday-hours/">/tools/holiday-hours/</a>. Pre-loaded with the eight US restaurant holidays that move covers (floating ones computed from the year input). Three outputs per run: plain text for the website, JSON-LD <code>specialOpeningHoursSpecification</code> for schema, GBP-formatted block for paste into Business Profile Manager. <a href="/privacy.html">/privacy.html</a> rewritten to ~700 words, first-person Don, four sections (what I collect / what I never do / your rights / vendors). <a href="/cookies.html">/cookies.html</a> rewritten with the three actual functional cookies in a typed table (<code>md_locale</code>, <code>lang_hint_dismissed</code>, <code>md_session</code>) plus a &ldquo;why no banner&rdquo; paragraph naming the position. Maryland PIPA breach-notification window named explicitly.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 7 &mdash; 5-item nav rewrite, AI crawler robots.txt</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          The deferred IA bet from Part II ships. Primary nav goes from 8 items + mega-menu to five: <strong>Library &middot; Tools &middot; Work &middot; Studio &middot; Sign in</strong>. Library now points at the canonical <a href="/library/">/library/</a> hub; Tools is promoted from inside the old mega-menu; Studio replaces Services + Restaurants + About (those pages remain reachable). The mega-menu is retired, controller script gone too. Mobile menu mirrors the desktop 5-item structure. <code>/robots.txt</code> extended with explicit per-agent stanzas: <strong>allowed</strong> &mdash; GPTBot, ClaudeBot, anthropic-ai, Claude-Web, PerplexityBot, Google-Extended, Bytespider, Applebot-Extended; <strong>disallowed</strong> (training-only, no retrieval-time citation) &mdash; CCBot, Omgilibot, ImagesiftBot. <a href="/llms.txt">/llms.txt</a> and <a href="/es/llms.txt">/es/llms.txt</a> now cross-link the full-body corpus (<a href="/llms-full.txt">/llms-full.txt</a>, <a href="/es/llms-full.txt">/es/llms-full.txt</a>, <a href="/feed-llm.json">/feed-llm.json</a>) at the top so AI crawlers find the citation surface immediately.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phase 6 &mdash; entity graph, sitemap, CTA canon CI guard</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          Homepage <code>LocalBusiness</code> JSON-LD now ships <code>telephone</code> on the entity itself plus a structured <code>contactPoint</code> array (support + sales). <code>sameAs</code> expanded from 1 entry to 10 (LinkedIn, Facebook, GitHub, Bluesky, Threads, Yelp, GBP, Bing Places, Apple Maps) &mdash; the threshold Google&rsquo;s Knowledge Panel checks before rendering. Sitemap regenerated to include all 11 pages added in phases 1&ndash;5 (the studio hub, three productized offers, five DMV cities, /never/, /ai/, /studio/compare/, /library/, three new research notes). New CI script <code>scripts/check-cta-canon.mjs</code> guards the locked CTA verb set from <a href="/methods/#voice-contract">/methods/#voice-contract</a> &mdash; first run found 21 drift hits across 18 files; all swept. Three more high-traffic articles cross-link the productized offers in the further-reading aside.
+        </p>
+      </div>
+
+      <div class="changelog-entry" style="margin-bottom:32px">
+        <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>
+        <h3 style="font-size:20px;font-weight:600;color:var(--ink);margin:0 0 8px">Launch plan, phases 1&ndash;5 &mdash; what shipped</h3>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--ink);margin:0">
+          A consultancy-grade refresh executed against the 12-week launch plan. <strong>Phase 1:</strong> three new trust pages (<a href="/never/">/never/</a>, <a href="/ai/">/ai/</a>, <a href="/studio/compare/">/studio/compare/</a>), the voice contract appended to <a href="/methods/#voice-contract">/methods/</a>, three signature stances on the homepage, footer trust cluster (4 &rarr; 5 columns), 247 escaped count sentinels restored. <strong>Phase 2:</strong> three productized offers (<a href="/services/audit/">$499 audit</a>, <a href="/services/menu-drop-in/">$1,500 menu drop-in</a>, <a href="/services/care-plan-light/">$99/mo Care Plan Light</a>), five DMV city subpages, ES mirrors of all phase-1 pages, mega-menu a11y rebuild (button + ARIA + keyboard), Cal.com onramp on /window/. <strong>Phase 3:</strong> productized offers wired into <a href="/services/#offers">/services/</a>, AI-search corpus (<code>/llms-full.txt</code>, <code>/feed-llm.json</code>, EN + ES), 404 redesign with search box, six-message operator drip in <code>/docs/email-drip/</code>, project-manager hire scope, the DoorDash math op-ed. <strong>Phase 4:</strong> <a href="/studio/">/studio/</a> canonical hub (EN + ES), mobile sticky bottom CTA bar, sync-includes idempotency fix (collapsed 4 &rarr; 1 trailing scripts across 429 pages), <code>lighthouserc.js</code> with the 7-URL gate set, Conversation + App shells named in <a href="/methods/">design-system.md</a>, <code>--gradient-hero</code> retired, DMV GBP audit research note. <strong>Phase 5:</strong> <a href="/library/">/library/</a> three-doors hub (EN + ES), /studio/contact/ + /library/* alias redirects, WCAG 2.2 AA standardization, the 1% margin audit research note, productized offers cross-linked from two high-traffic articles.
+        </p>
+      </div>
 
       <div class="changelog-entry" style="margin-bottom:32px">
         <p style="font-size:13.5px;color:var(--stone);margin:0 0 6px">2026-05-02</p>

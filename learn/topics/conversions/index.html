@@ -99,7 +99,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/learn/topics/conversions/#articles",
-      "numberOfItems": 7,
+      "numberOfItems": 8,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -129,12 +129,17 @@
         {
           "@type": "ListItem",
           "position": 6,
-          "url": "https://muntin.digital/blog/what-should-be-on-a-restaurant-website/"
+          "url": "https://muntin.digital/blog/an-honest-doordash-math-for-independent-restaurants-2026/"
         },
         {
           "@type": "ListItem",
           "position": 7,
-          "url": "https://muntin.digital/blog/can-chatgpt-write-your-restaurant-website/"
+          "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "url": "https://muntin.digital/blog/what-should-be-on-a-restaurant-website/"
         }
       ]
     }
@@ -159,36 +164,31 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Work / Studio / Sign in.
+         Library now points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         either as anchored sections (#pricing, #offers, #cities,
+         #process, #about) or as full child pages (/studio/compare/,
+         /studio/silver-spring/, etc.). The old Services and
+         Restaurants pages remain reachable via /studio/ and the
+         _redirects table; /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too. -->
     <nav class="nav-links" aria-label="Primary">
-      <a href="/services/">Services</a>
-      <a href="/for/restaurants/">Restaurants</a>
-      <div class="nav-library-wrap">
-        <a href="/learn/" class="nav-library-trigger">Library<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Library sections">
-          <a class="nav-library-menu__home" href="/learn/">
-            <strong>Library home</strong>
-            <span>The hub of everything below &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Learn</h4>
-            <a href="/learn/start-here/"><strong>Start here</strong><span>The 60-minute guided tour</span></a>
-            <a href="/learn/topics/"><strong>Topics</strong><span>Browse by what you're fixing</span></a>
-            <a href="/glossary/"><strong>Glossary</strong><span><!-- count:glossary.terms -->139<!-- /count --> terms in plain English</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Read</h4>
-            <a href="/blog/"><strong>Articles</strong><span>The how-to playbooks</span></a>
-            <a href="/learn/research/"><strong>Research</strong><span>The evidence behind the playbooks</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Do</h4>
-            <a href="/tools/"><strong>Free tools</strong><span>Run a check on your own site</span></a>
-            <a href="/learn/checklists/"><strong>Checklists &amp; guides</strong><span>Workbooks you can save</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/library/">Library</a>
+      <a href="/tools/">Tools</a>
       <a href="/work/">Work</a>
-      <a href="/about/">About</a>
+      <a href="/studio/">Studio</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -202,8 +202,6 @@
       <a href="/es/learn/topics/conversions/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="nav-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -211,32 +209,21 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Email Don CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <a href="/services/">Services</a>
-    <a href="/for/restaurants/">Restaurants</a>
-    <details class="mobile-library">
-      <summary>Library</summary>
-      <a href="/learn/">Library home</a>
-      <p class="mobile-library__group">Learn</p>
-      <a href="/learn/start-here/">Start here</a>
-      <a href="/learn/topics/">Topics</a>
-      <a href="/glossary/">Glossary</a>
-      <p class="mobile-library__group">Read</p>
-      <a href="/blog/">Articles</a>
-      <a href="/learn/research/">Research</a>
-      <p class="mobile-library__group">Do</p>
-      <a href="/tools/">Free tools</a>
-      <a href="/learn/checklists/">Checklists &amp; guides</a>
-    </details>
+    <a href="/library/">Library</a>
+    <a href="/tools/">Tools</a>
     <a href="/work/">Work</a>
-    <a href="/about/">About</a>
+    <a href="/studio/">Studio</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
-    <a class="mobile-auth js-nav-signin" href="/sign-in/" hidden>Sign in</a>
-    <a class="mobile-auth js-nav-workshop" href="/workbench/" hidden>Workshop</a>
     <a href="/es/learn/topics/conversions/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -256,6 +243,11 @@
       </button>
     </div>
   </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
 
   <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
        Calls /api/auth/me and reveals either the "Sign in" or
@@ -482,9 +474,78 @@
 <!-- topic-essay:start -->
 <section class="topic-essay">
   <div class="container">
-    <p class="topic-essay__eyebrow">Topic essay</p>
+    <p class="topic-essay__eyebrow">Pillar essay &middot; updated May 2026</p>
     <h2 class="topic-essay__title">Where the visitor turns into a guest.</h2>
-    <div class="topic-essay__body"><p>Most restaurant websites get the discovery part right — Google sends them traffic. The leak is later: visitors land, look around, don't find what they're looking for, and bounce. The reservation never happens. Conversions is the unglamorous middle of the funnel where almost all the lost money lives, and the fixes are usually small and unsexy.</p><p>The honest reservation funnel for a typical mid-volume independent restaurant looks something like this: 1,000 monthly Google clicks → 600 land on a page that loads in under 3 seconds → 350 find the menu → 180 reach the reservation page → 90 actually book. That's a 9% end-to-end conversion. Move it to 12% and you've added roughly $X in monthly revenue without spending a dollar on ads.</p><p>The path through this cluster:</p><ul><li><strong>Start here:</strong> <a href="/blog/why-your-restaurant-loses-reservations-every-night/">Why Your Restaurant Loses Reservations Every Night</a> — the six leaks, in order, with the math.</li><li><strong>Next:</strong> <a href="/blog/what-should-be-on-a-restaurant-website/">What Should Be on a Restaurant Website</a> — the seven pages that earn their keep.</li><li><strong>Advanced:</strong> <a href="/blog/can-chatgpt-write-your-restaurant-website/">Can ChatGPT Write Your Restaurant Website?</a> — for when the copy is what's bottlenecking the conversion.</li></ul><p>Tools that pair: <a href="/tools/storefront-health/">Storefront Health</a> (the composite scorecard), <a href="/tools/menu-copy/">Menu Copy Inspector</a> (description-by-description grading), <a href="/tools/photo-brief/">Photo Brief</a> (the spec sheet your photographer needs). Run Storefront Health first; it'll tell you which of these to dig into.</p><p>Sister topics: <strong>Speed &amp; Mobile</strong> (because the slow-load leak is upstream of every conversion fix) and <strong>Local SEO</strong> (because the GBP traffic is what funnels into the conversion path).</p></div>
+    <div class="topic-essay__body"><p>Most restaurant websites get the discovery part right &mdash; Google sends them traffic. The leak is later: visitors land, look around, don&rsquo;t find what they&rsquo;re looking for, and bounce. The reservation never happens. Conversions is the unglamorous middle of the funnel where almost all the lost money lives, and the fixes are usually small, unsexy, and under-an-hour.</p>
+
+      <p>The honest reservation funnel for a typical mid-volume independent looks like this: 1,000 monthly Google clicks &rarr; 600 land on a page that loads in under 3 seconds &rarr; 350 find the menu without pinch-zooming a PDF &rarr; 180 reach the reservation page &rarr; 90 actually book. That&rsquo;s a 9% end-to-end conversion. Move it to 12% and you&rsquo;ve added roughly $1,200&ndash;$3,000 in monthly margin without spending a dollar on ads. Move it from 9% to the upper-quartile 16% &mdash; which the &ldquo;direct order&rdquo; CTA hierarchy alone usually gets you &mdash; and you&rsquo;re looking at $4,000+ in recovered margin per month.</p>
+
+      <p>This pillar collects the playbooks, glossary terms, and tools that close that gap. Read it linearly if you&rsquo;re auditing your conversion funnel for the first time; jump to a section if you already know which step is leaking.</p>
+
+      <h3>The six places conversions leak, in order of dollar impact</h3>
+
+      <p>The <a href="/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/">1% margin audit</a> graded 50 independent restaurant websites for the six most common reservation-and-conversion leaks. Median operator leaks 0.94% of revenue; worst-quartile 2.3%. The six, ranked by per-incident impact:</p>
+
+      <ol>
+        <li><strong>Aggregator-only ordering, no direct path</strong> &mdash; 0.45% revenue impact when present. Every order goes through a 30% commission instead of a 3.6% processor fee. Also the easiest leak to spot in a five-second test of your menu page.</li>
+        <li><strong>Reservation button doesn&rsquo;t deeplink</strong> &mdash; 0.34% impact, present on 59% of sites audited. The OpenTable / Resy / Tock button sends the visitor to the platform&rsquo;s home page instead of your venue&rsquo;s page. One extra click is one reservation lost. Five-minute fix.</li>
+        <li><strong>EN-only on a bilingual block</strong> &mdash; 0.31% impact, present on 38%. A real <code>/es/</code> mirror with hreflang doubles addressable demand in roughly 35% of DMV neighborhoods. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> ships the menu page version in seven days; the full-site version is in any of the three site tiers.</li>
+        <li><strong>No direct-order CTA above third-party links</strong> &mdash; 0.27% impact, present on 71%. The single fix that recovers the most margin: a primary-color &ldquo;Order direct&rdquo; button positioned above the DoorDash / Uber Eats links. Match the third-party menu price; the customer notices, you keep the 26.4 points.</li>
+        <li><strong>Hours buried below the fold on mobile</strong> &mdash; 0.21% impact, present on 52%. Phones lose 800ms to a heavy hero photo; the visitor leaves before discovering you&rsquo;re open. Move the hours block above the hero. 15 minutes.</li>
+        <li><strong>Mobile LCP &gt; 3.0s</strong> &mdash; 0.18% impact, present on 68%. The slowest leak to fix (1&ndash;3 hours of image compression and JS pruning) but the one that compounds with every other leak above it.</li>
+      </ol>
+
+      <p>The first three fixes &mdash; under an hour combined, no developer required &mdash; recover roughly half of the median leak. They&rsquo;re a Saturday afternoon, not a project. The last three are where a paid build earns its keep.</p>
+
+      <h3>The DoorDash math is the conversion math</h3>
+
+      <p>An aggregator order isn&rsquo;t just a pricier channel; it&rsquo;s a parallel funnel that competes with your direct funnel for the same visitor. The marginal lift on switching one order from DoorDash to direct, on a $42 ticket: <strong>$4.42 in margin</strong>. Across an operator doing 2,400 third-party orders per year, a 40% switch to direct is $4,243 added to the bottom line. The full walk is in <a href="/blog/an-honest-doordash-math-for-independent-restaurants-2026/">An honest DoorDash math, 2026</a>; the calculator that runs it against your numbers is at <a href="/tools/margin-math/">/tools/margin-math/</a>.</p>
+
+      <p>Where the conversion side meets the margin side: every direct-order CTA above the third-party links isn&rsquo;t just a UX move &mdash; it&rsquo;s a margin lever. The conversion lift compounds with the margin lift; you&rsquo;re moving more orders <em>and</em> keeping more of each one.</p>
+
+      <h3>What converts isn&rsquo;t what looks good</h3>
+
+      <p>Three findings from the 1% audit that cut against operator instinct:</p>
+
+      <ul>
+        <li><strong>Photography quality didn&rsquo;t correlate with leakage.</strong> Phenomenal photos and operator-iPhone snapshots leaked at roughly the same rates. Photography drives consideration, not conversion. The $4,000 you&rsquo;d spend on a photographer would &mdash; on a conversion-leakage basis &mdash; be better spent on direct-order plumbing first, then photos. <a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a> is for after the funnel is fixed, not before.</li>
+        <li><strong>Older sites didn&rsquo;t leak more than newer ones.</strong> Some of the lowest-leakage sites in the sample were built in 2018 and never touched again. The features that cause leaks &mdash; heavy JS, third-party reservation widgets that don&rsquo;t deeplink, hero photos blocking the hours &mdash; are 2022&ndash;2024 patterns.</li>
+        <li><strong>Wix isn&rsquo;t universally bad.</strong> Of 11 Wix sites in the sample, 4 were in the under-1% leakage band. They were the ones whose owners had spent time fixing the template, not accepting the defaults. <a href="/blog/wix-vs-custom-for-restaurants/">Wix vs. custom</a> walks through the six places Wix breaks first.</li>
+      </ul>
+
+      <p>The takeaway: don&rsquo;t spend on a redesign before you&rsquo;ve audited the funnel. The cost-per-percent-recovered on a leak fix is roughly $200; the cost-per-percent-recovered on a full rebuild is closer to $4,000.</p>
+
+      <h3>Menu, hours, and reservation: the three pages that convert</h3>
+
+      <p>Of the seven pages an independent restaurant website needs (<a href="/blog/what-should-be-on-a-restaurant-website/">listed here</a>), three of them carry 80% of the conversion weight:</p>
+
+      <ul>
+        <li><strong>Menu page.</strong> If it&rsquo;s a PDF, you&rsquo;re leaking. A real HTML menu loads instantly, indexes for &ldquo;cacio e pepe near me&rdquo; queries, and renders well on a 360px phone screen. The free <a href="/tools/menu-converter/">Menu Converter</a> turns pasted menu text into semantic HTML + JSON-LD <code>Menu</code> schema in two seconds. The studio-built version is the <a href="/services/menu-drop-in/">$1,500 menu drop-in</a>.</li>
+        <li><strong>Hours block.</strong> The visitor wants to know if you&rsquo;re open right now. Anything more than that is friction. Above the fold, plain text, &ldquo;Open until 10 PM today&rdquo; format wins over a static schedule table. Add holiday hours via the <a href="/tools/holiday-hours/">Holiday Hours Generator</a>; the same tool emits the JSON-LD override and the GBP block.</li>
+        <li><strong>Reservation page.</strong> Or &mdash; better &mdash; the embedded reservation widget on the menu page. Either way: deeplink to your venue, not the platform&rsquo;s home page. Use the platform&rsquo;s native script (OpenTable Direct, Resy Widgets v2) rather than an iframe; the native script keeps the visitor on your domain and lets you measure the conversion in your own analytics.</li>
+      </ul>
+
+      <h3>What to do this week</h3>
+
+      <p>Three actions, in order, total time about an hour:</p>
+
+      <ol>
+        <li><strong>Run the free <a href="/tools/audits/restaurant/">Restaurant Audit</a> on your own URL.</strong> The result tells you which of the six leaks are active. Save it to your Workshop and re-run it monthly.</li>
+        <li><strong>Run <a href="/tools/storefront-health/">Storefront Health</a> as the composite read.</strong> The audit grades the technical leaks; Storefront Health grades the content + flow leaks. Together they cover the six.</li>
+        <li><strong>Pick one leak. Fix it this week.</strong> Reservation deeplink (5 min), hours-above-the-fold (15 min), or direct-order CTA (30 min) are the three under-an-hour fixes. Pick whichever your audit ranked highest. Re-run the audit after; the score moves immediately.</li>
+      </ol>
+
+      <p>Operators who can&rsquo;t carve out the hour can outsource it: the <a href="/services/audit/">$499 deep-read audit</a> ships a Loom + 8-page action sheet in five business days, ranked by dollar impact, with credits toward a build inside 60 days. The <a href="/services/menu-drop-in/">$1,500 menu drop-in</a> handles the menu-page leak directly; the <a href="/services/care-plan-light/">Care Plan Light</a> handles the hours-and-hygiene side monthly.</p>
+
+      <h3>Where this topic touches the others</h3>
+
+      <ul>
+        <li><strong><a href="/learn/topics/local-seo/">Local SEO &amp; Discovery</a></strong> &mdash; because the conversion funnel starts with the GBP click. The two pillars share more readers than any other pair on the site.</li>
+        <li><strong><a href="/learn/topics/speed-mobile/">Speed &amp; Mobile</a></strong> &mdash; because the slow-load leak is upstream of every conversion fix. A 4-second LCP makes every other improvement marginal.</li>
+        <li><strong><a href="/learn/topics/operations-margin/">Operations &amp; Margin</a></strong> &mdash; because conversion-channel mix (direct vs. aggregator) is the largest single lever on independent-restaurant margin. The DoorDash math op-ed sits across both pillars.</li>
+      </ul>
+
+      <p>The composite score you want to track: <strong>Storefront Health</strong>. Run it monthly, save the trend line, watch the conversions number compound. Everything in this pillar feeds that one metric.</p></div>
   </div>
 </section>
 <!-- topic-essay:end -->
@@ -514,9 +575,9 @@
 <footer>
   <div class="container">
     <div class="foot-cta">
-      <div class="foot-cta-text">Ready to build something worth the time?</div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="foot-cta-text">Got a question? The Window is open.</div>
+      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -531,18 +592,31 @@
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explore</p>
+        <p class="foot-heading" id="foot-explore">Studio</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services</a></li>
+          <li><a href="/services/">Services &amp; pricing</a></li>
           <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
+          <li><a href="/studio/compare/">Compare options</a></li>
+          <li><a href="/work/">Case studies</a></li>
           <li><a href="/about/">About Don</a></li>
+        </ul>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="foot-trust">
+        <p class="foot-heading" id="foot-trust">Trust</p>
+        <ul class="foot-links">
+          <li><a href="/never/">Never</a></li>
+          <li><a href="/ai/">AI policy</a></li>
+          <li><a href="/security/">Data &amp; security</a></li>
+          <li><a href="/methods/">Methods</a></li>
+          <li><a href="/receipts/">Receipts</a></li>
+          <li><a href="/changelog/">Changelog</a></li>
           <li><a href="/system/">The system</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Library</p>
         <ul class="foot-links">
           <li><a href="/learn/">Library home</a></li>
           <li><a href="/learn/start-here/">Start here</a></li>
@@ -559,24 +633,72 @@
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Write to Don</a></li>
+          <li><a href="/window/">Email Don</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
       </nav>
     </div>
 
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
+        <p class="foot-newsletter-pitch">I send a short note when I publish something — four notes a quarter, no funnels.</p>
+        <label class="sr-only" for="foot-news-email">Your email</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="you@yourrestaurant.com" />
+        <input type="hidden" name="locale" value="en" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
+        <a href="/security/">Data &amp; security</a>
         <a href="/accessibility.html">Accessibility</a>
         <a href="/cookies.html">Cookies</a>
+        <a href="/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
+  <!-- Mobile sticky bottom action bar. Phones only (max-width: 720px),
+       coarse pointer required so a tablet with a mouse doesn't get it.
+       Hidden when <body data-hide-sticky-bar> is set (set on /window/,
+       /sign-in/, /account/, and tool-result pages where a sticky bottom
+       would compete with the page's own bottom UI). Lives inside the
+       <footer> so sync-includes captures it as part of the canonical
+       footer block and stays idempotent across re-syncs. -->
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Run free audit
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Email Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>

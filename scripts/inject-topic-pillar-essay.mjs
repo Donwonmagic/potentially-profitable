@@ -26,13 +26,14 @@ if (!fs.existsSync(dataPath)) { console.log('topic-essays data missing — skipp
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 const essays = data.essays || {};
 
-function buildBlock(title, essayHtml, locale) {
-  const eyebrow = locale === 'es' ? 'Lectura del tema' : 'Topic essay';
+function buildBlock(title, essayHtml, locale, eyebrow) {
+  const defaultEyebrow = locale === 'es' ? 'Lectura del tema' : 'Topic essay';
+  const eyebrowText = eyebrow || defaultEyebrow;
   return [
     '<!-- topic-essay:start -->',
     '<section class="topic-essay">',
     '  <div class="container">',
-    `    <p class="topic-essay__eyebrow">${eyebrow}</p>`,
+    `    <p class="topic-essay__eyebrow">${eyebrowText}</p>`,
     `    <h2 class="topic-essay__title">${title}</h2>`,
     `    <div class="topic-essay__body">${essayHtml}</div>`,
     '  </div>',
@@ -54,9 +55,10 @@ for (const root of [['en', 'learn/topics'], ['es', 'es/learn/topics']]) {
     if (!entry) { skipped++; continue; }
     const title = locale === 'es' ? entry.title_es : entry.title_en;
     const essayHtml = locale === 'es' ? entry.essay_es_html : entry.essay_en_html;
+    const eyebrow = locale === 'es' ? entry.eyebrow_es : entry.eyebrow_en;
     if (!title || !essayHtml) { skipped++; continue; }
     const src = fs.readFileSync(file, 'utf8');
-    const block = buildBlock(title, essayHtml, locale);
+    const block = buildBlock(title, essayHtml, locale, eyebrow);
     let next;
     if (SENTINEL_RE.test(src)) {
       next = src.replace(SENTINEL_RE, block);

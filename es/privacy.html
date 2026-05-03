@@ -90,36 +90,21 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
     <nav class="nav-links" aria-label="Principal">
-      <a href="/es/services/">Servicios</a>
-      <a href="/es/for/restaurants/">Restaurantes</a>
-      <div class="nav-library-wrap">
-        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
-          <a class="nav-library-menu__home" href="/es/learn/">
-            <strong>Inicio de la biblioteca</strong>
-            <span>El centro de todo lo de abajo &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Aprende</h4>
-            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Lee</h4>
-            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Haz</h4>
-            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/about/">Sobre Don</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -133,8 +118,6 @@
       <a href="/privacy.html" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -143,33 +126,24 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/services/">Servicios</a>
-    <a href="/es/for/restaurants/">Restaurantes</a>
-    <details class="mobile-library">
-      <summary>Biblioteca</summary>
-      <a href="/es/learn/">Inicio de la biblioteca</a>
-      <p class="mobile-library__group">Aprende</p>
-      <a href="/es/learn/start-here/">Empieza aquí</a>
-      <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/glossary/">Glosario</a>
-      <p class="mobile-library__group">Lee</p>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/learn/research/">Investigación</a>
-      <p class="mobile-library__group">Haz</p>
-      <a href="/es/tools/">Herramientas gratis</a>
-      <a href="/es/learn/checklists/">Listas y recursos</a>
-    </details>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/about/">Sobre Don</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/privacy.html" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
@@ -215,101 +189,66 @@
   </aside>
 
   <article class="legal legal-privacy">
-    <h1>Política de privacidad</h1>
-    <p class="meta">Vigente desde mayo de 2026 &middot; Última revisi&oacute;n 2026&#8209;05&#8209;01</p>
+    <h1>Privacidad</h1>
+    <p class="meta">Vigente desde mayo de 2026 &middot; &Uacute;ltima revisi&oacute;n 2026&#8209;05&#8209;02</p>
 
     <aside class="callout" style="margin:0 0 28px;padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:6px;font-size:15.5px;line-height:1.65">
-      <strong>La versi&oacute;n corta.</strong> Recopilamos tu nombre y correo cuando nos escribes, inicias sesi&oacute;n en el Taller, o env&iacute;as un formulario. Usamos anal&iacute;tica sin cookies (Plausible) para contar p&aacute;ginas vistas &mdash; sin cookies, sin seguimiento entre sitios. No vendemos tus datos. No mostramos publicidad. No compartimos tus datos con terceros, salvo para entregar el servicio que pediste (por ejemplo, Resend para correo). Puedes eliminar todo lo asociado a tu cuenta en <a href="/es/account/">/es/account/</a>; la eliminaci&oacute;n se hace efectiva en minutos. La versi&oacute;n legal completa est&aacute; abajo si la necesitas.
+      <strong>La versi&oacute;n corta.</strong> Recolecto tu nombre y email cuando me escribes. Uso anal&iacute;tica cookieless (Plausible) para contar p&aacute;ginas vistas &mdash; sin cookies, sin tracking entre sitios, sin pixel de remarketing en la biblioteca. No vendo tus datos. No los comparto con nadie excepto los pocos vendors que entregan el servicio que pediste (Resend para email, Cloudflare para hosting). Puedes borrar todo lo asociado a tu cuenta en <a href="/es/account/">/es/account/</a>; la eliminaci&oacute;n se hace efectiva en minutos. La versi&oacute;n completa est&aacute; abajo.
     </aside>
 
-    <p>Muntin Digital&#8482; («nosotros», «nuestro» o la «Empresa») respeta tu privacidad. Esta Política de privacidad explica cómo recopilamos, usamos, compartimos y protegemos tu información personal cuando visitas nuestro sitio, usas nuestros servicios o interactúas con nosotros.</p>
-
-    <h2>Información que recopilamos</h2>
-    <p>Recopilamos información de varias maneras:</p>
+    <h2>Qu&eacute; recolecto</h2>
+    <p>Soy Don, un estudio de una persona en Silver Spring, MD. Recolecto informaci&oacute;n personal en cinco lugares, todos visibles para ti cuando ocurren:</p>
     <ul>
-      <li><strong>De tus consultas:</strong> cuando envías el formulario de contacto, le escribes a Don por La Ventana, o nos contactas por correo, recopilamos tu nombre, dirección de correo electrónico, información de tu empresa, detalles del proyecto y cualquier otra información que decidas compartir. Los formularios los procesa un Cloudflare Worker que operamos; ningún host externo de formularios recibe tus datos.</li>
-      <li><strong>Del Taller (cuenta opcional):</strong> si inicias sesión para guardar resultados de herramientas, recopilamos tu correo electrónico y un identificador de sesión. Los elementos guardados, los seguimientos y las propiedades de Storefront Health se almacenan en un namespace de Cloudflare KV asociado a tu cuenta y se pueden eliminar individualmente o mediante el flujo completo de eliminación de cuenta en <a href="/es/account/">/es/account/</a>.</li>
-      <li><strong>De La Ventana:</strong> cuando le escribes a Don por La Ventana, tu mensaje, correo y los metadatos del hilo se almacenan en nuestro namespace de Cloudflare KV y solo los procesa el Worker que operamos. Los hilos se conservan hasta que pidas que se eliminen.</li>
-      <li><strong>De los envíos a Notas del piso:</strong> si envías una nota en un artículo, recopilamos el cuerpo de la nota, el nombre que muestras y un hash SHA-256 unidireccional de tu IP (solo para triaje de abuso). Las notas aprobadas se publican con atribución.</li>
-      <li><strong>Analítica del sitio:</strong> usamos Plausible Analytics &#8212; un servicio de analítica amigable con la privacidad, sin cookies &#8212; para entender el uso agregado del sitio: páginas visitadas, sitios de referencia, tipo de dispositivo y país de origen. No se recopila información personal identificable ni se hace seguimiento entre sitios.</li>
-      <li><strong>Cookies y almacenamiento local:</strong> consulta la sección «Cookies y seguimiento» más abajo. Nuestra analítica propia no usa cookies.</li>
+      <li><strong>La Ventana.</strong> Cuando me escribes en <a href="/es/window/">/es/window/</a>, tu nombre, email y cuerpo del mensaje se guardan en un namespace de Cloudflare KV que opero. Los hilos se quedan hasta que me pidas borrarlos. Ning&uacute;n chat o agendador externo ve tu mensaje.</li>
+      <li><strong>El Taller (cuenta opcional).</strong> Si firmas para guardar resultados de herramientas, guardo tu email y un identificador de sesi&oacute;n. Los items guardados, watches y propiedades de Storefront Health viven en un namespace de Cloudflare KV vinculado a tu cuenta.</li>
+      <li><strong>Formularios.</strong> Los formularios de contacto, checklist y auditor&iacute;a postean a un Cloudflare Worker que opero. Las submissions se entregan v&iacute;a Resend para que el email llegue a mi inbox y tu confirmaci&oacute;n llegue al tuyo.</li>
+      <li><strong>Notas del piso.</strong> Si env&iacute;as una nota sobre un art&iacute;culo, guardo el cuerpo, tu nombre p&uacute;blico y un hash SHA-256 unidireccional de tu IP para triaje de abuso. Las notas aprobadas se publican con atribuci&oacute;n; el hash de IP se descarta a los 90 d&iacute;as.</li>
+      <li><strong>Anal&iacute;tica.</strong> Plausible Analytics cuenta p&aacute;ginas vistas en agregado. Sin cookies, sin identificadores, sin tracking entre sitios. Los reportes se mantienen hasta 2 a&ntilde;os.</li>
     </ul>
 
-    <h2>Cómo usamos tu información</h2>
-    <p>Usamos la información que recopilamos para fines legítimos del negocio:</p>
+    <h2>Lo que jam&aacute;s hago</h2>
+    <p>La lista de cosas que no har&eacute; es la parte m&aacute;s &uacute;til de esta p&aacute;gina. La versi&oacute;n completa est&aacute; en <a href="/es/never/">/es/never/</a>; el subset relevante a datos:</p>
     <ul>
-      <li>Para responder a tus consultas y prestar los servicios que solicitaste</li>
-      <li>Para agendar y realizar reuniones o consultas</li>
-      <li>Para enviarte actualizaciones relevantes sobre nuestros servicios (solo si te suscribiste)</li>
-      <li>Para entender cómo se usa nuestro sitio y mejorar su diseño y funcionalidad</li>
-      <li>Para cumplir con obligaciones legales y prevenir fraude o uso indebido</li>
-    </ul>
-
-    <h2>Servicios de terceros</h2>
-    <p>Usamos los siguientes servicios de terceros confiables para entregar lo que ofrecemos. Cada uno tiene su propia política de privacidad:</p>
-    <ul>
-      <li><strong>Resend:</strong> cuando envías un formulario en nuestro sitio (contacto, checklist o reporte de diagnóstico), los datos del formulario los procesa un Cloudflare Worker que operamos y luego se entregan a través de <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend</a>, un servicio de correo transaccional, para que la consulta llegue a nuestra bandeja y tú recibas un correo de confirmación. Resend procesa tu nombre y dirección de correo como parte de esa entrega. Consulta la <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">política de privacidad de Resend</a> para más detalles.</li>
-      <li><strong>La Ventana:</strong> cuando le escribes a Don a través de La Ventana, tu nombre, correo y mensaje se guardan en nuestro espacio Cloudflare KV y solo los procesa el Worker que operamos. Ninguna plataforma externa de agendamiento o chat recibe tus datos.</li>
-      <li><strong>Plausible Analytics:</strong> usamos Plausible para medir el uso agregado y anónimo del sitio. Plausible no usa cookies, no recopila datos personales y no comparte datos con anunciantes. Revisa la <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">política de datos de Plausible</a> para más detalles.</li>
-      <li><strong>Proveedor de hosting:</strong> nuestro sitio está alojado en un servidor seguro. Tus datos en tránsito están protegidos por cifrado SSL.</li>
-    </ul>
-
-    <h2>Cookies y seguimiento</h2>
-    <p>Mantenemos el uso de cookies al mínimo absoluto:</p>
-    <ul>
-      <li><strong>Nuestra analítica no usa cookies.</strong> Plausible Analytics no deja cookies propias ni de terceros.</li>
-      <li><strong>Preferencia de idioma:</strong> una cookie funcional llamada <code>md_locale</code> guarda tu elección de español o inglés para que la navegación entre páginas respete lo que elegiste. Puedes borrarla desde la configuración de tu navegador sin perder acceso al sitio.</li>
-      <li><strong>Almacenamiento local:</strong> algunas herramientas interactivas guardan tu trabajo en el almacenamiento local del navegador para que puedas volver más tarde (por ejemplo, historial de auditorías, recetas de costo de plato, datos de menu engineering). El almacenamiento local permanece en tu dispositivo y no se envía a nuestros servidores. La página de Cookies enumera todas las claves.</li>
-    </ul>
-    <p>La mayoría de los navegadores te permiten controlar las cookies desde su configuración. Como nuestra analítica principal no depende de cookies, bloquearlas no afecta a nuestra capacidad de entender el uso agregado del sitio.</p>
-
-    <h2>Retención de datos</h2>
-    <p>Guardamos tu información personal solo el tiempo necesario:</p>
-    <ul>
-      <li><strong>Envíos de formularios:</strong> conservamos la información de contacto y consulta hasta 3 años para dar seguimiento a proyectos potenciales y para nuestros registros.</li>
-      <li><strong>Guardados del Taller y propiedades:</strong> los resultados guardados, los seguimientos y las propiedades de Storefront Health se mantienen hasta que los elimines o hasta que cierres tu cuenta del Taller en <a href="/es/account/">/es/account/</a>. La eliminación se hace efectiva minutos después de la confirmación por correo.</li>
-      <li><strong>La Ventana:</strong> los hilos se mantienen hasta que pidas eliminarlos. Escríbele a Don para solicitar la eliminación de un hilo.</li>
-      <li><strong>Registros de moderación de Notas del piso:</strong> el rastro de decisión de cualquier nota enviada (aprobada, rechazada o revisada) se conserva para transparencia de moderación y revisión de abuso. El hash de IP no se conserva más allá de 90 días.</li>
-      <li><strong>Datos de analítica:</strong> los datos de Plausible Analytics son agregados y anónimos por diseño. Retenemos reportes generales de analítica hasta 2 años para análisis del negocio.</li>
-      <li><strong>Comunicación por correo:</strong> podemos retener correspondencia por correo relacionada con proyectos o consultas por razones comerciales y legales.</li>
+      <li><strong>Jam&aacute;s vendo tus datos.</strong> Ni a anunciantes, ni a brokers de leads, ni a revendedores de datos. No hay un loophole de &laquo;inter&eacute;s leg&iacute;timo&raquo; que termine alguna vez en un pago.</li>
+      <li><strong>Jam&aacute;s corro un pixel de remarketing en la biblioteca.</strong> Sin Meta pixel, sin tag de Google Ads, sin LinkedIn Insight, sin retargeting de terceros en ninguna p&aacute;gina que existe para ense&ntilde;ar &mdash; eso es art&iacute;culos, glosario, investigaci&oacute;n, herramientas.</li>
+      <li><strong>Jam&aacute;s entreno IA con tus datos.</strong> Las herramientas corren en tu navegador; sus inputs nunca llegan a un servidor. Donde uso IA en el estudio (drafts, alt text, cross-links de b&uacute;squeda), los proveedores que uso est&aacute;n configurados con la opci&oacute;n &laquo;sin entrenamiento&raquo; activada. Pol&iacute;tica completa en <a href="/es/ai/">/es/ai/</a>.</li>
+      <li><strong>Jam&aacute;s agrego ni revendo lo que tecleaste en una herramienta.</strong> Margin Math, Plate Cost, Invoice Decoder &mdash; todo se queda en tu navegador. El sitio no tiene telemetr&iacute;a de servidor sobre ning&uacute;n input de herramienta.</li>
     </ul>
 
     <h2>Tus derechos</h2>
-    <p>Dependiendo de tu ubicación, puedes tener derechos sobre tus datos personales:</p>
+    <p>Maryland es mi jurisdicci&oacute;n; dependiendo de d&oacute;nde vives, puedes tener derechos adicionales bajo GDPR (UE / UK), CCPA (California) u otras leyes estatales. Los cuatro que m&aacute;s importan:</p>
     <ul>
-      <li><strong>Derecho de acceso:</strong> puedes pedir una copia de la información personal que tenemos sobre ti.</li>
-      <li><strong>Derecho de rectificación:</strong> puedes pedir que corrijamos información inexacta o incompleta.</li>
-      <li><strong>Derecho de supresión:</strong> puedes pedir que borremos tu información personal, sujeto a ciertas obligaciones legales.</li>
-      <li><strong>Derecho a darte de baja:</strong> puedes dejar de recibir comunicaciones de marketing en cualquier momento respondiendo a los correos con tu solicitud o escribiéndonos directamente.</li>
+      <li><strong>Acceso.</strong> Escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a> y te env&iacute;o una copia de todo lo asociado a tu nombre o email dentro de 30 d&iacute;as.</li>
+      <li><strong>Correcci&oacute;n.</strong> Mismo canal; arreglo cualquier cosa inexacta dentro de cinco d&iacute;as h&aacute;biles.</li>
+      <li><strong>Eliminaci&oacute;n.</strong> Las cuentas del Taller pueden auto-servirse en <a href="/es/account/">/es/account/</a>; la eliminaci&oacute;n se hace efectiva en minutos. Para hilos de la Ventana o submissions de formularios, escr&iacute;beme &mdash; borro a pedido, sin preguntas, dentro de cinco d&iacute;as h&aacute;biles.</li>
+      <li><strong>Op-out de marketing.</strong> La Library Letter y el Operator Drip tienen un enlace de unsubscribe en cada mensaje. Un clic. La lista est&aacute; en Buttondown, el unsubscribe es permanente.</li>
     </ul>
-    <p>Para ejercer estos derechos, contáctanos con la información de la sección «Contáctanos» de más abajo. Respondemos a solicitudes razonables dentro de 30 días.</p>
+    <p>Si algo del lado de los datos te parece mal, escribe a <a href="mailto:don@muntin.digital">don@muntin.digital</a> &mdash; mismo d&iacute;a h&aacute;bil, siempre dentro de dos. Si un incidente de seguridad alguna vez expone tus datos, notifico a los operadores afectados dentro de 72 horas y reporto al Attorney General de Maryland dentro de la ventana de 45 d&iacute;as de PIPA.</p>
 
-    <h2>Seguridad de los datos</h2>
-    <p>Nos tomamos en serio la seguridad de tu información personal. Implementamos medidas técnicas y organizativas razonables para protegerla, entre ellas:</p>
+    <h2>Vendors</h2>
+    <p>Cuatro terceros tocan los datos vinculados a este sitio. Cada uno tiene su propia pol&iacute;tica enlazada abajo. El principio es minimizaci&oacute;n: cada vendor ve solo lo que necesita para entregar el servicio que pediste.</p>
     <ul>
-      <li>Cifrado SSL para los datos que se transmiten entre tu navegador y nuestro sitio</li>
-      <li>Acceso seguro a nuestros sistemas protegido con contraseña</li>
-      <li>Revisiones periódicas de nuestras prácticas de seguridad</li>
-      <li>Límites sobre quién dentro de nuestra organización puede acceder a los datos personales</li>
+      <li><strong>Cloudflare</strong> &mdash; hosting (Pages), Workers, namespace KV, respaldos R2. Retenci&oacute;n de log est&aacute;ndar; sin anal&iacute;tica. <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></li>
+      <li><strong>Resend</strong> &mdash; entrega de email transaccional para formularios, la Ventana y el operator drip. Ve tu direcci&oacute;n de email y el cuerpo del mensaje que enviaste. <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">resend.com/legal/privacy-policy</a></li>
+      <li><strong>Plausible</strong> &mdash; anal&iacute;tica agregada cookieless. Ve la URL que viste y tu ubicaci&oacute;n a nivel pa&iacute;s. Sin cookies, sin identificadores. <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a></li>
+      <li><strong>Buttondown</strong> &mdash; entrega de newsletter para la Library Letter y el operator drip. Ve tu direcci&oacute;n de email y a qu&eacute; lista est&aacute;s. <a href="https://buttondown.com/privacy" target="_blank" rel="noopener">buttondown.com/privacy</a></li>
     </ul>
-    <p>Aunque hacemos todo lo posible por proteger tu información, ningún método de transmisión por internet es 100 % seguro. No podemos garantizar seguridad absoluta, pero estamos comprometidos con resguardar tus datos.</p>
 
-    <h2>Privacidad de menores</h2>
-    <p>Nuestro sitio y nuestros servicios no están dirigidos a menores de 13 años. No recopilamos intencionalmente información personal de menores de 13. Si nos enteramos de que hemos recopilado información personal de un menor de 13 sin el consentimiento de sus padres, la borraremos de inmediato. Por favor escríbenos si crees que recopilamos información de un menor por error.</p>
+    <h2>Menores</h2>
+    <p>Este sitio no est&aacute; dirigido a menores de 13 a&ntilde;os y no recolecto a sabiendas datos de ellos. Si me entero de que lo hice, los borro. Escr&iacute;beme si crees que se recolectaron datos de un menor.</p>
 
-    <h2>Cambios en esta Política de privacidad</h2>
-    <p>Muntin Digital&#8482; puede actualizar esta Política de privacidad de vez en cuando para reflejar cambios en nuestras prácticas, en la tecnología o en los requisitos legales. Notificaremos los cambios materiales actualizando la fecha de vigencia en la parte superior de esta política. El uso continuado del sitio después de publicarse los cambios constituye tu aceptación de la política actualizada.</p>
+    <h2>Cambios</h2>
+    <p>Si actualizo esta pol&iacute;tica, la fecha en la parte superior cambia y el cambio aparece en el <a href="/changelog/" hreflang="en" lang="en">changelog</a>. Los cambios materiales (vendor nuevo, tipo de dato nuevo) reciben un p&aacute;rrafo; las ediciones cosm&eacute;ticas (correcciones de typo) solo mueven la fecha.</p>
 
-    <h2>Contáctanos</h2>
+    <h2>Contacto</h2>
     <div class="contact-box">
-      <p><strong>Muntin Digital&#8482;</strong></p>
-      <p>LLC de Maryland &middot; Estudio digital totalmente remoto</p>
-      <p>Correo: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
-      <p>Sitio: <a href="https://muntin.digital" target="_blank" rel="noopener">muntin.digital</a></p>
-      <p>Si tienes preguntas sobre esta Política de privacidad o sobre cómo manejamos tu información personal, no dudes en escribirnos.</p>
+      <p><strong>Don Goldstein, Muntin Digital</strong>&trade;</p>
+      <p>Maryland LLC &middot; Silver Spring, MD</p>
+      <p>Email: <a href="mailto:don@muntin.digital">don@muntin.digital</a></p>
+      <p>Respuesta dentro de cuatro horas h&aacute;biles, lun a vie.</p>
     </div>
 
-    <p>Gracias por confiar tu información a Muntin Digital&#8482;. Nos comprometemos a ser transparentes sobre cómo trabajamos con tus datos.</p>
+    <p style="margin-top:36px"><strong>Superficies hermanas:</strong> <a href="/es/security/">/es/security/</a> (datos y seguridad &mdash; nueve afirmaciones, cinco pruebas) &middot; <a href="/es/never/">/es/never/</a> (cinco cosas que este estudio no har&aacute;) &middot; <a href="/es/ai/">/es/ai/</a> (c&oacute;mo se usa la IA en el estudio) &middot; <a href="/es/cookies.html">/es/cookies.html</a> (las tres cookies funcionales, listadas) &middot; <a href="/methods/" hreflang="en" lang="en">/methods/</a> (de d&oacute;nde sale cada afirmaci&oacute;n del sitio).</p>
   </article>
 </main>
 
@@ -317,8 +256,8 @@
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
-      <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -340,6 +279,9 @@
           <li><a href="/es/work/">Proyectos</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
           <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
         </ul>
       </nav>
 
@@ -362,23 +304,64 @@
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
           <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
       </nav>
     </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/es/terms.html">Términos</a>
         <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
         <a href="/es/accessibility.html">Accesibilidad</a>
         <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>

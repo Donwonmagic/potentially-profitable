@@ -92,7 +92,7 @@
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/learn/topics/brand-design/#articles",
-      "numberOfItems": 4,
+      "numberOfItems": 3,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -108,11 +108,6 @@
           "@type": "ListItem",
           "position": 3,
           "url": "https://muntin.digital/es/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "url": "https://muntin.digital/es/blog/can-chatgpt-write-your-restaurant-website/"
         }
       ]
     }
@@ -143,36 +138,21 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
     <nav class="nav-links" aria-label="Principal">
-      <a href="/es/services/">Servicios</a>
-      <a href="/es/for/restaurants/">Restaurantes</a>
-      <div class="nav-library-wrap">
-        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
-          <a class="nav-library-menu__home" href="/es/learn/">
-            <strong>Inicio de la biblioteca</strong>
-            <span>El centro de todo lo de abajo &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Aprende</h4>
-            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Lee</h4>
-            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Haz</h4>
-            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/about/">Sobre Don</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -186,8 +166,6 @@
       <a href="/learn/topics/brand-design/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -196,33 +174,24 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/services/">Servicios</a>
-    <a href="/es/for/restaurants/">Restaurantes</a>
-    <details class="mobile-library">
-      <summary>Biblioteca</summary>
-      <a href="/es/learn/">Inicio de la biblioteca</a>
-      <p class="mobile-library__group">Aprende</p>
-      <a href="/es/learn/start-here/">Empieza aquí</a>
-      <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/glossary/">Glosario</a>
-      <p class="mobile-library__group">Lee</p>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/learn/research/">Investigación</a>
-      <p class="mobile-library__group">Haz</p>
-      <a href="/es/tools/">Herramientas gratis</a>
-      <a href="/es/learn/checklists/">Listas y recursos</a>
-    </details>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/about/">Sobre Don</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/learn/topics/brand-design/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
@@ -376,9 +345,63 @@
 <!-- topic-essay:start -->
 <section class="topic-essay">
   <div class="container">
-    <p class="topic-essay__eyebrow">Lectura del tema</p>
+    <p class="topic-essay__eyebrow">Ensayo del pilar &middot; actualizado en mayo de 2026</p>
     <h2 class="topic-essay__title">La marca es lo que tu restaurante se siente antes de que llegue la comida.</h2>
-    <div class="topic-essay__body"><p>La marca de un restaurante no es un logo — es la sensación que tiene un comensal cuando la puerta se cierra detrás de él, y si el sitio coincide con eso. La mayoría de los restaurantes independientes fallan de una de dos formas: la marca es fuerte en el salón y está ausente en línea, o la marca es ruidosa en línea y desconectada de lo que entra por la puerta.</p><p>El puente es un set pequeño de tokens de diseño — la paleta, la tipografía, el tratamiento de las fotos, la voz — aplicados consistentemente en el sitio, GBP, el menú y los materiales impresos. No hace falta un rebrand. La mayoría de los operadores llegan al 80% con una mañana de sábado, una paleta y tres pares accesibles.</p><p>El camino:</p><ul><li><strong>Empieza aquí:</strong> <a href="/es/blog/wix-vs-custom-for-restaurants/">Wix vs. Custom</a>.</li><li><strong>Avanzado:</strong> <a href="/es/blog/can-chatgpt-write-your-restaurant-website/">¿Puede ChatGPT escribir tu sitio?</a></li></ul><p>Herramientas: <a href="/es/tools/brand-suite/">Brand Suite</a>, <a href="/es/tools/photo-brief/">Photo Brief</a>.</p><p>Tema hermano: <strong>Conversiones y Contenido</strong>.</p></div>
+    <div class="topic-essay__body"><p>La marca de un restaurante no es un logo &mdash; es la sensaci&oacute;n que tiene un comensal cuando la puerta se cierra detr&aacute;s de &eacute;l, y si el sitio coincide con eso. La mayor&iacute;a de los restaurantes independientes fallan de una de dos formas: la marca es fuerte en el sal&oacute;n y est&aacute; ausente en l&iacute;nea, o la marca es ruidosa en l&iacute;nea y desconectada de lo que entra por la puerta. El puente es un set peque&ntilde;o de tokens de dise&ntilde;o &mdash; la paleta, la tipograf&iacute;a, el tratamiento de la foto, la voz &mdash; aplicados consistentemente en el sitio, en GBP, en el men&uacute; y en los impresos. No hace falta un rebrand; la mayor&iacute;a de los operadores llega al 80% con una ma&ntilde;ana de s&aacute;bado, una paleta y tres pares accesibles.</p>
+
+      <p>Este pilar junta los manuales, t&eacute;rminos del glosario y herramientas para el trabajo de dise&ntilde;o que toca el sitio. L&eacute;elo de corrido si est&aacute;s armando una marca desde cero; salta a la secci&oacute;n que toque si est&aacute;s arreglando una pieza puntual.</p>
+
+      <h3>La marca es un sistema, no un logo</h3>
+
+      <p>Los cinco elementos que cargan la identidad visual de un restaurante independiente, en orden de palanca para el operador:</p>
+
+      <ul>
+        <li><strong>Paleta de color.</strong> M&aacute;ximo tres a cinco colores: un primario (tu &laquo;color de marca&raquo;), un secundario o acento, ink (casi negro para texto), crema o papel (para fondos) y un color de alerta si entregas una herramienta o un formulario. La parte dura es el <em>par accesible</em> &mdash; una combinaci&oacute;n cuyo contraste cumpla WCAG 2.2 AA al tama&ntilde;o de cuerpo. La herramienta gratis <a href="/es/tools/brand-suite/">Brand Suite</a> genera pares accesibles desde cualquier hue inicial.</li>
+        <li><strong>Tipograf&iacute;a.</strong> Dos faces, casi siempre: una display para titulares (la personalidad), una de texto para el cuerpo (la legibilidad). Para restaurantes independientes las combinaciones probadas son una serif display (Fraunces, Cormorant Garamond, EB Garamond) emparejada con una sans humanista (Inter, Source Sans, Public Sans). Evita emparejar dos display; evita emparejar dos sans. La <a href="/es/blog/restaurant-photo-spec-sheet/">hoja de especificaciones de fotos</a> incluye los emparejamientos tipogr&aacute;ficos usados en builds reales.</li>
+        <li><strong>Tratamiento de foto.</strong> &iquest;Tus fotos son c&aacute;lidas o fr&iacute;as? &iquest;Alto contraste o muteadas? &iquest;Plato cerrado o mesa abierta? Elige un tratamiento y mant&eacute;nlo en el sitio, GBP, social y print. La inconsistencia es lo que lee como &laquo;contrataron a tres proveedores distintos&raquo; &mdash; y eso es la marca.</li>
+        <li><strong>Voz.</strong> La forma en que habla el sitio. &iquest;Primera persona del chef? &iquest;Tercera persona editorial? &iquest;Casual juguetona? &iquest;Formal contenida? El contrato de voz de este sitio (<a href="/methods/#voice-contract" hreflang="en" lang="en">/methods/#voice-contract</a>) es un modelo: declarativas cortas, sin marketing-speak, sin signos de exclamaci&oacute;n. Elige un registro y qu&eacute;date ah&iacute;.</li>
+        <li><strong>Iconograf&iacute;a.</strong> Si usas iconos (en nav, en herramientas, en la p&aacute;gina del men&uacute;), necesitan un solo grosor de trazo, un solo radio de esquina y un solo peso visual. Mezclar iconos de l&iacute;nea con iconos rellenos lee como inconsistente. Usa un solo set; si tu sitio necesita un icono custom, brifea a un dise&ntilde;ador y agr&eacute;galo al sistema.</li>
+      </ul>
+
+      <p>Codifica estos cinco en un archivo de tokens (un bloque JSON o de custom properties de CSS) que el sitio, las plantillas de email y el dise&ntilde;ador de print referencien. Una vez que existen los tokens, los &laquo;cambios de marca&raquo; se vuelven ediciones de dos l&iacute;neas, no redise&ntilde;os.</p>
+
+      <h3>La accesibilidad tambi&eacute;n es trabajo de marca</h3>
+
+      <p>La meta de accesibilidad del plan de lanzamiento (<a href="/es/accessibility.html">/es/accessibility.html</a>) es WCAG 2.2 AA. La mayor&iacute;a de los operadores leen &laquo;accesibilidad&raquo; como un balde separado de cumplimiento; en la pr&aacute;ctica es una disciplina de marca. Tres lugares donde la l&iacute;nea se borra:</p>
+
+      <ul>
+        <li><strong>Contraste de color.</strong> Un par primario-sobre-crema que falla 2.2 AA a 16px no es una decisi&oacute;n de marca &mdash; es una decisi&oacute;n de visibilidad que el adulto mayor y la persona con baja visi&oacute;n no pueden ver. Ajusta la luminosidad de uno de los colores hasta que pase; el hue se queda. <a href="/es/glossary/accessible-pair/">Par accesible</a> es el t&eacute;rmino; la <a href="/es/tools/brand-suite/">Brand Suite</a> te muestra qu&eacute; pares de tu paleta pasan y cu&aacute;les no.</li>
+        <li><strong>Tama&ntilde;os de tipo.</strong> Piso de 16px en el cuerpo en tel&eacute;fonos. M&aacute;s chico es una decisi&oacute;n de marca que falla al 5% de tu audiencia. La excepci&oacute;n rara es texto de pie de p&aacute;gina o adorno aria-hidden; nunca los precios del men&uacute;, nunca el copy del cuerpo.</li>
+        <li><strong>Anillos de foco.</strong> El anillo amarillo por defecto que env&iacute;an los navegadores es feo y funciona. Reempl&aacute;zalo con un anillo de 2px en tu color de acento &mdash; no m&aacute;s delgado, no transparente, no eliminado por CSS. La experiencia del usuario que navega con teclado es parte de la marca.</li>
+      </ul>
+
+      <h3>Tres modos de fallo de marca espec&iacute;ficos a sitios de restaurante</h3>
+
+      <ol>
+        <li><strong>El delator de plantilla Wix.</strong> Fuentes stock, hero stock, bloque de testimonios stock, scroll &laquo;parallax&raquo; de mediados de los 2010s. La lectura del visitante es &laquo;a este restaurante no le import&oacute; lo suficiente como para hacer esto por su cuenta&raquo;. El arreglo no es custom-desde-cero; el arreglo es quitar los delatores. Hostea las fuentes, reemplaza la foto stock con una imagen tomada por el operador, mata el parallax. <a href="/es/blog/wix-vs-custom-for-restaurants/">Wix versus a la medida</a> recorre los seis lugares donde Wix se queda sin espacio para un independiente.</li>
+        <li><strong>El delator de rebrand de agencia.</strong> Espacio en blanco excesivo, formas abstractas, &laquo;aut&eacute;ntico&raquo; en el about copy, una fuente demasiado refinada para la comida. La lectura del visitante es &laquo;este restaurante contrat&oacute; a la agencia equivocada&raquo;. La comida no necesita dise&ntilde;o a este nivel; el dise&ntilde;o est&aacute; compitiendo con el men&uacute;. Empareja el registro visual con la realidad de operaci&oacute;n.</li>
+        <li><strong>El desfase.</strong> El sal&oacute;n es c&aacute;lido, hecho a mano, familiar. El sitio se ve como una startup tecnol&oacute;gica. O el sal&oacute;n es preciso, emplatado, alta cocina. El sitio se ve como un blog Wordpress. El desfase cuesta reservas porque la expectativa que el visitante set&eacute;a en el sitio no coincide con lo que se encuentra al entrar. Los dos tienen que estar de acuerdo.</li>
+      </ol>
+
+      <h3>La fotograf&iacute;a es el artefacto que carga la marca</h3>
+
+      <p>La fotograf&iacute;a correlaciona con la consideraci&oacute;n pero no con la conversi&oacute;n (seg&uacute;n los hallazgos de la auditor&iacute;a del 1% de margen). Lo que eso significa: la fotograf&iacute;a fenomenal no arregla un embudo con fugas, pero la mala fotograf&iacute;a le pone un techo al valor percibido. Tres reglas:</p>
+
+      <ul>
+        <li><strong>La luz lo es todo.</strong> Luz de d&iacute;a en la ventana, media ma&ntilde;ana, con un reflector blanco para rellenar las sombras. La foto m&aacute;s cara de iPhone con mala luz le gana a la foto m&aacute;s barata de DSLR con buena luz, cada vez. La <a href="/es/blog/restaurant-photo-spec-sheet/">hoja de especificaciones de fotos</a> cubre el setup de iluminaci&oacute;n.</li>
+        <li><strong>Hojas de spec a los fot&oacute;grafos.</strong> Entr&eacute;gale al fot&oacute;grafo el output de <a href="/es/tools/photo-brief/">Photo Brief</a> antes del shoot. Relaciones de aspecto, tama&ntilde;os de archivo, superficies a las que apunta. Evita el resultado de &laquo;cuatro horas de fotos que se ven geniales pero no encajan en ning&uacute;n lado&raquo;.</li>
+        <li><strong>No uses comida generada por IA.</strong> La p&aacute;gina <a href="/es/ai/">/es/ai/</a> se compromete con eso; los operadores tambi&eacute;n deber&iacute;an. El sal&oacute;n se da cuenta. El cr&iacute;tico se da cuenta. El visitante se da cuenta. Platos reales por un fot&oacute;grafo real.</li>
+      </ul>
+
+      <h3>D&oacute;nde este tema toca a los otros</h3>
+
+      <ul>
+        <li><strong><a href="/es/learn/topics/conversions/">Conversiones y Contenido</a></strong> &mdash; porque la consistencia de marca sube el valor percibido, y el valor percibido sube el techo del precio. El bavette steak que cuesta $34 en un men&uacute; bellamente dise&ntilde;ado lee como m&aacute;s barato que el mismo steak a $34 en un men&uacute; feo.</li>
+        <li><strong><a href="/es/learn/topics/speed-mobile/">Velocidad y m&oacute;vil</a></strong> &mdash; porque las decisiones de dise&ntilde;o (hero grande, web fonts, cursores custom, animaciones de hover) juegan contra la velocidad. Los buenos dise&ntilde;adores conocen el tradeoff expl&iacute;citamente.</li>
+        <li><strong><a href="/es/learn/topics/trust-reviews/">Confianza y rese&ntilde;as</a></strong> &mdash; porque las se&ntilde;ales de confianza en un sitio (la p&aacute;gina del due&ntilde;o, el agregado de rese&ntilde;as, las menciones de prensa) son artefactos visuales y se ganan su tratamiento visual.</li>
+      </ul>
+
+      <p>El compuesto a vigilar: <strong>el puntaje de consistencia de Brand Suite</strong>. Corre la herramienta trimestralmente con tu paleta actual. El pasa-no-pasa de los pares accesibles es la &uacute;nica m&eacute;trica que importa; lo dem&aacute;s es gusto.</p></div>
   </div>
 </section>
 <!-- topic-essay:end -->
@@ -408,69 +431,113 @@
 <footer>
   <div class="container">
     <div class="foot-cta">
-      <div class="foot-cta-text">Ready to build something worth the time?</div>
-      <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Write to Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
     <div class="foot-grid">
       <div class="foot-col foot-brand">
-        <a href="/" class="foot-lockup-wrap" aria-label="Muntin Digital home">
+        <a href="/es/" class="foot-lockup-wrap" aria-label="Muntin Digital — inicio">
           <img class="foot-lockup" src="/brand/lockup/lockup-horizontal-cream.svg" alt="Muntin Digital" width="240" height="53" loading="lazy" decoding="async">
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
-        <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A restaurant web library and design studio in Silver Spring, MD &mdash; articles, free tools, research, and a <!-- count:glossary.terms -->139<!-- /count -->-term glossary, with the studio behind them when you&rsquo;re ready to hire.</p>
+        <p class="foot-tagline">La ventana.</p>
+        <p class="foot-blurb">Una biblioteca web y estudio de dise&ntilde;o para restaurantes, con base en Silver Spring, MD &mdash; art&iacute;culos, herramientas gratis, investigaci&oacute;n y un glosario de <!-- count:glossary.terms -->139<!-- /count --> t&eacute;rminos, con el estudio detr&aacute;s cuando quieras contratar. Se habla espa&ntilde;ol.</p>
       </div>
 
       <nav class="foot-col" aria-labelledby="foot-explore">
-        <p class="foot-heading" id="foot-explore">Explore</p>
+        <p class="foot-heading" id="foot-explore">Explorar</p>
         <ul class="foot-links">
-          <li><a href="/services/">Services</a></li>
-          <li><a href="/for/restaurants/">For restaurants</a></li>
-          <li><a href="/work/">Work</a></li>
-          <li><a href="/about/">About Don</a></li>
-          <li><a href="/system/">The system</a></li>
+          <li><a href="/es/services/">Servicios</a></li>
+          <li><a href="/es/for/restaurants/">Para restaurantes</a></li>
+          <li><a href="/es/work/">Proyectos</a></li>
+          <li><a href="/es/about/">Sobre Don</a></li>
+          <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col" aria-labelledby="foot-learn">
-        <p class="foot-heading" id="foot-learn">Learn</p>
+        <p class="foot-heading" id="foot-learn">Biblioteca</p>
         <ul class="foot-links">
-          <li><a href="/learn/">Library home</a></li>
-          <li><a href="/learn/start-here/">Start here</a></li>
-          <li><a href="/learn/topics/">Topics</a></li>
-          <li><a href="/blog/">Articles</a></li>
-          <li><a href="/tools/">Free tools</a></li>
-          <li><a href="/glossary/">Glossary</a></li>
-          <li><a href="/learn/research/">Research</a></li>
-          <li><a href="/learn/checklists/">Checklists &amp; guides</a></li>
+          <li><a href="/es/learn/">Inicio de la biblioteca</a></li>
+          <li><a href="/es/learn/start-here/">Empieza aquí</a></li>
+          <li><a href="/es/learn/topics/">Temas</a></li>
+          <li><a href="/es/blog/">Artículos</a></li>
+          <li><a href="/es/tools/">Herramientas gratis</a></li>
+          <li><a href="/es/glossary/">Glosario</a></li>
+          <li><a href="/es/learn/research/">Investigación</a></li>
+          <li><a href="/es/learn/checklists/">Listas y recursos</a></li>
         </ul>
       </nav>
 
       <nav class="foot-col foot-contact" aria-labelledby="foot-contact">
-        <p class="foot-heading" id="foot-contact">Contact</p>
+        <p class="foot-heading" id="foot-contact">Contacto</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Write to Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="/es/window/">Escríbele a Don</a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
-        <p class="foot-trust"><strong>Reply time:</strong> under 4 hours, Mon&#8211;Fri</p>
+        <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
       </nav>
     </div>
 
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
+
     <div class="foot-bottom">
-      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p>
+      <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/accessibility.html">Accessibility</a>
-        <a href="/cookies.html">Cookies</a>
+        <a href="/es/terms.html">Términos</a>
+        <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
+        <a href="/es/accessibility.html">Accesibilidad</a>
+        <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>

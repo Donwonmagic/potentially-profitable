@@ -242,36 +242,21 @@
       </svg>
       Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
+         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
+         Biblioteca apunta al hub canónico /es/library/. Herramientas
+         se promueve del antiguo mega-menú a un elemento de primer
+         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
+         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
+         se retira (el hub ES el menú); el controlador del script
+         también desaparece. -->
     <nav class="nav-links" aria-label="Principal">
-      <a href="/es/services/">Servicios</a>
-      <a href="/es/for/restaurants/">Restaurantes</a>
-      <div class="nav-library-wrap">
-        <a href="/es/learn/" class="nav-library-trigger">Biblioteca<svg class="nav-library-chevron" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <nav class="nav-library-menu nav-library-menu--mega" aria-label="Secciones de la biblioteca">
-          <a class="nav-library-menu__home" href="/es/learn/">
-            <strong>Inicio de la biblioteca</strong>
-            <span>El centro de todo lo de abajo &rarr;</span>
-          </a>
-          <div class="nav-library-menu__col">
-            <h4>Aprende</h4>
-            <a href="/es/learn/start-here/"><strong>Empieza aquí</strong><span>El recorrido guiado de 60 minutos</span></a>
-            <a href="/es/learn/topics/"><strong>Temas</strong><span>Navega por lo que quieres arreglar</span></a>
-            <a href="/es/glossary/"><strong>Glosario</strong><span><!-- count:glossary.terms -->139<!-- /count --> términos en lenguaje claro</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Lee</h4>
-            <a href="/es/blog/"><strong>Artículos</strong><span>Las guías paso a paso</span></a>
-            <a href="/es/learn/research/"><strong>Investigación</strong><span>La evidencia detrás de las guías</span></a>
-          </div>
-          <div class="nav-library-menu__col">
-            <h4>Haz</h4>
-            <a href="/es/tools/"><strong>Herramientas gratis</strong><span>Revisa tu propio sitio</span></a>
-            <a href="/es/learn/checklists/"><strong>Listas y recursos</strong><span>Workbooks que puedes guardar</span></a>
-          </div>
-        </nav>
-      </div>
+      <a href="/es/library/">Biblioteca</a>
+      <a href="/es/tools/">Herramientas</a>
       <a href="/es/work/">Proyectos</a>
-      <a href="/es/about/">Sobre Don</a>
+      <a href="/es/studio/">Estudio</a>
+      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
+      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -285,8 +270,6 @@
       <a href="/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="nav-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="nav-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
@@ -295,33 +278,24 @@
     </button>
   </div>
   <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/services/">Servicios</a>
-    <a href="/es/for/restaurants/">Restaurantes</a>
-    <details class="mobile-library">
-      <summary>Biblioteca</summary>
-      <a href="/es/learn/">Inicio de la biblioteca</a>
-      <p class="mobile-library__group">Aprende</p>
-      <a href="/es/learn/start-here/">Empieza aquí</a>
-      <a href="/es/learn/topics/">Temas</a>
-      <a href="/es/glossary/">Glosario</a>
-      <p class="mobile-library__group">Lee</p>
-      <a href="/es/blog/">Artículos</a>
-      <a href="/es/learn/research/">Investigación</a>
-      <p class="mobile-library__group">Haz</p>
-      <a href="/es/tools/">Herramientas gratis</a>
-      <a href="/es/learn/checklists/">Listas y recursos</a>
-    </details>
+    <a href="/es/library/">Biblioteca</a>
+    <a href="/es/tools/">Herramientas</a>
     <a href="/es/work/">Proyectos</a>
-    <a href="/es/about/">Sobre Don</a>
+    <a href="/es/studio/">Estudio</a>
+    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
+    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a class="mobile-auth js-nav-signin" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="mobile-auth js-nav-workshop" href="/es/workbench/" hidden>El Taller</a>
     <a href="/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
+
+  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
+       single link to /es/library/ (the canonical three-doors hub IS
+       the menu). Las reglas CSS de .nav-library-* permanecen para
+       reusar el patrón si vuelve un mega-menú en el futuro. -->
 
   <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
        Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
@@ -376,8 +350,8 @@
       </p>
       <ul class="hero-counts" aria-label="La biblioteca en cifras">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;t&eacute;rminos</li>
-        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;herramientas gratis</li>
-        <li class="hero-counts__chip"><strong><!-- count:articles -->17<!-- /count --></strong>&nbsp;art&iacute;culos</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;herramientas gratis</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->18<!-- /count --></strong>&nbsp;art&iacute;culos</li>
         <li class="hero-counts__chip">Todo gratis</li>
       </ul>
       <div class="hero-ctas">
@@ -549,7 +523,7 @@
       </a>
       <a class="learn-tool" href="/es/tools/">
         <span class="learn-tool-kicker">Herramientas gratis · sin registro</span>
-        <h3><!-- count:tools.live -->13<!-- /count --> herramientas gratis en <!-- count:topics -->7<!-- /count --> temas &mdash; precios, SEO, marca, horarios, contenido, operaciones.</h3>
+        <h3><!-- count:tools.live -->15<!-- /count --> herramientas gratis en <!-- count:topics -->8<!-- /count --> temas &mdash; precios, SEO, marca, horarios, contenido, operaciones.</h3>
         <p>Diagnósticos conscientes de restaurante, calculadoras, generadores &mdash; precios, mezcla del menú, costo del plato, paleta de marca, brief de fotos, horarios, calificación de Google y más. Cada herramienta corre en tu navegador, se agrupa por los mismos seis temas que el resto de la biblioteca, y enlaza con la investigación que la justifica.</p>
         <span class="learn-tool-cta">Explorar herramientas →</span>
       </a>
@@ -591,6 +565,18 @@
       </thead>
       <tbody>
       <tr>
+        <td class="lib-idx-title"><a href="/es/tools/holiday-hours/">Generador de horarios festivos</a></td>
+        <td class="lib-idx-section">Herramientas</td>
+        <td class="lib-idx-date" aria-label="2026-05-02"><time datetime="2026-05-02">2026-05-02</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/es/tools/menu-converter/">Conversor de menú</a></td>
+        <td class="lib-idx-section">Herramientas</td>
+        <td class="lib-idx-date" aria-label="2026-05-02"><time datetime="2026-05-02">2026-05-02</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
         <td class="lib-idx-title"><a href="/es/tools/menu-design/">Suite de Diseño de Menú</a></td>
         <td class="lib-idx-section">Herramientas</td>
         <td class="lib-idx-date" aria-label="2026-05-01"><time datetime="2026-05-01">2026-05-01</time></td>
@@ -622,18 +608,6 @@
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></td>
-        <td class="lib-idx-section">Artículos</td>
-        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/blog/restaurant-photo-spec-sheet/">Hoja de especificaciones de fotos</a></td>
-        <td class="lib-idx-section">Artículos</td>
-        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/es/blog/how-to-read-restaurant-google-search-console/">Cómo leer Google Search Console</a></td>
         <td class="lib-idx-section">Artículos</td>
         <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
@@ -919,8 +893,8 @@
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
-      <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -942,6 +916,9 @@
           <li><a href="/es/work/">Proyectos</a></li>
           <li><a href="/es/about/">Sobre Don</a></li>
           <li><a href="/es/system/">El sistema</a></li>
+          <li><a href="/receipts/" hreflang="en" lang="en">Receipts</a></li>
+          <li><a href="/methods/" hreflang="en" lang="en">Methods</a></li>
+          <li><a href="/changelog/" hreflang="en" lang="en">Changelog</a></li>
         </ul>
       </nav>
 
@@ -964,23 +941,64 @@
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
           <li><a href="/es/window/">Escríbele a Don</a></li>
-          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Tiempo de respuesta:</strong> menos de 4 horas, lun–vie</p>
       </nav>
     </div>
+
+    <!-- newsletter-capture:start -->
+    <div class="foot-newsletter">
+      <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es">
+        <p class="foot-newsletter-pitch">Te aviso cuando publique algo — cuatro notas por trimestre, sin secuencias automatizadas.</p>
+        <label class="sr-only" for="foot-news-email">Tu correo</label>
+        <input id="foot-news-email" name="email" type="email" required autocomplete="email" placeholder="tu@turestaurante.com" />
+        <input type="hidden" name="locale" value="es" />
+        <input type="hidden" name="source" value="footer" />
+        <input type="hidden" name="ts" value="" />
+        <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+    <!-- newsletter-capture:end -->
 
     <div class="foot-bottom">
       <p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; LLC de Maryland &middot; Silver Spring, MD</p>
       <nav class="foot-legal" aria-label="Legal">
         <a href="/es/terms.html">Términos</a>
         <a href="/es/privacy.html">Privacidad</a>
+        <a href="/es/security/">Datos y seguridad</a>
         <a href="/es/accessibility.html">Accesibilidad</a>
         <a href="/es/cookies.html">Cookies</a>
+        <a href="/es/feed.xml" type="application/rss+xml" title="Muntin Digital RSS">RSS</a>
       </nav>
     </div>
   </div>
+  <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      Auditor&iacute;a gratis
+    </a>
+    <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      Escr&iacute;bele a Don
+    </a>
+  </aside>
+  <script>
+    (function () {
+      var bar = document.getElementById('mobileCtaBar');
+      if (!bar) return;
+      var hide = document.body.dataset && document.body.dataset.hideStickyBar !== undefined;
+      var path = location.pathname;
+      if (hide || /^\/(window|sign-in|account|workbench|admin|es\/(window|sign-in|account|workbench|admin))/.test(path)) {
+        bar.hidden = true;
+      }
+    })();
+  </script>
 </footer>
+<script src="/assets/js/first-touch.js" defer></script>
+<script src="/assets/js/save-next-time.js" defer></script>
+<script src="/assets/js/share-hydrate.js" defer></script>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
 </body>

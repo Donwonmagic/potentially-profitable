@@ -61,3 +61,51 @@
 /es/blog/when-to-rebuild-your-restaurant-website/         /es/blog/cuando-rehacer-tu-sitio-web-de-restaurante/                    301
 /es/blog/how-to-read-restaurant-google-search-console/    /es/blog/como-leer-google-search-console-de-tu-restaurante/             301
 
+# Phase 5 (May 2026): /studio/contact/ alias.
+#
+# Per launch plan Part II, the canonical contact path moves from
+# /window/ to /studio/contact/ — the latter is more discoverable to
+# time-poor owners searching "contact" rather than the metaphorical
+# "window," and translates straight to /es/studio/contact/. The
+# infrastructure (auth, message handling, Worker routes) still lives
+# under /window/, so we 302 the new URL to the existing surface
+# rather than rebuild the backend. 302 (not 301) so we can flip the
+# canonical later without bleeding the search-engine cache.
+/studio/contact/                  /window/                  302
+/studio/contact                   /window/                  302
+/es/studio/contact/               /es/window/               302
+/es/studio/contact                /es/window/               302
+
+# Phase 5: /library/ aliases.
+#
+# The launch plan's IA migration target is /library/ as the single
+# canonical hub for /learn/, /blog/, /glossary/, and /learn/research/.
+# The full URL migration is multi-week; for now /library/ is a real
+# hub page that links INTO the existing /learn/ + /blog/ + /glossary/
+# trees. Keep the bare-/library/ path active (no redirect) so
+# /library/ is a destination, not a forwarder. The /library/articles/,
+# /library/glossary/, etc. paths the plan calls out are reserved for
+# the eventual migration; today they 302 to the live equivalents.
+/library/articles/                /blog/                    302
+/library/articles/*               /blog/:splat              302
+/library/glossary/                /glossary/                302
+/library/glossary/*               /glossary/:splat          302
+/library/research/                /learn/research/          302
+/library/research/*               /learn/research/:splat    302
+/library/topics/                  /learn/topics/            302
+/library/topics/*                 /learn/topics/:splat      302
+/library/start/                   /learn/start-here/        302
+/library/checklists/              /learn/checklists/        302
+/library/checklists/*             /learn/checklists/:splat  302
+/es/library/articles/             /es/blog/                 302
+/es/library/articles/*            /es/blog/:splat           302
+/es/library/glossary/             /es/glossary/             302
+/es/library/glossary/*            /es/glossary/:splat       302
+/es/library/research/             /es/learn/research/       302
+/es/library/research/*            /es/learn/research/:splat 302
+/es/library/topics/               /es/learn/topics/         302
+/es/library/topics/*              /es/learn/topics/:splat   302
+/es/library/start/                /es/learn/start-here/     302
+/es/library/checklists/           /es/learn/checklists/     302
+/es/library/checklists/*          /es/learn/checklists/:splat 302
+

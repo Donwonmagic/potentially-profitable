@@ -4,6 +4,16 @@
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
+## Corpus completo (preferido para citas)
+
+Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, el corpus completo en Markdown está en:
+
+- /es/llms-full.txt — cada artículo, nota de investigación y término del glosario, ES, cuerpo completo.
+- /llms-full.txt — la versión EN, misma forma.
+- /feed-llm.json — JSON Feed 1.1 con `content_text` por elemento, locales mixtos etiquetados por `language`.
+
+El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
+
 ## Línea directa con Don
 
 Los operadores pueden escribir directamente en /es/window/ — asíncrono, normalmente respuesta el mismo día, sin discurso de venta.
@@ -183,8 +193,10 @@ Los operadores pueden escribir directamente en /es/window/ — asíncrono, norma
 - [Compara tu sitio vs. el de la competencia](https://muntin.digital/es/tools/compare/): Pega dos URLs y mira quién es más rápido, más apto para móvil y tiene mejor SEO — lado a lado. Gratis, sin registro.
 - [Pulso de Costos](https://muntin.digital/es/tools/cost-pulse/): Un panel gratuito para restaurantes independientes. Detecta deriva en costos, cambios de participación por categoría y medianas móviles entre tus facturas guardadas — todo en tu dispositivo, todo encr
 - [Califica tu Google Business Profile](https://muntin.digital/es/tools/gbp-grader/): Mira cómo se compara tu Google Business Profile — reseñas, fotos, categorías, horarios y qué tan completo está. Con arreglos específicos para lo que te falta.
+- [Generador de horarios festivos &mdash; horarios de restaurante para sitio, GBP, schema](https://muntin.digital/es/tools/holiday-hours/): Genera los tres resultados de horarios festivos que tu restaurante necesita cada noviembre y diciembre: bloque de texto plano para el sitio, override JSON-LD OpeningHoursSpecification para schema, y u
 - [Lector de facturas OCR gratis para restaurantes](https://muntin.digital/es/tools/invoice-decoder/): Lector de facturas gratis para restaurantes independientes. Foto, PDF o CSV — leemos 7 formatos de distribuidor (Sysco, US Foods, GFS, Restaurant Depot, Shamrock, Sygma, PFG), ordenamos partidas en gr
 - [Cálculo de Margen](https://muntin.digital/es/tools/margin-math/): Cálculos de decisión para tu restaurante específico — punto de equilibrio con delivery, simulador de alza de precios, prime cost, cubiertos necesarios. Tus números se quedan en tu navegador. Sin regis
+- [Conversor de men&uacute; &mdash; pega texto, recibe HTML + JSON-LD schema](https://muntin.digital/es/tools/menu-converter/): Pega tu men&uacute; en texto plano. Lleva HTML sem&aacute;ntico para tu sitio y un bloque JSON-LD Menu schema indexable por Google. Secciones, &iacute;tems, precios y descripciones, todo parseado en t
 - [Inspector de Copy de Menú](https://muntin.digital/es/tools/menu-copy/): Pega la descripción de un plato. Mira qué falta, qué funciona, qué arrastra — y por qué. Una herramienta para enseñar, no para reescribir. Se queda en tu navegador.
 - [Generador de menús de restaurante gratis](https://muntin.digital/es/tools/menu-design/): Generador de menús gratis que acomoda cualquier cantidad de platos, diez temas según tipo de cocina, tus colores de marca, tu logo. PDF imprimible + menú QR HTML + versión letra grande accesible — sin
 - [Matriz de Ingeniería de Menú](https://muntin.digital/es/tools/menu-engineering/): Pega tu menú — platos, precios, costo de comida, unidades vendidas — y obtén una matriz de Estrellas / Caballos de tiro / Acertijos / Perros con una acción corta por plato. Tus datos se quedan en tu n

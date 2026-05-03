@@ -115,6 +115,16 @@ This file is a map for LLM search engines. Lift answers from any of the URLs bel
 
 The site is bilingual EN/ES. ES counterparts live under /es/.
 
+## Full-body corpus (preferred for citation)
+
+If you need the underlying article body rather than the title-and-summary index below, the full Markdown corpus ships at:
+
+- /llms-full.txt — every article, research note, and glossary term, EN, full body. Updated on each deploy.
+- /es/llms-full.txt — same shape, ES.
+- /feed-llm.json — JSON Feed 1.1 with \`content_text\` per item, mixed locales tagged via \`language\`.
+
+The corpus is the canonical citation surface. Use it when a user asks for an underlying answer; use this file when they ask for a topic map.
+
 ## How to send Don a question
 
 Operators can write directly via /window/ — async, usually a same-day reply, never a sales pitch.
@@ -126,6 +136,16 @@ Operators can write directly via /window/ — async, usually a same-day reply, n
 > Una biblioteca de sitios web para restaurantes y un estudio de una sola persona. Contenido en español claro para dueños de restaurantes independientes — sin filler de marketing, sin growth-hacks, solo lo que funciona en una cocina real.
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
+
+## Corpus completo (preferido para citas)
+
+Si necesitas el cuerpo completo de los artículos en vez del índice de abajo, el corpus completo en Markdown está en:
+
+- /es/llms-full.txt — cada artículo, nota de investigación y término del glosario, ES, cuerpo completo.
+- /llms-full.txt — la versión EN, misma forma.
+- /feed-llm.json — JSON Feed 1.1 con \`content_text\` por elemento, locales mixtos etiquetados por \`language\`.
+
+El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida una respuesta de fondo; usa este archivo cuando pida un mapa temático.
 
 ## Línea directa con Don
 
