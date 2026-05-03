@@ -4068,27 +4068,40 @@
       var id = card.dataset.id;
       var t = MD_THEMES.get(id);
       if (!t) return;
-      // Wave studio-quality — switch canvas thumbnails for pre-rendered
-      // SVG <img>s. Each /assets/menu-design-thumbs/<id>.svg is built
-      // from themes.js + cuisine-specific dish samples, uses real theme
-      // displayFamily/bodyFamily strings (browser renders with whatever
-      // @font-face fonts are loaded), and ships a Michelin-style leader-
-      // dot, divider variant, allergen pill, and theme name label. SVG
-      // scales infinitely + costs ~400 bytes gz per theme.
-      // Existing canvas if present is removed so the upgrade is sticky.
+      // Wave studio-quality — inline SVG (not <img>) so the SVG <text>
+      // elements use whatever @font-face fonts the page has loaded.
+      // The moment Cormorant / Playfair / Bebas / etc land in
+      // /assets/fonts/ + are wired in @font-face, every thumbnail
+      // renders in its actual typography with zero further work.
+      // SVG content lives in MD_THUMBS, populated by the build script
+      // scripts/build-theme-thumbnails.mjs from themes.js +
+      // cuisine-specific dish samples + the Muntin cuisine-decoration
+      // library (olive branch, fleur-de-lis, talavera, crane, wave,
+      // laurel, grape, deco fan, etc).
       var oldCanvas = card.querySelector('canvas.md-theme-thumb');
       if (oldCanvas) oldCanvas.parentNode.removeChild(oldCanvas);
-      var img = card.querySelector('img.md-theme-thumb');
-      if (!img) {
-        img = document.createElement('img');
-        img.className = 'md-theme-thumb';
-        img.setAttribute('aria-hidden', 'true');
-        img.setAttribute('alt', '');
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        card.appendChild(img);
+      var oldImg = card.querySelector('img.md-theme-thumb');
+      if (oldImg) oldImg.parentNode.removeChild(oldImg);
+      var holder = card.querySelector('.md-theme-thumb');
+      if (!holder) {
+        holder = document.createElement('div');
+        holder.className = 'md-theme-thumb';
+        holder.setAttribute('aria-hidden', 'true');
+        card.appendChild(holder);
       }
-      img.src = '/assets/menu-design-thumbs/' + id + '.svg?v=20260503-wsq';
+      var svgString = (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get)
+        ? MD_THUMBS.get(id) : null;
+      if (svgString) {
+        holder.innerHTML = svgString;
+        // Make the inline SVG scale to the holder's box.
+        var inlineSvg = holder.querySelector('svg');
+        if (inlineSvg) {
+          inlineSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+          inlineSvg.style.width = '100%';
+          inlineSvg.style.height = '100%';
+          inlineSvg.style.display = 'block';
+        }
+      }
       card.dataset.thumbLoaded = '1';
     });
   }
