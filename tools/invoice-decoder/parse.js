@@ -30,7 +30,15 @@
   // Common units the discriminator regex accepts as a price-line
   // unit token. Anything else in the unit slot demotes the line
   // toward Pattern C (description-+-price fallback).
-  var UNITS_RE = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box|jug|jar|tin|can|sleeve|tray|sack|bunch)$/i;
+  //
+  // Wave C.3 lite — extended with regional foodservice container
+  // units that previously dropped non-Sysco/USF distributors
+  // (produce jobbers, beer/wine, paper-goods, ethnic wholesalers)
+  // into the C-fallback. New entries: flat, keg, bin, tote,
+  // gaylord, rack, btl, bottle, pail, pkt/packet, drum, pouch.
+  // Spanish synonyms (bandeja, barril, saco, manojo, atado, caja,
+  // botella, paquete) sit alongside.
+  var UNITS_RE = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box|jug|jar|tin|can|sleeve|tray|sack|bunch|flat|keg|bin|tote|gaylord|rack|btl|bottle|bottles|pail|pkt|packet|drum|pouch|bandeja|barril|saco|manojo|atado|caja|botella|paquete)$/i;
 
   // Header / footer / boilerplate lines that shouldn't be parsed
   // as items. EN + ES coverage.
@@ -77,13 +85,23 @@
   // Conservative bias: skip lone-digit clusters with letters (e.g.
   // "B7" — could be a SKU prefix). The .dd-decimal / $-prefix
   // requirement filters out almost all false positives.
-  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
+  //
+  // Wave B.5 — added Z↔2 and g↔9. Both are well-documented Tesseract
+  // confusions in numeric columns (especially on phone-camera shots
+  // where serif/sans contrast is low). Both are guarded by the same
+  // numeric-cluster requirement, so a word like "size" is left alone
+  // (it has no $-prefix and no .dd decimal). Capital G stays untouched
+  // — it appears in valid SKU prefixes and the false-positive rate is
+  // too high.
+  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQqZzgG.,]+|[0-9OoIl|SsBbQqZzgG,]+\.[0-9OoIl|SsBbQqZzgG]{2,3})/g;
   function repairOcrNumerics(line) {
     return String(line || '').replace(OCR_CLUSTER_RE, function (m) {
       return m
         .replace(/[OoQq]/g, '0')
         .replace(/[lI|]/g,  '1')
+        .replace(/[Zz]/g,   '2')
         .replace(/[Ss]/g,   '5')
+        .replace(/[g]/g,    '9')
         .replace(/[Bb]/g,   '8');
     });
   }
@@ -373,7 +391,9 @@
       return {
         kind: 'rounding',
         delta: delta,
-        message: 'Likely rounding only — within ' + rows.length * 5 + '¢.'
+        message: 'Likely rounding only — within ' + rows.length * 5 + '¢.',
+        humanWhy: 'Sum vs. printed total differs by $' + Math.abs(delta).toFixed(2) +
+          ' across ' + rows.length + ' rows — that\'s within penny-rounding tolerance, so we treat the printed total as authoritative.'
       };
     }
 
@@ -399,7 +419,10 @@
               from: r.lineTotal,
               to: altVal,
               delta: delta,
-              message: 'Line ' + (i + 1) + ' reads $' + s + ' — if it\'s $' + alt + ', the math balances.'
+              message: 'Line ' + (i + 1) + ' reads $' + s + ' — if it\'s $' + alt + ', the math balances.',
+              humanWhy: 'Tesseract often confuses ' + DIGIT_PAIRS[pair][0] + ' and ' +
+                DIGIT_PAIRS[pair][1] + ' on phone-camera shots. Flipping line ' + (i + 1) +
+                ' from $' + s + ' to $' + alt + ' makes the row total reconcile with the printed total within 1¢.'
             };
           }
         }
@@ -415,7 +438,9 @@
         return {
           kind: 'missing-line',
           delta: delta,
-          message: 'Sum is $' + delta.toFixed(2) + ' under printed total — likely one missed line near the bottom.'
+          message: 'Sum is $' + delta.toFixed(2) + ' under printed total — likely one missed line near the bottom.',
+          humanWhy: 'The gap of $' + delta.toFixed(2) + ' is close to your median row ($' +
+            medianTotal.toFixed(2) + '), which usually means one line at the bottom of the invoice was cut off in the photo or skipped by OCR. Re-snap the bottom of the page or add the missing line manually.'
         };
       }
     }
@@ -423,7 +448,9 @@
     return {
       kind: 'unknown',
       delta: delta,
-      message: 'Math is off by $' + Math.abs(delta).toFixed(2) + '.'
+      message: 'Math is off by $' + Math.abs(delta).toFixed(2) + '.',
+      humanWhy: 'Row totals add up to $' + sum.toFixed(2) + ' but the printed total is $' +
+        printedTotal.toFixed(2) + '. None of our reconciliation strategies (rounding, digit-flip, missing-line) fit cleanly — review the rows for an OCR misread, a tax/discount line, or a typo.'
     };
   }
 

@@ -99,6 +99,32 @@
     'dozen':     { family: 'count',         toBase: 12 },
     'doz':       { family: 'count',         toBase: 12 },
 
+    // Wave C.3 lite — regional foodservice container units. All
+    // treated as `count` when no inner-pack info is present (e.g.
+    // "2 KEGS $400" → 2 ct). When the row also carries a pack
+    // notation (e.g. "1/15.5 GAL KEG"), pack-pricing already prefers
+    // the inner unit (gal here) for comparable computation, so
+    // adding these as `count` with toBase: 1 is safe and won't
+    // double-count.
+    'flat':      { family: 'count',         toBase: 1 },     // produce trays (12-cell, 24-cell)
+    'keg':       { family: 'count',         toBase: 1 },     // beer kegs (use inner gal/l for comparable)
+    'bin':       { family: 'count',         toBase: 1 },     // bulk produce bins
+    'tote':      { family: 'count',         toBase: 1 },     // bag-in-box, bulk liquid totes
+    'gaylord':   { family: 'count',         toBase: 1 },     // pallet-size shipping containers
+    'rack':      { family: 'count',         toBase: 1 },     // bread / chip racks
+    'btl':       { family: 'count',         toBase: 1 },
+    'bottle':    { family: 'count',         toBase: 1 },
+    'pail':      { family: 'count',         toBase: 1 },     // 5-gal sauce pails (use inner gal for comparable)
+    'pkt':       { family: 'count',         toBase: 1 },
+    'packet':    { family: 'count',         toBase: 1 },
+    'drum':      { family: 'count',         toBase: 1 },     // 55-gal drums
+    'pouch':     { family: 'count',         toBase: 1 },
+    'tray':      { family: 'count',         toBase: 1 },
+    'sack':      { family: 'count',         toBase: 1 },
+    'tin':       { family: 'count',         toBase: 1 },
+    'jar':       { family: 'count',         toBase: 1 },
+    'can':       { family: 'count',         toBase: 1 },     // generic can (#-can has its own table)
+
     // #-can placeholder. The actual per-can volume depends on the
     // size enumeration (#10, #5, #2.5, etc.) and is looked up via
     // HASH_CAN_TOBASE — NOT computed via toBase × unitSize.
@@ -136,7 +162,62 @@
     'grams':     'g',
     'gram':      'g',
     'fluid oz':  'fl_oz',
-    'fl oz':     'fl_oz'
+    'fl oz':     'fl_oz',
+
+    // Wave C.3 lite — plurals + ES synonyms for regional units
+    'flats':     'flat',
+    'kegs':      'keg',
+    'bins':      'bin',
+    'totes':     'tote',
+    'racks':     'rack',
+    'bottles':   'btl',
+    'bottle':    'btl',
+    'pails':     'pail',
+    'pkts':      'pkt',
+    'packets':   'pkt',
+    'packet':    'pkt',
+    'drums':     'drum',
+    'pouches':   'pouch',
+    'trays':     'tray',
+    'sacks':     'sack',
+    'tins':      'tin',
+    'jars':      'jar',
+    'cans':      'can',
+    'cases':     'cs',
+    'boxes':     'box',
+    'sleeves':   'sleeve',
+    'bags':      'bag',
+    'bunches':   'bunch',
+    'jugs':      'jug',
+    // Spanish synonyms — fall back to canonical English keys so
+    // downstream consumers don't need to switch on locale.
+    'bandeja':   'flat',
+    'bandejas':  'flat',
+    'barril':    'keg',
+    'barriles':  'keg',
+    'saco':      'sack',
+    'sacos':     'sack',
+    'manojo':    'bunch',
+    'manojos':   'bunch',
+    'atado':     'bunch',
+    'atados':    'bunch',
+    'caja':      'cs',
+    'cajas':     'cs',
+    'botella':   'btl',
+    'botellas':  'btl',
+    'paquete':   'pkt',
+    'paquetes':  'pkt',
+    'docena':    'dozen',
+    'docenas':   'dozen',
+    'libra':     'lb',
+    'libras':    'lb',
+    'litro':     'l',
+    'litros':    'l',
+    'galón':     'gal',
+    'galon':     'gal',
+    'galones':   'gal',
+    'onza':      'oz',
+    'onzas':     'oz'
   };
 
   // The display base unit per family. When a row's unit family is
