@@ -186,6 +186,43 @@
     var accent  = theme.accent || '#1F4E5B';
     var muted   = theme.muted  || '#7C6F60';
 
+    // Wave B6 — inject schema.org Menu JSON-LD into <head> so the
+    // operator's QR-menu HTML emits a Google rich-result when
+    // dropped into a host page. Tolerant: MD_JSONLD or MD_SCHEMA
+    // missing → emits no JSON-LD (Wave A boot order makes this rare,
+    // but the Node test harness exercises both paths).
+    //
+    // Caller provides a v3 canonical menu via opts.canonicalMenu when
+    // available (the orchestrator builds one from its v2 row stream
+    // before calling exportZip); otherwise we synthesize a minimal
+    // one here from rows + theme + meta-like opts.
+    var jsonldHtml = '';
+    try {
+      var hasJsonld = (root && root.MD_JSONLD && typeof root.MD_JSONLD.emitScriptTag === 'function');
+      var hasSchema = (root && root.MD_SCHEMA && typeof root.MD_SCHEMA.migrate === 'function');
+      if (hasJsonld) {
+        var canonicalForLd = opts.canonicalMenu;
+        if (!canonicalForLd && hasSchema) {
+          canonicalForLd = root.MD_SCHEMA.migrate({
+            rows:  rows,
+            theme: (theme && theme.id) || (opts.themeId || ''),
+            meta:  opts.meta || {
+              businessName: title,
+              tagline:      opts.tagline || '',
+              cuisine:      opts.cuisine || '',
+              currency:     opts.currency || 'USD',
+              locale:       locale
+            }
+          });
+        }
+        if (canonicalForLd) {
+          jsonldHtml = root.MD_JSONLD.emitScriptTag(canonicalForLd, {
+            url: opts.publishUrl || ''
+          }) + '\n';
+        }
+      }
+    } catch (_) { /* JSON-LD is best-effort; never block the export */ }
+
     // Self-contained HTML. The operator can drop this single file
     // into any host — no CDN dependency at view-time.
     return '<!doctype html>\n' +
@@ -194,6 +231,7 @@
 '<meta charset="utf-8" />\n' +
 '<meta name="viewport" content="width=device-width,initial-scale=1" />\n' +
 '<title>' + escHtml(title) + '</title>\n' +
+jsonldHtml +
 '<style>\n' +
 '  :root{\n' +
 '    --ink:' + ink + ';--paper:' + paper + ';--accent:' + accent + ';--muted:' + muted + ';\n' +
