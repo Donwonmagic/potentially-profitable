@@ -45,6 +45,10 @@
   // unified dispatcher. 'phone' keeps today's full-cleanup behavior.
   var _activePreprocessProfile = 'phone';
   var _activeClassification = null;
+  // Wave 3.4 — quality-gate override state. Set when the operator
+  // confirms "read it anyway" on a hopeless photo so the gate doesn't
+  // fire again on the same pendingPages.
+  var _qualityGateOverridden = false;
 
   var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
   function tt(en, es) { return LOCALE === 'es' ? es : en; }
@@ -186,7 +190,10 @@
             // Wave 2.2 — surface rectification result so the preview
             // meta can report "We straightened the page perspective".
             rectified: !!results[0].rectified,
-            rectifyConfidence: results[0].rectifyConfidence || null
+            rectifyConfidence: results[0].rectifyConfidence || null,
+            // Wave 3.3/3.4 — glare metrics for the quality gate.
+            glareRatio: results[1].glareRatio || 0,
+            glareRepaired: !!results[1].glareRepaired
           });
           doneFiles++;
           setProgress(15 + perFileShare * doneFiles);
@@ -350,12 +357,83 @@
     return (LOCALE === 'es' ? CAT_LABEL_ES[cat] : CAT_LABEL_EN[cat]) || cat;
   }
 
+  // Wave 3.4 — should we refuse to OCR this page? Two failure modes:
+  //   (a) blurry: laplacian variance < 60 means the photo is out of
+  //       focus past the point Tesseract can read it. ~30 sec of
+  //       wasted OCR returns mostly garbage.
+  //   (b) glared + low-contrast: glareRatio > 0.20 plus low bimodality
+  //       means specular highlights swallowed half the page. Inpaint
+  //       can't rescue more than ~10% glare; beyond that the operator
+  //       needs to retake.
+  // Only fires for the 'phone' profile — scanner / thermal / screenshot
+  // sources are pre-cleaned and the gate would falsely fire on them.
+  function _shouldRefuseOcr(page) {
+    if (!page) return false;
+    if (_activePreprocessProfile && _activePreprocessProfile !== 'phone') return false;
+    var hopelesslyBlurry = (typeof page.blurScore === 'number' && page.blurScore < 60);
+    var glaredAndLow = ((page.glareRatio || 0) > 0.20 && (page.bimodalityScore || 0) < 1100);
+    return hopelesslyBlurry || glaredAndLow;
+  }
+  function _showQualityGate(page) {
+    var existing = document.getElementById('idQualityGate');
+    if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+    var why;
+    if ((page.blurScore || 0) < 60) {
+      why = tt('This photo is too blurry to read cleanly. Tesseract will mostly return garbage on it.',
+               'Esta foto está muy borrosa para leerse bien. El motor devolverá basura en su mayoría.');
+    } else {
+      why = tt('Glare covers about ' + Math.round((page.glareRatio || 0) * 100) + '% of this photo, which destroys the text in those regions.',
+               'El reflejo cubre cerca del ' + Math.round((page.glareRatio || 0) * 100) + '% de la foto, lo que destruye el texto en esas zonas.');
+    }
+    var gate = document.createElement('div');
+    gate.id = 'idQualityGate';
+    gate.className = 'id-quality-gate';
+    gate.setAttribute('role', 'alert');
+    gate.innerHTML =
+      '<p class="id-qg-title">' + escHtml(tt('This photo won\'t read cleanly — retake?',
+                                              '¿Esta foto no se lee bien — la repites?')) + '</p>' +
+      '<p class="id-qg-blurb">' + escHtml(why) + ' ' +
+        escHtml(tt('A quick retake takes 5 seconds; an OCR pass takes 30+.',
+                   'Repetirla toma 5 segundos; un OCR completo toma 30+.')) +
+      '</p>' +
+      '<div class="id-qg-row">' +
+        '<button type="button" class="id-qg-retake" id="idQgRetake">' + escHtml(tt('Retake', 'Repetir')) + '</button>' +
+        '<button type="button" class="id-qg-anyway" id="idQgAnyway">' + escHtml(tt('Read it anyway', 'Léelo de todos modos')) + '</button>' +
+      '</div>';
+    var anchor = document.getElementById('idStatus');
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(gate, anchor);
+    var retake = gate.querySelector('#idQgRetake');
+    var anyway = gate.querySelector('#idQgAnyway');
+    if (retake) retake.addEventListener('click', function () {
+      // Drain pending pages and prompt for a new file via the unified
+      // input. The operator can drop a fresh photo without scroll.
+      pendingPages = [];
+      try { gate.parentNode && gate.parentNode.removeChild(gate); } catch (_) {}
+      var input = document.getElementById('idAnyInput');
+      if (input) try { input.click(); } catch (_) {}
+    });
+    if (anyway) anyway.addEventListener('click', function () {
+      _qualityGateOverridden = true;
+      try { gate.parentNode && gate.parentNode.removeChild(gate); } catch (_) {}
+      readPendingInvoice();
+    });
+  }
+
   function readPendingInvoice() {
     if (!pendingPages.length) return;
     if (typeof MID_OCR === 'undefined' || typeof MID_PARSE === 'undefined') {
       showStatus(tt('Reader module missing', 'Falta el módulo lector'),
                  tt('Refresh the page and try again.', 'Recarga la página e intenta de nuevo.'),
                  'error');
+      return;
+    }
+    // Wave 3.4 — quality-gate refusal. If page 1 is hopeless (blurry
+    // AND glared, OR very low contrast on a phone profile), surface a
+    // "this won't read cleanly — retake?" prompt before burning ~30s
+    // of OCR. Operator can override to read anyway. Suppressed once
+    // they've already overridden in this session.
+    if (!_qualityGateOverridden && _shouldRefuseOcr(pendingPages[0])) {
+      _showQualityGate(pendingPages[0]);
       return;
     }
     if (readBtn) {
@@ -473,6 +551,17 @@
       var vendorMatch = null;
       if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
         vendorMatch = MID_VENDORS.detectVendor(fullText);
+        // Wave 3.6 — when text-token detection failed, try logo dHash
+        // against the cleaned page-1 canvas. Rescues smudged or
+        // partially-glared letterheads where the OCR text is too noisy
+        // for token matching but the visual logo signature is intact.
+        if (!vendorMatch && pendingPages.length && pendingPages[0].gentle &&
+            typeof MID_VENDORS.detectVendorByLogo === 'function') {
+          try {
+            var logoMatch = MID_VENDORS.detectVendorByLogo(pendingPages[0].gentle);
+            if (logoMatch) vendorMatch = logoMatch;
+          } catch (_) {}
+        }
         // Wave 1.7 — fall back to the source-classifier's filename
         // vendorHint when text-token detection didn't cross threshold.
         // This rescues photos where the letterhead OCR'd badly but

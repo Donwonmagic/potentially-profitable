@@ -191,6 +191,83 @@
     return imageData;
   }
 
+  // -------------------- Wave 3.3: Glare detect + inpaint --------------------
+  // Specular highlights (camera flash bounce, kitchen ceiling LEDs)
+  // saturate the page in patches that destroy Otsu binarization. We
+  // detect the saturated region (luminance > 245), dilate the mask 3px
+  // to capture the haze ring, and fill the masked pixels with the
+  // mean of their non-glare 5×5 neighborhood. Cheap Telea-style
+  // scanline inpaint — no full PDE solve, just enough to restore
+  // local glyph contrast in glared regions.
+  //
+  // Returns { glareRatio, repaired } where glareRatio ∈ [0,1] is the
+  // fraction of pixels masked. Caller decides what to do with high
+  // values (Wave 3.4 quality gate). Mutates the imageData in place.
+  function repairGlareInPlace(imageData) {
+    var w = imageData.width, h = imageData.height;
+    if (w < 30 || h < 30) return { glareRatio: 0, repaired: false };
+    var d = imageData.data;
+    // Pass 1 — saturation mask.
+    var maskLen = w * h;
+    var mask = new Uint8Array(maskLen);
+    var glareCount = 0;
+    for (var y = 0; y < h; y++) {
+      for (var x = 0; x < w; x++) {
+        var i = (y * w + x) * 4;
+        if (d[i] > 245 && d[i + 1] > 245 && d[i + 2] > 245) {
+          mask[y * w + x] = 1;
+          glareCount++;
+        }
+      }
+    }
+    var glareRatio = glareCount / maskLen;
+    if (glareRatio < 0.005 || glareRatio > 0.45) {
+      // Either no meaningful glare or so much glare the photo is
+      // unusable; either way inpaint won't help. Skip.
+      return { glareRatio: glareRatio, repaired: false };
+    }
+    // Pass 2 — dilate the mask 3px to capture the glare halo.
+    var dilated = new Uint8Array(maskLen);
+    for (var y2 = 0; y2 < h; y2++) {
+      for (var x2 = 0; x2 < w; x2++) {
+        if (mask[y2 * w + x2]) {
+          for (var dy = -3; dy <= 3; dy++) {
+            for (var dx = -3; dx <= 3; dx++) {
+              var nx = x2 + dx, ny = y2 + dy;
+              if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+                dilated[ny * w + nx] = 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    // Pass 3 — fill masked pixels with mean of 5×5 non-mask neighbors.
+    // Two-pass scanline implementation — faster than per-pixel BFS
+    // for the receipt-resolution case (~2k×3k).
+    for (var y3 = 0; y3 < h; y3++) {
+      for (var x3 = 0; x3 < w; x3++) {
+        if (!dilated[y3 * w + x3]) continue;
+        var sumR = 0, sumG = 0, sumB = 0, count = 0;
+        for (var ny2 = Math.max(0, y3 - 2); ny2 <= Math.min(h - 1, y3 + 2); ny2++) {
+          for (var nx2 = Math.max(0, x3 - 2); nx2 <= Math.min(w - 1, x3 + 2); nx2++) {
+            if (dilated[ny2 * w + nx2]) continue;
+            var ni = (ny2 * w + nx2) * 4;
+            sumR += d[ni]; sumG += d[ni + 1]; sumB += d[ni + 2];
+            count++;
+          }
+        }
+        if (count > 0) {
+          var pi = (y3 * w + x3) * 4;
+          d[pi]     = Math.round(sumR / count);
+          d[pi + 1] = Math.round(sumG / count);
+          d[pi + 2] = Math.round(sumB / count);
+        }
+      }
+    }
+    return { glareRatio: glareRatio, repaired: true };
+  }
+
   // -------------------- Otsu threshold --------------------
   // Compute the inter-class variance for every possible threshold
   // 0..255 and pick the one that maximizes it. Returns the binary
@@ -1073,6 +1150,12 @@
     // 2. Grayscale + Otsu binarize.
     var ctx = deskewed.getContext('2d');
     var img = ctx.getImageData(0, 0, deskewed.width, deskewed.height);
+    // Wave 3.3 — glare repair on phone photos before binarize. Skip
+    // on scanner / thermal / screenshot (no glare in those sources).
+    var glareInfo = { glareRatio: 0, repaired: false };
+    if (profile === 'phone' && preset === 'gentle') {
+      try { glareInfo = repairGlareInPlace(img); } catch (_) {}
+    }
     grayscaleInPlace(img);
     var blurScore = laplacianVariance(img);
     var t = otsuThreshold(img);
@@ -1115,6 +1198,8 @@
       rectified: !!rectified,
       rectifyConfidence: rectConf,
       illuminationCorrected: illuminationCorrected,
+      glareRatio: glareInfo.glareRatio,
+      glareRepaired: !!glareInfo.repaired,
       profile: profile
     };
   }
@@ -1352,6 +1437,7 @@
     preprocessCanvas:  preprocessCanvas,
     preprocessCanvasWithRetry: preprocessCanvasWithRetry,
     preprocessParamSweep: preprocessParamSweep,
+    repairGlareInPlace: repairGlareInPlace,
     fileToCanvas:      fileToCanvas,
     canvasToDataUrl:   canvasToDataUrl,
     detectSkewAngle:   detectSkewAngle,

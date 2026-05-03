@@ -101,6 +101,18 @@
 .id-classify-hint{margin:14px 0 0;padding:10px 14px;background:color-mix(in srgb,var(--teal) 6%,var(--white));border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line));border-radius:8px;font-size:13px;color:var(--ink);line-height:1.5}
 .id-classify-hint[hidden]{display:none}
 
+/* Wave 3.4 — quality-gate refusal for hopeless photos.
+   Surfaced before OCR runs; offers retake / read-anyway. */
+.id-quality-gate{margin:14px 0 0;padding:14px 16px;background:#FFF5EB;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:10px}
+.id-qg-title{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.id-qg-blurb{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.55}
+.id-qg-row{display:flex;gap:8px;flex-wrap:wrap}
+.id-qg-retake,.id-qg-anyway{padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
+.id-qg-retake{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.id-qg-retake:hover{filter:brightness(1.1)}
+.id-qg-anyway:hover{border-color:var(--ink-soft)}
+.id-qg-retake:focus-visible,.id-qg-anyway:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
 /* Wave 1.5 — inline password prompt for protected PDFs. The password
    value lives only in the input element + the resolved Promise scope;
    the form clears the value and removes itself on submit/cancel. */

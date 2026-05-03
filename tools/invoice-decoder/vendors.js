@@ -336,6 +336,92 @@
     return null;
   }
 
+  // ---------------------------------------------------------------
+  // Wave 3.6 — Logo dHash vendor detection.
+  //
+  // Crop the top 12% of the rectified canvas, downscale to 9×8, take
+  // grayscale luminance, and compute a 64-bit dHash by comparing
+  // adjacent horizontal pixel pairs. Each vendor enrichment may carry
+  // a `logoHash` field (16-hex 64-bit). Hamming distance ≤ 12 wins.
+  //
+  // Survives smudged headers where text-token detection currently
+  // fails. Falls through silently when no vendor has a logoHash yet
+  // (introduced incrementally as we add reference letterheads).
+  // ---------------------------------------------------------------
+  function dHashCanvas(canvas, opts) {
+    if (!canvas || !canvas.getContext) return null;
+    opts = opts || {};
+    var topRatio = opts.topRatio || 0.12;
+    var W = 9, H = 8;
+    var sw = canvas.width, sh = canvas.height;
+    if (sw < 30 || sh < 30) return null;
+    var cropH = Math.max(20, Math.round(sh * topRatio));
+    // Downscale source crop to 9×8 directly via 2D drawImage.
+    try {
+      var dc = document.createElement('canvas');
+      dc.width = W; dc.height = H;
+      var ctx = dc.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(canvas, 0, 0, sw, cropH, 0, 0, W, H);
+      var d = ctx.getImageData(0, 0, W, H).data;
+      // Compute 8-row × 8-bit hash: row[y].bit[x] = (px[y][x] > px[y][x+1])
+      var bits = '';
+      for (var y = 0; y < H; y++) {
+        for (var x = 0; x < W - 1; x++) {
+          var i  = (y * W + x) * 4;
+          var i2 = (y * W + (x + 1)) * 4;
+          var l1 = 0.299 * d[i]  + 0.587 * d[i + 1]  + 0.114 * d[i + 2];
+          var l2 = 0.299 * d[i2] + 0.587 * d[i2 + 1] + 0.114 * d[i2 + 2];
+          bits += (l1 > l2) ? '1' : '0';
+        }
+      }
+      // Convert to 16-hex (64 bits).
+      var hex = '';
+      for (var b = 0; b < bits.length; b += 4) {
+        hex += parseInt(bits.substr(b, 4), 2).toString(16);
+      }
+      return hex;
+    } catch (_) { return null; }
+  }
+  function _hammingDistanceHex(a, b) {
+    if (!a || !b || a.length !== b.length) return Infinity;
+    var dist = 0;
+    for (var i = 0; i < a.length; i++) {
+      var x = parseInt(a[i], 16) ^ parseInt(b[i], 16);
+      while (x) { dist += x & 1; x >>= 1; }
+    }
+    return dist;
+  }
+  function detectVendorByLogo(canvas, opts) {
+    var hash = dHashCanvas(canvas, opts);
+    if (!hash) return null;
+    var maxDist = (opts && typeof opts.maxDist === 'number') ? opts.maxDist : 12;
+    var best = null;
+    var bestDist = Infinity;
+    for (var i = 0; i < STUBS.length; i++) {
+      var enrichment = STUBS[i]._enrichment;
+      if (!enrichment || !enrichment.logoHash) continue;
+      var d = _hammingDistanceHex(hash, enrichment.logoHash);
+      if (d < bestDist && d <= maxDist) {
+        bestDist = d;
+        best = STUBS[i];
+      }
+    }
+    if (!best) return null;
+    var vendor = facadeForStub(best);
+    return {
+      id: best.id,
+      label: best.label_en,
+      // Higher score for tighter Hamming match. Map [0..maxDist] →
+      // [1.0..0.5] so logo detections come in higher-confidence than
+      // borderline text-token detections.
+      score: 1.0 - (bestDist / maxDist) * 0.5,
+      vendor: vendor,
+      detection: { kind: 'logo', dHash: hash, hamming: bestDist }
+    };
+  }
+
   function applyVendorBoost(rows, vendor) {
     if (!vendor || !vendor.vendor) return rows;
     var boost = vendor.vendor.confidenceBoost || 0;
@@ -350,6 +436,8 @@
     REGISTRY:          REGISTRY,
     STUBS:             STUBS,           // exposed for tests
     detectVendor:      detectVendor,
+    detectVendorByLogo: detectVendorByLogo,
+    dHashCanvas:       dHashCanvas,
     applyVendorBoost:  applyVendorBoost,
     loadEnrichment:    loadEnrichment   // exposed for callers wanting headerLines for the matched vendor
   };
