@@ -78,11 +78,37 @@
     catch (_) { return false; }
   }
 
+  // Wave studio-quality (WCAG 2.2 AA) — screen-reader announce helper.
+  // Writes a short message into a polite live region so AT users hear
+  // confirmation of operations that happen visually without focus
+  // shift (dish add/remove, undo, redo, draft saved, theme change).
+  // Looks up the region by id; lazy-creates a hidden one if missing
+  // (defensive — host page should declare <div id="mdSrAnnounce"
+  // class="visually-hidden" aria-live="polite" aria-atomic="true">).
+  function announce(msg) {
+    if (typeof document === 'undefined') return;
+    if (!msg) return;
+    var el = document.getElementById('mdSrAnnounce');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'mdSrAnnounce';
+      el.setAttribute('aria-live', 'polite');
+      el.setAttribute('aria-atomic', 'true');
+      el.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0';
+      document.body.appendChild(el);
+    }
+    // Toggle pattern: clear then set so the same message announces
+    // again if fired in quick succession (some screen readers dedupe).
+    el.textContent = '';
+    setTimeout(function () { el.textContent = String(msg); }, 50);
+  }
+
   var api = {
     escHtml:        escHtml,
     downloadBlob:   downloadBlob,
     downscaleImage: downscaleImage,
-    reducedMotion:  reducedMotion
+    reducedMotion:  reducedMotion,
+    announce:       announce
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MD_DOM = api;

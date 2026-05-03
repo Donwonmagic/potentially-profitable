@@ -160,12 +160,165 @@
         window.plausible('Menu Design Theme Changed', { props: { theme: String(themeId || 'unknown') } });
       } catch (_) {}
     }
+    // Wave studio-quality (WCAG 2.2 AA) — announce theme change to AT.
+    // Theme cards visually highlight on selection but the change is
+    // otherwise silent for screen-reader users.
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce && typeof MD_THEMES !== 'undefined') {
+      var t = MD_THEMES.get(themeId);
+      var label = t ? (LOCALE === 'es' ? t.label_es : t.label_en) : themeId;
+      MD_DOM.announce(LOCALE === 'es'
+        ? 'Tema cambiado a ' + label + '.'
+        : 'Theme changed to ' + label + '.');
+    }
   }
 
   // Fire Tool Loaded immediately — it's the funnel head and must
   // count both no-action loads and full-flow sessions.
   if (window.plausible) {
     try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
+  }
+
+  // Wave studio-quality (code-split) — lazy-loader for the heavy
+  // renderer modules. The PDF / HTML / text emitters total ~120 KB
+  // raw and only fire when an export button is clicked. Load them
+  // on first need, dedup the promise, no-op once loaded.
+  //
+  // Each ensureMd*() resolves to a falsy value when the script tag
+  // fails to load (offline + not in SW cache); the export button
+  // surfaces a graceful error instead of hanging.
+  var __mdScriptCache = {};
+  function loadScript(src) {
+    if (__mdScriptCache[src]) return __mdScriptCache[src];
+    __mdScriptCache[src] = new Promise(function (resolve, reject) {
+      // Re-use a previously-injected tag (e.g. preload triggered first).
+      var existing = document.querySelector('script[data-md-lazy="' + src + '"]');
+      if (existing && existing.dataset.loaded === '1') { resolve(true); return; }
+      if (existing) {
+        existing.addEventListener('load', function () { resolve(true); });
+        existing.addEventListener('error', function () { reject(new Error(src + ' failed to load')); });
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.dataset.mdLazy = src;
+      s.addEventListener('load', function () {
+        s.dataset.loaded = '1';
+        resolve(true);
+      });
+      s.addEventListener('error', function () {
+        // Clear from cache so a retry works after a transient failure.
+        delete __mdScriptCache[src];
+        reject(new Error(src + ' failed to load'));
+      });
+      document.head.appendChild(s);
+    });
+    return __mdScriptCache[src];
+  }
+  function ensureMdPdf() {
+    if (typeof MD_PDF !== 'undefined' && MD_PDF.exportPdf) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-pdf.js?v=20260503-pdfua');
+  }
+  function ensureMdHtml() {
+    if (typeof MD_HTML !== 'undefined' && (MD_HTML.exportZip || MD_HTML.exportHtml)) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-html.js?v=20260503-cs');
+  }
+  function ensureMdText() {
+    if (typeof MD_TEXT !== 'undefined' && MD_TEXT.exportPlainText) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-text.js?v=20260503-cs');
+  }
+
+  // Convenience: load PDF + HTML + TEXT in parallel for the big-pack
+  // exports (Menu Pack ZIP, Bilingual ZIP) that touch all three.
+  function ensureAllRenderers() {
+    return Promise.all([ensureMdPdf(), ensureMdHtml(), ensureMdText()]);
+  }
+  // Tiny wrapper: shows a "Loading…" hint, awaits the loader, runs fn
+  // on success or surfaces a clear error on load failure (e.g. offline
+  // before SW has cached the renderer).
+  function withRenderer(loader, btnEl, loadingLabel, fn) {
+    if (!btnEl) {
+      // No button to gate — just await and call.
+      return loader().then(fn).catch(function (err) {
+        setDownloadMsg(tt(
+          'Could not load renderer: ' + (err && err.message ? err.message : 'load failed'),
+          'No se pudo cargar el renderizador: ' + (err && err.message ? err.message : 'falló la carga')
+        ), 'error');
+      });
+    }
+    var origText = btnEl.textContent;
+    var alreadyLoaded = false;
+    try { alreadyLoaded = (loader === ensureMdPdf  && typeof MD_PDF  !== 'undefined' && MD_PDF.exportPdf)
+                       || (loader === ensureMdHtml && typeof MD_HTML !== 'undefined')
+                       || (loader === ensureMdText && typeof MD_TEXT !== 'undefined'); } catch (_) {}
+    if (!alreadyLoaded && loadingLabel) {
+      btnEl.disabled = true;
+      btnEl.textContent = loadingLabel;
+    }
+    return loader().then(function () {
+      if (!alreadyLoaded && loadingLabel) {
+        btnEl.disabled = false;
+        btnEl.textContent = origText;
+      }
+      return fn();
+    }).catch(function (err) {
+      if (!alreadyLoaded && loadingLabel) {
+        btnEl.disabled = false;
+        btnEl.textContent = origText;
+      }
+      setDownloadMsg(tt(
+        'Could not load renderer. Check your connection and retry.',
+        'No se pudo cargar el renderizador. Revisa tu conexión e intenta de nuevo.'
+      ), 'error');
+      throw err;
+    });
+  }
+
+  // Optional preload: when an operator hovers a download button, kick
+  // off the script fetch so the click feels instant. Idle-time also
+  // schedules a low-priority load 4s after first interaction so
+  // returning operators with stale cache get the modules warmed up.
+  function preloadAllRenderers() {
+    if (preloadAllRenderers._fired) return;
+    preloadAllRenderers._fired = true;
+    ensureMdPdf().catch(function () {});
+    ensureMdHtml().catch(function () {});
+    ensureMdText().catch(function () {});
+  }
+  if (typeof requestIdleCallback === 'function') {
+    var __preloadIdle = false;
+    function _preloadOnInteract() {
+      if (__preloadIdle) return;
+      __preloadIdle = true;
+      requestIdleCallback(function () { preloadAllRenderers(); }, { timeout: 8000 });
+    }
+    document.addEventListener('pointerdown', _preloadOnInteract, { once: true, passive: true });
+    document.addEventListener('keydown', _preloadOnInteract, { once: true });
+  } else {
+    // Fallback: 4s after load.
+    setTimeout(preloadAllRenderers, 4000);
+  }
+
+  // Wave studio-quality (PWA) — register the service worker so the
+  // tool boots offline after one online visit and operators can
+  // install it as a phone/desktop app. EN-only for now; the ES tool
+  // links shared JS at /tools/menu-design/* paths that an ES-scoped
+  // SW couldn't intercept. Cross-locale offline support is a future
+  // move (requires Service-Worker-Allowed header for higher scope).
+  // Registration is silent, fire-and-forget, deferred 1.5s post-load
+  // so it doesn't compete with first-paint work.
+  if (LOCALE !== 'es' && 'serviceWorker' in navigator) {
+    setTimeout(function () {
+      try {
+        navigator.serviceWorker.register('/tools/menu-design/sw.js', {
+          scope: '/tools/menu-design/'
+        }).catch(function () {
+          // Silent — SW failures shouldn't break the page. Operators
+          // who can't run a SW (Private mode, restrictive policies)
+          // get the fully-functional non-PWA experience.
+        });
+      } catch (_) { /* old browsers without SW support */ }
+    }, 1500);
   }
 
   // -------------------- Wave B2 finish — effective disclaimer ---------
@@ -547,7 +700,14 @@
     // are DMV-area today; persisted with the rest of meta. JSON-LD +
     // Studio Brief read this field too so the priceCurrency in the
     // structured-data graph matches.
-    currency: 'USD'
+    currency: 'USD',
+    // Wave studio-quality — Quiet typography mode. When on, the
+    // renderers strip decoration (cuisine motif overlay, section
+    // glyphs, ornaments) and force single-column layout. Targets
+    // cognitive-load needs (ADHD, dyslexia, low literacy) without
+    // compromising the menu content. Operator opt-in; defaults off so
+    // the existing decorative themes look as they do today.
+    quietMode: false
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -576,10 +736,26 @@
   // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
   // Returns a known-good key, falling back to 'letter'.
   function migratePaperKey(k) {
-    if (typeof MD_PDF === 'undefined' || !MD_PDF.PAPERS) return k;
+    var papers = paperCatalog();
+    if (!papers) return k;
     if (k === 'trifold')   return 'trifold-letter-z';
     if (k === 'tabletent') return 'table-tent';
-    return MD_PDF.PAPERS[k] ? k : 'letter';
+    return papers[k] ? k : 'letter';
+  }
+  // Wave studio-quality (code-split) — single source of truth for the
+  // paper catalog. Prefers MD_PAPERS (always loaded at boot) so the
+  // editor's paper picker, the live preview, the meta block, and the
+  // pre-flight panel all work without menu-render-pdf.js loaded yet.
+  // Fallback to MD_PDF.PAPERS keeps the path working post-export when
+  // the PDF renderer has loaded and back-fills its own copy.
+  function paperCatalog() {
+    if (typeof MD_PAPERS !== 'undefined' && MD_PAPERS.PAPERS) return MD_PAPERS.PAPERS;
+    if (typeof MD_PDF    !== 'undefined' && MD_PDF.PAPERS)    return MD_PDF.PAPERS;
+    return null;
+  }
+  function paperByKey(k) {
+    var c = paperCatalog();
+    return c ? (c[k] || null) : null;
   }
 
   // -------------------- Helpers --------------------
@@ -662,7 +838,12 @@
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Section name (e.g. Starters)', 'Nombre de sección (ej. Entradas)') + '" aria-label="' + tt('Section name', 'Nombre de sección') + '" />' +
           secExtras + touchReorder + '</td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove section', 'Eliminar sección') + '">&times;</button></td>' +
+          '<td class="md-remove-cell">' +
+            '<button type="button" class="md-row-action md-dup" data-act="dup" data-i="' + i + '" aria-label="' + tt('Duplicate section', 'Duplicar sección') + '" title="' + tt('Duplicate', 'Duplicar') + '">' +
+              '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            '</button>' +
+            '<button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove section', 'Eliminar sección') + '">&times;</button>' +
+          '</td>' +
           '</tr>';
       } else {
         // "Need help describing?" link — only shows when the dish
@@ -840,7 +1021,12 @@
           '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
           allergenPop +
           helpHtml + touchReorder + '</td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
+          '<td class="md-remove-cell">' +
+            '<button type="button" class="md-row-action md-dup" data-act="dup" data-i="' + i + '" aria-label="' + tt('Duplicate dish', 'Duplicar plato') + '" title="' + tt('Duplicate', 'Duplicar') + '">' +
+              '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            '</button>' +
+            '<button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button>' +
+          '</td>' +
           '</tr>';
       }
     });
@@ -1246,6 +1432,70 @@
     });
   }
 
+  // Wave studio-quality — drag-and-drop logo upload. Modern apps let
+  // operators drop a logo onto the zone; the previous tool was click-
+  // only. We accept the first PNG/JPG/SVG/WebP from the drop and route
+  // it through the same readLogoFile() pipeline the file picker uses.
+  // Attach via the label/zone (preferred), fallback to logoInput.
+  var logoDropEl = document.getElementById('mdLogoDrop');
+  if (logoDropEl) {
+    function _isImageFile(f) {
+      if (!f) return false;
+      return /^image\/(png|jpeg|jpg|svg\+xml|webp)$/i.test(f.type) ||
+             /\.(png|jpe?g|svg|webp)$/i.test(f.name || '');
+    }
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      logoDropEl.addEventListener(evt, function (e) {
+        // Only react to file drags; ignore native draggable element drags.
+        var dt = e.dataTransfer;
+        if (!dt) return;
+        var hasFile = false;
+        if (dt.types) {
+          for (var i = 0; i < dt.types.length; i++) {
+            if (dt.types[i] === 'Files') { hasFile = true; break; }
+          }
+        }
+        if (!hasFile) return;
+        e.preventDefault();
+        e.stopPropagation();
+        logoDropEl.classList.add('is-dragging');
+        try { dt.dropEffect = 'copy'; } catch (_) {}
+      });
+    });
+    ['dragleave', 'dragend'].forEach(function (evt) {
+      logoDropEl.addEventListener(evt, function (e) {
+        // Only clear the highlight when the drag actually leaves the
+        // zone (relatedTarget is outside) — child elements firing
+        // dragleave shouldn't kill the highlight.
+        if (evt === 'dragleave' && e.relatedTarget && logoDropEl.contains(e.relatedTarget)) return;
+        logoDropEl.classList.remove('is-dragging');
+      });
+    });
+    logoDropEl.addEventListener('drop', function (e) {
+      var dt = e.dataTransfer;
+      if (!dt || !dt.files || !dt.files.length) return;
+      e.preventDefault();
+      e.stopPropagation();
+      logoDropEl.classList.remove('is-dragging');
+      // Find the first image file in the drop (operators sometimes
+      // drag a folder or a multi-file selection from the OS; we take
+      // the first match instead of refusing).
+      var files = dt.files;
+      var picked = null;
+      for (var j = 0; j < files.length; j++) {
+        if (_isImageFile(files[j])) { picked = files[j]; break; }
+      }
+      if (!picked) {
+        setLogoWarn(tt(
+          'That doesn\'t look like an image. Drop a PNG, JPG, or SVG.',
+          'Eso no parece una imagen. Suelta un PNG, JPG o SVG.'
+        ));
+        return;
+      }
+      readLogoFile(picked);
+    });
+  }
+
   // -------------------- Paper size (W7-3) --------------------
   // Category-pill + card-grid picker driven by the PAPERS catalog
   // shipped on MD_PDF.PAPERS. Each category renders cards for the
@@ -1260,8 +1510,8 @@
   var activePaperCat = 'sheet';
 
   function renderPaperGrid() {
-    if (!paperRow || typeof MD_PDF === 'undefined') return;
-    var paperRegistry = MD_PDF.PAPERS || {};
+    if (!paperRow) return;
+    var paperRegistry = paperCatalog() || {};
     var keys = Object.keys(paperRegistry);
     var inCat = keys.filter(function (k) {
       var p = paperRegistry[k];
@@ -1349,7 +1599,7 @@
   var printChecklistItems = document.getElementById('mdPrintChecklistItems');
   function renderPrintChecklist() {
     if (!printChecklistItems) return;
-    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    var paperInfo = paperByKey(paperKey);
     var paperLabel = (paperInfo && paperInfo.label) || paperKey;
     var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
     var logoDpiState = 'ok';
@@ -1440,6 +1690,23 @@
       meta.allowMultiPage = !!metaAllowMultiPageEl.checked;
       schedulePreview();
       scheduleSaveDraft();
+    });
+  }
+  // Wave studio-quality — Quiet typography mode toggle. Strips
+  // decoration + section glyphs and forces single-column across the
+  // live preview, the printed PDF, and the QR-menu HTML.
+  var metaQuietEl = document.getElementById('mdMetaQuietMode');
+  if (metaQuietEl) {
+    metaQuietEl.checked = !!meta.quietMode;
+    metaQuietEl.addEventListener('change', function () {
+      meta.quietMode = !!metaQuietEl.checked;
+      schedulePreview();
+      scheduleSaveDraft();
+      if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+        MD_DOM.announce(meta.quietMode
+          ? tt('Quiet typography mode on.', 'Modo tipografía calmada activado.')
+          : tt('Quiet typography mode off.', 'Modo tipografía calmada desactivado.'));
+      }
     });
   }
   // Wave studio-quality — currency selector. Drives the locale-aware
@@ -1555,7 +1822,7 @@
     // (Letter, A4, etc.) gets a portrait/landscape paper-shape;
     // panel flow (trifold, table-tent) gets the unfolded sheet
     // shape and the panel grid is set up via data-flow="panel".
-    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) || null;
+    var paperInfo = paperByKey(paperKey);
     if (paperInfo) {
       paper.style.setProperty('--paper-aspect', paperInfo.w + '/' + paperInfo.h);
       paper.style.setProperty('--paper-margin-pct',
@@ -1612,8 +1879,11 @@
     // Tolerant: empty when MD_DECOR isn't loaded or theme has no
     // cuisine match. Two-column / panel themes get a smaller / no
     // decoration so the asymmetric layout doesn't look unbalanced.
+    // Wave studio-quality — quietMode skips decoration entirely so
+    // operators get a calm, distraction-free menu surface.
     try {
-      if (typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
+      if (!meta.quietMode &&
+          typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
         var decorFrag = MD_DECOR.svgFragment(theme, { opacity: 0.10 });
         if (decorFrag) {
           html += '<div class="md-pp-decor" aria-hidden="true">' +
@@ -1644,7 +1914,9 @@
     }
 
     // Two-column theme: render dishes inside grid, sections span both columns.
-    var isTwoCol = theme.columns === 2;
+    // Wave studio-quality — quietMode forces single column for cognitive
+    // calm, even on 2-col themes (operator opted in for that reason).
+    var isTwoCol = !meta.quietMode && theme.columns === 2;
     if (isTwoCol) html += '<div class="md-pp-cols" style="grid-template-columns:1fr 1fr">';
     groups.forEach(function (g) {
       // W13-2 — hero band renders before the section header.
@@ -1654,7 +1926,11 @@
       }
       if (g.name) {
         var sectionClasses = 'md-pp-section' + (g.specials ? ' md-pp-section-specials' : '');
-        var glyphPrefix = g.glyph ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> ' : '';
+        // Wave studio-quality — quietMode strips section glyph
+        // prefixes (the small cuisine icon before each section name).
+        var glyphPrefix = (!meta.quietMode && g.glyph)
+          ? '<span class="md-pp-section-glyph" aria-hidden="true">' + escHtml(g.glyph) + '</span> '
+          : '';
         var availTag = g.availability ? '<span class="md-pp-section-avail">' + escHtml(g.availability) + '</span>' : '';
         html += '<h2 class="' + sectionClasses + '"' + (isTwoCol ? ' style="grid-column:1/-1"' : '') + '>' +
                 glyphPrefix + escHtml(g.name) + availTag +
@@ -2439,6 +2715,9 @@
     applySnapshot(__undoStack.pop());
     refreshUndoRedoBtns();
     scheduleSaveDraft();
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Undone.', 'Deshecho.'));
+    }
   }
   function doRedo() {
     if (!__redoStack.length) return;
@@ -2446,6 +2725,9 @@
     applySnapshot(__redoStack.pop());
     refreshUndoRedoBtns();
     scheduleSaveDraft();
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Redone.', 'Rehecho.'));
+    }
   }
   if (undoBtn) undoBtn.addEventListener('click', doUndo);
   if (redoBtn) redoBtn.addEventListener('click', doRedo);
@@ -2504,7 +2786,31 @@
       { label: tt('Bulk: tag all dishes as locally sourced', 'Lote: etiquetar todo como local'),
         run: function () { bulkTagAllergen('LO'); } },
       { label: tt('Bulk: clear all photos',     'Lote: quitar todas las fotos'),
-        run: function () { bulkClearPhotos(); } }
+        run: function () { bulkClearPhotos(); } },
+      // Wave studio-quality — duplicate the last dish from the palette.
+      // Useful for operators in flow who don't want to hunt for the
+      // dup button on a specific row.
+      { label: tt('Duplicate the last dish',    'Duplicar el último plato'),
+        run: function () {
+          for (var dx = rows.length - 1; dx >= 0; dx--) {
+            if (rows[dx].kind === 'dish' && !rows[dx].ghost) {
+              var btn = rowsEl && rowsEl.querySelector('[data-act="dup"][data-i="' + dx + '"]');
+              if (btn) { btn.click(); }
+              return;
+            }
+          }
+        } },
+      // Wave studio-quality — Save / Load full menu file.
+      { label: tt('Save menu as file',          'Guardar menú como archivo'),
+        run: function () { var b = document.getElementById('mdMenuSave'); if (b) b.click(); } },
+      { label: tt('Load menu from file',        'Cargar menú desde archivo'),
+        run: function () { var l = document.getElementById('mdMenuLoad'); if (l) l.click(); } },
+      // Wave studio-quality — Quiet typography mode toggle.
+      { label: tt('Toggle quiet typography (calm mode)', 'Alternar tipografía calmada'),
+        run: function () {
+          var q = document.getElementById('mdMetaQuietMode');
+          if (q) { q.checked = !q.checked; q.dispatchEvent(new Event('change')); }
+        } }
     ];
   }
   // ----------------------------------------------------------------
@@ -2763,7 +3069,16 @@
         meta: {
           tagline: meta.tagline, story: meta.story, coverPage: meta.coverPage,
           address: meta.address, hours: meta.hours, serviceCharge: meta.serviceCharge,
-          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer
+          sourcing: meta.sourcing, disclaimer: meta.disclaimer, askYourServer: meta.askYourServer,
+          // Wave studio-quality — persist the meta-panel toggles so a
+          // page reload restores them. Previously persistDraft was
+          // missing these fields entirely; the restore handler read
+          // them but they were always undefined.
+          allergenRegime: meta.allergenRegime || 'us-fda9',
+          allowMultiPage: !!meta.allowMultiPage,
+          currency:       meta.currency || 'USD',
+          quietMode:      !!meta.quietMode,
+          businessName:   meta.businessName || ''
         },
         customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
         logoMeta: logoMeta,
@@ -2858,6 +3173,7 @@
           meta.allergenRegime = d.meta.allergenRegime || 'us-fda9';
           meta.allowMultiPage = !!d.meta.allowMultiPage;
           meta.currency       = d.meta.currency || 'USD';
+          meta.quietMode      = !!d.meta.quietMode;
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
@@ -2865,6 +3181,8 @@
           if (regimeRestoreEl) regimeRestoreEl.value = meta.allergenRegime;
           var multiRestoreEl = document.getElementById('mdMetaAllowMultiPage');
           if (multiRestoreEl) multiRestoreEl.checked = !!meta.allowMultiPage;
+          var quietRestoreEl = document.getElementById('mdMetaQuietMode');
+          if (quietRestoreEl) quietRestoreEl.checked = !!meta.quietMode;
           var currencyRestoreEl = document.getElementById('mdMetaCurrency');
           if (currencyRestoreEl && meta.currency) currencyRestoreEl.value = meta.currency;
           metaFooterFields.forEach(function (pair) {
@@ -3052,10 +3370,60 @@
       if (act === 'del') {
         var i = parseInt(t.dataset.i, 10);
         if (!isFinite(i)) return;
+        var rem = rows[i];
+        var remLabel = rem && rem.kind === 'section'
+          ? tt('Section "' + (rem.name || 'unnamed') + '" removed.',
+               'Sección "' + (rem.name || 'sin nombre') + '" eliminada.')
+          : tt('Dish "' + ((rem && rem.name) || 'unnamed') + '" removed.',
+               'Plato "' + ((rem && rem.name) || 'sin nombre') + '" eliminado.');
         pushUndo();
         rows.splice(i, 1);
         render();
         scheduleSaveDraft();
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) MD_DOM.announce(remLabel);
+        return;
+      }
+      // Wave studio-quality — duplicate dish. Operators making 5
+      // pizzas with different toppings (or 4 pasta dishes with
+      // different sauces) clone-and-tweak instead of retyping the
+      // whole row. Inserts the copy directly below the source.
+      if (act === 'dup') {
+        var di = parseInt(t.dataset.i, 10);
+        if (!isFinite(di) || !rows[di]) return;
+        var src = rows[di];
+        if (src.kind !== 'dish' && src.kind !== 'section') return;
+        pushUndo();
+        // Deep-ish clone — primitives copied, allergens/badges arrays
+        // sliced (so editing the copy doesn't mutate the source). Photo
+        // is shared by reference (data URL) — operator can re-upload
+        // on the duplicate if they want a different one.
+        var copy = Object.assign({}, src);
+        if (Array.isArray(src.allergens)) copy.allergens = src.allergens.slice();
+        if (Array.isArray(src.badges))    copy.badges    = src.badges.slice();
+        if (src.allergenStates)           copy.allergenStates = Object.assign({}, src.allergenStates);
+        // Decorate the name so operators see the new row clearly and
+        // can rename it (no silent identical names that confuse the
+        // duplicate-detection in _computeDishWarnings).
+        if (src.kind === 'dish' && src.name) {
+          copy.name = src.name + tt(' (copy)', ' (copia)');
+        } else if (src.kind === 'section' && src.name) {
+          copy.name = src.name + tt(' (copy)', ' (copia)');
+        }
+        delete copy.ghost; // never duplicate as a ghost
+        rows.splice(di + 1, 0, copy);
+        render();
+        // Focus the new row's name field for immediate rename.
+        var freshName = rowsEl.querySelector('[data-field="name"][data-i="' + (di + 1) + '"]');
+        if (freshName) {
+          freshName.focus();
+          try { freshName.select(); } catch (_) {}
+        }
+        scheduleSaveDraft();
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+          MD_DOM.announce(src.kind === 'section'
+            ? tt('Section duplicated.', 'Sección duplicada.')
+            : tt('Dish duplicated.', 'Plato duplicado.'));
+        }
         return;
       }
       // W13-2 — remove section hero image
@@ -3081,6 +3449,107 @@
         return;
       }
     });
+    // Wave studio-quality — delegated drag-and-drop for per-dish photo
+    // zones + section hero zones. Each `.md-photo-pick` label is
+    // rendered fresh on every row redraw, so we delegate at the
+    // rowsEl level instead of attaching N listeners. Logo zone has
+    // its own one-off handler at /tools/menu-design/menu-design.js
+    // (search "logoDropEl"); this is the per-row equivalent.
+    function _isImgFile(f) {
+      if (!f) return false;
+      return /^image\/(png|jpeg|jpg|webp)$/i.test(f.type) ||
+             /\.(png|jpe?g|webp)$/i.test(f.name || '');
+    }
+    function _findPickLabel(target) {
+      if (!target || !target.closest) return null;
+      return target.closest('.md-photo-pick');
+    }
+    rowsEl.addEventListener('dragenter', function (e) {
+      var dt = e.dataTransfer; if (!dt) return;
+      var hasFile = false;
+      if (dt.types) {
+        for (var i = 0; i < dt.types.length; i++) {
+          if (dt.types[i] === 'Files') { hasFile = true; break; }
+        }
+      }
+      if (!hasFile) return;
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      e.preventDefault();
+      label.classList.add('is-dragging');
+    });
+    rowsEl.addEventListener('dragover', function (e) {
+      var dt = e.dataTransfer; if (!dt) return;
+      var hasFile = false;
+      if (dt.types) {
+        for (var i = 0; i < dt.types.length; i++) {
+          if (dt.types[i] === 'Files') { hasFile = true; break; }
+        }
+      }
+      if (!hasFile) return;
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      e.preventDefault();
+      try { dt.dropEffect = 'copy'; } catch (_) {}
+    });
+    rowsEl.addEventListener('dragleave', function (e) {
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      // Only clear when leaving the label entirely — child movements
+      // shouldn't kill the highlight.
+      if (e.relatedTarget && label.contains(e.relatedTarget)) return;
+      label.classList.remove('is-dragging');
+    });
+    rowsEl.addEventListener('drop', function (e) {
+      var label = _findPickLabel(e.target);
+      if (!label) return;
+      var input = label.querySelector('input[type="file"]');
+      if (!input) return;
+      var dt = e.dataTransfer;
+      if (!dt || !dt.files || !dt.files.length) return;
+      e.preventDefault();
+      label.classList.remove('is-dragging');
+      // Pick the first image file from the drop.
+      var picked = null;
+      for (var j = 0; j < dt.files.length; j++) {
+        if (_isImgFile(dt.files[j])) { picked = dt.files[j]; break; }
+      }
+      if (!picked) {
+        setDownloadMsg(tt(
+          'That doesn\'t look like an image. Drop a PNG, JPG, or WebP.',
+          'Eso no parece una imagen. Suelta un PNG, JPG o WebP.'
+        ), 'error');
+        return;
+      }
+      // Hand the file to the existing input by simulating a "files
+      // were picked" change event. DataTransfer assignment is browser-
+      // gated; safer to fire the same handler the input would.
+      try {
+        var dtList = new DataTransfer();
+        dtList.items.add(picked);
+        input.files = dtList.files;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      } catch (_) {
+        // Browser doesn't allow direct file assignment — manually fire
+        // the same path the change handler would (via the data-act
+        // dispatch logic below).
+        var act = input.dataset && input.dataset.act;
+        var idx = parseInt(input.dataset.i, 10);
+        if (!act || !isFinite(idx) || !rows[idx]) return;
+        downscaleImage(picked, act === 'hero-pick' ? 480 : 320, 0.82, function (dataUrl, w, h) {
+          if (!dataUrl) return;
+          pushUndo();
+          if (act === 'hero-pick') {
+            rows[idx].hero = { dataUrl: dataUrl, w: w, h: h, name: picked.name };
+          } else {
+            rows[idx].photo = { dataUrl: dataUrl, w: w, h: h, name: picked.name };
+          }
+          render();
+          scheduleSaveDraft();
+        });
+      }
+    });
+
     // W7-2 — allergen checkbox change. Lives on 'change' so it fires
     // for both mouse + keyboard (Space toggles a checkbox).
     // W11-4 — also handles photo file picker change events.
@@ -3153,6 +3622,16 @@
     });
   }
 
+  // Wave studio-quality (WCAG 2.2 AA) — small announce wrapper that
+  // routes through MD_DOM.announce when available; degrades silently
+  // otherwise. Used at every state transition that changes visible
+  // editor state without focus shift.
+  function srAnnounce(msg) {
+    if (typeof MD_DOM !== 'undefined' && typeof MD_DOM.announce === 'function') {
+      MD_DOM.announce(msg);
+    }
+  }
+
   if (addRowBtn) addRowBtn.addEventListener('click', function () {
     pushUndo();
     rows.push(blankDish());
@@ -3160,6 +3639,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Dish added at row ' + rows.length + '.', 'Plato agregado en fila ' + rows.length + '.'));
   });
   if (stickBtn) stickBtn.addEventListener('click', function () {
     pushUndo();
@@ -3168,6 +3648,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('input[data-field="name"]');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Dish added.', 'Plato agregado.'));
   });
 
   if (addSecBtn) addSecBtn.addEventListener('click', function () {
@@ -3177,6 +3658,7 @@
     scheduleSaveDraft();
     var inputs = rowsEl.querySelectorAll('.md-row-section input');
     if (inputs.length) inputs[inputs.length - 1].focus();
+    srAnnounce(tt('Section added.', 'Sección agregada.'));
   });
 
   if (clearBtn) clearBtn.addEventListener('click', function () {
@@ -3594,6 +4076,12 @@
 
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, downloadBtn, tt('Loading PDF tools…', 'Cargando…'), function () {
+        _doDownloadPdf();
+      });
+    });
+  }
+  function _doDownloadPdf() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt('PDF library failed to load. Refresh the page and try again.',
                           'No se pudo cargar la biblioteca PDF. Recarga la página e intenta de nuevo.'), 'error');
@@ -3663,6 +4151,10 @@
         // into the PDF so the smart 2-page split planner only fires
         // when the operator opted into a 2-page deliverable.
         allowMultiPage: !!(meta && meta.allowMultiPage),
+        // Wave studio-quality — Quiet typography mode. Strips cuisine
+        // decoration + section glyphs and forces single-column in the
+        // printed PDF for cognitive-load accessibility.
+        quietMode: !!(meta && meta.quietMode),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale
@@ -3696,6 +4188,14 @@
         if (result.pdfX3) {
           msg += ' ' + tt('PDF/X-3 metadata applied (TrimBox / BleedBox / OutputIntents).',
                           'Metadatos PDF/X-3 aplicados (TrimBox / BleedBox / OutputIntents).');
+        }
+        // Wave studio-quality (PDF/UA Phase 1) — surface accessibility
+        // metadata when the post-process step succeeded. AT users open
+        // the PDF and hear "Menu of <name>, English" / "Menú de <name>,
+        // Español" instead of nothing.
+        if (result.accessible) {
+          msg += ' ' + tt('Accessibility metadata embedded (Lang, Title, XMP).',
+                          'Metadatos de accesibilidad embebidos (idioma, título, XMP).');
         }
         setDownloadMsg(msg, 'success');
         // Wave A4: persist a slim history row to MuntinContext.menuHistory
@@ -3772,7 +4272,6 @@
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------
@@ -3844,6 +4343,10 @@
   // ----------------------------------------------------------------
   if (largePrintBtn) {
     largePrintBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, largePrintBtn, tt('Loading…', 'Cargando…'), function () { _doLargePrint(); });
+    });
+  }
+  function _doLargePrint() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt(
           'PDF generator not loaded. Refresh and try again.',
@@ -3894,7 +4397,6 @@
         largePrintBtn.disabled = false;
         largePrintBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------
@@ -3910,6 +4412,10 @@
   // export but routed through applyHighContrastOverride.
   if (highContrastBtn) {
     highContrastBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, highContrastBtn, tt('Loading…', 'Cargando…'), function () { _doHighContrast(); });
+    });
+  }
+  function _doHighContrast() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt('PDF generator not loaded. Refresh and try again.',
                           'El generador de PDF no se cargó. Recarga e intenta de nuevo.'), 'error');
@@ -3958,7 +4464,6 @@
         highContrastBtn.disabled = false;
         highContrastBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // W18 — downloadBlob extracted to infra/dom.js.
@@ -4005,6 +4510,10 @@
 
   if (exportTextBtn) {
     exportTextBtn.addEventListener('click', function () {
+      withRenderer(ensureMdText, exportTextBtn, tt('Loading…', 'Cargando…'), function () { _doExportText(); });
+    });
+  }
+  function _doExportText() {
       if (typeof MD_TEXT === 'undefined') return;
       var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
       if (!realRows.length) {
@@ -4021,10 +4530,13 @@
       setDownloadMsg(tt('Plain text + Markdown downloaded — screen-reader friendly.',
                         'Texto plano + Markdown descargados — compatibles con lectores de pantalla.'), 'success');
       if (window.plausible) { try { window.plausible('Menu Design Text Exported'); } catch (_) {} }
-    });
   }
   if (exportSsmlBtn) {
     exportSsmlBtn.addEventListener('click', function () {
+      withRenderer(ensureMdText, exportSsmlBtn, tt('Loading…', 'Cargando…'), function () { _doExportSsml(); });
+    });
+  }
+  function _doExportSsml() {
       if (typeof MD_TEXT === 'undefined') return;
       var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
       if (!realRows.length) {
@@ -4038,11 +4550,13 @@
       setDownloadMsg(tt('SSML downloaded — pipe to AWS Polly / Google TTS / Azure Speech.',
                         'SSML descargado — compatible con AWS Polly / Google TTS / Azure Speech.'), 'success');
       if (window.plausible) { try { window.plausible('Menu Design SSML Exported'); } catch (_) {} }
-    });
   }
   // W16 — BRF Grade-1 export
   var exportBrfBtn = document.getElementById('mdExportBrf');
   if (exportBrfBtn) exportBrfBtn.addEventListener('click', function () {
+    withRenderer(ensureMdText, exportBrfBtn, tt('Loading…', 'Cargando…'), function () { _doExportBrf(); });
+  });
+  function _doExportBrf() {
     if (typeof MD_TEXT === 'undefined' || typeof MD_TEXT.exportBrf !== 'function') return;
     var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
     if (!realRows.length) {
@@ -4057,7 +4571,7 @@
     setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
-  });
+  }
 
   // -------------------- Wave B5 — Menu Pack ZIP ------------------
   // The handoff packet the UX agent named as the missing primitive.
@@ -4073,6 +4587,21 @@
   // and what didn't).
   var exportPackBtn = document.getElementById('mdExportPack');
   if (exportPackBtn) exportPackBtn.addEventListener('click', function () {
+    var origLabel = exportPackBtn.textContent;
+    exportPackBtn.disabled = true;
+    exportPackBtn.textContent = tt('Loading…', 'Cargando…');
+    ensureAllRenderers().then(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.textContent = origLabel;
+      _doExportPack();
+    }).catch(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.textContent = origLabel;
+      setDownloadMsg(tt('Could not load pack tools. Check your connection and retry.',
+                        'No se pudieron cargar las herramientas. Revisa tu conexión.'), 'error');
+    });
+  });
+  function _doExportPack() {
     if (typeof MD_PACK === 'undefined' || typeof MD_SCHEMA === 'undefined') {
       setDownloadMsg(tt(
         'Menu pack module not loaded. Refresh and try again.',
@@ -4117,8 +4646,9 @@
     var paperKey = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
     var paperLabel = '';
     try {
-      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) {
-        paperLabel = MD_PDF.PAPERS[paperKey].label_en || MD_PDF.PAPERS[paperKey].label || paperKey;
+      var pInfo = paperByKey(paperKey);
+      if (pInfo) {
+        paperLabel = pInfo.label_en || pInfo.label || paperKey;
       }
     } catch (_) {}
     var dishCount = canonicalMenu.dishes.length;
@@ -4182,11 +4712,145 @@
       exportPackBtn.disabled = false;
       exportPackBtn.innerHTML = origLabel;
     });
+  }
+
+  // Wave studio-quality — Bilingual pack. One click, EN + ES side by
+  // side, all artifacts. The shipped artifacts (README, mailto,
+  // disclaimer text) are locale-aware; dish names + descriptions stay
+  // exactly as the operator typed them in their primary language.
+  // Routes through the same canonical-menu builder + MD_PACK pipeline.
+  var exportBilingualBtn = document.getElementById('mdExportBilingual');
+  if (exportBilingualBtn) exportBilingualBtn.addEventListener('click', function () {
+    var blOrigLabel = exportBilingualBtn.textContent;
+    exportBilingualBtn.disabled = true;
+    exportBilingualBtn.textContent = tt('Loading…', 'Cargando…');
+    ensureAllRenderers().then(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.textContent = blOrigLabel;
+      _doExportBilingual();
+    }).catch(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.textContent = blOrigLabel;
+      setDownloadMsg(tt('Could not load bilingual pack tools. Check your connection.',
+                        'No se pudieron cargar las herramientas. Revisa tu conexión.'), 'error');
+    });
   });
+  function _doExportBilingual() {
+    if (typeof MD_PACK === 'undefined' ||
+        typeof MD_PACK.exportBilingualPack !== 'function' ||
+        typeof MD_SCHEMA === 'undefined') {
+      setDownloadMsg(tt(
+        'Bilingual pack module not loaded. Refresh and try again.',
+        'El módulo de pack bilingüe no cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    var realRowsBl = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRowsBl.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before exporting the bilingual pack.',
+        'Agrega al menos un plato antes de exportar el pack bilingüe.'
+      ), 'error');
+      return;
+    }
+    var canonicalMenuBl;
+    try {
+      var v2ShapeBl = {
+        rows: rows.filter(function (r) { return !r.ghost; }),
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      canonicalMenuBl = MD_SCHEMA.migrate(v2ShapeBl);
+      canonicalMenuBl = MD_SCHEMA.applyAutoDisclaimer(canonicalMenuBl);
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build canonical menu: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el menú: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var themeBl = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    if (themeBl) themeBl = applyCustomizer(themeBl);
+    var titleValBl = (canonicalMenuBl.meta && canonicalMenuBl.meta.businessName) || tt('Menu', 'Menú');
+    var paperKeyBl = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
+    var paperLabelBl = '';
+    try {
+      var pInfoBl = paperByKey(paperKeyBl);
+      if (pInfoBl) {
+        paperLabelBl = pInfoBl.label_en || pInfoBl.label || paperKeyBl;
+      }
+    } catch (_) {}
+    var dishCountBl = canonicalMenuBl.dishes.length;
+    var dishBucketBl = dishCountBl < 12 ? '<12' : dishCountBl < 25 ? '12-24' : dishCountBl < 40 ? '25-39' : '40+';
+
+    exportBilingualBtn.disabled = true;
+    var origLabelBl = exportBilingualBtn.innerHTML;
+    exportBilingualBtn.textContent = tt('Building bilingual pack…', 'Generando pack bilingüe…');
+    setDownloadMsg('', 'success');
+
+    MD_PACK.exportBilingualPack({
+      canonicalMenu: canonicalMenuBl,
+      businessName:  titleValBl,
+      paperLabel:    paperLabelBl,
+      paperKey:      paperKeyBl,
+      themeId:       themeId,
+      cuisine:       (canonicalMenuBl.meta && canonicalMenuBl.meta.cuisine) || '',
+      allergenRegime:(canonicalMenuBl.meta && canonicalMenuBl.meta.allergenRegime) || 'us-fda9',
+      logoDataUrl:   logoUrl,
+      logoMeta:      logoMeta,
+      customDims:    paperKeyBl === 'custom' ? customDims : null,
+      theme:         themeBl,
+      htmlOpts:      { themeId: themeId },
+      pdfOpts:       { paperKey: paperKeyBl }
+    }, ['en', 'es']).then(function (blob) {
+      var slug = String(titleValBl || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = slug + '-menu-pack-bilingual.zip';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(a.href);
+      }, 4000);
+      setDownloadMsg(tt(
+        'Bilingual pack downloaded — open en/ for English, es/ for Spanish.',
+        'Pack bilingüe descargado — abre en/ para inglés, es/ para español.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Pack Exported', { props: {
+            theme:           themeId || 'unknown',
+            dishCount_bucket: dishBucketBl,
+            locale:          'bilingual'
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Bilingual pack failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló el pack bilingüe: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Export Failed', { props: { format: 'pack', reason: 'bilingual' } });
+        } catch (_) {}
+      }
+    }).then(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.innerHTML = origLabelBl;
+    });
+  }
 
   // W16 — Tablet kiosk HTML
   var exportTabletBtn = document.getElementById('mdExportTablet');
   if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
+    withRenderer(ensureMdHtml, exportTabletBtn, tt('Loading…', 'Cargando…'), function () { _doExportTablet(); });
+  });
+  function _doExportTablet() {
     if (typeof MD_HTML === 'undefined' || typeof MD_HTML.exportHtmlTablet !== 'function') return;
     var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
     if (!realRows.length) {
@@ -4204,7 +4868,7 @@
     setDownloadMsg(tt('Tablet HTML downloaded — drop on a kiosk device for guest reference.',
                       'HTML para tablet descargado — para uso en kiosko.'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design Tablet Exported'); } catch (_) {} }
-  });
+  }
 
   // ----------------------------------------------------------------
   // W6-1 — QR-menu export. Promps for a destination URL the operator
@@ -4214,6 +4878,10 @@
   // ----------------------------------------------------------------
   if (exportQrBtn) {
     exportQrBtn.addEventListener('click', function () {
+      withRenderer(ensureMdHtml, exportQrBtn, tt('Loading…', 'Cargando…'), function () { _doExportQr(); });
+    });
+  }
+  function _doExportQr() {
       if (typeof MD_HTML === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt(
           'QR exporter not loaded. Refresh and try again.',
@@ -4266,6 +4934,9 @@
         // B2 finish — same effective disclaimer the standard PDF export
         // already uses; the QR-menu HTML emits it below the allergen key.
         disclaimer:   effectiveDisclaimer(),
+        // Wave studio-quality — propagate Quiet typography mode so
+        // QR-menu HTML matches the operator's editor preference.
+        quietMode:    !!(meta && meta.quietMode),
         meta: {
           businessName:    title,
           tagline:         meta.tagline || '',
@@ -4304,7 +4975,6 @@
         exportQrBtn.disabled = false;
         exportQrBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------
@@ -5163,6 +5833,197 @@
     setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
     setDownloadMsg(tt('Theme JSON downloaded.', 'JSON de tema descargado.'), 'success');
   });
+  // Wave studio-quality — Save/Load full menu as a JSON file.
+  // Operators run multiple menus (lunch, dinner, brunch, kids, drinks,
+  // seasonal). The browser stores ONE draft. Saving as a file lets
+  // the operator keep all their menus on disk, switch freely, and
+  // even share menus across devices via file transfer.
+  //
+  // The exported JSON is a v3 canonical menu shape (via MD_SCHEMA)
+  // plus theme + customize + logo. Logo is embedded as a data URL,
+  // so the file is fully self-contained. Privacy: no upload — file
+  // saves to the operator's Downloads folder via the standard <a>
+  // download trick used elsewhere in the tool.
+  var menuSaveBtn = document.getElementById('mdMenuSave');
+  var menuLoadInput = document.getElementById('mdMenuLoad');
+  if (menuSaveBtn) menuSaveBtn.addEventListener('click', function () {
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before saving.', 'Agrega al menos un plato antes de guardar.'), 'error');
+      return;
+    }
+    var snapshot = null;
+    try {
+      var v2 = {
+        rows: realRows,
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      if (typeof MD_SCHEMA !== 'undefined' && MD_SCHEMA.migrate) {
+        snapshot = MD_SCHEMA.migrate(v2);
+      } else {
+        snapshot = v2;
+      }
+      // Bundle the logo as a data URL so the file is self-contained.
+      // The schema doesn't carry the logo by reference; embed it on a
+      // sibling key the loader picks up.
+      if (logoUrl) {
+        snapshot.logo = {
+          dataUrl: logoUrl,
+          name: (logoMeta && logoMeta.name) || '',
+          w: (logoMeta && logoMeta.w) || 0,
+          h: (logoMeta && logoMeta.h) || 0
+        };
+      }
+      // Stamp the export so the loader can warn on format drift.
+      snapshot.exportedFromTool = 'menu-design';
+      snapshot.exportedAt = new Date().toISOString();
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build menu file: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el archivo del menú: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var biz = (meta && meta.businessName) ? String(meta.businessName) : tt('menu', 'menu');
+    var slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+    var blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = slug + '-menu.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+    setDownloadMsg(tt(
+      'Menu saved. Keep this file — you can load it back anytime.',
+      'Menú guardado. Guarda este archivo — puedes cargarlo cuando quieras.'
+    ), 'success');
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Menu saved as JSON file.', 'Menú guardado como archivo JSON.'));
+    }
+  });
+
+  if (menuLoadInput) menuLoadInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        if (!parsed || typeof parsed !== 'object') {
+          setDownloadMsg(tt('Could not parse that JSON.', 'No se pudo leer el JSON.'), 'error');
+          return;
+        }
+        // Refuse files that don't look like a menu — protects the
+        // operator who accidentally drops a recipe.json or theme.json.
+        if (!parsed.dishes && !parsed.rows && !parsed.sections) {
+          setDownloadMsg(tt(
+            'That file does not look like a menu. Looking for a Menu Design saved menu (.json).',
+            'Ese archivo no parece un menú. Busco un archivo guardado de Menu Design (.json).'
+          ), 'error');
+          return;
+        }
+        // Confirm overwrite when the operator has unsaved work.
+        var hasWork = rows.some(function (r) { return !r.ghost; });
+        if (hasWork) {
+          var ok = confirm(tt(
+            'Loading this menu will replace your current dishes. Continue?',
+            'Cargar este menú reemplazará tus platos actuales. ¿Continuar?'
+          ));
+          if (!ok) { menuLoadInput.value = ''; return; }
+        }
+        pushUndo();
+        // Migrate to v3 if the file looks like v1/v2.
+        var menu = parsed;
+        try {
+          if (typeof MD_SCHEMA !== 'undefined' && MD_SCHEMA.migrate) {
+            menu = MD_SCHEMA.migrate(parsed);
+          }
+        } catch (_) {}
+        // Convert v3 → row stream the orchestrator uses.
+        var newRows = [];
+        if (Array.isArray(menu.sections) && Array.isArray(menu.dishes)) {
+          var sections = menu.sections.slice().sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+          var bySec = {};
+          menu.dishes.forEach(function (d) { (bySec[d.sectionId] = bySec[d.sectionId] || []).push(d); });
+          sections.forEach(function (s) {
+            if (s.name) newRows.push({ kind: 'section', name: s.name, blurb: s.blurb || '' });
+            var ds = (bySec[s.id] || []).slice().sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+            ds.forEach(function (d) {
+              newRows.push({
+                kind: 'dish',
+                name: d.name || '',
+                price: d.price || '',
+                desc: d.desc || '',
+                allergens: Array.isArray(d.allergens) ? d.allergens.slice() : [],
+                allergenStates: d.allergenStates || null,
+                badges: Array.isArray(d.badges) ? d.badges.slice() : [],
+                spice: d.spice || 0,
+                photo: d.photo || null
+              });
+            });
+          });
+        } else if (Array.isArray(parsed.rows)) {
+          newRows = parsed.rows.filter(function (r) { return !r.ghost; });
+        }
+        rows = newRows;
+        if (menu.theme && menu.theme.id && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(menu.theme.id)) {
+          themeId = menu.theme.id;
+        } else if (parsed.theme && typeof parsed.theme === 'string' && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(parsed.theme)) {
+          themeId = parsed.theme;
+        }
+        if (menu.meta) {
+          Object.keys(menu.meta).forEach(function (k) {
+            if (typeof menu.meta[k] !== 'undefined') meta[k] = menu.meta[k];
+          });
+        }
+        if (menu.customize || parsed.customize) {
+          var c = menu.customize || parsed.customize;
+          customize.accent = c.accent || null;
+          customize.paper  = c.paper  || null;
+          customize.ink    = c.ink    || null;
+          customize.paperTexture = !!c.paperTexture;
+          if (c.mods) customize.mods = c.mods;
+        }
+        // Restore logo if the file embedded one.
+        if (parsed.logo && parsed.logo.dataUrl) {
+          logoUrl = parsed.logo.dataUrl;
+          logoMeta = { name: parsed.logo.name || '', w: parsed.logo.w || 0, h: parsed.logo.h || 0 };
+          if (logoThumb) logoThumb.innerHTML = '<img src="' + escHtml(logoUrl) + '" alt="" />';
+          if (logoLine)  logoLine.textContent = parsed.logo.name || tt('Logo restored', 'Logo restaurado');
+          if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+        }
+        // Sync visible UI controls to restored state.
+        if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
+        renderThemePicker();
+        if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
+        // Wave studio-quality — sync the meta-panel checkboxes so the
+        // restored state is visible (operator can see Quiet mode on).
+        var quietSyncEl = document.getElementById('mdMetaQuietMode');
+        if (quietSyncEl) quietSyncEl.checked = !!meta.quietMode;
+        var multiSyncEl = document.getElementById('mdMetaAllowMultiPage');
+        if (multiSyncEl) multiSyncEl.checked = !!meta.allowMultiPage;
+        render();
+        scheduleSaveDraft();
+        setDownloadMsg(tt(
+          'Menu loaded — ' + rows.filter(function (r) { return r.kind === 'dish'; }).length + ' dishes restored.',
+          'Menú cargado — ' + rows.filter(function (r) { return r.kind === 'dish'; }).length + ' platos restaurados.'
+        ), 'success');
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+          MD_DOM.announce(tt('Menu loaded.', 'Menú cargado.'));
+        }
+      } catch (err) {
+        setDownloadMsg(tt(
+          'Could not load that menu file: ' + (err && err.message ? err.message : 'parse error'),
+          'No se pudo cargar el menú: ' + (err && err.message ? err.message : 'error de lectura')
+        ), 'error');
+      }
+    };
+    reader.readAsText(file);
+    menuLoadInput.value = '';
+  });
+
   if (themeImportInput) themeImportInput.addEventListener('change', function (e) {
     var file = e.target.files && e.target.files[0]; if (!file) return;
     var reader = new FileReader();

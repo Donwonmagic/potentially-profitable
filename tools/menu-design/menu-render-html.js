@@ -296,6 +296,8 @@ jsonldHtml +
       MD_DECOR isn't loaded or the theme has no cuisine match. */
    (function () {
      try {
+       // Wave studio-quality — Quiet typography mode skips decoration.
+       if (opts.quietMode) return '';
        var theme = opts.theme || {};
        var hasDecor = (root && root.MD_DECOR && typeof root.MD_DECOR.svgFragment === 'function');
        if (!hasDecor) return '';

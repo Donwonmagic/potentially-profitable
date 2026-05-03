@@ -611,8 +611,90 @@
     return rows;
   }
 
+  // ---------- Bilingual pack composer ------------------------------
+  // Wave studio-quality — one click → both languages, all artifacts.
+  //
+  // Bilingual operators (DMV-area Latino restaurants, hotel F&B, etc.)
+  // hand the EN PDF to one cook line and the ES PDF to the other, the
+  // EN README to their print shop and the ES README to their bilingual
+  // staff. Without this they ran the export twice and renamed files
+  // by hand. With this they get one zip with en/ and es/ subfolders.
+  //
+  // Implementation: runs exportPack() per locale then merges into a
+  // parent zip. The shipped artifacts (README, mailto, allergen
+  // disclaimer text) are locale-aware; the dish content stays as the
+  // operator typed it (we don't translate names or descriptions).
+  //
+  // @param {object} opts            same as exportPack (sans `locale`)
+  // @param {string[]} [locales]     defaults to ['en', 'es']
+  // @returns {Promise<Blob>}
+  function exportBilingualPack(opts, locales) {
+    opts = opts || {};
+    locales = (Array.isArray(locales) && locales.length) ? locales : ['en', 'es'];
+    var loadJSZip = opts.loadJSZip
+      || (root && root.MD_HTML && root.MD_HTML.loadJsZip)
+      || null;
+    if (!loadJSZip) {
+      return Promise.reject(new Error('Bilingual Menu Pack: no JSZip loader available'));
+    }
+    var perLocaleBlobs = [];
+    var chain = Promise.resolve();
+    locales.forEach(function (loc) {
+      chain = chain.then(function () {
+        var perOpts = Object.assign({}, opts, { locale: loc });
+        return exportPack(perOpts).then(function (blob) {
+          perLocaleBlobs.push({ locale: loc, blob: blob });
+        });
+      });
+    });
+    return chain.then(function () {
+      return loadJSZip().then(function (JSZip) {
+        var parent = new JSZip();
+        // Top-level README orienting the operator to the two folders.
+        var biz = opts.businessName || 'your restaurant';
+        var when = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        var topReadme =
+          '# Bilingual menu pack — ' + biz + '\n' +
+          'Generated: ' + when + '\n\n' +
+          'This pack ships your menu in ' + locales.length + ' languages, side by side.\n' +
+          'Each subfolder is a complete pack — open the README inside for handoff guidance.\n\n' +
+          locales.map(function (l) {
+            var name = l === 'es' ? 'Spanish (ES)' : (l === 'en' ? 'English (EN)' : l.toUpperCase());
+            return '- `' + l + '/` — ' + name + ' artifacts (PDF, QR menu, JSON-LD, plain text + Markdown, mailto template)';
+          }).join('\n') +
+          '\n\n## Why both languages\n' +
+          'Your bilingual staff can read the disclaimer in their language; your print shop and web dev get the same in theirs. Allergen labels, regulatory disclaimer, and the README are all translated. Dish names and descriptions stay exactly as you wrote them.\n\n' +
+          '## Privacy\n' +
+          'Both packs were generated in your browser. Nothing was uploaded.\n';
+        parent.file('README.md', topReadme);
+        // Unpack each per-locale zip into a subfolder.
+        var unpackChain = Promise.resolve();
+        perLocaleBlobs.forEach(function (entry) {
+          unpackChain = unpackChain.then(function () {
+            return JSZip.loadAsync(entry.blob).then(function (innerZip) {
+              var entries = [];
+              innerZip.forEach(function (relPath, file) {
+                if (!file.dir) entries.push({ relPath: relPath, file: file });
+              });
+              return Promise.all(entries.map(function (e) {
+                var asType = /\.(pdf|png|jpg|jpeg|webp)$/i.test(e.relPath) ? 'uint8array' : 'string';
+                return e.file.async(asType).then(function (data) {
+                  parent.file(entry.locale + '/' + e.relPath, data);
+                });
+              }));
+            });
+          });
+        });
+        return unpackChain.then(function () {
+          return parent.generateAsync({ type: 'blob' });
+        });
+      });
+    });
+  }
+
   var api = {
-    exportPack:    exportPack,
+    exportPack:          exportPack,
+    exportBilingualPack: exportBilingualPack,
     // exported for tests
     _buildReadmeEN:  buildReadmeEN,
     _buildReadmeES:  buildReadmeES,

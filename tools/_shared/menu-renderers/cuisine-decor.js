@@ -151,6 +151,33 @@
         'M8 6 Q9 8 8 10 M11 5 Q12 7 11 9 M14 6 Q15 8 14 10'
       ],
       extras: []
+    },
+    // Wave studio-quality — paisley (boteh) + small Mughal arch.
+    // The paisley curl is a classic South-Asian textile motif; the
+    // arch hints at Mughal architecture without being literal. Both
+    // shapes carry the Indian-cuisine identity at low opacity behind
+    // the menu content.
+    'paisley': {
+      paths: [
+        'M5 18 Q3 14 5 11 Q7 8 11 8 Q15 8 17 11 Q18 13 17 16 Q15 19 11 19 Q9 19 7 17 Q9 17 11 16 Q14 14 13 11 Q11 9 8 11 Q5 14 7 17',
+        'M14 5 Q14 3 16 3 Q18 3 18 5 L18 8 L14 8 Z'
+      ],
+      extras: [
+        '<circle cx="11" cy="13" r="1" fill="none" stroke="currentColor" stroke-width="0.4"/>',
+        '<circle cx="9" cy="14" r="0.4" fill="currentColor"/>',
+        '<circle cx="13" cy="13" r="0.4" fill="currentColor"/>'
+      ]
+    },
+    // Wave studio-quality — flame motif for Korean BBQ tabletop-grill
+    // theme. Three flame tongues curving up; minimal stroke so the
+    // motif sits softly behind menu content at low opacity.
+    'flame': {
+      paths: [
+        'M9 19 Q6 16 7 13 Q8 11 9 9 Q9 12 11 13 Q11 11 12 9 Q12 12 14 13 Q15 11 15 9 Q16 11 17 13 Q18 16 15 19',
+        'M11 17 Q10 15 11 13 Q12 14 11 17',
+        'M13 17 Q14 15 13 13 Q12 14 13 17'
+      ],
+      extras: []
     }
   };
 
@@ -185,6 +212,24 @@
     if (has(/tapas|pinchos|spanish|andaluz/i))               return { key: 'spanish-tile', x: 178, y: 38, s: 1.3 };
     if (has(/diner|breakfast|burger/i))                      return { key: 'coffee-cup',   x: 178, y: 36, s: 1.4 };
     if (has(/dessert|patisserie|dolci/i))                    return { key: 'leaf-cluster', x: 178, y: 36, s: 1.4 };
+    // Wave studio-quality — Indian-cuisine motif (paisley + Mughal
+    // arch). Operators currently default to a wrong theme; this gives
+    // the modern-indian theme its visual identity end-to-end.
+    if (has(/indian|india|mughal|tandoor|biryani|curry|punjab|tamil|bengali|gujarati|kashmir/i)) {
+      return { key: 'paisley', x: 175, y: 38, s: 1.3 };
+    }
+    // Wave studio-quality — Korean BBQ. Flame tongue motif for the
+    // tabletop-grill cuisine. Differentiates from generic bbq-smoke.
+    if (has(/korean.*bbq|kbbq|korean barbecue|gogi|samgyeopsal|bulgogi|galbi|coreana/i)) {
+      return { key: 'flame', x: 178, y: 38, s: 1.3 };
+    }
+    // Wave studio-quality — Levantine / Mediterranean sharing plates.
+    // Reuses the olive-branch motif (olive trees are central to this
+    // cuisine culture). Covers Lebanese / Israeli / Palestinian /
+    // Syrian / Jordanian / Greek / Turkish overlap.
+    if (has(/levant|leban|israel|palest|syrian|jordan|mezze|hummus|falafel|shawarma|kebab|greek|turkish|mediterran|aegean/i)) {
+      return { key: 'olive-branch', x: 175, y: 38, s: 1.4 };
+    }
     return null;
   }
 

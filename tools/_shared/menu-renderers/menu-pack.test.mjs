@@ -255,3 +255,63 @@ test('exportPack ES locale emits the Spanish README + mailto', async () => {
   assert.match(readmeBody, /^# Pack del menú/m);
   assert.match(mailtoBody, /^Asunto: Trabajo de impresión/m);
 });
+
+// ============== Bilingual pack ==============
+test('exportBilingualPack returns one zip with en/ + es/ subfolders', async () => {
+  // We need a more complete JSZip mock here because exportBilingualPack
+  // re-loads each per-locale blob via JSZip.loadAsync. Implement a tiny
+  // round-trip: each per-locale "zip" is a plain object with file
+  // bodies; loadAsync just returns the same shape so we can assert the
+  // parent merges them under the right prefix.
+  function makeMockJSZip() {
+    const filesIn = {};
+    return {
+      file: function (name, body) { filesIn[name] = body; return this; },
+      generateAsync: function () {
+        // Tag the synthetic blob so loadAsync (below) can recover the files.
+        return Promise.resolve({ __mockFiles: filesIn });
+      }
+    };
+  }
+  const JSZipMock = function () { return makeMockJSZip(); };
+  // Static loadAsync — pulls __mockFiles back out and emulates the
+  // per-entry .async(type) API by returning the body verbatim.
+  JSZipMock.loadAsync = function (blob) {
+    const files = blob.__mockFiles || {};
+    return Promise.resolve({
+      forEach: function (cb) {
+        Object.keys(files).forEach(function (rel) {
+          cb(rel, { dir: false, async: function () { return Promise.resolve(files[rel]); } });
+        });
+      }
+    });
+  };
+
+  const blob = await PACK.exportBilingualPack({
+    canonicalMenu: seed(),
+    businessName: 'Da Marco',
+    loadJSZip: () => Promise.resolve(JSZipMock),
+    exportText: () => 'TEXT',
+    exportMd:   () => 'MD',
+    emitJsonld: () => '{}'
+  }, ['en', 'es']);
+
+  // Parent zip should carry the top-level README + each locale's files
+  // under en/ and es/ prefixes.
+  const names = Object.keys(blob.__mockFiles);
+  assert.ok(names.indexOf('README.md') >= 0, 'top-level README present');
+  assert.ok(names.some(n => n.startsWith('en/')), 'en/ subfolder present');
+  assert.ok(names.some(n => n.startsWith('es/')), 'es/ subfolder present');
+  assert.ok(names.indexOf('en/README.md') >= 0, 'EN per-pack README present');
+  assert.ok(names.indexOf('es/README.md') >= 0, 'ES per-pack README present');
+  // Top-level README should mention both languages.
+  assert.match(blob.__mockFiles['README.md'], /English \(EN\)/);
+  assert.match(blob.__mockFiles['README.md'], /Spanish \(ES\)/);
+});
+
+test('exportBilingualPack rejects when no JSZip loader is available', async () => {
+  await assert.rejects(
+    PACK.exportBilingualPack({ canonicalMenu: seed() }),
+    /no JSZip loader/
+  );
+});

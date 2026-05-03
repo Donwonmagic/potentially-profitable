@@ -515,6 +515,152 @@
       letterSpacing: 'wide', sectionCase: 'uppercase', contentType: 'standard',
       paperFloors: ['letter', 'a4', 'half-page', 'a2-board'],
       cuisineHint: ['food truck', 'ghost kitchen', 'pop-up', 'street food', 'truck']
+    },
+
+    // Wave studio-quality (B4 partial) — Izakaya Lantern.
+    // Late-night Japanese pub. Lantern-red accent on ink-black paper
+    // with a brushed display face. Operators of izakayas, sake bars,
+    // and yakitori counters currently get funneled into asian-table
+    // (too clean) or ramen-counter (too lunch-y). This gives them a
+    // theme that reads like the actual room: warm light, low ink,
+    // one paper lantern overhead.
+    'izakaya-lantern': {
+      id: 'izakaya-lantern',
+      label_en: 'Izakaya Lantern',
+      label_es: 'Izakaya Lantern',
+      blurb_en: 'Late-night Japanese pub. Lantern-red on ink, brushed display.',
+      blurb_es: 'Pub japonés nocturno. Rojo de farol sobre tinta, display de pincel.',
+      paper:    '#15110D',
+      ink:      '#F2EAD8',
+      accent:   '#C84B3F',
+      muted:    '#8A7A66',
+      bodyFamily:    '"Noto Serif JP", Georgia, serif',
+      displayFamily: '"Shippori Mincho", "Noto Serif JP", Georgia, serif',
+      h1Pt:    34,
+      h2Pt:    16,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'normal',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'table-tent', 'specials'],
+      cuisineHint: ['izakaya', 'sake bar', 'yakitori', 'japanese pub', 'late-night japanese',
+                    'tempura bar', 'oden', 'japonesa', 'sake']
+    },
+
+    // Wave studio-quality (B4 partial) — Modern Indian.
+    // Mughal-paper warm cream with deep green accent and saffron
+    // muted. Indian restaurants currently default to amateur Canva
+    // templates (heavy on stock photos) or trattoria (wrong cuisine
+    // shape). This theme reads like a contemporary Indian dining
+    // room — warm, generous spacing, paisley motif rendering at
+    // page edges via the new cuisine-decor entry.
+    // Wave studio-quality (B4 partial) — Korean BBQ Counter.
+    // Tabletop-grill cuisine with a charcoal-paper + flame palette.
+    // Differentiates from bbq-smoke (American smoker) — KBBQ is
+    // about the protein cuts, the dipping sauces, and the table grill,
+    // not low-and-slow smoking. Two-column for the protein grid; tab-
+    // aligned prices because operators often sell by weight (per 100g).
+    'korean-bbq-counter': {
+      id: 'korean-bbq-counter',
+      label_en: 'Korean BBQ Counter',
+      label_es: 'Korean BBQ Counter',
+      blurb_en: 'Charcoal paper, flame accent. Tabletop grill, protein-cut grid.',
+      blurb_es: 'Papel carbón, acento llama. Parrilla de mesa, parrilla de cortes.',
+      paper:    '#181410',
+      ink:      '#F0E8D6',
+      accent:   '#E04E2C',
+      muted:    '#A89876',
+      bodyFamily:    '"Noto Sans KR", Inter, sans-serif',
+      displayFamily: '"Bebas Neue", "Noto Sans KR", "Helvetica Neue Condensed", sans-serif',
+      h1Pt:    34,
+      h2Pt:    18,
+      bodyPt:  11.5,
+      pricePt: 11.5,
+      descPt:  9.5,
+      priceStyle:    'tab-aligned',
+      dividerStyle:  'rule-thin',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'wide',
+      sectionCase:   'uppercase',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'tabloid', 'half-page', 'table-tent', 'placemat'],
+      cuisineHint: ['korean bbq', 'kbbq', 'korean barbecue', 'gogi', 'samgyeopsal',
+                    'bulgogi', 'galbi', 'korean', 'coreana', 'asador coreano']
+    },
+
+    // Wave studio-quality (B4 partial) — Levantine Mezze.
+    // Sharing-plates Lebanese / Israeli / Palestinian / Syrian /
+    // Jordanian cuisine. Three columns for the small-plate density,
+    // hand-set Garamond display, olive-cream paper, terracotta accent.
+    // Currently no good theme for these operators — they default to
+    // tapas-rustic (close but Spanish-coded) or trattoria (wrong).
+    'levantine-mezze': {
+      id: 'levantine-mezze',
+      label_en: 'Levantine Mezze',
+      label_es: 'Mezze Levantino',
+      blurb_en: 'Olive-cream paper, terracotta accent, three-column mezze grid.',
+      blurb_es: 'Papel oliva-crema, acento terracota, mezze en tres columnas.',
+      paper:    '#F4ECD8',
+      ink:      '#2A241B',
+      accent:   '#A0432A',
+      muted:    '#7C7053',
+      bodyFamily:    'Garamond, "EB Garamond", Georgia, serif',
+      displayFamily: '"Cormorant Garamond", Garamond, Georgia, serif',
+      h1Pt:    32,
+      h2Pt:    16,
+      bodyPt:  10.5,
+      pricePt: 10.5,
+      descPt:  9,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'hand-rule',
+      columns:       2,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'trifold-letter-z', 'placemat'],
+      cuisineHint: ['levantine', 'lebanese', 'israeli', 'palestinian', 'syrian', 'jordanian',
+                    'mezze', 'meze', 'hummus', 'falafel', 'shawarma', 'kebab',
+                    'mediterranean', 'aegean', 'greek', 'turkish',
+                    'libanesa', 'mediterránea', 'mezze levantino']
+    },
+
+    'modern-indian': {
+      id: 'modern-indian',
+      label_en: 'Modern Indian',
+      label_es: 'India Moderna',
+      blurb_en: 'Mughal-paper cream, deep green accent, saffron muted, paisley mark.',
+      blurb_es: 'Crema Mughal, acento verde profundo, saffron suave, motivo paisley.',
+      paper:    '#F8F1E0',
+      ink:      '#1F2A1A',
+      accent:   '#1F6F4C',
+      muted:    '#C97B2D',
+      bodyFamily:    'Georgia, "Times New Roman", serif',
+      displayFamily: 'Cormorant Garamond, Garamond, Georgia, serif',
+      h1Pt:    32,
+      h2Pt:    18,
+      bodyPt:  11,
+      pricePt: 11,
+      descPt:  9.5,
+      priceStyle:    'leader-dots',
+      dividerStyle:  'rule-thin',
+      columns:       1,
+      logoSlot:      'header-center',
+      letterSpacing: 'normal',
+      sectionCase:   'small-caps',
+      contentType:   'standard',
+      paperFloors:   ['letter', 'a4', 'half-page', 'wine-narrow', 'trifold-letter-z', 'placemat'],
+      cuisineHint: ['indian', 'india', 'mughal', 'tandoor', 'biryani', 'curry',
+                    'punjab', 'tamil', 'bengali', 'gujarati', 'kashmir',
+                    'chaat', 'thali', 'south indian', 'north indian',
+                    'india moderna', 'india del sur']
     }
   };
 
@@ -550,11 +696,11 @@
     { id: 'casual',     label_en: 'Casual / quick',          label_es: 'Casual / rápido',
       themes: ['diner-counter', 'cafe-counter', 'pizza-counter', 'cantina', 'food-truck', 'bakery-coffee', 'kids-bright'] },
     { id: 'classic',    label_en: 'Classic / traditional',   label_es: 'Clásico / tradicional',
-      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic'] },
+      themes: ['trattoria', 'brasserie', 'steakhouse', 'coastal-raw-bar', 'bistro-paris', 'gastropub-oak', 'tapas-rustic', 'levantine-mezze'] },
     { id: 'modern',     label_en: 'Modern / minimalist',     label_es: 'Moderno / minimalista',
-      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose'] },
+      themes: ['modern-minimal', 'asian-table', 'ramen-counter', 'plant-forward', 'dim-sum-rose', 'modern-indian'] },
     { id: 'specialty',  label_en: 'Specialty',                label_es: 'Especialidad',
-      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate'] }
+      themes: ['wine-list-formal', 'cocktail-deco', 'dessert-only', 'tasting-omakase', 'bbq-smoke', 'brewpub-slate', 'izakaya-lantern', 'korean-bbq-counter'] }
   ];
   function groups() { return GROUPS; }
 

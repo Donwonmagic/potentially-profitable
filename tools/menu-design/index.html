@@ -43,7 +43,10 @@
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<!-- Wave studio-quality (PWA) — tool-scoped manifest so installing
+     from this URL gives operators a dedicated Menu Design app icon
+     with start_url scoped to /tools/menu-design/. -->
+<link rel="manifest" href="/tools/menu-design/manifest.webmanifest" />
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
 <style>
@@ -61,6 +64,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 header.nav{min-height:64px}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
@@ -205,6 +209,9 @@ header.nav{min-height:64px}
 
 .md-grid .md-remove{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;font-size:18px;line-height:1;border-radius:50%;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
 .md-grid .md-remove:hover{background:var(--cream-2);color:var(--rust)}
+.md-grid .md-row-action{padding:4px;border:0;background:transparent;color:var(--stone);cursor:pointer;line-height:1;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;transition:color var(--t-fast),background var(--t-fast)}
+.md-grid .md-row-action:hover{background:var(--cream-2);color:var(--teal)}
+.md-grid .md-row-action:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .md-grid-actions{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:var(--cream-2);border-top:1px solid var(--line);align-items:center}
 .md-add-row,.md-add-section,.md-clear,.md-sample{padding:11px 14px;border-radius:999px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:transparent;min-height:44px}
 .md-add-row{border:1px dashed var(--line-dark);color:var(--stone)}
@@ -351,6 +358,7 @@ header.nav{min-height:64px}
    .md-logo-meta-line's ellipsis activates on long file names. */
 .md-logo-drop{display:flex;align-items:center;gap:10px;padding:10px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--cream-2);cursor:pointer;min-width:0}
 .md-logo-drop:hover{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,var(--cream-2))}
+.md-logo-drop.is-dragging{border-style:solid;border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--cream-2));box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 18%,transparent)}
 .md-logo-drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
 .md-logo-thumb{width:48px;height:48px;border-radius:6px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 48px;overflow:hidden}
 .md-logo-thumb img{max-width:100%;max-height:100%}
@@ -847,6 +855,7 @@ header.nav{min-height:64px}
 .md-photo-remove:hover{border-color:var(--rust);color:var(--rust)}
 .md-photo-pick{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:1px dashed var(--line-dark);border-radius:8px;background:var(--white);cursor:pointer;font-size:12.5px;color:var(--ink-soft);font-weight:600;min-height:44px}
 .md-photo-pick:hover{border-color:var(--teal);color:var(--teal)}
+.md-photo-pick.is-dragging{border-style:solid;border-color:var(--teal);color:var(--teal);background:color-mix(in srgb,var(--teal) 10%,var(--white));box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 18%,transparent)}
 .md-photo-pick input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
 
 /* W13-2 — section hero-image controls in the section-extras body. */
@@ -1010,6 +1019,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
+<!-- Wave studio-quality (WCAG 2.2 AA) — second skip link straight to
+     the dish editor; AT users on a return visit don't navigate past
+     hero + theme-picker every time. -->
+<a class="skip-link" href="#mdGrid">Skip to dish list</a>
+<!-- Wave studio-quality (WCAG 2.2 AA) — global ARIA live region for
+     editor announcements (dish add/remove, undo/redo, draft saved,
+     theme change). Routed through MD_DOM.announce(). -->
+<div id="mdSrAnnounce" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -1263,6 +1280,23 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </label>
             </div>
 
+            <!-- Wave studio-quality — Quiet typography mode. Strips
+                 decoration (cuisine motif, section glyphs) and forces
+                 single-column. For patrons with cognitive-load needs
+                 (ADHD, dyslexia, low literacy) or operators who want
+                 a calm distraction-free menu. Off by default. -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaQuietMode" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Quiet typography (calm mode)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Removes decoration and section glyphs, forces a single column. Helpful for patrons with cognitive load needs, dyslexia, or low literacy — and for any menu that just wants the content to speak.
+                  </span>
+                </span>
+              </label>
+            </div>
+
             <!-- Wave studio-quality — display currency. Drives the
                  prefix/suffix on bare-digit prices (operator types
                  "14" → renders as "$14" / "14 €" / "£14" depending
@@ -1482,6 +1516,22 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Vibe quiz →</button>
           </div>
+          <!-- Wave studio-quality — Save/Load full menu as a JSON file.
+               Restaurants run multiple menus (lunch, dinner, brunch);
+               browser draft holds one. File-based save lets operators
+               keep all their menus on disk and switch freely. -->
+          <div class="md-customize-tools md-menu-files" style="margin-top:10px;border-top:1px dashed var(--line);padding-top:10px">
+            <button type="button" id="mdMenuSave" class="md-customize-tool" aria-label="Save current menu as a JSON file">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save menu as file
+            </button>
+            <label class="md-customize-tool md-customize-tool-import" aria-label="Load a menu from a JSON file">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Load menu from file
+              <input type="file" id="mdMenuLoad" accept="application/json,.json" />
+            </label>
+            <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone);width:100%">Save your menu as a self-contained file. Reload anytime to switch between lunch / dinner / brunch / kids / drinks.</p>
+          </div>
         </div>
       </details>
     </div>
@@ -1494,7 +1544,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <span class="md-logo-thumb" id="mdLogoThumb"><span class="md-logo-thumb-empty" aria-hidden="true">+</span></span>
           <span class="md-logo-meta">
             <span class="md-logo-meta-line" id="mdLogoLine">Choose or take a photo</span>
-            <span class="md-logo-meta-sub">PNG, JPG, or SVG. Stays on this device.</span>
+            <span class="md-logo-meta-sub">PNG, JPG, or SVG — click or drop. Stays on this device.</span>
           </span>
           <input type="file" id="mdLogoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" capture="environment" />
         </label>
@@ -1587,6 +1637,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Send a complete pack to my printer, web dev, and staff (one zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
           Send to printer + web dev
+        </button>
+        <!-- Wave studio-quality — Bilingual pack. One click → EN+ES,
+             every artifact, in side-by-side subfolders. Operators with
+             bilingual staff (DMV-area Latino restaurants, hotel F&B)
+             stop running the export twice. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportBilingual" aria-label="Export bilingual pack (English + Spanish)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Bilingual pack (EN + ES)
         </button>
         <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Export QR menu (HTML + QR PNG zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
@@ -1790,9 +1848,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      page's @font-face fonts. Built by scripts/build-theme-thumbnails.mjs. -->
 <script src="./theme-thumbs.js?v=20260503-wsq"></script>
 <script src="./themes.js?v=20260501-w15"></script>
-<script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
-<script src="./menu-render-html.js?v=20260501-w23"></script>
-<script src="./menu-render-text.js?v=20260501-w23"></script>
-<script src="./menu-design.js?v=20260501-w24-2"></script>
+<!-- Wave studio-quality (code-split) — papers catalog ships at boot
+     (~3KB) so the editor can render its paper picker without loading
+     the heavy PDF renderer. -->
+<script src="./data/papers.js?v=20260503-cs"></script>
+<!-- Wave studio-quality (code-split) — menu-render-{pdf,html,text}.js
+     are now lazy-loaded by menu-design.js at first export. They
+     totalled ~120KB raw at first paint; the boot bundle no longer
+     pays that cost. The existing CDN-vendor lazy loads (jsPDF, JSZip,
+     svg2pdf, qrcode) remain inside those modules. -->
+<script src="./menu-design.js?v=20260503-cs"></script>
 </body>
 </html>
