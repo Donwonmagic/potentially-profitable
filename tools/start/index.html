@@ -458,7 +458,13 @@
     function buildLede(a) {
       var leakLabel = ECHO.leak[a.leak] || 'a leak';
       var bits = ['You said the leak is **' + leakLabel + '**'];
-      if (a.raise) bits.push('you raised prices **' + ECHO.raise[a.raise] + '**');
+      if (a.raise === 'no') {
+        // Special-case: "you raised prices not in the last 12 months" reads broken.
+        // Phrase the negative as a negative.
+        bits.push('you haven’t raised prices **in the last 12 months**');
+      } else if (a.raise) {
+        bits.push('you raised prices **' + ECHO.raise[a.raise] + '**');
+      }
       if (a.agg)   bits.push(ECHO.agg[a.agg]);
       var head = bits.join(', ') + '. Here’s the order I’d run them in.';
       // Per-leak tail.
