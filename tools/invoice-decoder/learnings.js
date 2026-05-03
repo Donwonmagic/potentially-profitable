@@ -167,11 +167,46 @@
 
   function listAll() { return readStore().slice(); }
 
+  // Wave 4.4 — operator-corpus user-words dictionary. Returns unique
+  // tokens (length ≥ 3, alpha-only) from every correction the operator
+  // has accepted. Other layers (parse.js token substitution, future
+  // Tesseract user_words integration) consult this set to bias toward
+  // the operator's own SKU vocabulary on subsequent OCRs. Pure local;
+  // no network, no pooling.
+  var __userWordsCache = null;
+  function buildUserWords() {
+    if (__userWordsCache) return __userWordsCache;
+    var entries = readStore();
+    var set = Object.create(null);
+    entries.forEach(function (e) {
+      var raw = String(e && e.rawNorm || '');
+      raw.split(/\s+/).forEach(function (tok) {
+        var t = tok.toLowerCase().replace(/[^a-z]/g, '');
+        if (t.length >= 3) set[t] = (set[t] || 0) + 1;
+      });
+    });
+    __userWordsCache = set;
+    return set;
+  }
+  function invalidateUserWords() { __userWordsCache = null; }
+
+  // Patch recordOverride/clearAll to invalidate the cache.
+  var _origRecord = recordOverride;
+  recordOverride = function () {
+    var r = _origRecord.apply(null, arguments);
+    invalidateUserWords();
+    return r;
+  };
+  var _origClear = clearAll;
+  clearAll = function () { var r = _origClear.apply(null, arguments); invalidateUserWords(); return r; };
+
   var api = {
     recordOverride: recordOverride,
     lookupOverride: lookupOverride,
     clearAll:       clearAll,
     listAll:        listAll,
+    buildUserWords: buildUserWords,
+    invalidateUserWords: invalidateUserWords,
     extractStem:    extractStem,
     _normalize:     normalize
   };

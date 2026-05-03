@@ -64,6 +64,26 @@
 .id-drop-blurb{font-size:13px;color:var(--stone);margin:0;line-height:1.55;max-width:48ch}
 .id-drop-types{font-size:11px;color:var(--stone);letter-spacing:.06em;text-transform:uppercase;margin:4px 0 0;opacity:.85}
 .id-inputs-label{font-size:12px;color:var(--stone);margin:18px 0 8px;text-align:center;letter-spacing:.04em}
+/* Wave 1.9 — folder pick button + queue strip */
+.id-folder-btn{display:inline-flex;align-items:center;gap:8px;margin:10px 0 0;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);font-size:13px;font-family:inherit;cursor:pointer;transition:border-color var(--t-fast)}
+.id-folder-btn:hover{border-color:var(--teal)}
+.id-folder-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-folder-btn[hidden]{display:none}
+.id-queue{margin:14px 0 0;padding:12px 14px;background:color-mix(in srgb,var(--teal) 4%,var(--white));border:1px solid color-mix(in srgb,var(--teal) 25%,var(--line));border-left:3px solid var(--teal);border-radius:8px}
+.id-queue[hidden]{display:none}
+.id-queue-msg{margin:0 0 8px;font-size:13px;color:var(--ink)}
+.id-queue-row{display:flex;gap:8px}
+.id-queue-skip,.id-queue-cancel{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);font-size:12.5px;font-family:inherit;cursor:pointer}
+.id-queue-skip:hover,.id-queue-cancel:hover{border-color:var(--ink-soft)}
+.id-queue-skip:focus-visible,.id-queue-cancel:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-inputs-more{margin:14px 0 0}
+.id-inputs-more>.id-inputs-summary{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--stone);cursor:pointer;letter-spacing:.02em;padding:6px 4px;border-radius:6px;list-style:none;user-select:none}
+.id-inputs-more>.id-inputs-summary::-webkit-details-marker{display:none}
+.id-inputs-more>.id-inputs-summary::before{content:"›";display:inline-block;font-size:14px;color:var(--stone);transition:transform var(--t-fast);transform:translateY(-1px)}
+.id-inputs-more[open]>.id-inputs-summary::before{transform:rotate(90deg) translateX(-1px)}
+.id-inputs-more>.id-inputs-summary:hover{color:var(--ink)}
+.id-inputs-more>.id-inputs-summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-inputs-more .id-inputs{margin-top:10px}
 .id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0}
 @media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
 .id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
@@ -74,6 +94,39 @@
 .id-input-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0}
 .id-input-blurb{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
 .id-input-tag{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--cream-2);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
+
+/* Wave 1.2 — classification hint banner. Sits above the status bar to
+   surface "we see this is a ScanSnap PDF" / "screenshot detected" the
+   moment the operator drops a file. Tonal, never blocks. */
+.id-classify-hint{margin:14px 0 0;padding:10px 14px;background:color-mix(in srgb,var(--teal) 6%,var(--white));border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line));border-radius:8px;font-size:13px;color:var(--ink);line-height:1.5}
+.id-classify-hint[hidden]{display:none}
+
+/* Wave 3.4 — quality-gate refusal for hopeless photos.
+   Surfaced before OCR runs; offers retake / read-anyway. */
+.id-quality-gate{margin:14px 0 0;padding:14px 16px;background:#FFF5EB;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:10px}
+.id-qg-title{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.id-qg-blurb{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.55}
+.id-qg-row{display:flex;gap:8px;flex-wrap:wrap}
+.id-qg-retake,.id-qg-anyway{padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
+.id-qg-retake{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.id-qg-retake:hover{filter:brightness(1.1)}
+.id-qg-anyway:hover{border-color:var(--ink-soft)}
+.id-qg-retake:focus-visible,.id-qg-anyway:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Wave 1.5 — inline password prompt for protected PDFs. The password
+   value lives only in the input element + the resolved Promise scope;
+   the form clears the value and removes itself on submit/cancel. */
+.id-pdf-pw{margin:14px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
+.id-pdf-pw-title{font-size:14px;font-weight:600;color:var(--ink);margin:0 0 6px}
+.id-pdf-pw-blurb{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
+.id-pdf-pw-input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:14px;background:var(--white);color:var(--ink);margin:0 0 10px;font-family:inherit}
+.id-pdf-pw-input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.id-pdf-pw-row{display:flex;gap:8px}
+.id-pdf-pw-submit,.id-pdf-pw-cancel{padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
+.id-pdf-pw-submit{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.id-pdf-pw-submit:hover{filter:brightness(1.05)}
+.id-pdf-pw-cancel:hover{border-color:var(--ink-soft)}
+.id-pdf-pw-submit:focus-visible,.id-pdf-pw-cancel:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
 /* Status / progress bar surfaced once an input is chosen. */
 .id-status{margin:18px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
@@ -383,6 +436,70 @@
 .id-pulse-pill[data-dir="up"]{background:rgba(252,224,215,0.95);color:#7a2e1f}
 .id-pulse-pill[data-dir="down"]{background:rgba(199,228,212,0.92);color:#0c4a26}
 .id-pulse-empty{font-size:12.5px;color:rgba(255,255,255,0.86);font-style:italic}
+/* Wave 2.2 — contract reconciliation strip inside the vendor pulse. */
+.id-pulse-contract{margin-top:10px;padding:10px 12px;background:rgba(252,224,215,0.18);border:1px solid rgba(252,224,215,0.35);border-radius:8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.id-pulse-contract-msg{font-size:13px;color:#fce0d7;flex:1 1 auto}
+.id-pulse-contract-btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);color:#7a2e1f;cursor:pointer;white-space:nowrap}
+.id-pulse-contract-btn:hover{filter:brightness(0.97)}
+.id-pulse-contract-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* Wave 8.7 — Privacy Self-Check report */
+.id-sc-run{padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--teal);background:var(--teal);color:var(--white);font-family:inherit}
+.id-sc-run:hover{filter:brightness(1.05)}
+.id-sc-run:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-sc-running{font-size:13px;color:var(--ink-soft);font-style:italic;margin:10px 0 0}
+.id-sc-report{margin:14px 0 0;padding:14px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;font-size:13px}
+.id-sc-ok{color:#0c4a26;margin:0 0 6px;font-size:14px}
+.id-sc-fail{color:#7a2e1f;margin:0 0 6px;font-size:14px}
+.id-sc-meta{color:var(--ink-soft);font-size:12px;margin:0 0 10px}
+.id-sc-table{width:100%;border-collapse:collapse;font-size:11.5px;font-family:ui-monospace,monospace}
+.id-sc-table th,.id-sc-table td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.id-sc-table th{font-weight:600;color:var(--ink)}
+.id-sc-row-ok td:first-child{color:#0c4a26}
+.id-sc-row-fail td:first-child{color:#7a2e1f}
+.id-sc-row-fail{background:rgba(252,224,215,0.4)}
+.id-sc-table td:nth-child(2){word-break:break-all;max-width:380px}
+.id-sc-actions{margin:10px 0 0}
+.id-sc-download{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);font-size:12.5px;cursor:pointer;font-family:inherit}
+.id-sc-download:hover{border-color:var(--ink-soft)}
+
+/* Wave 5.5 — Trust summary panel above the vendor pulse */
+.id-trust-summary{margin:0 0 12px;padding:14px 16px;background:#f4f7f5;border:1px solid var(--line);border-radius:10px}
+.id-trust-summary[hidden]{display:none}
+.id-ts-line{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.55;font-variant-numeric:tabular-nums}
+.id-ts-row{display:flex;gap:8px;flex-wrap:wrap}
+.id-ts-saveas,.id-ts-trustall{padding:8px 16px;border-radius:6px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
+.id-ts-saveas:hover{border-color:var(--ink-soft)}
+.id-ts-trustall{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.id-ts-trustall:hover{filter:brightness(1.05)}
+.id-ts-trustall:disabled{background:var(--cream-2);color:var(--stone);cursor:not-allowed;border-color:var(--line);opacity:0.7}
+.id-ts-saveas:focus-visible,.id-ts-trustall:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-ts-disabled-reason{margin:8px 0 0;font-size:12.5px;color:var(--stone);font-style:italic}
+
+/* Wave 5.2 — anomaly-collapse quiet-summary row */
+.id-row-quiet-summary{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:0 0 6px;background:color-mix(in srgb,var(--teal) 4%,var(--white));border:1px solid color-mix(in srgb,var(--teal) 25%,var(--line));border-left:3px solid var(--teal);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink-soft);font-style:italic;list-style:none}
+.id-row-quiet-summary:hover{background:color-mix(in srgb,var(--teal) 8%,var(--white))}
+.id-row-quiet-summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-quiet-glyph{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--teal);color:var(--white);font-size:11px;font-weight:600}
+
+/* Wave 2.3 — inline per-row math-fix accept chip */
+.id-row-mathfix{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;border-radius:6px;background:#FFF6E5;border:1px solid #B25C2A;color:#7a4413;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;font-variant-numeric:tabular-nums}
+.id-row-mathfix:hover{background:#fff0d4;border-color:#7a4413}
+.id-row-mathfix:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+
+/* Wave 5.4 — smart-default ghost-text proposal chip */
+.id-cell-ghost{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:1px 7px;border-radius:5px;background:transparent;border:1px dashed var(--stone);color:var(--stone);font-size:11px;cursor:pointer;font-family:inherit;font-style:italic;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0.85}
+.id-cell-ghost:hover{background:color-mix(in srgb,var(--teal) 8%,var(--white));border-color:var(--teal);color:var(--ink);opacity:1}
+.id-cell-ghost:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+
+/* Wave 5.7 — optimistic save pill, fixed-position toast */
+.id-save-pill{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:10px 18px;border-radius:999px;font-size:13px;font-weight:500;font-family:inherit;background:var(--ink);color:var(--white);box-shadow:0 4px 14px rgba(20,22,26,.18);z-index:1000;max-width:90vw;text-align:center}
+.id-save-pill[data-state="busy"]::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--teal);margin-right:8px;animation:id-save-pulse 1.2s ease-in-out infinite;vertical-align:middle}
+.id-save-pill[data-state="ok"]{background:#0c4a26}
+.id-save-pill[data-state="fail"]{background:#7a2e1f}
+.id-save-pill[hidden]{display:none}
+@keyframes id-save-pulse{0%,100%{opacity:0.5;transform:scale(0.85)}50%{opacity:1;transform:scale(1.1)}}
+@media(prefers-reduced-motion:reduce){.id-save-pill[data-state="busy"]::before{animation:none}}
 
 /* Wave 1.3 — math-fix card */
 .id-mathfix{margin:0 0 12px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px;color:var(--ink)}
@@ -883,7 +1000,7 @@
       <p class="id-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Free tool · Snap. Sort. Keep.</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Snap an invoice. <span class="serif-italic" style="color:var(--teal);">We sort it.</span> You keep it.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-02">May 2, 2026</time></p>
+            <p class="tool-verified" id="idToolVerified">Last verified: <time datetime="2026-05-02">May 2, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -896,46 +1013,64 @@
       <p class="id-walkaway"><strong>You leave with:</strong> Your last invoice — sorted into groups, saved to your Workshop, and ready to drop into Plate Cost.</p>
     </div>
 
-    <!-- Wave A — Universal intake. One dropzone takes anything the
-         operator throws at it: photo, scanned PDF (e.g. ScanSnap),
-         text-PDF, CSV, Excel, or a clipboard-paste screenshot. The
-         dispatcher in invoice-decoder.js sniffs each file and routes
-         it to the existing pipeline (photo→OCR, text-PDF→PDF.js,
-         scanned PDF→rasterize+OCR, CSV/Excel→column mapper). The
-         original chips below remain as a labeled fallback for
-         operators who want to pick a specific path. -->
+    <!-- Wave 1.1 — Universal intake. One dropzone is now visually
+         authoritative; the per-source chips collapse into a <details>
+         quality-cue list below. Operators who want to pick a specific
+         source still can. The dispatcher in invoice-decoder.js sniffs
+         each file and routes it (photo→OCR, text-PDF→PDF.js, scanned
+         PDF e.g. ScanSnap→rasterize+OCR, CSV/Excel→column mapper). -->
     <h2 id="idInputsHeading" class="visually-hidden">Send your invoice</h2>
     <div class="id-drop-wrap">
       <label class="id-drop" id="idDropzone" for="idAnyInput" role="region" aria-labelledby="idInputsHeading" aria-describedby="idDropBlurb">
         <span class="id-drop-icon" aria-hidden="true">📥</span>
         <p class="id-drop-title">Drop an invoice here, or tap to choose</p>
-        <p class="id-drop-blurb" id="idDropBlurb">Photo, PDF (text or scanned), CSV, or Excel — anything your distributor sends. Paste a screenshot with Ctrl+V too. All processing on this device.</p>
-        <p class="id-drop-types">JPG · PNG · HEIC · PDF · scanned PDF · CSV · TSV · XLSX</p>
+        <p class="id-drop-blurb" id="idDropBlurb">Photo, PDF (emailed or scanned — ScanSnap, Adobe Scan, flatbed), CSV, Excel, or a pasted screenshot. We pick the right reading path for each. All processing on this device.</p>
+        <p class="id-drop-types">JPG · PNG · HEIC · PDF · scanned PDF · CSV · TSV · XLSX · folder of files</p>
         <input type="file" id="idAnyInput" accept="image/*,application/pdf,.csv,.tsv,.xlsx,text/csv,text/tab-separated-values,text/plain" multiple aria-label="Drop or pick an invoice file" aria-describedby="idDropBlurb" />
       </label>
-      <p class="id-inputs-label">Or pick a specific source:</p>
+      <!-- Wave 1.9 — folder picker. webkitdirectory disables file
+           picking on iOS Safari, so we hide this button on touch /
+           mobile UAs and surface it only on desktop where folder
+           selection actually works. -->
+      <button type="button" class="id-folder-btn" id="idFolderBtn" hidden aria-label="Pick a folder of invoices">
+        <span aria-hidden="true">📁</span>
+        <span>Pick a folder of invoices</span>
+      </button>
+      <input type="file" id="idFolderInput" hidden multiple aria-hidden="true" />
     </div>
-    <div class="id-inputs" id="idInputs" role="group" aria-labelledby="idInputsHeading">
-      <label class="id-input-chip" data-input="photo">
-        <span class="id-input-icon" aria-hidden="true">📷</span>
-        <p class="id-input-title">Photo or scan</p>
-        <p class="id-input-blurb" id="idPhotoBlurb">Take a photo with your phone, or drop in a scanner-app image. Up to 8 pages.</p>
-        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple aria-label="Pick a photo or scan of your invoice" aria-describedby="idPhotoBlurb" />
-      </label>
-      <label class="id-input-chip" data-input="pdf">
-        <span class="id-input-icon" aria-hidden="true">📄</span>
-        <p class="id-input-title">PDF</p>
-        <p class="id-input-blurb" id="idPdfBlurb">Drop your distributor's emailed PDF, or a scanned PDF from ScanSnap and similar — both are read on-device.</p>
-        <span class="id-input-tag">Best</span>
-        <input type="file" id="idPdfInput" accept="application/pdf" aria-label="Pick your distributor's PDF" aria-describedby="idPdfBlurb" />
-      </label>
-      <label class="id-input-chip" data-input="csv">
-        <span class="id-input-icon" aria-hidden="true">📊</span>
-        <p class="id-input-title">CSV / Excel</p>
-        <p class="id-input-blurb" id="idCsvBlurb">Sysco / US Foods / Restaurant Depot order-history exports work as-is.</p>
-        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" aria-label="Pick your distributor's CSV or spreadsheet" aria-describedby="idCsvBlurb" />
-      </label>
+    <!-- Wave 1.9 — queue strip. Surfaced only when more than one file
+         is in flight. Shows position + filename + Skip/Pause. -->
+    <div class="id-queue" id="idQueue" hidden role="status" aria-live="polite">
+      <p class="id-queue-msg" id="idQueueMsg"></p>
+      <div class="id-queue-row">
+        <button type="button" class="id-queue-skip" id="idQueueSkip">Skip this one</button>
+        <button type="button" class="id-queue-cancel" id="idQueueCancel">Stop the queue</button>
+      </div>
     </div>
+    <details class="id-inputs-more" id="idInputsMore">
+      <summary class="id-inputs-summary">How we read each kind</summary>
+      <div class="id-inputs" id="idInputs" role="group" aria-labelledby="idInputsHeading">
+        <label class="id-input-chip" data-input="pdf">
+          <span class="id-input-icon" aria-hidden="true">📄</span>
+          <p class="id-input-title">PDF</p>
+          <p class="id-input-blurb" id="idPdfBlurb">Best path. Distributor-emailed PDFs read in ~1 second from the text layer. Scanned PDFs (ScanSnap, Adobe Scan, flatbed) auto-rasterize then OCR — same on-device pipeline.</p>
+          <span class="id-input-tag">Best</span>
+          <input type="file" id="idPdfInput" accept="application/pdf" aria-label="Pick your distributor's PDF" aria-describedby="idPdfBlurb" />
+        </label>
+        <label class="id-input-chip" data-input="csv">
+          <span class="id-input-icon" aria-hidden="true">📊</span>
+          <p class="id-input-title">CSV / Excel</p>
+          <p class="id-input-blurb" id="idCsvBlurb">Fastest path — skips OCR entirely. Sysco / US Foods / Restaurant Depot order-history exports work as-is. EN + ES headers detected automatically.</p>
+          <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" aria-label="Pick your distributor's CSV or spreadsheet" aria-describedby="idCsvBlurb" />
+        </label>
+        <label class="id-input-chip" data-input="photo">
+          <span class="id-input-icon" aria-hidden="true">📷</span>
+          <p class="id-input-title">Photo or scanner image</p>
+          <p class="id-input-blurb" id="idPhotoBlurb">Camera shots get the full clean-up pipeline (perspective fix, glare repair, deskew). Flatbed-scanner JPEGs and screenshots take a fast path that skips the cleanup they don't need. Up to 8 pages.</p>
+          <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple aria-label="Pick a photo or scan of your invoice" aria-describedby="idPhotoBlurb" />
+        </label>
+      </div>
+    </details>
 
     <!-- Wave 5 — sample-demo strip + telemetry-toggle + abandonment-resume.
          Visible only on first run (controller checks
@@ -1005,6 +1140,12 @@
     <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <!-- Wave 5.5 — One-tap "this looks right" summary. Surfaces above
+           the vendor pulse with two CTAs gated by math + anomaly checks.
+           Trust-all is disabled if math fails or any row exceeds the
+           anomaly threshold; that disabled-state copy explains why. -->
+      <aside class="id-trust-summary" id="idTrustSummary" hidden role="region" aria-label="Invoice summary"></aside>
+
       <!-- Wave 2.3 — Vendor Pulse Strip. Shows vendor + line count +
            sum + top movers vs. operator's history. -->
       <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Vendor pulse"></aside>
@@ -1091,6 +1232,15 @@
         <summary><strong>Open DevTools → Network. It stays empty.</strong></summary>
         <p>Until you press Save, no requests carry your image or your line items. After Save, exactly one POST goes out — and its body is base64-encoded ciphertext. Search the body for any of your dish names. You won't find them.</p>
       </details>
+      <!-- Wave 8.7 — one-tap Privacy Self-Check. Runs a synthetic
+           OCR pass, captures every network request in a JSON report,
+           lets the operator download it for their accountant. -->
+      <details class="id-honesty-fact" id="idSelfCheckHost">
+        <summary><strong>Run the Privacy Self-Check yourself.</strong></summary>
+        <p>One tap audits this tab's network traffic during a synthetic invoice run, asserts every resource is on the allowlist, and emits a JSON report you can email to your accountant or franchisee compliance team. Click here to prove our privacy policy:</p>
+        <p><button type="button" class="id-sc-run" id="idSelfCheckRun">Run Privacy Self-Check</button></p>
+        <div id="idSelfCheckOut"></div>
+      </details>
 
       <details class="id-verify" itemscope itemtype="https://schema.org/HowTo">
         <summary>Verify it yourself: open DevTools → Network <span class="id-verify-badge">2-minute walk-through</span></summary>
@@ -1159,6 +1309,7 @@
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="./vendor-config.js?v=20260501-w8-4"></script>
+<script src="./source-classifier.js?v=20260503-w1-2"></script>
 <script src="./preprocess.js?v=20260501-w8-1"></script>
 <script src="./capture-coach.js?v=20260501-w8-6"></script>
 <script src="./ocr.js?v=20260501-w8-4"></script>
@@ -1178,10 +1329,19 @@
 <script src="./proof-flyout.js?v=20260501-w3-1"></script>
 <script src="./device-key.js?v=20260501-w3-4"></script>
 <script src="./sku-history.js?v=20260501-w8-9"></script>
+<script src="./contract-watch.js?v=20260503-w2-2"></script>
 <script src="./substitution.js?v=20260501-w8-9"></script>
 <script src="./margin-impact.js?v=20260501-w8-1"></script>
 <script src="./accountant-export.js?v=20260501-w8-1"></script>
 <script src="./telemetry.js?v=20260501-w8-1"></script>
+<script src="./auto-confirm.js?v=20260503-w5-3"></script>
+<script src="./proposed-fix.js?v=20260503-w5-4"></script>
+<script src="./save-worker.js?v=20260503-w5-7"></script>
+<script src="./tombstones.js?v=20260503-w5-8"></script>
+<script src="./samples.js?v=20260503-w6-6"></script>
+<script src="./resume.js?v=20260503-w6-10"></script>
+<script src="./self-check.js?v=20260503-w8-7"></script>
+<script src="./device-tier.js?v=20260503-w9-1"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
 <script src="./invoice-decoder.js?v=20260501-w8-9"></script>
 

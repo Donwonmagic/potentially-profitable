@@ -45,7 +45,11 @@
   // Distributors print these alongside line items but they aren't
   // ingredients; bucketing them as `kind` keeps math reconciliation
   // honest and gives the accountant export a clean line type.
-  var CREDIT_RE   = /\b(credit|cred|cr|return|returned|adjustment|adj|reembolso|devoluci[oó]n|abono|nota\s+de\s+cr[eé]dito)\b/i;
+  // Wave 2.5 — split 'return' (goods physically returned) from 'credit'
+  // (admin credit memo / adjustment) so accountant export can map each
+  // to the right GL account.
+  var RETURN_RE   = /\b(return|returned|return\s+credit|devoluci[oó]n|devuelto|devuelta)\b/i;
+  var CREDIT_RE   = /\b(credit\s+memo|credit\b|cred|cr|adjustment|adj|reembolso|abono|nota\s+de\s+cr[eé]dito)\b/i;
   var DEPOSIT_RE  = /\b(deposit|btl\s*dep|bottle\s+dep|crv|recycl|envase|dep[oó]sito|dep\.?)\b/i;
   var SURCHARGE_RE = /\b(fuel\s+surcharge|fuel\s+adj|surcharge|delivery\s+fee|svc\s+fee|service\s+fee|small\s+order|recargo|combustible|env[ií]o)\b/i;
   var BACKORDER_RE = /\b(b\/o|b\.?o\.?|backorder|back\s*order|sin\s+existencia)\b/i;
@@ -77,10 +81,111 @@
   // Conservative bias: skip lone-digit clusters with letters (e.g.
   // "B7" — could be a SKU prefix). The .dd-decimal / $-prefix
   // requirement filters out almost all false positives.
-  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
+  // -------------------- Wave 4.1: column reconstruction --------------------
+  // Given OCR per-word output with bbox info, project word density
+  // along the X axis and find the gutter valleys that separate the
+  // canonical invoice columns: description / qty / unit / unit price
+  // / line total. Returns an array of {x0, x1, label} objects.
+  //
+  // Inputs are an array of {text, bbox: {x0, y0, x1, y1}, confidence}
+  // (Tesseract.js word-level output). Pages without bbox data return
+  // null — the caller falls through to today's regex-only parse.
+  //
+  // The function is exposed on MID_PARSE.reconstructColumns for the
+  // controller to call when bbox data is available; it's NOT wired
+  // into the default parseLines path because the regression risk on
+  // the existing 100%-accuracy soak fixtures (which lack bbox data)
+  // exceeds the potential lift until a bbox-rich fixture set lands.
+  function reconstructColumns(words, opts) {
+    if (!Array.isArray(words) || !words.length) return null;
+    opts = opts || {};
+    var minColumns = opts.minColumns || 3;
+    var bins = opts.bins || 80;
+    // Derive page width from word bboxes.
+    var maxX = 0, minX = Infinity;
+    for (var i = 0; i < words.length; i++) {
+      var b = words[i].bbox;
+      if (!b) return null;
+      if (b.x1 > maxX) maxX = b.x1;
+      if (b.x0 < minX) minX = b.x0;
+    }
+    var pageW = maxX - minX;
+    if (pageW <= 0) return null;
+    // Project word density: each word increments bins it covers.
+    var density = new Array(bins).fill(0);
+    var binW = pageW / bins;
+    words.forEach(function (w) {
+      var b = w.bbox;
+      var b0 = Math.floor((b.x0 - minX) / binW);
+      var b1 = Math.min(bins - 1, Math.floor((b.x1 - minX) / binW));
+      for (var k = b0; k <= b1; k++) density[k]++;
+    });
+    // Find gutter valleys: contiguous runs where density < threshold.
+    var maxDensity = Math.max.apply(null, density);
+    var threshold = Math.max(1, maxDensity * 0.15);
+    var gutters = [];
+    var inGutter = false;
+    var gStart = 0;
+    for (var k2 = 0; k2 < bins; k2++) {
+      if (density[k2] <= threshold) {
+        if (!inGutter) { gStart = k2; inGutter = true; }
+      } else if (inGutter) {
+        if (k2 - gStart >= 2) gutters.push({ start: gStart, end: k2 - 1 });
+        inGutter = false;
+      }
+    }
+    // Build columns from non-gutter spans.
+    var columns = [];
+    var cursor = 0;
+    gutters.forEach(function (g) {
+      if (g.start > cursor) {
+        columns.push({
+          x0: minX + cursor * binW,
+          x1: minX + g.start * binW
+        });
+      }
+      cursor = g.end + 1;
+    });
+    if (cursor < bins) {
+      columns.push({ x0: minX + cursor * binW, x1: minX + bins * binW });
+    }
+    if (columns.length < minColumns) return null;
+    // Heuristically label columns. Description is the widest leftmost
+    // column; the rightmost is total; second-from-right is unit price;
+    // qty / unit are the narrow columns in between.
+    var widths = columns.map(function (c, i) { return { i: i, w: c.x1 - c.x0 }; });
+    widths.sort(function (a, b) { return b.w - a.w; });
+    var descIdx = widths[0].i;
+    var labels = ['desc', 'qty', 'unit', 'price', 'total'];
+    columns.forEach(function (c, i) {
+      if (i === descIdx) c.label = 'desc';
+      else if (i === columns.length - 1) c.label = 'total';
+      else if (i === columns.length - 2) c.label = 'price';
+      else if (i === descIdx + 1) c.label = 'qty';
+      else c.label = labels[Math.min(i, labels.length - 1)] || ('col-' + i);
+    });
+    return columns;
+  }
+
+  // Wave 4.6 — also catch S→$ at cluster start (Tesseract sometimes
+  // reads "$48.00" as "S48.00"). Word-boundary anchored and requires
+  // 2+ digits immediately after the S so mid-word "SS" sequences in
+  // names like "RUSSET" / "BRUSSELS" don't get mangled.
+  // T/G expansions and %→9 deferred — they over-fire on real fixtures.
+  var OCR_CLUSTER_RE = /(\$[0-9OoIl|SsBbQq.,]+|(?:^|[\s(])S(?=\d{2,}|\d[OoIl|SsBbQq])[0-9OoIl|SsBbQq.,]+|[0-9OoIl|SsBbQq,]+\.[0-9OoIl|SsBbQq]{2,3})/g;
   function repairOcrNumerics(line) {
     return String(line || '').replace(OCR_CLUSTER_RE, function (m) {
-      return m
+      // Strip the optional leading whitespace/paren the alternation
+      // captured to enforce word-boundary on the S→$ branch.
+      var prefix = '';
+      while (m.length && /[\s(]/.test(m.charAt(0))) {
+        prefix += m.charAt(0);
+        m = m.slice(1);
+      }
+      var head = m.charAt(0);
+      var rest = m.slice(1);
+      if (head === 'S') head = '$';
+      return prefix + (head + rest)
         .replace(/[OoQq]/g, '0')
         .replace(/[lI|]/g,  '1')
         .replace(/[Ss]/g,   '5')
@@ -117,6 +222,7 @@
   // 'item'; flips when a credit/deposit/surcharge marker fires.
   function classifyKind(raw) {
     var s = String(raw || '');
+    if (RETURN_RE.test(s)) return 'return';
     if (CREDIT_RE.test(s) || NEG_PRICE_RE.test(s)) return 'credit';
     if (DEPOSIT_RE.test(s)) return 'deposit';
     if (SURCHARGE_RE.test(s)) return 'surcharge';
@@ -229,12 +335,40 @@
       row.kind = classifyKind(line);
       var pack = extractPack(line);
       if (pack) row.pack = pack;
-      // Negative-extended on a credit row: flip the lineTotal sign so
-      // math reconciliation sums correctly.
-      if (row.kind === 'credit' && typeof row.lineTotal === 'number' && row.lineTotal > 0) {
+      // Negative-extended on a credit / return row: flip the lineTotal
+      // sign so math reconciliation sums correctly.
+      if ((row.kind === 'credit' || row.kind === 'return') &&
+          typeof row.lineTotal === 'number' && row.lineTotal > 0) {
         if (NEG_PRICE_RE.test(line)) row.lineTotal = -row.lineTotal;
       }
       row.fieldConf = scoreFields(row, line, ocrConf, pattern);
+      // Wave 4.3 — cross-field reinforcement. When qty × unitPrice ≈
+      // lineTotal within 1% (or qty × inferred unit-price hits the
+      // line total exactly), three columns reinforce each other and
+      // we boost the per-field confidence. When they disagree by
+      // > 5%, demote price + qty so the operator catches the bad row.
+      if (typeof row.qty === 'number' && row.qty > 0 &&
+          typeof row.lineTotal === 'number' && row.lineTotal !== 0) {
+        var inferredUnit = row.lineTotal / row.qty;
+        if (typeof row.unitPrice === 'number' && row.unitPrice > 0) {
+          var calc = row.unitPrice * row.qty;
+          var pctOff = Math.abs(calc - row.lineTotal) / Math.abs(row.lineTotal);
+          if (pctOff < 0.01) {
+            row.fieldConf.qty   = Math.min(100, row.fieldConf.qty   + 8);
+            row.fieldConf.price = Math.min(100, row.fieldConf.price + 8);
+            row._twoWayBalanced = true;
+          } else if (pctOff > 0.05) {
+            row.fieldConf.qty   = Math.max(0, row.fieldConf.qty   - 6);
+            row.fieldConf.price = Math.max(0, row.fieldConf.price - 6);
+            row._twoWayBalanced = false;
+          }
+        } else if (isFinite(inferredUnit) && inferredUnit > 0) {
+          // Stash the inferred unit price so renderers + sku-history
+          // see a usable per-unit number even when the OCR'd unit-price
+          // column was missing.
+          row._inferredUnitPrice = +inferredUnit.toFixed(4);
+        }
+      }
       // Roll-up confidence is min(name, qty, price) so the legacy
       // bulk-confirm filter still works. Category fills in later.
       row.confidence = Math.min(row.fieldConf.name, row.fieldConf.qty, row.fieldConf.price);
@@ -557,6 +691,7 @@
     extractPack: extractPack,
     repairOcrNumerics: repairOcrNumerics,
     mergeWrappedLines: mergeWrappedLines,
+    reconstructColumns: reconstructColumns,
     UNITS_RE: UNITS_RE
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

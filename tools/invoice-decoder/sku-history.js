@@ -173,6 +173,64 @@
     return stems;
   }
 
+  // Wave 4.5 — same-vendor SKU memory bias. Given a candidate row
+  // name and a vendor id, look across the operator's stem store for
+  // close matches recently observed from the same vendor. Returns
+  // { stem, distance, observations, lastSeen, lastUnitPrice } when a
+  // single dominant match exists within edit-distance ≤ 2 AND ≥ 2
+  // recent observations, null otherwise. Conservative — fires only
+  // on real matches; never on first-time SKUs.
+  function _editDistance(a, b) {
+    if (a === b) return 0;
+    var alen = a.length, blen = b.length;
+    if (!alen) return blen;
+    if (!blen) return alen;
+    if (Math.abs(alen - blen) > 2) return Infinity;
+    var prev = new Array(blen + 1);
+    var curr = new Array(blen + 1);
+    for (var j = 0; j <= blen; j++) prev[j] = j;
+    for (var i = 1; i <= alen; i++) {
+      curr[0] = i;
+      for (var j2 = 1; j2 <= blen; j2++) {
+        var cost = (a.charAt(i - 1) === b.charAt(j2 - 1)) ? 0 : 1;
+        curr[j2] = Math.min(curr[j2 - 1] + 1, prev[j2] + 1, prev[j2 - 1] + cost);
+      }
+      var tmp = prev; prev = curr; curr = tmp;
+    }
+    return prev[blen];
+  }
+  function findClosestVendorMemory(name, vendor) {
+    var queryStem = stemOf(name);
+    if (!queryStem || queryStem.length < 4) return null;
+    var s = readStore();
+    var stems = Object.keys(s.skuHistory || {});
+    var best = null;
+    var bestDist = 3; // max edit distance we'll accept
+    var horizon = Date.now() - 90 * 86400000;
+    stems.forEach(function (stem) {
+      if (Math.abs(stem.length - queryStem.length) > 2) return;
+      var list = s.skuHistory[stem] || [];
+      // Filter to same-vendor recent observations.
+      var recent = list.filter(function (e) {
+        return (vendor ? (e.vendor === vendor) : true) && e.ts > horizon;
+      });
+      if (recent.length < 2) return;
+      var d = _editDistance(stem, queryStem);
+      if (d < bestDist) {
+        bestDist = d;
+        best = {
+          stem: stem,
+          distance: d,
+          observations: recent.length,
+          lastSeen: recent[0].ts,
+          lastUnitPrice: recent[0].unitPrice,
+          lastUnit: recent[0].unit
+        };
+      }
+    });
+    return best;
+  }
+
   // Returns history list for a row's stem, optionally constrained to
   // matching unit (so case-priced and each-priced entries stay
   // separate). Newest-first order.
@@ -627,6 +685,7 @@
     recordObservation:  recordObservation,
     recordObservations: recordObservations,
     lookupHistory:      lookupHistory,
+    findClosestVendorMemory: findClosestVendorMemory,
     rollingMedian:      rollingMedian,
     summarizeRow:       summarizeRow,
     topMovers:          topMovers,

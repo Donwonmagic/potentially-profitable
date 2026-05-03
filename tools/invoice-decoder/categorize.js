@@ -706,7 +706,127 @@
     return null;
   }
 
-  function classify(row) {
+  // Wave 5.6 — Tier 0.7 cross-vendor SKU equivalence. When the
+  // operator has historically classified the same stem under any
+  // vendor, reuse that category. Cap confidence at 88 so this never
+  // alone trips auto-confirm.
+  function tier07CrossVendorMemory(row) {
+    if (!row || !row.name) return null;
+    if (typeof root === 'undefined' || !root) return null;
+    var SKU = root.MID_SKU_HISTORY;
+    var LEARN = root.MID_LEARNINGS;
+    if (!LEARN || !LEARN.lookupOverride) return null;
+    // The lookup already covers operator overrides. We extend it by
+    // also consulting findClosestVendorMemory across all vendors for
+    // stems with ≥ 3 observations.
+    if (!SKU || !SKU.findClosestVendorMemory) return null;
+    try {
+      var mem = SKU.findClosestVendorMemory(row.name, null);
+      if (!mem || mem.observations < 3) return null;
+      // Look up category for the matched stem via operator learnings.
+      var lookupName = mem.stem;
+      var hit = LEARN.lookupOverride(lookupName);
+      if (hit && hit.category) {
+        return {
+          category: hit.category,
+          confidence: Math.min(88, hit.confidence || 80),
+          tier: 'cross-vendor-memory',
+          source: 'sku-history',
+          matched: mem.stem,
+          observations: mem.observations
+        };
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  // Wave 5.6 — Tier 0.8 co-occurrence prior. When the previous N
+  // rows share the same category and the current row's tokens are
+  // not contradictory (don't appear in any other category's lexicon),
+  // soft-classify into that category. Confidence capped at 75.
+  function tier08CoOccurrence(row, context) {
+    if (!row || !context || !context.length) return null;
+    var window = context.slice(-5);
+    if (window.length < 3) return null;
+    var bucket = {};
+    window.forEach(function (r) {
+      if (!r || !r.category) return;
+      bucket[r.category] = (bucket[r.category] || 0) + 1;
+    });
+    var topCat = null, topCount = 0;
+    Object.keys(bucket).forEach(function (c) {
+      if (bucket[c] > topCount) { topCount = bucket[c]; topCat = c; }
+    });
+    if (!topCat || topCount < 3) return null;
+    // Reject if the row tokens strongly suggest a different category.
+    var ros = normalize(row.name);
+    var contradictions = 0;
+    Object.keys(LEXICON).forEach(function (cat) {
+      if (cat === topCat) return;
+      var terms = LEXICON[cat];
+      if (terms && terms.some(function (t) { return ros.indexOf(t) !== -1; })) contradictions++;
+    });
+    if (contradictions > 0) return null;
+    return {
+      category:   topCat,
+      confidence: 75,
+      tier:       'co-occurrence',
+      source:     'window-' + topCount + '/' + window.length
+    };
+  }
+
+  // Wave 5.6 — Tier 0.9 n-gram operator-corpus cosine. Build bigrams
+  // from operator's past corrections and cosine-match the row's
+  // bigrams. Best match's category wins if cosine ≥ 0.6. Confidence
+  // capped at 80.
+  function _bigrams(s) {
+    s = String(s || '').toLowerCase().replace(/[^a-z]/g, ' ');
+    var out = {};
+    s.split(/\s+/).forEach(function (w) {
+      if (w.length < 3) return;
+      for (var i = 0; i < w.length - 1; i++) {
+        var bg = w.substr(i, 2);
+        out[bg] = (out[bg] || 0) + 1;
+      }
+    });
+    return out;
+  }
+  function _cosine(a, b) {
+    var keys = {};
+    Object.keys(a).forEach(function (k) { keys[k] = 1; });
+    Object.keys(b).forEach(function (k) { keys[k] = 1; });
+    var dot = 0, na = 0, nb = 0;
+    Object.keys(keys).forEach(function (k) {
+      var av = a[k] || 0, bv = b[k] || 0;
+      dot += av * bv; na += av * av; nb += bv * bv;
+    });
+    if (!na || !nb) return 0;
+    return dot / (Math.sqrt(na) * Math.sqrt(nb));
+  }
+  function tier09NgramCorpus(row) {
+    if (!row || !row.name) return null;
+    if (typeof root === 'undefined' || !root || !root.MID_LEARNINGS) return null;
+    var entries = root.MID_LEARNINGS.listAll && root.MID_LEARNINGS.listAll();
+    if (!entries || !entries.length) return null;
+    var rowBg = _bigrams(row.name);
+    var bestSim = 0, bestEntry = null;
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (!e || !e.rawNorm || !e.category) continue;
+      var sim = _cosine(rowBg, _bigrams(e.rawNorm));
+      if (sim > bestSim) { bestSim = sim; bestEntry = e; }
+    }
+    if (!bestEntry || bestSim < 0.6) return null;
+    return {
+      category:   bestEntry.category,
+      confidence: Math.min(80, Math.round(60 + bestSim * 25)),
+      tier:       'corpus-ngram',
+      source:     'cosine-' + bestSim.toFixed(2)
+    };
+  }
+
+  function classify(row, opts) {
+    opts = opts || {};
     if (!row || typeof row !== 'object') return { category: null, confidence: 0, tier: 'none', tags: [] };
     // Tier 0 — operator's own past corrections (W7-8). Wins over
     // lexicon because the operator has already told us what THIS
@@ -717,15 +837,18 @@
       hit = root.MID_LEARNINGS.lookupOverride(row.name);
     }
     // Tier 0.5 — vendor categoryHints (Wave 4.2 evolution).
-    // Vendor-printed class codes (GFS PRD/PRO/DRY) and structured
-    // SKU stems (Sysco SUPC) are essentially ground truth for the
-    // categorization question — we trust them over the lexicon.
     if (!hit) hit = tier05VendorHints(row);
+    // Wave 5.6 — Tiers 0.7 / 0.8 / 0.9 between vendor hints and the
+    // brand/exact/fuzzy lexicon. Each is conservative: capped
+    // confidence, never trips auto-confirm alone.
+    if (!hit) hit = tier07CrossVendorMemory(row);
     // Tier 1 brand — wins over generic lexicon when a recognized
     // brand name is present.
     if (!hit) hit = tier1Brand(row.name);
     if (!hit) hit = tier1Exact(row.name);
     if (!hit) hit = tier2Fuzzy(row.name);
+    if (!hit) hit = tier08CoOccurrence(row, opts.context || []);
+    if (!hit) hit = tier09NgramCorpus(row);
     if (!hit) hit = tier3Heuristic(row);
     if (!hit) hit = { category: null, confidence: 0, tier: 'none' };
     // Wave 4.7 — derive tags regardless of which tier won. Tags are
