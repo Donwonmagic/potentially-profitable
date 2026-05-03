@@ -1,0 +1,128 @@
+    <p class="sheet-paper-hint">Open the live site on a real phone (not a desktop emulator). Walk every row.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Audit context</legend>
+        <label>
+          <span><span>URL audited</span></span>
+          <input type="text" name="url" placeholder="https://yourrestaurant.com" />
+        </label>
+        <label>
+          <span><span>Phone tested</span></span>
+          <input type="text" name="phone_model" placeholder="e.g., iPhone 13, Pixel 7" />
+        </label>
+        <label>
+          <span><span>Date</span></span>
+          <input type="date" name="date" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>The 12 conversion checkpoints</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Checkpoint</th><th>Pass</th><th>Fail</th><th>Priority</th><th>Fix notes</th></tr></thead>
+          <tbody>
+            <tr><td>Phone number is a tel: link, not an image</td><td><input type="checkbox" name="c1_p" /></td><td><input type="checkbox" name="c1_f" /></td><td><select name="c1_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c1_n" /></td></tr>
+            <tr><td>Click-to-call CTA visible above the fold on mobile</td><td><input type="checkbox" name="c2_p" /></td><td><input type="checkbox" name="c2_f" /></td><td><select name="c2_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c2_n" /></td></tr>
+            <tr><td>Reservation CTA visible above the fold on mobile</td><td><input type="checkbox" name="c3_p" /></td><td><input type="checkbox" name="c3_f" /></td><td><select name="c3_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c3_n" /></td></tr>
+            <tr><td>Hours visible above the fold (or 1 tap to reveal)</td><td><input type="checkbox" name="c4_p" /></td><td><input type="checkbox" name="c4_f" /></td><td><select name="c4_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c4_n" /></td></tr>
+            <tr><td>Address tap-opens-Maps on mobile</td><td><input type="checkbox" name="c5_p" /></td><td><input type="checkbox" name="c5_f" /></td><td><select name="c5_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c5_n" /></td></tr>
+            <tr><td>Mobile menu loads in under 3 seconds (Slow 4G)</td><td><input type="checkbox" name="c6_p" /></td><td><input type="checkbox" name="c6_f" /></td><td><select name="c6_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c6_n" /></td></tr>
+            <tr><td>Menu is HTML — no PDF pinch-and-zoom</td><td><input type="checkbox" name="c7_p" /></td><td><input type="checkbox" name="c7_f" /></td><td><select name="c7_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c7_n" /></td></tr>
+            <tr><td>Allergen / dietary markers visible on the menu</td><td><input type="checkbox" name="c8_p" /></td><td><input type="checkbox" name="c8_f" /></td><td><select name="c8_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c8_n" /></td></tr>
+            <tr><td>Hero shot has a real dish or room (not stock)</td><td><input type="checkbox" name="c9_p" /></td><td><input type="checkbox" name="c9_f" /></td><td><select name="c9_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c9_n" /></td></tr>
+            <tr><td>HTTPS, no security warnings on phone</td><td><input type="checkbox" name="c10_p" /></td><td><input type="checkbox" name="c10_f" /></td><td><select name="c10_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c10_n" /></td></tr>
+            <tr><td>Reservation widget loads &amp; submits in &lt; 5s</td><td><input type="checkbox" name="c11_p" /></td><td><input type="checkbox" name="c11_f" /></td><td><select name="c11_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c11_n" /></td></tr>
+            <tr><td>Special / holiday hours messaging visible (when active)</td><td><input type="checkbox" name="c12_p" /></td><td><input type="checkbox" name="c12_f" /></td><td><select name="c12_pri"><option>P0</option><option>P1</option><option>P2</option></select></td><td><input type="text" name="c12_n" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Score</span>
+          <span class="sheet-output-value" data-output="score" data-band="idle">— / 12</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">P0 fixes</span>
+          <span class="sheet-output-value" data-output="p0_count" data-band="idle">0</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          12 of 12 is the goal. Anything below 9 means the site is leaking bookings before the kitchen even gets a chance.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var pass = 0, fail = 0, p0 = 0;
+          for (var i = 1; i <= 12; i++) {
+            if (f['c' + i + '_p'].checked) pass++;
+            if (f['c' + i + '_f'].checked) {
+              fail++;
+              if (f['c' + i + '_pri'].value === 'P0') p0++;
+            }
+          }
+          var sEl = document.querySelector('[data-output="score"]');
+          sEl.textContent = pass + ' / 12';
+          sEl.dataset.band = pass === 12 ? 'good' : (pass >= 9 ? 'warn' : 'bad');
+          var pEl = document.querySelector('[data-output="p0_count"]');
+          pEl.textContent = String(p0);
+          pEl.dataset.band = p0 === 0 ? 'good' : 'bad';
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (pass + fail === 0) {
+            c.textContent = '12 of 12 is the goal. Anything below 9 means the site is leaking bookings before the kitchen even gets a chance.';
+          } else if (p0 > 0) {
+            c.textContent = p0 + ' P0 fix(es) — ship those this week. Phone-as-image and missing click-to-call are the most common P0 finds.';
+          } else if (pass === 12) {
+            c.textContent = 'Clean audit. Re-walk next quarter.';
+          } else {
+            c.textContent = pass + '/12 passing. Schedule the failed rows by priority.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var labels = [
+            'Phone is tel: link, not image',
+            'Click-to-call above fold (mobile)',
+            'Reservation CTA above fold (mobile)',
+            'Hours visible above fold',
+            'Address tap-opens-Maps',
+            'Mobile menu loads < 3s',
+            'Menu is HTML, not PDF',
+            'Allergen markers on menu',
+            'Hero is real (not stock)',
+            'HTTPS, no warnings',
+            'Reservation widget < 5s',
+            'Special/holiday hours visible',
+          ];
+          var rows = [
+            ['Field', 'Value'],
+            ['URL',          f.url.value || ''],
+            ['Phone tested', f.phone_model.value || ''],
+            ['Date',         f.date.value || ''],
+            [],
+            ['Checkpoint', 'Pass', 'Fail', 'Priority', 'Notes'],
+          ];
+          for (var i = 1; i <= 12; i++) {
+            rows.push([
+              labels[i - 1],
+              f['c' + i + '_p'].checked ? 'yes' : '',
+              f['c' + i + '_f'].checked ? 'yes' : '',
+              f['c' + i + '_pri'].value || '',
+              f['c' + i + '_n'].value || '',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Score',     document.querySelector('[data-output="score"]').textContent]);
+          rows.push(['P0 fixes',  document.querySelector('[data-output="p0_count"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'website-conversion-checklist', collect: collect, recalc: recalc });
+      })();
+    </script>

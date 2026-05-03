@@ -253,6 +253,54 @@
         "Confundir \"contiene\" con \"puede contener\" (contacto cruzado). La cuadrícula necesita las dos columnas.",
         "Usar una búsqueda de Google para llenar un ingrediente escondido. Verifica con la ficha del proveedor, siempre."
       ]
+    },
+    "reservation-no-show-log": {
+      "when_to_use": [
+        "Diario — registra cada reserva confirmada conforme cancela, no llega o se sienta.",
+        "Fin de semana, cuando le pones precio a las sillas vacías. El número aterriza distinto que la sensación.",
+        "Antes de decidir si pides depósito o tarjeta de crédito por fuente de reserva."
+      ],
+      "mistakes": [
+        "Tratar cancelaciones tardías y no-shows como la misma fila. La cancelación tardía tuvo chance de re-llenar; el no-show no.",
+        "No costear la silla vacía. \"Dos no-shows hoy\" suena chico; \"$140 de ingreso perdido\" no.",
+        "Registrar solo reservas directas. La fuente es la palanca — si Resy tiene 3× los no-shows de OpenTable, la política va por fuente, no global."
+      ]
+    },
+    "website-conversion-checklist": {
+      "when_to_use": [
+        "Trimestral — una vez al trimestre en el sitio en vivo, con un iPhone real, no un emulador de escritorio.",
+        "Después de cualquier rediseño o migración de plataforma. El antes-y-después emparieja con la hoja de speed-test.",
+        "Cuando bajan las reservas y la auditoría de GBP sale limpia — la fuga está en el sitio mismo."
+      ],
+      "mistakes": [
+        "Número de teléfono renderizado como imagen en vez de enlace tel:. Click-to-call es el CTA de mejor conversión en un sitio de restaurante.",
+        "PDF de menú que se pellizca en móvil. Si el cliente tiene que hacer zoom, el menú es la fricción.",
+        "Esconder horarios debajo del fold. Los comensales chequean horarios el viernes a las 4pm; \"¿abierto hoy?\" es la pregunta que tu home contesta en 2 segundos o falla."
+      ]
+    },
+    "daypart-traffic-map": {
+      "when_to_use": [
+        "Mensual — saca reportes de POS para cubiertos, ventas y horas de mano de obra por hora del día.",
+        "Antes de una reescritura de horarios. El mapa nombra los cortes que no duelen al servicio.",
+        "Cuando consideras un nuevo daypart (lanzar comida, brunch dominical, late-night) — el mapa de calor muestra si la demanda existe."
+      ],
+      "mistakes": [
+        "Mezclar dine-in y para llevar en una celda. El costo laboral de cada daypart varía por canal; combinarlos esconde la verdad.",
+        "Cortar mano de obra en la hora más lenta sin chequear la tendencia. Un miércoles lento a las 4pm es ruido; ocho miércoles lentos es señal.",
+        "Olvidar la mano de obra de apertura (cocineros de prep, setup de BOH) — no aparecen en cubiertos pero son reales."
+      ]
+    },
+    "email-list-growth-log": {
+      "when_to_use": [
+        "Mensual — primera semana, sacando estadísticas de suscriptores de tu remitente (Mailchimp, Klaviyo, ConvertKit, etc.).",
+        "Antes de lanzar un nuevo punto de captura — table tent, QR, checkbox de pedido online — para establecer base.",
+        "Cuando suben las bajas — la atribución por fuente nombra qué canal está desalineado con lo que envías."
+      ],
+      "mistakes": [
+        "Contar altas sin engagement. Una lista de 5,000 con 6% de open rate vale menos que 800 al 40%.",
+        "Usar una sola forma de captura sin etiqueta de fuente — sin fuente, la pregunta de ROI no se puede contestar.",
+        "Mandar la misma cadencia a cada fuente. Las altas de reserva quieren contenido distinto que un opt-in de checkout."
+      ]
     }
   }
 }

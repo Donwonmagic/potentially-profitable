@@ -515,7 +515,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": ["average-check"], "blog": ["why-your-restaurant-loses-reservations-every-night"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Daily — log every confirmed reservation as it cancels, no-shows, or sits.",
+        "End of week, when you price the empty seats. The number lands different than the feeling.",
+        "Before deciding whether to require a deposit or a credit-card hold by booking source."
+      ],
+      "mistakes_en": [
+        "Treating late-cancels and no-shows as the same row. Late-cancel had a chance to refill; no-show didn’t.",
+        "Not pricing the empty seat. \"Two no-shows tonight\" sounds small; \"$140 in lost revenue\" doesn’t.",
+        "Logging only direct reservations. The booking source is the lever — if Resy no-shows are 3× OpenTable, the policy is by source, not blanket."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "website-conversion-checklist": {
       "title_en": "Website Conversion Checklist",
@@ -533,7 +544,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["mobile-check", "speed-test", "restaurant-audit"], "glossary": ["click-to-call", "lcp", "conversion-rate"], "blog": ["what-should-be-on-a-restaurant-website"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — once a quarter on the live site, with a real iPhone, not a desktop emulator.",
+        "After any redesign or platform migration. The before-and-after pairs naturally with the speed-test sheet.",
+        "When bookings dip and the GBP audit comes back clean — the leak is on the site itself."
+      ],
+      "mistakes_en": [
+        "Phone number rendered as an image instead of a tel: link. Click-to-call is the highest-converting CTA on a restaurant site.",
+        "Menu PDF that pinches on mobile. If a guest has to zoom, the menu is the friction.",
+        "Hiding hours below the fold. Diners check hours on Friday at 4pm; \"open today?\" is the question your homepage answers in 2 seconds or fails."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "daypart-traffic-map": {
       "title_en": "Daypart Traffic Map",
@@ -551,7 +573,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["margin-math"], "glossary": ["labor-cost"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — pull POS reports for covers, sales, and labor hours by hour-of-day.",
+        "Before a schedule rewrite. The map names the cuts that don't hurt service.",
+        "When considering a new daypart (lunch launch, Sunday brunch, late-night) — the heatmap shows whether the demand is there."
+      ],
+      "mistakes_en": [
+        "Mixing dine-in and to-go in one cell. The labor cost of each daypart differs by channel; combining hides the truth.",
+        "Cutting labor on the slowest hour without checking the trend. One slow Wednesday at 4pm is noise; eight slow Wednesdays is signal.",
+        "Forgetting opening labor (prep cooks, BOH setup) — they don't show in covers but they are real."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "email-list-growth-log": {
       "title_en": "Email & SMS List Growth Log",
@@ -569,7 +602,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — first week, pulling subscriber stats from your sender (Mailchimp, Klaviyo, ConvertKit, etc.).",
+        "Before launching a new capture point — table tent, QR code, online-order checkbox — to set a baseline.",
+        "When unsubscribes spike — the source attribution names which channel is misaligned with what you send."
+      ],
+      "mistakes_en": [
+        "Counting sign-ups without engagement. A list of 5,000 with 6% open rate is worth less than 800 at 40%.",
+        "Using a single capture form with no source tag — without source, the ROI question is unanswerable.",
+        "Sending the same cadence to every source. Reservation sign-ups want different content than a checkout opt-in."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
 
     "menu-redesign-brief": {

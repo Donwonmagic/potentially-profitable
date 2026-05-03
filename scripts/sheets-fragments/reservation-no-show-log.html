@@ -1,0 +1,152 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Date / week</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Average per-cover spend (used to price empty seats)</span></span>
+          <input type="number" name="avg_check" min="0" step="1" placeholder="e.g., 70" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Reservations this period</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Party size</th>
+              <th>Deposit?</th>
+              <th>Outcome</th>
+              <th>Lost $</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="date" name="r1_date" /></td><td><select name="r1_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r1_party" min="1" step="1" /></td><td><input type="checkbox" name="r1_dep" /></td><td><select name="r1_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r1_lost">—</output></td><td><input type="text" name="r1_notes" /></td></tr>
+            <tr><td><input type="date" name="r2_date" /></td><td><select name="r2_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r2_party" min="1" step="1" /></td><td><input type="checkbox" name="r2_dep" /></td><td><select name="r2_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r2_lost">—</output></td><td><input type="text" name="r2_notes" /></td></tr>
+            <tr><td><input type="date" name="r3_date" /></td><td><select name="r3_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r3_party" min="1" step="1" /></td><td><input type="checkbox" name="r3_dep" /></td><td><select name="r3_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r3_lost">—</output></td><td><input type="text" name="r3_notes" /></td></tr>
+            <tr><td><input type="date" name="r4_date" /></td><td><select name="r4_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r4_party" min="1" step="1" /></td><td><input type="checkbox" name="r4_dep" /></td><td><select name="r4_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r4_lost">—</output></td><td><input type="text" name="r4_notes" /></td></tr>
+            <tr><td><input type="date" name="r5_date" /></td><td><select name="r5_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r5_party" min="1" step="1" /></td><td><input type="checkbox" name="r5_dep" /></td><td><select name="r5_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r5_lost">—</output></td><td><input type="text" name="r5_notes" /></td></tr>
+            <tr><td><input type="date" name="r6_date" /></td><td><select name="r6_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r6_party" min="1" step="1" /></td><td><input type="checkbox" name="r6_dep" /></td><td><select name="r6_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r6_lost">—</output></td><td><input type="text" name="r6_notes" /></td></tr>
+            <tr><td><input type="date" name="r7_date" /></td><td><select name="r7_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r7_party" min="1" step="1" /></td><td><input type="checkbox" name="r7_dep" /></td><td><select name="r7_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r7_lost">—</output></td><td><input type="text" name="r7_notes" /></td></tr>
+            <tr><td><input type="date" name="r8_date" /></td><td><select name="r8_src"><option>—</option><option>OpenTable</option><option>Resy</option><option>Tock</option><option>Yelp Reservations</option><option>Direct (phone)</option><option>Direct (website)</option><option>Walk-in</option></select></td><td><input type="number" name="r8_party" min="1" step="1" /></td><td><input type="checkbox" name="r8_dep" /></td><td><select name="r8_out"><option>—</option><option>Showed</option><option>Late-cancel (≤24h)</option><option>No-show</option></select></td><td><output name="r8_lost">—</output></td><td><input type="text" name="r8_notes" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Lost $ = party size × average per-cover spend, automatically computed for no-shows and late-cancels.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">No-show rate</span>
+          <span class="sheet-output-value" data-output="ns_rate" data-band="idle">0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Late-cancel rate</span>
+          <span class="sheet-output-value" data-output="lc_rate" data-band="idle">0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Lost revenue this period</span>
+          <span class="sheet-output-value" data-output="lost_total" data-band="idle">$0</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Highest-no-show source</span>
+          <span class="sheet-output-value" data-output="top_source">—</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-source="callout" data-output="callout">
+          Log every reservation. The fix is by SOURCE — if one platform's no-show rate runs 3× another's, the deposit policy goes there first.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
+        function fmtPct(v) { return Math.round(v * 10) / 10 + '%'; }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var avg = n(f.avg_check.value);
+          var total = 0, ns = 0, lc = 0;
+          var lost = 0;
+          var sourceNs = {};
+          for (var i = 1; i <= 8; i++) {
+            var out = f['r' + i + '_out'].value;
+            var party = n(f['r' + i + '_party'].value);
+            if (!out || out === '—' || !party) {
+              f['r' + i + '_lost'].value = '—';
+              continue;
+            }
+            total++;
+            var src = f['r' + i + '_src'].value;
+            var lostThisRow = 0;
+            if (out === 'No-show')          { ns++; lostThisRow = party * avg; sourceNs[src] = (sourceNs[src] || 0) + 1; }
+            else if (out.indexOf('Late') === 0) { lc++; lostThisRow = party * avg * 0.5; }
+            f['r' + i + '_lost'].value = lostThisRow > 0 ? fmt$(lostThisRow) : '—';
+            lost += lostThisRow;
+          }
+          var nsRate = total > 0 ? (ns / total) * 100 : 0;
+          var lcRate = total > 0 ? (lc / total) * 100 : 0;
+          var nsEl = document.querySelector('[data-output="ns_rate"]');
+          nsEl.textContent = fmtPct(nsRate);
+          nsEl.dataset.band = nsRate < 5 ? 'good' : (nsRate < 10 ? 'warn' : 'bad');
+          var lcEl = document.querySelector('[data-output="lc_rate"]');
+          lcEl.textContent = fmtPct(lcRate);
+          lcEl.dataset.band = lcRate < 8 ? 'good' : (lcRate < 15 ? 'warn' : 'bad');
+          var ltEl = document.querySelector('[data-output="lost_total"]');
+          ltEl.textContent = fmt$(lost);
+          ltEl.dataset.band = lost === 0 ? 'good' : (lost < 200 ? 'warn' : 'bad');
+
+          var topSrc = null, topCount = 0;
+          for (var k in sourceNs) if (sourceNs[k] > topCount) { topSrc = k; topCount = sourceNs[k]; }
+          document.querySelector('[data-output="top_source"]').textContent = topSrc ? (topSrc + ' (' + topCount + ' no-shows)') : '—';
+
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (total === 0) {
+            c.textContent = 'Log every reservation. The fix is by SOURCE — if one platform’s no-show rate runs 3× another’s, the deposit policy goes there first.';
+          } else if (lost === 0) {
+            c.textContent = total + ' reservation(s) logged, all showed. Clean period.';
+          } else if (topSrc && topCount >= 3) {
+            c.textContent = topSrc + ' is the recurring no-show source — ' + topCount + ' this period. Deposit / hold policy goes here first.';
+          } else {
+            c.textContent = fmt$(lost) + ' lost across ' + (ns + lc) + ' missed reservation(s). Tally by source over a month before changing policy.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Date',           f.date.value || ''],
+            ['Avg per-cover',  f.avg_check.value || ''],
+            [],
+            ['Date', 'Source', 'Party', 'Deposit', 'Outcome', 'Lost $', 'Notes'],
+          ];
+          for (var i = 1; i <= 8; i++) {
+            if (!f['r' + i + '_date'].value && !f['r' + i + '_party'].value) continue;
+            rows.push([
+              f['r' + i + '_date'].value || '',
+              f['r' + i + '_src'].value || '',
+              f['r' + i + '_party'].value || '',
+              f['r' + i + '_dep'].checked ? 'yes' : 'no',
+              f['r' + i + '_out'].value || '',
+              (f['r' + i + '_lost'].value || '').replace(/^—$/, ''),
+              f['r' + i + '_notes'].value || '',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['No-show rate',     document.querySelector('[data-output="ns_rate"]').textContent]);
+          rows.push(['Late-cancel rate', document.querySelector('[data-output="lc_rate"]').textContent]);
+          rows.push(['Lost revenue',     document.querySelector('[data-output="lost_total"]').textContent]);
+          rows.push(['Top no-show src',  document.querySelector('[data-output="top_source"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'reservation-no-show-log', collect: collect, recalc: recalc });
+      })();
+    </script>
