@@ -538,6 +538,12 @@ header.nav{min-height:64px}
 .md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
 .md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
 .md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}
+/* Wave studio-quality — decoration repositioning when 2-col is active.
+   Top-right would collide with the right column's dish flow; move it
+   to bottom-right where there's typically white space below the last
+   dish row + the allergen key. Same when the theme is natively 2-col. */
+.md-preview-paper.md-promote-2col .md-pp-decor,
+.md-preview-paper[data-cols="2"] .md-pp-decor{top:auto;bottom:8%;right:8%;width:24%;max-width:130px;opacity:.55}
 .md-preview-paper.md-pp-texture{background-image:
   repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
   repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);

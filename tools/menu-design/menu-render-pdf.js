@@ -48,32 +48,44 @@
   // Tolerant: silent no-op when MD_DECOR or svg2pdf aren't loaded
   // OR when the theme has no cuisine match. Pre-load of svg2pdf is
   // handled by exportPdf() when the theme would benefit.
-  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY) {
+  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, opts) {
     try {
+      opts = opts || {};
       var DECOR = root && root.MD_DECOR;
       if (!DECOR || typeof DECOR.svgWrapped !== 'function') return;
       if (!root.svg2pdf || !doc.svg) return;
+      // Wave studio-quality — when 2-col is active, the decoration's
+      // upper-right position would overlap the right column's dish
+      // flow. Move it to bottom-right where there's typically empty
+      // space, AND make it slightly smaller + softer.
+      var twoColActive = !!opts.twoCol || (theme && theme.columns === 2);
       // Larger opacity than the live preview — the printed page
       // benefits from a faintly heavier mark since paper texture
-      // already softens the impression.
-      var svgText = DECOR.svgWrapped(theme, { opacity: 0.13, width: 220, height: 120 });
+      // already softens the impression. 2-col gets a softer mark
+      // since it sits in the visible body field.
+      var fragOpacity = twoColActive ? 0.10 : 0.13;
+      var gOpacity    = twoColActive ? 0.55 : 0.85;
+      var svgText = DECOR.svgWrapped(theme, { opacity: fragOpacity, width: 220, height: 120 });
       if (!svgText) return;
       var parser = new DOMParser();
       var parsed = parser.parseFromString(svgText, 'image/svg+xml');
       var svgEl = parsed && parsed.documentElement;
       if (!svgEl) return;
-      // Position in the upper-right corner of the page, sized to
-      // ~22% of paper width. Same visual weight as the HTML overlay.
+      // Position: upper-right (1-col) or bottom-right (2-col).
       var pageW = doc.internal.pageSize.getWidth();
-      var w = Math.min(180, pageW * 0.22);
+      var pageH = doc.internal.pageSize.getHeight();
+      var w = Math.min(twoColActive ? 140 : 180, pageW * (twoColActive ? 0.18 : 0.22));
       var h = w * (120 / 220);
-      // Clear margin from the right + top edge.
       var margin = paper && paper.margin ? paper.margin : 48;
+      var bleed  = paper && paper._bleed ? paper._bleed : 0;
       var x = pageW - margin - w;
-      var y = (paper && paper._bleed ? paper._bleed : 0) + Math.max(margin * 0.4, 12);
-      // Set a low GState opacity if the doc supports it (older jsPDF
-      // skips this gracefully).
-      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.85 })); } catch (_) {}
+      var y;
+      if (twoColActive) {
+        y = pageH - margin - h - bleed;
+      } else {
+        y = bleed + Math.max(margin * 0.4, 12);
+      }
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: gOpacity })); } catch (_) {}
       doc.svg(svgEl, { x: x, y: y, width: w, height: h });
       try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 })); } catch (_) {}
     } catch (_) { /* decoration is best-effort; never block the export */ }
@@ -1467,7 +1479,7 @@
     // Wave studio-quality — cuisine decoration on every page. Renders
     // FIRST so dish text + headers draw on top. No-op if MD_DECOR or
     // svg2pdf isn't loaded or the theme has no cuisine match.
-    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
@@ -1488,7 +1500,7 @@
         doc.addPage();
         pageCount++;
         contentY = margin + bleedOff;
-        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
       }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
@@ -1504,7 +1516,7 @@
           doc.addPage();
           pageCount++;
           contentY = margin + bleedOff;
-          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
+          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: !!opts.forceTwoCol });
         }
       } else if (contentY + h > bottom) {
         doc.addPage();
@@ -1554,6 +1566,11 @@
     var colWidth = (contentWidth - gutter) / 2;
     var pageCount = 1;
 
+    // Wave studio-quality — cuisine decoration on the first page,
+    // bottom-right (where 2-col content has whitespace below the
+    // last dish). Subsequent pages get it via newPage() below.
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
+
     // First, separate cover blocks (each consumes a full sheet).
     var i = 0;
     while (i < blocks.length && blocks[i].kind === 'cover') {
@@ -1561,6 +1578,7 @@
       doc.addPage();
       pageCount++;
       contentY = margin + bleedOff;
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
       i++;
     }
 
@@ -1579,6 +1597,9 @@
       doc.addPage();
       pageCount++;
       contentY = margin + bleedOff;
+      // Wave studio-quality — decoration on every page, bottom-right
+      // for 2-col layouts.
+      drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY, { twoCol: true });
     }
 
     function drawSpanFull(block) {
