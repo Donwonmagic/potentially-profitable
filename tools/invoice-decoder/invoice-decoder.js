@@ -300,8 +300,10 @@
     opts = opts || {};
     var vendor = opts.vendor || null;
     if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
+      // Wave 5.6 — pass a rolling context window into the classifier
+      // so the co-occurrence Tier 0.8 can read the previous 5 rows.
       for (var i = 0; i < rows.length; i++) {
-        var c = MID_CATEGORIZE.classify(rows[i]);
+        var c = MID_CATEGORIZE.classify(rows[i], { context: rows.slice(Math.max(0, i - 5), i) });
         rows[i].category           = c.category;
         rows[i].categoryConfidence = c.confidence;
         rows[i].categoryTier       = c.tier;
@@ -727,6 +729,23 @@
   function commitCellEdit(rowIdx, field, value) {
     if (!parsedRowsState[rowIdx]) return;
     var row = parsedRowsState[rowIdx];
+    // Wave 5.3 — disputes against the auto-confirm tier. If this row
+    // was auto-confirmed (live or shadow), an operator edit is a
+    // false positive that throttles the auto-confirm gate.
+    try {
+      if ((row.autoConfirm || row._shadowAutoConfirm) &&
+          typeof MID_AUTO_CONFIRM !== 'undefined' &&
+          MID_AUTO_CONFIRM.recordDispute) {
+        MID_AUTO_CONFIRM.recordDispute(row);
+      }
+    } catch (_) {}
+    // Wave 5.1 — bump the manual-corrections counter (drives
+    // personal-accuracy stat).
+    try {
+      if (typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+        MID_TELEMETRY.bump('manualCorrections', 1);
+      }
+    } catch (_) {}
     if (field === 'name')      row.name = String(value).trim();
     else if (field === 'qty')  row.qty = parseFloat(value) || 0;
     else if (field === 'unitPrice' || field === 'lineTotal') row[field] = parseFloat(value) || 0;
@@ -893,6 +912,56 @@
     rowEl.appendChild(wrap);
   }
 
+  // Wave 5.2 — anomaly-collapse rendering. Quiet "everything-looks-fine"
+  // rows collapse into a single summary line so the operator only
+  // eyeballs vocal (amber / anomaly / fallback / not-yet-confirmed)
+  // rows. Toggleable per session (`__expandedQuiet`) so power users
+  // can demand the full list. Default ON; preserves J/K cycling and
+  // bulk-confirm behavior (those iterate parsedRowsState directly).
+  var __expandedQuiet = false;
+  function _mathBalancedHint() {
+    // Soft signal: when the parser flagged a math fix, the invoice
+    // doesn't balance. Operators see every row in that case so a
+    // hidden mis-OCR'd $200 line can be caught.
+    return !_currentMathFix;
+  }
+  function _isQuietRow(r) {
+    if (!r) return false;
+    if (r.ignored) return false;
+    if (r.kind && r.kind !== 'item') return false;
+    if (!r.fieldConf) return false;
+    var minConf = Math.min(r.fieldConf.name || 0, r.fieldConf.qty || 0,
+                           r.fieldConf.price || 0, r.fieldConf.category || 80);
+    if (minConf < 90) return false;
+    if (r.categoryTier === 'fallback') return false;
+    // Anomaly: medianDelta > 15% AND ≥ 3 history observations.
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.summarizeRow) {
+        var s = MID_SKU_HISTORY.summarizeRow(r);
+        if (s && s.medianDelta != null && Math.abs(s.medianDelta) >= 15 && s.observations >= 3) return false;
+      }
+    } catch (_) {}
+    return true;
+  }
+  function _partitionRows(rows) {
+    var quiet = [], vocal = [];
+    rows.forEach(function (r) {
+      if (_isQuietRow(r)) quiet.push(r);
+      else vocal.push(r);
+    });
+    return { quiet: quiet, vocal: vocal };
+  }
+  function _quietSummaryHtml(quietCount) {
+    if (!quietCount) return '';
+    return '<li class="id-row-quiet-summary" id="idQuietSummary" tabindex="0" role="button" aria-expanded="false">' +
+      '<span class="id-quiet-glyph" aria-hidden="true">✓</span>' +
+      '<span class="id-quiet-text">' +
+        escHtml(tt(quietCount + ' rows confirmed automatically (tap to expand)',
+                   quietCount + ' filas confirmadas automáticamente (toca para expandir)')) +
+      '</span>' +
+    '</li>';
+  }
+
   function rerenderRows() {
     if (!parsedList) return;
     var visible = applyRowFilter(parsedRowsState);
@@ -903,7 +972,23 @@
            'Ningún renglón coincide — cambia a "Todas" para ver todo.') +
         '</li>';
     } else {
-      parsedList.innerHTML = visible.map(function (r) {
+      // Wave 5.2 — only collapse quiet rows when the operator hasn't
+      // explicitly expanded AND the math reconciles AND the active
+      // filter isn't 'confirmed' (where seeing them is the point).
+      var quietGate = !__expandedQuiet &&
+                      (__activeFilter !== 'confirmed') &&
+                      (__activeFilter !== 'all' || true) && // collapse on every filter except 'confirmed'
+                      _mathBalancedHint();
+      var rows = visible;
+      var quietHtml = '';
+      if (quietGate) {
+        var part = _partitionRows(visible);
+        if (part.quiet.length >= 5) {  // not worth collapsing fewer than 5
+          rows = part.vocal;
+          quietHtml = _quietSummaryHtml(part.quiet.length);
+        }
+      }
+      parsedList.innerHTML = quietHtml + rows.map(function (r) {
         return rowToHtml(r, parsedRowsState.indexOf(r));
       }).join('');
       // Wave 3.4 — color-rise on the just-edited row.
@@ -1350,6 +1435,99 @@
     }
   }
 
+  // Wave 5.5 — one-tap "this looks right" summary panel. Two CTAs:
+  //   Save as is — accept all current state, save (passphrase still
+  //                gated since the encrypted save is real).
+  //   Trust all  — auto-confirms remaining unconfirmed rows AND
+  //                triggers Save. Disabled when math doesn't reconcile
+  //                or any row is anomalous; the disabled copy explains.
+  function renderTrustSummary(parsed) {
+    var host = document.getElementById('idTrustSummary');
+    if (!host) return;
+    if (!parsed || !parsed.rows || !parsed.rows.length) { host.hidden = true; return; }
+    var rows = parsed.rows;
+    var lineCount = rows.length;
+    var sum = (parsed.sumParsed || rows.reduce(function (s, r) {
+      return s + (typeof r.lineTotal === 'number' ? r.lineTotal : 0);
+    }, 0));
+    var bands = { green: 0, amber: 0, red: 0 };
+    rows.forEach(function (r) { bands[confBand(r.confidence)]++; });
+    var anomalyCount = 0;
+    var maxAnomaly = 0;
+    try {
+      if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.summarizeRow) {
+        rows.forEach(function (r) {
+          var s = MID_SKU_HISTORY.summarizeRow(r);
+          if (s && s.medianDelta != null && Math.abs(s.medianDelta) >= 15 && s.observations >= 3) {
+            anomalyCount++;
+            if (Math.abs(s.medianDelta) > maxAnomaly) maxAnomaly = Math.abs(s.medianDelta);
+          }
+        });
+      }
+    } catch (_) {}
+    var mathBalanced = !(parsed.mathFix && parsed.mathFix.kind === 'digit-flip');
+    var trustAllOk = mathBalanced && bands.red === 0 && anomalyCount === 0;
+    var trustAllReason = '';
+    if (!mathBalanced) trustAllReason = tt('math doesn\'t reconcile yet', 'la suma aún no cuadra');
+    else if (bands.red) trustAllReason = tt(bands.red + ' red row' + (bands.red === 1 ? '' : 's'),
+                                              bands.red + ' renglón' + (bands.red === 1 ? '' : 'es') + ' rojo' + (bands.red === 1 ? '' : 's'));
+    else if (anomalyCount) trustAllReason = tt(anomalyCount + ' price anomal' + (anomalyCount === 1 ? 'y' : 'ies'),
+                                                  anomalyCount + ' anomalía' + (anomalyCount === 1 ? '' : 's') + ' de precio');
+    var summary = tt(
+      lineCount + ' lines · $' + sum.toFixed(2) + ' · ' + bands.green + ' high-confidence, ' + (bands.amber + bands.red) + ' need review' +
+        (mathBalanced ? ' · math balances ✓' : ' · math off') +
+        (anomalyCount ? ' · ' + anomalyCount + ' anomal' + (anomalyCount === 1 ? 'y' : 'ies') + ' vs your baseline' : ''),
+      lineCount + ' renglones · $' + sum.toFixed(2) + ' · ' + bands.green + ' alta confianza, ' + (bands.amber + bands.red) + ' a revisar' +
+        (mathBalanced ? ' · suma cuadra ✓' : ' · suma no cuadra') +
+        (anomalyCount ? ' · ' + anomalyCount + ' anomalía' + (anomalyCount === 1 ? '' : 's') : '')
+    );
+    host.innerHTML =
+      '<p class="id-ts-line">' + escHtml(summary) + '</p>' +
+      '<div class="id-ts-row">' +
+        '<button type="button" class="id-ts-saveas" id="idTsSaveAs">' +
+          escHtml(tt('Save as is', 'Guardar como está')) +
+        '</button>' +
+        '<button type="button" class="id-ts-trustall" id="idTsTrustAll" ' + (trustAllOk ? '' : 'disabled') +
+          (trustAllOk ? '' : ' title="' + escHtml(tt('Trust all needs: ', 'Confiar todo necesita: ') + trustAllReason) + '"') + '>' +
+          escHtml(tt('Trust all', 'Confiar todo')) +
+        '</button>' +
+      '</div>' +
+      (trustAllOk ? '' :
+        '<p class="id-ts-disabled-reason">' +
+          escHtml(tt('Trust all not available — ', 'Confiar todo no disponible — ') + trustAllReason + tt('. Review or fix, then save.', '. Revisa o arregla, luego guarda.')) +
+        '</p>');
+    host.hidden = false;
+    var saveAs = host.querySelector('#idTsSaveAs');
+    var trustAll = host.querySelector('#idTsTrustAll');
+    if (saveAs) saveAs.addEventListener('click', function () {
+      // Wave 5.1 — bump bulk-confirm counter.
+      try {
+        if (typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) MID_TELEMETRY.bump('bulkConfirms', 1);
+      } catch (_) {}
+      _triggerSaveButton();
+    });
+    if (trustAll && trustAllOk) trustAll.addEventListener('click', function () {
+      // Confirm every remaining unconfirmed non-ignored row at high
+      // confidence, then trigger the same save flow.
+      parsedRowsState.forEach(function (r) {
+        if (r.ignored) return;
+        if (!r.ownerConfirmed) {
+          r.ownerConfirmed = true;
+          r.confidence = Math.max(95, r.confidence || 0);
+        }
+      });
+      try {
+        if (typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) MID_TELEMETRY.bump('trustAlls', 1);
+      } catch (_) {}
+      rerenderRows();
+      _triggerSaveButton();
+    });
+  }
+  function _triggerSaveButton() {
+    var saveBtn = document.getElementById('idSaveBtn');
+    if (saveBtn) try { saveBtn.click(); } catch (_) {}
+  }
+
   // Wave 2.3 — Vendor Pulse Strip. One line per visible invoice:
   //   "Sysco · Tue Apr 28 · 41 lines · $1,842.10"
   //   then up to three pill-deltas (top movers via sku-history).
@@ -1764,6 +1942,14 @@
   // Click delegation — turn a span into an <input> on tap.
   if (parsedList) {
     parsedList.addEventListener('click', function (e) {
+      // Wave 5.2 — expand the quiet summary into full rows.
+      var qs = e.target.closest && e.target.closest('#idQuietSummary');
+      if (qs) {
+        e.preventDefault();
+        __expandedQuiet = true;
+        rerenderRows();
+        return;
+      }
       // Wave 2.3 — inline math-fix chip on the offending row.
       var mfBtn = e.target.closest && e.target.closest('.id-row-mathfix');
       if (mfBtn) {
@@ -2067,6 +2253,24 @@
         MID_ONBOARDING.markFirstRun();
       }
     } catch (_) {}
+    // Wave 5.3 — auto-confirm shadow-then-on. Run the predicate
+    // before render so the row badges and counters reflect it. Math
+    // gate: if the parser flagged a fix, all auto-confirms hold.
+    try {
+      if (typeof MID_AUTO_CONFIRM !== 'undefined' && MID_AUTO_CONFIRM.applyAutoConfirm) {
+        var mathBalanced = !(parsed.mathFix && parsed.mathFix.kind === 'digit-flip');
+        var mathFixSet = {};
+        if (parsed.mathFix && typeof parsed.mathFix.rowIdx === 'number') {
+          mathFixSet[parsed.mathFix.rowIdx] = true;
+        }
+        var ac = MID_AUTO_CONFIRM.applyAutoConfirm(parsed.rows, {
+          vendor: parsed.vendor || null,
+          mathBalanced: mathBalanced,
+          mathFixRowSet: mathFixSet
+        });
+        parsed._autoConfirm = ac;
+      }
+    } catch (_) {}
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
       parsedList.innerHTML = '<li class="id-parsed-empty">' +
@@ -2155,6 +2359,7 @@
     // MuntinDifferentiators (single source of truth, see W1-9).
     renderDiffStripOnce();
     // Wave 2.3 — vendor pulse strip with this invoice's top movers.
+    renderTrustSummary(parsed);
     renderVendorPulse(parsed);
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);

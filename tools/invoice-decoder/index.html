@@ -443,6 +443,25 @@
 .id-pulse-contract-btn:hover{filter:brightness(0.97)}
 .id-pulse-contract-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
+/* Wave 5.5 — Trust summary panel above the vendor pulse */
+.id-trust-summary{margin:0 0 12px;padding:14px 16px;background:#f4f7f5;border:1px solid var(--line);border-radius:10px}
+.id-trust-summary[hidden]{display:none}
+.id-ts-line{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.55;font-variant-numeric:tabular-nums}
+.id-ts-row{display:flex;gap:8px;flex-wrap:wrap}
+.id-ts-saveas,.id-ts-trustall{padding:8px 16px;border-radius:6px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
+.id-ts-saveas:hover{border-color:var(--ink-soft)}
+.id-ts-trustall{background:var(--teal);color:var(--white);border-color:var(--teal)}
+.id-ts-trustall:hover{filter:brightness(1.05)}
+.id-ts-trustall:disabled{background:var(--cream-2);color:var(--stone);cursor:not-allowed;border-color:var(--line);opacity:0.7}
+.id-ts-saveas:focus-visible,.id-ts-trustall:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-ts-disabled-reason{margin:8px 0 0;font-size:12.5px;color:var(--stone);font-style:italic}
+
+/* Wave 5.2 — anomaly-collapse quiet-summary row */
+.id-row-quiet-summary{display:flex;align-items:center;gap:10px;padding:10px 14px;margin:0 0 6px;background:color-mix(in srgb,var(--teal) 4%,var(--white));border:1px solid color-mix(in srgb,var(--teal) 25%,var(--line));border-left:3px solid var(--teal);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink-soft);font-style:italic;list-style:none}
+.id-row-quiet-summary:hover{background:color-mix(in srgb,var(--teal) 8%,var(--white))}
+.id-row-quiet-summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.id-quiet-glyph{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--teal);color:var(--white);font-size:11px;font-weight:600}
+
 /* Wave 2.3 — inline per-row math-fix accept chip */
 .id-row-mathfix{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;border-radius:6px;background:#FFF6E5;border:1px solid #B25C2A;color:#7a4413;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;font-variant-numeric:tabular-nums}
 .id-row-mathfix:hover{background:#fff0d4;border-color:#7a4413}
@@ -1087,6 +1106,12 @@
     <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
+      <!-- Wave 5.5 — One-tap "this looks right" summary. Surfaces above
+           the vendor pulse with two CTAs gated by math + anomaly checks.
+           Trust-all is disabled if math fails or any row exceeds the
+           anomaly threshold; that disabled-state copy explains why. -->
+      <aside class="id-trust-summary" id="idTrustSummary" hidden role="region" aria-label="Invoice summary"></aside>
+
       <!-- Wave 2.3 — Vendor Pulse Strip. Shows vendor + line count +
            sum + top movers vs. operator's history. -->
       <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Vendor pulse"></aside>
@@ -1266,6 +1291,7 @@
 <script src="./margin-impact.js?v=20260501-w8-1"></script>
 <script src="./accountant-export.js?v=20260501-w8-1"></script>
 <script src="./telemetry.js?v=20260501-w8-1"></script>
+<script src="./auto-confirm.js?v=20260503-w5-3"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
 <script src="./invoice-decoder.js?v=20260501-w8-9"></script>
 
