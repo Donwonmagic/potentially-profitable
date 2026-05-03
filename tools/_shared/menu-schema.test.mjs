@@ -179,3 +179,54 @@ test('200KB logo budget honored at migration boundary (no enforcement, just pres
   const round = SCHEMA.migrate(m);
   assert.equal(round.logos.primary.bytes, 250 * 1024);
 });
+
+// ============== Wave B2 — auto-disclaimer ==============
+test('autoDisclaimerFor returns the US-FDA-9 default in English', () => {
+  const txt = SCHEMA.autoDisclaimerFor('us-fda9', 'en');
+  assert.match(txt, /allergies/i);
+  assert.match(txt, /cross-contamination/i);
+});
+
+test('autoDisclaimerFor returns the EU-FIC-14 default in Spanish', () => {
+  const txt = SCHEMA.autoDisclaimerFor('eu-fic14', 'es');
+  assert.match(txt, /alergia|intolerancia/i);
+});
+
+test('autoDisclaimerFor falls back to default regime on bogus input', () => {
+  const txt = SCHEMA.autoDisclaimerFor('mars-edition', 'en');
+  assert.equal(txt, SCHEMA.autoDisclaimerFor(SCHEMA.DEFAULT_REGIME, 'en'));
+});
+
+test('autoDisclaimerFor returns regime-distinct text per locale', () => {
+  // EU and US disclaimers should differ in copy (different legal regimes).
+  assert.notEqual(
+    SCHEMA.autoDisclaimerFor('us-fda9', 'en'),
+    SCHEMA.autoDisclaimerFor('eu-fic14', 'en')
+  );
+});
+
+test('applyAutoDisclaimer fills empty meta.disclaimer', () => {
+  const m = SCHEMA.blankMenu();
+  m.meta.allergenRegime = 'eu-fic14';
+  m.meta.locale = 'en';
+  const next = SCHEMA.applyAutoDisclaimer(m);
+  assert.match(next.meta.disclaimer, /food allergy or intolerance/i);
+  // Original menu unchanged (helper is non-mutating).
+  assert.equal(m.meta.disclaimer, '');
+});
+
+test('applyAutoDisclaimer preserves operator-typed disclaimer', () => {
+  const m = SCHEMA.blankMenu();
+  m.meta.disclaimer = 'Our chef will accommodate any allergy with notice.';
+  const next = SCHEMA.applyAutoDisclaimer(m);
+  assert.equal(next.meta.disclaimer, m.meta.disclaimer);
+});
+
+test('applyAutoDisclaimer is idempotent', () => {
+  const m = SCHEMA.blankMenu();
+  m.meta.allergenRegime = 'us-fda9';
+  m.meta.locale = 'es';
+  const once  = SCHEMA.applyAutoDisclaimer(m);
+  const twice = SCHEMA.applyAutoDisclaimer(once);
+  assert.equal(once.meta.disclaimer, twice.meta.disclaimer);
+});

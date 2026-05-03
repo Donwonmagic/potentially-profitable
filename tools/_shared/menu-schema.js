@@ -478,6 +478,34 @@
     return errors;
   }
 
+  // -------- Auto-disclaimer (Wave B2 finish) ----------------------
+  // Returns the regime + locale-appropriate disclaimer text without
+  // mutating the menu. Renderers call this when meta.disclaimer is
+  // empty so a regime-aware footer ships by default. Operators
+  // who type their own disclaimer keep it (we never overwrite a
+  // non-empty value).
+  function autoDisclaimerFor(regimeId, locale) {
+    var regime = REGIMES[regimeId] || REGIMES[DEFAULT_REGIME];
+    var key = (locale === 'es') ? 'defaultDisclaimer_es' : 'defaultDisclaimer_en';
+    return regime[key] || '';
+  }
+
+  // Returns a NEW menu object with meta.disclaimer filled in from the
+  // regime registry IF the operator hasn't typed their own. Idempotent.
+  function applyAutoDisclaimer(menu) {
+    if (!menu || typeof menu !== 'object') return menu;
+    if (menu.meta && menu.meta.disclaimer && menu.meta.disclaimer.trim()) {
+      return menu;  // operator wrote their own; leave it alone
+    }
+    var next = JSON.parse(JSON.stringify(menu));
+    if (!next.meta) next.meta = {};
+    next.meta.disclaimer = autoDisclaimerFor(
+      next.meta.allergenRegime || DEFAULT_REGIME,
+      next.meta.locale || 'en'
+    );
+    return next;
+  }
+
   // -------- Public API ---------------------------------------------
   var api = {
     SCHEMA_VERSION: SCHEMA_VERSION,
@@ -490,7 +518,9 @@
     mintSectionId: mintSectionId,
     migrate: migrate,
     toV2Draft: toV2Draft,
-    validate: validate
+    validate: validate,
+    autoDisclaimerFor: autoDisclaimerFor,
+    applyAutoDisclaimer: applyAutoDisclaimer
   };
 
   if (typeof module !== 'undefined' && module.exports) {
