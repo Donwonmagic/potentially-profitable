@@ -156,6 +156,7 @@
       'Menu Design Large Print Exported',
       'Menu Design Outbound Drop-In',
       'Menu Design Outbound Polish',
+      'Menu Design Pack Exported',
       'Menu Design PDF Failed',
       'Menu Design PNG Fallback',
       'Menu Design Paste',

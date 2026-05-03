@@ -1250,6 +1250,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download PDF
         </button>
+        <!-- Wave B5 — the handoff packet. One click, all artifacts:
+             print PDF + QR-menu HTML + JSON-LD + plain text + Markdown
+             + a plain-English README that walks the print shop, the
+             web dev, and the staff through what to use and how. The
+             missing primitive the UX agent named in Phase 2. -->
+        <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Send a complete pack to my printer, web dev, and staff (one zip)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
+          Send to printer + web dev
+        </button>
         <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Export QR menu (HTML + QR PNG zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
           Export QR menu
@@ -1416,7 +1425,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      A1 state store + reducer that will replace the imperative
      mutations in menu-design.js incrementally. ~6KB gz combined. -->
 <script src="/tools/_shared/menu-schema.js?v=20260503-wA"></script>
+<script src="/tools/_shared/menu-renderers/jsonld.js?v=20260503-wB6"></script>
 <script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
+<script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
 <script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
 <script src="./menu-render-html.js?v=20260501-w23"></script>

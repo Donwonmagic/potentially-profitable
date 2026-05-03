@@ -3142,6 +3142,132 @@
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
   });
+
+  // -------------------- Wave B5 — Menu Pack ZIP ------------------
+  // The handoff packet the UX agent named as the missing primitive.
+  // One click → a single .zip with: print PDF, QR-menu HTML (with
+  // schema.org JSON-LD), plain text, Markdown, standalone JSON-LD,
+  // a plain-English README that walks the print shop, web dev, and
+  // staff through what each file is for, and a pre-written mailto
+  // template for the printer.
+  //
+  // No new lazy-loads — re-uses MD_HTML.loadJsZip and the existing
+  // PDF / HTML / text / JSON-LD emitters. Falls back gracefully when
+  // any one emitter is unavailable (the README declares what shipped
+  // and what didn't).
+  var exportPackBtn = document.getElementById('mdExportPack');
+  if (exportPackBtn) exportPackBtn.addEventListener('click', function () {
+    if (typeof MD_PACK === 'undefined' || typeof MD_SCHEMA === 'undefined') {
+      setDownloadMsg(tt(
+        'Menu pack module not loaded. Refresh and try again.',
+        'El módulo de pack no cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before sending the pack.',
+        'Agrega al menos un plato antes de enviar el pack.'
+      ), 'error');
+      return;
+    }
+    // Build the canonical v3 menu from current orchestrator state.
+    // applyAutoDisclaimer fills meta.disclaimer with the regime + locale
+    // default so the shipped artifacts carry it without the operator
+    // typing one. Operator-typed disclaimer wins.
+    var canonicalMenu;
+    try {
+      var v2Shape = {
+        rows: rows.filter(function (r) { return !r.ghost; }),
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      canonicalMenu = MD_SCHEMA.migrate(v2Shape);
+      canonicalMenu = MD_SCHEMA.applyAutoDisclaimer(canonicalMenu);
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build the canonical menu: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el menú canónico: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+    if (theme) theme = applyCustomizer(theme);
+    var titleVal = (canonicalMenu.meta && canonicalMenu.meta.businessName) || tt('Menu', 'Menú');
+    var paperKey = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
+    var paperLabel = '';
+    try {
+      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) {
+        paperLabel = MD_PDF.PAPERS[paperKey].label_en || MD_PDF.PAPERS[paperKey].label || paperKey;
+      }
+    } catch (_) {}
+    var dishCount = canonicalMenu.dishes.length;
+    var dishBucket = dishCount < 12 ? '<12' : dishCount < 25 ? '12-24' : dishCount < 40 ? '25-39' : '40+';
+
+    exportPackBtn.disabled = true;
+    var origLabel = exportPackBtn.innerHTML;
+    exportPackBtn.textContent = tt('Building pack…', 'Generando pack…');
+    setDownloadMsg('', 'success');
+
+    MD_PACK.exportPack({
+      canonicalMenu: canonicalMenu,
+      locale:        LOCALE,
+      businessName:  titleVal,
+      paperLabel:    paperLabel,
+      paperKey:      paperKey,
+      themeId:       themeId,
+      cuisine:       (canonicalMenu.meta && canonicalMenu.meta.cuisine) || '',
+      allergenRegime:(canonicalMenu.meta && canonicalMenu.meta.allergenRegime) || 'us-fda9',
+      logoDataUrl:   logoUrl,
+      logoMeta:      logoMeta,
+      customDims:    paperKey === 'custom' ? customDims : null,
+      theme:         theme,
+      htmlOpts:      { themeId: themeId },
+      pdfOpts:       { paperKey: paperKey }
+    }).then(function (blob) {
+      var slug = String(titleVal || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = slug + '-menu-pack.zip';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(a.href);
+      }, 4000);
+      setDownloadMsg(tt(
+        'Pack downloaded. Open the README inside — it tells your printer, your web dev, and your staff exactly what to use.',
+        'Pack descargado. Abre el README adentro — le dice a tu imprenta, a tu encargado de sitio y al staff qué usar.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Pack Exported', { props: {
+            theme:           themeId || 'unknown',
+            dishCount_bucket: dishBucket,
+            locale:          LOCALE
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Pack export failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló el pack: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Export Failed', { props: { format: 'pack', reason: 'unknown' } });
+        } catch (_) {}
+      }
+    }).then(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.innerHTML = origLabel;
+    });
+  });
+
   // W16 — Tablet kiosk HTML
   var exportTabletBtn = document.getElementById('mdExportTablet');
   if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
