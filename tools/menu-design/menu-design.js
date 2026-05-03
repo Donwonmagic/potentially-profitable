@@ -2666,7 +2666,33 @@
       e.preventDefault();
       showPalette();
     }
+    // Wave studio-quality — bare "?" opens the palette (Vim-style help
+    // affordance). Skip when the focus is in a text input, since "?"
+    // is a legitimate character there.
+    if (e.key === '?' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      var t = e.target;
+      var inEditable = t && (
+        t.tagName === 'INPUT' ||
+        t.tagName === 'TEXTAREA' ||
+        t.tagName === 'SELECT' ||
+        t.isContentEditable
+      );
+      if (inEditable) return;
+      if (anotherModalOpen()) return;
+      e.preventDefault();
+      showPalette();
+    }
   });
+
+  // Wave studio-quality — toolbar shortcut button opens the palette.
+  // Discoverability for the operator who doesn't know about ⌘K.
+  var shortcutsBtnEl = document.getElementById('mdShortcutsBtn');
+  if (shortcutsBtnEl) {
+    shortcutsBtnEl.addEventListener('click', function () {
+      if (anotherModalOpen()) return;
+      showPalette();
+    });
+  }
 
   // W8-1 — search filter. Hides rows whose name+desc don't match.
   // Section headers stay visible if any child dish matches; if not,
