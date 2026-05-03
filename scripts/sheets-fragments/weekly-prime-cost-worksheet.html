@@ -1,0 +1,166 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Week ending</legend>
+        <label>
+          <span><span>Week ending date</span></span>
+          <input type="date" name="week_ending" />
+          <span class="field-help">Tuesday morning works for most operators — prior week is closed.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sales (net of sales tax)</legend>
+        <label>
+          <span><span>Net sales — dine-in</span></span>
+          <input type="number" name="sales_dinein" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Net sales — to-go &amp; delivery</span></span>
+          <input type="number" name="sales_togo" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Net sales — bar &amp; catering</span></span>
+          <input type="number" name="sales_other" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cost of goods sold</legend>
+        <label>
+          <span><span>Food purchases this week</span></span>
+          <input type="number" name="cogs_food_purchases" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Sum of all food invoices received this week.</span>
+        </label>
+        <label>
+          <span><span>Beverage purchases this week</span></span>
+          <input type="number" name="cogs_bev_purchases" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Inventory adjustment (closing − opening)</span></span>
+          <input type="number" name="cogs_inv_adjustment" step="0.01" placeholder="0.00" />
+          <span class="field-help">Positive if inventory grew this week, negative if it shrank. Subtracted from purchases to get true used-cost.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Labor (fully loaded)</legend>
+        <label>
+          <span><span>Hourly &amp; tipped wages paid</span></span>
+          <input type="number" name="labor_hourly" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Salaried managers &amp; salaried back-of-house</span></span>
+          <input type="number" name="labor_salary" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Employer payroll taxes &amp; benefits</span></span>
+          <input type="number" name="labor_taxes_benefits" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">FICA + unemployment + workers comp + benefits. Typically 12–18% of wages. <strong>Do not skip — this is where prime cost reads low.</strong></span>
+        </label>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Net sales</span>
+          <span class="sheet-output-value" data-output="net_sales">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">COGS (food + bev, used cost)</span>
+          <span class="sheet-output-value" data-output="cogs_total">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Total labor (fully loaded)</span>
+          <span class="sheet-output-value" data-output="labor_total">$0.00</span>
+        </div>
+        <div class="sheet-output-row" style="border-top:1px solid var(--line,#E5DFD2);padding-top:10px;margin-top:4px;">
+          <span class="sheet-output-label" style="font-weight:700;">Prime cost</span>
+          <span class="sheet-output-value" data-output="prime_cost_dollars">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label" style="font-weight:700;">Prime cost as % of sales</span>
+          <span class="sheet-output-value" data-output="prime_cost_pct" data-band="idle">0.0%</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="recommendation">
+          Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { return '$' + (Math.round(v * 100) / 100).toFixed(2); }
+        function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
+
+        function band(pct) {
+          // Independent full-service health bands (sourced from the
+          // existing margin-math tool — the 55-65% range is the
+          // healthy band; 65-70% is "fix this quarter"; 70%+ is bad.
+          if (pct <= 0)  return { band: 'idle', msg: 'Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.' };
+          if (pct < 50)  return { band: 'good', msg: 'Below the typical band. Double-check that you included employer taxes and salaried managers in labor — under-counting labor is the most common cause of an artificially low prime cost.' };
+          if (pct < 60)  return { band: 'good', msg: 'Healthy. Keep the cadence; this is the number that protects the rest of the P&L.' };
+          if (pct < 65)  return { band: 'warn', msg: 'In the upper-healthy band. Watch food cost trend week-over-week; small drift here compounds fast.' };
+          if (pct < 70)  return { band: 'warn', msg: 'Above the healthy ceiling. Identify the bigger driver — food (vendor pricing, waste, portion) or labor (over-scheduling, salaried mix) — and act on it this quarter.' };
+          return { band: 'bad',  msg: 'Margin emergency. At this level, every additional dollar of sales loses you money once fixed costs are in. Cut here is non-optional.' };
+        }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var sales = n(f.sales_dinein.value) + n(f.sales_togo.value) + n(f.sales_other.value);
+          // Used-cost convention: purchases + (opening - closing). The
+          // user enters (closing - opening) directly, so we subtract.
+          var cogs = n(f.cogs_food_purchases.value) + n(f.cogs_bev_purchases.value) - n(f.cogs_inv_adjustment.value);
+          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes_benefits.value);
+          var prime = cogs + labor;
+          var pct = sales > 0 ? (prime / sales) * 100 : 0;
+
+          document.querySelector('[data-output="net_sales"]').textContent  = fmt$(sales);
+          document.querySelector('[data-output="cogs_total"]').textContent = fmt$(cogs);
+          document.querySelector('[data-output="labor_total"]').textContent = fmt$(labor);
+          document.querySelector('[data-output="prime_cost_dollars"]').textContent = fmt$(prime);
+          var pctEl = document.querySelector('[data-output="prime_cost_pct"]');
+          pctEl.textContent = fmtPct(pct);
+          var b = band(pct);
+          pctEl.dataset.band = b.band;
+          var rec = document.querySelector('[data-output="recommendation"]');
+          if (rec) rec.textContent = b.msg;
+        }
+
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Week ending', f.week_ending.value || ''],
+            [],
+            ['Sales — dine-in',                f.sales_dinein.value || '0'],
+            ['Sales — to-go & delivery',       f.sales_togo.value   || '0'],
+            ['Sales — bar & catering',         f.sales_other.value  || '0'],
+            ['Net sales',                      document.querySelector('[data-output="net_sales"]').textContent],
+            [],
+            ['Food purchases',                 f.cogs_food_purchases.value || '0'],
+            ['Beverage purchases',             f.cogs_bev_purchases.value  || '0'],
+            ['Inventory adjustment',           f.cogs_inv_adjustment.value || '0'],
+            ['COGS (used cost)',               document.querySelector('[data-output="cogs_total"]').textContent],
+            [],
+            ['Hourly & tipped wages',          f.labor_hourly.value || '0'],
+            ['Salaried wages',                 f.labor_salary.value || '0'],
+            ['Employer taxes & benefits',      f.labor_taxes_benefits.value || '0'],
+            ['Total labor',                    document.querySelector('[data-output="labor_total"]').textContent],
+            [],
+            ['Prime cost (dollars)',           document.querySelector('[data-output="prime_cost_dollars"]').textContent],
+            ['Prime cost (% of sales)',        document.querySelector('[data-output="prime_cost_pct"]').textContent],
+          ];
+          return rows;
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({
+            slug: 'weekly-prime-cost-worksheet',
+            collect: collect,
+            recalc: recalc,
+          });
+        }
+      })();
+    </script>

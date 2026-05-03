@@ -1,0 +1,54 @@
+{
+  "_doc": "ES translations for live Operator Sheets. data/sheets.json carries the title/summary/walkaway/cadence in both locales (title_en/title_es etc.); this file carries only the longer-form prose that lives BELOW the form: when_to_use bullets, mistakes bullets. Keys mirror the slug in data/sheets.json. Translator brief: translate the framework, not the legal terms; do not translate file format names (CSV, PDF) or platform names (Google Business Profile, DoorDash). Hazard sheets carry a regional disclaimer at the top of the page — see data/sheets.json _locale_hazard_notice.",
+
+  "sheets": {
+    "recipe-cost-card": {
+      "when_to_use": [
+        "Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de costo de comida.",
+        "Subió el precio de una proteína al recibir y quieres saber si el plato sigue rindiendo.",
+        "Tu jefe de cocina pregunta por qué la porción de cordero tiene que bajar un cuarto de onza."
+      ],
+      "mistakes": [
+        "Usar el precio AP como costo — la cocina paga el costo EP, después de merma y rendimiento.",
+        "Olvidar la guarnición, el pan, los pickles, la salsa. Suman.",
+        "Costear con cost-plus-50% sin mirar a qué precio está el plato del restaurante de enfrente."
+      ]
+    },
+    "weekly-prime-cost-worksheet": {
+      "when_to_use": [
+        "Martes en la mañana, cerrando la semana anterior. Antes de la nómina. Antes del pedido de produce.",
+        "Un costo brincó — quieres ver si aterrizó en el costo primo o se absorbió en otro lado.",
+        "Hablas con un socio o prestamista y necesitas una respuesta de un solo número sobre la salud del restaurante."
+      ],
+      "mistakes": [
+        "Olvidar impuestos de nómina y beneficios dentro de mano de obra — el resultado lee 4 a 6 puntos bajo.",
+        "Usar ingresos con impuesto de venta incluido. Neto del IVA, siempre, o el porcentaje queda mal.",
+        "Contar solo comida en COGS — el costo primo de bebidas corre diferente y necesita su propia línea."
+      ]
+    },
+    "third-party-channel-pnl": {
+      "when_to_use": [
+        "Fin de mes, cuando las plataformas ya cerraron y tienes la foto real de tarifas.",
+        "Cuando llama el ejecutivo de la plataforma y ofrece \"una promo gratis\" — mira si realmente da equilibrio.",
+        "Antes de decidir si dejas alguna de las tres plataformas activa."
+      ],
+      "mistakes": [
+        "Tratar los subsidios de promo como ingreso. El subsidio se acaba; el hábito de descuento, no.",
+        "Ignorar costo de empaque. Un envase, una tapa, un sticker, una bolsa — fácil 90 centavos por ticket.",
+        "Olvidar mano de obra incremental. Los pedidos de delivery comen tiempo de expo y empaque que no facturarías directo."
+      ]
+    },
+    "gbp-monthly-audit": {
+      "when_to_use": [
+        "Primer lunes de cada mes — quince minutos, con tu GBP abierto en otra pestaña.",
+        "Cuando bajan las reservas y no cambiaste nada en el sitio.",
+        "Justo después de un cambio de menú, una semana de feriado o una actualización de horarios."
+      ],
+      "mistakes": [
+        "Contar fotos auto-subidas por usuarios como contenido fresco. No lo son. El dueño sube fotos de dueño.",
+        "Ignorar las categorías secundarias. Una primaria mal y una secundaria faltante es una brecha de ranking real.",
+        "Dejar el Q&A sin respuesta. Google trata el Q&A sin respuesta como señal de baja interacción."
+      ]
+    }
+  }
+}

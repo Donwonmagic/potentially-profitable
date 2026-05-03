@@ -58,6 +58,14 @@ const ALLOWED_KINDS = new Set([
   // Saved rows MUST go through the envelope-encryption branch
   // in saveItem (B6-2); plaintext writes are rejected.
   'invoice-decoder',
+  // Operator Sheets — printable + fillable + CSV-exportable
+  // paperwork. ONE kind shape for the entire sheet layer; the
+  // sheet slug lives inside payload.slug. Workbench list
+  // groups saves of this kind under "Sheets" and the title
+  // disambiguates which sheet was saved (e.g., "Recipe Cost
+  // Card", "Weekly Prime Cost Worksheet"). Not watchable —
+  // sheets are operator paperwork, not external-state checks.
+  'sheet',
 ]);
 
 // Soft cap. Past this the save endpoint returns 409 with a clear
