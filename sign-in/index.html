@@ -225,6 +225,12 @@
       <input type="hidden" name="ts" id="signinTs" />
       <input type="hidden" name="returnTo" id="signinReturnTo" value="/workbench/" />
       <input type="hidden" name="locale" value="en" />
+      <!-- Turnstile (Phase 3B). Highest-value spam target on the site
+           — every successful submission triggers an outbound email
+           and mints a session token. Auto-injects cf-turnstile-response
+           into form fields; submit handler reads it explicitly because
+           the fetch uses JSON.stringify, not FormData. -->
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="signin"></div>
       <button type="submit" class="btn btn-primary" id="signinSubmit">
         <span class="btn-text">Send sign-in link</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -289,12 +295,19 @@
         return;
       }
       if (submit) submit.disabled = true;
+      // Phase 3B — pull the Turnstile token. Auto-injected by the
+      // widget on solve; absent when the secret isn't yet bound on
+      // the worker (skip path), absent when the visitor has JS off
+      // (rare for sign-in). Worker treats absent as drop on
+      // skipped:false branch.
+      var turnstileEl = form.querySelector('input[name="cf-turnstile-response"]');
       var body = {
         email: email,
         returnTo: returnToInput ? returnToInput.value : '/workbench/',
         ts: ts ? ts.value : String(Date.now()),
         hp: '',
         locale: 'en',
+        'cf-turnstile-response': turnstileEl ? turnstileEl.value : '',
       };
       try {
         var res = await fetch('/api/auth/magic-link', {

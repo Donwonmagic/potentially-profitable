@@ -456,6 +456,12 @@
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile widget (Phase 3B). Auto-injects a hidden
+             cf-turnstile-response field on the form when the user
+             passes; the worker validates via /api/lib/turnstile.js.
+             Managed mode: invisible 99% of the time, falls back to
+             a visible challenge for high-risk requests. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
         <button type="submit">Subscribe</button>
       </form>
     </div>
@@ -505,6 +511,13 @@
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
+     newsletter form lives in this footer, which renders on every page.
+     Async + defer so it never blocks render. ~28 KB; one outbound
+     request to challenges.cloudflare.com per cold load. Worker-side
+     verification lives in src/lib/turnstile.js and runs only when
+     env.TURNSTILE_SECRET_KEY is bound. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
