@@ -60,7 +60,13 @@ function buildBlock(slug, entry, locale) {
   const head  = entry[`headline_${locale}`];
   const body  = entry[`body_${locale}`];
   if (!url || !label || !head || !body) return null;
-  const href = `${url}?from=blog%2F${encodeURIComponent(slug)}&intent=watch`;
+  // Operator Sheets do not have a watch endpoint (sheets are paperwork,
+  // not external-state checks). Detect a sheet URL and stamp intent=save
+  // so the destination's Workshop save panel can pre-flag the entry as
+  // article-originated. Tools keep intent=watch (existing behavior).
+  const isSheet = /^\/(?:es\/)?sheets\//.test(url);
+  const intent = isSheet ? 'save' : 'watch';
+  const href = `${url}?from=blog%2F${encodeURIComponent(slug)}&intent=${intent}`;
   return [
     '<!-- post-end-cta:start -->',
     '    <aside class="post-end-cta" aria-label="Workshop next step">',

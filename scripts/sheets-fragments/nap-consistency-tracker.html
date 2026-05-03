@@ -1,0 +1,127 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Reference NAP (the canonical answer)</legend>
+        <label>
+          <span><span>Restaurant name</span></span>
+          <input type="text" name="ref_name" placeholder="e.g., Casa Linda" />
+        </label>
+        <label>
+          <span><span>Address line 1</span></span>
+          <input type="text" name="ref_addr_1" placeholder="e.g., 8001 Georgia Ave" />
+        </label>
+        <label>
+          <span><span>Address line 2 (suite / unit)</span></span>
+          <input type="text" name="ref_addr_2" placeholder="e.g., Suite 200 — note the format" />
+        </label>
+        <label>
+          <span><span>City, State ZIP</span></span>
+          <input type="text" name="ref_city" placeholder="Silver Spring, MD 20910" />
+        </label>
+        <label>
+          <span><span>Phone</span></span>
+          <input type="text" name="ref_phone" placeholder="+1 301-555-1234 — pick one format and stick to it" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Citation sources (mark each as match / mismatch)</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr><th>Source</th><th>Name</th><th>Address</th><th>Phone</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Google Business Profile</td><td><input type="checkbox" name="src_gbp_n" /></td><td><input type="checkbox" name="src_gbp_a" /></td><td><input type="checkbox" name="src_gbp_p" /></td><td><select name="src_gbp_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_gbp_action" /></td></tr>
+            <tr><td>Website footer</td><td><input type="checkbox" name="src_site_n" /></td><td><input type="checkbox" name="src_site_a" /></td><td><input type="checkbox" name="src_site_p" /></td><td><select name="src_site_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_site_action" /></td></tr>
+            <tr><td>Website schema (JSON-LD)</td><td><input type="checkbox" name="src_schema_n" /></td><td><input type="checkbox" name="src_schema_a" /></td><td><input type="checkbox" name="src_schema_p" /></td><td><select name="src_schema_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_schema_action" /></td></tr>
+            <tr><td>Apple Business Connect</td><td><input type="checkbox" name="src_apple_n" /></td><td><input type="checkbox" name="src_apple_a" /></td><td><input type="checkbox" name="src_apple_p" /></td><td><select name="src_apple_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_apple_action" /></td></tr>
+            <tr><td>Bing Places</td><td><input type="checkbox" name="src_bing_n" /></td><td><input type="checkbox" name="src_bing_a" /></td><td><input type="checkbox" name="src_bing_p" /></td><td><select name="src_bing_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_bing_action" /></td></tr>
+            <tr><td>Yelp</td><td><input type="checkbox" name="src_yelp_n" /></td><td><input type="checkbox" name="src_yelp_a" /></td><td><input type="checkbox" name="src_yelp_p" /></td><td><select name="src_yelp_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_yelp_action" /></td></tr>
+            <tr><td>TripAdvisor</td><td><input type="checkbox" name="src_trip_n" /></td><td><input type="checkbox" name="src_trip_a" /></td><td><input type="checkbox" name="src_trip_p" /></td><td><select name="src_trip_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_trip_action" /></td></tr>
+            <tr><td>OpenTable</td><td><input type="checkbox" name="src_ot_n" /></td><td><input type="checkbox" name="src_ot_a" /></td><td><input type="checkbox" name="src_ot_p" /></td><td><select name="src_ot_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_ot_action" /></td></tr>
+            <tr><td>Resy</td><td><input type="checkbox" name="src_resy_n" /></td><td><input type="checkbox" name="src_resy_a" /></td><td><input type="checkbox" name="src_resy_p" /></td><td><select name="src_resy_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_resy_action" /></td></tr>
+            <tr><td>DoorDash storefront</td><td><input type="checkbox" name="src_dd_n" /></td><td><input type="checkbox" name="src_dd_a" /></td><td><input type="checkbox" name="src_dd_p" /></td><td><select name="src_dd_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_dd_action" /></td></tr>
+            <tr><td>Uber Eats storefront</td><td><input type="checkbox" name="src_ue_n" /></td><td><input type="checkbox" name="src_ue_a" /></td><td><input type="checkbox" name="src_ue_p" /></td><td><select name="src_ue_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_ue_action" /></td></tr>
+            <tr><td>Instagram bio</td><td><input type="checkbox" name="src_ig_n" /></td><td><input type="checkbox" name="src_ig_a" /></td><td><input type="checkbox" name="src_ig_p" /></td><td><select name="src_ig_status"><option>—</option><option>Match</option><option>Mismatch</option></select></td><td><input type="text" name="src_ig_action" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Check the boxes for each NAP component that matches the reference. Status: pass if all 3 match, fail otherwise.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Sources matching all 3 NAP fields</span>
+          <span class="sheet-output-value" data-output="match_count" data-band="idle">0 / 12</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Sources flagged mismatch</span>
+          <span class="sheet-output-value" data-output="fail_count" data-band="idle">0</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Mark each row. The fix order: GBP first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        var SOURCES = ['gbp','site','schema','apple','bing','yelp','trip','ot','resy','dd','ue','ig'];
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var match = 0, fail = 0;
+          for (var i = 0; i < SOURCES.length; i++) {
+            var s = SOURCES[i];
+            var allThree = f['src_' + s + '_n'].checked && f['src_' + s + '_a'].checked && f['src_' + s + '_p'].checked;
+            if (allThree) match++;
+            if (f['src_' + s + '_status'].value === 'Mismatch') fail++;
+          }
+          var mEl = document.querySelector('[data-output="match_count"]');
+          mEl.textContent = match + ' / ' + SOURCES.length;
+          mEl.dataset.band = match === SOURCES.length ? 'good' : (match >= SOURCES.length - 2 ? 'warn' : 'bad');
+          var fEl = document.querySelector('[data-output="fail_count"]');
+          fEl.textContent = String(fail);
+          fEl.dataset.band = fail === 0 ? 'good' : (fail <= 2 ? 'warn' : 'bad');
+
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (match === 0 && fail === 0) {
+            c.textContent = 'Mark each row. The fix order: GBP first (Google trusts itself), then your own website + schema (the source of truth Google crawls), then aggregators.';
+          } else if (fail === 0 && match === SOURCES.length) {
+            c.textContent = 'Clean across all 12 citation sources. Re-run next quarter.';
+          } else {
+            c.textContent = 'Action: fix the ' + fail + ' mismatch row(s) in priority order — GBP, then website + schema, then aggregators.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Reference name',     f.ref_name.value || ''],
+            ['Reference address 1',f.ref_addr_1.value || ''],
+            ['Reference address 2',f.ref_addr_2.value || ''],
+            ['Reference city',     f.ref_city.value || ''],
+            ['Reference phone',    f.ref_phone.value || ''],
+            [],
+            ['Source', 'Name match', 'Addr match', 'Phone match', 'Status', 'Action'],
+          ];
+          var labels = { gbp: 'GBP', site: 'Website footer', schema: 'Website schema', apple: 'Apple', bing: 'Bing', yelp: 'Yelp', trip: 'TripAdvisor', ot: 'OpenTable', resy: 'Resy', dd: 'DoorDash', ue: 'Uber Eats', ig: 'Instagram' };
+          for (var i = 0; i < SOURCES.length; i++) {
+            var s = SOURCES[i];
+            rows.push([
+              labels[s],
+              f['src_' + s + '_n'].checked ? 'yes' : 'no',
+              f['src_' + s + '_a'].checked ? 'yes' : 'no',
+              f['src_' + s + '_p'].checked ? 'yes' : 'no',
+              f['src_' + s + '_status'].value || '',
+              f['src_' + s + '_action'].value || '',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Match count', document.querySelector('[data-output="match_count"]').textContent]);
+          rows.push(['Mismatch count', document.querySelector('[data-output="fail_count"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'nap-consistency-tracker', collect: collect, recalc: recalc });
+      })();
+    </script>

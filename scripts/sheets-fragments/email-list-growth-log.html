@@ -1,0 +1,140 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Month</span></span>
+          <input type="text" name="month" placeholder="e.g., April 2026" />
+        </label>
+        <label>
+          <span><span>Sender platform</span></span>
+          <input type="text" name="platform" placeholder="e.g., Mailchimp / Klaviyo / ConvertKit" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>By source — capture point performance</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>New sign-ups</th>
+              <th>Unsubscribes</th>
+              <th>Net add</th>
+              <th>Sends</th>
+              <th>Open %</th>
+              <th>Click %</th>
+              <th>Health</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Table tent / QR (in-restaurant)</td><td><input type="number" name="s1_new" min="0" /></td><td><input type="number" name="s1_unsub" min="0" /></td><td><output name="s1_net">—</output></td><td><input type="number" name="s1_sends" min="0" /></td><td><input type="number" name="s1_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s1_click" min="0" max="100" step="0.1" /></td><td><output name="s1_health">—</output></td></tr>
+            <tr><td>Reservation confirmation opt-in</td><td><input type="number" name="s2_new" min="0" /></td><td><input type="number" name="s2_unsub" min="0" /></td><td><output name="s2_net">—</output></td><td><input type="number" name="s2_sends" min="0" /></td><td><input type="number" name="s2_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s2_click" min="0" max="100" step="0.1" /></td><td><output name="s2_health">—</output></td></tr>
+            <tr><td>Online order checkout</td><td><input type="number" name="s3_new" min="0" /></td><td><input type="number" name="s3_unsub" min="0" /></td><td><output name="s3_net">—</output></td><td><input type="number" name="s3_sends" min="0" /></td><td><input type="number" name="s3_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s3_click" min="0" max="100" step="0.1" /></td><td><output name="s3_health">—</output></td></tr>
+            <tr><td>Website footer signup</td><td><input type="number" name="s4_new" min="0" /></td><td><input type="number" name="s4_unsub" min="0" /></td><td><output name="s4_net">—</output></td><td><input type="number" name="s4_sends" min="0" /></td><td><input type="number" name="s4_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s4_click" min="0" max="100" step="0.1" /></td><td><output name="s4_health">—</output></td></tr>
+            <tr><td>Instagram bio link</td><td><input type="number" name="s5_new" min="0" /></td><td><input type="number" name="s5_unsub" min="0" /></td><td><output name="s5_net">—</output></td><td><input type="number" name="s5_sends" min="0" /></td><td><input type="number" name="s5_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s5_click" min="0" max="100" step="0.1" /></td><td><output name="s5_health">—</output></td></tr>
+            <tr><td>Event / private dining inquiry</td><td><input type="number" name="s6_new" min="0" /></td><td><input type="number" name="s6_unsub" min="0" /></td><td><output name="s6_net">—</output></td><td><input type="number" name="s6_sends" min="0" /></td><td><input type="number" name="s6_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s6_click" min="0" max="100" step="0.1" /></td><td><output name="s6_health">—</output></td></tr>
+            <tr><td>Other (note)</td><td><input type="number" name="s7_new" min="0" /></td><td><input type="number" name="s7_unsub" min="0" /></td><td><output name="s7_net">—</output></td><td><input type="number" name="s7_sends" min="0" /></td><td><input type="number" name="s7_open" min="0" max="100" step="0.1" /></td><td><input type="number" name="s7_click" min="0" max="100" step="0.1" /></td><td><output name="s7_health">—</output></td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>Totals</td><td><output name="t_new">0</output></td><td><output name="t_unsub">0</output></td><td><output name="t_net">0</output></td><td colspan="3"></td><td><output name="t_health">—</output></td></tr>
+          </tfoot>
+        </table>
+        <span class="field-help">Health = open % &gt; 30 AND net add positive. Tag every signup form with its source — without source, ROI is unanswerable.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Net adds this month</span>
+          <span class="sheet-output-value" data-output="net" data-band="idle">0</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Healthiest source</span>
+          <span class="sheet-output-value" data-output="best">—</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Per-source attribution is the lever. A 5,000-name list at 6% open rate is worth less than 800 at 40% — the 800 came from somewhere. Find which.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        var SOURCES = ['Table tent / QR','Reservation opt-in','Online order checkout','Website footer','Instagram bio','Event inquiry','Other'];
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var totalNew = 0, totalUnsub = 0;
+          var bestSrc = null, bestScore = -1;
+          for (var i = 1; i <= 7; i++) {
+            var nw = n(f['s' + i + '_new'].value);
+            var un = n(f['s' + i + '_unsub'].value);
+            var net = nw - un;
+            f['s' + i + '_net'].value = (nw || un) ? String(net) : '—';
+            totalNew += nw; totalUnsub += un;
+            var open = n(f['s' + i + '_open'].value);
+            var clk = n(f['s' + i + '_click'].value);
+            var health = '';
+            if (nw + un + open + clk === 0) { health = '—'; }
+            else if (open >= 30 && net > 0) { health = 'Healthy'; }
+            else if (open >= 20)            { health = 'Aging';   }
+            else                             { health = 'Weak';    }
+            f['s' + i + '_health'].value = health;
+            if (open > 0 && net > 0) {
+              var score = open + clk * 2 + net;
+              if (score > bestScore) { bestScore = score; bestSrc = SOURCES[i - 1]; }
+            }
+          }
+          f.t_new.value   = String(totalNew);
+          f.t_unsub.value = String(totalUnsub);
+          f.t_net.value   = String(totalNew - totalUnsub);
+          f.t_health.value = '';
+          var nEl = document.querySelector('[data-output="net"]');
+          nEl.textContent = String(totalNew - totalUnsub);
+          nEl.dataset.band = (totalNew - totalUnsub) > 0 ? 'good' : ((totalNew - totalUnsub) === 0 ? 'idle' : 'bad');
+          document.querySelector('[data-output="best"]').textContent = bestSrc || '—';
+
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (totalNew + totalUnsub === 0) {
+            c.textContent = 'Per-source attribution is the lever. A 5,000-name list at 6% open rate is worth less than 800 at 40% — the 800 came from somewhere. Find which.';
+          } else if (totalUnsub > totalNew) {
+            c.textContent = 'List is shrinking this month. The cadence may be too high or the content misaligned with what each source signed up for.';
+          } else if (bestSrc) {
+            c.textContent = bestSrc + ' is doing the work. Lean into the capture point that drives this source.';
+          } else {
+            c.textContent = '+' + (totalNew - totalUnsub) + ' net this month. Engagement is light — review what you are sending.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Month',    f.month.value || ''],
+            ['Platform', f.platform.value || ''],
+            [],
+            ['Source', 'New', 'Unsub', 'Net', 'Sends', 'Open %', 'Click %', 'Health'],
+          ];
+          for (var i = 1; i <= 7; i++) {
+            rows.push([
+              SOURCES[i - 1],
+              f['s' + i + '_new'].value || '',
+              f['s' + i + '_unsub'].value || '',
+              (f['s' + i + '_net'].value || '').replace(/^—$/, ''),
+              f['s' + i + '_sends'].value || '',
+              f['s' + i + '_open'].value || '',
+              f['s' + i + '_click'].value || '',
+              (f['s' + i + '_health'].value || '').replace(/^—$/, ''),
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Total new',   f.t_new.value]);
+          rows.push(['Total unsub', f.t_unsub.value]);
+          rows.push(['Net',         f.t_net.value]);
+          rows.push(['Best source', document.querySelector('[data-output="best"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'email-list-growth-log', collect: collect, recalc: recalc });
+      })();
+    </script>

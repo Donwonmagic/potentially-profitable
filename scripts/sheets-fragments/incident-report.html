@@ -1,0 +1,123 @@
+    <p class="sheet-paper-hint">Print and complete the day of the incident. Memory degrades; ink does not.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Incident summary</legend>
+        <label>
+          <span><span>Date</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Time</span></span>
+          <input type="time" name="time" />
+        </label>
+        <label>
+          <span><span>Location in restaurant</span></span>
+          <input type="text" name="location" placeholder="e.g., dining room, host stand, kitchen line, parking lot" />
+        </label>
+        <label>
+          <span><span>Type of incident</span></span>
+          <select name="type">
+            <option value="">—</option>
+            <option>Slip / fall — guest</option>
+            <option>Slip / fall — staff</option>
+            <option>Burn / cut — staff</option>
+            <option>Allergen reaction</option>
+            <option>Foreign object in food</option>
+            <option>Customer-staff altercation</option>
+            <option>Customer-customer altercation</option>
+            <option>Property damage</option>
+            <option>Theft / loss</option>
+            <option>Other (note in description)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Persons involved</legend>
+        <label>
+          <span><span>Affected person — name</span></span>
+          <input type="text" name="affected_name" />
+        </label>
+        <label>
+          <span><span>Affected person — contact (phone or email)</span></span>
+          <input type="text" name="affected_contact" />
+        </label>
+        <label>
+          <span><span>Staff member(s) involved</span></span>
+          <input type="text" name="staff" />
+        </label>
+        <label>
+          <span><span>Manager on duty</span></span>
+          <input type="text" name="manager" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Witnesses</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Name</th><th>Role</th><th>Contact</th><th>Signature</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="w1_name" /></td><td><input type="text" name="w1_role" placeholder="staff / guest" /></td><td><input type="text" name="w1_contact" /></td><td><input type="text" name="w1_sig" /></td></tr>
+            <tr><td><input type="text" name="w2_name" /></td><td><input type="text" name="w2_role" /></td><td><input type="text" name="w2_contact" /></td><td><input type="text" name="w2_sig" /></td></tr>
+            <tr><td><input type="text" name="w3_name" /></td><td><input type="text" name="w3_role" /></td><td><input type="text" name="w3_contact" /></td><td><input type="text" name="w3_sig" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Description of incident</legend>
+        <label>
+          <span><span>What happened — be specific, in chronological order</span></span>
+          <textarea name="description" rows="6"></textarea>
+        </label>
+        <label>
+          <span><span>Conditions (lighting, weather, floor wet, etc.)</span></span>
+          <textarea name="conditions" rows="2"></textarea>
+        </label>
+        <label>
+          <span><span>Any photographs taken? (file names / phone)</span></span>
+          <input type="text" name="photos" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Actions taken</legend>
+        <label>
+          <span><span>Immediate care given</span></span>
+          <textarea name="immediate" rows="2"></textarea>
+        </label>
+        <label>
+          <span><span>Was 911 / EMS / police called?</span></span>
+          <input type="text" name="emergency_called" placeholder="No / Yes — agency, time, responding officer/unit" />
+        </label>
+        <label>
+          <span><span>Insurance carrier notified? (date + claim number)</span></span>
+          <input type="text" name="insurance" />
+        </label>
+        <label>
+          <span><span>Corrective action to prevent recurrence</span></span>
+          <textarea name="corrective" rows="2"></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sign-off</legend>
+        <label>
+          <span><span>Manager signature (printed + signed)</span></span>
+          <input type="text" name="manager_sig" />
+        </label>
+        <label>
+          <span><span>Affected person — declined to sign?</span></span>
+          <input type="text" name="declined" placeholder="If yes, note the reason" />
+        </label>
+        <label>
+          <span><span>Affected person signature (if willing)</span></span>
+          <input type="text" name="affected_sig" />
+        </label>
+        <label>
+          <span><span>Date signed</span></span>
+          <input type="date" name="signed_date" />
+        </label>
+      </fieldset>
+    </form>

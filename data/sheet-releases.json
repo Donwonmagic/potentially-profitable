@@ -1,0 +1,36 @@
+{
+  "_doc": "Pack-release announcements for /sheets/ — read by scripts/build-rss.mjs into /feed.xml + /es/feed.xml. Mirrors the data/tool-releases.json shape but the slug resolves under sheets/<slug>/ rather than tools/<slug>/. Use the SHEET HUB slug ('') to announce a whole pack landing; use a per-sheet slug to announce a notable single sheet update. note_en/note_es is one line, suitable for a feed reader's <description>.",
+
+  "releases": [
+    {
+      "slug": "menu-redesign-brief",
+      "date": "2026-05-04",
+      "note_en": "Pack 4 (Brand & Design) complete — 6 designer / printer / photographer handoffs: menu redesign brief, brand asset inventory, signage spec sheet, photo shoot list, social content calendar, vendor contact sheet. The full 30-sheet catalog now ships across all five packs.",
+      "note_es": "Paquete 4 (Marca y Diseño) completo — 6 entregables para diseñador, imprenta y fotógrafo: brief de rediseño del menú, inventario de activos de marca, hoja de especificación de letreros, lista de tomas, calendario de contenido social, hoja de contactos de proveedores. El catálogo completo de 30 hojas ya está en vivo en los cinco paquetes."
+    },
+    {
+      "slug": "reservation-no-show-log",
+      "date": "2026-05-04",
+      "note_en": "Pack 3 (Conversions & Reservations) complete — 5 sheets including third-party channel P&L (live since Phase 1) plus the no-show log with by-source priced losses, the 12-point website conversion checklist, the daypart traffic map with sales-per-labor-dollar scoring, and the email-list growth log with per-capture-point attribution.",
+      "note_es": "Paquete 3 (Conversiones y Reservas) completo — 5 hojas: P&G por canal de terceros (en vivo desde la Fase 1), registro de no-shows con pérdidas valoradas por fuente, lista de 12 puntos de conversión del sitio, mapa de tráfico por daypart con puntaje de ventas por dólar de mano de obra, y registro de crecimiento de lista de correo con atribución por punto de captura."
+    },
+    {
+      "slug": "allergen-matrix",
+      "date": "2026-05-04",
+      "note_en": "Pack 5 (Trust & Reviews) complete — 6 sheets, 4 of them legally defensive: review response log, complaint root-cause tracker, health inspection prep, staff onboarding (operational only), incident report, and the menu allergen matrix. Health inspection, onboarding, incident, and allergen carry a regional disclaimer — verify with your local authority before using.",
+      "note_es": "Paquete 5 (Confianza y Reseñas) completo — 6 hojas, 4 de ellas legalmente defensivas: registro de respuestas a reseñas, seguimiento de causa raíz de quejas, preparación de inspección sanitaria, incorporación de personal (solo operativa), reporte de incidente y matriz de alérgenos. Las cuatro últimas llevan un aviso de jurisdicción — verifica con tu autoridad local antes de usar."
+    },
+    {
+      "slug": "nap-consistency-tracker",
+      "date": "2026-05-04",
+      "note_en": "Pack 2 (Local SEO & Discovery) complete — adds NAP consistency tracker across 12 citation sources, holiday hours planner, local keyword × page map, and photo refresh tracker. Pairs with the existing GBP monthly health check.",
+      "note_es": "Paquete 2 (SEO local y Descubrimiento) completo — agrega seguimiento de consistencia NAP en 12 fuentes, planificador de horarios festivos, mapa de palabras clave por página y seguimiento de fotos por canal. Va con el chequeo mensual de GBP."
+    },
+    {
+      "slug": "",
+      "date": "2026-05-03",
+      "note_en": "Operator Sheets · Pack 1 (Operations & Margin) complete — 9 printable + fillable + saved-as-CSV sheets: recipe cost cards, weekly prime cost, daily sales recap, line check, waste log, invoice receiving, monthly P&L, inventory count, cash handling. Free, no signup, your numbers never leave the page.",
+      "note_es": "Hojas del Operador · Paquete 1 (Operaciones y Márgenes) completo — 9 hojas imprimibles, llenables y exportables: tarjetas de costo de receta, costo primo semanal, resumen diario, chequeo de línea, registro de desperdicio, recepción de facturas, P&G mensual, conteo de inventario, manejo de efectivo. Gratis, sin registro, tus números no salen de la página."
+    }
+  ]
+}

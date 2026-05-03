@@ -1,0 +1,145 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Month</span></span>
+          <input type="text" name="period" placeholder="e.g., April 2026" />
+        </label>
+        <label>
+          <span><span>Loaded labor rate ($/hour, fully loaded)</span></span>
+          <input type="number" name="labor_rate" min="0" step="0.5" placeholder="e.g., 22" />
+          <span class="field-help">Hourly wages + employer taxes + benefits, blended. Used to score sales-per-labor-dollar.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Daypart × hour grid (covers per shift)</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Hour</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+              <th>Avg covers</th>
+              <th>Labor hrs</th>
+              <th>Sales/$ labor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>11a–12p</td><td><input type="number" name="h1_mon" min="0" /></td><td><input type="number" name="h1_tue" min="0" /></td><td><input type="number" name="h1_wed" min="0" /></td><td><input type="number" name="h1_thu" min="0" /></td><td><input type="number" name="h1_fri" min="0" /></td><td><input type="number" name="h1_sat" min="0" /></td><td><input type="number" name="h1_sun" min="0" /></td><td><output name="h1_avg">—</output></td><td><input type="number" name="h1_lab" min="0" step="0.5" /></td><td><output name="h1_eff">—</output></td></tr>
+            <tr><td>12p–1p</td><td><input type="number" name="h2_mon" min="0" /></td><td><input type="number" name="h2_tue" min="0" /></td><td><input type="number" name="h2_wed" min="0" /></td><td><input type="number" name="h2_thu" min="0" /></td><td><input type="number" name="h2_fri" min="0" /></td><td><input type="number" name="h2_sat" min="0" /></td><td><input type="number" name="h2_sun" min="0" /></td><td><output name="h2_avg">—</output></td><td><input type="number" name="h2_lab" min="0" step="0.5" /></td><td><output name="h2_eff">—</output></td></tr>
+            <tr><td>1p–2p</td><td><input type="number" name="h3_mon" min="0" /></td><td><input type="number" name="h3_tue" min="0" /></td><td><input type="number" name="h3_wed" min="0" /></td><td><input type="number" name="h3_thu" min="0" /></td><td><input type="number" name="h3_fri" min="0" /></td><td><input type="number" name="h3_sat" min="0" /></td><td><input type="number" name="h3_sun" min="0" /></td><td><output name="h3_avg">—</output></td><td><input type="number" name="h3_lab" min="0" step="0.5" /></td><td><output name="h3_eff">—</output></td></tr>
+            <tr><td>2p–3p</td><td><input type="number" name="h4_mon" min="0" /></td><td><input type="number" name="h4_tue" min="0" /></td><td><input type="number" name="h4_wed" min="0" /></td><td><input type="number" name="h4_thu" min="0" /></td><td><input type="number" name="h4_fri" min="0" /></td><td><input type="number" name="h4_sat" min="0" /></td><td><input type="number" name="h4_sun" min="0" /></td><td><output name="h4_avg">—</output></td><td><input type="number" name="h4_lab" min="0" step="0.5" /></td><td><output name="h4_eff">—</output></td></tr>
+            <tr><td>3p–4p</td><td><input type="number" name="h5_mon" min="0" /></td><td><input type="number" name="h5_tue" min="0" /></td><td><input type="number" name="h5_wed" min="0" /></td><td><input type="number" name="h5_thu" min="0" /></td><td><input type="number" name="h5_fri" min="0" /></td><td><input type="number" name="h5_sat" min="0" /></td><td><input type="number" name="h5_sun" min="0" /></td><td><output name="h5_avg">—</output></td><td><input type="number" name="h5_lab" min="0" step="0.5" /></td><td><output name="h5_eff">—</output></td></tr>
+            <tr><td>4p–5p</td><td><input type="number" name="h6_mon" min="0" /></td><td><input type="number" name="h6_tue" min="0" /></td><td><input type="number" name="h6_wed" min="0" /></td><td><input type="number" name="h6_thu" min="0" /></td><td><input type="number" name="h6_fri" min="0" /></td><td><input type="number" name="h6_sat" min="0" /></td><td><input type="number" name="h6_sun" min="0" /></td><td><output name="h6_avg">—</output></td><td><input type="number" name="h6_lab" min="0" step="0.5" /></td><td><output name="h6_eff">—</output></td></tr>
+            <tr><td>5p–6p</td><td><input type="number" name="h7_mon" min="0" /></td><td><input type="number" name="h7_tue" min="0" /></td><td><input type="number" name="h7_wed" min="0" /></td><td><input type="number" name="h7_thu" min="0" /></td><td><input type="number" name="h7_fri" min="0" /></td><td><input type="number" name="h7_sat" min="0" /></td><td><input type="number" name="h7_sun" min="0" /></td><td><output name="h7_avg">—</output></td><td><input type="number" name="h7_lab" min="0" step="0.5" /></td><td><output name="h7_eff">—</output></td></tr>
+            <tr><td>6p–7p</td><td><input type="number" name="h8_mon" min="0" /></td><td><input type="number" name="h8_tue" min="0" /></td><td><input type="number" name="h8_wed" min="0" /></td><td><input type="number" name="h8_thu" min="0" /></td><td><input type="number" name="h8_fri" min="0" /></td><td><input type="number" name="h8_sat" min="0" /></td><td><input type="number" name="h8_sun" min="0" /></td><td><output name="h8_avg">—</output></td><td><input type="number" name="h8_lab" min="0" step="0.5" /></td><td><output name="h8_eff">—</output></td></tr>
+            <tr><td>7p–8p</td><td><input type="number" name="h9_mon" min="0" /></td><td><input type="number" name="h9_tue" min="0" /></td><td><input type="number" name="h9_wed" min="0" /></td><td><input type="number" name="h9_thu" min="0" /></td><td><input type="number" name="h9_fri" min="0" /></td><td><input type="number" name="h9_sat" min="0" /></td><td><input type="number" name="h9_sun" min="0" /></td><td><output name="h9_avg">—</output></td><td><input type="number" name="h9_lab" min="0" step="0.5" /></td><td><output name="h9_eff">—</output></td></tr>
+            <tr><td>8p–9p</td><td><input type="number" name="h10_mon" min="0" /></td><td><input type="number" name="h10_tue" min="0" /></td><td><input type="number" name="h10_wed" min="0" /></td><td><input type="number" name="h10_thu" min="0" /></td><td><input type="number" name="h10_fri" min="0" /></td><td><input type="number" name="h10_sat" min="0" /></td><td><input type="number" name="h10_sun" min="0" /></td><td><output name="h10_avg">—</output></td><td><input type="number" name="h10_lab" min="0" step="0.5" /></td><td><output name="h10_eff">—</output></td></tr>
+            <tr><td>9p–10p</td><td><input type="number" name="h11_mon" min="0" /></td><td><input type="number" name="h11_tue" min="0" /></td><td><input type="number" name="h11_wed" min="0" /></td><td><input type="number" name="h11_thu" min="0" /></td><td><input type="number" name="h11_fri" min="0" /></td><td><input type="number" name="h11_sat" min="0" /></td><td><input type="number" name="h11_sun" min="0" /></td><td><output name="h11_avg">—</output></td><td><input type="number" name="h11_lab" min="0" step="0.5" /></td><td><output name="h11_eff">—</output></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Avg covers = mean of the 7 day cells. Sales/$ labor = (avg covers × your avg check) / (labor hours × loaded rate). Above 3 is healthy; below 1 is a cut candidate.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Reference</legend>
+        <label>
+          <span><span>Average per-cover spend ($)</span></span>
+          <input type="number" name="avg_check" min="0" step="1" placeholder="e.g., 35" />
+        </label>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Slowest hour (cut candidate)</span>
+          <span class="sheet-output-value" data-output="slowest">—</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Best sales-per-labor-dollar hour</span>
+          <span class="sheet-output-value" data-output="best">—</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Fill in covers + labor hours. The map will name the hour to cut and the hour you might be under-staffing. Cut by trend, not one bad day.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        var DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
+        var HOURS = ['11a–12p','12p–1p','1p–2p','2p–3p','3p–4p','4p–5p','5p–6p','6p–7p','7p–8p','8p–9p','9p–10p'];
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var rate = n(f.labor_rate.value);
+          var avgCheck = n(f.avg_check.value);
+          var slowest = null, slowestVal = Infinity;
+          var best = null, bestEff = -Infinity;
+          for (var i = 1; i <= 11; i++) {
+            var sum = 0, count = 0;
+            for (var d = 0; d < DAYS.length; d++) {
+              var v = n(f['h' + i + '_' + DAYS[d]].value);
+              if (v > 0) { sum += v; count++; }
+            }
+            var avg = count > 0 ? sum / count : 0;
+            f['h' + i + '_avg'].value = avg > 0 ? avg.toFixed(1) : '—';
+            var lab = n(f['h' + i + '_lab'].value);
+            var eff = (lab > 0 && rate > 0 && avgCheck > 0) ? (avg * avgCheck) / (lab * rate) : 0;
+            f['h' + i + '_eff'].value = eff > 0 ? eff.toFixed(1) : '—';
+            if (avg > 0 && avg < slowestVal) { slowestVal = avg; slowest = HOURS[i - 1]; }
+            if (eff > 0 && eff > bestEff) { bestEff = eff; best = HOURS[i - 1]; }
+          }
+          document.querySelector('[data-output="slowest"]').textContent = slowest ? (slowest + ' (' + slowestVal.toFixed(1) + ' covers avg)') : '—';
+          document.querySelector('[data-output="best"]').textContent = best ? (best + ' ($' + bestEff.toFixed(1) + ' sales / $1 labor)') : '—';
+
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (slowest == null) {
+            c.textContent = 'Fill in covers + labor hours. The map will name the hour to cut and the hour you might be under-staffing. Cut by trend, not one bad day.';
+          } else if (bestEff > 4 && slowestVal < 4) {
+            c.textContent = 'Big spread between best and slowest hours. The slowest hour is the cut candidate; the best hour is where to add a server before turning tables faster becomes hard.';
+          } else {
+            c.textContent = 'Slowest hour: ' + slowest + '. Best hour: ' + best + '. Pull next month and compare — three months of the same shape is signal.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Period',     f.period.value || ''],
+            ['Labor rate', f.labor_rate.value || ''],
+            ['Avg check',  f.avg_check.value || ''],
+            [],
+            ['Hour', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Avg', 'Labor hrs', 'Sales/$ labor'],
+          ];
+          for (var i = 1; i <= 11; i++) {
+            rows.push([
+              HOURS[i - 1],
+              f['h' + i + '_mon'].value || '',
+              f['h' + i + '_tue'].value || '',
+              f['h' + i + '_wed'].value || '',
+              f['h' + i + '_thu'].value || '',
+              f['h' + i + '_fri'].value || '',
+              f['h' + i + '_sat'].value || '',
+              f['h' + i + '_sun'].value || '',
+              (f['h' + i + '_avg'].value || '').replace(/^—$/, ''),
+              f['h' + i + '_lab'].value || '',
+              (f['h' + i + '_eff'].value || '').replace(/^—$/, ''),
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Slowest hour',  document.querySelector('[data-output="slowest"]').textContent]);
+          rows.push(['Best $/labor',  document.querySelector('[data-output="best"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'daypart-traffic-map', collect: collect, recalc: recalc });
+      })();
+    </script>

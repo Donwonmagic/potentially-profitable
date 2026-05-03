@@ -1,0 +1,127 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Week ending</span></span>
+          <input type="date" name="week_ending" />
+        </label>
+        <label>
+          <span><span>Reviewer</span></span>
+          <input type="text" name="reviewer" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Complaints — log the cause, not the symptom</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Channel</th>
+              <th>Category</th>
+              <th>Symptom</th>
+              <th>Root cause</th>
+              <th>Fix</th>
+              <th>Owner</th>
+              <th>Closed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="date" name="c1_date" /></td><td><select name="c1_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c1_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c1_sym" placeholder="e.g., cold food" /></td><td><input type="text" name="c1_cause" placeholder="e.g., expo gap on sat dinner" /></td><td><input type="text" name="c1_fix" /></td><td><input type="text" name="c1_owner" /></td><td><input type="checkbox" name="c1_closed" /></td></tr>
+            <tr><td><input type="date" name="c2_date" /></td><td><select name="c2_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c2_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c2_sym" /></td><td><input type="text" name="c2_cause" /></td><td><input type="text" name="c2_fix" /></td><td><input type="text" name="c2_owner" /></td><td><input type="checkbox" name="c2_closed" /></td></tr>
+            <tr><td><input type="date" name="c3_date" /></td><td><select name="c3_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c3_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c3_sym" /></td><td><input type="text" name="c3_cause" /></td><td><input type="text" name="c3_fix" /></td><td><input type="text" name="c3_owner" /></td><td><input type="checkbox" name="c3_closed" /></td></tr>
+            <tr><td><input type="date" name="c4_date" /></td><td><select name="c4_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c4_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c4_sym" /></td><td><input type="text" name="c4_cause" /></td><td><input type="text" name="c4_fix" /></td><td><input type="text" name="c4_owner" /></td><td><input type="checkbox" name="c4_closed" /></td></tr>
+            <tr><td><input type="date" name="c5_date" /></td><td><select name="c5_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c5_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c5_sym" /></td><td><input type="text" name="c5_cause" /></td><td><input type="text" name="c5_fix" /></td><td><input type="text" name="c5_owner" /></td><td><input type="checkbox" name="c5_closed" /></td></tr>
+            <tr><td><input type="date" name="c6_date" /></td><td><select name="c6_chan"><option>—</option><option>In-house</option><option>Online review</option><option>DM / social</option><option>Email</option><option>Phone</option></select></td><td><select name="c6_cat"><option>—</option><option>food</option><option>service</option><option>wait</option><option>cleanliness</option><option>value</option><option>other</option></select></td><td><input type="text" name="c6_sym" /></td><td><input type="text" name="c6_cause" /></td><td><input type="text" name="c6_fix" /></td><td><input type="text" name="c6_owner" /></td><td><input type="checkbox" name="c6_closed" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">"Cold food" is the symptom. "Expo gap on Saturday dinner" is the cause. The cause is the only thing you can fix.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Logged this period</span>
+          <span class="sheet-output-value" data-output="logged_count">0</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Top recurring category</span>
+          <span class="sheet-output-value" data-output="top_cat">—</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Open (no fix logged)</span>
+          <span class="sheet-output-value" data-output="open_count" data-band="idle">0</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Log every complaint with its CAUSE, not the symptom. The fix is the test of the diagnosis; the next week is the test of the fix.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var logged = 0, open = 0;
+          var cats = {};
+          for (var i = 1; i <= 6; i++) {
+            var d = f['c' + i + '_date'].value;
+            var sym = f['c' + i + '_sym'].value;
+            if (!d && !sym) continue;
+            logged++;
+            var cat = f['c' + i + '_cat'].value;
+            if (cat && cat !== '—') cats[cat] = (cats[cat] || 0) + 1;
+            if (!f['c' + i + '_fix'].value || !f['c' + i + '_closed'].checked) open++;
+          }
+          document.querySelector('[data-output="logged_count"]').textContent = String(logged);
+          var top = null, topCount = 0;
+          for (var k in cats) if (cats[k] > topCount) { top = k; topCount = cats[k]; }
+          document.querySelector('[data-output="top_cat"]').textContent = top ? (top + ' (' + topCount + ')') : '—';
+          var oEl = document.querySelector('[data-output="open_count"]');
+          oEl.textContent = String(open);
+          oEl.dataset.band = open === 0 ? 'good' : (open <= 2 ? 'warn' : 'bad');
+
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (logged === 0) {
+            c.textContent = 'Log every complaint with its CAUSE, not the symptom. The fix is the test of the diagnosis; the next week is the test of the fix.';
+          } else if (top && topCount >= 3) {
+            c.textContent = 'Recurring category: "' + top + '" (' + topCount + ' this period). That is no longer noise — root-cause it before next week.';
+          } else if (open >= 3) {
+            c.textContent = open + ' open complaint(s) without a fix logged. Close them or carry them forward; do not let them age out.';
+          } else {
+            c.textContent = logged + ' complaint(s) logged, ' + (logged - open) + ' closed. Clean week.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Week ending', f.week_ending.value || ''],
+            ['Reviewer',    f.reviewer.value || ''],
+            [],
+            ['Date', 'Channel', 'Category', 'Symptom', 'Root cause', 'Fix', 'Owner', 'Closed'],
+          ];
+          for (var i = 1; i <= 6; i++) {
+            if (!f['c' + i + '_date'].value && !f['c' + i + '_sym'].value) continue;
+            rows.push([
+              f['c' + i + '_date'].value || '',
+              f['c' + i + '_chan'].value || '',
+              f['c' + i + '_cat'].value || '',
+              f['c' + i + '_sym'].value || '',
+              f['c' + i + '_cause'].value || '',
+              f['c' + i + '_fix'].value || '',
+              f['c' + i + '_owner'].value || '',
+              f['c' + i + '_closed'].checked ? 'yes' : 'no',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Logged this period', document.querySelector('[data-output="logged_count"]').textContent]);
+          rows.push(['Top category',        document.querySelector('[data-output="top_cat"]').textContent]);
+          rows.push(['Open',                document.querySelector('[data-output="open_count"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'complaint-root-cause-tracker', collect: collect, recalc: recalc });
+      })();
+    </script>

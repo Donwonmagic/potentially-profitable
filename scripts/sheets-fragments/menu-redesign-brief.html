@@ -1,0 +1,50 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Brief context</legend>
+        <label><span><span>Restaurant</span></span><input type="text" name="restaurant" /></label>
+        <label><span><span>Designer</span></span><input type="text" name="designer" /></label>
+        <label><span><span>Target launch date</span></span><input type="date" name="launch_date" /></label>
+        <label><span><span>Print + digital + POS targets</span></span><input type="text" name="targets" placeholder="e.g., trifold print + website HTML + POS button labels" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Top sellers (last 90 days)</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>#</th><th>Item</th><th>Category</th><th>Sold (count)</th><th>Margin band</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><input type="text" name="top1_item" /></td><td><input type="text" name="top1_cat" /></td><td><input type="number" name="top1_count" min="0" /></td><td><select name="top1_margin"><option>—</option><option>Star (high pop · high margin)</option><option>Plowhorse (high pop · low margin)</option><option>Puzzle (low pop · high margin)</option><option>Dog (low pop · low margin)</option></select></td></tr>
+            <tr><td>2</td><td><input type="text" name="top2_item" /></td><td><input type="text" name="top2_cat" /></td><td><input type="number" name="top2_count" min="0" /></td><td><select name="top2_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>3</td><td><input type="text" name="top3_item" /></td><td><input type="text" name="top3_cat" /></td><td><input type="number" name="top3_count" min="0" /></td><td><select name="top3_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>4</td><td><input type="text" name="top4_item" /></td><td><input type="text" name="top4_cat" /></td><td><input type="number" name="top4_count" min="0" /></td><td><select name="top4_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>5</td><td><input type="text" name="top5_item" /></td><td><input type="text" name="top5_cat" /></td><td><input type="number" name="top5_count" min="0" /></td><td><select name="top5_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>6</td><td><input type="text" name="top6_item" /></td><td><input type="text" name="top6_cat" /></td><td><input type="number" name="top6_count" min="0" /></td><td><select name="top6_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>7</td><td><input type="text" name="top7_item" /></td><td><input type="text" name="top7_cat" /></td><td><input type="number" name="top7_count" min="0" /></td><td><select name="top7_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>8</td><td><input type="text" name="top8_item" /></td><td><input type="text" name="top8_cat" /></td><td><input type="number" name="top8_count" min="0" /></td><td><select name="top8_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>9</td><td><input type="text" name="top9_item" /></td><td><input type="text" name="top9_cat" /></td><td><input type="number" name="top9_count" min="0" /></td><td><select name="top9_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+            <tr><td>10</td><td><input type="text" name="top10_item" /></td><td><input type="text" name="top10_cat" /></td><td><input type="number" name="top10_count" min="0" /></td><td><select name="top10_margin"><option>—</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option></select></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Stars get the layout's prime real estate. Puzzles get a callout treatment to lift mix. Dogs get cut. The brief is the brief; the engineering is upstream of the design.</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cuts &amp; price changes</legend>
+        <label><span><span>Items to cut (one per line)</span></span><textarea name="cuts" rows="3"></textarea></label>
+        <label><span><span>Price changes (item — old → new)</span></span><textarea name="prices" rows="3"></textarea></label>
+        <label><span><span>Callouts to feature (specials, signature dishes)</span></span><textarea name="callouts" rows="3"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Constraints &amp; voice</legend>
+        <label><span><span>Dietary markers required</span></span><input type="text" name="dietary" placeholder="e.g., GF, V, VG, DF" /></label>
+        <label><span><span>Allergen disclosure approach</span></span><input type="text" name="allergen_approach" placeholder="e.g., per-item icons + footer note" /></label>
+        <label><span><span>Tone notes for descriptions</span></span><textarea name="tone" rows="2" placeholder="e.g., short, no superlatives, lead with the protein"></textarea></label>
+        <label><span><span>Other constraints</span></span><textarea name="other" rows="2"></textarea></label>
+      </fieldset>
+    </form>
+
+    <script>
+      (function () {
+        if (window.SheetPage) window.SheetPage.register({ slug: 'menu-redesign-brief' });
+      })();
+    </script>

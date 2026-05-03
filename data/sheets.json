@@ -8,7 +8,7 @@
       "label_es": "Operaciones y Márgenes",
       "blurb_en": "The honest paperwork of running an independent restaurant — daily, weekly, monthly. The sheets that keep prime cost from drifting.",
       "blurb_es": "El papeleo honesto de operar un restaurante independiente — diario, semanal, mensual. Las hojas que evitan que el costo primo se desborde.",
-      "sheets": ["weekly-prime-cost-worksheet", "daily-sales-recap", "line-check-sheet", "waste-log", "invoice-receiving-checklist", "monthly-pnl-snapshot", "inventory-count-sheet", "cash-handling-log"]
+      "sheets": ["recipe-cost-card", "weekly-prime-cost-worksheet", "daily-sales-recap", "line-check-sheet", "waste-log", "invoice-receiving-checklist", "monthly-pnl-snapshot", "inventory-count-sheet", "cash-handling-log"]
     },
     {
       "id": "local-seo",
@@ -188,13 +188,24 @@
       "url_en": "/sheets/daily-sales-recap/",
       "url_es": "/es/sheets/daily-sales-recap/",
       "pack": "operations-margin",
-      "cadence_en": "Daily",
-      "cadence_es": "Diaria",
+      "cadence_en": "Daily · per shift",
+      "cadence_es": "Diaria · por turno",
       "format": "report",
       "stay_paper": false,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["margin-math"], "glossary": ["average-check"], "blog": [] },
-      "status": "queued"
+      "pairsWith": { "tools": ["margin-math", "cost-pulse"], "glossary": ["average-check"], "blog": [] },
+      "when_to_use_en": [
+        "Right at close, before the manager leaves the building.",
+        "Comparing tonight to a typical Tuesday — was the dip weather, schedule, or something else?",
+        "Spotting a void rate that drifts above 1% of sales — that is where theft hides."
+      ],
+      "mistakes_en": [
+        "Logging gross sales instead of net (sales tax included). Use net every time.",
+        "Skipping the cash over/short field on busy nights — the field exists for the busy nights.",
+        "Not noting weather. A 30% dip on a clear Saturday is a different problem than the same dip in a snowstorm."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "line-check-sheet": {
       "title_en": "Pre-Service Line Check",
@@ -212,7 +223,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["plate-cost"], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Twenty minutes before doors open — lunch and dinner separately.",
+        "When the previous shift's manager left a note about a temp-log gap.",
+        "Right after a vendor delivery so you catch a temperature problem before service."
+      ],
+      "mistakes_en": [
+        "Initialing without checking the temps. The walk is the point; the signature is the proof.",
+        "Not dating the printout. Health inspectors want the date, not just the day of the week.",
+        "Putting the 86 list in the manager's pocket instead of expo. The line cannot read your pocket."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "waste-log": {
       "title_en": "Waste & Spoilage Log",
@@ -230,7 +252,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["cost-pulse", "plate-cost"], "glossary": ["yield-percent"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Every time a kitchen lead drops something, throws spoiled prep, or hands off staff meal.",
+        "Tuesday morning, when the weekly review names the top three offenders.",
+        "Any time someone says \"we throw a lot away\" — make them cite the number."
+      ],
+      "mistakes_en": [
+        "Mixing staff-meal with spoilage. Staff meal is a labor benefit; spoilage is a margin leak.",
+        "Skipping the reason code. Without the code, the log just says \"we wasted things.\"",
+        "Not pricing the line. A waste log without dollars is a feelings journal."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "invoice-receiving-checklist": {
       "title_en": "Invoice Receiving Checklist",
@@ -248,7 +281,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["invoice-decoder", "cost-pulse"], "glossary": ["edible-portion"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Standing at the back door while the driver is still there.",
+        "Whenever a substitution shows up that you did not approve in writing.",
+        "Right after a price-increase notice from a vendor — verify the new price hits the line."
+      ],
+      "mistakes_en": [
+        "Signing the slip before counting the boxes. Once it's signed, the credit conversation is uphill.",
+        "Not flagging substitutions in writing. \"They were out\" is not a credit; \"item swap, no approval\" is.",
+        "Skipping the protein temp on cold winter mornings. The truck cooler can fail in any weather."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "monthly-pnl-snapshot": {
       "title_en": "Monthly P&L Snapshot",
@@ -266,7 +310,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["margin-math", "menu-engineering"], "glossary": ["break-even", "contribution-margin", "fixed-costs"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "First week of every month, against the prior month closed by your bookkeeper.",
+        "Before sitting down with a partner, lender, or landlord about the business.",
+        "After a menu change, price raise, or labor reset — see what actually moved."
+      ],
+      "mistakes_en": [
+        "Lumping owner draw into labor. Owner pay is a distribution; labor is the line that pays the staff.",
+        "Forgetting credit-card fees as a variable cost. 2.6% on every dine-in dollar is not rounding error.",
+        "Counting marketing as fixed when half is platform-promo subsidy. The subsidy ends; the cost stays."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "inventory-count-sheet": {
       "title_en": "Period-End Inventory Count Sheet",
@@ -284,7 +339,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["plate-cost"], "glossary": ["food-cost"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Last day of the period, after the close, two people walking together.",
+        "Whenever the prime cost number reads off and you suspect a count miss.",
+        "Before a vendor switch — start the new vendor at a known opening number."
+      ],
+      "mistakes_en": [
+        "Counting sealed cases as open weight. A case of #10 cans is not the same line as opened pulls.",
+        "Counting in random order. The next person who recounts has to do it the same way.",
+        "Skipping the bar walk-in because \"beverage is small.\" Beverage is where the highest-margin theft hides."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "cash-handling-log": {
       "title_en": "Cash Drop & Deposit Log",
@@ -296,13 +362,24 @@
       "url_en": "/sheets/cash-handling-log/",
       "url_es": "/es/sheets/cash-handling-log/",
       "pack": "operations-margin",
-      "cadence_en": "Daily",
-      "cadence_es": "Diaria",
+      "cadence_en": "Per drop · daily review",
+      "cadence_es": "Por entrega · revisión diaria",
       "format": "log",
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Every cash drop. Every drawer change. Every deposit prep.",
+        "Whenever a single drawer reads more than $10 over or short — the trend matters.",
+        "Before any conversation with an employee about a discrepancy — bring the log, not the memory."
+      ],
+      "mistakes_en": [
+        "Single-initial drops. Two pairs of eyes is the entire point of the chain of custody.",
+        "No paid-out receipts attached. Cash that left the drawer needs a paper reason.",
+        "Depositing without recording the slip number. The bank can lose a slip; you cannot lose the number."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
 
     "nap-consistency-tracker": {
@@ -320,8 +397,19 @@
       "format": "table",
       "stay_paper": false,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["schema-check", "gbp-grader"], "glossary": ["gbp"], "blog": [] },
-      "status": "queued"
+      "pairsWith": { "tools": ["schema-check", "gbp-grader"], "glossary": ["gbp", "nap-consistency"], "blog": [] },
+      "when_to_use_en": [
+        "Quarterly — once a quarter is enough to catch what drifts.",
+        "After a phone number change, suite move, or rebrand.",
+        "Whenever Google Search Console flags a duplicate-listing issue."
+      ],
+      "mistakes_en": [
+        "Treating \"Suite 200\" and \"Ste 200\" as identical. Google does not.",
+        "Phone with vs. without country code — both can co-exist; only one belongs in your NAP.",
+        "Forgetting the schema block on the website. Visible footer is one source; the JSON-LD is another."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "holiday-hours-planner": {
       "title_en": "Holiday Hours Update Planner",
@@ -339,7 +427,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["holiday-hours", "open-hours"], "glossary": ["holiday-hours", "hours-of-operation"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "First week of each quarter — plan three months of holidays at once.",
+        "Right after a holiday week — review what missed and capture the lessons.",
+        "Before any planned closure — staff vacation, equipment swap, private buyout."
+      ],
+      "mistakes_en": [
+        "Forgetting voicemail. Google and the website agree; the recording still says \"Open daily.\"",
+        "Setting Google special hours less than two weeks ahead — slow indexing means the diner sees stale info.",
+        "Using GBP \"closed\" instead of \"closes early\" for an early shutdown — \"closed\" all day suppresses the listing."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "local-keyword-map": {
       "title_en": "Local Keyword × Page Map",
@@ -357,7 +456,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["schema-check", "seo-grader"], "glossary": [], "blog": ["how-to-read-restaurant-google-search-console"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly, with Search Console open in the next tab.",
+        "Before adding a new page — does it cannibalize one that already ranks?",
+        "After a content rewrite — verify the keyword map matches the new page."
+      ],
+      "mistakes_en": [
+        "Targeting the same keyword on three pages. Google picks one; the other two split the signal and suppress all three.",
+        "Using city-only keywords when neighborhood-modified terms convert better — \"silver spring brunch\" beats \"silver spring restaurant\" for intent.",
+        "Mapping by gut instead of by query data. Search Console says what people actually typed; trust it."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "photo-refresh-tracker": {
       "title_en": "Photo Refresh Tracker",
@@ -375,7 +485,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["photo-brief"], "glossary": ["hero-shot"], "blog": ["restaurant-photo-spec-sheet"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — fifteen minutes with the four channels open in tabs.",
+        "After a menu change — every dropped dish has a stale photo somewhere.",
+        "When a channel goes a month without a fresh upload from the owner."
+      ],
+      "mistakes_en": [
+        "Reusing the same hero shot across all four channels. Each channel has a native aspect ratio; one shot can't satisfy all.",
+        "Uploading vertical photos to website slots that are landscape. Crop forced; the dish gets cut in half.",
+        "Counting auto-imported user photos on GBP as \"new content.\" They are not — owner-uploaded counts."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
 
     "reservation-no-show-log": {
@@ -394,7 +515,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": ["average-check"], "blog": ["why-your-restaurant-loses-reservations-every-night"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Daily — log every confirmed reservation as it cancels, no-shows, or sits.",
+        "End of week, when you price the empty seats. The number lands different than the feeling.",
+        "Before deciding whether to require a deposit or a credit-card hold by booking source."
+      ],
+      "mistakes_en": [
+        "Treating late-cancels and no-shows as the same row. Late-cancel had a chance to refill; no-show didn’t.",
+        "Not pricing the empty seat. \"Two no-shows tonight\" sounds small; \"$140 in lost revenue\" doesn’t.",
+        "Logging only direct reservations. The booking source is the lever — if Resy no-shows are 3× OpenTable, the policy is by source, not blanket."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "website-conversion-checklist": {
       "title_en": "Website Conversion Checklist",
@@ -412,7 +544,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["mobile-check", "speed-test", "restaurant-audit"], "glossary": ["click-to-call", "lcp", "conversion-rate"], "blog": ["what-should-be-on-a-restaurant-website"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — once a quarter on the live site, with a real iPhone, not a desktop emulator.",
+        "After any redesign or platform migration. The before-and-after pairs naturally with the speed-test sheet.",
+        "When bookings dip and the GBP audit comes back clean — the leak is on the site itself."
+      ],
+      "mistakes_en": [
+        "Phone number rendered as an image instead of a tel: link. Click-to-call is the highest-converting CTA on a restaurant site.",
+        "Menu PDF that pinches on mobile. If a guest has to zoom, the menu is the friction.",
+        "Hiding hours below the fold. Diners check hours on Friday at 4pm; \"open today?\" is the question your homepage answers in 2 seconds or fails."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "daypart-traffic-map": {
       "title_en": "Daypart Traffic Map",
@@ -430,7 +573,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["margin-math"], "glossary": ["labor-cost"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — pull POS reports for covers, sales, and labor hours by hour-of-day.",
+        "Before a schedule rewrite. The map names the cuts that don't hurt service.",
+        "When considering a new daypart (lunch launch, Sunday brunch, late-night) — the heatmap shows whether the demand is there."
+      ],
+      "mistakes_en": [
+        "Mixing dine-in and to-go in one cell. The labor cost of each daypart differs by channel; combining hides the truth.",
+        "Cutting labor on the slowest hour without checking the trend. One slow Wednesday at 4pm is noise; eight slow Wednesdays is signal.",
+        "Forgetting opening labor (prep cooks, BOH setup) — they don't show in covers but they are real."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "email-list-growth-log": {
       "title_en": "Email & SMS List Growth Log",
@@ -448,7 +602,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — first week, pulling subscriber stats from your sender (Mailchimp, Klaviyo, ConvertKit, etc.).",
+        "Before launching a new capture point — table tent, QR code, online-order checkbox — to set a baseline.",
+        "When unsubscribes spike — the source attribution names which channel is misaligned with what you send."
+      ],
+      "mistakes_en": [
+        "Counting sign-ups without engagement. A list of 5,000 with 6% open rate is worth less than 800 at 40%.",
+        "Using a single capture form with no source tag — without source, the ROI question is unanswerable.",
+        "Sending the same cadence to every source. Reservation sign-ups want different content than a checkout opt-in."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
 
     "menu-redesign-brief": {
@@ -467,7 +632,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["menu-engineering", "menu-design", "brand-suite"], "glossary": ["menu-engineering", "menu-mix"], "blog": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Six to eighteen months in — when the menu has drifted enough that the printout no longer matches the kitchen.",
+        "Before sending to the designer. The brief is what makes their work fast and yours predictable.",
+        "After a price raise or item cut — formalize the change so the designer doesn't redesign around stale data."
+      ],
+      "mistakes_en": [
+        "Reordering items without re-engineering the categories. The grid (popularity × margin) is the engineering; the layout is downstream.",
+        "Skipping the dietary markers and allergen flags. Those go in the brief or the menu ships missing them.",
+        "Sending the brief without your top-10 sellers. The designer can balance the layout only if they know what you actually sell."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "brand-asset-inventory": {
       "title_en": "Brand Asset Inventory",
@@ -485,7 +661,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["brand-suite"], "glossary": ["brand-identity", "logo-lockup"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly review — find the asset that disappeared and the license about to lapse.",
+        "Onboarding a new designer or marketing hire — they get the inventory before they get the work.",
+        "Before any rebrand — you cannot redesign what you cannot find."
+      ],
+      "mistakes_en": [
+        "Logos stored only on a former employee's laptop. Make the cloud the source of truth, not the heirloom.",
+        "No license records. A stock-photo contract that lapsed is a lawsuit waiting to happen.",
+        "Mixing working files with deliverables. The .ai source and the exported PNG are different artifacts; track both."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "signage-spec-sheet": {
       "title_en": "Signage & Print Spec Sheet",
@@ -503,7 +690,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["brand-suite"], "glossary": ["color-palette"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Before commissioning new signage, awnings, or printed graphics — your printer needs every spec.",
+        "When ordering reorders — the spec sheet is the proof the new batch matches the old.",
+        "Before a permit application — the spec is the document you submit to the city."
+      ],
+      "mistakes_en": [
+        "Pantone codes for a CMYK print job — the print shop will substitute and you won't see it until install.",
+        "Missing the mounting detail. \"Flush mount\" vs \"stand-off\" changes the install bill, not just the look.",
+        "No bleed / safety zone marked. The print shop trims; what was on the edge is now off the edge."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "photo-shot-list": {
       "title_en": "Photo Shoot Shot List",
@@ -521,7 +719,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["photo-brief"], "glossary": ["hero-shot"], "blog": ["restaurant-photo-spec-sheet"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Two weeks before a shoot — gives the kitchen time to source garnishes and rehearse plating.",
+        "On set — paper, on a clipboard, ticked off as each shot lands.",
+        "After the shoot — the list is what you compare against to confirm everything got captured."
+      ],
+      "mistakes_en": [
+        "No backup dish for the shot that bombs. Plating fails happen; the photographer does not have time to wait.",
+        "Listing the dish without naming the channel target. A 4:3 menu shot and a 9:16 Reel cover are different shoots.",
+        "Forgetting the props the photographer asked for. Linens, glassware, a backup garnish — all on the list."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "social-content-calendar": {
       "title_en": "Social Content Calendar",
@@ -539,7 +748,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Last week of every month — plan the next 30 days before the urgent eats the important.",
+        "Around any holiday or event — plan content alongside the holiday-hours-planner so the messages match.",
+        "After a menu change — content needs to lead the swap, not lag it."
+      ],
+      "mistakes_en": [
+        "Posting only food. Mix in people, place, and process — guests follow restaurants for the room as much as the plate.",
+        "No CTA on a single post. Every post answers \"what now?\" — book, order, follow, or share.",
+        "Scheduling without dates. \"Coming soon\" is not a calendar; a date and channel are."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "vendor-contact-sheet": {
       "title_en": "Vendor Contact Sheet",
@@ -557,7 +777,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["invoice-decoder"], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "When the dishwasher breaks at 7pm on a Saturday and you need the equipment vendor's after-hours number.",
+        "Quarterly review — call each contact, verify they still work there, update the sheet.",
+        "Onboarding any new manager — they get the list before they get a key."
+      ],
+      "mistakes_en": [
+        "Out-of-date sales-rep names. People move; the account number stays. Verify quarterly.",
+        "Missing the after-hours line. The 9-to-5 line is great until it isn't 9-to-5.",
+        "Storing it digital-only. The phone is dead, the WiFi is out — the printed sheet by the office phone is the safety net."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
 
     "review-response-log": {
@@ -576,7 +807,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["gbp-grader"], "glossary": [], "blog": ["how-to-get-more-google-reviews-for-your-restaurant"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Weekly — fifteen minutes, with the GBP / Yelp / Tripadvisor inboxes open.",
+        "After every 1- or 2-star review — those need a response within 48 hours, every time.",
+        "When a complaint theme repeats — the log surfaces the pattern that one-off reviews hide."
+      ],
+      "mistakes_en": [
+        "Responding only to 5-stars. Google reads the response rate on negatives as a quality signal.",
+        "Generic responses (\"thanks for your feedback\") on detailed complaints. The reviewer wrote 200 words; respect them.",
+        "Logging the response date but not the THEME tag. Without themes, you cannot run the pattern review."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "complaint-root-cause-tracker": {
       "title_en": "Complaint Root-Cause Tracker",
@@ -594,7 +836,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Weekly review of the prior week's complaints — across in-house, online, and DM channels.",
+        "When a complaint theme repeats three times in one month — that is no longer noise.",
+        "After a service incident that produced a manager intervention — the cause logs there, not just the comp."
+      ],
+      "mistakes_en": [
+        "Logging the symptom (\"cold food\") instead of the cause (\"expo gap on Saturday dinner\"). Symptoms are signals; causes are fixes.",
+        "Not assigning an owner. A complaint without an owner is a complaint that recurs.",
+        "Closing the log without verifying the fix held the next week. \"Fixed\" is a hypothesis until the next complaint cycle proves it."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "health-inspection-prep": {
       "title_en": "Health Inspection Prep Checklist",
@@ -612,7 +865,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — between routine inspections, with the last violation list in hand.",
+        "Day before any pre-announced inspection — final walk to catch anything that drifted.",
+        "After a violation — the corrective-action verification belongs on this sheet."
+      ],
+      "mistakes_en": [
+        "Treating the inspection as a one-day prep instead of standing practice. The sheet exists to make it standing.",
+        "Letting temp logs go more than 24 hours without an entry. The gap is the violation, not the temperature.",
+        "Storing the dating system label (FIFO stickers, day-dot system) where the inspector cannot see it."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "staff-onboarding-checklist": {
       "title_en": "Staff Onboarding Checklist (Operational)",
@@ -630,7 +894,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Day one of every new hire — front-of-house, back-of-house, host, dishwasher, all of them.",
+        "When promoting from within — onboard them into the new role, do not assume they have it.",
+        "Back-to-back with the orientation packet — the checklist is the proof of completion."
+      ],
+      "mistakes_en": [
+        "Confusing this with HR onboarding. This is operational only — no I-9, no W-4, no state new-hire reporting.",
+        "Skipping the manager-on-duty intro. The new hire needs to know who to ask before service starts.",
+        "Treating the trail shifts as informal. Schedule them, log them, debrief after each."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "incident-report": {
       "title_en": "Incident Report (Slip · Injury · Customer)",
@@ -648,7 +923,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "The day it happens — never the week after. Memory is unreliable in legal proceedings.",
+        "Even for incidents that resolve on the spot — the paper trail is the protection.",
+        "Anything involving an injury, a slip, an allergen reaction, or a customer-staff altercation."
+      ],
+      "mistakes_en": [
+        "Filling it out from memory days later. Time, exact words, witnesses — all degrade fast.",
+        "Skipping the witness signatures. A witness who confirms today is hard to call back next year.",
+        "Not photographing the scene. The phone in your pocket is part of the report."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "allergen-matrix": {
       "title_en": "Menu Allergen Matrix",
@@ -666,7 +952,18 @@
       "stay_paper": false,
       "es_locale_hazard": true,
       "pairsWith": { "tools": ["menu-design"], "glossary": ["dietary-markers"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — every menu change, every supplier swap, every new prep recipe.",
+        "Before training a new server — the matrix is the reference they cite to a guest.",
+        "After any allergen reaction — verify the matrix matches what the kitchen actually does."
+      ],
+      "mistakes_en": [
+        "Updating the menu but not the matrix. The lag is where allergen incidents happen.",
+        "Conflating \"contains\" with \"may contain\" (cross-contact). The grid needs both columns.",
+        "Using a Google search to fill in a hidden ingredient. Verify with the supplier spec sheet, every time."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     }
   },
 

@@ -1,0 +1,45 @@
+    <p class="sheet-paper-hint">Print and hand to the printer / sign vendor. Specs without ambiguity = no surprises at install.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Project</legend>
+        <label><span><span>Project name</span></span><input type="text" name="project" placeholder="e.g., Window decals — fall 2026" /></label>
+        <label><span><span>Quantity</span></span><input type="number" name="qty" min="1" /></label>
+        <label><span><span>Vendor</span></span><input type="text" name="vendor" /></label>
+        <label><span><span>Install date</span></span><input type="date" name="install" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dimensions &amp; material</legend>
+        <label><span><span>Sign type</span></span><select name="type"><option>Window decal</option><option>Storefront sign (illuminated)</option><option>Storefront sign (non-illuminated)</option><option>Awning</option><option>Wayfinding (interior)</option><option>Menu board</option><option>A-frame / sandwich</option><option>Wall vinyl</option><option>Other</option></select></label>
+        <label><span><span>Dimensions (W × H × D, with units)</span></span><input type="text" name="dims" placeholder="e.g., 36in × 24in × 1in" /></label>
+        <label><span><span>Material / substrate</span></span><input type="text" name="material" placeholder="e.g., 3M IJ180Cv3 vinyl, ACM panel, brushed aluminum" /></label>
+        <label><span><span>Finish</span></span><input type="text" name="finish" placeholder="e.g., matte / satin / gloss / brushed" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Color &amp; print</legend>
+        <label><span><span>Color system (CMYK / RGB / Pantone)</span></span><input type="text" name="color_system" /></label>
+        <label><span><span>Primary color (with code)</span></span><input type="text" name="color_1" placeholder="e.g., Pantone 1797 C / CMYK 0/100/99/4" /></label>
+        <label><span><span>Secondary color (with code)</span></span><input type="text" name="color_2" /></label>
+        <label><span><span>Bleed</span></span><input type="text" name="bleed" placeholder="e.g., 0.125 in on all sides" /></label>
+        <label><span><span>Safety zone</span></span><input type="text" name="safety" placeholder="e.g., 0.25 in inside trim" /></label>
+        <label><span><span>Resolution / DPI</span></span><input type="text" name="dpi" placeholder="e.g., 150 DPI at final size" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Mounting &amp; install</legend>
+        <label><span><span>Mounting style</span></span><input type="text" name="mount" placeholder="e.g., flush mount with VHB, stand-off 1in, suction" /></label>
+        <label><span><span>Hardware required</span></span><input type="text" name="hardware" /></label>
+        <label><span><span>Permit / approval needed?</span></span><input type="text" name="permit" placeholder="If yes, jurisdiction + permit number" /></label>
+        <label><span><span>Special instructions for install crew</span></span><textarea name="install_notes" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Files delivered</legend>
+        <label><span><span>Print-ready file location (path / link)</span></span><input type="text" name="file_loc" /></label>
+        <label><span><span>Format(s)</span></span><input type="text" name="formats" placeholder="e.g., PDF/X-1a, .ai, layered .psd" /></label>
+        <label><span><span>Approver signature</span></span><input type="text" name="approver" /></label>
+        <label><span><span>Date approved</span></span><input type="date" name="approved_date" /></label>
+      </fieldset>
+    </form>

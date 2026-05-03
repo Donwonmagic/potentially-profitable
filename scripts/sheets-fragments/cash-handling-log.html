@@ -1,0 +1,90 @@
+    <p class="sheet-paper-hint">Print fresh for each shift. Two initials per drop. Attach paid-out receipts.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Shift</legend>
+        <label>
+          <span><span>Date</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Shift</span></span>
+          <select name="shift">
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="brunch">Brunch</option>
+          </select>
+        </label>
+        <label>
+          <span><span>Manager on duty</span></span>
+          <input type="text" name="manager" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Drawer detail</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Drawer #</th>
+              <th>Cashier</th>
+              <th>Open bank ($)</th>
+              <th>Cash sales ($)</th>
+              <th>Paid-outs ($)</th>
+              <th>Drop ($)</th>
+              <th>Over / short ($)</th>
+              <th>Init 1</th>
+              <th>Init 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text" name="d1_num" /></td><td><input type="text" name="d1_cashier" /></td><td><input type="text" name="d1_open" /></td><td><input type="text" name="d1_sales" /></td><td><input type="text" name="d1_paidouts" /></td><td><input type="text" name="d1_drop" /></td><td><input type="text" name="d1_diff" /></td><td><input type="text" name="d1_i1" maxlength="4" /></td><td><input type="text" name="d1_i2" maxlength="4" /></td></tr>
+            <tr><td><input type="text" name="d2_num" /></td><td><input type="text" name="d2_cashier" /></td><td><input type="text" name="d2_open" /></td><td><input type="text" name="d2_sales" /></td><td><input type="text" name="d2_paidouts" /></td><td><input type="text" name="d2_drop" /></td><td><input type="text" name="d2_diff" /></td><td><input type="text" name="d2_i1" maxlength="4" /></td><td><input type="text" name="d2_i2" maxlength="4" /></td></tr>
+            <tr><td><input type="text" name="d3_num" /></td><td><input type="text" name="d3_cashier" /></td><td><input type="text" name="d3_open" /></td><td><input type="text" name="d3_sales" /></td><td><input type="text" name="d3_paidouts" /></td><td><input type="text" name="d3_drop" /></td><td><input type="text" name="d3_diff" /></td><td><input type="text" name="d3_i1" maxlength="4" /></td><td><input type="text" name="d3_i2" maxlength="4" /></td></tr>
+            <tr><td><input type="text" name="d4_num" /></td><td><input type="text" name="d4_cashier" /></td><td><input type="text" name="d4_open" /></td><td><input type="text" name="d4_sales" /></td><td><input type="text" name="d4_paidouts" /></td><td><input type="text" name="d4_drop" /></td><td><input type="text" name="d4_diff" /></td><td><input type="text" name="d4_i1" maxlength="4" /></td><td><input type="text" name="d4_i2" maxlength="4" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Paid-outs (must have receipts attached)</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Item</th><th>Vendor / payee</th><th>$</th><th>Receipt #</th><th>Approved by</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="po_item_1" /></td><td><input type="text" name="po_payee_1" /></td><td><input type="text" name="po_amt_1" /></td><td><input type="text" name="po_rec_1" /></td><td><input type="text" name="po_appr_1" /></td></tr>
+            <tr><td><input type="text" name="po_item_2" /></td><td><input type="text" name="po_payee_2" /></td><td><input type="text" name="po_amt_2" /></td><td><input type="text" name="po_rec_2" /></td><td><input type="text" name="po_appr_2" /></td></tr>
+            <tr><td><input type="text" name="po_item_3" /></td><td><input type="text" name="po_payee_3" /></td><td><input type="text" name="po_amt_3" /></td><td><input type="text" name="po_rec_3" /></td><td><input type="text" name="po_appr_3" /></td></tr>
+            <tr><td><input type="text" name="po_item_4" /></td><td><input type="text" name="po_payee_4" /></td><td><input type="text" name="po_amt_4" /></td><td><input type="text" name="po_rec_4" /></td><td><input type="text" name="po_appr_4" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Bank deposit</legend>
+        <label>
+          <span><span>Total deposit ($)</span></span>
+          <input type="text" name="deposit_total" />
+        </label>
+        <label>
+          <span><span>Deposit slip number</span></span>
+          <input type="text" name="deposit_slip" />
+          <span class="field-help">The bank can lose a slip; you cannot lose the number.</span>
+        </label>
+        <label>
+          <span><span>Deposited by</span></span>
+          <input type="text" name="deposited_by" />
+        </label>
+        <label>
+          <span><span>Time</span></span>
+          <input type="time" name="deposit_time" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sign-off</legend>
+        <label>
+          <span><span>Manager signature</span></span>
+          <input type="text" name="manager_signoff" />
+        </label>
+      </fieldset>
+    </form>

@@ -145,6 +145,17 @@ header.nav{min-height:64px}
 }
 </script>
 <!-- glossary-article-schema:end -->
+<!-- term-sheet-sidecar:style --><style>
+.term-sheet-sidecar{margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--teal,#1F4E5B);border-radius:var(--r-sm,6px);background:var(--cream-2,#F3EEE3)}
+.term-sheet-sidecar__eyebrow{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal,#1F4E5B)}
+.term-sheet-sidecar__intro{margin:4px 0 10px;font-size:14px;line-height:1.5;color:var(--ink-soft,#2A2D33)}
+.term-sheet-sidecar__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.term-sheet-sidecar__link{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line,#E5DFD2);border-radius:var(--r-sm,6px);background:var(--white,#FFFFFF);text-decoration:none;color:var(--ink,#14161A);transition:border-color 140ms ease}
+.term-sheet-sidecar__link:hover{border-color:var(--teal,#1F4E5B)}
+.term-sheet-sidecar__title{font-family:var(--font-display,"Fraunces",Georgia,serif);font-size:16px;font-weight:500;color:var(--teal,#1F4E5B)}
+.term-sheet-sidecar__walkaway{font-size:13px;line-height:1.45;color:var(--ink-soft,#2A2D33)}
+@media print{.term-sheet-sidecar{display:none !important}}
+</style>
 </head>
 <body>
 
@@ -302,6 +313,20 @@ header.nav{min-height:64px}
     <header class="term-head">
       <span class="eyebrow"><a href="/glossary/findability/">Findability</a></span>
       <h1 class="term-h1">Special hours</h1>
+      <!-- term-sheet-sidecar:start -->
+      <aside class="term-sheet-sidecar" aria-labelledby="term-sheet-sidecar-h-special-hours">
+        <p class="term-sheet-sidecar__eyebrow">Use this sheet</p>
+        <p class="term-sheet-sidecar__intro" id="term-sheet-sidecar-h-special-hours">A printable + fillable sheet pairs with this term:</p>
+        <ul class="term-sheet-sidecar__list">
+        <li>
+          <a class="term-sheet-sidecar__link" href="/sheets/gbp-monthly-audit/">
+            <span class="term-sheet-sidecar__title">GBP Monthly Health Check</span>
+            <span class="term-sheet-sidecar__walkaway">A monthly punch list: what is current, what drifted, what to fix this week.</span>
+          </a>
+        </li>
+        </ul>
+      </aside>
+      <!-- term-sheet-sidecar:end -->
       <!-- glossary-backlinks:start --><!-- glossary-backlinks:end -->
       <p class="term-aka">the override for any day that doesn't follow your usual schedule</p>
       <div class="term-meta">

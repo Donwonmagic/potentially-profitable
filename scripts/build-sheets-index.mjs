@@ -39,6 +39,13 @@ const SENTINEL_CLOSE = '<!-- /sheets:auto -->';
 const errors = [];
 const packIds = new Set(SHEETS.packs.map((p) => p.id));
 
+// Reverse-index: pack id → set of slugs that pack lists. Used to
+// detect orphan sheets (sheet.pack="X" but X.sheets does not list
+// the slug). Found by audit on 2026-05-03 — recipe-cost-card had
+// pack="operations-margin" but was missing from that pack's sheets[];
+// it rendered nowhere. The asymmetric check below catches both
+// directions of that drift.
+const packToSheets = new Map(SHEETS.packs.map((p) => [p.id, new Set(p.sheets)]));
 for (const p of SHEETS.packs) {
   for (const slug of p.sheets) {
     if (!SHEETS.sheets[slug]) errors.push(`pack "${p.id}" references missing sheet "${slug}"`);
@@ -47,6 +54,10 @@ for (const p of SHEETS.packs) {
 }
 for (const [slug, s] of Object.entries(SHEETS.sheets)) {
   if (!packIds.has(s.pack)) errors.push(`sheet "${slug}".pack ("${s.pack}") is not a valid pack id`);
+  // Catch the orphan case: sheet declares membership in a pack but
+  // the pack does not list the sheet. Without this the sheet renders
+  // nowhere (the hub iterates pack.sheets, not Object.keys(sheets)).
+  else if (!packToSheets.get(s.pack).has(slug)) errors.push(`sheet "${slug}".pack="${s.pack}" but pack "${s.pack}".sheets[] does not include this slug — orphan`);
   for (const k of ['title_en', 'title_es', 'summary_en', 'summary_es', 'walkaway_en', 'walkaway_es', 'url_en', 'url_es', 'pack', 'cadence_en', 'cadence_es', 'format', 'status']) {
     if (!s[k]) errors.push(`sheet "${slug}" missing required field "${k}"`);
   }

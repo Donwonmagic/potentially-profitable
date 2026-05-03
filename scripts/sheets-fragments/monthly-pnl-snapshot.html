@@ -1,0 +1,233 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Period</legend>
+        <label>
+          <span><span>Month</span></span>
+          <input type="text" name="period" placeholder="e.g., April 2026" />
+        </label>
+        <label>
+          <span><span>Operating days in this month</span></span>
+          <input type="number" name="days" min="1" max="31" step="1" value="30" />
+          <span class="field-help">Used to compute breakeven sales per operating day.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sales (net of sales tax)</legend>
+        <label>
+          <span><span>Lunch / brunch sales</span></span>
+          <input type="number" name="sales_lunch" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Dinner sales</span></span>
+          <input type="number" name="sales_dinner" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Bar &amp; beverage</span></span>
+          <input type="number" name="sales_bar" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>To-go &amp; delivery (net of platform fees)</span></span>
+          <input type="number" name="sales_togo" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Catering &amp; other</span></span>
+          <input type="number" name="sales_other" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cost of goods sold</legend>
+        <label>
+          <span><span>Food cost</span></span>
+          <input type="number" name="cogs_food" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Beverage cost</span></span>
+          <input type="number" name="cogs_bev" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Labor (fully loaded)</legend>
+        <label>
+          <span><span>Wages — hourly &amp; tipped</span></span>
+          <input type="number" name="labor_hourly" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Wages — salaried</span></span>
+          <input type="number" name="labor_salary" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Employer payroll taxes &amp; benefits</span></span>
+          <input type="number" name="labor_taxes" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Typically 12–18% of wages. Required to make prime cost honest.</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Variable costs (other)</legend>
+        <label>
+          <span><span>Credit-card processing fees</span></span>
+          <input type="number" name="var_cc_fees" min="0" step="0.01" placeholder="0.00" />
+          <span class="field-help">Roughly 2.6% of card-paid sales.</span>
+        </label>
+        <label>
+          <span><span>Supplies, smallwares, paper</span></span>
+          <input type="number" name="var_supplies" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Fixed costs</legend>
+        <label>
+          <span><span>Occupancy (rent + CAM + property tax)</span></span>
+          <input type="number" name="fixed_occupancy" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Utilities</span></span>
+          <input type="number" name="fixed_utilities" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Insurance &amp; licenses</span></span>
+          <input type="number" name="fixed_insurance" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Marketing &amp; subscriptions</span></span>
+          <input type="number" name="fixed_marketing" min="0" step="0.01" placeholder="0.00" />
+        </label>
+        <label>
+          <span><span>Other fixed (loan, depreciation, accounting)</span></span>
+          <input type="number" name="fixed_other" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Total sales</span>
+          <span class="sheet-output-value" data-output="total_sales">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Prime cost (COGS + labor)</span>
+          <span class="sheet-output-value" data-output="prime_dollars">$0.00</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label" style="font-weight:700;">Prime cost % of sales</span>
+          <span class="sheet-output-value" data-output="prime_pct" data-band="idle">0.0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Contribution margin %</span>
+          <span class="sheet-output-value" data-output="contrib_pct" data-band="idle">0.0%</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Operating profit (before tax)</span>
+          <span class="sheet-output-value" data-output="profit" data-band="idle">$0.00</span>
+        </div>
+        <div class="sheet-output-row" style="border-top:1px solid var(--line,#E5DFD2);padding-top:10px;margin-top:4px;">
+          <span class="sheet-output-label" style="font-weight:700;">Breakeven sales / day</span>
+          <span class="sheet-output-value" data-output="breakeven_per_day">$0.00</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          Type the period numbers above. Independent full-service typically targets prime cost in the 55–65% band; profit lives in the gap below 65%.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
+        function fmt$(v) { var sign = v < 0 ? '-' : ''; var abs = Math.abs(v); return sign + '$' + (Math.round(abs * 100) / 100).toFixed(2); }
+        function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
+
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var sales = n(f.sales_lunch.value) + n(f.sales_dinner.value) + n(f.sales_bar.value) + n(f.sales_togo.value) + n(f.sales_other.value);
+          var cogs  = n(f.cogs_food.value) + n(f.cogs_bev.value);
+          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes.value);
+          var prime = cogs + labor;
+          var variable = n(f.var_cc_fees.value) + n(f.var_supplies.value);
+          var fixed = n(f.fixed_occupancy.value) + n(f.fixed_utilities.value) + n(f.fixed_insurance.value) + n(f.fixed_marketing.value) + n(f.fixed_other.value);
+          var primePct = sales > 0 ? (prime / sales) * 100 : 0;
+          var contribPct = sales > 0 ? ((sales - prime - variable) / sales) * 100 : 0;
+          var profit = sales - prime - variable - fixed;
+          // Breakeven: sales such that contribution covers fixed.
+          // Contribution rate = (sales - prime - variable) / sales = contribPct/100.
+          var contribRate = contribPct / 100;
+          var breakevenMonth = contribRate > 0 ? fixed / contribRate : 0;
+          var days = Math.max(1, n(f.days.value));
+          var breakevenDay = breakevenMonth / days;
+
+          document.querySelector('[data-output="total_sales"]').textContent = fmt$(sales);
+          document.querySelector('[data-output="prime_dollars"]').textContent = fmt$(prime);
+          var primeEl = document.querySelector('[data-output="prime_pct"]');
+          primeEl.textContent = fmtPct(primePct);
+          primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          var contribEl = document.querySelector('[data-output="contrib_pct"]');
+          contribEl.textContent = fmtPct(contribPct);
+          contribEl.dataset.band = contribPct > 30 ? 'good' : (contribPct > 20 ? 'warn' : 'bad');
+          var profitEl = document.querySelector('[data-output="profit"]');
+          profitEl.textContent = fmt$(profit);
+          profitEl.dataset.band = profit > 0 ? 'good' : (profit === 0 ? 'idle' : 'bad');
+          document.querySelector('[data-output="breakeven_per_day"]').textContent = fmt$(breakevenDay);
+
+          var callout = document.querySelector('[data-output="callout"]');
+          if (!callout) return;
+          if (sales <= 0) {
+            callout.textContent = 'Type the period numbers above. Independent full-service typically targets prime cost in the 55–65% band; profit lives in the gap below 65%.';
+          } else if (profit < 0) {
+            callout.textContent = 'This month booked a loss of ' + fmt$(Math.abs(profit)) + '. The fix is almost always in prime cost (' + fmtPct(primePct) + ' here) before fixed costs — labor or food, name the bigger driver and act this month.';
+          } else if (primePct >= 65) {
+            callout.textContent = 'Prime cost above the 65% ceiling. This month was profitable on the back of low fixed costs; the model breaks the moment rent or utilities tick up.';
+          } else if (primePct >= 60) {
+            callout.textContent = 'Prime cost in the warning band. Tight discipline next month — small drift here compounds quickly.';
+          } else {
+            callout.textContent = 'Healthy month. Prime cost ' + fmtPct(primePct) + ', operating profit ' + fmt$(profit) + '. Breakeven sales runs ' + fmt$(breakevenDay) + ' per day.';
+          }
+        }
+
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          return [
+            ['Field', 'Value'],
+            ['Period', f.period.value || ''],
+            ['Operating days', f.days.value || ''],
+            [],
+            ['Lunch / brunch',     f.sales_lunch.value || '0'],
+            ['Dinner',             f.sales_dinner.value || '0'],
+            ['Bar & beverage',     f.sales_bar.value || '0'],
+            ['To-go & delivery',   f.sales_togo.value || '0'],
+            ['Catering & other',   f.sales_other.value || '0'],
+            ['Total sales',        document.querySelector('[data-output="total_sales"]').textContent],
+            [],
+            ['COGS — food',        f.cogs_food.value || '0'],
+            ['COGS — beverage',    f.cogs_bev.value || '0'],
+            [],
+            ['Labor — hourly',     f.labor_hourly.value || '0'],
+            ['Labor — salaried',   f.labor_salary.value || '0'],
+            ['Labor — taxes & benefits', f.labor_taxes.value || '0'],
+            [],
+            ['CC processing',      f.var_cc_fees.value || '0'],
+            ['Supplies / paper',   f.var_supplies.value || '0'],
+            [],
+            ['Occupancy',          f.fixed_occupancy.value || '0'],
+            ['Utilities',          f.fixed_utilities.value || '0'],
+            ['Insurance & licenses', f.fixed_insurance.value || '0'],
+            ['Marketing & subs',   f.fixed_marketing.value || '0'],
+            ['Other fixed',        f.fixed_other.value || '0'],
+            [],
+            ['Prime cost ($)',         document.querySelector('[data-output="prime_dollars"]').textContent],
+            ['Prime cost (%)',         document.querySelector('[data-output="prime_pct"]').textContent],
+            ['Contribution margin (%)',document.querySelector('[data-output="contrib_pct"]').textContent],
+            ['Operating profit',       document.querySelector('[data-output="profit"]').textContent],
+            ['Breakeven / day',        document.querySelector('[data-output="breakeven_per_day"]').textContent],
+            ['Callout',                document.querySelector('[data-output="callout"]').textContent],
+          ];
+        }
+
+        if (window.SheetPage) {
+          window.SheetPage.register({ slug: 'monthly-pnl-snapshot', collect: collect, recalc: recalc });
+        }
+      })();
+    </script>

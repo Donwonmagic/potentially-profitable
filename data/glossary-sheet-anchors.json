@@ -1,0 +1,22 @@
+{
+  "_doc": "Per-term mappings to relevant Operator Sheets. scripts/inject-glossary-sheet-sidecar.mjs reads this and stamps a 'Use this sheet' callout into the matching glossary term page (EN + ES) right after the </h1>. Each entry is { term-slug: [sheet-slug, ...] } in priority order — first sheet listed becomes the primary CTA. Built from data/sheets.json's pairsWith.glossary, reverse-indexed (term → sheets that pair with it). When a sheet's pairsWith.glossary list changes, regenerate this file or hand-edit. The injector silently skips sheets whose status !== 'live' so a queued sheet does not surface a 404.",
+
+  "anchors": {
+    "food-cost":           ["weekly-prime-cost-worksheet", "recipe-cost-card"],
+    "edible-portion":      ["recipe-cost-card"],
+    "yield-percent":       ["recipe-cost-card", "waste-log"],
+    "prime-cost":          ["weekly-prime-cost-worksheet", "monthly-pnl-snapshot"],
+    "labor-cost":          ["weekly-prime-cost-worksheet", "monthly-pnl-snapshot"],
+    "commission":          ["third-party-channel-pnl"],
+    "contribution-margin": ["monthly-pnl-snapshot", "third-party-channel-pnl"],
+    "break-even":          ["monthly-pnl-snapshot", "third-party-channel-pnl"],
+    "fixed-costs":         ["monthly-pnl-snapshot"],
+    "variable-costs":      ["monthly-pnl-snapshot"],
+    "average-check":       ["daily-sales-recap"],
+    "gbp":                 ["gbp-monthly-audit"],
+    "nap-consistency":     ["gbp-monthly-audit"],
+    "hours-of-operation":  ["gbp-monthly-audit"],
+    "holiday-hours":       ["gbp-monthly-audit"],
+    "special-hours":       ["gbp-monthly-audit"]
+  }
+}

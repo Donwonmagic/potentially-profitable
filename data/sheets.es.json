@@ -49,6 +49,330 @@
         "Ignorar las categorías secundarias. Una primaria mal y una secundaria faltante es una brecha de ranking real.",
         "Dejar el Q&A sin respuesta. Google trata el Q&A sin respuesta como señal de baja interacción."
       ]
+    },
+    "daily-sales-recap": {
+      "when_to_use": [
+        "Justo en el cierre, antes de que el gerente salga del local.",
+        "Comparando esta noche con un martes típico — ¿la baja fue por clima, horario u otra cosa?",
+        "Detectando una tasa de anulaciones que sube por encima del 1% — ahí se esconde el robo."
+      ],
+      "mistakes": [
+        "Registrar ventas brutas en vez de netas (con IVA). Usa netas siempre.",
+        "Saltarse el campo de sobrante/faltante en noches ocupadas — ese campo existe para las noches ocupadas.",
+        "No anotar el clima. Una baja del 30% en un sábado despejado es un problema distinto que la misma baja en una nevada."
+      ]
+    },
+    "line-check-sheet": {
+      "when_to_use": [
+        "Veinte minutos antes de abrir — comida y cena por separado.",
+        "Cuando el gerente del turno anterior dejó nota de un hueco en el registro de temperaturas.",
+        "Justo después de una entrega de proveedor para atrapar un problema de temperatura antes del servicio."
+      ],
+      "mistakes": [
+        "Firmar sin revisar las temperaturas. El recorrido es el punto; la firma es la prueba.",
+        "No fechar la impresión. Los inspectores quieren la fecha, no solo el día de la semana.",
+        "Guardar la lista de 86 en el bolsillo del gerente en vez de en expo. La línea no puede leer tu bolsillo."
+      ]
+    },
+    "waste-log": {
+      "when_to_use": [
+        "Cada vez que un cocinero tira algo, descarta prep dañado o entrega comida de personal.",
+        "Martes en la mañana, cuando la revisión semanal nombra los tres principales ofensores.",
+        "Cuando alguien dice \"se tira mucho\" — pídele la cifra."
+      ],
+      "mistakes": [
+        "Mezclar comida de personal con merma. La comida de personal es un beneficio laboral; la merma es una fuga de margen.",
+        "Saltarse el código de razón. Sin código, el registro solo dice \"desperdiciamos cosas\".",
+        "No costear la línea. Un registro de desperdicio sin pesos es un diario de sentimientos."
+      ]
+    },
+    "invoice-receiving-checklist": {
+      "when_to_use": [
+        "Parado en la puerta trasera mientras el chofer sigue ahí.",
+        "Cuando aparece una sustitución que no aprobaste por escrito.",
+        "Justo después de un aviso de aumento de precio de un proveedor — verifica que el nuevo precio aterrice en la línea."
+      ],
+      "mistakes": [
+        "Firmar la nota antes de contar las cajas. Una vez firmada, la conversación de crédito es cuesta arriba.",
+        "No marcar las sustituciones por escrito. \"No tenían\" no es un crédito; \"sustitución sin aprobación\" sí.",
+        "Saltarse la temperatura de la proteína en mañanas frías de invierno. La cámara del camión puede fallar en cualquier clima."
+      ]
+    },
+    "monthly-pnl-snapshot": {
+      "when_to_use": [
+        "Primera semana de cada mes, contra el mes anterior cerrado por tu contador.",
+        "Antes de sentarte con un socio, prestamista o casero a hablar del negocio.",
+        "Después de un cambio de menú, alza de precios o reset de mano de obra — mira qué se movió de verdad."
+      ],
+      "mistakes": [
+        "Sumar el draw del dueño dentro de mano de obra. El pago al dueño es distribución; mano de obra es la línea que paga al staff.",
+        "Olvidar las comisiones de tarjeta como costo variable. 2.6% en cada peso de mesa no es error de redondeo.",
+        "Contar marketing como fijo cuando la mitad es subsidio de promo de plataforma. El subsidio se acaba; el costo se queda."
+      ]
+    },
+    "inventory-count-sheet": {
+      "when_to_use": [
+        "Último día del periodo, después del cierre, dos personas caminando juntas.",
+        "Cuando el costo primo lee mal y sospechas un conteo perdido.",
+        "Antes de cambiar de proveedor — empieza al nuevo proveedor en un número de apertura conocido."
+      ],
+      "mistakes": [
+        "Contar cajas selladas como peso abierto. Una caja de latas #10 no es la misma línea que jalas abiertos.",
+        "Contar en orden aleatorio. La siguiente persona que recuente tiene que hacerlo igual.",
+        "Saltarse la cámara del bar porque \"la bebida es chica\". La bebida es donde se esconde el robo de mayor margen."
+      ]
+    },
+    "cash-handling-log": {
+      "when_to_use": [
+        "Cada entrega de efectivo. Cada cambio de caja. Cada preparación de depósito.",
+        "Cuando una sola caja lee más de $10 sobrante o faltante — la tendencia importa.",
+        "Antes de hablar con un empleado sobre una discrepancia — lleva el registro, no la memoria."
+      ],
+      "mistakes": [
+        "Entregas con una sola firma. Dos pares de ojos es el punto entero de la cadena de custodia.",
+        "Sin recibos de pagos adjuntos. El efectivo que salió de la caja necesita una razón en papel.",
+        "Depositar sin registrar el número de boleta. El banco puede perder una boleta; tú no puedes perder el número."
+      ]
+    },
+    "nap-consistency-tracker": {
+      "when_to_use": [
+        "Trimestral — una vez al trimestre alcanza para atrapar lo que se desfasa.",
+        "Después de un cambio de número, mudanza de suite o rebranding.",
+        "Cuando Google Search Console marca un problema de listado duplicado."
+      ],
+      "mistakes": [
+        "Tratar \"Suite 200\" y \"Ste 200\" como iguales. Google no lo hace.",
+        "Teléfono con o sin código de país — los dos pueden coexistir; solo uno pertenece a tu NAP.",
+        "Olvidar el bloque de schema en el sitio. El pie visible es una fuente; el JSON-LD es otra."
+      ]
+    },
+    "holiday-hours-planner": {
+      "when_to_use": [
+        "Primera semana de cada trimestre — planea tres meses de feriados de una.",
+        "Justo después de una semana de feriado — revisa qué falló y captura las lecciones.",
+        "Antes de cualquier cierre planeado — vacaciones de personal, cambio de equipo, evento privado."
+      ],
+      "mistakes": [
+        "Olvidar la contestadora. Google y el sitio coinciden; la grabación sigue diciendo \"Abierto todos los días\".",
+        "Programar horarios especiales de Google con menos de dos semanas de anticipación — la indexación lenta hace que el comensal vea info vieja.",
+        "Usar \"cerrado\" de GBP en vez de \"cierra temprano\" para un cierre adelantado — \"cerrado\" todo el día suprime la ficha."
+      ]
+    },
+    "local-keyword-map": {
+      "when_to_use": [
+        "Trimestral, con Search Console abierto en la siguiente pestaña.",
+        "Antes de agregar una página nueva — ¿caníbaliza una que ya rankea?",
+        "Después de reescribir contenido — verifica que el mapa de keywords coincida con la nueva página."
+      ],
+      "mistakes": [
+        "Apuntar a la misma palabra clave en tres páginas. Google escoge una; las otras dos parten la señal y suprimen las tres.",
+        "Usar keywords solo de ciudad cuando los términos por barrio convierten mejor — \"silver spring brunch\" gana sobre \"silver spring restaurante\" por intención.",
+        "Mapear por instinto en vez de por datos de búsqueda. Search Console dice qué escribió la gente realmente; confía en él."
+      ]
+    },
+    "photo-refresh-tracker": {
+      "when_to_use": [
+        "Mensual — quince minutos con los cuatro canales abiertos en pestañas.",
+        "Después de un cambio de menú — cada plato que sale tiene una foto vieja en algún lado.",
+        "Cuando un canal pasa un mes sin una subida fresca del dueño."
+      ],
+      "mistakes": [
+        "Reutilizar el mismo hero shot en los cuatro canales. Cada canal tiene su aspect ratio nativo; una sola foto no puede con todos.",
+        "Subir fotos verticales a slots de sitio que son horizontales. Crop forzado; el plato queda cortado a la mitad.",
+        "Contar fotos auto-subidas por usuarios en GBP como \"contenido nuevo\". No lo son — solo cuenta lo que subió el dueño."
+      ]
+    },
+    "review-response-log": {
+      "when_to_use": [
+        "Semanal — quince minutos, con los inboxes de GBP, Yelp y TripAdvisor abiertos.",
+        "Después de cada reseña de 1 o 2 estrellas — esas necesitan respuesta en 48 horas, siempre.",
+        "Cuando un tema de queja se repite — el registro saca el patrón que las reseñas sueltas esconden."
+      ],
+      "mistakes": [
+        "Responder solo a las de 5 estrellas. Google lee la tasa de respuesta a negativas como señal de calidad.",
+        "Respuestas genéricas (\"gracias por tu retroalimentación\") a quejas detalladas. El reseñador escribió 200 palabras; respétalo.",
+        "Registrar la fecha de respuesta pero no la ETIQUETA de tema. Sin temas, no puedes correr la revisión de patrones."
+      ]
+    },
+    "complaint-root-cause-tracker": {
+      "when_to_use": [
+        "Revisión semanal de las quejas de la semana anterior — en local, online y DM.",
+        "Cuando un tema de queja se repite tres veces en un mes — eso ya no es ruido.",
+        "Después de un incidente de servicio que produjo una intervención del gerente — la causa va aquí, no solo la cortesía."
+      ],
+      "mistakes": [
+        "Registrar el síntoma (\"comida fría\") en vez de la causa (\"hueco en expo el sábado en la noche\"). Síntomas son señales; causas son arreglos.",
+        "No asignar dueño. Una queja sin dueño es una queja que se repite.",
+        "Cerrar el registro sin verificar que el arreglo aguantó la siguiente semana. \"Arreglado\" es una hipótesis hasta que el siguiente ciclo lo prueba."
+      ]
+    },
+    "health-inspection-prep": {
+      "when_to_use": [
+        "Trimestral — entre inspecciones de rutina, con la lista de la última violación a mano.",
+        "Día antes de cualquier inspección anunciada — recorrido final para atrapar lo que se desfasó.",
+        "Después de una violación — la verificación de acción correctiva pertenece a esta hoja."
+      ],
+      "mistakes": [
+        "Tratar la inspección como prep de un día en vez de práctica permanente. La hoja existe para hacerla permanente.",
+        "Dejar pasar más de 24 horas sin entrada en los registros de temperatura. El hueco es la violación, no la temperatura.",
+        "Guardar la etiqueta del sistema de fechado (FIFO, day-dot) donde el inspector no puede verla."
+      ]
+    },
+    "staff-onboarding-checklist": {
+      "when_to_use": [
+        "Día uno de cada nuevo ingreso — de mesero, cocinero, host, lavaplatos, todos.",
+        "Cuando promueves desde adentro — incorpóralos al nuevo rol, no asumas que ya lo tienen.",
+        "Junto con el paquete de orientación — la lista es la prueba de que se completó."
+      ],
+      "mistakes": [
+        "Confundir esta con incorporación de RH. Esta es solo operativa — sin I-9, sin W-4, sin reportes estatales.",
+        "Saltarse la presentación con el gerente del turno. El nuevo ingreso necesita saber a quién preguntarle antes de abrir servicio.",
+        "Tratar los turnos de seguimiento como informales. Prográmalos, regístralos, da feedback después de cada uno."
+      ]
+    },
+    "incident-report": {
+      "when_to_use": [
+        "El día que pasa — nunca la semana después. La memoria no es confiable en procesos legales.",
+        "Aun para incidentes que se resuelven en el momento — el rastro de papel es la protección.",
+        "Cualquier cosa con lesión, resbalón, reacción alérgica o altercado cliente-personal."
+      ],
+      "mistakes": [
+        "Llenarlo de memoria días después. Hora, palabras exactas, testigos — todo se degrada rápido.",
+        "Saltarse las firmas de testigos. Un testigo que confirma hoy es difícil de llamar de vuelta el próximo año.",
+        "No fotografiar la escena. El teléfono en tu bolsillo es parte del reporte."
+      ]
+    },
+    "allergen-matrix": {
+      "when_to_use": [
+        "Trimestral — cada cambio de menú, cada cambio de proveedor, cada nueva receta de prep.",
+        "Antes de entrenar a un mesero nuevo — la matriz es la referencia que cita al cliente.",
+        "Después de cualquier reacción alérgica — verifica que la matriz coincide con lo que la cocina hace de verdad."
+      ],
+      "mistakes": [
+        "Actualizar el menú pero no la matriz. La diferencia es donde pasan los incidentes alérgicos.",
+        "Confundir \"contiene\" con \"puede contener\" (contacto cruzado). La cuadrícula necesita las dos columnas.",
+        "Usar una búsqueda de Google para llenar un ingrediente escondido. Verifica con la ficha del proveedor, siempre."
+      ]
+    },
+    "reservation-no-show-log": {
+      "when_to_use": [
+        "Diario — registra cada reserva confirmada conforme cancela, no llega o se sienta.",
+        "Fin de semana, cuando le pones precio a las sillas vacías. El número aterriza distinto que la sensación.",
+        "Antes de decidir si pides depósito o tarjeta de crédito por fuente de reserva."
+      ],
+      "mistakes": [
+        "Tratar cancelaciones tardías y no-shows como la misma fila. La cancelación tardía tuvo chance de re-llenar; el no-show no.",
+        "No costear la silla vacía. \"Dos no-shows hoy\" suena chico; \"$140 de ingreso perdido\" no.",
+        "Registrar solo reservas directas. La fuente es la palanca — si Resy tiene 3× los no-shows de OpenTable, la política va por fuente, no global."
+      ]
+    },
+    "website-conversion-checklist": {
+      "when_to_use": [
+        "Trimestral — una vez al trimestre en el sitio en vivo, con un iPhone real, no un emulador de escritorio.",
+        "Después de cualquier rediseño o migración de plataforma. El antes-y-después emparieja con la hoja de speed-test.",
+        "Cuando bajan las reservas y la auditoría de GBP sale limpia — la fuga está en el sitio mismo."
+      ],
+      "mistakes": [
+        "Número de teléfono renderizado como imagen en vez de enlace tel:. Click-to-call es el CTA de mejor conversión en un sitio de restaurante.",
+        "PDF de menú que se pellizca en móvil. Si el cliente tiene que hacer zoom, el menú es la fricción.",
+        "Esconder horarios debajo del fold. Los comensales chequean horarios el viernes a las 4pm; \"¿abierto hoy?\" es la pregunta que tu home contesta en 2 segundos o falla."
+      ]
+    },
+    "daypart-traffic-map": {
+      "when_to_use": [
+        "Mensual — saca reportes de POS para cubiertos, ventas y horas de mano de obra por hora del día.",
+        "Antes de una reescritura de horarios. El mapa nombra los cortes que no duelen al servicio.",
+        "Cuando consideras un nuevo daypart (lanzar comida, brunch dominical, late-night) — el mapa de calor muestra si la demanda existe."
+      ],
+      "mistakes": [
+        "Mezclar dine-in y para llevar en una celda. El costo laboral de cada daypart varía por canal; combinarlos esconde la verdad.",
+        "Cortar mano de obra en la hora más lenta sin chequear la tendencia. Un miércoles lento a las 4pm es ruido; ocho miércoles lentos es señal.",
+        "Olvidar la mano de obra de apertura (cocineros de prep, setup de BOH) — no aparecen en cubiertos pero son reales."
+      ]
+    },
+    "email-list-growth-log": {
+      "when_to_use": [
+        "Mensual — primera semana, sacando estadísticas de suscriptores de tu remitente (Mailchimp, Klaviyo, ConvertKit, etc.).",
+        "Antes de lanzar un nuevo punto de captura — table tent, QR, checkbox de pedido online — para establecer base.",
+        "Cuando suben las bajas — la atribución por fuente nombra qué canal está desalineado con lo que envías."
+      ],
+      "mistakes": [
+        "Contar altas sin engagement. Una lista de 5,000 con 6% de open rate vale menos que 800 al 40%.",
+        "Usar una sola forma de captura sin etiqueta de fuente — sin fuente, la pregunta de ROI no se puede contestar.",
+        "Mandar la misma cadencia a cada fuente. Las altas de reserva quieren contenido distinto que un opt-in de checkout."
+      ]
+    },
+    "menu-redesign-brief": {
+      "when_to_use": [
+        "Cada 6 a 18 meses — cuando el menú se desfasó lo suficiente que la impresión ya no coincide con la cocina.",
+        "Antes de mandárselo al diseñador. El brief es lo que hace su trabajo rápido y el tuyo predecible.",
+        "Después de un alza de precios o item retirado — formaliza el cambio para que el diseñador no rediseñe sobre datos viejos."
+      ],
+      "mistakes": [
+        "Reordenar items sin re-ingenierar las categorías. La cuadrícula (popularidad × margen) es la ingeniería; el layout viene después.",
+        "Saltarse las etiquetas dietéticas y alérgenos. Esos van en el brief o el menú sale sin ellos.",
+        "Mandar el brief sin tu top-10 de ventas. El diseñador balancea el layout solo si sabe qué vendes de verdad."
+      ]
+    },
+    "brand-asset-inventory": {
+      "when_to_use": [
+        "Revisión trimestral — encuentra el activo que desapareció y la licencia a punto de vencer.",
+        "Al incorporar diseñador o marketing nuevo — primero el inventario, luego el trabajo.",
+        "Antes de cualquier rebranding — no puedes rediseñar lo que no encuentras."
+      ],
+      "mistakes": [
+        "Logos guardados solo en la laptop de un ex-empleado. Que la nube sea la fuente de verdad, no la herencia.",
+        "Sin registros de licencia. Un contrato de stock-photo que venció es un juicio esperando.",
+        "Mezclar archivos editables con entregables. El .ai fuente y el PNG exportado son artefactos distintos; rastrea ambos."
+      ]
+    },
+    "signage-spec-sheet": {
+      "when_to_use": [
+        "Antes de pedir letreros nuevos, toldos o gráficos impresos — la imprenta necesita cada especificación.",
+        "Al pedir reorders — la hoja es la prueba de que la nueva tirada coincide con la vieja.",
+        "Antes de un permiso — la spec es el documento que entregas a la ciudad."
+      ],
+      "mistakes": [
+        "Códigos Pantone para impresión CMYK — la imprenta sustituye y no lo ves hasta el día de instalar.",
+        "Falta el detalle de montaje. \"Flush mount\" vs \"stand-off\" cambia el costo, no solo el look.",
+        "Sin bleed / safety zone marcada. La imprenta corta; lo que estaba al borde queda fuera del borde."
+      ]
+    },
+    "photo-shot-list": {
+      "when_to_use": [
+        "Dos semanas antes del shoot — la cocina tiene tiempo de conseguir guarniciones y ensayar plating.",
+        "En el set — papel, en una tabla, tachando cada toma conforme aterriza.",
+        "Después del shoot — la lista es contra lo que comparas para confirmar que todo se capturó."
+      ],
+      "mistakes": [
+        "Sin plato de respaldo para la toma que falla. Las fallas de plating pasan; el fotógrafo no tiene tiempo de esperar.",
+        "Listar el plato sin nombrar el canal destino. Una toma de menú 4:3 y una portada de Reel 9:16 son shoots distintos.",
+        "Olvidar los props que pidió el fotógrafo. Manteles, cristalería, una guarnición de respaldo — todo en la lista."
+      ]
+    },
+    "social-content-calendar": {
+      "when_to_use": [
+        "Última semana de cada mes — planea los próximos 30 días antes de que lo urgente se coma lo importante.",
+        "Alrededor de cualquier feriado o evento — planea contenido junto con el planificador de horarios para que los mensajes coincidan.",
+        "Después de un cambio de menú — el contenido lidera el cambio, no lo persigue."
+      ],
+      "mistakes": [
+        "Solo subir comida. Mezcla personas, lugar y proceso — los clientes siguen restaurantes por el cuarto tanto como por el plato.",
+        "Sin CTA en algún post. Cada post contesta \"¿y ahora qué?\" — reservar, pedir, seguir o compartir.",
+        "Programar sin fechas. \"Próximamente\" no es calendario; fecha y canal sí."
+      ]
+    },
+    "vendor-contact-sheet": {
+      "when_to_use": [
+        "Cuando se rompe el lavaplatos a las 7pm un sábado y necesitas el número fuera de horario del proveedor.",
+        "Revisión trimestral — llama a cada contacto, verifica que sigue ahí, actualiza la hoja.",
+        "Al incorporar a cualquier gerente nuevo — primero la lista, luego la llave."
+      ],
+      "mistakes": [
+        "Nombres de ejecutivo de ventas desactualizados. La gente se mueve; el número de cuenta se queda. Verifica trimestral.",
+        "Sin línea fuera de horario. La línea de 9-a-5 sirve hasta que no son las 9-a-5.",
+        "Guardarlo solo digital. El teléfono está muerto, el WiFi se cayó — la hoja impresa junto al teléfono de oficina es la red de seguridad."
+      ]
     }
   }
 }
