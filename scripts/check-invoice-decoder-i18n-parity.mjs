@@ -81,10 +81,12 @@ const EXPECTED_TAG_COUNT_DRIFT = {
   // ES has fewer of these because the bulk-undo banner, first-run
   // strip, and sort-toggle aren't mirrored yet (see EXPECTED_ID_DRIFT
   // above). The diffs here track what we expect; a different number
-  // means the drift has CHANGED and warrants a look.
+  // means the drift has CHANGED and warrants a look. When you add an
+  // element to BOTH mirrors, bump both numbers in lockstep here so
+  // the script's baseline stays accurate.
   h2:      { en: 3, es: 2 },
   h3:      { en: 4, es: 5 },
-  button:  { en: 23, es: 17 },
+  button:  { en: 24, es: 18 },  // Wave E.5: +1 each side for #idPrivacyTestBtn
   details: { en: 7, es: 3 },
   summary: { en: 7, es: 3 },
   aside:   { en: 4, es: 3 },
