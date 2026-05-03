@@ -1901,6 +1901,129 @@
     return __pdfLibPromise2;
   }
 
+  // ----------------------------------------------------------------
+  // Wave studio-quality — Accessibility post-processor (PDF/UA Phase 1).
+  //
+  // jsPDF emits a baseline PDF; this pass walks the catalog with pdf-lib
+  // and injects the document-level accessibility metadata that turns a
+  // "screen reader can sort of see this" PDF into one that announces
+  // itself properly:
+  //
+  //   /Lang              — locale code (en / es) so the screen reader
+  //                        picks the right voice and pronunciation
+  //   /ViewerPreferences /DisplayDocTitle true — Acrobat shows the
+  //                        document title in the window chrome instead
+  //                        of the filename ("Menu of Da Marco" vs
+  //                        "menu-da-marco-2026-05-03.pdf")
+  //   XMP metadata stream — Dublin Core (title/creator/language) plus
+  //                        PDF metadata. Indexed by content-management
+  //                        systems, GoogleBot, and Acrobat's File Info.
+  //
+  // Phase 1 stops short of claiming PDF/UA conformance — that requires
+  // a real /StructTreeRoot with H1/H2/P/Table elements, which jsPDF's
+  // content-stream output does not carry. Phase 2 (future) walks the
+  // pre-paginated `blocks[]` array and emits the structure tree via
+  // pdf-lib. Even Phase 1 closes the most operator-visible gap: AT
+  // users hear "Menu of Da Marco, English" on open instead of nothing.
+  //
+  // Returns a new Uint8Array; original input untouched.
+  // ----------------------------------------------------------------
+  function injectAccessibilityMetadata(arrayBuffer, opts) {
+    return loadPdfLib().then(function (PDFLib) {
+      return PDFLib.PDFDocument.load(arrayBuffer).then(function (pdfDoc) {
+        var locale = (opts && opts.locale) ? String(opts.locale).toLowerCase().slice(0, 2) : 'en';
+        var title  = (opts && opts.title)  ? String(opts.title)  : 'Menu';
+        var creatorTool = 'Muntin Digital Menu Design Suite';
+        var producer = 'jsPDF + pdf-lib (Muntin)';
+        var subject  = 'Restaurant menu — accessible PDF';
+        var keywords = ['menu', 'restaurant', 'muntin'];
+        if (opts && opts.theme && opts.theme.id) keywords.push(opts.theme.id);
+        var nowIso = new Date().toISOString();
+
+        // ---------- Catalog-level fields ---------------------------
+        var catalog = pdfDoc.catalog;
+        catalog.set(PDFLib.PDFName.of('Lang'), PDFLib.PDFString.of(locale));
+        // ViewerPreferences /DisplayDocTitle true → Acrobat shows
+        // /Title in the window chrome instead of the filename.
+        var vp = pdfDoc.context.obj({
+          DisplayDocTitle: true
+        });
+        catalog.set(PDFLib.PDFName.of('ViewerPreferences'), vp);
+
+        // ---------- Document Info dict (legacy metadata) -----------
+        // pdf-lib also writes these via setProperties / setTitle but
+        // we set explicitly so locale + producer survive the round-trip.
+        try { pdfDoc.setTitle(title); }    catch (_) {}
+        try { pdfDoc.setSubject(subject); }   catch (_) {}
+        try { pdfDoc.setCreator(creatorTool); } catch (_) {}
+        try { pdfDoc.setProducer(producer); }   catch (_) {}
+        try { pdfDoc.setKeywords(keywords); }   catch (_) {}
+        try { pdfDoc.setLanguage(locale); }     catch (_) {}
+
+        // ---------- XMP metadata stream (modern metadata) ---------
+        // pdf-lib's setTitle / setLanguage update Document Info AND XMP
+        // automatically. We supplement with a richer XMP packet that
+        // carries Dublin Core + PDF/A-friendly markers.
+        var safeTitle = _xmlEscape(title);
+        var safeSubject = _xmlEscape(subject);
+        var safeCreator = _xmlEscape(creatorTool);
+        var langTag = locale === 'es' ? 'es' : 'en';
+        var xmp =
+          '<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n' +
+          '<x:xmpmeta xmlns:x="adobe:ns:meta/">\n' +
+          ' <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n' +
+          '  <rdf:Description rdf:about=""\n' +
+          '    xmlns:dc="http://purl.org/dc/elements/1.1/"\n' +
+          '    xmlns:xmp="http://ns.adobe.com/xap/1.0/"\n' +
+          '    xmlns:pdf="http://ns.adobe.com/pdf/1.3/">\n' +
+          '   <dc:title><rdf:Alt><rdf:li xml:lang="' + langTag + '">' + safeTitle + '</rdf:li></rdf:Alt></dc:title>\n' +
+          '   <dc:creator><rdf:Seq><rdf:li>' + safeCreator + '</rdf:li></rdf:Seq></dc:creator>\n' +
+          '   <dc:description><rdf:Alt><rdf:li xml:lang="' + langTag + '">' + safeSubject + '</rdf:li></rdf:Alt></dc:description>\n' +
+          '   <dc:language><rdf:Bag><rdf:li>' + langTag + '</rdf:li></rdf:Bag></dc:language>\n' +
+          '   <xmp:CreatorTool>' + safeCreator + '</xmp:CreatorTool>\n' +
+          '   <xmp:CreateDate>' + nowIso + '</xmp:CreateDate>\n' +
+          '   <xmp:ModifyDate>' + nowIso + '</xmp:ModifyDate>\n' +
+          '   <pdf:Producer>' + _xmlEscape(producer) + '</pdf:Producer>\n' +
+          '   <pdf:Keywords>' + _xmlEscape(keywords.join(', ')) + '</pdf:Keywords>\n' +
+          '  </rdf:Description>\n' +
+          ' </rdf:RDF>\n' +
+          '</x:xmpmeta>\n' +
+          '<?xpacket end="w"?>';
+        try {
+          // pdf-lib exposes metadata via the catalog's /Metadata stream.
+          var stream = pdfDoc.context.flateStream(xmp, {
+            Type: PDFLib.PDFName.of('Metadata'),
+            Subtype: PDFLib.PDFName.of('XML')
+          });
+          // pdf-lib helper varies across versions; fall back to context.register.
+          var metaRef;
+          if (typeof pdfDoc.context.register === 'function') {
+            metaRef = pdfDoc.context.register(stream);
+          } else {
+            // Older pdf-lib: use context.assign
+            metaRef = pdfDoc.context.assign(pdfDoc.context.nextRef(), stream);
+          }
+          if (metaRef) {
+            catalog.set(PDFLib.PDFName.of('Metadata'), metaRef);
+          }
+        } catch (_) {
+          // XMP injection is best-effort; the Document Info dict above
+          // already carries the operator-visible fields.
+        }
+
+        return pdfDoc.save();
+      });
+    });
+  }
+  function _xmlEscape(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+
   // Post-process a jsPDF-generated array buffer with pdf-lib so each
   // page carries a /TrimBox + /BleedBox set per the PDF/X-3 spec.
   // jsPDF doesn't expose these page-dict entries directly. Returns
@@ -1968,7 +2091,10 @@
                              opts.theme && root.MD_DECOR.decorationFor(opts.theme));
     var loaders = [loadJsPdf(), loadBrandFonts()];
     if (hasSvgLogo || hasCuisineDecor) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
-    if (opts.printVendor) loaders.push(loadPdfLib().catch(function () { return null; }));
+    // Wave studio-quality (PDF/UA Phase 1) — always pre-load pdf-lib
+    // so the accessibility post-process can run on every export. The
+    // ~150KB lib is lazy and cached after first load.
+    loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
       var jsPDF = results[0];
       var brandFonts = results[1]; // null on failure
@@ -2176,34 +2302,52 @@
         }
       }
       setPdfXMetadata(doc, paper, opts);
-      // W17 — when print-vendor mode is on AND pdf-lib loaded, post-
-      // process the saved buffer to inject TrimBox/BleedBox/
-      // OutputIntents so the PDF is genuinely PDF/X-3-flavored.
-      if (opts.printVendor && root.PDFLib && bleed > 0) {
+      // Wave studio-quality (PDF/UA Phase 1 + W17) — chain pdf-lib
+      // post-processors. Always inject accessibility metadata; also
+      // inject TrimBox/BleedBox/OutputIntents when print-vendor is on.
+      // pdf-lib loaded as part of the export's parallel loaders above;
+      // when load failed we silently fall back to standard doc.save.
+      if (root.PDFLib) {
         try {
           var ab = doc.output('arraybuffer');
-          return injectTrimBleedBoxes(ab, paper, bleed).then(function (uint8) {
+          var fname = (opts.filename || 'menu') + '.pdf';
+          var trimBleed = (opts.printVendor && bleed > 0);
+          var chain = injectAccessibilityMetadata(ab, opts);
+          if (trimBleed) {
+            chain = chain.then(function (a11yBuf) {
+              return injectTrimBleedBoxes(a11yBuf, paper, bleed);
+            });
+          }
+          return chain.then(function (uint8) {
             var blob = new Blob([uint8], { type: 'application/pdf' });
-            var fname = (opts.filename || 'menu') + '.pdf';
             var a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = fname;
             document.body.appendChild(a); a.click();
             setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
-            return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo, pdfX3: true };
+            return {
+              pageCount: pageCount,
+              droppedSvgLogo: droppedSvgLogo,
+              pdfX3: trimBleed,
+              accessible: true
+            };
           }).catch(function () {
             // Fallback to standard doc.save on post-process failure.
-            var fname2 = (opts.filename || 'menu') + '.pdf';
-            doc.save(fname2);
-            return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo, pdfX3: false };
+            doc.save(fname);
+            return {
+              pageCount: pageCount,
+              droppedSvgLogo: droppedSvgLogo,
+              pdfX3: false,
+              accessible: false
+            };
           });
         } catch (_) {
           // Any unexpected failure -> fall through to standard save.
         }
       }
-      var fname = (opts.filename || 'menu') + '.pdf';
-      doc.save(fname);
-      return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo };
+      var fname2 = (opts.filename || 'menu') + '.pdf';
+      doc.save(fname2);
+      return { pageCount: pageCount, droppedSvgLogo: droppedSvgLogo, accessible: false };
     });
   }
 

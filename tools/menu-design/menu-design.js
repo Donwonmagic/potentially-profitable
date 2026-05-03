@@ -217,7 +217,7 @@
   }
   function ensureMdPdf() {
     if (typeof MD_PDF !== 'undefined' && MD_PDF.exportPdf) return Promise.resolve(true);
-    return loadScript('/tools/menu-design/menu-render-pdf.js?v=20260503-cs');
+    return loadScript('/tools/menu-design/menu-render-pdf.js?v=20260503-pdfua');
   }
   function ensureMdHtml() {
     if (typeof MD_HTML !== 'undefined' && (MD_HTML.exportZip || MD_HTML.exportHtml)) return Promise.resolve(true);
@@ -4087,6 +4087,14 @@
         if (result.pdfX3) {
           msg += ' ' + tt('PDF/X-3 metadata applied (TrimBox / BleedBox / OutputIntents).',
                           'Metadatos PDF/X-3 aplicados (TrimBox / BleedBox / OutputIntents).');
+        }
+        // Wave studio-quality (PDF/UA Phase 1) — surface accessibility
+        // metadata when the post-process step succeeded. AT users open
+        // the PDF and hear "Menu of <name>, English" / "Menú de <name>,
+        // Español" instead of nothing.
+        if (result.accessible) {
+          msg += ' ' + tt('Accessibility metadata embedded (Lang, Title, XMP).',
+                          'Metadatos de accesibilidad embebidos (idioma, título, XMP).');
         }
         setDownloadMsg(msg, 'success');
         // Wave A4: persist a slim history row to MuntinContext.menuHistory
