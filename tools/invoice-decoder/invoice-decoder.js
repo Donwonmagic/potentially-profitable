@@ -646,6 +646,19 @@
         try { MID_LEARNINGS.recordOverride(row.name, value); } catch (_) {}
       }
     }
+    // Wave E.1 — on-device-only accuracy counter. The first edit on a
+    // row is what we count; subsequent edits to the same row don't
+    // re-bump (an operator who fixes the qty AND the price on the
+    // same row corrected one row, not two). A row.ownerConfirmed
+    // check from BEFORE this edit tells us whether this is the first
+    // touch. Counters never leave the device — telemetry sentinel
+    // blocks any payload mentioning the schema keys.
+    if (!row.ownerConfirmed && typeof MID_ACCURACY !== 'undefined' && MID_ACCURACY.recordCorrection) {
+      try {
+        var vendorId = (lastReadParsed && lastReadParsed.vendor) || null;
+        MID_ACCURACY.recordCorrection(field, vendorId);
+      } catch (_) {}
+    }
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
     row.ownerConfirmed = true;
@@ -1913,6 +1926,15 @@
     try {
       if (typeof MID_ONBOARDING !== 'undefined' && MID_ONBOARDING.markFirstRun) {
         MID_ONBOARDING.markFirstRun();
+      }
+    } catch (_) {}
+    // Wave E.1 — feed the on-device accuracy counter. We count the
+    // invoice and its row total here (denominator); per-row
+    // corrections accumulate later through commitCellEdit
+    // (numerator). Stays fully on-device.
+    try {
+      if (typeof MID_ACCURACY !== 'undefined' && MID_ACCURACY.recordInvoice && parsed && Array.isArray(parsed.rows)) {
+        MID_ACCURACY.recordInvoice(parsed.rows.length, parsed.vendor || null);
       }
     } catch (_) {}
     if (!parsedEl || !parsedList) return;
