@@ -90,6 +90,7 @@ const CHECKS = [
   ['Article fieldnotes (idem)','inject-article-fieldnotes.mjs','--check'],
   ['Article listen (idem)','inject-article-listen.mjs','--check'],
   ['Checklist script (idem)','inject-checklist-script.mjs','--check'],
+  ['Glossary script (idem)','inject-glossary-script.mjs','--check'],
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],

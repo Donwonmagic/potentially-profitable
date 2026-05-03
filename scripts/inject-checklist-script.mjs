@@ -49,15 +49,23 @@ const PAGES = [
   'es/learn/checklists/restaurant-website-checklist/index.html',
 ];
 
+// Canonical shape of the checklist sentinel + tag.
+const canonicalSiteJs        = `<script src="/assets/site.js?v=${CACHE_BUST}" defer></script>`;
+const canonicalChecklistTag  = `<script src="/assets/js/checklist.js?v=${CACHE_BUST}" defer></script>`;
+const canonicalChecklistSentinel = `<!-- checklist-script:start -->\n  ${canonicalChecklistTag}\n  <!-- checklist-script:end -->`;
+
 function transform(src) {
   if (!src.includes('class="check-item"')) return src;
   if (!SITE_JS_RE.test(src)) return src;
 
+  // Idempotency: don't fight other module-split injectors for the
+  // position right after site.js. If the canonical sentinel already
+  // exists anywhere after the canonical site.js tag, leave it alone.
+  if (src.includes(canonicalSiteJs) && src.includes(canonicalChecklistSentinel)) return src;
+
   let next = src.replace(SENTINEL_RE, '');
-  const canonicalSiteJs = `<script src="/assets/site.js?v=${CACHE_BUST}" defer></script>`;
   next = next.replace(SITE_JS_RE, canonicalSiteJs);
-  const withChecklist = `${canonicalSiteJs}\n  <!-- checklist-script:start -->\n  <script src="/assets/js/checklist.js?v=${CACHE_BUST}" defer></script>\n  <!-- checklist-script:end -->`;
-  next = next.replace(canonicalSiteJs, withChecklist);
+  next = next.replace(canonicalSiteJs, `${canonicalSiteJs}\n  ${canonicalChecklistSentinel}`);
 
   return next;
 }
