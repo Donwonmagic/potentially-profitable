@@ -632,7 +632,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["menu-engineering", "menu-design", "brand-suite"], "glossary": ["menu-engineering", "menu-mix"], "blog": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Six to eighteen months in — when the menu has drifted enough that the printout no longer matches the kitchen.",
+        "Before sending to the designer. The brief is what makes their work fast and yours predictable.",
+        "After a price raise or item cut — formalize the change so the designer doesn't redesign around stale data."
+      ],
+      "mistakes_en": [
+        "Reordering items without re-engineering the categories. The grid (popularity × margin) is the engineering; the layout is downstream.",
+        "Skipping the dietary markers and allergen flags. Those go in the brief or the menu ships missing them.",
+        "Sending the brief without your top-10 sellers. The designer can balance the layout only if they know what you actually sell."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "brand-asset-inventory": {
       "title_en": "Brand Asset Inventory",
@@ -650,7 +661,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["brand-suite"], "glossary": ["brand-identity", "logo-lockup"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly review — find the asset that disappeared and the license about to lapse.",
+        "Onboarding a new designer or marketing hire — they get the inventory before they get the work.",
+        "Before any rebrand — you cannot redesign what you cannot find."
+      ],
+      "mistakes_en": [
+        "Logos stored only on a former employee's laptop. Make the cloud the source of truth, not the heirloom.",
+        "No license records. A stock-photo contract that lapsed is a lawsuit waiting to happen.",
+        "Mixing working files with deliverables. The .ai source and the exported PNG are different artifacts; track both."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "signage-spec-sheet": {
       "title_en": "Signage & Print Spec Sheet",
@@ -668,7 +690,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["brand-suite"], "glossary": ["color-palette"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Before commissioning new signage, awnings, or printed graphics — your printer needs every spec.",
+        "When ordering reorders — the spec sheet is the proof the new batch matches the old.",
+        "Before a permit application — the spec is the document you submit to the city."
+      ],
+      "mistakes_en": [
+        "Pantone codes for a CMYK print job — the print shop will substitute and you won't see it until install.",
+        "Missing the mounting detail. \"Flush mount\" vs \"stand-off\" changes the install bill, not just the look.",
+        "No bleed / safety zone marked. The print shop trims; what was on the edge is now off the edge."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "photo-shot-list": {
       "title_en": "Photo Shoot Shot List",
@@ -686,7 +719,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["photo-brief"], "glossary": ["hero-shot"], "blog": ["restaurant-photo-spec-sheet"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Two weeks before a shoot — gives the kitchen time to source garnishes and rehearse plating.",
+        "On set — paper, on a clipboard, ticked off as each shot lands.",
+        "After the shoot — the list is what you compare against to confirm everything got captured."
+      ],
+      "mistakes_en": [
+        "No backup dish for the shot that bombs. Plating fails happen; the photographer does not have time to wait.",
+        "Listing the dish without naming the channel target. A 4:3 menu shot and a 9:16 Reel cover are different shoots.",
+        "Forgetting the props the photographer asked for. Linens, glassware, a backup garnish — all on the list."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "social-content-calendar": {
       "title_en": "Social Content Calendar",
@@ -704,7 +748,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Last week of every month — plan the next 30 days before the urgent eats the important.",
+        "Around any holiday or event — plan content alongside the holiday-hours-planner so the messages match.",
+        "After a menu change — content needs to lead the swap, not lag it."
+      ],
+      "mistakes_en": [
+        "Posting only food. Mix in people, place, and process — guests follow restaurants for the room as much as the plate.",
+        "No CTA on a single post. Every post answers \"what now?\" — book, order, follow, or share.",
+        "Scheduling without dates. \"Coming soon\" is not a calendar; a date and channel are."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "vendor-contact-sheet": {
       "title_en": "Vendor Contact Sheet",
@@ -722,7 +777,18 @@
       "stay_paper": true,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["invoice-decoder"], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "When the dishwasher breaks at 7pm on a Saturday and you need the equipment vendor's after-hours number.",
+        "Quarterly review — call each contact, verify they still work there, update the sheet.",
+        "Onboarding any new manager — they get the list before they get a key."
+      ],
+      "mistakes_en": [
+        "Out-of-date sales-rep names. People move; the account number stays. Verify quarterly.",
+        "Missing the after-hours line. The 9-to-5 line is great until it isn't 9-to-5.",
+        "Storing it digital-only. The phone is dead, the WiFi is out — the printed sheet by the office phone is the safety net."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
 
     "review-response-log": {
