@@ -43,7 +43,10 @@ function* walk(dir, skip) {
 function targetTool(href) {
   // /tools/seo-grader/?from=...&intent=watch  →  /tools/seo-grader/
   // /es/tools/audits/restaurant/?...           →  /es/tools/audits/restaurant/
-  const m = href.match(/^(\/(?:es\/)?tools\/[^?#]+\/)/);
+  // /sheets/recipe-cost-card/?from=...&intent=save → /sheets/recipe-cost-card/
+  // (Operator Sheets accept ?intent=save and route through assets/js/sheets.js
+  //  which posts to /api/workbench/save with kind='sheet' and slug in payload.)
+  const m = href.match(/^(\/(?:es\/)?(?:tools|sheets)\/[^?#]+\/)/);
   return m ? m[1] : null;
 }
 
@@ -111,10 +114,14 @@ function main() {
         failures.push(`${rel}: intent= URL points to "${target}" which has no index.html`);
         continue;
       }
-      // Verify the target tool loads workbench-save.js (so readIntent runs).
+      // Verify the target loads the correct save wiring. Tools load
+      // workbench-save.js (the original Phase-2 helper); Operator
+      // Sheets load sheets.js which has its own POST + reveal logic.
       const targetText = fs.readFileSync(targetHtml, 'utf8');
-      if (!targetText.includes('workbench-save.js')) {
-        failures.push(`${rel}: intent= URL points to "${target}" but that tool does not load workbench-save.js`);
+      const isSheet = /^\/(?:es\/)?sheets\//.test(target);
+      const wiringScript = isSheet ? 'sheets.js' : 'workbench-save.js';
+      if (!targetText.includes(wiringScript)) {
+        failures.push(`${rel}: intent= URL points to "${target}" but that page does not load ${wiringScript}`);
       }
     }
   }

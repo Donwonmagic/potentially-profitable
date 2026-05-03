@@ -1,0 +1,117 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Mapping period</legend>
+        <label>
+          <span><span>Quarter</span></span>
+          <input type="text" name="quarter" placeholder="e.g., Q3 2026" />
+        </label>
+        <label>
+          <span><span>Search Console window used</span></span>
+          <input type="text" name="window" placeholder="e.g., last 90 days" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Keyword × page map</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Target keyword</th>
+              <th>Neighborhood / modifier</th>
+              <th>Target page (URL)</th>
+              <th>H1 on page</th>
+              <th>Schema type</th>
+              <th>Current rank</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text" name="kw_1_target" placeholder="e.g., brunch" /></td><td><input type="text" name="kw_1_mod" placeholder="silver spring" /></td><td><input type="text" name="kw_1_url" /></td><td><input type="text" name="kw_1_h1" /></td><td><input type="text" name="kw_1_schema" placeholder="Restaurant / FAQPage" /></td><td><input type="text" name="kw_1_rank" /></td><td><input type="text" name="kw_1_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_2_target" /></td><td><input type="text" name="kw_2_mod" /></td><td><input type="text" name="kw_2_url" /></td><td><input type="text" name="kw_2_h1" /></td><td><input type="text" name="kw_2_schema" /></td><td><input type="text" name="kw_2_rank" /></td><td><input type="text" name="kw_2_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_3_target" /></td><td><input type="text" name="kw_3_mod" /></td><td><input type="text" name="kw_3_url" /></td><td><input type="text" name="kw_3_h1" /></td><td><input type="text" name="kw_3_schema" /></td><td><input type="text" name="kw_3_rank" /></td><td><input type="text" name="kw_3_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_4_target" /></td><td><input type="text" name="kw_4_mod" /></td><td><input type="text" name="kw_4_url" /></td><td><input type="text" name="kw_4_h1" /></td><td><input type="text" name="kw_4_schema" /></td><td><input type="text" name="kw_4_rank" /></td><td><input type="text" name="kw_4_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_5_target" /></td><td><input type="text" name="kw_5_mod" /></td><td><input type="text" name="kw_5_url" /></td><td><input type="text" name="kw_5_h1" /></td><td><input type="text" name="kw_5_schema" /></td><td><input type="text" name="kw_5_rank" /></td><td><input type="text" name="kw_5_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_6_target" /></td><td><input type="text" name="kw_6_mod" /></td><td><input type="text" name="kw_6_url" /></td><td><input type="text" name="kw_6_h1" /></td><td><input type="text" name="kw_6_schema" /></td><td><input type="text" name="kw_6_rank" /></td><td><input type="text" name="kw_6_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_7_target" /></td><td><input type="text" name="kw_7_mod" /></td><td><input type="text" name="kw_7_url" /></td><td><input type="text" name="kw_7_h1" /></td><td><input type="text" name="kw_7_schema" /></td><td><input type="text" name="kw_7_rank" /></td><td><input type="text" name="kw_7_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_8_target" /></td><td><input type="text" name="kw_8_mod" /></td><td><input type="text" name="kw_8_url" /></td><td><input type="text" name="kw_8_h1" /></td><td><input type="text" name="kw_8_schema" /></td><td><input type="text" name="kw_8_rank" /></td><td><input type="text" name="kw_8_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_9_target" /></td><td><input type="text" name="kw_9_mod" /></td><td><input type="text" name="kw_9_url" /></td><td><input type="text" name="kw_9_h1" /></td><td><input type="text" name="kw_9_schema" /></td><td><input type="text" name="kw_9_rank" /></td><td><input type="text" name="kw_9_notes" /></td></tr>
+            <tr><td><input type="text" name="kw_10_target" /></td><td><input type="text" name="kw_10_mod" /></td><td><input type="text" name="kw_10_url" /></td><td><input type="text" name="kw_10_h1" /></td><td><input type="text" name="kw_10_schema" /></td><td><input type="text" name="kw_10_rank" /></td><td><input type="text" name="kw_10_notes" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">One keyword → one page. Two pages chasing the same keyword cannibalize each other; one wins, both drop.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Keywords mapped</span>
+          <span class="sheet-output-value" data-output="mapped_count">0</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Cannibalization flags</span>
+          <span class="sheet-output-value" data-output="cannib_count" data-band="idle">0</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          One keyword maps to one URL. The map surfaces cannibalization (one URL claiming multiple keywords) and gaps (a keyword with no page).
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var mapped = 0;
+          var urls = {};
+          for (var i = 1; i <= 10; i++) {
+            var t = f['kw_' + i + '_target'].value;
+            var u = f['kw_' + i + '_url'].value;
+            if (t || u) mapped++;
+            if (u && t) urls[u] = (urls[u] || 0) + 1;
+          }
+          var cannib = 0;
+          for (var k in urls) if (urls[k] > 1) cannib += urls[k] - 1;
+          document.querySelector('[data-output="mapped_count"]').textContent = String(mapped);
+          var cEl = document.querySelector('[data-output="cannib_count"]');
+          cEl.textContent = String(cannib);
+          cEl.dataset.band = cannib === 0 ? 'good' : (cannib <= 1 ? 'warn' : 'bad');
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (mapped === 0) {
+            c.textContent = 'One keyword maps to one URL. The map surfaces cannibalization (one URL claiming multiple keywords) and gaps (a keyword with no page).';
+          } else if (cannib === 0) {
+            c.textContent = mapped + ' keyword(s) mapped, no cannibalization. Compare against your Search Console queries — anything ranking that is not on the map is a content opportunity.';
+          } else {
+            c.textContent = cannib + ' cannibalization flag(s). Pick the strongest page for each duplicated URL pair and consolidate the others into it (301 + content merge).';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Quarter', f.quarter.value || ''],
+            ['Window',  f.window.value || ''],
+            [],
+            ['Keyword', 'Modifier', 'URL', 'H1', 'Schema', 'Rank', 'Notes'],
+          ];
+          for (var i = 1; i <= 10; i++) {
+            if (!f['kw_' + i + '_target'].value && !f['kw_' + i + '_url'].value) continue;
+            rows.push([
+              f['kw_' + i + '_target'].value || '',
+              f['kw_' + i + '_mod'].value || '',
+              f['kw_' + i + '_url'].value || '',
+              f['kw_' + i + '_h1'].value || '',
+              f['kw_' + i + '_schema'].value || '',
+              f['kw_' + i + '_rank'].value || '',
+              f['kw_' + i + '_notes'].value || '',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Mapped count',          document.querySelector('[data-output="mapped_count"]').textContent]);
+          rows.push(['Cannibalization flags', document.querySelector('[data-output="cannib_count"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'local-keyword-map', collect: collect, recalc: recalc });
+      })();
+    </script>

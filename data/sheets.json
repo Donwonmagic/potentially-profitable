@@ -397,8 +397,19 @@
       "format": "table",
       "stay_paper": false,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["schema-check", "gbp-grader"], "glossary": ["gbp"], "blog": [] },
-      "status": "queued"
+      "pairsWith": { "tools": ["schema-check", "gbp-grader"], "glossary": ["gbp", "nap-consistency"], "blog": [] },
+      "when_to_use_en": [
+        "Quarterly — once a quarter is enough to catch what drifts.",
+        "After a phone number change, suite move, or rebrand.",
+        "Whenever Google Search Console flags a duplicate-listing issue."
+      ],
+      "mistakes_en": [
+        "Treating \"Suite 200\" and \"Ste 200\" as identical. Google does not.",
+        "Phone with vs. without country code — both can co-exist; only one belongs in your NAP.",
+        "Forgetting the schema block on the website. Visible footer is one source; the JSON-LD is another."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "holiday-hours-planner": {
       "title_en": "Holiday Hours Update Planner",
@@ -416,7 +427,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["holiday-hours", "open-hours"], "glossary": ["holiday-hours", "hours-of-operation"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "First week of each quarter — plan three months of holidays at once.",
+        "Right after a holiday week — review what missed and capture the lessons.",
+        "Before any planned closure — staff vacation, equipment swap, private buyout."
+      ],
+      "mistakes_en": [
+        "Forgetting voicemail. Google and the website agree; the recording still says \"Open daily.\"",
+        "Setting Google special hours less than two weeks ahead — slow indexing means the diner sees stale info.",
+        "Using GBP \"closed\" instead of \"closes early\" for an early shutdown — \"closed\" all day suppresses the listing."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "local-keyword-map": {
       "title_en": "Local Keyword × Page Map",
@@ -434,7 +456,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["schema-check", "seo-grader"], "glossary": [], "blog": ["how-to-read-restaurant-google-search-console"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly, with Search Console open in the next tab.",
+        "Before adding a new page — does it cannibalize one that already ranks?",
+        "After a content rewrite — verify the keyword map matches the new page."
+      ],
+      "mistakes_en": [
+        "Targeting the same keyword on three pages. Google picks one; the other two split the signal and suppress all three.",
+        "Using city-only keywords when neighborhood-modified terms convert better — \"silver spring brunch\" beats \"silver spring restaurant\" for intent.",
+        "Mapping by gut instead of by query data. Search Console says what people actually typed; trust it."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
     "photo-refresh-tracker": {
       "title_en": "Photo Refresh Tracker",
@@ -452,7 +485,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["photo-brief"], "glossary": ["hero-shot"], "blog": ["restaurant-photo-spec-sheet"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Monthly — fifteen minutes with the four channels open in tabs.",
+        "After a menu change — every dropped dish has a stale photo somewhere.",
+        "When a channel goes a month without a fresh upload from the owner."
+      ],
+      "mistakes_en": [
+        "Reusing the same hero shot across all four channels. Each channel has a native aspect ratio; one shot can't satisfy all.",
+        "Uploading vertical photos to website slots that are landscape. Crop forced; the dish gets cut in half.",
+        "Counting auto-imported user photos on GBP as \"new content.\" They are not — owner-uploaded counts."
+      ],
+      "status": "live",
+      "added": "2026-05-03"
     },
 
     "reservation-no-show-log": {

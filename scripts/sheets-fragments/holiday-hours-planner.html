@@ -1,0 +1,118 @@
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Quarter</legend>
+        <label>
+          <span><span>Quarter being planned</span></span>
+          <input type="text" name="quarter" placeholder="e.g., Q3 2026" />
+        </label>
+        <label>
+          <span><span>Planner</span></span>
+          <input type="text" name="planner" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Holiday rows — plan and check four surfaces</legend>
+        <table class="sheet-row-table">
+          <thead>
+            <tr>
+              <th>Holiday / event</th>
+              <th>Date</th>
+              <th>Planned hours</th>
+              <th>GBP</th>
+              <th>Site</th>
+              <th>Voicemail</th>
+              <th>Reservation system</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="text" name="h1_name" placeholder="e.g., Memorial Day" /></td><td><input type="date" name="h1_date" /></td><td><input type="text" name="h1_hours" placeholder="e.g., 11–8 or Closed" /></td><td><input type="checkbox" name="h1_gbp" /></td><td><input type="checkbox" name="h1_site" /></td><td><input type="checkbox" name="h1_vm" /></td><td><input type="checkbox" name="h1_resy" /></td><td><input type="text" name="h1_notes" /></td></tr>
+            <tr><td><input type="text" name="h2_name" /></td><td><input type="date" name="h2_date" /></td><td><input type="text" name="h2_hours" /></td><td><input type="checkbox" name="h2_gbp" /></td><td><input type="checkbox" name="h2_site" /></td><td><input type="checkbox" name="h2_vm" /></td><td><input type="checkbox" name="h2_resy" /></td><td><input type="text" name="h2_notes" /></td></tr>
+            <tr><td><input type="text" name="h3_name" /></td><td><input type="date" name="h3_date" /></td><td><input type="text" name="h3_hours" /></td><td><input type="checkbox" name="h3_gbp" /></td><td><input type="checkbox" name="h3_site" /></td><td><input type="checkbox" name="h3_vm" /></td><td><input type="checkbox" name="h3_resy" /></td><td><input type="text" name="h3_notes" /></td></tr>
+            <tr><td><input type="text" name="h4_name" /></td><td><input type="date" name="h4_date" /></td><td><input type="text" name="h4_hours" /></td><td><input type="checkbox" name="h4_gbp" /></td><td><input type="checkbox" name="h4_site" /></td><td><input type="checkbox" name="h4_vm" /></td><td><input type="checkbox" name="h4_resy" /></td><td><input type="text" name="h4_notes" /></td></tr>
+            <tr><td><input type="text" name="h5_name" /></td><td><input type="date" name="h5_date" /></td><td><input type="text" name="h5_hours" /></td><td><input type="checkbox" name="h5_gbp" /></td><td><input type="checkbox" name="h5_site" /></td><td><input type="checkbox" name="h5_vm" /></td><td><input type="checkbox" name="h5_resy" /></td><td><input type="text" name="h5_notes" /></td></tr>
+            <tr><td><input type="text" name="h6_name" /></td><td><input type="date" name="h6_date" /></td><td><input type="text" name="h6_hours" /></td><td><input type="checkbox" name="h6_gbp" /></td><td><input type="checkbox" name="h6_site" /></td><td><input type="checkbox" name="h6_vm" /></td><td><input type="checkbox" name="h6_resy" /></td><td><input type="text" name="h6_notes" /></td></tr>
+            <tr><td><input type="text" name="h7_name" /></td><td><input type="date" name="h7_date" /></td><td><input type="text" name="h7_hours" /></td><td><input type="checkbox" name="h7_gbp" /></td><td><input type="checkbox" name="h7_site" /></td><td><input type="checkbox" name="h7_vm" /></td><td><input type="checkbox" name="h7_resy" /></td><td><input type="text" name="h7_notes" /></td></tr>
+            <tr><td><input type="text" name="h8_name" /></td><td><input type="date" name="h8_date" /></td><td><input type="text" name="h8_hours" /></td><td><input type="checkbox" name="h8_gbp" /></td><td><input type="checkbox" name="h8_site" /></td><td><input type="checkbox" name="h8_vm" /></td><td><input type="checkbox" name="h8_resy" /></td><td><input type="text" name="h8_notes" /></td></tr>
+          </tbody>
+        </table>
+        <span class="field-help">Set GBP special hours at least two weeks ahead so Google's index catches up. Voicemail is the surface most operators forget.</span>
+      </fieldset>
+
+      <div class="sheet-output">
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Holidays planned this quarter</span>
+          <span class="sheet-output-value" data-output="planned_count">0</span>
+        </div>
+        <div class="sheet-output-row">
+          <span class="sheet-output-label">Surfaces still to update</span>
+          <span class="sheet-output-value" data-output="pending_count" data-band="idle">0</span>
+        </div>
+        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
+          List the holidays. Check the boxes as each surface gets updated. Two-week lead time on GBP keeps the diner from seeing yesterday's hours.
+        </p>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        function recalc() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return;
+          var planned = 0;
+          var pending = 0;
+          for (var i = 1; i <= 8; i++) {
+            if (f['h' + i + '_name'].value || f['h' + i + '_date'].value) {
+              planned++;
+              if (!f['h' + i + '_gbp'].checked)  pending++;
+              if (!f['h' + i + '_site'].checked) pending++;
+              if (!f['h' + i + '_vm'].checked)   pending++;
+              if (!f['h' + i + '_resy'].checked) pending++;
+            }
+          }
+          document.querySelector('[data-output="planned_count"]').textContent = String(planned);
+          var pEl = document.querySelector('[data-output="pending_count"]');
+          pEl.textContent = String(pending);
+          pEl.dataset.band = pending === 0 ? 'good' : (pending <= 4 ? 'warn' : 'bad');
+          var c = document.querySelector('[data-output="callout"]');
+          if (!c) return;
+          if (planned === 0) {
+            c.textContent = 'List the holidays. Check the boxes as each surface gets updated. Two-week lead time on GBP keeps the diner from seeing yesterday’s hours.';
+          } else if (pending === 0) {
+            c.textContent = 'All ' + planned + ' holidays covered across all four surfaces. Pull the sheet out next quarter.';
+          } else {
+            c.textContent = pending + ' surface update(s) still pending across ' + planned + ' holiday(s). The voicemail update is the one operators most often miss.';
+          }
+        }
+        function collect() {
+          var f = document.getElementById('sheet-fields');
+          if (!f) return [['Field', 'Value']];
+          var rows = [
+            ['Field', 'Value'],
+            ['Quarter', f.quarter.value || ''],
+            ['Planner', f.planner.value || ''],
+            [],
+            ['Holiday', 'Date', 'Planned hours', 'GBP', 'Site', 'Voicemail', 'Reservation', 'Notes'],
+          ];
+          for (var i = 1; i <= 8; i++) {
+            if (!f['h' + i + '_name'].value && !f['h' + i + '_date'].value) continue;
+            rows.push([
+              f['h' + i + '_name'].value || '',
+              f['h' + i + '_date'].value || '',
+              f['h' + i + '_hours'].value || '',
+              f['h' + i + '_gbp'].checked ? 'yes' : 'no',
+              f['h' + i + '_site'].checked ? 'yes' : 'no',
+              f['h' + i + '_vm'].checked ? 'yes' : 'no',
+              f['h' + i + '_resy'].checked ? 'yes' : 'no',
+              f['h' + i + '_notes'].value || '',
+            ]);
+          }
+          rows.push([]);
+          rows.push(['Holidays planned',  document.querySelector('[data-output="planned_count"]').textContent]);
+          rows.push(['Surfaces pending',   document.querySelector('[data-output="pending_count"]').textContent]);
+          return rows;
+        }
+        if (window.SheetPage) window.SheetPage.register({ slug: 'holiday-hours-planner', collect: collect, recalc: recalc });
+      })();
+    </script>

@@ -133,6 +133,54 @@
         "Sin recibos de pagos adjuntos. El efectivo que salió de la caja necesita una razón en papel.",
         "Depositar sin registrar el número de boleta. El banco puede perder una boleta; tú no puedes perder el número."
       ]
+    },
+    "nap-consistency-tracker": {
+      "when_to_use": [
+        "Trimestral — una vez al trimestre alcanza para atrapar lo que se desfasa.",
+        "Después de un cambio de número, mudanza de suite o rebranding.",
+        "Cuando Google Search Console marca un problema de listado duplicado."
+      ],
+      "mistakes": [
+        "Tratar \"Suite 200\" y \"Ste 200\" como iguales. Google no lo hace.",
+        "Teléfono con o sin código de país — los dos pueden coexistir; solo uno pertenece a tu NAP.",
+        "Olvidar el bloque de schema en el sitio. El pie visible es una fuente; el JSON-LD es otra."
+      ]
+    },
+    "holiday-hours-planner": {
+      "when_to_use": [
+        "Primera semana de cada trimestre — planea tres meses de feriados de una.",
+        "Justo después de una semana de feriado — revisa qué falló y captura las lecciones.",
+        "Antes de cualquier cierre planeado — vacaciones de personal, cambio de equipo, evento privado."
+      ],
+      "mistakes": [
+        "Olvidar la contestadora. Google y el sitio coinciden; la grabación sigue diciendo \"Abierto todos los días\".",
+        "Programar horarios especiales de Google con menos de dos semanas de anticipación — la indexación lenta hace que el comensal vea info vieja.",
+        "Usar \"cerrado\" de GBP en vez de \"cierra temprano\" para un cierre adelantado — \"cerrado\" todo el día suprime la ficha."
+      ]
+    },
+    "local-keyword-map": {
+      "when_to_use": [
+        "Trimestral, con Search Console abierto en la siguiente pestaña.",
+        "Antes de agregar una página nueva — ¿caníbaliza una que ya rankea?",
+        "Después de reescribir contenido — verifica que el mapa de keywords coincida con la nueva página."
+      ],
+      "mistakes": [
+        "Apuntar a la misma palabra clave en tres páginas. Google escoge una; las otras dos parten la señal y suprimen las tres.",
+        "Usar keywords solo de ciudad cuando los términos por barrio convierten mejor — \"silver spring brunch\" gana sobre \"silver spring restaurante\" por intención.",
+        "Mapear por instinto en vez de por datos de búsqueda. Search Console dice qué escribió la gente realmente; confía en él."
+      ]
+    },
+    "photo-refresh-tracker": {
+      "when_to_use": [
+        "Mensual — quince minutos con los cuatro canales abiertos en pestañas.",
+        "Después de un cambio de menú — cada plato que sale tiene una foto vieja en algún lado.",
+        "Cuando un canal pasa un mes sin una subida fresca del dueño."
+      ],
+      "mistakes": [
+        "Reutilizar el mismo hero shot en los cuatro canales. Cada canal tiene su aspect ratio nativo; una sola foto no puede con todos.",
+        "Subir fotos verticales a slots de sitio que son horizontales. Crop forzado; el plato queda cortado a la mitad.",
+        "Contar fotos auto-subidas por usuarios en GBP como \"contenido nuevo\". No lo son — solo cuenta lo que subió el dueño."
+      ]
     }
   }
 }
