@@ -53,7 +53,7 @@ header.nav{min-height:64px}
 <noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
-<body data-page="sheet" data-sheet-slug="signage-spec-sheet" data-sheet-pack="brand-design">
+<body data-page="sheet" data-sheet-slug="signage-spec-sheet" data-sheet-pack="brand-design" data-pagefind-meta="kind:sheet,pack:brand-design">
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
@@ -176,7 +176,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">Hoja gratis del operador · Se queda en tu navegador</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4.5" x2="12" y2="19.5"/><line x1="4.5" y1="10" x2="19.5" y2="10"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
   <h1>Hoja de especificación de letreros e<br><span class="serif-italic">impresos.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Tipo de letrero, dimensiones, material, códigos de color, montaje, proveedor, fecha de instalación. Le da a la imprenta todo lo que necesita para empezar.</p>
   <p class="sheet-meta" aria-label="Metadatos de la hoja">
@@ -185,6 +185,7 @@ header.nav{min-height:64px}
     <span class="status-chip" data-band="good">Privado — corre en tu navegador</span>
   </p>
   
+  <p class="sheet-progress" id="sheet-progress" hidden></p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -265,8 +266,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="signage-spec-sheet" data-locale="es" hidden>
       <p>Guarda esta hoja en tu Taller para volver a abrirla el próximo mes.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Guardar en el Taller</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -442,7 +446,9 @@ header.nav{min-height:64px}
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>

@@ -1,0 +1,94 @@
+{
+  "_doc": "Centralized benchmarks for Operator Sheets. scripts/build-sheet-benchmarks.mjs reads this and writes assets/js/sheet-benchmarks.gen.js, which exposes window.Bench.evaluate(metric, value) → {band, msg_en, msg_es} and window.Bench.flag(slug, outputs) → [{say_en, say_es}]. Per-fragment recalc functions can collapse their hardcoded thresholds to a single Bench.evaluate() call. Update a band here and 31 sheets follow. lastReviewed is the date the band was sourced or re-verified; source is the upstream citation.",
+
+  "metrics": {
+    "prime_cost_pct": {
+      "label_en": "Prime cost (% of net sales)",
+      "label_es": "Costo primo (% de ventas netas)",
+      "thresholds": [
+        { "lt": 50, "band": "good", "msg_en": "Below the typical band. Double-check that you included employer taxes and salaried managers in labor — under-counting labor is the most common cause of an artificially low prime cost.", "msg_es": "Debajo de la banda típica. Verifica que incluiste impuestos del empleador y salaries de gerentes en mano de obra — sub-contar mano de obra es la causa más común de un costo primo artificialmente bajo." },
+        { "lt": 60, "band": "good", "msg_en": "Healthy. Keep the cadence; this is the number that protects the rest of the P&L.", "msg_es": "Saludable. Mantén la cadencia; este es el número que protege el resto del P&G." },
+        { "lt": 65, "band": "warn", "msg_en": "In the upper-healthy band. Watch food cost trend week-over-week; small drift here compounds fast.", "msg_es": "En la banda superior-saludable. Observa la tendencia de costo de comida semana a semana; pequeñas desviaciones aquí se acumulan rápido." },
+        { "lt": 70, "band": "warn", "msg_en": "Above the healthy ceiling. Identify the bigger driver — food (vendor pricing, waste, portion) or labor (over-scheduling, salaried mix) — and act on it this quarter.", "msg_es": "Sobre el techo saludable. Identifica el motor mayor — comida (precios, merma, porción) o mano de obra (sobre-horarios, mezcla de salariados) — y actúa este trimestre." },
+        { "lt": 999, "band": "bad", "msg_en": "Margin emergency. At this level, every additional dollar of sales loses you money once fixed costs are in. Cut here is non-optional.", "msg_es": "Emergencia de margen. A este nivel, cada dólar adicional de venta te cuesta dinero una vez que entran los costos fijos. Cortar aquí no es opcional." }
+      ],
+      "source": "National Restaurant Association — full-service independents, healthy band 55–65% of sales (ranges shifted ±5pt for fast-casual / fine-dining segments).",
+      "lastReviewed": "2026-04-15"
+    },
+    "voids_pct_of_sales": {
+      "label_en": "Voids (% of net sales)",
+      "label_es": "Anulaciones (% de ventas netas)",
+      "thresholds": [
+        { "lt": 1.0, "band": "good", "msg_en": "Healthy void rate.", "msg_es": "Tasa de anulaciones saludable." },
+        { "lt": 2.0, "band": "warn", "msg_en": "Voids running above 1% of sales — review who is voiding and why.", "msg_es": "Anulaciones por encima del 1% de ventas — revisa quién anula y por qué." },
+        { "lt": 999, "band": "bad",  "msg_en": "Voids above 2% of sales — this is the band where theft hides.", "msg_es": "Anulaciones por encima del 2% de ventas — esta es la banda donde se esconde el robo." }
+      ],
+      "source": "Field-tested operator practice; void rate >1% is the canonical theft-hiding signal in full-service operations.",
+      "lastReviewed": "2026-04-15"
+    },
+    "comps_pct_of_sales": {
+      "label_en": "Comps (% of net sales)",
+      "label_es": "Cortesías (% de ventas netas)",
+      "thresholds": [
+        { "lt": 2.0, "band": "good", "msg_en": "Healthy comp rate.", "msg_es": "Tasa de cortesías saludable." },
+        { "lt": 4.0, "band": "warn", "msg_en": "Comps above 2% of sales — review who is comping and why.", "msg_es": "Cortesías sobre 2% de ventas — revisa quién está dando cortesías y por qué." },
+        { "lt": 999, "band": "bad",  "msg_en": "Comps above 4% of sales — over-comping starts pricing your menu.", "msg_es": "Cortesías sobre 4% de ventas — el exceso de cortesías empieza a fijar tu menú." }
+      ],
+      "lastReviewed": "2026-04-15"
+    },
+    "channel_contribution_pct": {
+      "label_en": "Third-party channel contribution margin (% of gross)",
+      "label_es": "Margen de contribución de canal (% del bruto)",
+      "thresholds": [
+        { "lt": 5,  "band": "bad",  "msg_en": "This channel is losing you money on each order before fixed costs are even applied. Either renegotiate fees, raise menu prices on this channel, or turn it off.", "msg_es": "Este canal te cuesta dinero por pedido antes de aplicar costos fijos. Renegocia tarifas, sube precios en este canal o apágalo." },
+        { "lt": 12, "band": "warn", "msg_en": "Thin contribution. Watch packaging and incremental labor — these are the line items that drift quietly.", "msg_es": "Contribución delgada. Vigila empaque y mano de obra incremental — son las líneas que se desfasan en silencio." },
+        { "lt": 999, "band": "good", "msg_en": "Healthy contribution for a third-party channel.", "msg_es": "Contribución saludable para un canal de terceros." }
+      ],
+      "lastReviewed": "2026-04-15"
+    },
+    "noshow_rate_pct": {
+      "label_en": "No-show rate (% of confirmed reservations)",
+      "label_es": "Tasa de no-shows (% de reservas confirmadas)",
+      "thresholds": [
+        { "lt": 5,  "band": "good", "msg_en": "Healthy no-show rate.", "msg_es": "Tasa de no-shows saludable." },
+        { "lt": 10, "band": "warn", "msg_en": "Above the typical band. Source-tag every booking and identify which platform is driving the misses.", "msg_es": "Sobre la banda típica. Etiqueta la fuente de cada reserva e identifica qué plataforma genera las faltas." },
+        { "lt": 999,"band": "bad",  "msg_en": "Above 10%. Time for deposit / credit-card-hold policy on the highest-no-show source.", "msg_es": "Sobre 10%. Hora de política de depósito / retención de tarjeta en la fuente con más no-shows." }
+      ],
+      "lastReviewed": "2026-04-15"
+    },
+    "review_response_rate_pct": {
+      "label_en": "Review response rate (% of all reviews)",
+      "label_es": "Tasa de respuesta a reseñas (% del total)",
+      "thresholds": [
+        { "lt": 40, "band": "bad",  "msg_en": "Below 40%. Google reads low response rate as low engagement.", "msg_es": "Por debajo de 40%. Google lee la tasa de respuesta baja como baja interacción." },
+        { "lt": 70, "band": "warn", "msg_en": "Mid band. Aim for ≥50% overall and 100% on negatives.", "msg_es": "Banda media. Apunta a ≥50% en general y 100% en negativas." },
+        { "lt": 999,"band": "good", "msg_en": "Healthy response rate.", "msg_es": "Tasa de respuesta saludable." }
+      ],
+      "lastReviewed": "2026-04-15"
+    }
+  },
+
+  "anomalies": [
+    {
+      "slug": "daily-sales-recap",
+      "id": "drawer_short_>5",
+      "when": { "field": "cash_diff", "op": "lt", "rhs": -5 },
+      "say_en": "Drawer short by more than $5 — log it tonight; do not let it carry.",
+      "say_es": "Caja con faltante mayor a $5 — regístralo esta noche; no lo dejes pasar."
+    },
+    {
+      "slug": "weekly-prime-cost-worksheet",
+      "id": "prime_below_50",
+      "when": { "field": "prime_cost_pct", "op": "lt", "rhs": 50 },
+      "say_en": "Prime cost reading below 50% — this is rare. Verify employer payroll taxes and benefits are inside the labor line.",
+      "say_es": "Costo primo bajo 50% — raro. Verifica que impuestos y beneficios del empleador estén dentro de la línea de mano de obra."
+    },
+    {
+      "slug": "review-response-log",
+      "id": "negs_unanswered",
+      "when": { "field": "neg_unanswered", "op": "gt", "rhs": 0 },
+      "say_en": "Negatives unanswered. These need a response within 48 hours, every time.",
+      "say_es": "Negativas sin respuesta. Necesitan respuesta en 48 horas, siempre."
+    }
+  ]
+}

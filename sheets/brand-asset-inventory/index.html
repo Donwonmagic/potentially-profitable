@@ -53,7 +53,7 @@ header.nav{min-height:64px}
 <noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
-<body data-page="sheet" data-sheet-slug="brand-asset-inventory" data-sheet-pack="brand-design">
+<body data-page="sheet" data-sheet-slug="brand-asset-inventory" data-sheet-pack="brand-design" data-pagefind-meta="kind:sheet,pack:brand-design">
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="nav" id="nav">
   <div class="container nav-inner">
@@ -202,7 +202,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">Free operator sheet · Stays in your browser</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4.5" x2="12" y2="19.5"/><line x1="4.5" y1="10" x2="19.5" y2="10"/></svg></span>Free operator sheet · Stays in your browser</span>
   <h1>Brand Asset<br><span class="serif-italic">Inventory.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Asset type, file location, last updated, owner, license. Catches the logo that only exists on a former employee's laptop.</p>
   <p class="sheet-meta" aria-label="Sheet meta">
@@ -211,6 +211,7 @@ header.nav{min-height:64px}
     <span class="status-chip" data-band="good">Private — runs in your browser</span>
   </p>
   
+  <p class="sheet-progress" id="sheet-progress" hidden></p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -283,8 +284,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="brand-asset-inventory" data-locale="en" hidden>
       <p>Save this sheet to your Workshop so you can pull it up next month.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Save to the Workshop</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Keyboard: <kbd>⌘P</kbd> print · <kbd>⌘S</kbd> download CSV · <kbd>⌘↵</kbd> save to Workshop</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -492,7 +496,9 @@ header.nav{min-height:64px}
      production traffic where forms actually submit. -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>

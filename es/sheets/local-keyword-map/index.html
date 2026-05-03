@@ -53,7 +53,7 @@ header.nav{min-height:64px}
 <noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
-<body data-page="sheet" data-sheet-slug="local-keyword-map" data-sheet-pack="local-seo">
+<body data-page="sheet" data-sheet-slug="local-keyword-map" data-sheet-pack="local-seo" data-pagefind-meta="kind:sheet,pack:local-seo">
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
@@ -176,7 +176,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">Hoja gratis del operador · Se queda en tu navegador</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22 C7 16 4 12 4 9 a8 8 0 0 1 16 0 c0 3 -3 7 -8 13 z"/><circle cx="12" cy="9" r="2.5"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
   <h1>Mapa de palabras clave locales por<br><span class="serif-italic">página.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Qué palabra clave apunta cada página, modificador de barrio, posición actual, H1, tipo de schema. Saca a la luz canibalización y huecos de cobertura.</p>
   <p class="sheet-meta" aria-label="Metadatos de la hoja">
@@ -185,6 +185,7 @@ header.nav{min-height:64px}
     <span class="status-chip" data-band="good">Privado — corre en tu navegador</span>
   </p>
   
+  <p class="sheet-progress" id="sheet-progress" hidden></p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -337,8 +338,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="local-keyword-map" data-locale="es" hidden>
       <p>Guarda esta hoja en tu Taller para volver a abrirla el próximo mes.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Guardar en el Taller</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -515,7 +519,9 @@ header.nav{min-height:64px}
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>

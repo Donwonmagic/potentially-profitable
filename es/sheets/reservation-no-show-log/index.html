@@ -53,7 +53,7 @@ header.nav{min-height:64px}
 <noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
-<body data-page="sheet" data-sheet-slug="reservation-no-show-log" data-sheet-pack="conversions">
+<body data-page="sheet" data-sheet-slug="reservation-no-show-log" data-sheet-pack="conversions" data-pagefind-meta="kind:sheet,pack:conversions">
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
@@ -176,7 +176,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow">Hoja gratis del operador · Se queda en tu navegador</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="6" y1="11" x2="18" y2="11"/><line x1="9" y1="16" x2="15" y2="16"/><polyline points="10 19 12 21 14 19"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
   <h1>Registro de reservas y<br><span class="serif-italic">no-shows.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Fuente de reserva, tamaño del grupo, depósito sí o no, llegó o no-show o cancelación tardía, ingreso perdido. Nombra lo que cada silla vacía costó.</p>
   <p class="sheet-meta" aria-label="Metadatos de la hoja">
@@ -185,6 +185,7 @@ header.nav{min-height:64px}
     <span class="status-chip" data-band="good">Privado — corre en tu navegador</span>
   </p>
   
+  <p class="sheet-progress" id="sheet-progress" hidden></p>
 </div></div></section>
 
 <section class="block"><div class="container container-wide">
@@ -287,8 +288,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="reservation-no-show-log" data-locale="es" hidden>
       <p>Guarda esta hoja en tu Taller para volver a abrirla el próximo mes.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Guardar en el Taller</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -464,8 +468,10 @@ header.nav{min-height:64px}
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>
  + Math.round(v).toLocaleString('en-US'); }
@@ -553,8 +559,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="reservation-no-show-log" data-locale="es" hidden>
       <p>Guarda esta hoja en tu Taller para volver a abrirla el próximo mes.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Guardar en el Taller</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -618,8 +627,10 @@ header.nav{min-height:64px}
   </div>
 </footer>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>
 , 'Notes'],
@@ -670,8 +681,11 @@ header.nav{min-height:64px}
     <div class="mm-save" data-kind="sheet" data-sheet-slug="reservation-no-show-log" data-locale="es" hidden>
       <p>Guarda esta hoja en tu Taller para volver a abrirla el próximo mes.</p>
       <button type="button" class="btn btn-primary js-sheet-save">Guardar en el Taller</button>
+      <div class="sheet-history" data-output="history" hidden></div>
     </div>
     <!-- mm-save:end -->
+
+    <p class="sheet-keyboard-hint" id="sheet-keyboard-hint">Teclado: <kbd>⌘P</kbd> imprimir · <kbd>⌘S</kbd> bajar CSV · <kbd>⌘↵</kbd> guardar en el Taller</p>
   </article>
 
   <article class="mm-card sheet-when-to-use" aria-labelledby="when-to-use-h">
@@ -735,7 +749,9 @@ header.nav{min-height:64px}
   </div>
 </footer>
 
-<script src="/assets/js/sheet-csv.js?v=20260503" defer></script>
-<script src="/assets/js/sheets.js?v=20260503" defer></script>
+<script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
+<script src="/assets/js/sheets.js?v=20260504" defer></script>
 </body>
 </html>
