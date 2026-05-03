@@ -715,6 +715,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </select>
             </label>
           </div>
+          <!-- Wave studio-quality — paridad con EN para herramientas
+               de tema: exportar/importar JSON + lanzador de vibe quiz. -->
+          <div class="md-customize-tools">
+            <button type="button" id="mdThemeExport" class="md-customize-tool">Exportar JSON del tema</button>
+            <label class="md-customize-tool md-customize-tool-import">Importar JSON del tema
+              <input type="file" id="mdThemeImport" accept="application/json,.json" />
+            </label>
+            <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Quiz de vibe →</button>
+          </div>
         </div>
       </details>
     </div>
@@ -814,6 +823,22 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
           Texto plano
         </button>
+        <!-- Wave studio-quality — paridad ES con EN para SSML/BRF/Tablet.
+             SSML: lectura para TTS (Polly/Azure). BRF: archivo para
+             impresoras Braille. Tablet: HTML autosuficiente para iPad
+             tipo kiosko. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportSsml" aria-label="Descargar SSML para texto-a-voz">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          SSML (audio)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Descargar Braille Ready Format (Grade 1)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+          Braille (BRF)
+        </button>
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Descargar HTML para tablet kiosko">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          HTML para tablet
+        </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
     </div>
@@ -829,6 +854,56 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
   </div>
 </section>
+
+<!-- Wave studio-quality — paridad con EN: diálogo del Quiz de vibe.
+     Cuatro preguntas rápidas → 3 temas recomendados. -->
+<div class="md-vibequiz" id="mdVibeQuiz" hidden role="dialog" aria-modal="true" aria-label="Quiz de vibe">
+  <div class="md-vibequiz-backdrop" id="mdVibeQuizBackdrop"></div>
+  <div class="md-vibequiz-card">
+    <h2>¿Cuál es la vibe?</h2>
+    <p>Cuatro preguntas rápidas. Te sugerimos 3 temas que encajan.</p>
+    <form id="mdVibeQuizForm" class="md-vibequiz-form">
+      <fieldset>
+        <legend>Estilo de servicio</legend>
+        <label><input type="radio" name="vq-service" value="counter" /> Mostrador / rápido</label>
+        <label><input type="radio" name="vq-service" value="table" checked /> Servicio en mesa</label>
+        <label><input type="radio" name="vq-service" value="fine" /> Alta cocina</label>
+      </fieldset>
+      <fieldset>
+        <legend>Sensación</legend>
+        <label><input type="radio" name="vq-feel" value="light" checked /> Ligera / luminosa</label>
+        <label><input type="radio" name="vq-feel" value="rich" /> Profunda / oscura</label>
+      </fieldset>
+      <fieldset>
+        <legend>Época</legend>
+        <label><input type="radio" name="vq-era" value="modern" checked /> Moderna</label>
+        <label><input type="radio" name="vq-era" value="traditional" /> Tradicional</label>
+      </fieldset>
+      <fieldset>
+        <legend>Cocina</legend>
+        <label><input type="radio" name="vq-cuisine" value="european" /> Europea</label>
+        <label><input type="radio" name="vq-cuisine" value="american" checked /> Americana</label>
+        <label><input type="radio" name="vq-cuisine" value="latin" /> Latina / mexicana</label>
+        <label><input type="radio" name="vq-cuisine" value="asian" /> Asiática</label>
+      </fieldset>
+      <div class="md-vibequiz-actions">
+        <button type="submit" class="md-vibequiz-submit">Ver recomendaciones</button>
+        <button type="button" class="md-vibequiz-cancel" id="mdVibeQuizCancel">Cancelar</button>
+      </div>
+    </form>
+    <div class="md-vibequiz-results" id="mdVibeQuizResults" hidden></div>
+  </div>
+</div>
+
+<!-- Wave studio-quality — paridad con EN: paleta de comandos (⌘K). -->
+<div class="md-palette" id="mdPalette" hidden role="dialog" aria-modal="true" aria-label="Paleta de comandos">
+  <div class="md-palette-backdrop" id="mdPaletteBackdrop"></div>
+  <div class="md-palette-card">
+    <input type="text" class="md-palette-input" id="mdPaletteInput" placeholder="Ejecuta un comando…" aria-label="Buscar comando" autocomplete="off" />
+    <ul class="md-palette-list" id="mdPaletteList" role="listbox"></ul>
+    <p class="md-palette-foot">↑ ↓ para navegar · Enter para ejecutar · Esc para cerrar</p>
+  </div>
+</div>
 
 <!-- tool-knit -->
 <aside class="tool-knit" aria-labelledby="tool-knit-heading-menu-design">
