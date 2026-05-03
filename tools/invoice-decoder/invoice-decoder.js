@@ -41,6 +41,30 @@
   // invoice" is tapped. Wave B5 will let the user remove pages
   // before reading; for B2 we read all pages in order.
   var pendingPages = [];
+  // Wave 6.11 — surface the personal-accuracy stat on the verified
+  // line once the operator has saved ≥ 3 invoices. Replaces the
+  // static "Last verified May 2" copy with their own accuracy.
+  function _maybeSurfacePersonalAccuracy() {
+    try {
+      var el = document.getElementById('idToolVerified');
+      if (!el) return;
+      if (typeof MID_TELEMETRY === 'undefined' || !MID_TELEMETRY.getPersonalAccuracy) return;
+      var saved = MID_TELEMETRY.get('invoicesSaved') || 0;
+      if (saved < 3) return;
+      var acc = MID_TELEMETRY.getPersonalAccuracy(90);
+      if (acc == null) return;
+      var pct = Math.round(acc * 100);
+      el.textContent = (LOCALE === 'es')
+        ? 'En tus últimas ' + Math.min(5, saved) + ' facturas, ' + pct + '% de las filas se leyeron bien la primera vez.'
+        : 'On your last ' + Math.min(5, saved) + ' invoices, ' + pct + '% of rows read correctly first time.';
+    } catch (_) {}
+  }
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _maybeSurfacePersonalAccuracy);
+    } else _maybeSurfacePersonalAccuracy();
+  }
+
   // Wave 1.2/1.4 — classification result + profile threaded by the
   // unified dispatcher. 'phone' keeps today's full-cleanup behavior.
   var _activePreprocessProfile = 'phone';
@@ -2688,6 +2712,21 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
+          // Wave 5.1 — bump the invoicesSaved + per-row counters so
+          // the auto-confirm gate and personal-accuracy stat see this.
+          try {
+            if (typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+              MID_TELEMETRY.bump('invoicesSaved', 1);
+              MID_TELEMETRY.bump('rowsTotal', payload.itemCount || 0);
+              var asis = parsedRowsState.filter(function (r) {
+                return r.ownerConfirmed && !r._wasEdited;
+              }).length;
+              MID_TELEMETRY.bump('rowsConfirmedAsIs', asis);
+            }
+          } catch (_) {}
+          // Wave 6.11 — refresh the personal-accuracy stat now that
+          // counters moved.
+          try { _maybeSurfacePersonalAccuracy(); } catch (_) {}
           // Wave 1.9 — fire the queue-advance event so a multi-file
           // intake moves to the next invoice automatically once this
           // one is saved.
