@@ -2872,6 +2872,10 @@
             var custEl = document.getElementById('mdCustomize');
             if (custEl) custEl.open = true;
           }
+          // Wave studio-quality — refresh the customize-summary badge
+          // so a returning operator sees their override count carried
+          // across sessions.
+          if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
         }
         if (savedLogo) {
           logoUrl = savedLogo;
@@ -5027,24 +5031,69 @@
   }
   if (customAccentEl) customAccentEl.addEventListener('input', function () {
     customize.accent = customAccentEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customPaperEl) customPaperEl.addEventListener('input', function () {
     customize.paper = customPaperEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customInkEl) customInkEl.addEventListener('input', function () {
     customize.ink = customInkEl.value;
+    updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customResetEl) customResetEl.addEventListener('click', function () {
+    // Wave studio-quality — comprehensive reset. The button label says
+    // "Reset to theme default" so it should mean it: clear colors AND
+    // paper-texture AND all three modifiers (season/daypart/event).
+    // Operators previously had to walk each dropdown back to "None"
+    // by hand after picking a few. Sync the UI controls to match.
     customize.accent = customize.paper = customize.ink = null;
+    customize.paperTexture = false;
+    customize.mods = { season: 'none', daypart: 'none', event: 'none' };
+    if (paperTextureEl) paperTextureEl.checked = false;
+    if (modSeasonEl)  modSeasonEl.value  = 'none';
+    if (modDaypartEl) modDaypartEl.value = 'none';
+    if (modEventEl)   modEventEl.value   = 'none';
     syncCustomizeFromTheme();
+    updateCustomizeBadge();
     schedulePreview();
     scheduleSaveDraft();
   });
+
+  // Wave studio-quality — surface an at-a-glance override count in the
+  // customize panel summary, so operators see whether they've changed
+  // anything from the theme default. Updates after every customize
+  // edit + after reset + after restore-from-draft. Reads through the
+  // existing `customize` state object — no new state.
+  function updateCustomizeBadge() {
+    var badgeEl = document.getElementById('mdCustomizeBadge');
+    if (!badgeEl) return;
+    var overrides = 0;
+    if (customize.accent) overrides++;
+    if (customize.paper) overrides++;
+    if (customize.ink) overrides++;
+    if (customize.paperTexture) overrides++;
+    if (customize.mods) {
+      if (customize.mods.season  && customize.mods.season  !== 'none') overrides++;
+      if (customize.mods.daypart && customize.mods.daypart !== 'none') overrides++;
+      if (customize.mods.event   && customize.mods.event   !== 'none') overrides++;
+    }
+    if (overrides === 0) {
+      badgeEl.hidden = true;
+      badgeEl.textContent = '';
+    } else {
+      badgeEl.hidden = false;
+      badgeEl.textContent = overrides === 1
+        ? tt('1 override', '1 cambio')
+        : tt(overrides + ' overrides', overrides + ' cambios');
+    }
+  }
   if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
     customize.paperTexture = !!paperTextureEl.checked;
+    updateCustomizeBadge();
     schedulePreview();
     scheduleSaveDraft();
   });
@@ -5059,6 +5108,7 @@
     if (!el) return;
     el.addEventListener('change', function () {
       customize.mods[key] = el.value || 'none';
+      updateCustomizeBadge();
       schedulePreview();
       scheduleSaveDraft();
     });
@@ -5122,6 +5172,7 @@
         if (metaStoryEl)   metaStoryEl.value   = meta.story;
         if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
         renderThemePicker();
+        if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
         renderPreview();
         scheduleSaveDraft();
         setDownloadMsg(tt('Theme imported successfully.', 'Tema importado correctamente.'), 'success');
