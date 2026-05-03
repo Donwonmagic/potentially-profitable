@@ -3988,6 +3988,17 @@
       if (meh.dogs)        bits.push(meh.dogs       + (meh.dogs       === 1 ? ' Dog'       : ' Dogs'));
       if (bits.length) parts.push({ label: 'From Menu Engineering', value: bits.join(' · ') });
     }
+    // Wave studio-quality (C9) — surface menu-copy verdict counts +
+    // average score when the handoff carried them.
+    if (ctx.menuCopyHint) {
+      var mch = ctx.menuCopyHint;
+      var copyBits = [];
+      if (mch.polish)  copyBits.push(mch.polish  + ' polish');
+      if (mch.edit)    copyBits.push(mch.edit    + ' edit');
+      if (mch.rewrite) copyBits.push(mch.rewrite + ' rewrite');
+      if (mch.avgScore != null) copyBits.push('avg score ' + mch.avgScore);
+      if (copyBits.length) parts.push({ label: 'From Menu Copy', value: copyBits.join(' · ') });
+    }
     if (!parts.length) {
       ctxEl.hidden = true;
       return;

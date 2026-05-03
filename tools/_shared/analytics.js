@@ -136,6 +136,7 @@
       'Margin Math PnL Shortcut',
       'Margin Math PriceRaise',
       'Margin Math PrimeCost',
+      'Menu Copy Handoff',
       'Menu Copy Inspector Analysis',
       'Menu Copy Inspector Export',
       'Menu Design BRF Exported',
