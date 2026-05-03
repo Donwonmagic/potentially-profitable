@@ -181,6 +181,78 @@
         "Subir fotos verticales a slots de sitio que son horizontales. Crop forzado; el plato queda cortado a la mitad.",
         "Contar fotos auto-subidas por usuarios en GBP como \"contenido nuevo\". No lo son — solo cuenta lo que subió el dueño."
       ]
+    },
+    "review-response-log": {
+      "when_to_use": [
+        "Semanal — quince minutos, con los inboxes de GBP, Yelp y TripAdvisor abiertos.",
+        "Después de cada reseña de 1 o 2 estrellas — esas necesitan respuesta en 48 horas, siempre.",
+        "Cuando un tema de queja se repite — el registro saca el patrón que las reseñas sueltas esconden."
+      ],
+      "mistakes": [
+        "Responder solo a las de 5 estrellas. Google lee la tasa de respuesta a negativas como señal de calidad.",
+        "Respuestas genéricas (\"gracias por tu retroalimentación\") a quejas detalladas. El reseñador escribió 200 palabras; respétalo.",
+        "Registrar la fecha de respuesta pero no la ETIQUETA de tema. Sin temas, no puedes correr la revisión de patrones."
+      ]
+    },
+    "complaint-root-cause-tracker": {
+      "when_to_use": [
+        "Revisión semanal de las quejas de la semana anterior — en local, online y DM.",
+        "Cuando un tema de queja se repite tres veces en un mes — eso ya no es ruido.",
+        "Después de un incidente de servicio que produjo una intervención del gerente — la causa va aquí, no solo la cortesía."
+      ],
+      "mistakes": [
+        "Registrar el síntoma (\"comida fría\") en vez de la causa (\"hueco en expo el sábado en la noche\"). Síntomas son señales; causas son arreglos.",
+        "No asignar dueño. Una queja sin dueño es una queja que se repite.",
+        "Cerrar el registro sin verificar que el arreglo aguantó la siguiente semana. \"Arreglado\" es una hipótesis hasta que el siguiente ciclo lo prueba."
+      ]
+    },
+    "health-inspection-prep": {
+      "when_to_use": [
+        "Trimestral — entre inspecciones de rutina, con la lista de la última violación a mano.",
+        "Día antes de cualquier inspección anunciada — recorrido final para atrapar lo que se desfasó.",
+        "Después de una violación — la verificación de acción correctiva pertenece a esta hoja."
+      ],
+      "mistakes": [
+        "Tratar la inspección como prep de un día en vez de práctica permanente. La hoja existe para hacerla permanente.",
+        "Dejar pasar más de 24 horas sin entrada en los registros de temperatura. El hueco es la violación, no la temperatura.",
+        "Guardar la etiqueta del sistema de fechado (FIFO, day-dot) donde el inspector no puede verla."
+      ]
+    },
+    "staff-onboarding-checklist": {
+      "when_to_use": [
+        "Día uno de cada nuevo ingreso — de mesero, cocinero, host, lavaplatos, todos.",
+        "Cuando promueves desde adentro — incorpóralos al nuevo rol, no asumas que ya lo tienen.",
+        "Junto con el paquete de orientación — la lista es la prueba de que se completó."
+      ],
+      "mistakes": [
+        "Confundir esta con incorporación de RH. Esta es solo operativa — sin I-9, sin W-4, sin reportes estatales.",
+        "Saltarse la presentación con el gerente del turno. El nuevo ingreso necesita saber a quién preguntarle antes de abrir servicio.",
+        "Tratar los turnos de seguimiento como informales. Prográmalos, regístralos, da feedback después de cada uno."
+      ]
+    },
+    "incident-report": {
+      "when_to_use": [
+        "El día que pasa — nunca la semana después. La memoria no es confiable en procesos legales.",
+        "Aun para incidentes que se resuelven en el momento — el rastro de papel es la protección.",
+        "Cualquier cosa con lesión, resbalón, reacción alérgica o altercado cliente-personal."
+      ],
+      "mistakes": [
+        "Llenarlo de memoria días después. Hora, palabras exactas, testigos — todo se degrada rápido.",
+        "Saltarse las firmas de testigos. Un testigo que confirma hoy es difícil de llamar de vuelta el próximo año.",
+        "No fotografiar la escena. El teléfono en tu bolsillo es parte del reporte."
+      ]
+    },
+    "allergen-matrix": {
+      "when_to_use": [
+        "Trimestral — cada cambio de menú, cada cambio de proveedor, cada nueva receta de prep.",
+        "Antes de entrenar a un mesero nuevo — la matriz es la referencia que cita al cliente.",
+        "Después de cualquier reacción alérgica — verifica que la matriz coincide con lo que la cocina hace de verdad."
+      ],
+      "mistakes": [
+        "Actualizar el menú pero no la matriz. La diferencia es donde pasan los incidentes alérgicos.",
+        "Confundir \"contiene\" con \"puede contener\" (contacto cruzado). La cuadrícula necesita las dos columnas.",
+        "Usar una búsqueda de Google para llenar un ingrediente escondido. Verifica con la ficha del proveedor, siempre."
+      ]
     }
   }
 }

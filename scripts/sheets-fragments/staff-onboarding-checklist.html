@@ -1,0 +1,68 @@
+    <p class="sheet-paper-hint">Print one per new hire. Operational only — no I-9, W-4, or state new-hire reporting (those live with HR / payroll).</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>New hire</legend>
+        <label>
+          <span><span>Name</span></span>
+          <input type="text" name="name" />
+        </label>
+        <label>
+          <span><span>Role / position</span></span>
+          <input type="text" name="role" placeholder="Server / line cook / host / dishwasher" />
+        </label>
+        <label>
+          <span><span>Start date</span></span>
+          <input type="date" name="start_date" />
+        </label>
+        <label>
+          <span><span>Onboarding manager</span></span>
+          <input type="text" name="manager" />
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Day one</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Item</th><th>Done</th><th>Initial</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Tour: front-of-house, kitchen, walk-ins, exits, restrooms</td><td><input type="checkbox" name="tour_d" /></td><td><input type="text" name="tour_i" maxlength="4" /></td><td><input type="text" name="tour_n" /></td></tr>
+            <tr><td>Uniform issued + dress code reviewed</td><td><input type="checkbox" name="uniform_d" /></td><td><input type="text" name="uniform_i" maxlength="4" /></td><td><input type="text" name="uniform_n" /></td></tr>
+            <tr><td>POS / pinpad login + receipt printer training</td><td><input type="checkbox" name="pos_d" /></td><td><input type="text" name="pos_i" maxlength="4" /></td><td><input type="text" name="pos_n" /></td></tr>
+            <tr><td>Food handler card on file (number recorded)</td><td><input type="checkbox" name="card_d" /></td><td><input type="text" name="card_i" maxlength="4" /></td><td><input type="text" name="card_n" placeholder="card #" /></td></tr>
+            <tr><td>Manager-on-duty introduction</td><td><input type="checkbox" name="mod_d" /></td><td><input type="text" name="mod_i" maxlength="4" /></td><td><input type="text" name="mod_n" /></td></tr>
+            <tr><td>Emergency procedures (fire, evacuation, injury)</td><td><input type="checkbox" name="emerg_d" /></td><td><input type="text" name="emerg_i" maxlength="4" /></td><td><input type="text" name="emerg_n" /></td></tr>
+            <tr><td>Allergen matrix walked + cross-contact protocols</td><td><input type="checkbox" name="allerg_d" /></td><td><input type="text" name="allerg_i" maxlength="4" /></td><td><input type="text" name="allerg_n" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Week one — trail shifts (logged in writing)</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Shift</th><th>Date</th><th>Trainer</th><th>Stations covered</th><th>Debrief notes</th></tr></thead>
+          <tbody>
+            <tr><td>Trail 1</td><td><input type="date" name="t1_date" /></td><td><input type="text" name="t1_trainer" /></td><td><input type="text" name="t1_stations" /></td><td><input type="text" name="t1_debrief" /></td></tr>
+            <tr><td>Trail 2</td><td><input type="date" name="t2_date" /></td><td><input type="text" name="t2_trainer" /></td><td><input type="text" name="t2_stations" /></td><td><input type="text" name="t2_debrief" /></td></tr>
+            <tr><td>Trail 3</td><td><input type="date" name="t3_date" /></td><td><input type="text" name="t3_trainer" /></td><td><input type="text" name="t3_stations" /></td><td><input type="text" name="t3_debrief" /></td></tr>
+            <tr><td>First solo shift</td><td><input type="date" name="t4_date" /></td><td><input type="text" name="t4_trainer" /></td><td><input type="text" name="t4_stations" /></td><td><input type="text" name="t4_debrief" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>30-day check-in</legend>
+        <label>
+          <span><span>Check-in date</span></span>
+          <input type="date" name="checkin_date" />
+        </label>
+        <label>
+          <span><span>What's working / what needs more reps</span></span>
+          <textarea name="checkin_notes" rows="3"></textarea>
+        </label>
+        <label>
+          <span><span>Hire-manager signature</span></span>
+          <input type="text" name="signoff" />
+        </label>
+      </fieldset>
+    </form>

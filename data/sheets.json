@@ -697,7 +697,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": ["gbp-grader"], "glossary": [], "blog": ["how-to-get-more-google-reviews-for-your-restaurant"] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Weekly — fifteen minutes, with the GBP / Yelp / Tripadvisor inboxes open.",
+        "After every 1- or 2-star review — those need a response within 48 hours, every time.",
+        "When a complaint theme repeats — the log surfaces the pattern that one-off reviews hide."
+      ],
+      "mistakes_en": [
+        "Responding only to 5-stars. Google reads the response rate on negatives as a quality signal.",
+        "Generic responses (\"thanks for your feedback\") on detailed complaints. The reviewer wrote 200 words; respect them.",
+        "Logging the response date but not the THEME tag. Without themes, you cannot run the pattern review."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "complaint-root-cause-tracker": {
       "title_en": "Complaint Root-Cause Tracker",
@@ -715,7 +726,18 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Weekly review of the prior week's complaints — across in-house, online, and DM channels.",
+        "When a complaint theme repeats three times in one month — that is no longer noise.",
+        "After a service incident that produced a manager intervention — the cause logs there, not just the comp."
+      ],
+      "mistakes_en": [
+        "Logging the symptom (\"cold food\") instead of the cause (\"expo gap on Saturday dinner\"). Symptoms are signals; causes are fixes.",
+        "Not assigning an owner. A complaint without an owner is a complaint that recurs.",
+        "Closing the log without verifying the fix held the next week. \"Fixed\" is a hypothesis until the next complaint cycle proves it."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "health-inspection-prep": {
       "title_en": "Health Inspection Prep Checklist",
@@ -733,7 +755,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — between routine inspections, with the last violation list in hand.",
+        "Day before any pre-announced inspection — final walk to catch anything that drifted.",
+        "After a violation — the corrective-action verification belongs on this sheet."
+      ],
+      "mistakes_en": [
+        "Treating the inspection as a one-day prep instead of standing practice. The sheet exists to make it standing.",
+        "Letting temp logs go more than 24 hours without an entry. The gap is the violation, not the temperature.",
+        "Storing the dating system label (FIFO stickers, day-dot system) where the inspector cannot see it."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "staff-onboarding-checklist": {
       "title_en": "Staff Onboarding Checklist (Operational)",
@@ -751,7 +784,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Day one of every new hire — front-of-house, back-of-house, host, dishwasher, all of them.",
+        "When promoting from within — onboard them into the new role, do not assume they have it.",
+        "Back-to-back with the orientation packet — the checklist is the proof of completion."
+      ],
+      "mistakes_en": [
+        "Confusing this with HR onboarding. This is operational only — no I-9, no W-4, no state new-hire reporting.",
+        "Skipping the manager-on-duty intro. The new hire needs to know who to ask before service starts.",
+        "Treating the trail shifts as informal. Schedule them, log them, debrief after each."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "incident-report": {
       "title_en": "Incident Report (Slip · Injury · Customer)",
@@ -769,7 +813,18 @@
       "stay_paper": true,
       "es_locale_hazard": true,
       "pairsWith": { "tools": [], "glossary": [], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "The day it happens — never the week after. Memory is unreliable in legal proceedings.",
+        "Even for incidents that resolve on the spot — the paper trail is the protection.",
+        "Anything involving an injury, a slip, an allergen reaction, or a customer-staff altercation."
+      ],
+      "mistakes_en": [
+        "Filling it out from memory days later. Time, exact words, witnesses — all degrade fast.",
+        "Skipping the witness signatures. A witness who confirms today is hard to call back next year.",
+        "Not photographing the scene. The phone in your pocket is part of the report."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     },
     "allergen-matrix": {
       "title_en": "Menu Allergen Matrix",
@@ -787,7 +842,18 @@
       "stay_paper": false,
       "es_locale_hazard": true,
       "pairsWith": { "tools": ["menu-design"], "glossary": ["dietary-markers"], "blog": [] },
-      "status": "queued"
+      "when_to_use_en": [
+        "Quarterly — every menu change, every supplier swap, every new prep recipe.",
+        "Before training a new server — the matrix is the reference they cite to a guest.",
+        "After any allergen reaction — verify the matrix matches what the kitchen actually does."
+      ],
+      "mistakes_en": [
+        "Updating the menu but not the matrix. The lag is where allergen incidents happen.",
+        "Conflating \"contains\" with \"may contain\" (cross-contact). The grid needs both columns.",
+        "Using a Google search to fill in a hidden ingredient. Verify with the supplier spec sheet, every time."
+      ],
+      "status": "live",
+      "added": "2026-05-04"
     }
   },
 

@@ -1,0 +1,79 @@
+    <p class="sheet-paper-hint">Print this. Walk it quarterly. The inspection prep is the practice; the inspection is the test.</p>
+
+    <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
+      <fieldset>
+        <legend>Walk-through</legend>
+        <label>
+          <span><span>Date of walk-through</span></span>
+          <input type="date" name="date" />
+        </label>
+        <label>
+          <span><span>Walked by</span></span>
+          <input type="text" name="walked_by" />
+        </label>
+        <label>
+          <span><span>Last inspection date</span></span>
+          <input type="date" name="last_inspection" />
+        </label>
+        <label>
+          <span><span>Last inspection violations (carry-forward list)</span></span>
+          <textarea name="last_violations" rows="3" placeholder="One per line — verify each is corrected and stays corrected."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Temperature controls</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>All cooler temp logs current (≤ 24h gap)</td><td><input type="checkbox" name="temp_logs_p" /></td><td><input type="checkbox" name="temp_logs_f" /></td><td><input type="text" name="temp_logs_n" /></td></tr>
+            <tr><td>Walk-in cooler 36–40°F at last reading</td><td><input type="checkbox" name="walkin_p" /></td><td><input type="checkbox" name="walkin_f" /></td><td><input type="text" name="walkin_n" /></td></tr>
+            <tr><td>Hot-hold ≥ 140°F at last reading</td><td><input type="checkbox" name="hothold_p" /></td><td><input type="checkbox" name="hothold_f" /></td><td><input type="text" name="hothold_n" /></td></tr>
+            <tr><td>Cooling logs (160→70°F in 2h, 70→41°F in 4h)</td><td><input type="checkbox" name="cooling_p" /></td><td><input type="checkbox" name="cooling_f" /></td><td><input type="text" name="cooling_n" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sanitation &amp; hygiene</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Hand-sinks stocked (soap, single-use towels, hot water)</td><td><input type="checkbox" name="hand_p" /></td><td><input type="checkbox" name="hand_f" /></td><td><input type="text" name="hand_n" /></td></tr>
+            <tr><td>3-compartment sink + sanitizer concentration verified</td><td><input type="checkbox" name="sink3_p" /></td><td><input type="checkbox" name="sink3_f" /></td><td><input type="text" name="sink3_n" /></td></tr>
+            <tr><td>Chemicals labeled and stored away from food</td><td><input type="checkbox" name="chem_p" /></td><td><input type="checkbox" name="chem_f" /></td><td><input type="text" name="chem_n" /></td></tr>
+            <tr><td>FIFO / dating system in place; nothing past expiration</td><td><input type="checkbox" name="fifo_p" /></td><td><input type="checkbox" name="fifo_f" /></td><td><input type="text" name="fifo_n" /></td></tr>
+            <tr><td>Pest control: no evidence; service log current</td><td><input type="checkbox" name="pest_p" /></td><td><input type="checkbox" name="pest_f" /></td><td><input type="text" name="pest_n" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Documentation</legend>
+        <table class="sheet-row-table">
+          <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Food handler / manager certifications posted</td><td><input type="checkbox" name="cert_p" /></td><td><input type="checkbox" name="cert_f" /></td><td><input type="text" name="cert_n" /></td></tr>
+            <tr><td>Allergen matrix current with menu</td><td><input type="checkbox" name="allerg_p" /></td><td><input type="checkbox" name="allerg_f" /></td><td><input type="text" name="allerg_n" /></td></tr>
+            <tr><td>Employee illness policy posted &amp; understood</td><td><input type="checkbox" name="illness_p" /></td><td><input type="checkbox" name="illness_f" /></td><td><input type="text" name="illness_n" /></td></tr>
+            <tr><td>Self-inspection log up to date (this sheet)</td><td><input type="checkbox" name="self_p" /></td><td><input type="checkbox" name="self_f" /></td><td><input type="text" name="self_n" /></td></tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sign-off</legend>
+        <label>
+          <span><span>Manager / chef signature</span></span>
+          <input type="text" name="signoff" />
+        </label>
+        <label>
+          <span><span>Time completed</span></span>
+          <input type="time" name="signoff_time" />
+        </label>
+        <label>
+          <span><span>Action items from this walk</span></span>
+          <textarea name="actions" rows="3"></textarea>
+        </label>
+      </fieldset>
+    </form>
