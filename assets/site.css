@@ -5582,6 +5582,40 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 .window-signin{text-align:center;margin-top:24px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input)}
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
+.window-signin strong{color:var(--ink)}
+
+/* ============ WINDOW COMPOSER — Phase-2 redesign ============
+   On-ramp chips moved above the form, surface productized offers
+   with prices. Optional context grid (Name / Restaurant / Site)
+   sits above the textarea. Three always-visible escape hatches
+   replace the single Cal.com link. Sign-in becomes upgrade copy.
+*/
+.window-onramps__hint{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--stone);margin:0 0 10px}
+.window-composer__onramps{flex-direction:column;align-items:flex-start;margin-top:0;margin-bottom:24px;gap:8px}
+.window-composer__onramps .window-onramp{padding:10px 16px;font-size:13px;letter-spacing:0;text-transform:none;font-weight:500;width:auto;display:inline-flex;align-items:center;gap:10px;line-height:1.3}
+.window-composer__onramps .window-onramp em{font-family:var(--font-display);font-style:italic;font-weight:500;color:var(--teal);font-size:13.5px}
+.window-composer__onramps .window-onramp:hover em,.window-composer__onramps .window-onramp:focus-visible em{color:var(--teal-dark)}
+.window-composer__context{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.window-composer__field-pair{display:flex;flex-direction:column;gap:4px}
+.window-composer__field-pair--full{grid-column:1 / -1}
+.window-composer__field-pair label{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--ink-soft)}
+.window-composer__field-pair input{padding:10px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:15px;background:var(--white);color:var(--ink);min-height:44px}
+.window-composer__field-pair input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,78,91,.18)}
+.window-composer__opt{font-weight:400;color:var(--stone);font-style:italic}
+.window-composer__body-label{display:block;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:0.01em}
+.window-composer__req{color:var(--rust);font-weight:600;margin-left:2px}
+.window-composer__alt-row{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 24px;font-size:14px;color:var(--stone);text-align:center}
+.window-composer__alt-row li{position:relative}
+.window-composer__alt-row li + li::before{content:"·";position:absolute;left:-14px;top:0;color:var(--stone-2)}
+.window-composer__alt-row a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none;transition:border-bottom-style var(--t-fast) var(--ease)}
+.window-composer__alt-row a:hover,.window-composer__alt-row a:focus-visible{border-bottom-style:solid}
+.window-composer__alt-row .serif-italic{font-family:var(--font-display);font-style:italic;font-weight:500}
+@media (max-width:640px){
+  .window-composer__context{grid-template-columns:1fr}
+  .window-composer__onramps .window-onramp{width:100%;justify-content:space-between}
+  .window-composer__alt-row{gap:6px;flex-direction:column;align-items:center}
+  .window-composer__alt-row li + li::before{display:none}
+}
 
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}

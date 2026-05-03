@@ -28,6 +28,12 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const CHECKS = [
   ['Name coherence',      'check-name-coherence.mjs',      '--check'],
   ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
+  // Phase-2 cohesion guards. Sentinel-escape is fail-CI from day 1
+  // (the regression cost was 247 frozen pages); banned-words is
+  // warn-only at first so existing usage can be flagged + fixed
+  // before promoting to fail-CI in a later sprint.
+  ['Count sentinel escape','check-count-sentinel-escape.mjs','--check'],
+  ['Banned words',        'check-banned-words.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   ['Tool header',         'check-tool-header.mjs',         '--check'],
