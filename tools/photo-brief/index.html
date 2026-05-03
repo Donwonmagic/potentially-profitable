@@ -16,11 +16,6 @@
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
-<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/photo-brief/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/photo-brief/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/photo-brief/" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Photo Brief Builder — Walk into your photographer's session with a one-page brief" />
 <meta property="og:description" content="Type your dishes and where the photos go. Walk away with a one-page brief that gets you the right photos in one shoot. Stays in your browser." />
@@ -41,11 +36,35 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/tools/photo-brief/#tool","name":"Photo Brief Builder","description":"Client-side photo-brief builder for independent restaurants. Lists dishes, picks destination surfaces (Yelp, Google, Instagram, web hero, menu), runs aspect-ratio crop math + shot-count dedup, and exports a printable Photo Brief and Brand Photo Card. The brief stays in the browser.","url":"https://muntin.digital/tools/photo-brief/","applicationCategory":"DesignApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"browserRequirements":"Requires a modern browser with JavaScript enabled","keywords":"photo brief, restaurant photography, food photography brief, aspect ratio map, hero shot, photographer day rate, image dimensions, Google Business Profile photo, Instagram feed ratio, Yelp featured photo","audience":{"@type":"BusinessAudience","audienceType":"Independent restaurant owners and operators"},"featureList":["Eight canonical destination surfaces with 2026-current pixel specs (web hero, OG card, Yelp featured, Google Business cover, Instagram feed 4:5, Instagram square, Instagram story, menu inline, Apple Maps)","Source-frame ratio chooser (3:2 / 4:3 / 16:9) — crop math redraws to match the photographer's camera","Shot-count dedup (one source frame can serve multiple destinations via crop math)","Photographer day-rate ROI math with Wansink/Cornell descriptive-photo lift range","Paste-from-spreadsheet import (CSV/TSV with English + Spanish header aliases)","Printable Photo Brief PNG and Brand Photo Card PNG","ZIP bundle (Brief + Card + brief.html + shot-list.csv + photo-brief.json + README)","Inbound funnels from Menu Engineering, Brand Suite, and Plate Cost via URL-fragment data","Client-side: no fetch, no storage, no account"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},{"@type":"FAQPage","@id":"https://muntin.digital/tools/photo-brief/#faq","mainEntity":[{"@type":"Question","name":"Do my dish names leave the page when I use the Photo Brief Builder?","acceptedAnswer":{"@type":"Answer","text":"No. Open DevTools → Network. Type a brief and click any export — zero requests fire with your dish names. The math runs entirely on your device. The page is static HTML plus two unminified JavaScript files you can read directly."}},{"@type":"Question","name":"Where do the surface specs come from, and how often do you check them?","acceptedAnswer":{"@type":"Answer","text":"Meta Help Center for Instagram (feed default 4:5, 1080×1350; story 9:16, 1080×1920), Google Business Profile help (cover 16:9, 1200×675 minimum), Yelp partner guidance (featured 1920×1280), and the OpenGraph protocol (1.91:1, 1200×630). Specs are reviewed every quarter — the surface checklist shows the review date so you can tell at a glance how stale the defaults are."}},{"@type":"Question","name":"What if my photographer shoots 4:3 or 16:9 instead of 3:2?","acceptedAnswer":{"@type":"Answer","text":"Pick the source-frame ratio at the top of the form. The crop math, the live coverage strip, and the printable Photo Brief PNG all redraw to match. A 4:3 phone shooter gets accurate crop boxes; a 16:9 cinema body gets accurate crop boxes. The math is sound for any source ratio you give it."}},{"@type":"Question","name":"What does the deduplication math actually do?","acceptedAnswer":{"@type":"Answer","text":"Naively, you'd shoot every dish in every destination's aspect — 6 dishes × 4 surfaces × 3 angles = 72 frames. The dedup math notes that one source frame can serve multiple destinations via crop math. If web hero, OG card, and Google Business all want 45-degree warm-window light, the photographer shoots that source frame once and the brief tells you which destinations it crops to. A typical 6-dish brief drops from ~72 naive shots to ~20 source frames."}},{"@type":"Question","name":"Can I share a brief with my photographer?","acceptedAnswer":{"@type":"Answer","text":"Yes. Download the Photo Brief PNG and the ZIP bundle (PNG + printable HTML + shot-list CSV + JSON + README). The PNG is shoot-day asset; the printable HTML is the page the photographer reads on the table; the CSV pastes into a Google Sheet for shoot-day reference."}},{"@type":"Question","name":"Is the source code open and readable?","acceptedAnswer":{"@type":"Answer","text":"Yes. No build step, no minification, no framework. The math module lives at /tools/photo-brief/photo-brief.js as plain JavaScript with named functions. Right-click View Page Source to read the UI directly."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Photo Brief Builder","item":"https://muntin.digital/tools/photo-brief/"}]}]}
 </script>
-<link rel="preconnect" href="https://plausible.io" crossorigin />
-<link rel="dns-prefetch" href="https://plausible.io" />
-<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement" />
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <style>.breadcrumb{visibility:hidden;padding-top:100px}
 /* === Photo Brief Builder tool-scoped styles. Page-prefix .pb-*. === */
 .pb-warnings{display:flex;flex-direction:column;gap:10px;margin:0 0 18px}
@@ -433,7 +452,7 @@ body[data-pb-mode="reshoot"] .pb-reshoot-banner{display:block}
     })();
   </script>
 </header>
-<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">&#8250;</span><span aria-current="page">Photo Brief Builder</span></nav>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Photo Brief Builder</span></nav>
 
 <main id="main">
 <!-- HERO -->

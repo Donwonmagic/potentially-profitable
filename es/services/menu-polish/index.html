@@ -62,11 +62,10 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}.offer-hero{padding:120px 0 32px}.offer-price{font-family:var(--font-display);font-size:clamp(48px,7vw,72px);font-weight:500;line-height:1;color:var(--ink);margin:0;letter-spacing:-1.5px}.offer-price small{font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--ink-soft);letter-spacing:0;display:inline-block;margin-left:8px;vertical-align:baseline}.offer-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 
-<link rel="preconnect" href="https://plausible.io" crossorigin />
-<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script src="/assets/p.js?v=20260503" defer></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
+  plausible.init({ endpoint: '/api/event', logging: false })
 </script>
 </head>
 <body>
@@ -163,9 +162,9 @@
   <nav class="breadcrumb container" aria-label="Migas de pan" style="margin-top:90px">
     <ol style="list-style:none;padding:0;margin:0;display:flex;gap:8px;font-size:13px;color:var(--stone)">
       <li><a href="/es/" style="color:var(--teal)">Inicio</a></li>
-      <li aria-hidden="true">&rsaquo;</li>
+      <li aria-hidden="true">›</li>
       <li><a href="/es/services/" style="color:var(--teal)">Servicios</a></li>
-      <li aria-hidden="true">&rsaquo;</li>
+      <li aria-hidden="true">›</li>
       <li aria-current="page">Menu polish</li>
     </ol>
   </nav>

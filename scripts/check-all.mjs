@@ -33,6 +33,44 @@ const CHECKS = [
   // warn-only at first so existing usage can be flagged + fixed
   // before promoting to fail-CI in a later sprint.
   ['Count sentinel escape','check-count-sentinel-escape.mjs','--check'],
+  // Phase-3B cohesion guard. Catches the orphan-hreflang regression
+  // where stamp-hreflang.mjs writes its own sentinel block but legacy
+  // hand-authored <link rel="alternate" hreflang> / <meta og:locale>
+  // lines below it survive — leading to duplicate hreflang triplets
+  // on 161 pages until the cleanup pass landed. Fail-CI from day 1.
+  ['Hreflang orphans',    'check-hreflang-orphans.mjs',    '--check'],
+  // CTA canon — locked Phase 6 + extended in Phase 3B. Catches retired
+  // verbs in button-style positions (Send to Don, View case study, etc.).
+  // Body-prose mentions are allowed; this only flags the structural
+  // pattern of `>Phrase</tag>` or `>Phrase<svg>`.
+  ['CTA canon',           'check-cta-canon.mjs',           '--strict'],
+  // Phase-3B footer canon — catches the regression class Phase 1
+  // cleaned up on 23 tool pages (stale "Structure Brings Clarity"
+  // tagline + DMV-studio blurb returning).
+  ['Footer payload',      'check-footer-payload.mjs',      '--check'],
+  // Phase-3B breadcrumb separator canon — catches &rsaquo; / &#8250;
+  // returning inside breadcrumb-sep elements (3 different encodings
+  // coexisted before Phase 3B normalised to literal `›`).
+  ['Breadcrumb separator','check-breadcrumb-separator.mjs','--check'],
+  // Phase-3B no-third-party-Plausible — after the self-host cutover,
+  // /assets/p.js + /api/event proxy carry analytics. Any direct
+  // plausible.io script src / preconnect / init endpoint reintroduces
+  // a third-party request and breaks the privacy posture documented
+  // on /never/ #4 + /privacy.html + /cookies.html. Fail-CI from day 1.
+  ['No 3p Plausible',     'check-no-third-party-plausible.mjs','--check'],
+  // Phase-3B-perf — CSS shell split. Verifies the three shell files
+  // (assets/site-{core,tool,article}.css) are a sound partition of
+  // assets/site.css: round-trip identity (no rule lost or duplicated),
+  // cascade safety (no selector in core AND a supplemental shell),
+  // build freshness (running build-css-shells --check would not
+  // change anything). Fail-CI from day 1.
+  ['CSS shells',          'check-css-shells.mjs',          '--check'],
+  // Invoice-Decoder safety: the four server files in src/ that touch
+  // the decoder pipeline must NOT contain any outbound network paths
+  // for invoice content. Cheap regex check; high-blast-radius bug if
+  // it ever regresses (the whole "your numbers never leave this page"
+  // promise depends on it).
+  ['No invoice egress',   'check-no-invoice-egress.mjs'],
   ['Banned words',        'check-banned-words.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],

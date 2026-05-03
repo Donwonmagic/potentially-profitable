@@ -1,0 +1,18 @@
+{
+  "_doc": "ES translated-slug ↔ EN canonical-slug map for the blog. Used by scripts/stamp-hreflang.mjs so EN blog posts emit the right hreflang=\"es\" pointing at the actual ES URL (not /es/<same-EN-slug>/, which 404s for translated slugs). Direction is en→es; an EN slug present here has an ES counterpart at the mapped path. ES-only posts that are ES-original (no EN counterpart yet) live in esOriginal[]. Adding a new translated post: add the mapping AND drop the .html into both /blog/<en>/ and /es/blog/<es>/ in the same commit, then run scripts/stamp-hreflang.mjs.",
+  "_lastReviewed": "2026-05-03",
+  "blog": {
+    "how-much-does-a-custom-restaurant-website-cost-in-2026": "cuanto-cuesta-una-pagina-web-para-restaurante-2026",
+    "does-my-restaurant-need-a-website": "como-hacer-sitio-web-para-mi-restaurante",
+    "how-to-read-restaurant-google-search-console": "como-leer-google-search-console-de-tu-restaurante",
+    "is-doordash-worth-it-for-restaurants-in-2026": "como-salir-de-doordash-mi-restaurante",
+    "when-to-rebuild-your-restaurant-website": "cuando-rehacer-tu-sitio-web-de-restaurante",
+    "restaurant-photo-spec-sheet": "especificaciones-de-fotos-para-restaurantes",
+    "restaurant-schema-markup-6-types-google-uses": "los-6-tipos-de-schema-markup-que-google-usa",
+    "how-to-tell-if-a-restaurant-tool-is-safe": "como-saber-si-una-herramienta-de-restaurante-es-segura"
+  },
+  "esOriginal": [
+    "mi-restaurante-no-aparece-en-google-maps",
+    "schema-markup-para-restaurante-ejemplo"
+  ]
+}

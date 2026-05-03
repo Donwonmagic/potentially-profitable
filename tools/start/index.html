@@ -15,11 +15,6 @@
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
-<link rel="alternate" hreflang="en" href="https://muntin.digital/tools/start/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/start/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/start/" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Start Here — Pick the right tool first | Muntin Digital" />
@@ -63,17 +58,36 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 
-<link rel="preconnect" href="https://plausible.io" crossorigin />
-<link rel="dns-prefetch" href="https://plausible.io" />
-<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script src="/assets/p.js?v=20260503" defer></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
+  plausible.init({ endpoint: '/api/event', logging: false })
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="preload" as="style" href="/assets/site.css?v=20260501-engagement">
-<link rel="stylesheet" href="/assets/site.css?v=20260501-engagement" fetchpriority="high">
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+header.nav{min-height:64px}
+</style>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 
 <style>
   /* /tools/start/ — five-question decision tree.
@@ -458,7 +472,13 @@
     function buildLede(a) {
       var leakLabel = ECHO.leak[a.leak] || 'a leak';
       var bits = ['You said the leak is **' + leakLabel + '**'];
-      if (a.raise) bits.push('you raised prices **' + ECHO.raise[a.raise] + '**');
+      if (a.raise === 'no') {
+        // Special-case: "you raised prices not in the last 12 months" reads broken.
+        // Phrase the negative as a negative.
+        bits.push('you haven’t raised prices **in the last 12 months**');
+      } else if (a.raise) {
+        bits.push('you raised prices **' + ECHO.raise[a.raise] + '**');
+      }
       if (a.agg)   bits.push(ECHO.agg[a.agg]);
       var head = bits.join(', ') + '. Here’s the order I’d run them in.';
       // Per-leak tail.

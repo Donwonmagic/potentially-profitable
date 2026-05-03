@@ -50,6 +50,7 @@ import {
   classifySpam,
 } from './lib/validation.js';
 import { withAuditCache } from './lib/audit-cache.js';
+import { checkTurnstile } from './lib/turnstile.js';
 import { createRateLimiter, clientIpFromRequest } from './lib/rate-limit.js';
 import { RateLimiter, checkDurableRateLimit } from './lib/rate-limiter-do.js';
 import { saveSnapshot, getSnapshot, getSnapshotOg, isValidTokenShape } from './lib/audit-snapshots.js';
@@ -327,6 +328,12 @@ const API_ROUTES = {
   '/api/admin/window/archive':       handleAdminWindowArchive,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
+  // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
+  // at /assets/p.js posts here; we forward to plausible.io with the
+  // visitor's CF-Connecting-IP so analytics see the right client IP
+  // instead of every request originating from the worker. Lets us
+  // drop plausible.io from CSP connect-src.
+  '/api/event':                      handlePlausibleEvent,
   '/sub/confirm':                    handleSubscribeConfirm,
   '/sub/unsubscribe':                handleSubscribeUnsubscribe,
   // Phase G.11 (Growth) — generalized share-snapshot endpoints.
@@ -1396,6 +1403,18 @@ async function handleIntake(request, env, ctx) {
     console.warn('intake:spam', { reason: 'timestamp' });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
   }
+  // Layer-2 anti-spam: Turnstile. No-op until TURNSTILE_SECRET_KEY is
+  // bound (skipped: true), so this PR is a true zero-impact change in
+  // production until the owner finishes the dashboard wiring. Failure
+  // is silent (200 OK) to match the rest of the spam-defense surface
+  // — bots get no signal, legitimate humans whose token expired get
+  // an unfortunate silent-drop, but the rate is low and beats UX
+  // friction for everyone else.
+  const turnstile = await checkTurnstile(body, env, request);
+  if (!turnstile.ok && !turnstile.skipped) {
+    console.warn('intake:spam', { reason: 'turnstile', code: turnstile.error });
+    return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
   const heuristic = classifySpam(body);
   if (heuristic.spam) {
     console.warn('intake:spam', { reason: 'content', signals: heuristic.reasons });
@@ -1468,6 +1487,14 @@ async function handleChecklist(request, env, ctx) {
   if (!isTimestampSane(body)) {
     console.warn('checklist:spam', { reason: 'timestamp' });
     return jsonResponse({ ok: true, status: 'sent' }, 200);
+  }
+  // Layer-2 anti-spam: Turnstile. Skipped until secret is wired.
+  {
+    const turnstile = await checkTurnstile(body, env, request);
+    if (!turnstile.ok && !turnstile.skipped) {
+      console.warn('checklist:spam', { reason: 'turnstile', code: turnstile.error });
+      return jsonResponse({ ok: true, status: 'sent' }, 200);
+    }
   }
   const checklistHeuristic = classifySpam(body);
   if (checklistHeuristic.spam) {
@@ -4487,6 +4514,14 @@ async function handleAuthMagicLink(request, env, ctx) {
   if (isSpamHoneypot(body))     return SILENT_OK;
   if (!isTimestampSane(body))   return SILENT_OK;
   if (isHighThreatIP(request))  return SILENT_OK;
+  // Layer-2 anti-spam: Turnstile. Skipped until secret is wired.
+  // Magic-link is the highest-value phish/spam target on the site
+  // (every successful submission triggers an outbound email and
+  // mints a session token), so this gate matters most here.
+  {
+    const turnstile = await checkTurnstile(body, env, request);
+    if (!turnstile.ok && !turnstile.skipped) return SILENT_OK;
+  }
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   if (!isValidEmail(email))     return SILENT_OK;
 
@@ -6233,6 +6268,71 @@ async function parseFormBody(request) {
 
 // sha256Hex is already imported from ./lib/auth.js — reuse it.
 
+// ===== Phase 3B — Plausible analytics events proxy =====
+//
+// The self-hosted tracker at /assets/p.js POSTs events to /api/event
+// instead of plausible.io directly. We forward to plausible.io's
+// /api/event endpoint with the visitor's CF-Connecting-IP carried
+// through as X-Forwarded-For so analytics see the real client IP
+// (without it, every event would look like it came from the worker).
+//
+// Why this matters:
+//   - Drops plausible.io from CSP connect-src (one fewer third-party).
+//   - Drops the preconnect/dns-prefetch lines from every page head.
+//   - Lets Plausible (or any drop-in replacement) be swapped without
+//     touching site-wide HTML — only the upstream URL here changes.
+//
+// Wire-shape: pass-through. Plausible's tracker sends a small JSON
+// body with { n, u, d, r, p, ... }. We don't parse it; we just
+// forward bytes. Failure-mode is silent (204) so the user's session
+// isn't disrupted by upstream hiccups.
+const PLAUSIBLE_UPSTREAM = 'https://plausible.io/api/event';
+
+async function handlePlausibleEvent(request, env, ctx) {
+  if (request.method !== 'POST') {
+    return new Response(null, { status: 405, headers: { allow: 'POST' } });
+  }
+  // Plausible is happy to ignore an empty body; cap the request so
+  // a malicious POST can't tie up isolate memory. 8 KB is generous.
+  let body;
+  try {
+    body = await request.text();
+    if (body.length > 8192) {
+      return new Response(null, { status: 413 });
+    }
+  } catch (_) {
+    return new Response(null, { status: 400 });
+  }
+
+  const clientIp = request.headers.get('cf-connecting-ip') || '';
+  const userAgent = request.headers.get('user-agent') || '';
+
+  // Best-effort forward. Don't await for too long; the visitor
+  // doesn't see this latency but we shouldn't tie up the worker
+  // either. 5s upper bound is plenty for Plausible's siteverify.
+  let upstreamRes;
+  try {
+    upstreamRes = await fetch(PLAUSIBLE_UPSTREAM, {
+      method: 'POST',
+      headers: {
+        'content-type': 'text/plain',  // Plausible accepts text/plain JSON
+        'user-agent': userAgent,
+        ...(clientIp ? { 'x-forwarded-for': clientIp } : {}),
+      },
+      body,
+      signal: AbortSignal.timeout ? AbortSignal.timeout(5_000) : undefined,
+    });
+  } catch (_) {
+    // Network blip; return 202 (Accepted) so the tracker treats
+    // it as success and doesn't retry-storm.
+    return new Response(null, { status: 202 });
+  }
+
+  // Mirror upstream status so the tracker can react if needed.
+  // Body content from Plausible is minimal; we don't relay it.
+  return new Response(null, { status: upstreamRes.status });
+}
+
 const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
 
 async function handleSubscribe(request, env, ctx) {
@@ -6246,6 +6346,9 @@ async function handleSubscribe(request, env, ctx) {
   if (isSpamHoneypot(body))    return SILENT_OK;
   if (!isTimestampSane(body))  return SILENT_OK;
   if (isHighThreatIP(request)) return SILENT_OK;
+  // Layer-2 anti-spam: Turnstile. Skipped until the secret is wired.
+  const turnstile = await checkTurnstile(body, env, request);
+  if (!turnstile.ok && !turnstile.skipped) return SILENT_OK;
   const email = typeof body.email === 'string' ? body.email.trim() : '';
   if (!isValidEmail(email))    return SILENT_OK;
 

@@ -15,11 +15,6 @@
 <meta property="og:locale" content="en_US" />
 <meta property="og:locale:alternate" content="es_US" />
 <!-- i18n:hreflang END -->
-<link rel="alternate" hreflang="en" href="https://muntin.digital/glossary/nap-consistency/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/glossary/nap-consistency/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/glossary/nap-consistency/" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="NAP consistency — Muntin Digital glossary" />
@@ -44,7 +39,33 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<style>
+/* Critical CSS — prevents flash of unstyled content while the main
+   stylesheet (assets/site.css) loads non-render-blocking via the
+   <link> below. Carries: token vars used in inline styles elsewhere,
+   body baseline (cream + ink + body-size + line-height), container
+   width, skip-link affordance, and a min-height reservation for the
+   fixed nav so layout doesn't shift when site.css applies. ~600
+   bytes. Documented in Phase 3B perf cutover; the full token set
+   reapplies once site.css arrives. */
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+header.nav{min-height:64px}
+</style>
+<!-- Preload the two above-the-fold web fonts so they arrive in
+     parallel with site.css instead of being discovered after parse. -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
+     (with a <noscript> fallback for the JS-disabled path). The
+     onload assigns this.rel='stylesheet', which the browser then
+     applies; before that the critical CSS above carries the page. -->
+<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -114,7 +135,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-nap-consistency.png",
-      "datePublished": "2026-04-30T03:45:15+00:00",
+      "datePublished": "2026-04-30T03:49:47+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -460,6 +481,12 @@
         <input type="hidden" name="source" value="footer" />
         <input type="hidden" name="ts" value="" />
         <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+        <!-- Turnstile widget (Phase 3B). Auto-injects a hidden
+             cf-turnstile-response field on the form when the user
+             passes; the worker validates via /api/lib/turnstile.js.
+             Managed mode: invisible 99% of the time, falls back to
+             a visible challenge for high-risk requests. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADIgoGh56MvqeE8L" data-action="newsletter" data-size="flexible"></div>
         <button type="submit">Subscribe</button>
       </form>
     </div>
@@ -509,6 +536,27 @@
 <script src="/assets/js/first-touch.js" defer></script>
 <script src="/assets/js/save-next-time.js" defer></script>
 <script src="/assets/js/share-hydrate.js" defer></script>
+<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
+     newsletter form lives in this footer, which renders on every page.
+     Async + defer so it never blocks render. ~28 KB; one outbound
+     request to challenges.cloudflare.com per cold load. Worker-side
+     verification lives in src/lib/turnstile.js and runs only when
+     env.TURNSTILE_SECRET_KEY is bound. -->
+<!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts. The widget
+     calls back to challenges.cloudflare.com to validate the host
+     against the Turnstile site's allowlist; localhost isn't in the
+     allowlist (and adding it would weaken the prod gate), so the
+     widget logs a console error on every dev/CI page load. We
+     gate the script load instead — Turnstile only matters on real
+     production traffic where forms actually submit. -->
+<script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
+<!-- Cloudflare Turnstile (Phase 3B). Loaded site-wide because the
+     newsletter form lives in this footer, which renders on every page.
+     Async + defer so it never blocks render. ~28 KB; one outbound
+     request to challenges.cloudflare.com per cold load. Worker-side
+     verification lives in src/lib/turnstile.js and runs only when
+     env.TURNSTILE_SECRET_KEY is bound. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 </body>
