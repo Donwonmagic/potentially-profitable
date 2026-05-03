@@ -126,11 +126,11 @@ const CHECKS = [
   ['Include coverage',     'check-include-coverage.mjs'],
   ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
   ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
-  // Pricing consistency — warn-only during initial rollout. Promotes to
-  // --strict once the ~11 inline service-link backlog is worked off
-  // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
-  // that link to a service inline without naming the price).
-  ['Pricing consistency (warn)','check-pricing-consistency.mjs'],
+  // Pricing consistency — promoted to fail-CI after the initial 11-page
+  // backlog was worked off (paired commit). Inline service mentions
+  // across /learn/research/, /learn/topics/, /studio/<city>/ pages now
+  // carry the canonical price; future drift is a hard fail.
+  ['Pricing consistency',  'check-pricing-consistency.mjs', '--strict'],
   ['Turnstile singleton',   'check-turnstile-singleton.mjs'],
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
