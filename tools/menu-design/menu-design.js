@@ -97,6 +97,7 @@
   var logoThumb = document.getElementById('mdLogoThumb');
   var logoLine  = document.getElementById('mdLogoLine');
   var logoWarn  = document.getElementById('mdLogoWarn');
+  var logoRemoveBtn = document.getElementById('mdLogoRemove');
   var paperRow  = document.getElementById('mdPaperRow');
   var paper     = document.getElementById('mdPaper');
   var previewMeta = document.getElementById('mdPreviewMeta');
@@ -1099,6 +1100,30 @@
     } else {
       setLogoWarn('');
     }
+    // Wave studio-quality — surface the explicit "Remove logo" button
+    // once a logo is loaded. Hidden in the empty state so the drop zone
+    // stays clean for first-run operators.
+    if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+    renderPreview();
+    scheduleSaveDraft();
+  }
+
+  // Wave studio-quality — explicit logo removal. Operators can swap a
+  // logo by re-uploading, but had no way to clear back to "no logo"
+  // without nuking the whole menu via Clear All. This restores the
+  // empty drop-zone state without touching dishes/theme/meta.
+  function removeLogo() {
+    logoUrl = null;
+    logoMeta = null;
+    if (logoThumb) {
+      logoThumb.innerHTML = '<span class="md-logo-thumb-empty" aria-hidden="true">+</span>';
+    }
+    if (logoLine) {
+      logoLine.textContent = tt('Choose or take a photo', 'Elige o toma una foto');
+    }
+    setLogoWarn('');
+    if (logoRemoveBtn) logoRemoveBtn.hidden = true;
+    if (logoInput) logoInput.value = '';
     renderPreview();
     scheduleSaveDraft();
   }
@@ -1149,6 +1174,18 @@
       readLogoFile(file);
       // Reset input value so re-selecting the same file fires change.
       e.target.value = '';
+    });
+  }
+
+  // Wave studio-quality — wire the Remove-logo button.
+  if (logoRemoveBtn) {
+    logoRemoveBtn.addEventListener('click', function (e) {
+      // The button sits inside the same parent as the file-input <label>;
+      // stop the click from bubbling to the label and re-opening the
+      // file picker on top of the removal.
+      e.preventDefault();
+      e.stopPropagation();
+      removeLogo();
     });
   }
 
@@ -2779,7 +2816,17 @@
             if (custEl) custEl.open = true;
           }
         }
-        if (savedLogo) { logoUrl = savedLogo; }
+        if (savedLogo) {
+          logoUrl = savedLogo;
+          // Wave studio-quality — surface the logo thumbnail + Remove
+          // affordance after a draft restore. We don't have the original
+          // file name; "Logo" is the honest fallback.
+          if (logoThumb) {
+            logoThumb.innerHTML = '<img src="' + escHtml(savedLogo) + '" alt="" />';
+          }
+          if (logoLine) logoLine.textContent = tt('Logo restored', 'Logo restaurado');
+          if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+        }
         render();
         renderPreview();
         __saveDraftEnabled = true;
@@ -3052,6 +3099,9 @@
                     '¿Borrar todas las filas? No se puede deshacer.'))) return;
     pushUndo();
     rows = [];
+    // Wave studio-quality — clearing all rows should also clear the
+    // logo. Operators expect "clear everything" to mean everything.
+    if (logoUrl) removeLogo();
     render();
     clearDraft();
   });

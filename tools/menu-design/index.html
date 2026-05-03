@@ -347,6 +347,10 @@ header.nav{min-height:64px}
 .md-logo-meta-line{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .md-logo-meta-sub{font-size:11.5px;color:var(--stone);margin-top:2px}
 .md-logo-warn{margin-top:6px;font-size:11.5px;color:#b86c0f}
+.md-logo-remove{margin-top:6px;display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);font-size:11.5px;font-weight:500;cursor:pointer;line-height:1.2;transition:color var(--t-fast),border-color var(--t-fast)}
+.md-logo-remove[hidden]{display:none}
+.md-logo-remove:hover{color:var(--rust,#9b3a2a);border-color:var(--rust,#9b3a2a)}
+.md-logo-remove:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .md-paper-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .md-paper-row label{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);background:var(--white)}
 .md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
@@ -1458,6 +1462,13 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           </span>
           <input type="file" id="mdLogoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" capture="environment" />
         </label>
+        <!-- Wave studio-quality — explicit "remove logo" affordance.
+             Hidden until a logo is loaded, so the empty drop-zone stays
+             clean. The previous tool only let you swap or clear-all. -->
+        <button type="button" class="md-logo-remove" id="mdLogoRemove" hidden aria-label="Remove logo">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Remove logo
+        </button>
         <p class="md-logo-warn" id="mdLogoWarn" hidden></p>
       </div>
       <div class="md-option">
