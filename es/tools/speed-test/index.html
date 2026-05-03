@@ -432,7 +432,7 @@
       </p>
 
       <form class="speed-form" id="speedForm" novalidate>
-        <input type="url" id="speedUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+        <input type="url" id="speedUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="speedSubmit">Probar velocidad</button>
       </form>
       <p class="speed-note">Funciona con cualquier URL pública. Toma unos treinta segundos.</p>
@@ -441,7 +441,7 @@
       <div class="tool-states-slot" id="speedStates" data-state="idle" aria-live="polite"></div>
 
       <!-- Result -->
-      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" aria-live="polite">
+      <div class="speed-result" id="speedResult" role="region" aria-labelledby="speedResultHeading" tabindex="-1">
         <h2 id="speedResultHeading" tabindex="-1" class="sr-only">Resultados de la prueba de velocidad</h2>
         <div class="speed-dial" id="speedDial">
           <svg viewBox="0 0 180 180" aria-hidden="true">

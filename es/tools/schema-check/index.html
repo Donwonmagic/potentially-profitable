@@ -293,7 +293,7 @@
             <!-- storefront-rail:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">El marcado schema le dice a Google qué tipo de negocio eres — tus horarios, tu categoría, tu ubicación. Pega tu URL y mira lo que Google ve.</p>
   <form class="sch-form" id="schForm" novalidate>
-    <input type="url" id="schUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+    <input type="url" id="schUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
     <button type="submit" id="schSubmit">Revisar</button>
   </form>
   <p class="sch-note">Usa Google PageSpeed Insights. Toma unos treinta segundos.</p>
@@ -353,7 +353,7 @@
   </style>
   <!-- Sprint 6 (cohesión) — estados compartidos. -->
   <div class="tool-states-slot" id="schStates" data-state="idle" aria-live="polite"></div>
-  <div class="sch-result" id="schResult" aria-live="polite">
+  <div class="sch-result" id="schResult" tabindex="-1">
     <div class="sch-verdict" id="schVerdict"></div>
     <ul class="sch-types" id="schTypes"></ul>
 

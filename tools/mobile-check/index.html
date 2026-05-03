@@ -372,7 +372,7 @@
         Three checks that matter: does it fit on a phone, can you tap the buttons, can you read the text. Paste your URL and find out.
       </p>
       <form class="mob-form" id="mobForm" novalidate>
-        <input type="url" id="mobUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+        <input type="url" id="mobUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="mobSubmit">Check it</button>
       </form>
       <p class="mob-note">Powered by Google Lighthouse. Takes about thirty seconds.</p>
@@ -380,7 +380,7 @@
       <!-- Sprint 6 (cohesion) — shared loading + error states. -->
       <div class="tool-states-slot" id="mobStates" data-state="idle" aria-live="polite"></div>
 
-      <div class="mob-result" id="mobResult" aria-live="polite">
+      <div class="mob-result" id="mobResult" tabindex="-1">
         <div class="mob-verdict" id="mobVerdict"></div>
         <div class="mob-checks" id="mobChecks"></div>
 
@@ -789,7 +789,12 @@
         if (typeof MuntinContext !== 'undefined' && MuntinContext.merge) {
           try { MuntinContext.merge({ lastUrl: url }); } catch (_) {}
         }
-        if (states) states.setSuccess();
+        // Phase-3A a11y: announce + focus the result region.
+        var locStrings = (document.documentElement.lang === 'es')
+          ? { complete: 'Revisi&oacute;n m&oacute;vil completa. ' + passCount + ' de ' + (passCount + failCount + unknownCount) + ' verificaciones aprobadas.' }
+          : { complete: 'Mobile check complete. ' + passCount + ' of ' + (passCount + failCount + unknownCount) + ' checks passed.' };
+        if (states) states.setSuccess({ summary: locStrings.complete });
+        try { result.focus({ preventScroll: true }); } catch (_) { result.focus(); }
         showSaveAffordance(payload);
 
         if (window.plausible) {

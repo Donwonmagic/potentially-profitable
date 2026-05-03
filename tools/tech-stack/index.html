@@ -320,13 +320,13 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Paste your URL and see your CMS, analytics, booking platforms, and payment processors — plus what that means for your speed, SEO, and flexibility.</p>
   <form class="ts-form" id="tsForm" novalidate>
-    <input type="url" id="tsUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" />
+    <input type="url" id="tsUrl" placeholder="https://yourbusiness.com" autocomplete="url" required aria-label="Your website URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
     <button type="submit" id="tsSubmit">Detect</button>
   </form>
   <p class="ts-note">Scans the URLs and scripts loaded during a mobile page load. Takes about thirty seconds. Note: this detects technologies loaded on the initial page — scripts that load lazily or after user interaction may not appear.</p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
   <div class="tool-states-slot" id="tsStates" data-state="idle" aria-live="polite"></div>
-  <div class="ts-result" id="tsResult" aria-live="polite"></div>
+  <div class="ts-result" id="tsResult" tabindex="-1"></div>
   <div class="ts-save" id="tsSave" hidden>
     <p class="ts-save-text" id="tsSaveText">Save this scan to the Workshop so it follows you across devices.</p>
     <button type="button" class="ts-save-btn" id="tsSaveBtn" hidden>

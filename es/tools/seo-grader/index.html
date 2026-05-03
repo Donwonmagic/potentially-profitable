@@ -399,7 +399,7 @@
       </div>
 
       <form class="seo-form" id="seoForm" novalidate>
-        <input type="url" id="seoUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+        <input type="url" id="seoUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="seoSubmit">Calificar</button>
       </form>
 
@@ -419,7 +419,7 @@
            en assets/site.css bajo §Tool states. -->
       <div class="tool-states-slot" id="seoStates" data-state="idle" aria-live="polite"></div>
 
-      <div class="seo-result" id="seoResult" aria-live="polite">
+      <div class="seo-result" id="seoResult" tabindex="-1">
         <!-- Title card -->
         <div class="seo-card" id="titleCard">
           <div class="card-label" id="titleGrade">ETIQUETA DE TÍTULO</div>
@@ -944,8 +944,10 @@
         renderCard('desc', descResult, descResult.desc);
         renderRewriteAndPreview(url, data.title || '', data.description || '');
 
-        if (states) states.setSuccess();
+        // Phase-3A a11y: anuncio + foco al área de resultados.
+        if (states) states.setSuccess({ summary: 'Diagn&oacute;stico completo. T&iacute;tulo ' + titleResult.pct + ' de 100. Descripci&oacute;n ' + descResult.pct + ' de 100.' });
         result.classList.add('visible');
+        try { result.focus({ preventScroll: true }); } catch (_) { result.focus(); }
         result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         // Phase 2 (Workshop) — afordancia de guardado.

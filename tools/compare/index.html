@@ -339,9 +339,9 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Paste two URLs and see who wins on speed, mobile, SEO, and accessibility — side by side, plain English.</p>
   <div class="cmp-inputs">
-    <input type="url" id="cmpUrl1" placeholder="https://yoursite.com" aria-label="Your website URL" />
+    <input type="url" id="cmpUrl1" placeholder="https://yoursite.com" aria-label="Your website URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
     <span class="vs">vs.</span>
-    <input type="url" id="cmpUrl2" placeholder="https://competitor.com" aria-label="Competitor URL" />
+    <input type="url" id="cmpUrl2" placeholder="https://competitor.com" aria-label="Competitor URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
   </div>
   <button class="cmp-btn" id="cmpSubmit">Compare</button>
 
@@ -378,7 +378,7 @@
   <p class="cmp-status" id="cmpStatus" hidden></p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
   <div class="tool-states-slot" id="cmpStates" data-state="idle" aria-live="polite"></div>
-  <div class="cmp-result" id="cmpResult" aria-live="polite"></div>
+  <div class="cmp-result" id="cmpResult" tabindex="-1"></div>
   <div class="cmp-save" id="cmpSave" hidden>
     <p class="cmp-save-text" id="cmpSaveText">Save this comparison to the Workshop so it follows you across devices.</p>
     <button type="button" class="cmp-save-btn" id="cmpSaveBtn" hidden>

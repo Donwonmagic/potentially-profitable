@@ -360,7 +360,7 @@
         Tres revisiones que importan: ¿entra en la pantalla del teléfono?, ¿se pueden tocar los botones?, ¿se puede leer el texto? Pega tu URL y averígualo.
       </p>
       <form class="mob-form" id="mobForm" novalidate>
-        <input type="url" id="mobUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" />
+        <input type="url" id="mobUrl" placeholder="https://tunegocio.com" autocomplete="url" required aria-label="URL de tu sitio" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
         <button type="submit" id="mobSubmit">Revisar</button>
       </form>
       <p class="mob-note">Usa Google Lighthouse. Toma unos treinta segundos.</p>
@@ -368,7 +368,7 @@
       <!-- Sprint 6 (cohesión) — estados compartidos. -->
       <div class="tool-states-slot" id="mobStates" data-state="idle" aria-live="polite"></div>
 
-      <div class="mob-result" id="mobResult" aria-live="polite">
+      <div class="mob-result" id="mobResult" tabindex="-1">
         <div class="mob-verdict" id="mobVerdict"></div>
         <div class="mob-checks" id="mobChecks"></div>
 

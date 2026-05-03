@@ -402,14 +402,14 @@
             <!-- data-promise:end -->
   <p class="hero-sub" style="margin:20px auto 0;max-width:540px;">Paste your URL once. Get a unified scorecard across SEO, speed, mobile, schema, GBP, and a full audit — with the next fix linked to the tool that runs it.</p>
   <div class="cmp-inputs">
-    <input type="url" id="shUrl" placeholder="https://yourrestaurant.com" aria-label="Your restaurant URL" />
+    <input type="url" id="shUrl" placeholder="https://yourrestaurant.com" aria-label="Your restaurant URL" inputmode="url" enterkeyhint="go" spellcheck="false" autocapitalize="off" />
   </div>
   <button class="cmp-btn" id="shSubmit">Score my storefront</button>
   <p class="cmp-note">Runs all six checks in parallel. Takes about 30–60 seconds.</p>
   <p class="cmp-status" id="shStatus" hidden></p>
   <!-- Sprint 6 (cohesion) — shared loading + error states. -->
   <div class="tool-states-slot" id="shStates" data-state="idle" aria-live="polite"></div>
-  <div class="sh-result" id="shResult" aria-live="polite"></div>
+  <div class="sh-result" id="shResult" tabindex="-1"></div>
   <div class="sh-save" id="shSave" hidden>
     <p class="sh-save-text" id="shSaveText">Save this storefront to the Workshop so its scorecard follows you across devices.</p>
     <button type="button" class="sh-save-btn" id="shSaveBtn" hidden>
