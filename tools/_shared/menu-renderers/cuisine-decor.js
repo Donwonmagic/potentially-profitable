@@ -167,6 +167,17 @@
         '<circle cx="9" cy="14" r="0.4" fill="currentColor"/>',
         '<circle cx="13" cy="13" r="0.4" fill="currentColor"/>'
       ]
+    },
+    // Wave studio-quality — flame motif for Korean BBQ tabletop-grill
+    // theme. Three flame tongues curving up; minimal stroke so the
+    // motif sits softly behind menu content at low opacity.
+    'flame': {
+      paths: [
+        'M9 19 Q6 16 7 13 Q8 11 9 9 Q9 12 11 13 Q11 11 12 9 Q12 12 14 13 Q15 11 15 9 Q16 11 17 13 Q18 16 15 19',
+        'M11 17 Q10 15 11 13 Q12 14 11 17',
+        'M13 17 Q14 15 13 13 Q12 14 13 17'
+      ],
+      extras: []
     }
   };
 
@@ -206,6 +217,18 @@
     // the modern-indian theme its visual identity end-to-end.
     if (has(/indian|india|mughal|tandoor|biryani|curry|punjab|tamil|bengali|gujarati|kashmir/i)) {
       return { key: 'paisley', x: 175, y: 38, s: 1.3 };
+    }
+    // Wave studio-quality — Korean BBQ. Flame tongue motif for the
+    // tabletop-grill cuisine. Differentiates from generic bbq-smoke.
+    if (has(/korean.*bbq|kbbq|korean barbecue|gogi|samgyeopsal|bulgogi|galbi|coreana/i)) {
+      return { key: 'flame', x: 178, y: 38, s: 1.3 };
+    }
+    // Wave studio-quality — Levantine / Mediterranean sharing plates.
+    // Reuses the olive-branch motif (olive trees are central to this
+    // cuisine culture). Covers Lebanese / Israeli / Palestinian /
+    // Syrian / Jordanian / Greek / Turkish overlap.
+    if (has(/levant|leban|israel|palest|syrian|jordan|mezze|hummus|falafel|shawarma|kebab|greek|turkish|mediterran|aegean/i)) {
+      return { key: 'olive-branch', x: 175, y: 38, s: 1.4 };
     }
     return null;
   }

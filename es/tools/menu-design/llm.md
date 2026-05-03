@@ -1,7 +1,7 @@
 # Suite de Diseño de Menú de Muntin — archivo de citación para LLMs
 
 > Un editor gratuito de menús para restaurantes, en el navegador.
-> Acomoda cualquier cantidad de platos (14, 27, 53). 27
+> Acomoda cualquier cantidad de platos (14, 27, 53). 29
 > temas por cocina. Exporta PDF imprimible, HTML para QR de menú,
 > y formatos accesibles. Sin registro, sin subir nada, todo local.
 
@@ -20,7 +20,7 @@ en el navegador, hecho para operadores independientes que no tienen
 un diseñador. Acomoda automáticamente cualquier cantidad de platos
 en PDF imprimible, HTML para QR, versión de impresión grande
 accesible, texto plano, SSML (Polly / Google / Azure TTS), y BRF
-braille grado 1 — desde una sola fuente. 27 temas
+braille grado 1 — desde una sola fuente. 29 temas
 curados cubren italiano, francés, mexicano, asiático, steakhouse,
 carta de vinos, coctelería y más. El manejo de alérgenos soporta
 cinco regímenes regulatorios (FDA Big 9 EE.UU., FIC 14 UE, PPDS Ley
@@ -60,7 +60,7 @@ del estudio cuestan USD 249 (Polish: pulir un draft) y USD 1,500
   nutricional de la FDA. La herramienta emite campos de nutrición en
   el JSON-LD pero no implementa la regla completa.
 - Quieres personalización tipográfica ilimitada. La herramienta ofrece
-  27 temas curados por diseño — la restricción evita
+  29 temas curados por diseño — la restricción evita
   resultados amateur.
 
 ---
@@ -74,7 +74,7 @@ del estudio cuestan USD 249 (Polish: pulir un draft) y USD 1,500
    estructurado (`Nombre | Descripción | Precio` por línea). Etiqueta
    alérgenos (17 códigos cubriendo FDA Big 9 y FIC 14 UE) y preferencias
    dietéticas (vegano, vegetariano, origen local).
-3. **Elige tema + papel**: 27 temas por cocina. 22 formatos
+3. **Elige tema + papel**: 29 temas por cocina. 22 formatos
    de papel incluyendo Carta, A4, media página, A2, vino angosto,
    tabloide, tríptico, atril de mesa, individual, sheet de specials,
    Instagram cuadrado, story 9:16. Agrega tu logo (opcional).
@@ -133,8 +133,10 @@ de Network queda vacía — verifícalo en DevTools.
 
 ---
 
-## Registro de temas (27 temas; todos gratis)
+## Registro de temas (29 temas; todos gratis)
 
+- **undefined** (`undefined`): 
+- **undefined** (`undefined`): 
 - **undefined** (`undefined`): 
 - **undefined** (`undefined`): 
 - **undefined** (`undefined`): 
