@@ -69,6 +69,24 @@ function isToolPath(rel) {
   return /^(?:es\/)?tools\//.test(p);
 }
 
+// Article-shell pages: long-form content surfaces that need the
+// citation drawer, listen player, KnitRail, post-end CTA, inline
+// graphics, glossary popover, etc. Per-page byte savings is smaller
+// than tool pages (article shell is heavier than tool shell) but
+// the cumulative win across ~350 pages is real, and core.css amortizes
+// across navigation patterns that mix marketing → blog → glossary.
+//
+// Excludes /learn/checklists/<slug>/ (uses checklist UI primitives that
+// live in core), /learn/ landing (mixed shell needs — defer), and the
+// /glossary/<topic>/ topic-cluster index pages (use the topic styles
+// in article shell, but they also pull homepage utility classes from
+// core; defer until measured).
+function isArticlePath(rel) {
+  const p = rel.split(path.sep).join('/');
+  return /^(?:es\/)?(?:blog|glossary)\//.test(p)
+      || /^(?:es\/)?learn\/(?:research|topics)\//.test(p);
+}
+
 function listHtml(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     if (e.name.startsWith('.') || e.name === 'node_modules' || e.name === 'dist'
@@ -82,28 +100,33 @@ function listHtml(dir, out = []) {
   return out;
 }
 
-function buildToolShellBlock() {
+function buildShellBlock(supplementalShell) {
   const corePreload = `<link rel="preload" as="style" href="/assets/site-core.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
-  const toolPreload = `<link rel="preload" as="style" href="/assets/site-tool.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
-  const noscript    = `<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${CACHE_BUST}"><link rel="stylesheet" href="/assets/site-tool.css?v=${CACHE_BUST}"></noscript>`;
-  return `${corePreload}\n${toolPreload}\n${noscript}`;
+  const supPreload  = `<link rel="preload" as="style" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
+  const noscript    = `<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${CACHE_BUST}"><link rel="stylesheet" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}"></noscript>`;
+  return `${corePreload}\n${supPreload}\n${noscript}`;
 }
 
-const newBlock = buildToolShellBlock();
-const newBlockSig = `site-core.css?v=${CACHE_BUST}`;
+const toolBlock    = buildShellBlock('tool');
+const articleBlock = buildShellBlock('article');
+const coreSig      = `site-core.css?v=${CACHE_BUST}`;
 
 let changed = 0;
 const changedFiles = [];
 
 for (const file of listHtml(repoRoot)) {
   const rel = path.relative(repoRoot, file);
-  if (!isToolPath(rel)) continue;
+  let supplementalShell = null;
+  let newBlock = null;
+  if (isToolPath(rel))         { supplementalShell = 'tool';    newBlock = toolBlock;    }
+  else if (isArticlePath(rel)) { supplementalShell = 'article'; newBlock = articleBlock; }
+  else continue;
 
   const src = fs.readFileSync(file, 'utf8');
 
-  // Idempotency: if the page already has site-core.css with the right
-  // cache-bust AND site-tool.css, leave it alone.
-  if (src.includes(newBlockSig) && src.includes(`site-tool.css?v=${CACHE_BUST}`)) continue;
+  // Idempotency: if the page already has core + the right supplemental
+  // shell at the current cache-bust, leave it alone.
+  if (src.includes(coreSig) && src.includes(`site-${supplementalShell}.css?v=${CACHE_BUST}`)) continue;
 
   let next = src;
   let replaced = false;
@@ -125,10 +148,10 @@ for (const file of listHtml(repoRoot)) {
 }
 
 if (checkOnly && changed > 0) {
-  console.error(`inject-css-shells: ${changed} tool page(s) would change:`);
+  console.error(`inject-css-shells: ${changed} shell-injected page(s) would change:`);
   for (const f of changedFiles.slice(0, 10)) console.error(`  ${f}`);
   if (changedFiles.length > 10) console.error(`  …and ${changedFiles.length - 10} more`);
   process.exit(1);
 }
 
-console.log(`inject-css-shells: ${changed} tool page(s) ${checkOnly ? 'would change' : 'updated'}.`);
+console.log(`inject-css-shells: ${changed} shell-injected page(s) ${checkOnly ? 'would change' : 'updated'}.`);
