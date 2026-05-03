@@ -68,12 +68,10 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 
-<link rel="preconnect" href="https://plausible.io" crossorigin />
-<link rel="dns-prefetch" href="https://plausible.io" />
-<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
+<script src="/assets/p.js?v=20260503" defer></script>
 <script>
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
+  plausible.init({ endpoint: '/api/event' })
 </script>
 
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
