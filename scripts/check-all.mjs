@@ -46,6 +46,11 @@ const CHECKS = [
   // ship their tests next to the source and the runner picks
   // them up by glob.
   ['Unit tests',          'check-tests.mjs'],
+  // Wave B13 — LLM citation companion auto-derived from themes +
+  // allergens. Idempotent: --check fails if themes.js or
+  // allergens.js drifted without a corresponding regen of the
+  // /tools/menu-design/llm.md companion.
+  ['Menu Design LLM (idem)','build-menu-design-llm.mjs',     '--check'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
