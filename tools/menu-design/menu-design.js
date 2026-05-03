@@ -182,6 +182,54 @@
       return r && r.kind === 'dish' && Array.isArray(r.allergens) && r.allergens.length > 0;
     });
   }
+  // Wave studio-quality — read the live preview's active shrink class
+  // so the PDF export ships at the same font sizes the operator
+  // approved on screen. Returns 1.0 (no shrink) when no class is
+  // active OR when the preview paper isn't found.
+  function effectiveShrinkFactor() {
+    var paperEl = paper;
+    if (!paperEl || !paperEl.classList) return 1.0;
+    if (paperEl.classList.contains('md-shrink-4')) return 0.84;
+    if (paperEl.classList.contains('md-shrink-3')) return 0.88;
+    if (paperEl.classList.contains('md-shrink-2')) return 0.92;
+    if (paperEl.classList.contains('md-shrink-1')) return 0.96;
+    return 1.0;
+  }
+  // Sister helper — did the live-preview cascade promote the layout
+  // to 2 columns? PDF export flow uses this to switch from paginate()
+  // to paginateTwoCol() so the printed deliverable matches the
+  // on-screen preview the operator just approved.
+  function effectiveTwoColPromote() {
+    var paperEl = paper;
+    if (!paperEl || !paperEl.classList) return false;
+    return paperEl.classList.contains('md-promote-2col');
+  }
+  // Wave studio-quality — locale-aware price display.
+  // Operator types whatever they want ("12", "12.50", "$12", "€8,50",
+  // "Market Price"). The renderer respects what they typed when it
+  // already carries a currency symbol or non-numeric content. When
+  // the operator typed bare digits (with optional decimal), the
+  // helper prefixes/suffixes per the active currency convention so
+  // the menu reads like a real menu in that market.
+  //   USD/CAD/MXN/AUD → $14
+  //   EUR             → 14 €  (symbol after, thin space)
+  //   GBP             → £14
+  //   JPY             → ¥1400
+  //   CHF             → CHF 14
+  // No format change for already-symboled or non-numeric inputs.
+  function formatPriceDisplay(raw, currency) {
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return '';
+    if (/[$€£¥₩₹฿]/.test(s)) return s;     // operator added a symbol; respect it
+    if (!/^[\d.,]+$/.test(s)) return s;     // non-numeric ('Market Price', 'TBD')
+    var c = (currency || 'USD').toUpperCase();
+    if (c === 'EUR') return s + '  €';   // narrow no-break space + €
+    if (c === 'GBP') return '£' + s;
+    if (c === 'JPY') return '¥' + s;
+    if (c === 'CHF') return 'CHF ' + s;
+    return '$' + s;                          // USD / CAD / MXN / AUD default
+  }
+
   function effectiveDisclaimer() {
     if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
       return meta.disclaimer;
@@ -212,7 +260,22 @@
     // is US-FDA-9 (current operator base); selector at #mdMetaRegime
     // lets EU / UK / CA / AU / NZ operators override. Persisted with
     // the rest of meta via state/draft.js.
-    allergenRegime: 'us-fda9'
+    allergenRegime: 'us-fda9',
+    // Wave studio-quality — opt-in to a 2-page (front+back) menu when
+    // the operator's content genuinely needs it. Default false: the
+    // live-preview pagination tries to fit a single sheet by auto-
+    // shrinking type within readable bounds, and surfaces a clear
+    // advisory when even minimum sizes overflow. Real restaurant
+    // menus are 1 or 2 pages — three-page menus aren't a thing.
+    allowMultiPage: false,
+    // Wave studio-quality — display currency. Affects how bare-digit
+    // prices render (e.g., operator types "14" → "$14" / "14 €" / "£14"
+    // depending on currency). Operator-typed prices that already carry
+    // a symbol pass through verbatim. Default 'USD' since most operators
+    // are DMV-area today; persisted with the rest of meta. JSON-LD +
+    // Studio Brief read this field too so the priceCurrency in the
+    // structured-data graph matches.
+    currency: 'USD'
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -964,6 +1027,29 @@
       scheduleSaveDraft();
     });
   });
+  // Wave studio-quality — allow-multi-page checkbox (auto-fit override).
+  var metaAllowMultiPageEl = document.getElementById('mdMetaAllowMultiPage');
+  if (metaAllowMultiPageEl) {
+    metaAllowMultiPageEl.checked = !!meta.allowMultiPage;
+    metaAllowMultiPageEl.addEventListener('change', function () {
+      meta.allowMultiPage = !!metaAllowMultiPageEl.checked;
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+  // Wave studio-quality — currency selector. Drives the locale-aware
+  // price formatting (formatPriceDisplay) and the JSON-LD priceCurrency
+  // field. Updates the live preview + studio brief on change.
+  var metaCurrencyEl = document.getElementById('mdMetaCurrency');
+  if (metaCurrencyEl) {
+    if (meta.currency) metaCurrencyEl.value = meta.currency;
+    metaCurrencyEl.addEventListener('change', function () {
+      meta.currency = metaCurrencyEl.value || 'USD';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
+
   // Wave B2 — regime selector (separate wiring; uses `change` instead
   // of `input`). Defaults to us-fda9; menus loaded from a v1/v2 draft
   // that lacks the field default to us-fda9 too. The placeholder hint
@@ -1100,8 +1186,37 @@
       }
     });
     if (current.name !== null || current.dishes.length) groups.push(current);
+    // Wave studio-quality — prune empty sections from the rendered
+    // output. An operator who created a section header but hasn't
+    // added dishes yet (work-in-progress) shouldn't ship an empty
+    // header to the printer. The data stays in rows[] so they can
+    // keep editing; we just skip it in the visual render. The
+    // unnamed group (dishes before any section header) is always
+    // emitted when it has content.
+    groups = groups.filter(function (g) {
+      if (g.dishes.length > 0) return true;       // section with dishes
+      if (g.name === null) return false;           // empty unnamed group
+      return false;                                // empty named section — prune
+    });
 
     var html = '';
+    // Wave studio-quality — cuisine decoration on the live preview.
+    // Same data + same motif as the picker thumbnail and the QR-menu
+    // HTML output. Operator picks Trattoria → instantly sees the
+    // olive-branch in the preview, not just on the final export.
+    // Tolerant: empty when MD_DECOR isn't loaded or theme has no
+    // cuisine match. Two-column / panel themes get a smaller / no
+    // decoration so the asymmetric layout doesn't look unbalanced.
+    try {
+      if (typeof MD_DECOR !== 'undefined' && typeof MD_DECOR.svgFragment === 'function') {
+        var decorFrag = MD_DECOR.svgFragment(theme, { opacity: 0.10 });
+        if (decorFrag) {
+          html += '<div class="md-pp-decor" aria-hidden="true">' +
+                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">' + decorFrag + '</svg>' +
+                  '</div>';
+        }
+      }
+    } catch (_) {}
     if (logoUrl) {
       html += '<img class="md-pp-logo" src="' + escHtml(logoUrl) + '" alt="" />';
     }
@@ -1190,8 +1305,13 @@
         var pairing  = (d.pairing  || '').trim();
         var modifier = (d.modifier || '').trim();
         var halfPrice = (d.halfPrice || '').trim();
-        var priceHtml = escHtml(price);
-        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' + escHtml(halfPrice) + '</span>';
+        // Wave studio-quality — locale-aware currency formatting.
+        // Operator's bare-digit prices get the regional currency symbol
+        // (defaults to USD); already-symboled prices pass through.
+        var displayCurrency = (meta && meta.currency) || 'USD';
+        var priceHtml = escHtml(formatPriceDisplay(price, displayCurrency));
+        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' +
+          escHtml(formatPriceDisplay(halfPrice, displayCurrency)) + '</span>';
         html += '<div class="md-pp-row">';
         html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
@@ -1331,12 +1451,104 @@
     }
   }
 
-  // W24-2 — DOM-measured page split. After the html is rendered into
-  // the first .md-preview-paper, walk children and bin-pack by
-  // measured height vs the paper's content-area height. When a child
-  // would overflow, start a new .md-preview-paper sibling and insert
-  // a .md-page-break shim between. Per-page corner labels are added
-  // last. Returns final page count.
+  // W24-2 + Wave studio-quality — DOM-measured page split with
+  // auto-shrink-to-fit. Real restaurant menus are 1 page (most
+  // common) or 2 pages (front + back). Three-page menus aren't a
+  // thing. Behavior cascade for sheet papers:
+  //
+  //   1. Measure with theme's native font sizes. If it fits the
+  //      target page count (1 by default; 2 if meta.allowMultiPage),
+  //      ship it.
+  //   2. If overflow, progressively shrink the body+desc fonts via
+  //      a CSS scale variable. Floor at 0.78× (so 11pt body → 8.6pt;
+  //      below that menus get unreadable). Re-measure each step.
+  //   3. If still overflow at minimum scale, surface a clear
+  //      actionable warning instead of silently spilling to N pages.
+  //
+  // The shrink applies via the .md-shrink-N CSS class (added/removed
+  // on paperEl) — actual font sizes live in the existing CSS vars.
+  // Operator opt-in: `meta.allowMultiPage` lets the renderer split
+  // freely (back-compat for existing operators with multi-page menus).
+  function _measureBuckets(paperEl, contentAreaH) {
+    // Wave studio-quality — 2-column promotion adjusts measurement.
+    // When .md-promote-2col is active, dish rows + dividers consume
+    // ~half the vertical space (they share the column with a sibling
+    // in the other column). Spanning elements (title, tagline, story,
+    // h2, allergen-key, hero, blurb, decor) still consume full height.
+    var twoCol = paperEl.classList.contains('md-promote-2col');
+    var SPAN_SELECTOR = 'h1.md-pp-title, .md-pp-tagline, .md-pp-story, h2.md-pp-section, .md-pp-allergen-key, .md-pp-section-hero, .md-pp-section-blurb, .md-pp-decor, img.md-pp-logo';
+    var children = Array.prototype.slice.call(paperEl.children);
+    var heights = children.map(function (c) {
+      var cs = window.getComputedStyle(c);
+      if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
+      var h = c.getBoundingClientRect().height;
+      if (twoCol && c.matches && !c.matches(SPAN_SELECTOR)) {
+        return h / 2;  // shared column space
+      }
+      return h;
+    });
+    var pageBuckets = [[]];
+    var bucketH = 0;
+    // Wave studio-quality — widow/orphan control. When a break would
+    // leave a section header alone at the bottom of a page (or with
+    // only its blurb but no dishes), move the header to the next
+    // page so it stays attached to its first dish. Same protection
+    // for the section-blurb element — it should ride with its header.
+    function _isHeaderish(node) {
+      if (!node || !node.matches) return false;
+      return node.matches('h2.md-pp-section, .md-pp-section-blurb, .md-pp-section-hero');
+    }
+    children.forEach(function (c, idx) {
+      var ch = heights[idx];
+      if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
+        // Before starting a new bucket, check if the LAST few items
+        // in the current bucket are header-ish — if so, peel them
+        // off and prepend to the new bucket so the header doesn't
+        // strand. Walk backward up to 3 items (enough for hero +
+        // header + blurb stack).
+        var curr = pageBuckets[pageBuckets.length - 1];
+        var peeled = [];
+        for (var lookBack = 0; lookBack < 3 && curr.length > 0; lookBack++) {
+          var lastIdx = curr.length - 1;
+          if (_isHeaderish(curr[lastIdx])) {
+            peeled.unshift(curr.pop());
+          } else {
+            break;
+          }
+        }
+        // Recompute the current bucket's height after peeling.
+        if (peeled.length) {
+          bucketH = 0;
+          curr.forEach(function (n) {
+            var i = children.indexOf(n);
+            if (i >= 0) bucketH += heights[i];
+          });
+          // If peeling emptied the bucket, the page-overflow we just
+          // hit was a one-block-too-large situation. Restore one
+          // peeled item so we don't infinite-loop or emit empty pages.
+          if (curr.length === 0 && peeled.length > 0) {
+            curr.push(peeled.shift());
+            var i0 = children.indexOf(curr[0]);
+            if (i0 >= 0) bucketH = heights[i0];
+          }
+          pageBuckets.push(peeled.concat([c]));
+        } else {
+          pageBuckets.push([c]);
+        }
+        bucketH = 0;
+        var newBucket = pageBuckets[pageBuckets.length - 1];
+        newBucket.forEach(function (n) {
+          var i = children.indexOf(n);
+          if (i >= 0) bucketH += heights[i];
+        });
+      } else {
+        pageBuckets[pageBuckets.length - 1].push(c);
+        bucketH += ch;
+      }
+    });
+    return pageBuckets;
+  }
+
   function paginatePreviewDom(paperEl, frame, paperInfo) {
     if (!paperEl || !frame || !paperInfo) return 1;
     var rect = paperEl.getBoundingClientRect();
@@ -1351,17 +1563,195 @@
       addPageNumLabel(paperEl, 1, 1);
       return 1;
     }
-    // Measure each child once. Skip absolute-positioned siblings.
+
+    // Wave studio-quality — auto-shrink-to-fit for sheet papers.
+    // Panel-flow papers (trifold/tent) stay on their own pagination.
+    if (paperInfo.flow !== 'panel') {
+      var allowMulti = !!(meta && meta.allowMultiPage);
+      var targetPages = allowMulti ? 2 : 1;
+      // Wave studio-quality — promote-to-2-column eligibility. A real
+      // designer reaches for 2-column when the menu is dish-heavy AND
+      // the paper is wide enough that two columns of body text both
+      // hit a comfortable measure (~30 chars per column, conservatively
+      // ~360 CSS px at body 11px). Below that 2-col looks crushed.
+      var rectW = paperEl.getBoundingClientRect().width;
+      var twoColEligible = rectW >= 480;
+      // Cascade — interleave 1-col shrink + 2-col promotion. A real
+      // designer prefers slight shrink at 1-col over heavy shrink, and
+      // prefers 2-col at modest shrink over crushing the type. The
+      // order below reflects that hierarchy.
+      var STEPS = [
+        { cls: '',         twoCol: false, label: 'native' },
+        { cls: 'shrink-1', twoCol: false, label: '96%' },
+        { cls: 'shrink-2', twoCol: false, label: '92%' }
+      ];
+      if (twoColEligible) {
+        STEPS.push(
+          { cls: '',         twoCol: true,  label: '2-col native' },
+          { cls: 'shrink-1', twoCol: true,  label: '2-col 96%' },
+          { cls: 'shrink-2', twoCol: true,  label: '2-col 92%' }
+        );
+      }
+      STEPS.push({ cls: 'shrink-3', twoCol: false, label: '88%' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-3', twoCol: true, label: '2-col 88%' });
+      }
+      STEPS.push({ cls: 'shrink-4', twoCol: false, label: '84% (floor)' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-4', twoCol: true, label: '2-col 84%' });
+      }
+      // Clear prior cascade classes before measuring.
+      ['shrink-1','shrink-2','shrink-3','shrink-4','promote-2col'].forEach(function (c) {
+        paperEl.classList.remove('md-' + c);
+      });
+      var fitOk = false;
+      var firstStepBuckets = null;
+      var pickedStep = null;
+      for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
+        var step = STEPS[stepIdx];
+        if (step.cls) paperEl.classList.add('md-' + step.cls);
+        if (step.twoCol) paperEl.classList.add('md-promote-2col');
+        // Force a reflow before re-measure.
+        // eslint-disable-next-line no-unused-expressions
+        paperEl.offsetHeight;
+        var buckets = _measureBuckets(paperEl, contentAreaH);
+        if (stepIdx === 0) firstStepBuckets = buckets;
+        if (buckets.length <= targetPages) {
+          fitOk = true;
+          pickedStep = step;
+          break;
+        }
+        // Remove this step's classes before trying the next.
+        if (step.cls) paperEl.classList.remove('md-' + step.cls);
+        if (step.twoCol) paperEl.classList.remove('md-promote-2col');
+      }
+      // Stash the picked step on the paper so the export-PDF flow can
+      // mirror it (effectiveShrinkFactor + effectiveTwoColPromote).
+      paperEl.dataset.fitStep = (pickedStep && pickedStep.label) || (fitOk ? 'fit' : 'overflow');
+
+      // Wave studio-quality — smart 2-page split. When the operator
+      // opted into "Allow front + back" AND the cascade landed on a
+      // 2-bucket fit, prefer to split at a SECTION BOUNDARY rather
+      // than arbitrarily mid-section. A real designer plans the front
+      // page as appetizers + mains and the back as desserts + drinks
+      // (or similar logical halves), not a random page-break that
+      // chops 'Pasta' across two sheets.
+      //
+      // Approach: pick the section whose accumulated height (up to
+      // and including its preceding sections) is closest to half the
+      // total content. Force the bin-pack to break there next pass.
+      if (allowMulti && targetPages >= 2 && fitOk) {
+        var finalBuckets = _measureBuckets(paperEl, contentAreaH);
+        if (finalBuckets.length === 2) {
+          var allChildren = Array.prototype.slice.call(paperEl.children);
+          var headerIndices = [];
+          allChildren.forEach(function (ch, i) {
+            if (ch.matches && ch.matches('h2.md-pp-section')) headerIndices.push(i);
+          });
+          if (headerIndices.length >= 2) {
+            // Compute cumulative heights to find the section break
+            // closest to the midpoint.
+            var SPAN_SELECTOR2 = 'h1.md-pp-title, .md-pp-tagline, .md-pp-story, h2.md-pp-section, .md-pp-allergen-key, .md-pp-section-hero, .md-pp-section-blurb, .md-pp-decor, img.md-pp-logo';
+            var twoColActive = paperEl.classList.contains('md-promote-2col');
+            var heightsForSplit = allChildren.map(function (c) {
+              var cs = window.getComputedStyle(c);
+              if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
+              var h = c.getBoundingClientRect().height;
+              if (twoColActive && c.matches && !c.matches(SPAN_SELECTOR2)) return h / 2;
+              return h;
+            });
+            var totalH = heightsForSplit.reduce(function (a, b) { return a + b; }, 0);
+            var halfH = totalH / 2;
+            var bestBreak = headerIndices[0];
+            var bestDelta = Infinity;
+            var cum = 0;
+            for (var ci = 0; ci < allChildren.length; ci++) {
+              cum += heightsForSplit[ci];
+              if (headerIndices.indexOf(ci) >= 0 && ci > 0) {
+                // ci is a section header — splitting before it puts
+                // everything up to ci-1 on page 1, ci+ on page 2.
+                var pageOneH = cum - heightsForSplit[ci];
+                var d = Math.abs(pageOneH - halfH);
+                if (d < bestDelta) {
+                  bestDelta = d;
+                  bestBreak = ci;
+                }
+              }
+            }
+            // Stash the chosen break index for the bin-pack below to
+            // honor (it walks children and forces a new bucket at this
+            // index regardless of contentAreaH).
+            paperEl.dataset.smartBreakAt = String(bestBreak);
+          }
+        }
+      } else {
+        delete paperEl.dataset.smartBreakAt;
+      }
+      // If still overflowing at maximum shrink, restore native sizes
+      // (no shrink class) and let the legacy multi-page split fire,
+      // BUT surface a clear actionable warning so the operator knows
+      // their menu won't ship as a single sheet.
+      if (!fitOk) {
+        // Re-measure children with the now-cleared shrink classes
+        // so the heights variable below uses native sizes.
+        // eslint-disable-next-line no-unused-expressions
+        paperEl.offsetHeight;
+        if (overflowEl && firstStepBuckets) {
+          var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+          var pagesAtNative = firstStepBuckets.length;
+          var avgPerPage = Math.max(1, Math.round(dishCount / pagesAtNative));
+          var trimNeeded = Math.max(3, dishCount - avgPerPage);
+          var paperLabel = paperInfo.label || paperInfo.label_en || 'this paper';
+          overflowEl.hidden = false;
+          overflowEl.innerHTML =
+            '<strong>' + escHtml(tt(
+              "This menu won't fit on one " + paperLabel + ".",
+              'Este menú no cabe en un ' + paperLabel + '.'
+            )) + '</strong> ' +
+            escHtml(tt(
+              'Real restaurant menus are 1 page or 2 pages (front + back). To fit:',
+              'Los menús de restaurante reales son 1 página o 2 páginas (frente + dorso). Para que quepa:'
+            )) +
+            '<ul style="margin:6px 0 0 18px;padding:0">' +
+              '<li>' + escHtml(tt('Trim ' + trimNeeded + ' dishes, OR', 'Quita ' + trimNeeded + ' platos, O')) + '</li>' +
+              '<li>' + escHtml(tt('Enable "Allow front + back (2 pages)" in the meta panel below, OR',
+                                  'Activa "Permitir frente + dorso (2 páginas)" en el panel de meta abajo, O')) + '</li>' +
+              '<li>' + escHtml(tt('Pick a larger paper format (Tabloid 11×17, A3) or a trifold layout',
+                                  'Elige un formato más grande (Tabloide 11×17, A3) o un tríptico')) + '</li>' +
+            '</ul>';
+        }
+      } else if (overflowEl) {
+        // Fit OK — clear any prior warning.
+        overflowEl.hidden = true;
+        overflowEl.textContent = '';
+      }
+    }
+
+    // Final measurement (after any shrink class settled) for the
+    // existing bin-pack into pageBuckets that the rest of the function
+    // consumes. The shrink class remains on paperEl through draw.
     var heights = children.map(function (c) {
       var cs = window.getComputedStyle(c);
       if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
       return c.getBoundingClientRect().height;
     });
+    // Wave studio-quality — honor smart-break-at when the cascade
+    // chose a section boundary as the optimal 2-page split. Uses the
+    // SAME bin-pack but forces the new bucket exactly at the picked
+    // index, regardless of contentAreaH.
+    var smartBreakAt = paperEl.dataset.smartBreakAt
+      ? parseInt(paperEl.dataset.smartBreakAt, 10)
+      : -1;
     var pageBuckets = [[]];
     var bucketH = 0;
     children.forEach(function (c, idx) {
       var ch = heights[idx];
-      if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
+      if (smartBreakAt >= 0 && idx === smartBreakAt &&
+          pageBuckets[pageBuckets.length - 1].length) {
+        // Force a new bucket at the smart-split section boundary.
+        pageBuckets.push([c]);
+        bucketH = ch;
+      } else if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
         pageBuckets.push([c]);
         bucketH = ch;
       } else {
@@ -2013,9 +2403,19 @@
           meta.sourcing      = d.meta.sourcing      || '';
           meta.disclaimer    = d.meta.disclaimer    || '';
           meta.askYourServer = d.meta.askYourServer || '';
+          // Wave B2 — restore allergen regime + studio-quality multi-page flag.
+          meta.allergenRegime = d.meta.allergenRegime || 'us-fda9';
+          meta.allowMultiPage = !!d.meta.allowMultiPage;
+          meta.currency       = d.meta.currency || 'USD';
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
+          var regimeRestoreEl = document.getElementById('mdMetaRegime');
+          if (regimeRestoreEl) regimeRestoreEl.value = meta.allergenRegime;
+          var multiRestoreEl = document.getElementById('mdMetaAllowMultiPage');
+          if (multiRestoreEl) multiRestoreEl.checked = !!meta.allowMultiPage;
+          var currencyRestoreEl = document.getElementById('mdMetaCurrency');
+          if (currencyRestoreEl && meta.currency) currencyRestoreEl.value = meta.currency;
           metaFooterFields.forEach(function (pair) {
             var fEl = document.getElementById(pair[0]);
             if (fEl) fEl.value = meta[pair[1]] || '';
@@ -2778,6 +3178,23 @@
         title:        title,
         tagline:      meta.tagline,
         story:        meta.story,
+        // Wave studio-quality — preview/PDF parity. Pass the live
+        // preview's effective shrink factor so the PDF ships at the
+        // same font sizes the operator just approved on screen.
+        shrinkFactor: effectiveShrinkFactor(),
+        // Same parity for 2-column promotion: when the live-preview
+        // cascade promoted a 1-col theme to 2-col to fit a single
+        // sheet, the PDF needs to use paginateTwoCol() to match.
+        forceTwoCol: effectiveTwoColPromote(),
+        // Wave studio-quality — operator's display currency (default
+        // USD). The PDF renderer applies the same locale-aware
+        // formatPriceDisplay so the printed deliverable carries the
+        // right currency symbol on bare-digit prices.
+        currency:    (meta && meta.currency) || 'USD',
+        // And operator's "Allow front + back" toggle — propagates
+        // into the PDF so the smart 2-page split planner only fires
+        // when the operator opted into a 2-page deliverable.
+        allowMultiPage: !!(meta && meta.allowMultiPage),
         // W14-2 — restaurant footer fields
         // B2 finish — disclaimer routes through effectiveDisclaimer()
         // so menus with allergens tagged auto-receive the regime + locale
@@ -3111,7 +3528,7 @@
         cuisine:         (function () {
           try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
         })(),
-        currency:        'USD',
+        currency:        (meta && meta.currency) || 'USD',
         locale:          LOCALE,
         allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
       }
@@ -3387,7 +3804,7 @@
           cuisine:         (function () {
             try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
           })(),
-          currency:        'USD',
+          currency:        (meta && meta.currency) || 'USD',
           locale:          LOCALE,
           allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
         }
@@ -3677,75 +4094,388 @@
   // preview of the operator's actual rows[] in that theme. Lazily
   // painted on hover/focus via IntersectionObserver-style trigger.
   // ----------------------------------------------------------------
+  // -------------------- Thumbnail painter (rebuilt) --------------------
+  // Faithful canvas preview of a theme. Honors:
+  //   displayFamily / bodyFamily   — actual font stacks (canvas falls
+  //                                    through them like CSS does)
+  //   sectionCase                  — uppercase / small-caps / capitalize
+  //   letterSpacing                — wide vs normal tracking on headers
+  //   dividerStyle                 — box / hand-rule / ornament / whitespace
+  //   priceStyle                   — leader-dots / right-monospace /
+  //                                    tab-aligned / whitespace
+  //   columns                      — 1 vs 2 column body
+  //   contentType                  — standard / tasting / wine / cocktail /
+  //                                    dessert / kids (drives section name +
+  //                                    sample copy)
+  //   cuisineHint                  — pulls cuisine-specific sample dishes
+  //   paperTexture                 — speckled overlay
+  //   accent / ink / muted / paper — actual theme colors
+  // Plus a small allergen pill in the accent color (positive-only V/VG/GF)
+  // and a cuisine-coherent ornament glyph for ornament-style themes.
+  // The bottom strip carries the theme's human label in muted body type
+  // so picker scanning is still legible at thumb size.
+
+  // Section name by cuisine + contentType. Closed enums keep it scannable.
+  function _thumbSectionFor(theme) {
+    var ct = (theme && theme.contentType) || 'standard';
+    if (ct === 'tasting')  return 'COURSE I';
+    if (ct === 'wine')     return 'BY THE GLASS';
+    if (ct === 'cocktail') return 'CLASSICS';
+    if (ct === 'dessert')  return 'DOLCI';
+    if (ct === 'kids')     return 'FOR THE LITTLES';
+    var ch = (theme && theme.cuisineHint) || [];
+    function has(re) { return ch.some(function (x) { return re.test(String(x)); }); }
+    if (has(/italian|trattor|pasta/i))                    return 'ANTIPASTI';
+    if (has(/mexic|taco|cantina/i))                       return 'ANTOJITOS';
+    if (has(/french|bistro|francesa/i))                   return 'ENTRÉES';
+    if (has(/asian|thai|viet|japan|kor|ramen|sushi/i))    return 'STARTERS';
+    if (has(/seafood|oyster|fish|maris|pesc/i))           return 'RAW BAR';
+    if (has(/bbq|barbec|smoke|brisket/i))                 return 'FROM THE PIT';
+    if (has(/diner|breakfast|burger|sandwich|deli/i))     return 'OPENERS';
+    if (has(/farm|seasonal|garden|plant/i))               return 'FROM THE GARDEN';
+    if (has(/cafe|bakery|patisserie/i))                   return 'PASTRIES';
+    return 'STARTERS';
+  }
+
+  // Cuisine-coherent sample dishes. Three rows per profile so the
+  // thumbnail feels representative without crowding.
+  function _thumbDishesFor(theme) {
+    var ct = (theme && theme.contentType) || 'standard';
+    if (ct === 'tasting') return [
+      { name: 'Course I',         price: '' },
+      { name: 'Course II',        price: '' },
+      { name: 'Course III',       price: '' }
+    ];
+    if (ct === 'wine') return [
+      { name: 'Pinot Noir, 2021', price: '14' },
+      { name: 'Sancerre, 2022',   price: '17' },
+      { name: 'Champagne brut',   price: '22' }
+    ];
+    if (ct === 'cocktail') return [
+      { name: 'Old fashioned',    price: '14' },
+      { name: 'Negroni',          price: '13' },
+      { name: 'French 75',        price: '15' }
+    ];
+    if (ct === 'dessert') return [
+      { name: 'Tiramisu',         price: '11' },
+      { name: 'Crème brûlée',     price: '10' },
+      { name: 'Sorbet trio',      price: '9' }
+    ];
+    if (ct === 'kids') return [
+      { name: 'Mac & cheese',     price: '7' },
+      { name: 'Chicken tenders',  price: '8' },
+      { name: 'PB&J',             price: '5' }
+    ];
+    var ch = (theme && theme.cuisineHint) || [];
+    function has(re) { return ch.some(function (x) { return re.test(String(x)); }); }
+    if (has(/italian|trattor/i)) return [
+      { name: 'Bruschetta',       price: '9'  },
+      { name: 'Caprese',          price: '13' },
+      { name: 'Carbonara',        price: '21' }
+    ];
+    if (has(/mexic|taco/i)) return [
+      { name: 'Guacamole',        price: '12' },
+      { name: 'Tacos al pastor',  price: '14' },
+      { name: 'Pollo asado',      price: '22' }
+    ];
+    if (has(/french|bistro/i)) return [
+      { name: 'Soupe à l’oignon', price: '12' },
+      { name: 'Steak frites',     price: '32' },
+      { name: 'Tarte du jour',    price: '11' }
+    ];
+    if (has(/asian|thai|viet|japan|kor|ramen|sushi/i)) return [
+      { name: 'Spring rolls',     price: '9'  },
+      { name: 'Pad thai',         price: '17' },
+      { name: 'Bibimbap',         price: '19' }
+    ];
+    if (has(/seafood|oyster|fish|maris|pesc/i)) return [
+      { name: 'Oysters, half doz',price: '24' },
+      { name: 'Crab cake',        price: '18' },
+      { name: 'Branzino',         price: '38' }
+    ];
+    if (has(/bbq|barbec|smoke/i)) return [
+      { name: 'Brisket, 1/2 lb',  price: '22' },
+      { name: 'Pulled pork',      price: '17' },
+      { name: 'Cornbread',        price: '6'  }
+    ];
+    if (has(/diner|breakfast|burger/i)) return [
+      { name: 'Pancakes',         price: '11' },
+      { name: 'Eggs benedict',    price: '15' },
+      { name: 'House burger',     price: '17' }
+    ];
+    if (has(/farm|garden|plant/i)) return [
+      { name: 'Beet salad',       price: '14' },
+      { name: 'Duck breast',      price: '34' },
+      { name: 'Lamb tagine',      price: '32' }
+    ];
+    if (has(/cafe|bakery|patisser/i)) return [
+      { name: 'Almond croissant', price: '5'  },
+      { name: 'Pain au chocolat', price: '4'  },
+      { name: 'Quiche du jour',   price: '12' }
+    ];
+    return [
+      { name: 'Caesar salad',     price: '14' },
+      { name: 'House bread',      price: '6'  },
+      { name: 'Roast chicken',    price: '28' }
+    ];
+  }
+
+  // Apply sectionCase enum to a section label.
+  function _applyCase(s, mode) {
+    if (mode === 'capitalize') {
+      return String(s || '').toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+    if (mode === 'small-caps') {
+      // No real small-caps in canvas; use uppercase at slightly smaller weight.
+      return String(s || '').toUpperCase();
+    }
+    return String(s || '').toUpperCase();
+  }
+
+  // Render text with letter-spacing (wide vs normal tracking).
+  function _drawSpacedText(ctx, txt, x, y, spacing, align) {
+    spacing = spacing || 0;
+    if (!spacing) {
+      ctx.textAlign = align || 'left';
+      ctx.fillText(txt, x, y);
+      return;
+    }
+    // Manually space characters (canvas has no letter-spacing).
+    ctx.save();
+    ctx.textAlign = 'left';
+    var w = 0;
+    var chars = String(txt).split('');
+    for (var i = 0; i < chars.length; i++) {
+      w += ctx.measureText(chars[i]).width + (i < chars.length - 1 ? spacing : 0);
+    }
+    var startX = align === 'center' ? x - w / 2 : align === 'right' ? x - w : x;
+    var cur = startX;
+    for (var j = 0; j < chars.length; j++) {
+      ctx.fillText(chars[j], cur, y);
+      cur += ctx.measureText(chars[j]).width + spacing;
+    }
+    ctx.restore();
+  }
+
+  // dividerStyle renderer — rule, box, ornament, whitespace.
+  function _drawSectionDivider(ctx, w, y, theme) {
+    var style = theme.dividerStyle || 'whitespace';
+    var col = theme.muted || theme.accent || '#7C6F60';
+    if (style === 'box') {
+      ctx.strokeStyle = theme.ink || '#14161A';
+      ctx.lineWidth = 0.6;
+      ctx.strokeRect(w * 0.18, y - 12, w * 0.64, 14);
+      return;
+    }
+    if (style === 'hand-rule') {
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.20, y);
+      ctx.lineTo(w * 0.80, y);
+      ctx.stroke();
+      return;
+    }
+    if (style === 'ornament') {
+      // small accent diamond between two short rules
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.20, y); ctx.lineTo(w * 0.42, y);
+      ctx.moveTo(w * 0.58, y); ctx.lineTo(w * 0.80, y);
+      ctx.stroke();
+      ctx.fillStyle = theme.accent || col;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.50, y - 2.5);
+      ctx.lineTo(w * 0.515, y);
+      ctx.lineTo(w * 0.50, y + 2.5);
+      ctx.lineTo(w * 0.485, y);
+      ctx.closePath();
+      ctx.fill();
+      return;
+    }
+    // whitespace — no stroke; the headline + spacing carries the rhythm.
+  }
+
+  // priceStyle renderer — leader-dots, monospace, tab-aligned, whitespace.
+  function _drawDishRow(ctx, dish, x0, x1, y, theme, bodyPx) {
+    var name = String(dish.name || '').slice(0, 22);
+    var price = String(dish.price || '');
+    ctx.fillStyle = theme.ink || '#14161A';
+    ctx.textAlign = 'left';
+    ctx.fillText(name, x0, y);
+    if (!price) return;
+    ctx.textAlign = 'right';
+    ctx.fillText(price, x1, y);
+    if (theme.priceStyle === 'leader-dots') {
+      ctx.strokeStyle = theme.muted || '#9A958B';
+      ctx.lineWidth = 0.4;
+      ctx.setLineDash([0.5, 1.5]);
+      var nameW = ctx.measureText(name).width;
+      var priceW = ctx.measureText(price).width;
+      ctx.beginPath();
+      ctx.moveTo(x0 + nameW + 3, y - bodyPx * 0.32);
+      ctx.lineTo(x1 - priceW - 3, y - bodyPx * 0.32);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Allergen pill — simple rounded chip in accent color with a code letter.
+  function _drawAllergenPill(ctx, x, y, code, theme) {
+    var w = 12, h = 8;
+    ctx.fillStyle = theme.accent || '#1F4E5B';
+    if (typeof ctx.roundRect === 'function') {
+      ctx.beginPath();
+      ctx.roundRect(x, y - h + 2, w, h, 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(x, y - h + 2, w, h);
+    }
+    ctx.fillStyle = theme.paper || '#FAF6EE';
+    ctx.font = '600 5.5px Inter, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(code || 'V', x + w / 2, y - h / 2 + 2);
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  // Mix two hex colors at a given ratio (0–1). Used for paper-texture
+  // speckle and for the muted-on-paper preview tint.
+  function _colorMix(c1, c2, ratio) {
+    function p(c) {
+      var s = String(c || '#000000').replace('#', '');
+      if (s.length === 3) s = s.split('').map(function (x) { return x + x; }).join('');
+      return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+    }
+    var a = p(c1), b = p(c2);
+    var r = Math.round(a[0] * (1 - ratio) + b[0] * ratio);
+    var g = Math.round(a[1] * (1 - ratio) + b[1] * ratio);
+    var bl = Math.round(a[2] * (1 - ratio) + b[2] * ratio);
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+
   function paintThemeThumb(canvas, themeRef) {
     if (!canvas || !canvas.getContext) return;
     var ctx = canvas.getContext('2d');
-    var W = canvas.width = canvas.offsetWidth * 2;  // 2x for retina
-    var H = canvas.height = canvas.offsetHeight * 2;
-    ctx.scale(2, 2);
+    var ratio = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+    canvas.width  = canvas.offsetWidth  * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
     var w = canvas.offsetWidth;
     var h = canvas.offsetHeight;
-    // Background paper
-    ctx.fillStyle = themeRef.paper || '#FAF6EE';
+
+    // ===== Background paper + optional speckle texture =====
+    var paper  = themeRef.paper  || '#FAF6EE';
+    var ink    = themeRef.ink    || '#14161A';
+    var accent = themeRef.accent || '#1F4E5B';
+    var muted  = themeRef.muted  || '#7C6F60';
+    ctx.fillStyle = paper;
     ctx.fillRect(0, 0, w, h);
-    // Title (display family fallback to system)
-    var titleFont = (themeRef.id && themeRef.id.indexOf('counter') !== -1) ||
-                    /helvetica|inter|sans/.test((themeRef.displayFamily || '').toLowerCase())
-      ? 'Inter, system-ui, sans-serif' : 'Georgia, serif';
-    ctx.fillStyle = themeRef.ink || '#14161A';
-    ctx.font = '600 11px ' + titleFont;
-    ctx.textAlign = 'center';
-    ctx.fillText('Menu', w / 2, 14);
-    // Section header
-    ctx.fillStyle = themeRef.accent || '#1F4E5B';
-    ctx.font = '600 7.5px ' + titleFont;
-    ctx.textAlign = 'center';
-    ctx.fillText('STARTERS', w / 2, 30);
-    if (themeRef.dividerStyle === 'hand-rule' || themeRef.dividerStyle === 'whitespace') {
-      ctx.strokeStyle = themeRef.muted || '#7C6F60';
-      ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(w * 0.2, 34); ctx.lineTo(w * 0.8, 34); ctx.stroke();
-    } else if (themeRef.dividerStyle === 'box') {
-      ctx.strokeStyle = themeRef.ink || '#14161A';
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(w * 0.3, 22, w * 0.4, 14);
-    }
-    // Three dish rows
-    var rowsToShow = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).slice(0, 4);
-    if (!rowsToShow.length) {
-      rowsToShow = [
-        { name: 'Caesar salad',  price: '$14' },
-        { name: 'House bread',    price: '$6'  },
-        { name: 'Roast chicken',  price: '$28' }
-      ];
-    }
-    var bodyFontPx = '7px ' + titleFont;
-    ctx.font = bodyFontPx;
-    ctx.fillStyle = themeRef.ink || '#14161A';
-    var y = 44;
-    rowsToShow.forEach(function (r) {
-      var name = String(r.name || '').slice(0, 22);
-      ctx.textAlign = 'left';
-      ctx.fillText(name, w * 0.08, y);
-      if (r.price) {
-        ctx.textAlign = 'right';
-        ctx.fillText(String(r.price), w * 0.92, y);
+    if (themeRef.paperTexture) {
+      ctx.fillStyle = _colorMix(paper, ink, 0.06);
+      for (var sx = 1; sx < w; sx += 3) {
+        for (var sy = 1; sy < h; sy += 3) {
+          if (((sx * 7919) ^ (sy * 6151)) % 11 === 0) ctx.fillRect(sx, sy, 1, 1);
+        }
       }
-      // Leader-dots if theme calls for them
-      if (themeRef.priceStyle === 'leader-dots') {
-        ctx.strokeStyle = themeRef.muted || '#9A958B';
-        ctx.lineWidth = 0.4;
-        ctx.setLineDash([0.5, 1.5]);
-        var nameW = ctx.measureText(name).width;
-        ctx.beginPath();
-        ctx.moveTo(w * 0.08 + nameW + 4, y - 1.5);
-        var priceW = r.price ? ctx.measureText(String(r.price)).width : 0;
-        ctx.lineTo(w * 0.92 - priceW - 4, y - 1.5);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-      y += 11;
-    });
+    }
+
+    var displayFamily = themeRef.displayFamily || 'Georgia, "Times New Roman", serif';
+    var bodyFamily    = themeRef.bodyFamily    || displayFamily;
+    var letterSpacing = themeRef.letterSpacing === 'wide' ? 1.2 : 0.4;
+
+    // ===== Title (the operator's first section name OR a generic) =====
+    var firstSection = rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); });
+    var titleText = (firstSection && firstSection.name) ||
+                    (themeRef.label_en || 'Menu');
+    if (titleText.length > 14) titleText = titleText.slice(0, 14) + '…';
+    ctx.fillStyle = ink;
+    var titlePx = (themeRef.contentType === 'kids') ? 14 : 13;
+    ctx.font = '500 ' + titlePx + 'px ' + displayFamily;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(titleText, w / 2, 14);
+
+    var topY = 22;
+
+    // Optional small ornament above the section header on ornament themes
+    if (themeRef.dividerStyle === 'ornament') {
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.moveTo(w / 2 - 3, topY);
+      ctx.lineTo(w / 2,     topY - 3);
+      ctx.lineTo(w / 2 + 3, topY);
+      ctx.lineTo(w / 2,     topY + 3);
+      ctx.closePath();
+      ctx.fill();
+      topY += 6;
+    }
+
+    // ===== Section header =====
+    var sectionRaw = _thumbSectionFor(themeRef);
+    var sectionLabel = _applyCase(sectionRaw, themeRef.sectionCase || 'uppercase');
+    ctx.fillStyle = accent;
+    var headerPx = themeRef.sectionCase === 'small-caps' ? 7 : 8;
+    ctx.font = '600 ' + headerPx + 'px ' + displayFamily;
+    _drawSpacedText(ctx, sectionLabel, w / 2, topY + headerPx, letterSpacing, 'center');
+    topY += headerPx + 6;
+
+    // ===== Section divider =====
+    _drawSectionDivider(ctx, w, topY, themeRef);
+    topY += 8;
+
+    // ===== Body dishes =====
+    var operatorRows = rows.filter(function (r) {
+      return r.kind === 'dish' && !r.ghost && (r.name || '').trim();
+    }).slice(0, 3);
+    var dishes = operatorRows.length ? operatorRows.map(function (r) {
+      return { name: r.name, price: r.price || '' };
+    }) : _thumbDishesFor(themeRef);
+
+    var bodyPx = 7.2;
+    ctx.font = bodyPx + 'px ' + bodyFamily;
+    ctx.textBaseline = 'alphabetic';
+    var x0 = w * 0.10;
+    var x1 = w * 0.90;
+    var rowGap = bodyPx + 4;
+
+    // Two-column themes split the body into a left + right column with
+    // shorter dish lines so each side reads as its own list.
+    if (themeRef.columns === 2 && dishes.length >= 2) {
+      var leftDishes  = dishes.slice(0, Math.ceil(dishes.length / 2));
+      var rightDishes = dishes.slice(Math.ceil(dishes.length / 2));
+      var midGap = w * 0.04;
+      var leftX1  = w / 2 - midGap / 2;
+      var rightX0 = w / 2 + midGap / 2;
+      leftDishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, x0, leftX1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      rightDishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, rightX0, x1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      topY += Math.max(leftDishes.length, rightDishes.length) * rowGap;
+    } else {
+      dishes.forEach(function (d, i) {
+        _drawDishRow(ctx, d, x0, x1, topY + i * rowGap, themeRef, bodyPx);
+      });
+      topY += dishes.length * rowGap;
+    }
+
+    // ===== Allergen pill on first dish (positive-only V) =====
+    if (themeRef.contentType !== 'tasting' &&
+        themeRef.contentType !== 'wine' &&
+        themeRef.contentType !== 'cocktail') {
+      _drawAllergenPill(ctx, x0, topY + 2, 'V', themeRef);
+    }
+
+    // ===== Bottom strip — theme name in muted body type =====
+    var label = themeRef.label_en || themeRef.id || '';
+    if (label.length > 24) label = label.slice(0, 24) + '…';
+    ctx.fillStyle = muted;
+    ctx.font = '500 6.5px ' + bodyFamily;
+    ctx.textAlign = 'center';
+    ctx.fillText(label, w / 2, h - 4);
   }
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
@@ -3755,15 +4485,40 @@
       var id = card.dataset.id;
       var t = MD_THEMES.get(id);
       if (!t) return;
-      // Insert canvas if not already
-      var canvas = card.querySelector('.md-theme-thumb');
-      if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.className = 'md-theme-thumb';
-        canvas.setAttribute('aria-hidden', 'true');
-        card.appendChild(canvas);
+      // Wave studio-quality — inline SVG (not <img>) so the SVG <text>
+      // elements use whatever @font-face fonts the page has loaded.
+      // The moment Cormorant / Playfair / Bebas / etc land in
+      // /assets/fonts/ + are wired in @font-face, every thumbnail
+      // renders in its actual typography with zero further work.
+      // SVG content lives in MD_THUMBS, populated by the build script
+      // scripts/build-theme-thumbnails.mjs from themes.js +
+      // cuisine-specific dish samples + the Muntin cuisine-decoration
+      // library (olive branch, fleur-de-lis, talavera, crane, wave,
+      // laurel, grape, deco fan, etc).
+      var oldCanvas = card.querySelector('canvas.md-theme-thumb');
+      if (oldCanvas) oldCanvas.parentNode.removeChild(oldCanvas);
+      var oldImg = card.querySelector('img.md-theme-thumb');
+      if (oldImg) oldImg.parentNode.removeChild(oldImg);
+      var holder = card.querySelector('.md-theme-thumb');
+      if (!holder) {
+        holder = document.createElement('div');
+        holder.className = 'md-theme-thumb';
+        holder.setAttribute('aria-hidden', 'true');
+        card.appendChild(holder);
       }
-      paintThemeThumb(canvas, t);
+      var svgString = (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get)
+        ? MD_THUMBS.get(id) : null;
+      if (svgString) {
+        holder.innerHTML = svgString;
+        // Make the inline SVG scale to the holder's box.
+        var inlineSvg = holder.querySelector('svg');
+        if (inlineSvg) {
+          inlineSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+          inlineSvg.style.width = '100%';
+          inlineSvg.style.height = '100%';
+          inlineSvg.style.display = 'block';
+        }
+      }
       card.dataset.thumbLoaded = '1';
     });
   }

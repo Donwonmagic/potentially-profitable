@@ -413,14 +413,19 @@ header.nav{min-height:64px}
 /* W24-2 — page-break shim: dashed rule + accent label visible
    between stacked sheets so the operator can see exactly where
    the PDF will break. */
-.md-page-break{display:flex;align-items:center;gap:10px;margin:18px auto;max-width:680px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
-.md-page-break::before,.md-page-break::after{content:'';flex:1;border-top:1px dashed var(--line-dark)}
-.md-page-break span{flex:0 0 auto}
-@media(max-width:640px){.md-page-break{font-size:10px;letter-spacing:.08em}}
+/* Page-break separator — sits BETWEEN paper sheets so the operator
+   sees that their menu wraps to a new printed page. Should read
+   as a clear separator, not as a header inside the menu. Reduced
+   visual weight + a small pill so it doesn't compete with the
+   menu typography. */
+.md-page-break{display:flex;align-items:center;gap:14px;margin:24px auto 18px;max-width:680px;color:var(--stone)}
+.md-page-break::before,.md-page-break::after{content:'';flex:1;border-top:1px dashed color-mix(in srgb,var(--stone) 35%,transparent)}
+.md-page-break span{flex:0 0 auto;padding:4px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--stone)}
+@media(max-width:640px){.md-page-break span{font-size:9.5px;padding:3px 10px;letter-spacing:.08em}}
 /* W24-2 — per-page corner indicator. Anchored to the paper
    element's bottom-right gutter; muted color so it sits below
    the dish content visually. */
-.md-preview-page-num{position:absolute;bottom:10px;right:14px;font-size:10px;color:var(--muted);font-variant:tabular-nums;letter-spacing:.04em;opacity:.7}
+.md-preview-page-num{position:absolute;bottom:10px;right:14px;font-size:9px;color:var(--muted);font-variant:tabular-nums;letter-spacing:.06em;opacity:.45}
 /* W24-3 — folded-format panel preview. Operator sees N panels
    side-by-side at the unfolded sheet's aspect ratio, with
    visible fold lines. On mobile we stack panels vertically
@@ -481,17 +486,79 @@ header.nav{min-height:64px}
 
 /* W12-3 — paper-texture overlay (linen grain) via two crossed
    hairline-stripe gradients at 4% opacity. Subtle, not pictorial. */
+/* Wave studio-quality — cuisine decoration on the live preview.
+   Sits in the upper-right corner at low opacity; pointer-events:none
+   so it never intercepts taps. SVG inherits the theme's muted color
+   via currentColor + the decoration's color attribute. The preview
+   paper is position:relative; this layers behind menu content via
+   z-index:0 (content sits at z-index:1 by default in stacking ctx). */
+/* Wave studio-quality — auto-shrink-to-fit. Real restaurant menus
+   are 1 page or 2 pages (front+back), never 3+. When the operator's
+   dish count would overflow, paginatePreviewDom progressively adds
+   one of these classes to scale type down by 4–16% (CSS-multiplier
+   on the existing --bodypx / --h2px tokens). Floors at 0.84× of
+   native — below that menus get unreadable. Class added BEFORE
+   final measurement so the bucket pass sees the shrunken sizes. */
+.md-preview-paper.md-shrink-1{font-size:96%}
+.md-preview-paper.md-shrink-1 .md-pp-row{padding:8px 0}
+.md-preview-paper.md-shrink-2{font-size:92%}
+.md-preview-paper.md-shrink-2 .md-pp-row{padding:7px 0}
+.md-preview-paper.md-shrink-2 h2.md-pp-section{margin:24px 0 10px}
+.md-preview-paper.md-shrink-3{font-size:88%}
+.md-preview-paper.md-shrink-3 .md-pp-row{padding:6px 0}
+.md-preview-paper.md-shrink-3 h2.md-pp-section{margin:20px 0 8px}
+.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:0.78em}
+.md-preview-paper.md-shrink-4{font-size:84%}
+.md-preview-paper.md-shrink-4 .md-pp-row{padding:5px 0}
+.md-preview-paper.md-shrink-4 h2.md-pp-section{margin:16px 0 6px}
+.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:0.74em}
+
+/* Wave studio-quality — 2-column auto-promotion. When the cascade
+   decides a 1-column theme would benefit from 2-column flow to fit
+   a single sheet, it adds .md-promote-2col to the paper. CSS column-
+   count flows the children naturally; the title / tagline / story /
+   section headers / allergen key span both columns via column-span.
+   Section-blurb and section-hero also span. The dish rows are what
+   actually flow column-to-column. */
+.md-preview-paper.md-promote-2col{column-count:2;column-gap:32px}
+.md-preview-paper.md-promote-2col h1.md-pp-title,
+.md-preview-paper.md-promote-2col .md-pp-tagline,
+.md-preview-paper.md-promote-2col .md-pp-story,
+.md-preview-paper.md-promote-2col h2.md-pp-section,
+.md-preview-paper.md-promote-2col .md-pp-allergen-key,
+.md-preview-paper.md-promote-2col .md-pp-section-hero,
+.md-preview-paper.md-promote-2col .md-pp-section-blurb,
+.md-preview-paper.md-promote-2col .md-pp-decor,
+.md-preview-paper.md-promote-2col > img.md-pp-logo{column-span:all}
+/* Avoid awkward orphans where a dish row's name lands at the bottom
+   of column 1 and its description starts column 2. break-inside on
+   the row keeps the dish atomic. */
+.md-preview-paper.md-promote-2col .md-pp-row{break-inside:avoid}
+.md-preview-paper.md-promote-2col h2.md-pp-section{break-after:avoid}
+
+.md-preview-paper .md-pp-decor{position:absolute;top:6%;right:6%;width:28%;max-width:160px;aspect-ratio:220/120;opacity:.85;pointer-events:none;z-index:0}
+.md-preview-paper .md-pp-decor svg{width:100%;height:100%;display:block}
+.md-preview-paper > *:not(.md-pp-decor){position:relative;z-index:1}
 .md-preview-paper.md-pp-texture{background-image:
   repeating-linear-gradient(0deg, rgba(0,0,0,.022) 0 1px, transparent 1px 4px),
   repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);
   background-color:var(--paper)}
-.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 6px;color:var(--ink);letter-spacing:0}
+/* Title — the menu's H1. Caps at 2.6× body so even the boldest
+   themes don't visually crush the dish copy. Optical letter-spacing
+   tightens slightly above 28px (per Robert Bringhurst's rule). */
+.md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:min(var(--h1px),calc(var(--bodypx,11px) * 2.6));font-weight:500;text-align:center;margin:0 0 10px;color:var(--ink);letter-spacing:-0.005em;line-height:1.05}
 /* W9-3 — Tagline + chef's-note story block render between title and first section. */
-.md-preview-paper .md-pp-tagline{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--accent);margin:0 0 18px;font-size:0.86em;letter-spacing:.04em}
-.md-preview-paper .md-pp-story{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--ink);margin:0 auto 28px;padding:14px 0;font-size:0.9em;line-height:1.6;border-top:0.5px solid var(--muted);border-bottom:0.5px solid var(--muted);max-width:80%}
-.md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}
+.md-preview-paper .md-pp-tagline{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--accent);margin:0 0 22px;font-size:0.86em;letter-spacing:.04em;line-height:1.45}
+.md-preview-paper .md-pp-story{font-family:var(--bodyFamily);font-style:italic;text-align:center;color:var(--ink);margin:0 auto 32px;padding:14px 0;font-size:0.9em;line-height:1.6;border-top:0.5px solid color-mix(in srgb,var(--muted) 50%,transparent);border-bottom:0.5px solid color-mix(in srgb,var(--muted) 50%,transparent);max-width:80%}
+/* Section header — caps at 1.5× body so it's clearly subordinate
+   to the title. Generous top margin (1 lh) and tighter bottom
+   margin (0.5 lh) creates clear "section opens here" rhythm. */
+.md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-size:min(var(--h2px),calc(var(--bodypx,11px) * 1.55));font-weight:500;text-align:center;margin:32px 0 14px;color:var(--ink);letter-spacing:.04em;line-height:1.15}
+.md-preview-paper h2.md-pp-section:first-of-type{margin-top:24px}
 .md-preview-paper .md-pp-cols{display:grid;gap:0 32px}
-.md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:8px 0;break-inside:avoid}
+/* Dish row — generous baseline padding (10px) so dishes have room
+   to breathe; description hangs below the name without crowding. */
+.md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:10px 0;break-inside:avoid;position:relative}
 .md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
 .md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
 .md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
@@ -516,8 +583,28 @@ header.nav{min-height:64px}
 .md-preview-paper[data-divider="box"] h2.md-pp-section{display:inline-block;border:1px solid var(--ink);padding:6px 18px;background:transparent;text-align:center;width:auto;margin-left:auto;margin-right:auto;margin-bottom:14px}
 .md-preview-paper[data-divider="ornament"] h2.md-pp-section::before{content:'\2766\2002';color:var(--accent)}
 .md-preview-paper[data-divider="ornament"] h2.md-pp-section::after{content:'\2002\2766';color:var(--accent)}
-.md-preview-paper[data-price="leader-dots"] .md-pp-row::after{content:'';grid-column:1/-1;border-bottom:1.5px dotted var(--muted);margin:-22px 0 0;height:2px;align-self:start;order:2}
-.md-preview-paper[data-price="leader-dots"] .md-pp-row{grid-template-rows:auto auto}
+/* Leader-dots — proper Michelin-style typography. Three-track grid
+   (name | leader | price) so the dotted line fills the EXACT gap
+   between dish name and price, sits on the baseline, and never
+   bleeds under the description / pairing / modifier sub-lines.
+   Light dot weight + tight kerning so the row reads as type, not
+   as a fence. */
+.md-preview-paper[data-price="leader-dots"] .md-pp-row{grid-template-columns:max-content 1fr max-content;grid-template-rows:auto auto auto auto auto auto;align-items:baseline;column-gap:0}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-name{grid-column:1;grid-row:1}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-price{grid-column:3;grid-row:1}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row::after{
+  content:'';
+  grid-column:2;
+  grid-row:1;
+  align-self:end;
+  height:0;
+  margin:0 8px 4px;
+  border-bottom:1px dotted color-mix(in srgb, var(--muted) 65%, transparent);
+}
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-desc,
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-pairing,
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-modifier,
+.md-preview-paper[data-price="leader-dots"] .md-pp-row > .md-pp-portion{grid-column:1/-1}
 .md-preview-paper[data-price="right-monospace"] .md-pp-price{font-family:ui-monospace,SFMono-Regular,monospace}
 .md-preview-paper[data-price="tab-aligned"] .md-pp-row{grid-template-columns:1fr 60px;text-align:right}
 .md-preview-paper[data-price="tab-aligned"] .md-pp-name{text-align:left}
@@ -692,12 +779,18 @@ header.nav{min-height:64px}
 /* The preview-paper renders chips after the dish name. They inherit
    the theme accent so they match the overall palette without a
    contrast hit on dark stocks. */
-.md-preview-paper .md-pp-glyphs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-left:6px;vertical-align:middle}
-.md-preview-paper .md-pp-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 5px;border:0.6px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);font-size:8.5px;font-weight:700;letter-spacing:.04em;line-height:1;font-family:var(--bodyFamily)}
+.md-preview-paper .md-pp-glyphs{display:inline-flex;flex-wrap:wrap;gap:5px;margin-left:8px;vertical-align:middle}
+/* Allergen pill — bumped from 18×14 to 22×18 so the code letters
+   read clearly at on-screen preview size. Border weight 0.8px (was
+   0.6) so the chip holds shape on retina + non-retina screens. */
+.md-preview-paper .md-pp-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;padding:0 7px;border:0.8px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.04em;line-height:1;font-family:var(--bodyFamily)}
 /* W19 — SVG variant of the preview chip. Circular border, sized
    so the icon reads at the menu's body-text scale. */
-.md-preview-paper .md-pp-glyph-svg{padding:1px;width:16px;min-width:16px;height:16px;border-radius:50%}
-.md-preview-paper .md-pp-glyph-svg svg{width:12px;height:12px;display:block}
+/* SVG glyph variant — bumped to 22×22 (was 16×16) so the bespoke
+   single-stroke W25 art reads at preview size; inner SVG bumped
+   from 12 → 16 for the same reason. */
+.md-preview-paper .md-pp-glyph-svg{padding:2px;width:22px;min-width:22px;height:22px;border-radius:50%}
+.md-preview-paper .md-pp-glyph-svg svg{width:16px;height:16px;display:block;stroke:currentColor;fill:none}
 .md-preview-paper .md-pp-glyph-spice{border:0;background:transparent;color:inherit;font-size:9.5px;letter-spacing:0;padding:0}
 
 /* Auto-generated allergen key legend at the menu footer. Renders only
@@ -1035,6 +1128,48 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               <label for="mdMetaSourcing">Sourcing / origin note</label>
               <input type="text" id="mdMetaSourcing" maxlength="200" placeholder="Sourced from farms within 100 miles of our kitchen" autocomplete="off" />
             </div>
+            <!-- Wave studio-quality — page-fit override. By default the
+                 tool fits every menu to a single sheet (auto-shrinking
+                 type within readable bounds). Operators with genuinely
+                 long menus opt INTO front+back (2-page) mode by ticking
+                 this box. Three-page menus aren't a thing in real
+                 restaurants — the auto-fit + clear advisory protects
+                 the operator from shipping one. -->
+            <div class="md-meta-field">
+              <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+                <input type="checkbox" id="mdMetaAllowMultiPage" style="margin-top:3px" />
+                <span style="font-size:13px;line-height:1.45;font-weight:500;color:var(--ink)">
+                  Allow front + back (2 pages)
+                  <span style="display:block;font-weight:400;color:var(--stone);font-size:11.5px;margin-top:2px">
+                    Real menus are 1 page or 2 pages — never 3. Off by default; we auto-shrink type to fit. Tick to allow a front + back.
+                  </span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Wave studio-quality — display currency. Drives the
+                 prefix/suffix on bare-digit prices (operator types
+                 "14" → renders as "$14" / "14 €" / "£14" depending
+                 on selection). Already-symboled prices ("$14", "€8,50")
+                 pass through untouched. Also sets priceCurrency in
+                 the schema.org Menu JSON-LD output. -->
+            <div class="md-meta-field">
+              <label for="mdMetaCurrency">Display currency</label>
+              <select id="mdMetaCurrency" autocomplete="off">
+                <option value="USD">US dollar — $14 (default)</option>
+                <option value="EUR">Euro — 14 €</option>
+                <option value="GBP">British pound — £14</option>
+                <option value="CAD">Canadian dollar — $14</option>
+                <option value="MXN">Mexican peso — $14</option>
+                <option value="AUD">Australian dollar — $14</option>
+                <option value="CHF">Swiss franc — CHF 14</option>
+                <option value="JPY">Japanese yen — ¥1400</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Only affects bare-digit prices like &ldquo;14&rdquo;. If you typed a symbol (&ldquo;$14&rdquo;, &ldquo;&euro;8,50&rdquo;), we keep it as-is.
+              </small>
+            </div>
+
             <!-- Wave B2 — allergen regime selector. Default is US FDA Big 9
                  (the operator base today); EU / UK / CA / AU / NZ operators
                  switch to get the regime-correct default disclaimer text
@@ -1463,9 +1598,14 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      A1 state store + reducer that will replace the imperative
      mutations in menu-design.js incrementally. ~6KB gz combined. -->
 <script src="/tools/_shared/menu-schema.js?v=20260503-wA"></script>
+<script src="/tools/_shared/menu-renderers/cuisine-decor.js?v=20260503-wsq"></script>
 <script src="/tools/_shared/menu-renderers/jsonld.js?v=20260503-wB6"></script>
 <script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
 <script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
+<!-- Auto-generated bundle of inline SVG thumbnails per theme. Lets the
+     theme picker show real cuisine-specific previews that inherit the
+     page's @font-face fonts. Built by scripts/build-theme-thumbnails.mjs. -->
+<script src="./theme-thumbs.js?v=20260503-wsq"></script>
 <script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
 <script src="./menu-render-html.js?v=20260501-w23"></script>

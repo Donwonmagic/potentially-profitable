@@ -582,9 +582,31 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
 <script src="/tools/_shared/context-bus.js?v=20260430-wave0"></script>
-<script src="/tools/menu-design/themes.js?v=20260501-a2"></script>
-<script src="/tools/menu-design/menu-render-pdf.js?v=20260501-a4"></script>
-<script src="/tools/menu-design/menu-render-html.js?v=20260501-w6-1"></script>
-<script src="/tools/menu-design/menu-design.js?v=20260501-w6-1"></script>
+<!-- ES parity (Wave A6/B5/B6/B11/B13) — same module set the EN
+     tool ships, so the orchestrator's allergen catalog, badge data,
+     glyph SVGs, draft persistence, canonical schema, JSON-LD emitter,
+     studio brief, and menu pack are all available to ES operators.
+     Element-id-gated wiring inside menu-design.js no-ops gracefully
+     for any UI that doesn't yet exist on the ES HTML wrapper. -->
+<script src="/tools/menu-design/data/allergens.js?v=20260501-w18"></script>
+<script src="/tools/menu-design/data/badges.js?v=20260501-w18"></script>
+<script src="/tools/menu-design/data/allergen-glyphs.js?v=20260501-w25"></script>
+<script src="/tools/menu-design/data/quiz-tiles.js?v=20260501-w22"></script>
+<script src="/tools/menu-design/data/templates.js?v=20260501-w22"></script>
+<script src="/tools/menu-design/infra/dom.js?v=20260501-w18"></script>
+<script src="/tools/menu-design/infra/i18n.js?v=20260501-w18"></script>
+<script src="/tools/menu-design/state/draft.js?v=20260501-w22"></script>
+<script src="/tools/menu-design/state/history.js?v=20260501-w22"></script>
+<script src="/tools/_shared/menu-schema.js?v=20260503-wA"></script>
+<script src="/tools/_shared/menu-renderers/cuisine-decor.js?v=20260503-wsq"></script>
+<script src="/tools/_shared/menu-renderers/jsonld.js?v=20260503-wB6"></script>
+<script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
+<script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
+<script src="/tools/menu-design/theme-thumbs.js?v=20260503-wsq"></script>
+<script src="/tools/menu-design/themes.js?v=20260501-w15"></script>
+<script src="/tools/menu-design/menu-render-pdf.js?v=20260501-w24-2"></script>
+<script src="/tools/menu-design/menu-render-html.js?v=20260501-w23"></script>
+<script src="/tools/menu-design/menu-render-text.js?v=20260501-w23"></script>
+<script src="/tools/menu-design/menu-design.js?v=20260501-w24-2"></script>
 </body>
 </html>
