@@ -8,13 +8,17 @@
  * banned variant in a button-style position.
  *
  * Banned variants (with the canonical replacement):
- *   "Write to Don"                  → "Email Don"
- *   "Send to Don"                   → "Email Don"
+ *   "Send to Don"                   → "Send the note"  (field-note form submit)
+ *   "Enviar a Don"                  → "Enviar la nota" (ES field-note form submit)
  *   "Send & book your call"         → "Book a 20-min call"
- *   "View case study"               → "Open the case"
- *   "Read the case study"           → "Open the case"
- *   "See the work"                  → "Open the case"
- *   "Email Don about <topic>"       → use a topic chip on /window/
+ *   "View case study"               → "See the case study"
+ *   "Read the case study"           → "See the case study"
+ *
+ * Both "Email Don" and "Write to Don" are CANONICAL per the voice
+ * contract: "Email Don" is the nav primary contact (one tap from
+ * anywhere, direct verb); "Write to Don" is the softer body / footer
+ * register (used in foot-cta, Care Plan inline mention, etc.). They
+ * coexist by design — neither is in the BANNED list.
  *
  * The first match in a button-style position (preceded by `>`,
  * inside a label-like element) is treated as drift and reported.
@@ -49,12 +53,23 @@ const strict     = process.argv.includes('--strict');
 // common drift (HTML element opening then visible text). Whitespace
 // allowed around the phrase to match indented HTML.
 const BANNED = [
-  { phrase: 'Write to Don',           replace: 'Email Don' },
-  { phrase: 'Send to Don',            replace: 'Email Don' },
-  { phrase: 'Send & book your call',  replace: 'Book a 20-min call' },
-  { phrase: 'View case study',        replace: 'Open the case' },
-  { phrase: 'Read the case study',    replace: 'Open the case' },
-  { phrase: 'See the work',           replace: 'Open the case' },
+  // Field-note submit buttons across every blog post — the canon is
+  // "Send the note" / "Enviar la nota" (verb-on-the-object, not
+  // verb-on-the-recipient — the recipient context is already clear
+  // from the form's surrounding "Be the first field note on this
+  // article" framing).
+  { phrase: 'Send to Don',            replace: 'Send the note' },
+  { phrase: 'Enviar a Don',           replace: 'Enviar la nota' },
+  // Legacy intake-form submit; intake form now uses "Send the note"
+  // and booking happens via /studio/call/.
+  { phrase: 'Send & book your call',  replace: '"Send the note" or "Book a 20-min call"' },
+  // Work-card CTA mix — the locked canon is "See the case study →".
+  { phrase: 'View case study',        replace: 'See the case study' },
+  { phrase: 'Read the case study',    replace: 'See the case study' },
+  // "See the work" stays canonical as a section CTA (button → /work/
+  // index linking to the portfolio overall) — it's only banned
+  // INSIDE a per-card span class. Per-card scoping handled by the
+  // pattern-match below; the bare phrase isn't in the BANNED list.
 ];
 
 const ALLOWLIST_DIRS = new Set([

@@ -39,6 +39,25 @@ const CHECKS = [
   // lines below it survive — leading to duplicate hreflang triplets
   // on 161 pages until the cleanup pass landed. Fail-CI from day 1.
   ['Hreflang orphans',    'check-hreflang-orphans.mjs',    '--check'],
+  // CTA canon — locked Phase 6 + extended in Phase 3B. Catches retired
+  // verbs in button-style positions (Send to Don, View case study, etc.).
+  // Body-prose mentions are allowed; this only flags the structural
+  // pattern of `>Phrase</tag>` or `>Phrase<svg>`.
+  ['CTA canon',           'check-cta-canon.mjs',           '--strict'],
+  // Phase-3B footer canon — catches the regression class Phase 1
+  // cleaned up on 23 tool pages (stale "Structure Brings Clarity"
+  // tagline + DMV-studio blurb returning).
+  ['Footer payload',      'check-footer-payload.mjs',      '--check'],
+  // Phase-3B breadcrumb separator canon — catches &rsaquo; / &#8250;
+  // returning inside breadcrumb-sep elements (3 different encodings
+  // coexisted before Phase 3B normalised to literal `›`).
+  ['Breadcrumb separator','check-breadcrumb-separator.mjs','--check'],
+  // Invoice-Decoder safety: the four server files in src/ that touch
+  // the decoder pipeline must NOT contain any outbound network paths
+  // for invoice content. Cheap regex check; high-blast-radius bug if
+  // it ever regresses (the whole "your numbers never leave this page"
+  // promise depends on it).
+  ['No invoice egress',   'check-no-invoice-egress.mjs'],
   ['Banned words',        'check-banned-words.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
