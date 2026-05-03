@@ -3152,24 +3152,66 @@
     // make the preview. Tolerant to layout drift — each getter is
     // independently null-safe, so a redesigned note that drops
     // (say) the dek still renders the rest.
+    //
+    // Two layout shapes are supported:
+    //   1. Canonical research-note shape (older notes):
+    //      .research-hero h1 / .research-source-line / .research-dek /
+    //      .research-note p / .research-findings > li / .research-original
+    //   2. Article-body shape (newer notes that read more like longreads):
+    //      <article class="article-body"> with <h1>, lede <p>, and a
+    //      first <ul> or <ol> we can present as findings.
+    // A note matching neither shape returns null and the drawer
+    // falls back to its error state (which still offers the full
+    // note in a new tab).
     function extract(html) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
-      const hero = doc.querySelector('.research-hero');
-      if (!hero) return null;
-      const title = (doc.querySelector('.research-hero h1') || {}).innerHTML || '';
-      const sourceLine = (doc.querySelector('.research-source-line') || {}).innerHTML || '';
-      const dek = (doc.querySelector('.research-dek') || {}).textContent || '';
-      // Don's note: prefer the first <p> inside .research-note.
-      const noteP = doc.querySelector('.research-note p');
-      const note = noteP ? noteP.innerHTML : '';
-      // Top 3 findings (the note itself carries 5; keep the preview lean).
-      const findings = Array.from(doc.querySelectorAll('.research-findings > li')).slice(0, 3).map((li) => li.innerHTML);
-      // External source link — the "Read the original …" button in
-      // the .research-original aside.
-      const origAnchor = doc.querySelector('.research-original a[href^="http"]');
-      const originalHref = origAnchor ? origAnchor.getAttribute('href') : '';
-      return { title, sourceLine, dek, note, findings, originalHref };
+
+      // Shape 1: canonical research-note.
+      if (doc.querySelector('.research-hero')) {
+        const title = (doc.querySelector('.research-hero h1') || {}).innerHTML || '';
+        const sourceLine = (doc.querySelector('.research-source-line') || {}).innerHTML || '';
+        const dek = (doc.querySelector('.research-dek') || {}).textContent || '';
+        const noteP = doc.querySelector('.research-note p');
+        const note = noteP ? noteP.innerHTML : '';
+        const findings = Array.from(doc.querySelectorAll('.research-findings > li')).slice(0, 3).map((li) => li.innerHTML);
+        const origAnchor = doc.querySelector('.research-original a[href^="http"]');
+        const originalHref = origAnchor ? origAnchor.getAttribute('href') : '';
+        return { title, sourceLine, dek, note, findings, originalHref };
+      }
+
+      // Shape 2: article-body longread. Pull title from <h1>, lede
+      // from the first paragraph after it, findings from the first
+      // <ul>/<ol> in the body. No source line (these are original
+      // notes, not external citations) and no separate Don note.
+      const article = doc.querySelector('article.article-body, article.container.article-body, main article');
+      if (!article) return null;
+      const titleEl = article.querySelector('h1');
+      if (!titleEl) return null;
+      const title = titleEl.innerHTML;
+      // Lede: first <p> that isn't a meta line. Skip <p class="meta">,
+      // .article-meta, .breadcrumb-style paragraphs.
+      const ps = Array.from(article.querySelectorAll(':scope > p, :scope > header > p, :scope > div > p'));
+      const ledeP = ps.find((p) => {
+        const cls = (p.className || '').toLowerCase();
+        if (cls.indexOf('meta') !== -1) return false;
+        if (cls.indexOf('eyebrow') !== -1) return false;
+        if (cls.indexOf('breadcrumb') !== -1) return false;
+        const txt = (p.textContent || '').trim();
+        return txt.length > 40;
+      });
+      const dek = ledeP ? (ledeP.textContent || '') : '';
+      // Findings: first list of 3+ <li> in the article.
+      let findings = [];
+      const lists = article.querySelectorAll('ul, ol');
+      for (const list of lists) {
+        const items = list.querySelectorAll(':scope > li');
+        if (items.length >= 3) {
+          findings = Array.from(items).slice(0, 3).map((li) => li.innerHTML);
+          break;
+        }
+      }
+      return { title, sourceLine: '', dek, note: '', findings, originalHref: '' };
     }
 
     function render(href, preview) {

@@ -83,13 +83,40 @@ function prettyPathFor(relPath) {
 // doesn't exist on disk, we omit the es alternate rather than declare
 // a phantom 404. Google ignores one-way claims; a missing alternate is
 // safer than a stale one.
+// Per-locale slug-map for the blog. Without this, /blog/<en-slug>/ would
+// emit hreflang="es" → /es/blog/<en-slug>/ which 404s for translated-slug
+// ES posts (e.g. /es/blog/cuanto-cuesta-... is the real ES counterpart of
+// /blog/how-much-does-a-custom-restaurant-website-cost-in-2026/, not a
+// /es/blog/<same-EN-slug>/ that doesn't exist). Adding a translated post
+// is two-step: drop the file into /es/blog/<es-slug>/ AND add an entry to
+// data/i18n-slug-map.json's "blog" map, then re-run this script.
+const slugMapPath = path.join(repoRoot, 'data', 'i18n-slug-map.json');
+let slugMap = { blog: {}, esOriginal: [] };
+try {
+  slugMap = JSON.parse(fs.readFileSync(slugMapPath, 'utf8'));
+  if (!slugMap.blog) slugMap.blog = {};
+  if (!slugMap.esOriginal) slugMap.esOriginal = [];
+} catch (_) {
+  // Missing or unreadable slug-map: behave as if empty. Pages still
+  // get the default /es<path>/ alternate when it exists on disk.
+}
+
 function alternatesFor(enPath, repoRoot) {
-  const esPath = enPath === '/' ? '/es/' : `/es${enPath}`;
+  // Default ES counterpart is the EN path mirrored under /es/. For
+  // blog posts, prefer the slug-map override so EN→ES hreflang points
+  // at the actual translated URL.
+  let esPath;
+  const blogMatch = enPath.match(/^\/blog\/([^/]+)\/$/);
+  if (blogMatch && slugMap.blog && slugMap.blog[blogMatch[1]]) {
+    esPath = `/es/blog/${slugMap.blog[blogMatch[1]]}/`;
+  } else {
+    esPath = enPath === '/' ? '/es/' : `/es${enPath}`;
+  }
   const esExists = (() => {
     if (!repoRoot) return true; // back-compat: fall through if no root
     // Map a pretty path back to the file on disk.
-    const rel = esPath === '/es/' ? 'es/index.html' : ('es' + esPath.slice(3) + (esPath.endsWith('/') ? 'index.html' : ''));
-    const candidate = path.join(repoRoot, rel.startsWith('es/') ? rel : 'es' + rel);
+    const rel = esPath === '/es/' ? 'es/index.html' : (esPath.slice(1) + (esPath.endsWith('/') ? 'index.html' : ''));
+    const candidate = path.join(repoRoot, rel);
     try { return fs.existsSync(candidate); } catch { return false; }
   })();
   return {

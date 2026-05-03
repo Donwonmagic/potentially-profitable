@@ -403,7 +403,13 @@
     function buildLede(a) {
       var leakLabel = ECHO.leak[a.leak] || 'una fuga';
       var bits = ['Dijiste que la fuga es **' + leakLabel + '**'];
-      if (a.raise) bits.push('subiste precios **' + ECHO.raise[a.raise] + '**');
+      if (a.raise === 'no') {
+        // Special-case: "subiste precios no en los últimos 12 meses" reads broken.
+        // Phrase the negative as a negative.
+        bits.push('no has subido precios **en los últimos 12 meses**');
+      } else if (a.raise) {
+        bits.push('subiste precios **' + ECHO.raise[a.raise] + '**');
+      }
       if (a.agg)   bits.push(ECHO.agg[a.agg]);
       var head = bits.join(', ') + '. Este es el orden en que las correría.';
       var tail = '';
