@@ -58,13 +58,14 @@ const ALLOWED_KINDS = new Set([
   // Saved rows MUST go through the envelope-encryption branch
   // in saveItem (B6-2); plaintext writes are rejected.
   'invoice-decoder',
-  // Operator Sheets — printable + fillable + CSV-exportable
-  // paperwork. ONE kind shape for the entire sheet layer; the
-  // sheet slug lives inside payload.slug. Workbench list
-  // groups saves of this kind under "Sheets" and the title
-  // disambiguates which sheet was saved (e.g., "Recipe Cost
-  // Card", "Weekly Prime Cost Worksheet"). Not watchable —
-  // sheets are operator paperwork, not external-state checks.
+  // Operator Sheets — printable + fillable paperwork (recipe
+  // cost cards, weekly prime cost, GBP audit, etc.). ONE kind
+  // shape for the entire sheet layer; the sheet slug lives
+  // inside payload.slug. The Workshop list groups saves of
+  // this kind under "Sheets" and the title disambiguates
+  // which sheet was saved (e.g., "Recipe Cost Card",
+  // "Weekly Prime Cost Worksheet"). Not watchable — sheets
+  // are operator paperwork, not external-state checks.
   'sheet',
 ]);
 
