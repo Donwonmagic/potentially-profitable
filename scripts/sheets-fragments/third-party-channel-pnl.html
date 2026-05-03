@@ -20,9 +20,8 @@
       <fieldset>
         <legend>Channel statement (paste from their dashboard)</legend>
         <label>
-          <span><span>Gross sales (before fees)</span></span>
+          <span><span>Gross sales — what customers paid before any fees</span></span>
           <input type="number" name="gross_sales" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">What customers paid you for food + delivery, before any fees come out.</span>
         </label>
         <label>
           <span><span>Commission &amp; service fees the platform charged you</span></span>
@@ -33,23 +32,20 @@
           <input type="number" name="marketing_fees" min="0" step="0.01" placeholder="0.00" />
         </label>
         <label>
-          <span><span>Refunds &amp; adjustments charged back to you</span></span>
+          <span><span>Refunds &amp; adjustments — wrong order, missing item, customer credits</span></span>
           <input type="number" name="refunds" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Wrong order, missing item, customer credits the platform extended on your behalf.</span>
         </label>
       </fieldset>
 
       <fieldset>
         <legend>Your costs (the platform does not show these)</legend>
         <label>
-          <span><span>Food cost on these orders</span></span>
+          <span><span>Food cost — apply your normal food-cost % to gross as a starting estimate</span></span>
           <input type="number" name="food_cost" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Apply your normal food-cost percent to gross sales as a starting estimate.</span>
         </label>
         <label>
-          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils)</span></span>
+          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils) — typically $0.60–$1.20 per ticket</span></span>
           <input type="number" name="packaging" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Multiply per-ticket packaging cost (typically $0.60–$1.20) by ticket count for the period.</span>
         </label>
         <label>
           <span><span>Incremental labor (extra expo, packing, delivery handoff)</span></span>
