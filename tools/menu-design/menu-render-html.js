@@ -270,6 +270,14 @@ jsonldHtml +
 '  .ml-allergen-key-glyph{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:18px;padding:0 6px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.04em;margin:0;flex:0 0 auto}\n' +
 '  .ml-allergen-key-row dd{margin:0;font-size:13px;color:var(--ink)}\n' +
 '  .ml-foot{text-align:center;font-size:12px;color:var(--muted);padding-top:32px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent);margin-top:40px}\n' +
+/* Wave studio-quality — cuisine decoration overlay.
+   Positioned in the upper-right corner of the page, ~10% opacity,
+   pointer-events:none so it never intercepts taps. The SVG itself
+   uses currentColor + the decoration's color attribute so it picks
+   up the theme's muted color cleanly. */
+'  .ml-decor{position:absolute;top:24px;right:24px;width:140px;height:80px;opacity:.85;pointer-events:none;z-index:0}\n' +
+'  .ml-decor svg{width:100%;height:100%;display:block}\n' +
+'  .ml-page{position:relative}\n' +
 /* Wave B2 — regime-aware allergen disclaimer. Sits above the
    last-updated footer; reads as advisory, not decorative. */
 '  .ml-disclaimer{margin:32px 0 0;padding:14px 16px;background:color-mix(in srgb,var(--accent) 6%,transparent);border-left:3px solid var(--accent);color:var(--ink);font-size:13px;line-height:1.55;font-style:italic}\n' +
@@ -281,6 +289,25 @@ jsonldHtml +
 '    ' + (logoDataUrl ? '<img class="ml-logo" alt="" src="' + escHtml(logoDataUrl) + '" />' : '') + '\n' +
 '    <h1 class="ml-title">' + escHtml(title) + '</h1>\n' +
 '  </header>\n' +
+   /* Wave studio-quality — cuisine decoration in the actual deliverable.
+      Same data that drives the picker thumbnail; positioned as a
+      page-edge motif so the operator's printed/scanned menu carries
+      the Muntin theme identity end-to-end. Falls back to empty when
+      MD_DECOR isn't loaded or the theme has no cuisine match. */
+   (function () {
+     try {
+       var theme = opts.theme || {};
+       var hasDecor = (root && root.MD_DECOR && typeof root.MD_DECOR.svgFragment === 'function');
+       if (!hasDecor) return '';
+       var frag = root.MD_DECOR.svgFragment(theme, {
+         opacity: 0.10  // softer in HTML than thumbnail since it sits behind real content
+       });
+       if (!frag) return '';
+       return '  <aside class="ml-decor" aria-hidden="true">\n' +
+              '    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120" preserveAspectRatio="xMidYMid meet">' + frag + '</svg>\n' +
+              '  </aside>\n';
+     } catch (_) { return ''; }
+   })() +
 '  ' + sectionsHtml + '\n' +
    keyHtml + '\n' +
    (opts.disclaimer && String(opts.disclaimer).trim()

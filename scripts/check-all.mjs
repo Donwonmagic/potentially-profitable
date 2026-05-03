@@ -89,6 +89,12 @@ const CHECKS = [
   // allergens.js drifted without a corresponding regen of the
   // /tools/menu-design/llm.md companion.
   ['Menu Design LLM (idem)','build-menu-design-llm.mjs',     '--check'],
+  // Studio-quality push — per-theme SVG thumbnails generated from
+  // themes.js. The picker uses these as <img> instead of canvas
+  // approximations so each theme renders with its real typography
+  // (browser uses whichever @font-face fonts are loaded). Idempotent
+  // check fails if themes drifted without a regen.
+  ['Theme thumbnails (idem)','build-theme-thumbnails.mjs',   '--check'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
@@ -117,6 +123,14 @@ const CHECKS = [
   ['Article listen (idem)','inject-article-listen.mjs','--check'],
   ['Checklist script (idem)','inject-checklist-script.mjs','--check'],
   ['Glossary script (idem)','inject-glossary-script.mjs','--check'],
+  ['Include coverage',     'check-include-coverage.mjs'],
+  ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
+  ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
+  // Pricing consistency — warn-only during initial rollout. Promotes to
+  // --strict once the ~11 inline service-link backlog is worked off
+  // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
+  // that link to a service inline without naming the price).
+  ['Pricing consistency (warn)','check-pricing-consistency.mjs'],
   ['Article fieldnote form (idem)','inject-article-fieldnote-form.mjs','--check'],
   ['Article fieldnotes allowlist','check-fieldnotes-allowlist.mjs','--check'],
   ['Article fieldnote attribution','check-fieldnote-attribution.mjs','--check'],

@@ -42,6 +42,43 @@
     });
     return __svg2pdfPromise;
   }
+  // Wave studio-quality — draw the theme's cuisine decoration on a
+  // PDF page via svg2pdf. Same data the picker thumbnail / live
+  // preview / QR-menu HTML use, now in the printed deliverable.
+  // Tolerant: silent no-op when MD_DECOR or svg2pdf aren't loaded
+  // OR when the theme has no cuisine match. Pre-load of svg2pdf is
+  // handled by exportPdf() when the theme would benefit.
+  function drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY) {
+    try {
+      var DECOR = root && root.MD_DECOR;
+      if (!DECOR || typeof DECOR.svgWrapped !== 'function') return;
+      if (!root.svg2pdf || !doc.svg) return;
+      // Larger opacity than the live preview — the printed page
+      // benefits from a faintly heavier mark since paper texture
+      // already softens the impression.
+      var svgText = DECOR.svgWrapped(theme, { opacity: 0.13, width: 220, height: 120 });
+      if (!svgText) return;
+      var parser = new DOMParser();
+      var parsed = parser.parseFromString(svgText, 'image/svg+xml');
+      var svgEl = parsed && parsed.documentElement;
+      if (!svgEl) return;
+      // Position in the upper-right corner of the page, sized to
+      // ~22% of paper width. Same visual weight as the HTML overlay.
+      var pageW = doc.internal.pageSize.getWidth();
+      var w = Math.min(180, pageW * 0.22);
+      var h = w * (120 / 220);
+      // Clear margin from the right + top edge.
+      var margin = paper && paper.margin ? paper.margin : 48;
+      var x = pageW - margin - w;
+      var y = (paper && paper._bleed ? paper._bleed : 0) + Math.max(margin * 0.4, 12);
+      // Set a low GState opacity if the doc supports it (older jsPDF
+      // skips this gracefully).
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.85 })); } catch (_) {}
+      doc.svg(svgEl, { x: x, y: y, width: w, height: h });
+      try { if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 })); } catch (_) {}
+    } catch (_) { /* decoration is best-effort; never block the export */ }
+  }
+
   function svgDataUrlToElement(dataUrl) {
     // Decode the data URL to an SVG string, parse with DOMParser.
     var prefix = 'data:image/svg+xml';
@@ -465,9 +502,27 @@
     fn(doc, x, y, size, color);
   }
 
+  // Wave studio-quality — locale-aware price display in PDF.
+  // Mirrors the orchestrator's formatPriceDisplay so the operator's
+  // "14" renders as "$14" / "14 €" / "£14" / "¥1400" depending on
+  // opts.currency. Already-symboled inputs pass through untouched.
+  function _formatPriceForPdf(raw, currency) {
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return '';
+    if (/[$€£¥₩₹฿]/.test(s)) return s;
+    if (!/^[\d.,]+$/.test(s)) return s;
+    var c = (currency || 'USD').toUpperCase();
+    if (c === 'EUR') return s + ' €';   // narrow no-break space + €
+    if (c === 'GBP') return '£' + s;
+    if (c === 'JPY') return '¥' + s;
+    if (c === 'CHF') return 'CHF ' + s;
+    return '$' + s;
+  }
+
   function buildBlocks(rows, title, logoDataUrl, opts) {
     opts = opts || {};
     var blocks = [];
+    var currency = opts.currency || 'USD';
     // W11-3 — cover page block. Rendered when opts.coverPage === true
     // OR when we detect the menu will multi-page. Adds a dedicated
     // first page with large display-face title, tagline, and an
@@ -485,7 +540,30 @@
     }
     var seenAllergens = {};
     var firstDishOfSection = true;
-    rows.forEach(function (r) {
+    // Wave studio-quality — prune empty sections from the PDF block
+    // stream. Same protection as the live preview: an operator who
+    // created a section header but hasn't added dishes yet shouldn't
+    // ship an empty header to the printer. Forward-look from each
+    // section index for at least one dish row before the next
+    // section; skip if none.
+    var prunedRows = (function () {
+      var out = [];
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        if (r.kind === 'section' && (r.name || '').trim()) {
+          var hasDish = false;
+          for (var j = i + 1; j < rows.length; j++) {
+            var n = rows[j];
+            if (n.kind === 'section') break;
+            if (n.kind === 'dish' && (n.name || '').trim()) { hasDish = true; break; }
+          }
+          if (!hasDish) continue;  // empty section — prune
+        }
+        out.push(r);
+      }
+      return out;
+    })();
+    prunedRows.forEach(function (r) {
       if (r.kind === 'section' && (r.name || '').trim()) {
         // W13-2 — section hero image renders as a 4:1 band BEFORE
         // the section header. Distinct block kind so the paginator
@@ -520,7 +598,10 @@
         blocks.push({
           kind: 'dish',
           name:     (r.name || '').trim(),
-          price:    (r.price || '').trim(),
+          // Wave studio-quality — apply locale-aware currency
+          // formatting at block-build time so the printed PDF matches
+          // the live preview (which formats via formatPriceDisplay).
+          price:    _formatPriceForPdf((r.price || '').trim(), currency),
           desc:     (r.desc || '').trim(),
           allergens: allergens,
           spice: spice,
@@ -528,7 +609,7 @@
           photo: r.photo || null,             // W11-4 — propagate dish photo
           pairing:  (r.pairing  || '').trim(), // W12-2
           modifier: (r.modifier || '').trim(), // W12-2
-          halfPrice:(r.halfPrice|| '').trim(), // W12-2
+          halfPrice: _formatPriceForPdf((r.halfPrice || '').trim(), currency), // W12-2 + currency
           portion:  (r.portion  || '').trim(), // W14-1 — portion size
           calories: (r.calories || '').trim ? r.calories.trim() : (r.calories ? String(r.calories) : ''),
           altName:  (r.altName  || '').trim(), // W14-1 — multilingual mirror
@@ -1309,15 +1390,70 @@
   // and digital formats use the simple flow below; panel formats
   // (bifold/trifold/tent) get a panel-aware layout that maps
   // content to logical panels (front/inside/back/address).
-  function paginate(blocks, doc, theme, paper) {
+  function paginate(blocks, doc, theme, paper, opts) {
+    opts = opts || {};
     if (paper.flow === 'panel') return paginatePanel(blocks, doc, theme, paper);
     // W12-1 — two-column flow when theme requests it AND the paper
     // is wide enough to support balanced columns. Half-page and
     // narrow papers (wine-narrow, postcard) stay single-column even
     // if the theme prefers two; otherwise text shrinks to unreadable.
+    // Wave studio-quality — opts.forceTwoCol lets the orchestrator
+    // promote a 1-col theme to 2-col when the live preview's cascade
+    // decided that's the best fit for the operator's dish count.
     var minTwoColW = 400;
-    var twoColumn = (theme.columns === 2) && (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    var paperWideEnough = (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
+    var twoColumn = paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
     if (twoColumn) return paginateTwoCol(blocks, doc, theme, paper);
+
+    // Wave studio-quality — smart 2-page split planning. Mirror of the
+    // live preview's section-boundary heuristic. When the natural
+    // pagination would land on 2 pages AND the operator opted into
+    // multi-page, pick the section header whose split point is closest
+    // to total/2 and force the page break there (not at arbitrary
+    // mid-section overflow). Result: page 1 reads as appetizers +
+    // entrees, page 2 reads as desserts + drinks.
+    var smartBreakAtIdx = -1;
+    if (opts.allowMultiPage) {
+      // Dry-run measure pass.
+      var margin0 = paper.margin || 48;
+      var contentWidth0 = paper.w - margin0 * 2;
+      var bottom0 = paper.h - margin0;
+      var contentY0 = margin0;
+      var pageCount0 = 1;
+      var blockHeights = blocks.map(function (b) { return measureBlock(b, doc, theme, contentWidth0); });
+      blocks.forEach(function (block, i) {
+        var h = blockHeights[i];
+        if (block.kind === 'cover') { contentY0 = margin0; pageCount0++; return; }
+        if (contentY0 + h > bottom0) {
+          contentY0 = margin0;
+          pageCount0++;
+        }
+        contentY0 += h;
+      });
+      if (pageCount0 === 2) {
+        var sectionIndices = [];
+        blocks.forEach(function (b, i) {
+          if (b.kind === 'section') sectionIndices.push(i);
+        });
+        if (sectionIndices.length >= 2) {
+          var totalH = blockHeights.reduce(function (a, b) { return a + b; }, 0);
+          var halfH = totalH / 2;
+          var bestDelta = Infinity;
+          var cumH = 0;
+          for (var bi = 0; bi < blocks.length; bi++) {
+            cumH += blockHeights[bi];
+            if (sectionIndices.indexOf(bi) >= 0 && bi > 0) {
+              var pageOneH = cumH - blockHeights[bi];
+              var d = Math.abs(pageOneH - halfH);
+              if (d < bestDelta) {
+                bestDelta = d;
+                smartBreakAtIdx = bi;
+              }
+            }
+          }
+        }
+      }
+    }
     var margin = paper.margin || 48;
     // W10-1 — when print-vendor mode is on, the doc is sized
     // bleed+paper+bleed; content origin shifts inward by bleed
@@ -1328,6 +1464,10 @@
     var contentWidth = paper.w - margin * 2;
     var bottom = paper.h - margin + bleedOff;
     var pageCount = 1;
+    // Wave studio-quality — cuisine decoration on every page. Renders
+    // FIRST so dish text + headers draw on top. No-op if MD_DECOR or
+    // svg2pdf isn't loaded or the theme has no cuisine match.
+    drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
 
     blocks.forEach(function (block, i) {
       var h = measureBlock(block, doc, theme, contentWidth);
@@ -1339,6 +1479,16 @@
         pageCount++;
         contentY = margin + bleedOff;
         return;
+      }
+      // Wave studio-quality — smart 2-page split. When the dry-run
+      // planner picked this block index as the optimal section
+      // boundary for the page break, force the addPage here even if
+      // we wouldn't have naturally overflowed yet.
+      if (smartBreakAtIdx >= 0 && i === smartBreakAtIdx && pageCount === 1) {
+        doc.addPage();
+        pageCount++;
+        contentY = margin + bleedOff;
+        drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
       }
       // Widow-section avoidance — if we're a section header and
       // there's room for fewer than 2 dishes after, skip to next
@@ -1354,6 +1504,7 @@
           doc.addPage();
           pageCount++;
           contentY = margin + bleedOff;
+          drawCuisineDecorationOnPage(doc, theme, paper, contentX, contentY);
         }
       } else if (contentY + h > bottom) {
         doc.addPage();
@@ -1779,8 +1930,15 @@
     // W17 — also load pdf-lib when print-vendor mode is on so the
     // post-process step has the library ready.
     var hasSvgLogo = opts.logoDataUrl && typeof opts.logoDataUrl === 'string' && opts.logoDataUrl.indexOf('data:image/svg') === 0;
+    // Wave studio-quality — also pre-load svg2pdf when the theme
+    // would benefit from a cuisine decoration on the page (so the
+    // printed PDF carries the same Muntin theme identity as the
+    // thumbnail / live preview / QR-menu HTML output).
+    var hasCuisineDecor = !!(root && root.MD_DECOR &&
+                             typeof root.MD_DECOR.decorationFor === 'function' &&
+                             opts.theme && root.MD_DECOR.decorationFor(opts.theme));
     var loaders = [loadJsPdf(), loadBrandFonts()];
-    if (hasSvgLogo) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
+    if (hasSvgLogo || hasCuisineDecor) loaders.push(loadSvg2Pdf().catch(function () { return null; }));
     if (opts.printVendor) loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
       var jsPDF = results[0];
@@ -1793,6 +1951,31 @@
       // W12-4 — apply high-contrast override (yellow-on-black).
       if (opts.highContrast && opts.theme) {
         opts = Object.assign({}, opts, { theme: applyHighContrastOverride(opts.theme) });
+      }
+      // Wave studio-quality — preview/PDF parity. The orchestrator
+      // reads the live preview's effective shrink class (md-shrink-1
+      // ... md-shrink-4) and passes opts.shrinkFactor here so the PDF
+      // ships at the SAME font sizes the operator just approved on
+      // screen. Real menus are 1 page or 2 pages; the preview already
+      // auto-fits to that target. Without this parity step the PDF
+      // would silently render at native theme sizes and spill to N
+      // pages — exactly the problem we're solving.
+      var sf = opts.shrinkFactor;
+      if (typeof sf === 'number' && sf > 0 && sf < 1.0 && opts.theme) {
+        var t = opts.theme;
+        // Body + desc shrink linearly; the section header shrinks more
+        // gently (sqrt) so the visual hierarchy survives the squeeze.
+        // Title (h1) is left alone — it's the page anchor and shouldn't
+        // shrink with the body.
+        var sqrt = Math.sqrt(sf);
+        opts = Object.assign({}, opts, {
+          theme: Object.assign({}, t, {
+            bodyPt:  Math.max(8.5,  (t.bodyPt  || 11) * sf),
+            descPt:  Math.max(7.5,  (t.descPt  || (t.bodyPt || 11) - 1) * sf),
+            pricePt: Math.max(8.5,  (t.pricePt || t.bodyPt || 11) * sf),
+            h2Pt:    Math.max(11,   (t.h2Pt    || 14) * sqrt)
+          })
+        });
       }
       var paperKey = PAPERS[opts.paperKey] ? opts.paperKey : 'letter';
       var paper = resolvePaper(paperKey, opts.customDims);
@@ -1853,7 +2036,11 @@
         tagline:   opts.tagline   || '',
         story:     opts.story     || '',
         themeId:   (opts.theme && opts.theme.id) || '',
-        coverPage: !!opts.coverPage
+        coverPage: !!opts.coverPage,
+        // Wave studio-quality — pipe operator's display currency
+        // through to buildBlocks so dish + halfPrice get formatted
+        // correctly in the PDF (matches the live preview).
+        currency:  opts.currency  || 'USD'
       });
       // Forward logoMeta + locale onto the relevant blocks.
       blocks.forEach(function (b) {
@@ -1880,7 +2067,14 @@
       };
       // Stamp the bleed offset on the paper so paginate() can read it.
       paper._bleed = bleed;
-      var pageCount = paginate(blocks, doc, opts.theme, paper);
+      var pageCount = paginate(blocks, doc, opts.theme, paper, {
+        forceTwoCol:    !!opts.forceTwoCol,
+        // Wave studio-quality — operator's "Allow front + back"
+        // toggle propagates into PDF so smart 2-page split planner
+        // (above paginate()) only fires when the operator actually
+        // opted into a 2-page deliverable.
+        allowMultiPage: !!opts.allowMultiPage
+      });
       // W10-1 — crop marks on every page when print-vendor mode is on.
       if (opts.printVendor) {
         var totalPages = doc.internal && doc.internal.pages ? doc.internal.pages.length - 1 : pageCount;

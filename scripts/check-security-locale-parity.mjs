@@ -21,11 +21,18 @@ const PAIRS = [
 
 function extractIds(src) {
   // Pull every id="…" on section / aside / article / h2 / h3 elements
-  // we care about. Skip nav / breadcrumb / shell IDs.
+  // INSIDE <main>. Anything in the nav, header, or footer is shared
+  // chrome that legitimately diverges across locales (e.g. the EN
+  // nav carries an #langHint "Prefer Spanish?" prompt that has no ES
+  // counterpart by design — the user is already on ES). Restricting
+  // to <main> keeps this check focused on the actual page content
+  // parity it cares about.
   const out = new Set();
+  const mainMatch = src.match(/<main\b[^>]*>([\s\S]*?)<\/main>/);
+  const body = mainMatch ? mainMatch[1] : src;
   const re = /<(?:section|aside|article|h[123])\b[^>]*\bid="([a-zA-Z0-9-]+)"/g;
   let m;
-  while ((m = re.exec(src))) out.add(m[1]);
+  while ((m = re.exec(body))) out.add(m[1]);
   return out;
 }
 

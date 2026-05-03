@@ -170,6 +170,17 @@
 
 
 # ------------------------------------------------------------
+# Per-theme SVG thumbnails (build-time generated from themes.js).
+# 1-day browser cache + week-long stale-while-revalidate to match
+# the global asset policy. Cache-busted via ?v= when themes.js
+# changes (the picker JS sets the v stamp).
+# ------------------------------------------------------------
+/assets/menu-design-thumbs/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Content-Type: image/svg+xml; charset=utf-8
+
+
+# ------------------------------------------------------------
 # HTML pages
 # ------------------------------------------------------------
 # Short browser cache (10 min) and a slightly longer edge
