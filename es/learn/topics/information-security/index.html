@@ -265,9 +265,86 @@
 <!-- topic-essay:start -->
 <section class="topic-essay">
   <div class="container">
-    <p class="topic-essay__eyebrow">Lectura del tema</p>
+    <p class="topic-essay__eyebrow">Ensayo del pilar &middot; actualizado en mayo de 2026</p>
     <h2 class="topic-essay__title">La herramienta gratis con etiqueta de precio, pagada con tus datos.</h2>
-    <div class="topic-essay__body"><p>La mayoría de las &ldquo;auditorías de margen gratis&rdquo; tienen un precio. Solo se paga con datos. Tecleas tu ticket real, tu food cost real, tu mano de obra real — y a la mañana siguiente un vendedor te llega con la respuesta que generaron y la oferta que ya iban a hacerte. La herramienta era el embudo. Tus números eran el calificador.</p><p>El patrón se esconde porque nadie hace la pregunta obvia: ¿a dónde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes responder esa pregunta en menos de un minuto. Abre DevTools, ve a la pestaña Network, teclea un número, observa qué pasa. Una herramienta segura: nada. Una insegura: cada tecla POSTea al servidor. La mecánica es exactamente así de visible.</p><p>Este tema existe porque las herramientas para restaurantes deberían ser honestas con su manejo de datos, y la mayoría no lo es. El cluster no moraliza. Te enseña a verificar.</p><p>El camino:</p><ul><li><strong>Empieza aquí:</strong> <a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">Cómo saber si una herramienta de restaurante es segura</a> — el framework de 5 pruebas, el modelo de 4 niveles de datos, y el ejemplo trabajado (Margin Math) de cómo se ve &ldquo;seguro&rdquo; en la práctica.</li><li><strong>Luego corre la auditoría:</strong> <a href="/es/learn/checklists/audit-any-tool/">La checklist de 5 pruebas</a> — interactiva, te lleva por DevTools en vivo sobre cualquier herramienta que estés evaluando.</li><li><strong>La versión de promesa de marca:</strong> <a href="/es/security/">/es/security/</a> — nueve afirmaciones sobre cada herramienta de Muntin, cada una verificable en tu navegador, cada una aplicada por la cadena de build para que una herramienta futura no pueda enviarse con un patrón prohibido.</li></ul><p>Términos del glosario que acompañan: <a href="/es/glossary/data-tiering/">niveles de datos</a>, <a href="/es/glossary/client-side-tool/">herramienta client-side</a>, <a href="/es/glossary/url-fragment-vs-query/">fragmento de URL vs query</a>, <a href="/es/glossary/pii/">PII</a>, y <a href="/es/glossary/incident-response/">respuesta a incidentes</a>.</p><p>Temas hermanos: <strong>Operaciones y márgenes</strong> — porque los inputs que proteges son los que deciden si te mantienes abierto — y <strong>Confianza y reseñas</strong> — porque el marco de credibilidad que te gana reseñas de tus comensales es el mismo que debería ganarte la confianza de tus proveedores.</p></div>
+    <div class="topic-essay__body">
+
+      <p>La mayor&iacute;a de las &laquo;auditor&iacute;as de margen gratis&raquo; tienen precio. Solo se paga con datos. Tecleas tu ticket real, tu food cost real, tu mano de obra real &mdash; y a la ma&ntilde;ana siguiente un vendedor te escribe con la respuesta que ellos generaron, m&aacute;s la oferta que ya te iban a hacer. La herramienta era el embudo. Tus n&uacute;meros eran el calificador.</p>
+
+      <p>El patr&oacute;n se esconde porque nadie hace la pregunta obvia: &iquest;a d&oacute;nde van mis inputs el momento en que los tecleo? En un navegador funcional, puedes contestar esa pregunta en menos de un minuto. Abre DevTools, ve a la pesta&ntilde;a Network, teclea un n&uacute;mero, observa qu&eacute; pasa. Una herramienta segura: nada. Una insegura: cada keystroke postea al servidor. La mec&aacute;nica es exactamente as&iacute; de visible.</p>
+
+      <p>Este pilar existe porque las herramientas de calidad para restaurantes deber&iacute;an ser honestas con su manejo de datos, y la mayor&iacute;a no lo son. El cluster no moraliza. Te ense&ntilde;a a verificar.</p>
+
+      <h3>Los cuatro niveles de datos de restaurante, ordenados por da&ntilde;o si se exponen</h3>
+
+      <p>El modelo mental que decide qu&eacute; compartir y d&oacute;nde:</p>
+
+      <ul>
+        <li><strong>Nivel 1 &mdash; P&uacute;blico, intencional.</strong> Horarios, direcci&oacute;n, men&uacute;, tipo de cocina, fotos. Quieres esto en cada directorio que puedas encontrar. No hace falta ninguna restricci&oacute;n.</li>
+        <li><strong>Nivel 2 &mdash; N&uacute;meros operativos, sensibles pero acotados.</strong> Rangos de ingreso, ticket promedio, prime cost, porcentaje de food cost. &Uacute;tiles en benchmarks y comparaciones. Solo deber&iacute;an salir de tu cabeza cuando un contrato nombre qu&eacute; hace el receptor con ellos. Encuestas RAMW, las notas de investigaci&oacute;n del estudio, tu contador. No una herramienta gratis de margen de un proveedor del que nunca o&iacute;ste.</li>
+        <li><strong>Nivel 3 &mdash; Datos de clientes.</strong> Listas de reservas, direcciones de email, el log de quejas, el cliente regular que dej&oacute; una estrella. Sujeto a ley de privacidad (GDPR, CCPA, PIPA de Maryland). Vive solo en tu POS, tu plataforma de reservas y tus respaldos cifrados. Nunca tecleado en una herramienta gratis.</li>
+        <li><strong>Nivel 4 &mdash; Identidad.</strong> EIN, SSN del due&ntilde;o, routing bancario, credenciales del procesador de pagos, facturas de proveedores con t&eacute;rminos de pago. La lista de cosas que, si se exponen, toman seis meses limpiar. Vive detr&aacute;s de 2FA, nunca en email, nunca en una carpeta compartida de Drive, nunca cerca de una herramienta gratis.</li>
+      </ul>
+
+      <p>El principio: <strong>los datos nunca fluyen hacia un nivel m&aacute;s alto.</strong> Una herramienta que necesita Nivel 2 (tu ticket promedio) para computar una respuesta de Nivel 1 (un benchmark direccional de la industria) es sospechosa. Una que necesita Nivel 3 (emails de clientes) para computar una respuesta de Nivel 2 (una lista de marketing) est&aacute; vendiendo a tus clientes. Una que necesita Nivel 4 (tu info bancaria) para computar cualquier cosa que no sea procesar pagos es una estafa.</p>
+
+      <h3>La auditor&iacute;a de cinco pruebas que puedes correr sobre cualquier herramienta gratis</h3>
+
+      <p>El recorrido completo est&aacute; en <a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">C&oacute;mo saber si una herramienta de restaurante es segura</a>; las cinco pruebas, en orden de qu&eacute; tan r&aacute;pido atrapan a un mal actor:</p>
+
+      <ol>
+        <li><strong>La prueba de Network (15 segundos).</strong> Abre DevTools, pesta&ntilde;a Network. Teclea un n&uacute;mero real en la herramienta. Mira el log de requests. Si un solo keystroke postea tu input, vete. Las herramientas de Muntin (<a href="/es/security/">/es/security/</a>) env&iacute;an una promesa verificable: cero outbound requests cuando tecleas un n&uacute;mero.</li>
+        <li><strong>La prueba de Storage (15 segundos).</strong> Application &rarr; Storage. Teclea un n&uacute;mero. Recarga la p&aacute;gina. &iquest;Tu n&uacute;mero persisti&oacute;? Si s&iacute; &mdash; localStorage, IndexedDB, cookies &mdash; la herramienta est&aacute; haciendo una copia. Eso puede estar bien (el Workshop de Muntin persiste en localStorage por tu guardado expl&iacute;cito) pero deber&iacute;a ser obvio, no una sorpresa.</li>
+        <li><strong>La prueba de View Source (30 segundos).</strong> Click derecho, View Page Source. Busca &laquo;fetch(&raquo; o &laquo;XMLHttpRequest&raquo;. Una herramienta segura tiene cero hits en el camino del c&oacute;digo de la calculadora; una insegura llama a fetch() en el handler del keystroke.</li>
+        <li><strong>La prueba de hash de integridad (1 minuto).</strong> El sitio publica <code>/security/integrity.txt</code> con hashes SHA-256 de cada archivo JS enviado. Puedes hashear el archivo que tu navegador efectivamente carg&oacute; y comparar. Si coinciden, el JS que corriste es el JS que el estudio dice enviar. <a href="/security/integrity.txt" hreflang="en" lang="en">/security/integrity.txt</a> en este sitio.</li>
+        <li><strong>La prueba del competidor (5 minutos).</strong> Corre las mismas cinco pruebas en una herramienta comparable. La diferencia es el argumento que carga peso. La mayor&iacute;a de las calculadoras de &laquo;margen gratis&raquo; falla al menos tres de las cinco.</li>
+      </ol>
+
+      <h3>La pregunta del proveedor</h3>
+
+      <p>M&aacute;s all&aacute; de las herramientas mismas, la pregunta del proveedor: &iquest;a qui&eacute;n dejas ver tus datos cuando armas tu stack? La respuesta honesta para un restaurante independiente se ve algo as&iacute;:</p>
+
+      <ul>
+        <li><strong>POS (Toast, Square, Clover).</strong> Vive aqu&iacute; data de Nivel 3. El contrato es lo que importa; lee la cl&aacute;usula de exportaci&oacute;n de datos y la de eliminaci&oacute;n antes de firmar.</li>
+        <li><strong>Plataforma de reservas (OpenTable, Resy, Tock).</strong> Vive aqu&iacute; data de Nivel 3. La mayor&iacute;a agrega tus datos en reportes de tendencia que vuelven a vender a la industria &mdash; legalmente est&aacute; bien, pero preg&uacute;ntalo antes de comprometerte.</li>
+        <li><strong>Agregadores (DoorDash, Uber Eats, Grubhub).</strong> Vive aqu&iacute; data de Nivel 3, con no-portabilidad expl&iacute;cita. El agregador es due&ntilde;o de la relaci&oacute;n con el cliente; t&uacute; eres due&ntilde;o de la relaci&oacute;n con la cocina. La op-ed de la cuenta de DoorDash (<a href="/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/">/es/blog/an-honest-doordash-math-for-independent-restaurants-2026/</a>) hace el caso para la propiedad del canal directo justamente por esto.</li>
+        <li><strong>Herramientas gratis que piden tus n&uacute;meros.</strong> Aplica la auditor&iacute;a de cinco pruebas. Si fallan, teclea n&uacute;meros ficticios; si no puedes testearla con n&uacute;meros falsos, esa es la respuesta.</li>
+      </ul>
+
+      <h3>Respuesta a incidente: qu&eacute; hacer si tu stack se vulnera</h3>
+
+      <p>El escenario de brecha m&aacute;s probable para un restaurante independiente es una brecha en el proveedor del POS (c&oacute;digo de otro), no propia. Los cuatro pasos en orden:</p>
+
+      <ol>
+        <li><strong>Verifica que la brecha sea real.</strong> Los emails de phishing que dicen &laquo;tus datos fueron expuestos&raquo; son ellos mismos un phish. Revisa la p&aacute;gina propia de incidentes del proveedor, no el enlace del email. PIPA de Maryland le da al proveedor 45 d&iacute;as para reportar al Attorney General; la brecha es real si el registro del AG la tiene.</li>
+        <li><strong>Lee qu&eacute; fue expuesto.</strong> Nivel 1 (horarios, direcci&oacute;n) &mdash; nada que hacer. Nivel 2 (ingreso) &mdash; inc&oacute;modo pero no accionable. Nivel 3 (emails de clientes) &mdash; tus comensales necesitan notificaci&oacute;n bajo la mayor&iacute;a de las leyes estatales. Nivel 4 (banking, credenciales del procesador) &mdash; congela las cuentas, rota credenciales, reporta al FBI.</li>
+        <li><strong>Notifica a los clientes si la brecha es Nivel 3.</strong> La ley de Maryland (PIPA) requiere notificaci&oacute;n dentro de 45 d&iacute;as para residentes cuyos datos fueron expuestos. La notificaci&oacute;n es plantillable; <a href="https://www.marylandattorneygeneral.gov/Pages/IdentityTheft/businessGL.aspx" target="_blank" rel="noopener">la p&aacute;gina del AG</a> tiene el marco. Hazlo aunque el proveedor diga que va a notificar; tus clientes se inscribieron contigo, no con el proveedor.</li>
+        <li><strong>Documenta la l&iacute;nea de tiempo.</strong> Cu&aacute;ndo te enteraste, qu&eacute; fue expuesto, qu&eacute; hiciste, cu&aacute;ndo notificaste. PIPA de Maryland exige retener esto al menos tres a&ntilde;os. El estudio usa un solo archivo de GDocs por incidente; tabular, simple.</li>
+      </ol>
+
+      <h3>Qu&eacute; hacer este mes</h3>
+
+      <p>Tres acciones:</p>
+
+      <ol>
+        <li><strong>Corre la auditor&iacute;a de cinco pruebas en cada herramienta de &laquo;margen gratis&raquo; en la que tengas hoy una pesta&ntilde;a abierta.</strong> La mayor&iacute;a falla. Las que pasan son las que te quedas usando.</li>
+        <li><strong>Lista a tus proveedores por nivel.</strong> &iquest;Qu&eacute; proveedor tiene data Nivel 1, 2, 3 y 4? La mayor&iacute;a de los operadores nunca arm&oacute; la lista. El acto de escribirla atrapa los over-shares.</li>
+        <li><strong>Configura una b&oacute;veda gratuita en LastPass / 1Password / Bitwarden para las credenciales del estudio.</strong> Data Nivel 4 nunca deber&iacute;a estar en una hoja de Google. Migra este mes; toma 90 minutos una sola vez y te ahorra una limpieza de seis meses despu&eacute;s.</li>
+      </ol>
+
+      <p>Operadores que quieren ayuda del lado del estudio: la <a href="/es/services/audit/">auditor&iacute;a de $499</a> incluye un recorrido proveedor-por-nivel para el stack actual del operador como parte del entregable.</p>
+
+      <h3>D&oacute;nde este tema toca a los otros</h3>
+
+      <ul>
+        <li><strong><a href="/es/learn/topics/operations-margin/">Operaciones y margen</a></strong> &mdash; porque la data de Nivel 2 (tus n&uacute;meros operativos) es el input de la mayor parte del trabajo de margen. Prot&eacute;gela donde vive; no la dispares por todas las herramientas gratis.</li>
+        <li><strong><a href="/es/learn/topics/trust-reviews/">Confianza y rese&ntilde;as</a></strong> &mdash; porque el marco de credibilidad que te gana rese&ntilde;as de tus comensales es el mismo que deber&iacute;a ganarte la confianza de tus proveedores.</li>
+        <li><strong><a href="/es/learn/topics/ai-search/">B&uacute;squeda con IA y citaci&oacute;n</a></strong> &mdash; porque los modelos de b&uacute;squeda con IA son una clase emergente de proveedor, y la pregunta &laquo;&iquest;entrena con mis datos?&raquo; es una pregunta de Nivel 2. La p&aacute;gina <a href="/es/ai/">/es/ai/</a> documenta la postura del estudio; los operadores que eval&uacute;an herramientas de IA deber&iacute;an hacer las mismas preguntas.</li>
+      </ul>
+
+      <p>El compuesto a vigilar: <strong>tu lista nivel-por-proveedor, refrescada cada trimestre</strong>. La lista misma es la disciplina.</p>
+
+    </div>
   </div>
 </section>
 <!-- topic-essay:end -->
