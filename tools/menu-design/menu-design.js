@@ -1578,6 +1578,65 @@
       // Stash the picked step on the paper so the export-PDF flow can
       // mirror it (effectiveShrinkFactor + effectiveTwoColPromote).
       paperEl.dataset.fitStep = (pickedStep && pickedStep.label) || (fitOk ? 'fit' : 'overflow');
+
+      // Wave studio-quality — smart 2-page split. When the operator
+      // opted into "Allow front + back" AND the cascade landed on a
+      // 2-bucket fit, prefer to split at a SECTION BOUNDARY rather
+      // than arbitrarily mid-section. A real designer plans the front
+      // page as appetizers + mains and the back as desserts + drinks
+      // (or similar logical halves), not a random page-break that
+      // chops 'Pasta' across two sheets.
+      //
+      // Approach: pick the section whose accumulated height (up to
+      // and including its preceding sections) is closest to half the
+      // total content. Force the bin-pack to break there next pass.
+      if (allowMulti && targetPages >= 2 && fitOk) {
+        var finalBuckets = _measureBuckets(paperEl, contentAreaH);
+        if (finalBuckets.length === 2) {
+          var allChildren = Array.prototype.slice.call(paperEl.children);
+          var headerIndices = [];
+          allChildren.forEach(function (ch, i) {
+            if (ch.matches && ch.matches('h2.md-pp-section')) headerIndices.push(i);
+          });
+          if (headerIndices.length >= 2) {
+            // Compute cumulative heights to find the section break
+            // closest to the midpoint.
+            var SPAN_SELECTOR2 = 'h1.md-pp-title, .md-pp-tagline, .md-pp-story, h2.md-pp-section, .md-pp-allergen-key, .md-pp-section-hero, .md-pp-section-blurb, .md-pp-decor, img.md-pp-logo';
+            var twoColActive = paperEl.classList.contains('md-promote-2col');
+            var heightsForSplit = allChildren.map(function (c) {
+              var cs = window.getComputedStyle(c);
+              if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
+              var h = c.getBoundingClientRect().height;
+              if (twoColActive && c.matches && !c.matches(SPAN_SELECTOR2)) return h / 2;
+              return h;
+            });
+            var totalH = heightsForSplit.reduce(function (a, b) { return a + b; }, 0);
+            var halfH = totalH / 2;
+            var bestBreak = headerIndices[0];
+            var bestDelta = Infinity;
+            var cum = 0;
+            for (var ci = 0; ci < allChildren.length; ci++) {
+              cum += heightsForSplit[ci];
+              if (headerIndices.indexOf(ci) >= 0 && ci > 0) {
+                // ci is a section header — splitting before it puts
+                // everything up to ci-1 on page 1, ci+ on page 2.
+                var pageOneH = cum - heightsForSplit[ci];
+                var d = Math.abs(pageOneH - halfH);
+                if (d < bestDelta) {
+                  bestDelta = d;
+                  bestBreak = ci;
+                }
+              }
+            }
+            // Stash the chosen break index for the bin-pack below to
+            // honor (it walks children and forces a new bucket at this
+            // index regardless of contentAreaH).
+            paperEl.dataset.smartBreakAt = String(bestBreak);
+          }
+        }
+      } else {
+        delete paperEl.dataset.smartBreakAt;
+      }
       // If still overflowing at maximum shrink, restore native sizes
       // (no shrink class) and let the legacy multi-page split fire,
       // BUT surface a clear actionable warning so the operator knows
@@ -1626,11 +1685,23 @@
       if (cs.position === 'absolute' || cs.position === 'fixed') return 0;
       return c.getBoundingClientRect().height;
     });
+    // Wave studio-quality — honor smart-break-at when the cascade
+    // chose a section boundary as the optimal 2-page split. Uses the
+    // SAME bin-pack but forces the new bucket exactly at the picked
+    // index, regardless of contentAreaH.
+    var smartBreakAt = paperEl.dataset.smartBreakAt
+      ? parseInt(paperEl.dataset.smartBreakAt, 10)
+      : -1;
     var pageBuckets = [[]];
     var bucketH = 0;
     children.forEach(function (c, idx) {
       var ch = heights[idx];
-      if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
+      if (smartBreakAt >= 0 && idx === smartBreakAt &&
+          pageBuckets[pageBuckets.length - 1].length) {
+        // Force a new bucket at the smart-split section boundary.
+        pageBuckets.push([c]);
+        bucketH = ch;
+      } else if (bucketH + ch > contentAreaH && pageBuckets[pageBuckets.length - 1].length) {
         pageBuckets.push([c]);
         bucketH = ch;
       } else {
