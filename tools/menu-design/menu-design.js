@@ -3999,6 +3999,15 @@
       if (mch.avgScore != null) copyBits.push('avg score ' + mch.avgScore);
       if (copyBits.length) parts.push({ label: 'From Menu Copy', value: copyBits.join(' · ') });
     }
+    // Wave studio-quality (C9) — surface menu-converter parse counts.
+    if (ctx.menuConverterHint) {
+      var mcvh = ctx.menuConverterHint;
+      var convBits = [];
+      if (mcvh.sections) convBits.push(mcvh.sections + ' section' + (mcvh.sections === 1 ? '' : 's'));
+      if (mcvh.items)    convBits.push(mcvh.items    + ' item'    + (mcvh.items    === 1 ? '' : 's'));
+      if (mcvh.currency) convBits.push(mcvh.currency);
+      if (convBits.length) parts.push({ label: 'From Menu Converter', value: convBits.join(' · ') });
+    }
     if (!parts.length) {
       ctxEl.hidden = true;
       return;

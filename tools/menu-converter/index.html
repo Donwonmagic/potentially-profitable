@@ -374,6 +374,19 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
         <div id="mcOutSchemaBody"></div>
       </div>
 
+      <!-- Wave studio-quality (C9) — Menu Design handoff. After the
+           operator has structured menu output (HTML + JSON-LD), the
+           next move is often "give me a printable too" — the styled
+           PDF / table-tent / placemat that the schema'd HTML can't
+           produce. We push the parsed structure (sections + items)
+           into MuntinContext + deeplink into Menu Design where the
+           dishes pre-load and the operator just picks a theme. -->
+      <aside class="mc-handoff-card" id="mcvHandoffMenuDesign" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
+        <p id="mcvHandoffHeadline" style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;"></p>
+        <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your structured menu and lays out a print-ready PDF + QR-menu HTML in your chosen theme. Same dishes, eight more deliverables.</p>
+        <button type="button" id="mcvHandoffMenuDesignBtn" class="mc-btn" style="font-size:13px;padding:8px 14px;"></button>
+      </aside>
+
       <p style="font-size:13.5px;color:var(--stone);margin:14px 0 0;font-style:italic">
         Want the menu page styled, mobile-fast, schema-validated, and bilingual EN/ES &mdash; without the rebuild? <a href="/services/menu-drop-in/" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">$1,500 menu drop-in &rarr;</a>
       </p>
@@ -844,6 +857,65 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     showTab('mcOutPreview');
     document.getElementById('mcResultRegion').focus();
     if (window.plausible) window.plausible('Tool First Result', { props: { tool: 'menu-converter' } });
+    paintMenuDesignHandoff(sections, totalItems, name, currency);
+  }
+
+  // Wave studio-quality (C9) — Menu Design handoff. Stash the parsed
+  // sections + items in MuntinContext and deeplink into Menu Design.
+  function paintMenuDesignHandoff(sections, totalItems, restaurantName, currency) {
+    var card = document.getElementById('mcvHandoffMenuDesign');
+    var headlineEl = document.getElementById('mcvHandoffHeadline');
+    var btnEl = document.getElementById('mcvHandoffMenuDesignBtn');
+    if (!card || !btnEl) return;
+    if (totalItems === 0) { card.hidden = true; return; }
+    card.hidden = false;
+    var sectionN = sections.length;
+    headlineEl.textContent = totalItems + ' item' + (totalItems === 1 ? '' : 's') +
+      ' across ' + sectionN + ' section' + (sectionN === 1 ? '' : 's') +
+      ' — turn this into a printable.';
+    btnEl.textContent = 'Open in Menu Design Suite →';
+    if (btnEl.dataset.wired === '1') return;
+    btnEl.dataset.wired = '1';
+    btnEl.addEventListener('click', function () {
+      // Flatten sections → dishes[] for the canonical menu shape.
+      var dishes = [];
+      sections.forEach(function (sec) {
+        // Insert section marker as a dish with a synthetic flag so the
+        // menu-design ctx-bus loader treats it as a section header.
+        if (sec.name) dishes.push({ kind: 'section', name: sec.name });
+        sec.items.forEach(function (it) {
+          dishes.push({
+            kind: 'dish',
+            name: it.name || '',
+            desc: it.description || '',
+            price: it.price ? '$' + it.price : ''
+          });
+        });
+      });
+      try {
+        if (typeof MuntinContext !== 'undefined' && typeof MuntinContext.merge === 'function') {
+          MuntinContext.merge({
+            dishes: dishes,
+            businessName: (restaurantName || '').trim() || undefined,
+            menuConverterHint: {
+              sections: sectionN,
+              items: totalItems,
+              currency: currency || 'USD',
+              from: 'menu-converter'
+            }
+          });
+        }
+      } catch (_) {}
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Converter Handoff', { props: {
+            to: 'menu-design',
+            itemCount_bucket: totalItems < 6 ? '<6' : totalItems < 12 ? '6-11' : totalItems < 25 ? '12-24' : '25+'
+          }});
+        } catch (_) {}
+      }
+      window.location.href = '/tools/menu-design/?from=menu-converter';
+    });
   }
 
   function showTab(id) {
