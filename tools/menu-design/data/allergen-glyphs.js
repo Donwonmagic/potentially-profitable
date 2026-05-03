@@ -229,6 +229,110 @@
         { d: 'M12 22C12 22 5 14 5 9C5 5.7 8.1 3 12 3C15.9 3 19 5.7 19 9C19 14 12 22 12 22Z' },
         { d: 'M12 6.5L13.2 8.6L15.5 9L13.7 10.7L14.2 13L12 11.9L9.8 13L10.3 10.7L8.5 9L10.8 8.6Z' }
       ]
+    },
+
+    // ============================================================
+    // Wave B2 — regional allergen extension. Six glyphs covering
+    // EU FIC 14 + UK PPDS regimes. Same family rules: 1.5pt stroke
+    // at 24x24, single ink, balanced inside an 18x18 safe area.
+    // Each silhouette is the most-economical reading of its
+    // referent. Where the W25 set used filled accents at focal
+    // points, these reuse that grammar (shell whorl center, lupin
+    // seed dots, sulphite bubbles) so the visual family holds.
+    // ============================================================
+
+    // PE — Peanuts. Classic figure-8 shell silhouette with two
+    // filled seed-dots inside, one per lobe. Distinct from N
+    // (tree nuts) by the horizontal orientation and the pinch.
+    PE: {
+      title_en: 'Peanuts',
+      title_es: 'Cacahuetes',
+      paths: [
+        { d: 'M5 12C5 8 7 6 9 6C11 6 12 8 12 10C12 8 13 6 15 6C17 6 19 8 19 12C19 16 17 18 15 18C13 18 12 16 12 14C12 16 11 18 9 18C7 18 5 16 5 12Z' }
+      ],
+      extras: [
+        { type: 'circle', cx: 8.7,  cy: 12, r: 1.0, fill: true },
+        { type: 'circle', cx: 15.3, cy: 12, r: 1.0, fill: true }
+      ]
+    },
+
+    // MU — Mustard. Squeeze-bottle silhouette: short neck, broad
+    // shoulder, tapered body. Reads as a condiment vessel without
+    // resorting to label text. Cap-line at the top is a single
+    // horizontal stroke.
+    MU: {
+      title_en: 'Mustard',
+      title_es: 'Mostaza',
+      paths: [
+        { d: 'M9 4H15V7L17 9V20C17 21 16 22 15 22H9C8 22 7 21 7 20V9L9 7Z' },
+        { d: 'M9 4H15' }
+      ]
+    },
+
+    // CE — Celery. Vertical stalk with three short leaf strokes
+    // fanning outward at the top. Stalk is two parallel uprights
+    // joined at the bottom; leaf strokes are economical L-curves
+    // that suggest fronds without rendering them literally.
+    CE: {
+      title_en: 'Celery',
+      title_es: 'Apio',
+      paths: [
+        { d: 'M10 22V8' },
+        { d: 'M14 22V8' },
+        { d: 'M10 8C9 6 8 4 6 3' },
+        { d: 'M12 8C12 5 12 3 12 2' },
+        { d: 'M14 8C15 6 16 4 18 3' }
+      ]
+    },
+
+    // LU — Lupin. Vertical pod (long oval, slight lean) with
+    // three filled seed-dots arrayed inside. Distinct from V
+    // (vegan sprout) which uses leaves; from PE (peanuts) which
+    // is horizontal and pinched.
+    LU: {
+      title_en: 'Lupin',
+      title_es: 'Altramuz',
+      paths: [
+        { d: 'M12 3C9.5 3 8 5 8 9V17C8 20 9.5 21 12 21C14.5 21 16 20 16 17V9C16 5 14.5 3 12 3Z' }
+      ],
+      extras: [
+        { type: 'circle', cx: 12, cy: 8.5,  r: 1.1, fill: true },
+        { type: 'circle', cx: 12, cy: 12,   r: 1.1, fill: true },
+        { type: 'circle', cx: 12, cy: 15.5, r: 1.1, fill: true }
+      ]
+    },
+
+    // MO — Molluscs. Spiral shell silhouette: outer arc opens
+    // upward, inner whorl tightens to a filled center-dot. The
+    // dot is the family's load-bearing detail, mirroring the
+    // SE (sesame) seed accents.
+    MO: {
+      title_en: 'Molluscs',
+      title_es: 'Moluscos',
+      paths: [
+        { d: 'M3 17C3 10 8 5 14 5C19 5 22 8 22 12C22 16 19 19 15 19C12 19 10 17 10 14C10 12 11.5 10 14 10C16 10 17 11.5 17 13' }
+      ],
+      extras: [
+        { type: 'circle', cx: 14.5, cy: 13, r: 0.9, fill: true }
+      ]
+    },
+
+    // SU — Sulphites (≥10ppm in wine, dried fruit, pickles).
+    // Erlenmeyer flask silhouette: narrow neck, broad triangular
+    // base, two small bubble-dots floating above the rim to
+    // suggest fermentation / chemistry without literal labelling.
+    SU: {
+      title_en: 'Sulphites',
+      title_es: 'Sulfitos',
+      paths: [
+        { d: 'M10 4H14V10L19 20C19.5 21 19 22 18 22H6C5 22 4.5 21 5 20L10 10Z' },
+        { d: 'M10 4H14' },
+        { d: 'M8 16H16' }
+      ],
+      extras: [
+        { type: 'circle', cx: 8.5, cy: 3, r: 0.7, fill: true },
+        { type: 'circle', cx: 15.5, cy: 2, r: 0.6, fill: true }
+      ]
     }
   };
 

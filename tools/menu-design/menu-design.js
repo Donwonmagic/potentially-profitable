@@ -3836,22 +3836,84 @@
     if (el.closest('.md-toolbar, .md-download-row, .md-export')) return 'toolbar';
     return 'body';
   }
+
+  // Wave B11 — Studio Brief auto-bundler attached to the outbound
+  // CTAs. When the operator clicks "Start a polish" or "Start a
+  // drop-in" with non-trivial menu content in the editor, we encode
+  // the canonical-v3 menu into a base64url URL fragment and append
+  // it to the link href. The receiving page (window) will read
+  // location.hash and pre-fill the form — no round-trip needed.
+  //
+  // Privacy posture stays intact: the brief lives in location.hash,
+  // which is client-side-only (the fragment never leaves the
+  // browser as a query parameter; the operator only "sends" it
+  // when they submit the form). Logos are NOT included (size +
+  // privacy). Empty-menu sessions skip the fragment entirely.
+  function dishCountForBrief() {
+    return rows.filter(function (r) { return r && r.kind === 'dish' && (r.name || '').trim() !== ''; }).length;
+  }
+  function dishCountBucketFor(n) {
+    return n < 12 ? '<12' : n < 25 ? '12-24' : n < 40 ? '25-39' : '40+';
+  }
+  function buildStudioBriefFragment() {
+    if (typeof MD_SCHEMA === 'undefined' || typeof MD_BRIEF === 'undefined') return null;
+    if (dishCountForBrief() === 0) return null;
+    try {
+      var v2Shape = {
+        rows: rows,
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      var menu = MD_SCHEMA.migrate(v2Shape);
+      // Non-mutating disclaimer fill: the canonical menu carries the
+      // regime + locale, so we surface the regime-aware default text
+      // before the brief is encoded. Operator-typed disclaimer wins.
+      menu = MD_SCHEMA.applyAutoDisclaimer(menu);
+      return MD_BRIEF.toUrlFragment(menu);
+    } catch (_) {
+      return null;
+    }
+  }
+  function appendBriefFragmentToHref(a) {
+    if (!a) return;
+    var brief = buildStudioBriefFragment();
+    if (!brief) return;
+    var href = a.getAttribute('href') || '';
+    // Strip any prior #brief=… so re-clicks pick up fresh state.
+    href = href.replace(/(?:#|&)brief=[A-Za-z0-9_-]+/, '');
+    var sep = href.indexOf('#') >= 0 ? '&' : '#';
+    a.setAttribute('href', href + sep + 'brief=' + brief);
+  }
+
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest && e.target.closest('a[href]');
     if (!a) return;
     var href = a.getAttribute('href') || '';
     if (href.indexOf('/services/menu-drop-in/') >= 0 || href.indexOf('/services/menu-drop-in') === 0) {
+      appendBriefFragmentToHref(a);
       if (window.plausible) {
         try {
-          window.plausible('Menu Design Outbound Drop-In', { props: { surface: ctaSurfaceFor(a), locale: LOCALE } });
+          window.plausible('Menu Design Outbound Drop-In', { props: {
+            surface: ctaSurfaceFor(a),
+            locale: LOCALE,
+            dishCount_bucket: dishCountBucketFor(dishCountForBrief())
+          }});
         } catch (_) {}
       }
       return;
     }
     if (href.indexOf('/services/menu-polish/') >= 0 || href.indexOf('/services/menu-polish') === 0) {
+      appendBriefFragmentToHref(a);
       if (window.plausible) {
         try {
-          window.plausible('Menu Design Outbound Polish', { props: { surface: ctaSurfaceFor(a), locale: LOCALE } });
+          window.plausible('Menu Design Outbound Polish', { props: {
+            surface: ctaSurfaceFor(a),
+            locale: LOCALE,
+            dishCount_bucket: dishCountBucketFor(dishCountForBrief())
+          }});
         } catch (_) {}
       }
       return;

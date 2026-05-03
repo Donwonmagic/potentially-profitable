@@ -22,18 +22,27 @@
 
   // Shared allergen catalog mirror — keep in sync with the editor
   // and the other emitters. Keys are the codes; values are EN/ES.
+  // Wave B2 — extended to cover EU FIC 14 + UK PPDS regimes (peanuts,
+  // mustard, celery, lupin, molluscs, sulphites). Original 11 entries
+  // preserved verbatim for back-compat with already-shipped menus.
   var TXT_ALLERGENS = {
-    V:  { en: 'Vegan',           es: 'Vegano' },
-    VG: { en: 'Vegetarian',      es: 'Vegetariano' },
-    GF: { en: 'Gluten-free',     es: 'Sin gluten' },
-    DF: { en: 'Dairy-free',      es: 'Sin lácteos' },
-    N:  { en: 'Contains nuts',   es: 'Frutos secos' },
-    E:  { en: 'Contains eggs',   es: 'Huevos' },
-    SO: { en: 'Contains soy',    es: 'Soya' },
-    SF: { en: 'Shellfish',       es: 'Mariscos' },
-    FI: { en: 'Contains fish',   es: 'Pescado' },
-    SE: { en: 'Sesame',          es: 'Sésamo' },
-    LO: { en: 'Locally sourced', es: 'Origen local' }
+    V:  { en: 'Vegan',              es: 'Vegano' },
+    VG: { en: 'Vegetarian',         es: 'Vegetariano' },
+    GF: { en: 'Gluten-free',        es: 'Sin gluten' },
+    DF: { en: 'Dairy-free',         es: 'Sin lácteos' },
+    N:  { en: 'Tree nuts',          es: 'Frutos secos' },
+    E:  { en: 'Contains eggs',      es: 'Huevos' },
+    SO: { en: 'Contains soy',       es: 'Soya' },
+    SF: { en: 'Shellfish',          es: 'Mariscos' },
+    FI: { en: 'Contains fish',      es: 'Pescado' },
+    SE: { en: 'Sesame',             es: 'Sésamo' },
+    LO: { en: 'Locally sourced',    es: 'Origen local' },
+    PE: { en: 'Peanuts',            es: 'Cacahuetes' },
+    MU: { en: 'Mustard',            es: 'Mostaza' },
+    CE: { en: 'Celery',             es: 'Apio' },
+    LU: { en: 'Lupin',              es: 'Altramuz' },
+    MO: { en: 'Molluscs',           es: 'Moluscos' },
+    SU: { en: 'Sulphites ≥10ppm', es: 'Sulfitos ≥10ppm' }
   };
   function allergenLabel(code, locale) {
     var a = TXT_ALLERGENS[code]; if (!a) return code;

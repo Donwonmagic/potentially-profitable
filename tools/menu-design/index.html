@@ -1401,6 +1401,13 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="./infra/i18n.js?v=20260501-w18"></script>
 <script src="./state/draft.js?v=20260501-w22"></script>
 <script src="./state/history.js?v=20260501-w22"></script>
+<!-- Wave A5 / B11 — canonical v3 menu schema + studio-brief bundler.
+     Both serve outbound CTAs (drop-in / polish) by carrying the
+     operator's current menu as a URL fragment, and underpin the
+     A1 state store + reducer that will replace the imperative
+     mutations in menu-design.js incrementally. ~6KB gz combined. -->
+<script src="/tools/_shared/menu-schema.js?v=20260503-wA"></script>
+<script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
 <script src="./themes.js?v=20260501-w15"></script>
 <script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
 <script src="./menu-render-html.js?v=20260501-w23"></script>
