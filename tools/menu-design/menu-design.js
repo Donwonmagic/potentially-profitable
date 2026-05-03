@@ -195,6 +195,94 @@
     if (paperEl.classList.contains('md-shrink-1')) return 0.96;
     return 1.0;
   }
+  // Wave studio-quality — dish quality checks. Surface non-fatal
+  // issues a real designer would catch before shipping a menu.
+  // Advisory only; never blocks export. Runs after each preview
+  // render and updates the #mdQualityCheck panel.
+  //
+  // Checks:
+  //   - Dish name > 80 chars (will wrap badly)         → high
+  //   - Dish name 51–80 chars (may wrap on narrow)     → med
+  //   - Duplicate dish name within the menu             → med
+  //   - Price is $0 / 0 (likely typo)                  → high
+  //   - Dish has price + name but no description       → low (informational)
+  function _computeDishWarnings() {
+    var warnings = [];
+    var seenNames = {};
+    var noDescCount = 0;
+    rows.forEach(function (r) {
+      if (r.kind !== 'dish') return;
+      var name = (r.name || '').trim();
+      if (!name) return;
+      // Length
+      if (name.length > 80) {
+        warnings.push({ severity: 'high', dish: name, msg: tt(
+          'Dish name is ' + name.length + ' characters — will wrap onto 2–3 lines.',
+          'Nombre de ' + name.length + ' caracteres — se romperá en 2–3 líneas.'
+        ) });
+      } else if (name.length > 50) {
+        warnings.push({ severity: 'med', dish: name, msg: tt(
+          'Dish name is ' + name.length + ' characters — may wrap on narrow paper.',
+          'Nombre de ' + name.length + ' caracteres — puede romperse en papeles angostos.'
+        ) });
+      }
+      // Duplicate
+      var lower = name.toLowerCase();
+      if (seenNames[lower]) {
+        warnings.push({ severity: 'med', dish: name, msg: tt(
+          'Duplicate of an earlier dish — was that intentional?',
+          'Duplicado de un plato anterior — ¿fue intencional?'
+        ) });
+      }
+      seenNames[lower] = true;
+      // $0 price
+      var price = (r.price || '').trim();
+      if (price && /^[$€£¥₩₹]?\s*0+(\.0+)?$/.test(price)) {
+        warnings.push({ severity: 'high', dish: name, msg: tt(
+          'Price is zero — typo?',
+          'Precio cero — ¿error?'
+        ) });
+      }
+      // Missing description (count silently; only surfaces if many)
+      if (!(r.desc || '').trim()) noDescCount++;
+    });
+    var totalDishes = rows.filter(function (r) {
+      return r.kind === 'dish' && (r.name || '').trim() !== '';
+    }).length;
+    if (totalDishes >= 5 && noDescCount >= totalDishes * 0.7) {
+      warnings.push({ severity: 'low', dish: '', msg: tt(
+        noDescCount + ' of ' + totalDishes + ' dishes have no description. Diners reading top-down often skip dishes that don\'t describe themselves.',
+        noDescCount + ' de ' + totalDishes + ' platos no tienen descripción. Los diners que leen de arriba a abajo suelen saltar los que no se describen.'
+      ) });
+    }
+    return warnings;
+  }
+  function _renderDishWarnings() {
+    var qcEl = document.getElementById('mdQualityCheck');
+    if (!qcEl) return;
+    var warnings = _computeDishWarnings();
+    if (!warnings.length) {
+      qcEl.hidden = true;
+      qcEl.innerHTML = '';
+      return;
+    }
+    qcEl.hidden = false;
+    var heading = warnings.length === 1
+      ? tt('1 quality check', '1 verificación de calidad')
+      : tt(warnings.length + ' quality checks', warnings.length + ' verificaciones de calidad');
+    var body = '<strong>' + escHtml(heading) + ':</strong><ul>';
+    warnings.slice(0, 8).forEach(function (w) {
+      var sevClass = w.severity === 'high' ? 'md-qc-sev-high' : '';
+      var dishLabel = w.dish ? '<code>' + escHtml(w.dish.length > 32 ? w.dish.slice(0, 32) + '…' : w.dish) + '</code> — ' : '';
+      body += '<li class="' + sevClass + '">' + dishLabel + escHtml(w.msg) + '</li>';
+    });
+    if (warnings.length > 8) {
+      body += '<li>' + escHtml(tt('+ ' + (warnings.length - 8) + ' more', '+ ' + (warnings.length - 8) + ' más')) + '</li>';
+    }
+    body += '</ul>';
+    qcEl.innerHTML = body;
+  }
+
   // Sister helper — did the live-preview cascade promote the layout
   // to 2 columns? PDF export flow uses this to switch from paginate()
   // to paginateTwoCol() so the printed deliverable matches the
@@ -1909,7 +1997,13 @@
   var previewTimer = null;
   function schedulePreview() {
     if (previewTimer) clearTimeout(previewTimer);
-    previewTimer = setTimeout(function () { previewTimer = null; renderPreview(); }, 300);
+    previewTimer = setTimeout(function () {
+      previewTimer = null;
+      renderPreview();
+      // Wave studio-quality — quality-check warnings render after
+      // every preview repaint so they stay current with operator edits.
+      try { _renderDishWarnings(); } catch (_) {}
+    }, 300);
   }
 
   // ----------------------------------------------------------------
