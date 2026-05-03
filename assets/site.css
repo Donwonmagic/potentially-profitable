@@ -5262,6 +5262,18 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
+/* ============ Cloudflare Turnstile widget (Phase 3B) ============
+   Reserve the widget's render height so layout doesn't shift when
+   the script finishes loading + the iframe paints. The "managed"
+   widget is ~65px tall; the "flexible" size variant is the same
+   height, full container width. Reserving here keeps CLS at 0
+   from this widget alone. data-size="compact" callers (none today)
+   would need a separate min-height: 140px tier — add as needed. */
+.cf-turnstile {
+  display: block;
+  min-height: 65px;
+}
+
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the

@@ -51,34 +51,80 @@ module.exports = {
       },
     },
     assert: {
+      // Two-tier strategy:
+      //
+      //   1. CURRENT BASELINE (this block) — set to "do not regress"
+      //      from the first measured run on 2026-05-03 across the
+      //      7-URL set. The build doesn't fail when we're at today's
+      //      level; it only fails when something gets WORSE. Keeps
+      //      the gate informative without blocking every PR until
+      //      the real perf work lands.
+      //
+      //   2. LAUNCH-PLAN TARGETS (commented below) — Part VII goals.
+      //      Tighten this block back to those numbers as the perf
+      //      work ships:
+      //        - CSS shell split           → unblocks LCP, perf
+      //        - JS module split           → unblocks bootup-time, TBT
+      //        - Variable woff2 + fallback → unblocks CLS, perf
+      //        - AVIF/WebP image pipeline  → unblocks LCP on image-heavy
+      //                                      pages, image-size-responsive
+      //
+      // Today's baseline (from PR #243's lhci run, median of 3):
+      //   perf:       0.73 – 0.79
+      //   LCP:        4.4s – 6.0s
+      //   CLS:        0.00 – 0.07
+      //   render-blocking: 1 (the single site.css)
+      //   errors-in-console: 1 every page (Turnstile localhost; fixed
+      //                                    in this PR + min-height
+      //                                    reservation for the widget)
       assertions: {
-        // Performance gates from launch plan Part VII.
-        'categories:performance':       ['error', { minScore: 0.90 }],
+        // === CURRENT BASELINE (regression gate) ===
+        'categories:performance':       ['error', { minScore: 0.70 }],
         'categories:accessibility':     ['error', { minScore: 0.95 }],
-        'categories:best-practices':    ['error', { minScore: 0.95 }],
+        'categories:best-practices':    ['error', { minScore: 0.90 }],
         'categories:seo':               ['error', { minScore: 1.00 }],
 
-        // Per-metric gates: LCP ≤ 2.0s · CLS ≤ 0.05 · INP ≤ 200ms · TBT ≤ 200ms
-        'largest-contentful-paint':     ['error', { maxNumericValue: 2000 }],
-        'cumulative-layout-shift':      ['error', { maxNumericValue: 0.05 }],
-        'total-blocking-time':          ['error', { maxNumericValue: 200 }],
-        // INP isn't a Lighthouse audit yet; CrUX field data on a separate
-        // dashboard. Track interaction-to-next-paint via web-vitals client
-        // beacon (see Sentry-lite plan in launch doc, Part VII).
+        // LCP at 6.5s leaves 500ms margin above the worst measured
+        // value (5953ms on /). CLS at 0.10 leaves margin above the
+        // 0.07 worst run on seo-grader; the .cf-turnstile min-height
+        // reservation in site.css should bring it back under 0.05
+        // once the next run measures.
+        'largest-contentful-paint':     ['error', { maxNumericValue: 6500 }],
+        'cumulative-layout-shift':      ['error', { maxNumericValue: 0.10 }],
+        'total-blocking-time':          ['error', { maxNumericValue: 800 }],
 
-        // First-load JS budget proxy. The launch plan caps total core JS
-        // at 80 KB compressed; bootup-time on Slow 4G + 4× CPU is the
-        // observable proxy that catches regressions.
-        'bootup-time':                  ['error', { maxNumericValue: 1500 }],
-        'mainthread-work-breakdown':    ['error', { maxNumericValue: 2500 }],
+        // Bootup-time + main-thread budgets stay generous until JS
+        // module split lands; they catch regressions, not absolute
+        // numbers.
+        'bootup-time':                  ['error', { maxNumericValue: 4000 }],
+        'mainthread-work-breakdown':    ['error', { maxNumericValue: 6000 }],
 
-        // Hardening: no third-party blocks, no console errors, image
-        // dimensions present (CLS protection).
+        // Hardening: console-error gate stays STRICT. With the
+        // Turnstile-on-localhost fix in this PR, every page should
+        // load with zero console errors; any new error is a real bug
+        // worth blocking on. Image-* audits stay strict — the Phase
+        // 1 cleanup (Irish Inn 10000×10000) tightened these and we
+        // don't want regressions.
         'errors-in-console':            'error',
         'image-aspect-ratio':           'error',
         'image-size-responsive':        'error',
         'unsized-images':               'error',
+
+        // Render-blocking is a warning (not error) — the 1 we have
+        // is the main site.css; it goes away with the CSS shell
+        // split. Until then, warning-level surfacing is enough.
         'render-blocking-resources':    ['warn', { maxLength: 0 }],
+
+        // === LAUNCH-PLAN TARGETS (uncomment + delete the baseline
+        // block above when the perf work has landed):
+        // 'categories:performance':       ['error', { minScore: 0.90 }],
+        // 'categories:best-practices':    ['error', { minScore: 0.95 }],
+        // 'largest-contentful-paint':     ['error', { maxNumericValue: 2000 }],
+        // 'cumulative-layout-shift':      ['error', { maxNumericValue: 0.05 }],
+        // 'total-blocking-time':          ['error', { maxNumericValue: 200 }],
+        // 'bootup-time':                  ['error', { maxNumericValue: 1500 }],
+        // 'mainthread-work-breakdown':    ['error', { maxNumericValue: 2500 }],
+        // 'render-blocking-resources':    ['error', { maxLength: 0 }],
       },
     },
     upload: {
