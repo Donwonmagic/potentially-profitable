@@ -98,6 +98,7 @@ const CHECKS = [
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
+  ['Article sheet callouts (idem)','inject-article-sheet-callouts.mjs','--check'],
   ['Glossary OG seed (idem)','seed-glossary-og.mjs',       '--check'],
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],

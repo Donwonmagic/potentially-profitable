@@ -638,7 +638,15 @@ header.nav{min-height:64px}
           document.querySelector('[data-output="prime_dollars"]').textContent = fmt$(prime);
           var primeEl = document.querySelector('[data-output="prime_pct"]');
           primeEl.textContent = fmtPct(primePct);
-          primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          // D9 — band routes through centralized benchmarks. Same
+          // metric key as weekly-prime-cost-worksheet so the two
+          // sheets agree on what "healthy" means.
+          if (window.Bench && window.Bench.evaluate) {
+            var bp = window.Bench.evaluate('prime_cost_pct', primePct);
+            if (bp && bp.band) primeEl.dataset.band = bp.band;
+          } else {
+            primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          }
           var contribEl = document.querySelector('[data-output="contrib_pct"]');
           contribEl.textContent = fmtPct(contribPct);
           contribEl.dataset.band = contribPct > 30 ? 'good' : (contribPct > 20 ? 'warn' : 'bad');

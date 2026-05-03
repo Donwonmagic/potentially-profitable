@@ -373,6 +373,50 @@ header.nav{min-height:64px}
   </div>
 </section>
 
+<!-- ============ ARQUITECTURA DE LAS HOJAS DEL OPERADOR ============ -->
+<section class="sys-section" id="sheets" aria-labelledby="sheets-heading">
+  <div class="container">
+    <div class="sys-section-head">
+      <span class="eyebrow">Hojas del operador</span>
+      <h2 id="sheets-heading">Treinta y un papeles<br><span class="serif-italic">imprimibles.</span></h2>
+      <p class="final-sub">Cada hoja en <code>/sheets/&lt;slug&gt;/</code> es un formulario interactivo de una sola página: la llenas, la matemática corre en tu navegador, la imprimes o la guardas como CSV. Cinco paquetes (Operaciones y Márgenes, SEO local y Descubrimiento, Conversiones y Reservas, Marca y Diseño, Confianza y Reseñas) en paridad EN+ES. El pipeline está dirigido por datos desde una sola fuente de verdad, así que agregar una hoja cuesta una entrada de JSON y un fragmento HTML.</p>
+    </div>
+
+    <ol class="sys-pipeline">
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">01</span>
+        <h3>Una sola fuente de verdad</h3>
+        <p><code>data/sheets.json</code> declara cada hoja — título, resumen, walkaway, cadencia, formato, paquete, pairsWith.{tools,glossary,blog}, status. <code>data/sheets.es.json</code> lleva la prosa larga en español (bullets de when_to_use + mistakes). Un campo cambia una hoja de queued a live, y el build la recoge en todos lados.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">02</span>
+        <h3>Composición shell + fragment</h3>
+        <p><code>_includes/sheet-shell.html</code> es la chrome compartida: hero, breadcrumb, mm-card, panel de resultados, fila de mm-actions, panel mm-save, knit de pairs-with. <code>scripts/sheets-fragments/&lt;slug&gt;.html</code> es el cuerpo por hoja — fieldsets, inputs, tablas repetidas, el script de recalc específico. <code>scripts/build-sheet-pages.mjs</code> envuelve la shell alrededor del fragment y escribe 62 páginas (31 hojas × EN + ES).</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">03</span>
+        <h3>Bandas centralizadas</h3>
+        <p><code>data/benchmarks.json</code> declara cada banda de umbral ("costo primo 55–65% saludable") con mensajes EN + ES y cita de fuente. <code>scripts/build-sheet-benchmarks.mjs</code> genera <code>assets/js/sheet-benchmarks.gen.js</code>, que expone <code>window.Bench.evaluate(metric, value)</code>. Actualiza un umbral aquí y 31 hojas siguen.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">04</span>
+        <h3>Payloads de guardado versionados</h3>
+        <p>Los guardados en el Taller llevan <code>{ v: 1, slug, savedAt, inputs, outputs }</code>. El endpoint <code>/api/workbench/sheet-history</code> lee los guardados previos del usuario para la misma hoja y dibuja una sparkline encima del panel de guardar — <code>extractSheetMetric</code> maneja el fallback v-absent para que los guardados anteriores al versionado sigan dibujándose limpios.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">05</span>
+        <h3>Cross-links recíprocos</h3>
+        <p>32 páginas de glosario estampan un sidecar "Usa esta hoja"; 10 páginas pillar de tema estampan un rail de hojas; 30 páginas de detalle de herramienta estampan un rail "Empareja con papeleo" hacia las hojas que las usan. Cuatro posts del blog enlazan vía post-end-CTA hacia una hoja en el momento de intención. Cada enlace se indexa al revés desde el campo <code>pairsWith</code> de <code>data/sheets.json</code> — sin registro separado que se desfase.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">06</span>
+        <h3>Postura de privacidad verificable</h3>
+        <p><code>scripts/check-sheet-no-fetch.mjs</code> rastrea cada fragmento y cada bloque <code>&lt;main&gt;</code> renderizado en busca de patrones de red prohibidos (fetch, XHR, sendBeacon, localStorage en fragmentos, eval, src de script externo). CI falla si algún fragmento contacta cualquier URL. La promesa "se queda en tu navegador" en cada hoja enlaza a <code>/es/receipts/</code> donde el rastro de auditoría está visible.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
 <!-- ============ URL RESTRUCTURE HISTORY ============ -->
 <section class="block bg-cream2" aria-labelledby="urls-heading">
   <div class="container">

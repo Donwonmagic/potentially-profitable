@@ -567,7 +567,13 @@ header.nav{min-height:64px}
           var lcRate = total > 0 ? (lc / total) * 100 : 0;
           var nsEl = document.querySelector('[data-output="ns_rate"]');
           nsEl.textContent = fmtPct(nsRate);
-          nsEl.dataset.band = nsRate < 5 ? 'good' : (nsRate < 10 ? 'warn' : 'bad');
+          // D9 — band via centralized benchmarks.
+          if (window.Bench && window.Bench.evaluate) {
+            var bn = window.Bench.evaluate('noshow_rate_pct', nsRate);
+            if (bn && bn.band) nsEl.dataset.band = bn.band;
+          } else {
+            nsEl.dataset.band = nsRate < 5 ? 'good' : (nsRate < 10 ? 'warn' : 'bad');
+          }
           var lcEl = document.querySelector('[data-output="lc_rate"]');
           lcEl.textContent = fmtPct(lcRate);
           lcEl.dataset.band = lcRate < 8 ? 'good' : (lcRate < 15 ? 'warn' : 'bad');

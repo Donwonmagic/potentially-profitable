@@ -527,10 +527,23 @@ header.nav{min-height:64px}
           document.querySelector('[data-output="avg_check"]').textContent = fmt$(avg);
           var vEl = document.querySelector('[data-output="voids_pct"]');
           vEl.textContent = fmtPct(voidPct);
-          vEl.dataset.band = voidPct < 1 ? 'good' : (voidPct < 2 ? 'warn' : 'bad');
+          // D9 — voids and comps bands route through centralized
+          // benchmarks (data/benchmarks.json). Inline ladder is the
+          // pre-Bench fallback.
+          if (window.Bench && window.Bench.evaluate) {
+            var bv = window.Bench.evaluate('voids_pct_of_sales', voidPct);
+            if (bv && bv.band) vEl.dataset.band = bv.band;
+          } else {
+            vEl.dataset.band = voidPct < 1 ? 'good' : (voidPct < 2 ? 'warn' : 'bad');
+          }
           var cEl = document.querySelector('[data-output="comps_pct"]');
           cEl.textContent = fmtPct(compPct);
-          cEl.dataset.band = compPct < 2 ? 'good' : (compPct < 4 ? 'warn' : 'bad');
+          if (window.Bench && window.Bench.evaluate) {
+            var bc = window.Bench.evaluate('comps_pct_of_sales', compPct);
+            if (bc && bc.band) cEl.dataset.band = bc.band;
+          } else {
+            cEl.dataset.band = compPct < 2 ? 'good' : (compPct < 4 ? 'warn' : 'bad');
+          }
 
           var varEl = document.querySelector('[data-output="variance"]');
           if (variance == null) {
@@ -549,7 +562,14 @@ header.nav{min-height:64px}
           if (voidPct > 1)       bits.push('Voids running above 1% of sales — ' + fmtPct(voidPct) + ' tonight.');
           if (compPct > 3)       bits.push('Comps running above 3% of sales — review who is comping and why.');
           if (variance != null && Math.abs(variance) > 20) bits.push('Tonight landed ' + (variance > 0 ? 'above' : 'below') + ' the 14-day average by more than 20%.');
-          if (n(f.cash_diff.value) <= -5) bits.push('Drawer short by ' + fmt$(Math.abs(n(f.cash_diff.value))) + ' — log it tonight, do not let it carry.');
+          // D9 — Bench.flag walks data/benchmarks.json's anomalies
+          // for this slug; the drawer-short rule lives there.
+          if (window.Bench && window.Bench.flag) {
+            var flags = window.Bench.flag('daily-sales-recap', { cash_diff: n(f.cash_diff.value) });
+            for (var fi = 0; fi < flags.length; fi++) bits.push(flags[fi]);
+          } else if (n(f.cash_diff.value) <= -5) {
+            bits.push('Drawer short by ' + fmt$(Math.abs(n(f.cash_diff.value))) + ' — log it tonight, do not let it carry.');
+          }
           callout.textContent = bits.length ? bits.join(' ') : 'A clean recap. File it; pull the trend in next week’s review.';
         }
 

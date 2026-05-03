@@ -281,7 +281,13 @@ header.nav{min-height:64px}
           var negRate = negs > 0 ? Math.round((negsResp / negs) * 100) : null;
           var rEl = document.querySelector('[data-output="response_rate"]');
           rEl.textContent = rate + '%';
-          rEl.dataset.band = rate >= 70 ? 'good' : (rate >= 40 ? 'warn' : 'bad');
+          // D9 — band via centralized benchmarks.
+          if (window.Bench && window.Bench.evaluate) {
+            var br = window.Bench.evaluate('review_response_rate_pct', rate);
+            if (br && br.band) rEl.dataset.band = br.band;
+          } else {
+            rEl.dataset.band = rate >= 70 ? 'good' : (rate >= 40 ? 'warn' : 'bad');
+          }
           var nEl = document.querySelector('[data-output="neg_rate"]');
           if (negRate == null) { nEl.textContent = 'no negatives'; nEl.dataset.band = 'good'; }
           else { nEl.textContent = negRate + '% (' + negsResp + ' / ' + negs + ')'; nEl.dataset.band = negRate === 100 ? 'good' : (negRate >= 75 ? 'warn' : 'bad'); }
@@ -292,8 +298,15 @@ header.nav{min-height:64px}
 
           var c = document.querySelector('[data-output="callout"]');
           if (!c) return;
+          // D9 — Bench.flag walks data/benchmarks.json's anomalies
+          // for this slug. The negs-unanswered rule lives there.
+          var flagMsgs = (window.Bench && window.Bench.flag)
+            ? window.Bench.flag('review-response-log', { neg_unanswered: negs - negsResp })
+            : [];
           if (total === 0) {
             c.textContent = 'Log every review. Theme tags surface the patterns; responses set the public tone. Aim for 100% response on negatives and ≥50% overall.';
+          } else if (flagMsgs.length) {
+            c.textContent = flagMsgs.join(' ') + ' (' + (negs - negsResp) + ' of ' + negs + ' unanswered.)';
           } else if (negRate != null && negRate < 100) {
             c.textContent = 'Negatives missed: ' + (negs - negsResp) + ' of ' + negs + ' unanswered. These need a response within 48 hours, every time.';
           } else if (topTheme && topCount >= 2) {

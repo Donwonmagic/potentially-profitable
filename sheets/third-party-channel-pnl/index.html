@@ -584,7 +584,16 @@ header.nav{min-height:64px}
           dEl.dataset.band = contrib > 0 ? 'good' : (contrib < 0 ? 'bad' : 'idle');
           var pEl = document.querySelector('[data-output="contrib_pct"]');
           pEl.textContent = fmtPct(pct);
-          pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          // D9 — band routes through Bench.evaluate when available, so
+          // updating data/benchmarks.json's channel_contribution_pct
+          // thresholds cascades to this sheet automatically. Inline
+          // ladder is the graceful fallback.
+          if (window.Bench && window.Bench.evaluate) {
+            var bench = window.Bench.evaluate('channel_contribution_pct', pct);
+            if (bench && bench.band) pEl.dataset.band = bench.band;
+          } else {
+            pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          }
 
           var verdict = document.querySelector('[data-output="verdict"]');
           if (verdict) {
@@ -592,6 +601,10 @@ header.nav{min-height:64px}
               verdict.textContent = 'Type your numbers. A positive contribution margin means the channel earns its keep; negative means each order loses money before fixed costs.';
             } else if (contrib < 0) {
               verdict.textContent = 'This channel is losing you money on each order before fixed costs are even applied. Either renegotiate fees, raise menu prices on this channel, or turn it off.';
+            } else if (window.Bench && window.Bench.evaluate) {
+              // Centralized message for non-edge bands (>= 0 contrib).
+              var b2 = window.Bench.evaluate('channel_contribution_pct', pct);
+              if (b2 && b2.msg) verdict.textContent = b2.msg;
             } else if (pct < 5) {
               verdict.textContent = 'Thin contribution. The channel is not paying for itself once fixed costs (rent, utilities, salaried management) are included. Action: raise menu prices on this channel, or shrink the menu offered through it to higher-margin items only.';
             } else if (pct < 12) {
