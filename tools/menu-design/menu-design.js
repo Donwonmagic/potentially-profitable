@@ -178,6 +178,127 @@
     try { window.plausible('Menu Design Tool Loaded', { props: { locale: LOCALE } }); } catch (_) {}
   }
 
+  // Wave studio-quality (code-split) — lazy-loader for the heavy
+  // renderer modules. The PDF / HTML / text emitters total ~120 KB
+  // raw and only fire when an export button is clicked. Load them
+  // on first need, dedup the promise, no-op once loaded.
+  //
+  // Each ensureMd*() resolves to a falsy value when the script tag
+  // fails to load (offline + not in SW cache); the export button
+  // surfaces a graceful error instead of hanging.
+  var __mdScriptCache = {};
+  function loadScript(src) {
+    if (__mdScriptCache[src]) return __mdScriptCache[src];
+    __mdScriptCache[src] = new Promise(function (resolve, reject) {
+      // Re-use a previously-injected tag (e.g. preload triggered first).
+      var existing = document.querySelector('script[data-md-lazy="' + src + '"]');
+      if (existing && existing.dataset.loaded === '1') { resolve(true); return; }
+      if (existing) {
+        existing.addEventListener('load', function () { resolve(true); });
+        existing.addEventListener('error', function () { reject(new Error(src + ' failed to load')); });
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.dataset.mdLazy = src;
+      s.addEventListener('load', function () {
+        s.dataset.loaded = '1';
+        resolve(true);
+      });
+      s.addEventListener('error', function () {
+        // Clear from cache so a retry works after a transient failure.
+        delete __mdScriptCache[src];
+        reject(new Error(src + ' failed to load'));
+      });
+      document.head.appendChild(s);
+    });
+    return __mdScriptCache[src];
+  }
+  function ensureMdPdf() {
+    if (typeof MD_PDF !== 'undefined' && MD_PDF.exportPdf) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-pdf.js?v=20260503-cs');
+  }
+  function ensureMdHtml() {
+    if (typeof MD_HTML !== 'undefined' && (MD_HTML.exportZip || MD_HTML.exportHtml)) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-html.js?v=20260503-cs');
+  }
+  function ensureMdText() {
+    if (typeof MD_TEXT !== 'undefined' && MD_TEXT.exportPlainText) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-text.js?v=20260503-cs');
+  }
+
+  // Convenience: load PDF + HTML + TEXT in parallel for the big-pack
+  // exports (Menu Pack ZIP, Bilingual ZIP) that touch all three.
+  function ensureAllRenderers() {
+    return Promise.all([ensureMdPdf(), ensureMdHtml(), ensureMdText()]);
+  }
+  // Tiny wrapper: shows a "Loading…" hint, awaits the loader, runs fn
+  // on success or surfaces a clear error on load failure (e.g. offline
+  // before SW has cached the renderer).
+  function withRenderer(loader, btnEl, loadingLabel, fn) {
+    if (!btnEl) {
+      // No button to gate — just await and call.
+      return loader().then(fn).catch(function (err) {
+        setDownloadMsg(tt(
+          'Could not load renderer: ' + (err && err.message ? err.message : 'load failed'),
+          'No se pudo cargar el renderizador: ' + (err && err.message ? err.message : 'falló la carga')
+        ), 'error');
+      });
+    }
+    var origText = btnEl.textContent;
+    var alreadyLoaded = false;
+    try { alreadyLoaded = (loader === ensureMdPdf  && typeof MD_PDF  !== 'undefined' && MD_PDF.exportPdf)
+                       || (loader === ensureMdHtml && typeof MD_HTML !== 'undefined')
+                       || (loader === ensureMdText && typeof MD_TEXT !== 'undefined'); } catch (_) {}
+    if (!alreadyLoaded && loadingLabel) {
+      btnEl.disabled = true;
+      btnEl.textContent = loadingLabel;
+    }
+    return loader().then(function () {
+      if (!alreadyLoaded && loadingLabel) {
+        btnEl.disabled = false;
+        btnEl.textContent = origText;
+      }
+      return fn();
+    }).catch(function (err) {
+      if (!alreadyLoaded && loadingLabel) {
+        btnEl.disabled = false;
+        btnEl.textContent = origText;
+      }
+      setDownloadMsg(tt(
+        'Could not load renderer. Check your connection and retry.',
+        'No se pudo cargar el renderizador. Revisa tu conexión e intenta de nuevo.'
+      ), 'error');
+      throw err;
+    });
+  }
+
+  // Optional preload: when an operator hovers a download button, kick
+  // off the script fetch so the click feels instant. Idle-time also
+  // schedules a low-priority load 4s after first interaction so
+  // returning operators with stale cache get the modules warmed up.
+  function preloadAllRenderers() {
+    if (preloadAllRenderers._fired) return;
+    preloadAllRenderers._fired = true;
+    ensureMdPdf().catch(function () {});
+    ensureMdHtml().catch(function () {});
+    ensureMdText().catch(function () {});
+  }
+  if (typeof requestIdleCallback === 'function') {
+    var __preloadIdle = false;
+    function _preloadOnInteract() {
+      if (__preloadIdle) return;
+      __preloadIdle = true;
+      requestIdleCallback(function () { preloadAllRenderers(); }, { timeout: 8000 });
+    }
+    document.addEventListener('pointerdown', _preloadOnInteract, { once: true, passive: true });
+    document.addEventListener('keydown', _preloadOnInteract, { once: true });
+  } else {
+    // Fallback: 4s after load.
+    setTimeout(preloadAllRenderers, 4000);
+  }
+
   // Wave studio-quality (PWA) — register the service worker so the
   // tool boots offline after one online visit and operators can
   // install it as a phone/desktop app. EN-only for now; the ES tool
@@ -615,10 +736,26 @@
   // the v2 catalog uses specific keys (trifold-letter-z / table-tent).
   // Returns a known-good key, falling back to 'letter'.
   function migratePaperKey(k) {
-    if (typeof MD_PDF === 'undefined' || !MD_PDF.PAPERS) return k;
+    var papers = paperCatalog();
+    if (!papers) return k;
     if (k === 'trifold')   return 'trifold-letter-z';
     if (k === 'tabletent') return 'table-tent';
-    return MD_PDF.PAPERS[k] ? k : 'letter';
+    return papers[k] ? k : 'letter';
+  }
+  // Wave studio-quality (code-split) — single source of truth for the
+  // paper catalog. Prefers MD_PAPERS (always loaded at boot) so the
+  // editor's paper picker, the live preview, the meta block, and the
+  // pre-flight panel all work without menu-render-pdf.js loaded yet.
+  // Fallback to MD_PDF.PAPERS keeps the path working post-export when
+  // the PDF renderer has loaded and back-fills its own copy.
+  function paperCatalog() {
+    if (typeof MD_PAPERS !== 'undefined' && MD_PAPERS.PAPERS) return MD_PAPERS.PAPERS;
+    if (typeof MD_PDF    !== 'undefined' && MD_PDF.PAPERS)    return MD_PDF.PAPERS;
+    return null;
+  }
+  function paperByKey(k) {
+    var c = paperCatalog();
+    return c ? (c[k] || null) : null;
   }
 
   // -------------------- Helpers --------------------
@@ -1373,8 +1510,8 @@
   var activePaperCat = 'sheet';
 
   function renderPaperGrid() {
-    if (!paperRow || typeof MD_PDF === 'undefined') return;
-    var paperRegistry = MD_PDF.PAPERS || {};
+    if (!paperRow) return;
+    var paperRegistry = paperCatalog() || {};
     var keys = Object.keys(paperRegistry);
     var inCat = keys.filter(function (k) {
       var p = paperRegistry[k];
@@ -1462,7 +1599,7 @@
   var printChecklistItems = document.getElementById('mdPrintChecklistItems');
   function renderPrintChecklist() {
     if (!printChecklistItems) return;
-    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS) ? MD_PDF.PAPERS[paperKey] : null;
+    var paperInfo = paperByKey(paperKey);
     var paperLabel = (paperInfo && paperInfo.label) || paperKey;
     var dishCount = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
     var logoDpiState = 'ok';
@@ -1685,7 +1822,7 @@
     // (Letter, A4, etc.) gets a portrait/landscape paper-shape;
     // panel flow (trifold, table-tent) gets the unfolded sheet
     // shape and the panel grid is set up via data-flow="panel".
-    var paperInfo = (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) || null;
+    var paperInfo = paperByKey(paperKey);
     if (paperInfo) {
       paper.style.setProperty('--paper-aspect', paperInfo.w + '/' + paperInfo.h);
       paper.style.setProperty('--paper-margin-pct',
@@ -3838,6 +3975,12 @@
 
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, downloadBtn, tt('Loading PDF tools…', 'Cargando…'), function () {
+        _doDownloadPdf();
+      });
+    });
+  }
+  function _doDownloadPdf() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt('PDF library failed to load. Refresh the page and try again.',
                           'No se pudo cargar la biblioteca PDF. Recarga la página e intenta de nuevo.'), 'error');
@@ -4020,7 +4163,6 @@
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------
@@ -4092,6 +4234,10 @@
   // ----------------------------------------------------------------
   if (largePrintBtn) {
     largePrintBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, largePrintBtn, tt('Loading…', 'Cargando…'), function () { _doLargePrint(); });
+    });
+  }
+  function _doLargePrint() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt(
           'PDF generator not loaded. Refresh and try again.',
@@ -4142,7 +4288,6 @@
         largePrintBtn.disabled = false;
         largePrintBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------
@@ -4158,6 +4303,10 @@
   // export but routed through applyHighContrastOverride.
   if (highContrastBtn) {
     highContrastBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, highContrastBtn, tt('Loading…', 'Cargando…'), function () { _doHighContrast(); });
+    });
+  }
+  function _doHighContrast() {
       if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt('PDF generator not loaded. Refresh and try again.',
                           'El generador de PDF no se cargó. Recarga e intenta de nuevo.'), 'error');
@@ -4206,7 +4355,6 @@
         highContrastBtn.disabled = false;
         highContrastBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // W18 — downloadBlob extracted to infra/dom.js.
@@ -4253,6 +4401,10 @@
 
   if (exportTextBtn) {
     exportTextBtn.addEventListener('click', function () {
+      withRenderer(ensureMdText, exportTextBtn, tt('Loading…', 'Cargando…'), function () { _doExportText(); });
+    });
+  }
+  function _doExportText() {
       if (typeof MD_TEXT === 'undefined') return;
       var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
       if (!realRows.length) {
@@ -4269,10 +4421,13 @@
       setDownloadMsg(tt('Plain text + Markdown downloaded — screen-reader friendly.',
                         'Texto plano + Markdown descargados — compatibles con lectores de pantalla.'), 'success');
       if (window.plausible) { try { window.plausible('Menu Design Text Exported'); } catch (_) {} }
-    });
   }
   if (exportSsmlBtn) {
     exportSsmlBtn.addEventListener('click', function () {
+      withRenderer(ensureMdText, exportSsmlBtn, tt('Loading…', 'Cargando…'), function () { _doExportSsml(); });
+    });
+  }
+  function _doExportSsml() {
       if (typeof MD_TEXT === 'undefined') return;
       var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
       if (!realRows.length) {
@@ -4286,11 +4441,13 @@
       setDownloadMsg(tt('SSML downloaded — pipe to AWS Polly / Google TTS / Azure Speech.',
                         'SSML descargado — compatible con AWS Polly / Google TTS / Azure Speech.'), 'success');
       if (window.plausible) { try { window.plausible('Menu Design SSML Exported'); } catch (_) {} }
-    });
   }
   // W16 — BRF Grade-1 export
   var exportBrfBtn = document.getElementById('mdExportBrf');
   if (exportBrfBtn) exportBrfBtn.addEventListener('click', function () {
+    withRenderer(ensureMdText, exportBrfBtn, tt('Loading…', 'Cargando…'), function () { _doExportBrf(); });
+  });
+  function _doExportBrf() {
     if (typeof MD_TEXT === 'undefined' || typeof MD_TEXT.exportBrf !== 'function') return;
     var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
     if (!realRows.length) {
@@ -4305,7 +4462,7 @@
     setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
-  });
+  }
 
   // -------------------- Wave B5 — Menu Pack ZIP ------------------
   // The handoff packet the UX agent named as the missing primitive.
@@ -4321,6 +4478,21 @@
   // and what didn't).
   var exportPackBtn = document.getElementById('mdExportPack');
   if (exportPackBtn) exportPackBtn.addEventListener('click', function () {
+    var origLabel = exportPackBtn.textContent;
+    exportPackBtn.disabled = true;
+    exportPackBtn.textContent = tt('Loading…', 'Cargando…');
+    ensureAllRenderers().then(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.textContent = origLabel;
+      _doExportPack();
+    }).catch(function () {
+      exportPackBtn.disabled = false;
+      exportPackBtn.textContent = origLabel;
+      setDownloadMsg(tt('Could not load pack tools. Check your connection and retry.',
+                        'No se pudieron cargar las herramientas. Revisa tu conexión.'), 'error');
+    });
+  });
+  function _doExportPack() {
     if (typeof MD_PACK === 'undefined' || typeof MD_SCHEMA === 'undefined') {
       setDownloadMsg(tt(
         'Menu pack module not loaded. Refresh and try again.',
@@ -4365,8 +4537,9 @@
     var paperKey = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
     var paperLabel = '';
     try {
-      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKey]) {
-        paperLabel = MD_PDF.PAPERS[paperKey].label_en || MD_PDF.PAPERS[paperKey].label || paperKey;
+      var pInfo = paperByKey(paperKey);
+      if (pInfo) {
+        paperLabel = pInfo.label_en || pInfo.label || paperKey;
       }
     } catch (_) {}
     var dishCount = canonicalMenu.dishes.length;
@@ -4430,7 +4603,7 @@
       exportPackBtn.disabled = false;
       exportPackBtn.innerHTML = origLabel;
     });
-  });
+  }
 
   // Wave studio-quality — Bilingual pack. One click, EN + ES side by
   // side, all artifacts. The shipped artifacts (README, mailto,
@@ -4439,6 +4612,21 @@
   // Routes through the same canonical-menu builder + MD_PACK pipeline.
   var exportBilingualBtn = document.getElementById('mdExportBilingual');
   if (exportBilingualBtn) exportBilingualBtn.addEventListener('click', function () {
+    var blOrigLabel = exportBilingualBtn.textContent;
+    exportBilingualBtn.disabled = true;
+    exportBilingualBtn.textContent = tt('Loading…', 'Cargando…');
+    ensureAllRenderers().then(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.textContent = blOrigLabel;
+      _doExportBilingual();
+    }).catch(function () {
+      exportBilingualBtn.disabled = false;
+      exportBilingualBtn.textContent = blOrigLabel;
+      setDownloadMsg(tt('Could not load bilingual pack tools. Check your connection.',
+                        'No se pudieron cargar las herramientas. Revisa tu conexión.'), 'error');
+    });
+  });
+  function _doExportBilingual() {
     if (typeof MD_PACK === 'undefined' ||
         typeof MD_PACK.exportBilingualPack !== 'function' ||
         typeof MD_SCHEMA === 'undefined') {
@@ -4481,8 +4669,9 @@
     var paperKeyBl = (typeof window !== 'undefined' && window.__mdPaperKey) || 'letter';
     var paperLabelBl = '';
     try {
-      if (typeof MD_PDF !== 'undefined' && MD_PDF.PAPERS && MD_PDF.PAPERS[paperKeyBl]) {
-        paperLabelBl = MD_PDF.PAPERS[paperKeyBl].label_en || MD_PDF.PAPERS[paperKeyBl].label || paperKeyBl;
+      var pInfoBl = paperByKey(paperKeyBl);
+      if (pInfoBl) {
+        paperLabelBl = pInfoBl.label_en || pInfoBl.label || paperKeyBl;
       }
     } catch (_) {}
     var dishCountBl = canonicalMenuBl.dishes.length;
@@ -4545,11 +4734,14 @@
       exportBilingualBtn.disabled = false;
       exportBilingualBtn.innerHTML = origLabelBl;
     });
-  });
+  }
 
   // W16 — Tablet kiosk HTML
   var exportTabletBtn = document.getElementById('mdExportTablet');
   if (exportTabletBtn) exportTabletBtn.addEventListener('click', function () {
+    withRenderer(ensureMdHtml, exportTabletBtn, tt('Loading…', 'Cargando…'), function () { _doExportTablet(); });
+  });
+  function _doExportTablet() {
     if (typeof MD_HTML === 'undefined' || typeof MD_HTML.exportHtmlTablet !== 'function') return;
     var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
     if (!realRows.length) {
@@ -4567,7 +4759,7 @@
     setDownloadMsg(tt('Tablet HTML downloaded — drop on a kiosk device for guest reference.',
                       'HTML para tablet descargado — para uso en kiosko.'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design Tablet Exported'); } catch (_) {} }
-  });
+  }
 
   // ----------------------------------------------------------------
   // W6-1 — QR-menu export. Promps for a destination URL the operator
@@ -4577,6 +4769,10 @@
   // ----------------------------------------------------------------
   if (exportQrBtn) {
     exportQrBtn.addEventListener('click', function () {
+      withRenderer(ensureMdHtml, exportQrBtn, tt('Loading…', 'Cargando…'), function () { _doExportQr(); });
+    });
+  }
+  function _doExportQr() {
       if (typeof MD_HTML === 'undefined' || typeof MD_THEMES === 'undefined') {
         setDownloadMsg(tt(
           'QR exporter not loaded. Refresh and try again.',
@@ -4670,7 +4866,6 @@
         exportQrBtn.disabled = false;
         exportQrBtn.innerHTML = origLabel;
       });
-    });
   }
 
   // ----------------------------------------------------------------

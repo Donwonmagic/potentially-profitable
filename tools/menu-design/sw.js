@@ -22,7 +22,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'md-v1-2026-05-03';
+var SW_VERSION = 'md-v2-2026-05-03';
 var SHELL_CACHE = 'md-shell-' + SW_VERSION;
 var ASSET_CACHE = 'md-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'md-vendor-' + SW_VERSION;
@@ -36,6 +36,10 @@ var SHELL_URLS = [
   '/tools/menu-design/',
   '/tools/menu-design/manifest.webmanifest',
   '/tools/menu-design/menu-design.js',
+  // Wave studio-quality (code-split) — these three are now lazy-loaded
+  // by menu-design.js at first export. Precaching them anyway means
+  // the first export is offline-capable too without paying any extra
+  // first-paint cost (the page doesn't fetch them at boot).
   '/tools/menu-design/menu-render-pdf.js',
   '/tools/menu-design/menu-render-html.js',
   '/tools/menu-design/menu-render-text.js',
@@ -46,6 +50,7 @@ var SHELL_URLS = [
   '/tools/menu-design/data/badges.js',
   '/tools/menu-design/data/templates.js',
   '/tools/menu-design/data/quiz-tiles.js',
+  '/tools/menu-design/data/papers.js',
   '/tools/menu-design/infra/dom.js',
   '/tools/menu-design/infra/i18n.js',
   '/tools/menu-design/state/draft.js',

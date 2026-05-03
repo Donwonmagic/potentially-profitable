@@ -50,6 +50,10 @@ const TARGET_FIRST_PAINT_GZ = 35 * 1024; // 35 KB compressed
 // Today (pre-Wave-A3): every renderer + theme + the orchestrator
 // is here. After the split: only the shell, data, infra, state
 // modules should remain.
+// Wave studio-quality (code-split shipped) — menu-render-{pdf,html,
+// text}.js are now lazy-loaded by menu-design.js at first export, so
+// they're out of the first-paint set. The papers catalog moved to
+// its own 3KB module that ships at boot.
 const FIRST_PAINT_FILES = [
   // Catalogs (small, pure data)
   'tools/menu-design/data/allergens.js',
@@ -57,6 +61,7 @@ const FIRST_PAINT_FILES = [
   'tools/menu-design/data/templates.js',
   'tools/menu-design/data/quiz-tiles.js',
   'tools/menu-design/data/allergen-glyphs.js',
+  'tools/menu-design/data/papers.js',
   // Infra
   'tools/menu-design/infra/dom.js',
   'tools/menu-design/infra/i18n.js',
@@ -65,12 +70,24 @@ const FIRST_PAINT_FILES = [
   'tools/menu-design/state/history.js',
   // Themes (currently in menu-design/; planned move to _shared)
   'tools/menu-design/themes.js',
-  // Renderers (currently first-paint; Wave A3 lazy-loads them)
+  'tools/menu-design/theme-thumbs.js',
+  // Shared modules loaded synchronously
+  'tools/_shared/menu-schema.js',
+  'tools/_shared/menu-renderers/cuisine-decor.js',
+  'tools/_shared/menu-renderers/jsonld.js',
+  'tools/_shared/menu-renderers/studio-brief.js',
+  'tools/_shared/menu-renderers/menu-pack.js',
+  // Orchestrator
+  'tools/menu-design/menu-design.js',
+];
+
+// Lazy-loaded modules — reported separately for visibility but NOT
+// against the first-paint budget. They load on first export click
+// (or via idle-time preload after first interaction).
+const LAZY_FILES = [
   'tools/menu-design/menu-render-pdf.js',
   'tools/menu-design/menu-render-html.js',
   'tools/menu-design/menu-render-text.js',
-  // Orchestrator
-  'tools/menu-design/menu-design.js',
 ];
 
 // ---- Helpers ------------------------------------------------
@@ -117,6 +134,22 @@ for (const rel of FIRST_PAINT_FILES) {
 
 console.log('-'.repeat(72));
 console.log(`${pad('TOTAL', 50)} ${pad(fmtKB(totalRaw), 10)} ${fmtKB(totalGz)}`);
+console.log('');
+
+// Lazy-loaded — reported separately, doesn't count against the budget.
+let lazyRaw = 0;
+let lazyGz = 0;
+console.log('Lazy-loaded on first export (NOT counted against budget):');
+console.log('-'.repeat(72));
+for (const rel of LAZY_FILES) {
+  const { exists, raw, gz } = gzSize(rel);
+  if (!exists) continue;
+  lazyRaw += raw;
+  lazyGz += gz;
+  console.log(`${pad(rel, 50)} ${pad(fmtKB(raw), 10)} ${fmtKB(gz)}`);
+}
+console.log('-'.repeat(72));
+console.log(`${pad('LAZY TOTAL', 50)} ${pad(fmtKB(lazyRaw), 10)} ${fmtKB(lazyGz)}`);
 console.log('');
 
 const overBudget  = totalGz > BUDGET_FIRST_PAINT_GZ;

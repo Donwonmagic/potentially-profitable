@@ -212,7 +212,11 @@
   //   board   — large format (A2 board, A1 board)
   //   digital — screen-aspect-ratio (16:9 horizontal, 9:16 vertical)
   //   custom  — operator-typed dimensions
-  var PAPERS = {
+  // Wave studio-quality (code-split) — prefer the boot-loaded
+  // MD_PAPERS catalog when present, so menu-render-pdf.js and the
+  // orchestrator share a single source of truth. Falls back to the
+  // inline copy below for tests + back-compat.
+  var PAPERS = (root && root.MD_PAPERS && root.MD_PAPERS.PAPERS) || {
     // -------- Sheets --------
     'letter':       { w: 612,    h: 792,    flow: 'page',  cat: 'sheet',  orient: 'portrait',  margin: 48, label: 'Letter (8.5×11)',          stock: '24lb-text' },
     'letter-land':  { w: 792,    h: 612,    flow: 'page',  cat: 'sheet',  orient: 'landscape', margin: 48, label: 'Letter landscape (11×8.5)', stock: '24lb-text' },

@@ -1819,9 +1819,15 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      page's @font-face fonts. Built by scripts/build-theme-thumbnails.mjs. -->
 <script src="./theme-thumbs.js?v=20260503-wsq"></script>
 <script src="./themes.js?v=20260501-w15"></script>
-<script src="./menu-render-pdf.js?v=20260501-w24-2"></script>
-<script src="./menu-render-html.js?v=20260501-w23"></script>
-<script src="./menu-render-text.js?v=20260501-w23"></script>
-<script src="./menu-design.js?v=20260501-w24-2"></script>
+<!-- Wave studio-quality (code-split) — papers catalog ships at boot
+     (~3KB) so the editor can render its paper picker without loading
+     the heavy PDF renderer. -->
+<script src="./data/papers.js?v=20260503-cs"></script>
+<!-- Wave studio-quality (code-split) — menu-render-{pdf,html,text}.js
+     are now lazy-loaded by menu-design.js at first export. They
+     totalled ~120KB raw at first paint; the boot bundle no longer
+     pays that cost. The existing CDN-vendor lazy loads (jsPDF, JSZip,
+     svg2pdf, qrcode) remain inside those modules. -->
+<script src="./menu-design.js?v=20260503-cs"></script>
 </body>
 </html>
