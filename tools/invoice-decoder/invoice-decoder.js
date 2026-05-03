@@ -2026,6 +2026,12 @@
   var bulkConfirm = document.getElementById('idBulkConfirm');
   var bulkSave    = document.getElementById('idBulkSave');
 
+  // Wave D.7 — module-scope save-flow lock. Set true between the
+  // operator clicking Save and the save chain settling (success,
+  // error, or operator-cancel). Prevents a second click from
+  // launching a parallel save while the passphrase modal is open.
+  var __saveInFlight = false;
+
   // -------------------- Cross-tool handoffs (B6-4) --------------------
   // After a successful save, surface three one-tap handoff buttons
   // to the rest of the suite. Each opens the target tool with a
@@ -2248,6 +2254,15 @@
                  'Falta el módulo de encriptación. Recarga e intenta de nuevo.'));
         return;
       }
+      // Wave D.7 — anti-double-click guard. setSaveStatus('busy')
+      // happens INSIDE pickPassphrase().then(), so a fast double-tap
+      // before the modal returns previously fired two passphrase
+      // prompts. Disable the button now; the existing setSaveStatus
+      // calls will re-enable it on completion or error. A second
+      // click while __saveInFlight is true is ignored.
+      if (__saveInFlight) return;
+      __saveInFlight = true;
+      bulkSave.disabled = true;
       // W1-6: pickPassphrase now returns a Promise (modal-driven).
       // W3-1: capture the envelope + aad in this closure so the
       // proof flyout can show the real ciphertext after success.
@@ -2257,8 +2272,32 @@
       // post-save recovery-phrase setup can call MID_ENCRYPT.addWrap
       // without re-prompting. We never expose this to globals.
       var savedPassphrase = null;
+      // Wave D.7 — idempotency. Generate a stable client-side request
+      // ID for this save attempt. If the network blip / offline queue
+      // causes us to re-POST the same encrypted envelope later, we
+      // send the same requestId. Servers that honor it can dedupe;
+      // servers that ignore it accept the duplicate (no harm because
+      // each save is a distinct Workshop entry by design).
+      var __saveRequestId = (function () {
+        try {
+          if (root.crypto && root.crypto.randomUUID) return root.crypto.randomUUID();
+        } catch (_) {}
+        return 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+      })();
+      // Always release the lock when the chain settles, regardless
+      // of which branch returned. Wrapped around the original
+      // pickPassphrase().then(...) chain via .then/.catch fall-through;
+      // each existing exit point already calls setSaveStatus(...).
+      function releaseSaveLock() {
+        __saveInFlight = false;
+      }
       pickPassphrase().then(function (pp) {
-        if (!pp) return; // owner cancelled — silent.
+        if (!pp) {
+          // Owner cancelled — silent. Re-enable the button.
+          releaseSaveLock();
+          if (bulkSave) bulkSave.disabled = !parsedRowsState.length;
+          return;
+        }
         savedPassphrase = pp;
         setSaveStatus(null, 'busy');
         var payload = buildSavePayload();
@@ -2273,9 +2312,19 @@
         var body = new URLSearchParams();
         body.set('kind', 'invoice-decoder');
         body.set('title', tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'));
-        // Wrap envelope in a payload field the workbench expects.
-        // Server does NOT decrypt — it just stores the envelope.
-        body.set('payload', JSON.stringify({ envelope: envelope, aad: aad, items: payload.itemCount, parsedSum: payload.parsedSum }));
+        // Wave D.7 — clientRequestId on the wire so a server (or a
+        // future Workshop dedupe layer) can recognize a re-tried
+        // POST that originated from the same operator click. Today
+        // the server doesn't dedupe; the field is forward-compatible
+        // and harmless. Same id is reused if the offline queue ends
+        // up re-POSTing this envelope.
+        body.set('payload', JSON.stringify({
+          envelope: envelope,
+          aad: aad,
+          items: payload.itemCount,
+          parsedSum: payload.parsedSum,
+          clientRequestId: __saveRequestId
+        }));
         return fetch('/api/workbench/save', { // h8-exempt:workshop-save — encrypted ciphertext only; user-initiated
           method: 'POST',
           credentials: 'same-origin',
@@ -2520,13 +2569,14 @@
           if (isNetworkLike && savedEnvelope) {
             try {
               enqueueOfflineSave({
-                envelope:   savedEnvelope,
-                aad:        savedAad,
-                title:      tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'),
-                items:      payload.itemCount,
-                parsedSum:  payload.parsedSum,
-                vendor:     payload.vendor || null,
-                queuedAt:   Date.now()
+                envelope:        savedEnvelope,
+                aad:             savedAad,
+                title:           tt('Invoice', 'Factura') + ' · ' + payload.itemCount + ' ' + tt('items', 'partidas'),
+                items:           payload.itemCount,
+                parsedSum:       payload.parsedSum,
+                vendor:          payload.vendor || null,
+                queuedAt:        Date.now(),
+                clientRequestId: __saveRequestId
               });
               setSaveStatus(null, 'ok');
               showStatus(
@@ -2546,7 +2596,7 @@
           alert(tt('Save failed: ' + (err.message || 'unknown error'),
                    'Falló el guardado: ' + (err.message || 'error desconocido')));
         });
-      });
+      }).then(releaseSaveLock, releaseSaveLock);
     });
   }
 
@@ -2602,14 +2652,15 @@
       body.set('kind', 'invoice-decoder');
       body.set('title', entry.title || (tt('Invoice', 'Factura')));
       body.set('payload', JSON.stringify({
-        envelope:  entry.envelope,
-        aad:       entry.aad,
-        items:     entry.items,
-        parsedSum: entry.parsedSum,
+        envelope:        entry.envelope,
+        aad:             entry.aad,
+        items:           entry.items,
+        parsedSum:       entry.parsedSum,
         // Tag the queued save so the server / observability can
         // distinguish at-rest delayed POSTs from live ones.
-        queued:    true,
-        queuedAt:  entry.queuedAt || null
+        queued:          true,
+        queuedAt:        entry.queuedAt || null,
+        clientRequestId: entry.clientRequestId || null
       }));
       return fetch('/api/workbench/save', { // h8-exempt:workshop-save — encrypted ciphertext only; queued from offline
         method: 'POST',

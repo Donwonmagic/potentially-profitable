@@ -100,12 +100,67 @@
       }
     }
 
+    // Wave E.2 — payload key-scan. Defense-in-depth above the
+    // origin allowlist: even when a fetch is going to a permitted
+    // host (same-origin /api/workbench/save, plausible.io), we
+    // refuse to send any body that mentions a forbidden key. These
+    // keys name on-device-only state (accuracy counters, source
+    // bboxes, raw OCR text, learned brand registry) that the
+    // operator's privacy contract says never leaves the device.
+    // A bug that accidentally serializes one of these into a
+    // request body produces a loud sentinel error in DevTools
+    // instead of a silent leak.
+    var FORBIDDEN_KEYS = [
+      'accuracyStats',     // E.1 on-device accuracy counters
+      'byField',           // sub-key of accuracy counters
+      'correctedRows',     // sub-key of accuracy counters
+      'sourceBbox',        // D.4 verify-panel cropped image bbox
+      'sourceCanvas',      // D.4 source raster (memory-only)
+      'rawOcr',            // raw Tesseract output before parse
+      '_rawOcrText',       // internal field on parse result
+      'brandRegistry',     // C.6 per-operator brand registry
+      'learnedVendorTemplates' // C.7 induced grammars
+    ];
+
+    function bodyHasForbiddenKey(body) {
+      if (body == null) return null;
+      var text = null;
+      if (typeof body === 'string') {
+        text = body;
+      } else if (typeof URLSearchParams !== 'undefined' && body instanceof URLSearchParams) {
+        text = body.toString();
+      } else if (typeof Blob !== 'undefined' && body instanceof Blob && body.type &&
+                 /^(application\/json|application\/x-www-form-urlencoded|text\/)/.test(body.type)) {
+        // Blobs of known text types we *could* read — but reading is
+        // async and we don't want to delay the fetch. Skip; the
+        // origin guard + the explicit string/URLSearchParams checks
+        // catch the realistic invoice-decoder write paths.
+        return null;
+      } else {
+        // FormData / ArrayBuffer / TypedArray / Stream — opaque to
+        // the scan. The encrypted-envelope save path uses
+        // URLSearchParams, so this is the relevant slot.
+        return null;
+      }
+      for (var i = 0; i < FORBIDDEN_KEYS.length; i++) {
+        if (text.indexOf(FORBIDDEN_KEYS[i]) !== -1) return FORBIDDEN_KEYS[i];
+      }
+      return null;
+    }
+
     var origFetch = root.fetch ? root.fetch.bind(root) : null;
     if (origFetch) {
       root.fetch = function (input, init) {
         var url = typeof input === 'string' ? input : (input && input.url) || '';
         if (calledFromDecoderScript() && !inAllowlist(url)) {
           throw new Error('mid-sentinel: blocked fetch to non-allowlisted ' + originUrl(url));
+        }
+        // Wave E.2 — payload key-scan even on allowlisted hosts.
+        if (calledFromDecoderScript() && init && init.body) {
+          var hit = bodyHasForbiddenKey(init.body);
+          if (hit) {
+            throw new Error('mid-sentinel: blocked fetch — body contains forbidden key "' + hit + '" (on-device-only state)');
+          }
         }
         return origFetch(input, init);
       };
@@ -119,6 +174,19 @@
           throw new Error('mid-sentinel: blocked XHR to non-allowlisted ' + originUrl(url));
         }
         return origOpen.apply(this, arguments);
+      };
+      // For XHR, body inspection happens at .send() time. Mirror the
+      // fetch-side scan so a stray XHR write of an on-device key
+      // throws too.
+      var origSend = XHR.prototype.send;
+      XHR.prototype.send = function (body) {
+        if (calledFromDecoderScript()) {
+          var hit = bodyHasForbiddenKey(body);
+          if (hit) {
+            throw new Error('mid-sentinel: blocked XHR send — body contains forbidden key "' + hit + '"');
+          }
+        }
+        return origSend.apply(this, arguments);
       };
     }
   })();
