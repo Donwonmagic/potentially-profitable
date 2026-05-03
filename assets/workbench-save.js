@@ -109,6 +109,50 @@
       .then(function (r) { authState = { checked: true, signedIn: r.status === 200 }; })
       .catch(function ()  { authState = { checked: true, signedIn: false }; });
 
+    // Phase 3B (mobile UX) — magic-link round-trip survival.
+    //
+    // Anonymous flow today: user fills form → clicks "Sign in to save"
+    // → /sign-in/ → magic-link email → opens link in Mail.app → Safari
+    // opens a new tab back at the tool URL → form is empty because the
+    // navigation discarded all in-memory state.
+    //
+    // Fix: on sign-in-link click, snapshot lastSavePayload to
+    // localStorage keyed by tool kind + path. On every tool page load,
+    // check for a recent (≤ 1 hour) prefill and rehydrate via
+    // onRehydrate(). One-shot: the key is deleted on consume so a
+    // refresh doesn't re-fire.
+    var PREFILL_KEY  = 'mw.prefill.' + kind;
+    var PREFILL_TTL  = 60 * 60 * 1000; // one hour
+    function snapshotPrefill() {
+      if (!lastSavePayload) return;
+      try {
+        localStorage.setItem(PREFILL_KEY, JSON.stringify({
+          ts:      Date.now(),
+          path:    window.location.pathname,
+          payload: lastSavePayload,
+        }));
+      } catch (_) { /* quota / private mode */ }
+    }
+    function consumePrefill() {
+      if (!onRehydrate) return;
+      var raw;
+      try { raw = localStorage.getItem(PREFILL_KEY); } catch (_) { return; }
+      if (!raw) return;
+      try { localStorage.removeItem(PREFILL_KEY); } catch (_) {}
+      var snap;
+      try { snap = JSON.parse(raw); } catch (_) { return; }
+      if (!snap || typeof snap !== 'object') return;
+      if (typeof snap.ts !== 'number' || (Date.now() - snap.ts) > PREFILL_TTL) return;
+      // Path scoping: only rehydrate if we're on the same tool URL we
+      // left from. Different tools share the same kind under the
+      // namespace (e.g. two URL-fetch graders), and a prefill from
+      // tool A shouldn't fire on tool B.
+      if (snap.path && snap.path !== window.location.pathname) return;
+      try { onRehydrate(snap.payload); } catch (err) {
+        console.warn('[workbench-save] onRehydrate (prefill) threw', err);
+      }
+    }
+
     function setMsg(textVal, isError) {
       if (!msg) return;
       if (!textVal) { msg.hidden = true; msg.textContent = ''; msg.classList.remove('error'); return; }
@@ -209,6 +253,20 @@
     }
 
     if (btn) btn.addEventListener('click', attemptSave);
+
+    // Phase 3B (mobile UX) — snapshot lastSavePayload to localStorage
+    // when the anonymous user clicks the sign-in link, so the magic-
+    // link round-trip can rehydrate the form on return. Deliberately
+    // a regular click handler (not a form-action interceptor) so we
+    // never block navigation; if snapshot fails (quota / private
+    // mode) the user just lands on /sign-in/ as today.
+    if (link) link.addEventListener('click', snapshotPrefill);
+
+    // Phase 3B — on init, see if a recent magic-link round-trip left
+    // a prefill in localStorage. Fires before the ?saved= rehydrate
+    // path so a /tools/X/?saved=Y URL still wins (server-side payload
+    // beats client-side form snapshot).
+    consumePrefill();
 
     // Rehydrate from ?saved=<id> if present.
     if (onRehydrate) {
