@@ -54,9 +54,8 @@
 <style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260501-engagement">
 
-<link rel="preconnect" href="https://plausible.io" crossorigin />
-<script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
-<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event' })</script>
 </head>
 <body>
 
@@ -212,7 +211,7 @@
       <li style="counter-increment:never;margin-bottom:36px;padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
         <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px">Nunca &mdash; cuatro</p>
         <h2 style="font-family:var(--font-display);font-size:24px;font-weight:500;line-height:1.2;color:var(--ink);margin:0 0 10px">No voy a poner pixel de remarketing en la biblioteca.</h2>
-        <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Sin pixel de Meta. Sin etiqueta de Google Ads. Sin LinkedIn Insight. Sin remarketing de terceros en ninguna p&aacute;gina cuyo prop&oacute;sito sea ense&ntilde;ar &mdash; eso incluye art&iacute;culos, glosario, investigaci&oacute;n, herramientas. Plausible es la &uacute;nica anal&iacute;tica que carga, no usa cookies, y el script es auto-hospedable. Lee un art&iacute;culo en paz: nadie te seguir&aacute; a casa.</p>
+        <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Sin pixel de Meta. Sin etiqueta de Google Ads. Sin LinkedIn Insight. Sin remarketing de terceros en ninguna p&aacute;gina cuyo prop&oacute;sito sea ense&ntilde;ar &mdash; eso incluye art&iacute;culos, glosario, investigaci&oacute;n, herramientas. Plausible es la &uacute;nica anal&iacute;tica que carga, no usa cookies, y desde la Fase 3B el script se sirve desde este mismo dominio (<code>/assets/p.js</code>) con los eventos pasando por <code>/api/event</code> &mdash; tu navegador nunca hace una solicitud a un origen anal&iacute;tico de terceros. Lee un art&iacute;culo en paz: nadie te seguir&aacute; a casa.</p>
       </li>
       <li style="counter-increment:never;margin-bottom:36px;padding:24px 28px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px">
         <p style="font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px">Nunca &mdash; cinco</p>

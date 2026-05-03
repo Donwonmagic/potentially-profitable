@@ -328,6 +328,12 @@ const API_ROUTES = {
   '/api/admin/window/archive':       handleAdminWindowArchive,
   // Phase G.10 (Growth) — newsletter subscription + double-opt confirm.
   '/api/subscribe':                  handleSubscribe,
+  // Phase 3B — Plausible analytics events proxy. Self-hosted tracker
+  // at /assets/p.js posts here; we forward to plausible.io with the
+  // visitor's CF-Connecting-IP so analytics see the right client IP
+  // instead of every request originating from the worker. Lets us
+  // drop plausible.io from CSP connect-src.
+  '/api/event':                      handlePlausibleEvent,
   '/sub/confirm':                    handleSubscribeConfirm,
   '/sub/unsubscribe':                handleSubscribeUnsubscribe,
   // Phase G.11 (Growth) — generalized share-snapshot endpoints.
@@ -6261,6 +6267,71 @@ async function parseFormBody(request) {
 // signup from spam. Hard-503 only when KV/Resend bindings missing.
 
 // sha256Hex is already imported from ./lib/auth.js — reuse it.
+
+// ===== Phase 3B — Plausible analytics events proxy =====
+//
+// The self-hosted tracker at /assets/p.js POSTs events to /api/event
+// instead of plausible.io directly. We forward to plausible.io's
+// /api/event endpoint with the visitor's CF-Connecting-IP carried
+// through as X-Forwarded-For so analytics see the real client IP
+// (without it, every event would look like it came from the worker).
+//
+// Why this matters:
+//   - Drops plausible.io from CSP connect-src (one fewer third-party).
+//   - Drops the preconnect/dns-prefetch lines from every page head.
+//   - Lets Plausible (or any drop-in replacement) be swapped without
+//     touching site-wide HTML — only the upstream URL here changes.
+//
+// Wire-shape: pass-through. Plausible's tracker sends a small JSON
+// body with { n, u, d, r, p, ... }. We don't parse it; we just
+// forward bytes. Failure-mode is silent (204) so the user's session
+// isn't disrupted by upstream hiccups.
+const PLAUSIBLE_UPSTREAM = 'https://plausible.io/api/event';
+
+async function handlePlausibleEvent(request, env, ctx) {
+  if (request.method !== 'POST') {
+    return new Response(null, { status: 405, headers: { allow: 'POST' } });
+  }
+  // Plausible is happy to ignore an empty body; cap the request so
+  // a malicious POST can't tie up isolate memory. 8 KB is generous.
+  let body;
+  try {
+    body = await request.text();
+    if (body.length > 8192) {
+      return new Response(null, { status: 413 });
+    }
+  } catch (_) {
+    return new Response(null, { status: 400 });
+  }
+
+  const clientIp = request.headers.get('cf-connecting-ip') || '';
+  const userAgent = request.headers.get('user-agent') || '';
+
+  // Best-effort forward. Don't await for too long; the visitor
+  // doesn't see this latency but we shouldn't tie up the worker
+  // either. 5s upper bound is plenty for Plausible's siteverify.
+  let upstreamRes;
+  try {
+    upstreamRes = await fetch(PLAUSIBLE_UPSTREAM, {
+      method: 'POST',
+      headers: {
+        'content-type': 'text/plain',  // Plausible accepts text/plain JSON
+        'user-agent': userAgent,
+        ...(clientIp ? { 'x-forwarded-for': clientIp } : {}),
+      },
+      body,
+      signal: AbortSignal.timeout ? AbortSignal.timeout(5_000) : undefined,
+    });
+  } catch (_) {
+    // Network blip; return 202 (Accepted) so the tracker treats
+    // it as success and doesn't retry-storm.
+    return new Response(null, { status: 202 });
+  }
+
+  // Mirror upstream status so the tracker can react if needed.
+  // Body content from Plausible is minimal; we don't relay it.
+  return new Response(null, { status: upstreamRes.status });
+}
 
 const SUBSCRIBE_SOURCES = new Set(['footer', 'article-end', 'workshop-empty-state', 'window']);
 

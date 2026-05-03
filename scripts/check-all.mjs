@@ -52,6 +52,12 @@ const CHECKS = [
   // returning inside breadcrumb-sep elements (3 different encodings
   // coexisted before Phase 3B normalised to literal `›`).
   ['Breadcrumb separator','check-breadcrumb-separator.mjs','--check'],
+  // Phase-3B no-third-party-Plausible — after the self-host cutover,
+  // /assets/p.js + /api/event proxy carry analytics. Any direct
+  // plausible.io script src / preconnect / init endpoint reintroduces
+  // a third-party request and breaks the privacy posture documented
+  // on /never/ #4 + /privacy.html + /cookies.html. Fail-CI from day 1.
+  ['No 3p Plausible',     'check-no-third-party-plausible.mjs','--check'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   // for invoice content. Cheap regex check; high-blast-radius bug if
