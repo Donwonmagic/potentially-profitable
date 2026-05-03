@@ -204,6 +204,31 @@
     if (!paperEl || !paperEl.classList) return false;
     return paperEl.classList.contains('md-promote-2col');
   }
+  // Wave studio-quality — locale-aware price display.
+  // Operator types whatever they want ("12", "12.50", "$12", "€8,50",
+  // "Market Price"). The renderer respects what they typed when it
+  // already carries a currency symbol or non-numeric content. When
+  // the operator typed bare digits (with optional decimal), the
+  // helper prefixes/suffixes per the active currency convention so
+  // the menu reads like a real menu in that market.
+  //   USD/CAD/MXN/AUD → $14
+  //   EUR             → 14 €  (symbol after, thin space)
+  //   GBP             → £14
+  //   JPY             → ¥1400
+  //   CHF             → CHF 14
+  // No format change for already-symboled or non-numeric inputs.
+  function formatPriceDisplay(raw, currency) {
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return '';
+    if (/[$€£¥₩₹฿]/.test(s)) return s;     // operator added a symbol; respect it
+    if (!/^[\d.,]+$/.test(s)) return s;     // non-numeric ('Market Price', 'TBD')
+    var c = (currency || 'USD').toUpperCase();
+    if (c === 'EUR') return s + '  €';   // narrow no-break space + €
+    if (c === 'GBP') return '£' + s;
+    if (c === 'JPY') return '¥' + s;
+    if (c === 'CHF') return 'CHF ' + s;
+    return '$' + s;                          // USD / CAD / MXN / AUD default
+  }
 
   function effectiveDisclaimer() {
     if (meta && typeof meta.disclaimer === 'string' && meta.disclaimer.trim()) {
@@ -242,7 +267,15 @@
     // shrinking type within readable bounds, and surfaces a clear
     // advisory when even minimum sizes overflow. Real restaurant
     // menus are 1 or 2 pages — three-page menus aren't a thing.
-    allowMultiPage: false
+    allowMultiPage: false,
+    // Wave studio-quality — display currency. Affects how bare-digit
+    // prices render (e.g., operator types "14" → "$14" / "14 €" / "£14"
+    // depending on currency). Operator-typed prices that already carry
+    // a symbol pass through verbatim. Default 'USD' since most operators
+    // are DMV-area today; persisted with the rest of meta. JSON-LD +
+    // Studio Brief read this field too so the priceCurrency in the
+    // structured-data graph matches.
+    currency: 'USD'
   };
 
   // W12-3 — theme customizer state. Each field is null when the
@@ -1004,6 +1037,18 @@
       scheduleSaveDraft();
     });
   }
+  // Wave studio-quality — currency selector. Drives the locale-aware
+  // price formatting (formatPriceDisplay) and the JSON-LD priceCurrency
+  // field. Updates the live preview + studio brief on change.
+  var metaCurrencyEl = document.getElementById('mdMetaCurrency');
+  if (metaCurrencyEl) {
+    if (meta.currency) metaCurrencyEl.value = meta.currency;
+    metaCurrencyEl.addEventListener('change', function () {
+      meta.currency = metaCurrencyEl.value || 'USD';
+      schedulePreview();
+      scheduleSaveDraft();
+    });
+  }
 
   // Wave B2 — regime selector (separate wiring; uses `change` instead
   // of `input`). Defaults to us-fda9; menus loaded from a v1/v2 draft
@@ -1260,8 +1305,13 @@
         var pairing  = (d.pairing  || '').trim();
         var modifier = (d.modifier || '').trim();
         var halfPrice = (d.halfPrice || '').trim();
-        var priceHtml = escHtml(price);
-        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' + escHtml(halfPrice) + '</span>';
+        // Wave studio-quality — locale-aware currency formatting.
+        // Operator's bare-digit prices get the regional currency symbol
+        // (defaults to USD); already-symboled prices pass through.
+        var displayCurrency = (meta && meta.currency) || 'USD';
+        var priceHtml = escHtml(formatPriceDisplay(price, displayCurrency));
+        if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' +
+          escHtml(formatPriceDisplay(halfPrice, displayCurrency)) + '</span>';
         html += '<div class="md-pp-row">';
         html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
@@ -2356,6 +2406,7 @@
           // Wave B2 — restore allergen regime + studio-quality multi-page flag.
           meta.allergenRegime = d.meta.allergenRegime || 'us-fda9';
           meta.allowMultiPage = !!d.meta.allowMultiPage;
+          meta.currency       = d.meta.currency || 'USD';
           if (metaTaglineEl) metaTaglineEl.value = meta.tagline;
           if (metaStoryEl)   metaStoryEl.value   = meta.story;
           if (metaCoverEl)   metaCoverEl.checked = meta.coverPage;
@@ -2363,6 +2414,8 @@
           if (regimeRestoreEl) regimeRestoreEl.value = meta.allergenRegime;
           var multiRestoreEl = document.getElementById('mdMetaAllowMultiPage');
           if (multiRestoreEl) multiRestoreEl.checked = !!meta.allowMultiPage;
+          var currencyRestoreEl = document.getElementById('mdMetaCurrency');
+          if (currencyRestoreEl && meta.currency) currencyRestoreEl.value = meta.currency;
           metaFooterFields.forEach(function (pair) {
             var fEl = document.getElementById(pair[0]);
             if (fEl) fEl.value = meta[pair[1]] || '';
@@ -3466,7 +3519,7 @@
         cuisine:         (function () {
           try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
         })(),
-        currency:        'USD',
+        currency:        (meta && meta.currency) || 'USD',
         locale:          LOCALE,
         allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
       }
@@ -3742,7 +3795,7 @@
           cuisine:         (function () {
             try { return (typeof MuntinContext !== 'undefined' && MuntinContext.read && (MuntinContext.read() || {}).cuisine) || ''; } catch (_) { return ''; }
           })(),
-          currency:        'USD',
+          currency:        (meta && meta.currency) || 'USD',
           locale:          LOCALE,
           allergenRegime:  (meta && meta.allergenRegime) || 'us-fda9'
         }

@@ -1146,6 +1146,29 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </label>
             </div>
 
+            <!-- Wave studio-quality — display currency. Drives the
+                 prefix/suffix on bare-digit prices (operator types
+                 "14" → renders as "$14" / "14 €" / "£14" depending
+                 on selection). Already-symboled prices ("$14", "€8,50")
+                 pass through untouched. Also sets priceCurrency in
+                 the schema.org Menu JSON-LD output. -->
+            <div class="md-meta-field">
+              <label for="mdMetaCurrency">Display currency</label>
+              <select id="mdMetaCurrency" autocomplete="off">
+                <option value="USD">US dollar — $14 (default)</option>
+                <option value="EUR">Euro — 14 €</option>
+                <option value="GBP">British pound — £14</option>
+                <option value="CAD">Canadian dollar — $14</option>
+                <option value="MXN">Mexican peso — $14</option>
+                <option value="AUD">Australian dollar — $14</option>
+                <option value="CHF">Swiss franc — CHF 14</option>
+                <option value="JPY">Japanese yen — ¥1400</option>
+              </select>
+              <small style="color:var(--stone);font-size:11.5px;margin-top:2px;display:block">
+                Only affects bare-digit prices like &ldquo;14&rdquo;. If you typed a symbol (&ldquo;$14&rdquo;, &ldquo;&euro;8,50&rdquo;), we keep it as-is.
+              </small>
+            </div>
+
             <!-- Wave B2 — allergen regime selector. Default is US FDA Big 9
                  (the operator base today); EU / UK / CA / AU / NZ operators
                  switch to get the regime-correct default disclaimer text
