@@ -467,6 +467,26 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       </div>
     </details>
 
+    <!-- Wave A1 — toolbar parity. Sits above the dish grid; carries the
+         saved indicator (live region for screen readers), undo / redo,
+         and dish search. The orchestrator JS (in menu-design.js) wires
+         every element by id; locale-neutral. -->
+    <div class="md-toolbar" id="mdToolbar" role="toolbar" aria-label="Barra del editor de menú">
+      <span class="md-saved" id="mdSaved" aria-live="polite" aria-atomic="true">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="md-saved-text">Sin guardar todavía</span>
+      </span>
+      <div class="md-toolbar-actions">
+        <button type="button" class="md-tb-btn" id="mdUndoBtn" aria-label="Deshacer (Cmd-Z)" title="Deshacer (⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+        </button>
+        <button type="button" class="md-tb-btn" id="mdRedoBtn" aria-label="Rehacer (Cmd-Shift-Z)" title="Rehacer (⇧⌘Z)" disabled>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></svg>
+        </button>
+        <input type="search" class="md-tb-search" id="mdSearch" placeholder="Buscar platos…" aria-label="Filtrar platos" autocomplete="off" />
+      </div>
+    </div>
+
     <p class="md-status" id="mdStatus"><strong>0</strong> platos · <strong>0</strong> secciones — tu menú vive solo en este navegador.</p>
 
     <!-- Wave studio-quality + B2 + B5 — full meta panel parity with EN.
