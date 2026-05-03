@@ -57,10 +57,97 @@
     return canvas;
   }
 
+  // Wave 1.6 — HEIC/HEIF detection. iOS Safari decodes HEIC natively
+  // through <img>; Chrome desktop does not. We feature-detect via
+  // createImageBitmap (succeeds on iOS, throws on Chrome desktop)
+  // and fall back to a lazy-loaded libheif-js worker only when
+  // needed. Result cached so repeat HEIC drops don't re-test.
+  var __heicSupportPromise = null;
+  function _detectHeicSupport() {
+    if (__heicSupportPromise) return __heicSupportPromise;
+    if (typeof createImageBitmap !== 'function') {
+      __heicSupportPromise = Promise.resolve(false);
+      return __heicSupportPromise;
+    }
+    // 1×1 HEIC is too costly to bundle; instead, infer from UA hints.
+    // Safari (iOS, macOS ≥ 11) decodes natively; Firefox + Chrome
+    // desktop don't. The actual fallback runs only when an HEIC
+    // file fails to load through <img>, so a wrong guess here
+    // costs at most one retry attempt.
+    var ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+    var isSafari = /^((?!chrome|android).)*safari/i.test(ua) || /\biPhone|\biPad|\biPod/.test(ua);
+    __heicSupportPromise = Promise.resolve(isSafari);
+    return __heicSupportPromise;
+  }
+  function _isHeicFile(file) {
+    if (!file) return false;
+    var t = String(file.type || '').toLowerCase();
+    if (t === 'image/heic' || t === 'image/heif') return true;
+    return /\.(heic|heif)$/i.test(String(file.name || ''));
+  }
+  // Lazy libheif-js loader. Looks for a self-hosted ESM at
+  // /assets/vendor/libheif/libheif.js (added by Wave 8 vendor-pin).
+  // Returns a function that decodes a Blob to a Canvas, or rejects.
+  var __libheifPromise = null;
+  function _loadLibheif() {
+    if (__libheifPromise) return __libheifPromise;
+    __libheifPromise = (function () {
+      // Only attempt if the script is reachable; we don't want to
+      // pollute the network panel with 404s in dev.
+      var url = '/assets/vendor/libheif/libheif.js';
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = url;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.onload = function () {
+          if (root && root.libheif) resolve(root.libheif);
+          else reject(new Error('libheif loaded but global missing'));
+        };
+        s.onerror = function () { reject(new Error('libheif unavailable')); };
+        document.head.appendChild(s);
+      });
+    })().catch(function (err) {
+      __libheifPromise = null;
+      throw err;
+    });
+    return __libheifPromise;
+  }
+  function _heicToCanvas(file, maxEdge) {
+    return _loadLibheif().then(function (libheif) {
+      return file.arrayBuffer().then(function (buf) {
+        var decoder = new libheif.HeifDecoder();
+        var data = decoder.decode(buf);
+        if (!data || !data.length) throw new Error('libheif returned no images');
+        var image = data[0];
+        var w = image.get_width();
+        var h = image.get_height();
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.createImageData(w, h);
+        return new Promise(function (resolve, reject) {
+          image.display(imageData, function (display) {
+            if (!display) return reject(new Error('libheif display failed'));
+            ctx.putImageData(display, 0, 0);
+            // Apply maxEdge downscale if needed.
+            if (maxEdge && Math.max(w, h) > maxEdge) {
+              resolve(imageToCanvas(canvas, maxEdge));
+            } else {
+              resolve(canvas);
+            }
+          });
+        });
+      });
+    });
+  }
   // Read a File or Blob into an HTMLImageElement, then to canvas.
   // SVG / unsupported formats reject; the caller falls back to a
-  // "couldn't read this image" status message.
+  // "couldn't read this image" status message. Wave 1.6 — HEIC
+  // files attempt native decode first, then fall back to libheif-js
+  // on browsers that can't decode HEIC natively.
   function fileToCanvas(file, maxEdge) {
+    var heic = _isHeicFile(file);
     return new Promise(function (resolve, reject) {
       var url = URL.createObjectURL(file);
       var img = new Image();
@@ -73,6 +160,19 @@
       };
       img.onerror = function () {
         URL.revokeObjectURL(url);
+        if (heic) {
+          // Native decode failed — try libheif-js fallback.
+          _heicToCanvas(file, maxEdge || 2000)
+            .then(resolve)
+            .catch(function () {
+              reject(new Error(
+                'This HEIC photo can\'t be read in your browser. ' +
+                'On iPhone, share it as JPG (Photos → Share → Options → Most Compatible), ' +
+                'or use Chrome on a phone for native HEIC.'
+              ));
+            });
+          return;
+        }
         reject(new Error('image decode failed'));
       };
       img.src = url;
@@ -929,74 +1029,79 @@
   // denoise), 'gentle' for noisy fax / phone shots (with denoise).
   // Wave B2's multi-pass OCR runs both and takes the higher-conf
   // result per cell.
-  function preprocessCanvas(canvas, preset) {
-    preset = preset || 'aggressive';
-    // Wave 2.2 — perspective rectification first. When the photo
-    // is angled enough that we can detect the document's four
-    // corners with confidence ≥0.4, we warp it to a clean rectangle
-    // before any other step. Deskew + threshold + denoise then
-    // operate on the rectified surface (where they're MORE
-    // effective, because text rows are now genuinely parallel).
-    //
-    // Failure mode: rectifyDocument returns null when confidence
-    // is low; we silently fall through to today's deskew. The
-    // operator's experience is unchanged on hard photos.
+  function preprocessCanvas(canvas, presetOrOpts) {
+    // Wave 1.4 — accept either a preset string (legacy) or an opts
+    // object {preset, profile}. profile is the source-classifier hint
+    // ('scanner' / 'thermal' / 'screenshot' / 'phone') that lets us
+    // skip cleanup steps the input doesn't need.
+    var preset = 'aggressive';
+    var profile = 'phone';
+    if (typeof presetOrOpts === 'string') {
+      preset = presetOrOpts || 'aggressive';
+    } else if (presetOrOpts && typeof presetOrOpts === 'object') {
+      preset  = presetOrOpts.preset  || 'aggressive';
+      profile = presetOrOpts.profile || 'phone';
+    }
+
+    // Profile capability flags. Phone keeps the full pipeline. Scanner
+    // and screenshot inputs are already flat / clean — skip the costly
+    // rectify + illumination + Sauvola steps. Thermal needs Sauvola
+    // (uneven thermal print), no rectify.
+    var doRectify       = (profile === 'phone');
+    var doDeskew        = (profile !== 'screenshot');
+    var doIllumination  = (profile === 'phone');
+    var allowSauvola    = (profile === 'phone' || profile === 'thermal');
+    var sauvolaParams   = (profile === 'thermal') ? { window: 15, k: 0.20 } : { window: 21, k: 0.34 };
+
     var rectified = null;
     var rectConf = null;
-    try {
-      var rect = rectifyDocument(canvas, { minConfidence: 0.4 });
-      if (rect && rect.canvas) {
-        rectified = rect.canvas;
-        rectConf = rect.confidence;
-        canvas = rectified;
-      }
-    } catch (_) { /* never block on rectification failure */ }
-    // 1. Deskew (operates on the rectified canvas if rectification
-    //    succeeded — usually a small residual angle ≤2°).
-    var skew = detectSkewAngle(canvas);
-    var deskewed = rotateCanvas(canvas, -skew);
+    if (doRectify) {
+      // Wave 2.2 — perspective rectification. Skipped on scanner /
+      // thermal / screenshot inputs since they're already flat.
+      try {
+        var rect = rectifyDocument(canvas, { minConfidence: 0.4 });
+        if (rect && rect.canvas) {
+          rectified = rect.canvas;
+          rectConf = rect.confidence;
+          canvas = rectified;
+        }
+      } catch (_) { /* never block on rectification failure */ }
+    }
+    // 1. Deskew. Screenshots are pixel-aligned by definition; skip.
+    var skew = doDeskew ? detectSkewAngle(canvas) : 0;
+    var deskewed = doDeskew ? rotateCanvas(canvas, -skew) : canvas;
     // 2. Grayscale + Otsu binarize.
     var ctx = deskewed.getContext('2d');
     var img = ctx.getImageData(0, 0, deskewed.width, deskewed.height);
     grayscaleInPlace(img);
-    // W2-3: compute quality metrics on the GRAYSCALE buffer
-    // BEFORE binarization. Laplacian variance reads blur;
-    // Otsu's between-class variance (already computed inside
-    // otsuThreshold) reads contrast bimodality. Surface both
-    // so the controller can offer retake-coaching before OCR.
     var blurScore = laplacianVariance(img);
     var t = otsuThreshold(img);
     var bimodalityScore = otsuBetweenClassVariance(img, t);
-    // Wave 1.6 — Aggressive preset keeps Otsu (best on flat-lit clean
-    // photos). Gentle preset switches to Sauvola when the photo shows
-    // signs of uneven lighting (low bimodality + decent blur score
-    // suggests the histogram is washed out by shadow/glare, not by
-    // motion blur). Pure Otsu falls back when bimodality is high
-    // since Sauvola adds compute we don't need.
     var thresholdMethod = 'otsu';
     var illuminationCorrected = false;
     if (preset === 'aggressive') {
       t = Math.min(255, t + 8);
       applyThresholdInPlace(img, t);
-    } else if (preset === 'gentle' && bimodalityScore < 1500 && blurScore > 60) {
+    } else if (preset === 'gentle' && allowSauvola && bimodalityScore < 1500 && blurScore > 60) {
       // Wave 8.1 — when the histogram is washed-out (low bimodality)
       // but the image is sharp, the culprit is almost always uneven
       // lighting (shadows/glare). Subtract the background-illumination
       // map first; Sauvola then operates on a near-evenly-lit page
-      // and produces a much cleaner binary surface for OCR.
-      correctIlluminationInPlace(img);
-      illuminationCorrected = true;
-      // Re-Otsu so the surfaced threshold reflects the corrected image
-      // (downstream callers — and the bimodality-trigger for retake
-      // coaching — read this value).
+      // and produces a much cleaner binary surface for OCR. Skipped
+      // on scanner / screenshot — those are evenly lit by nature.
+      if (doIllumination) {
+        correctIlluminationInPlace(img);
+        illuminationCorrected = true;
+      }
       t = otsuThreshold(img);
       bimodalityScore = otsuBetweenClassVariance(img, t);
-      sauvolaInPlace(img, { window: 21, k: 0.34 });
+      sauvolaInPlace(img, sauvolaParams);
       thresholdMethod = 'sauvola';
     } else if (preset === 'gentle') {
       t = Math.max(0, t - 4);
       applyThresholdInPlace(img, t);
-      median3x3InPlace(img);
+      // Skip median denoise on already-clean surfaces.
+      if (profile === 'phone') median3x3InPlace(img);
     }
     ctx.putImageData(img, 0, 0);
     return {
@@ -1009,7 +1114,8 @@
       qualityHint: classifyQuality(blurScore, bimodalityScore),
       rectified: !!rectified,
       rectifyConfidence: rectConf,
-      illuminationCorrected: illuminationCorrected
+      illuminationCorrected: illuminationCorrected,
+      profile: profile
     };
   }
 
@@ -1106,15 +1212,16 @@
   function preprocessCanvasWithRetry(canvas, opts) {
     opts = opts || {};
     var firstPreset = opts.preset || 'aggressive';
+    var profile = opts.profile || 'phone';
     var altPreset = (firstPreset === 'gentle') ? 'aggressive' : 'gentle';
-    var first = preprocessCanvas(canvas, firstPreset);
+    var first = preprocessCanvas(canvas, { preset: firstPreset, profile: profile });
     if (first.qualityHint === 'good' || opts.skipRetry) {
       first.retried = false;
       first.preset = firstPreset;
       return first;
     }
     // Re-pass on the original input canvas so we get a clean rectify.
-    var second = preprocessCanvas(canvas, altPreset);
+    var second = preprocessCanvas(canvas, { preset: altPreset, profile: profile });
     var firstScore = qualityScoreFor(first);
     var secondScore = qualityScoreFor(second);
     if (secondScore > firstScore + 5) {
@@ -1135,10 +1242,11 @@
     opts = opts || {};
     var maxEdge = opts.maxEdge || 2000;
     var preset = opts.preset || 'aggressive';
+    var profile = opts.profile || 'phone';
     return fileToCanvas(file, maxEdge).then(function (raw) {
       var result = opts.retryOnLowQuality
-        ? preprocessCanvasWithRetry(raw, { preset: preset })
-        : preprocessCanvas(raw, preset);
+        ? preprocessCanvasWithRetry(raw, { preset: preset, profile: profile })
+        : preprocessCanvas(raw, { preset: preset, profile: profile });
       return {
         canvas: result.canvas,
         rawWidth:  raw.width,
@@ -1146,6 +1254,7 @@
         skewAngle: result.skewAngle,
         threshold: result.threshold,
         preset:    result.preset || preset,
+        profile:   result.profile || profile,
         retried:   !!result.retried,
         qualityHint: result.qualityHint
       };

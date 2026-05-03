@@ -41,6 +41,10 @@
   // invoice" is tapped. Wave B5 will let the user remove pages
   // before reading; for B2 we read all pages in order.
   var pendingPages = [];
+  // Wave 1.2/1.4 — classification result + profile threaded by the
+  // unified dispatcher. 'phone' keeps today's full-cleanup behavior.
+  var _activePreprocessProfile = 'phone';
+  var _activeClassification = null;
 
   var LOCALE = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
   function tt(en, es) { return LOCALE === 'es' ? es : en; }
@@ -66,8 +70,19 @@
   }
 
   // -------------------- Photo handler --------------------
-  function handlePhotoFiles(fileList) {
+  function handlePhotoFiles(fileList, opts) {
     if (!fileList || !fileList.length) return;
+    // Wave 1.2 — accept a classification opts so the preprocess
+    // pipeline can pick a profile-aware path (Wave 1.4). Backward
+    // compatible: callers without opts still get the default 'phone'
+    // pipeline, which is the conservative full-cleanup path.
+    opts = opts || {};
+    var profile = (opts.classification && opts.classification.preprocessProfile) || 'phone';
+    var classification = opts.classification || null;
+    // Stash on a closure-visible var so the multi-page reduce loop
+    // below can pass it into preprocessFile() without restructuring.
+    _activePreprocessProfile = profile;
+    _activeClassification = classification;
     if (typeof MID_PREPROCESS === 'undefined') {
       showStatus(
         tt('Preprocess module missing', 'Falta el módulo de preprocesamiento'),
@@ -149,9 +164,12 @@
 
     files.reduce(function (chain, file, idx) {
       return chain.then(function () {
+        // Wave 1.4 — thread the classification's preprocessProfile so
+        // 'scanner' / 'screenshot' / 'thermal' inputs skip the cleanup
+        // they don't need. 'phone' remains the safe full pipeline.
         return Promise.all([
-          MID_PREPROCESS.preprocessFile(file, { preset: 'aggressive', maxEdge: 2000 }),
-          MID_PREPROCESS.preprocessFile(file, { preset: 'gentle',     maxEdge: 2000 })
+          MID_PREPROCESS.preprocessFile(file, { preset: 'aggressive', maxEdge: 2000, profile: _activePreprocessProfile }),
+          MID_PREPROCESS.preprocessFile(file, { preset: 'gentle',     maxEdge: 2000, profile: _activePreprocessProfile })
         ]).then(function (results) {
           pendingPages.push({
             file: file,
@@ -455,6 +473,19 @@
       var vendorMatch = null;
       if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
         vendorMatch = MID_VENDORS.detectVendor(fullText);
+        // Wave 1.7 — fall back to the source-classifier's filename
+        // vendorHint when text-token detection didn't cross threshold.
+        // This rescues photos where the letterhead OCR'd badly but
+        // the operator named the file with the distributor name.
+        if (!vendorMatch && _activeClassification && _activeClassification.vendorHint) {
+          var registry = MID_VENDORS.REGISTRY || [];
+          for (var vi = 0; vi < registry.length; vi++) {
+            if (registry[vi].id === _activeClassification.vendorHint) {
+              vendorMatch = { id: registry[vi].id, label: registry[vi].label_en, score: 0.5, vendor: registry[vi] };
+              break;
+            }
+          }
+        }
         if (vendorMatch) {
           MID_VENDORS.applyVendorBoost(parsed.rows, vendorMatch);
           parsed.vendor = vendorMatch.id;
@@ -1766,60 +1797,35 @@
     var params = new URLSearchParams(window.location.search || '');
     var sharedToken = params.get('shared');
     if (sharedToken && sharedToken !== 'error' && typeof caches !== 'undefined') {
+      // Wave 1.8 — page-side reader for the Web Share Target. We pull
+      // the stashed file back out of the SW cache, reconstruct a File,
+      // and hand it to the *unified* dispatcher. That gives us:
+      //   - identical routing (PDF / image / CSV) as a direct drop
+      //   - the source-classifier banner ("scanned PDF detected…")
+      //   - profile-aware preprocess (Wave 1.4)
+      //   - inline password prompt for protected PDFs (Wave 1.5)
+      // No special-casing per type here.
       var stashUrl = '/tools/invoice-decoder/_shared_inbox/' + sharedToken;
       caches.open('id-share-inbox').then(function (cache) {
-        return cache.match(stashUrl);
-      }).then(function (resp) {
-        if (!resp) return;
-        return resp.blob().then(function (blob) {
-          // Build a File so the existing handlers don't need to care
-          // about Blob vs File distinctions.
-          var name = 'shared-invoice';
-          try {
-            var hdr = resp.headers.get('X-Mid-Shared-Name');
-            if (hdr) name = decodeURIComponent(hdr);
-          } catch (_) {}
-          var file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
-          // Route by MIME.
-          if (file.type.indexOf('image/') === 0) {
-            handlePhotoFiles([file]);
-          } else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
-            // Fake a change-event-style invocation against the PDF input.
-            if (typeof MID_PDF_EXTRACT !== 'undefined' && MID_PDF_EXTRACT.extractPdf) {
-              setActiveChip('pdf');
-              showStatus(
-                tt('Reading the shared PDF…', 'Leyendo el PDF compartido…'),
-                tt('From your Share Sheet — runs the same way as a direct upload.',
-                   'Desde tu menú compartir — funciona igual que subirlo directo.')
-              );
-              setProgress(15);
-              MID_PDF_EXTRACT.extractPdf(file).then(function (result) {
-                if (result.imageOnly) {
-                  showStatus(
-                    tt('This PDF is a scanned image, not a text document.',
-                       'Este PDF es una imagen escaneada, no un documento de texto.'),
-                    tt('Try the photo path with each page snapped separately.',
-                       'Usa la ruta de foto con cada página por separado.'),
-                    'error'
-                  );
-                  return;
-                }
-                var parsedShared = MID_PARSE.parseLines(result.lines, result.fullText);
-                if (typeof MID_VENDORS !== 'undefined' && MID_VENDORS.detectVendor) {
-                  var vMatchShared = MID_VENDORS.detectVendor(result.fullText);
-                  if (vMatchShared) {
-                    MID_VENDORS.applyVendorBoost(parsedShared.rows, vMatchShared);
-                    parsedShared.vendor = vMatchShared.id;
-                  }
-                }
-                classifyRows(parsedShared.rows);
-                renderParsed(parsedShared);
-                hideStatus();
-              });
-            }
-          }
-          // Clean up the stashed file so it's not reusable.
-          return cache.delete(stashUrl);
+        return cache.match(stashUrl).then(function (resp) {
+          if (!resp) return;
+          return resp.blob().then(function (blob) {
+            var name = 'shared-invoice';
+            try {
+              var hdr = resp.headers.get('X-Mid-Shared-Name');
+              if (hdr) name = decodeURIComponent(hdr);
+            } catch (_) {}
+            var file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
+            dispatchUnifiedFile(file);
+            // Clean up the stashed file so a back/forward navigation
+            // doesn't re-trigger the share. Notify the SW for parity.
+            try {
+              if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_SHARE_INBOX' });
+              }
+            } catch (_) {}
+            return cache.delete(stashUrl);
+          });
         });
       }).catch(function () { /* missing or expired share; user re-shares */ });
       // Strip ?shared= from the URL so a refresh doesn't re-trigger.
@@ -2277,6 +2283,14 @@
         if (!j) return;
         if (j.ok) {
           setSaveStatus(null, 'ok');
+          // Wave 1.9 — fire the queue-advance event so a multi-file
+          // intake moves to the next invoice automatically once this
+          // one is saved.
+          try {
+            window.dispatchEvent(new CustomEvent('mid:invoice-saved', {
+              detail: { aad: aad, vendor: payload.vendor || null, itemCount: payload.itemCount }
+            }));
+          } catch (_) {}
           // W4-7 — push a 12-deep ring-buffer entry into invoiceTrend
           // so Cost Pulse / Plate Cost stale-banner / Margin Math
           // food-cost-band can read trend deltas without re-decrypting
@@ -2659,41 +2673,97 @@
   // sniffs each file (MIME + extension) and routes it to the right
   // pipeline. Multi-file drops process the first matching item now;
   // a follow-up wave will queue the rest.
+  // Wave 1.2 — delegate the looksLike* sniffs to the source classifier
+  // module so they share one source of truth. Module exposes synchronous
+  // helpers for cheap dispatch and an async classify() for full signals.
   function _looksLikeCsv(f) {
+    if (typeof MID_SOURCE_CLASSIFIER !== 'undefined') return MID_SOURCE_CLASSIFIER.looksLikeCsv(f);
     var n = String(f && f.name || '').toLowerCase();
     if (/\.(csv|tsv|xlsx|xls)$/.test(n)) return true;
     var t = String(f && f.type || '').toLowerCase();
-    if (t === 'text/csv' || t === 'text/tab-separated-values' ||
-        t === 'application/vnd.ms-excel' ||
-        t === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') return true;
-    return false;
+    return t === 'text/csv' || t === 'text/tab-separated-values' ||
+      t === 'application/vnd.ms-excel' ||
+      t === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   }
   function _looksLikePdf(f) {
+    if (typeof MID_SOURCE_CLASSIFIER !== 'undefined') return MID_SOURCE_CLASSIFIER.looksLikePdf(f);
     var t = String(f && f.type || '').toLowerCase();
     if (t === 'application/pdf') return true;
     return /\.pdf$/i.test(String(f && f.name || ''));
   }
   function _looksLikeImage(f) {
+    if (typeof MID_SOURCE_CLASSIFIER !== 'undefined') return MID_SOURCE_CLASSIFIER.looksLikeImage(f);
     var t = String(f && f.type || '').toLowerCase();
     if (t.indexOf('image/') === 0) return true;
     return /\.(jpe?g|png|heic|heif|webp|tiff?|bmp|gif)$/i.test(String(f && f.name || ''));
   }
+  // Wave 1.2 — async classification before routing, so processPdfFile
+  // and handlePhotoFiles can pick a profile-aware preprocess path
+  // (Wave 1.4) and so we can surface honest "we see a ScanSnap PDF"
+  // coaching to the operator.
   function dispatchUnifiedFile(file) {
     if (!file) return;
-    if (_looksLikePdf(file)) {
-      processPdfFile(file);
-    } else if (_looksLikeCsv(file)) {
-      processCsvFile(file);
-    } else if (_looksLikeImage(file)) {
-      handlePhotoFiles([file]);
-    } else {
+    var coarse = (typeof MID_SOURCE_CLASSIFIER !== 'undefined')
+      ? MID_SOURCE_CLASSIFIER.classifySync(file)
+      : { kind: _looksLikePdf(file) ? 'pdf-hybrid' : (_looksLikeCsv(file) ? 'tabular' : (_looksLikeImage(file) ? 'image-phone' : 'unknown')) };
+    if (coarse.kind === 'unknown') {
       showStatus(
         tt('We don\'t recognize this file type.', 'No reconocemos este tipo de archivo.'),
         tt('Try a photo (JPG/PNG/HEIC), a PDF, or a CSV / Excel export.',
            'Prueba una foto (JPG/PNG/HEIC), un PDF, o un CSV / Excel.'),
         'error'
       );
+      return;
     }
+    var classifyP = (typeof MID_SOURCE_CLASSIFIER !== 'undefined')
+      ? MID_SOURCE_CLASSIFIER.classify(file).catch(function () { return coarse; })
+      : Promise.resolve(coarse);
+    classifyP.then(function (result) {
+      _surfaceClassificationHint(result);
+      if (result.kind === 'tabular' || _looksLikeCsv(file)) {
+        processCsvFile(file);
+      } else if (/^pdf-/.test(result.kind) || _looksLikePdf(file)) {
+        processPdfFile(file, { classification: result });
+      } else if (/^image-/.test(result.kind) || _looksLikeImage(file)) {
+        handlePhotoFiles([file], { classification: result });
+      }
+    });
+  }
+  // Surface a small honest banner when the classifier identifies a
+  // scanner producer (ScanSnap, Adobe Scan, ...) or a screenshot —
+  // the operator immediately sees we recognize their input. Banner
+  // is informational; never blocks routing.
+  function _surfaceClassificationHint(c) {
+    if (!c || !c.scannerHint && !/^(image-screenshot|image-scanner|image-thermal)$/.test(c.kind || '')) return;
+    var msg = '';
+    if (c.scannerHint) {
+      msg = tt('We see this is a scanned PDF (' + c.scannerHint + ') — reading the scanned pages.',
+               'Vemos que es un PDF escaneado (' + c.scannerHint + ') — leyendo las páginas escaneadas.');
+    } else if (c.kind === 'image-screenshot') {
+      msg = tt('Looks like a screenshot — skipping photo cleanup so it stays sharp.',
+               'Parece una captura — saltando la limpieza de foto para mantenerla nítida.');
+    } else if (c.kind === 'image-scanner') {
+      msg = tt('Flatbed-scanner image detected — using the fast path.',
+               'Imagen de escáner detectada — usando la vía rápida.');
+    } else if (c.kind === 'image-thermal') {
+      msg = tt('Thermal/receipt image detected — tuning for narrow paper.',
+               'Imagen de recibo térmico detectada — ajustando para papel estrecho.');
+    }
+    if (!msg) return;
+    try {
+      var hintEl = document.getElementById('idClassifyHint');
+      if (!hintEl) {
+        hintEl = document.createElement('p');
+        hintEl.id = 'idClassifyHint';
+        hintEl.className = 'id-classify-hint';
+        hintEl.setAttribute('role', 'status');
+        hintEl.setAttribute('aria-live', 'polite');
+        var anchor = document.getElementById('idStatus');
+        if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(hintEl, anchor);
+      }
+      hintEl.textContent = msg;
+      hintEl.hidden = false;
+    } catch (_) {}
   }
   function dispatchUnifiedFileList(fileList) {
     if (!fileList || !fileList.length) return;
@@ -2704,25 +2774,110 @@
     // chip about the rest — the queue lands in a follow-up.
     var allImages = files.every(_looksLikeImage);
     if (allImages) {
-      handlePhotoFiles(files);
+      // Classify the first image so the rest get the same profile.
+      var firstClassifyP = (typeof MID_SOURCE_CLASSIFIER !== 'undefined')
+        ? MID_SOURCE_CLASSIFIER.classify(files[0]).catch(function () { return null; })
+        : Promise.resolve(null);
+      firstClassifyP.then(function (c) {
+        _surfaceClassificationHint(c);
+        handlePhotoFiles(files, { classification: c });
+      });
       return;
     }
+    // Wave 1.9 — multi-file queue. Process the first file now; queue
+    // the rest. Each saved invoice fires `mid:invoice-saved`, which
+    // advances the queue. Skip / Stop buttons drain it.
+    _enqueueFiles(files.slice(1));
     dispatchUnifiedFile(files[0]);
-    if (files.length > 1) {
-      // Soft notice: we processed one; ask the operator to drop the
-      // rest after this invoice is reviewed.
-      // Don't override the active showStatus — schedule via setTimeout.
-      setTimeout(function () {
-        try {
-          if (statusEl && !statusEl.hidden && /error/.test(statusEl.className || '')) return;
+    _renderQueueStrip();
+  }
+
+  // Wave 1.9 — intake queue state + UI helpers.
+  var _intakeQueue = [];
+  function _enqueueFiles(files) {
+    if (!files || !files.length) return;
+    Array.prototype.push.apply(_intakeQueue, files);
+  }
+  function _drainQueue() { _intakeQueue.length = 0; _renderQueueStrip(); }
+  function _renderQueueStrip() {
+    var qEl = document.getElementById('idQueue');
+    var msg = document.getElementById('idQueueMsg');
+    if (!qEl) return;
+    if (!_intakeQueue.length) {
+      qEl.hidden = true;
+      return;
+    }
+    qEl.hidden = false;
+    var nextName = String(_intakeQueue[0] && _intakeQueue[0].name || 'next file').replace(/[<>&]/g, '');
+    if (msg) msg.textContent = tt(
+      _intakeQueue.length + ' more in this batch — next: "' + nextName + '" after you save this one.',
+      _intakeQueue.length + ' más en este lote — sigue: "' + nextName + '" cuando guardes ésta.'
+    );
+  }
+  function _advanceQueueAfterSave() {
+    if (!_intakeQueue.length) {
+      _renderQueueStrip();
+      return;
+    }
+    var next = _intakeQueue.shift();
+    _renderQueueStrip();
+    // Small delay so the proof flyout / save toast can settle visibly
+    // before the next file kicks off OCR.
+    setTimeout(function () { dispatchUnifiedFile(next); }, 1200);
+  }
+  // Listen for the save event fired in the encryptPayload chain above.
+  if (typeof window !== 'undefined') {
+    window.addEventListener('mid:invoice-saved', _advanceQueueAfterSave);
+  }
+  // Wire the queue-strip buttons.
+  if (typeof document !== 'undefined') {
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t) return;
+      if (t.id === 'idQueueSkip' && _intakeQueue.length) {
+        _intakeQueue.shift();
+        _renderQueueStrip();
+        // Skipping the *current* in-flight invoice is operator-pacing;
+        // we just remove the next-up entry. If the operator wants to
+        // skip the *current* invoice, they can hit Stop.
+      } else if (t.id === 'idQueueCancel') {
+        _drainQueue();
+      }
+    });
+  }
+  // Wave 1.9 — folder picker. Hidden on touch UAs (iOS Safari and
+  // many mobile browsers ignore webkitdirectory and silently no-op
+  // the picker, which is more confusing than not showing the button
+  // at all).
+  if (typeof navigator !== 'undefined') {
+    var ua = navigator.userAgent || '';
+    var isTouch = /iPhone|iPad|iPod|Android|Mobile/i.test(ua);
+    var folderBtn = document.getElementById('idFolderBtn');
+    var folderInput = document.getElementById('idFolderInput');
+    if (folderBtn && folderInput && !isTouch) {
+      try { folderInput.setAttribute('webkitdirectory', ''); } catch (_) {}
+      try { folderInput.setAttribute('directory', ''); } catch (_) {}
+      folderBtn.hidden = false;
+      folderBtn.addEventListener('click', function () { folderInput.click(); });
+      folderInput.addEventListener('change', function (e) {
+        // Filter to recognized types so the queue doesn't choke on
+        // .DS_Store / Thumbs.db / random metadata files.
+        var raw = Array.prototype.slice.call(e.target.files || []);
+        var filtered = raw.filter(function (f) {
+          return _looksLikePdf(f) || _looksLikeImage(f) || _looksLikeCsv(f);
+        });
+        if (!filtered.length) {
           showStatus(
-            tt('Processing the first file — drop the others after you review this one.',
-               'Procesando el primer archivo — suelta los demás después de revisar éste.'),
-            tt('Multi-file queueing is coming in a follow-up; for now, one invoice at a time keeps your review focused.',
-               'La cola para varios archivos llegará pronto; por ahora, una factura a la vez mantiene la revisión enfocada.')
+            tt('No invoice files in that folder.', 'No hay archivos de factura en esa carpeta.'),
+            tt('Looking for PDF, JPG/PNG, HEIC, CSV, or Excel files.',
+               'Buscamos PDF, JPG/PNG, HEIC, CSV o Excel.'),
+            'error'
           );
-        } catch (_) {}
-      }, 800);
+          return;
+        }
+        dispatchUnifiedFileList(filtered);
+        e.target.value = '';
+      });
     }
   }
   // Hook the new unified dropzone input. Backward compat: the
@@ -2810,8 +2965,11 @@
   // (Wave A) can route a sniffed PDF here without going through a
   // synthetic <input> change event. The original pdfInput change
   // listener simply forwards.
-  function processPdfFile(f) {
+  function processPdfFile(f, opts) {
     if (!f) return;
+    opts = opts || {};
+    var classification = opts.classification || null;
+    var password = opts.password || null;
     setActiveChip('pdf');
     if (typeof MID_PDF_EXTRACT === 'undefined' || !MID_PDF_EXTRACT.extractPdf) {
       showStatus(
@@ -2838,7 +2996,7 @@
     );
     setProgress(15);
 
-    MID_PDF_EXTRACT.extractPdf(f).then(function (result) {
+    MID_PDF_EXTRACT.extractPdf(f, password ? { password: password } : undefined).then(function (result) {
       setProgress(70);
       if (result.imageOnly) {
         // Image-only PDF (scan with no text layer — typical of
@@ -2865,6 +3023,7 @@
         );
         setProgress(35);
         return MID_PDF_EXTRACT.rasterizeImageOnlyPdf(f, {
+          password: password,
           onProgress: function (idx, total /*, phase */) {
             // Show smooth progress between 35–65% across rasterization.
             try {
@@ -2899,8 +3058,19 @@
           }
           // Hand off to the existing photo pipeline. handlePhotoFiles
           // already enforces an 8-page cap, so the rasterize cap and
-          // photo cap line up.
-          handlePhotoFiles(raster.files);
+          // photo cap line up. Wave 1.4 — pass profile='scanner' since
+          // rasterized PDF pages are by definition flat, even, and
+          // straight, so they skip illumination/Sauvola/perspective.
+          handlePhotoFiles(raster.files, {
+            classification: {
+              kind: 'image-scanner',
+              preprocessProfile: 'scanner',
+              vendorHint: classification && classification.vendorHint || null,
+              scannerHint: classification && classification.scannerHint || null,
+              confidence: 1.0,
+              signals: classification && classification.signals || {}
+            }
+          });
         }).catch(function (err) {
           showStatus(
             tt('Could not read this scanned PDF.', 'No se pudo leer este PDF escaneado.'),
@@ -2953,12 +3123,94 @@
         } });
       }
     }).catch(function (err) {
+      // Wave 1.5 — protected PDF? Surface an inline password prompt
+      // and retry. Password lives only in this closure, never
+      // persisted, never logged.
+      if (err && err.code === 'PDF_PASSWORD_REQUIRED') {
+        _promptPdfPassword(f).then(function (pw) {
+          if (pw == null) {
+            showStatus(
+              tt('Locked PDF — cancelled.', 'PDF protegido — cancelado.'),
+              tt('Drop the file again with the password if you change your mind.',
+                 'Suelta el archivo de nuevo con la contraseña si cambias de idea.'),
+              'error'
+            );
+            return;
+          }
+          processPdfFile(f, { classification: classification, password: pw });
+        });
+        return;
+      }
       showStatus(
         tt('Could not read this PDF.', 'No se pudo leer este PDF.'),
         (err && err.message) ? err.message :
           tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
         'error'
       );
+    });
+  }
+  // Wave 1.5 — inline PDF password prompt. Resolves to the entered
+  // password (string) or null on cancel. The password is captured
+  // into this Promise scope and dropped after `getDocument` resolves;
+  // never written to localStorage / sessionStorage / IndexedDB / DOM
+  // attributes. The prompt is rendered above #idStatus, removed on
+  // resolve, and tab-cycle-trapped while open.
+  function _promptPdfPassword(file) {
+    return new Promise(function (resolve) {
+      try {
+        var existing = document.getElementById('idPdfPwForm');
+        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+      } catch (_) {}
+      var form = document.createElement('form');
+      form.id = 'idPdfPwForm';
+      form.className = 'id-pdf-pw';
+      form.setAttribute('role', 'dialog');
+      form.setAttribute('aria-label', tt('Enter PDF password', 'Introduce la contraseña del PDF'));
+      var fname = file && file.name ? String(file.name).replace(/[<>&"']/g, '') : 'this PDF';
+      form.innerHTML =
+        '<p class="id-pdf-pw-title">' +
+          tt('This PDF is locked', 'Este PDF está protegido') +
+        '</p>' +
+        '<p class="id-pdf-pw-blurb">' +
+          tt('Enter the password to read “' + fname + '”. The password stays in memory for this read and is then discarded.',
+             'Introduce la contraseña para leer “' + fname + '”. La contraseña queda solo en memoria para esta lectura y luego se descarta.') +
+        '</p>' +
+        '<input type="password" class="id-pdf-pw-input" id="idPdfPwInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />' +
+        '<div class="id-pdf-pw-row">' +
+          '<button type="submit" class="id-pdf-pw-submit">' + tt('Unlock', 'Desbloquear') + '</button>' +
+          '<button type="button" class="id-pdf-pw-cancel">' + tt('Cancel', 'Cancelar') + '</button>' +
+        '</div>';
+      var anchor = document.getElementById('idStatus');
+      if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(form, anchor);
+      else document.body.appendChild(form);
+      var input = form.querySelector('#idPdfPwInput');
+      var cancelBtn = form.querySelector('.id-pdf-pw-cancel');
+      try { input.focus(); } catch (_) {}
+      function cleanup() {
+        try { form.parentNode && form.parentNode.removeChild(form); } catch (_) {}
+      }
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var pw = input.value;
+        // Best-effort wipe of the input value before we drop the
+        // reference. It still lives in the resolved Promise scope
+        // until pdfjsLib.getDocument finishes consuming it.
+        try { input.value = ''; } catch (_) {}
+        cleanup();
+        resolve(pw);
+      });
+      cancelBtn.addEventListener('click', function () {
+        try { input.value = ''; } catch (_) {}
+        cleanup();
+        resolve(null);
+      });
+      form.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') {
+          try { input.value = ''; } catch (_) {}
+          cleanup();
+          resolve(null);
+        }
+      });
     });
   }
   if (pdfInput) pdfInput.addEventListener('change', function (e) {
