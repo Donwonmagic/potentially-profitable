@@ -735,6 +735,19 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdVibeQuizBtn" class="md-customize-tool">Quiz de vibe →</button>
           </div>
+          <!-- Wave studio-quality — Guardar / Cargar menú como archivo JSON. -->
+          <div class="md-customize-tools md-menu-files" style="margin-top:10px;border-top:1px dashed var(--line);padding-top:10px">
+            <button type="button" id="mdMenuSave" class="md-customize-tool" aria-label="Guardar el menú actual como archivo JSON">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Guardar menú como archivo
+            </button>
+            <label class="md-customize-tool md-customize-tool-import" aria-label="Cargar un menú desde un archivo JSON">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Cargar menú desde archivo
+              <input type="file" id="mdMenuLoad" accept="application/json,.json" />
+            </label>
+            <p style="margin:6px 0 0;font-size:11.5px;color:var(--stone);width:100%">Guarda tu menú como archivo autónomo. Cárgalo cuando quieras para alternar entre almuerzo / cena / brunch / niños / bebidas.</p>
+          </div>
         </div>
       </details>
     </div>

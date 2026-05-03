@@ -2607,7 +2607,12 @@
               return;
             }
           }
-        } }
+        } },
+      // Wave studio-quality — Save / Load full menu file.
+      { label: tt('Save menu as file',          'Guardar menú como archivo'),
+        run: function () { var b = document.getElementById('mdMenuSave'); if (b) b.click(); } },
+      { label: tt('Load menu from file',        'Cargar menú desde archivo'),
+        run: function () { var l = document.getElementById('mdMenuLoad'); if (l) l.click(); } }
     ];
   }
   // ----------------------------------------------------------------
@@ -5444,6 +5449,191 @@
     setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
     setDownloadMsg(tt('Theme JSON downloaded.', 'JSON de tema descargado.'), 'success');
   });
+  // Wave studio-quality — Save/Load full menu as a JSON file.
+  // Operators run multiple menus (lunch, dinner, brunch, kids, drinks,
+  // seasonal). The browser stores ONE draft. Saving as a file lets
+  // the operator keep all their menus on disk, switch freely, and
+  // even share menus across devices via file transfer.
+  //
+  // The exported JSON is a v3 canonical menu shape (via MD_SCHEMA)
+  // plus theme + customize + logo. Logo is embedded as a data URL,
+  // so the file is fully self-contained. Privacy: no upload — file
+  // saves to the operator's Downloads folder via the standard <a>
+  // download trick used elsewhere in the tool.
+  var menuSaveBtn = document.getElementById('mdMenuSave');
+  var menuLoadInput = document.getElementById('mdMenuLoad');
+  if (menuSaveBtn) menuSaveBtn.addEventListener('click', function () {
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before saving.', 'Agrega al menos un plato antes de guardar.'), 'error');
+      return;
+    }
+    var snapshot = null;
+    try {
+      var v2 = {
+        rows: realRows,
+        theme: themeId,
+        meta: meta,
+        customize: customize,
+        customDims: customDims,
+        schemaVersion: SCHEMA_VERSION
+      };
+      if (typeof MD_SCHEMA !== 'undefined' && MD_SCHEMA.migrate) {
+        snapshot = MD_SCHEMA.migrate(v2);
+      } else {
+        snapshot = v2;
+      }
+      // Bundle the logo as a data URL so the file is self-contained.
+      // The schema doesn't carry the logo by reference; embed it on a
+      // sibling key the loader picks up.
+      if (logoUrl) {
+        snapshot.logo = {
+          dataUrl: logoUrl,
+          name: (logoMeta && logoMeta.name) || '',
+          w: (logoMeta && logoMeta.w) || 0,
+          h: (logoMeta && logoMeta.h) || 0
+        };
+      }
+      // Stamp the export so the loader can warn on format drift.
+      snapshot.exportedFromTool = 'menu-design';
+      snapshot.exportedAt = new Date().toISOString();
+    } catch (err) {
+      setDownloadMsg(tt(
+        'Could not build menu file: ' + (err && err.message ? err.message : 'unknown'),
+        'No se pudo construir el archivo del menú: ' + (err && err.message ? err.message : 'desconocido')
+      ), 'error');
+      return;
+    }
+    var biz = (meta && meta.businessName) ? String(meta.businessName) : tt('menu', 'menu');
+    var slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+    var blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = slug + '-menu.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
+    setDownloadMsg(tt(
+      'Menu saved. Keep this file — you can load it back anytime.',
+      'Menú guardado. Guarda este archivo — puedes cargarlo cuando quieras.'
+    ), 'success');
+    if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+      MD_DOM.announce(tt('Menu saved as JSON file.', 'Menú guardado como archivo JSON.'));
+    }
+  });
+
+  if (menuLoadInput) menuLoadInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var parsed = JSON.parse(String(reader.result));
+        if (!parsed || typeof parsed !== 'object') {
+          setDownloadMsg(tt('Could not parse that JSON.', 'No se pudo leer el JSON.'), 'error');
+          return;
+        }
+        // Refuse files that don't look like a menu — protects the
+        // operator who accidentally drops a recipe.json or theme.json.
+        if (!parsed.dishes && !parsed.rows && !parsed.sections) {
+          setDownloadMsg(tt(
+            'That file does not look like a menu. Looking for a Menu Design saved menu (.json).',
+            'Ese archivo no parece un menú. Busco un archivo guardado de Menu Design (.json).'
+          ), 'error');
+          return;
+        }
+        // Confirm overwrite when the operator has unsaved work.
+        var hasWork = rows.some(function (r) { return !r.ghost; });
+        if (hasWork) {
+          var ok = confirm(tt(
+            'Loading this menu will replace your current dishes. Continue?',
+            'Cargar este menú reemplazará tus platos actuales. ¿Continuar?'
+          ));
+          if (!ok) { menuLoadInput.value = ''; return; }
+        }
+        pushUndo();
+        // Migrate to v3 if the file looks like v1/v2.
+        var menu = parsed;
+        try {
+          if (typeof MD_SCHEMA !== 'undefined' && MD_SCHEMA.migrate) {
+            menu = MD_SCHEMA.migrate(parsed);
+          }
+        } catch (_) {}
+        // Convert v3 → row stream the orchestrator uses.
+        var newRows = [];
+        if (Array.isArray(menu.sections) && Array.isArray(menu.dishes)) {
+          var sections = menu.sections.slice().sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+          var bySec = {};
+          menu.dishes.forEach(function (d) { (bySec[d.sectionId] = bySec[d.sectionId] || []).push(d); });
+          sections.forEach(function (s) {
+            if (s.name) newRows.push({ kind: 'section', name: s.name, blurb: s.blurb || '' });
+            var ds = (bySec[s.id] || []).slice().sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+            ds.forEach(function (d) {
+              newRows.push({
+                kind: 'dish',
+                name: d.name || '',
+                price: d.price || '',
+                desc: d.desc || '',
+                allergens: Array.isArray(d.allergens) ? d.allergens.slice() : [],
+                allergenStates: d.allergenStates || null,
+                badges: Array.isArray(d.badges) ? d.badges.slice() : [],
+                spice: d.spice || 0,
+                photo: d.photo || null
+              });
+            });
+          });
+        } else if (Array.isArray(parsed.rows)) {
+          newRows = parsed.rows.filter(function (r) { return !r.ghost; });
+        }
+        rows = newRows;
+        if (menu.theme && menu.theme.id && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(menu.theme.id)) {
+          themeId = menu.theme.id;
+        } else if (parsed.theme && typeof parsed.theme === 'string' && typeof MD_THEMES !== 'undefined' && MD_THEMES.get(parsed.theme)) {
+          themeId = parsed.theme;
+        }
+        if (menu.meta) {
+          Object.keys(menu.meta).forEach(function (k) {
+            if (typeof menu.meta[k] !== 'undefined') meta[k] = menu.meta[k];
+          });
+        }
+        if (menu.customize || parsed.customize) {
+          var c = menu.customize || parsed.customize;
+          customize.accent = c.accent || null;
+          customize.paper  = c.paper  || null;
+          customize.ink    = c.ink    || null;
+          customize.paperTexture = !!c.paperTexture;
+          if (c.mods) customize.mods = c.mods;
+        }
+        // Restore logo if the file embedded one.
+        if (parsed.logo && parsed.logo.dataUrl) {
+          logoUrl = parsed.logo.dataUrl;
+          logoMeta = { name: parsed.logo.name || '', w: parsed.logo.w || 0, h: parsed.logo.h || 0 };
+          if (logoThumb) logoThumb.innerHTML = '<img src="' + escHtml(logoUrl) + '" alt="" />';
+          if (logoLine)  logoLine.textContent = parsed.logo.name || tt('Logo restored', 'Logo restaurado');
+          if (logoRemoveBtn) logoRemoveBtn.hidden = false;
+        }
+        // Sync visible UI controls to restored state.
+        if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
+        renderThemePicker();
+        if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
+        render();
+        scheduleSaveDraft();
+        setDownloadMsg(tt(
+          'Menu loaded — ' + rows.filter(function (r) { return r.kind === 'dish'; }).length + ' dishes restored.',
+          'Menú cargado — ' + rows.filter(function (r) { return r.kind === 'dish'; }).length + ' platos restaurados.'
+        ), 'success');
+        if (typeof MD_DOM !== 'undefined' && MD_DOM.announce) {
+          MD_DOM.announce(tt('Menu loaded.', 'Menú cargado.'));
+        }
+      } catch (err) {
+        setDownloadMsg(tt(
+          'Could not load that menu file: ' + (err && err.message ? err.message : 'parse error'),
+          'No se pudo cargar el menú: ' + (err && err.message ? err.message : 'error de lectura')
+        ), 'error');
+      }
+    };
+    reader.readAsText(file);
+    menuLoadInput.value = '';
+  });
+
   if (themeImportInput) themeImportInput.addEventListener('change', function (e) {
     var file = e.target.files && e.target.files[0]; if (!file) return;
     var reader = new FileReader();
