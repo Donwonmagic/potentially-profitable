@@ -662,7 +662,12 @@
           '<td colspan="3"><input type="text" class="md-input" data-field="name" data-i="' + i +
           '" value="' + escHtml(r.name) + '" placeholder="' + tt('Section name (e.g. Starters)', 'Nombre de sección (ej. Entradas)') + '" aria-label="' + tt('Section name', 'Nombre de sección') + '" />' +
           secExtras + touchReorder + '</td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove section', 'Eliminar sección') + '">&times;</button></td>' +
+          '<td class="md-remove-cell">' +
+            '<button type="button" class="md-row-action md-dup" data-act="dup" data-i="' + i + '" aria-label="' + tt('Duplicate section', 'Duplicar sección') + '" title="' + tt('Duplicate', 'Duplicar') + '">' +
+              '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            '</button>' +
+            '<button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove section', 'Eliminar sección') + '">&times;</button>' +
+          '</td>' +
           '</tr>';
       } else {
         // "Need help describing?" link — only shows when the dish
@@ -840,7 +845,12 @@
           '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
           allergenPop +
           helpHtml + touchReorder + '</td>' +
-          '<td class="md-remove-cell"><button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button></td>' +
+          '<td class="md-remove-cell">' +
+            '<button type="button" class="md-row-action md-dup" data-act="dup" data-i="' + i + '" aria-label="' + tt('Duplicate dish', 'Duplicar plato') + '" title="' + tt('Duplicate', 'Duplicar') + '">' +
+              '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+            '</button>' +
+            '<button type="button" class="md-remove" data-act="del" data-i="' + i + '" aria-label="' + tt('Remove dish', 'Quitar plato') + '">&times;</button>' +
+          '</td>' +
           '</tr>';
       }
     });
@@ -2568,7 +2578,20 @@
       { label: tt('Bulk: tag all dishes as locally sourced', 'Lote: etiquetar todo como local'),
         run: function () { bulkTagAllergen('LO'); } },
       { label: tt('Bulk: clear all photos',     'Lote: quitar todas las fotos'),
-        run: function () { bulkClearPhotos(); } }
+        run: function () { bulkClearPhotos(); } },
+      // Wave studio-quality — duplicate the last dish from the palette.
+      // Useful for operators in flow who don't want to hunt for the
+      // dup button on a specific row.
+      { label: tt('Duplicate the last dish',    'Duplicar el último plato'),
+        run: function () {
+          for (var dx = rows.length - 1; dx >= 0; dx--) {
+            if (rows[dx].kind === 'dish' && !rows[dx].ghost) {
+              var btn = rowsEl && rowsEl.querySelector('[data-act="dup"][data-i="' + dx + '"]');
+              if (btn) { btn.click(); }
+              return;
+            }
+          }
+        } }
     ];
   }
   // ----------------------------------------------------------------
@@ -3119,6 +3142,44 @@
         pushUndo();
         rows.splice(i, 1);
         render();
+        scheduleSaveDraft();
+        return;
+      }
+      // Wave studio-quality — duplicate dish. Operators making 5
+      // pizzas with different toppings (or 4 pasta dishes with
+      // different sauces) clone-and-tweak instead of retyping the
+      // whole row. Inserts the copy directly below the source.
+      if (act === 'dup') {
+        var di = parseInt(t.dataset.i, 10);
+        if (!isFinite(di) || !rows[di]) return;
+        var src = rows[di];
+        if (src.kind !== 'dish' && src.kind !== 'section') return;
+        pushUndo();
+        // Deep-ish clone — primitives copied, allergens/badges arrays
+        // sliced (so editing the copy doesn't mutate the source). Photo
+        // is shared by reference (data URL) — operator can re-upload
+        // on the duplicate if they want a different one.
+        var copy = Object.assign({}, src);
+        if (Array.isArray(src.allergens)) copy.allergens = src.allergens.slice();
+        if (Array.isArray(src.badges))    copy.badges    = src.badges.slice();
+        if (src.allergenStates)           copy.allergenStates = Object.assign({}, src.allergenStates);
+        // Decorate the name so operators see the new row clearly and
+        // can rename it (no silent identical names that confuse the
+        // duplicate-detection in _computeDishWarnings).
+        if (src.kind === 'dish' && src.name) {
+          copy.name = src.name + tt(' (copy)', ' (copia)');
+        } else if (src.kind === 'section' && src.name) {
+          copy.name = src.name + tt(' (copy)', ' (copia)');
+        }
+        delete copy.ghost; // never duplicate as a ghost
+        rows.splice(di + 1, 0, copy);
+        render();
+        // Focus the new row's name field for immediate rename.
+        var freshName = rowsEl.querySelector('[data-field="name"][data-i="' + (di + 1) + '"]');
+        if (freshName) {
+          freshName.focus();
+          try { freshName.select(); } catch (_) {}
+        }
         scheduleSaveDraft();
         return;
       }
