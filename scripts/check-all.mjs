@@ -158,6 +158,7 @@ const CHECKS = [
   ['Topic sheets rail (idem)','inject-topic-sheets-rail.mjs','--check'],
   ['Tool sheet rail (idem)','inject-tool-sheet-rail.mjs','--check'],
   ['Sheet glossary popovers (idem)','inject-sheet-glossary-popovers.mjs','--check'],
+  ['Sheet worked examples (idem)','inject-sheet-worked-examples.mjs','--check'],
   // Warn-only — the cap-counter + duplicate-of-label rules are scriptable;
   // the "skip-it-changes-result-by-5%" judgment is in docs/voice-canon-sheets.md
   // and lives with the human reviewer.
