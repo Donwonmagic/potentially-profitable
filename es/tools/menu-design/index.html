@@ -596,6 +596,73 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <div class="md-themes">
       <p class="md-themes-label">Elige un tema</p>
       <ul class="md-themes-list" id="mdThemes" role="radiogroup" aria-label="Tema de menú"></ul>
+
+      <!-- Wave A1/W12-3/W15 — customize panel parity. ES operators get
+           per-theme color tuning + paper texture + seasonal/daypart/
+           event modifiers. The orchestrator JS wires every control
+           by element id. -->
+      <details class="md-customize" id="mdCustomize">
+        <summary class="md-customize-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          <span>Personalizar colores y textura <span class="md-customize-hint">(opcional)</span></span>
+        </summary>
+        <div class="md-customize-body">
+          <div class="md-customize-grid">
+            <label class="md-customize-field">
+              <span>Acento</span>
+              <input type="color" id="mdCustomAccent" value="#1F4E5B" />
+            </label>
+            <label class="md-customize-field">
+              <span>Papel</span>
+              <input type="color" id="mdCustomPaper" value="#FAF6EE" />
+            </label>
+            <label class="md-customize-field">
+              <span>Tinta</span>
+              <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <div class="md-customize-toggles">
+            <label class="md-customize-toggle">
+              <input type="checkbox" id="mdPaperTexture" />
+              <span>Textura de papel <span class="md-customize-hint">— grano sutil de lino sobre el fondo del menú</span></span>
+            </label>
+            <button type="button" id="mdCustomizeReset" class="md-customize-reset">Restablecer al tema por defecto</button>
+          </div>
+          <div class="md-customize-modifiers">
+            <label class="md-customize-mod-field">
+              <span>Estación</span>
+              <select id="mdModSeason">
+                <option value="none">Ninguna</option>
+                <option value="summer">Verano</option>
+                <option value="autumn">Otoño</option>
+                <option value="winter">Invierno</option>
+                <option value="holiday">Fiestas</option>
+                <option value="spring">Primavera</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Daypart</span>
+              <select id="mdModDaypart">
+                <option value="none">Ninguno</option>
+                <option value="lunch">Almuerzo</option>
+                <option value="dinner">Cena</option>
+                <option value="late-night">Madrugada</option>
+              </select>
+            </label>
+            <label class="md-customize-mod-field">
+              <span>Ocasión</span>
+              <select id="mdModEvent">
+                <option value="none">Ninguna</option>
+                <option value="valentines">San Valentín</option>
+                <option value="mothers-day">Día de las Madres</option>
+                <option value="pride">Pride</option>
+                <option value="nye">Año Nuevo</option>
+                <option value="halloween">Halloween</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </details>
     </div>
 
     <div class="md-options">
