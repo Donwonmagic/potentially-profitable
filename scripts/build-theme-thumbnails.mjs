@@ -144,6 +144,228 @@ function colorMix(c1, c2, ratio) {
   return `rgb(${r},${g},${b})`;
 }
 
+// ---- Muntin cuisine-decoration library ---------------------------
+// Each cuisine cluster gets a tasteful low-opacity motif rendered
+// behind the menu content. Drawn in 24-unit local coords; emitted
+// inside a <g transform="translate(...) scale(...)"> so positioning
+// is consistent. Stroke-current-style + fill-current so the theme's
+// muted/accent color carries through without per-decoration tuning.
+//
+// Visual language: single-stroke line art, 1.0–1.4 unit weight,
+// 12% opacity. Goal is to suggest cuisine identity at a glance
+// without competing with the menu typography.
+const CUISINE_DECOR = {
+  // Italian — olive branch in top-right corner
+  'olive-branch': {
+    paths: [
+      'M2 12 Q9 8 18 5',                                  // stem
+      'M5 11 Q3 8 1 9 Q3 11 5 11',                        // leaf 1
+      'M9 9.5 Q7 6 5 7 Q7 9 9 10',                        // leaf 2
+      'M13 8 Q11 5 9 6 Q11 8 13 8.5',                     // leaf 3
+      'M16 6.7 Q14 4 12 5 Q14 7 16 7.3'                   // leaf 4
+    ],
+    extras: ['<circle cx="17" cy="5.4" r="0.6"/>',         // olive 1
+             '<circle cx="14" cy="6.5" r="0.55"/>',        // olive 2
+             '<circle cx="11" cy="7.7" r="0.5"/>']         // olive 3
+  },
+  // Mexican — talavera-tile rosette
+  'talavera': {
+    paths: [
+      'M12 2 L13 8 L19 7 L14 11 L18 17 L12 14 L6 17 L10 11 L5 7 L11 8 Z'
+    ],
+    extras: ['<circle cx="12" cy="11" r="1.2"/>',
+             '<circle cx="12" cy="11" r="2.4" fill="none" stroke="currentColor" stroke-width="0.4"/>']
+  },
+  // French — fleur-de-lis
+  'fleur-de-lis': {
+    paths: [
+      'M12 3 Q11 7 8 9 Q10 10 11 13 L11 19 Q9 17 6 17 Q9 15 9 12 Q11 11 12 8',
+      'M12 3 Q13 7 16 9 Q14 10 13 13 L13 19 Q15 17 18 17 Q15 15 15 12 Q13 11 12 8',
+      'M9 13 L15 13'
+    ],
+    extras: []
+  },
+  // Asian (general / Japanese / Vietnamese / Korean) — minimalist crane
+  'crane': {
+    paths: [
+      'M3 14 Q8 12 11 13 L13 13 Q15 11 18 8 L20 7',       // body + neck
+      'M11 13 Q11 16 9 18 M11 13 Q12 16 11 18',           // legs
+      'M19.5 7.5 L21 6.5 M19.5 7.5 L20.5 8.5'             // beak
+    ],
+    extras: ['<circle cx="19" cy="7.8" r="0.35"/>']
+  },
+  // Seafood / coastal — gentle wave at top
+  'wave': {
+    paths: [
+      'M0 6 Q3 3 6 6 T12 6 T18 6 T24 6',
+      'M0 9.5 Q3 7 6 9.5 T12 9.5 T18 9.5 T24 9.5'
+    ],
+    extras: []
+  },
+  // Steakhouse / formal — laurel wreath corner
+  'laurel': {
+    paths: [
+      'M3 18 Q5 14 8 12 Q11 10 13 8 Q15 6 17 5',          // arc
+      'M5 16 L7 17 M7 14 L9 15 M9 12 L11 13 M11 10 L13 11 M13 8 L15 9 M15 6 L17 7'
+    ],
+    extras: []
+  },
+  // Cafe / bakery — coffee bean cluster
+  'coffee-bean': {
+    paths: [
+      'M5 5 Q7 3 9 5 Q7 7 5 5 M5 5 Q7 5 9 5',
+      'M11 8 Q13 6 15 8 Q13 10 11 8 M11 8 Q13 8 15 8',
+      'M7 12 Q9 10 11 12 Q9 14 7 12 M7 12 Q9 12 11 12'
+    ],
+    extras: []
+  },
+  // Tasting / omakase — single sumi-e brush stroke
+  'brush-stroke': {
+    paths: [
+      'M2 14 Q6 6 14 9 Q19 11 22 7'
+    ],
+    extras: ['<circle cx="22" cy="7" r="0.7"/>']
+  },
+  // Wine list — grape cluster
+  'grape-cluster': {
+    paths: [
+      'M12 2 Q14 4 13 7',                                 // stem
+      'M11 7 L13 7'
+    ],
+    extras: [
+      '<circle cx="10" cy="9" r="1.6"/>',
+      '<circle cx="14" cy="9" r="1.6"/>',
+      '<circle cx="8" cy="12" r="1.6"/>',
+      '<circle cx="12" cy="12" r="1.6"/>',
+      '<circle cx="16" cy="12" r="1.6"/>',
+      '<circle cx="10" cy="15" r="1.6"/>',
+      '<circle cx="14" cy="15" r="1.6"/>',
+      '<circle cx="12" cy="18" r="1.6"/>'
+    ]
+  },
+  // Cocktail / deco — radiating fan
+  'deco-fan': {
+    paths: [
+      'M12 20 L4 6 M12 20 L7 5 M12 20 L12 4 M12 20 L17 5 M12 20 L20 6',
+      'M4 6 Q12 2 20 6'
+    ],
+    extras: []
+  },
+  // Pizza counter — slice with topping dots
+  'pizza-slice': {
+    paths: [
+      'M12 3 L4 19 L20 19 Z',                             // slice
+      'M5 17 L19 17'                                       // crust line
+    ],
+    extras: [
+      '<circle cx="10" cy="11" r="0.9"/>',
+      '<circle cx="14" cy="11" r="0.9"/>',
+      '<circle cx="12" cy="14" r="0.9"/>'
+    ]
+  },
+  // BBQ / brewpub — wood grain
+  'wood-grain': {
+    paths: [
+      'M0 4 Q6 5 12 4 T24 4',
+      'M0 9 Q6 10 12 9 T24 9',
+      'M0 14 Q6 13 12 14 T24 14',
+      'M0 19 Q6 20 12 19 T24 19'
+    ],
+    extras: []
+  },
+  // Plant-forward / farm — leaf cluster
+  'leaf-cluster': {
+    paths: [
+      'M12 4 Q8 8 8 14 Q12 12 12 18',                     // leaf 1 (left)
+      'M12 4 Q16 8 16 14 Q12 12 12 18',                   // leaf 2 (right)
+      'M12 4 L12 18'                                       // central spine
+    ],
+    extras: []
+  },
+  // Kids — confetti dots
+  'confetti': {
+    paths: [],
+    extras: [
+      '<circle cx="3" cy="4" r="1.2"/>',
+      '<circle cx="20" cy="3" r="1"/>',
+      '<circle cx="6" cy="14" r="0.9"/>',
+      '<circle cx="18" cy="13" r="1.3"/>',
+      '<circle cx="11" cy="6" r="0.8"/>',
+      '<circle cx="14" cy="18" r="1.1"/>',
+      '<circle cx="22" cy="9" r="0.7"/>',
+      '<rect x="2" y="11" width="2" height="2" transform="rotate(20 3 12)"/>',
+      '<rect x="20" y="17" width="1.6" height="1.6" transform="rotate(35 20.8 17.8)"/>'
+    ]
+  },
+  // Tapas / spanish — geometric tile star
+  'spanish-tile': {
+    paths: [
+      'M12 2 L15 9 L22 9 L17 13 L19 20 L12 16 L5 20 L7 13 L2 9 L9 9 Z'
+    ],
+    extras: ['<circle cx="12" cy="12" r="1.5" fill="none" stroke="currentColor" stroke-width="0.5"/>']
+  },
+  // Diner / breakfast — coffee cup with steam
+  'coffee-cup': {
+    paths: [
+      'M5 12 L5 17 Q5 19 7 19 L15 19 Q17 19 17 17 L17 12 Z',
+      'M17 13 Q20 13 20 16 Q20 18 17 18',                  // handle
+      'M8 6 Q9 8 8 10 M11 5 Q12 7 11 9 M14 6 Q15 8 14 10'  // steam
+    ],
+    extras: []
+  }
+};
+
+// Map cuisineHint patterns to a decoration key + position+scale.
+// Returns {key, x, y, s} or null when no decoration fits.
+function decorationFor(theme) {
+  const ct = theme.contentType || 'standard';
+  const ch = (theme.cuisineHint || []).map(String);
+  const has = re => ch.some(s => re.test(s));
+
+  // Content-type wins (tasting / wine / cocktail / dessert / kids)
+  if (ct === 'tasting')  return { key: 'brush-stroke', x: 8, y: 88, s: 1.3 };
+  if (ct === 'wine')     return { key: 'grape-cluster', x: 178, y: 38, s: 1.2 };
+  if (ct === 'cocktail') return { key: 'deco-fan',     x: 178, y: 38, s: 1.3 };
+  if (ct === 'kids')     return { key: 'confetti',     x: 0,   y: 0,  s: 4 };
+
+  if (has(/italian|trattor|pasta/i))                  return { key: 'olive-branch', x: 175, y: 38, s: 1.4 };
+  if (has(/mexic|taco|cantina/i))                     return { key: 'talavera',     x: 178, y: 38, s: 1.3 };
+  if (has(/french|bistro|francesa|brasser/i))         return { key: 'fleur-de-lis', x: 180, y: 36, s: 1.4 };
+  if (has(/japan|ramen|sushi|izakaya|noodle/i))       return { key: 'crane',        x: 4,   y: 86, s: 1.3 };
+  if (has(/asian|thai|viet|kor/i))                    return { key: 'crane',        x: 4,   y: 86, s: 1.3 };
+  if (has(/seafood|oyster|fish|maris|pesc|raw bar/i)) return { key: 'wave',         x: 0,   y: 0,  s: 9.2 };
+  if (has(/steak|chop|parr|asad|grill/i))             return { key: 'laurel',       x: 175, y: 36, s: 1.5 };
+  if (has(/cafe|café|bakery|patisser|coffee/i))       return { key: 'coffee-bean',  x: 178, y: 38, s: 1.3 };
+  if (has(/pizza|slice/i))                            return { key: 'pizza-slice',  x: 178, y: 38, s: 1.3 };
+  if (has(/bbq|barbec|smoke|brisket|brewpub|brewery/i)) return { key: 'wood-grain', x: 0,   y: 28, s: 9.2 };
+  if (has(/farm|garden|plant|seasonal/i))             return { key: 'leaf-cluster', x: 178, y: 36, s: 1.4 };
+  if (has(/tapas|pinchos|spanish|andaluz/i))          return { key: 'spanish-tile', x: 178, y: 38, s: 1.3 };
+  if (has(/diner|breakfast|burger/i))                 return { key: 'coffee-cup',   x: 178, y: 36, s: 1.4 };
+  if (has(/dessert|patisserie|dolci/i))               return { key: 'leaf-cluster', x: 178, y: 36, s: 1.4 };
+  return null;
+}
+
+// Render the decoration as an inline <g>. Color = theme.muted at
+// 12% opacity (16% for kids/tasting/wave variants). Stroke 1.0-unit.
+function decorationSvg(theme) {
+  const dec = decorationFor(theme);
+  if (!dec) return '';
+  const motif = CUISINE_DECOR[dec.key];
+  if (!motif) return '';
+  const muted = theme.muted || theme.accent || '#7C6F60';
+  const opacity = (dec.key === 'kids' || dec.key === 'wave' || dec.key === 'wood-grain') ? 0.10 : 0.13;
+  const sw = dec.key === 'wave' || dec.key === 'wood-grain' || dec.key === 'brush-stroke' ? 1.4 : 1.0;
+  let inner = '';
+  motif.paths.forEach(d => {
+    inner += `    <path d="${d}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>\n`;
+  });
+  motif.extras.forEach(e => {
+    // extras are pre-built SVG fragments; default fill=currentColor unless overridden
+    inner += '    ' + (e.includes('fill=') ? e : e.replace(/<(circle|rect)/, '<$1 fill="currentColor"')) + '\n';
+  });
+  return `  <g transform="translate(${dec.x} ${dec.y}) scale(${dec.s})" color="${muted}" opacity="${opacity}" aria-hidden="true">\n${inner}  </g>\n`;
+}
+
 // ---- SVG fragment builders ---------------------------------------
 function paperRect(theme) {
   const paper = theme.paper || '#FAF6EE';
@@ -237,6 +459,11 @@ function buildSvg(theme) {
 
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VW} ${VH}" role="img" aria-label="${esc(theme.label_en || theme.id)} preview">\n`;
   svg += paperRect(theme);
+  // Cuisine-specific Muntin decoration — sits behind the menu content
+  // at low opacity so the thumbnail reads as a curated template, not
+  // a blank page. Selection map in decorationFor(); art in
+  // CUISINE_DECOR. Empty string when no decoration matches.
+  svg += decorationSvg(theme);
 
   // Title
   let y = 16;
