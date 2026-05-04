@@ -154,7 +154,11 @@ const PADDLEOCR_PUBLIC_PREFIX = '/assets/vendor/paddleocr@2.2.5';
 
 // Language packs are not tarballed via npm. We try the project's
 // own CDN first, then fall back to the official tesseract-ocr GitHub
-// mirror. eng + spa cover the operator base.
+// mirror. eng + spa cover the operator base; the chi_sim / jpn / kor
+// packs (Wave 9.4) are optional — only downloaded when a build
+// supports the heavy tier and only loaded at runtime when an
+// operator's MuntinContext.preferredLanguagePacks lists them or a
+// saved invoice came from an Asian-script vendor template.
 const LANG_PACKS = [
   { lang: 'eng', urls: [
     'https://github.com/tesseract-ocr/tessdata_fast/raw/main/eng.traineddata',
@@ -163,6 +167,25 @@ const LANG_PACKS = [
   { lang: 'spa', urls: [
     'https://github.com/tesseract-ocr/tessdata_fast/raw/main/spa.traineddata',
     'https://tessdata.projectnaptha.com/4.0.0/spa.traineddata.gz'
+  ]},
+  // Wave 9.4 — heavy-tier lang packs. Marked optional so a build can
+  // succeed when the source repo isn't reachable; runtime gracefully
+  // falls back to eng+spa.
+  { lang: 'chi_sim', optional: true, urls: [
+    'https://github.com/tesseract-ocr/tessdata_fast/raw/main/chi_sim.traineddata',
+    'https://tessdata.projectnaptha.com/4.0.0/chi_sim.traineddata.gz'
+  ]},
+  { lang: 'chi_tra', optional: true, urls: [
+    'https://github.com/tesseract-ocr/tessdata_fast/raw/main/chi_tra.traineddata',
+    'https://tessdata.projectnaptha.com/4.0.0/chi_tra.traineddata.gz'
+  ]},
+  { lang: 'jpn',     optional: true, urls: [
+    'https://github.com/tesseract-ocr/tessdata_fast/raw/main/jpn.traineddata',
+    'https://tessdata.projectnaptha.com/4.0.0/jpn.traineddata.gz'
+  ]},
+  { lang: 'kor',     optional: true, urls: [
+    'https://github.com/tesseract-ocr/tessdata_fast/raw/main/kor.traineddata',
+    'https://tessdata.projectnaptha.com/4.0.0/kor.traineddata.gz'
   ]}
 ];
 
@@ -421,8 +444,13 @@ async function main() {
       } catch (e) { lastErr = e; }
     }
     if (!data) {
-      console.warn(`  ! lang-pack ${lp.lang}: ${(lastErr && lastErr.message) || 'all sources failed'}`);
-      warnings++;
+      const msg = `lang-pack ${lp.lang}: ${(lastErr && lastErr.message) || 'all sources failed'}`;
+      if (lp.optional || allowOffline) {
+        console.warn(`  ! ${msg} (optional / offline; skipping)`);
+      } else {
+        console.warn(`  ! ${msg}`);
+        warnings++;
+      }
       continue;
     }
     // GitHub mirror serves the uncompressed .traineddata; the

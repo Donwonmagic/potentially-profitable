@@ -555,6 +555,13 @@
     var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
     var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
 
+    // Wave 9.4 — heavy-tier language packs (chi_sim/chi_tra/jpn/kor)
+    // when the operator's preferences or vendor history imply them.
+    // Lean devices collapse to eng+spa.
+    var langArg = (typeof MID_LANG_PACK !== 'undefined' && MID_LANG_PACK.languageArg)
+      ? MID_LANG_PACK.languageArg()
+      : 'eng+spa';
+
     pendingPages.reduce(function (chain, page, pageIdx) {
       return chain.then(function () {
         // Wave 9.2 — ensemble OCR: Tesseract multipass + PaddleOCR
@@ -566,7 +573,7 @@
           ? MID_OCR.recognizeMultiPassEnsemble
           : MID_OCR.recognizeMultiPass;
         return recognize(page.aggressive, page.gentle, {
-          lang: 'eng+spa',
+          lang: langArg,
           psm: 6,
           onProgress: function (p) {
             setProgress(2 + doneShare + p * pageShare);
@@ -3447,12 +3454,28 @@
                 if (!r.category || r.lineTotal == null) return;
                 totalsByCategory[r.category] = +(((totalsByCategory[r.category] || 0) + r.lineTotal).toFixed(2));
               });
+              // Wave 9.4 — propagate vendor's required language packs
+              // into the trend entry so the next invoice can opportunistically
+              // pre-load chi_sim/kor/jpn etc. Only the lang strings are
+              // persisted; no PII.
+              var trendVendorLangs = null;
+              try {
+                if (typeof MID_VENDORS !== 'undefined' && payload.vendor) {
+                  var vTpl = MID_VENDORS.REGISTRY && MID_VENDORS.REGISTRY.find &&
+                             MID_VENDORS.REGISTRY.find(function (v) { return v.id === payload.vendor; });
+                  if (vTpl) {
+                    if (Array.isArray(vTpl.requiresLangs)) trendVendorLangs = vTpl.requiresLangs.slice();
+                    else if (typeof vTpl.requiresLang === 'string') trendVendorLangs = [vTpl.requiresLang];
+                  }
+                }
+              } catch (_) {}
               MuntinContext.pushTrendEntry({
                 vendor:           payload.vendor || null,
                 savedAt:          payload.savedAt,
                 totalsByCategory: totalsByCategory,
                 parsedSum:        payload.parsedSum,
-                itemCount:        payload.itemCount
+                itemCount:        payload.itemCount,
+                requiresLangs:    trendVendorLangs
               });
             }
           } catch (_) {}
