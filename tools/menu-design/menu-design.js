@@ -1916,6 +1916,12 @@
         String((paperInfo.margin || 48) / paperInfo.w * 100) + '%');
       paper.dataset.paper = paperKey;
       paper.dataset.flow  = paperInfo.flow || 'page';
+      // Wave studio-quality (C1 partial) — round-shape paper hint.
+      // beer-mat-round and similar use a CSS clip-path on the live
+      // preview so operators see the actual die-cut shape, not a
+      // square. Print PDF stays as a square for the die-cut machine
+      // (no PDF clip-path; the print shop handles the trim).
+      paper.dataset.shape = paperInfo.shape || 'rect';
       if (paperInfo.flow === 'panel') {
         paper.style.setProperty('--panels', String(paperInfo.panels || 1));
       } else {
@@ -2177,7 +2183,16 @@
     // concrete advisory when a panel-flow paper genuinely can't
     // hold the operator's content.
     if (overflowEl) {
-      if (paperInfo && paperInfo.flow === 'panel' && dishes.length > (paperInfo.panels || 6) * 8) {
+      // Wave studio-quality (C1 partial) — beer-mat / round paper
+      // pre-flight. A 4.25" round only holds ~6 short dishes; warn
+      // the operator before they print 12 dishes onto a coaster.
+      if (paperInfo && paperInfo.shape === 'round' && dishes.length > 6) {
+        overflowEl.hidden = false;
+        overflowEl.textContent = tt(
+          'Beer-mat round only fits ~6 short dishes. Trim to 6, or pick "Specials card (5×7)" for a slightly larger trim that holds 8.',
+          'El beer-mat redondo solo cabe ~6 platos cortos. Reduce a 6, o elige "Tarjeta de especiales (5×7)" para un trim más grande con 8.'
+        );
+      } else if (paperInfo && paperInfo.flow === 'panel' && dishes.length > (paperInfo.panels || 6) * 8) {
         overflowEl.hidden = false;
         var ovLabel = paperInfo.label || paperKey;
         overflowEl.textContent = tt(
