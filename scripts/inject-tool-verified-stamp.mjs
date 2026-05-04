@@ -17,9 +17,20 @@
  * Locale-aware: EN renders "Last verified", ES renders
  * "Última revisión".
  *
+ * `--check` tolerance: when the on-disk stamp is up to
+ * STALE_TOLERANCE_DAYS BEHIND the directory's git-mtime, treat as
+ * still acceptable rather than failing CI. This prevents the
+ * "every commit touching a tool re-stales every PR's check-all"
+ * problem — a CSS-class fix in /tools/<x>/ shouldn't immediately
+ * fail PR CI just because nobody re-ran the stamp injector. The
+ * writer mode still bumps to today on every run; only the gate
+ * gets the slack window. Stamps that are MORE than the window
+ * behind git-mtime, or AHEAD of it (impossible without manual
+ * tampering), still fail check.
+ *
  * Usage:
  *   node scripts/inject-tool-verified-stamp.mjs           # rewrite
- *   node scripts/inject-tool-verified-stamp.mjs --check   # exit 1 on diff
+ *   node scripts/inject-tool-verified-stamp.mjs --check   # exit 1 on real drift
  */
 
 import fs from 'node:fs';
@@ -31,7 +42,22 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
+// Days of slack the --check gate allows between the on-disk stamp
+// and the directory's current git-mtime. 14 days is shorter than
+// typical verification cadence (~monthly) but long enough to
+// absorb the noise from incidental commits (CSS fixes, schema
+// regens) that touch a tool's directory without warranting a fresh
+// "Last verified" stamp.
+const STALE_TOLERANCE_DAYS = 14;
+
 const SENTINEL_RE = /<!-- tool-verified:start -->[\s\S]*?<!-- tool-verified:end -->/;
+const STAMP_DATE_RE = /<time datetime="(\d{4}-\d{2}-\d{2})"/;
+
+function daysBetween(a, b) {
+  // Absolute diff in days between two YYYY-MM-DD strings.
+  const t = (s) => new Date(s + 'T00:00:00Z').getTime();
+  return Math.round((t(b) - t(a)) / 86400000);
+}
 
 function gitMtime(dir) {
   try {
@@ -103,6 +129,19 @@ for (const { file, dir, locale } of pages) {
     next = src.replace('</h1>', insertion);
   }
   if (next === src) continue;
+
+  // --check tolerance: parse the on-disk stamp date. If it's BEHIND
+  // git-mtime by 0..STALE_TOLERANCE_DAYS days (i.e., not stale enough
+  // to warrant a fresh stamp), treat as no-change for the gate.
+  // Writer mode (no --check) always rewrites to today's git-mtime.
+  if (checkOnly) {
+    const m = src.match(STAMP_DATE_RE);
+    if (m) {
+      const diff = daysBetween(m[1], dateIso); // positive = stamp behind git-mtime
+      if (diff >= 0 && diff <= STALE_TOLERANCE_DAYS) continue;
+    }
+  }
+
   if (!checkOnly) fs.writeFileSync(file, next);
   console.log(`${checkOnly ? 'would update' : 'updated'}: ${path.relative(repoRoot, file)}`);
   changed++;
