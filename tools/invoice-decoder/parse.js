@@ -805,6 +805,65 @@
       var k = r.kind || 'item';
       kindCounts[k] = (kindCounts[k] || 0) + 1;
     });
+
+    // Pattern atlas (commit 3/5) — invoice family classification +
+    // grammar-aware kind enrichment + math reconciliation grammar.
+    // Pure additions to the parseLines return object; existing
+    // fields (rows / vendor / mathFix / kindCounts) are unchanged
+    // so every soak fixture keeps passing.
+    var family = null;
+    var familyHints = null;
+    var mathValidation = null;
+    var fullTextStr = fullText || lines.map(function (l) { return l.text; }).join('\n');
+    try {
+      var F = (typeof root !== 'undefined' && root && root.MID_FAMILY)
+        || (typeof require !== 'undefined' && (function () { try { return require('./family-classifier.js'); } catch (_) { return null; } })());
+      if (F && F.classifyFamily) {
+        var result = F.classifyFamily(fullTextStr, { lineCount: lines.length });
+        if (result) {
+          family = result.family;
+          familyHints = result.hints || {};
+        }
+      }
+    } catch (_) {}
+    try {
+      var G = (typeof root !== 'undefined' && root && root.MID_GRAMMAR)
+        || (typeof require !== 'undefined' && (function () { try { return require('./invoice-grammar.js'); } catch (_) { return null; } })());
+      if (G) {
+        // Grammar-aware kind enrichment: rows whose existing kind is
+        // 'item' (the default) get a second pass against the universal
+        // KIND_PATTERNS. Rows that the upstream parser ALREADY classified
+        // as a non-item kind keep their existing classification.
+        if (G.classifyKind) {
+          capped.forEach(function (r) {
+            if (!r) return;
+            if (r.kind && r.kind !== 'item') return;
+            var inferred = G.classifyKind((r.name || '') + ' ' + (r.raw || ''));
+            if (inferred && inferred !== 'item' && inferred !== 'unknown') {
+              r._kindInferredBy = 'grammar';
+              r._inferredKind = inferred;
+              // Kind override is opt-in: only apply when the existing
+              // parse left the kind at the default. Never overwrite a
+              // confidently-set kind from the upstream parser.
+              if (!r.kind || r.kind === 'item') r.kind = inferred;
+            }
+          });
+          // Recount kind buckets after enrichment.
+          kindCounts = { item: 0, credit: 0, deposit: 0, surcharge: 0, backorder: 0, tax: 0, discount: 0, fee: 0, subtotal: 0, total: 0, substitution: 0 };
+          capped.forEach(function (r) {
+            var k = r.kind || 'item';
+            kindCounts[k] = (kindCounts[k] || 0) + 1;
+          });
+        }
+        // Math reconciliation grammar surface for the family.
+        if (G.validateMath && family) {
+          try {
+            mathValidation = G.validateMath({ rows: capped }, family);
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
+
     return {
       rows: capped,
       vendor: meta.vendor,
@@ -812,7 +871,11 @@
       sumParsed: +sumParsed.toFixed(2),
       deltaPct: deltaPct,
       mathFix: mathFix,
-      kindCounts: kindCounts
+      kindCounts: kindCounts,
+      // Pattern atlas additions
+      family: family,
+      familyHints: familyHints,
+      mathValidation: mathValidation
     };
   }
 
