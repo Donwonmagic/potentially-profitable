@@ -165,6 +165,7 @@
       'Menu Design Paste',
       'Menu Design QR Exported',
       'Menu Design Quiz Picked',
+      'Menu Design Save Failed',
       'Menu Design SSML Exported',
       'Menu Design Social Exported',
       'Menu Design Specials Exported',

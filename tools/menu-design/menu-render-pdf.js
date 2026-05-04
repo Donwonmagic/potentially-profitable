@@ -25,20 +25,53 @@
   var SVG2PDF_CDN = 'https://cdn.jsdelivr.net/npm/svg2pdf.js@2.4.0/dist/svg2pdf.umd.min.js';
   var __pdfLibPromise = null;
   var __svg2pdfPromise = null;
+
+  // Wave studio-quality — bounded script-load timeout. Without this,
+  // a partial load (200 OK then connection drop) leaves the script
+  // tag pending forever and the operator's "Download PDF" button
+  // stays disabled with no error. 15s is generous for jsPDF/pdf-lib
+  // on slow cell, plenty for jsdelivr's edge cache.
+  var SCRIPT_LOAD_TIMEOUT_MS = 15000;
+  function withScriptTimeout(promiseFactory, label) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var to = setTimeout(function () {
+        if (done) return;
+        done = true;
+        reject(new Error(label + ' load timed out after ' + (SCRIPT_LOAD_TIMEOUT_MS / 1000) + 's — check your network'));
+      }, SCRIPT_LOAD_TIMEOUT_MS);
+      promiseFactory().then(function (v) {
+        if (done) return;
+        done = true;
+        clearTimeout(to);
+        resolve(v);
+      }, function (e) {
+        if (done) return;
+        done = true;
+        clearTimeout(to);
+        reject(e);
+      });
+    });
+  }
   function loadSvg2Pdf() {
     if (root.svg2pdf) return Promise.resolve(root.svg2pdf);
     if (__svg2pdfPromise) return __svg2pdfPromise;
-    __svg2pdfPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = SVG2PDF_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.svg2pdf) resolve(root.svg2pdf);
-        else { __svg2pdfPromise = null; reject(new Error('svg2pdf loaded but global missing')); }
-      };
-      s.onerror = function () { __svg2pdfPromise = null; reject(new Error('svg2pdf load failed')); };
-      document.head.appendChild(s);
+    __svg2pdfPromise = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = SVG2PDF_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          if (root.svg2pdf) resolve(root.svg2pdf);
+          else reject(new Error('svg2pdf loaded but global missing'));
+        };
+        s.onerror = function () { reject(new Error('svg2pdf load failed')); };
+        document.head.appendChild(s);
+      });
+    }, 'svg2pdf').catch(function (e) {
+      __svg2pdfPromise = null;
+      throw e;
     });
     return __svg2pdfPromise;
   }
@@ -112,21 +145,25 @@
   function loadJsPdf() {
     if (root.jspdf && root.jspdf.jsPDF) return Promise.resolve(root.jspdf.jsPDF);
     if (__pdfLibPromise) return __pdfLibPromise;
-    __pdfLibPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = JSPDF_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        var lib = (root.jspdf && root.jspdf.jsPDF) || null;
-        if (lib) resolve(lib);
-        else { __pdfLibPromise = null; reject(new Error('jsPDF loaded but global missing')); }
-      };
-      s.onerror = function () {
-        __pdfLibPromise = null;
-        reject(new Error('Could not load jsPDF — check your network'));
-      };
-      document.head.appendChild(s);
+    __pdfLibPromise = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = JSPDF_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          var lib = (root.jspdf && root.jspdf.jsPDF) || null;
+          if (lib) resolve(lib);
+          else reject(new Error('jsPDF loaded but global missing'));
+        };
+        s.onerror = function () {
+          reject(new Error('Could not load jsPDF — check your network'));
+        };
+        document.head.appendChild(s);
+      });
+    }, 'jsPDF').catch(function (e) {
+      __pdfLibPromise = null;
+      throw e;
     });
     return __pdfLibPromise;
   }
@@ -1893,17 +1930,22 @@
   function loadPdfLib() {
     if (root.PDFLib) return Promise.resolve(root.PDFLib);
     if (__pdfLibPromise2) return __pdfLibPromise2;
-    __pdfLibPromise2 = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = PDFLIB_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.PDFLib) resolve(root.PDFLib);
-        else { __pdfLibPromise2 = null; reject(new Error('pdf-lib loaded but global missing')); }
-      };
-      s.onerror = function () { __pdfLibPromise2 = null; reject(new Error('pdf-lib load failed')); };
-      document.head.appendChild(s);
+    __pdfLibPromise2 = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = PDFLIB_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          if (root.PDFLib) resolve(root.PDFLib);
+          else reject(new Error('pdf-lib loaded but global missing'));
+        };
+        s.onerror = function () { reject(new Error('pdf-lib load failed')); };
+        document.head.appendChild(s);
+      });
+    }, 'pdf-lib').catch(function (e) {
+      __pdfLibPromise2 = null;
+      throw e;
     });
     return __pdfLibPromise2;
   }
@@ -2081,8 +2123,63 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // Script-detection guard. The PDF font subsets are Latin-only
+  // (Fraunces + Inter + Cormorant), so Arabic / Hebrew / CJK / Thai /
+  // Devanagari / Cyrillic-extended / Ethiopic content silently emits
+  // boxes or wrong glyphs. We refuse PDF export with an explicit
+  // message instead of shipping unreadable output. Operators can use
+  // the HTML, text, or kiosk export paths until proper subsets ship.
+  //
+  // Returns null when content is safe to export, or an i18n object
+  // { en, es } with operator-tone copy when content must be refused.
+  // ----------------------------------------------------------------
+  var NON_LATIN_RE = /[֐-׿؀-ۿ܀-ݏऀ-ॿ฀-๿ሀ-፿　-ヿ぀-ゟ㐀-䶿一-鿿가-힯יִ-﷿ﹰ-﻿]/;
+  function detectUnsupportedScript(opts) {
+    var fields = [];
+    function collect(s) { if (s) fields.push(String(s)); }
+    var meta = opts && opts.meta;
+    if (meta) {
+      collect(meta.tagline); collect(meta.story); collect(meta.coverPage);
+      collect(meta.address); collect(meta.hours); collect(meta.serviceCharge);
+      collect(meta.sourcing); collect(meta.disclaimer); collect(meta.askYourServer);
+      collect(meta.businessName);
+    }
+    var sections = (opts && opts.sections) || [];
+    for (var s = 0; s < sections.length; s++) {
+      collect(sections[s].name);
+      var dishes = sections[s].dishes || [];
+      for (var d = 0; d < dishes.length; d++) {
+        collect(dishes[d].name); collect(dishes[d].desc);
+      }
+    }
+    var joined = fields.join('\n');
+    if (NON_LATIN_RE.test(joined)) {
+      return {
+        en: 'PDF export needs Arabic / Hebrew / CJK / Thai / Devanagari / Ethiopic font subsets we have not shipped yet. ' +
+            'Use the HTML, kiosk, or text export — those handle every script your browser can render. ' +
+            '(Multi-script PDF is on the roadmap.)',
+        es: 'La exportación a PDF necesita subsets de fuentes árabe / hebreo / CJK / tailandés / devanagari / etíope que aún no enviamos. ' +
+            'Usa la exportación HTML, kiosko o texto — esas manejan cualquier script que tu navegador pueda renderizar. ' +
+            '(PDF multiscript está en el roadmap.)'
+      };
+    }
+    return null;
+  }
+
   function exportPdf(opts) {
     opts = opts || {};
+    // Wave studio-quality — fail-loud guard for non-Latin scripts.
+    // Better to refuse than to ship boxes / reversed Arabic to print.
+    var unsupported = detectUnsupportedScript(opts);
+    if (unsupported) {
+      var locale = (opts.locale || 'en').toLowerCase().slice(0, 2);
+      var msg = locale === 'es' ? unsupported.es : unsupported.en;
+      var err = new Error(msg);
+      err.code = 'unsupported-script';
+      err.unsupported = true;
+      return Promise.reject(err);
+    }
     // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
     // W13-1 — also load svg2pdf when the operator's logo is SVG so
     // the doc.svg() call in the logo drawer has the plugin available.

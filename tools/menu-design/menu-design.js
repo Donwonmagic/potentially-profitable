@@ -716,11 +716,22 @@
     // Wave studio-quality — display currency. Affects how bare-digit
     // prices render (e.g., operator types "14" → "$14" / "14 €" / "£14"
     // depending on currency). Operator-typed prices that already carry
-    // a symbol pass through verbatim. Default 'USD' since most operators
-    // are DMV-area today; persisted with the rest of meta. JSON-LD +
+    // a symbol pass through verbatim. Locale-aware default — a Mexican
+    // operator's browser ships them MXN, a Japanese one ships them JPY.
+    // Falls back to USD when the locale doesn't map to a known regime
+    // (DMV operators, en-US default). The currency selector at
+    // #mdMetaCurrency lets the operator override regardless. JSON-LD +
     // Studio Brief read this field too so the priceCurrency in the
     // structured-data graph matches.
-    currency: 'USD',
+    currency: (function () {
+      try {
+        if (typeof MD_QUIZ !== 'undefined' && MD_QUIZ.suggestForBrowser) {
+          var hint = MD_QUIZ.suggestForBrowser();
+          if (hint && hint.currency) return hint.currency;
+        }
+      } catch (_) {}
+      return 'USD';
+    })(),
     // Wave studio-quality — Quiet typography mode. When on, the
     // renderers strip decoration (cuisine motif overlay, section
     // glyphs, ornaments) and force single-column layout. Targets
@@ -2881,6 +2892,86 @@
   var __saveTimer = null;
   var __saveDraftEnabled = true;
 
+  // ----------------------------------------------------------------
+  // Multi-tab safety. Two tabs of menu-design open on the same browser
+  // would both autosave every 500ms to a single localStorage key —
+  // last writer wins, the operator silently loses work in the inactive
+  // tab. The first tab to open claims a lock via BroadcastChannel;
+  // every subsequent tab receives 'lock-claimed' and switches itself
+  // into read-only mode with an explicit banner.
+  // ----------------------------------------------------------------
+  var __tabId = 'tab-' + Math.random().toString(36).slice(2, 10) + '-' + Date.now().toString(36);
+  var __isPrimaryTab = true;          // until proven otherwise
+  var __tabChannel = null;
+  var __readonlyLockBanner = null;
+  function initTabLock() {
+    if (typeof BroadcastChannel === 'undefined') return;  // older browsers
+    try {
+      __tabChannel = new BroadcastChannel('md-draft-lock');
+    } catch (_) { return; }
+    __tabChannel.addEventListener('message', function (ev) {
+      var d = ev && ev.data;
+      if (!d || d.tabId === __tabId) return;
+      if (d.type === 'hello') {
+        // Another tab just opened. If we're primary, tell them.
+        if (__isPrimaryTab) {
+          try { __tabChannel.postMessage({ type: 'lock-claimed', tabId: __tabId }); } catch (_) {}
+        }
+      } else if (d.type === 'lock-claimed') {
+        // Another tab is primary. Demote ourselves.
+        if (__isPrimaryTab) {
+          __isPrimaryTab = false;
+          __saveDraftEnabled = false;
+          showReadonlyLockBanner();
+        }
+      } else if (d.type === 'farewell') {
+        // The primary tab closed. Promote ourselves if we're the
+        // only remaining tab. (A 200ms sniff catches more open tabs.)
+        if (!__isPrimaryTab) {
+          setTimeout(function () {
+            // Re-announce; if no one objects within 200ms we're primary.
+            __isPrimaryTab = true;
+            try { __tabChannel.postMessage({ type: 'hello', tabId: __tabId }); } catch (_) {}
+            setTimeout(function () {
+              if (__isPrimaryTab) {
+                __saveDraftEnabled = true;
+                hideReadonlyLockBanner();
+              }
+            }, 200);
+          }, 200);
+        }
+      }
+    });
+    // Announce ourselves. If there's already a primary tab, it will
+    // respond with 'lock-claimed' and we'll demote ourselves.
+    try { __tabChannel.postMessage({ type: 'hello', tabId: __tabId }); } catch (_) {}
+    window.addEventListener('beforeunload', function () {
+      if (__isPrimaryTab && __tabChannel) {
+        try { __tabChannel.postMessage({ type: 'farewell', tabId: __tabId }); } catch (_) {}
+      }
+    });
+  }
+  function showReadonlyLockBanner() {
+    if (__readonlyLockBanner) return;
+    var b = document.createElement('div');
+    b.className = 'md-readonly-banner';
+    b.setAttribute('role', 'alert');
+    b.innerHTML =
+      '<strong>' + tt('Another tab is editing this menu.', 'Otra pestaña está editando este menú.') + '</strong> ' +
+      tt('Edits in this tab will NOT save. Switch to the other tab, or close it and refresh here.',
+         'Los cambios en esta pestaña NO se guardarán. Cambia a la otra pestaña, o ciérrala y recarga aquí.');
+    document.body.insertBefore(b, document.body.firstChild);
+    __readonlyLockBanner = b;
+    updateSavedIndicator('save-failed');
+  }
+  function hideReadonlyLockBanner() {
+    if (__readonlyLockBanner && __readonlyLockBanner.parentNode) {
+      __readonlyLockBanner.parentNode.removeChild(__readonlyLockBanner);
+    }
+    __readonlyLockBanner = null;
+  }
+  initTabLock();
+
   function safeLs() {
     if (typeof MD_DRAFT !== 'undefined') return MD_DRAFT.safeLs();
     try {
@@ -2897,7 +2988,7 @@
   var __lastSavedTs = 0;
   function updateSavedIndicator(state) {
     if (!savedEl || !savedText) return;
-    savedEl.classList.remove('is-saved', 'is-saving');
+    savedEl.classList.remove('is-saved', 'is-saving', 'is-error');
     if (state === 'saving') {
       savedEl.classList.add('is-saving');
       savedText.textContent = tt('Saving…', 'Guardando…');
@@ -2905,6 +2996,15 @@
       __lastSavedTs = Date.now();
       savedEl.classList.add('is-saved');
       savedText.textContent = tt('Saved just now', 'Guardado ahora');
+    } else if (state === 'quota-error') {
+      // Stop lying. Browser storage is full; the draft is NOT saved.
+      savedEl.classList.add('is-error');
+      savedText.textContent = tt('Storage full — export JSON now',
+                                 'Almacenamiento lleno — exporta JSON ya');
+    } else if (state === 'save-failed') {
+      savedEl.classList.add('is-error');
+      savedText.textContent = tt('Save failed — export JSON now',
+                                 'Falló al guardar — exporta JSON ya');
     } else if (state === 'tick') {
       // Periodic refresh — show "Saved 12s ago" / "Saved 3m ago".
       if (!__lastSavedTs) return;
@@ -3377,7 +3477,37 @@
         ls.removeItem(LOGO_KEY);
       }
       updateSavedIndicator('saved');
-    } catch (_) { /* quota — silent */ updateSavedIndicator('saved'); }
+    } catch (e) {
+      // Stop lying to the operator. localStorage refused the write —
+      // either quota exceeded (5MB), security context (Safari private),
+      // or storage disabled. Surface the truth so the operator can
+      // export JSON before refreshing.
+      var isQuota = e && (e.name === 'QuotaExceededError' ||
+                          e.code === 22 || e.code === 1014 ||
+                          /quota/i.test(String(e && e.message)));
+      updateSavedIndicator(isQuota ? 'quota-error' : 'save-failed');
+      if (!__draftSaveErrorFired) {
+        __draftSaveErrorFired = true;  // single-fire per session
+        try {
+          if (window.plausible) {
+            window.plausible('Menu Design Save Failed', {
+              props: { reason: isQuota ? 'quota' : 'other' }
+            });
+          }
+        } catch (_) {}
+        showSaveFailedBanner(isQuota);
+      }
+    }
+  }
+  var __draftSaveErrorFired = false;
+  function showSaveFailedBanner(isQuota) {
+    // Operator-tone banner: tell them what happened, what to do.
+    var msg = isQuota
+      ? tt('Browser storage is full. Your draft is NOT being saved. Export your menu as JSON now (Menu → Save menu file) before refreshing.',
+           'El almacenamiento del navegador está lleno. Tu borrador NO se está guardando. Exporta tu menú como JSON ahora (Menú → Guardar archivo) antes de recargar.')
+      : tt('Could not save your draft to browser storage. Export your menu as JSON now (Menu → Save menu file) before refreshing.',
+           'No se pudo guardar el borrador. Exporta tu menú como JSON ahora (Menú → Guardar archivo) antes de recargar.');
+    setDownloadMsg(msg, 'error');
   }
 
   function scheduleSaveDraft() {
@@ -4620,6 +4750,19 @@
         // success toast. Honors prefers-reduced-motion.
         try { surfaceDownloadCelebration(filename, pages); } catch (_) {}
       }).catch(function (err) {
+        // Wave studio-quality — explicit script-detection failure.
+        // PDF font subsets are Latin-only; instead of shipping boxes
+        // we point the operator at the working export paths.
+        if (err && err.code === 'unsupported-script') {
+          setDownloadMsg(err.message || tt(
+            'PDF export needs font subsets we have not shipped. Use HTML, kiosk, or text export.',
+            'La exportación a PDF necesita subsets que aún no enviamos. Usa la exportación HTML, kiosko o texto.'
+          ), 'error');
+          if (window.plausible) {
+            try { window.plausible('Menu Design Export Failed', { props: { format: 'pdf', reason: 'unsupported-script' } }); } catch (_) {}
+          }
+          return;
+        }
         // W10-10 — failure-mode delight. Don't dead-end on a PDF
         // failure; surface a retry + a PNG fallback so the operator
         // walks away with an artifact regardless. Lazy-loads
@@ -4656,7 +4799,7 @@
           //   format ∈ pdf | large-print | high-contrast | qr | text |
           //            ssml | brf | tablet | png
           //   reason ∈ cdn-blocked | cdn-load | oom | font-missing |
-          //            worker-unsupported | unknown
+          //            worker-unsupported | unsupported-script | unknown
           // Same call site, two events: legacy stays for back-compat
           // dashboards; new one carries the diagnostic prop pair.
           try {
@@ -5809,13 +5952,25 @@
   // ----------------------------------------------------------------
   // W11-2 + W22 — Quiz tile catalog extracted to data/quiz-tiles.js.
   var QUIZ_TILES = (typeof MD_QUIZ !== 'undefined') ? MD_QUIZ.TILES : [];
+  // Wave studio-quality — locale-aware tile suggestion. A Spanish-
+  // speaking operator in CDMX should see Mexicana pre-highlighted,
+  // not have to scan 16 tiles. Read once on boot; never overrides
+  // a saved draft or operator-typed currency.
+  var __localeSuggest = (typeof MD_QUIZ !== 'undefined' && MD_QUIZ.suggestForBrowser)
+    ? MD_QUIZ.suggestForBrowser()
+    : null;
   function renderQuizTiles() {
     var host = document.getElementById('mdQuizTiles');
     if (!host) return;
+    var pickedId = __localeSuggest && __localeSuggest.tile;
     host.innerHTML = QUIZ_TILES.map(function (t) {
       var label = LOCALE === 'es' ? t.label_es : t.label_en;
       var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
-      return '<li><button type="button" class="md-quiz-tile" data-cuisine="' + escHtml(t.id) + '">' +
+      var cls = 'md-quiz-tile' + (pickedId && pickedId === t.id ? ' is-suggested' : '');
+      var aria = (pickedId && pickedId === t.id)
+        ? ' aria-label="' + escHtml(label + ' — ' + (LOCALE === 'es' ? 'sugerido por tu navegador' : 'suggested by your browser')) + '"'
+        : '';
+      return '<li><button type="button" class="' + cls + '" data-cuisine="' + escHtml(t.id) + '"' + aria + '>' +
         '<span class="md-quiz-tile-glyph" aria-hidden="true">' + t.glyph + '</span>' +
         '<span class="md-quiz-tile-label">' + escHtml(label) + '</span>' +
         '<span class="md-quiz-tile-hint">' + escHtml(hint) + '</span>' +
