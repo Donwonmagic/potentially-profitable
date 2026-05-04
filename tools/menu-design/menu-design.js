@@ -3511,9 +3511,25 @@
       var tr = e.target.closest('tr[data-i]');
       if (!tr || __dragSrcIdx === -1) return;
       e.preventDefault();
-      var prev = rowsEl.querySelector('.md-drag-over');
-      if (prev && prev !== tr) prev.classList.remove('md-drag-over');
-      if (tr !== rowsEl.querySelector('.md-drag-source')) tr.classList.add('md-drag-over');
+      // Wave studio-quality (UX) — directional drop indicator. Show
+      // a horizontal insertion line at the top or bottom of the
+      // hovered row based on cursor position within the row. Way
+      // clearer on long menus than the previous "outline the whole
+      // row" treatment which left operators guessing whether the
+      // drop would land before or after.
+      var rect = tr.getBoundingClientRect();
+      var midY = rect.top + rect.height / 2;
+      var insertBefore = e.clientY < midY;
+      // Clear ALL prior drag-over classes (any direction).
+      rowsEl.querySelectorAll('.md-drag-over,.md-drag-over-top,.md-drag-over-bottom')
+        .forEach(function (el) {
+          el.classList.remove('md-drag-over', 'md-drag-over-top', 'md-drag-over-bottom');
+        });
+      if (tr !== rowsEl.querySelector('.md-drag-source')) {
+        tr.classList.add(insertBefore ? 'md-drag-over-top' : 'md-drag-over-bottom');
+        // Remember the insertion direction for the drop handler.
+        tr.dataset.dropDir = insertBefore ? 'before' : 'after';
+      }
     });
     rowsEl.addEventListener('drop', function (e) {
       e.preventDefault();
@@ -3521,9 +3537,18 @@
       if (!tr || __dragSrcIdx === -1) return;
       var dst = parseInt(tr.dataset.i, 10);
       if (!isFinite(dst) || dst === __dragSrcIdx) return;
+      // Wave studio-quality (UX) — honor the directional indicator.
+      // dropDir 'before' inserts at dst; 'after' inserts at dst+1.
+      // Adjust for the splice that removed the source item from
+      // earlier in the list.
+      var dropDir = tr.dataset.dropDir || 'before';
       pushUndo();
       var moved = rows.splice(__dragSrcIdx, 1)[0];
-      rows.splice(dst, 0, moved);
+      // After splice, dst may have shifted left by 1 if source was
+      // earlier in the list.
+      var adjustedDst = (__dragSrcIdx < dst) ? dst - 1 : dst;
+      var insertAt = dropDir === 'after' ? adjustedDst + 1 : adjustedDst;
+      rows.splice(insertAt, 0, moved);
       __dragSrcIdx = -1;
       render();
       scheduleSaveDraft();
