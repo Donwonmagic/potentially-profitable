@@ -3056,6 +3056,17 @@
           '<button type="button" class="id-export-btn" data-fmt="contpaqi">ContPaqi / Aspel</button>' +
           '<button type="button" class="id-export-btn" data-fmt="generic">' + tt('Generic ledger CSV', 'CSV genérico') + '</button>' +
         '</div>' +
+        // Wave 13.3 — annotated PDF for bookkeepers. Lazy-loads
+        // pdf-lib on first click; ~470 KB cost never paid by non-users.
+        '<div class="id-export-row id-export-row-pdf">' +
+          '<button type="button" class="id-export-btn id-export-btn-pdf" data-fmt="annotated-pdf">' +
+            '📄 ' + tt('Annotated PDF for bookkeeper', 'PDF anotado para tu contador') +
+          '</button>' +
+          '<span class="id-export-hint">' +
+            tt('Overlays your corrections + flagged rows + contract overages on the original. Built on this device.',
+               'Sobrepone tus correcciones + filas marcadas + sobreprecios de contrato sobre el original. Generado en este dispositivo.') +
+          '</span>' +
+        '</div>' +
       '</details>';
     host.hidden = false;
     // Wave 2.6 — recompute margin impact now that the host exists.
@@ -3726,8 +3737,39 @@
     var btn = e.target.closest && e.target.closest('.id-export-btn');
     if (!btn) return;
     var fmt = btn.getAttribute('data-fmt');
-    if (!fmt || typeof MID_ACCOUNTANT === 'undefined') return;
+    if (!fmt) return;
     e.preventDefault();
+    // Wave 13.3 — annotated PDF export branch. Routes through the
+    // pdf-annotate module (lazy-loads pdf-lib on first click).
+    if (fmt === 'annotated-pdf') {
+      if (typeof MID_PDF_ANNOTATE === 'undefined' || !MID_PDF_ANNOTATE.exportAnnotated) {
+        alert(tt('Annotated PDF module unavailable.',
+                 'Módulo de PDF anotado no disponible.'));
+        return;
+      }
+      var orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = tt('Building annotated PDF…', 'Generando PDF anotado…');
+      var packed = Object.assign({}, lastReadParsed || {}, {
+        rows: parsedRowsState.slice(),
+        sumParsed: (lastReadParsed && lastReadParsed.sumParsed) || null,
+        vendor:    (lastReadParsed && lastReadParsed.vendor) || null,
+        originalBuffer: (lastReadParsed && lastReadParsed.originalBuffer) || null
+      });
+      MID_PDF_ANNOTATE.exportAnnotated(packed, {})
+        .then(function () {
+          btn.textContent = tt('Saved ✓', 'Guardado ✓');
+          setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1800);
+        })
+        .catch(function (err) {
+          btn.textContent = orig;
+          btn.disabled = false;
+          alert(tt('Annotated PDF export failed: ' + (err && err.message ? err.message : 'unknown error'),
+                   'Falló el PDF anotado: ' + (err && err.message ? err.message : 'error desconocido')));
+        });
+      return;
+    }
+    if (typeof MID_ACCOUNTANT === 'undefined') return;
     try {
       var inv = buildAccountantInvoice();
       var artifact = MID_ACCOUNTANT.exportInvoice(fmt, inv, {});
@@ -4189,6 +4231,10 @@
       // Wave 4.3 — preserve PDF text so auto-learn can fingerprint
       // unrecognized vendors from the PDF path too.
       parsed._rawOcrText = result.fullText || '';
+      // Wave 13.3 — retain the original PDF buffer so the annotated-
+      // export module can lay annotations on top of the operator's
+      // own source PDF rather than emit a summary-only fallback.
+      if (result.originalBuffer) parsed.originalBuffer = result.originalBuffer;
       setProgress(95);
       renderParsed(parsed);
       hideStatus();

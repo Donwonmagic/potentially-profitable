@@ -214,11 +214,21 @@
     if (!file) return Promise.reject(new Error('file required'));
     opts = opts || {};
     return file.arrayBuffer().then(function (buf) {
+      // Wave 13.3 — retain the original buffer so the annotator
+      // (pdf-annotate.js) can write annotation overlays onto a copy
+      // of the source PDF without re-fetching. We pass a CLONE into
+      // pdfjsLib.getDocument because some pdf.js versions detach the
+      // underlying ArrayBuffer once parsing starts; the annotator
+      // needs a clean buffer.
+      var origBuf = buf.slice(0);
       return loadPdfjs().then(function (pdfjsLib) {
         var docOpts = { data: buf, isEvalSupported: false };
         // Wave 1.5 — accept an optional password from the caller.
         if (opts.password) docOpts.password = opts.password;
-        return pdfjsLib.getDocument(docOpts).promise;
+        return pdfjsLib.getDocument(docOpts).promise.then(function (d) {
+          d.__origBuf = origBuf;     // attach so callers can read after
+          return d;
+        });
       }).then(function (doc) {
         var pageCount = doc.numPages;
         // Wave 1.3 — read metadata so the classifier can react to
@@ -257,7 +267,8 @@
               imageOnly: true,
               classification: cls,
               vendorHint: vendorHintFromFilename(file.name),
-              scannerHint: cls.scannerHint || null
+              scannerHint: cls.scannerHint || null,
+              originalBuffer: origBuf
             };
           }
           // Each page → cluster into lines → flatten across all pages.
@@ -276,7 +287,11 @@
             hybrid: cls.kind === 'hybrid',
             classification: cls,
             vendorHint: vendorHintFromFilename(file.name),
-            scannerHint: cls.scannerHint || null
+            scannerHint: cls.scannerHint || null,
+            // Wave 13.3 — original PDF bytes for the annotated-export
+            // path. Caller (invoice-decoder.js) stashes on
+            // lastReadParsed so the export button can read it later.
+            originalBuffer: origBuf
           };
         });
       }).catch(function (err) {

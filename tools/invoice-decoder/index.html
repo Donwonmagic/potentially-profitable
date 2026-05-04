@@ -699,6 +699,12 @@ header.nav{min-height:64px}
 .id-export-btn{font:inherit;font-size:12.5px;padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 .id-export-btn:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a);background:#f0f9f7}
 .id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
+/* Wave 13.3 — annotated PDF export row */
+.id-export-row-pdf{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);align-items:center;gap:10px}
+.id-export-btn-pdf{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:500}
+.id-export-btn-pdf:hover{filter:brightness(1.05);background:var(--teal);color:#fff}
+.id-export-btn-pdf[disabled]{opacity:0.7;cursor:wait}
+.id-export-hint{font-size:11.5px;color:var(--ink-soft);font-style:italic;flex:1 1 200px}
 
 /* Wave 3.1 — focus rings + larger tap targets across the board */
 .id-input-chip:focus-within{border-color:var(--accent,#1f6f6a);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#1f6f6a) 22%,transparent)}
@@ -1544,6 +1550,7 @@ header.nav{min-height:64px}
 <script src="./whatif-panel.js?v=20260504-w14-3" defer></script>
 <script src="./cell-history.js?v=20260504-w13-8"></script>
 <script src="./first-run-tour.js?v=20260504-w14-6" defer></script>
+<script src="./pdf-annotate.js?v=20260504-w13-3" defer></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
