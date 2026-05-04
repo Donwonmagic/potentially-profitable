@@ -44,26 +44,38 @@ Wave 13 fourth (surprise-and-delight that spreads).
 
 ---
 
-## Wave 10 — The Cross-Tool Spine (~11.5 engineer-days)
+## Wave 10 — The Cross-Tool Spine (~13 engineer-days)
 
 The single most valuable wave. Closes the loop the user explicitly asked for.
 
+**Audit-driven correction**: an integration audit (see
+`docs/invoice-decoder-gold-standard-audit.md`) surfaced three blockers that
+gate Wave 10 from starting. They land first as **Wave 10.0 — Prep (~1.5 days)**:
+
 | # | Item | Files | Days |
 |---|------|-------|------|
-| 10.1 | New `tools/_shared/sku-match.js` — `classify(name, candidates)` returns `auto`/`propose`/`manual` tier with Levenshtein + token-set + substring matching. Reuses the existing `MID_LEARNINGS.extractStem` so Invoice Decoder and Plate Cost normalize identically | `tools/_shared/sku-match.js`, `tools/_shared/learnings-stem.js` (lift) | 0.5 |
-| 10.2 | New `tools/_shared/portion-bridge.js` — `quoteAtPortion({comparable, portion, yieldPercent})` converts an invoice's `{perBaseUnit, baseUnit}` into Plate Cost's `{apPrice, apQty, apUnit}` domain with cross-family safety. Mismatches set `compatible:false` rather than silent "guess the density" math | new file | 1.0 |
-| 10.3 | Extend `MuntinContext` with two new plaintext-aggregate keys: `invoiceLatestPrices` (stem→{perBaseUnit, baseUnit, vendor, ts, qty, unit, source}) and `dishCostHistory` (12-deep ring per dish). Eviction by `ts`. Same posture as the existing `invoiceTrend` | `tools/_shared/context-bus.js` | 0.5 |
-| 10.4 | Push wiring: at save, fold `parsedRowsState` into `writeLatestPrices(map)`. Walk `MuntinContext.dishes`, classify each ingredient against the new prices, queue `recipeStaleQueue` entries when comparable delta > 1% | `tools/invoice-decoder/invoice-decoder.js` (next to `recordObservations`) | 1.0 |
-| 10.5 | Plate Cost stale-banner: on cold load, if `recipeStaleQueue` has entries, render "5 recipes have ingredient prices that changed in your last Sysco invoice. [Review changes]" with accept-all / accept-some / dismiss. Rejection writes `matchLearnings` so the same false-positive doesn't recur | new `tools/plate-cost/stale-banner.js`, `tools/plate-cost/index.html` | 1.5 |
-| 10.6 | Plate Cost pull (in-recipe ghost chips): per-row sync read of `readLatestPrices()`. For bound ingredients with > 1% delta, render "Sysco Apr 28: $4.20/lb (yours: $3.80) [Update]" as a dashed chip. One-tap accept commits via the existing edit path. Operator-edit since-last-invoice protected via `apPriceSource: 'manual'\|'invoice:<ts>'` field — auto-update only overwrites when source is older | `tools/plate-cost/index.html`, `tools/plate-cost/plate-cost.js` | 0.5 |
-| 10.7 | Recipe schema gains `boundStem` (additive — unbound rows fall back to today's typed `apPrice`) + `apPriceSource` + `apPricePrev` (one-cycle undo). `validateRecipe` adds soft `unbound-ingredient` warning so the gap is visible without blocking save | `tools/plate-cost/plate-cost.js` (`validateRecipe`, schema) | 0.75 |
-| 10.8 | Cascade — Menu Engineering: subscribes to `MuntinContext.subscribe`. When `dishes[*].foodCost` changes, recomputes contribution margin and re-buckets Stars/Plowhorses/Puzzles/Dogs. A Star moving to Puzzle gets a thin teal underline + "moved last invoice" tag | `tools/menu-engineering/menu-engineering.js`, subscriber wiring | 1.0 |
-| 10.9 | Cascade — Cost Pulse: new "Recipe ripple" strip beneath the trend strip. Top three dishes whose plate cost shifted most this week, sourced from `dishCostHistory` | `tools/cost-pulse/index.html`, `tools/cost-pulse/cost-pulse.js` | 0.75 |
-| 10.10 | Cascade — Margin Math: reads `dishCostHistory` to recompute prime cost % and break-even covers. Surfaces *"Break-even shifted from 38 → 41 covers/night because beef rose 12% on last week's Sysco invoice."* This is the operator-gasp moment | `tools/margin-math/margin-math.js`, dish-impact path | 0.75 |
-| 10.11 | Per-portion contract surveillance: new `tools/_shared/dish-drift.js`. Walks `contractPrices × invoiceLatestPrices × dishes`; emits per-dish drift signals. Surfaces in `idHandoff` panel and a new "drift" tab in Cost Pulse | new file, `tools/cost-pulse/`, `tools/invoice-decoder/index.html` | 1.0 |
-| 10.12 | Yield-percent tracking: Plate Cost gains `actualYieldPercent` per row (operator records 7.4 lb out of 10 lb roll → stores 0.74). New `MuntinContext.yieldLearnings` map. `lookupYield` consults it before the canonical `YIELD_TABLE`. Tiny "weighed it? log yield" link beside each row opens a 2-input modal | `tools/plate-cost/plate-cost.js`, `index.html` | 1.0 |
-| 10.13 | Vendor-swap simulator: per-row "compare vendors" affordance powered by `MID_SKU_HISTORY.compareAcrossVendors`. Switch the row's bound stem price to the cheapest vendor's median × portion × covers/week → "*Switching ground beef from Sysco to Restaurant Depot saves $0.18/burger × 240 = $172/month*" | new `tools/plate-cost/vendor-swap.js` | 0.75 |
+| 10.0a | **Stem lift to shared scope.** `MID_LEARNINGS.extractStem` + `normalize` are invoice-decoder-private today. Lift into `tools/_shared/stem.js` so Plate Cost can normalize identically (without it, stem matching diverges silently when learnings.js's `DROP_TOKENS` regex evolves). Back-compat re-export from learnings.js | new `tools/_shared/stem.js`, `learnings.js`, `sku-history.js`, `substitution.js`, `margin-impact.js` | 0.5 |
+| 10.0b | **Egress-check expansion.** `scripts/check-no-invoice-egress.mjs` only scans server-side files today. Add `tools/_shared/` + `tools/invoice-decoder/` targets and forbid `fetch / sendBeacon / new Image().src= / WebSocket / EventSource` patterns in those modules | `scripts/check-no-invoice-egress.mjs` | 0.5 |
+| 10.0c | **Analytics registry pre-registration.** 18 new event names land across waves 10-13 (stale-accept, ghost-update, recipe-ripple, break-even-shift, bucket-move, voice-query, insight-card-shared, what-if, pdf-annotated, bookmarklet-receive, cell-history, theft-flag, reorder-copied, forecast-shown, vendor-switch-roi, run-rate, seasonality, supplier-health). Register all 18 in `tools/_shared/analytics.js` before any wiring; `check-analytics-vocabulary.mjs` blocks the build otherwise | `tools/_shared/analytics.js` | 0.25 |
+| 10.0d | **Storage-budget audit.** `dishCostHistory` (60 dishes × 12 entries × ~80B = ~58KB) + projected aggregates approach ~200KB combined MuntinContext payload. Browsers cap localStorage at ~5MB but Workshop quota concerns surface earlier. Compute worst-case, document, gate caps | `tools/_shared/context-bus.js` (new constants) | 0.25 |
+
+| # | Item | Files | Days |
+|---|------|-------|------|
+| 10.1 | New `tools/_shared/sku-match.js` — `classify(name, candidates)` returns `auto`/`propose`/`manual` tier with Levenshtein + token-set + substring matching. Reuses `_shared/stem.js` (lifted in 10.0a) | new file | 0.5 |
+| 10.2 | New `tools/_shared/portion-bridge.js` — `quoteAtPortion({comparable, portion, yieldPercent})` converts an invoice's `{perBaseUnit, baseUnit}` into Plate Cost's `{apPrice, apQty, apUnit}` domain with cross-family safety. Mismatches set `compatible:false` rather than silent "guess the density" math. **Test budget: 6 unit families × 3 yield scenarios × 5 failure modes** (cross-family, yield≤0, yield>1, NaN propagation, density-required-but-missing) | new file | 1.0 |
+| 10.3 | **Audit-corrected: don't create a parallel `invoiceLatestPrices` map.** `MID_SKU_HISTORY.skuHistory[stem][0]` already IS the latest observation per stem. Instead expose `MID_SKU_HISTORY.latestByStem()` as a thin sync projection returning `{stem → {perBaseUnit, baseUnit, vendor, ts}}`. Saves ~24KB of duplicated localStorage and one source of drift. Add `MuntinContext.dishCostHistory` (12-deep ring per dish) for the cascade only | `tools/invoice-decoder/sku-history.js`, `tools/_shared/context-bus.js` | 0.5 |
+| 10.4 | Push wiring: at save, walk `MuntinContext.dishes`, classify each ingredient against the new prices via `latestByStem()`, queue `recipeStaleQueue` entries when comparable delta > 1%. Walk cost: 60 dishes × 8 ingredients = 480 stem lookups, sync, on save thread (acceptable, document) | `tools/invoice-decoder/invoice-decoder.js` (next to `recordObservations`) | 1.0 |
+| 10.5 | Plate Cost stale-banner: on cold load, if `recipeStaleQueue` has entries, render "5 recipes have ingredient prices that changed in your last Sysco invoice. [Review changes]" with accept-all / accept-some / dismiss. Rejection writes `skuMatchLearnings` (renamed from `matchLearnings` to avoid conflation with the existing `invoiceLearnings` category-override store). **Render-order discipline**: stale-banner sync read first, existing pull-CTA async decrypt second | new `tools/plate-cost/stale-banner.js`, `tools/plate-cost/index.html` | 1.5 |
+| 10.6 | Plate Cost pull (in-recipe ghost chips): per-row sync read of `MID_SKU_HISTORY.latestByStem()` (NOT a separate `readLatestPrices()`). For bound ingredients with > 1% delta, render "Sysco Apr 28: $4.20/lb (yours: $3.80) [Update]" as a dashed chip. Operator-edit since-last-invoice protected via `apPriceSource: 'manual'\|'invoice:<ts>'` field — auto-update only overwrites when source is older. **Pre-schema-change recipes**: `apPriceSource == undefined` treated as `manual` (defensive default) | `tools/plate-cost/index.html`, `tools/plate-cost/plate-cost.js` | 0.5 |
+| 10.7 | Recipe schema gains `boundStem` + `apPriceSource` + `apPricePrev` (one-cycle undo). `validateRecipe` adds soft `unbound-ingredient` warning. **Underscored field convention** (`_boundStem`, etc) so the existing CSV exporter at `plate-cost.js:850-1002` doesn't surface them in operator-facing output | `tools/plate-cost/plate-cost.js` (`validateRecipe`, schema) | 0.75 |
+| 10.8 | **Audit-corrected: greenfield wiring, not subscriber extension.** Menu Engineering (`tools/menu-engineering/menu-engineering.js`) does NOT consume MuntinContext today (zero hits in grep). New work: (a) `<script src="/tools/_shared/context-bus.js">` include in `index.html`, (b) cold-load read path of `dishes`, (c) `subscribe()` for cross-tab updates, (d) "first run" prefill, (e) ~80 lines of glue to feed `dishCostHistory` deltas into `menuEngineeringAnalyze`. Quadrant change → thin teal underline + "moved last invoice" tag. Bump from 1.0 → 1.5 days | `tools/menu-engineering/menu-engineering.js`, `index.html` | 1.5 |
+| 10.9 | Cascade — Cost Pulse: new "Recipe ripple" strip beneath the trend strip. Top three dishes whose plate cost shifted most this week, sourced from `dishCostHistory`. **Plan-correction**: Cost Pulse is a single index.html with embedded JS today (no `cost-pulse.js`); ~40-line inline addition rather than a new external module | `tools/cost-pulse/index.html` (inline) | 0.75 |
+| 10.10 | **Audit-corrected: greenfield wiring, not subscriber extension.** Margin Math (`tools/margin-math/margin-math.js`) does NOT consume MuntinContext today. Same stack as 10.8 (script include, cold-load read, subscribe). New aggregation step: sum `dishCostHistory[*]` deltas weighted by mix → updated `foodCostPct`. Surface "*Break-even shifted from 38 → 41 covers/night because beef rose 12% on last week's Sysco invoice.*" Bump from 0.75 → 1.25 days | `tools/margin-math/margin-math.js`, `index.html` | 1.25 |
+| 10.11 | Per-portion contract surveillance: new `tools/_shared/dish-drift.js`. Walks `contractPrices × latestByStem × dishes`; emits per-dish drift signals. Surfaces in `idHandoff` panel and a new "drift" tab in Cost Pulse | new file, `tools/cost-pulse/`, `tools/invoice-decoder/index.html` | 1.0 |
+| 10.12 | Yield-percent tracking: Plate Cost gains `actualYieldPercent` per row. New `MuntinContext.yieldLearnings`. `lookupYield` consults it before the canonical `YIELD_TABLE`. Tiny "weighed it? log yield" link beside each row | `tools/plate-cost/plate-cost.js`, `index.html` | 1.0 |
+| 10.13 | Vendor-swap simulator: per-row "compare vendors" affordance powered by `MID_SKU_HISTORY.compareAcrossVendors`. **Audit-corrected**: that function is invoice-decoder-private today. Two clean paths: (a) lift to `tools/_shared/cross-vendor.js` (preferred), or (b) load-couple plate-cost to `<script src="/tools/invoice-decoder/sku-history.js">`. Pick (a) | new `tools/_shared/cross-vendor.js`, `tools/plate-cost/vendor-swap.js` | 1.0 |
 | 10.14 | Health tab: "29 of 47 ingredients are auto-priced from invoices; 18 still manual." Sparkline of binding rate over last 12 invoices + one-tap "match the rest" tour walking unbound rows by priority (`lineTotal × frequency`) | `tools/plate-cost/`, new health tab | 0.5 |
+| 10.15 | **Audit-added: extend `scripts/test-plate-cost.mjs` with MuntinContext stubs.** Plate Cost's tests today cover pure math (zero `MuntinContext`/`invoice` hits in grep). Wave 10.5/10.6/10.7 introduce new integration points that must get `global.window.MuntinContext` fixture cases — 6 new test blocks | `scripts/test-plate-cost.mjs` | 0.5 |
 
 **Privacy preserved**: `invoiceLatestPrices` + `dishCostHistory` are aggregates
 (stems + numbers, not row text) — same posture as the existing `invoiceTrend`.
@@ -135,18 +147,19 @@ Eight features ranked by screenshot-and-share probability.
 
 ---
 
-## Sequencing summary
+## Sequencing summary (audit-revised)
 
 | Wave | Theme | Eng-days | User-visible win |
 |------|-------|----------|------------------|
-| 10 | Cross-tool spine | ~11.5 | Save invoice → Plate Cost auto-updates → Menu Engineering re-classifies → Margin Math shifts break-even |
-| 11 | Compounding accuracy | ~14 | Tool gets meaningfully more accurate every week the operator uses it |
-| 12 | Owner-grade insights | ~16 | "Wait, your invoice tool catches THEFT?" |
-| 13 | Surprise-and-delight | ~12 | Shareable cards turn every operator into a referral |
+| 10 | Cross-tool spine (incl. 10.0 prep + greenfield Menu Eng / Margin Math wiring) | ~13 | Save invoice → Plate Cost auto-updates → Menu Engineering re-classifies → Margin Math shifts break-even |
+| 11 | Compounding accuracy (11.6 sidecar-spec gated) | ~14 | Tool gets meaningfully more accurate every week the operator uses it |
+| 12 | Owner-grade insights (share `dish-recompute.js` with 10.8) | ~16 | "Wait, your invoice tool catches THEFT?" |
+| 13 | Surprise-and-delight + Privacy Self-Check v2 | ~13 | Shareable cards turn every operator into a referral |
 
-Total: **~53.5 engineer-days** across **~10 calendar weeks for one engineer**.
+Total: **~56 engineer-days** across **~11 calendar weeks for one engineer**
+(audit-revised from initial 53.5, with three blockers addressed in 10.0 prep).
 Two engineers in parallel (one on accuracy/parsing, one on cross-tool +
-insights + delight) compresses to ~5 calendar weeks.
+insights + delight) compresses to ~5.5 calendar weeks.
 
 The biggest compound moat is in Wave 11 (per-operator confusion matrix +
 cross-invoice vote + calibration). Cloud OCR competitors structurally cannot
