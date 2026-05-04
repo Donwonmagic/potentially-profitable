@@ -1862,7 +1862,13 @@
     sobelMagnitude:    sobelMagnitude,
     houghLines:        houghLines,
     pickQuad:          pickQuad,
-    bilinearSample:    bilinearSample
+    bilinearSample:    bilinearSample,
+    // Decode-format detection — exposed for the regression test suite
+    // (scripts/test-decode-fallbacks.mjs) so a future change to the
+    // sniffer can't silently break TIFF/HEIC/AVIF routing.
+    _sniffImageMagicBytes: _sniffImageMagicBytes,
+    _isTiffFile:           _isTiffFile,
+    _isHeicFile:           _isHeicFile
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_PREPROCESS = api;
