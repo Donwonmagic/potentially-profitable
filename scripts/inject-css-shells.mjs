@@ -69,6 +69,23 @@ function isToolPath(rel) {
   return /^(?:es\/)?tools\//.test(p);
 }
 
+// Core-only pages: ship just site-core.css with no supplemental shell.
+// Used for pages whose markup pulls only core primitives (no citation
+// drawer, listen player, glossary popover, knit-rail, editorial
+// callouts, etc.). Saves another ~32 KB gzip versus core+article on
+// pages that don't need article styles.
+//
+// Today: just /sheets/ + /es/sheets/ (audited 2026-05-04, zero tool-
+// or article-only classes after the foot-newsletter / skip-link /
+// sr-only / nav-toggle re-bucketing). Marketing surfaces (homepage,
+// /services/, /window/, /studio/) STILL use article-shell classes
+// (.reveal, .learn-tool*, .services-collapse-*, .recently-added__head)
+// so they can't go core-only without first moving those rules. Defer.
+function isCoreOnlyPath(rel) {
+  const p = rel.split(path.sep).join('/');
+  return /^(?:es\/)?sheets\//.test(p);
+}
+
 // Article-shell pages: long-form content surfaces that need the
 // citation drawer, listen player, KnitRail, post-end CTA, inline
 // graphics, glossary popover, etc. Per-page byte savings is smaller
@@ -102,14 +119,20 @@ function listHtml(dir, out = []) {
 
 function buildShellBlock(supplementalShell) {
   const corePreload = `<link rel="preload" as="style" href="/assets/site-core.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
-  const supPreload  = `<link rel="preload" as="style" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
-  const noscript    = `<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${CACHE_BUST}"><link rel="stylesheet" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}"></noscript>`;
+  if (!supplementalShell) {
+    // Core-only mode — single preload, single noscript fallback.
+    const noscript = `<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${CACHE_BUST}"></noscript>`;
+    return `${corePreload}\n${noscript}`;
+  }
+  const supPreload = `<link rel="preload" as="style" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}" onload="this.onload=null;this.rel='stylesheet'">`;
+  const noscript   = `<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${CACHE_BUST}"><link rel="stylesheet" href="/assets/site-${supplementalShell}.css?v=${CACHE_BUST}"></noscript>`;
   return `${corePreload}\n${supPreload}\n${noscript}`;
 }
 
-const toolBlock    = buildShellBlock('tool');
-const articleBlock = buildShellBlock('article');
-const coreSig      = `site-core.css?v=${CACHE_BUST}`;
+const toolBlock     = buildShellBlock('tool');
+const articleBlock  = buildShellBlock('article');
+const coreOnlyBlock = buildShellBlock(null);
+const coreSig       = `site-core.css?v=${CACHE_BUST}`;
 
 let changed = 0;
 const changedFiles = [];
@@ -118,15 +141,27 @@ for (const file of listHtml(repoRoot)) {
   const rel = path.relative(repoRoot, file);
   let supplementalShell = null;
   let newBlock = null;
-  if (isToolPath(rel))         { supplementalShell = 'tool';    newBlock = toolBlock;    }
-  else if (isArticlePath(rel)) { supplementalShell = 'article'; newBlock = articleBlock; }
+  let mode = null;
+  if (isToolPath(rel))          { supplementalShell = 'tool';    newBlock = toolBlock;     mode = 'tool';     }
+  else if (isArticlePath(rel))  { supplementalShell = 'article'; newBlock = articleBlock;  mode = 'article';  }
+  else if (isCoreOnlyPath(rel)) { supplementalShell = null;      newBlock = coreOnlyBlock; mode = 'core-only';}
   else continue;
 
   const src = fs.readFileSync(file, 'utf8');
 
-  // Idempotency: if the page already has core + the right supplemental
-  // shell at the current cache-bust, leave it alone.
-  if (src.includes(coreSig) && src.includes(`site-${supplementalShell}.css?v=${CACHE_BUST}`)) continue;
+  // Idempotency: if the page already has core (and the right supplemental
+  // shell, when applicable) at the current cache-bust, leave it alone.
+  // For core-only mode, also confirm NO supplemental shell is present —
+  // otherwise we'd skip an over-loaded page that legitimately needs a
+  // trim down to core.
+  if (mode === 'core-only') {
+    const hasCore = src.includes(coreSig);
+    const hasTool = src.includes(`site-tool.css?v=${CACHE_BUST}`);
+    const hasArt  = src.includes(`site-article.css?v=${CACHE_BUST}`);
+    if (hasCore && !hasTool && !hasArt) continue;
+  } else if (src.includes(coreSig) && src.includes(`site-${supplementalShell}.css?v=${CACHE_BUST}`)) {
+    continue;
+  }
 
   let next = src;
   let replaced = false;
