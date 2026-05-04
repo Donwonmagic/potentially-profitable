@@ -446,6 +446,68 @@ header.nav{min-height:64px}
 .id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
 
 /* Wave 2.3 — Vendor Pulse Strip */
+/* Wave 14.4 — cell-history clock + popover */
+.id-cell-clock{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:4px;padding:0;border:none;background:transparent;color:var(--stone);font-size:13px;cursor:pointer;line-height:1;border-radius:3px;vertical-align:middle;opacity:0.55;transition:opacity var(--t-fast),color var(--t-fast)}
+.id-cell-clock:hover{opacity:1;color:var(--teal)}
+.id-cell-clock:focus-visible{outline:2px solid var(--teal);outline-offset:1px;opacity:1}
+.id-cell-history-pop{position:absolute;z-index:60;width:max-content;max-width:min(320px,calc(100vw - 24px));padding:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(20,22,26,.18);font-size:12.5px;color:var(--ink)}
+@media (min-width:480px){.id-cell-history-pop{min-width:240px}}
+.id-cell-history-h{margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.id-cell-history-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.id-cell-history-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.id-cell-history-row:last-child{border-bottom:0}
+.id-cell-history-label{flex:0 0 80px;color:var(--ink-soft);font-size:11px}
+.id-cell-history-value{flex:1 1 auto;color:var(--ink);font-variant-numeric:tabular-nums;word-break:break-word}
+.id-cell-history-restore{font:inherit;font-size:11px;padding:2px 8px;border-radius:5px;border:1px solid var(--teal);background:var(--teal);color:var(--white);cursor:pointer}
+.id-cell-history-restore:hover{filter:brightness(1.05)}
+
+/* Wave 14.3 — what-if simulator panel */
+.id-whatif{margin:0 0 12px;border:1px solid var(--line);border-radius:10px;background:var(--cream-2);overflow:hidden}
+.id-whatif-summary{padding:12px 14px;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:10px;list-style:none}
+.id-whatif-summary::-webkit-details-marker{display:none}
+.id-whatif-summary::after{content:'›';margin-left:auto;font-size:18px;color:var(--ink-soft);transition:transform var(--t-fast)}
+.id-whatif[open] .id-whatif-summary::after{transform:rotate(90deg)}
+.id-whatif-icon{font-size:18px;line-height:1}
+.id-whatif-tip{font-size:12px;color:var(--ink-soft);font-weight:400}
+.id-whatif-body{padding:0 14px 14px}
+.id-whatif-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-bottom:12px}
+.id-whatif-controls label{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--ink-soft)}
+.id-whatif-controls select{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);width:100%}
+@media (min-width:480px){.id-whatif-controls select{width:auto;min-width:140px}}
+.id-whatif-run{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--teal);background:var(--teal);color:var(--white);font-weight:500;cursor:pointer}
+.id-whatif-run:hover{filter:brightness(1.05)}
+.id-whatif-result{padding-top:8px;border-top:1px dashed var(--line)}
+.id-whatif-result[hidden]{display:none}
+.id-whatif-headline{margin:6px 0 12px;font-size:15px;color:var(--ink)}
+.id-whatif-headline[data-dir="win"]{color:#0c4a26}
+.id-whatif-headline[data-dir="loss"]{color:#7a2e1f}
+.id-whatif-h{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:10px 0 4px;font-weight:600}
+.id-whatif-list{margin:0;padding:0;list-style:none}
+.id-whatif-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;padding:5px 0;font-size:12.5px;border-bottom:1px dashed var(--line);align-items:baseline}
+.id-whatif-row:last-child{border-bottom:0}
+.id-whatif-stem{color:var(--ink);font-weight:500}
+.id-whatif-prices{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.id-whatif-delta{font-variant-numeric:tabular-nums;font-weight:600}
+.id-whatif-row[data-dir="win"] .id-whatif-delta{color:#0c4a26}
+.id-whatif-row[data-dir="loss"] .id-whatif-delta{color:#7a2e1f}
+.id-whatif-disclaimer{margin:10px 0 0;font-size:11.5px;color:var(--ink-soft);font-style:italic}
+.id-whatif-empty{margin:8px 0;font-size:13px;color:var(--ink-soft)}
+
+/* Wave 14.1 — voice query FAB. Bottom-right anchored, feature-detected
+   discovery surface for the voice intent layer. Hidden when
+   prefers-reduced-motion AND user hasn't engaged. */
+.id-voice-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));width:52px;height:52px;border-radius:50%;border:1px solid var(--teal);background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(20,22,26,.18);z-index:50;transition:transform var(--t-fast),box-shadow var(--t-fast)}
+.id-voice-fab:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(20,22,26,.22)}
+.id-voice-fab:focus-visible{outline:3px solid #fff;outline-offset:-5px;box-shadow:0 0 0 4px var(--teal)}
+.id-voice-fab.is-listening{background:var(--rust);border-color:var(--rust);animation:id-voice-pulse 1.4s ease-in-out infinite}
+@keyframes id-voice-pulse{0%,100%{box-shadow:0 0 0 0 rgba(178,92,42,.55)}50%{box-shadow:0 0 0 14px rgba(178,92,42,0)}}
+@media (prefers-reduced-motion:reduce){.id-voice-fab.is-listening{animation:none}}
+.id-voice-hint{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(80px,calc(env(safe-area-inset-bottom) + 80px));max-width:340px;padding:10px 14px;background:var(--ink);color:var(--cream);border-radius:8px;font-size:13px;line-height:1.45;box-shadow:0 6px 18px rgba(20,22,26,.22);z-index:50}
+.id-voice-hint[hidden]{display:none}
+.id-voice-hint[data-kind="error"]{background:#7a2e1f}
+.id-voice-hint[data-kind="answer"]{background:var(--teal)}
+@media (max-width:480px){.id-voice-fab{width:48px;height:48px}.id-voice-hint{max-width:calc(100vw - 32px)}}
+
 /* Wave 13.7 — receipt-trail print stylesheet. One-page clean print
    with operator annotations + corrections; bookkeeper-friendly. */
 @media print {
@@ -454,7 +516,8 @@ header.nav{min-height:64px}
   .id-quality-gate, .id-classify-hint, .id-coming, .id-update,
   .id-install, .id-firstrun, .id-resume, .id-status, .id-trust-summary,
   .id-mathfix, .id-row-act, .id-bulk-confirm, .id-handoff,
-  .id-coming, .id-vendor-pulse, .id-insights { display: none !important; }
+  .id-coming, .id-vendor-pulse, .id-insights, .id-voice-fab,
+  .id-voice-hint, .id-whatif { display: none !important; }
   .id-parsed { display: block !important; box-shadow: none; border: none; }
   .id-parsed-row { page-break-inside: avoid; border-bottom: 1px solid #ccc; padding: 6px 0; }
   .id-parsed-row[data-conf="amber"] { background: #fef9e7; }
@@ -497,6 +560,8 @@ header.nav{min-height:64px}
 .id-pulse-contract{margin-top:10px;padding:10px 12px;background:rgba(252,224,215,0.18);border:1px solid rgba(252,224,215,0.35);border-radius:8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
 .id-pulse-contract-msg{font-size:13px;color:#fce0d7;flex:1 1 auto}
 .id-pulse-contract-btn{font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);color:#7a2e1f;cursor:pointer;white-space:nowrap}
+.id-pulse-contract-btn-share{background:transparent;color:#fce0d7;border-color:rgba(252,224,215,0.7)}
+.id-pulse-contract-btn-share:hover{background:rgba(252,224,215,0.1);color:#fff}
 .id-pulse-contract-btn:hover{filter:brightness(0.97)}
 .id-pulse-contract-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
@@ -1410,7 +1475,9 @@ header.nav{min-height:64px}
 <script src="./insights.js?v=20260504-w12"></script>
 <script src="./insight-card.js?v=20260504-w13-1"></script>
 <script src="./voice-query.js?v=20260504-w13-2"></script>
+<script src="./voice-fab.js?v=20260504-w14-1" defer></script>
 <script src="./whatif.js?v=20260504-w13-6"></script>
+<script src="./whatif-panel.js?v=20260504-w14-3" defer></script>
 <script src="./cell-history.js?v=20260504-w13-8"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>

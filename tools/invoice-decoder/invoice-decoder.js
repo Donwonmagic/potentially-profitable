@@ -787,9 +787,73 @@
   // CAT_LABEL_EN/ES so iOS / Android present the system picker.
   var parsedRowsState = []; // Live array the user is editing.
 
+  // Wave 14.4 — cell-history popover. Anchored to the clock button;
+  // dismissed on outside click or Esc.
+  function _showCellHistoryPopover(anchor, rowIdx, field) {
+    var existing = document.getElementById('idCellHistoryPop');
+    if (existing) try { existing.parentNode.removeChild(existing); } catch (_) {}
+    if (typeof MID_CELL_HISTORY === 'undefined') return;
+    var stack = MID_CELL_HISTORY.list(rowIdx, field);
+    if (!stack || stack.length < 2) return;
+    var pop = document.createElement('div');
+    pop.id = 'idCellHistoryPop';
+    pop.className = 'id-cell-history-pop';
+    pop.setAttribute('role', 'menu');
+    pop.innerHTML =
+      '<p class="id-cell-history-h">' + escHtml(tt('Edit history', 'Historial')) + '</p>' +
+      '<ul class="id-cell-history-list">' + stack.map(function (entry, i) {
+        var label = entry.source === 'ocr'
+          ? tt('OCR original', 'OCR original')
+          : (i === 0 ? tt('Now (current)', 'Ahora (actual)') : tt('Earlier', 'Anterior'));
+        var disp = (entry.value == null || entry.value === '') ? '—' : String(entry.value);
+        return '<li class="id-cell-history-row">' +
+          '<span class="id-cell-history-label">' + escHtml(label) + '</span>' +
+          '<span class="id-cell-history-value">' + escHtml(disp) + '</span>' +
+          (i === 0 ? '' : '<button type="button" class="id-cell-history-restore" data-restore-idx="' + i + '">' + escHtml(tt('Restore', 'Restaurar')) + '</button>') +
+        '</li>';
+      }).join('') + '</ul>';
+    document.body.appendChild(pop);
+    var rect = anchor.getBoundingClientRect();
+    pop.style.left = Math.max(8, Math.min(window.innerWidth - 280, rect.left)) + 'px';
+    pop.style.top  = (rect.bottom + window.scrollY + 6) + 'px';
+    function _close(ev) {
+      if (ev && pop.contains(ev.target)) return;
+      try { pop.parentNode.removeChild(pop); } catch (_) {}
+      document.removeEventListener('click', _close, true);
+      document.removeEventListener('keydown', _onKey);
+    }
+    function _onKey(ev) { if (ev.key === 'Escape') _close(); }
+    setTimeout(function () {
+      document.addEventListener('click', _close, true);
+      document.addEventListener('keydown', _onKey);
+    }, 0);
+    pop.addEventListener('click', function (ev) {
+      var btn = ev.target.closest && ev.target.closest('.id-cell-history-restore');
+      if (!btn) return;
+      var i = parseInt(btn.getAttribute('data-restore-idx'), 10);
+      if (!isFinite(i)) return;
+      var entry = MID_CELL_HISTORY.restore(rowIdx, field, i);
+      if (entry) commitCellEdit(rowIdx, field, entry.value);
+      _close();
+    });
+  }
+
   function commitCellEdit(rowIdx, field, value) {
     if (!parsedRowsState[rowIdx]) return;
     var row = parsedRowsState[rowIdx];
+    // Wave 14.4 — record the pre-edit value into the cell-history
+    // ring so the operator can restore it within the session. We
+    // capture the OCR-original on the first edit (source='ocr')
+    // and every subsequent value as source='edit'.
+    try {
+      if (typeof MID_CELL_HISTORY !== 'undefined' && MID_CELL_HISTORY.record) {
+        var existing = MID_CELL_HISTORY.list(rowIdx, field);
+        if (!existing.length) {
+          MID_CELL_HISTORY.record(rowIdx, field, row[field], 'ocr');
+        }
+        MID_CELL_HISTORY.record(rowIdx, field, value, 'edit');
+      }
+    } catch (_) {}
     // Wave 5.3 — disputes against the auto-confirm tier. If this row
     // was auto-confirmed (live or shadow), an operator edit is a
     // false positive that throttles the auto-confirm gate.
@@ -1858,6 +1922,11 @@
               '<button type="button" class="id-pulse-contract-btn" id="idCopyReconNote">' +
                 escHtml(tt('Copy reconciliation note', 'Copiar nota de conciliación')) +
               '</button>' +
+              '<button type="button" class="id-pulse-contract-btn id-pulse-contract-btn-share" id="idShareCatch" title="' +
+                escHtml(tt('Share an image you can drop in a chefs\' chat. SKU names are redacted by default.',
+                           'Comparte una imagen para un chat de chefs. Los nombres de SKU se ocultan por defecto.')) + '">' +
+                escHtml(tt('Share this catch ↗', 'Compartir este hallazgo ↗')) +
+              '</button>' +
             '</div>';
         }
       }
@@ -1894,6 +1963,37 @@
             if (window.plausible) {
               try { window.plausible('Invoice Decoder Recon Note Copied'); } catch (_) {}
             }
+          });
+        } catch (_) {}
+      });
+    }
+    // Wave 14.2 — Share-this-catch button composes a 1080×1350 PNG
+    // via MID_INSIGHT_CARD with SKU names redacted by default. Falls
+    // back gracefully when the composer module isn't loaded.
+    var shareBtn = document.getElementById('idShareCatch');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function () {
+        if (typeof MID_INSIGHT_CARD === 'undefined' || !MID_INSIGHT_CARD.share) {
+          shareBtn.textContent = tt('Composer unavailable', 'Compositor no disponible');
+          return;
+        }
+        try {
+          var ovNow = MID_CONTRACT_WATCH.buildOveragesFor(parsed.rows);
+          var data = {
+            vendor: vendor,
+            totalOvercharge: ovNow.total,
+            lineCount: ovNow.count,
+            items: ovNow.lines.map(function (entry) {
+              return { label: entry.row.name, overcharge: entry.overage };
+            })
+          };
+          var orig = shareBtn.textContent;
+          shareBtn.textContent = tt('Building card…', 'Generando tarjeta…');
+          MID_INSIGHT_CARD.share('contract-overage', data, { redact: true }).then(function () {
+            shareBtn.textContent = tt('Shared ✓', 'Compartido ✓');
+            setTimeout(function () { shareBtn.textContent = orig; }, 2000);
+          }).catch(function () {
+            shareBtn.textContent = orig;
           });
         } catch (_) {}
       });
@@ -2215,13 +2315,26 @@
       }
     } catch (_) {}
 
+    // Wave 14.4 — cell-history clock indicator. Shown when the
+    // operator has edited a cell at least once in this session. Click
+    // opens a small popover; alt-click restores the most recent
+    // pre-edit value silently.
+    function _historyClock(field) {
+      if (typeof MID_CELL_HISTORY === 'undefined' || !MID_CELL_HISTORY.list) return '';
+      var stack = MID_CELL_HISTORY.list(idx, field);
+      if (!stack || stack.length < 2) return '';
+      return '<button type="button" class="id-cell-clock" data-cell-history="' + idx + ':' + field + '" tabindex="-1" aria-label="' +
+        escHtml(tt('Show edit history', 'Ver historial')) + '" title="' +
+        escHtml(tt(stack.length + ' values logged · click to view', stack.length + ' valores · clic para ver')) +
+      '">↺</button>';
+    }
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip + ghostName +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip + ghostName + _historyClock('name') +
       '</span>' +
-      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + ghostQty + '</span>' +
-      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + ghostPrice + '</span>' +
+      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + ghostQty + _historyClock('qty') + '</span>' +
+      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + ghostPrice + _historyClock('lineTotal') + '</span>' +
       '<span class="id-row-fielddots" aria-label="' + escHtml(tt('Per-field confidence', 'Confianza por campo')) + '">' + dots + '</span>' +
       actions +
     '</li>';
@@ -2236,6 +2349,28 @@
         e.preventDefault();
         __expandedQuiet = true;
         rerenderRows();
+        return;
+      }
+      // Wave 14.4 — cell-history clock. Click opens a small popover
+      // listing the last 5 values for this (row, field). Alt-click
+      // skips the popover and restores the most recent pre-edit
+      // value silently.
+      var clockBtn = e.target.closest && e.target.closest('.id-cell-clock');
+      if (clockBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var spec = String(clockBtn.getAttribute('data-cell-history') || '').split(':');
+        var hIdx = parseInt(spec[0], 10);
+        var hField = spec[1];
+        if (!isFinite(hIdx) || !hField) return;
+        if (e.altKey) {
+          var stack = MID_CELL_HISTORY.list(hIdx, hField);
+          // stack[0] is the most recent edit; stack[1] is the value
+          // before that edit — that's what "undo" should restore.
+          if (stack.length >= 2) commitCellEdit(hIdx, hField, stack[1].value);
+          return;
+        }
+        _showCellHistoryPopover(clockBtn, hIdx, hField);
         return;
       }
       // Wave 5.4 — accept a smart-default ghost-text suggestion.
