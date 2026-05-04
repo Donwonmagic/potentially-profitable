@@ -179,12 +179,33 @@
     if (root.__menuPdfFonts) return Promise.resolve(root.__menuPdfFonts);
     if (__pdfFontsPromise) return __pdfFontsPromise;
     var specs = [
+      // Site-wide body faces. Fraunces (serif) + Inter (sans) anchor
+      // every theme that doesn't ask for one of the cuisine display
+      // families below. Matches the audits/restaurant tool.
       ['fraunces400', '/assets/fonts/pdf/fraunces-400.ttf'],
       ['fraunces500', '/assets/fonts/pdf/fraunces-500.ttf'],
       ['fraunces600', '/assets/fonts/pdf/fraunces-600.ttf'],
       ['inter400',    '/assets/fonts/pdf/inter-400.ttf'],
       ['inter500',    '/assets/fonts/pdf/inter-500.ttf'],
-      ['inter600',    '/assets/fonts/pdf/inter-600.ttf']
+      ['inter600',    '/assets/fonts/pdf/inter-600.ttf'],
+      // Theme display faces. Each one matches a theme's displayFamily
+      // declaration so cocktail-deco prints in Playfair, trattoria in
+      // Quattrocento, tasting-omakase in Cormorant, pizza-counter /
+      // food-truck / bbq-smoke in Bebas, kids-bright in Alfa Slab,
+      // and Noto Serif as the European-classical fallback.
+      ['cormorant400',    '/assets/fonts/pdf/cormorant-400.ttf'],
+      ['cormorant400i',   '/assets/fonts/pdf/cormorant-400i.ttf'],
+      ['cormorant600',    '/assets/fonts/pdf/cormorant-600.ttf'],
+      ['cormorantSc400',  '/assets/fonts/pdf/cormorant-sc-400.ttf'],
+      ['playfair400',     '/assets/fonts/pdf/playfair-400.ttf'],
+      ['playfair400i',    '/assets/fonts/pdf/playfair-400i.ttf'],
+      ['playfair700',     '/assets/fonts/pdf/playfair-700.ttf'],
+      ['quattrocento400', '/assets/fonts/pdf/quattrocento-400.ttf'],
+      ['quattrocento700', '/assets/fonts/pdf/quattrocento-700.ttf'],
+      ['notoSerif400',    '/assets/fonts/pdf/noto-serif-400.ttf'],
+      ['notoSerif400i',   '/assets/fonts/pdf/noto-serif-400i.ttf'],
+      ['bebasNeue400',    '/assets/fonts/pdf/bebas-neue-400.ttf'],
+      ['alfaSlab400',     '/assets/fonts/pdf/alfa-slab-400.ttf']
     ];
     __pdfFontsPromise = Promise.all(specs.map(function (s) {
       return fetch(s[1], { cache: 'force-cache' }) // h8-exempt: same-origin font asset for in-browser PDF embed
@@ -229,6 +250,24 @@
       doc.addFont('Inter-500.ttf', 'Inter Medium', 'normal');
       doc.addFileToVFS('Inter-600.ttf', fonts.inter600);
       doc.addFont('Inter-600.ttf', 'Inter', 'bold');
+      // Theme display faces. Each registered under its operator-
+      // recognizable family name. pickPdfFont() routes the theme's
+      // displayFamily here based on a name-substring match. Italic
+      // + bold variants registered where the family ships them so
+      // section titles, dish names, and emphasis all stay in family.
+      if (fonts.cormorant400)    { doc.addFileToVFS('Cormorant-400.ttf',    fonts.cormorant400);    doc.addFont('Cormorant-400.ttf',    'Cormorant Garamond', 'normal'); }
+      if (fonts.cormorant400i)   { doc.addFileToVFS('Cormorant-400i.ttf',   fonts.cormorant400i);   doc.addFont('Cormorant-400i.ttf',   'Cormorant Garamond', 'italic'); }
+      if (fonts.cormorant600)    { doc.addFileToVFS('Cormorant-600.ttf',    fonts.cormorant600);    doc.addFont('Cormorant-600.ttf',    'Cormorant Garamond', 'bold'); }
+      if (fonts.cormorantSc400)  { doc.addFileToVFS('CormorantSC-400.ttf',  fonts.cormorantSc400);  doc.addFont('CormorantSC-400.ttf',  'Cormorant SC', 'normal'); }
+      if (fonts.playfair400)     { doc.addFileToVFS('Playfair-400.ttf',     fonts.playfair400);     doc.addFont('Playfair-400.ttf',     'Playfair Display', 'normal'); }
+      if (fonts.playfair400i)    { doc.addFileToVFS('Playfair-400i.ttf',    fonts.playfair400i);    doc.addFont('Playfair-400i.ttf',    'Playfair Display', 'italic'); }
+      if (fonts.playfair700)     { doc.addFileToVFS('Playfair-700.ttf',     fonts.playfair700);     doc.addFont('Playfair-700.ttf',     'Playfair Display', 'bold'); }
+      if (fonts.quattrocento400) { doc.addFileToVFS('Quattrocento-400.ttf', fonts.quattrocento400); doc.addFont('Quattrocento-400.ttf', 'Quattrocento', 'normal'); }
+      if (fonts.quattrocento700) { doc.addFileToVFS('Quattrocento-700.ttf', fonts.quattrocento700); doc.addFont('Quattrocento-700.ttf', 'Quattrocento', 'bold'); }
+      if (fonts.notoSerif400)    { doc.addFileToVFS('NotoSerif-400.ttf',    fonts.notoSerif400);    doc.addFont('NotoSerif-400.ttf',    'Noto Serif', 'normal'); }
+      if (fonts.notoSerif400i)   { doc.addFileToVFS('NotoSerif-400i.ttf',   fonts.notoSerif400i);   doc.addFont('NotoSerif-400i.ttf',   'Noto Serif', 'italic'); }
+      if (fonts.bebasNeue400)    { doc.addFileToVFS('BebasNeue-400.ttf',    fonts.bebasNeue400);    doc.addFont('BebasNeue-400.ttf',    'Bebas Neue', 'normal'); }
+      if (fonts.alfaSlab400)     { doc.addFileToVFS('AlfaSlab-400.ttf',     fonts.alfaSlab400);     doc.addFont('AlfaSlab-400.ttf',     'Alfa Slab One', 'normal'); }
       return true;
     } catch (e) {
       return false;
@@ -399,21 +438,28 @@
   function pickPdfFont(family, brandsLoaded) {
     var f = String(family || '').toLowerCase();
     if (brandsLoaded) {
-      // Match every serif theme face to Fraunces (covers Georgia,
-      // Cormorant, Quattrocento, Noto, Playfair, Source Serif —
-      // they all read as serif on screen, and Fraunces is a
-      // fitting general-purpose stand-in for the PDF deliverable).
-      if (/georgia|times|fraunces|cormorant|noto|quattrocento|playfair|garamond|source.serif|serif/.test(f)) {
-        return 'Fraunces';
-      }
-      // Match every sans theme face to Inter.
-      if (/inter|helvetica|arial|work.sans|system/.test(f)) {
-        return 'Inter';
-      }
-      // Display-only special cases (Bebas, Alfa Slab) get Inter
-      // bold as the closest available stand-in until W9-3 adds
-      // those subsets.
-      if (/bebas|alfa.slab|condensed/.test(f)) return 'Inter';
+      // Match each named theme face to its registered family. Order
+      // matters — most-specific patterns first so "Cormorant SC"
+      // doesn't fall through to plain Cormorant. All names live in
+      // registerBrandFonts() above; if a font failed to load the
+      // addFont call was skipped and jsPDF will fall through to the
+      // base-14 family below.
+      if (/alfa.slab/.test(f))                          return 'Alfa Slab One';
+      if (/bebas/.test(f))                              return 'Bebas Neue';
+      if (/cormorant.sc|cormorantsc/.test(f))           return 'Cormorant SC';
+      if (/cormorant|garamond/.test(f))                 return 'Cormorant Garamond';
+      if (/playfair/.test(f))                           return 'Playfair Display';
+      if (/quattrocento/.test(f))                       return 'Quattrocento';
+      if (/noto.?serif/.test(f))                        return 'Noto Serif';
+      // Generic serif themes (Georgia, Times, Source Serif, Fraunces)
+      // → Fraunces. Generic sans (Inter, Helvetica, Arial, Work Sans,
+      // system) → Inter. These are the body-face fallbacks; almost
+      // every theme's bodyFamily lands here.
+      if (/georgia|times|fraunces|source.serif|serif/.test(f)) return 'Fraunces';
+      if (/inter|helvetica|arial|work.sans|system/.test(f))    return 'Inter';
+      // Anything else condensed-display-ish gets Bebas (was previously
+      // Inter as a stand-in; now we have the real face).
+      if (/condensed|display/.test(f))                  return 'Bebas Neue';
     }
     if (/georgia|times|fraunces|serif/.test(f)) return 'times';
     if (/courier|monospace/.test(f)) return 'courier';
