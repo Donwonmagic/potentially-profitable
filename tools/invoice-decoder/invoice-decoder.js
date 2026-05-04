@@ -2959,6 +2959,17 @@
     renderTrustSummary(parsed);
     renderVendorPulse(parsed);
     renderInsights(parsed);
+    // Decision Brief (Wave A+B) — synthesises findings from every
+    // detector into one ranked card at #idBriefing. Renders after
+    // the legacy surfaces so it sits visually FIRST in the DOM
+    // (the briefing aside is positioned above #idTrustSummary in
+    // index.html). The briefing module gracefully no-ops when
+    // MID_DECISION_BRIEF or MID_BRIEFING_CARD aren't loaded.
+    try {
+      if (typeof MID_BRIEFING_CARD !== 'undefined' && MID_BRIEFING_CARD.renderFromParsed) {
+        MID_BRIEFING_CARD.renderFromParsed(parsed, parsed.vendor || null);
+      }
+    } catch (_) {}
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
     // Wave 4.3 — auto-learn observation. When no vendor matched
