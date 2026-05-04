@@ -573,11 +573,38 @@
     return n;                     // already a fraction
   }
 
-  // Look up a canonical yield % for an ingredient name. Returns null
-  // if no match is found — the caller should default to 1.0 in that
-  // case but display a "unknown yield, assuming 100%" hint.
+  // Wave 10.12 — operator-recorded yield wins over canonical.
+  // When the operator weighs a 10-lb chuck and gets 7.4 lbs after
+  // trim, they hit "weighed it? log yield" beside the row. The
+  // recorded {stem → {yield, samples, ts}} ends up in
+  // MuntinContext.yieldLearnings. lookupYield consults this map
+  // FIRST, then falls back to the canonical YIELD_TABLE.
+  function _readYieldLearnings() {
+    try {
+      if (typeof window !== 'undefined' && window.MuntinContext && typeof window.MuntinContext.read === 'function') {
+        var ctx = window.MuntinContext.read() || {};
+        return ctx.yieldLearnings || null;
+      }
+    } catch (_) {}
+    return null;
+  }
+  function _stemKey(name) {
+    if (typeof window !== 'undefined' && window.MuntinStem && window.MuntinStem.extractStem) {
+      return window.MuntinStem.extractStem(name);
+    }
+    // Fallback: simple normalize.
+    return String(name || '').trim().toLowerCase();
+  }
   function lookupYield(name) {
     if (!name) return null;
+    // Operator-recorded yield wins.
+    var learnings = _readYieldLearnings();
+    if (learnings) {
+      var sk = _stemKey(name);
+      if (sk && learnings[sk] && typeof learnings[sk].yield === 'number') {
+        return learnings[sk].yield;
+      }
+    }
     var key = String(name).trim().toLowerCase();
     if (YIELD_TABLE[key] != null) return YIELD_TABLE[key];
     // Loose fallbacks: drop parenthetical notes, then try plural-strip
@@ -593,6 +620,39 @@
     var stripEs = noParens.replace(/es$/, '');
     if (YIELD_TABLE[stripEs] != null) return YIELD_TABLE[stripEs];
     return null;
+  }
+
+  // Wave 10.12 — record a yield observation. Caller passes the
+  // ingredient name + raw AP qty + observed EP qty (post-trim).
+  // Yields > 1.05 or < 0.05 are rejected as operator-typo defenses.
+  function recordYieldObservation(name, apQty, epQty) {
+    if (typeof window === 'undefined' || !window.MuntinContext) return false;
+    if (!name) return false;
+    var ap = parseFloat(apQty);
+    var ep = parseFloat(epQty);
+    if (!isFinite(ap) || !isFinite(ep) || ap <= 0 || ep < 0) return false;
+    var y = ep / ap;
+    if (y > 1.05 || y < 0.05) return false;     // sanity gate
+    var sk = _stemKey(name);
+    if (!sk) return false;
+    var ctx = window.MuntinContext.read() || {};
+    var map = ctx.yieldLearnings || {};
+    var entry = map[sk];
+    var samples = (entry && entry.samples) ? entry.samples : 0;
+    var rolling = (entry && typeof entry.yield === 'number')
+                    ? ((entry.yield * samples) + y) / (samples + 1)
+                    : y;
+    map[sk] = { yield: +rolling.toFixed(4), samples: samples + 1, ts: Date.now() };
+    var keys = Object.keys(map);
+    var cap = (window.MuntinContext.STORAGE_BUDGET && window.MuntinContext.STORAGE_BUDGET.YIELD_LEARNINGS_CAP) || 100;
+    if (keys.length > cap) {
+      keys.map(function (k) { return { k: k, ts: map[k].ts || 0 }; })
+          .sort(function (a, b) { return a.ts - b.ts; })
+          .slice(0, keys.length - cap)
+          .forEach(function (e) { delete map[e.k]; });
+    }
+    window.MuntinContext.merge({ yieldLearnings: map });
+    return true;
   }
 
   // ============================================================
@@ -1507,6 +1567,7 @@
     validateRecipe:        validateRecipe,
     convertUnits:          convertUnits,
     lookupYield:           lookupYield,
+    recordYieldObservation: recordYieldObservation,
     normalizeUnit:         normalizeUnit,
     parseTabularText:      parseTabularText,
     normalizeYieldInput:   normalizeYieldInput,

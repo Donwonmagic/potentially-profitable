@@ -296,21 +296,162 @@
     });
   }
 
+  // ---- 10.13 vendor-swap chips ----
+  // For each row whose bound (or auto-matchable) stem has ≥2 vendors
+  // with comparable history, surface a "↓ cheaper at {vendor} (-X%)"
+  // chip when the gap exceeds 8%. One-tap opens an inline tooltip
+  // with the "would save $/week, $/month" math (covers/week defaults
+  // to a conservative 70 unless the operator has typed a coversPerWeek
+  // value into the Plate Cost portions field).
+  function renderVendorSwapChips() {
+    if (typeof root.MuntinCrossVendor === 'undefined' || typeof root.MuntinSkuMatch === 'undefined') return;
+    if (typeof root.MuntinContext === 'undefined' || typeof root.MuntinContext.latestSkuByStem !== 'function') return;
+    var rows = document.querySelectorAll('[data-pc-row]');
+    if (!rows.length) return;
+    var portionsEl = document.getElementById('pcPortions');
+    var portions = parseFloat(portionsEl && portionsEl.value) || 1;
+    var coversPerWeek = portions * 7;     // assumption: 1 batch/day per portion
+    var latest = root.MuntinContext.latestSkuByStem();
+    var stems = Object.keys(latest);
+    if (!stems.length) return;
+    Array.prototype.forEach.call(rows, function (rowEl) {
+      if (rowEl.querySelector('.pc-vswap-chip')) return;
+      var apInput = rowEl.querySelector('[data-field="apPrice"]');
+      var ingInput = rowEl.querySelector('[data-field="ingredient"]');
+      var apUnitInput = rowEl.querySelector('[data-field="apUnit"]');
+      var usedQtyInput = rowEl.querySelector('[data-field="usedQty"]');
+      var usedUnitInput = rowEl.querySelector('[data-field="usedUnit"]');
+      if (!apInput || !ingInput || !usedQtyInput || !usedUnitInput) return;
+      var name = String(ingInput.value || '').trim();
+      if (!name) return;
+      var match = root.MuntinSkuMatch.classify(name, stems);
+      if (!match || (match.tier !== 'auto' && match.tier !== 'propose')) return;
+      var info = latest[match.stem];
+      if (!info || !info.vendor) return;
+      var rows2 = root.MuntinCrossVendor.compare({ name: name });
+      if (!rows2 || rows2.length < 2) return;
+      var cheapest = rows2[0];
+      if (cheapest.vendor === info.vendor) return;     // already on cheapest
+      var current = rows2.find(function (r) { return r.vendor === info.vendor; });
+      if (!current || current.gapPctVsCheapest < 8) return;
+      var portionQty = parseFloat(usedQtyInput.value) || 0;
+      var portionUnit = usedUnitInput.value || apUnitInput.value || '';
+      var saving = root.MuntinCrossVendor.projectMonthlySaving({
+        name: name,
+        currentVendor: info.vendor,
+        targetVendor: cheapest.vendor,
+        portionQty: portionQty,
+        portionUnit: portionUnit,
+        coversPerWeek: coversPerWeek
+      });
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pc-vswap-chip';
+      var label = '↓ ' + cheapest.vendor + ' −' + current.gapPctVsCheapest.toFixed(0) + '%';
+      btn.textContent = label;
+      var savingStr = saving
+        ? (' — saves $' + Math.abs(saving.savingPerMonth).toFixed(0) + '/mo at ' + Math.round(coversPerWeek) + ' covers/wk')
+        : '';
+      btn.title = 'Cheaper at ' + cheapest.vendor + savingStr + '. Tap to copy as a comparison note.';
+      btn.addEventListener('click', function () {
+        if (!saving) return;
+        var note = 'Switching ' + name + ' from ' + info.vendor + ' to ' + cheapest.vendor +
+                   ' projects $' + Math.abs(saving.savingPerMonth).toFixed(2) + '/mo savings (' +
+                   '$' + Math.abs(saving.savingPerPortion).toFixed(4) + '/portion × ~' + Math.round(coversPerWeek) + ' covers/wk).';
+        try { navigator.clipboard && navigator.clipboard.writeText(note); } catch (_) {}
+        btn.textContent = '✓ copied';
+        setTimeout(function () { btn.textContent = label; }, 1800);
+        if (root.plausible) {
+          try { root.plausible('Invoice Decoder Vendor Switch ROI', { props: { dir: 'copy' } }); } catch (_) {}
+        }
+      });
+      apInput.parentNode.insertBefore(btn, apInput.nextSibling);
+    });
+  }
+
+  // ---- 10.14 match-health line ----
+  // Surfaces the operator-owned-learning compounding moat in a single
+  // line: "29 of 47 ingredients bound to invoices. [Match the rest]"
+  // The "Match the rest" walk picks the highest-priority unbound row
+  // (largest typed apPrice × usage) and scrolls + focuses it.
+  function renderMatchHealth() {
+    var line = $('pcMatchHealth');
+    if (!line) return;
+    var rows = document.querySelectorAll('[data-pc-row]');
+    if (!rows.length || typeof root.MuntinContext === 'undefined' ||
+        typeof root.MuntinContext.latestSkuByStem !== 'function') {
+      line.hidden = true;
+      return;
+    }
+    var latest = root.MuntinContext.latestSkuByStem();
+    var stems = Object.keys(latest);
+    if (!stems.length || typeof root.MuntinSkuMatch === 'undefined') {
+      line.hidden = true;
+      return;
+    }
+    var bound = 0, total = 0;
+    var unbound = [];
+    Array.prototype.forEach.call(rows, function (rowEl) {
+      var ingInput = rowEl.querySelector('[data-field="ingredient"]');
+      var apInput  = rowEl.querySelector('[data-field="apPrice"]');
+      if (!ingInput) return;
+      var name = String(ingInput.value || '').trim();
+      if (!name) return;
+      total++;
+      // Bound = explicit boundStem on the row, OR auto-tier match
+      // against history.
+      var explicit = rowEl.getAttribute('data-bound-stem');
+      if (explicit) { bound++; return; }
+      var match = root.MuntinSkuMatch.classify(name, stems);
+      if (match && match.tier === 'auto') { bound++; return; }
+      var apPrice = parseFloat(apInput && apInput.value) || 0;
+      unbound.push({ rowEl: rowEl, name: name, priority: apPrice });
+    });
+    if (!total) { line.hidden = true; return; }
+    var pct = Math.round((bound / total) * 100);
+    line.innerHTML = bound + ' of ' + total + ' ingredients bound to invoices (' + pct + '%).' +
+      (unbound.length
+        ? ' <button type="button" class="pc-match-rest" id="pcMatchRest">Match the rest</button>'
+        : ' <span class="pc-match-allgood">all linked ✓</span>');
+    line.hidden = false;
+    var btn = $('pcMatchRest');
+    if (btn) btn.addEventListener('click', function () {
+      unbound.sort(function (a, b) { return b.priority - a.priority; });
+      var first = unbound[0];
+      if (!first) return;
+      try { first.rowEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {}
+      var ing = first.rowEl.querySelector('[data-field="ingredient"]');
+      if (ing) try { ing.focus(); ing.select && ing.select(); } catch (_) {}
+    });
+  }
+
   function init() {
     renderStaleBanner();
     // Defer ghost chips until rows have rendered.
-    setTimeout(renderGhostChips, 200);
-    // Re-render ghosts on rerender events surfaced by Plate Cost.
+    setTimeout(function () {
+      renderGhostChips();
+      renderVendorSwapChips();
+      renderMatchHealth();
+    }, 200);
+    // Re-render chips on rerender events surfaced by Plate Cost.
     if (typeof root.addEventListener === 'function') {
       root.addEventListener('mid:plate-cost-rerender', function () {
-        setTimeout(renderGhostChips, 50);
+        setTimeout(function () {
+          renderGhostChips();
+          renderVendorSwapChips();
+          renderMatchHealth();
+        }, 50);
       });
     }
     // Cross-tab sync — when the queue is updated, refresh.
     if (root.MuntinContext && typeof root.MuntinContext.subscribe === 'function') {
       root.MuntinContext.subscribe(function () {
         renderStaleBanner();
-        setTimeout(renderGhostChips, 50);
+        setTimeout(function () {
+          renderGhostChips();
+          renderVendorSwapChips();
+          renderMatchHealth();
+        }, 50);
       });
     }
   }
@@ -324,7 +465,9 @@
   // Public helpers for tests / Plate Cost controller hooks.
   var api = {
     renderStaleBanner: renderStaleBanner,
-    renderGhostChips: renderGhostChips
+    renderGhostChips: renderGhostChips,
+    renderVendorSwapChips: renderVendorSwapChips,
+    renderMatchHealth: renderMatchHealth
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.PlateCostStaleBanner = api;

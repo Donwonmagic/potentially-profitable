@@ -148,6 +148,16 @@ header.nav{min-height:64px}
 .pc-ghost-chip{display:inline-flex;align-items:center;gap:3px;margin:4px 0 0;padding:1px 8px;border-radius:5px;background:transparent;border:1px dashed var(--ink-soft);color:var(--ink-soft);font-size:11px;cursor:pointer;font-family:inherit;font-style:italic;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0.85}
 .pc-ghost-chip:hover{background:color-mix(in srgb,var(--teal) 8%,var(--cream));border-color:var(--teal);color:var(--ink);opacity:1}
 .pc-ghost-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+/* Wave 10.13 — vendor-swap chip (cheaper-elsewhere hint) */
+.pc-vswap-chip{display:inline-flex;align-items:center;margin:4px 0 0 6px;padding:1px 8px;border-radius:5px;background:#c7e4d4;border:1px solid #0c4a26;color:#0c4a26;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pc-vswap-chip:hover{filter:brightness(1.05)}
+.pc-vswap-chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+/* Wave 10.14 — match-health line */
+.pc-match-health{margin:6px 12px 0;font-size:12.5px;color:var(--ink-soft)}
+.pc-match-health[hidden]{display:none}
+.pc-match-rest{font:inherit;font-size:12px;padding:3px 9px;border-radius:5px;border:1px solid var(--teal);background:var(--teal);color:var(--cream);cursor:pointer;margin-left:4px}
+.pc-match-rest:hover{filter:brightness(1.05)}
+.pc-match-allgood{color:#0c4a26;font-weight:600;margin-left:4px}
 .pc-sample-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-sample-btn:hover{background:var(--teal);color:var(--cream)}
 .pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
@@ -653,6 +663,11 @@ body[data-pc-mode="recost"] .pc-prev-cell{display:block}
       </div>
       <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
+      <!-- Wave 10.14 — match-health line: how many ingredients bind to
+           invoice history, how many still need a match. Surfaces the
+           operator-owned-learning compounding moat. -->
+      <p class="pc-match-health" id="pcMatchHealth" hidden></p>
+
       <!-- Wave 10.5 — recipe-stale banner. Renders above the pull CTA
            when MuntinContext.recipeStaleQueue has entries pushed by
            Invoice Decoder at save time. Render-order discipline:
@@ -946,6 +961,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
+<script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
 <script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260504-w10-7"></script>
 <script src="/tools/plate-cost/stale-banner.js?v=20260504-w10-5" defer></script>
@@ -1460,6 +1476,29 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
       el.value = normalized;
       renderResults();
     }
+    // Wave 10.12 — silently learn the operator's yield. When the
+    // typed value differs from the canonical yield (or no canonical
+    // exists), write to MuntinContext.yieldLearnings so the next
+    // invoice's auto-fill respects it. No separate UI; the existing
+    // yield input IS the learning surface.
+    try {
+      var tr = el.closest && el.closest('tr');
+      if (!tr) return;
+      var ingInput = tr.querySelector('[data-field="ingredient"]');
+      var apInput  = tr.querySelector('[data-field="apQty"]');
+      var name = ingInput && ingInput.value && ingInput.value.trim();
+      if (!name) return;
+      var typed = parseFloat(normalized != null ? normalized : raw);
+      if (!isFinite(typed) || typed <= 0 || typed > 1) return;
+      var canonical = PC.lookupYield(name);
+      if (canonical != null && Math.abs(canonical - typed) < 0.02) return;
+      // Only record when we have an AP qty — otherwise we can't
+      // anchor the yield to a real observation.
+      var apQty = parseFloat(apInput && apInput.value);
+      if (!isFinite(apQty) || apQty <= 0) return;
+      var epQty = apQty * typed;
+      if (PC.recordYieldObservation) PC.recordYieldObservation(name, apQty, epQty);
+    } catch (_) {}
   }, true);
   if (portionsEl) portionsEl.addEventListener('input', renderResults);
   if (nameEl)     nameEl.addEventListener('input', renderResults);
