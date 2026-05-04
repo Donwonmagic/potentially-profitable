@@ -183,7 +183,7 @@ const CHECKS = [
   ['Event prop cardinality','check-event-prop-cardinality.mjs','--check'],
   ['Image dimensions (warn)','check-image-dimensions.mjs',   '--check'],
   ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
-  ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
+  ['CLS animation',       'check-cls-animation.mjs',        '--check'],
   ['Image formats (warn)','check-image-formats.mjs',         '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
