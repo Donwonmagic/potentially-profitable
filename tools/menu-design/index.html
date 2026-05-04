@@ -171,6 +171,12 @@ header.nav{min-height:64px}
 .md-readonly-banner strong{display:block;margin-bottom:2px}
 .md-toolbar-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
 .md-tb-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast),color var(--t-fast)}
+@media (max-width: 1024px){
+  /* WCAG 2.2 SC 2.5.8 — touch targets ≥ 24×24, target ≥ 44×44 for
+     primary controls. The 36px chips are too small for thumbs on
+     a phone; bump to 44px on touch-class viewports. */
+  .md-tb-btn{width:44px;height:44px}
+}
 .md-tb-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal)}
 .md-tb-btn[disabled]{opacity:.4;cursor:not-allowed}
 .md-tb-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -199,6 +205,13 @@ header.nav{min-height:64px}
    of each row; HTML5 drag-and-drop on desktop, up/down arrow
    buttons (rendered next to the handle) for touch / keyboard. */
 .md-grid .md-handle{flex:0 0 auto;width:24px;height:32px;background:transparent;border:0;color:var(--stone-2);cursor:grab;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;padding:0}
+/* WCAG 2.2 SC 2.5.8 — drag handles + row-action chips. Bump to
+   44×44 on coarse pointers (touch screens). Pointer-fine viewports
+   keep the compact desktop sizing. */
+@media (pointer: coarse){
+  .md-grid .md-handle{width:44px;height:44px;font-size:18px}
+  .md-grid .md-row-action{width:44px;height:44px}
+}
 .md-grid .md-handle:hover{color:var(--teal);background:var(--cream-2)}
 .md-grid .md-handle:active,.md-grid .md-handle.is-dragging{cursor:grabbing;color:var(--teal)}
 .md-grid .md-handle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -281,7 +294,7 @@ header.nav{min-height:64px}
 }
 
 /* Sticky add-dish pill follows scroll edge so item 27 still has a one-tap path. */
-.md-stick{position:sticky;bottom:8px;align-self:end;margin-top:-44px;margin-right:14px;padding:10px 16px;background:var(--ink);color:var(--cream);border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);z-index:5}
+.md-stick{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));align-self:end;margin-top:-44px;margin-right:14px;padding:12px 18px;min-height:44px;min-width:44px;background:var(--ink);color:var(--cream);border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);z-index:5}
 .md-stick:hover{background:var(--teal)}
 
 /* Paste drawer (CSV/TSV ingest, mirrors plate-cost). */
@@ -490,7 +503,107 @@ header.nav{min-height:64px}
 /* Preview — HTML/CSS rendering. The PDF renderer (Wave A3) will
    read the same theme tokens; the HTML preview is the canonical
    on-screen representation. The PDF aims to match this 1:1. */
-.md-preview-wrap{margin:28px 0 0}
+.md-preview-wrap{margin:28px 0 0;transition:transform .25s ease, opacity .25s ease}
+
+/* ----------------------------------------------------------------
+   Wave studio-quality (T3.1) — two-column shell.
+
+   Desktop ≥ 1280px: pull the preview out of document flow into a
+   fixed right-edge sidecar so it stays visible while the operator
+   scrolls the editor. The container body grows to make room.
+
+   Mobile < 1280px: keep document order so screen readers walk
+   editor → preview sensibly. Add a floating "Show preview" pill
+   that promotes the preview to a bottom-sheet modal on demand.
+
+   The sticky-on-scroll pattern Linear / Notion / Figma all use,
+   ported to vanilla CSS without changing the markup. */
+@media (min-width: 1280px) {
+  body.md-tool-menu-design { padding-right: 0; }
+  .md-tool-menu-design main#main > section.block > .container {
+    max-width: 1240px;
+    padding-right: 420px;
+    position: relative;
+  }
+  .md-tool-menu-design .md-preview-wrap {
+    position: fixed;
+    top: 92px;
+    right: max(16px, calc((100vw - 1240px) / 2 + 16px));
+    width: 380px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    margin: 0;
+    z-index: 40;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.10);
+    padding: 14px;
+  }
+  .md-tool-menu-design .md-preview-frame { padding: 8px 6px; background: transparent; border: 0 }
+  .md-tool-menu-design .md-preview-paper { max-width: 340px; box-shadow: 0 2px 10px rgba(0,0,0,.08) }
+  .md-show-preview-pill { display: none !important; }
+}
+.md-show-preview-pill {
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  border: 0;
+  background: var(--teal);
+  color: var(--cream);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.md-show-preview-pill:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+@media (max-width: 1279.98px) {
+  .md-show-preview-pill { display: inline-flex; }
+}
+.md-preview-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20,20,20,.45);
+  z-index: 99;
+  animation: mdBackdropFadeIn .2s ease;
+}
+@keyframes mdBackdropFadeIn { from { opacity: 0 } to { opacity: 1 } }
+@media (max-width: 1279.98px) {
+  body.md-show-preview .md-preview-backdrop { display: block; }
+  body.md-show-preview .md-preview-wrap {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    margin: 0;
+    z-index: 100;
+    background: var(--white);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    box-shadow: 0 -8px 32px rgba(0,0,0,.20);
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 14px 14px calc(20px + env(safe-area-inset-bottom));
+    animation: mdBottomSheetIn .22s ease;
+  }
+  body.md-show-preview .md-preview-wrap::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    margin: 4px auto 12px;
+  }
+}
+@keyframes mdBottomSheetIn { from { transform: translateY(100%) } to { transform: translateY(0) } }
+@media (prefers-reduced-motion: reduce) {
+  .md-preview-wrap, .md-preview-backdrop { animation: none !important; transition: none !important; }
+}
 .md-preview-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
 .md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
@@ -2026,6 +2139,36 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
   </aside>
 <!-- /tool-knit -->
 </main>
+
+<!-- Wave studio-quality (T3.1) — mobile bottom-sheet preview drawer.
+     Desktop CSS hides the pill (sidecar pattern handles the preview).
+     Mobile: tap pill → preview promotes to bottom sheet with backdrop.
+     Tap backdrop / Escape / drag-handle to dismiss. -->
+<button type="button" class="md-show-preview-pill" id="mdShowPreviewPill" aria-label="Show menu preview" title="Preview">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+</button>
+<div class="md-preview-backdrop" id="mdPreviewBackdrop" aria-hidden="true"></div>
+<script>
+(function () {
+  // Tag the body so the desktop CSS knows to scope its layout
+  // tweaks (we want them to fire only on the menu-design page,
+  // not on tool-knit fragments embedded in sister tools).
+  document.body.classList.add('md-tool-menu-design');
+  var pill = document.getElementById('mdShowPreviewPill');
+  var backdrop = document.getElementById('mdPreviewBackdrop');
+  if (!pill || !backdrop) return;
+  function open() { document.body.classList.add('md-show-preview'); }
+  function close() { document.body.classList.remove('md-show-preview'); }
+  pill.addEventListener('click', function () {
+    if (document.body.classList.contains('md-show-preview')) close();
+    else open();
+  });
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('md-show-preview')) close();
+  });
+})();
+</script>
 
 <!-- W15 — Vibe quiz modal. Four short questions; submits a theme
      recommendation. Replaces the "is your restaurant ___?" abstraction
