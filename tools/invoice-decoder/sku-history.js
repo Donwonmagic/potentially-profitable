@@ -680,6 +680,61 @@
     writeStore({ skuHistory: {}, contractPrices: {} });
   }
 
+  // Wave 10.3 — sync projection of latest observation per stem.
+  //
+  // Cross-tool consumers (Plate Cost, Menu Engineering, Margin Math)
+  // need a fast plaintext map of stem → most-recent comparable price
+  // for ghost-chip rendering without the async device-key decrypt
+  // path that readInvoiceItems() uses. The newest entry in each
+  // skuHistory[stem] array IS that latest observation — we expose a
+  // thin sync projection rather than maintaining a parallel store
+  // (saves ~24 KB localStorage and one source of drift).
+  //
+  // Returns: { [stem]: { perBaseUnit, baseUnit, vendor, ts, qty, unit, source } }
+  //
+  // - perBaseUnit / baseUnit come from comparablePrice / comparableUnit
+  //   when present (pack-aware row); otherwise fall back to unitPrice
+  //   in the row's raw unit. source signals which path won.
+  // - Stems with empty history are omitted.
+  function latestByStem(opts) {
+    opts = opts || {};
+    var s = readStore();
+    var map = s.skuHistory || {};
+    var out = Object.create(null);
+    var stems = Object.keys(map);
+    var minObs = opts.minObservations || 1;
+    for (var i = 0; i < stems.length; i++) {
+      var stem = stems[i];
+      var list = map[stem];
+      if (!Array.isArray(list) || list.length < minObs) continue;
+      var latest = list[0];
+      if (!latest) continue;
+      // Prefer comparable (pack-aware) when present.
+      if (typeof latest.comparablePrice === 'number' && latest.comparableUnit) {
+        out[stem] = {
+          perBaseUnit: +latest.comparablePrice.toFixed(4),
+          baseUnit:    latest.comparableUnit,
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'pack'
+        };
+      } else if (typeof latest.unitPrice === 'number' && latest.unit) {
+        out[stem] = {
+          perBaseUnit: +latest.unitPrice.toFixed(4),
+          baseUnit:    String(latest.unit).toLowerCase(),
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'unit'
+        };
+      }
+    }
+    return out;
+  }
+
   var api = {
     // Phase 1 — observation
     recordObservation:  recordObservation,
@@ -689,6 +744,8 @@
     rollingMedian:      rollingMedian,
     summarizeRow:       summarizeRow,
     topMovers:          topMovers,
+    // Wave 10.3 — sync projection for cross-tool consumers
+    latestByStem:       latestByStem,
     // Phase 2 — contract
     setContract:        setContract,
     clearContract:      clearContract,

@@ -2684,6 +2684,89 @@
     return fn({ mode: 'create' });
   }
 
+  // Wave 10.4 — cross-tool spine: queue stale-recipe entries.
+  //
+  // For each ingredient in MuntinContext.dishes whose normalized stem
+  // matches a parsed-row stem and whose pre-invoice cost differs by
+  // > 1% from the new comparable price, write an entry into
+  // MuntinContext.recipeStaleQueue. Plate Cost's stale-banner reads
+  // on cold load and surfaces "5 recipes have ingredient prices that
+  // changed in your last invoice [Review changes]."
+  //
+  // Cost: O(dishes × ingredients × stem_lookup). 60 × 8 = 480 stem
+  // matches per invoice; runs sync on save thread (acceptable).
+  //
+  // Privacy: only stems + numbers + the operator's own dish names
+  // (which they typed). No invoice row text crosses into the queue.
+  function _queueRecipeStaleEntries(rows, vendor, savedAad) {
+    if (typeof MuntinContext === 'undefined') return;
+    if (typeof MuntinSkuMatch === 'undefined') return;
+    if (typeof MuntinStem === 'undefined') return;
+    var ctx = MuntinContext.read() || {};
+    var dishes = Array.isArray(ctx.dishes) ? ctx.dishes : [];
+    if (!dishes.length || !rows || !rows.length) return;
+    // Build a stem→{perBaseUnit, baseUnit, vendor, ts} map from this
+    // invoice's parsed rows so we can look up by stem in O(1) below.
+    var invoiceStems = Object.create(null);
+    rows.forEach(function (r) {
+      if (!r || (r.kind && r.kind !== 'item')) return;
+      var stem = MuntinStem.extractStem(r.name || '');
+      if (!stem) return;
+      var perBase = null, baseUnit = null;
+      if (r.comparable && typeof r.comparable.perBaseUnit === 'number') {
+        perBase = r.comparable.perBaseUnit;
+        baseUnit = r.comparable.baseUnit;
+      } else if (typeof r.unitPrice === 'number' && r.unit) {
+        perBase = r.unitPrice;
+        baseUnit = String(r.unit).toLowerCase();
+      }
+      if (perBase == null || !baseUnit) return;
+      // Newest wins if duplicates within the same invoice.
+      invoiceStems[stem] = { perBaseUnit: +perBase.toFixed(4), baseUnit: baseUnit, vendor: vendor || null };
+    });
+    if (!Object.keys(invoiceStems).length) return;
+    var queueEntries = [];
+    var now = Date.now();
+    var threshold = 0.01;
+    var candidateStems = Object.keys(invoiceStems);
+    dishes.forEach(function (dish) {
+      var ingredients = Array.isArray(dish && dish.rows) ? dish.rows : (Array.isArray(dish && dish.units) ? dish.units : []);
+      if (!ingredients.length) return;
+      ingredients.forEach(function (ing) {
+        var name = ing && (ing.ingredient || ing.name);
+        if (!name) return;
+        var match = MuntinSkuMatch.classify(name, candidateStems);
+        if (!match || match.tier !== 'auto') return;     // conservative: only auto-tier triggers a stale entry
+        var newPrice = invoiceStems[match.stem];
+        if (!newPrice) return;
+        var oldPrice = (typeof ing.apPrice === 'number') ? ing.apPrice : null;
+        var delta = (oldPrice != null && oldPrice > 0)
+                      ? (newPrice.perBaseUnit - oldPrice) / oldPrice
+                      : null;
+        if (delta != null && Math.abs(delta) < threshold) return;
+        queueEntries.push({
+          dish:       dish.name || dish.id || '(unnamed dish)',
+          ingredient: String(name).slice(0, 80),
+          stem:       match.stem,
+          oldPerBaseUnit: oldPrice,
+          newPerBaseUnit: newPrice.perBaseUnit,
+          baseUnit:   newPrice.baseUnit,
+          deltaPct:   delta != null ? +(delta * 100).toFixed(2) : null,
+          vendor:     newPrice.vendor,
+          source:     'invoice:' + (savedAad || ('ts:' + now)),
+          ts:         now
+        });
+      });
+    });
+    if (!queueEntries.length) return;
+    var current = MuntinContext.read() || {};
+    var queue = Array.isArray(current.recipeStaleQueue) ? current.recipeStaleQueue.slice() : [];
+    queue.unshift.apply(queue, queueEntries);
+    var cap = (MuntinContext.STORAGE_BUDGET && MuntinContext.STORAGE_BUDGET.RECIPE_STALE_QUEUE_CAP) || 100;
+    if (queue.length > cap) queue = queue.slice(0, cap);
+    MuntinContext.merge({ recipeStaleQueue: queue });
+  }
+
   function buildSavePayload() {
     // Slim shape — never raw OCR text or image bytes. Caps each
     // field below the 50KB-per-row Workshop budget.
@@ -2891,6 +2974,17 @@
             if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.recordObservations) {
               MID_SKU_HISTORY.recordObservations(parsedRowsState, payload.vendor || null);
             }
+          } catch (_) {}
+          // Wave 10.4 — cross-tool spine: queue stale-recipe entries
+          // so Plate Cost (and the cascade through Menu Engineering /
+          // Margin Math / Cost Pulse) shows updated prices without
+          // operator effort. Walks MuntinContext.dishes; for each
+          // ingredient row whose stem matches an invoice row with
+          // > 1% comparable-price delta, push a {dish, ingredient,
+          // stem, oldEp, newEp, deltaPct, source} entry into the
+          // queue. Plate Cost's stale-banner reads on cold load.
+          try {
+            _queueRecipeStaleEntries(parsedRowsState, payload.vendor || null, savedAad);
           } catch (_) {}
           // Wave 5.6 — accuracy sample: confirmed-without-edit ratio.
           try {
