@@ -108,6 +108,7 @@ jobs:
           node scripts/build-sitemap.mjs
           node scripts/build-css-shells.mjs
           node scripts/inject-css-shells.mjs
+          node scripts/inject-picture-tags.mjs
 
       - name: Stage dist/ for serving
         run: |

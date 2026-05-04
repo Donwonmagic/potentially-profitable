@@ -127,6 +127,12 @@ const CHECKS = [
   ['Include coverage',     'check-include-coverage.mjs'],
   ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
   ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
+  // Image-formats: every raster source must have AVIF + WebP siblings
+  // so the <picture> wrappers (inject-picture-tags) can serve modern
+  // formats to capable browsers. --check is sharp-free; only the
+  // writer mode (no --check) requires `npm i sharp`.
+  ['AVIF/WebP siblings (idem)','build-image-formats.mjs','--check'],
+  ['Picture tags (idem)','inject-picture-tags.mjs','--check'],
   // Pricing consistency — warn-only during initial rollout. Promotes to
   // --strict once the ~11 inline service-link backlog is worked off
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
