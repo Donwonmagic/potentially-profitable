@@ -22,29 +22,22 @@
 
   var CAP = 100;
 
-  function normalize(s) {
-    return String(s || '')
-      .toLowerCase()
-      .replace(/[áàä]/g, 'a').replace(/[éèë]/g, 'e').replace(/[íìï]/g, 'i')
-      .replace(/[óòö]/g, 'o').replace(/[úùü]/g, 'u').replace(/ñ/g, 'n')
-      .replace(/[^a-z0-9 ]+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+  // Wave 10.0a — normalize + extractStem moved into tools/_shared/stem.js
+  // so cross-tool consumers (Plate Cost, Menu Engineering, Margin Math,
+  // Cost Pulse) get identical normalization. Loaded by index.html before
+  // learnings.js. Back-compat: this module re-exports both on
+  // MID_LEARNINGS so existing call sites (sku-history.js, substitution.js,
+  // margin-impact.js, parse.js) keep working without changes.
+  var _shared = (typeof root !== 'undefined' && root && root.MuntinStem) ||
+                (typeof require !== 'undefined' ? (function () {
+                  try { return require('../_shared/stem.js'); } catch (_) { return null; }
+                })() : null);
+  if (!_shared) {
+    throw new Error('MuntinStem not loaded — include /tools/_shared/stem.js before learnings.js');
   }
-
-  // Wave 4.5 — extract a canonical "stem" from a noisy SKU string.
-  // The stem is the alphabetic core after dropping (a) digits, (b)
-  // pack notation tokens (24CT, 12/16OZ, 6#10), (c) brand-quantifier
-  // adjectives (LRG, XL, FRZN), and (d) trailing distributor codes.
-  // Used for variant propagation: correcting "STELLA ARTOIS 24/12 BTL"
-  // also matches future "STELLA ARTOIS 12/22 CAN" via the shared
-  // "stella artois" stem.
-  var DROP_TOKENS = /\b(\d+|\d+\/\d+|lg|md|sm|xl|xxl|frzn|frz|fzn|iqf|cs|ea|ct|lb|kg|oz|gal|btl|can|pk|case|count|each)\b/g;
-  function extractStem(rawName) {
-    var n = normalize(rawName);
-    if (!n) return '';
-    return n.replace(DROP_TOKENS, '').replace(/\s+/g, ' ').trim();
-  }
+  var normalize    = _shared.normalize;
+  var extractStem  = _shared.extractStem;
+  var DROP_TOKENS  = _shared.DROP_TOKENS;
 
   // Wave 4.5 — find bilingual synonyms in the global lexicon. Given a
   // term + category, scan the matching category bucket for entries

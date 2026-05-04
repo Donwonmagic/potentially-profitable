@@ -680,15 +680,106 @@
     writeStore({ skuHistory: {}, contractPrices: {} });
   }
 
+  // Wave 11.5 — per-(stem, vendor) price corridor for numeric
+  // coherence checks. Returns { p10, median, p90, n } over the last
+  // 8 observations matching the optional vendor filter, or null when
+  // the operator's history doesn't have ≥4 samples for that key.
+  // Used by parse.js to flag rows whose unit price falls outside
+  // the operator's typical band — catches OCR digit-swaps that the
+  // qty × price = lineTotal check misses.
+  function priceCorridor(stemKey, opts) {
+    if (!stemKey) return null;
+    var s = readStore();
+    var list = (s.skuHistory && s.skuHistory[stemKey]) || [];
+    if (!list.length) return null;
+    var vendor = opts && opts.vendor;
+    var pool = list.filter(function (e) {
+      if (vendor && e.vendor !== vendor) return false;
+      return typeof e.unitPrice === 'number' && e.unitPrice > 0;
+    }).slice(0, 8);
+    if (pool.length < 4) return null;
+    var sorted = pool.map(function (e) { return e.unitPrice; }).sort(function (a, b) { return a - b; });
+    var pct = function (p) {
+      var i = (sorted.length - 1) * p;
+      var lo = Math.floor(i), hi = Math.ceil(i);
+      if (lo === hi) return sorted[lo];
+      return sorted[lo] + (i - lo) * (sorted[hi] - sorted[lo]);
+    };
+    return {
+      p10:    +pct(0.1).toFixed(4),
+      median: +pct(0.5).toFixed(4),
+      p90:    +pct(0.9).toFixed(4),
+      n:      pool.length
+    };
+  }
+
+  // Wave 10.3 — sync projection of latest observation per stem.
+  //
+  // Cross-tool consumers (Plate Cost, Menu Engineering, Margin Math)
+  // need a fast plaintext map of stem → most-recent comparable price
+  // for ghost-chip rendering without the async device-key decrypt
+  // path that readInvoiceItems() uses. The newest entry in each
+  // skuHistory[stem] array IS that latest observation — we expose a
+  // thin sync projection rather than maintaining a parallel store
+  // (saves ~24 KB localStorage and one source of drift).
+  //
+  // Returns: { [stem]: { perBaseUnit, baseUnit, vendor, ts, qty, unit, source } }
+  //
+  // - perBaseUnit / baseUnit come from comparablePrice / comparableUnit
+  //   when present (pack-aware row); otherwise fall back to unitPrice
+  //   in the row's raw unit. source signals which path won.
+  // - Stems with empty history are omitted.
+  function latestByStem(opts) {
+    opts = opts || {};
+    var s = readStore();
+    var map = s.skuHistory || {};
+    var out = Object.create(null);
+    var stems = Object.keys(map);
+    var minObs = opts.minObservations || 1;
+    for (var i = 0; i < stems.length; i++) {
+      var stem = stems[i];
+      var list = map[stem];
+      if (!Array.isArray(list) || list.length < minObs) continue;
+      var latest = list[0];
+      if (!latest) continue;
+      // Prefer comparable (pack-aware) when present.
+      if (typeof latest.comparablePrice === 'number' && latest.comparableUnit) {
+        out[stem] = {
+          perBaseUnit: +latest.comparablePrice.toFixed(4),
+          baseUnit:    latest.comparableUnit,
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'pack'
+        };
+      } else if (typeof latest.unitPrice === 'number' && latest.unit) {
+        out[stem] = {
+          perBaseUnit: +latest.unitPrice.toFixed(4),
+          baseUnit:    String(latest.unit).toLowerCase(),
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'unit'
+        };
+      }
+    }
+    return out;
+  }
+
   var api = {
     // Phase 1 — observation
     recordObservation:  recordObservation,
     recordObservations: recordObservations,
     lookupHistory:      lookupHistory,
     findClosestVendorMemory: findClosestVendorMemory,
+    priceCorridor:      priceCorridor,
     rollingMedian:      rollingMedian,
     summarizeRow:       summarizeRow,
     topMovers:          topMovers,
+    // Wave 10.3 — sync projection for cross-tool consumers
+    latestByStem:       latestByStem,
     // Phase 2 — contract
     setContract:        setContract,
     clearContract:      clearContract,

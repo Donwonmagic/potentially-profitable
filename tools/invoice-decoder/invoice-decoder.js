@@ -345,6 +345,21 @@
     if (!Array.isArray(rows)) return;
     opts = opts || {};
     var vendor = opts.vendor || null;
+    // Wave 11.4 — cross-page + cross-invoice SKU vote. Mutates rows
+    // in place to lift confidence on history-confirmed names.
+    try {
+      if (typeof MID_RECONCILE !== 'undefined' && MID_RECONCILE.reconcileRows) {
+        MID_RECONCILE.reconcileRows(rows);
+      }
+    } catch (_) {}
+    // Wave 11.1 — apply per-operator calibration to per-row + per-
+    // field confidences. After ~30 operator corrections the curve
+    // begins meaningfully diverging from the global prior.
+    try {
+      if (typeof MID_CALIBRATION !== 'undefined' && MID_CALIBRATION.applyToRow) {
+        for (var ci = 0; ci < rows.length; ci++) MID_CALIBRATION.applyToRow(rows[ci]);
+      }
+    } catch (_) {}
     if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
       // Wave 5.6 — pass a rolling context window into the classifier
       // so the co-occurrence Tier 0.8 can read the previous 5 rows.
@@ -792,6 +807,11 @@
         MID_TELEMETRY.bump('manualCorrections', 1);
       }
     } catch (_) {}
+    // Wave 11.2 — record name corrections in the confusion matrix.
+    // Also Wave 11.1 — feed the calibration sample (this row's
+    // pre-edit OCR confidence vs "was correct" = false).
+    var _preEditName = row.name;
+    var _preEditConf = row.confidence;
     if (field === 'name')      row.name = String(value).trim();
     else if (field === 'qty')  row.qty = parseFloat(value) || 0;
     else if (field === 'unitPrice' || field === 'lineTotal') row[field] = parseFloat(value) || 0;
@@ -804,6 +824,18 @@
         try { MID_LEARNINGS.recordOverride(row.name, value); } catch (_) {}
       }
     }
+    // Wave 11.1/11.2 — learn from this correction.
+    try {
+      if (field === 'name' && _preEditName && _preEditName !== row.name) {
+        if (typeof MID_CONFUSION !== 'undefined' && MID_CONFUSION.recordCorrection) {
+          MID_CONFUSION.recordCorrection(_preEditName, row.name);
+        }
+      }
+      if (typeof MID_CALIBRATION !== 'undefined' && MID_CALIBRATION.recordSample &&
+          typeof _preEditConf === 'number') {
+        MID_CALIBRATION.recordSample(_preEditConf, false);   // edit means OCR was wrong
+      }
+    } catch (_) {}
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
     row.ownerConfirmed = true;
@@ -1574,6 +1606,187 @@
     if (saveBtn) try { saveBtn.click(); } catch (_) {}
   }
 
+  // Wave 12 — Owner-grade insights renderer. Reads each insight,
+  // renders only the cards whose data passes their threshold gate.
+  function renderInsights(parsed) {
+    var host = document.getElementById('idInsights');
+    if (!host) return;
+    if (typeof MID_INSIGHTS === 'undefined') { host.hidden = true; return; }
+    var cards = [];
+    var vendor = parsed && parsed.vendor;
+    // 12.3 forecast vs actual.
+    try {
+      var fcast = MID_INSIGHTS.forecastInvoiceTotal(parsed.rows, vendor);
+      if (fcast && fcast.sampleSize >= 4 && Math.abs(fcast.deltaPct) >= 7) {
+        var sign = fcast.deltaPct > 0 ? '+' : '';
+        var driverStr = fcast.categoryDriver
+          ? ' Biggest mover: ' + fcast.categoryDriver.category + ' $' + fcast.categoryDriver.actual.toFixed(0) +
+            ' vs typical $' + fcast.categoryDriver.expected.toFixed(0) + '.'
+          : '';
+        cards.push({
+          id: 'forecast',
+          tone: Math.abs(fcast.deltaPct) >= 15 ? 'warn' : 'info',
+          headline: vendor + ' typical $' + fcast.expectedRange[0].toFixed(0) + '–$' + fcast.expectedRange[1].toFixed(0) +
+                    '. This one: $' + fcast.actual.toFixed(0) + ' (' + sign + fcast.deltaPct + '%)',
+          body: driverStr || 'Within normal range.',
+          analytics: 'Invoice Decoder Forecast Shown'
+        });
+      }
+    } catch (_) {}
+    // 12.5 menu bridge — top dishes affected.
+    try {
+      if (typeof MuntinDishDrift !== 'undefined' && MuntinDishDrift.compute) {
+        var driftedDishes = MuntinDishDrift.compute();
+        if (driftedDishes.length) {
+          var top = driftedDishes.slice(0, 3);
+          var lines = top.map(function (d) {
+            var s = d.deltaPctOnDish > 0 ? '+' : '';
+            return d.dish + ' ' + s + d.deltaPctOnDish.toFixed(1) + '%';
+          });
+          cards.push({
+            id: 'menu-bridge',
+            tone: 'warn',
+            headline: 'This invoice shifts ' + top.length + ' dish' + (top.length === 1 ? '' : 'es') + '’ plate cost',
+            body: lines.join(' · ')
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.1 shrinkage anomaly.
+    try {
+      var shrink = MID_INSIGHTS.detectShrinkage();
+      if (shrink && shrink.length) {
+        var top = shrink[0];
+        cards.push({
+          id: 'shrinkage',
+          tone: 'warn',
+          headline: top.label + ': ' + top.recentCount + ' orders this week vs your usual ' + top.expectedCount,
+          body: '$' + top.dollarExposure.toFixed(0) + ' exposure across recent orders. Either business is up sharply, or worth a sanity-check.',
+          analytics: 'Invoice Decoder Theft Flag'
+        });
+      }
+    } catch (_) {}
+    // 12.2 reorder shortlist.
+    try {
+      var reorder = MID_INSIGHTS.buildReorderShortlist({ max: 6 });
+      if (reorder && reorder.length >= 3) {
+        cards.push({
+          id: 'reorder',
+          tone: 'info',
+          headline: reorder.length + ' SKUs likely due for reorder',
+          body: reorder.slice(0, 4).map(function (r) { return r.stem; }).join(', ') + (reorder.length > 4 ? '…' : ''),
+          actions: [{ label: 'Copy order pad', kind: 'primary', handler: function () {
+            var note = MID_INSIGHTS.formatOrderPad(reorder);
+            try { navigator.clipboard && navigator.clipboard.writeText(note); } catch (_) {}
+            if (window.plausible) try { window.plausible('Invoice Decoder Reorder Copied', { props: { count_bucket: reorder.length < 5 ? '<5' : reorder.length < 10 ? '5-9' : '10+' } }); } catch (_) {}
+          }}]
+        });
+      }
+    } catch (_) {}
+    // 12.4 vendor-switch ROI.
+    try {
+      var swaps = MID_INSIGHTS.aggregateVendorSwitchRoi({ max: 3 });
+      if (swaps && swaps.length) {
+        var s0 = swaps[0];
+        cards.push({
+          id: 'vendor-switch-roi',
+          tone: 'info',
+          headline: 'Switching from ' + s0.from + ' to ' + s0.to + ' projects $' + s0.monthlyDelta.toFixed(0) + '/mo',
+          body: 'Across ' + s0.stems.length + ' SKUs in your history. Top: ' + s0.stems.slice(0, 3).map(function (st) { return st.stem; }).join(', '),
+          analytics: 'Invoice Decoder Vendor Switch ROI'
+        });
+      }
+    } catch (_) {}
+    // 12.8 supplier health (only when vendor present + ≥3 invoices).
+    try {
+      if (vendor) {
+        var health = MID_INSIGHTS.supplierHealth(vendor);
+        if (health && health.score < 75) {
+          cards.push({
+            id: 'supplier-health',
+            tone: health.score < 60 ? 'warn' : 'info',
+            headline: vendor + ' supplier health: ' + health.score + '/100',
+            body: 'Backorder ' + health.stats.backorderRate + '%, price stability CV ' + health.stats.priceCV + '%, ' + health.stats.invoicesSeen + ' invoices observed.',
+            analytics: 'Invoice Decoder Supplier Health'
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.7 seasonality — sample one anomaly row to demonstrate the
+    // pre-threshold signal (only fires when ≥1 row has ≥10 mo history).
+    try {
+      var anchorRow = (parsed.rows || []).find(function (r) { return r && r.name && (!r.kind || r.kind === 'item'); });
+      if (anchorRow) {
+        var season = MID_INSIGHTS.detectSeasonality(null, { byName: anchorRow.name });
+        if (season && season.unlocked && season.deltaPct != null && Math.abs(season.deltaPct) >= 10) {
+          var dirS = season.deltaPct > 0 ? '+' : '';
+          cards.push({
+            id: 'seasonality',
+            tone: 'info',
+            headline: season.stem + ' year-over-year: ' + dirS + season.deltaPct + '%',
+            body: 'Same month last year: $' + season.sameMonthLastYear.toFixed(2) + '/unit. This month: $' + season.thisMonth.toFixed(2) + '/unit.',
+            analytics: 'Invoice Decoder Seasonality'
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.6 daily food-cost run-rate. We need weekly revenue from the
+    // operator; if MuntinContext.weeklyRevenue is set surface, else
+    // skip silently.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined' && MuntinContext.read) ? MuntinContext.read() : null;
+      var weeklyRev = ctx && ctx.weeklyRevenue;
+      if (weeklyRev && weeklyRev > 0) {
+        var rate = MID_INSIGHTS.dailyFoodCostRunRate(weeklyRev);
+        if (rate && rate.menuFcPct != null && Math.abs(rate.leakPct) >= 0.02) {
+          var sign = rate.leakPct > 0 ? '+' : '';
+          cards.push({
+            id: 'run-rate',
+            tone: rate.leakPct > 0 ? 'warn' : 'info',
+            headline: 'Menu says ' + (rate.menuFcPct * 100).toFixed(1) + '% FC, invoices say ' + (rate.invoicedFcPct * 100).toFixed(1) + '% (' + sign + (rate.leakPct * 100).toFixed(1) + ' pp)',
+            body: 'Roughly $' + Math.abs(rate.leakDollars).toFixed(0) + '/week ' + (rate.leakPct > 0 ? 'leak' : 'gain') + ' across ' + rate.sampleSize + ' invoices.',
+            analytics: 'Invoice Decoder Run Rate'
+          });
+        }
+      }
+    } catch (_) {}
+    if (!cards.length) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    host.innerHTML = cards.map(function (c) {
+      var actionHtml = '';
+      if (c.actions && c.actions.length) {
+        actionHtml = '<div class="id-insight-actions">' + c.actions.map(function (a, i) {
+          var cls = 'id-insight-btn' + (a.kind === 'primary' ? ' id-insight-btn-primary' : '');
+          return '<button type="button" class="' + cls + '" data-card="' + c.id + '" data-act="' + i + '">' + escHtml(a.label) + '</button>';
+        }).join('') + '</div>';
+      }
+      return '<div class="id-insight-card" data-tone="' + c.tone + '" data-card-id="' + c.id + '">' +
+        '<p class="id-insight-headline">' + escHtml(c.headline) + '</p>' +
+        '<p class="id-insight-body">' + escHtml(c.body) + '</p>' +
+        actionHtml +
+      '</div>';
+    }).join('');
+    host.hidden = false;
+    // Wire action handlers.
+    cards.forEach(function (c) {
+      if (!c.actions) return;
+      c.actions.forEach(function (a, i) {
+        var btn = host.querySelector('[data-card="' + c.id + '"][data-act="' + i + '"]');
+        if (btn) btn.addEventListener('click', function () {
+          a.handler();
+          btn.textContent = '✓ ' + a.label;
+          setTimeout(function () { btn.textContent = a.label; }, 1800);
+        });
+      });
+      if (c.analytics && window.plausible) {
+        try { window.plausible(c.analytics); } catch (_) {}
+      }
+    });
+  }
+
   // Wave 2.3 — Vendor Pulse Strip. One line per visible invoice:
   //   "Sysco · Tue Apr 28 · 41 lines · $1,842.10"
   //   then up to three pill-deltas (top movers via sku-history).
@@ -2337,6 +2550,52 @@
       try { photoInput.click(); } catch (_) {}
       try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
     }
+    // Wave 13.5 — ?intake=portal#<encoded-payload> — bookmarklet
+    // hands off scraped distributor-portal rows. Decode, build a
+    // synthetic CSV-shaped invoice, route via processCsvFile-like
+    // path. The hash payload is operator-side data the bookmarklet
+    // built on the third-party origin; we treat it as untrusted
+    // input and validate shape before consuming.
+    if (params.get('intake') === 'portal' && window.location.hash) {
+      try {
+        var raw = decodeURIComponent(window.location.hash.slice(1));
+        var payload = JSON.parse(raw);
+        if (payload && Array.isArray(payload.rows) && payload.rows.length) {
+          // Synthesize a parsed shape and feed through the existing
+          // render pipeline.
+          var synthRows = payload.rows.map(function (r) {
+            return {
+              name:      String(r.name || '').slice(0, 80),
+              qty:       (typeof r.qty === 'number') ? r.qty : null,
+              unit:      r.unit || null,
+              unitPrice: (typeof r.unitPrice === 'number') ? r.unitPrice : null,
+              lineTotal: (typeof r.lineTotal === 'number') ? r.lineTotal : null,
+              confidence: 99,        // bookmarklet → authoritative
+              fieldConf: { name: 99, qty: 99, price: 99, category: 70 },
+              kind: 'item'
+            };
+          });
+          var sumParsed = synthRows.reduce(function (s, r) { return s + (r.lineTotal || 0); }, 0);
+          var parsed = {
+            rows: synthRows,
+            sumParsed: +sumParsed.toFixed(2),
+            vendor: payload.vendor || null,
+            _intakeSource: 'bookmarklet'
+          };
+          if (typeof MID_VENDORS !== 'undefined' && payload.vendor) {
+            var registry = MID_VENDORS.REGISTRY || [];
+            var stub = registry.find(function (v) { return v.id === payload.vendor; });
+            if (stub) MID_VENDORS.applyVendorBoost(parsed.rows, { id: stub.id, label: stub.label_en, score: 0.95, vendor: stub });
+          }
+          classifyRows(parsed.rows, { vendor: parsed.vendor });
+          renderParsed(parsed);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Bookmarklet Receive', { props: { vendor: payload.vendor || 'unknown' } }); } catch (_) {}
+          }
+        }
+      } catch (_) { /* malformed payload — silent fail */ }
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
   }
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
@@ -2463,6 +2722,7 @@
     // Wave 2.3 — vendor pulse strip with this invoice's top movers.
     renderTrustSummary(parsed);
     renderVendorPulse(parsed);
+    renderInsights(parsed);
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
     // Wave 4.3 — auto-learn observation. When no vendor matched
@@ -2684,6 +2944,89 @@
     return fn({ mode: 'create' });
   }
 
+  // Wave 10.4 — cross-tool spine: queue stale-recipe entries.
+  //
+  // For each ingredient in MuntinContext.dishes whose normalized stem
+  // matches a parsed-row stem and whose pre-invoice cost differs by
+  // > 1% from the new comparable price, write an entry into
+  // MuntinContext.recipeStaleQueue. Plate Cost's stale-banner reads
+  // on cold load and surfaces "5 recipes have ingredient prices that
+  // changed in your last invoice [Review changes]."
+  //
+  // Cost: O(dishes × ingredients × stem_lookup). 60 × 8 = 480 stem
+  // matches per invoice; runs sync on save thread (acceptable).
+  //
+  // Privacy: only stems + numbers + the operator's own dish names
+  // (which they typed). No invoice row text crosses into the queue.
+  function _queueRecipeStaleEntries(rows, vendor, savedAad) {
+    if (typeof MuntinContext === 'undefined') return;
+    if (typeof MuntinSkuMatch === 'undefined') return;
+    if (typeof MuntinStem === 'undefined') return;
+    var ctx = MuntinContext.read() || {};
+    var dishes = Array.isArray(ctx.dishes) ? ctx.dishes : [];
+    if (!dishes.length || !rows || !rows.length) return;
+    // Build a stem→{perBaseUnit, baseUnit, vendor, ts} map from this
+    // invoice's parsed rows so we can look up by stem in O(1) below.
+    var invoiceStems = Object.create(null);
+    rows.forEach(function (r) {
+      if (!r || (r.kind && r.kind !== 'item')) return;
+      var stem = MuntinStem.extractStem(r.name || '');
+      if (!stem) return;
+      var perBase = null, baseUnit = null;
+      if (r.comparable && typeof r.comparable.perBaseUnit === 'number') {
+        perBase = r.comparable.perBaseUnit;
+        baseUnit = r.comparable.baseUnit;
+      } else if (typeof r.unitPrice === 'number' && r.unit) {
+        perBase = r.unitPrice;
+        baseUnit = String(r.unit).toLowerCase();
+      }
+      if (perBase == null || !baseUnit) return;
+      // Newest wins if duplicates within the same invoice.
+      invoiceStems[stem] = { perBaseUnit: +perBase.toFixed(4), baseUnit: baseUnit, vendor: vendor || null };
+    });
+    if (!Object.keys(invoiceStems).length) return;
+    var queueEntries = [];
+    var now = Date.now();
+    var threshold = 0.01;
+    var candidateStems = Object.keys(invoiceStems);
+    dishes.forEach(function (dish) {
+      var ingredients = Array.isArray(dish && dish.rows) ? dish.rows : (Array.isArray(dish && dish.units) ? dish.units : []);
+      if (!ingredients.length) return;
+      ingredients.forEach(function (ing) {
+        var name = ing && (ing.ingredient || ing.name);
+        if (!name) return;
+        var match = MuntinSkuMatch.classify(name, candidateStems);
+        if (!match || match.tier !== 'auto') return;     // conservative: only auto-tier triggers a stale entry
+        var newPrice = invoiceStems[match.stem];
+        if (!newPrice) return;
+        var oldPrice = (typeof ing.apPrice === 'number') ? ing.apPrice : null;
+        var delta = (oldPrice != null && oldPrice > 0)
+                      ? (newPrice.perBaseUnit - oldPrice) / oldPrice
+                      : null;
+        if (delta != null && Math.abs(delta) < threshold) return;
+        queueEntries.push({
+          dish:       dish.name || dish.id || '(unnamed dish)',
+          ingredient: String(name).slice(0, 80),
+          stem:       match.stem,
+          oldPerBaseUnit: oldPrice,
+          newPerBaseUnit: newPrice.perBaseUnit,
+          baseUnit:   newPrice.baseUnit,
+          deltaPct:   delta != null ? +(delta * 100).toFixed(2) : null,
+          vendor:     newPrice.vendor,
+          source:     'invoice:' + (savedAad || ('ts:' + now)),
+          ts:         now
+        });
+      });
+    });
+    if (!queueEntries.length) return;
+    var current = MuntinContext.read() || {};
+    var queue = Array.isArray(current.recipeStaleQueue) ? current.recipeStaleQueue.slice() : [];
+    queue.unshift.apply(queue, queueEntries);
+    var cap = (MuntinContext.STORAGE_BUDGET && MuntinContext.STORAGE_BUDGET.RECIPE_STALE_QUEUE_CAP) || 100;
+    if (queue.length > cap) queue = queue.slice(0, cap);
+    MuntinContext.merge({ recipeStaleQueue: queue });
+  }
+
   function buildSavePayload() {
     // Slim shape — never raw OCR text or image bytes. Caps each
     // field below the 50KB-per-row Workshop budget.
@@ -2891,6 +3234,17 @@
             if (typeof MID_SKU_HISTORY !== 'undefined' && MID_SKU_HISTORY.recordObservations) {
               MID_SKU_HISTORY.recordObservations(parsedRowsState, payload.vendor || null);
             }
+          } catch (_) {}
+          // Wave 10.4 — cross-tool spine: queue stale-recipe entries
+          // so Plate Cost (and the cascade through Menu Engineering /
+          // Margin Math / Cost Pulse) shows updated prices without
+          // operator effort. Walks MuntinContext.dishes; for each
+          // ingredient row whose stem matches an invoice row with
+          // > 1% comparable-price delta, push a {dish, ingredient,
+          // stem, oldEp, newEp, deltaPct, source} entry into the
+          // queue. Plate Cost's stale-banner reads on cold load.
+          try {
+            _queueRecipeStaleEntries(parsedRowsState, payload.vendor || null, savedAad);
           } catch (_) {}
           // Wave 5.6 — accuracy sample: confirmed-without-edit ratio.
           try {

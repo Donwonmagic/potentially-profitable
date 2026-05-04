@@ -1,0 +1,37 @@
+{
+  "WFWorkflowName": "Forward to Invoice Decoder",
+  "WFWorkflowMinimumClientVersion": 1500,
+  "WFWorkflowIconStartColor": 2071128575,
+  "WFWorkflowImportQuestions": [
+    { "ParameterKey": "MailLabel", "Category": "Mail", "Text": "Which Mail label holds invoices?", "DefaultValue": "Invoices" }
+  ],
+  "WFWorkflowActions": [
+    {
+      "WFWorkflowActionIdentifier": "is.workflow.actions.mail.search",
+      "WFWorkflowActionParameters": {
+        "WFMailLabel": "Invoices",
+        "WFMailHasAttachment": true,
+        "WFMailAttachmentTypes": ["com.adobe.pdf"]
+      }
+    },
+    {
+      "WFWorkflowActionIdentifier": "is.workflow.actions.documentpicker.save",
+      "WFWorkflowActionParameters": {
+        "WFFileDestinationPath": "/Files/On My iPhone/Invoices/"
+      }
+    },
+    {
+      "WFWorkflowActionIdentifier": "is.workflow.actions.openurl",
+      "WFWorkflowActionParameters": {
+        "WFInput": "https://muntin.digital/tools/invoice-decoder/?intake=share"
+      }
+    },
+    {
+      "WFWorkflowActionIdentifier": "is.workflow.actions.share",
+      "WFWorkflowActionParameters": {
+        "WFShareIntent": "com.muntin.invoice-decoder"
+      }
+    }
+  ],
+  "WFWorkflowDescription": "Watches your Mail 'Invoices' label for PDF attachments and routes each to the Muntin Invoice Decoder PWA via the existing Web Share Target. Runs entirely on this device — Muntin never sees your inbox."
+}

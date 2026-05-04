@@ -167,6 +167,77 @@
     return columns;
   }
 
+  // -------------------- Wave 11.3: beam-search line repair --------------------
+  // When parseLine falls through (no pattern matched on the raw OCR
+  // text or its cluster-repaired variant), try a small beam search
+  // over candidate edits sourced from MID_CONFUSION.topConfusions.
+  // Each candidate is scored by (parses_cleanly ? 1 : 0) +
+  // math_coherent_bonus + lexicon_hit_bonus. Pick the highest-
+  // scoring variant whose lineTotal also fits the OCR'd raw price.
+  //
+  // Beam: width 8, depth 2 substitutions. Cost: at most 64 candidate
+  // parses per failed line. Bypassed when there's no confusion data
+  // (cold-start) or when the line already parses.
+  function beamSearchRepair(line, opts) {
+    opts = opts || {};
+    if (!line || typeof line !== 'string') return null;
+    var beamWidth = opts.beamWidth || 8;
+    var maxSubs   = opts.maxSubs   || 2;
+    // Bail when the parser has no confusion data to draw from.
+    var topFor = (typeof MID_CONFUSION !== 'undefined' && MID_CONFUSION.topConfusions)
+                   ? MID_CONFUSION.topConfusions
+                   : (typeof require !== 'undefined' ? (function () {
+                        try { return require('./confusion-matrix.js').topConfusions; }
+                        catch (_) { return null; }
+                      })() : null);
+    if (!topFor) return null;
+    // Find candidate substitution positions: characters that have a
+    // top-N confusion. Cap to first ~16 candidate positions so the
+    // beam doesn't explode.
+    var positions = [];
+    for (var i = 0; i < line.length && positions.length < 16; i++) {
+      var subs = topFor(line.charAt(i), 3);
+      if (subs && subs.length) positions.push({ i: i, subs: subs });
+    }
+    if (!positions.length) return null;
+    // Beam: each entry { line, edits, score }. Initial state: original.
+    var beam = [{ line: line, edits: 0, score: 0 }];
+    for (var depth = 0; depth < maxSubs; depth++) {
+      var next = [];
+      beam.forEach(function (state) {
+        positions.forEach(function (pos) {
+          pos.subs.forEach(function (sub) {
+            if (state.line.charAt(pos.i) === sub.to) return;
+            var candidate = state.line.substr(0, pos.i) + sub.to + state.line.substr(pos.i + 1);
+            var s = _scoreCandidate(candidate, opts);
+            next.push({ line: candidate, edits: state.edits + 1, score: s });
+          });
+        });
+      });
+      // Keep top beamWidth.
+      next.sort(function (a, b) { return b.score - a.score; });
+      beam = next.slice(0, beamWidth);
+      if (!beam.length) break;
+      // Early exit: a candidate parses cleanly with high math
+      // coherence — no need to search deeper.
+      if (beam[0].score >= 2) break;
+    }
+    if (!beam.length || beam[0].score <= 0) return null;
+    return { line: beam[0].line, score: beam[0].score, edits: beam[0].edits };
+  }
+  function _scoreCandidate(candidate, opts) {
+    var parsed = null;
+    try { parsed = parseLine(candidate, opts && opts.ocrConf); } catch (_) {}
+    if (!parsed) return 0;
+    var score = 1;
+    // Math coherence: qty × unitPrice ≈ lineTotal. The cross-field
+    // reinforcement layer (Wave 4.3) sets row._twoWayBalanced when
+    // this holds.
+    if (parsed._twoWayBalanced === true) score += 1;
+    if (parsed.unit && UNITS_RE.test(parsed.unit)) score += 0.25;
+    return score;
+  }
+
   // Wave 4.6 — also catch S→$ at cluster start (Tesseract sometimes
   // reads "$48.00" as "S48.00"). Word-boundary anchored and requires
   // 2+ digits immediately after the S so mid-word "SS" sequences in
@@ -540,6 +611,69 @@
       }
     }
 
+    // Wave 11.5 — Strategy 2.5: per-row corridor mismatch. When the
+    // operator's history has a price corridor for a stem and the
+    // row's unitPrice falls outside [p10, p90] AND the corridor's
+    // median × this row's qty would close the math gap, propose
+    // *that* as the digit-flip candidate. Catches OCR digit-swaps
+    // the simple pair table misses (e.g., $48 → $4.80 when median
+    // is $4.20).
+    var skuHist = (typeof root !== 'undefined' && root && root.MID_SKU_HISTORY) ||
+                  (typeof require !== 'undefined' ? (function () {
+                    try { return require('./sku-history.js'); } catch (_) { return null; }
+                  })() : null);
+    if (skuHist && typeof skuHist.priceCorridor === 'function' && typeof skuHist.stemOf === 'function') {
+      for (var ci = 0; ci < rows.length; ci++) {
+        var cr = rows[ci];
+        if (!cr || typeof cr.lineTotal !== 'number' || typeof cr.qty !== 'number' || cr.qty <= 0) continue;
+        var corridor = skuHist.priceCorridor(skuHist.stemOf(cr.name), { vendor: cr.vendorDetected });
+        if (!corridor) continue;
+        var rowUnitPrice = cr.lineTotal / cr.qty;
+        if (rowUnitPrice >= corridor.p10 && rowUnitPrice <= corridor.p90) continue;
+        var proposedTotal = +(corridor.median * cr.qty).toFixed(2);
+        var altSum = +(sum - cr.lineTotal + proposedTotal).toFixed(2);
+        if (Math.abs(altSum - printedTotal) < 0.05) {
+          return {
+            kind: 'digit-flip',
+            rowIdx: ci,
+            from: cr.lineTotal,
+            to: proposedTotal,
+            delta: delta,
+            corridor: corridor,
+            message: 'Line ' + (ci + 1) + ' reads $' + cr.lineTotal.toFixed(2) +
+                     ' — your last 8 invoices put it near $' + proposedTotal.toFixed(2) +
+                     ' (and the math balances).'
+          };
+        }
+      }
+    }
+
+    // Wave 11.5 — Strategy 2.7: tax / freight / fee back-fit. When
+    // the parser already found a tax-kind, surcharge-kind, or
+    // backorder-kind row whose lineTotal could "absorb" the gap
+    // (within 5%), propose updating its lineTotal rather than
+    // mutating an item row. Restaurant Depot frequently mis-OCRs
+    // the tax line; this saves an operator edit.
+    var feeKinds = { tax: true, surcharge: true, deposit: true };
+    for (var fi = 0; fi < rows.length; fi++) {
+      var fr = rows[fi];
+      if (!fr || !feeKinds[fr.kind]) continue;
+      var corrected = +(fr.lineTotal + delta).toFixed(2);
+      if (corrected < 0 || corrected > printedTotal * 0.5) continue;
+      var newSum = +(sum - fr.lineTotal + corrected).toFixed(2);
+      if (Math.abs(newSum - printedTotal) < 0.05) {
+        return {
+          kind: 'fee-fix',
+          rowIdx: fi,
+          from: fr.lineTotal,
+          to: corrected,
+          delta: delta,
+          message: 'The ' + fr.kind + ' line reads $' + fr.lineTotal.toFixed(2) +
+                   ' — if it\'s $' + corrected.toFixed(2) + ', the math balances.'
+        };
+      }
+    }
+
     // Strategy 3: missing-line hint.
     if (delta > 0 && rows.length > 0) {
       var medianTotal = rows.map(function (r) { return r.lineTotal || 0; })
@@ -692,6 +826,7 @@
     repairOcrNumerics: repairOcrNumerics,
     mergeWrappedLines: mergeWrappedLines,
     reconstructColumns: reconstructColumns,
+    beamSearchRepair:  beamSearchRepair,
     UNITS_RE: UNITS_RE
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

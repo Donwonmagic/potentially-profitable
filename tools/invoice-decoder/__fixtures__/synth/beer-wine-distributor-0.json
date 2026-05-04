@@ -1,0 +1,410 @@
+{
+  "vendor": "beer-wine-distributor",
+  "seed": 3715206792,
+  "fullText": "beer-wine-distributor\n\n1 LB CHEDDAR BLOCK $4.27\n1 CS OYSTER PANKO 5LB $25.26\n5 CS ROMAINE HEARTS 24CT $206.15\n1 CS PAPER NAPKIN 250CT $17.73\n3 BN CILANTRO $5.43\n5 CS TOMATOES VINE-RIPE $113.70\n2 CS STELLA ARTOIS 24/12 BTL $82.06\n4 LB GROUND CHUCK 80/20 $14.52\n\nTOTAL: $469.12",
+  "expectedRows": [
+    {
+      "name": "CHEDDAR BLOCK",
+      "qty": 1,
+      "unit": "lb",
+      "unitPrice": 4.27,
+      "lineTotal": 4.27,
+      "category": "dairy"
+    },
+    {
+      "name": "OYSTER PANKO 5LB",
+      "qty": 1,
+      "unit": "cs",
+      "unitPrice": 25.26,
+      "lineTotal": 25.26,
+      "category": "dry-goods"
+    },
+    {
+      "name": "ROMAINE HEARTS 24CT",
+      "qty": 5,
+      "unit": "cs",
+      "unitPrice": 41.23,
+      "lineTotal": 206.15,
+      "category": "produce"
+    },
+    {
+      "name": "PAPER NAPKIN 250CT",
+      "qty": 1,
+      "unit": "cs",
+      "unitPrice": 17.73,
+      "lineTotal": 17.73,
+      "category": "paper"
+    },
+    {
+      "name": "CILANTRO",
+      "qty": 3,
+      "unit": "bn",
+      "unitPrice": 1.81,
+      "lineTotal": 5.43,
+      "category": "produce"
+    },
+    {
+      "name": "TOMATOES VINE-RIPE",
+      "qty": 5,
+      "unit": "cs",
+      "unitPrice": 22.74,
+      "lineTotal": 113.7,
+      "category": "produce"
+    },
+    {
+      "name": "STELLA ARTOIS 24/12 BTL",
+      "qty": 2,
+      "unit": "cs",
+      "unitPrice": 41.03,
+      "lineTotal": 82.06,
+      "category": "beverage"
+    },
+    {
+      "name": "GROUND CHUCK 80/20",
+      "qty": 4,
+      "unit": "lb",
+      "unitPrice": 3.63,
+      "lineTotal": 14.52,
+      "category": "protein"
+    }
+  ],
+  "expectedTotal": 469.12,
+  "wordBoxes": [
+    {
+      "text": "beer-wine-distributor",
+      "x0": 0,
+      "y0": 0,
+      "x1": 147,
+      "y1": 14
+    },
+    {
+      "text": "1",
+      "x0": 0,
+      "y0": 28,
+      "x1": 7,
+      "y1": 42
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 28,
+      "x1": 28,
+      "y1": 42
+    },
+    {
+      "text": "CHEDDAR",
+      "x0": 35,
+      "y0": 28,
+      "x1": 84,
+      "y1": 42
+    },
+    {
+      "text": "BLOCK",
+      "x0": 91,
+      "y0": 28,
+      "x1": 126,
+      "y1": 42
+    },
+    {
+      "text": "$4.27",
+      "x0": 133,
+      "y0": 28,
+      "x1": 168,
+      "y1": 42
+    },
+    {
+      "text": "1",
+      "x0": 0,
+      "y0": 42,
+      "x1": 7,
+      "y1": 56
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 42,
+      "x1": 28,
+      "y1": 56
+    },
+    {
+      "text": "OYSTER",
+      "x0": 35,
+      "y0": 42,
+      "x1": 77,
+      "y1": 56
+    },
+    {
+      "text": "PANKO",
+      "x0": 84,
+      "y0": 42,
+      "x1": 119,
+      "y1": 56
+    },
+    {
+      "text": "5LB",
+      "x0": 126,
+      "y0": 42,
+      "x1": 147,
+      "y1": 56
+    },
+    {
+      "text": "$25.26",
+      "x0": 154,
+      "y0": 42,
+      "x1": 196,
+      "y1": 56
+    },
+    {
+      "text": "5",
+      "x0": 0,
+      "y0": 56,
+      "x1": 7,
+      "y1": 70
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 56,
+      "x1": 28,
+      "y1": 70
+    },
+    {
+      "text": "ROMAINE",
+      "x0": 35,
+      "y0": 56,
+      "x1": 84,
+      "y1": 70
+    },
+    {
+      "text": "HEARTS",
+      "x0": 91,
+      "y0": 56,
+      "x1": 133,
+      "y1": 70
+    },
+    {
+      "text": "24CT",
+      "x0": 140,
+      "y0": 56,
+      "x1": 168,
+      "y1": 70
+    },
+    {
+      "text": "$206.15",
+      "x0": 175,
+      "y0": 56,
+      "x1": 224,
+      "y1": 70
+    },
+    {
+      "text": "1",
+      "x0": 0,
+      "y0": 70,
+      "x1": 7,
+      "y1": 84
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 70,
+      "x1": 28,
+      "y1": 84
+    },
+    {
+      "text": "PAPER",
+      "x0": 35,
+      "y0": 70,
+      "x1": 70,
+      "y1": 84
+    },
+    {
+      "text": "NAPKIN",
+      "x0": 77,
+      "y0": 70,
+      "x1": 119,
+      "y1": 84
+    },
+    {
+      "text": "250CT",
+      "x0": 126,
+      "y0": 70,
+      "x1": 161,
+      "y1": 84
+    },
+    {
+      "text": "$17.73",
+      "x0": 168,
+      "y0": 70,
+      "x1": 210,
+      "y1": 84
+    },
+    {
+      "text": "3",
+      "x0": 0,
+      "y0": 84,
+      "x1": 7,
+      "y1": 98
+    },
+    {
+      "text": "BN",
+      "x0": 14,
+      "y0": 84,
+      "x1": 28,
+      "y1": 98
+    },
+    {
+      "text": "CILANTRO",
+      "x0": 35,
+      "y0": 84,
+      "x1": 91,
+      "y1": 98
+    },
+    {
+      "text": "$5.43",
+      "x0": 98,
+      "y0": 84,
+      "x1": 133,
+      "y1": 98
+    },
+    {
+      "text": "5",
+      "x0": 0,
+      "y0": 98,
+      "x1": 7,
+      "y1": 112
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 98,
+      "x1": 28,
+      "y1": 112
+    },
+    {
+      "text": "TOMATOES",
+      "x0": 35,
+      "y0": 98,
+      "x1": 91,
+      "y1": 112
+    },
+    {
+      "text": "VINE-RIPE",
+      "x0": 98,
+      "y0": 98,
+      "x1": 161,
+      "y1": 112
+    },
+    {
+      "text": "$113.70",
+      "x0": 168,
+      "y0": 98,
+      "x1": 217,
+      "y1": 112
+    },
+    {
+      "text": "2",
+      "x0": 0,
+      "y0": 112,
+      "x1": 7,
+      "y1": 126
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 112,
+      "x1": 28,
+      "y1": 126
+    },
+    {
+      "text": "STELLA",
+      "x0": 35,
+      "y0": 112,
+      "x1": 77,
+      "y1": 126
+    },
+    {
+      "text": "ARTOIS",
+      "x0": 84,
+      "y0": 112,
+      "x1": 126,
+      "y1": 126
+    },
+    {
+      "text": "24/12",
+      "x0": 133,
+      "y0": 112,
+      "x1": 168,
+      "y1": 126
+    },
+    {
+      "text": "BTL",
+      "x0": 175,
+      "y0": 112,
+      "x1": 196,
+      "y1": 126
+    },
+    {
+      "text": "$82.06",
+      "x0": 203,
+      "y0": 112,
+      "x1": 245,
+      "y1": 126
+    },
+    {
+      "text": "4",
+      "x0": 0,
+      "y0": 126,
+      "x1": 7,
+      "y1": 140
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 126,
+      "x1": 28,
+      "y1": 140
+    },
+    {
+      "text": "GROUND",
+      "x0": 35,
+      "y0": 126,
+      "x1": 77,
+      "y1": 140
+    },
+    {
+      "text": "CHUCK",
+      "x0": 84,
+      "y0": 126,
+      "x1": 119,
+      "y1": 140
+    },
+    {
+      "text": "80/20",
+      "x0": 126,
+      "y0": 126,
+      "x1": 161,
+      "y1": 140
+    },
+    {
+      "text": "$14.52",
+      "x0": 168,
+      "y0": 126,
+      "x1": 210,
+      "y1": 140
+    },
+    {
+      "text": "TOTAL:",
+      "x0": 0,
+      "y0": 154,
+      "x1": 42,
+      "y1": 168
+    },
+    {
+      "text": "$469.12",
+      "x0": 49,
+      "y0": 154,
+      "x1": 98,
+      "y1": 168
+    }
+  ]
+}

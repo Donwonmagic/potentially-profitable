@@ -638,6 +638,123 @@ assertEq('SAMPLE_RECIPE_ES is Tinga de pollo', PC.SAMPLE_RECIPE_ES.name, 'Tinga 
 }
 
 // ============================================================
+// 5. Wave 10 — cross-tool spine integration
+// ============================================================
+//
+// MuntinContext stub for Plate Cost integration tests. Mirrors the
+// in-tab API surface (read/write/merge/get/clear/subscribe + the
+// Wave 10 helpers added in tools/_shared/context-bus.js).
+
+function makeContextStub(initial) {
+  const state = Object.assign({}, initial || {});
+  const subscribers = [];
+  return {
+    read: () => Object.assign({}, state),
+    write: (next) => { Object.assign(state, next || {}); return true; },
+    merge: (delta) => {
+      Object.assign(state, delta || {});
+      subscribers.forEach(fn => { try { fn({ changedKeys: Object.keys(delta || {}) }); } catch (_) {} });
+      return true;
+    },
+    get: (k) => state[k],
+    clear: () => { for (const k of Object.keys(state)) delete state[k]; },
+    subscribe: (fn) => {
+      subscribers.push(fn);
+      return () => { const i = subscribers.indexOf(fn); if (i >= 0) subscribers.splice(i, 1); };
+    },
+    pushDishCostEntry: (dishKey, entry) => {
+      if (!dishKey || !entry) return false;
+      const map = state.dishCostHistory || {};
+      const ring = Array.isArray(map[dishKey]) ? map[dishKey].slice() : [];
+      ring.unshift(Object.assign({ ts: Date.now() }, entry));
+      if (ring.length > 12) ring.length = 12;
+      map[dishKey] = ring;
+      state.dishCostHistory = map;
+      return true;
+    },
+    readDishCostHistory: (dishKey) => {
+      const map = state.dishCostHistory || {};
+      return dishKey ? (map[dishKey] || []) : map;
+    },
+    latestSkuByStem: () => {
+      const map = state.skuHistory || {};
+      const out = {};
+      for (const stem of Object.keys(map)) {
+        const list = map[stem];
+        if (!Array.isArray(list) || !list.length) continue;
+        const latest = list[0];
+        if (typeof latest.comparablePrice === 'number' && latest.comparableUnit) {
+          out[stem] = { perBaseUnit: latest.comparablePrice, baseUnit: latest.comparableUnit, vendor: latest.vendor || null, ts: latest.ts || 0 };
+        } else if (typeof latest.unitPrice === 'number' && latest.unit) {
+          out[stem] = { perBaseUnit: latest.unitPrice, baseUnit: latest.unit, vendor: latest.vendor || null, ts: latest.ts || 0 };
+        }
+      }
+      return out;
+    },
+    readRecipeStaleQueue: () => state.recipeStaleQueue || [],
+    clearRecipeStaleQueue: () => { delete state.recipeStaleQueue; return true; },
+    ackRecipeStaleEntries: (predicate) => {
+      if (typeof predicate !== 'function') return false;
+      state.recipeStaleQueue = (state.recipeStaleQueue || []).filter(e => !predicate(e));
+      return true;
+    },
+    STORAGE_BUDGET: { YIELD_LEARNINGS_CAP: 100, SKU_MATCH_LEARNINGS_CAP: 100 }
+  };
+}
+
+// 5a — recordYieldObservation feeds yieldLearnings; lookupYield then
+// returns the recorded value over the canonical YIELD_TABLE.
+{
+  const ctx = makeContextStub({ yieldLearnings: {} });
+  const stem = { extractStem: (s) => String(s || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim() };
+  global.window = { MuntinContext: ctx, MuntinStem: stem };
+  // Without a recorded observation, lookupYield falls back to canonical.
+  near('Wave 10.12 yield (canonical) for romaine before observation', PC.lookupYield('romaine'), 0.75, 0.01);
+  // Operator weighs 10 lb roll, gets 6.5 lb usable → 0.65 yield.
+  const ok = PC.recordYieldObservation('romaine', 10, 6.5);
+  assert('Wave 10.12 recordYieldObservation returns true on valid input', ok === true);
+  // Now lookupYield returns the operator's 0.65, not the canonical 0.75.
+  near('Wave 10.12 yield after observation flips to operator-recorded 0.65', PC.lookupYield('romaine'), 0.65, 0.01);
+  // Out-of-range observations rejected.
+  assert('Wave 10.12 recordYieldObservation rejects yield > 1.05', PC.recordYieldObservation('halibut', 10, 12) === false);
+  assert('Wave 10.12 recordYieldObservation rejects yield < 0.05', PC.recordYieldObservation('halibut', 10, 0.4) === false);
+  delete global.window;
+}
+
+// 5b — rolling average across multiple observations.
+{
+  const ctx = makeContextStub({ yieldLearnings: {} });
+  const stem = { extractStem: (s) => String(s || '').toLowerCase().trim() };
+  global.window = { MuntinContext: ctx, MuntinStem: stem };
+  PC.recordYieldObservation('beef tenderloin', 10, 6);   // 0.60
+  PC.recordYieldObservation('beef tenderloin', 10, 7);   // 0.70
+  PC.recordYieldObservation('beef tenderloin', 10, 8);   // 0.80
+  near('Wave 10.12 rolling yield averages to 0.70 across 3 obs', PC.lookupYield('beef tenderloin'), 0.70, 0.01);
+  delete global.window;
+}
+
+// 5c — context stub round-trip: pushDishCostEntry → readDishCostHistory.
+{
+  const ctx = makeContextStub();
+  ctx.pushDishCostEntry('Burger', { foodCost: 3.20, vendorTrigger: 'sysco' });
+  ctx.pushDishCostEntry('Burger', { foodCost: 3.40, vendorTrigger: 'sysco' });
+  const ring = ctx.readDishCostHistory('Burger');
+  assert('Wave 10.0d dishCostHistory ring stores newest-first', ring.length === 2 && ring[0].foodCost === 3.40);
+}
+
+// 5d — recipeStaleQueue ack-by-predicate.
+{
+  const ctx = makeContextStub({ recipeStaleQueue: [
+    { dish: 'Burger', stem: 'ground beef', deltaPct: 12 },
+    { dish: 'Caesar', stem: 'romaine',     deltaPct: 18 }
+  ]});
+  ctx.ackRecipeStaleEntries((e) => e.dish === 'Burger');
+  const remaining = ctx.readRecipeStaleQueue();
+  assert('Wave 10.5 ackRecipeStaleEntries removes matched, keeps rest',
+         remaining.length === 1 && remaining[0].dish === 'Caesar');
+}
+
+// ============================================================
 console.log('\n' + (failures === 0
   ? '✓ all plate-cost assertions pass'
   : '✗ ' + failures + ' plate-cost assertion(s) failed'));

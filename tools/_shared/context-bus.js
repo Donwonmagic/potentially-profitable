@@ -231,9 +231,168 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // Wave 10.0d — storage budget contract.
+  //
+  // The MuntinContext payload sits in localStorage which the browser
+  // caps at ~5 MB. Workshop quota concerns surface earlier — at
+  // ~250 KB the read/write hot path starts measurably slowing on
+  // older Android devices. Each ring-buffer cap below is sized so
+  // the worst-case combined payload fits well under 200 KB:
+  //
+  //   invoiceTrend         12 × ~600 B          =   ~7 KB
+  //   skuHistory          200 × 24 × ~120 B    =  ~58 KB  (stem store)
+  //   contractPrices      100 × ~120 B          =  ~12 KB
+  //   dishCostHistory      60 × 12 × ~80 B     =  ~58 KB  (per-dish ring)
+  //   recipeStaleQueue    100 × ~150 B          =  ~15 KB
+  //   skuMatchLearnings   100 × ~120 B          =  ~12 KB
+  //   yieldLearnings      100 × ~80 B           =   ~8 KB
+  //   invoiceLearnings    100 × ~100 B          =  ~10 KB
+  //   invoiceItemsEnc      one envelope, capped at ~30 KB ciphertext
+  //   miscellaneous flags / tokens                ~5 KB
+  //                                              -------
+  //                                              ~215 KB
+  //
+  // The latestByStem() projection is computed sync from skuHistory[0]
+  // entries — no separate store, no extra bytes.
+  //
+  // Ring caps (RECIPE_*, etc) are exported so consumers can sanity-
+  // check before writes; runtime enforcement happens inside each
+  // helper's eviction logic.
+  // ----------------------------------------------------------------
+  var STORAGE_BUDGET = {
+    DISH_COST_HISTORY_DISH_CAP:   60,
+    DISH_COST_HISTORY_RING_DEPTH: 12,
+    RECIPE_STALE_QUEUE_CAP:       100,
+    SKU_MATCH_LEARNINGS_CAP:      100,
+    YIELD_LEARNINGS_CAP:          100,
+    SOFT_PAYLOAD_BYTES_TARGET:    200 * 1024
+  };
+
+  // Per-dish ring buffer write helper. Stores `{ts, foodCost,
+  // foodCostPct, vendorTrigger}` slim entries for at-most
+  // DISH_COST_HISTORY_RING_DEPTH revisions per dish, across at most
+  // DISH_COST_HISTORY_DISH_CAP dishes (newest-touched-first eviction).
+  function pushDishCostEntry(dishKey, entry) {
+    if (!dishKey || !entry || typeof entry !== 'object') return false;
+    var current = read();
+    var map = (current && current.dishCostHistory) || {};
+    var ring = Array.isArray(map[dishKey]) ? map[dishKey].slice() : [];
+    ring.unshift({
+      ts:           entry.ts || Date.now(),
+      foodCost:     +(entry.foodCost || 0).toFixed(4),
+      foodCostPct:  (typeof entry.foodCostPct === 'number') ? +entry.foodCostPct.toFixed(4) : null,
+      vendorTrigger: entry.vendorTrigger || null
+    });
+    if (ring.length > STORAGE_BUDGET.DISH_COST_HISTORY_RING_DEPTH) {
+      ring = ring.slice(0, STORAGE_BUDGET.DISH_COST_HISTORY_RING_DEPTH);
+    }
+    map[dishKey] = ring;
+    // Evict oldest-touched dishes when we exceed the dish cap.
+    var keys = Object.keys(map);
+    if (keys.length > STORAGE_BUDGET.DISH_COST_HISTORY_DISH_CAP) {
+      keys
+        .map(function (k) { return { k: k, ts: (map[k][0] && map[k][0].ts) || 0 }; })
+        .sort(function (a, b) { return a.ts - b.ts; })
+        .slice(0, keys.length - STORAGE_BUDGET.DISH_COST_HISTORY_DISH_CAP)
+        .forEach(function (e) { delete map[e.k]; });
+    }
+    current.dishCostHistory = map;
+    return write(current);
+  }
+
+  function readDishCostHistory(dishKey) {
+    var current = read();
+    var map = (current && current.dishCostHistory) || {};
+    if (!dishKey) return map;
+    return Array.isArray(map[dishKey]) ? map[dishKey] : [];
+  }
+
+  // ----------------------------------------------------------------
+  // Wave 10.3 (cross-tool sync read) — latestSkuByStem.
+  //
+  // Mirrors MID_SKU_HISTORY.latestByStem(), but lives on the context
+  // bus so cross-tool consumers (Plate Cost, Menu Engineering,
+  // Margin Math, Cost Pulse) don't need to load invoice-decoder
+  // modules just to read the operator's own stem→latest-price
+  // projection. Returns:
+  //
+  //   { [stem]: { perBaseUnit, baseUnit, vendor, ts, qty, unit, source } }
+  //
+  // Pure read — no side effects, no decrypt. Computed sync from the
+  // existing skuHistory[stem][0] entries; no parallel store.
+  // ----------------------------------------------------------------
+  function latestSkuByStem(opts) {
+    opts = opts || {};
+    var current = read();
+    var map = (current && current.skuHistory) || {};
+    var out = {};
+    var minObs = opts.minObservations || 1;
+    var stems = Object.keys(map);
+    for (var i = 0; i < stems.length; i++) {
+      var stem = stems[i];
+      var list = map[stem];
+      if (!Array.isArray(list) || list.length < minObs) continue;
+      var latest = list[0];
+      if (!latest) continue;
+      if (typeof latest.comparablePrice === 'number' && latest.comparableUnit) {
+        out[stem] = {
+          perBaseUnit: +latest.comparablePrice.toFixed(4),
+          baseUnit:    latest.comparableUnit,
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'pack'
+        };
+      } else if (typeof latest.unitPrice === 'number' && latest.unit) {
+        out[stem] = {
+          perBaseUnit: +latest.unitPrice.toFixed(4),
+          baseUnit:    String(latest.unit).toLowerCase(),
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'unit'
+        };
+      }
+    }
+    return out;
+  }
+
+  // ----------------------------------------------------------------
+  // Wave 10.5 helper — recipeStaleQueue read/clear.
+  //
+  // Plate Cost's stale banner reads on cold load, decrements/dismisses
+  // entries the operator handles. Pure helpers; runtime state lives
+  // in MuntinContext.recipeStaleQueue.
+  // ----------------------------------------------------------------
+  function readRecipeStaleQueue() {
+    var current = read();
+    return Array.isArray(current && current.recipeStaleQueue) ? current.recipeStaleQueue : [];
+  }
+  function clearRecipeStaleQueue() {
+    var current = read();
+    if (current && Array.isArray(current.recipeStaleQueue)) {
+      current.recipeStaleQueue = [];
+      return write(current);
+    }
+    return true;
+  }
+  function ackRecipeStaleEntries(predicate) {
+    if (typeof predicate !== 'function') return false;
+    var current = read();
+    if (!current || !Array.isArray(current.recipeStaleQueue)) return true;
+    current.recipeStaleQueue = current.recipeStaleQueue.filter(function (e) {
+      return !predicate(e);
+    });
+    return write(current);
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     SCHEMA_VERSION: SCHEMA_VERSION,
+    STORAGE_BUDGET: STORAGE_BUDGET,
     read: read,
     write: write,
     merge: merge,
@@ -243,7 +402,13 @@
     writeInvoiceItems: writeInvoiceItems,
     readInvoiceItems:  readInvoiceItems,
     pushTrendEntry:    pushTrendEntry,
-    readTrend:         readTrend
+    readTrend:         readTrend,
+    pushDishCostEntry:    pushDishCostEntry,
+    readDishCostHistory:  readDishCostHistory,
+    latestSkuByStem:      latestSkuByStem,
+    readRecipeStaleQueue: readRecipeStaleQueue,
+    clearRecipeStaleQueue: clearRecipeStaleQueue,
+    ackRecipeStaleEntries: ackRecipeStaleEntries
   };
 
   if (typeof module !== 'undefined' && module.exports) {

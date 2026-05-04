@@ -1,0 +1,424 @@
+{
+  "vendor": "shamrock",
+  "seed": 66202592,
+  "fullText": "shamrock\n\n5 LB BONELESS CHICKEN BREAST $18.55\n1 CS TOMATOES VINE-RIPE $22.96\n4 CS PAPER NAPKIN 250CT $70.60\n3 CS STELLA ARTOIS 24/12 BTL $141.27\n1 BN CILANTRO $2.27\n4 CS ROMAINE HEARTS 24CT $166.00\n2 GAL OLIVE OIL EXTRA VIRGIN $44.78\n3 LB GROUND CHUCK 80/20 $13.02\n\nTOTAL: $479.45",
+  "expectedRows": [
+    {
+      "name": "BONELESS CHICKEN BREAST",
+      "qty": 5,
+      "unit": "lb",
+      "unitPrice": 3.71,
+      "lineTotal": 18.55,
+      "category": "protein"
+    },
+    {
+      "name": "TOMATOES VINE-RIPE",
+      "qty": 1,
+      "unit": "cs",
+      "unitPrice": 22.96,
+      "lineTotal": 22.96,
+      "category": "produce"
+    },
+    {
+      "name": "PAPER NAPKIN 250CT",
+      "qty": 4,
+      "unit": "cs",
+      "unitPrice": 17.65,
+      "lineTotal": 70.6,
+      "category": "paper"
+    },
+    {
+      "name": "STELLA ARTOIS 24/12 BTL",
+      "qty": 3,
+      "unit": "cs",
+      "unitPrice": 47.09,
+      "lineTotal": 141.27,
+      "category": "beverage"
+    },
+    {
+      "name": "CILANTRO",
+      "qty": 1,
+      "unit": "bn",
+      "unitPrice": 2.27,
+      "lineTotal": 2.27,
+      "category": "produce"
+    },
+    {
+      "name": "ROMAINE HEARTS 24CT",
+      "qty": 4,
+      "unit": "cs",
+      "unitPrice": 41.5,
+      "lineTotal": 166,
+      "category": "produce"
+    },
+    {
+      "name": "OLIVE OIL EXTRA VIRGIN",
+      "qty": 2,
+      "unit": "gal",
+      "unitPrice": 22.39,
+      "lineTotal": 44.78,
+      "category": "dry-goods"
+    },
+    {
+      "name": "GROUND CHUCK 80/20",
+      "qty": 3,
+      "unit": "lb",
+      "unitPrice": 4.34,
+      "lineTotal": 13.02,
+      "category": "protein"
+    }
+  ],
+  "expectedTotal": 479.45,
+  "wordBoxes": [
+    {
+      "text": "shamrock",
+      "x0": 0,
+      "y0": 0,
+      "x1": 56,
+      "y1": 14
+    },
+    {
+      "text": "5",
+      "x0": 0,
+      "y0": 28,
+      "x1": 7,
+      "y1": 42
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 28,
+      "x1": 28,
+      "y1": 42
+    },
+    {
+      "text": "BONELESS",
+      "x0": 35,
+      "y0": 28,
+      "x1": 91,
+      "y1": 42
+    },
+    {
+      "text": "CHICKEN",
+      "x0": 98,
+      "y0": 28,
+      "x1": 147,
+      "y1": 42
+    },
+    {
+      "text": "BREAST",
+      "x0": 154,
+      "y0": 28,
+      "x1": 196,
+      "y1": 42
+    },
+    {
+      "text": "$18.55",
+      "x0": 203,
+      "y0": 28,
+      "x1": 245,
+      "y1": 42
+    },
+    {
+      "text": "1",
+      "x0": 0,
+      "y0": 42,
+      "x1": 7,
+      "y1": 56
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 42,
+      "x1": 28,
+      "y1": 56
+    },
+    {
+      "text": "TOMATOES",
+      "x0": 35,
+      "y0": 42,
+      "x1": 91,
+      "y1": 56
+    },
+    {
+      "text": "VINE-RIPE",
+      "x0": 98,
+      "y0": 42,
+      "x1": 161,
+      "y1": 56
+    },
+    {
+      "text": "$22.96",
+      "x0": 168,
+      "y0": 42,
+      "x1": 210,
+      "y1": 56
+    },
+    {
+      "text": "4",
+      "x0": 0,
+      "y0": 56,
+      "x1": 7,
+      "y1": 70
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 56,
+      "x1": 28,
+      "y1": 70
+    },
+    {
+      "text": "PAPER",
+      "x0": 35,
+      "y0": 56,
+      "x1": 70,
+      "y1": 70
+    },
+    {
+      "text": "NAPKIN",
+      "x0": 77,
+      "y0": 56,
+      "x1": 119,
+      "y1": 70
+    },
+    {
+      "text": "250CT",
+      "x0": 126,
+      "y0": 56,
+      "x1": 161,
+      "y1": 70
+    },
+    {
+      "text": "$70.60",
+      "x0": 168,
+      "y0": 56,
+      "x1": 210,
+      "y1": 70
+    },
+    {
+      "text": "3",
+      "x0": 0,
+      "y0": 70,
+      "x1": 7,
+      "y1": 84
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 70,
+      "x1": 28,
+      "y1": 84
+    },
+    {
+      "text": "STELLA",
+      "x0": 35,
+      "y0": 70,
+      "x1": 77,
+      "y1": 84
+    },
+    {
+      "text": "ARTOIS",
+      "x0": 84,
+      "y0": 70,
+      "x1": 126,
+      "y1": 84
+    },
+    {
+      "text": "24/12",
+      "x0": 133,
+      "y0": 70,
+      "x1": 168,
+      "y1": 84
+    },
+    {
+      "text": "BTL",
+      "x0": 175,
+      "y0": 70,
+      "x1": 196,
+      "y1": 84
+    },
+    {
+      "text": "$141.27",
+      "x0": 203,
+      "y0": 70,
+      "x1": 252,
+      "y1": 84
+    },
+    {
+      "text": "1",
+      "x0": 0,
+      "y0": 84,
+      "x1": 7,
+      "y1": 98
+    },
+    {
+      "text": "BN",
+      "x0": 14,
+      "y0": 84,
+      "x1": 28,
+      "y1": 98
+    },
+    {
+      "text": "CILANTRO",
+      "x0": 35,
+      "y0": 84,
+      "x1": 91,
+      "y1": 98
+    },
+    {
+      "text": "$2.27",
+      "x0": 98,
+      "y0": 84,
+      "x1": 133,
+      "y1": 98
+    },
+    {
+      "text": "4",
+      "x0": 0,
+      "y0": 98,
+      "x1": 7,
+      "y1": 112
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 98,
+      "x1": 28,
+      "y1": 112
+    },
+    {
+      "text": "ROMAINE",
+      "x0": 35,
+      "y0": 98,
+      "x1": 84,
+      "y1": 112
+    },
+    {
+      "text": "HEARTS",
+      "x0": 91,
+      "y0": 98,
+      "x1": 133,
+      "y1": 112
+    },
+    {
+      "text": "24CT",
+      "x0": 140,
+      "y0": 98,
+      "x1": 168,
+      "y1": 112
+    },
+    {
+      "text": "$166.00",
+      "x0": 175,
+      "y0": 98,
+      "x1": 224,
+      "y1": 112
+    },
+    {
+      "text": "2",
+      "x0": 0,
+      "y0": 112,
+      "x1": 7,
+      "y1": 126
+    },
+    {
+      "text": "GAL",
+      "x0": 14,
+      "y0": 112,
+      "x1": 35,
+      "y1": 126
+    },
+    {
+      "text": "OLIVE",
+      "x0": 42,
+      "y0": 112,
+      "x1": 77,
+      "y1": 126
+    },
+    {
+      "text": "OIL",
+      "x0": 84,
+      "y0": 112,
+      "x1": 105,
+      "y1": 126
+    },
+    {
+      "text": "EXTRA",
+      "x0": 112,
+      "y0": 112,
+      "x1": 147,
+      "y1": 126
+    },
+    {
+      "text": "VIRGIN",
+      "x0": 154,
+      "y0": 112,
+      "x1": 196,
+      "y1": 126
+    },
+    {
+      "text": "$44.78",
+      "x0": 203,
+      "y0": 112,
+      "x1": 245,
+      "y1": 126
+    },
+    {
+      "text": "3",
+      "x0": 0,
+      "y0": 126,
+      "x1": 7,
+      "y1": 140
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 126,
+      "x1": 28,
+      "y1": 140
+    },
+    {
+      "text": "GROUND",
+      "x0": 35,
+      "y0": 126,
+      "x1": 77,
+      "y1": 140
+    },
+    {
+      "text": "CHUCK",
+      "x0": 84,
+      "y0": 126,
+      "x1": 119,
+      "y1": 140
+    },
+    {
+      "text": "80/20",
+      "x0": 126,
+      "y0": 126,
+      "x1": 161,
+      "y1": 140
+    },
+    {
+      "text": "$13.02",
+      "x0": 168,
+      "y0": 126,
+      "x1": 210,
+      "y1": 140
+    },
+    {
+      "text": "TOTAL:",
+      "x0": 0,
+      "y0": 154,
+      "x1": 42,
+      "y1": 168
+    },
+    {
+      "text": "$479.45",
+      "x0": 49,
+      "y0": 154,
+      "x1": 98,
+      "y1": 168
+    }
+  ]
+}
