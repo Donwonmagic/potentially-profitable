@@ -128,24 +128,71 @@ function _renderText(vendorTpl, rows) {
   ].join('\n');
 }
 
-// Generate stub bbox boxes by laying out characters in a 12-pt
-// monospace grid. Used by Wave 4.1 column reconstruction tests.
-function _renderBoxes(text) {
-  const charW = 7, lineH = 14;
+// Generate stub bbox boxes by laying out tokens in a column-aware
+// grid. Header lines flow free-form (the operator's letterhead);
+// body lines (qty / unit / desc / price) snap to fixed column
+// x-ranges so reconstructColumns can find real gutter valleys
+// between columns. Used by Wave 4.1 / 14.7 column reconstruction
+// tests.
+function _renderBoxes(text, rows) {
+  const charW = 7, lineH = 18;
   const out = [];
-  text.split('\n').forEach((line, y) => {
+  const lines = text.split('\n');
+  // Body lines occupy a fixed column layout with gutter gaps:
+  //   qty   x: 30-70   (30 wide)
+  //   unit  x: 90-140  (50 wide)
+  //   desc  x: 170-580 (410 wide)
+  //   price x: 620-700 (80 wide)
+  // Gaps of ~20-40px between columns ensure visible density valleys.
+  const COLS = {
+    qty:   { x0: 30,  x1: 70 },
+    unit:  { x0: 90,  x1: 140 },
+    desc:  { x0: 170, x1: 580 },
+    price: { x0: 620, x1: 700 }
+  };
+  const TOTAL_LINE_RE = /^TOTAL:/i;
+  const HEADER_KEYWORDS = /^(SYSCO|RESTAURANT|FOOD|US\s*FOODS|GFS|GORDON|SHAMROCK|SYGMA|PFG|CHENEY|KEITH|IMPERIAL|KEHE|UNFI|COSTCO|WEBSTAURANT|MAINES|BALDOR|FRESHPOINT|H\s*MART|VERITIV|HILAND|REPUBLIC|SOUTHERN|CUSTOMER|ASIAN|MEXICAN|DAIRY|BEER|INVOICE|FACTURA)/i;
+  const isBodyLine = (line, idx) => {
+    // A line is a "body" line if it starts with a digit (qty) and
+    // contains a $ amount.
+    if (!line) return false;
+    if (HEADER_KEYWORDS.test(line)) return false;
+    if (TOTAL_LINE_RE.test(line)) return false;
+    return /^\d+\s+\w+\s+.+\$\d+/.test(line);
+  };
+  lines.forEach((line, y) => {
+    if (!line.trim()) return;
+    const lineY = y * lineH;
     const tokens = line.split(/\s+/).filter(Boolean);
-    let xCursor = 0;
-    tokens.forEach((tok) => {
-      out.push({
-        text: tok,
-        x0: xCursor * charW,
-        y0: y * lineH,
-        x1: (xCursor + tok.length) * charW,
-        y1: (y + 1) * lineH
+    if (isBodyLine(line, y)) {
+      // Body row: split tokens into [qty][unit][desc...][price].
+      // First token = qty, second = unit, last = price ($ prefix),
+      // everything between = desc.
+      const qty = tokens[0];
+      const unit = tokens[1];
+      const price = tokens[tokens.length - 1];
+      const descTokens = tokens.slice(2, -1);
+      out.push({ text: qty,  confidence: 92, bbox: { x0: COLS.qty.x0,  x1: COLS.qty.x0  + qty.length * charW,  y0: lineY, y1: lineY + lineH } });
+      out.push({ text: unit, confidence: 92, bbox: { x0: COLS.unit.x0, x1: COLS.unit.x0 + unit.length * charW, y0: lineY, y1: lineY + lineH } });
+      let descX = COLS.desc.x0;
+      descTokens.forEach((tok) => {
+        const tokW = tok.length * charW;
+        if (descX + tokW > COLS.desc.x1) return;     // truncate if overflow
+        out.push({ text: tok, confidence: 92, bbox: { x0: descX, x1: descX + tokW, y0: lineY, y1: lineY + lineH } });
+        descX += tokW + charW;
       });
-      xCursor += tok.length + 1;
-    });
+      out.push({ text: price, confidence: 92, bbox: { x0: COLS.price.x0, x1: COLS.price.x0 + price.length * charW, y0: lineY, y1: lineY + lineH } });
+    } else {
+      // Header / total / blank — flow free-form across the desc band
+      // so they don't disrupt column projection.
+      let xCursor = COLS.desc.x0;
+      tokens.forEach((tok) => {
+        const tokW = tok.length * charW;
+        if (xCursor + tokW > COLS.desc.x1 + 100) return;
+        out.push({ text: tok, confidence: 92, bbox: { x0: xCursor, x1: xCursor + tokW, y0: lineY, y1: lineY + lineH } });
+        xCursor += tokW + charW;
+      });
+    }
   });
   return out;
 }
@@ -200,6 +247,8 @@ function check() {
   }
   const files = fs.readdirSync(outDir).filter(f => f.endsWith('.json'));
   let fails = 0;
+  let columnPasses = 0;
+  let columnAttempts = 0;
   files.forEach((f) => {
     const fixture = JSON.parse(fs.readFileSync(path.join(outDir, f), 'utf8'));
     const lines = fixture.fullText.split('\n').map(text => ({ text: text, confidence: 92 }));
@@ -211,14 +260,42 @@ function check() {
     const totalDelta = totalParsed != null ? Math.abs(totalParsed - fixture.expectedTotal) : null;
     const totalOk = totalParsed == null || totalDelta < 0.05;
     const ok = within && totalOk;
+
+    // Wave 14.7 — column reconstruction validation. Each fixture
+    // ships a wordBoxes[] array that mirrors the bbox shape Tesseract
+    // would emit. Run reconstructColumns on those words and assert
+    // it returns ≥3 columns with sensible labels (desc / qty /
+    // price / total). Independent of the row-parse pass — failing
+    // here only flags column wiring, not parse correctness.
+    let colNote = '';
+    if (Array.isArray(fixture.wordBoxes) && fixture.wordBoxes.length >= 30 && PARSE.reconstructColumns) {
+      columnAttempts++;
+      try {
+        const columns = PARSE.reconstructColumns(fixture.wordBoxes, { minColumns: 3 });
+        if (columns && columns.length >= 3) {
+          const labels = columns.map(c => c.label).join('/');
+          columnPasses++;
+          colNote = `  cols=${columns.length} (${labels})`;
+        } else {
+          colNote = '  cols=null';
+        }
+      } catch (err) {
+        colNote = `  cols=err(${err.message})`;
+      }
+    }
+
     console.log(`${ok ? 'PASS' : 'FAIL'}  ${f}  rows=${itemRows.length}/${expected}` +
-                (totalParsed != null ? `  total=$${totalParsed} (Δ${totalDelta.toFixed(2)})` : '  total=skipped'));
+                (totalParsed != null ? `  total=$${totalParsed} (Δ${totalDelta.toFixed(2)})` : '  total=skipped') +
+                colNote);
     if (!ok) fails++;
   });
   console.log('');
   console.log(fails === 0
     ? `✓ all ${files.length} synthetic-vendor fixtures parse within tolerance`
     : `✗ ${fails} of ${files.length} fixtures failed`);
+  if (columnAttempts > 0) {
+    console.log(`  ${columnPasses}/${columnAttempts} column reconstructions returned ≥3 labeled columns`);
+  }
   process.exit(fails === 0 ? 0 : 1);
 }
 

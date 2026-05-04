@@ -821,6 +821,7 @@ header.nav{min-height:64px}
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script src="./card-render.js?v=20260425-me5"></script>
 <script src="./cascade.js?v=20260504-w10-8" defer></script>
+<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <!-- IIFE_PLACEHOLDER -->
 <script>
 /* Menu Engineering Matrix — input + matrix rendering.
@@ -1957,6 +1958,26 @@ header.nav{min-height:64px}
       if (window.plausible) window.plausible('Menu Engineering Export', { props: { format: 'zip' } });
     });
   }
+})();
+
+/* Wave 14.8 — discoverability pulse for the dish-quadrant cascade tag.
+ * The italic chip is appended next to a dish name when a saved invoice
+ * shifts that dish across the Star/Plowhorse/Puzzle/Dog quadrants.
+ * Operators rarely notice it the first time; this lights it up. */
+(function(){
+  if (!window.MuntinWhatsNew) return;
+  window.MuntinWhatsNew.register({
+    toolKey: 'menu-engineering',
+    surfaces: [
+      {
+        id: 'cascade-tag',
+        target: '.me-cascade-tag',
+        title: 'New: dish moved quadrant',
+        body: 'When invoice prices shift a dish across the matrix (e.g. Star → Puzzle), this tag explains why and points to the underlying ingredient.',
+        shipDate: '2026-04-30'
+      }
+    ]
+  });
 })();
 </script>
 </body>

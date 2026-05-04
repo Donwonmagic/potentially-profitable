@@ -698,19 +698,38 @@
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
       parsed._rawOcrText = fullText;
-      renderParsed(parsed);
-      clearPhaseLadder();
-      setProgress(100);
-      hideStatus();
-      if (window.plausible) {
-        window.plausible('Invoice Decoder Read', { props: {
-          rows_bucket: parsed.rows.length < 10 ? '<10' :
-                       parsed.rows.length < 25 ? '10-24' :
-                       parsed.rows.length < 50 ? '25-49' : '50+',
-          vendor_detected: parsed.vendor ? 'true' : 'false',
-          delta_known: parsed.deltaPct != null ? 'true' : 'false'
-        } });
+      // Wave 14.7 — column-aware refinement. Runs ONLY when the
+      // matched vendor template carries columnsEnabled:true (Sysco
+      // first; other vendors enable as their fixtures validate).
+      // Costs one extra OCR pass on page-1 gentle canvas to surface
+      // word bboxes — gated so non-Sysco invoices pay nothing.
+      var columnsRefinePromise = Promise.resolve(parsed);
+      if (enrichment && enrichment.columnsEnabled &&
+          typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
+          typeof MID_OCR.recognizeCanvasWithWords === 'function' &&
+          pendingPages.length && pendingPages[0].gentle) {
+        columnsRefinePromise = MID_OCR.recognizeCanvasWithWords(pendingPages[0].gentle, {
+          lang: 'eng+spa', psm: 6
+        }).then(function (wordResult) {
+          var words = (wordResult && wordResult.words) || [];
+          return MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, words);
+        }).catch(function () { return parsed; });
       }
+      columnsRefinePromise.then(function () {
+        renderParsed(parsed);
+        clearPhaseLadder();
+        setProgress(100);
+        hideStatus();
+        if (window.plausible) {
+          window.plausible('Invoice Decoder Read', { props: {
+            rows_bucket: parsed.rows.length < 10 ? '<10' :
+                         parsed.rows.length < 25 ? '10-24' :
+                         parsed.rows.length < 50 ? '25-49' : '50+',
+            vendor_detected: parsed.vendor ? 'true' : 'false',
+            delta_known: parsed.deltaPct != null ? 'true' : 'false'
+          } });
+        }
+      });   // close columnsRefinePromise.then
       });   // close enrichmentPromise.then
     }).catch(function (err) {
       clearPhaseLadder();
@@ -787,9 +806,73 @@
   // CAT_LABEL_EN/ES so iOS / Android present the system picker.
   var parsedRowsState = []; // Live array the user is editing.
 
+  // Wave 14.4 — cell-history popover. Anchored to the clock button;
+  // dismissed on outside click or Esc.
+  function _showCellHistoryPopover(anchor, rowIdx, field) {
+    var existing = document.getElementById('idCellHistoryPop');
+    if (existing) try { existing.parentNode.removeChild(existing); } catch (_) {}
+    if (typeof MID_CELL_HISTORY === 'undefined') return;
+    var stack = MID_CELL_HISTORY.list(rowIdx, field);
+    if (!stack || stack.length < 2) return;
+    var pop = document.createElement('div');
+    pop.id = 'idCellHistoryPop';
+    pop.className = 'id-cell-history-pop';
+    pop.setAttribute('role', 'menu');
+    pop.innerHTML =
+      '<p class="id-cell-history-h">' + escHtml(tt('Edit history', 'Historial')) + '</p>' +
+      '<ul class="id-cell-history-list">' + stack.map(function (entry, i) {
+        var label = entry.source === 'ocr'
+          ? tt('OCR original', 'OCR original')
+          : (i === 0 ? tt('Now (current)', 'Ahora (actual)') : tt('Earlier', 'Anterior'));
+        var disp = (entry.value == null || entry.value === '') ? '—' : String(entry.value);
+        return '<li class="id-cell-history-row">' +
+          '<span class="id-cell-history-label">' + escHtml(label) + '</span>' +
+          '<span class="id-cell-history-value">' + escHtml(disp) + '</span>' +
+          (i === 0 ? '' : '<button type="button" class="id-cell-history-restore" data-restore-idx="' + i + '">' + escHtml(tt('Restore', 'Restaurar')) + '</button>') +
+        '</li>';
+      }).join('') + '</ul>';
+    document.body.appendChild(pop);
+    var rect = anchor.getBoundingClientRect();
+    pop.style.left = Math.max(8, Math.min(window.innerWidth - 280, rect.left)) + 'px';
+    pop.style.top  = (rect.bottom + window.scrollY + 6) + 'px';
+    function _close(ev) {
+      if (ev && pop.contains(ev.target)) return;
+      try { pop.parentNode.removeChild(pop); } catch (_) {}
+      document.removeEventListener('click', _close, true);
+      document.removeEventListener('keydown', _onKey);
+    }
+    function _onKey(ev) { if (ev.key === 'Escape') _close(); }
+    setTimeout(function () {
+      document.addEventListener('click', _close, true);
+      document.addEventListener('keydown', _onKey);
+    }, 0);
+    pop.addEventListener('click', function (ev) {
+      var btn = ev.target.closest && ev.target.closest('.id-cell-history-restore');
+      if (!btn) return;
+      var i = parseInt(btn.getAttribute('data-restore-idx'), 10);
+      if (!isFinite(i)) return;
+      var entry = MID_CELL_HISTORY.restore(rowIdx, field, i);
+      if (entry) commitCellEdit(rowIdx, field, entry.value);
+      _close();
+    });
+  }
+
   function commitCellEdit(rowIdx, field, value) {
     if (!parsedRowsState[rowIdx]) return;
     var row = parsedRowsState[rowIdx];
+    // Wave 14.4 — record the pre-edit value into the cell-history
+    // ring so the operator can restore it within the session. We
+    // capture the OCR-original on the first edit (source='ocr')
+    // and every subsequent value as source='edit'.
+    try {
+      if (typeof MID_CELL_HISTORY !== 'undefined' && MID_CELL_HISTORY.record) {
+        var existing = MID_CELL_HISTORY.list(rowIdx, field);
+        if (!existing.length) {
+          MID_CELL_HISTORY.record(rowIdx, field, row[field], 'ocr');
+        }
+        MID_CELL_HISTORY.record(rowIdx, field, value, 'edit');
+      }
+    } catch (_) {}
     // Wave 5.3 — disputes against the auto-confirm tier. If this row
     // was auto-confirmed (live or shadow), an operator edit is a
     // false positive that throttles the auto-confirm gate.
@@ -1858,6 +1941,11 @@
               '<button type="button" class="id-pulse-contract-btn" id="idCopyReconNote">' +
                 escHtml(tt('Copy reconciliation note', 'Copiar nota de conciliación')) +
               '</button>' +
+              '<button type="button" class="id-pulse-contract-btn id-pulse-contract-btn-share" id="idShareCatch" title="' +
+                escHtml(tt('Share an image you can drop in a chefs\' chat. SKU names are redacted by default.',
+                           'Comparte una imagen para un chat de chefs. Los nombres de SKU se ocultan por defecto.')) + '">' +
+                escHtml(tt('Share this catch ↗', 'Compartir este hallazgo ↗')) +
+              '</button>' +
             '</div>';
         }
       }
@@ -1894,6 +1982,37 @@
             if (window.plausible) {
               try { window.plausible('Invoice Decoder Recon Note Copied'); } catch (_) {}
             }
+          });
+        } catch (_) {}
+      });
+    }
+    // Wave 14.2 — Share-this-catch button composes a 1080×1350 PNG
+    // via MID_INSIGHT_CARD with SKU names redacted by default. Falls
+    // back gracefully when the composer module isn't loaded.
+    var shareBtn = document.getElementById('idShareCatch');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function () {
+        if (typeof MID_INSIGHT_CARD === 'undefined' || !MID_INSIGHT_CARD.share) {
+          shareBtn.textContent = tt('Composer unavailable', 'Compositor no disponible');
+          return;
+        }
+        try {
+          var ovNow = MID_CONTRACT_WATCH.buildOveragesFor(parsed.rows);
+          var data = {
+            vendor: vendor,
+            totalOvercharge: ovNow.total,
+            lineCount: ovNow.count,
+            items: ovNow.lines.map(function (entry) {
+              return { label: entry.row.name, overcharge: entry.overage };
+            })
+          };
+          var orig = shareBtn.textContent;
+          shareBtn.textContent = tt('Building card…', 'Generando tarjeta…');
+          MID_INSIGHT_CARD.share('contract-overage', data, { redact: true }).then(function () {
+            shareBtn.textContent = tt('Shared ✓', 'Compartido ✓');
+            setTimeout(function () { shareBtn.textContent = orig; }, 2000);
+          }).catch(function () {
+            shareBtn.textContent = orig;
           });
         } catch (_) {}
       });
@@ -2215,13 +2334,26 @@
       }
     } catch (_) {}
 
+    // Wave 14.4 — cell-history clock indicator. Shown when the
+    // operator has edited a cell at least once in this session. Click
+    // opens a small popover; alt-click restores the most recent
+    // pre-edit value silently.
+    function _historyClock(field) {
+      if (typeof MID_CELL_HISTORY === 'undefined' || !MID_CELL_HISTORY.list) return '';
+      var stack = MID_CELL_HISTORY.list(idx, field);
+      if (!stack || stack.length < 2) return '';
+      return '<button type="button" class="id-cell-clock" data-cell-history="' + idx + ':' + field + '" tabindex="-1" aria-label="' +
+        escHtml(tt('Show edit history', 'Ver historial')) + '" title="' +
+        escHtml(tt(stack.length + ' values logged · click to view', stack.length + ' valores · clic para ver')) +
+      '">↺</button>';
+    }
     return '<li class="id-parsed-row" data-conf="' + band + '" data-kind="' + escHtml(r.kind || 'item') + '" data-idx="' + idx + '"' + anomalyAttr + ' title="' + escHtml(r.raw || '') + '">' +
       '<span class="id-row-glyph-cell" aria-hidden="true">' + glyph + '</span>' +
       '<span class="id-parsed-name" data-edit="name" tabindex="0" role="button">' +
-        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip + ghostName +
+        escHtml(r.name) + chip + learnedChip + kindTag + driftChip + contractBadge + crossVendorChip + subChip + mathFixChip + ghostName + _historyClock('name') +
       '</span>' +
-      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + ghostQty + '</span>' +
-      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + ghostPrice + '</span>' +
+      '<span class="id-parsed-qty"  data-edit="qty"  tabindex="0" role="button">' + escHtml(qtyText) + ghostQty + _historyClock('qty') + '</span>' +
+      '<span class="id-parsed-price" data-edit="lineTotal" tabindex="0" role="button">' + escHtml(priceText) + ghostPrice + _historyClock('lineTotal') + '</span>' +
       '<span class="id-row-fielddots" aria-label="' + escHtml(tt('Per-field confidence', 'Confianza por campo')) + '">' + dots + '</span>' +
       actions +
     '</li>';
@@ -2236,6 +2368,28 @@
         e.preventDefault();
         __expandedQuiet = true;
         rerenderRows();
+        return;
+      }
+      // Wave 14.4 — cell-history clock. Click opens a small popover
+      // listing the last 5 values for this (row, field). Alt-click
+      // skips the popover and restores the most recent pre-edit
+      // value silently.
+      var clockBtn = e.target.closest && e.target.closest('.id-cell-clock');
+      if (clockBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var spec = String(clockBtn.getAttribute('data-cell-history') || '').split(':');
+        var hIdx = parseInt(spec[0], 10);
+        var hField = spec[1];
+        if (!isFinite(hIdx) || !hField) return;
+        if (e.altKey) {
+          var stack = MID_CELL_HISTORY.list(hIdx, hField);
+          // stack[0] is the most recent edit; stack[1] is the value
+          // before that edit — that's what "undo" should restore.
+          if (stack.length >= 2) commitCellEdit(hIdx, hField, stack[1].value);
+          return;
+        }
+        _showCellHistoryPopover(clockBtn, hIdx, hField);
         return;
       }
       // Wave 5.4 — accept a smart-default ghost-text suggestion.
@@ -2533,6 +2687,8 @@
       try {
         history.replaceState({}, '', window.location.pathname);
       } catch (_) {}
+      // Wave 14.2 (Self-Check v2) — mark share-target channel as used.
+      try { if (typeof MID_SELF_CHECK !== 'undefined' && MID_SELF_CHECK.markChannel) MID_SELF_CHECK.markChannel('shareTarget'); } catch (_) {}
       if (window.plausible) {
         try { window.plausible('Invoice Decoder Share Received'); } catch (_) {}
       }
@@ -2589,6 +2745,8 @@
           }
           classifyRows(parsed.rows, { vendor: parsed.vendor });
           renderParsed(parsed);
+          // Wave 14.2 (Self-Check v2) — mark bookmarklet channel.
+          try { if (typeof MID_SELF_CHECK !== 'undefined' && MID_SELF_CHECK.markChannel) MID_SELF_CHECK.markChannel('bookmarklet'); } catch (_) {}
           if (window.plausible) {
             try { window.plausible('Invoice Decoder Bookmarklet Receive', { props: { vendor: payload.vendor || 'unknown' } }); } catch (_) {}
           }
@@ -2613,6 +2771,12 @@
       if (typeof MID_ONBOARDING !== 'undefined' && MID_ONBOARDING.markFirstRun) {
         MID_ONBOARDING.markFirstRun();
       }
+    } catch (_) {}
+    // Wave 14.6 — surface the manual tour launcher so operators who
+    // skipped the auto-tour (or want a refresher) can re-enter.
+    try {
+      var tl = document.getElementById('idTourLauncher');
+      if (tl) tl.hidden = false;
     } catch (_) {}
     // Wave 5.3 — auto-confirm shadow-then-on. Run the predicate
     // before render so the row badges and counters reflect it. Math
@@ -2910,6 +3074,17 @@
           '<button type="button" class="id-export-btn" data-fmt="xero">Xero</button>' +
           '<button type="button" class="id-export-btn" data-fmt="contpaqi">ContPaqi / Aspel</button>' +
           '<button type="button" class="id-export-btn" data-fmt="generic">' + tt('Generic ledger CSV', 'CSV genérico') + '</button>' +
+        '</div>' +
+        // Wave 13.3 — annotated PDF for bookkeepers. Lazy-loads
+        // pdf-lib on first click; ~470 KB cost never paid by non-users.
+        '<div class="id-export-row id-export-row-pdf">' +
+          '<button type="button" class="id-export-btn id-export-btn-pdf" data-fmt="annotated-pdf">' +
+            '📄 ' + tt('Annotated PDF for bookkeeper', 'PDF anotado para tu contador') +
+          '</button>' +
+          '<span class="id-export-hint">' +
+            tt('Overlays your corrections + flagged rows + contract overages on the original. Built on this device.',
+               'Sobrepone tus correcciones + filas marcadas + sobreprecios de contrato sobre el original. Generado en este dispositivo.') +
+          '</span>' +
         '</div>' +
       '</details>';
     host.hidden = false;
@@ -3581,8 +3756,39 @@
     var btn = e.target.closest && e.target.closest('.id-export-btn');
     if (!btn) return;
     var fmt = btn.getAttribute('data-fmt');
-    if (!fmt || typeof MID_ACCOUNTANT === 'undefined') return;
+    if (!fmt) return;
     e.preventDefault();
+    // Wave 13.3 — annotated PDF export branch. Routes through the
+    // pdf-annotate module (lazy-loads pdf-lib on first click).
+    if (fmt === 'annotated-pdf') {
+      if (typeof MID_PDF_ANNOTATE === 'undefined' || !MID_PDF_ANNOTATE.exportAnnotated) {
+        alert(tt('Annotated PDF module unavailable.',
+                 'Módulo de PDF anotado no disponible.'));
+        return;
+      }
+      var orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = tt('Building annotated PDF…', 'Generando PDF anotado…');
+      var packed = Object.assign({}, lastReadParsed || {}, {
+        rows: parsedRowsState.slice(),
+        sumParsed: (lastReadParsed && lastReadParsed.sumParsed) || null,
+        vendor:    (lastReadParsed && lastReadParsed.vendor) || null,
+        originalBuffer: (lastReadParsed && lastReadParsed.originalBuffer) || null
+      });
+      MID_PDF_ANNOTATE.exportAnnotated(packed, {})
+        .then(function () {
+          btn.textContent = tt('Saved ✓', 'Guardado ✓');
+          setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1800);
+        })
+        .catch(function (err) {
+          btn.textContent = orig;
+          btn.disabled = false;
+          alert(tt('Annotated PDF export failed: ' + (err && err.message ? err.message : 'unknown error'),
+                   'Falló el PDF anotado: ' + (err && err.message ? err.message : 'error desconocido')));
+        });
+      return;
+    }
+    if (typeof MID_ACCOUNTANT === 'undefined') return;
     try {
       var inv = buildAccountantInvoice();
       var artifact = MID_ACCOUNTANT.exportInvoice(fmt, inv, {});
@@ -4044,6 +4250,10 @@
       // Wave 4.3 — preserve PDF text so auto-learn can fingerprint
       // unrecognized vendors from the PDF path too.
       parsed._rawOcrText = result.fullText || '';
+      // Wave 13.3 — retain the original PDF buffer so the annotated-
+      // export module can lay annotations on top of the operator's
+      // own source PDF rather than emit a summary-only fallback.
+      if (result.originalBuffer) parsed.originalBuffer = result.originalBuffer;
       setProgress(95);
       renderParsed(parsed);
       hideStatus();

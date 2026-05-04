@@ -258,6 +258,7 @@ header.nav{min-height:64px}
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
+<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script>
 (function () {
   'use strict';
@@ -426,6 +427,29 @@ header.nav{min-height:64px}
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+  }
+
+  // Wave 14.8 — pulse the cross-tool surfaces operators didn't ask for.
+  if (window.MuntinWhatsNew) {
+    window.MuntinWhatsNew.register({
+      toolKey: 'cost-pulse',
+      surfaces: [
+        {
+          id: 'recipe-ripple',
+          target: '#cpRippleCard',
+          title: 'New: invoice ripple into your dishes',
+          body: 'When you save an invoice, this card shows which dishes moved up or down — and which ingredient drove it.',
+          shipDate: '2026-04-25'
+        },
+        {
+          id: 'dish-drift',
+          target: '#cpDriftDishCard',
+          title: 'New: contract drift, per dish',
+          body: 'Per-portion contract overcharges roll up into the dishes that use them most. Reconcile with your distributor in two taps.',
+          shipDate: '2026-04-29'
+        }
+      ]
+    });
   }
 
   if (window.plausible) {

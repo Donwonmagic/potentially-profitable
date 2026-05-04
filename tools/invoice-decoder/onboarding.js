@@ -205,6 +205,11 @@
           if (typeof root.MID_DECODER_RENDER === 'function') {
             root.MID_DECODER_RENDER(parsed);
           }
+          // Wave 14.6 — let the first-run tour module know a sample
+          // has rendered, so it can spotlight the cross-tool spine.
+          try {
+            root.dispatchEvent(new CustomEvent('mid:sample-rendered', { detail: { id: id } }));
+          } catch (_) {}
           markSampleCompleted(id);
           if (root.plausible) {
             try { root.plausible('Invoice Decoder Sample Started', { props: { fixture: id } }); } catch (_) {}

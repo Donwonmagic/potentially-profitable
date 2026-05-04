@@ -163,6 +163,7 @@
     var lang = opts.lang || 'eng+spa';
     var psm = opts.psm || 6;
     var onProgress = opts.onProgress || function () {};
+    var withWords = !!(opts && opts.withWords);
     return loadTesseract().then(function (Tesseract) {
       // Wave 2.4 — explicit lease/release so concurrent recognize()
       // calls actually run on parallel pool workers when available.
@@ -172,13 +173,23 @@
           onProgress(0.95);
           var blocks = (result && result.data && result.data.blocks) || [];
           var lines = [];
+          var allWords = withWords ? [] : null;
           blocks.forEach(function (b) {
             (b.paragraphs || []).forEach(function (p) {
               (p.lines || []).forEach(function (ln) {
+                var lineWords = (ln.words || []).map(function (w) {
+                  return {
+                    text: String(w.text || '').trim(),
+                    confidence: typeof w.confidence === 'number' ? w.confidence : 0,
+                    bbox: w.bbox || null
+                  };
+                }).filter(function (w) { return w.text.length > 0; });
+                if (allWords && lineWords.length) Array.prototype.push.apply(allWords, lineWords);
                 lines.push({
                   text: (ln.text || '').replace(/\s+/g, ' ').trim(),
                   confidence: typeof ln.confidence === 'number' ? ln.confidence : 0,
-                  bbox: ln.bbox || null
+                  bbox: ln.bbox || null,
+                  words: withWords ? lineWords : undefined
                 });
               });
             });
@@ -191,13 +202,26 @@
           }
           var meanConf = lines.length ? lines.reduce(function (a, b) { return a + b.confidence; }, 0) / lines.length : 0;
           _releaseWorker(lease);
-          return { text: result.data.text || '', lines: lines, meanConfidence: meanConf };
+          return {
+            text: result.data.text || '',
+            lines: lines,
+            meanConfidence: meanConf,
+            words: allWords
+          };
         }).catch(function (err) {
           _releaseWorker(lease);
           throw err;
         });
       });
     });
+  }
+  // Wave 4.1 wiring helper — convenience entry point for the columns
+  // orchestrator. Always sets withWords:true so reconstructColumns
+  // can project word-density along X.
+  function recognizeCanvasWithWords(canvas, opts) {
+    opts = opts || {};
+    opts.withWords = true;
+    return recognizeCanvas(canvas, opts);
   }
 
   // Multi-pass: run aggressive + gentle preset, take per-line max
@@ -464,6 +488,7 @@
     recognizeMultiPass:   recognizeMultiPass,
     adaptiveReread:       adaptiveReread,
     recognizeRegion:      recognizeRegion,
+    recognizeCanvasWithWords: recognizeCanvasWithWords,
     REGION_WHITELISTS:    WHITELISTS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

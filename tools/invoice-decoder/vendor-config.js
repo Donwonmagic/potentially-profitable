@@ -28,6 +28,11 @@
   var TESSDATA_VERSION    = '4.0.0';
 
   var HASHWASM_VERSION = '4.11.0';
+  // Wave 13.3 — pdf-lib for annotated PDF export. Lazy-loaded only
+  // when the operator triggers Save-as-annotated-PDF; ~470 KB cost
+  // never paid by non-users. Pinned alongside the other vendors so
+  // the SRI manifest covers it once vendor-pin.mjs runs.
+  var PDFLIB_VERSION = '1.17.1';
 
   // Self-hosted URLs the runtime prefers.
   var SELF = {
@@ -38,7 +43,8 @@
     xlsx:          '/assets/vendor/xlsx@'              + XLSX_VERSION     + '/xlsx.mjs',
     tessCorePath:  '/assets/vendor/tesseract.js-core@' + TESSCORE_VERSION + '/',
     tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/',
-    argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js'
+    argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js',
+    pdflib:        '/assets/vendor/pdf-lib@'           + PDFLIB_VERSION   + '/pdf-lib.min.js'
   };
 
   // Legacy CDN fallbacks. Only used when the build's vendor-pin
@@ -50,7 +56,8 @@
     tesseract:   'https://cdn.jsdelivr.net/npm/tesseract.js@'   + TESSERACT_VERSION + '/dist/tesseract.min.js',
     pdfjs:       'https://cdn.jsdelivr.net/npm/pdfjs-dist@'     + PDFJS_VERSION    + '/build/pdf.min.mjs',
     pdfjsWorker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@'     + PDFJS_VERSION    + '/build/pdf.worker.min.mjs',
-    xlsx:        'https://cdn.jsdelivr.net/npm/xlsx@'           + XLSX_VERSION     + '/xlsx.mjs'
+    xlsx:        'https://cdn.jsdelivr.net/npm/xlsx@'           + XLSX_VERSION     + '/xlsx.mjs',
+    pdflib:      'https://cdn.jsdelivr.net/npm/pdf-lib@'        + PDFLIB_VERSION   + '/dist/pdf-lib.min.js'
   };
 
   // Cached integrity manifest (loaded once per session).
@@ -148,6 +155,7 @@
     TESSCORE_VERSION:  TESSCORE_VERSION,
     TESSDATA_VERSION:  TESSDATA_VERSION,
     HASHWASM_VERSION:  HASHWASM_VERSION,
+    PDFLIB_VERSION:    PDFLIB_VERSION,
     loadManifest:   loadManifest,
     resolve:        resolve,
     loadScript:     loadScript,

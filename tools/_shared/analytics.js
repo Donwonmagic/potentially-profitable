@@ -144,6 +144,9 @@
       'Invoice Decoder Seasonality',
       'Invoice Decoder Supplier Health',
       'Invoice Decoder Theft Flag',
+      'Invoice Decoder Tour Completed',
+      'Invoice Decoder Tour Skipped',
+      'Invoice Decoder Tour Started',
       'Invoice Decoder Vendor Switch ROI',
       'Invoice Decoder Voice Query',
       'Invoice Decoder What-If',
@@ -207,6 +210,12 @@
       'Plate Cost OCR',
       'Plate Cost Push',
       'Plate Cost Signature',
+      // Wave 14.8 — cross-tool "what's new" pulse on surfaces operators
+      // gained when the Invoice Decoder spine landed. Tool + surface ID
+      // are bounded (per registry), no operator data carried.
+      'Whats New Clicked Through',
+      'Whats New Dismissed',
+      'Whats New Opened',
     ],
     // Library — content engagement events.
     library: [

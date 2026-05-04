@@ -107,13 +107,20 @@
   }
 
   // Best-effort copy-to-clipboard with a tiny synchronous fallback.
+  // Wave 14.2 (Self-Check v2) — mark clipboard channel as used so the
+  // Privacy Self-Check report surfaces an honest verdict; the OS
+  // clipboard is outside Muntin's control even though the operator
+  // initiated the write.
   function copyToClipboard(text) {
     if (!text) return Promise.resolve(false);
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(text).then(function () { return true; })
-        .catch(function () { return _legacyCopy(text); });
+    function _mark() {
+      try { if (root && root.MID_SELF_CHECK && root.MID_SELF_CHECK.markChannel) root.MID_SELF_CHECK.markChannel('clipboard'); } catch (_) {}
     }
-    return Promise.resolve(_legacyCopy(text));
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () { _mark(); return true; })
+        .catch(function () { var ok = _legacyCopy(text); if (ok) _mark(); return ok; });
+    }
+    var ok = _legacyCopy(text); if (ok) _mark(); return Promise.resolve(ok);
   }
   function _legacyCopy(text) {
     try {

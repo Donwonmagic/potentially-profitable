@@ -1277,6 +1277,7 @@ header.nav{min-height:64px}
 <script src="./margin-math.js?v=20260428-mm5"></script>
 <script src="/assets/workbench-save.js?v=20260428-sprint0-tokens"></script>
 <script src="./cascade.js?v=20260504-w10-10" defer></script>
+<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script>
 /* Shared scenario sync. Each calculator IIFE registers its own
  * getState() closure; on user interaction we re-encode the full
@@ -2689,6 +2690,26 @@ header.nav{min-height:64px}
         flash('Copy from your address bar');
       }
     });
+  });
+})();
+
+/* Wave 14.8 — discoverability pulse for the cross-tool break-even
+ * shift banner. The banner only renders when MuntinContext receives
+ * a contract-drift signal from the Invoice Decoder, so the pill
+ * lights up the first time it does. */
+(function(){
+  if (!window.MuntinWhatsNew) return;
+  window.MuntinWhatsNew.register({
+    toolKey: 'margin-math',
+    surfaces: [
+      {
+        id: 'cascade-banner',
+        target: '#mmCascadeBanner',
+        title: 'New: break-even shift from your invoices',
+        body: 'When invoice prices move enough to shift a calculator output, this banner explains by how much and why. Computed locally.',
+        shipDate: '2026-04-30'
+      }
+    ]
   });
 })();
 </script>
