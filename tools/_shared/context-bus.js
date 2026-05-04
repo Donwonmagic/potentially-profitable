@@ -308,6 +308,87 @@
     return Array.isArray(map[dishKey]) ? map[dishKey] : [];
   }
 
+  // ----------------------------------------------------------------
+  // Wave 10.3 (cross-tool sync read) — latestSkuByStem.
+  //
+  // Mirrors MID_SKU_HISTORY.latestByStem(), but lives on the context
+  // bus so cross-tool consumers (Plate Cost, Menu Engineering,
+  // Margin Math, Cost Pulse) don't need to load invoice-decoder
+  // modules just to read the operator's own stem→latest-price
+  // projection. Returns:
+  //
+  //   { [stem]: { perBaseUnit, baseUnit, vendor, ts, qty, unit, source } }
+  //
+  // Pure read — no side effects, no decrypt. Computed sync from the
+  // existing skuHistory[stem][0] entries; no parallel store.
+  // ----------------------------------------------------------------
+  function latestSkuByStem(opts) {
+    opts = opts || {};
+    var current = read();
+    var map = (current && current.skuHistory) || {};
+    var out = {};
+    var minObs = opts.minObservations || 1;
+    var stems = Object.keys(map);
+    for (var i = 0; i < stems.length; i++) {
+      var stem = stems[i];
+      var list = map[stem];
+      if (!Array.isArray(list) || list.length < minObs) continue;
+      var latest = list[0];
+      if (!latest) continue;
+      if (typeof latest.comparablePrice === 'number' && latest.comparableUnit) {
+        out[stem] = {
+          perBaseUnit: +latest.comparablePrice.toFixed(4),
+          baseUnit:    latest.comparableUnit,
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'pack'
+        };
+      } else if (typeof latest.unitPrice === 'number' && latest.unit) {
+        out[stem] = {
+          perBaseUnit: +latest.unitPrice.toFixed(4),
+          baseUnit:    String(latest.unit).toLowerCase(),
+          vendor:      latest.vendor || null,
+          ts:          latest.ts || 0,
+          qty:         latest.qty || null,
+          unit:        latest.unit || null,
+          source:      'unit'
+        };
+      }
+    }
+    return out;
+  }
+
+  // ----------------------------------------------------------------
+  // Wave 10.5 helper — recipeStaleQueue read/clear.
+  //
+  // Plate Cost's stale banner reads on cold load, decrements/dismisses
+  // entries the operator handles. Pure helpers; runtime state lives
+  // in MuntinContext.recipeStaleQueue.
+  // ----------------------------------------------------------------
+  function readRecipeStaleQueue() {
+    var current = read();
+    return Array.isArray(current && current.recipeStaleQueue) ? current.recipeStaleQueue : [];
+  }
+  function clearRecipeStaleQueue() {
+    var current = read();
+    if (current && Array.isArray(current.recipeStaleQueue)) {
+      current.recipeStaleQueue = [];
+      return write(current);
+    }
+    return true;
+  }
+  function ackRecipeStaleEntries(predicate) {
+    if (typeof predicate !== 'function') return false;
+    var current = read();
+    if (!current || !Array.isArray(current.recipeStaleQueue)) return true;
+    current.recipeStaleQueue = current.recipeStaleQueue.filter(function (e) {
+      return !predicate(e);
+    });
+    return write(current);
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     SCHEMA_VERSION: SCHEMA_VERSION,
@@ -323,7 +404,11 @@
     pushTrendEntry:    pushTrendEntry,
     readTrend:         readTrend,
     pushDishCostEntry:    pushDishCostEntry,
-    readDishCostHistory:  readDishCostHistory
+    readDishCostHistory:  readDishCostHistory,
+    latestSkuByStem:      latestSkuByStem,
+    readRecipeStaleQueue: readRecipeStaleQueue,
+    clearRecipeStaleQueue: clearRecipeStaleQueue,
+    ackRecipeStaleEntries: ackRecipeStaleEntries
   };
 
   if (typeof module !== 'undefined' && module.exports) {
