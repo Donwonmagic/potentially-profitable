@@ -154,8 +154,114 @@
       id: 'repeat-last',
       pattern: /(?:say|repeat)\s+that\s+again/i,
       handler: function () { return root.__midLastVoiceAnswer || 'Nothing to repeat.'; }
+    },
+    // Wave D — briefing card actions, voice-driven. Each intent
+    // resolves to the most recent matching Finding (read from the
+    // briefing host's stashed __brief) and dispatches the same
+    // action handler the on-screen button calls. Audit trail is
+    // uniform across tap and voice paths.
+    {
+      id: 'voice-copy-dispute',
+      pattern: /^(?:copy\s+)?(?:the\s+)?dispute(?:\s+(?:for|on)\s+(.+))?$/i,
+      handler: function (m) {
+        var hint = (m[1] || '').toLowerCase();
+        var f = _findFinding('contract-overcharge', hint);
+        if (!f) return 'No contract overcharge to dispute on this invoice.';
+        var actions = root.MID_BRIEFING_ACTIONS;
+        if (!actions || !actions.dispatch) return 'Action layer not loaded.';
+        actions.dispatch(f.id, null);
+        return 'Dispute note copied for ' + (f.stem || 'item') + '.';
+      }
+    },
+    {
+      id: 'voice-mark-expected',
+      pattern: /(?:mark|that(?:'|')?s)\s+(.+?)\s+(?:as\s+)?expected/i,
+      handler: function (m) {
+        var hint = (m[1] || '').toLowerCase();
+        var f = _findFinding(null, hint);
+        if (!f) return 'No matching finding to mark as expected.';
+        var actions = root.MID_BRIEFING_ACTIONS;
+        if (!actions || !actions.dispatch) return 'Action layer not loaded.';
+        // Force the dispatch into the mark-expected path by overriding
+        // cta label briefly.
+        var origCta = f.cta;
+        f.cta = { label: 'Mark expected', payload: origCta && origCta.payload };
+        actions.dispatch(f.id, null);
+        f.cta = origCta;
+        return 'Marked ' + (f.stem || hint) + ' as expected for the season.';
+      }
+    },
+    {
+      id: 'voice-track',
+      pattern: /^track\s+(?:price\s+(?:on|of)\s+)?(.+)$/i,
+      handler: function (m) {
+        var hint = (m[1] || '').toLowerCase();
+        var f = _findFinding('price-drift', hint) || _findFinding(null, hint);
+        if (!f) return 'No matching finding to track.';
+        var actions = root.MID_BRIEFING_ACTIONS;
+        if (!actions || !actions.dispatch) return 'Action layer not loaded.';
+        var origCta = f.cta;
+        f.cta = { label: 'See history', payload: origCta && origCta.payload };
+        actions.dispatch(f.id, null);
+        f.cta = origCta;
+        return 'Tracking ' + (f.stem || hint) + '.';
+      }
+    },
+    {
+      id: 'voice-switch-vendor',
+      pattern: /switch\s+(.+?)\s+to\s+(.+)/i,
+      handler: function (m) {
+        var fromHint = (m[1] || '').toLowerCase();
+        var toHint   = (m[2] || '').toLowerCase();
+        var f = _findFinding('vendor-switch', fromHint + ' ' + toHint);
+        if (!f) return 'No vendor-switch finding matches.';
+        var actions = root.MID_BRIEFING_ACTIONS;
+        if (!actions || !actions.dispatch) return 'Action layer not loaded.';
+        actions.dispatch(f.id, null);
+        return 'Switch saved: ' + (f.evidence && f.evidence.from) + ' to ' + (f.evidence && f.evidence.to) + '.';
+      }
+    },
+    {
+      id: 'voice-share-accountant',
+      pattern: /(?:send|share)\s+(?:that|this|it)?\s*(?:to|with)\s+(?:my\s+)?accountant/i,
+      handler: function () {
+        var fs = _briefFindings();
+        var f = fs[0];
+        if (!f) return 'Nothing on the briefing to share.';
+        var actions = root.MID_BRIEFING_ACTIONS;
+        if (!actions || !actions.dispatch) return 'Action layer not loaded.';
+        var origCta = f.cta;
+        f.cta = { label: 'Share with accountant', payload: origCta && origCta.payload };
+        actions.dispatch(f.id, null);
+        f.cta = origCta;
+        return 'Sent. CSV saved to downloads, email body copied to clipboard.';
+      }
     }
   ];
+
+  // Helpers used by the briefing-action voice intents.
+  function _briefFindings() {
+    var host = root.document && root.document.getElementById && root.document.getElementById('idBriefing');
+    if (!host || !host.__brief) return [];
+    var b = host.__brief;
+    var fs = (b.findings || []).slice();
+    if (Array.isArray(b.positives)) Array.prototype.push.apply(fs, b.positives);
+    return fs;
+  }
+  function _findFinding(kind, hint) {
+    var fs = _briefFindings();
+    var hintLc = (hint || '').toLowerCase();
+    function matches(f) {
+      if (kind && f.kind !== kind) return false;
+      if (!hintLc) return true;
+      var hay = (f.message + ' ' + (f.stem || '') + ' ' + (f.vendor || '')).toLowerCase();
+      // Loose match — every word of hint must appear in hay.
+      var words = hintLc.split(/\s+/).filter(Boolean);
+      return words.every(function (w) { return hay.indexOf(w) !== -1; });
+    }
+    for (var i = 0; i < fs.length; i++) if (matches(fs[i])) return fs[i];
+    return null;
+  }
 
   function query(text) {
     if (!text) return null;
