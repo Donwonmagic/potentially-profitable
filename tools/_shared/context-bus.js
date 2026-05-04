@@ -231,9 +231,87 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // Wave 10.0d — storage budget contract.
+  //
+  // The MuntinContext payload sits in localStorage which the browser
+  // caps at ~5 MB. Workshop quota concerns surface earlier — at
+  // ~250 KB the read/write hot path starts measurably slowing on
+  // older Android devices. Each ring-buffer cap below is sized so
+  // the worst-case combined payload fits well under 200 KB:
+  //
+  //   invoiceTrend         12 × ~600 B          =   ~7 KB
+  //   skuHistory          200 × 24 × ~120 B    =  ~58 KB  (stem store)
+  //   contractPrices      100 × ~120 B          =  ~12 KB
+  //   dishCostHistory      60 × 12 × ~80 B     =  ~58 KB  (per-dish ring)
+  //   recipeStaleQueue    100 × ~150 B          =  ~15 KB
+  //   skuMatchLearnings   100 × ~120 B          =  ~12 KB
+  //   yieldLearnings      100 × ~80 B           =   ~8 KB
+  //   invoiceLearnings    100 × ~100 B          =  ~10 KB
+  //   invoiceItemsEnc      one envelope, capped at ~30 KB ciphertext
+  //   miscellaneous flags / tokens                ~5 KB
+  //                                              -------
+  //                                              ~215 KB
+  //
+  // The latestByStem() projection is computed sync from skuHistory[0]
+  // entries — no separate store, no extra bytes.
+  //
+  // Ring caps (RECIPE_*, etc) are exported so consumers can sanity-
+  // check before writes; runtime enforcement happens inside each
+  // helper's eviction logic.
+  // ----------------------------------------------------------------
+  var STORAGE_BUDGET = {
+    DISH_COST_HISTORY_DISH_CAP:   60,
+    DISH_COST_HISTORY_RING_DEPTH: 12,
+    RECIPE_STALE_QUEUE_CAP:       100,
+    SKU_MATCH_LEARNINGS_CAP:      100,
+    YIELD_LEARNINGS_CAP:          100,
+    SOFT_PAYLOAD_BYTES_TARGET:    200 * 1024
+  };
+
+  // Per-dish ring buffer write helper. Stores `{ts, foodCost,
+  // foodCostPct, vendorTrigger}` slim entries for at-most
+  // DISH_COST_HISTORY_RING_DEPTH revisions per dish, across at most
+  // DISH_COST_HISTORY_DISH_CAP dishes (newest-touched-first eviction).
+  function pushDishCostEntry(dishKey, entry) {
+    if (!dishKey || !entry || typeof entry !== 'object') return false;
+    var current = read();
+    var map = (current && current.dishCostHistory) || {};
+    var ring = Array.isArray(map[dishKey]) ? map[dishKey].slice() : [];
+    ring.unshift({
+      ts:           entry.ts || Date.now(),
+      foodCost:     +(entry.foodCost || 0).toFixed(4),
+      foodCostPct:  (typeof entry.foodCostPct === 'number') ? +entry.foodCostPct.toFixed(4) : null,
+      vendorTrigger: entry.vendorTrigger || null
+    });
+    if (ring.length > STORAGE_BUDGET.DISH_COST_HISTORY_RING_DEPTH) {
+      ring = ring.slice(0, STORAGE_BUDGET.DISH_COST_HISTORY_RING_DEPTH);
+    }
+    map[dishKey] = ring;
+    // Evict oldest-touched dishes when we exceed the dish cap.
+    var keys = Object.keys(map);
+    if (keys.length > STORAGE_BUDGET.DISH_COST_HISTORY_DISH_CAP) {
+      keys
+        .map(function (k) { return { k: k, ts: (map[k][0] && map[k][0].ts) || 0 }; })
+        .sort(function (a, b) { return a.ts - b.ts; })
+        .slice(0, keys.length - STORAGE_BUDGET.DISH_COST_HISTORY_DISH_CAP)
+        .forEach(function (e) { delete map[e.k]; });
+    }
+    current.dishCostHistory = map;
+    return write(current);
+  }
+
+  function readDishCostHistory(dishKey) {
+    var current = read();
+    var map = (current && current.dishCostHistory) || {};
+    if (!dishKey) return map;
+    return Array.isArray(map[dishKey]) ? map[dishKey] : [];
+  }
+
   var api = {
     STORAGE_KEY: STORAGE_KEY,
     SCHEMA_VERSION: SCHEMA_VERSION,
+    STORAGE_BUDGET: STORAGE_BUDGET,
     read: read,
     write: write,
     merge: merge,
@@ -243,7 +321,9 @@
     writeInvoiceItems: writeInvoiceItems,
     readInvoiceItems:  readInvoiceItems,
     pushTrendEntry:    pushTrendEntry,
-    readTrend:         readTrend
+    readTrend:         readTrend,
+    pushDishCostEntry:    pushDishCostEntry,
+    readDishCostHistory:  readDishCostHistory
   };
 
   if (typeof module !== 'undefined' && module.exports) {

@@ -50,6 +50,61 @@ const TARGETS = [
   'src/lib/email.js'
 ].map(p => path.join(repoRoot, p)).filter(p => fs.existsSync(p));
 
+// Wave 10.0b — extend egress invariant into the client-side spine.
+//
+// The runtime sentinel in tools/invoice-decoder/telemetry.js monkey-
+// patches fetch + XHR; this build-time pass catches the source-code
+// patterns that would have to land before that sentinel could fail.
+// Two directories:
+//   tools/invoice-decoder/   — the tool's own modules
+//   tools/_shared/            — cross-tool helpers consumed by the tool
+//                              (stem, sku-match, portion-bridge,
+//                              cross-vendor, dish-drift, etc).
+//
+// Forbidden runtime calls in those directories:
+//   fetch(...)                — direct network egress
+//   navigator.sendBeacon(...) — analytics-style fire-and-forget
+//   new XMLHttpRequest        — pre-fetch escape hatch
+//   new WebSocket(...)        — bidirectional channel
+//   new EventSource(...)      — server-sent events
+//   new Image().src=          — img-src exfiltration trick
+//
+// Allowlist exemptions for vendor bootstraps and same-origin save
+// flows are encoded as inline `// h8-exempt:<reason>` comments on
+// the same line — already in use elsewhere in the repo.
+
+const CLIENT_FORBIDDEN = [
+  { id: 'client-fetch',         re: /(?<!\/\/.*)\bfetch\s*\(/,                                 what: 'direct fetch() call' },
+  { id: 'client-sendBeacon',    re: /\bnavigator\s*\.\s*sendBeacon\s*\(/,                       what: 'navigator.sendBeacon() call' },
+  { id: 'client-xhr',           re: /\bnew\s+XMLHttpRequest\s*\(/,                              what: 'new XMLHttpRequest()' },
+  { id: 'client-websocket',     re: /\bnew\s+WebSocket\s*\(/,                                   what: 'new WebSocket()' },
+  { id: 'client-eventsource',   re: /\bnew\s+EventSource\s*\(/,                                 what: 'new EventSource()' },
+  { id: 'client-image-exfil',   re: /\bnew\s+Image\s*\(\s*\)\s*\.\s*src\s*=/,                   what: 'new Image().src = …  (img-src exfil pattern)' }
+];
+
+// Walk a directory recursively, collecting .js / .mjs files.
+function walkClientDir(dir) {
+  const out = [];
+  if (!fs.existsSync(dir)) return out;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      // Skip vendored third-party assets and test fixtures — those
+      // legitimately reference their own bootstraps.
+      if (entry.name === 'vendor' || entry.name === '__fixtures__' || entry.name === 'recipes') continue;
+      out.push(...walkClientDir(full));
+    } else if (/\.(m?js)$/.test(entry.name)) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+const CLIENT_TARGETS = [
+  ...walkClientDir(path.join(repoRoot, 'tools', 'invoice-decoder')),
+  ...walkClientDir(path.join(repoRoot, 'tools', '_shared'))
+];
+
 const isCheck = process.argv.includes('--check');
 let violations = 0;
 
@@ -66,6 +121,37 @@ for (const file of TARGETS) {
         console.error(`        ${lines[i].trim().slice(0, 120)}`);
         violations++;
         break;
+      }
+    }
+  }
+}
+
+// Wave 10.0b — client-side scan. Strip /* … */ blocks (including
+// multi-line) before scanning so JSDoc examples don't false-positive.
+function stripBlockComments(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, function (m) {
+    // Preserve line breaks so error line numbers stay accurate.
+    return m.replace(/[^\n]/g, ' ');
+  });
+}
+for (const file of CLIENT_TARGETS) {
+  const content = stripBlockComments(fs.readFileSync(file, 'utf8'));
+  const rawLines = fs.readFileSync(file, 'utf8').split(/\r?\n/);
+  const lines = content.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Trim line-trailing // comments.
+    const stripped = line.replace(/\/\/.*$/, '');
+    if (!stripped.trim()) continue;
+    // JSDoc continuation lines start with * — skip.
+    if (/^\s*\*/.test(stripped)) continue;
+    if (/h8-exempt|vendor-bootstrap-allowlisted/.test(line)) continue;
+    for (const pat of CLIENT_FORBIDDEN) {
+      if (pat.re.test(stripped)) {
+        const rel = path.relative(repoRoot, file);
+        console.error(`  ✗ ${rel}:${i + 1}  ${pat.id}  ${pat.what}`);
+        console.error(`        ${(rawLines[i] || '').trim().slice(0, 120)}`);
+        violations++;
       }
     }
   }
@@ -91,7 +177,7 @@ if (fs.existsSync(wbPath)) {
 }
 
 if (violations === 0) {
-  console.log(`No-invoice-egress: ${TARGETS.length} server file(s) scanned; no egress paths found.`);
+  console.log(`No-invoice-egress: ${TARGETS.length} server file(s) + ${CLIENT_TARGETS.length} client file(s) scanned; no egress paths found.`);
   process.exit(0);
 }
 
