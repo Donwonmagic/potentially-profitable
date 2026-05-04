@@ -551,11 +551,21 @@
     var doneShare = 0;
     var allLines = [];
     var fullText = '';
-    var invoiceBiasReplacements = 0;  // Wave 4.4 — sum across pages
+    var invoiceBiasReplacements   = 0;  // Wave 4.4 — sum across pages
+    var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
+    var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
 
     pendingPages.reduce(function (chain, page, pageIdx) {
       return chain.then(function () {
-        return MID_OCR.recognizeMultiPass(page.aggressive, page.gentle, {
+        // Wave 9.2 — ensemble OCR: Tesseract multipass + PaddleOCR
+        // when heavy mode is enabled by the device-tier detector.
+        // The ensemble degrades to Tesseract-only on lean devices,
+        // when Paddle's model fails to load, or when the JS bundle
+        // isn't available — no operator-visible failure.
+        var recognize = (typeof MID_OCR.recognizeMultiPassEnsemble === 'function')
+          ? MID_OCR.recognizeMultiPassEnsemble
+          : MID_OCR.recognizeMultiPass;
+        return recognize(page.aggressive, page.gentle, {
           lang: 'eng+spa',
           psm: 6,
           onProgress: function (p) {
@@ -631,6 +641,14 @@
           if (typeof ocrResult.userWordsBiasCount === 'number') {
             invoiceBiasReplacements += ocrResult.userWordsBiasCount;
           }
+          // Wave 9.2 — ensemble attribution. When Paddle contributed
+          // (replaced ≥1 Tesseract line on this page), bump the
+          // counters once per page. Telemetry is bounded to small
+          // bucket counts; no row text, no bbox.
+          if (ocrResult.ensembleStats && ocrResult.ensembleStats.replacedByPaddle > 0) {
+            invoicePaddleReplacements += ocrResult.ensembleStats.replacedByPaddle;
+            invoicePaddlePages++;
+          }
           doneShare += pageShare;
         });
       });
@@ -648,8 +666,29 @@
           MID_TELEMETRY.bump('userWordsBiasInvoices', 1);
         } catch (_) {}
       }
+      // Wave 9.2 — Paddle ensemble attribution. Same posture: pure
+      // tallies, bumped once per invoice where the second engine
+      // changed at least one line.
+      if (invoicePaddleReplacements > 0 &&
+          typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+        try {
+          MID_TELEMETRY.bump('paddleEnsembleReplacements', invoicePaddleReplacements);
+          MID_TELEMETRY.bump('paddleEnsembleInvoices', 1);
+        } catch (_) {}
+        if (window.plausible) {
+          try {
+            window.plausible('Invoice Decoder Paddle Ensemble', { props: {
+              replaced_bucket: invoicePaddleReplacements < 3 ? '<3' :
+                              invoicePaddleReplacements < 10 ? '3-9' : '10+',
+              pages_bucket:    invoicePaddlePages < 2 ? '1' :
+                              invoicePaddlePages < 4 ? '2-3' : '4+'
+            } });
+          } catch (_) {}
+        }
+      }
       var parsed = MID_PARSE.parseLines(allLines, fullText);
-      parsed._userWordsBiasCount = invoiceBiasReplacements;
+      parsed._userWordsBiasCount   = invoiceBiasReplacements;
+      parsed._paddleReplacements   = invoicePaddleReplacements;
       // Wave B3 — vendor detection. When detect() crosses
       // threshold the rows get a confidence boost (knowing the
       // column layout removes a chunk of OCR uncertainty) and

@@ -117,6 +117,7 @@
       'Invoice Decoder Ghost Accepted',
       'Invoice Decoder Installed',
       'Invoice Decoder Math Fix Applied',
+      'Invoice Decoder Paddle Ensemble',
       'Invoice Decoder PDF Extract',
       'Invoice Decoder Page Dedup',
       'Invoice Decoder Preprocess',
