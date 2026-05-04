@@ -669,6 +669,30 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    inside the wrapper instead of pushing the article wide. */
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
 .table-scroll>table{min-width:max-content}
+/* Margin-walk / operator tables (.op-table). Three columns —
+   line label, $ amount, % of ticket — that overflow on phones if left
+   as a regular table even inside .table-scroll, because the line column
+   alone fills the viewport and the numbers sit off-screen. On ≤640px
+   we drop the thead and re-grid each <tr> as
+   [label spans full width] / [$ right] / [% right], keeping every
+   value visible without a horizontal scroll gesture. */
+.op-table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.45}
+.op-table th,.op-table td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.op-table thead th{font-weight:600;font-size:13px;color:var(--ink-soft);letter-spacing:0.02em;border-bottom:2px solid var(--ink)}
+.op-table .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.op-table tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600;font-size:15.5px;padding-top:12px}
+@media (max-width:640px){
+  .op-table thead{display:none}
+  .op-table tr{display:grid;grid-template-columns:1fr auto auto;column-gap:14px;row-gap:4px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .op-table th,.op-table td{padding:0;border:0}
+  .op-table td:first-child,.op-table th:first-child{grid-column:1 / -1;font-weight:500;color:var(--ink-soft)}
+  .op-table tfoot tr{border-top:2px solid var(--ink);padding-top:12px;font-weight:600}
+  .op-table tfoot td{border-top:0;padding-top:0}
+  /* Rendered inside .table-scroll, the inner table previously got
+     min-width:max-content. Reset to auto on phones so the new grid
+     layout fills the wrapper instead of forcing horizontal overflow. */
+  .table-scroll>.op-table{min-width:0}
+}
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
@@ -996,12 +1020,13 @@ to{opacity:1;transform:translateZ(0)}
 }
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
-/* Mobile: the decorative .window is purely brand identity (aria-hidden)
-   and at full mobile width with aspect-ratio:5/6 it becomes ~480px tall —
-   a giant black-grid overlay between the contact line and the count chips
-   that pushes real content off-screen. Hide it under 720px so mobile
-   readers see content, not an oversized window-mark flash. */
-@media (max-width:720px){.window,.window-caption{display:none}}
+/* Mobile + small-tablet: the decorative .window is purely brand identity
+   (aria-hidden) and at column width with aspect-ratio:5/6 it becomes a
+   ~480px-tall black-grid overlay between the contact line and the count
+   chips that pushes real content off-screen. The hero grid itself stacks
+   1-col at 960px, so anything ≤960 hides the window-mark — landscape
+   phones (~720-915px wide) and small tablets are covered. */
+@media (max-width:960px){.window,.window-caption{display:none}}
 .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;background:var(--cream)}
 .proof-inner{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:space-between}
 .proof-label{font-size:13px;color:var(--stone);letter-spacing:0.04em}
