@@ -34,6 +34,17 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
+import crypto from 'node:crypto';
+function shellHash(name) {
+  // Content-hashed cache-bust, in lockstep with inject-css-cache-bust.mjs.
+  // Generators emit the current hash so their --check stays clean even
+  // after inject-css-cache-bust rewrites cache-busts on existing pages.
+  const abs = path.join(repoRoot, 'assets', name);
+  const h = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex');
+  return h.slice(0, 12);
+}
+const SHELL_HASH = { core: shellHash('site-core.css'), article: shellHash('site-article.css') };
+
 const checkMode  = process.argv.includes('--check');
 
 function loadModule(relPath) {
@@ -261,8 +272,8 @@ function emitThemePage(themeId, locale) {
      the two critical above-the-fold weights (Fraunces 500 for the display
      headline and Inter 400 for body copy) to keep first paint fast without
      over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -284,9 +295,9 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=20260503-shells"><link rel="stylesheet" href="/assets/site-article.css?v=20260503-shells"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=${SHELL_HASH.core}"><link rel="stylesheet" href="/assets/site-article.css?v=${SHELL_HASH.article}"></noscript>
 <style>
 .md-ts-hero{padding:48px 0 24px;border-bottom:1px solid var(--line)}
 .md-ts-group{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
