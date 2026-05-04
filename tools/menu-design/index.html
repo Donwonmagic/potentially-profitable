@@ -846,14 +846,19 @@ header.nav{min-height:64px}
 .md-preview-paper.md-shrink-2{font-size:92%}
 .md-preview-paper.md-shrink-2 .md-pp-row{padding:7px 0}
 .md-preview-paper.md-shrink-2 h2.md-pp-section{margin:24px 0 10px}
+/* Wave studio-quality (Pull-It-Back, Wave 4) — readability floors.
+   Clamp the description font-size so cafe-counter (descPt 9) at
+   shrink-4 (0.74em) doesn't fall to 6.66pt. max(8.5pt, NN%) lets
+   themes with descPt 11+ continue to scale relatively while themes
+   with smaller descPts hit the absolute 8.5pt floor. */
 .md-preview-paper.md-shrink-3{font-size:88%}
 .md-preview-paper.md-shrink-3 .md-pp-row{padding:6px 0}
 .md-preview-paper.md-shrink-3 h2.md-pp-section{margin:20px 0 8px}
-.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:0.78em}
+.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:max(8.5pt,0.82em)}
 .md-preview-paper.md-shrink-4{font-size:84%}
 .md-preview-paper.md-shrink-4 .md-pp-row{padding:5px 0}
 .md-preview-paper.md-shrink-4 h2.md-pp-section{margin:16px 0 6px}
-.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:0.74em}
+.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:max(8.5pt,0.78em)}
 
 /* Wave studio-quality — 2-column auto-promotion. When the cascade
    decides a 1-column theme would benefit from 2-column flow to fit

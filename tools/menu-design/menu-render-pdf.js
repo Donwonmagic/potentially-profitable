@@ -1469,7 +1469,17 @@
     var minTwoColW = 400;
     var paperWideEnough = (paper.w - 2 * (paper.margin || 48) >= minTwoColW);
     // Wave studio-quality — Quiet typography mode forces single-column.
-    var twoColumn = !opts.quietMode && paperWideEnough && (theme.columns === 2 || opts.forceTwoCol);
+    //
+    // Pull-It-Back-From-The-Grave (Wave 3) — also honor the per-theme
+    // twoColPromotable opt-out. Native-2-col themes (theme.columns === 2)
+    // still always run 2-col; the orchestrator's forceTwoCol flag only
+    // promotes when the active theme has opted in. Tasting / prix-fixe /
+    // chef-counter / room-service / dessert / cocktail / wine-list have
+    // twoColPromotable: false and stay 1-col regardless of cascade.
+    var promotable = theme.twoColPromotable !== false;
+    var twoColumn = !opts.quietMode
+                  && paperWideEnough
+                  && (theme.columns === 2 || (opts.forceTwoCol && promotable));
     if (twoColumn) return paginateTwoCol(blocks, doc, theme, paper);
 
     // Wave studio-quality — smart 2-page split planning. Mirror of the

@@ -513,19 +513,63 @@
     // Build the items list.
     var items = [];
     if (fitOverflow) {
+      // Wave studio-quality (Pull-It-Back, Wave 5) — replace the
+      // bare "trim N dishes" message with concrete alternatives.
+      // The cascade has already exhausted 1-col + 2-col + shrink,
+      // so the operator's three real options are bigger paper,
+      // multi-page, or fewer dishes (in that order of preserving
+      // the menu's design).
       items.push({
         kind: 'block',
         label: tt(
-          "Won't fit one page even at minimum type size — see the warning above for ways to make it fit.",
-          'No cabe en una página ni con el tipo más pequeño — mira la advertencia de arriba para ver cómo hacerlo caber.'
+          "Won't fit one page even at 2 columns + minimum type size. Three ways to fix:",
+          'No cabe en una página ni a 2 columnas + tipo mínimo. Tres formas de arreglarlo:'
         )
       });
-    } else if (fitShrunk) {
       items.push({
         kind: 'note',
         label: tt(
-          'Fit at ' + fitStep + (twoColActive ? '' : '') + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
-          'Cabe a ' + fitStep + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
+          'Switch to Tabloid (11×17) — fits ~2× the dishes at the same density.',
+          'Cambia a Tabloide (11×17) — cabe ~2× los platos a la misma densidad.'
+        )
+      });
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Enable Allow front + back (2 pages) below — splits at the closest section boundary.',
+          'Activa Permitir frente + dorso (2 páginas) abajo — corta en el límite de sección más cercano.'
+        )
+      });
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Trim a few dishes (3-pack tier).',
+          'Quita unos platos (3-pack).'
+        )
+      });
+    } else if (twoColActive && !fitShrunk) {
+      // Wave studio-quality (Pull-It-Back, Wave 5) — celebrate the
+      // 2-col promotion. When the cascade auto-promoted to native
+      // 2-col (no shrink), tell the operator WHY: their menu just
+      // looks like Pastis instead of overflowing.
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Promoted to 2 columns to fit one sheet — classic Pastis layout.',
+          'Promovido a 2 columnas para caber en una hoja — diseño Pastis clásico.'
+        )
+      });
+    } else if (fitShrunk) {
+      // Pull-It-Back, Wave 5 — note 2-col status when the cascade
+      // shrunk AND promoted (e.g. a 27-dish menu lands at "2-col 96%").
+      var twoColTag = twoColActive
+        ? tt(' (2 columns)', ' (2 columnas)')
+        : '';
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Fit at ' + fitStep + twoColTag + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
+          'Cabe a ' + fitStep + twoColTag + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
         )
       });
     }
@@ -2244,7 +2288,7 @@
       // based on actual measured heights. requestAnimationFrame waits
       // one frame so getBoundingClientRect returns settled values.
       requestAnimationFrame(function () {
-        try { pages = paginatePreviewDom(paper, frame, paperInfo); }
+        try { pages = paginatePreviewDom(paper, frame, paperInfo, theme); }
         catch (_) { pages = 1; }
         updatePreviewMeta(pages, paperInfo, dishes.length);
       });
@@ -2407,7 +2451,7 @@
     return pageBuckets;
   }
 
-  function paginatePreviewDom(paperEl, frame, paperInfo) {
+  function paginatePreviewDom(paperEl, frame, paperInfo, paginateTheme) {
     if (!paperEl || !frame || !paperInfo) return 1;
     var rect = paperEl.getBoundingClientRect();
     if (!rect.width) return 1;
@@ -2427,36 +2471,68 @@
     if (paperInfo.flow !== 'panel') {
       var allowMulti = !!(meta && meta.allowMultiPage);
       var targetPages = allowMulti ? 2 : 1;
-      // Wave studio-quality — promote-to-2-column eligibility. A real
-      // designer reaches for 2-column when the menu is dish-heavy AND
-      // the paper is wide enough that two columns of body text both
-      // hit a comfortable measure (~30 chars per column, conservatively
-      // ~360 CSS px at body 11px). Below that 2-col looks crushed.
-      var rectW = paperEl.getBoundingClientRect().width;
-      var twoColEligible = rectW >= 480;
-      // Cascade — interleave 1-col shrink + 2-col promotion. A real
-      // designer prefers slight shrink at 1-col over heavy shrink, and
-      // prefers 2-col at modest shrink over crushing the type. The
-      // order below reflects that hierarchy.
+      // Wave studio-quality (Pull-It-Back) — promote-to-2-column
+      // eligibility. Gates on the ACTUAL paper width in points, not
+      // the on-screen preview rect. The preview is just a zoom level;
+      // a Letter sheet is 612pt wide regardless of whether the
+      // sidecar shows it at 340px or the bottom sheet at 680px.
+      // Reuses the 400pt threshold from menu-render-pdf.js minTwoColW
+      // so preview and PDF agree on eligibility.
+      //
+      // Themes opt out via twoColPromotable: false (tasting,
+      // prix-fixe, etc.) so the cascade preserves their editorial
+      // pace instead of forcing 2 columns onto a 5-course menu.
+      // theme.columns === 2 themes always run 2-col regardless.
+      var paperContentPt = (paperInfo.w || 612) - 2 * (paperInfo.margin || 48);
+      var themePromotable = !paginateTheme || paginateTheme.twoColPromotable !== false;
+      var twoColEligible = paperContentPt >= 400
+                        && paperInfo.flow !== 'panel'
+                        && themePromotable;
+      // Cascade — Pull-It-Back-From-The-Grave reorder.
+      //
+      // Studio-quality intuition: a real designer reaches for two
+      // columns BEFORE crushing leading. A 10-dish brunch on Letter
+      // is unambiguously 2-col territory (Pastis, Balthazar, Eleven
+      // Madison Park all do this). The previous order tried 1-col
+      // 88% / 84% before any 2-col promotion — that's the cascade
+      // that produces a 3-page brunch with cramped type instead of
+      // a 1-page Pastis-style layout.
+      //
+      // New order:
+      //   1. native 1-col          (editorial pace if the budget allows)
+      //   2. shrink-1 1-col        (96%, modest, still 1-col)
+      //   3. 2-col native          (PROMOTED before any deeper shrink)
+      //   4. shrink-2 1-col        (92%, last shot at 1-col)
+      //   5. 2-col shrink-1
+      //   6. shrink-3 1-col
+      //   7. 2-col shrink-2
+      //   8. shrink-4 1-col        (84% floor)
+      //   9. 2-col shrink-3
+      //  10. 2-col shrink-4        (escape valve for 53-dish menus)
+      //
+      // When 2-col is ineligible (panel paper, too narrow, theme
+      // opted out), the 1-col-only steps stay in order.
       var STEPS = [
         { cls: '',         twoCol: false, label: 'native' },
-        { cls: 'shrink-1', twoCol: false, label: '96%' },
-        { cls: 'shrink-2', twoCol: false, label: '92%' }
+        { cls: 'shrink-1', twoCol: false, label: '96%' }
       ];
       if (twoColEligible) {
-        STEPS.push(
-          { cls: '',         twoCol: true,  label: '2-col native' },
-          { cls: 'shrink-1', twoCol: true,  label: '2-col 96%' },
-          { cls: 'shrink-2', twoCol: true,  label: '2-col 92%' }
-        );
+        STEPS.push({ cls: '', twoCol: true, label: '2-col native' });
+      }
+      STEPS.push({ cls: 'shrink-2', twoCol: false, label: '92%' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-1', twoCol: true, label: '2-col 96%' });
       }
       STEPS.push({ cls: 'shrink-3', twoCol: false, label: '88%' });
       if (twoColEligible) {
-        STEPS.push({ cls: 'shrink-3', twoCol: true, label: '2-col 88%' });
+        STEPS.push({ cls: 'shrink-2', twoCol: true, label: '2-col 92%' });
       }
       STEPS.push({ cls: 'shrink-4', twoCol: false, label: '84% (floor)' });
       if (twoColEligible) {
-        STEPS.push({ cls: 'shrink-4', twoCol: true, label: '2-col 84%' });
+        STEPS.push(
+          { cls: 'shrink-3', twoCol: true, label: '2-col 88%' },
+          { cls: 'shrink-4', twoCol: true, label: '2-col 84%' }
+        );
       }
       // Clear prior cascade classes before measuring.
       ['shrink-1','shrink-2','shrink-3','shrink-4','promote-2col'].forEach(function (c) {
