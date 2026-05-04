@@ -1,0 +1,42 @@
+{
+  "_doc": "Mid-article inline sheet callouts (Phase C9). Maps blog-post slugs to one or more inline callouts that scripts/inject-article-sheet-callouts.mjs stamps just AFTER the matching <h2> in the article body. Each callout names the sheet to surface and the operator-context line shown alongside the sheet's title and walkaway. The post-end-cta is a generic moment-of-intent push at the close; mid-article callouts are the section-of-intent push, capped at one per article. Voice canon: the lead-in line should connect the article paragraph the operator just read to the sheet that operationalizes it — not generic 'check out our tool'. EN+ES per article (only EN is curated; ES articles where they exist receive the same anchors). Section anchor matches the <h2 id> on the article page; if the id changes the injector silently no-ops on that callout.",
+
+  "callouts": {
+    "is-doordash-worth-it-for-restaurants-in-2026": [
+      {
+        "anchor_h2_contains_en": "What $100 of DoorDash revenue actually becomes",
+        "anchor_h2_contains_es": "ingresos de DoorDash",
+        "sheet": "third-party-channel-pnl",
+        "lead_en": "If your napkin math just landed somewhere uncomfortable, the channel P&L sheet runs the numbers in your browser — gross sales minus commission, marketing fees, refunds, packaging, and incremental labor. None of it leaves the page.",
+        "lead_es": "Si tus cuentas de servilleta acaban de aterrizar en un lugar incómodo, la hoja de P&G por canal corre los números en tu navegador — ventas brutas menos comisión, marketing, reembolsos, empaque y mano de obra incremental. Nada sale de la página."
+      }
+    ],
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations": [
+      {
+        "anchor_h2_contains_en": "anxious math",
+        "anchor_h2_contains_es": "cuenta incómoda",
+        "sheet": "recipe-cost-card",
+        "lead_en": "Before you raise a single price, run the dishes you are about to touch. The recipe cost card walks ingredients, AP prices, yield, and target food-cost percent — the sheet tells you the price that holds the margin without you guessing.",
+        "lead_es": "Antes de subir un solo precio, corre los platos que vas a tocar. La tarjeta de costo de receta camina ingredientes, precios AP, rendimiento y costo de comida objetivo — la hoja te dice el precio que sostiene el margen sin adivinar."
+      }
+    ],
+    "how-to-set-up-google-business-profile-for-your-restaurant": [
+      {
+        "anchor_h2_contains_en": "fifteen-minute weekly habit",
+        "anchor_h2_contains_es": "hábito semanal de quince minutos",
+        "sheet": "gbp-monthly-audit",
+        "lead_en": "Once setup is done, this is the standing fifteen-minute walk that keeps it earning. The monthly audit sheet pairs with the GBP grader tool — the tool scores, the sheet gives you the punch list to act on by next Monday.",
+        "lead_es": "Una vez hecha la configuración, este es el recorrido permanente de quince minutos que la mantiene generando. La hoja de auditoría mensual va con el calificador de GBP — la herramienta puntúa, la hoja te da la lista de tareas para actuar antes del próximo lunes."
+      }
+    ],
+    "five-restaurant-website-changes-recover-one-percent-margin": [
+      {
+        "anchor_h2_contains_en": "honest compounding argument",
+        "anchor_h2_contains_es": "argumento compuesto honesto",
+        "sheet": "website-conversion-checklist",
+        "lead_en": "The twelve-point checklist works as a printable companion to this article. Open it on a real phone, walk every checkpoint with priority ratings, and keep the punch list as a CSV when you hand it to your developer.",
+        "lead_es": "La lista de doce puntos funciona como compañera imprimible de este artículo. Ábrela en un teléfono real, camina cada punto con prioridad, y guarda la lista como CSV cuando se la entregues a tu desarrollador."
+      }
+    ]
+  }
+}

@@ -25,6 +25,25 @@ const SKIP_DIRS = new Set([
   'docs', 'src', 'brand', 'assets', 'scripts'
 ]);
 
+// Auto-generated pages whose nav is owned by their generator script
+// rather than this sync. If we mutate them here, the script's
+// idempotency check (build-cuisine-landing-pages.mjs --check, etc.)
+// fails because regenerated content with the script's stub nav
+// won't match the disk content with our canonical nav.
+//
+// Each pattern is a path-prefix match against the relative path.
+// Add entries here when a new generated-page family is introduced.
+const GENERATED_PAGE_PREFIXES = [
+  'library/menu-design-cuisines/',
+  'library/menu-design-themes/',
+  'es/library/menu-design-cuisines/',
+  'es/library/menu-design-themes/'
+];
+function isGeneratedPage(relPath) {
+  const posix = relPath.split(path.sep).join('/');
+  return GENERATED_PAGE_PREFIXES.some((p) => posix.startsWith(p));
+}
+
 // Locales the site ships. English is the default and lives at the repo
 // root; non-default locales live under a top-level directory matching
 // their code (e.g. es/about/index.html). Adding a locale is a matter of
@@ -72,6 +91,27 @@ const NAV_RE = /<header class="nav" id="nav">[\s\S]*?<\/header>/;
 // Discriminator (foot-grid) keeps us from touching <footer> inside an
 // article body (e.g. a blog byline footer), if one ever shows up.
 const FOOTER_RE = /<footer>[\s\S]*?<div class="foot-grid">[\s\S]*?<\/footer>(?:\s*<script\s+src="\/assets\/js\/(?:first-touch|save-next-time|share-hydrate)\.js"\s+defer><\/script>)*(?:\s*(?:<!--[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?-->|<script\b[^>]*>[\s\S]*?(?:Turnstile|challenges\.cloudflare)[\s\S]*?<\/script>|<script\s+src="https:\/\/challenges\.cloudflare\.com\/turnstile\/v0\/api\.js"[^>]*><\/script>))*/;
+
+// Trailing-tail cleanup. The footer template ends with a Cloudflare
+// Turnstile loader (Phase 3B). Until this fix, the loader was outside
+// FOOTER_RE's reach, so every CF deploy build appended another copy of
+// the comment + IIFE — six pages had ten or more duplicates by the
+// time the bug surfaced. This pass runs AFTER the footer replacement
+// and prunes every Turnstile block beyond the first, leaving the
+// canonical copy from the freshly-stamped footer template intact.
+//
+// Pattern is anchored: comment block(s) starting with "Cloudflare
+// Turnstile" or "Skip Turnstile", followed by a script tag whose
+// source-or-body mentions turnstile. Both the inline IIFE form and
+// the legacy <script src="...turnstile/v0/api.js"...> form match.
+const TURNSTILE_BLOCK_RE = /\n*<!--\s*(?:Cloudflare Turnstile|Skip Turnstile)[\s\S]*?<script\b[^>]*>[\s\S]*?turnstile[\s\S]*?<\/script>/g;
+function pruneDuplicateTurnstile(html) {
+  let seen = 0;
+  return html.replace(TURNSTILE_BLOCK_RE, (m) => {
+    seen += 1;
+    return seen === 1 ? m : '';
+  });
+}
 
 // Load one nav + footer partial per locale. English partials live at
 // _includes/nav.html + _includes/footer.html (unchanged for backward
@@ -227,6 +267,10 @@ const problems = [];
 for (const file of collectHtml(repoRoot)) {
   const rel     = path.relative(repoRoot, file);
   const locale  = localeForPath(rel);
+  // Skip generated pages whose nav is owned by their generator script
+  // (cuisine landing pages, theme story pages). Mutating them here
+  // would cause the generator's --check idempotency assert to fail.
+  if (isGeneratedPage(rel)) { skipped++; continue; }
   const src     = fs.readFileSync(file, 'utf8');
 
   const hasNav    = NAV_RE.test(src);
@@ -242,6 +286,10 @@ for (const file of collectHtml(repoRoot)) {
   if (hasNav)             next = next.replace(NAV_RE, renderNav(rel, locale));
   if (footerIsCanonical)  next = next.replace(FOOTER_RE, renderFooter(rel, locale));
   if (hasFooter && !footerIsCanonical) footerSkipped++;
+  // Prune duplicate Turnstile blocks that prior buggy syncs accumulated
+  // outside FOOTER_RE's reach. Idempotent — only touches canonical
+  // pages; tool-utility footers stay untouched.
+  if (footerIsCanonical) next = pruneDuplicateTurnstile(next);
 
   if (!hasNav || !hasFooter) {
     problems.push(`${rel}: missing ${!hasNav ? 'nav' : ''}${!hasNav && !hasFooter ? ' and ' : ''}${!hasFooter ? 'footer' : ''}`);

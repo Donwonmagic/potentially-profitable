@@ -37,7 +37,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/recipe-cost-card/#sheet","name":"Tarjeta de costo de receta","description":"Mete ingredientes, precios AP y rendimientos. Llévate el costo del plato, el precio objetivo a tu meta de costo de comida y una tarjeta imprimible para la carpeta.","url":"https://muntin.digital/es/sheets/recipe-cost-card/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -47,14 +47,24 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="recipe-cost-card" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -64,7 +74,7 @@ header.nav{min-height:64px}
   window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -90,19 +100,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/sheets/recipe-cost-card/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -116,7 +126,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
@@ -176,7 +186,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
   <h1>Tarjeta de costo de<br><span class="serif-italic">receta.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Mete ingredientes, precios AP y rendimientos. Llévate el costo del plato, el precio objetivo a tu meta de costo de comida y una tarjeta imprimible para la carpeta.</p>
   <p class="sheet-meta" aria-label="Metadatos de la hoja">
@@ -197,6 +207,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="recipe-cost-card">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Medio pollo asado, lote de 4 platos</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Pollo entero — 1.5 lb c/u, $3.20/lb, rendimiento 72%</th><td>$4.80 AP / plato</td></tr><tr><th scope="row">Aceite de oliva — 0.5 floz, $0.18/floz, rendimiento 100%</th><td>$0.09</td></tr><tr><th scope="row">Sachet de hierbas (romero, tomillo) — 0.25 oz, $1.40/oz, rendimiento 90%</th><td>$0.39</td></tr><tr><th scope="row">Papas asadas en sartén — 6 oz, $0.12/oz, rendimiento 88%</th><td>$0.82</td></tr><tr><th scope="row">Jugo de limón-chalote — 1.5 floz, $0.28/floz, rendimiento 100%</th><td>$0.42</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Costo del plato (ajustado por rendimiento)</th><td>$6.52</td></tr><tr><th scope="row">Al 30% de costo de comida objetivo, precio objetivo</th><td>$21.73</td></tr><tr><th scope="row">Precio charm (redondeado a .95)</th><td>$21.95</td></tr></tbody></table>
+        <p class="swe-punchline">El control deslizante de rendimiento es la palanca — los pollos de invierno vienen con más hueso y el 72% baja a 68%. A 68%, el costo del plato llega a $6.91, y el mismo objetivo mueve el precio a $23.95. La decisión no es si subir el precio del menú — es cuándo. Mueve el control deslizante de rendimiento ahora y ve a cuánto debería subir el precio.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Recipe</legend>
@@ -207,7 +234,6 @@ header.nav{min-height:64px}
         <label>
           <span><span>Number of plates this recipe yields</span></span>
           <input type="number" name="plates_yielded" min="1" step="1" value="4" />
-          <span class="field-help">Plates the finished recipe produces. Costs divide across this number.</span>
         </label>
         <label>
           <span><span>Target food-cost percent</span></span>
@@ -340,6 +366,41 @@ header.nav{min-height:64px}
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three questions an operator asks while
+         pricing a dish: vendor price drift, kitchen yield reality,
+         and house food-cost target. Re-runs recalc() over the typed
+         numbers without touching them. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if vendor prices, yield, or your target shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the plate cost and target price re-run on top of your typed numbers. Yield drop is one-sided — kitchens lose yield in winter, on holidays, with new line cooks.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Vendor price drift (every ingredient AP)</span>
+          <input type="range" name="whatif_ap" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_ap_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Yield drop (kitchen reality)</span>
+          <input type="range" name="whatif_yield" min="-10" max="0" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_yield_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Target food-cost % change</span>
+          <input type="range" name="whatif_target" min="-3" max="3" step="0.25" value="0" style="flex:2;" />
+          <output name="whatif_target_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         dish-level pricing — AP/EP, the four lies, the charm-price
+         illusion, and when to actually push a menu price. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      AP vs EP, why the food-cost target is a policy decision (not a math one), the four lies in dish-level costing, and when to actually raise a menu price. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The yield slider &mdash; Why dish pricing is a guess until you do this math &rarr;</a>
+    </p>
+
     <script>
       (function () {
         // Unit normalization to a baseline weight (oz) and volume (floz)
@@ -353,15 +414,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Acciones de la hoja">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Imprimir
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Bajar CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copiar como texto
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -385,7 +446,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">Cuándo usarla</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Saca esta hoja cuando —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de costo de comida.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Vas a meter un plato nuevo y necesitas un precio que respete tu objetivo de <a class="sheet-glossary-popover-link" href="/es/glossary/food-cost/" data-glossary-head="Costo de comida" data-glossary-aka="COGS de comida" data-glossary-blurb="Costo de comida vendida como porcentaje de ventas de comida, base costo usado (compras menos ajuste de inventario). Full-service independiente típicamente apunta a 28–32%; pizza y formatos de alto margen corren más bajo." data-sheet-popover="1">costo de comida</a>.</li>
       <li>Subió el precio de una proteína al recibir y quieres saber si el plato sigue rindiendo.</li>
       <li>Tu jefe de cocina pregunta por qué la porción de cordero tiene que bajar un cuarto de onza.</li></ul>
   </article>
@@ -438,13 +499,14 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
       <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -529,11 +591,11 @@ header.nav{min-height:64px}
   </div>
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Auditor&iacute;a gratis
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Escr&iacute;bele a Don
     </a>
   </aside>
@@ -559,8 +621,14 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(v * 100) / 100).toFixed(2); }
@@ -582,14 +650,32 @@ header.nav{min-height:64px}
           return n(qty) * n(ap);
         }
 
+        // D8 · Read what-if slider state. AP drift is multiplicative,
+        // yield drop is additive on the typed yield (one-sided), target
+        // delta is additive in percentage points.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_ap) return { ap: 0, yld: 0, target: 0 };
+          return {
+            ap:     n(f.whatif_ap.value),
+            yld:    n(f.whatif_yield.value),
+            target: n(f.whatif_target.value),
+          };
+        }
+
         function recalc() {
           var form  = document.getElementById('sheet-fields');
           if (!form) return;
+          var w = whatif();
+          var apMult = 1 + w.ap / 100;
           var total = 0;
           for (var i = 1; i <= 5; i++) {
             var qty   = n(form['ing_qty_'   + i].value);
-            var ap    = n(form['ing_ap_'    + i].value);
-            var yld   = Math.max(1, n(form['ing_yield_' + i].value));
+            var rawAp = n(form['ing_ap_'    + i].value);
+            var ap    = rawAp * apMult;
+            // Effective yield: typed minus the (one-sided) drop, floor 1.
+            var rawYld = Math.max(1, n(form['ing_yield_' + i].value));
+            var yld    = Math.max(1, Math.min(100, rawYld + w.yld));
             // Yield % expresses what's usable after trim. Effective
             // unit cost goes UP by the inverse: $/EP = ($/AP) / (yield/100)
             var line  = (qty * ap) / (yld / 100);
@@ -599,10 +685,17 @@ header.nav{min-height:64px}
           }
           var plates = Math.max(1, n(form.plates_yielded.value));
           var perPlate = total / plates;
-          var pct = Math.max(1, Math.min(60, n(form.target_food_cost_pct.value))) / 100;
+          var rawPct = Math.max(1, Math.min(60, n(form.target_food_cost_pct.value)));
+          var pct = Math.max(1, Math.min(60, rawPct + w.target)) / 100;
           var target = pct > 0 ? perPlate / pct : 0;
           form.total_ingredient_cost.value = fmt$(total);
           form.cost_per_plate.value        = fmt$(perPlate);
+
+          // Update what-if output labels.
+          if (form.whatif_ap_out)     form.whatif_ap_out.value     = (w.ap     >= 0 ? '+' : '') + w.ap.toFixed(0)     + '%';
+          if (form.whatif_yield_out)  form.whatif_yield_out.value  = w.yld.toFixed(1) + 'pt';
+          if (form.whatif_target_out) form.whatif_target_out.value = (w.target >= 0 ? '+' : '') + w.target.toFixed(2) + 'pt';
+
           var pc = document.querySelector('[data-output="plate_cost"]');
           if (pc) pc.textContent = fmt$(perPlate);
           var tp = document.querySelector('[data-output="target_price"]');
@@ -610,6 +703,19 @@ header.nav{min-height:64px}
           var cp = document.querySelector('[data-output="charm_price"]');
           if (cp) cp.textContent = fmt$(charm(target));
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_ap)     f.whatif_ap.value     = 0;
+            if (f.whatif_yield)  f.whatif_yield.value  = 0;
+            if (f.whatif_target) f.whatif_target.value = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         // Per-sheet collect: shape rows for CSV export — recipe header,
         // then ingredients table, then summary outputs. Mirrors what
@@ -659,15 +765,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Acciones de la hoja">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Imprimir
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Bajar CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copiar como texto
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -753,7 +859,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

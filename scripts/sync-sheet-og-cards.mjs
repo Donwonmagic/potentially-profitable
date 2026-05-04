@@ -45,11 +45,21 @@ const SHEETS = JSON.parse(fs.readFileSync(SHEETS_PATH, 'utf8'));
 const cards  = JSON.parse(fs.readFileSync(CARDS_PATH, 'utf8'));
 
 const PACK_STYLE = {
-  'operations-margin': { accent: 'gold', glyph: 'resources' },
-  'local-seo':         { accent: 'teal', glyph: 'local-seo' },
-  'conversions':       { accent: 'rust', glyph: 'conversions' },
-  'brand-design':      { accent: 'teal', glyph: 'brand' },
-  'trust-reviews':     { accent: 'ink',  glyph: 'trust' },
+  'operations-margin': { accent: 'gold', glyph: 'resources',   focus: 'stat' },
+  'local-seo':         { accent: 'teal', glyph: 'local-seo',   focus: 'checks' },
+  'conversions':       { accent: 'rust', glyph: 'conversions', focus: 'funnel' },
+  'brand-design':      { accent: 'teal', glyph: 'brand',       focus: 'list' },
+  'trust-reviews':     { accent: 'ink',  glyph: 'trust',       focus: 'score-ring' },
+};
+
+// Per-sheet-format focus override. Some formats are universally
+// better-served by a specific module regardless of pack — checklist
+// formats use 'checks', report formats use 'stat', etc.
+const FORMAT_FOCUS_OVERRIDE = {
+  'checklist': 'checks',
+  'log':       'list',
+  'table':     'list',
+  'report':    'stat',
 };
 
 const COPY = {
@@ -94,6 +104,11 @@ function buildEntry(slug, sheet, locale) {
   if (!style) return null;
   const titleSrc = locale === 'es' ? sheet.title_es : sheet.title_en;
   const split    = splitTitle(titleSrc);
+  // D1 — focus module varies by format with pack as fallback. Format
+  // override beats pack default because format is more local to the
+  // sheet's actual subject (a "checklist" format always reads better
+  // as a 'checks' card regardless of pack).
+  const focusType = FORMAT_FOCUS_OVERRIDE[sheet.format] || style.focus || 'type';
   return {
     slug:   locale === 'es' ? `sheet-${slug}-es` : `sheet-${slug}`,
     kind:   'tool',
@@ -104,7 +119,7 @@ function buildEntry(slug, sheet, locale) {
     title_italic: split.title_italic,
     title_2: split.title_2,
     dek:    dekFor(sheet, locale),
-    focus:  { type: 'type' },
+    focus:  { type: focusType },
     glyph:  style.glyph,
   };
 }

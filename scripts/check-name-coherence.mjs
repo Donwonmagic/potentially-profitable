@@ -38,7 +38,7 @@ const ALLOWED_PATTERNS = [
   /MuntinWorkbench/,                            // global JS identifier
   /\bjs-wb-[A-Za-z]/,                           // JS hook classes (js-wb-watch-attach, js-wb-delete, etc.)
   /\bwb(?:Handle|List|Save|Box|Btn|Link|Text|Msg|Watch|Loading|Empty|Error)\b/, // variable / id names
-  /'Workbench (?:Save|Open Saved|Watch Attach|Watch Detach|Account Delete Request)'/, // Plausible event names (Sprint 15)
+  /'Workbench (?:Save|Open Saved|Watch Attach|Watch Detach|Account Delete Request|Sheet Reopen)'/, // Plausible event names (Sprint 15)
   /workbench-save(?:-pattern)?/,                // file refs (.js / .md)
   /^\s*(?:\/\/|\/\*|\*|<!--)/,                  // line is a JS/CSS/HTML comment
   /Save-to-Workbench/,                          // hyphenated form is comment-only

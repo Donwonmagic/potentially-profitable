@@ -38,7 +38,8 @@
     //   altName / altDesc: multilingual mirror (renders when locale
     //                      switches OR when the operator wants to
     //                      ship a bilingual menu in one PDF)
-    return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
+    return { kind: 'dish', name: '', price: '', desc: '', descPlain: '',
+             allergens: [], spice: 0, photo: null,
              pairing: '', modifier: '', halfPrice: '', badges: [],
              portion: '', calories: '', altName: '', altDesc: '' };
   }
@@ -106,6 +107,25 @@
   var downloadMsg = document.getElementById('mdDownloadMsg');
   var exportQrBtn = document.getElementById('mdExportQr');
   var largePrintBtn = document.getElementById('mdLargePrint');
+  // Wave studio-quality (C1 partial) — daily specials card export.
+  var exportSpecialsBtn = document.getElementById('mdExportSpecials');
+
+  // Wave studio-quality (C2) — Plain-language preference helper.
+  // When operators provide a descPlain sibling on a dish, the
+  // accessibility-flavored exports (large-print PDF, high-contrast,
+  // plain text, SSML, BRF, tablet kiosk) prefer it over the
+  // sensory `desc` field. Returns a NEW array; never mutates inputs.
+  // WCAG 3.1.5 Reading Level (AAA): one source, two voices — the
+  // operator's marketing copy AND a simpler reading-level variant.
+  function withPlainLanguageDesc(rs) {
+    if (!Array.isArray(rs)) return rs;
+    return rs.map(function (r) {
+      if (!r || r.kind !== 'dish') return r;
+      var p = (r.descPlain || '').trim();
+      if (!p) return r;
+      return Object.assign({}, r, { desc: p });
+    });
+  }
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -227,6 +247,15 @@
     if (typeof MD_TEXT !== 'undefined' && MD_TEXT.exportPlainText) return Promise.resolve(true);
     return loadScript('/tools/menu-design/menu-render-text.js?v=20260503-cs');
   }
+  // Wave A3 — defer theme-thumbs.js (91 KB raw / ~28 KB gz) from boot.
+  // It contains pre-built inline SVG thumbnails for the picker UI,
+  // never used until the operator scrolls to the picker section.
+  // The picker's IntersectionObserver lazy-paints visible thumbs;
+  // ensureMdThumbs() is the gate it consults before reading MD_THUMBS.
+  function ensureMdThumbs() {
+    if (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/theme-thumbs.js?v=20260503-wsq');
+  }
 
   // Convenience: load PDF + HTML + TEXT in parallel for the big-pack
   // exports (Menu Pack ZIP, Bilingual ZIP) that touch all three.
@@ -284,6 +313,10 @@
     ensureMdPdf().catch(function () {});
     ensureMdHtml().catch(function () {});
     ensureMdText().catch(function () {});
+    // Wave A3 — also preload theme-thumbs so the picker thumbnails
+    // materialize without a visible delay on first scroll. Same
+    // gating as the renderers (idle, post-interaction).
+    ensureMdThumbs().catch(function () {});
   }
   if (typeof requestIdleCallback === 'function') {
     var __preloadIdle = false;
@@ -493,19 +526,63 @@
     // Build the items list.
     var items = [];
     if (fitOverflow) {
+      // Wave studio-quality (Pull-It-Back, Wave 5) — replace the
+      // bare "trim N dishes" message with concrete alternatives.
+      // The cascade has already exhausted 1-col + 2-col + shrink,
+      // so the operator's three real options are bigger paper,
+      // multi-page, or fewer dishes (in that order of preserving
+      // the menu's design).
       items.push({
         kind: 'block',
         label: tt(
-          "Won't fit one page even at minimum type size — see the warning above for ways to make it fit.",
-          'No cabe en una página ni con el tipo más pequeño — mira la advertencia de arriba para ver cómo hacerlo caber.'
+          "Won't fit one page even at 2 columns + minimum type size. Three ways to fix:",
+          'No cabe en una página ni a 2 columnas + tipo mínimo. Tres formas de arreglarlo:'
         )
       });
-    } else if (fitShrunk) {
       items.push({
         kind: 'note',
         label: tt(
-          'Fit at ' + fitStep + (twoColActive ? '' : '') + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
-          'Cabe a ' + fitStep + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
+          'Switch to Tabloid (11×17) — fits ~2× the dishes at the same density.',
+          'Cambia a Tabloide (11×17) — cabe ~2× los platos a la misma densidad.'
+        )
+      });
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Enable Allow front + back (2 pages) below — splits at the closest section boundary.',
+          'Activa Permitir frente + dorso (2 páginas) abajo — corta en el límite de sección más cercano.'
+        )
+      });
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Trim a few dishes (3-pack tier).',
+          'Quita unos platos (3-pack).'
+        )
+      });
+    } else if (twoColActive && !fitShrunk) {
+      // Wave studio-quality (Pull-It-Back, Wave 5) — celebrate the
+      // 2-col promotion. When the cascade auto-promoted to native
+      // 2-col (no shrink), tell the operator WHY: their menu just
+      // looks like Pastis instead of overflowing.
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Promoted to 2 columns to fit one sheet — classic Pastis layout.',
+          'Promovido a 2 columnas para caber en una hoja — diseño Pastis clásico.'
+        )
+      });
+    } else if (fitShrunk) {
+      // Pull-It-Back, Wave 5 — note 2-col status when the cascade
+      // shrunk AND promoted (e.g. a 27-dish menu lands at "2-col 96%").
+      var twoColTag = twoColActive
+        ? tt(' (2 columns)', ' (2 columnas)')
+        : '';
+      items.push({
+        kind: 'note',
+        label: tt(
+          'Fit at ' + fitStep + twoColTag + ' — body type is slightly tightened. Looks good; consider trimming a couple of dishes if you want native size.',
+          'Cabe a ' + fitStep + twoColTag + ' — el tipo está ligeramente ajustado. Se ve bien; considera quitar un par de platos si quieres el tamaño nativo.'
         )
       });
     }
@@ -696,11 +773,22 @@
     // Wave studio-quality — display currency. Affects how bare-digit
     // prices render (e.g., operator types "14" → "$14" / "14 €" / "£14"
     // depending on currency). Operator-typed prices that already carry
-    // a symbol pass through verbatim. Default 'USD' since most operators
-    // are DMV-area today; persisted with the rest of meta. JSON-LD +
+    // a symbol pass through verbatim. Locale-aware default — a Mexican
+    // operator's browser ships them MXN, a Japanese one ships them JPY.
+    // Falls back to USD when the locale doesn't map to a known regime
+    // (DMV operators, en-US default). The currency selector at
+    // #mdMetaCurrency lets the operator override regardless. JSON-LD +
     // Studio Brief read this field too so the priceCurrency in the
     // structured-data graph matches.
-    currency: 'USD',
+    currency: (function () {
+      try {
+        if (typeof MD_QUIZ !== 'undefined' && MD_QUIZ.suggestForBrowser) {
+          var hint = MD_QUIZ.suggestForBrowser();
+          if (hint && hint.currency) return hint.currency;
+        }
+      } catch (_) {}
+      return 'USD';
+    })(),
     // Wave studio-quality — Quiet typography mode. When on, the
     // renderers strip decoration (cuisine motif overlay, section
     // glyphs, ornaments) and force single-column layout. Targets
@@ -715,7 +803,17 @@
   // PDF + preview applyCustomizer() helper merges these onto the
   // active theme tokens before render. paperTexture flag enables
   // a subtle linen-grain background overlay.
-  var customize = { accent: null, paper: null, ink: null, paperTexture: false };
+  // Wave studio-quality (B12) — Theme Tuner state. Three new knobs
+  // expose typography choices that were previously locked to the
+  // theme's defaults. Each value is a closed enum (matches the
+  // themes-lint refusal rules); null means "use the theme default."
+  //   letterSpacing: null | 'normal' | 'wide'
+  //   sectionCase:   null | 'normal' | 'uppercase' | 'small-caps' | 'capitalize'
+  //   dividerStyle:  null | 'rule-thin' | 'hand-rule' | 'box' | 'whitespace' | 'double-rule' | 'ornament'
+  var customize = {
+    accent: null, paper: null, ink: null, paperTexture: false,
+    letterSpacing: null, sectionCase: null, dividerStyle: null
+  };
 
   function applyCustomizer(theme) {
     if (!theme) return theme;
@@ -729,6 +827,10 @@
     if (customize.accent) out.accent = customize.accent;
     if (customize.paper)  out.paper  = customize.paper;
     if (customize.ink)    out.ink    = customize.ink;
+    // Wave studio-quality (B12) — Theme Tuner overlays.
+    if (customize.letterSpacing) out.letterSpacing = customize.letterSpacing;
+    if (customize.sectionCase)   out.sectionCase   = customize.sectionCase;
+    if (customize.dividerStyle)  out.dividerStyle  = customize.dividerStyle;
     return out;
   }
 
@@ -936,8 +1038,12 @@
             '</summary>' +
             '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens, photo, and dietary tags', 'Alérgenos, foto y etiquetas') + '">' +
               '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
-              '<div class="md-spice-row">' +
-                '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
+              // Wave B9 finish — accessible group label so screen readers
+              // announce the spice-button cluster as a coherent control,
+              // not three loose chips. Each dot still carries its own
+              // aria-label + aria-pressed for individual state.
+              '<div class="md-spice-row" role="group" aria-label="' + tt('Spice level', 'Nivel de picante') + '">' +
+                '<span class="md-spice-label" aria-hidden="true">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
                 '<button type="button" class="md-spice-dot md-spice-zero' + (dishSpice === 0 ? ' is-on' : '') +
                   '" data-act="spice" data-i="' + i + '" data-level="0" aria-label="' +
                   tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
@@ -1011,6 +1117,26 @@
             '</div>' +
           '</details>';
 
+        // Wave studio-quality (C2) — Plain-language sibling. Optional
+        // simpler description that BRF + large-print + plain-text
+        // emitters prefer when present (WCAG 3.1.5 Reading Level AAA).
+        // Hidden by default behind a small affordance; opens inline
+        // with a sibling textarea. Operator types whatever sensory
+        // copy they want in `desc` and an "easier to read" version
+        // in `descPlain`. The accessibility variants then ship the
+        // simpler version automatically.
+        var hasDescPlain = !!(r.descPlain || '').trim();
+        var descPlainBlock =
+          '<details class="md-desc-plain" data-i="' + i + '"' + (hasDescPlain ? ' open' : '') + '>' +
+            '<summary class="md-desc-plain-trigger">' +
+              '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' +
+              '<span>' + tt('Plain-language version', 'Versión en lenguaje sencillo') +
+              (hasDescPlain ? ' <span class="md-desc-plain-on">✓</span>' : '') +
+              '</span>' +
+            '</summary>' +
+            '<textarea class="md-input md-input-desc-plain" data-field="descPlain" data-i="' + i +
+            '" rows="2" placeholder="' + tt('Lettuce salad with creamy dressing and crunchy cheese.', 'Ensalada de lechuga con aderezo cremoso y queso crujiente.') + '" aria-label="' + tt('Plain-language description', 'Descripción en lenguaje sencillo') + '">' + escHtml(r.descPlain || '') + '</textarea>' +
+          '</details>';
         html += '<tr data-i="' + i + '"' + ghostAttr + draggable + '>' +
           handleCell +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
@@ -1019,6 +1145,7 @@
           '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="' + tt('Price', 'Precio') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Description', 'Descripción') + '" class="md-cell-desc"><textarea class="md-input md-input-desc" data-field="desc" data-i="' + i +
           '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          descPlainBlock +
           allergenPop +
           helpHtml + touchReorder + '</td>' +
           '<td class="md-remove-cell">' +
@@ -1217,8 +1344,19 @@
     if (emptyEl) emptyEl.hidden = anyMatch;
   }
   var themeFilterInputEl = document.getElementById('mdThemeFilter');
+  // Wave studio-quality (perf) — rAF-debounced theme filter. 37 cards
+  // × hidden-flag write per keystroke is fine, but the handler also
+  // walks group headers to compute visibility — skip the duplicate
+  // work when the operator's typing fast.
   if (themeFilterInputEl) {
-    themeFilterInputEl.addEventListener('input', applyThemeFilter);
+    var __themeFilterRaf = null;
+    themeFilterInputEl.addEventListener('input', function () {
+      if (__themeFilterRaf) return;
+      __themeFilterRaf = requestAnimationFrame(function () {
+        __themeFilterRaf = null;
+        applyThemeFilter();
+      });
+    });
   }
 
   if (themesEl) {
@@ -1234,6 +1372,9 @@
       // W12-3 — when changing theme, sync customizer pickers to the
       // new theme's defaults (unless operator has already overridden).
       if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
+      // Wave studio-quality — re-run live lint against the new theme's
+      // colors so any warnings reflect the post-switch state.
+      if (typeof updateLintFeedback === 'function') updateLintFeedback();
       renderPreview();
       scheduleSaveDraft();
     });
@@ -1638,8 +1779,33 @@
       // print shop. Class on the preview frame gates the CSS overlay.
       var pf = document.getElementById('mdPreviewFrame');
       if (pf) pf.classList.toggle('md-pp-print-marks', printVendor);
+      // Wave studio-quality (B15) — surface the print-shop deeplinks
+      // rail when print-vendor mode is on. Operators with a press-ready
+      // PDF in hand get a one-click route to a vetted partner.
+      var shopsEl = document.getElementById('mdPrintShops');
+      if (shopsEl) shopsEl.hidden = !printVendor;
       schedulePreview();
       scheduleSaveDraft();
+    });
+  }
+  // Wave studio-quality (B15) — wire each print-shop link with a
+  // Plausible event so we can measure conversion rates per vendor.
+  // Bounded prop set: vendor in {moo, gotprint, vistaprint}. Click
+  // does NOT swallow the navigation — the link still opens normally.
+  var printShopsEl = document.getElementById('mdPrintShops');
+  if (printShopsEl) {
+    printShopsEl.addEventListener('click', function (e) {
+      var link = e.target && e.target.closest && e.target.closest('.md-print-shop');
+      if (!link) return;
+      var vendor = link.dataset && link.dataset.vendor;
+      if (!vendor) return;
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Outbound Print Shop', {
+            props: { vendor: vendor }
+          });
+        } catch (_) {}
+      }
     });
   }
 
@@ -1784,6 +1950,7 @@
       paper.removeAttribute('data-logo-slot');
       paper.removeAttribute('data-paper');
       paper.removeAttribute('data-flow');
+      paper.removeAttribute('data-stock');
       paper.style.removeProperty('--paper-aspect');
       paper.style.removeProperty('--paper-margin-pct');
       paper.style.removeProperty('--panels');
@@ -1813,10 +1980,14 @@
     paper.style.setProperty('--h2px', theme.h2Pt + 'px');
     paper.style.setProperty('--bodypx', theme.bodyPt + 'px');
     paper.style.setProperty('--descpx', theme.descPt + 'px');
-    paper.dataset.divider     = theme.dividerStyle;
-    paper.dataset.price       = theme.priceStyle;
-    paper.dataset.cols        = String(theme.columns);
-    paper.dataset.sectionCase = theme.sectionCase;
+    paper.dataset.divider       = theme.dividerStyle;
+    paper.dataset.price         = theme.priceStyle;
+    paper.dataset.cols          = String(theme.columns);
+    paper.dataset.sectionCase   = theme.sectionCase;
+    // Wave studio-quality (B12) — Theme Tuner letter-spacing wired
+    // to the preview via a data-attribute so a CSS rule can reflect
+    // 'normal' / 'wide' on the rendered DOM.
+    paper.dataset.letterSpacing = theme.letterSpacing || 'normal';
     // W24-2 — apply paper aspect ratio + scaled padding so the
     // preview is shaped like the actual deliverable. Sheet flow
     // (Letter, A4, etc.) gets a portrait/landscape paper-shape;
@@ -1829,6 +2000,24 @@
         String((paperInfo.margin || 48) / paperInfo.w * 100) + '%');
       paper.dataset.paper = paperKey;
       paper.dataset.flow  = paperInfo.flow || 'page';
+      // Wave studio-quality (T6) — paper-stock awareness. The stock
+      // field on each paper format (24lb-text, 80lb-cover,
+      // 100lb-cover, 120lb-coaster, 70lb-uncoated, rigid-board,
+      // screen-rgb) drives a subtle CSS overlay that gives each
+      // stock its own look in the live preview: cream-leaning hue
+      // shift on uncoated stock, a fiber-grain shadow on cover
+      // stock, a cooler gloss tint on screen output. Operators
+      // pick paper consciously instead of treating it as metadata
+      // that doesn't render. The data attribute is also a hook
+      // for stock-aware templates ("are you printing on cover or
+      // text? — text won't fold cleanly for a tri-fold").
+      paper.dataset.stock = paperInfo.stock || 'standard';
+      // Wave studio-quality (C1 partial) — round-shape paper hint.
+      // beer-mat-round and similar use a CSS clip-path on the live
+      // preview so operators see the actual die-cut shape, not a
+      // square. Print PDF stays as a square for the die-cut machine
+      // (no PDF clip-path; the print shop handles the trim).
+      paper.dataset.shape = paperInfo.shape || 'rect';
       if (paperInfo.flow === 'panel') {
         paper.style.setProperty('--panels', String(paperInfo.panels || 1));
       } else {
@@ -1841,7 +2030,7 @@
     // section header land in an unnamed group at the top.
     var groups = [];
     var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false, hero: null };
-    rows.forEach(function (r) {
+    rows.forEach(function (r, ri) {
       if (r.kind === 'section') {
         if (current.name !== null || current.dishes.length) groups.push(current);
         current = {
@@ -1851,10 +2040,18 @@
           glyph: (r.glyph || '').trim(),
           availability: (r.availability || '').trim(),
           specials: !!r.specials,
-          hero: r.hero || null
+          hero: r.hero || null,
+          // Wave studio-quality (perf/UX) — preserve the editor's
+          // row index so the live preview can stamp data-preview-i
+          // on the rendered DOM. The instant-update path uses this
+          // to find the right element on each input event.
+          _editorIdx: ri
         };
       } else if ((r.name || '').trim()) {
-        current.dishes.push(r);
+        // Shallow-copy the row + add _editorIdx so consumers can
+        // still read d.name, d.desc etc. unchanged.
+        var d = Object.assign({}, r, { _editorIdx: ri });
+        current.dishes.push(d);
       }
     });
     if (current.name !== null || current.dishes.length) groups.push(current);
@@ -1993,10 +2190,18 @@
         var priceHtml = escHtml(formatPriceDisplay(price, displayCurrency));
         if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' +
           escHtml(formatPriceDisplay(halfPrice, displayCurrency)) + '</span>';
-        html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
+        // Wave studio-quality (perf/UX) — data-preview-i stamps the
+        // editor's row index on the preview row so the input handler
+        // can find this element instantly on each keystroke.
+        // <span.md-pp-name-text> wraps just the name text so we can
+        // update it without touching adjacent thumb / badges / glyphs.
+        var pi = (typeof d._editorIdx === 'number') ? d._editorIdx : -1;
+        html += '<div class="md-pp-row" data-preview-i="' + pi + '">';
+        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml +
+                '<span class="md-pp-name-text">' + escHtml(name) + '</span>' +
+                glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
-        if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        if (desc) html += '<div class="md-pp-desc" lang="' + LOCALE + '">' + escHtml(desc) + '</div>';
         // W14-1 — portion + calories rendered as a small muted suffix.
         var portionBits = [];
         if (d.portion)  portionBits.push(escHtml(d.portion));
@@ -2056,7 +2261,31 @@
       html += '</div>';
     }
 
+    // Wave studio-quality (perf) — short-circuit when the rendered
+    // HTML matches the previous render AND the cascade-affecting
+    // inputs (paper width, theme sizing tokens, columns, paper key)
+    // are all unchanged. Catches typed-then-deleted, focus-triggered
+    // schedulePreview(), and meta-edits that didn't affect the
+    // preview output. Theme switches invalidate the cache because
+    // the size tokens flow into the cache key. Width going stale
+    // (window resize) also invalidates so the cascade re-fits.
+    var paperRect = paper.getBoundingClientRect();
+    var widthBucket = Math.round(paperRect.width / 4);
+    var fitCacheKey = [
+      widthBucket,
+      paperKey,
+      theme.bodyPt, theme.h1Pt, theme.h2Pt, theme.descPt,
+      theme.columns, theme.dividerStyle, theme.sectionCase,
+      theme.letterSpacing || 'normal',
+      !!(meta && meta.allowMultiPage),
+      !!(meta && meta.quietMode)
+    ].join('|');
+    if (paper.__lastHtml === html && paper.__lastFitCacheKey === fitCacheKey) {
+      return;
+    }
     paper.innerHTML = html;
+    paper.__lastHtml = html;
+    paper.__lastFitCacheKey = fitCacheKey;
     // W24-2 — clear any leftover sibling pages + page-break shims
     // from the previous render. The frame is the multi-page host.
     var frame = paper.parentElement;
@@ -2076,7 +2305,7 @@
       // based on actual measured heights. requestAnimationFrame waits
       // one frame so getBoundingClientRect returns settled values.
       requestAnimationFrame(function () {
-        try { pages = paginatePreviewDom(paper, frame, paperInfo); }
+        try { pages = paginatePreviewDom(paper, frame, paperInfo, theme); }
         catch (_) { pages = 1; }
         updatePreviewMeta(pages, paperInfo, dishes.length);
       });
@@ -2090,7 +2319,16 @@
     // concrete advisory when a panel-flow paper genuinely can't
     // hold the operator's content.
     if (overflowEl) {
-      if (paperInfo && paperInfo.flow === 'panel' && dishes.length > (paperInfo.panels || 6) * 8) {
+      // Wave studio-quality (C1 partial) — beer-mat / round paper
+      // pre-flight. A 4.25" round only holds ~6 short dishes; warn
+      // the operator before they print 12 dishes onto a coaster.
+      if (paperInfo && paperInfo.shape === 'round' && dishes.length > 6) {
+        overflowEl.hidden = false;
+        overflowEl.textContent = tt(
+          'Beer-mat round only fits ~6 short dishes. Trim to 6, or pick "Specials card (5×7)" for a slightly larger trim that holds 8.',
+          'El beer-mat redondo solo cabe ~6 platos cortos. Reduce a 6, o elige "Tarjeta de especiales (5×7)" para un trim más grande con 8.'
+        );
+      } else if (paperInfo && paperInfo.flow === 'panel' && dishes.length > (paperInfo.panels || 6) * 8) {
         overflowEl.hidden = false;
         var ovLabel = paperInfo.label || paperKey;
         overflowEl.textContent = tt(
@@ -2127,8 +2365,17 @@
     } else {
       var pages = (typeof countOrPages === 'number' ? countOrPages : 1);
       var pageWord = pages === 1 ? tt('page', 'página') : tt('pages', 'páginas');
+      // Wave studio-quality (Pull-It-Back, Wave 5) — surface the
+      // cascade's column decision in the preview-meta strip. When
+      // the cascade promoted to 2-col (auto or theme-native), tell
+      // the operator. Lets them see "10 dishes · 1 page · 2 columns"
+      // and understand the layout at a glance.
+      var twoColTag = '';
+      if (paper && paper.classList && paper.classList.contains('md-promote-2col')) {
+        twoColTag = ' · ' + tt('2 columns', '2 columnas');
+      }
       previewMeta.textContent = paperLabel + ' · ' + dishCount + ' ' + tt('dishes', 'platos') +
-        ' · ' + pages + ' ' + pageWord;
+        ' · ' + pages + ' ' + pageWord + twoColTag;
     }
   }
 
@@ -2230,7 +2477,7 @@
     return pageBuckets;
   }
 
-  function paginatePreviewDom(paperEl, frame, paperInfo) {
+  function paginatePreviewDom(paperEl, frame, paperInfo, paginateTheme) {
     if (!paperEl || !frame || !paperInfo) return 1;
     var rect = paperEl.getBoundingClientRect();
     if (!rect.width) return 1;
@@ -2250,62 +2497,158 @@
     if (paperInfo.flow !== 'panel') {
       var allowMulti = !!(meta && meta.allowMultiPage);
       var targetPages = allowMulti ? 2 : 1;
-      // Wave studio-quality — promote-to-2-column eligibility. A real
-      // designer reaches for 2-column when the menu is dish-heavy AND
-      // the paper is wide enough that two columns of body text both
-      // hit a comfortable measure (~30 chars per column, conservatively
-      // ~360 CSS px at body 11px). Below that 2-col looks crushed.
-      var rectW = paperEl.getBoundingClientRect().width;
-      var twoColEligible = rectW >= 480;
-      // Cascade — interleave 1-col shrink + 2-col promotion. A real
-      // designer prefers slight shrink at 1-col over heavy shrink, and
-      // prefers 2-col at modest shrink over crushing the type. The
-      // order below reflects that hierarchy.
+      // Wave studio-quality (Pull-It-Back) — promote-to-2-column
+      // eligibility. Gates on the ACTUAL paper width in points, not
+      // the on-screen preview rect. The preview is just a zoom level;
+      // a Letter sheet is 612pt wide regardless of whether the
+      // sidecar shows it at 340px or the bottom sheet at 680px.
+      // Reuses the 400pt threshold from menu-render-pdf.js minTwoColW
+      // so preview and PDF agree on eligibility.
+      //
+      // Themes opt out via twoColPromotable: false (tasting,
+      // prix-fixe, etc.) so the cascade preserves their editorial
+      // pace instead of forcing 2 columns onto a 5-course menu.
+      // theme.columns === 2 themes always run 2-col regardless.
+      var paperContentPt = (paperInfo.w || 612) - 2 * (paperInfo.margin || 48);
+      var themePromotable = !paginateTheme || paginateTheme.twoColPromotable !== false;
+      var twoColEligible = paperContentPt >= 400
+                        && paperInfo.flow !== 'panel'
+                        && themePromotable;
+      // Cascade — Pull-It-Back-From-The-Grave reorder.
+      //
+      // Studio-quality intuition: a real designer reaches for two
+      // columns BEFORE crushing leading. A 10-dish brunch on Letter
+      // is unambiguously 2-col territory (Pastis, Balthazar, Eleven
+      // Madison Park all do this). The previous order tried 1-col
+      // 88% / 84% before any 2-col promotion — that's the cascade
+      // that produces a 3-page brunch with cramped type instead of
+      // a 1-page Pastis-style layout.
+      //
+      // New order:
+      //   1. native 1-col          (editorial pace if the budget allows)
+      //   2. shrink-1 1-col        (96%, modest, still 1-col)
+      //   3. 2-col native          (PROMOTED before any deeper shrink)
+      //   4. shrink-2 1-col        (92%, last shot at 1-col)
+      //   5. 2-col shrink-1
+      //   6. shrink-3 1-col
+      //   7. 2-col shrink-2
+      //   8. shrink-4 1-col        (84% floor)
+      //   9. 2-col shrink-3
+      //  10. 2-col shrink-4        (escape valve for 53-dish menus)
+      //
+      // When 2-col is ineligible (panel paper, too narrow, theme
+      // opted out), the 1-col-only steps stay in order.
       var STEPS = [
         { cls: '',         twoCol: false, label: 'native' },
-        { cls: 'shrink-1', twoCol: false, label: '96%' },
-        { cls: 'shrink-2', twoCol: false, label: '92%' }
+        { cls: 'shrink-1', twoCol: false, label: '96%' }
       ];
       if (twoColEligible) {
-        STEPS.push(
-          { cls: '',         twoCol: true,  label: '2-col native' },
-          { cls: 'shrink-1', twoCol: true,  label: '2-col 96%' },
-          { cls: 'shrink-2', twoCol: true,  label: '2-col 92%' }
-        );
+        STEPS.push({ cls: '', twoCol: true, label: '2-col native' });
+      }
+      STEPS.push({ cls: 'shrink-2', twoCol: false, label: '92%' });
+      if (twoColEligible) {
+        STEPS.push({ cls: 'shrink-1', twoCol: true, label: '2-col 96%' });
       }
       STEPS.push({ cls: 'shrink-3', twoCol: false, label: '88%' });
       if (twoColEligible) {
-        STEPS.push({ cls: 'shrink-3', twoCol: true, label: '2-col 88%' });
+        STEPS.push({ cls: 'shrink-2', twoCol: true, label: '2-col 92%' });
       }
       STEPS.push({ cls: 'shrink-4', twoCol: false, label: '84% (floor)' });
       if (twoColEligible) {
-        STEPS.push({ cls: 'shrink-4', twoCol: true, label: '2-col 84%' });
+        STEPS.push(
+          { cls: 'shrink-3', twoCol: true, label: '2-col 88%' },
+          { cls: 'shrink-4', twoCol: true, label: '2-col 84%' }
+        );
       }
       // Clear prior cascade classes before measuring.
       ['shrink-1','shrink-2','shrink-3','shrink-4','promote-2col'].forEach(function (c) {
         paperEl.classList.remove('md-' + c);
       });
+      // Wave studio-quality (perf) — Warm-start the cascade from the
+      // previously-picked step. If the operator just edited a
+      // description by 5 chars, the previously-picked step almost
+      // always still fits — we save 9 measurement passes (each one
+      // forces a reflow). When it stops fitting (e.g. operator added
+      // a dish that breaks the budget), we fall through to the full
+      // cascade and pick the next-larger step. Always validates;
+      // no staleness risk.
       var fitOk = false;
       var firstStepBuckets = null;
       var pickedStep = null;
-      for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
-        var step = STEPS[stepIdx];
-        if (step.cls) paperEl.classList.add('md-' + step.cls);
-        if (step.twoCol) paperEl.classList.add('md-promote-2col');
-        // Force a reflow before re-measure.
+      var warmStartIdx = -1;
+      if (paginatePreviewDom._lastPickedLabel) {
+        for (var ws = 0; ws < STEPS.length; ws++) {
+          if (STEPS[ws].label === paginatePreviewDom._lastPickedLabel) {
+            warmStartIdx = ws;
+            break;
+          }
+        }
+      }
+      if (warmStartIdx >= 0) {
+        var wstep = STEPS[warmStartIdx];
+        if (wstep.cls) paperEl.classList.add('md-' + wstep.cls);
+        if (wstep.twoCol) paperEl.classList.add('md-promote-2col');
         // eslint-disable-next-line no-unused-expressions
         paperEl.offsetHeight;
-        var buckets = _measureBuckets(paperEl, contentAreaH);
-        if (stepIdx === 0) firstStepBuckets = buckets;
-        if (buckets.length <= targetPages) {
+        var wbuckets = _measureBuckets(paperEl, contentAreaH);
+        // Pull-It-Back invariant — 2-col promotion is a 1-page-fit
+        // primitive only (page-split breaks 2-col layout visually).
+        // If warm-start was 2-col and now needs multi-page, drop the
+        // warm hit and let the full cascade pick a single-col fallback.
+        var warmInvalid = (wstep.twoCol && wbuckets.length > 1);
+        if (!warmInvalid && wbuckets.length <= targetPages) {
           fitOk = true;
-          pickedStep = step;
-          break;
+          pickedStep = wstep;
+          firstStepBuckets = wbuckets;
+        } else {
+          // Warm start didn't fit; clear and fall through.
+          if (wstep.cls) paperEl.classList.remove('md-' + wstep.cls);
+          if (wstep.twoCol) paperEl.classList.remove('md-promote-2col');
         }
-        // Remove this step's classes before trying the next.
-        if (step.cls) paperEl.classList.remove('md-' + step.cls);
-        if (step.twoCol) paperEl.classList.remove('md-promote-2col');
       }
+      // Full cascade only fires when warm-start missed (or no prior
+      // pick exists). Mirrors the original behaviour exactly.
+      if (!fitOk) {
+        for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
+          var step = STEPS[stepIdx];
+          if (step.cls) paperEl.classList.add('md-' + step.cls);
+          if (step.twoCol) paperEl.classList.add('md-promote-2col');
+          // Force a reflow before re-measure.
+          // eslint-disable-next-line no-unused-expressions
+          paperEl.offsetHeight;
+          var buckets = _measureBuckets(paperEl, contentAreaH);
+          if (stepIdx === 0) firstStepBuckets = buckets;
+          // Pull-It-Back invariant — 2-col promotion is a 1-page-fit
+          // primitive only. The page-split machinery clones the
+          // paperEl per page; 2-col content cloned across multi-page
+          // breaks visually (section headers overlap dishes that
+          // flowed into the wrong column). When the cascade is in
+          // multi-page-allowed mode and a 2-col step would still
+          // produce >1 bucket, skip it and try the next step. The
+          // cascade's later 1-col steps (88%, 84% floor) WILL fit
+          // single-col multi-page cleanly because the page-split
+          // was designed for single-column flow.
+          if (step.twoCol && buckets.length > 1) {
+            // 2-col can't make this fit one page at this shrink.
+            // Strip and try the next step.
+            if (step.cls) paperEl.classList.remove('md-' + step.cls);
+            paperEl.classList.remove('md-promote-2col');
+            continue;
+          }
+          if (buckets.length <= targetPages) {
+            fitOk = true;
+            pickedStep = step;
+            break;
+          }
+          // Remove this step's classes before trying the next.
+          if (step.cls) paperEl.classList.remove('md-' + step.cls);
+          if (step.twoCol) paperEl.classList.remove('md-promote-2col');
+        }
+      }
+      // Stash the picked step's label so the next render's warm-start
+      // can try it first. Cleared (set to null) on overflow so we
+      // start from native next time the operator trims content.
+      paginatePreviewDom._lastPickedLabel = (pickedStep && pickedStep.label) || null;
       // Stash the picked step on the paper so the export-PDF flow can
       // mirror it (effectiveShrinkFactor + effectiveTwoColPromote).
       paperEl.dataset.fitStep = (pickedStep && pickedStep.label) || (fitOk ? 'fit' : 'overflow');
@@ -2581,7 +2924,63 @@
   // Debounce live-preview re-render so each keystroke during fast
   // typing doesn't recompute layout — matches the 300ms cadence
   // mentioned in the cohesive plan's A2 spec.
+  // Wave studio-quality (perf/UX) — Instant preview update for
+  // dish name / desc / price.
+  //
+  // The 120ms debounced render is fast but still feels lagging on
+  // dish-name typing. This helper updates the corresponding preview
+  // DOM element directly on each input event so operators see their
+  // text reflected immediately. The eventual debounced render still
+  // fires (full cascade + allergen-key + pre-flight) but the operator
+  // already saw their change.
+  //
+  // Tradeoffs handled:
+  //   - Caret preservation: we touch ONLY preview-side DOM, never
+  //     the editor input — caret stays put.
+  //   - Multi-page split: the preview can be paginated into sibling
+  //     .md-preview-paper elements; querySelectorAll on the frame
+  //     finds the row regardless of which page it landed on.
+  //   - Price formatter: applies the same formatPriceDisplay() the
+  //     debounced render uses, so no flicker between instant + final.
+  //   - Element absence: when desc was empty and operator types the
+  //     first char, the .md-pp-desc span doesn't exist. Skip the
+  //     instant path; the debounced render will create it.
+  //   - Glyphs: the dish name is wrapped in <span.md-pp-name-text>
+  //     so we update only the text, leaving allergen pills alone.
+  function _instantUpdatePreview(rowI, field, value) {
+    var frame = paper && paper.parentElement;
+    if (!frame) return;
+    var rowEl = frame.querySelector('[data-preview-i="' + rowI + '"]');
+    if (!rowEl) return;
+    if (field === 'name') {
+      var nameEl = rowEl.querySelector('.md-pp-name-text');
+      if (nameEl) nameEl.textContent = String(value == null ? '' : value);
+    } else if (field === 'desc') {
+      var descEl = rowEl.querySelector('.md-pp-desc');
+      if (descEl) {
+        descEl.textContent = String(value == null ? '' : value);
+      }
+      // When desc element doesn't exist (was empty before this
+      // keystroke), let the debounced render insert it.
+    } else if (field === 'price') {
+      var priceEl = rowEl.querySelector('.md-pp-price');
+      if (priceEl) {
+        // Apply the same formatter the debounced render uses so no
+        // flicker between instant and final rendered text.
+        var displayCurrency = (meta && meta.currency) || 'USD';
+        priceEl.textContent = formatPriceDisplay(value, displayCurrency);
+      }
+    }
+  }
+
   var previewTimer = null;
+  // Wave studio-quality (perf) — debounce reduced 300ms → 120ms.
+  // The cascade warm-start (1 measurement pass on stable content)
+  // + HTML memoization (no-op renders skip the innerHTML write +
+  // cascade entirely) made renders cheap enough that 120ms feels
+  // responsive without thrashing. Operators typing fast see the
+  // preview track their edits visibly instead of lagging behind.
+  var PREVIEW_DEBOUNCE_MS = 120;
   function schedulePreview() {
     if (previewTimer) clearTimeout(previewTimer);
     previewTimer = setTimeout(function () {
@@ -2604,7 +3003,7 @@
           });
         });
       }
-    }, 300);
+    }, PREVIEW_DEBOUNCE_MS);
   }
 
   // ----------------------------------------------------------------
@@ -2630,6 +3029,86 @@
   var __saveTimer = null;
   var __saveDraftEnabled = true;
 
+  // ----------------------------------------------------------------
+  // Multi-tab safety. Two tabs of menu-design open on the same browser
+  // would both autosave every 500ms to a single localStorage key —
+  // last writer wins, the operator silently loses work in the inactive
+  // tab. The first tab to open claims a lock via BroadcastChannel;
+  // every subsequent tab receives 'lock-claimed' and switches itself
+  // into read-only mode with an explicit banner.
+  // ----------------------------------------------------------------
+  var __tabId = 'tab-' + Math.random().toString(36).slice(2, 10) + '-' + Date.now().toString(36);
+  var __isPrimaryTab = true;          // until proven otherwise
+  var __tabChannel = null;
+  var __readonlyLockBanner = null;
+  function initTabLock() {
+    if (typeof BroadcastChannel === 'undefined') return;  // older browsers
+    try {
+      __tabChannel = new BroadcastChannel('md-draft-lock');
+    } catch (_) { return; }
+    __tabChannel.addEventListener('message', function (ev) {
+      var d = ev && ev.data;
+      if (!d || d.tabId === __tabId) return;
+      if (d.type === 'hello') {
+        // Another tab just opened. If we're primary, tell them.
+        if (__isPrimaryTab) {
+          try { __tabChannel.postMessage({ type: 'lock-claimed', tabId: __tabId }); } catch (_) {}
+        }
+      } else if (d.type === 'lock-claimed') {
+        // Another tab is primary. Demote ourselves.
+        if (__isPrimaryTab) {
+          __isPrimaryTab = false;
+          __saveDraftEnabled = false;
+          showReadonlyLockBanner();
+        }
+      } else if (d.type === 'farewell') {
+        // The primary tab closed. Promote ourselves if we're the
+        // only remaining tab. (A 200ms sniff catches more open tabs.)
+        if (!__isPrimaryTab) {
+          setTimeout(function () {
+            // Re-announce; if no one objects within 200ms we're primary.
+            __isPrimaryTab = true;
+            try { __tabChannel.postMessage({ type: 'hello', tabId: __tabId }); } catch (_) {}
+            setTimeout(function () {
+              if (__isPrimaryTab) {
+                __saveDraftEnabled = true;
+                hideReadonlyLockBanner();
+              }
+            }, 200);
+          }, 200);
+        }
+      }
+    });
+    // Announce ourselves. If there's already a primary tab, it will
+    // respond with 'lock-claimed' and we'll demote ourselves.
+    try { __tabChannel.postMessage({ type: 'hello', tabId: __tabId }); } catch (_) {}
+    window.addEventListener('beforeunload', function () {
+      if (__isPrimaryTab && __tabChannel) {
+        try { __tabChannel.postMessage({ type: 'farewell', tabId: __tabId }); } catch (_) {}
+      }
+    });
+  }
+  function showReadonlyLockBanner() {
+    if (__readonlyLockBanner) return;
+    var b = document.createElement('div');
+    b.className = 'md-readonly-banner';
+    b.setAttribute('role', 'alert');
+    b.innerHTML =
+      '<strong>' + tt('Another tab is editing this menu.', 'Otra pestaña está editando este menú.') + '</strong> ' +
+      tt('Edits in this tab will NOT save. Switch to the other tab, or close it and refresh here.',
+         'Los cambios en esta pestaña NO se guardarán. Cambia a la otra pestaña, o ciérrala y recarga aquí.');
+    document.body.insertBefore(b, document.body.firstChild);
+    __readonlyLockBanner = b;
+    updateSavedIndicator('save-failed');
+  }
+  function hideReadonlyLockBanner() {
+    if (__readonlyLockBanner && __readonlyLockBanner.parentNode) {
+      __readonlyLockBanner.parentNode.removeChild(__readonlyLockBanner);
+    }
+    __readonlyLockBanner = null;
+  }
+  initTabLock();
+
   function safeLs() {
     if (typeof MD_DRAFT !== 'undefined') return MD_DRAFT.safeLs();
     try {
@@ -2646,7 +3125,7 @@
   var __lastSavedTs = 0;
   function updateSavedIndicator(state) {
     if (!savedEl || !savedText) return;
-    savedEl.classList.remove('is-saved', 'is-saving');
+    savedEl.classList.remove('is-saved', 'is-saving', 'is-error');
     if (state === 'saving') {
       savedEl.classList.add('is-saving');
       savedText.textContent = tt('Saving…', 'Guardando…');
@@ -2654,6 +3133,15 @@
       __lastSavedTs = Date.now();
       savedEl.classList.add('is-saved');
       savedText.textContent = tt('Saved just now', 'Guardado ahora');
+    } else if (state === 'quota-error') {
+      // Stop lying. Browser storage is full; the draft is NOT saved.
+      savedEl.classList.add('is-error');
+      savedText.textContent = tt('Storage full — export JSON now',
+                                 'Almacenamiento lleno — exporta JSON ya');
+    } else if (state === 'save-failed') {
+      savedEl.classList.add('is-error');
+      savedText.textContent = tt('Save failed — export JSON now',
+                                 'Falló al guardar — exporta JSON ya');
     } else if (state === 'tick') {
       // Periodic refresh — show "Saved 12s ago" / "Saved 3m ago".
       if (!__lastSavedTs) return;
@@ -3009,9 +3497,16 @@
     var q = (searchEl.value || '').toLowerCase().trim();
     var trs = rowsEl.querySelectorAll('tr[data-i]');
     if (!q) {
-      trs.forEach(function (tr) { tr.style.display = ''; });
+      trs.forEach(function (tr) {
+        tr.style.display = '';
+        tr.classList.remove('md-search-match');
+      });
+      // Also clear the rowsEl-level "search active" class so the
+      // visual style returns to default.
+      rowsEl.classList.remove('md-search-active');
       return;
     }
+    rowsEl.classList.add('md-search-active');
     // Determine which sections retain at least one matching dish.
     var keepSections = {};
     var lastSec = null;
@@ -3026,15 +3521,36 @@
       var i = parseInt(tr.dataset.i, 10);
       if (!isFinite(i) || !rows[i]) return;
       var r = rows[i];
+      // Wave studio-quality (UX) — search highlight. Matched rows
+      // stay visible AND get a subtle highlight (teal left-edge
+      // stripe + warm tint) so operators see at-a-glance which
+      // dishes match — not just "the unmatched ones disappeared."
       if (r.kind === 'section') {
         tr.style.display = keepSections[i] ? '' : 'none';
+        tr.classList.remove('md-search-match');
       } else {
         var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
-        tr.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+        var matches = hay.indexOf(q) !== -1;
+        tr.style.display = matches ? '' : 'none';
+        tr.classList.toggle('md-search-match', matches);
       }
     });
   }
-  if (searchEl) searchEl.addEventListener('input', applySearchFilter);
+  // Wave studio-quality (perf) — rAF-debounced search filter. The
+  // filter does a linear scan + per-row inline-style write that costs
+  // ~5ms per call on a 100-dish menu; without debouncing the handler
+  // fires 5-6× per typing burst and the input feels janky. rAF
+  // coalesces to one filter pass per frame.
+  var __searchRaf = null;
+  if (searchEl) {
+    searchEl.addEventListener('input', function () {
+      if (__searchRaf) return;
+      __searchRaf = requestAnimationFrame(function () {
+        __searchRaf = null;
+        applySearchFilter();
+      });
+    });
+  }
 
   function persistDraft() {
     if (!__saveDraftEnabled) return;
@@ -3080,7 +3596,14 @@
           quietMode:      !!meta.quietMode,
           businessName:   meta.businessName || ''
         },
-        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
+        customize: {
+          accent: customize.accent, paper: customize.paper, ink: customize.ink,
+          paperTexture: customize.paperTexture, mods: customize.mods,
+          // Wave studio-quality (B12) — Theme Tuner state persisted too.
+          letterSpacing: customize.letterSpacing,
+          sectionCase: customize.sectionCase,
+          dividerStyle: customize.dividerStyle
+        },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -3091,7 +3614,37 @@
         ls.removeItem(LOGO_KEY);
       }
       updateSavedIndicator('saved');
-    } catch (_) { /* quota — silent */ updateSavedIndicator('saved'); }
+    } catch (e) {
+      // Stop lying to the operator. localStorage refused the write —
+      // either quota exceeded (5MB), security context (Safari private),
+      // or storage disabled. Surface the truth so the operator can
+      // export JSON before refreshing.
+      var isQuota = e && (e.name === 'QuotaExceededError' ||
+                          e.code === 22 || e.code === 1014 ||
+                          /quota/i.test(String(e && e.message)));
+      updateSavedIndicator(isQuota ? 'quota-error' : 'save-failed');
+      if (!__draftSaveErrorFired) {
+        __draftSaveErrorFired = true;  // single-fire per session
+        try {
+          if (window.plausible) {
+            window.plausible('Menu Design Save Failed', {
+              props: { reason: isQuota ? 'quota' : 'other' }
+            });
+          }
+        } catch (_) {}
+        showSaveFailedBanner(isQuota);
+      }
+    }
+  }
+  var __draftSaveErrorFired = false;
+  function showSaveFailedBanner(isQuota) {
+    // Operator-tone banner: tell them what happened, what to do.
+    var msg = isQuota
+      ? tt('Browser storage is full. Your draft is NOT being saved. Export your menu as JSON now (Menu → Save menu file) before refreshing.',
+           'El almacenamiento del navegador está lleno. Tu borrador NO se está guardando. Exporta tu menú como JSON ahora (Menú → Guardar archivo) antes de recargar.')
+      : tt('Could not save your draft to browser storage. Export your menu as JSON now (Menu → Save menu file) before refreshing.',
+           'No se pudo guardar el borrador. Exporta tu menú como JSON ahora (Menú → Guardar archivo) antes de recargar.');
+    setDownloadMsg(msg, 'error');
   }
 
   function scheduleSaveDraft() {
@@ -3204,6 +3757,10 @@
           customize.ink    = d.customize.ink    || null;
           customize.paperTexture = !!d.customize.paperTexture;
           customize.mods   = d.customize.mods   || { season: 'none', daypart: 'none', event: 'none' };
+          // Wave studio-quality (B12) — Theme Tuner restore.
+          customize.letterSpacing = d.customize.letterSpacing || null;
+          customize.sectionCase   = d.customize.sectionCase   || null;
+          customize.dividerStyle  = d.customize.dividerStyle  || null;
           if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
           if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
           if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
@@ -3211,8 +3768,15 @@
           if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
           if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
           if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+          var lsEl = document.getElementById('mdCustomLetterSpacing');
+          var scEl = document.getElementById('mdCustomSectionCase');
+          var dsEl = document.getElementById('mdCustomDividerStyle');
+          if (lsEl) lsEl.value = customize.letterSpacing || '';
+          if (scEl) scEl.value = customize.sectionCase   || '';
+          if (dsEl) dsEl.value = customize.dividerStyle  || '';
           var anyMod = customize.mods.season !== 'none' || customize.mods.daypart !== 'none' || customize.mods.event !== 'none';
-          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod) {
+          var anyTuner = customize.letterSpacing || customize.sectionCase || customize.dividerStyle;
+          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod || anyTuner) {
             var custEl = document.getElementById('mdCustomize');
             if (custEl) custEl.open = true;
           }
@@ -3275,6 +3839,20 @@
         return;
       }
       rows[i][t.dataset.field] = t.value;
+      // Wave studio-quality (perf/UX) — instant preview update for
+      // the three trivial fields. Bypasses the 120ms debounce so the
+      // operator sees their typing reflected in the live preview
+      // immediately. The full debounced render still fires after to
+      // pick up downstream consequences (cascade, allergen-key, etc).
+      // Only touches preview-side DOM; never the input the operator
+      // is typing in, so the caret is preserved.
+      if (rows[i].kind === 'dish' && (
+            t.dataset.field === 'name' ||
+            t.dataset.field === 'desc' ||
+            t.dataset.field === 'price'
+          )) {
+        _instantUpdatePreview(i, t.dataset.field, t.value);
+      }
       schedulePreview();
       scheduleSaveDraft();    // W5-8
     });
@@ -3300,9 +3878,25 @@
       var tr = e.target.closest('tr[data-i]');
       if (!tr || __dragSrcIdx === -1) return;
       e.preventDefault();
-      var prev = rowsEl.querySelector('.md-drag-over');
-      if (prev && prev !== tr) prev.classList.remove('md-drag-over');
-      if (tr !== rowsEl.querySelector('.md-drag-source')) tr.classList.add('md-drag-over');
+      // Wave studio-quality (UX) — directional drop indicator. Show
+      // a horizontal insertion line at the top or bottom of the
+      // hovered row based on cursor position within the row. Way
+      // clearer on long menus than the previous "outline the whole
+      // row" treatment which left operators guessing whether the
+      // drop would land before or after.
+      var rect = tr.getBoundingClientRect();
+      var midY = rect.top + rect.height / 2;
+      var insertBefore = e.clientY < midY;
+      // Clear ALL prior drag-over classes (any direction).
+      rowsEl.querySelectorAll('.md-drag-over,.md-drag-over-top,.md-drag-over-bottom')
+        .forEach(function (el) {
+          el.classList.remove('md-drag-over', 'md-drag-over-top', 'md-drag-over-bottom');
+        });
+      if (tr !== rowsEl.querySelector('.md-drag-source')) {
+        tr.classList.add(insertBefore ? 'md-drag-over-top' : 'md-drag-over-bottom');
+        // Remember the insertion direction for the drop handler.
+        tr.dataset.dropDir = insertBefore ? 'before' : 'after';
+      }
     });
     rowsEl.addEventListener('drop', function (e) {
       e.preventDefault();
@@ -3310,9 +3904,18 @@
       if (!tr || __dragSrcIdx === -1) return;
       var dst = parseInt(tr.dataset.i, 10);
       if (!isFinite(dst) || dst === __dragSrcIdx) return;
+      // Wave studio-quality (UX) — honor the directional indicator.
+      // dropDir 'before' inserts at dst; 'after' inserts at dst+1.
+      // Adjust for the splice that removed the source item from
+      // earlier in the list.
+      var dropDir = tr.dataset.dropDir || 'before';
       pushUndo();
       var moved = rows.splice(__dragSrcIdx, 1)[0];
-      rows.splice(dst, 0, moved);
+      // After splice, dst may have shifted left by 1 if source was
+      // earlier in the list.
+      var adjustedDst = (__dragSrcIdx < dst) ? dst - 1 : dst;
+      var insertAt = dropDir === 'after' ? adjustedDst + 1 : adjustedDst;
+      rows.splice(insertAt, 0, moved);
       __dragSrcIdx = -1;
       render();
       scheduleSaveDraft();
@@ -3973,6 +4576,38 @@
     if (ctx.neighborhood || ctx.city) parts.push({ label: 'Neighborhood', value: ctx.neighborhood || ctx.city });
     if (Array.isArray(ctx.dishes) && ctx.dishes.length) parts.push({ label: 'Dishes', value: ctx.dishes.length + ' from prior tools' });
     if (Array.isArray(ctx.palette) && ctx.palette.length) parts.push({ label: 'Palette', swatches: ctx.palette.slice(0, 5) });
+    // Wave studio-quality (C9) — surface menu-engineering quadrant
+    // counts when the handoff carried them so the operator sees what
+    // came across without expanding the editor.
+    if (ctx.menuEngineeringHint) {
+      var meh = ctx.menuEngineeringHint;
+      var bits = [];
+      if (meh.stars)       bits.push(meh.stars      + (meh.stars      === 1 ? ' Star'      : ' Stars'));
+      if (meh.plowhorses)  bits.push(meh.plowhorses + (meh.plowhorses === 1 ? ' Plowhorse' : ' Plowhorses'));
+      if (meh.puzzles)     bits.push(meh.puzzles    + (meh.puzzles    === 1 ? ' Puzzle'    : ' Puzzles'));
+      if (meh.dogs)        bits.push(meh.dogs       + (meh.dogs       === 1 ? ' Dog'       : ' Dogs'));
+      if (bits.length) parts.push({ label: 'From Menu Engineering', value: bits.join(' · ') });
+    }
+    // Wave studio-quality (C9) — surface menu-copy verdict counts +
+    // average score when the handoff carried them.
+    if (ctx.menuCopyHint) {
+      var mch = ctx.menuCopyHint;
+      var copyBits = [];
+      if (mch.polish)  copyBits.push(mch.polish  + ' polish');
+      if (mch.edit)    copyBits.push(mch.edit    + ' edit');
+      if (mch.rewrite) copyBits.push(mch.rewrite + ' rewrite');
+      if (mch.avgScore != null) copyBits.push('avg score ' + mch.avgScore);
+      if (copyBits.length) parts.push({ label: 'From Menu Copy', value: copyBits.join(' · ') });
+    }
+    // Wave studio-quality (C9) — surface menu-converter parse counts.
+    if (ctx.menuConverterHint) {
+      var mcvh = ctx.menuConverterHint;
+      var convBits = [];
+      if (mcvh.sections) convBits.push(mcvh.sections + ' section' + (mcvh.sections === 1 ? '' : 's'));
+      if (mcvh.items)    convBits.push(mcvh.items    + ' item'    + (mcvh.items    === 1 ? '' : 's'));
+      if (mcvh.currency) convBits.push(mcvh.currency);
+      if (convBits.length) parts.push({ label: 'From Menu Converter', value: convBits.join(' · ') });
+    }
     if (!parts.length) {
       ctxEl.hidden = true;
       return;
@@ -4074,6 +4709,32 @@
     downloadMsg.textContent = text || '';
   }
 
+  // Wave studio-quality (perf/UX) — Export busy-state coordinator.
+  // PDF generation on a 53-dish tabloid blocks the main thread for
+  // 4-6s. The button label change ("Building PDF…") is the only
+  // signal today, so operators staring at the preview wonder if
+  // anything is happening. This counter-based helper toggles a soft
+  // pulse on the preview frame whenever ANY export is in flight,
+  // and clears when all exports finish (operators sometimes click
+  // Download PDF + Pack ZIP back-to-back; the counter handles that).
+  var __exportBusy = 0;
+  function setExportBusy(running) {
+    if (running) {
+      __exportBusy++;
+    } else {
+      __exportBusy = Math.max(0, __exportBusy - 1);
+    }
+    var pf = document.getElementById('mdPreviewFrame');
+    if (pf) {
+      pf.classList.toggle('md-preview-busy', __exportBusy > 0);
+      if (__exportBusy > 0) {
+        pf.setAttribute('aria-busy', 'true');
+      } else {
+        pf.removeAttribute('aria-busy');
+      }
+    }
+  }
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
       withRenderer(ensureMdPdf, downloadBtn, tt('Loading PDF tools…', 'Cargando…'), function () {
@@ -4125,6 +4786,7 @@
       var originalLabel = downloadBtn.innerHTML;
       downloadBtn.innerHTML = tt('Building PDF…', 'Generando PDF…');
       setDownloadMsg('');
+      setExportBusy(true);
 
       MD_PDF.exportPdf({
         rows:         rows,
@@ -4225,6 +4887,19 @@
         // success toast. Honors prefers-reduced-motion.
         try { surfaceDownloadCelebration(filename, pages); } catch (_) {}
       }).catch(function (err) {
+        // Wave studio-quality — explicit script-detection failure.
+        // PDF font subsets are Latin-only; instead of shipping boxes
+        // we point the operator at the working export paths.
+        if (err && err.code === 'unsupported-script') {
+          setDownloadMsg(err.message || tt(
+            'PDF export needs font subsets we have not shipped. Use HTML, kiosk, or text export.',
+            'La exportación a PDF necesita subsets que aún no enviamos. Usa la exportación HTML, kiosko o texto.'
+          ), 'error');
+          if (window.plausible) {
+            try { window.plausible('Menu Design Export Failed', { props: { format: 'pdf', reason: 'unsupported-script' } }); } catch (_) {}
+          }
+          return;
+        }
         // W10-10 — failure-mode delight. Don't dead-end on a PDF
         // failure; surface a retry + a PNG fallback so the operator
         // walks away with an artifact regardless. Lazy-loads
@@ -4261,7 +4936,7 @@
           //   format ∈ pdf | large-print | high-contrast | qr | text |
           //            ssml | brf | tablet | png
           //   reason ∈ cdn-blocked | cdn-load | oom | font-missing |
-          //            worker-unsupported | unknown
+          //            worker-unsupported | unsupported-script | unknown
           // Same call site, two events: legacy stays for back-compat
           // dashboards; new one carries the diagnostic prop pair.
           try {
@@ -4271,6 +4946,7 @@
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
+        setExportBusy(false);
       });
   }
 
@@ -4280,22 +4956,52 @@
   // a high-res PNG. Lower fidelity than PDF (rasterized), but the
   // operator never leaves empty-handed.
   // ----------------------------------------------------------------
-  var H2C_CDN = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  // Wave A4 — html2canvas with same-origin vendored fallback.
+  // CDN tried first; on error, /assets/vendor/html2canvas@1.4.1/...
+  // takes over and a Plausible event surfaces the fallback rate.
+  var H2C_CDN    = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  var H2C_VENDOR = '/assets/vendor/html2canvas@1.4.1/html2canvas.min.js';
   var __h2cLoadPromise = null;
   function loadHtml2Canvas() {
     if (window.html2canvas) return Promise.resolve(window.html2canvas);
     if (__h2cLoadPromise) return __h2cLoadPromise;
-    __h2cLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = H2C_CDN; s.async = true; s.crossOrigin = 'anonymous'; s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (window.html2canvas) resolve(window.html2canvas);
-        else { __h2cLoadPromise = null; reject(new Error('html2canvas missing after load')); }
-      };
-      s.onerror = function () { __h2cLoadPromise = null; reject(new Error('html2canvas load failed')); };
-      document.head.appendChild(s);
+    __h2cLoadPromise = _loadCdnOrVendorMd(H2C_CDN, H2C_VENDOR, 'html2canvas').then(function () {
+      if (window.html2canvas) return window.html2canvas;
+      throw new Error('html2canvas missing after load');
+    }).catch(function (e) {
+      __h2cLoadPromise = null;
+      throw e;
     });
     return __h2cLoadPromise;
+  }
+  // Local helper (mirrors loadOneOrFallback in menu-render-pdf.js
+  // and _loadCdnOrVendor in menu-render-html.js — kept inline rather
+  // than extracted to avoid an extra script load order constraint).
+  function _loadCdnOrVendorMd(cdnUrl, vendorUrl, label) {
+    return new Promise(function (resolve, reject) {
+      function loadFrom(src, isFallback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () { resolve({ src: src, fallback: !!isFallback }); };
+        s.onerror = function () {
+          if (!isFallback) {
+            try {
+              if (window.plausible) {
+                window.plausible('Menu Design CDN Fallback', { props: { lib: label } });
+              }
+            } catch (_) {}
+            loadFrom(vendorUrl, true);
+          } else {
+            reject(new Error(label + ' failed to load from CDN and vendored copy'));
+          }
+        };
+        document.head.appendChild(s);
+      }
+      loadFrom(cdnUrl, false);
+    });
   }
 
   function downloadAsPng(filenameBase, title) {
@@ -4334,6 +5040,126 @@
     });
   }
 
+  // Wave studio-quality (C1 partial) — Social PNG export.
+  //
+  // Operators post their menus on Instagram / Facebook / X every
+  // week, especially around specials. Until now they screenshotted
+  // the live preview manually. This ships four standard social
+  // dimensions and renders the live preview into each, fitted with
+  // the theme's paper color as the matte (so a Letter-shaped menu
+  // landing on a 1080×1920 story doesn't sit on a random white
+  // bar — it sits on the menu's own paper color).
+  //
+  // Output is a single PNG per click. Reuses the html2canvas lazy-
+  // load already wired for the PNG fallback path.
+  var SOCIAL_FORMATS = {
+    'instagram-square': { w: 1080, h: 1080, label_en: 'Instagram square (1080×1080)', label_es: 'Instagram cuadrado (1080×1080)' },
+    'instagram-story':  { w: 1080, h: 1920, label_en: 'Story 9:16 (1080×1920)',       label_es: 'Story 9:16 (1080×1920)' },
+    'facebook-cover':   { w: 1640, h: 924,  label_en: 'Facebook cover (1640×924)',     label_es: 'Portada Facebook (1640×924)' },
+    'x-header':         { w: 1500, h: 500,  label_en: 'X / Twitter header (1500×500)', label_es: 'Cabecera X / Twitter (1500×500)' }
+  };
+  function _doExportSocial(formatKey) {
+    var fmt = SOCIAL_FORMATS[formatKey];
+    if (!fmt) return;
+    var preview = document.getElementById('mdPaper');
+    if (!preview) {
+      setDownloadMsg(tt('No preview to capture.', 'Sin vista previa para capturar.'), 'error');
+      return;
+    }
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before exporting a social PNG.',
+        'Agrega al menos un plato antes de exportar un PNG social.'
+      ), 'error');
+      return;
+    }
+    setDownloadMsg(tt(
+      'Capturing ' + fmt.label_en.split(' (')[0] + '…',
+      'Capturando ' + fmt.label_es.split(' (')[0] + '…'
+    ));
+    loadHtml2Canvas().then(function (h2c) {
+      // Capture the live preview at high res. scale=2 gives ~retina
+      // crispness on a Letter-sized preview.
+      return h2c(preview, { backgroundColor: null, scale: 2, useCORS: true });
+    }).then(function (sourceCanvas) {
+      // Compose into a target-sized canvas, fitting the preview
+      // proportionally with the theme's paper color as the matte.
+      var t = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+      var paperColor = (t && (customize.paper || t.paper)) || '#FAF6EE';
+      var target = document.createElement('canvas');
+      target.width  = fmt.w;
+      target.height = fmt.h;
+      var ctx = target.getContext('2d');
+      ctx.fillStyle = paperColor;
+      ctx.fillRect(0, 0, fmt.w, fmt.h);
+      // Compute fitted size — leave a 6% margin on each side so the
+      // menu doesn't crash into the social-platform UI overlays.
+      var marginX = Math.round(fmt.w * 0.06);
+      var marginY = Math.round(fmt.h * 0.06);
+      var availW = fmt.w - 2 * marginX;
+      var availH = fmt.h - 2 * marginY;
+      var srcRatio = sourceCanvas.width / sourceCanvas.height;
+      var dstRatio = availW / availH;
+      var dw, dh;
+      if (srcRatio > dstRatio) {
+        dw = availW;
+        dh = Math.round(availW / srcRatio);
+      } else {
+        dh = availH;
+        dw = Math.round(availH * srcRatio);
+      }
+      var dx = Math.round((fmt.w - dw) / 2);
+      var dy = Math.round((fmt.h - dh) / 2);
+      // Smooth high-quality downscale.
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, dx, dy, dw, dh);
+      target.toBlob(function (blob) {
+        if (!blob) {
+          setDownloadMsg(tt('Couldn\'t make the PNG.', 'No se pudo armar el PNG.'), 'error');
+          return;
+        }
+        var biz = (meta && meta.businessName) ? String(meta.businessName) : 'menu';
+        var slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = slug + '-' + formatKey + '.png';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'Downloaded ' + fmt.label_en.split(' (')[0] + ' PNG. Drop into Instagram / Facebook / X.',
+          'Descargado PNG ' + fmt.label_es.split(' (')[0] + '. Súbelo a Instagram / Facebook / X.'
+        ), 'success');
+        if (window.plausible) {
+          try {
+            window.plausible('Menu Design Social Exported', {
+              props: { format: formatKey }
+            });
+          } catch (_) {}
+        }
+      }, 'image/png');
+    }).catch(function () {
+      setDownloadMsg(tt(
+        'Couldn\'t capture the preview as a social PNG. Check your network and retry.',
+        'No se pudo capturar la vista previa como PNG. Revisa tu red e intenta de nuevo.'
+      ), 'error');
+    });
+  }
+  // Delegate click handler for the social-format buttons.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest && e.target.closest('[data-social-format]');
+    if (!btn) return;
+    var fmt = btn.dataset.socialFormat;
+    if (SOCIAL_FORMATS[fmt]) {
+      e.preventDefault();
+      _doExportSocial(fmt);
+    }
+  });
+
   // ----------------------------------------------------------------
   // W6-3 — Large-print accessibility variant. Reuses the existing
   // PDF flow with largePrint: true. Override bumps body to 18pt /
@@ -4365,11 +5191,13 @@
       var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
       var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
       var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-large-print';
-      largePrintBtn.disabled = true;
+      largePrintBtn.disabled = true; setExportBusy(true);
       var origLabel = largePrintBtn.innerHTML;
       largePrintBtn.textContent = tt('Building large-print PDF…', 'Generando letra grande…');
+      // Wave studio-quality (C2) — large-print prefers descPlain.
+      var rowsForLargePrint = withPlainLanguageDesc(realRows);
       MD_PDF.exportPdf({
-        rows:        realRows,
+        rows:        rowsForLargePrint,
         theme:       theme,
         paperKey:    paperKey,
         customDims:  paperKey === 'custom' ? customDims : null,
@@ -4432,11 +5260,13 @@
       try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) title = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
       if (!title) title = tt('Menu', 'Menú');
       var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-high-contrast';
-      highContrastBtn.disabled = true;
+      highContrastBtn.disabled = true; setExportBusy(true);
       var origLabel = highContrastBtn.innerHTML;
       highContrastBtn.textContent = tt('Building high-contrast PDF…', 'Generando alto contraste…');
+      // Wave studio-quality (C2) — high-contrast prefers descPlain.
+      var rowsForHighContrast = withPlainLanguageDesc(realRows);
       MD_PDF.exportPdf({
-        rows:         realRows,
+        rows:         rowsForHighContrast,
         theme:        theme,
         paperKey:     paperKey,
         customDims:   paperKey === 'custom' ? customDims : null,
@@ -4466,6 +5296,116 @@
       });
   }
 
+  // Wave studio-quality (C1 partial) — Daily specials card export.
+  // Operators tag a section "Today's specials" via the per-section
+  // checkbox. This handler filters to JUST those sections and routes
+  // the export to the existing 'specials' paper format (5×7). Print
+  // a fresh card nightly without redoing the whole menu.
+  if (exportSpecialsBtn) {
+    exportSpecialsBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, exportSpecialsBtn, tt('Loading…', 'Cargando…'), function () { _doExportSpecials(); });
+    });
+  }
+  function _doExportSpecials() {
+    if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+      setDownloadMsg(tt(
+        'PDF generator not loaded. Refresh and try again.',
+        'El generador de PDF no se cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    // Filter rows to: any section flagged specials + the dishes that
+    // belong to it (until the next section header or end of list).
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    var filtered = [];
+    var inSpecial = false;
+    realRows.forEach(function (r) {
+      if (r.kind === 'section') {
+        inSpecial = !!r.specials;
+        if (inSpecial) filtered.push(r);
+      } else if (inSpecial) {
+        filtered.push(r);
+      }
+    });
+    var dishCount = filtered.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+    if (dishCount === 0) {
+      setDownloadMsg(tt(
+        'No specials sections found. Mark a section as "Today\'s specials" via the per-section settings, then try again.',
+        'No hay secciones marcadas como especiales. Marca una sección como "Especiales del día" en sus ajustes y vuelve a intentar.'
+      ), 'error');
+      return;
+    }
+    var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+    theme = applyCustomizer(theme);
+    var title = (meta && meta.businessName)
+      ? meta.businessName + ' — ' + tt('Specials', 'Especiales')
+      : tt('Today\'s specials', 'Especiales del día');
+    var slug = String((meta && meta.businessName) || 'menu').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+    var ymd = (function () {
+      var d = new Date();
+      return d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
+    })();
+    var fnameBase = slug + '-specials-' + ymd;
+
+    exportSpecialsBtn.disabled = true; setExportBusy(true);
+    var origLabel = exportSpecialsBtn.innerHTML;
+    exportSpecialsBtn.textContent = tt('Building specials card…', 'Generando especiales…');
+
+    MD_PDF.exportPdf({
+      rows:        filtered,
+      theme:       theme,
+      paperKey:    'specials',
+      title:       title,
+      tagline:     '',
+      story:       '',
+      currency:    (meta && meta.currency) || 'USD',
+      allowMultiPage: false,
+      quietMode:   !!(meta && meta.quietMode),
+      footer: {
+        address:       meta.address,
+        hours:         meta.hours,
+        serviceCharge: '',
+        sourcing:      '',
+        disclaimer:    effectiveDisclaimer(),
+        askYourServer: meta.askYourServer
+      },
+      coverPage:    false,
+      paperTexture: !!customize.paperTexture,
+      logoDataUrl:  logoUrl,
+      logoMeta:     logoMeta,
+      filename:     fnameBase,
+      locale:       LOCALE,
+      printVendor:  false
+    }).then(function (result) {
+      var pages = result.pageCount || 1;
+      setDownloadMsg(tt(
+        'Specials card downloaded — ' + dishCount + ' special' + (dishCount === 1 ? '' : 's') + ' on a 5×7 card. Print a fresh one nightly.',
+        'Especiales descargado — ' + dishCount + ' especial' + (dishCount === 1 ? '' : 'es') + ' en una tarjeta 5×7. Imprime uno fresco cada noche.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Specials Exported', { props: {
+            dishCount_bucket: dishCount < 4 ? '<4' : dishCount < 8 ? '4-7' : '8+'
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Specials card failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló especiales: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try { window.plausible('Menu Design Export Failed', { props: { format: 'specials', reason: 'unknown' } }); } catch (_) {}
+      }
+    }).then(function () {
+      exportSpecialsBtn.disabled = false; setExportBusy(false);
+      exportSpecialsBtn.innerHTML = origLabel;
+    });
+  }
+
   // W18 — downloadBlob extracted to infra/dom.js.
   function downloadBlob(content, filename, mime) {
     if (typeof MD_DOM !== 'undefined') return MD_DOM.downloadBlob(content, filename, mime);
@@ -4477,8 +5417,17 @@
     a.click();
     setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
   }
-  function buildEmitterOpts() {
+  function buildEmitterOpts(opts) {
+    opts = opts || {};
     var realRows = rows.filter(function (r) { return !r.ghost; });
+    // Wave studio-quality (C2) — accessibility-coded callers pass
+    // preferPlainLanguage: true so the rows[] swap descPlain → desc
+    // before the emitter sees them. Operators with an A11y-friendly
+    // sibling description ship that variant on the screen-reader,
+    // braille, large-print, and audio surfaces.
+    if (opts.preferPlainLanguage) {
+      realRows = withPlainLanguageDesc(realRows);
+    }
     var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
     var titleVal = '';
     try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
@@ -4520,7 +5469,7 @@
         setDownloadMsg(tt('Add at least one dish before exporting plain text.', 'Agrega al menos un plato antes de exportar.'), 'error');
         return;
       }
-      var opts = buildEmitterOpts();
+      var opts = buildEmitterOpts({ preferPlainLanguage: true });
       var md  = MD_TEXT.exportMarkdown(opts);
       var txt = MD_TEXT.exportPlainText(opts);
       var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
@@ -4543,7 +5492,7 @@
         setDownloadMsg(tt('Add at least one dish before exporting SSML.', 'Agrega al menos un plato antes de exportar SSML.'), 'error');
         return;
       }
-      var opts = buildEmitterOpts();
+      var opts = buildEmitterOpts({ preferPlainLanguage: true });
       var ssml = MD_TEXT.exportSsml(opts);
       var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
       downloadBlob(ssml, slug + '-menu.ssml', 'application/ssml+xml');
@@ -4564,13 +5513,50 @@
                         'Agrega al menos un plato antes de exportar Braille.'), 'error');
       return;
     }
-    var optsB = buildEmitterOpts();
+    var optsB = buildEmitterOpts({ preferPlainLanguage: true });
     var brf = MD_TEXT.exportBrf(optsB);
     var slug = String(optsB.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
     downloadBlob(brf, slug + '-menu.brf', 'application/x-brf');
     setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
+  }
+
+  // Wave C1 finish — ESC/POS thermal-printer .bin export. The
+  // emitter (tools/menu-design/menu-render-escpos.js) is small (~5
+  // KB gz, no external deps) and lazy-loaded only on click.
+  var exportEscposBtn = document.getElementById('mdExportEscpos');
+  if (exportEscposBtn) exportEscposBtn.addEventListener('click', function () {
+    withRenderer(ensureMdEscpos, exportEscposBtn, tt('Loading…', 'Cargando…'), function () { _doExportEscpos(); });
+  });
+  function ensureMdEscpos() {
+    if (typeof MD_ESCPOS !== 'undefined' && MD_ESCPOS.exportEscpos) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-escpos.js?v=20260504-c1');
+  }
+  function _doExportEscpos() {
+    if (typeof MD_ESCPOS === 'undefined' || typeof MD_ESCPOS.exportEscpos !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting a thermal-printer file.',
+                        'Agrega al menos un plato antes de exportar el archivo para impresora térmica.'), 'error');
+      return;
+    }
+    var opts = {
+      rows:    rows,
+      theme:   resolveTheme(),
+      meta:    meta,
+      title:   meta.businessName || 'Menu',
+      locale:  LOCALE
+    };
+    var result = MD_ESCPOS.exportEscpos(opts);
+    downloadBlob(result.blob, result.filename, 'application/octet-stream');
+    setDownloadMsg(tt(
+      'Thermal printer file downloaded (' + result.byteCount + ' bytes). Pipe to /dev/usb/lp0 or your POS raw-print endpoint.',
+      'Archivo para impresora térmica descargado (' + result.byteCount + ' bytes). Envíalo a /dev/usb/lp0 o al endpoint raw-print de tu POS.'
+    ), 'success');
+    if (window.plausible) {
+      try { window.plausible('Menu Design Thermal Exported'); } catch (_) {}
+    }
   }
 
   // -------------------- Wave B5 — Menu Pack ZIP ------------------
@@ -4658,6 +5644,7 @@
     var origLabel = exportPackBtn.innerHTML;
     exportPackBtn.textContent = tt('Building pack…', 'Generando pack…');
     setDownloadMsg('', 'success');
+    setExportBusy(true);
 
     MD_PACK.exportPack({
       canonicalMenu: canonicalMenu,
@@ -4711,6 +5698,7 @@
     }).then(function () {
       exportPackBtn.disabled = false;
       exportPackBtn.innerHTML = origLabel;
+      setExportBusy(false);
     });
   }
 
@@ -4790,6 +5778,7 @@
     var origLabelBl = exportBilingualBtn.innerHTML;
     exportBilingualBtn.textContent = tt('Building bilingual pack…', 'Generando pack bilingüe…');
     setDownloadMsg('', 'success');
+    setExportBusy(true);
 
     MD_PACK.exportBilingualPack({
       canonicalMenu: canonicalMenuBl,
@@ -4842,6 +5831,7 @@
     }).then(function () {
       exportBilingualBtn.disabled = false;
       exportBilingualBtn.innerHTML = origLabelBl;
+      setExportBusy(false);
     });
   }
 
@@ -4920,7 +5910,7 @@
         theme = MD_THEMES.applyPalette(theme, palette);
       }
       var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
-      exportQrBtn.disabled = true;
+      exportQrBtn.disabled = true; setExportBusy(true);
       var origLabel = exportQrBtn.innerHTML;
       exportQrBtn.textContent = tt('Building zip…', 'Empacando zip…');
       setDownloadMsg('', 'success');
@@ -4972,7 +5962,7 @@
           'No se pudo armar el zip — revisa tu red e intenta de nuevo.'
         ), 'error');
       }).then(function () {
-        exportQrBtn.disabled = false;
+        exportQrBtn.disabled = false; setExportBusy(false);
         exportQrBtn.innerHTML = origLabel;
       });
   }
@@ -5166,13 +6156,25 @@
   // ----------------------------------------------------------------
   // W11-2 + W22 — Quiz tile catalog extracted to data/quiz-tiles.js.
   var QUIZ_TILES = (typeof MD_QUIZ !== 'undefined') ? MD_QUIZ.TILES : [];
+  // Wave studio-quality — locale-aware tile suggestion. A Spanish-
+  // speaking operator in CDMX should see Mexicana pre-highlighted,
+  // not have to scan 16 tiles. Read once on boot; never overrides
+  // a saved draft or operator-typed currency.
+  var __localeSuggest = (typeof MD_QUIZ !== 'undefined' && MD_QUIZ.suggestForBrowser)
+    ? MD_QUIZ.suggestForBrowser()
+    : null;
   function renderQuizTiles() {
     var host = document.getElementById('mdQuizTiles');
     if (!host) return;
+    var pickedId = __localeSuggest && __localeSuggest.tile;
     host.innerHTML = QUIZ_TILES.map(function (t) {
       var label = LOCALE === 'es' ? t.label_es : t.label_en;
       var hint  = LOCALE === 'es' ? t.hint_es  : t.hint_en;
-      return '<li><button type="button" class="md-quiz-tile" data-cuisine="' + escHtml(t.id) + '">' +
+      var cls = 'md-quiz-tile' + (pickedId && pickedId === t.id ? ' is-suggested' : '');
+      var aria = (pickedId && pickedId === t.id)
+        ? ' aria-label="' + escHtml(label + ' — ' + (LOCALE === 'es' ? 'sugerido por tu navegador' : 'suggested by your browser')) + '"'
+        : '';
+      return '<li><button type="button" class="' + cls + '" data-cuisine="' + escHtml(t.id) + '"' + aria + '>' +
         '<span class="md-quiz-tile-glyph" aria-hidden="true">' + t.glyph + '</span>' +
         '<span class="md-quiz-tile-label">' + escHtml(label) + '</span>' +
         '<span class="md-quiz-tile-hint">' + escHtml(hint) + '</span>' +
@@ -5181,17 +6183,91 @@
   }
   function showQuizIfFresh() {
     var quizEl = document.getElementById('mdQuiz');
+    var onboardEl = document.getElementById('mdOnboard');
     if (!quizEl) return;
     // Only show on a truly cold load: no rows, no draft, no ctx menu data.
     if (rows.filter(function (r) { return !r.ghost; }).length) return;
     if (loadDraft()) return;
+
+    // Wave A8 — paste-or-type onboarding is the primary cold-start.
+    // Quiz is reachable via the "Don't have a menu? Browse by cuisine"
+    // button. If the operator immediately taps the cuisine link
+    // without pasting, we fall through to the existing quiz path.
+    if (onboardEl) {
+      onboardEl.hidden = false;
+      var areaEl = document.getElementById('mdOnboardArea');
+      var goBtn  = document.getElementById('mdOnboardGo');
+      var quizFallbackBtn = document.getElementById('mdOnboardQuiz');
+      function applyOnboardPaste() {
+        var raw = (areaEl && areaEl.value || '').trim();
+        if (!raw) {
+          // Empty submit — just close the onboard and seed ghost rows
+          // so the editor isn't a void. Operator can still type or
+          // hit the quiz fallback.
+          onboardEl.hidden = true;
+          try {
+            if (!rows.length && seedGhostRows()) {
+              render();
+              renderGhostOverlay();
+            }
+          } catch (_) {}
+          return;
+        }
+        // > 1 line OR contains a comma/tab — treat as paste. Otherwise
+        // seed a single dish row from the typed name.
+        var lineCount = raw.split('\n').filter(function (s) { return s.trim(); }).length;
+        var looksTabular = /[,\t]/.test(raw) || lineCount >= 2;
+        if (looksTabular && typeof parsePaste === 'function') {
+          var parsed = parsePaste(raw);
+          if (parsed && parsed.length) {
+            rows = parsed;
+            __ghostActive = false;
+            onboardEl.hidden = true;
+            render();
+            renderThemePicker();
+            scheduleSaveDraft();
+            if (window.plausible) {
+              try { window.plausible('Menu Design Paste', { props: { added: String(parsed.length) } }); } catch (_) {}
+            }
+            return;
+          }
+        }
+        // Single-dish typed: seed a blank dish row with the typed name.
+        var firstName = raw.split('\n')[0].trim();
+        rows = [{ kind: 'dish', name: firstName, price: '', desc: '', allergens: [] }];
+        __ghostActive = false;
+        onboardEl.hidden = true;
+        render();
+        renderThemePicker();
+        scheduleSaveDraft();
+        if (window.plausible) {
+          try { window.plausible('Menu Design First Dish', { props: { trigger: 'onboard-typed' } }); } catch (_) {}
+        }
+      }
+      if (goBtn) goBtn.addEventListener('click', applyOnboardPaste);
+      if (areaEl) {
+        areaEl.addEventListener('keydown', function (e) {
+          // Cmd-Enter or Ctrl-Enter submits. Plain Enter inserts newline
+          // (operators are pasting CSV; newlines must work).
+          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            e.preventDefault();
+            applyOnboardPaste();
+          }
+        });
+      }
+      if (quizFallbackBtn) quizFallbackBtn.addEventListener('click', function () {
+        onboardEl.hidden = true;
+        renderQuizTiles();
+        quizEl.hidden = false;
+      });
+    }
+
+    // Quiz wiring — same as before, just doesn't auto-show. Reachable
+    // via the onboarding card's "Browse by cuisine" link.
     renderQuizTiles();
-    quizEl.hidden = false;
     var skipBtn = document.getElementById('mdQuizSkip');
     if (skipBtn) skipBtn.addEventListener('click', function () {
       quizEl.hidden = true;
-      // Fall through to the existing ghost-rows seed for those who
-      // skipped — keeps the empty-state visually anchored.
       try {
         if (!rows.length && seedGhostRows()) {
           render();
@@ -5206,10 +6282,7 @@
       var entry = null;
       for (var i = 0; i < QUIZ_TILES.length; i++) if (QUIZ_TILES[i].id === cuisine) { entry = QUIZ_TILES[i]; break; }
       if (!entry) return;
-      // Apply theme suggestion immediately.
       themeId = entry.theme;
-      // If the tile names a starter template, load it; else seed
-      // the standard SAMPLE_MENU as a working starting point.
       if (entry.template && TEMPLATES[entry.template]) {
         rows = TEMPLATES[entry.template].rows.map(function (r) { return Object.assign({}, r); });
       } else {
@@ -5615,9 +6688,81 @@
     ctx.textAlign = 'center';
     ctx.fillText(label, w / 2, h - 4);
   }
+  // Wave studio-quality (perf) — lazy-paint theme thumbnails via
+  // IntersectionObserver. The 27-theme thumb bundle is ~89KB raw of
+  // inline SVG markup; painting all 27 at boot does ~80KB of
+  // innerHTML writes + reflows. Only ~6-8 cards are visible above
+  // the fold on a typical viewport — paint those, lazy-paint the
+  // rest as the operator scrolls. On browsers without IO (very old)
+  // the function falls back to immediate full paint.
+  function _paintSingleThumb(card) {
+    if (card.dataset.thumbLoaded === '1') return;
+    if (typeof MD_THEMES === 'undefined') return;
+    var id = card.dataset.id;
+    var t = MD_THEMES.get(id);
+    if (!t) return;
+    var oldCanvas = card.querySelector('canvas.md-theme-thumb');
+    if (oldCanvas) oldCanvas.parentNode.removeChild(oldCanvas);
+    var oldImg = card.querySelector('img.md-theme-thumb');
+    if (oldImg) oldImg.parentNode.removeChild(oldImg);
+    var holder = card.querySelector('.md-theme-thumb');
+    if (!holder) {
+      holder = document.createElement('div');
+      holder.className = 'md-theme-thumb';
+      holder.setAttribute('aria-hidden', 'true');
+      card.appendChild(holder);
+    }
+    var svgString = (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get)
+      ? MD_THUMBS.get(id) : null;
+    if (svgString) {
+      holder.innerHTML = svgString;
+      var inlineSvg = holder.querySelector('svg');
+      if (inlineSvg) {
+        inlineSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        inlineSvg.style.width = '100%';
+        inlineSvg.style.height = '100%';
+        inlineSvg.style.display = 'block';
+      }
+    }
+    card.dataset.thumbLoaded = '1';
+  }
+
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
+    // Wave A3 — theme-thumbs.js is lazy-loaded. Ensure MD_THUMBS is
+    // available before painting; if not, kick off the load and return.
+    // The orchestrator will re-call paintAllThemeThumbs after the load
+    // resolves (see ensureMdThumbs().then below).
+    if (typeof MD_THUMBS === 'undefined' || !MD_THUMBS.get) {
+      ensureMdThumbs().then(function () { paintAllThemeThumbs(); }, function () {
+        // Load failed; degrade to no-thumb picker (cards still readable).
+      });
+      return;
+    }
     var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+    if (typeof IntersectionObserver === 'function' && cards.length > 8) {
+      // Set up (or reuse) a single observer that paints each card
+      // as it enters the viewport. rootMargin pre-paints just below
+      // the fold so the next-row cards are ready by the time they
+      // scroll into view.
+      if (!paintAllThemeThumbs._observer) {
+        paintAllThemeThumbs._observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              _paintSingleThumb(entry.target);
+              paintAllThemeThumbs._observer.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px 0px' });
+      }
+      cards.forEach(function (card) {
+        if (card.dataset.thumbLoaded !== '1') {
+          paintAllThemeThumbs._observer.observe(card);
+        }
+      });
+      return;
+    }
+    // Fallback: paint everything synchronously (small picker, no IO).
     cards.forEach(function (card) {
       if (card.dataset.thumbLoaded === '1') return;
       var id = card.dataset.id;
@@ -5713,6 +6858,10 @@
   var customInkEl    = document.getElementById('mdCustomInk');
   var customResetEl  = document.getElementById('mdCustomizeReset');
   var paperTextureEl = document.getElementById('mdPaperTexture');
+  // Wave studio-quality (B12) — Theme Tuner picker refs.
+  var customLetterSpacingEl = document.getElementById('mdCustomLetterSpacing');
+  var customSectionCaseEl   = document.getElementById('mdCustomSectionCase');
+  var customDividerStyleEl  = document.getElementById('mdCustomDividerStyle');
 
   function syncCustomizeFromTheme() {
     // When the operator switches theme without explicitly overriding
@@ -5724,37 +6873,92 @@
     if (customAccentEl && !customize.accent) customAccentEl.value = t.accent || '#1F4E5B';
     if (customPaperEl  && !customize.paper)  customPaperEl.value  = t.paper  || '#FAF6EE';
     if (customInkEl    && !customize.ink)    customInkEl.value    = t.ink    || '#14161A';
+    // Wave studio-quality (C14) — refresh the theme-story affordance
+    // with the active theme's review-board metadata.
+    updateThemeStory();
+  }
+  function updateThemeStory() {
+    var nameEl = document.getElementById('mdThemeStoryName');
+    var metaEl = document.getElementById('mdThemeStoryMeta');
+    var textEl = document.getElementById('mdThemeStoryText');
+    if (!nameEl || !metaEl || !textEl) return;
+    if (typeof MD_THEME_CREDITS === 'undefined') return;
+    var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(themeId) : null;
+    var label = t ? (LOCALE === 'es' ? t.label_es : t.label_en) : themeId;
+    var c = MD_THEME_CREDITS.get(themeId);
+    if (!c) {
+      nameEl.textContent = label;
+      metaEl.textContent = tt('No story on file for this theme yet.', 'Sin historia registrada para este tema todavía.');
+      textEl.textContent = '';
+      return;
+    }
+    nameEl.textContent = label;
+    var datePart = c.dateAdded
+      ? tt('Added ', 'Añadido ') + c.dateAdded
+      : '';
+    var bits = [];
+    if (c.reviewedBy) bits.push(tt('Reviewed by ', 'Revisado por ') + c.reviewedBy);
+    if (datePart)     bits.push(datePart);
+    metaEl.textContent = bits.join(' · ');
+    var insp = (Array.isArray(c.inspiredBy) && c.inspiredBy.length)
+      ? tt('Inspired by: ', 'Inspirado en: ') + c.inspiredBy.join('; ') + '.\n\n'
+      : '';
+    textEl.textContent = insp + (c.story || '');
   }
   if (customAccentEl) customAccentEl.addEventListener('input', function () {
     customize.accent = customAccentEl.value;
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customPaperEl) customPaperEl.addEventListener('input', function () {
     customize.paper = customPaperEl.value;
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customInkEl) customInkEl.addEventListener('input', function () {
     customize.ink = customInkEl.value;
+    updateCustomizeBadge();
+    updateLintFeedback();
+    schedulePreview(); scheduleSaveDraft();
+  });
+  // Wave studio-quality (B12) — Theme Tuner change handlers. Each
+  // picker writes to customize state; empty value means "use the
+  // theme default." Reset clears them.
+  if (customLetterSpacingEl) customLetterSpacingEl.addEventListener('change', function () {
+    customize.letterSpacing = customLetterSpacingEl.value || null;
+    updateCustomizeBadge();
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customSectionCaseEl) customSectionCaseEl.addEventListener('change', function () {
+    customize.sectionCase = customSectionCaseEl.value || null;
+    updateCustomizeBadge();
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customDividerStyleEl) customDividerStyleEl.addEventListener('change', function () {
+    customize.dividerStyle = customDividerStyleEl.value || null;
     updateCustomizeBadge();
     schedulePreview(); scheduleSaveDraft();
   });
   if (customResetEl) customResetEl.addEventListener('click', function () {
     // Wave studio-quality — comprehensive reset. The button label says
     // "Reset to theme default" so it should mean it: clear colors AND
-    // paper-texture AND all three modifiers (season/daypart/event).
-    // Operators previously had to walk each dropdown back to "None"
-    // by hand after picking a few. Sync the UI controls to match.
+    // paper-texture AND all three modifiers AND the Theme Tuner knobs.
     customize.accent = customize.paper = customize.ink = null;
     customize.paperTexture = false;
     customize.mods = { season: 'none', daypart: 'none', event: 'none' };
+    customize.letterSpacing = customize.sectionCase = customize.dividerStyle = null;
     if (paperTextureEl) paperTextureEl.checked = false;
     if (modSeasonEl)  modSeasonEl.value  = 'none';
     if (modDaypartEl) modDaypartEl.value = 'none';
     if (modEventEl)   modEventEl.value   = 'none';
+    if (customLetterSpacingEl) customLetterSpacingEl.value = '';
+    if (customSectionCaseEl)   customSectionCaseEl.value   = '';
+    if (customDividerStyleEl)  customDividerStyleEl.value  = '';
     syncCustomizeFromTheme();
     updateCustomizeBadge();
+    updateLintFeedback();
     schedulePreview();
     scheduleSaveDraft();
   });
@@ -5777,6 +6981,10 @@
       if (customize.mods.daypart && customize.mods.daypart !== 'none') overrides++;
       if (customize.mods.event   && customize.mods.event   !== 'none') overrides++;
     }
+    // Wave studio-quality (B12) — Theme Tuner knobs count too.
+    if (customize.letterSpacing) overrides++;
+    if (customize.sectionCase)   overrides++;
+    if (customize.dividerStyle)  overrides++;
     if (overrides === 0) {
       badgeEl.hidden = true;
       badgeEl.textContent = '';
@@ -5787,6 +6995,96 @@
         : tt(overrides + ' overrides', overrides + ' cambios');
     }
   }
+
+  // Wave studio-quality — Live taste-floor lint feedback.
+  //
+  // The themes-lint CI gate ships eight refusal rules that every
+  // theme must satisfy. Operators tweaking accent/paper/ink in the
+  // customize panel can violate the same rules — bright yellow
+  // accent on white paper, paper too close to ink in luminance, etc.
+  // Surface a friendly warning inline when their edit drops below
+  // the floor. Educational, not blocking — operators can ignore the
+  // chip and ship anyway.
+  //
+  // Reuses the same contrast math as scripts/check-themes-lint.mjs
+  // so the feedback matches what the CI gate would say if their
+  // values were a permanent theme entry.
+  function _relLuminance(hex) {
+    var m = String(hex).replace('#', '');
+    if (m.length !== 6) return 0.5;
+    var r = parseInt(m.slice(0, 2), 16) / 255;
+    var g = parseInt(m.slice(2, 4), 16) / 255;
+    var b = parseInt(m.slice(4, 6), 16) / 255;
+    function ch(c) { return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+  }
+  function _contrastRatio(a, b) {
+    var la = _relLuminance(a), lb = _relLuminance(b);
+    var hi = Math.max(la, lb), lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function _effectiveColors() {
+    // Resolve effective paper/ink/accent: customize override wins,
+    // otherwise theme default.
+    var t = (typeof MD_THEMES !== 'undefined') ? MD_THEMES.get(themeId) : null;
+    return {
+      paper:  customize.paper  || (t && t.paper)  || '#FAF6EE',
+      ink:    customize.ink    || (t && t.ink)    || '#14161A',
+      accent: customize.accent || (t && t.accent) || '#1F4E5B'
+    };
+  }
+  function updateLintFeedback() {
+    var hostEl = document.getElementById('mdCustomizeLint');
+    if (!hostEl) return;
+    var c = _effectiveColors();
+    var warnings = [];
+    var paperInkCr = _contrastRatio(c.paper, c.ink);
+    if (paperInkCr < 7) {
+      warnings.push({
+        severity: paperInkCr < 4.5 ? 'high' : 'med',
+        msg: tt(
+          'Paper ↔ ink contrast is ' + paperInkCr.toFixed(1) + ':1 (theme floor 7:1). Body text may be hard to read on cheap printers.',
+          'Contraste papel ↔ tinta es ' + paperInkCr.toFixed(1) + ':1 (mínimo del tema 7:1). El texto puede ser difícil de leer en impresoras económicas.'
+        )
+      });
+    }
+    var paperAccentCr = _contrastRatio(c.paper, c.accent);
+    if (paperAccentCr < 3) {
+      warnings.push({
+        severity: 'high',
+        msg: tt(
+          'Accent ↔ paper contrast is ' + paperAccentCr.toFixed(1) + ':1 (theme floor 3:1). Section rules and ornaments will be hard to see — try a darker or more saturated accent.',
+          'Contraste acento ↔ papel es ' + paperAccentCr.toFixed(1) + ':1 (mínimo del tema 3:1). Las reglas de sección y los ornamentos se verán mal — prueba un acento más oscuro o saturado.'
+        )
+      });
+    } else if (paperAccentCr < 4.5) {
+      warnings.push({
+        severity: 'low',
+        msg: tt(
+          'Accent ↔ paper contrast is ' + paperAccentCr.toFixed(1) + ':1 — passes the decorative floor (3:1) but won\'t work for accent text. Use it only for rules and ornaments.',
+          'Contraste acento ↔ papel es ' + paperAccentCr.toFixed(1) + ':1 — pasa el mínimo decorativo (3:1) pero no sirve para texto. Úsalo solo para reglas y ornamentos.'
+        )
+      });
+    }
+    if (warnings.length === 0) {
+      hostEl.hidden = true;
+      hostEl.innerHTML = '';
+      return;
+    }
+    var heading = warnings.length === 1
+      ? tt('1 readability warning', '1 advertencia de legibilidad')
+      : tt(warnings.length + ' readability warnings', warnings.length + ' advertencias de legibilidad');
+    var listHtml = warnings.map(function (w) {
+      var cls = w.severity === 'high' ? 'md-lint-high' : (w.severity === 'med' ? 'md-lint-med' : 'md-lint-low');
+      return '<li class="' + cls + '">' + escHtml(w.msg) + '</li>';
+    }).join('');
+    hostEl.hidden = false;
+    hostEl.innerHTML =
+      '<strong>' + escHtml(heading) + '.</strong> ' +
+      escHtml(tt('You can still ship — these are advisory.', 'Puedes seguir — solo son avisos.')) +
+      '<ul>' + listHtml + '</ul>';
+  }
+
   if (paperTextureEl) paperTextureEl.addEventListener('change', function () {
     customize.paperTexture = !!paperTextureEl.checked;
     updateCustomizeBadge();
@@ -5956,6 +7254,8 @@
                 name: d.name || '',
                 price: d.price || '',
                 desc: d.desc || '',
+                // Wave studio-quality (C2) — plain-language sibling.
+                descPlain: d.descPlain || '',
                 allergens: Array.isArray(d.allergens) ? d.allergens.slice() : [],
                 allergenStates: d.allergenStates || null,
                 badges: Array.isArray(d.badges) ? d.badges.slice() : [],
@@ -5984,6 +7284,9 @@
           customize.paper  = c.paper  || null;
           customize.ink    = c.ink    || null;
           customize.paperTexture = !!c.paperTexture;
+          customize.letterSpacing = c.letterSpacing || null;
+          customize.sectionCase   = c.sectionCase   || null;
+          customize.dividerStyle  = c.dividerStyle  || null;
           if (c.mods) customize.mods = c.mods;
         }
         // Restore logo if the file embedded one.
@@ -5996,6 +7299,7 @@
         }
         // Sync visible UI controls to restored state.
         if (typeof updateCustomizeBadge === 'function') updateCustomizeBadge();
+        if (typeof updateLintFeedback   === 'function') updateLintFeedback();
         renderThemePicker();
         if (typeof syncCustomizeFromTheme === 'function') syncCustomizeFromTheme();
         // Wave studio-quality — sync the meta-panel checkboxes so the
@@ -6041,6 +7345,9 @@
           customize.ink    = parsed.customize.ink    || null;
           customize.paperTexture = !!parsed.customize.paperTexture;
           customize.mods = parsed.customize.mods || { season:'none', daypart:'none', event:'none' };
+          customize.letterSpacing = parsed.customize.letterSpacing || null;
+          customize.sectionCase   = parsed.customize.sectionCase   || null;
+          customize.dividerStyle  = parsed.customize.dividerStyle  || null;
         }
         if (parsed.meta) {
           meta.tagline = parsed.meta.tagline || '';

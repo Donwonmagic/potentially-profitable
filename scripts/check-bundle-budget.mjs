@@ -70,7 +70,6 @@ const FIRST_PAINT_FILES = [
   'tools/menu-design/state/history.js',
   // Themes (currently in menu-design/; planned move to _shared)
   'tools/menu-design/themes.js',
-  'tools/menu-design/theme-thumbs.js',
   // Shared modules loaded synchronously
   'tools/_shared/menu-schema.js',
   'tools/_shared/menu-renderers/cuisine-decor.js',
@@ -88,6 +87,9 @@ const LAZY_FILES = [
   'tools/menu-design/menu-render-pdf.js',
   'tools/menu-design/menu-render-html.js',
   'tools/menu-design/menu-render-text.js',
+  // Wave A3 — picker-only. Loaded by ensureMdThumbs() on first
+  // picker render or via the boot-time requestIdleCallback preload.
+  'tools/menu-design/theme-thumbs.js',
 ];
 
 // ---- Helpers ------------------------------------------------

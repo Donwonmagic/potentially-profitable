@@ -98,6 +98,7 @@ const CHECKS = [
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
+  ['Article sheet callouts (idem)','inject-article-sheet-callouts.mjs','--check'],
   ['Glossary OG seed (idem)','seed-glossary-og.mjs',       '--check'],
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
@@ -126,6 +127,24 @@ const CHECKS = [
   ['Include coverage',     'check-include-coverage.mjs'],
   ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
   ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
+  // Cache-bust uniformity (PR #290's stale-cache class of bug). Hashes
+  // each /assets/site*.css file's content; stamps the hash as the
+  // ?v=… cache-bust on every <link href="/assets/site*.css?v=...">
+  // reference site-wide. If CSS content changes, hash changes, URL
+  // changes, browser refetches. Zero stale-cache risk; zero hand-bumping.
+  ['CSS cache-bust (idem)','inject-css-cache-bust.mjs','--check'],
+  // Image-formats: every raster source must have AVIF + WebP siblings
+  // so the <picture> wrappers (inject-picture-tags) can serve modern
+  // formats to capable browsers. --check is sharp-free; only the
+  // writer mode (no --check) requires `npm i sharp`.
+  ['AVIF/WebP siblings (idem)','build-image-formats.mjs','--check'],
+  ['Picture tags (idem)','inject-picture-tags.mjs','--check'],
+  // Critical-CSS link color (PR May 2026). Adds `a{color:inherit}` to
+  // every page's inline <style> so the brief unstyled-render window
+  // before site-core.css applies doesn't show <a> tags in browser
+  // default link blue — which inline SVGs that use stroke=currentColor
+  // (envelope, search, hamburger) inherit, producing a blue-icon flash.
+  ['Critical-CSS link color (idem)','inject-critical-link-color.mjs','--check'],
   // Pricing consistency — warn-only during initial rollout. Promotes to
   // --strict once the ~11 inline service-link backlog is worked off
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
@@ -156,6 +175,12 @@ const CHECKS = [
   ['Glossary sheet sidecar (idem)','inject-glossary-sheet-sidecar.mjs','--check'],
   ['Topic sheets rail (idem)','inject-topic-sheets-rail.mjs','--check'],
   ['Tool sheet rail (idem)','inject-tool-sheet-rail.mjs','--check'],
+  ['Sheet glossary popovers (idem)','inject-sheet-glossary-popovers.mjs','--check'],
+  ['Sheet worked examples (idem)','inject-sheet-worked-examples.mjs','--check'],
+  // Warn-only — the cap-counter + duplicate-of-label rules are scriptable;
+  // the "skip-it-changes-result-by-5%" judgment is in docs/voice-canon-sheets.md
+  // and lives with the human reviewer.
+  ['Sheet help-cadence (warn)','check-sheet-help-cadence.mjs'],
   ['Sheet OG cards (idem)','sync-sheet-og-cards.mjs','--check'],
   ['Sheet benchmarks (idem)','build-sheet-benchmarks.mjs','--check'],
   ['Window field-notes rail (idem)','inject-window-fieldnotes-rail.mjs','--check'],
@@ -174,9 +199,14 @@ const CHECKS = [
   ['RSS coverage',        'check-rss-coverage.mjs',        '--check'],
   ['Content guardrails',  'check-content-guardrails.mjs',  '--check'],
   ['Event prop cardinality','check-event-prop-cardinality.mjs','--check'],
-  ['Image dimensions (warn)','check-image-dimensions.mjs',   '--check'],
-  ['Lazy images (warn)',  'check-lazy-images.mjs',          '--check'],
-  ['CLS animation (warn)','check-cls-animation.mjs',        '--check'],
+  ['Image dimensions',    'check-image-dimensions.mjs',     '--check'],
+  ['Lazy images',         'check-lazy-images.mjs',          '--check'],
+  ['CLS animation',       'check-cls-animation.mjs',        '--check'],
+  // SVG dimensions — fail-CI from day 1 (the regression cost was 4,366
+  // unsized inline SVGs flashing at 300×150 on every page load before
+  // CSS arrived; fixed in PR #285). Catches any new SVG without
+  // explicit width+height attributes from re-introducing the bug.
+  ['SVG dimensions',      'check-svg-dimensions.mjs'],
   ['Image formats (warn)','check-image-formats.mjs',         '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],
@@ -186,7 +216,13 @@ const CHECKS = [
   ['Security page schema (idem)','inject-security-page-schema.mjs','--check'],
   ['Tool data-promise (idem)','inject-tool-data-promise.mjs','--check'],
   ['Tool no-fetch invariant','check-tool-no-fetch.mjs'],
+  ['Sheet no-fetch invariant','check-sheet-no-fetch.mjs'],
   ['Menu-Design consistency','check-menu-design.mjs'],
+  ['Themes lint',          'check-themes-lint.mjs'],
+  ['Themes metadata',      'check-themes-metadata.mjs'],
+  ['Themes review board (idem)','build-themes-review-board.mjs','--check'],
+  ['Theme story pages (idem)','build-theme-story-pages.mjs','--check'],
+  ['Cuisine landing pages (idem)','build-cuisine-landing-pages.mjs','--check'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
@@ -194,6 +230,12 @@ const CHECKS = [
   ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
   ['No fixed min-width',   'check-no-fixed-min-width.mjs'],
   ['Table scroll wrap',    'check-table-scroll-wrap.mjs'],
+  // Article graphics — Phase-1 graphics refresh. Manifest-driven SVG
+  // generator at brand/article-svg/graphics.json. Schema validation,
+  // locale parity (EN/ES twin enforcement), and idempotency in
+  // --check mode. Empty manifest is allowed; entries get filled in
+  // as articles are refreshed in Phase 2+.
+  ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
 ];
 
 const results = [];

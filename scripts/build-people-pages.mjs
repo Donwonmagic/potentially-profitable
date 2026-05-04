@@ -224,7 +224,7 @@ ${AUTO_MARKER}
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 <script async src="https://plausible.io/js/pa-LcA9d3kj64ol8aOaLm7Z7.js"></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260429-batch3">
 ${renderPersonSchema({ locale, slug, author, notes: sorted })}
 </head>

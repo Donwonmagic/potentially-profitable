@@ -20,9 +20,8 @@
       <fieldset>
         <legend>Channel statement (paste from their dashboard)</legend>
         <label>
-          <span><span>Gross sales (before fees)</span></span>
+          <span><span>Gross sales — what customers paid before any fees</span></span>
           <input type="number" name="gross_sales" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">What customers paid you for food + delivery, before any fees come out.</span>
         </label>
         <label>
           <span><span>Commission &amp; service fees the platform charged you</span></span>
@@ -33,23 +32,20 @@
           <input type="number" name="marketing_fees" min="0" step="0.01" placeholder="0.00" />
         </label>
         <label>
-          <span><span>Refunds &amp; adjustments charged back to you</span></span>
+          <span><span>Refunds &amp; adjustments — wrong order, missing item, customer credits</span></span>
           <input type="number" name="refunds" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Wrong order, missing item, customer credits the platform extended on your behalf.</span>
         </label>
       </fieldset>
 
       <fieldset>
         <legend>Your costs (the platform does not show these)</legend>
         <label>
-          <span><span>Food cost on these orders</span></span>
+          <span><span>Food cost — apply your normal food-cost % to gross as a starting estimate</span></span>
           <input type="number" name="food_cost" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Apply your normal food-cost percent to gross sales as a starting estimate.</span>
         </label>
         <label>
-          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils)</span></span>
+          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils) — typically $0.60–$1.20 per ticket</span></span>
           <input type="number" name="packaging" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Multiply per-ticket packaging cost (typically $0.60–$1.20) by ticket count for the period.</span>
         </label>
         <label>
           <span><span>Incremental labor (extra expo, packing, delivery handoff)</span></span>
@@ -81,6 +77,40 @@
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three real worries on a delivery channel:
+         platform commission pressure, marketing-fee drift, and the
+         labor-honesty question (under-counting incremental labor is
+         the most common error). -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if commission, marketing, or your labor estimate shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the contribution margin re-runs on top of your typed numbers. The labor multiplier is the honest one — if you typed $1,800 but the real number is closer to $3,600, slide it to 2x and watch what happens.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Commission rate change (% of gross)</span>
+          <input type="range" name="whatif_comm" min="-5" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_comm_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Marketing-fee change (% of gross)</span>
+          <input type="range" name="whatif_mkt" min="-3" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_mkt_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Incremental labor honesty (multiplier)</span>
+          <input type="range" name="whatif_labor" min="0.5" max="2" step="0.1" value="1" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">1.0x</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         delivery-channel economics — the why beneath the what. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      The headline lie, the five lines you need to count, the contribution-margin bands, and a four-lever renegotiation playbook for when the channel doesn't pencil. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The honest channel P&amp;L &mdash; Why most operators discover delivery is a subsidy &rarr;</a>
+    </p>
+
     <script>
       (function () {
         function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
@@ -94,15 +124,41 @@
           return sign + (Math.round(Math.abs(v) * 10) / 10).toFixed(1) + '%';
         }
 
+        // D8 · Read what-if slider state. Commission/marketing are
+        // additive points-of-gross; labor is a multiplier on the typed
+        // incremental_labor line.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_comm) return { comm: 0, mkt: 0, laborMult: 1 };
+          var lm = n(f.whatif_labor.value);
+          if (!isFinite(lm) || lm <= 0) lm = 1;
+          return {
+            comm: n(f.whatif_comm.value),
+            mkt:  n(f.whatif_mkt.value),
+            laborMult: lm,
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
+          var w = whatif();
           var gross   = n(f.gross_sales.value);
-          var deducts = n(f.commission.value) + n(f.marketing_fees.value) + n(f.refunds.value);
-          var costs   = n(f.food_cost.value) + n(f.packaging.value) + n(f.incremental_labor.value);
+          // D8 — apply commission/marketing point deltas as a fraction
+          // of gross; labor multiplier scales the typed incremental.
+          var commission = n(f.commission.value)     + (w.comm / 100) * gross;
+          var marketing  = n(f.marketing_fees.value) + (w.mkt  / 100) * gross;
+          var labor      = n(f.incremental_labor.value) * w.laborMult;
+          var deducts = commission + marketing + n(f.refunds.value);
+          var costs   = n(f.food_cost.value) + n(f.packaging.value) + labor;
           var payout  = gross - deducts;
           var contrib = payout - costs;
           var pct     = gross > 0 ? (contrib / gross) * 100 : 0;
+
+          // Update what-if output labels.
+          if (f.whatif_comm_out)  f.whatif_comm_out.value  = (w.comm >= 0 ? '+' : '') + w.comm.toFixed(1) + 'pt';
+          if (f.whatif_mkt_out)   f.whatif_mkt_out.value   = (w.mkt  >= 0 ? '+' : '') + w.mkt.toFixed(1)  + 'pt';
+          if (f.whatif_labor_out) f.whatif_labor_out.value = w.laborMult.toFixed(1) + 'x';
 
           document.querySelector('[data-output="net_payout"]').textContent  = fmt$(payout);
           document.querySelector('[data-output="total_costs"]').textContent = fmt$(costs);
@@ -111,7 +167,16 @@
           dEl.dataset.band = contrib > 0 ? 'good' : (contrib < 0 ? 'bad' : 'idle');
           var pEl = document.querySelector('[data-output="contrib_pct"]');
           pEl.textContent = fmtPct(pct);
-          pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          // D9 — band routes through Bench.evaluate when available, so
+          // updating data/benchmarks.json's channel_contribution_pct
+          // thresholds cascades to this sheet automatically. Inline
+          // ladder is the graceful fallback.
+          if (window.Bench && window.Bench.evaluate) {
+            var bench = window.Bench.evaluate('channel_contribution_pct', pct);
+            if (bench && bench.band) pEl.dataset.band = bench.band;
+          } else {
+            pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          }
 
           var verdict = document.querySelector('[data-output="verdict"]');
           if (verdict) {
@@ -119,6 +184,10 @@
               verdict.textContent = 'Type your numbers. A positive contribution margin means the channel earns its keep; negative means each order loses money before fixed costs.';
             } else if (contrib < 0) {
               verdict.textContent = 'This channel is losing you money on each order before fixed costs are even applied. Either renegotiate fees, raise menu prices on this channel, or turn it off.';
+            } else if (window.Bench && window.Bench.evaluate) {
+              // Centralized message for non-edge bands (>= 0 contrib).
+              var b2 = window.Bench.evaluate('channel_contribution_pct', pct);
+              if (b2 && b2.msg) verdict.textContent = b2.msg;
             } else if (pct < 5) {
               verdict.textContent = 'Thin contribution. The channel is not paying for itself once fixed costs (rent, utilities, salaried management) are included. Action: raise menu prices on this channel, or shrink the menu offered through it to higher-margin items only.';
             } else if (pct < 12) {
@@ -152,6 +221,19 @@
             ['Effective margin (%)',      document.querySelector('[data-output="contrib_pct"]').textContent],
           ];
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_comm)  f.whatif_comm.value  = 0;
+            if (f.whatif_mkt)   f.whatif_mkt.value   = 0;
+            if (f.whatif_labor) f.whatif_labor.value = 1;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         if (window.SheetPage) {
           window.SheetPage.register({

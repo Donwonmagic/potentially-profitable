@@ -37,7 +37,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/weekly-prime-cost-worksheet/#sheet","name":"Weekly Prime Cost Worksheet","description":"The single most important number a small operator can track. Plug in food, beverage, and labor costs against net sales. See your prime cost percent and where it sits versus the 60 percent ceiling.","url":"https://muntin.digital/sheets/weekly-prime-cost-worksheet/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -47,18 +47,28 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="weekly-prime-cost-worksheet" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
 <a class="skip-link" href="#main">Skip to main content</a>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -94,19 +104,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/sheets/weekly-prime-cost-worksheet/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -123,7 +133,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -142,7 +152,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/sheets/weekly-prime-cost-worksheet/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -202,7 +212,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Free operator sheet · Stays in your browser</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Free operator sheet · Stays in your browser</span>
   <h1>Weekly Prime Cost<br><span class="serif-italic">Worksheet.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">The single most important number a small operator can track. Plug in food, beverage, and labor costs against net sales. See your prime cost percent and where it sits versus the 60 percent ceiling.</p>
   <p class="sheet-meta" aria-label="Sheet meta">
@@ -223,6 +233,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="weekly-prime-cost-worksheet">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">60-seat coffee bar, Brooklyn</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Net sales (all channels)</th><td>$48,200</td></tr><tr><th scope="row">COGS — food + beverage (after inventory swing)</th><td>$15,580</td></tr><tr><th scope="row">FOH wages</th><td>$7,900</td></tr><tr><th scope="row">BOH wages</th><td>$8,400</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">COGS as a % of sales</th><td>32.3%</td></tr><tr><th scope="row">Labor as a % of sales</th><td>33.8%</td></tr><tr><th scope="row">Prime cost</th><td>66.1% · yellow</td></tr></tbody></table>
+        <p class="swe-punchline">Their 13-week trailing average is 64.0%, so this week ran a touch hot. The back-of-house wage line is the lever — Tuesday was staffed for a busier night than the one that showed up. The Wednesday huddle gets a one-cook-down trial.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Week ending</legend>
@@ -252,9 +279,8 @@ header.nav{min-height:64px}
       <fieldset>
         <legend>Cost of goods sold</legend>
         <label>
-          <span><span>Food purchases this week</span></span>
+          <span><span>Food purchases this week — sum of every food invoice received</span></span>
           <input type="number" name="cogs_food_purchases" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Sum of all food invoices received this week.</span>
         </label>
         <label>
           <span><span>Beverage purchases this week</span></span>
@@ -308,8 +334,43 @@ header.nav{min-height:64px}
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="recommendation">
           Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
         </p>
+        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#B8541A);background:var(--cream-2,#F3EEE3);font-size:13px;line-height:1.5;color:var(--ink,#14161A);"></div>
       </div>
     </form>
+
+    <!-- D8 · What-if sliders. Three small adjustments re-run recalc()
+         against an in-memory snapshot of the form values; the verdict
+         and outputs update without touching the typed numbers. Reset
+         button restores the unadjusted view. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Labor change</span>
+          <input type="range" name="whatif_labor" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Food cost change</span>
+          <input type="range" name="whatif_food" min="-5" max="5" step="0.25" value="0" style="flex:2;" />
+          <output name="whatif_food_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Sales change</span>
+          <input type="range" name="whatif_sales" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_sales_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. Surfaces the slow think
+         piece on prime cost — the why beneath the what the sheet does. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
+    </p>
 
     <script>
       (function () {
@@ -318,15 +379,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Sheet actions">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy as text
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -351,7 +412,7 @@ header.nav{min-height:64px}
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
     <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Tuesday morning, closing the prior week. Before payroll. Before the produce reorder.</li>
-      <li>A cost just jumped — you want to see if it landed in the prime cost number or got absorbed.</li>
+      <li>A cost just jumped — you want to see if it landed in the <a class="sheet-glossary-popover-link" href="/glossary/prime-cost/" data-glossary-head="Prime cost" data-glossary-aka="Cost of goods sold + labor" data-glossary-blurb="Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in." data-sheet-popover="1">prime cost</a> number or got absorbed.</li>
       <li>You are talking to a partner or lender and need a one-number answer about restaurant health.</li></ul>
   </article>
 
@@ -404,13 +465,14 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -516,11 +578,11 @@ header.nav{min-height:64px}
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Run free audit
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Email Don
     </a>
   </aside>
@@ -556,18 +618,31 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(v * 100) / 100).toFixed(2); }
         function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
 
+        // D9 · Verdict band uses the centralized Bench.evaluate(metric, value)
+        // when available (built from data/benchmarks.json), with the
+        // pre-Bench band ladder as a graceful fallback. Updating
+        // benchmarks.json's prime_cost_pct thresholds cascades to
+        // every sheet that calls Bench.evaluate('prime_cost_pct', ...).
         function band(pct) {
-          // Independent full-service health bands (sourced from the
-          // existing margin-math tool — the 55-65% range is the
-          // healthy band; 65-70% is "fix this quarter"; 70%+ is bad.
-          if (pct <= 0)  return { band: 'idle', msg: 'Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.' };
+          if (pct <= 0) return { band: 'idle', msg: 'Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.' };
+          if (window.Bench && window.Bench.evaluate) {
+            var verdict = window.Bench.evaluate('prime_cost_pct', pct);
+            if (verdict && verdict.msg) return { band: verdict.band, msg: verdict.msg };
+          }
+          // Fallback ladder (shipped before centralized benchmarks).
           if (pct < 50)  return { band: 'good', msg: 'Below the typical band. Double-check that you included employer taxes and salaried managers in labor — under-counting labor is the most common cause of an artificially low prime cost.' };
           if (pct < 60)  return { band: 'good', msg: 'Healthy. Keep the cadence; this is the number that protects the rest of the P&L.' };
           if (pct < 65)  return { band: 'warn', msg: 'In the upper-healthy band. Watch food cost trend week-over-week; small drift here compounds fast.' };
@@ -575,16 +650,40 @@ header.nav{min-height:64px}
           return { band: 'bad',  msg: 'Margin emergency. At this level, every additional dollar of sales loses you money once fixed costs are in. Cut here is non-optional.' };
         }
 
+        // D8 · Read what-if slider state. Returns {labor, food, sales}
+        // as point/percent deltas applied on top of the typed inputs.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_labor) return { labor: 0, food: 0, sales: 0 };
+          return {
+            labor: n(f.whatif_labor.value),
+            food:  n(f.whatif_food.value),
+            sales: n(f.whatif_sales.value),
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
-          var sales = n(f.sales_dinein.value) + n(f.sales_togo.value) + n(f.sales_other.value);
-          // Used-cost convention: purchases + (opening - closing). The
-          // user enters (closing - opening) directly, so we subtract.
-          var cogs = n(f.cogs_food_purchases.value) + n(f.cogs_bev_purchases.value) - n(f.cogs_inv_adjustment.value);
-          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes_benefits.value);
+          var w = whatif();
+          // D8 — apply scenario deltas on top of the typed numbers.
+          // Labor delta is in PERCENTAGE POINTS of sales; food delta is
+          // in PERCENTAGE POINTS of sales; sales delta is in PERCENT
+          // (multiplicative).
+          var rawSales = n(f.sales_dinein.value) + n(f.sales_togo.value) + n(f.sales_other.value);
+          var sales = rawSales * (1 + w.sales / 100);
+          // Used-cost convention.
+          var rawCogs = n(f.cogs_food_purchases.value) + n(f.cogs_bev_purchases.value) - n(f.cogs_inv_adjustment.value);
+          var cogs = rawCogs + (w.food / 100) * sales;
+          var rawLabor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes_benefits.value);
+          var labor = rawLabor + (w.labor / 100) * sales;
           var prime = cogs + labor;
           var pct = sales > 0 ? (prime / sales) * 100 : 0;
+
+          // Update what-if output labels.
+          if (f.whatif_labor_out) f.whatif_labor_out.value = (w.labor >= 0 ? '+' : '') + w.labor.toFixed(1) + 'pt';
+          if (f.whatif_food_out)  f.whatif_food_out.value  = (w.food  >= 0 ? '+' : '') + w.food.toFixed(2)  + 'pt';
+          if (f.whatif_sales_out) f.whatif_sales_out.value = (w.sales >= 0 ? '+' : '') + w.sales.toFixed(0) + '%';
 
           document.querySelector('[data-output="net_sales"]').textContent  = fmt$(sales);
           document.querySelector('[data-output="cogs_total"]').textContent = fmt$(cogs);
@@ -596,7 +695,35 @@ header.nav{min-height:64px}
           pctEl.dataset.band = b.band;
           var rec = document.querySelector('[data-output="recommendation"]');
           if (rec) rec.textContent = b.msg;
+
+          // D9 · Anomaly flags. Bench.flag(slug, outputs) walks
+          // data/benchmarks.json's anomalies array and returns any
+          // operator-relevant warnings.
+          var anomEl = document.querySelector('[data-output="anomalies"]');
+          if (anomEl && window.Bench && window.Bench.flag) {
+            var flags = window.Bench.flag('weekly-prime-cost-worksheet', { prime_cost_pct: pct });
+            if (flags && flags.length) {
+              anomEl.innerHTML = flags.map(function (f) { return '<p style="margin:0 0 4px;">' + f.replace(/[<>]/g, '') + '</p>'; }).join('');
+              anomEl.hidden = false;
+            } else {
+              anomEl.hidden = true;
+              anomEl.innerHTML = '';
+            }
+          }
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_labor) f.whatif_labor.value = 0;
+            if (f.whatif_food)  f.whatif_food.value  = 0;
+            if (f.whatif_sales) f.whatif_sales.value = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         function collect() {
           var f = document.getElementById('sheet-fields');
@@ -639,15 +766,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Sheet actions">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy as text
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -734,7 +861,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

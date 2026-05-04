@@ -1,0 +1,301 @@
+{
+  "_doc": "D3 worked examples (Phase D3). For high-signal sheets, surfaces a small <details> block right before the <form>: 'Here's what a Tuesday-morning fill-in might look like for a real shop.' Voice canon: subject = 'who this is' in five words; inputs = three to five illustrative numbers (the operator can map these to their own); result = one or two derived values; punchline = 1-3 sentences naming the band the example lands in and the operator-level lever the example points to. Do not use real shop names or numbers — these are composite-typical so the operator can recognize their own kitchen in them. EN+ES per example. The injector stamps these silently if the slug is missing from the map.",
+  "examples": {
+    "weekly-prime-cost-worksheet": {
+      "subject_en": "60-seat coffee bar, Brooklyn",
+      "subject_es": "Café de 60 asientos, Brooklyn",
+      "inputs_en": [
+        ["Net sales (all channels)", "$48,200"],
+        ["COGS — food + beverage (after inventory swing)", "$15,580"],
+        ["FOH wages", "$7,900"],
+        ["BOH wages", "$8,400"]
+      ],
+      "inputs_es": [
+        ["Ventas netas (todos los canales)", "$48,200"],
+        ["Costo de mercancía — comida + bebida (con ajuste de inventario)", "$15,580"],
+        ["Salarios de salón (FOH)", "$7,900"],
+        ["Salarios de cocina (BOH)", "$8,400"]
+      ],
+      "result_en": [
+        ["COGS as a % of sales", "32.3%"],
+        ["Labor as a % of sales", "33.8%"],
+        ["Prime cost", "66.1% · yellow"]
+      ],
+      "result_es": [
+        ["Costo de mercancía como % de ventas", "32.3%"],
+        ["Mano de obra como % de ventas", "33.8%"],
+        ["Costo principal", "66.1% · amarillo"]
+      ],
+      "punchline_en": "Their 13-week trailing average is 64.0%, so this week ran a touch hot. The back-of-house wage line is the lever — Tuesday was staffed for a busier night than the one that showed up. The Wednesday huddle gets a one-cook-down trial.",
+      "punchline_es": "Su promedio rodante de 13 semanas es 64.0%, así que esta semana corrió un poco caliente. La línea de salarios de cocina es la palanca — el martes se cubrió para una noche más ocupada que la que llegó. El martes a las 10 pone a prueba un turno con un cocinero menos."
+    },
+    "daily-sales-recap": {
+      "subject_en": "32-seat neighborhood bistro, Tuesday close",
+      "subject_es": "Bistró de barrio de 32 asientos, cierre del martes",
+      "inputs_en": [
+        ["Net sales (POS, after sales tax)", "$3,840"],
+        ["Voids", "$62"],
+        ["Comps", "$48"],
+        ["Cash drawer over/short", "−$11"]
+      ],
+      "inputs_es": [
+        ["Ventas netas (POS, después de impuesto)", "$3,840"],
+        ["Anulaciones", "$62"],
+        ["Cortesías", "$48"],
+        ["Cuadre de caja sobrante/faltante", "−$11"]
+      ],
+      "result_en": [
+        ["Voids as a % of sales", "1.6% · yellow"],
+        ["Comps as a % of sales", "1.3% · green"],
+        ["Drawer flag", "Within $5 — clear"]
+      ],
+      "result_es": [
+        ["Anulaciones como % de ventas", "1.6% · amarillo"],
+        ["Cortesías como % de ventas", "1.3% · verde"],
+        ["Bandera de caja", "Dentro de $5 — limpio"]
+      ],
+      "punchline_en": "Voids ran a hair high — three of them came from one server who hadn't been re-trained on the comp-vs-void distinction since the spring menu change. The recap stack from the prior two weeks shows the same name on the void column three days running. Wednesday's pre-shift gets a 90-second refresher.",
+      "punchline_es": "Las anulaciones quedaron un poco altas — tres salieron del mismo mesero, que no había sido recapacitado en la diferencia entre cortesía y anulación desde el cambio de menú de primavera. La pila de recapitulaciones de las dos semanas anteriores muestra el mismo nombre en la columna de anulaciones tres días seguidos. El pre-turno del miércoles incluye un repaso de 90 segundos."
+    },
+    "third-party-channel-pnl": {
+      "subject_en": "Single-unit operator running DoorDash + Uber Eats",
+      "subject_es": "Operador de un solo local corriendo DoorDash + Uber Eats",
+      "inputs_en": [
+        ["Gross third-party sales (last 4 weeks)", "$24,000"],
+        ["Commission + marketing fees (avg 28%)", "−$6,720"],
+        ["Refunds + adjustments", "−$480"],
+        ["Packaging cost", "−$960"],
+        ["Incremental kitchen labor estimate", "−$1,800"]
+      ],
+      "inputs_es": [
+        ["Ventas brutas de terceros (últimas 4 semanas)", "$24,000"],
+        ["Comisión + marketing (promedio 28%)", "−$6,720"],
+        ["Reembolsos + ajustes", "−$480"],
+        ["Costo de empaque", "−$960"],
+        ["Estimación de mano de obra incremental", "−$1,800"]
+      ],
+      "result_en": [
+        ["Net contribution after channel costs", "$14,040"],
+        ["Channel contribution margin", "58.5% · green"],
+        ["Per dollar of gross third-party revenue", "$0.585 stays"]
+      ],
+      "result_es": [
+        ["Contribución neta después de costos de canal", "$14,040"],
+        ["Margen de contribución del canal", "58.5% · verde"],
+        ["Por cada dólar bruto de tercero", "$0.585 se queda"]
+      ],
+      "punchline_en": "The channel pencils — but only because their incremental labor estimate is honest. If they were treating delivery orders as 'free' kitchen time, the margin would read closer to 70% and they'd quietly be subsidizing the platform. The next move is the recipe-cost-card on the three SKUs that move 60% of delivery volume — those decide whether the channel stays accretive.",
+      "punchline_es": "El canal sale rentable — pero solo porque su estimación de mano de obra incremental es honesta. Si trataran los pedidos de entrega como tiempo 'gratis' en cocina, el margen marcaría cerca de 70% y estarían subsidiando a la plataforma calladamente. El siguiente paso es la tarjeta de costo de receta en los tres SKUs que mueven el 60% del volumen de entrega — esos deciden si el canal sigue siendo acrecentivo."
+    },
+    "monthly-pnl-snapshot": {
+      "subject_en": "80-seat dinner-only restaurant, suburban DC",
+      "subject_es": "Restaurante de 80 asientos solo cena, suburbios de DC",
+      "inputs_en": [
+        ["Total sales (April, 30 days)", "$187,400"],
+        ["COGS — food + beverage", "$58,300"],
+        ["Total labor (hourly + salary + taxes)", "$61,500"],
+        ["Variable costs (cc fees + supplies)", "$11,200"],
+        ["Fixed costs (rent + insurance + utilities)", "$33,400"]
+      ],
+      "inputs_es": [
+        ["Ventas totales (abril, 30 días)", "$187,400"],
+        ["Costo de mercancía — comida + bebida", "$58,300"],
+        ["Mano de obra total (por hora + planilla + impuestos)", "$61,500"],
+        ["Costos variables (comisiones + suministros)", "$11,200"],
+        ["Costos fijos (renta + seguro + servicios)", "$33,400"]
+      ],
+      "result_en": [
+        ["Prime cost", "63.9% · green"],
+        ["Restaurant operating profit", "$23,000"],
+        ["Operating margin", "12.3%"]
+      ],
+      "result_es": [
+        ["Costo principal", "63.9% · verde"],
+        ["Utilidad operativa del restaurante", "$23,000"],
+        ["Margen operativo", "12.3%"]
+      ],
+      "punchline_en": "Green band on prime cost, double-digit operating margin — a healthy month. The watch-line is fixed costs at 17.8% of sales: their lease renews in October, and a single-digit rent bump tips next quarter into yellow. The conversation is rent before it's anything in the kitchen.",
+      "punchline_es": "Banda verde en costo principal, margen operativo de dos dígitos — un mes saludable. La línea a vigilar son los costos fijos al 17.8% de ventas: su contrato se renueva en octubre, y un aumento de renta de un solo dígito empuja el siguiente trimestre a amarillo. La conversación es la renta antes que cualquier cosa en la cocina."
+    },
+    "reservation-no-show-log": {
+      "subject_en": "32-seat tasting-menu spot, Fri+Sat only",
+      "subject_es": "Lugar de menú de degustación de 32 asientos, solo vie+sáb",
+      "inputs_en": [
+        ["Reservations logged (two-week period)", "48"],
+        ["Late-cancels (≤24h)", "3"],
+        ["No-shows", "5"],
+        ["Average check", "$145"],
+        ["Of the 5 no-shows, deposit-protected", "0"]
+      ],
+      "inputs_es": [
+        ["Reservas registradas (período de dos semanas)", "48"],
+        ["Cancelaciones tardías (≤24h)", "3"],
+        ["No-shows", "5"],
+        ["Cuenta promedio", "$145"],
+        ["De los 5 no-shows, con depósito", "0"]
+      ],
+      "result_en": [
+        ["No-show rate", "10.4% · red"],
+        ["Estimated lost revenue", "$725"],
+        ["No-show rate among deposit-holders", "0%"]
+      ],
+      "result_es": [
+        ["Tasa de no-show", "10.4% · rojo"],
+        ["Ingreso perdido estimado", "$725"],
+        ["Tasa de no-show entre quienes pusieron depósito", "0%"]
+      ],
+      "punchline_en": "Every single no-show came from a non-deposit reservation. The pattern decides the next move: a two-week test on deposit-required for Fri/Sat parties of 4 or more. The window table at 8pm is what hurts — it's the one nobody walks in for at the last minute.",
+      "punchline_es": "Cada uno de los no-shows vino de una reserva sin depósito. El patrón decide el siguiente paso: una prueba de dos semanas con depósito requerido para mesas de 4+ los vie/sáb. La mesa de la ventana a las 8pm es la que duele — es la que nadie pide al último momento."
+    },
+    "recipe-cost-card": {
+      "subject_en": "Roasted half-chicken, 4-plate batch",
+      "subject_es": "Medio pollo asado, lote de 4 platos",
+      "inputs_en": [
+        ["Whole chicken — 1.5 lb each, $3.20/lb, 72% yield", "$4.80 AP / plate"],
+        ["Olive oil — 0.5 floz, $0.18/floz, 100% yield", "$0.09"],
+        ["Herb sachet (rosemary, thyme) — 0.25 oz, $1.40/oz, 90% yield", "$0.39"],
+        ["Pan-roasted potatoes — 6 oz, $0.12/oz, 88% yield", "$0.82"],
+        ["Lemon-shallot pan jus — 1.5 floz, $0.28/floz, 100% yield", "$0.42"]
+      ],
+      "inputs_es": [
+        ["Pollo entero — 1.5 lb c/u, $3.20/lb, rendimiento 72%", "$4.80 AP / plato"],
+        ["Aceite de oliva — 0.5 floz, $0.18/floz, rendimiento 100%", "$0.09"],
+        ["Sachet de hierbas (romero, tomillo) — 0.25 oz, $1.40/oz, rendimiento 90%", "$0.39"],
+        ["Papas asadas en sartén — 6 oz, $0.12/oz, rendimiento 88%", "$0.82"],
+        ["Jugo de limón-chalote — 1.5 floz, $0.28/floz, rendimiento 100%", "$0.42"]
+      ],
+      "result_en": [
+        ["Plate cost (yield-adjusted)", "$6.52"],
+        ["At 30% target food cost, target price", "$21.73"],
+        ["Charm price (rounded up to .95)", "$21.95"]
+      ],
+      "result_es": [
+        ["Costo del plato (ajustado por rendimiento)", "$6.52"],
+        ["Al 30% de costo de comida objetivo, precio objetivo", "$21.73"],
+        ["Precio charm (redondeado a .95)", "$21.95"]
+      ],
+      "punchline_en": "The yield slider is the lever — winter chickens come in heavier-boned and the 72% drops to 68%. At 68% the plate cost lands at $6.91, and the same target moves to $23.95. The decision isn't whether to raise the menu price — the decision is when. Try the yield slider now and see what the price would need to be.",
+      "punchline_es": "El control deslizante de rendimiento es la palanca — los pollos de invierno vienen con más hueso y el 72% baja a 68%. A 68%, el costo del plato llega a $6.91, y el mismo objetivo mueve el precio a $23.95. La decisión no es si subir el precio del menú — es cuándo. Mueve el control deslizante de rendimiento ahora y ve a cuánto debería subir el precio."
+    },
+    "gbp-monthly-audit": {
+      "subject_en": "60-seat neighborhood bistro, May audit",
+      "subject_es": "Bistró de barrio de 60 asientos, auditoría de mayo",
+      "inputs_en": [
+        ["Hours of operation, special-day hours, primary + secondary categories", "All Pass"],
+        ["Phone, address, website link, links to menu", "Pass · Pass · Pass · Fail (broken)"],
+        ["Photos posted in last 30 days", "2"],
+        ["GBP posts in last 30 days", "0"],
+        ["Q&A unanswered", "3"]
+      ],
+      "inputs_es": [
+        ["Horarios, horarios especiales, categorías primaria + secundaria", "Todo Aprobado"],
+        ["Teléfono, dirección, sitio web, enlaces al menú", "Aprobado · Aprobado · Aprobado · Falló (roto)"],
+        ["Fotos publicadas en últimos 30 días", "2"],
+        ["Posts de GBP en últimos 30 días", "0"],
+        ["Preguntas sin responder", "3"]
+      ],
+      "result_en": [
+        ["Listing fundamentals", "7 of 8 pass"],
+        ["Content cadence", "Below threshold (4 photos + 4 posts target)"],
+        ["This month's punch list", "4 items"]
+      ],
+      "result_es": [
+        ["Fundamentos del listado", "7 de 8 aprobados"],
+        ["Cadencia de contenido", "Bajo el umbral (objetivo 4 fotos + 4 posts)"],
+        ["Lista de tareas de este mes", "4 elementos"]
+      ],
+      "punchline_en": "The broken menu link is the priority — that's the link Google was sending people to. Behind it: the three Q&As (probably about parking, dietary options, and reservations — answer them once and they sit there forever) and the post cadence. The audit takes fifteen minutes; the punch list takes the rest of the morning if you batch it. The next month's audit walks a healthier listing.",
+      "punchline_es": "El enlace roto del menú es la prioridad — ese es el enlace al que Google enviaba a la gente. Detrás de eso: las tres preguntas sin responder (probablemente sobre estacionamiento, opciones dietéticas y reservas — respóndelas una vez y se quedan ahí para siempre) y la cadencia de posts. La auditoría toma quince minutos; la lista de tareas toma el resto de la mañana si la haces en bloque. La auditoría del próximo mes camina sobre un listado más sano."
+    },
+    "waste-log": {
+      "subject_en": "32-seat bistro, one slow week",
+      "subject_es": "Bistró de 32 asientos, una semana lenta",
+      "inputs_en": [
+        ["Salmon, 6oz portions — 4 portions, $6.40 each, spoilage, Sunday", "$25.60"],
+        ["Mixed greens — 3 lb, $1.80/lb, overprep, Tuesday", "$5.40"],
+        ["Bread — 6 loaves, $2.20 each, staff meal, Mon-Wed", "$13.20"],
+        ["Heirloom tomatoes — 2 lb, $4.20/lb, spoilage, Thursday", "$8.40"],
+        ["Beurre blanc — 8 oz, $0.85/oz, dropped, Saturday", "$6.80"]
+      ],
+      "inputs_es": [
+        ["Salmón, porciones de 6oz — 4 porciones, $6.40 c/u, descomposición, domingo", "$25.60"],
+        ["Mix de hojas verdes — 3 lb, $1.80/lb, sobreproducción, martes", "$5.40"],
+        ["Pan — 6 piezas, $2.20 c/u, comida del personal, lun-mié", "$13.20"],
+        ["Tomate heirloom — 2 lb, $4.20/lb, descomposición, jueves", "$8.40"],
+        ["Beurre blanc — 8 oz, $0.85/oz, derramado, sábado", "$6.80"]
+      ],
+      "result_en": [
+        ["Total weekly waste", "$59.40"],
+        ["Pattern: spoilage", "$34.00 (57% of waste)"],
+        ["Pattern: where it lands", "Sunday + Thursday — slow days following heavy prep"]
+      ],
+      "result_es": [
+        ["Desperdicio semanal total", "$59.40"],
+        ["Patrón: descomposición", "$34.00 (57% del desperdicio)"],
+        ["Patrón: dónde aterriza", "Domingo + jueves — días lentos después de prep pesado"]
+      ],
+      "punchline_en": "The waste-log is a pattern detector, not a moral ledger. Two weeks of entries make the spoilage line obvious — too much prep on Wednesday and Saturday for the Sunday and Thursday traffic that actually walks in. The fix isn't shouting at the line; it's the prep par sheet getting Sunday's salmon allocation cut by 30% next week.",
+      "punchline_es": "El registro de desperdicio es un detector de patrones, no un libro moral. Dos semanas de entradas hacen obvia la línea de descomposición — demasiado prep el miércoles y sábado para el tráfico real del domingo y jueves. El arreglo no es gritarle a la línea; es la hoja par de prep recortando 30% la asignación de salmón del domingo la próxima semana."
+    },
+    "vendor-contact-sheet": {
+      "subject_en": "60-seat full-service, one binder",
+      "subject_es": "60 asientos servicio completo, una carpeta",
+      "inputs_en": [
+        ["Sysco — Dry goods · rep + after-hours line + Tue/Fri 6am · Net 14", "Filled"],
+        ["Baldor Specialty — Produce · rep cell + Mon/Wed/Fri 5am · Net 7", "Filled"],
+        ["Pat LaFrieda — Protein · rep + after-hours · Tue/Fri AM · Net 14", "Filled"],
+        ["Local dairy co-op — Dairy · cell only · Mon/Thu · COD", "Filled"],
+        ["Equipment service (refrigeration) — emergency line, contract #", "Filled"]
+      ],
+      "inputs_es": [
+        ["Sysco — Abarrotes · rep + línea fuera de horario + mar/vie 6am · Net 14", "Lleno"],
+        ["Baldor Specialty — Frutas y verduras · cel del rep + lun/mié/vie 5am · Net 7", "Lleno"],
+        ["Pat LaFrieda — Proteína · rep + fuera de horario · mar/vie AM · Net 14", "Lleno"],
+        ["Cooperativa local de lácteos — Lácteos · solo cel · lun/jue · COD", "Lleno"],
+        ["Servicio de equipo (refrigeración) — línea de emergencia, # de contrato", "Lleno"]
+      ],
+      "result_en": [
+        ["Vendors filled", "10 of 10"],
+        ["Emergency numbers (landlord, insurance, utility, bank)", "All present"],
+        ["Last verified", "Yesterday — by GM"]
+      ],
+      "result_es": [
+        ["Proveedores llenados", "10 de 10"],
+        ["Números de emergencia (arrendador, seguro, servicio público, banco)", "Todos presentes"],
+        ["Última verificación", "Ayer — por el gerente"]
+      ],
+      "punchline_en": "The print version goes on the wall by the manager's desk and inside the fridge gasket on a magnetized clip. The night the walk-in dies at 11pm, the GM doesn't text the owner asking for the refrigeration tech's number — they read it off the wall. Re-verify quarterly; phone numbers and reps churn faster than you think.",
+      "punchline_es": "La versión impresa va en la pared junto al escritorio del gerente y dentro del empaque del refrigerador en un clip magnetizado. La noche que muere el walk-in a las 11pm, el gerente no le manda mensaje al dueño pidiendo el número del técnico de refrigeración — lo lee de la pared. Re-verifica cada trimestre; teléfonos y reps cambian más rápido de lo que crees."
+    },
+    "review-response-log": {
+      "subject_en": "60-seat neighborhood bistro, two weeks of reviews",
+      "subject_es": "Bistró de barrio de 60 asientos, dos semanas de reseñas",
+      "inputs_en": [
+        ["Reviews logged (across Google, Yelp, OpenTable)", "18"],
+        ["Negatives (≤3 stars)", "3"],
+        ["Owner responses", "7"],
+        ["Owner responses to negatives", "1"],
+        ["Repeated theme in negatives", "Dishroom noise (3 of 3)"]
+      ],
+      "inputs_es": [
+        ["Reseñas registradas (Google, Yelp, OpenTable)", "18"],
+        ["Negativas (≤3 estrellas)", "3"],
+        ["Respuestas del operador", "7"],
+        ["Respuestas a negativas", "1"],
+        ["Tema repetido en negativas", "Ruido del fregadero (3 de 3)"]
+      ],
+      "result_en": [
+        ["Response rate", "38.9% · red"],
+        ["Negative response rate", "33.3% · red"],
+        ["Anomaly flag", "Negs unanswered (≥2)"]
+      ],
+      "result_es": [
+        ["Tasa de respuesta", "38.9% · rojo"],
+        ["Tasa de respuesta a negativas", "33.3% · rojo"],
+        ["Bandera de anomalía", "Negativas sin responder (≥2)"]
+      ],
+      "punchline_en": "The unanswered negatives are this Tuesday's first task — three customers named the same dishroom-noise issue with no public response. The pattern is also the punch list: schedule the dishroom acoustic fix that's been on the maintenance log since February. The reply and the fix are the same conversation, three weeks apart.",
+      "punchline_es": "Las negativas sin responder son la primera tarea de este martes — tres clientes nombraron el mismo problema del ruido del fregadero sin respuesta pública. El patrón también es la lista de tareas: agenda el arreglo acústico del fregadero que está en el registro de mantenimiento desde febrero. La respuesta y el arreglo son la misma conversación, separadas por tres semanas."
+    }
+  }
+}

@@ -37,7 +37,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/sheets/third-party-channel-pnl/#sheet","name":"Third-Party Channel P&L","description":"Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders cost. Settles the argument.","url":"https://muntin.digital/sheets/third-party-channel-pnl/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -47,18 +47,28 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="third-party-channel-pnl" data-sheet-pack="conversions" data-pagefind-meta="kind:sheet,pack:conversions">
 <a class="skip-link" href="#main">Skip to main content</a>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -94,19 +104,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/sheets/third-party-channel-pnl/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -123,7 +133,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -142,7 +152,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/sheets/third-party-channel-pnl/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -202,7 +212,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="6" y1="11" x2="18" y2="11"/><line x1="9" y1="16" x2="15" y2="16"/><polyline points="10 19 12 21 14 19"/></svg></span>Free operator sheet · Stays in your browser</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="6" y1="11" x2="18" y2="11"/><line x1="9" y1="16" x2="15" y2="16"/><polyline points="10 19 12 21 14 19"/></svg></span>Free operator sheet · Stays in your browser</span>
   <h1>Third-Party Channel<br><span class="serif-italic">P&amp;L.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Run the honest math on DoorDash, Uber Eats, or Grubhub. Gross sales minus commission, marketing fees, refunds, packaging, and the labor those orders cost. Settles the argument.</p>
   <p class="sheet-meta" aria-label="Sheet meta">
@@ -223,6 +233,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="third-party-channel-pnl">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">Single-unit operator running DoorDash + Uber Eats</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Gross third-party sales (last 4 weeks)</th><td>$24,000</td></tr><tr><th scope="row">Commission + marketing fees (avg 28%)</th><td>−$6,720</td></tr><tr><th scope="row">Refunds + adjustments</th><td>−$480</td></tr><tr><th scope="row">Packaging cost</th><td>−$960</td></tr><tr><th scope="row">Incremental kitchen labor estimate</th><td>−$1,800</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Net contribution after channel costs</th><td>$14,040</td></tr><tr><th scope="row">Channel contribution margin</th><td>58.5% · green</td></tr><tr><th scope="row">Per dollar of gross third-party revenue</th><td>$0.585 stays</td></tr></tbody></table>
+        <p class="swe-punchline">The channel pencils — but only because their incremental labor estimate is honest. If they were treating delivery orders as 'free' kitchen time, the margin would read closer to 70% and they'd quietly be subsidizing the platform. The next move is the recipe-cost-card on the three SKUs that move 60% of delivery volume — those decide whether the channel stays accretive.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Channel &amp; period</legend>
@@ -245,9 +272,8 @@ header.nav{min-height:64px}
       <fieldset>
         <legend>Channel statement (paste from their dashboard)</legend>
         <label>
-          <span><span>Gross sales (before fees)</span></span>
+          <span><span>Gross sales — what customers paid before any fees</span></span>
           <input type="number" name="gross_sales" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">What customers paid you for food + delivery, before any fees come out.</span>
         </label>
         <label>
           <span><span>Commission &amp; service fees the platform charged you</span></span>
@@ -258,23 +284,20 @@ header.nav{min-height:64px}
           <input type="number" name="marketing_fees" min="0" step="0.01" placeholder="0.00" />
         </label>
         <label>
-          <span><span>Refunds &amp; adjustments charged back to you</span></span>
+          <span><span>Refunds &amp; adjustments — wrong order, missing item, customer credits</span></span>
           <input type="number" name="refunds" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Wrong order, missing item, customer credits the platform extended on your behalf.</span>
         </label>
       </fieldset>
 
       <fieldset>
         <legend>Your costs (the platform does not show these)</legend>
         <label>
-          <span><span>Food cost on these orders</span></span>
+          <span><span>Food cost — apply your normal food-cost % to gross as a starting estimate</span></span>
           <input type="number" name="food_cost" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Apply your normal food-cost percent to gross sales as a starting estimate.</span>
         </label>
         <label>
-          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils)</span></span>
+          <span><span>Packaging cost (clamshells, lids, bags, stickers, utensils) — typically $0.60–$1.20 per ticket</span></span>
           <input type="number" name="packaging" min="0" step="0.01" placeholder="0.00" />
-          <span class="field-help">Multiply per-ticket packaging cost (typically $0.60–$1.20) by ticket count for the period.</span>
         </label>
         <label>
           <span><span>Incremental labor (extra expo, packing, delivery handoff)</span></span>
@@ -306,6 +329,40 @@ header.nav{min-height:64px}
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three real worries on a delivery channel:
+         platform commission pressure, marketing-fee drift, and the
+         labor-honesty question (under-counting incremental labor is
+         the most common error). -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if commission, marketing, or your labor estimate shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the contribution margin re-runs on top of your typed numbers. The labor multiplier is the honest one — if you typed $1,800 but the real number is closer to $3,600, slide it to 2x and watch what happens.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Commission rate change (% of gross)</span>
+          <input type="range" name="whatif_comm" min="-5" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_comm_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Marketing-fee change (% of gross)</span>
+          <input type="range" name="whatif_mkt" min="-3" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_mkt_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Incremental labor honesty (multiplier)</span>
+          <input type="range" name="whatif_labor" min="0.5" max="2" step="0.1" value="1" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">1.0x</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         delivery-channel economics — the why beneath the what. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      The headline lie, the five lines you need to count, the contribution-margin bands, and a four-lever renegotiation playbook for when the channel doesn't pencil. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The honest channel P&amp;L &mdash; Why most operators discover delivery is a subsidy &rarr;</a>
+    </p>
+
     <script>
       (function () {
         function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
@@ -316,15 +373,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Sheet actions">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy as text
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -401,13 +458,14 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -513,11 +571,11 @@ header.nav{min-height:64px}
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Run free audit
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Email Don
     </a>
   </aside>
@@ -553,8 +611,14 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(abs * 100) / 100).toFixed(2);
@@ -564,15 +628,41 @@ header.nav{min-height:64px}
           return sign + (Math.round(Math.abs(v) * 10) / 10).toFixed(1) + '%';
         }
 
+        // D8 · Read what-if slider state. Commission/marketing are
+        // additive points-of-gross; labor is a multiplier on the typed
+        // incremental_labor line.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_comm) return { comm: 0, mkt: 0, laborMult: 1 };
+          var lm = n(f.whatif_labor.value);
+          if (!isFinite(lm) || lm <= 0) lm = 1;
+          return {
+            comm: n(f.whatif_comm.value),
+            mkt:  n(f.whatif_mkt.value),
+            laborMult: lm,
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
+          var w = whatif();
           var gross   = n(f.gross_sales.value);
-          var deducts = n(f.commission.value) + n(f.marketing_fees.value) + n(f.refunds.value);
-          var costs   = n(f.food_cost.value) + n(f.packaging.value) + n(f.incremental_labor.value);
+          // D8 — apply commission/marketing point deltas as a fraction
+          // of gross; labor multiplier scales the typed incremental.
+          var commission = n(f.commission.value)     + (w.comm / 100) * gross;
+          var marketing  = n(f.marketing_fees.value) + (w.mkt  / 100) * gross;
+          var labor      = n(f.incremental_labor.value) * w.laborMult;
+          var deducts = commission + marketing + n(f.refunds.value);
+          var costs   = n(f.food_cost.value) + n(f.packaging.value) + labor;
           var payout  = gross - deducts;
           var contrib = payout - costs;
           var pct     = gross > 0 ? (contrib / gross) * 100 : 0;
+
+          // Update what-if output labels.
+          if (f.whatif_comm_out)  f.whatif_comm_out.value  = (w.comm >= 0 ? '+' : '') + w.comm.toFixed(1) + 'pt';
+          if (f.whatif_mkt_out)   f.whatif_mkt_out.value   = (w.mkt  >= 0 ? '+' : '') + w.mkt.toFixed(1)  + 'pt';
+          if (f.whatif_labor_out) f.whatif_labor_out.value = w.laborMult.toFixed(1) + 'x';
 
           document.querySelector('[data-output="net_payout"]').textContent  = fmt$(payout);
           document.querySelector('[data-output="total_costs"]').textContent = fmt$(costs);
@@ -581,7 +671,16 @@ header.nav{min-height:64px}
           dEl.dataset.band = contrib > 0 ? 'good' : (contrib < 0 ? 'bad' : 'idle');
           var pEl = document.querySelector('[data-output="contrib_pct"]');
           pEl.textContent = fmtPct(pct);
-          pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          // D9 — band routes through Bench.evaluate when available, so
+          // updating data/benchmarks.json's channel_contribution_pct
+          // thresholds cascades to this sheet automatically. Inline
+          // ladder is the graceful fallback.
+          if (window.Bench && window.Bench.evaluate) {
+            var bench = window.Bench.evaluate('channel_contribution_pct', pct);
+            if (bench && bench.band) pEl.dataset.band = bench.band;
+          } else {
+            pEl.dataset.band = pct > 5 ? 'good' : (pct >= 0 ? 'warn' : 'bad');
+          }
 
           var verdict = document.querySelector('[data-output="verdict"]');
           if (verdict) {
@@ -589,6 +688,10 @@ header.nav{min-height:64px}
               verdict.textContent = 'Type your numbers. A positive contribution margin means the channel earns its keep; negative means each order loses money before fixed costs.';
             } else if (contrib < 0) {
               verdict.textContent = 'This channel is losing you money on each order before fixed costs are even applied. Either renegotiate fees, raise menu prices on this channel, or turn it off.';
+            } else if (window.Bench && window.Bench.evaluate) {
+              // Centralized message for non-edge bands (>= 0 contrib).
+              var b2 = window.Bench.evaluate('channel_contribution_pct', pct);
+              if (b2 && b2.msg) verdict.textContent = b2.msg;
             } else if (pct < 5) {
               verdict.textContent = 'Thin contribution. The channel is not paying for itself once fixed costs (rent, utilities, salaried management) are included. Action: raise menu prices on this channel, or shrink the menu offered through it to higher-margin items only.';
             } else if (pct < 12) {
@@ -623,6 +726,19 @@ header.nav{min-height:64px}
           ];
         }
 
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_comm)  f.whatif_comm.value  = 0;
+            if (f.whatif_mkt)   f.whatif_mkt.value   = 0;
+            if (f.whatif_labor) f.whatif_labor.value = 1;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+
         if (window.SheetPage) {
           window.SheetPage.register({
             slug: 'third-party-channel-pnl',
@@ -636,15 +752,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Sheet actions">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy as text
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -730,7 +846,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

@@ -97,8 +97,8 @@
 }
 </script>
 
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>
@@ -106,7 +106,7 @@
   plausible.init({ endpoint: '/api/event', logging: false })
 </script>
 
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -122,14 +122,16 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
 
 <style>
   /* ===== SERVICES PAGE LOCAL STYLES (mirror of /services/) ===== */
@@ -153,6 +155,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -162,7 +174,7 @@ header.nav{min-height:64px}
   window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -188,19 +200,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/services/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -214,7 +226,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
@@ -338,11 +350,11 @@ header.nav{min-height:64px}
         <div class="price">USD 2,500<small>–4,000</small></div>
         <p class="desc">Un sitio a medida de 3 a 6 páginas, lanzado en 2 a 3 semanas. Perfecto para dueños que ya no quieren pedir disculpas por su sitio.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño a medida, pensado primero para celular</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Listo para SEO desde el día uno</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Formularios de contacto y de suscripción</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Google Analytics y Search Console</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Acompañamiento en dominio y lanzamiento</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño a medida, pensado primero para celular</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Listo para SEO desde el día uno</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Formularios de contacto y de suscripción</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Google Analytics y Search Console</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Acompañamiento en dominio y lanzamiento</li>
         </ul>
       </div>
 
@@ -352,11 +364,11 @@ header.nav{min-height:64px}
         <div class="price">USD 5,000<small>–9,000</small></div>
         <p class="desc">Todo lo del Esencial, más un CMS liviano, integraciones y pulido final. El paquete que la mayoría de restaurantes y marcas locales necesitan.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>CMS editable para menús, notas y horarios</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Integraciones de reservas, pedidos y agenda</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Pulido de copys y curaduría de fotos</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Plan de lanzamiento y sesión de capacitación</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>30 días de soporte post-lanzamiento</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>CMS editable para menús, notas y horarios</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Integraciones de reservas, pedidos y agenda</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Pulido de copys y curaduría de fotos</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Plan de lanzamiento y sesión de capacitación</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>30 días de soporte post-lanzamiento</li>
         </ul>
       </div>
 
@@ -366,11 +378,11 @@ header.nav{min-height:64px}
         <div class="price">USD 8,000<small>–15,000+</small></div>
         <p class="desc">Para marcas boutique a las que se les quedó chico un constructor de tienda. Shopify o headless, construido alrededor de tus productos y de tu flujo real.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Shopify a medida o headless</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Datos de producto, variantes y reglas de envío</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Captura de correo y recuperación de carrito</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Analítica y seguimiento de conversiones</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>60 días de soporte post-lanzamiento</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Shopify a medida o headless</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Datos de producto, variantes y reglas de envío</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Captura de correo y recuperación de carrito</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Analítica y seguimiento de conversiones</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>60 días de soporte post-lanzamiento</li>
         </ul>
       </div>
     </div>
@@ -388,7 +400,7 @@ header.nav{min-height:64px}
       <span>Mira primero cómo califica tu sitio actual — la auditoría gratis para restaurantes corre en unos 30 segundos.</span>
     </div>
     <a class="btn btn-ghost" href="/es/tools/audits/restaurant/">Correr la auditoría gratis
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
     </a>
   </div>
 </aside>
@@ -491,10 +503,10 @@ header.nav{min-height:64px}
         <div class="price">USD 1,500<small>–3,000</small></div>
         <p class="desc">Todo lo que necesitas para verte como un negocio de verdad. Logo, colores, tipografía y un tablero de marca que lo amarra todo.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño de logo (2 a 3 conceptos, 2 rondas de ajuste)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Paleta de color y selección tipográfica</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Variantes del logo (ícono, apilado, horizontal)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>PDF del tablero de marca</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño de logo (2 a 3 conceptos, 2 rondas de ajuste)</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Paleta de color y selección tipográfica</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Variantes del logo (ícono, apilado, horizontal)</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>PDF del tablero de marca</li>
         </ul>
       </div>
 
@@ -504,10 +516,10 @@ header.nav{min-height:64px}
         <div class="price">USD 800<small>–1,500</small></div>
         <p class="desc">Las piezas de apoyo que hacen que tu marca se sienta real en el mundo &mdash; tarjetas, plantillas, gráficos para redes.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Tarjeta de presentación y papelería</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño de firma de correo</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Gráficos de perfil y portada para redes</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Plantilla de presentaciones</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Tarjeta de presentación y papelería</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Diseño de firma de correo</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Gráficos de perfil y portada para redes</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Plantilla de presentaciones</li>
         </ul>
       </div>
 
@@ -517,10 +529,10 @@ header.nav{min-height:64px}
         <div class="price price-alt">Por proyecto</div>
         <p class="desc">Trabajos de diseño puntuales para clientes actuales. Menús, volantes, letreros, empaques &mdash; lo que necesites, dentro de la marca.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Refresco de menú: USD 200–400</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Volante / gráfico promocional: USD 150–300</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Letrero / banner: USD 250–500</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Empaque / etiqueta: USD 400–800</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Refresco de menú: USD 200–400</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Volante / gráfico promocional: USD 150–300</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Letrero / banner: USD 250–500</li>
+          <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5C3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Empaque / etiqueta: USD 400–800</li>
         </ul>
       </div>
     </div>
@@ -548,10 +560,10 @@ header.nav{min-height:64px}
           <div class="price">USD 500<small>–800/mes</small></div>
           <p class="desc">Gráficos con tu marca, descripciones y un calendario de contenido &mdash; tú te encargas de publicar.</p>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>12 a 16 gráficos con tu marca al mes</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Descripciones y estrategia de hashtags</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Calendario mensual de contenido</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>2 a 3 plataformas (IG, FB, Google Business)</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>12 a 16 gráficos con tu marca al mes</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Descripciones y estrategia de hashtags</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Calendario mensual de contenido</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>2 a 3 plataformas (IG, FB, Google Business)</li>
           </ul>
         </div>
 
@@ -561,10 +573,10 @@ header.nav{min-height:64px}
           <div class="price">USD 1,200<small>–1,800/mes</small></div>
           <p class="desc">Publicación y programación completa en tus plataformas, con flujo de aprobación y seguimiento de desempeño.</p>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>16 a 20 publicaciones al mes, 3 plataformas</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Calendario de contenido + flujo de aprobación</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Interacción básica con la comunidad</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Reporte mensual de desempeño</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>16 a 20 publicaciones al mes, 3 plataformas</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Calendario de contenido + flujo de aprobación</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Interacción básica con la comunidad</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Reporte mensual de desempeño</li>
           </ul>
         </div>
 
@@ -574,10 +586,10 @@ header.nav{min-height:64px}
           <div class="price">USD 2,500<small>–3,500/mes</small></div>
           <p class="desc">Todo lo de Presencia más gestión de comunidad, analítica y estrategia trimestral.</p>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Comentarios, DMs y manejo de reseñas</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Analítica mensual con recomendaciones</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Actualización trimestral de estrategia</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Historias y reels puntuales</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Comentarios, DMs y manejo de reseñas</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Analítica mensual con recomendaciones</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Actualización trimestral de estrategia</li>
+            <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rust)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>Historias y reels puntuales</li>
           </ul>
         </div>
       </div>
@@ -682,7 +694,7 @@ header.nav{min-height:64px}
 
     <div class="hero-ctas reveal" style="justify-content:center;margin-top:32px;">
       <a class="btn btn-primary js-window" href="/es/window/">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
       <a class="btn btn-ghost" href="/es/#contact">Enviar un resumen del proyecto</a>
     </div>
@@ -696,7 +708,7 @@ header.nav{min-height:64px}
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
       <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -781,11 +793,11 @@ header.nav{min-height:64px}
   </div>
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Auditor&iacute;a gratis
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Escr&iacute;bele a Don
     </a>
   </aside>

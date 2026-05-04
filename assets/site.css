@@ -540,69 +540,56 @@
 
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
-   instead of Google Fonts. Each @font-face is scoped to a single
-   weight + style so the browser only downloads what a given page
-   actually needs. font-display:swap keeps first paint fast and works
+   as VARIABLE font files: one woff2 per font/style covers every weight
+   from 100 (Thin) to 900 (Black) via font-weight:100 900. font-display:
+   swap keeps first paint fast and works
    with the metric-matched fallbacks defined further below to prevent
    CLS. unicode-range is set to the Latin subset the woff2 files were
    generated against by google-webfonts-helper.
 */
+/* Variable woff2 — one file covers every weight from 100 (Thin) to 900
+   (Black). Replaces the 7 per-weight @font-face rules that used to live
+   here (Fraunces 400/500/600 + italic, Inter 400/500/600). Single-file
+   source means: one HTTP fetch unlocks every weight (no on-demand fetch
+   for h2 vs h3 vs body bold), and h1 → h2 → body weight transitions
+   render correctly from first paint instead of waiting for the right
+   per-weight file to arrive. unicode-range matches the latin subset the
+   fontsource-variable packages were generated against. */
 @font-face{
   font-family:'Fraunces';
   font-style:normal;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-regular.woff2') format('woff2');
+  src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Fraunces';
   font-style:italic;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-italic.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face{
-  font-family:'Fraunces';
-  font-style:normal;
-  font-weight:500;
-  font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-500.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face{
-  font-family:'Fraunces';
-  font-style:normal;
-  font-weight:600;
-  font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-600.woff2') format('woff2');
+  src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Inter';
   font-style:normal;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-regular.woff2') format('woff2');
+  src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Inter';
-  font-style:normal;
-  font-weight:500;
+  font-style:italic;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-500.woff2') format('woff2');
+  src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
-@font-face{
-  font-family:'Inter';
-  font-style:normal;
-  font-weight:600;
-  font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-600.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
+/* (block kept at 7 + 1 padding lines so build-css-shells SECTIONS map
+   line numbers stay stable past line 605.)
+   --------------------------------------------------------------- */
 
 /* Web font CLS prevention. Fraunces (display) and Inter (body) load
    from /assets/fonts, so the browser first paints text in the fallback
@@ -614,8 +601,8 @@
    in the layout. The fallback names are inserted into the --font-display
    and --font-body chains above so the cascade picks them up before
    falling through to system fonts. */
-@font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:105%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
-@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:107%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
@@ -682,6 +669,30 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
    inside the wrapper instead of pushing the article wide. */
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
 .table-scroll>table{min-width:max-content}
+/* Margin-walk / operator tables (.op-table). Three columns —
+   line label, $ amount, % of ticket — that overflow on phones if left
+   as a regular table even inside .table-scroll, because the line column
+   alone fills the viewport and the numbers sit off-screen. On ≤640px
+   we drop the thead and re-grid each <tr> as
+   [label spans full width] / [$ right] / [% right], keeping every
+   value visible without a horizontal scroll gesture. */
+.op-table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.45}
+.op-table th,.op-table td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.op-table thead th{font-weight:600;font-size:13px;color:var(--ink-soft);letter-spacing:0.02em;border-bottom:2px solid var(--ink)}
+.op-table .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.op-table tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600;font-size:15.5px;padding-top:12px}
+@media (max-width:640px){
+  .op-table thead{display:none}
+  .op-table tr{display:grid;grid-template-columns:1fr auto auto;column-gap:14px;row-gap:4px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .op-table th,.op-table td{padding:0;border:0}
+  .op-table td:first-child,.op-table th:first-child{grid-column:1 / -1;font-weight:500;color:var(--ink-soft)}
+  .op-table tfoot tr{border-top:2px solid var(--ink);padding-top:12px;font-weight:600}
+  .op-table tfoot td{border-top:0;padding-top:0}
+  /* Rendered inside .table-scroll, the inner table previously got
+     min-width:max-content. Reset to auto on phones so the new grid
+     layout fills the wrapper instead of forcing horizontal overflow. */
+  .table-scroll>.op-table{min-width:0}
+}
 .eyebrow{font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:10px}
 .eyebrow::before{content:'';width:28px;height:1px;background:var(--teal)}
 /* Eyebrow with leading glyph: replaces the 28px rule with a 24px line-stroked SVG mark in the same accent color. Used to add a page-relevance cue without breaking the eyebrow's existing inline-flex rhythm. */
@@ -1009,6 +1020,13 @@ to{opacity:1;transform:translateZ(0)}
 }
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+/* Mobile + small-tablet: the decorative .window is purely brand identity
+   (aria-hidden) and at column width with aspect-ratio:5/6 it becomes a
+   ~480px-tall black-grid overlay between the contact line and the count
+   chips that pushes real content off-screen. The hero grid itself stacks
+   1-col at 960px, so anything ≤960 hides the window-mark — landscape
+   phones (~720-915px wide) and small tablets are covered. */
+@media (max-width:960px){.window,.window-caption{display:none}}
 .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;background:var(--cream)}
 .proof-inner{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:space-between}
 .proof-label{font-size:13px;color:var(--stone);letter-spacing:0.04em}
@@ -1379,11 +1397,14 @@ body:has(.block.final) .foot-cta{display:none}
 .cite-body a:hover{color:var(--teal-dark)}
 @media print{.cite{border:1px solid #ccc}.cite summary::after{display:none}.cite-body a::after{content:' (' attr(href) ')';font-size:11px;color:#666;word-break:break-all}}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 800ms var(--ease-out),transform 800ms var(--ease-out)}
-.reveal.in{opacity:1;transform:translateY(0)}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}
+/* `.reveal` was opacity:0 by default — JS observer added `.in` to fade
+   it in. Below-the-fold was INVISIBLE until site.js loaded; "bottom
+   takes a few seconds." Default to visible; `.in` is a visual no-op.
+   Correctness over decoration. */
 .reveal{opacity:1;transform:none}
-}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+/* (kept for line-count parity with the previous .reveal block) */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -3654,6 +3675,14 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   border-radius:4px;color:var(--stone-2);background:var(--cream-2);line-height:1.3;
 }
 .nav-search-kbd-mod{font-size:12px}
+/* Platform-aware kbd hint. Default to Ctrl+K (Windows/Linux); a tiny
+   inline script in nav.html sets <html data-platform="mac"> on Apple
+   devices, swapping to ⌘K. Defaulting to Ctrl avoids showing the wrong
+   symbol to PC users (the larger audience) while the script runs. */
+.nav-search-kbd-mac{display:none}
+.nav-search-kbd-pc{display:inline}
+[data-platform="mac"] .nav-search-kbd-mac{display:inline}
+[data-platform="mac"] .nav-search-kbd-pc{display:none}
 @media (max-width:1060px){
   .nav-search-label,.nav-search-kbd{display:none}
   .nav-search-btn{padding:8px;gap:0;aspect-ratio:1}
@@ -6339,3 +6368,102 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
     order: -1;
   }
 }
+
+/* ============ ARTICLE VIZ COMPONENTS ============
+   Namespaced .viz-* family for inline article graphics. Tokens-only
+   (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
+   compositor-only animation (transform/opacity), explicit width/height
+   on every SVG. Reduced-motion: components render at final state
+   without animation. Animation is opt-in via data-animate attribute
+   plus the .reveal class (the existing IntersectionObserver in
+   assets/site.js adds .in on viewport entry).
+
+   Phase-1 components in this section:
+     .viz-figure       — figure wrapper (caption + a11y)
+     .viz-bars         — animated horizontal bar chart (replaces .dist-chart)
+
+   Future phases extend this with .viz-ring / .viz-spark / .viz-ba /
+   .viz-flow / .viz-tree / .viz-waterfall / .viz-gauge / .viz-hero /
+   .viz-scroll. */
+
+.viz-figure{margin:32px 0;padding:0}
+.viz-figure>figcaption{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--stone);margin-top:14px;font-style:italic;text-align:center}
+.viz-figure .viz-sr-table{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.viz-bars{display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;align-items:center;margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+.viz-bars__label{font-variant-numeric:tabular-nums;line-height:1.3}
+.viz-bars__track{background:var(--cream-2);border-radius:4px;height:20px;overflow:hidden;position:relative}
+.viz-bars__fill{display:block;height:100%;background:var(--teal);border-radius:4px;transform:scaleX(var(--w,1));transform-origin:left center;width:100%}
+.viz-bars__fill[data-tone="rust"]{background:var(--rust)}
+.viz-bars__fill[data-tone="stone"]{background:var(--stone)}
+.viz-bars__fill[data-tone="ink"]{background:var(--ink)}
+.viz-bars__num{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;line-height:1.3}
+@media (prefers-reduced-motion:no-preference){
+  /* Bars start at scaleX(0) and grow to scaleX(var(--w)) when the
+     wrapper enters the viewport (.in is added by the existing IO in
+     assets/site.js for elements carrying class .reveal). Compositor-
+     only transform — passes check-cls-animation.mjs. Stagger via
+     inline --delay (renderer writes "--delay:Nms" on each track). */
+  .viz-bars[data-animate="grow"] .viz-bars__fill{transform:scaleX(0);transition:transform 900ms cubic-bezier(0.2,0.8,0.2,1);transition-delay:var(--delay,0ms)}
+  .viz-bars[data-animate="grow"].in .viz-bars__fill{transform:scaleX(var(--w,1))}
+}
+@media (max-width:520px){
+  .viz-bars{font-size:13px;gap:6px 10px}
+  .viz-bars__track{height:16px}
+}
+
+/* .viz-waterfall — single horizontal bar segmented by where each
+   dollar of a fixed-amount transaction goes (commission, processing,
+   packaging, food cost, labor, keep). Each segment grows along the
+   inline-flex axis to flex-basis: calc(var(--w) * 100%); --w is the
+   segment's share of the whole (0..1). The "keep" segment is rendered
+   in the brand teal so the reader's eye lands on it. Live-recompute
+   driver lives in assets/article-viz.js (data-viz-waterfall hook). */
+.viz-waterfall{margin:24px 0;font-family:var(--font-body)}
+.viz-waterfall__title{font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.005em}
+.viz-waterfall__bar{display:flex;height:64px;border-radius:8px;overflow:hidden;background:var(--cream-2);margin:0 0 18px;border:1px solid var(--line)}
+.viz-waterfall__seg{display:flex;align-items:center;justify-content:center;flex-grow:0;flex-shrink:0;flex-basis:calc(var(--w,0)*100%);min-width:0;font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;white-space:nowrap;overflow:hidden;background:var(--stone)}
+.viz-waterfall__seg[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__seg[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:var(--ink)}
+.viz-waterfall__seg[data-tone="teal"],.viz-waterfall__seg--keep{background:var(--teal);color:var(--cream)}
+.viz-waterfall__legend{display:grid;grid-template-columns:1fr;gap:0;font-size:14.5px;border-top:1px solid var(--line);border-radius:6px;overflow:hidden}
+.viz-waterfall__row{display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);color:var(--ink)}
+.viz-waterfall__row:last-child{border-bottom:0}
+.viz-waterfall__row[data-keep="true"]{border-top:2px solid var(--ink);background:linear-gradient(90deg,rgba(31,78,91,0.08),transparent);padding:14px 4px;font-weight:600;border-bottom:0}
+.viz-waterfall__row[data-keep="true"] .viz-waterfall__num{color:var(--teal);font-family:var(--font-display);font-size:20px;font-weight:500}
+.viz-waterfall__swatch{width:14px;height:14px;border-radius:3px;background:var(--stone);align-self:center}
+.viz-waterfall__swatch[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__swatch[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__swatch[data-tone="teal"]{background:var(--teal)}
+.viz-waterfall__num{font-variant-numeric:tabular-nums;text-align:right;min-width:72px}
+.viz-waterfall__pct{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;min-width:60px;font-size:13px}
+@media (prefers-reduced-motion:no-preference){
+  .viz-waterfall__seg{transition:flex-basis 480ms cubic-bezier(0.2,0.8,0.2,1),background-color var(--t-fast) var(--ease)}
+}
+@media (max-width:520px){
+  .viz-waterfall__bar{height:52px}
+  .viz-waterfall__row{grid-template-columns:14px 1fr auto;gap:10px;font-size:13.5px}
+  .viz-waterfall__row .viz-waterfall__pct{display:none}
+}
+
+/* .viz-slider — labeled range input that drives a viz widget. Pairs
+   with .viz-waterfall (commission rate) but is generic; data-vw-slider
+   on the input attaches the widget driver in assets/article-viz.js.
+   The thumb is styled in the brand teal so the affordance reads as
+   editorial, not OS-default. */
+.viz-slider{display:grid;gap:10px;margin:18px 0;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.viz-slider__label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--font-body)}
+.viz-slider__title{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.005em}
+.viz-slider__readout{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:24px;color:var(--teal);font-weight:500;letter-spacing:-0.01em}
+.viz-slider input[type="range"]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:24px;margin:0;cursor:pointer}
+.viz-slider input[type="range"]:focus{outline:none}
+.viz-slider input[type="range"]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(to right,var(--teal) 0%,var(--teal) calc(var(--p,50%) * 1),var(--line) calc(var(--p,50%) * 1),var(--line) 100%)}
+.viz-slider input[type="range"]::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}
+.viz-slider input[type="range"]::-moz-range-progress{height:6px;border-radius:999px;background:var(--teal)}
+.viz-slider input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);margin-top:-8px;cursor:grab}
+.viz-slider input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);cursor:grab}
+.viz-slider input[type="range"]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider input[type="range"]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider__hint{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
+.viz-slider__hint b{color:var(--ink);font-weight:600}

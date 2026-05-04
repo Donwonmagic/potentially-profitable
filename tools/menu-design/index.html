@@ -65,20 +65,21 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=20260503-shells" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=20260503-shells"><link rel="stylesheet" href="/assets/site-tool.css?v=20260503-shells"></noscript>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<style>.breadcrumb{padding-top:100px}
 /* === Menu Design Suite tool-scoped styles. Page-prefix .md-*. === */
 .md-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
 .md-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
@@ -89,6 +90,23 @@ header.nav{min-height:64px}
    six large tappable tiles. Disappears once any choice is made
    or skipped; never re-appears for the same browser unless the
    draft is fully cleared. */
+/* Wave A8 — paste-or-type onboarding. Centered card, big textarea
+   front and center. Visually similar to the quiz card it lives next
+   to, but with a different action: paste your menu, get a working
+   editor immediately. Quiz reachable from a "Don't have a menu?"
+   secondary button. */
+.md-onboard{margin:18px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--teal) 4%,var(--white)) 0%,var(--white) 100%);box-shadow:var(--elev-1)}
+.md-onboard[hidden]{display:none}
+.md-onboard-inner{max-width:680px;margin:0 auto}
+.md-onboard-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px;text-align:center;line-height:1.25}
+.md-onboard-sub{font-size:13px;color:var(--ink-soft);margin:0 0 16px;text-align:center}
+.md-onboard-area{width:100%;min-height:140px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--white);color:var(--ink);box-sizing:border-box;resize:vertical}
+.md-onboard-area:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.md-onboard-actions{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.md-onboard-go{padding:10px 18px;border:0;border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
+.md-onboard-go:hover{background:color-mix(in srgb,var(--teal) 88%,#000)}
+.md-onboard-quiz{padding:10px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.md-onboard-quiz:hover{color:var(--teal)}
 .md-quiz{margin:18px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--teal) 4%,var(--white)) 0%,var(--white) 100%);box-shadow:var(--elev-1)}
 .md-quiz[hidden]{display:none}
 .md-quiz-inner{max-width:680px;margin:0 auto}
@@ -99,6 +117,13 @@ header.nav{min-height:64px}
 .md-quiz-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:18px 12px;border:1px solid var(--line);border-radius:12px;background:var(--white);cursor:pointer;font:inherit;font-size:13.5px;color:var(--ink);min-height:96px;transition:transform var(--t-fast),border-color var(--t-fast)}
 .md-quiz-tile:hover{border-color:var(--teal);transform:translateY(-2px);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
 .md-quiz-tile:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-quiz-tile.is-suggested{border-color:var(--teal);box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 25%,transparent);background:color-mix(in srgb,var(--teal) 6%,var(--white))}
+.md-quiz-tile.is-suggested::after{content:'★';position:absolute;top:6px;right:8px;color:var(--teal);font-size:14px}
+.md-quiz-tile{position:relative}
+@media (prefers-reduced-motion: no-preference){
+  .md-quiz-tile.is-suggested{animation:mdSuggestPulse 2.4s ease-out 1}
+}
+@keyframes mdSuggestPulse{0%,100%{box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 25%,transparent)}50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--teal) 12%,transparent)}}
 .md-quiz-tile-glyph{font-size:28px;line-height:1}
 .md-quiz-tile-label{font-weight:600;color:var(--ink)}
 .md-quiz-tile-hint{font-size:11.5px;color:var(--stone);text-align:center;line-height:1.3}
@@ -154,13 +179,42 @@ header.nav{min-height:64px}
 /* W8-1 — Editor toolbar: saved indicator, undo/redo buttons, dish
    search input. Calm visual weight; left-cluster has the Saved
    pill, right-cluster has the action chips. */
-.md-toolbar{margin:18px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* Wave A7 finish — sticky toolbar.
+   When the operator is editing dish row 47, scrolling past the
+   header to reach the row, the saved indicator + undo/redo + search
+   chip used to scroll out of view. Now they pin at the top of the
+   viewport (just below the site nav at 64px), staying reachable
+   while the operator works. Keeps the "saved" reassurance visible
+   as a glance during long edits.
+
+   The site's primary nav (header.nav) is ~56-64px tall depending on
+   viewport; we offset by 64px to ensure no overlap. On screens with
+   a sticky bottom-sheet preview drawer (mobile), this toolbar pins
+   above the dish grid and stays accessible. */
+.md-toolbar{margin:18px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:64px;z-index:10;background:var(--cream);padding:8px 0;margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px;border-bottom:1px solid color-mix(in srgb, var(--line) 40%, transparent)}
+@media (max-width: 640px){
+  /* Don't pin on phones — sticky over dish-add inputs causes touch
+     conflicts (the toolbar would intercept taps meant for the row
+     below it). The bottom-sheet preview-drawer + a sticky toolbar
+     would also fight for attention. Keep mobile toolbar in flow. */
+  .md-toolbar{position:static;border-bottom:0;background:transparent;padding:0;margin-left:0;margin-right:0}
+}
 .md-saved{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-weight:600}
 .md-saved svg{color:var(--stone-2)}
 .md-saved.is-saved svg{color:var(--status-good,#1F6B3A)}
 .md-saved.is-saving svg{color:var(--teal)}
+.md-saved.is-error{color:var(--status-bad,#A8392A);font-weight:700}
+.md-saved.is-error svg{color:var(--status-bad,#A8392A)}
+.md-readonly-banner{position:sticky;top:0;z-index:200;padding:10px 16px;background:#A8392A;color:#fff;font-size:14px;line-height:1.45;border-bottom:2px solid #7a2818}
+.md-readonly-banner strong{display:block;margin-bottom:2px}
 .md-toolbar-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
 .md-tb-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink-soft);cursor:pointer;transition:border-color var(--t-fast),color var(--t-fast)}
+@media (max-width: 1024px){
+  /* WCAG 2.2 SC 2.5.8 — touch targets ≥ 24×24, target ≥ 44×44 for
+     primary controls. The 36px chips are too small for thumbs on
+     a phone; bump to 44px on touch-class viewports. */
+  .md-tb-btn{width:44px;height:44px}
+}
 .md-tb-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal)}
 .md-tb-btn[disabled]{opacity:.4;cursor:not-allowed}
 .md-tb-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -189,11 +243,32 @@ header.nav{min-height:64px}
    of each row; HTML5 drag-and-drop on desktop, up/down arrow
    buttons (rendered next to the handle) for touch / keyboard. */
 .md-grid .md-handle{flex:0 0 auto;width:24px;height:32px;background:transparent;border:0;color:var(--stone-2);cursor:grab;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;padding:0}
+/* WCAG 2.2 SC 2.5.8 — drag handles + row-action chips. Bump to
+   44×44 on coarse pointers (touch screens). Pointer-fine viewports
+   keep the compact desktop sizing. */
+@media (pointer: coarse){
+  .md-grid .md-handle{width:44px;height:44px;font-size:18px}
+  .md-grid .md-row-action{width:44px;height:44px}
+}
 .md-grid .md-handle:hover{color:var(--teal);background:var(--cream-2)}
 .md-grid .md-handle:active,.md-grid .md-handle.is-dragging{cursor:grabbing;color:var(--teal)}
 .md-grid .md-handle:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .md-grid tr[draggable="true"]{cursor:default}
 .md-grid tr.md-drag-over{outline:2px dashed var(--teal);outline-offset:-2px;background:color-mix(in srgb,var(--teal) 6%,var(--white))}
+/* Wave studio-quality (UX) — Directional drop indicator. Replaces
+   the "outline the whole row" treatment with a 2px teal line at the
+   top or bottom of the hovered row, showing exactly where the source
+   will land. Way clearer on long menus. */
+.md-grid tr.md-drag-over-top{box-shadow:inset 0 3px 0 0 var(--teal),inset 0 -1px 0 0 color-mix(in srgb,var(--teal) 25%,transparent);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.md-grid tr.md-drag-over-bottom{box-shadow:inset 0 -3px 0 0 var(--teal),inset 0 1px 0 0 color-mix(in srgb,var(--teal) 25%,transparent);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.md-grid tr.md-drag-source{opacity:.45}
+/* Wave studio-quality (UX) — Search highlight. When the dish-search
+   input has a query, matched rows get a subtle teal left-edge stripe
+   + warm cream tint. Way clearer than "non-matched are hidden" alone
+   — operators see at-a-glance which dishes matched. The class is
+   applied to <tbody id="mdRows">, not the wrapping .md-grid div, so
+   the selector targets the tbody directly. */
+.md-search-active tr.md-search-match{box-shadow:inset 3px 0 0 0 var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
 .md-grid tr.md-drag-source{opacity:.4}
 .md-handle-cell{padding:4px 0 4px 6px !important;width:36px}
 @media(max-width:640px){.md-handle-cell{display:none}}
@@ -257,7 +332,7 @@ header.nav{min-height:64px}
 }
 
 /* Sticky add-dish pill follows scroll edge so item 27 still has a one-tap path. */
-.md-stick{position:sticky;bottom:8px;align-self:end;margin-top:-44px;margin-right:14px;padding:10px 16px;background:var(--ink);color:var(--cream);border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);z-index:5}
+.md-stick{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));align-self:end;margin-top:-44px;margin-right:14px;padding:12px 18px;min-height:44px;min-width:44px;background:var(--ink);color:var(--cream);border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);z-index:5}
 .md-stick:hover{background:var(--teal)}
 
 /* Paste drawer (CSV/TSV ingest, mirrors plate-cost). */
@@ -322,15 +397,37 @@ header.nav{min-height:64px}
 .md-customize-hint{color:var(--stone);font-weight:400;font-size:11.5px}
 .md-customize-badge{margin-left:auto;padding:2px 8px;background:var(--teal);color:#fff;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;line-height:1.4}
 .md-customize-badge[hidden]{display:none}
+/* Wave studio-quality (C14) — Theme story / review-board affordance. */
+.md-theme-story{margin-bottom:14px;padding:10px 14px;background:var(--cream-2);border:1px dashed var(--line);border-radius:6px}
+.md-theme-story-summary{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+.md-theme-story-summary::-webkit-details-marker{display:none}
+.md-theme-story-summary:hover{color:var(--teal)}
+.md-theme-story-body{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.md-theme-story-meta{font-size:11.5px;color:var(--stone);margin:0 0 8px;line-height:1.5}
+.md-theme-story-text{font-size:12.5px;color:var(--ink);line-height:1.6;margin:0}
+.md-theme-story-link{margin:10px 0 0;font-size:12px}
+.md-theme-story-link a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;font-weight:600}
+.md-theme-story-link a:hover{color:var(--ink)}
 .md-customize-body{padding:12px 14px}
 /* W24-1 — auto-fit + min(140px, 100%) gracefully stacks 3-up on
    tablet, 2-up on phone, 1-up below 280px. Replaces the hard
    3-column grid that squeezed color pickers at 390pt viewport. */
 .md-customize-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));gap:10px}
+.md-customize-tuner{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tuner select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer}
+.md-customize-tuner select:hover{border-color:var(--teal)}
+.md-customize-tuner select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .md-customize-field{display:flex;flex-direction:column;gap:4px}
 .md-customize-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .md-customize-field input[type="color"]{width:100%;height:36px;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:2px}
 .md-customize-toggles{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-lint{margin-top:12px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
+.md-customize-lint[hidden]{display:none}
+.md-customize-lint ul{margin:6px 0 0 18px;padding:0}
+.md-customize-lint li{margin:0 0 4px}
+.md-customize-lint .md-lint-high{color:#7a2912;font-weight:600}
+.md-customize-lint .md-lint-med{color:#7a4408}
+.md-customize-lint .md-lint-low{color:#3a4654}
 .md-customize-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);cursor:pointer;flex:1 1 auto}
 .md-customize-toggle input{accent-color:var(--teal);width:16px;height:16px;cursor:pointer}
 .md-customize-reset{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:11.5px;font-weight:600}
@@ -415,6 +512,21 @@ header.nav{min-height:64px}
 .md-print-mode:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
 .md-print-checklist{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
 .md-print-checklist[hidden]{display:none}
+/* Wave studio-quality (B15) — Print-shop deeplinks rail. Visible
+   only when print-vendor mode is on. Subtle enough that operators
+   who self-host their print job aren't pushed; visible enough to
+   close the "I have a press-ready PDF, now what?" gap. */
+.md-print-shops{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-print-shops[hidden]{display:none}
+.md-print-shops-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.md-print-shops-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.md-print-shop{flex:1 1 160px;display:flex;flex-direction:column;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--white);text-decoration:none;color:var(--ink);transition:border-color var(--t-fast),background var(--t-fast)}
+.md-print-shop:hover{border-color:var(--teal);background:var(--cream-2)}
+.md-print-shop:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.md-print-shop-name{font-weight:600;font-size:13.5px;color:var(--ink)}
+.md-print-shop-hint{font-size:11.5px;color:var(--stone);margin-top:2px}
+.md-print-shops-disclosure{margin:0;font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+.md-print-shops-disclosure a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .md-print-checklist summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--ink-soft);list-style:none;padding:6px 0}
 .md-print-checklist summary::-webkit-details-marker{display:none}
 .md-print-checklist summary::before{content:'+ ';color:var(--ink-soft)}
@@ -429,13 +541,126 @@ header.nav{min-height:64px}
 /* Preview — HTML/CSS rendering. The PDF renderer (Wave A3) will
    read the same theme tokens; the HTML preview is the canonical
    on-screen representation. The PDF aims to match this 1:1. */
-.md-preview-wrap{margin:28px 0 0}
+.md-preview-wrap{margin:28px 0 0;transition:transform .25s ease, opacity .25s ease}
+
+/* ----------------------------------------------------------------
+   Wave studio-quality (T3.1) — two-column shell.
+
+   Desktop ≥ 1280px: pull the preview out of document flow into a
+   fixed right-edge sidecar so it stays visible while the operator
+   scrolls the editor. The container body grows to make room.
+
+   Mobile < 1280px: keep document order so screen readers walk
+   editor → preview sensibly. Add a floating "Show preview" pill
+   that promotes the preview to a bottom-sheet modal on demand.
+
+   The sticky-on-scroll pattern Linear / Notion / Figma all use,
+   ported to vanilla CSS without changing the markup. */
+@media (min-width: 1280px) {
+  body.md-tool-menu-design { padding-right: 0; }
+  .md-tool-menu-design main#main > section.block > .container {
+    max-width: 1240px;
+    padding-right: 420px;
+    position: relative;
+  }
+  .md-tool-menu-design .md-preview-wrap {
+    position: fixed;
+    top: 92px;
+    right: max(16px, calc((100vw - 1240px) / 2 + 16px));
+    width: 380px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    margin: 0;
+    z-index: 40;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.10);
+    padding: 14px;
+  }
+  .md-tool-menu-design .md-preview-frame { padding: 8px 6px; background: transparent; border: 0 }
+  .md-tool-menu-design .md-preview-paper { max-width: 340px; box-shadow: 0 2px 10px rgba(0,0,0,.08) }
+  .md-show-preview-pill { display: none !important; }
+}
+.md-show-preview-pill {
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  border: 0;
+  background: var(--teal);
+  color: var(--cream);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.md-show-preview-pill:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+@media (max-width: 1279.98px) {
+  .md-show-preview-pill { display: inline-flex; }
+}
+.md-preview-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(20,20,20,.45);
+  z-index: 99;
+  animation: mdBackdropFadeIn .2s ease;
+}
+@keyframes mdBackdropFadeIn { from { opacity: 0 } to { opacity: 1 } }
+@media (max-width: 1279.98px) {
+  body.md-show-preview .md-preview-backdrop { display: block; }
+  body.md-show-preview .md-preview-wrap {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    margin: 0;
+    z-index: 100;
+    background: var(--white);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    box-shadow: 0 -8px 32px rgba(0,0,0,.20);
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 14px 14px calc(20px + env(safe-area-inset-bottom));
+    animation: mdBottomSheetIn .22s ease;
+  }
+  body.md-show-preview .md-preview-wrap::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    margin: 4px auto 12px;
+  }
+}
+@keyframes mdBottomSheetIn { from { transform: translateY(100%) } to { transform: translateY(0) } }
+@media (prefers-reduced-motion: reduce) {
+  .md-preview-wrap, .md-preview-backdrop { animation: none !important; transition: none !important; }
+}
 .md-preview-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
 .md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 /* W24-2 — frame is now the multi-page host; document scroll
    handles tall menus instead of nested overflow. */
 .md-preview-frame{position:relative;padding:18px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+/* Wave studio-quality (perf/UX) — busy state during slow exports
+   (PDF generation can take 4-6s on a 53-dish tabloid). The frame
+   gets a soft animated outline so operators see visual confirmation
+   that work is happening even when the button label change is far
+   from where they're looking. */
+.md-preview-frame.md-preview-busy{outline:2px solid color-mix(in srgb,var(--teal) 60%,transparent);outline-offset:4px;animation:md-preview-busy-pulse 1.4s ease-in-out infinite}
+.md-preview-frame.md-preview-busy::after{content:'';position:absolute;inset:18px 12px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--teal) 18%,transparent),transparent);background-size:30% 100%;background-position:-30% 0;background-repeat:no-repeat;animation:md-preview-busy-shimmer 1.6s linear infinite;pointer-events:none;border-radius:8px}
+@keyframes md-preview-busy-pulse{0%,100%{outline-offset:4px;outline-color:color-mix(in srgb,var(--teal) 35%,transparent)}50%{outline-offset:6px;outline-color:color-mix(in srgb,var(--teal) 75%,transparent)}}
+@keyframes md-preview-busy-shimmer{from{background-position:-30% 0}to{background-position:130% 0}}
+@media (prefers-reduced-motion: reduce){
+  .md-preview-frame.md-preview-busy{animation:none}
+  .md-preview-frame.md-preview-busy::after{animation:none;background:color-mix(in srgb,var(--teal) 8%,transparent)}
+}
 /* W24-2 — preview paper now respects the operator's paper choice
    via aspect-ratio + padding-percent driven by JS. Default to
    Letter portrait when no paper is selected. */
@@ -464,6 +689,129 @@ header.nav{min-height:64px}
 .md-preview-paper[data-flow="panel"]{display:grid;grid-template-columns:repeat(var(--panels,3),1fr);padding:0}
 .md-preview-paper[data-flow="panel"] > .md-pp-panel{padding:6%;border-right:1px dashed color-mix(in srgb,var(--ink) 30%,transparent);position:relative;overflow:hidden;font-size:0.8em}
 .md-preview-paper[data-flow="panel"] > .md-pp-panel:last-child{border-right:0}
+/* Wave studio-quality (C1 partial) — Round-shape preview (beer-mat).
+   Operator sees the actual die-cut shape on the live preview. The
+   PDF stays as a square for the print shop's die-cutter; we just
+   render a guide-circle so the operator places content inside the
+   safe zone. */
+.md-preview-paper[data-shape="round"]{border-radius:50%;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 25%,transparent),0 1px 2px rgba(0,0,0,0.08)}
+
+/* ============ TOOL-SCOPED DISPLAY FONTS ============
+   Site-wide CSS only loads Fraunces + Inter. These six theme display
+   families (Cormorant, Cormorant SC, Playfair, Quattrocento, Noto
+   Serif, Bebas Neue, Alfa Slab) ship FROM HERE so they don't bloat
+   the homepage. font-display:swap; the metric-matched fallback in
+   each theme's displayFamily stack (Georgia / Arial) holds the line
+   until the woff2 arrives. unicode-range matches what
+   google-webfonts-helper generated against (Latin + extended-A).
+   Each font is loaded only when a theme that names it is active —
+   the Theme picker is a small surface so all eight families fit in
+   one CSS round-trip; total weight is ~70 KB compressed.
+
+   These pair 1:1 with the TTFs that scripts/build-pdf-fonts.mjs
+   converts; menu-render-pdf.js's loadBrandFonts() pulls those for
+   the print PDF so the on-screen preview and the printed deliverable
+   stay in the same typeface family. */
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;font-display:swap;src:url('/assets/fonts/cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-italic.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-600.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Cormorant SC';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/cormorant-sc-v19-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/playfair-display-v40-latin/playfair-display-v40-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:400;font-display:swap;src:url('/assets/fonts/playfair-display-v40-latin/playfair-display-v40-latin-italic.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/playfair-display-v40-latin/playfair-display-v40-latin-700.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Quattrocento';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/quattrocento-v24-latin/quattrocento-v24-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Quattrocento';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/quattrocento-v24-latin/quattrocento-v24-latin-700.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Noto Serif';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/noto-serif-v33-latin/noto-serif-v33-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Noto Serif';font-style:italic;font-weight:400;font-display:swap;src:url('/assets/fonts/noto-serif-v33-latin/noto-serif-v33-latin-italic.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/bebas-neue-v16-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Alfa Slab One';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/alfa-slab-one-v21-latin-regular.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+/* ----------------------------------------------------------------
+   Wave studio-quality (T6) — paper-stock aware preview overlay.
+
+   Each paper format declares a stock (data/papers.js). Until now
+   that field drove nothing visible. Now the preview surfaces a
+   stock-specific overlay so operators see the difference between
+   24lb-text (everyday office paper), 80lb-cover (postcard-weight),
+   100lb-cover (premium uncoated, table-tents and table-cards),
+   120lb-coaster (rigid pulp board, beer-mats), 70lb-uncoated
+   (recycled-feel placemats), rigid-board (foam-core posters),
+   screen-rgb (digital displays).
+
+   Each overlay is implemented via CSS pseudo-elements + radial /
+   repeating gradients keyed to the data-stock attribute. The
+   underlying --paper color is preserved; we ADD a thin overlay
+   so contrast doesn't suffer. Subtle by design — operators
+   should feel the stock, not be distracted by it. */
+
+.md-preview-paper[data-stock]{position:relative;overflow:hidden}
+.md-preview-paper[data-stock]::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;mix-blend-mode:multiply;opacity:.55;
+}
+
+/* 24lb-text & 32lb-text — everyday office cream, very light grain */
+.md-preview-paper[data-stock="24lb-text"]::after,
+.md-preview-paper[data-stock="32lb-text"]::after{
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,250,235,.25), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(255,250,235,.15), transparent 60%);
+}
+
+/* 80lb-cover — postcard / brochure weight: subtle warm paper hue +
+   very faint stipple (looks like fine cover stock under print light) */
+.md-preview-paper[data-stock="80lb-cover"]::after{
+  background:
+    repeating-radial-gradient(circle at 20% 30%, rgba(160,140,110,.04) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 50% 50%, rgba(200,180,150,.10), transparent 70%);
+}
+
+/* 100lb-cover — premium uncoated. Stronger creamy warm tint +
+   fiber-suggestive radial glow.  */
+.md-preview-paper[data-stock="100lb-cover"]::after{
+  background:
+    repeating-radial-gradient(circle at 30% 70%, rgba(140,115,80,.05) 0 1px, transparent 1px 5px),
+    repeating-radial-gradient(circle at 70% 30%, rgba(140,115,80,.04) 0 1px, transparent 1px 6px),
+    radial-gradient(ellipse at 50% 40%, rgba(210,185,150,.16), transparent 75%);
+  opacity:.65;
+}
+
+/* 120lb-coaster — pulp board. Beige tint + visible fiber pattern */
+.md-preview-paper[data-stock="120lb-coaster"]::after{
+  background:
+    repeating-linear-gradient(38deg, rgba(170,140,100,.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-22deg, rgba(170,140,100,.04) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at center, rgba(190,160,120,.20), transparent 80%);
+  opacity:.75;
+}
+
+/* 70lb-uncoated — recycled placemat. Warmer + visible fiber */
+.md-preview-paper[data-stock="70lb-uncoated"]::after{
+  background:
+    repeating-linear-gradient(45deg, rgba(150,125,90,.06) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 50%, rgba(180,150,110,.12), transparent 70%);
+  opacity:.7;
+}
+
+/* rigid-board — A1/A2 menu board. Smooth, slightly cooler */
+.md-preview-paper[data-stock="rigid-board"]::after{
+  background: radial-gradient(ellipse at center, rgba(220,225,230,.10), transparent 75%);
+  opacity:.5;
+}
+
+/* screen-rgb — digital display. Cooler tint, slight backlit glow */
+.md-preview-paper[data-stock="screen-rgb"]::after{
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(180,210,255,.12), transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(180,210,255,.08), transparent 60%);
+  mix-blend-mode:screen;
+  opacity:.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No animation involved, but if a future iteration adds one,
+     the reduced-motion query is a single source of truth. */
+}
 .md-pp-panel-role{position:absolute;top:6px;left:8px;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55;pointer-events:none}
 @media(max-width:640px){
   .md-preview-paper[data-flow="panel"]{grid-template-columns:1fr;aspect-ratio:auto}
@@ -535,14 +883,19 @@ header.nav{min-height:64px}
 .md-preview-paper.md-shrink-2{font-size:92%}
 .md-preview-paper.md-shrink-2 .md-pp-row{padding:7px 0}
 .md-preview-paper.md-shrink-2 h2.md-pp-section{margin:24px 0 10px}
+/* Wave studio-quality (Pull-It-Back, Wave 4) — readability floors.
+   Clamp the description font-size so cafe-counter (descPt 9) at
+   shrink-4 (0.74em) doesn't fall to 6.66pt. max(8.5pt, NN%) lets
+   themes with descPt 11+ continue to scale relatively while themes
+   with smaller descPts hit the absolute 8.5pt floor. */
 .md-preview-paper.md-shrink-3{font-size:88%}
 .md-preview-paper.md-shrink-3 .md-pp-row{padding:6px 0}
 .md-preview-paper.md-shrink-3 h2.md-pp-section{margin:20px 0 8px}
-.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:0.78em}
+.md-preview-paper.md-shrink-3 .md-pp-desc{font-size:max(8.5pt,0.82em)}
 .md-preview-paper.md-shrink-4{font-size:84%}
 .md-preview-paper.md-shrink-4 .md-pp-row{padding:5px 0}
 .md-preview-paper.md-shrink-4 h2.md-pp-section{margin:16px 0 6px}
-.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:0.74em}
+.md-preview-paper.md-shrink-4 .md-pp-desc{font-size:max(8.5pt,0.78em)}
 
 /* Wave studio-quality — 2-column auto-promotion. When the cascade
    decides a 1-column theme would benefit from 2-column flow to fit
@@ -649,9 +1002,33 @@ header.nav{min-height:64px}
 /* Dish row — generous baseline padding (10px) so dishes have room
    to breathe; description hangs below the name without crowding. */
 .md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:10px 0;break-inside:avoid;position:relative}
-.md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
-.md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
-.md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+.md-preview-paper .md-pp-name{font-weight:500;color:var(--ink);font-feature-settings:"kern" 1,"liga" 1,"calt" 1}
+.md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1,"frac" 1}
+/* Wave studio-quality (T5.2) — typesetting craft on dish descriptions.
+   - hyphens: auto       — soft-break long words (e.g. caponata-rigatoni)
+                           via the browser's hyphenation engine instead
+                           of leaving an awful right-rag gap
+   - hanging-punctuation — quote marks + opening parens hang outside
+                           the column edge for cleaner optical alignment
+                           (Safari + Firefox; Chromium ignores)
+   - text-wrap: pretty   — Chrome 117+/Safari 17+: optimizes orphans
+                           and last-line balance; older browsers ignore
+   - font-feature-settings — kerning + ligatures + contextual alts on,
+                             default off in many user-agent stylesheets
+   - text-rendering: optimizeLegibility — pulls in opsz axis on
+                                          variable fonts that have it */
+.md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4;hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto;text-wrap:pretty;hanging-punctuation:first last;font-feature-settings:"kern" 1,"liga" 1,"clig" 1,"calt" 1,"onum" 1;text-rendering:optimizeLegibility}
+.md-preview-paper{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+/* Tracking by point size — match high-end print typography practice.
+   Smaller body sizes need slightly more letter-spacing to stay open;
+   large display sizes need slightly tighter spacing to feel set. The
+   md-shrink classes override below for tight cascades. */
+.md-preview-paper{letter-spacing:0.005em}
+.md-preview-paper.md-shrink-1{letter-spacing:0.008em}
+.md-preview-paper.md-shrink-2{letter-spacing:0.012em}
+.md-preview-paper.md-shrink-3{letter-spacing:0.014em}
+.md-preview-paper.md-shrink-4{letter-spacing:0.016em}
+.md-preview-paper h2.md-pp-section{letter-spacing:.04em}  /* unchanged display tracking */
 /* W12-2 — pairing italic line in accent color, modifier muted, half-price inline tag */
 .md-preview-paper .md-pp-pairing{grid-column:1/-1;color:var(--accent);font-size:0.78em;font-style:italic;margin-top:2px;line-height:1.45}
 .md-preview-paper .md-pp-pairing::before{content:'\2737  ';opacity:.7}
@@ -702,6 +1079,16 @@ header.nav{min-height:64px}
 .md-preview-paper[data-section-case="uppercase"] h2.md-pp-section{text-transform:uppercase;letter-spacing:.18em}
 .md-preview-paper[data-section-case="small-caps"] h2.md-pp-section{font-variant:small-caps;letter-spacing:.06em}
 .md-preview-paper[data-section-case="capitalize"] h2.md-pp-section{text-transform:none}
+.md-preview-paper[data-section-case="normal"] h2.md-pp-section{text-transform:none;font-variant:normal;letter-spacing:normal}
+/* Wave studio-quality (B12) — Theme Tuner divider overrides applied
+   to the live preview. The PDF renderer reads the theme.dividerStyle
+   token directly and is already wired. These rules give parity in
+   the live preview when the operator toggles the divider knob. */
+.md-preview-paper[data-divider="rule-thin"] h2.md-pp-section{border-bottom:0.5pt solid var(--ink);padding-bottom:6px}
+.md-preview-paper[data-divider="double-rule"] h2.md-pp-section{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;background:transparent}
+.md-preview-paper[data-divider="whitespace"] h2.md-pp-section{border:0;padding-bottom:0;margin-top:24px;margin-bottom:14px}
+/* Wave studio-quality (B12) — Letter-spacing knob. */
+.md-preview-paper[data-letter-spacing="wide"]{letter-spacing:0.04em}
 /* Logo placement variants. */
 .md-pp-logo{display:block;margin:0 auto 18px;max-height:80px;max-width:240px}
 .md-preview-paper[data-logo-slot="header-left"] .md-pp-logo{margin-left:0}
@@ -761,7 +1148,53 @@ header.nav{min-height:64px}
 .md-download-msg{font-size:12.5px;color:var(--ink-soft);margin:0;flex-basis:100%}
 .md-download-msg.error{color:var(--rust)}
 .md-download-msg.success{color:var(--status-good)}
+
+/* Wave studio-quality (A9) — More-formats disclosure. The export row
+   used to carry 9 buttons at equal weight; operators got overwhelmed.
+   Now primary + secondary stay visible, the rest live behind a
+   <details> with operator-tone hints. */
+.md-more-formats{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.md-more-formats-summary{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);list-style:none;border-radius:6px}
+.md-more-formats-summary::-webkit-details-marker{display:none}
+.md-more-formats-summary svg{transition:transform var(--t-fast)}
+.md-more-formats[open] .md-more-formats-summary svg{transform:rotate(180deg)}
+.md-more-formats-summary:hover{color:var(--teal);background:var(--cream-2)}
+.md-more-formats-hint{color:var(--stone);font-weight:400;font-size:12px}
+.md-more-formats-body{margin-top:14px;display:flex;flex-direction:column;gap:18px}
+.md-format-group-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.md-format-row{display:flex;align-items:flex-start;gap:14px;padding:8px 0;border-top:1px solid var(--line);flex-direction:column}
+.md-format-row:first-of-type{border-top:0}
+.md-format-btn{flex:0 0 auto;width:100%;justify-content:center}
+.md-format-hint{flex:1;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+/* Wave studio-quality (C1 partial) — Social PNG button group. Four
+   compact buttons stay grouped at any width so operators see them
+   as a cluster ("pick your platform") instead of a wall. */
+.md-format-btn-group{display:flex;flex-wrap:wrap;gap:6px;flex:0 0 auto}
+.md-format-btn-sm{padding:8px 12px;font-size:12.5px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:inherit;font-weight:600;line-height:1}
+.md-format-btn-sm:hover{background:var(--ink);color:var(--cream)}
+.md-format-btn-sm:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media(max-width:540px){
+  .md-format-btn-group{flex-direction:column;width:100%}
+  .md-format-btn-sm{justify-content:center}
+}
+@media(min-width:641px){
+  .md-format-row{flex-direction:row}
+  .md-format-btn{width:auto;min-width:240px;justify-content:flex-start}
+  .md-format-hint{align-self:center}
+}
+@media(max-width:640px){
+  .md-more-formats-hint{display:none}
+}
 /* Inline "Need help describing?" link under empty description fields. */
+/* Wave studio-quality (C2) — Plain-language sibling description. */
+.md-desc-plain{margin-top:6px}
+.md-desc-plain-trigger{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink-soft);list-style:none;padding:3px 8px;border:1px dashed var(--line-dark);border-radius:999px;line-height:1.3}
+.md-desc-plain-trigger::-webkit-details-marker{display:none}
+.md-desc-plain-trigger:hover{color:var(--teal);border-color:var(--teal)}
+.md-desc-plain[open] .md-desc-plain-trigger{color:var(--teal);border-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,transparent)}
+.md-desc-plain-on{color:var(--status-good,#1F6B3A);font-weight:700}
+.md-input-desc-plain{margin-top:6px;width:100%;font-size:13px;line-height:1.5;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-family:inherit;color:var(--ink);background:var(--cream-2);resize:vertical}
+.md-input-desc-plain:focus{border-color:var(--teal);outline:0}
 .md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
 .md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
 @media(max-width:640px){.md-help-desc{display:block;text-align:center}}
@@ -1011,8 +1444,10 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"WebApplication","@id":"https://muntin.digital/tools/menu-design/#tool","name":"Menu Design Suite","description":"Auto-layout printable menus for independent restaurants from a typed dish list, four typeset themes, the operator's logo, and four paper sizes. Mechanical layout only — no AI rewriting.","url":"https://muntin.digital/tools/menu-design/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
-{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Menu Design Suite","item":"https://muntin.digital/tools/menu-design/"}]}
+{"@type":"WebApplication","@id":"https://muntin.digital/tools/menu-design/#tool","name":"Menu Design Suite","description":"Auto-layout printable restaurant menus from a typed or pasted dish list. 37 typeset themes, 22 paper sizes, 17 allergen codes across 5 regional regimes (US/EU/UK/CA/AU), bilingual EN+ES, accessible PDF metadata, offline PWA. Free, no signup, runs entirely in your browser.","url":"https://muntin.digital/tools/menu-design/","applicationCategory":"BusinessApplication","applicationSubCategory":"Menu design","operatingSystem":"Web","inLanguage":["en","es"],"isAccessibleForFree":true,"featureList":["37 curated themes","22 paper sizes","17 allergens × 5 regulatory regimes","Bilingual EN/ES","Accessible PDF metadata (Lang + Title + XMP)","Schema.org Menu JSON-LD","Print-vendor PDF (PDF/X-3-flavored, bleed + crop marks)","Large-print + high-contrast variants","Plain text + Markdown + SSML + Braille (BRF)","QR menu HTML","Tablet kiosk HTML","ESC/POS thermal-printer ready","Bilingual ZIP (EN+ES side by side)","Save/Load menu as JSON file","Service worker — offline after first visit","Installable PWA"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://muntin.digital/tools/"},{"@type":"ListItem","position":3,"name":"Menu Design Suite","item":"https://muntin.digital/tools/menu-design/"}]},
+{"@type":"HowTo","name":"How to make a printable restaurant menu in 4 steps","description":"Build a print-ready PDF menu from a typed or pasted dish list. No design skill required.","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"Web browser"}],"step":[{"@type":"HowToStep","name":"Type or paste your dishes","text":"Paste your existing menu, or type your first dish into the editor. Section headers are detected automatically. Allergens, prices, and descriptions go into their own columns.","url":"https://muntin.digital/tools/menu-design/#mdGrid"},{"@type":"HowToStep","name":"Pick a theme","text":"Choose from 37 curated themes — Trattoria, Modern Minimal, Brasserie, Steakhouse, Izakaya Lantern, Modern Indian, Korean BBQ Counter, Levantine Mezze, Peruvian Coastal, Persian Saffron, Filipino Feast, Deli Counter, Cheese + Butcher, Chef's Counter, Room Service, Bagel Grid, and more. Each is constrained so the result can't look amateur.","url":"https://muntin.digital/tools/menu-design/#mdThemes"},{"@type":"HowToStep","name":"Pick a paper size","text":"22 paper sizes including Letter, A4, Tabloid, half-page, postcard, bi-fold, tri-fold, table tent, placemat, wine list, A2 board, A1 board, digital screen, and custom dimensions. Two-column auto-promotion when the dish count needs it.","url":"https://muntin.digital/tools/menu-design/#mdPaperRow"},{"@type":"HowToStep","name":"Download the PDF","text":"Click Download PDF. Your menu generates in your browser; nothing uploads. The deliverable carries accessibility metadata (Lang, Title, XMP) so screen readers announce it correctly. Print-vendor mode adds bleed, crop marks, and PDF/X-3 metadata for your local print shop.","url":"https://muntin.digital/tools/menu-design/#mdDownload"}]},
+{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this really free? What's the catch?","acceptedAnswer":{"@type":"Answer","text":"It's genuinely free, with no signup, no email gate, no watermark, no usage cap. The catch is that we don't take your data — the entire tool runs in your browser. The only paid services are optional menu polish ($249) and full menu drop-in ($1,500), and they have a waitlist."}},{"@type":"Question","name":"Does my menu data leave my computer?","acceptedAnswer":{"@type":"Answer","text":"No. Open DevTools → Network. Type a dish, paste a menu, change theme, export PDF. The Network tab stays empty (after the page itself loads). Everything happens in the browser. Your menu is saved as a draft in your browser's localStorage; you can also save it as a JSON file to your downloads."}},{"@type":"Question","name":"Why doesn't this support 3-page menus?","acceptedAnswer":{"@type":"Answer","text":"Real restaurant menus are 1 page or 2 pages (front + back). Three-page menus aren't a thing — they confuse diners and add print cost. The auto-fit cascade tries native sizing first, then four shrink levels, then 2-column promotion. If your content still won't fit, the tool surfaces clear advice (trim N dishes, enable front+back, pick a larger paper)."}},{"@type":"Question","name":"What's the allergen labeling regime selector for?","acceptedAnswer":{"@type":"Answer","text":"Allergen rules vary by region. US-FDA-9 is the default (Big 9 allergens including sesame). EU-FIC-14 adds mustard, celery, lupin, molluscs, sulphites. UK-PPDS adds Natasha's Law contains/may-contain distinction. Canada and Australia/New Zealand have their own rules. The selector swaps the default disclaimer text and the allergen catalog so the printed PDF matches your regulatory regime."}},{"@type":"Question","name":"Will the PDF work for my print shop?","acceptedAnswer":{"@type":"Answer","text":"Yes. Toggle 'Print-vendor mode' before exporting and the PDF carries 0.125\" bleed, crop marks at every corner, sRGB OutputIntent, TrimBox and BleedBox per the PDF/X-3 spec, and PDF metadata (Title, Subject, Creator). Your local print shop accepts this directly. We also bundle a plain-English mailto template you can fire at your printer with the file attached."}},{"@type":"Question","name":"Can I export a QR menu for my website?","acceptedAnswer":{"@type":"Answer","text":"Yes. Click 'Export QR menu' and provide the URL where you'll host menu.html. The tool returns a zip with a self-contained styled HTML page (with Schema.org Menu JSON-LD for Google rich results), a PNG of the QR code, and instructions. Drop the HTML on your Wix / Squarespace / WordPress / S3 / GitHub Pages — the QR points to it, customers scan, the page loads instantly."}},{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. After your first visit the service worker caches the entire tool. You can install it as a phone or desktop app from the browser's Add to Home Screen affordance. Editor, preview, and export all work without internet. The lazy-loaded PDF library caches on first export and is then offline-capable too."}},{"@type":"Question","name":"How is this different from Canva?","acceptedAnswer":{"@type":"Answer","text":"Canva ships generic templates that don't understand restaurants — they assume 12 dishes, no allergen regulations, no auto-fit. We're built for restaurants specifically: every constraint, every word. accessible PDF metadata (Lang, Title, XMP), Schema.org Menu JSON-LD, ESC/POS thermal-printer output, regional allergen regimes, bilingual EN+ES, fully offline. Canva structurally cannot match this because their bytes need to land on their servers."}},{"@type":"Question","name":"What if I want my menu professionally polished?","acceptedAnswer":{"@type":"Answer","text":"We offer two paid services. Menu Polish ($249, 3-business-day turnaround, one revision) takes your exported brief and returns a press-ready PDF + InDesign source. Menu Drop-In ($1,500) is a full bespoke menu design from scratch with operator interview. Both are run by a single designer with 14 years on restaurant floors, capacity-capped to 6 polishes and 1 drop-in per week."}},{"@type":"Question","name":"Do you support languages other than English and Spanish?","acceptedAnswer":{"@type":"Answer","text":"EN and ES are first-class today (full UI, locale-aware allergen disclaimers, locale-aware currency formatting). FR, PT-BR, VI, AM, ZH, KO, JA, AR, HE are on the roadmap with locale-deep typography (CJK font subsetting, RTL HTML mirror). Dish content itself can be typed in any language the operator types in."}}]}
 ]}
 </script>
 </head>
@@ -1027,10 +1462,20 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
      editor announcements (dish add/remove, undo/redo, draft saved,
      theme change). Routed through MD_DOM.announce(). -->
 <div id="mdSrAnnounce" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -1066,19 +1511,19 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/tools/menu-design/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1095,7 +1540,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -1114,7 +1559,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/tools/menu-design/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -1180,7 +1625,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <p class="md-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Free tool · Menu layout for any dish count</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">A menu, laid out for the dishes <span class="serif-italic" style="color:var(--teal);">you actually have</span>.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-03">May 3, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-04">May 4, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -1197,6 +1642,26 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
          is empty AND no draft exists. Six large tiles; one tap
          picks a fitting theme + suggests a starter template.
          Replaces the older ghost-rows + overlay pattern. -->
+    <!-- Wave A8 — paste-or-type onboarding. Replaces the cuisine
+         quiz as the primary cold-start. Operators paste an existing
+         menu (CSV / TSV / pasted text from another tool) and we
+         parse it via the existing parsePaste() machinery, dropping
+         them into a populated grid in < 30 s. The quiz is reachable
+         as a P2 fallback ("Browse by cuisine") for operators who
+         don't have a menu to paste yet. -->
+    <aside class="md-onboard" id="mdOnboard" hidden role="region" aria-labelledby="mdOnboardTitle">
+      <div class="md-onboard-inner">
+        <h2 class="md-onboard-title" id="mdOnboardTitle">Paste your menu, or type your first dish.</h2>
+        <p class="md-onboard-sub">CSV, TSV, or just pasted text — we'll detect sections and dish rows. Or type one dish below and we'll seed the rest.</p>
+        <textarea class="md-onboard-area" id="mdOnboardArea" spellcheck="false" autocomplete="off" rows="6"
+                  placeholder="## Starters&#10;Caesar Salad,$14,Crisp little gems with our buttermilk dressing&#10;House Bread,$6&#10;## Mains&#10;Roast Chicken,$28,Half a Path Valley chicken with pan jus"></textarea>
+        <div class="md-onboard-actions">
+          <button type="button" class="md-onboard-go" id="mdOnboardGo">Use this menu</button>
+          <button type="button" class="md-onboard-quiz" id="mdOnboardQuiz">Don't have a menu? Browse by cuisine →</button>
+        </div>
+      </div>
+    </aside>
+
     <aside class="md-quiz" id="mdQuiz" hidden role="region" aria-labelledby="mdQuizTitle">
       <div class="md-quiz-inner">
         <h2 class="md-quiz-title" id="mdQuizTitle">What kind of restaurant is this?</h2>
@@ -1451,6 +1916,22 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <span class="md-customize-badge" id="mdCustomizeBadge" hidden></span>
         </summary>
         <div class="md-customize-body">
+          <!-- Wave studio-quality (C14) — Theme story / review-board
+               surface. Updates with the active theme; reveals the
+               named curator + cuisine traditions inspiredBy + dateAdded
+               + the curator's note. Defensible vs Canva, who don't
+               name a human reviewer or a real-world inspiration. -->
+          <details class="md-theme-story" id="mdThemeStory">
+            <summary class="md-theme-story-summary">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <span>Theme story &mdash; <span id="mdThemeStoryName">—</span></span>
+            </summary>
+            <div class="md-theme-story-body" id="mdThemeStoryBody">
+              <p class="md-theme-story-meta" id="mdThemeStoryMeta"></p>
+              <p class="md-theme-story-text" id="mdThemeStoryText"></p>
+              <p class="md-theme-story-link"><a href="/library/menu-design-themes/" rel="noopener">See all 37 theme stories →</a></p>
+            </div>
+          </details>
           <div class="md-customize-grid">
             <label class="md-customize-field">
               <span>Accent</span>
@@ -1465,6 +1946,42 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               <input type="color" id="mdCustomInk" value="#14161A" />
             </label>
           </div>
+          <!-- Wave studio-quality (B12) — Theme Tuner. Three closed-
+               enum knobs that let operators tune typography within
+               the taste-floor lints. Each picker writes to customize
+               state; "Theme default" leaves it at the theme's value. -->
+          <div class="md-customize-grid md-customize-tuner">
+            <label class="md-customize-field">
+              <span>Letter spacing</span>
+              <select id="mdCustomLetterSpacing">
+                <option value="">Theme default</option>
+                <option value="normal">Normal</option>
+                <option value="wide">Wide (+0.04em)</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Section headers</span>
+              <select id="mdCustomSectionCase">
+                <option value="">Theme default</option>
+                <option value="normal">As typed</option>
+                <option value="uppercase">UPPERCASE</option>
+                <option value="small-caps">Small caps</option>
+                <option value="capitalize">Capitalized</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Divider style</span>
+              <select id="mdCustomDividerStyle">
+                <option value="">Theme default</option>
+                <option value="rule-thin">Thin rule</option>
+                <option value="hand-rule">Hand-drawn</option>
+                <option value="double-rule">Double rule</option>
+                <option value="box">Boxed</option>
+                <option value="ornament">Ornament</option>
+                <option value="whitespace">Whitespace only</option>
+              </select>
+            </label>
+          </div>
           <div class="md-customize-toggles">
             <label class="md-customize-toggle">
               <input type="checkbox" id="mdPaperTexture" />
@@ -1472,6 +1989,12 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             </label>
             <button type="button" id="mdCustomizeReset" class="md-customize-reset">Reset to theme default</button>
           </div>
+          <!-- Wave studio-quality — Live taste-floor lint feedback.
+               When the operator's color picks drop below the readability
+               floor (paper↔ink < 7:1, paper↔accent < 3:1, etc.) we
+               surface a friendly chip with the rule + suggested fix.
+               Educational, not blocking — operator can ship anyway. -->
+          <div class="md-customize-lint" id="mdCustomizeLint" role="status" aria-live="polite" hidden></div>
           <!-- W15 — modifier dropdowns: seasonal palette, daypart,
                occasion event. Sparse overrides on top of the active
                theme's tokens; each dropdown defaults to "None" -->
@@ -1598,6 +2121,33 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         <summary>Press-readiness checklist</summary>
         <ul id="mdPrintChecklistItems"></ul>
       </details>
+      <!-- Wave studio-quality (B15) — Print-shop deeplinks. Visible
+           only when print-vendor mode is on, since these are press-
+           ready partners. Operators get a one-click route to upload
+           their PDF; we earn a small affiliate fee per conversion.
+           Disclosure is inline and on /never/. No file upload — the
+           deeplink only carries operator intent. -->
+      <div class="md-print-shops" id="mdPrintShops" hidden>
+        <p class="md-print-shops-label">Print this with a vetted shop:</p>
+        <div class="md-print-shops-row">
+          <a href="https://www.moo.com/us/products/menus" target="_blank" rel="nofollow noopener sponsored" class="md-print-shop" data-vendor="moo">
+            <span class="md-print-shop-name">MOO</span>
+            <span class="md-print-shop-hint">Premium stocks, slow turnaround</span>
+          </a>
+          <a href="https://www.gotprint.com/g/menus.do" target="_blank" rel="nofollow noopener sponsored" class="md-print-shop" data-vendor="gotprint">
+            <span class="md-print-shop-name">GotPrint</span>
+            <span class="md-print-shop-hint">Fast, decent quality, lowest cost</span>
+          </a>
+          <a href="https://www.vistaprint.com/marketing-materials/menus" target="_blank" rel="nofollow noopener sponsored" class="md-print-shop" data-vendor="vistaprint">
+            <span class="md-print-shop-name">Vistaprint</span>
+            <span class="md-print-shop-hint">Range of paper, fast shipping</span>
+          </a>
+        </div>
+        <p class="md-print-shops-disclosure">
+          We earn a small fee if you print through these links — only the deeplink carries your intent (paper size, etc.); the file never uploads.
+          <a href="/never/#affiliate-disclosure">Read our affiliate stance →</a>
+        </p>
+      </div>
     </div>
 
     <!-- Live preview — same theme tokens the PDF renderer (Wave A3) will read. -->
@@ -1621,7 +2171,12 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
          Advisory only — never blocks export. -->
     <div class="md-preflight" id="mdPreflight" role="status" aria-live="polite" hidden></div>
 
-    <!-- Download — the deliverable. PDF lands in the operator's Downloads. -->
+    <!-- Download — the deliverable. PDF lands in the operator's Downloads.
+         Wave studio-quality (A9) — restructured. The previous row presented
+         9 buttons at equal weight; operators got overwhelmed. Now: Download
+         PDF as the only primary, the menu pack as one secondary, and
+         everything else lives in a "More formats" disclosure with
+         operator-tone hints. -->
     <div class="md-download">
       <p class="md-download-text"><strong>Ready when you are.</strong> Tap Download to save your menu as a PDF. The file is generated in your browser — nothing uploads.</p>
       <div class="md-download-row">
@@ -1631,54 +2186,134 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
         </button>
         <!-- Wave B5 — the handoff packet. One click, all artifacts:
              print PDF + QR-menu HTML + JSON-LD + plain text + Markdown
-             + a plain-English README that walks the print shop, the
-             web dev, and the staff through what to use and how. The
-             missing primitive the UX agent named in Phase 2. -->
-        <button type="button" class="md-download-btn" id="mdExportPack" aria-label="Send a complete pack to my printer, web dev, and staff (one zip)">
+             + a plain-English README. Stays at top because operators
+             often want this as their main deliverable. -->
+        <button type="button" class="md-download-btn md-download-qr" id="mdExportPack" aria-label="Send a complete pack to my printer, web dev, and staff (one zip)">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4M3 7v10l9 4 9-4V7M3 7l9 4 9-4M12 11v10"/></svg>
           Send to printer + web dev
         </button>
-        <!-- Wave studio-quality — Bilingual pack. One click → EN+ES,
-             every artifact, in side-by-side subfolders. Operators with
-             bilingual staff (DMV-area Latino restaurants, hotel F&B)
-             stop running the export twice. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportBilingual" aria-label="Export bilingual pack (English + Spanish)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Bilingual pack (EN + ES)
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportQr" aria-label="Export QR menu (HTML + QR PNG zip)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
-          Export QR menu
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdLargePrint" aria-label="Download large-print accessibility version">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Large-print version
-        </button>
-        <!-- W12-4 — High-contrast variant (yellow-on-black) for low-vision patrons. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdHighContrast" aria-label="Download high-contrast accessibility version">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12c-3 0-5-2-5-5s2-5 5-5z" fill="currentColor"/></svg>
-          High-contrast
-        </button>
-        <!-- W10-2 — accessible / screen-reader-friendly variants. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportText" aria-label="Download plain text + Markdown">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Plain text / Markdown
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportSsml" aria-label="Download SSML for text-to-speech">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-          SSML (audio-ready)
-        </button>
-        <!-- W16 — Braille Ready Format + tablet kiosk HTML. -->
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportBrf" aria-label="Download Braille Ready Format (Grade 1)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
-          Braille (BRF)
-        </button>
-        <button type="button" class="md-download-btn md-download-qr" id="mdExportTablet" aria-label="Download tablet kiosk HTML">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-          Tablet kiosk HTML
-        </button>
       </div>
       <p class="md-download-msg" id="mdDownloadMsg" role="status" aria-live="polite"></p>
+      <!-- Wave studio-quality (A9) — More formats disclosure. Each item
+           carries a one-line operator-tone hint so the operator picks
+           the right artifact for the task without guessing. -->
+      <details class="md-more-formats">
+        <summary class="md-more-formats-summary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          <span>More formats</span>
+          <span class="md-more-formats-hint">(QR menu · large-print · plain text · audio · braille · tablet · bilingual)</span>
+        </summary>
+        <div class="md-more-formats-body">
+          <div class="md-format-group">
+            <p class="md-format-group-label">Web &amp; QR</p>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportBilingual" aria-label="Export bilingual pack (English + Spanish)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Bilingual pack (EN + ES)</span>
+              </button>
+              <span class="md-format-hint">One click, your menu in two languages, side-by-side subfolders. For bilingual staff and bilingual print runs.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportQr" aria-label="Export QR menu (HTML + QR PNG zip)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="16" y="16" width="5" height="5"/></svg>
+                <span>QR menu (HTML + PNG)</span>
+              </button>
+              <span class="md-format-hint">A self-contained styled HTML page + the QR PNG. Drop on your site; the QR points to it. Schema.org Menu JSON-LD baked in.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportTablet" aria-label="Download tablet kiosk HTML">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <span>Tablet kiosk HTML</span>
+              </button>
+              <span class="md-format-hint">Single HTML file sized for an iPad / tablet at the host stand or by-the-door. No internet needed.</span>
+            </div>
+            <!-- Wave studio-quality (C1 partial) — Daily specials. -->
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportSpecials" aria-label="Download today's specials as a 5x7 card">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>Today's specials (5×7 card)</span>
+              </button>
+              <span class="md-format-hint">Print a fresh card nightly without redoing the whole menu. Mark a section "Today's specials" in the editor; this exports just that section to a 5×7 card.</span>
+            </div>
+            <!-- Wave studio-quality (C1 partial) — Social PNG. Four
+                 standard dimensions; each renders the live preview
+                 onto the theme's paper color matte at the target size. -->
+            <div class="md-format-row">
+              <div class="md-format-btn-group" role="group" aria-label="Social PNG formats">
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="instagram-square" aria-label="Export Instagram square (1080×1080) PNG">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+                  <span>IG square</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="instagram-story" aria-label="Export Instagram story 9:16 (1080×1920) PNG">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+                  <span>Story 9:16</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="facebook-cover" aria-label="Export Facebook cover (1640×924) PNG">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+                  <span>FB cover</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="x-header" aria-label="Export X header (1500×500) PNG">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="9" width="20" height="6" rx="1"/></svg>
+                  <span>X header</span>
+                </button>
+              </div>
+              <span class="md-format-hint">PNG export at standard social dimensions, fitted onto the theme's paper color so the menu looks intentional in your feed. Pair with a "tonight's menu →" caption.</span>
+            </div>
+          </div>
+          <div class="md-format-group">
+            <p class="md-format-group-label">Accessibility</p>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdLargePrint" aria-label="Download large-print accessibility version">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Large-print PDF</span>
+              </button>
+              <span class="md-format-hint">For guests with low vision; meets ADA at 18 pt. Same content, larger type, more space.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdHighContrast" aria-label="Download high-contrast accessibility version">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12c-3 0-5-2-5-5s2-5 5-5z" fill="currentColor"/></svg>
+                <span>High-contrast PDF</span>
+              </button>
+              <span class="md-format-hint">Yellow-on-black AAA contrast variant. Useful for low-vision patrons in dim dining rooms.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportText" aria-label="Download plain text + Markdown">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span>Plain text + Markdown</span>
+              </button>
+              <span class="md-format-hint">Screen-reader-friendly text version. Paste into emails, sticky to a kitchen wall, or feed into other tools.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportSsml" aria-label="Download SSML for text-to-speech">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                <span>SSML (audio-ready)</span>
+              </button>
+              <span class="md-format-hint">Pipes into AWS Polly / Google TTS / Azure Speech for an audio menu — pause-marked, pronunciation-hinted.</span>
+            </div>
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportBrf" aria-label="Download Braille Ready Format (Grade 1)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="12" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+                <span>Braille (BRF)</span>
+              </button>
+              <span class="md-format-hint">Grade 1 (uncontracted) Braille Ready Format file. Send to a Braille embosser; meets ADA Title III for accessible menus.</span>
+            </div>
+            <!-- Wave C1 finish — ESC/POS thermal-printer .bin export.
+                 Output is raw bytes the operator pipes to a thermal
+                 receipt printer (Epson TM, Star TSP, etc.) for the
+                 most common operator artifact you can't get out of
+                 Canva: a printed "today's specials" or "delivery
+                 only" receipt at the pickup window, or a stamp on
+                 the bottom of every kitchen slip. -->
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportEscpos" aria-label="Download ESC/POS thermal printer .bin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><polyline points="6 14 18 14 18 22 6 22 6 14"/></svg>
+                <span>Thermal printer (.bin)</span>
+              </button>
+              <span class="md-format-hint">Raw ESC/POS bytes for an 80 mm thermal receipt printer. Pipe the .bin to /dev/usb/lp0 (Linux), or to your POS's "raw print" endpoint. Niche, but a Canva-can't artifact.</span>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
 
     <!-- Wave A4: Last-3-menus history. Slim — theme/paper/count/date only. -->
@@ -1710,6 +2345,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <li><a href="/tools/menu-copy/">Menu Copy Inspector</a></li>
           <li><a href="/tools/menu-engineering/">Menu Engineering Matrix</a></li>
           <li><a href="/tools/menu-converter/">Menu Converter</a></li>
+          <li><a href="/tools/plate-cost/">Plate Cost Calculator</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -1725,6 +2361,9 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <li><a href="/glossary/charm-pricing/">Charm pricing</a></li>
           <li><a href="/glossary/dietary-markers/">Dietary &amp; allergen markers</a></li>
           <li><a href="/glossary/sensory-adjective/">Sensory adjective</a></li>
+          <li><a href="/glossary/menu-copy/">Menu copy</a></li>
+          <li><a href="/glossary/menu-engineering/">Menu engineering</a></li>
+          <li><a href="/glossary/plate-cost/">Plate cost</a></li>
         </ul>
       </div>
       </div>
@@ -1759,6 +2398,36 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <!-- tool-sheet-rail:end -->
 
 </main>
+
+<!-- Wave studio-quality (T3.1) — mobile bottom-sheet preview drawer.
+     Desktop CSS hides the pill (sidecar pattern handles the preview).
+     Mobile: tap pill → preview promotes to bottom sheet with backdrop.
+     Tap backdrop / Escape / drag-handle to dismiss. -->
+<button type="button" class="md-show-preview-pill" id="mdShowPreviewPill" aria-label="Show menu preview" title="Preview">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+</button>
+<div class="md-preview-backdrop" id="mdPreviewBackdrop" aria-hidden="true"></div>
+<script>
+(function () {
+  // Tag the body so the desktop CSS knows to scope its layout
+  // tweaks (we want them to fire only on the menu-design page,
+  // not on tool-knit fragments embedded in sister tools).
+  document.body.classList.add('md-tool-menu-design');
+  var pill = document.getElementById('mdShowPreviewPill');
+  var backdrop = document.getElementById('mdPreviewBackdrop');
+  if (!pill || !backdrop) return;
+  function open() { document.body.classList.add('md-show-preview'); }
+  function close() { document.body.classList.remove('md-show-preview'); }
+  pill.addEventListener('click', function () {
+    if (document.body.classList.contains('md-show-preview')) close();
+    else open();
+  });
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('md-show-preview')) close();
+  });
+})();
+</script>
 
 <!-- W15 — Vibe quiz modal. Four short questions; submits a theme
      recommendation. Replaces the "is your restaurant ___?" abstraction
@@ -1843,11 +2512,17 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/tools/_shared/menu-renderers/jsonld.js?v=20260503-wB6"></script>
 <script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
 <script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
-<!-- Auto-generated bundle of inline SVG thumbnails per theme. Lets the
-     theme picker show real cuisine-specific previews that inherit the
-     page's @font-face fonts. Built by scripts/build-theme-thumbnails.mjs. -->
-<script src="./theme-thumbs.js?v=20260503-wsq"></script>
+<!-- Auto-generated bundle of inline SVG thumbnails per theme.
+     Wave A3 — code-split: theme-thumbs.js (~28 KB gz) used to load
+     synchronously here. It's now lazy-loaded by menu-design.js's
+     paintAllThemeThumbs() via ensureMdThumbs(), keeping ~28 KB off
+     the boot path. Picker thumbnails materialize on first scroll
+     into the picker (IntersectionObserver) or via the boot-time
+     requestIdleCallback preload below. -->
 <script src="./themes.js?v=20260501-w15"></script>
+<!-- Wave studio-quality (C14) — Theme review-board credits. Each
+     theme has a named reviewer + inspiredBy + dateAdded + story. -->
+<script src="./data/theme-credits.js?v=20260503-c14"></script>
 <!-- Wave studio-quality (code-split) — papers catalog ships at boot
      (~3KB) so the editor can render its paper picker without loading
      the heavy PDF renderer. -->

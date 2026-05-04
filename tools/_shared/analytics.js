@@ -65,6 +65,7 @@
       'Audit Dev Brief Emailed',
       'Audit Dev Brief Printed',
       'Audit Dev-Prompt Copy',
+      'Audit Error: Client Timeout',
       'Audit Error: Referrer Blocked',
       'Audit Feedback',
       'Audit PDF Email Failed',
@@ -163,6 +164,8 @@
       'Margin Math PnL Shortcut',
       'Margin Math PriceRaise',
       'Margin Math PrimeCost',
+      'Menu Converter Handoff',
+      'Menu Copy Handoff',
       'Menu Copy Inspector Analysis',
       'Menu Copy Inspector Export',
       'Menu Design BRF Exported',
@@ -171,6 +174,7 @@
       // close the diagnosis gap between Tool Loaded and Outbound CTA
       // (the studio handoff). Bounded prop sets enforced by
       // scripts/check-event-prop-cardinality.mjs.
+      'Menu Design CDN Fallback',
       'Menu Design Custom Logo Added',
       'Menu Design Disclaimer Read',
       'Menu Design Downloaded',
@@ -183,20 +187,26 @@
       'Menu Design Large Print Exported',
       'Menu Design Outbound Drop-In',
       'Menu Design Outbound Polish',
+      'Menu Design Outbound Print Shop',
       'Menu Design Pack Exported',
       'Menu Design PDF Failed',
       'Menu Design PNG Fallback',
       'Menu Design Paste',
       'Menu Design QR Exported',
       'Menu Design Quiz Picked',
+      'Menu Design Save Failed',
       'Menu Design SSML Exported',
+      'Menu Design Social Exported',
+      'Menu Design Specials Exported',
       'Menu Design Tablet Exported',
       'Menu Design Template Loaded',
+      'Menu Design Thermal Exported',
       'Menu Design Text Exported',
       'Menu Design Theme Changed',
       'Menu Design Tool Loaded',
       'Menu Engineering Analysis',
       'Menu Engineering Export',
+      'Menu Engineering Handoff',
       'Menu Engineering Whatif',
       'Open Hours Export',
       'Open Hours Render',
@@ -250,6 +260,9 @@
       // Phase D (Storefront Health) — fired when intent=watch param
       // auto-opens the watch panel on tool arrival.
       'Workbench Watch Open',
+      // B7 (Operator Sheets) — fired when the Workshop's Reopen button
+      // hands the operator off to a sheet with prefilled values.
+      'Workbench Sheet Reopen',
       // Phase C (Storefront Health) — property lifecycle.
       'Property Created',
       'Property Verified',

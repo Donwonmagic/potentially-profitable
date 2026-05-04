@@ -12,7 +12,12 @@
  *
  *   node scripts/check-lazy-images.mjs --check
  *
- * Ships as warning; promote to fail-CI after 30-day soak.
+ * Promote-to-fail history: shipped warn-only with a naive `<img>`
+ * regex that swept up tags inside <script> tags (JS string templates)
+ * and runtime placeholders without src. The current code strips
+ * <script> blocks first and skips placeholder <img> elements (no
+ * src/srcset) since they're set by JS at runtime — lazy/async
+ * doesn't mean anything before there's a src to fetch.
  */
 
 import fs from 'node:fs';
@@ -22,7 +27,12 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 
-const WARN_ONLY = true;
+// Once script-stripping + placeholder-skip eliminated the false-
+// positive noise that had been hiding under warn-only, the check
+// found zero real below-fold <img> elements missing lazy/async
+// across the site, so the gate was no longer protecting us from a
+// fix backlog. Promoted to fail-CI from this PR.
+const WARN_ONLY = false;
 const ABOVE_FOLD_CLASSES = ['hero', 'logo', 'lockup', 'foot-lockup', 'people-hero'];
 const ABOVE_FOLD_FIRST_N = 2;
 
@@ -37,16 +47,26 @@ function* walk(dir) {
   }
 }
 
+function stripScripts(src) {
+  return src.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+}
+
+function isPlaceholder(tag) {
+  const hasRealSrc = /\bsrc\s*=\s*"[^"]+"/i.test(tag) || /\bsrcset\s*=\s*"[^"]+"/i.test(tag);
+  return !hasRealSrc;
+}
+
 const failures = [];
 let scanned = 0, imgs = 0;
 
 for (const file of walk(repoRoot)) {
   scanned++;
-  const src = fs.readFileSync(file, 'utf8');
+  const src = stripScripts(fs.readFileSync(file, 'utf8'));
   const matches = [...src.matchAll(/<img\b[^>]*>/gi)];
   for (let i = 0; i < matches.length; i++) {
-    imgs++;
     const tag = matches[i][0];
+    if (isPlaceholder(tag)) continue;
+    imgs++;
     const isAboveFold = i < ABOVE_FOLD_FIRST_N
       || ABOVE_FOLD_CLASSES.some((c) => tag.includes(c));
     if (isAboveFold) continue;

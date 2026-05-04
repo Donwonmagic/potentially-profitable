@@ -478,7 +478,7 @@ function pageHead(locale, { title, description, canonical, ogImage, jsonLd }) {
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
 ${jsonLd ? `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>` : ''}
 </head>`;

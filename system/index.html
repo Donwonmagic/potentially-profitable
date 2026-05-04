@@ -65,8 +65,8 @@
 }
 </script>
 
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>
@@ -74,7 +74,7 @@
   plausible.init({ endpoint: '/api/event', logging: false })
 </script>
 
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -90,23 +90,34 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=b24024a905b1" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=b24024a905b1"></noscript>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -142,19 +153,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/system/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -171,7 +182,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -190,7 +201,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/system/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -399,6 +410,50 @@ header.nav{min-height:64px}
   </div>
 </section>
 
+<!-- ============ OPERATOR SHEETS ARCHITECTURE ============ -->
+<section class="sys-section" id="sheets" aria-labelledby="sheets-heading">
+  <div class="container">
+    <div class="sys-section-head">
+      <span class="eyebrow">Operator sheets</span>
+      <h2 id="sheets-heading">Thirty-one printable<br><span class="serif-italic">paperwork artifacts.</span></h2>
+      <p class="final-sub">Every sheet at <code>/sheets/&lt;slug&gt;/</code> is a single-page interactive form: you fill it in, the math runs in your browser, you print or save it as CSV. Five packs (Operations &amp; Margin, Local SEO &amp; Discovery, Conversions &amp; Reservations, Brand &amp; Design, Trust &amp; Reviews) ship with full Spanish parity. The pipeline is data-driven from a single source of truth so adding a sheet costs one JSON entry plus one HTML fragment.</p>
+    </div>
+
+    <ol class="sys-pipeline">
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">01</span>
+        <h3>Single source of truth</h3>
+        <p><code>data/sheets.json</code> declares every sheet — title, summary, walkaway, cadence, format, pack, pairsWith.{tools,glossary,blog}, status. <code>data/sheets.es.json</code> carries the per-sheet ES prose (when_to_use + mistakes bullets). One field flips a queued sheet to live, and the build picks it up everywhere.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">02</span>
+        <h3>Shell + fragment composition</h3>
+        <p><code>_includes/sheet-shell.html</code> is the shared chrome: hero, breadcrumb, mm-card form container, results panel, mm-actions row, mm-save panel, pairs-with knit. <code>scripts/sheets-fragments/&lt;slug&gt;.html</code> is the per-sheet body — fieldsets, inputs, repeating tables, the per-sheet recalc script. <code>scripts/build-sheet-pages.mjs</code> wraps the shell around the fragment and writes 62 pages (31 sheets × EN + ES).</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">03</span>
+        <h3>Centralized benchmarks</h3>
+        <p><code>data/benchmarks.json</code> declares every threshold band ("prime cost 55–65% healthy") with EN + ES messages and source citation. <code>scripts/build-sheet-benchmarks.mjs</code> generates <code>assets/js/sheet-benchmarks.gen.js</code>, exposing <code>window.Bench.evaluate(metric, value)</code>. Update one threshold here, 31 sheets follow.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">04</span>
+        <h3>Versioned save payloads</h3>
+        <p>Workshop saves carry <code>{ v: 1, slug, savedAt, inputs, outputs }</code>. The <code>/api/workbench/sheet-history</code> endpoint reads back the user's prior saves of the same sheet to draw a sparkline above the save panel — <code>extractSheetMetric</code> handles the v-absent fallback so saves shipped before versioning still draw cleanly.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">05</span>
+        <h3>Reciprocal cross-links</h3>
+        <p>32 glossary term pages stamp a "Use this sheet" sidecar; 10 topic-pillar pages stamp a sheet rail; 30 tool detail pages stamp a "Pair with paperwork" rail back to the sheets that use them. Four blog posts post-end-CTA into a sheet at the moment of intent. Every link is reverse-indexed from <code>data/sheets.json</code>'s <code>pairsWith</code> field — no separate registry to drift.</p>
+      </li>
+      <li>
+        <span class="sys-pipeline-num" aria-hidden="true">06</span>
+        <h3>Verifiable privacy posture</h3>
+        <p><code>scripts/check-sheet-no-fetch.mjs</code> greps every sheet fragment + every rendered <code>&lt;main&gt;</code> block for forbidden network patterns (fetch, XHR, sendBeacon, localStorage in fragments, eval, external script src). CI fails if any fragment contacts any URL. The "Stays in your browser" claim on every sheet links to <code>/receipts/</code> where the audit trail is shown.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
 <!-- ============ URL RESTRUCTURE HISTORY ============ -->
 <section class="block bg-cream2" aria-labelledby="urls-heading">
   <div class="container">
@@ -559,7 +614,7 @@ header.nav{min-height:64px}
 
     <div class="hero-ctas reveal hero-ctas-center">
       <a class="btn btn-primary js-window" href="/window/">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
       <a class="btn btn-ghost" href="mailto:don@muntin.digital">Email Don</a>
     </div>
@@ -573,7 +628,7 @@ header.nav{min-height:64px}
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -679,11 +734,11 @@ header.nav{min-height:64px}
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Run free audit
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Email Don
     </a>
   </aside>

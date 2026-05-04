@@ -37,7 +37,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://muntin.digital/es/sheets/monthly-pnl-snapshot/#sheet","name":"Resumen mensual de P&G","description":"Un P&G de una página que el operador lee en 90 segundos — no la versión del contador. Ventas por daypart, costo de mercancía, mano de obra, ocupación, marketing.","url":"https://muntin.digital/es/sheets/monthly-pnl-snapshot/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}}]}</script>
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
@@ -47,14 +47,24 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260503">
 </head>
 <body data-page="sheet" data-sheet-slug="monthly-pnl-snapshot" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -64,7 +74,7 @@ header.nav{min-height:64px}
   window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -90,19 +100,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/sheets/monthly-pnl-snapshot/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -116,7 +126,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
     <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Buscar en la biblioteca</span>
     </button>
     <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
@@ -176,7 +186,7 @@ header.nav{min-height:64px}
 </nav>
 
 <section class="hero hero-tight"><div class="container"><div class="mm-hero">
-  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
+  <span class="eyebrow"><span class="sheet-pack-glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="0.5"/><rect x="14.5" y="14.5" width="6" height="6" rx="0.5"/><line x1="20" y1="4" x2="4" y2="20"/></svg></span>Hoja gratis del operador · Se queda en tu navegador</span>
   <h1>Resumen mensual de<br><span class="serif-italic">P&amp;G.</span></h1>
   <p class="hero-sub" style="margin:20px auto 0;max-width:620px;">Un P&amp;G de una página que el operador lee en 90 segundos — no la versión del contador. Ventas por daypart, costo de mercancía, mano de obra, ocupación, marketing.</p>
   <p class="sheet-meta" aria-label="Metadatos de la hoja">
@@ -197,6 +207,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="monthly-pnl-snapshot">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Restaurante de 80 asientos solo cena, suburbios de DC</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Ventas totales (abril, 30 días)</th><td>$187,400</td></tr><tr><th scope="row">Costo de mercancía — comida + bebida</th><td>$58,300</td></tr><tr><th scope="row">Mano de obra total (por hora + planilla + impuestos)</th><td>$61,500</td></tr><tr><th scope="row">Costos variables (comisiones + suministros)</th><td>$11,200</td></tr><tr><th scope="row">Costos fijos (renta + seguro + servicios)</th><td>$33,400</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Costo principal</th><td>63.9% · verde</td></tr><tr><th scope="row">Utilidad operativa del restaurante</th><td>$23,000</td></tr><tr><th scope="row">Margen operativo</th><td>12.3%</td></tr></tbody></table>
+        <p class="swe-punchline">Banda verde en costo principal, margen operativo de dos dígitos — un mes saludable. La línea a vigilar son los costos fijos al 17.8% de ventas: su contrato se renueva en octubre, y un aumento de renta de un solo dígito empuja el siguiente trimestre a amarillo. La conversación es la renta antes que cualquier cosa en la cocina.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -332,6 +359,41 @@ header.nav{min-height:64px}
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three multiplicative deltas frame the
+         operator's most common monthly questions: a labor wage change,
+         a COGS movement, and a lease-renewal rent bump. Re-run recalc()
+         on top of the typed numbers without touching them. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if labor, COGS, or rent shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the verdict re-runs on top of your typed numbers. Lease-renewal pressure is one-sided — rent goes up or it stays.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Labor change (wages, all categories)</span>
+          <input type="range" name="whatif_labor" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">COGS change (food + beverage)</span>
+          <input type="range" name="whatif_cogs" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_cogs_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Occupancy change (lease-renewal scenario)</span>
+          <input type="range" name="whatif_occ" min="0" max="25" step="1" value="0" style="flex:2;" />
+          <output name="whatif_occ_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">+0%</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         monthly P&L economics — fixed costs, the three numbers
+         operators conflate, and the lease-renewal scenario. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      What the month adds that the week can't see, the three numbers operators conflate (operating profit vs cash flow vs owner's pay), the breakeven sales-per-day number, and what to do when the lease renewal slider goes red. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">Where the month lands &mdash; What the monthly P&amp;L tells you that weekly can't &rarr;</a>
+    </p>
+
     <script>
       (function () {
         function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
@@ -339,15 +401,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Acciones de la hoja">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Imprimir
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Bajar CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copiar como texto
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -423,13 +485,14 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
     <div class="foot-cta">
       <div class="foot-cta-text">¿Tienes una pregunta? La Ventana está abierta.</div>
       <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -514,11 +577,11 @@ header.nav{min-height:64px}
   </div>
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Acciones r&aacute;pidas">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/es/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Auditor&iacute;a gratis
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/es/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Escr&iacute;bele a Don
     </a>
   </aside>
@@ -544,22 +607,46 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(abs * 100) / 100).toFixed(2); }
         function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
 
+        // D8 · Read what-if slider state. All three are multiplicative
+        // percent deltas applied on top of the typed line items.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_labor) return { labor: 0, cogs: 0, occ: 0 };
+          return {
+            labor: n(f.whatif_labor.value),
+            cogs:  n(f.whatif_cogs.value),
+            occ:   n(f.whatif_occ.value),
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
+          var w = whatif();
           var sales = n(f.sales_lunch.value) + n(f.sales_dinner.value) + n(f.sales_bar.value) + n(f.sales_togo.value) + n(f.sales_other.value);
-          var cogs  = n(f.cogs_food.value) + n(f.cogs_bev.value);
-          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes.value);
+          var rawCogs  = n(f.cogs_food.value) + n(f.cogs_bev.value);
+          var rawLabor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes.value);
+          var rawOcc   = n(f.fixed_occupancy.value);
+          // D8 — multiplicative deltas on top of the typed line items.
+          var cogs  = rawCogs  * (1 + w.cogs  / 100);
+          var labor = rawLabor * (1 + w.labor / 100);
+          var occ   = rawOcc   * (1 + w.occ   / 100);
           var prime = cogs + labor;
           var variable = n(f.var_cc_fees.value) + n(f.var_supplies.value);
-          var fixed = n(f.fixed_occupancy.value) + n(f.fixed_utilities.value) + n(f.fixed_insurance.value) + n(f.fixed_marketing.value) + n(f.fixed_other.value);
+          var fixed = occ + n(f.fixed_utilities.value) + n(f.fixed_insurance.value) + n(f.fixed_marketing.value) + n(f.fixed_other.value);
           var primePct = sales > 0 ? (prime / sales) * 100 : 0;
           var contribPct = sales > 0 ? ((sales - prime - variable) / sales) * 100 : 0;
           var profit = sales - prime - variable - fixed;
@@ -570,11 +657,24 @@ header.nav{min-height:64px}
           var days = Math.max(1, n(f.days.value));
           var breakevenDay = breakevenMonth / days;
 
+          // Update what-if output labels.
+          if (f.whatif_labor_out) f.whatif_labor_out.value = (w.labor >= 0 ? '+' : '') + w.labor.toFixed(0) + '%';
+          if (f.whatif_cogs_out)  f.whatif_cogs_out.value  = (w.cogs  >= 0 ? '+' : '') + w.cogs.toFixed(1)  + '%';
+          if (f.whatif_occ_out)   f.whatif_occ_out.value   = '+' + w.occ.toFixed(0) + '%';
+
           document.querySelector('[data-output="total_sales"]').textContent = fmt$(sales);
           document.querySelector('[data-output="prime_dollars"]').textContent = fmt$(prime);
           var primeEl = document.querySelector('[data-output="prime_pct"]');
           primeEl.textContent = fmtPct(primePct);
-          primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          // D9 — band routes through centralized benchmarks. Same
+          // metric key as weekly-prime-cost-worksheet so the two
+          // sheets agree on what "healthy" means.
+          if (window.Bench && window.Bench.evaluate) {
+            var bp = window.Bench.evaluate('prime_cost_pct', primePct);
+            if (bp && bp.band) primeEl.dataset.band = bp.band;
+          } else {
+            primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          }
           var contribEl = document.querySelector('[data-output="contrib_pct"]');
           contribEl.textContent = fmtPct(contribPct);
           contribEl.dataset.band = contribPct > 30 ? 'good' : (contribPct > 20 ? 'warn' : 'bad');
@@ -638,6 +738,19 @@ header.nav{min-height:64px}
           ];
         }
 
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_labor) f.whatif_labor.value = 0;
+            if (f.whatif_cogs)  f.whatif_cogs.value  = 0;
+            if (f.whatif_occ)   f.whatif_occ.value   = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+
         if (window.SheetPage) {
           window.SheetPage.register({ slug: 'monthly-pnl-snapshot', collect: collect, recalc: recalc });
         }
@@ -647,15 +760,15 @@ header.nav{min-height:64px}
 
     <div class="mm-actions" role="group" aria-label="Acciones de la hoja">
       <button type="button" class="btn btn-primary mm-action-primary" data-sheet-action="print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18 H4 a2 2 0 0 1 -2 -2 v-5 a2 2 0 0 1 2 -2 h16 a2 2 0 0 1 2 2 v5 a2 2 0 0 1 -2 2 h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Imprimir
       </button>
       <button type="button" class="btn" data-sheet-action="download-csv">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Bajar CSV
       </button>
       <button type="button" class="btn" data-sheet-action="copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copiar como texto
       </button>
       <button type="reset" class="btn" form="sheet-fields">
@@ -740,7 +853,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

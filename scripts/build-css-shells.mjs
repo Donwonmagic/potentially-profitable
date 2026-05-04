@@ -67,61 +67,90 @@ const SECTIONS = [
   { start: 253,  shell: 'core',    label: 'Field Guide editorial surfaces (.score-card, .score-pill — used by tools + audits)' },
   { start: 533,  shell: 'core',    label: 'Global focus-visible' },
   { start: 541,  shell: 'core',    label: 'Self-hosted web fonts (@font-face)' },
-  { start: 620,  shell: 'core',    label: 'Breakpoint scale' },
-  { start: 701,  shell: 'core',    label: 'Button vocabulary (.btn family)' },
-  { start: 1264, shell: 'core',    label: 'Footer' },
-  { start: 1361, shell: 'article', label: 'Citation drawer (.cite, .cite-body)' },
+  { start: 607,  shell: 'core',    label: 'Breakpoint scale' },
+  { start: 713,  shell: 'core',    label: 'Button vocabulary (.btn family)' },
+  { start: 1282, shell: 'core',    label: 'Footer' },
+  { start: 1379, shell: 'article', label: 'Citation drawer (.cite, .cite-body)' },
+  // Lines 1394-1454 in the source are global chrome (focus-visible
+  // rules, .skip-link, .sr-only, nav-toggle, mobile-menu) that landed
+  // inside the visual proximity of the citation-drawer section but
+  // are used on EVERY page. Without this split, sheet pages and other
+  // core-only consumers shipped without `.skip-link` / `.sr-only` /
+  // mobile menu styles even though the markup is on every page.
+  { start: 1408, shell: 'core',    label: 'Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome)' },
   // The "CITATION DRAWER" section header at line 1361 actually carries
   // about 95 lines of cite styles followed by ~20 lines of nav refinements
   // + the share-widget UI before the next section header. Split here so
   // the latter half lands in core where it belongs (share is on every
   // shell; nav refinements affect every page).
-  { start: 1455, shell: 'core',    label: 'Nav refinements + share widget (was inside CITATION DRAWER section)' },
-  { start: 1476, shell: 'article', label: 'Listen / audio player' },
-  { start: 2005, shell: 'core',    label: 'Breadcrumbs' },
-  { start: 2031, shell: 'core',    label: 'Homepage utility classes' },
-  { start: 2083, shell: 'core',    label: 'Legal pages' },
-  { start: 2109, shell: 'core',    label: 'Homepage primary tool CTA (restaurant audit)' },
-  { start: 2399, shell: 'tool',    label: 'TOOL SHELL — shared primitives for /tools/* pages' },
-  { start: 2497, shell: 'tool',    label: 'Tools-landing cluster layout' },
-  { start: 2788, shell: 'tool',    label: 'Per-tool "Keep going" knit-in' },
-  { start: 2899, shell: 'article', label: 'Glossary scannability' },
-  { start: 3054, shell: 'article', label: '"Recently added" strip on /learn/' },
-  { start: 3129, shell: 'core',    label: 'Library nav-mega regroup (nav is everywhere)' },
-  { start: 3448, shell: 'article', label: 'Learn hub + Start here pages' },
-  { start: 3551, shell: 'core',    label: '/system/ colophon page (small, kept in core)' },
-  { start: 3628, shell: 'core',    label: 'Search modal (Pagefind-backed; on every page)' },
-  { start: 3795, shell: 'article', label: 'Research notes (/learn/research/)' },
-  { start: 3812, shell: 'article', label: 'Library topics (/learn/topics/)' },
-  { start: 3994, shell: 'article', label: 'Glossary term pages (/glossary/<slug>/)' },
-  { start: 4589, shell: 'article', label: 'Research-note CTA inside cite drawer' },
-  { start: 4610, shell: 'article', label: 'Research drawer (inline preview)' },
-  { start: 4750, shell: 'article', label: 'Glossary term → research note cross-link' },
-  { start: 4795, shell: 'article', label: '"Recently added" rail (under glossary hero)' },
-  { start: 4853, shell: 'article', label: 'Glossary index "▶ 90s explainer" chip' },
-  { start: 4874, shell: 'article', label: 'Glossary explainer (90-second narrated diagram)' },
-  { start: 5140, shell: 'article', label: 'Inline glossary popover' },
-  { start: 5207, shell: 'article', label: 'Print view for glossary section landing pages' },
-  { start: 5264, shell: 'core',    label: 'Cloudflare Turnstile widget (reservation min-height)' },
-  { start: 5276, shell: 'core',    label: 'Workshop save banner (multi-context, kept in core)' },
-  { start: 5328, shell: 'tool',    label: 'Tool states (loading / error / empty)' },
-  { start: 5373, shell: 'article', label: 'Editorial callouts' },
-  { start: 5457, shell: 'tool',    label: 'Learn-back (in tool result region)' },
-  { start: 5475, shell: 'article', label: 'Post-end Workshop CTA' },
-  { start: 5491, shell: 'core',    label: 'Workshop rationale' },
-  { start: 5507, shell: 'core',    label: 'The Window (/window/ — kept in core to avoid a 4th shell)' },
-  { start: 5624, shell: 'core',    label: 'Window composer (Phase-2 redesign)' },
-  { start: 5657, shell: 'core',    label: 'ADMIN /admin/window/ (kept in core; admin is auth-gated noindex)' },
-  { start: 5744, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
-  { start: 5783, shell: 'tool',    label: 'Statistical disclosure components' },
-  { start: 5826, shell: 'tool',    label: 'Tool-internal type minimums' },
-  { start: 6004, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
-  { start: 6065, shell: 'core',    label: 'Touch-device hover hygiene' },
-  { start: 6104, shell: 'core',    label: 'Hero mobile reorder (homepage)' },
-  { start: 6127, shell: 'article', label: 'KnitRail — "what’s next" component for articles' },
-  { start: 6202, shell: 'core',    label: 'Hero count chips (homepage)' },
-  { start: 6233, shell: 'core',    label: 'Trust strip (homepage)' },
-  { start: 6259, shell: 'core',    label: 'Compare cards (homepage)' },
+  { start: 1476, shell: 'core',    label: 'Nav refinements + share widget (was inside CITATION DRAWER section)' },
+  { start: 1497, shell: 'article', label: 'Listen / audio player' },
+  { start: 2026, shell: 'core',    label: 'Breadcrumbs' },
+  { start: 2052, shell: 'core',    label: 'Homepage utility classes' },
+  { start: 2104, shell: 'core',    label: 'Legal pages' },
+  { start: 2130, shell: 'core',    label: 'Homepage primary tool CTA (restaurant audit)' },
+  { start: 2420, shell: 'tool',    label: 'TOOL SHELL — shared primitives for /tools/* pages' },
+  { start: 2518, shell: 'tool',    label: 'Tools-landing cluster layout' },
+  { start: 2809, shell: 'tool',    label: 'Per-tool "Keep going" knit-in' },
+  { start: 2920, shell: 'article', label: 'Glossary scannability' },
+  { start: 3075, shell: 'article', label: '"Recently added" strip on /learn/' },
+  { start: 3150, shell: 'core',    label: 'Library nav-mega regroup (nav is everywhere)' },
+  { start: 3469, shell: 'article', label: 'Learn hub + Start here pages' },
+  { start: 3572, shell: 'core',    label: '/system/ colophon page (small, kept in core)' },
+  { start: 3649, shell: 'core',    label: 'Search modal (Pagefind-backed; on every page)' },
+  { start: 3824, shell: 'article', label: 'Research notes (/learn/research/)' },
+  { start: 3841, shell: 'article', label: 'Library topics (/learn/topics/)' },
+  { start: 4023, shell: 'article', label: 'Glossary term pages (/glossary/<slug>/)' },
+  // .tool-deep-links is the "Why this tool exists" block at the bottom of
+  // every /tools/* page. Lives in this region historically because it was
+  // built alongside glossary cross-linking, but it ships on tool pages —
+  // which only load core+tool. Without this split it lands in article and
+  // the audit page's deep-links section renders unstyled (reported May 2026).
+  { start: 4137, shell: 'tool',    label: 'Tool deep-links (.tool-deep-* — bottom of every /tools/* page)' },
+  { start: 4221, shell: 'article', label: 'Resume article — services-aside-cta + see-also + research notes' },
+  { start: 4618, shell: 'article', label: 'Research-note CTA inside cite drawer' },
+  { start: 4639, shell: 'article', label: 'Research drawer (inline preview)' },
+  { start: 4779, shell: 'article', label: 'Glossary term → research note cross-link' },
+  { start: 4824, shell: 'article', label: '"Recently added" rail (under glossary hero)' },
+  { start: 4882, shell: 'article', label: 'Glossary index "▶ 90s explainer" chip' },
+  { start: 4903, shell: 'article', label: 'Glossary explainer (90-second narrated diagram)' },
+  { start: 5169, shell: 'article', label: 'Inline glossary popover' },
+  { start: 5236, shell: 'article', label: 'Print view for glossary section landing pages' },
+  { start: 5293, shell: 'core',    label: 'Cloudflare Turnstile widget (reservation min-height)' },
+  { start: 5305, shell: 'core',    label: 'Workshop save banner (multi-context, kept in core)' },
+  { start: 5357, shell: 'tool',    label: 'Tool states (loading / error / empty)' },
+  { start: 5402, shell: 'article', label: 'Editorial callouts' },
+  { start: 5486, shell: 'tool',    label: 'Learn-back (in tool result region)' },
+  { start: 5504, shell: 'article', label: 'Post-end Workshop CTA' },
+  { start: 5520, shell: 'core',    label: 'Workshop rationale' },
+  { start: 5536, shell: 'core',    label: 'The Window (/window/ — kept in core to avoid a 4th shell)' },
+  { start: 5653, shell: 'core',    label: 'Window composer (Phase-2 redesign)' },
+  { start: 5686, shell: 'core',    label: 'ADMIN /admin/window/ (kept in core; admin is auth-gated noindex)' },
+  { start: 5773, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
+  { start: 5812, shell: 'tool',    label: 'Statistical disclosure components' },
+  { start: 5855, shell: 'tool',    label: 'Tool-internal type minimums' },
+  // foot-newsletter lives in the global footer partial, so it needs to
+  // be in core — every page renders the form, not just /tools/*. The
+  // historical bucket (Tool-internal type minimums) extended past the
+  // newsletter block; splitting here pulls the .foot-newsletter* rules
+  // out of site-tool.css where they were inert on /blog/, /glossary/,
+  // /sheets/, and other non-tool pages. (Line 5986 = 5983 in the
+  // pre-#284 site.css + the 3-line .reveal block #284 added at line 1382.)
+  { start: 6012, shell: 'core',    label: 'Newsletter capture (in global footer; on every page)' },
+  { start: 6033, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
+  { start: 6094, shell: 'core',    label: 'Touch-device hover hygiene' },
+  { start: 6133, shell: 'core',    label: 'Hero mobile reorder (homepage)' },
+  { start: 6156, shell: 'article', label: 'KnitRail — "what’s next" component for articles' },
+  { start: 6231, shell: 'core',    label: 'Hero count chips (homepage)' },
+  { start: 6262, shell: 'core',    label: 'Trust strip (homepage)' },
+  { start: 6288, shell: 'core',    label: 'Compare cards (homepage)' },
+  // Article viz components — Phase-1 foundation for the graphics
+  // refresh. Namespaced .viz-* family for inline article charts
+  // (.viz-figure, .viz-bars today; .viz-ring/.viz-spark/.viz-ba/
+  // .viz-flow/.viz-tree/.viz-waterfall/.viz-gauge/.viz-hero/.viz-scroll
+  // land in subsequent phases). Article shell — only loaded on
+  // /blog/, /learn/, /glossary/.
+  { start: 6372, shell: 'article', label: 'Article viz components (.viz-* family)' },
 ];
 
 // === Validation ===

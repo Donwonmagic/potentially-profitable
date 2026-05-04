@@ -55,7 +55,7 @@
 }
 </script>
 
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -71,18 +71,20 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Preload the two above-the-fold web fonts so they arrive in
      parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>
@@ -95,10 +97,20 @@ header.nav{min-height:64px}
 <a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ============ NAV ============ -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -134,19 +146,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/never/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -163,7 +175,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -182,7 +194,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/never/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -279,6 +291,45 @@ header.nav{min-height:64px}
         <p style="font-size:16px;line-height:1.65;color:var(--ink);margin:0">Two builds run at a time, no exceptions. If the calendar can&rsquo;t carry your project, you hear so on day one &mdash; with a date you&rsquo;d be next, or a referral to a peer studio that can. Better a polite &ldquo;not yet&rdquo; than a deadline missed. Operators run on calendars; the studio respects that.</p>
       </li>
     </ol>
+
+    <section id="free-forever" style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;line-height:1.2;color:var(--ink);margin:0 0 10px">What I will never charge for in the Menu Design Suite.</h2>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
+        Operators ask whether the free tool is a teaser for the paid services. It isn&rsquo;t. The free tool is the actual studio output, capped only by what one designer can hand-touch in a day. The list below is what stays free <strong>and complete</strong>, in writing, on the record:
+      </p>
+      <ul style="font-size:15.5px;line-height:1.8;color:var(--ink);margin:0 0 14px;padding-left:22px">
+        <li>All 37 curated typeset themes &mdash; every cuisine, every paper format, no &ldquo;premium tier&rdquo; gate.</li>
+        <li>Every accessibility variant: large-print 18pt PDF, high-contrast yellow-on-black, plain text + Markdown, SSML for AWS Polly / Google TTS / Azure Speech, Grade 1 Braille (BRF) for embossers, ESC/POS thermal-printer .bin.</li>
+        <li>Allergen-key export across all five regulatory regimes (US-FDA-9, EU-FIC-14, UK-PPDS, CA, AU/NZ) and the auto-disclaimer footer it produces.</li>
+        <li>Bilingual EN+ES UI and a side-by-side bilingual ZIP export.</li>
+        <li>Print-vendor PDF (PDF/X-3-flavored, 0.125&Prime; bleed, crop marks, sRGB OutputIntent, TrimBox + BleedBox) &mdash; this is the press-ready file, identical to what an operator would pay $249 for as a one-shot.</li>
+        <li>Schema.org Menu JSON-LD for the operator&rsquo;s website, plus the QR-menu HTML and the tablet-kiosk HTML &mdash; all self-contained, host-anywhere.</li>
+        <li>Studio-handoff brief: when an operator does book Polish or Drop-In, the brief is auto-bundled (free), so they don&rsquo;t pay for me to round-trip the obvious.</li>
+        <li>Service-worker offline mode and PWA installable shell &mdash; ship a menu in the kitchen at 11pm with no internet.</li>
+      </ul>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
+        The two paid services &mdash; <a href="/services/menu-polish/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Menu Polish ($249)</a> and <a href="/services/menu-drop-in/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">Menu Drop-In ($1,500)</a> &mdash; are about my hands-on time, not feature unlocks. Polish is &ldquo;take what you built and refine it&rdquo;; Drop-In is &ldquo;design the menu from scratch with you.&rdquo; The free tool produces the same artifact shapes either way; the paid services produce the kind of refinement only a designer with 14 years on restaurant floors can add.
+      </p>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0">
+        I don&rsquo;t want a million users. I want to serve a few hundred restaurants well. That&rsquo;s why this tool stays free, complete, and ad-less &mdash; and that&rsquo;s why the paid services have a waitlist (capacity-capped to six polishes and one drop-in per week). Constrained-by-design capacity is the feature, not a bug.
+      </p>
+    </section>
+
+    <section id="affiliate-disclosure" style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;line-height:1.2;color:var(--ink);margin:0 0 10px">When I do take a small fee &mdash; here&rsquo;s exactly when, and what travels.</h2>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
+        Menu Design Suite&rsquo;s print-vendor mode shows three deeplinks &mdash; MOO, GotPrint, Vistaprint. If you click through and order, I earn a small per-conversion fee from that vendor. The <strong>only</strong> thing the deeplink carries is your intent (you wanted to print a menu); your file never uploads to us, and never to them through us. Same with their checkout: if you choose to upload your PDF on their site, that&rsquo;s your transaction with them &mdash; we&rsquo;re not in the loop.
+      </p>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
+        I picked those three because each one solves a different real-restaurant need: MOO for premium stocks when the menu is a brand artifact, GotPrint for cost-sensitive print runs that need to ship, Vistaprint for paper variety + fast turnaround. None of the three pay for placement order; the operator-tone hint next to each link names the actual trade-off so you pick the right one for the job.
+      </p>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink);margin:0 0 14px">
+        The links carry <code>rel="sponsored"</code> per Google&rsquo;s convention so search engines see the relationship clearly, and they open in a new tab so you don&rsquo;t lose your menu draft. If the fee ever stops being modest enough to be a footnote, this section gets rewritten and the changelog dates the change.
+      </p>
+      <p style="font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0">
+        I will never run a print-shop ad above the editor itself. The deeplinks live <em>only</em> next to the press-ready PDF download &mdash; the place where they answer a real question (&ldquo;OK, now where do I print this?&rdquo;) instead of selling you something.
+      </p>
+    </section>
 
     <section style="margin-top:56px;padding-top:32px;border-top:1px solid var(--line)">
       <p style="font-size:15.5px;line-height:1.7;color:var(--ink-soft);margin:0 0 14px">

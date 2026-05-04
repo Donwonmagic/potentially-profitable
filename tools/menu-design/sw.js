@@ -51,6 +51,7 @@ var SHELL_URLS = [
   '/tools/menu-design/data/templates.js',
   '/tools/menu-design/data/quiz-tiles.js',
   '/tools/menu-design/data/papers.js',
+  '/tools/menu-design/data/theme-credits.js',
   '/tools/menu-design/infra/dom.js',
   '/tools/menu-design/infra/i18n.js',
   '/tools/menu-design/state/draft.js',

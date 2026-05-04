@@ -34,8 +34,8 @@
 <link rel="icon" type="image/svg+xml" href="/brand/mark/mark-square-ink.svg" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -51,23 +51,34 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=b24024a905b1" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=b24024a905b1"></noscript>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -103,19 +114,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/workbench/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -132,7 +143,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -151,7 +162,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/workbench/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -216,6 +227,17 @@ header.nav{min-height:64px}
     </form>
   </p>
 
+  <!-- B8 — Saved-items tabs. "All saves" is the default; "By sheet"
+       groups kind=sheet items by title with a per-group count.
+       Tabs hide entirely when there are no sheet saves. -->
+  <nav class="wsh-tabs" id="wbTabs" hidden role="tablist" aria-label="Filter saved items"
+       style="display:flex;gap:18px;margin:24px 0 16px;border-bottom:1px solid var(--line,#E5DFD2);">
+    <button type="button" role="tab" aria-selected="true" data-tab="all"
+            style="background:transparent;border:0;padding:10px 0;font:inherit;font-size:14.5px;font-weight:600;color:var(--ink,#14161A);cursor:pointer;border-bottom:2px solid var(--teal,#1F4E5B);margin-bottom:-1px;">All saves</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="sheets"
+            style="background:transparent;border:0;padding:10px 0;font:inherit;font-size:14.5px;font-weight:500;color:var(--ink-soft,#2A2D33);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;">By sheet <span data-sheets-count style="opacity:.7;font-weight:500;"></span></button>
+  </nav>
+
   <div class="wsh-list" id="wbList" aria-live="polite">
     <div class="wsh-state" id="wbLoading">
       <p>Loading your saved items&hellip;</p>
@@ -254,7 +276,7 @@ header.nav{min-height:64px}
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -360,11 +382,11 @@ header.nav{min-height:64px}
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Run free audit
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Email Don
     </a>
   </aside>
@@ -592,14 +614,92 @@ header.nav{min-height:64px}
       });
     }
 
+    // B8 — active workbench tab. 'all' = legacy flat list; 'sheets'
+    // = filter to kind=sheet rows, group visually by title with a
+    // per-group label. Tab UI is hidden until at least one sheet
+    // save exists, so single-tool users never see it.
+    var activeTab = 'all';
+    var lastItems = [];
+
+    function applyTabFilter(items) {
+      if (activeTab !== 'sheets') return items;
+      var sheetItems = items.filter(function (it) { return it.kind === 'sheet'; });
+      // Group by title; sort groups by latest save desc; flatten back
+      // to a list with a small group-header item interleaved as a
+      // sentinel so renderItems can stamp a heading.
+      var groups = {};
+      sheetItems.forEach(function (it) {
+        var key = (it.title || '(untitled sheet)').trim();
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(it);
+      });
+      var groupList = Object.keys(groups).map(function (k) {
+        var rows = groups[k];
+        rows.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+        return { title: k, latest: rows[0].createdAt, items: rows };
+      });
+      groupList.sort(function (a, b) { return (b.latest || 0) - (a.latest || 0); });
+      var out = [];
+      groupList.forEach(function (g) {
+        out.push({ __group: true, title: g.title, count: g.items.length, latest: g.latest });
+        g.items.forEach(function (it) { out.push(it); });
+      });
+      return out;
+    }
+
+    function refreshTabUi() {
+      var tabs = document.getElementById('wbTabs');
+      if (!tabs) return;
+      var sheetCount = (lastItems || []).filter(function (it) { return it.kind === 'sheet'; }).length;
+      tabs.hidden = sheetCount < 1;
+      var countEl = tabs.querySelector('[data-sheets-count]');
+      if (countEl) countEl.textContent = sheetCount > 0 ? '(' + sheetCount + ')' : '';
+      var btns = tabs.querySelectorAll('button[data-tab]');
+      btns.forEach(function (b) {
+        var on = b.dataset.tab === activeTab;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.style.color = on ? 'var(--ink, #14161A)' : 'var(--ink-soft, #2A2D33)';
+        b.style.fontWeight = on ? '600' : '500';
+        b.style.borderBottomColor = on ? 'var(--teal, #1F4E5B)' : 'transparent';
+      });
+    }
+
+    document.addEventListener('click', function (ev) {
+      var btn = ev.target.closest && ev.target.closest('#wbTabs button[data-tab]');
+      if (!btn) return;
+      activeTab = btn.dataset.tab;
+      refreshTabUi();
+      renderItems(lastItems);
+    });
+
     function renderItems(items) {
+      lastItems = items;
+      refreshTabUi();
+      var filtered = applyTabFilter(items);
       [loadingEl, emptyEl, errorEl].forEach(function (n) {
         if (n && n.parentNode === listEl) listEl.removeChild(n);
       });
-      var existing = listEl.querySelectorAll('.wsh-item');
+      var existing = listEl.querySelectorAll('.wsh-item, .wsh-group-heading');
       existing.forEach(function (n) { listEl.removeChild(n); });
 
-      items.forEach(function (item) {
+      filtered.forEach(function (item) {
+        // B8 — group-heading sentinel inserted by applyTabFilter when
+        // grouping by sheet. Render as a quiet section divider with
+        // the sheet's title and how many saves the user has of it.
+        if (item.__group) {
+          var heading = document.createElement('div');
+          heading.className = 'wsh-group-heading';
+          heading.style.cssText = 'margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--cream-2,#F3EEE3);display:flex;align-items:baseline;justify-content:space-between;';
+          heading.innerHTML =
+            '<h2 style="font-family:var(--font-display,\'Fraunces\',Georgia,serif);font-size:18px;font-weight:500;margin:0;color:var(--ink,#14161A);">' +
+              (item.title || 'Sheet') +
+            '</h2>' +
+            '<span style="font-size:12.5px;color:var(--stone,#6B6B6B);">' +
+              item.count + ' save' + (item.count === 1 ? '' : 's') +
+            '</span>';
+          listEl.appendChild(heading);
+          return;
+        }
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/tools/';
         // Phase 7 W1-8: Invoice Decoder rows are encrypted. The
@@ -626,6 +726,14 @@ header.nav{min-height:64px}
           statusPillHtml = ' <span class="wsh-item-status">· ' + escapeHtml(item._submission.statusLabel) + '</span>';
           openUrl = '/blog/' + encodeURIComponent(item._submission.articleSlug) + '/#field-note-form';
           actionsHtml = '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>';
+        } else if (item.kind === 'sheet') {
+          // B7 — sheet-kind rows route Open through the prefill hand-off:
+          // fetch the saved payload, read v:1 inputs + slug, build a
+          // /sheets/<slug>/?prefill=... URL, navigate. The receiving
+          // sheet stamps the values and shows the prefill banner.
+          actionsHtml = watchSlot +
+            '<a class="btn btn-ghost btn-sm js-wb-open-sheet" href="#" data-id="' + escapeHtml(item.id) + '">Reopen</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm btn-danger js-wb-delete">Delete</button>';
         } else {
           actionsHtml = watchSlot +
             '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>' +
@@ -665,6 +773,81 @@ header.nav{min-height:64px}
       });
       listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
         btn.addEventListener('click', function () { onWatchDetach(btn); });
+      });
+
+      // B7 — sheet-kind Reopen button: fetch the saved payload, read
+      // v:1 inputs + slug, build /sheets/<slug>/?prefill=... and go.
+      listEl.querySelectorAll('.js-wb-open-sheet').forEach(function (btn) {
+        btn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (btn.disabled) return;
+          var id = btn.getAttribute('data-id');
+          if (!id) return;
+          var row = btn.closest('.wsh-item');
+          var titleEl = row && row.querySelector('.wsh-item-title');
+          var sourceTitle = titleEl ? titleEl.textContent.trim() : '';
+          btn.disabled = true;
+          var orig = btn.textContent;
+          btn.textContent = '…';
+          fetch('/api/workbench/get?id=' + encodeURIComponent(id), {
+            credentials: 'same-origin',
+          }).then(function (r) {
+            if (!r.ok) throw new Error('get-failed');
+            return r.json();
+          }).then(function (data) {
+            var item = data && data.item;
+            var p = item && item.payload;
+            if (!p || !p.slug || p.v !== 1 || !p.inputs) {
+              alert('This save is older than the prefill format. Open the sheet directly and use the saved payload manually.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var slug = String(p.slug).replace(/[^a-zA-Z0-9_-]/g, '');
+            if (!slug) {
+              alert('Could not resolve the sheet for this save.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            // Build the prefill query. Cap pairs and length defensively.
+            var pairs = [];
+            var totalLen = 0;
+            Object.keys(p.inputs).forEach(function (k) {
+              if (pairs.length >= 30) return;
+              if (!/^[a-zA-Z0-9_]{1,40}$/.test(k)) return;
+              var v = p.inputs[k];
+              if (v == null) return;
+              var s = String(v);
+              if (s.length > 200 || !s.length) return;
+              var enc = k + ':' + encodeURIComponent(s);
+              if (totalLen + enc.length + 1 > 1800) return;
+              totalLen += enc.length + 1;
+              pairs.push(enc);
+            });
+            if (!pairs.length) {
+              alert('This save has no fields the sheet can prefill.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+            var basePath = locale === 'es' ? '/es/sheets/' : '/sheets/';
+            var url = basePath + slug + '/?prefill=' + pairs.join(',');
+            url += '&prefill_source=' + encodeURIComponent(slug);
+            if (sourceTitle) url += '&prefill_label=' + encodeURIComponent(sourceTitle.slice(0, 80));
+            try {
+              if (typeof window.plausible === 'function') {
+                window.plausible('Workbench Sheet Reopen', { props: { slug: slug } });
+              }
+            } catch (_) { /* analytics best-effort */ }
+            window.location.href = url;
+          }).catch(function () {
+            alert('Could not load this saved sheet. Try again in a moment.');
+            btn.disabled = false;
+            btn.textContent = orig;
+          });
+        });
       });
 
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {

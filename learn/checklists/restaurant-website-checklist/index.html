@@ -120,8 +120,8 @@
      the two critical above-the-fold weights (Fraunces 500 for the display
      headline and Inter 400 for body copy) to keep first paint fast without
      over-fetching. Metric-matched fallbacks in site.css prevent CLS. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>
@@ -132,7 +132,7 @@
 <!-- FOUC guard: keep breadcrumb hidden until site.css applies.
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
-<style>.breadcrumb{visibility:hidden;padding-top:100px}</style>
+<style>.breadcrumb{padding-top:100px}</style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
    stylesheet (assets/site.css) loads non-render-blocking via the
@@ -148,14 +148,16 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+a{color:inherit}
 header.nav{min-height:64px}
 </style>
 <!-- Async-load the main stylesheet. Pattern: preload + onload-swap
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
 
 <style>
   /* ============ CHECKLIST PAGE STYLES ============ */
@@ -1319,10 +1321,20 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
-      <svg class="logo-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -1358,19 +1370,19 @@ header.nav{min-height:64px}
       <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
     </nav>
     <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="7"/>
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Search</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Language">
       <a href="/es/learn/checklists/restaurant-website-checklist/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
       <span class="lang-switch-current" aria-current="true">EN</span>
     </nav>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1387,7 +1399,7 @@ header.nav{min-height:64px}
     <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
     <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
     <button type="button" class="mobile-search js-open-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
       <span>Search the library</span>
     </button>
     <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don</a>
@@ -1406,7 +1418,7 @@ header.nav{min-height:64px}
       <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
       <a href="/es/learn/checklists/restaurant-website-checklist/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
       <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
   </aside>
@@ -1463,7 +1475,7 @@ header.nav{min-height:64px}
      it up so there is no empty pill for users without JS. -->
 <aside class="score-pill" id="scorePill" data-band="idle" aria-live="polite" aria-atomic="true" hidden>
   <button type="button" class="score-pill-btn" id="scorePillBtn" aria-label="Jump to checklist progress bar. 0 of 30 complete.">
-    <svg class="score-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+    <svg class="score-ring" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
       <circle class="score-ring-track" cx="22" cy="22" r="19"></circle>
       <circle class="score-ring-fill"  cx="22" cy="22" r="19"></circle>
     </svg>
@@ -1489,7 +1501,7 @@ header.nav{min-height:64px}
   <div class="container">
     <div class="checklist-hero">
       <!-- Muntin window mark — the brand anchor for the deliverable. -->
-      <svg class="checklist-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+      <svg class="checklist-mark" width="128" height="128" viewBox="0 0 128 128" fill="none" aria-hidden="true">
         <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="18" y="18" width="92" height="92"/>
           <line x1="64" y1="18" x2="64" y2="110"/>
@@ -1511,7 +1523,7 @@ header.nav{min-height:64px}
         </button>
         <div class="share-dropdown" data-share>
           <button type="button" class="share-btn" aria-haspopup="true" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span>Share</span>
           </button>
           <div class="share-menu" hidden role="menu">
@@ -1608,7 +1620,7 @@ header.nav{min-height:64px}
       <h3>All 30 checks passed.</h3>
       <p>Your <span data-token="noun">restaurant</span> site is in genuinely good shape. If you want a second set of eyes on what's left, a 20-minute call can confirm — or find the things a checklist can't catch.</p>
       <a class="btn btn-primary js-window" href="/window/">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
   </div>
@@ -1621,7 +1633,7 @@ header.nav{min-height:64px}
       <div class="cat-header">
         <div class="cat-header-title">
           <span class="cat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10 14 2"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10 14 2"/></svg>
           </span>
           <h2>The basics.</h2>
         </div>
@@ -1638,7 +1650,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your site on your phone. Tap "Menu." Can you read the first dish name without pinching?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Replace PDF menus with real HTML menu pages. If you must serve a PDF, at least embed it behind a mobile-friendly menu summary so visitors see something readable first.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Mobile-readable menu" data-popover-body="A menu that renders as real HTML text on a phone - not a PDF, not an image. PDFs open in a separate tab, image menus can&#39;t be searched or zoomed gracefully. Real HTML menus are indexable by Google, legible on every screen size, and updatable without a designer." data-popover-glossary="html-menu" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Mobile-readable menu" data-popover-body="A menu that renders as real HTML text on a phone - not a PDF, not an image. PDFs open in a separate tab, image menus can&#39;t be searched or zoomed gracefully. Real HTML menus are indexable by Google, legible on every screen size, and updatable without a designer." data-popover-glossary="html-menu" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="02">
@@ -1650,7 +1662,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Load your homepage. Count the seconds until you see today's hours without scrolling.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Put hours in the hero, in a persistent header bar, or — best of all — in a small "OPEN NOW · until 10pm" badge that updates automatically based on the current time.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Above-the-fold hours" data-popover-body="&quot;Are they open right now?&quot; is the single most common question a restaurant site has to answer. Hours belong in the hero, in a persistent header, or in a live &quot;Open · until 10&quot; chip - not behind a link to a hours page most visitors won&#39;t click." data-popover-glossary="hours-visibility"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Above-the-fold hours" data-popover-body="&quot;Are they open right now?&quot; is the single most common question a restaurant site has to answer. Hours belong in the hero, in a persistent header, or in a live &quot;Open · until 10&quot; chip - not behind a link to a hours page most visitors won&#39;t click." data-popover-glossary="hours-visibility"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="03">
@@ -1662,7 +1674,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Long-press your address on your phone. Does a "Copy" option appear?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Use real text wrapped in a Maps link: <code>&lt;a href="https://maps.google.com/?q=Your+Address"&gt;</code>. Bonus points for an embedded map that opens to directions on tap.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Copyable address" data-popover-body="If a visitor can&#39;t long-press the address on their phone and hit Copy, they can&#39;t paste it into Maps, an Uber, or a text to a friend. Baked-in image addresses break every one of those flows. Use real text wrapped in a Google Maps link." data-popover-glossary="copyable-address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Copyable address" data-popover-body="If a visitor can&#39;t long-press the address on their phone and hit Copy, they can&#39;t paste it into Maps, an Uber, or a text to a friend. Baked-in image addresses break every one of those flows. Use real text wrapped in a Google Maps link." data-popover-glossary="copyable-address"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="04">
@@ -1674,7 +1686,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Tap your phone number on your mobile site. Does the dialer open immediately with your number pre-filled?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Wrap the number in <code>&lt;a href="tel:+15551234567"&gt;</code>. Free, takes thirty seconds, and the conversion lift is real.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Tap-to-call phone link" data-popover-body="A phone number wrapped in a tel: anchor so a phone tap launches the dialer. Plain-text numbers force visitors to memorize or copy-paste, losing ~15% of takeout orders and reservation calls at the margins." data-popover-glossary="click-to-call" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Tap-to-call phone link" data-popover-body="A phone number wrapped in a tel: anchor so a phone tap launches the dialer. Plain-text numbers force visitors to memorize or copy-paste, losing ~15% of takeout orders and reservation calls at the margins." data-popover-glossary="click-to-call" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="05">
@@ -1686,7 +1698,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Show your homepage to someone who's never heard of your restaurant. Ask them what kind of place it is. If they hesitate, you fail.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Add a subhead under your name that names cuisine + neighborhood + vibe. Something like "Neighborhood Italian · Silver Spring · family-run since 1998."</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Cuisine pitch" data-popover-body="One sentence under the restaurant name that tells a first-time visitor what you serve, who you serve, and why they should care. A first-time visitor should classify your restaurant by cuisine, vibe, and neighborhood in about four seconds." data-popover-glossary="cuisine-pitch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Cuisine pitch" data-popover-body="One sentence under the restaurant name that tells a first-time visitor what you serve, who you serve, and why they should care. A first-time visitor should classify your restaurant by cuisine, vibe, and neighborhood in about four seconds." data-popover-glossary="cuisine-pitch"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="25">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 25 complete">
@@ -1697,7 +1709,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your menu page on a phone. Count the dishes that call out ANY dietary signal. Fewer than three? You have a gap. Zero? Your menu is invisible to a meaningful slice of searchers.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Add V / GF / DF symbols to the dishes they apply to, and put a one-line legend at the top of the menu. For bakeries with custom-order intake, add a dietary-restriction field to the form — it's a safety signal as much as a marketing one.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Dietary markers" data-popover-body="Per-dish labels — V for vegan, GF for gluten-free, DF for dairy-free, plus halal, kosher, nut-free — that let dietary-restricted visitors self-qualify the menu. About 1 in 3 diners avoids at least one food group." data-popover-glossary="dietary-markers" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Dietary markers" data-popover-body="Per-dish labels — V for vegan, GF for gluten-free, DF for dairy-free, plus halal, kosher, nut-free — that let dietary-restricted visitors self-qualify the menu. About 1 in 3 diners avoids at least one food group." data-popover-glossary="dietary-markers" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
     </div>
   </div>
@@ -1710,7 +1722,7 @@ header.nav{min-height:64px}
       <div class="cat-header">
         <div class="cat-header-title">
           <span class="cat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
           </span>
           <h2>Mobile experience.</h2>
         </div>
@@ -1727,7 +1739,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Run your URL through <a href="https://pagespeed.web.dev" target="_blank" rel="noopener"><code>pagespeed.web.dev</code></a>. Under Mobile, you want LCP under 2.5s, INP under 200ms, and CLS under 0.1 — those are Google's "good" thresholds. Anything over 4s LCP or 500ms INP is a real emergency; the audit tool calls those out by name too.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Compress hero images to WebP or AVIF (80% size reduction, no visual loss). Defer non-critical JavaScript. Remove render-blocking web fonts or use <code>font-display: swap</code>. Reserve explicit dimensions on every image so layout doesn't shift as images load. If your site is on Wix or Squarespace and still slow after those fixes, you've hit the template ceiling.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Page speed" data-popover-body="How fast your homepage becomes usable on a phone on a normal mobile connection - measured by Google&#39;s Core Web Vitals (LCP, INP, CLS). 53% of mobile visitors abandon a page that takes longer than three seconds to load." data-popover-glossary="core-web-vitals" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Page speed" data-popover-body="How fast your homepage becomes usable on a phone on a normal mobile connection - measured by Google&#39;s Core Web Vitals (LCP, INP, CLS). 53% of mobile visitors abandon a page that takes longer than three seconds to load." data-popover-glossary="core-web-vitals" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="07">
@@ -1739,7 +1751,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your mobile site one-handed. Can you tap every button, link, and menu item with your thumb without zooming or squinting?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Set a minimum button size of 44px. Add padding around text links. Space nav items out so they aren't stacked within a thumb's reach of each other.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Tap targets (44×44px)" data-popover-body="Any button or link that a phone visitor might tap needs to be at least 44×44 CSS pixels. Smaller targets produce fat-finger misses, and on a restaurant site the most-tapped buttons are usually &quot;Reserve,&quot; &quot;Order,&quot; and the phone number - precisely where a miss costs revenue." data-popover-glossary="tap-targets" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Tap targets (44×44px)" data-popover-body="Any button or link that a phone visitor might tap needs to be at least 44×44 CSS pixels. Smaller targets produce fat-finger misses, and on a restaurant site the most-tapped buttons are usually &quot;Reserve,&quot; &quot;Order,&quot; and the phone number - precisely where a miss costs revenue." data-popover-glossary="tap-targets" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="08">
@@ -1751,7 +1763,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your site on an actual phone — not a desktop "responsive view." Can you read a menu description at arm's length without squinting?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Set your body font-size to at least 16px. For anything you actually want someone to read — menu descriptions, about copy, the story of your place — aim for 17 or 18px.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Body font-size (16px+)" data-popover-body="Body copy needs to render at 16px or larger on phones. Smaller forces iOS Safari to zoom on input focus and reads as tiny. Menu descriptions and wine lists deserve 17-18px - those paragraphs are what convince a guest to book." data-popover-glossary="body-text-size" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Body font-size (16px+)" data-popover-body="Body copy needs to render at 16px or larger on phones. Smaller forces iOS Safari to zoom on input focus and reads as tiny. Menu descriptions and wine lists deserve 17-18px - those paragraphs are what convince a guest to book." data-popover-glossary="body-text-size" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="09">
@@ -1763,7 +1775,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your homepage on your phone. When it loads, is everything already sized for the screen — or do you see a tiny desktop layout that you have to pinch and zoom just to read? If it's the second one, you fail this check.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Ask whoever built your site to add this line to the <code>&lt;head&gt;</code> of every page: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. It's a one-minute fix. If your site is on a modern custom build, this is already handled.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Viewport meta tag" data-popover-body="A one-line <meta> tag that tells mobile browsers to render the page at phone width instead of zoomed-out desktop width. Without it, mobile browsers render at ~980px and scale down - everything looks tiny, nothing is tappable, visitors bounce instantly." data-popover-glossary="viewport-meta" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Viewport meta tag" data-popover-body="A one-line <meta> tag that tells mobile browsers to render the page at phone width instead of zoomed-out desktop width. Without it, mobile browsers render at ~980px and scale down - everything looks tiny, nothing is tappable, visitors bounce instantly." data-popover-glossary="viewport-meta" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
     </div>
   </div>
@@ -1776,7 +1788,7 @@ header.nav{min-height:64px}
       <div class="cat-header">
         <div class="cat-header-title">
           <span class="cat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 L9 15 M14 6 L18 10 M12 2 C16 4 20 8 22 12 L16 18 C12 16 8 12 6 8 Z"/><circle cx="14" cy="10" r="1.5"/><path d="M5 19 C4 17 4 15 5 14 L6 15 C7 16 7 18 6 20 Z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 L9 15 M14 6 L18 10 M12 2 C16 4 20 8 22 12 L16 18 C12 16 8 12 6 8 Z"/><circle cx="14" cy="10" r="1.5"/><path d="M5 19 C4 17 4 15 5 14 L6 15 C7 16 7 18 6 20 Z"/></svg>
           </span>
           <h2>Conversions.</h2>
         </div>
@@ -1793,7 +1805,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open any page of your site — the menu, the about, the story. Can you start a reservation in one tap without scrolling?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Put a reservation CTA in your main nav and a persistent sticky footer on mobile. The button should be visible from the first pixel of every page.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Reservation CTA on every page" data-popover-body="A &quot;Reserve a table&quot; action visible on every page that launches your reservations flow in one tap. A visitor reading the menu on an inside page still needs a one-tap path to book. Link directly to Resy, Tock, SevenRooms, OpenTable, or an embedded widget." data-popover-glossary="reservation-link" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Reservation CTA on every page" data-popover-body="A &quot;Reserve a table&quot; action visible on every page that launches your reservations flow in one tap. A visitor reading the menu on an inside page still needs a one-tap path to book. Link directly to Resy, Tock, SevenRooms, OpenTable, or an embedded widget." data-popover-glossary="reservation-link" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="11" data-na="fine-dining bar">
@@ -1805,7 +1817,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Tap "Order online" from your homepage. Count the steps until you see a real menu item you can add to a cart.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Link directly to your Toast, Square, ChowNow, or custom ordering URL. Skip the interstitial. If your POS doesn't allow direct checkout links, that's a POS problem worth fixing.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Direct-order link" data-popover-body="A button that jumps straight to YOUR checkout on Toast, Square, or ChowNow - not to an aggregator interstitial. Every DoorDash/Grubhub order takes 20-30% commission; every direct Toast order keeps the full margin AND gives you the customer." data-popover-glossary="online-ordering" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Direct-order link" data-popover-body="A button that jumps straight to YOUR checkout on Toast, Square, or ChowNow - not to an aggregator interstitial. Every DoorDash/Grubhub order takes 20-30% commission; every direct Toast order keeps the full margin AND gives you the customer." data-popover-glossary="online-ordering" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="12" data-na="truck">
@@ -1817,7 +1829,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Tap "Get directions" or your address on your mobile site. Does Apple Maps or Google Maps launch with your restaurant as the destination?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Link your address to <code>https://maps.google.com/?q=</code> followed by your URL-encoded address. Or use the native <code>maps:</code> protocol for iOS.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Directions link" data-popover-body="A tappable address or &quot;Directions&quot; button that launches Google Maps or Apple Maps with your restaurant pre-filled. Plain-text addresses force the visitor to copy, switch apps, and paste - three extra steps that cost you first-time visitors." data-popover-glossary="click-to-directions" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Directions link" data-popover-body="A tappable address or &quot;Directions&quot; button that launches Google Maps or Apple Maps with your restaurant pre-filled. Plain-text addresses force the visitor to copy, switch apps, and paste - three extra steps that cost you first-time visitors." data-popover-glossary="click-to-directions" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="13">
@@ -1829,7 +1841,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Scroll your homepage. Count the photos that are (a) of your actual restaurant and (b) sharp enough to look professional.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Hire a local food and interior photographer for a two-hour session. Typical cost: $300–$700. You'll use those photos on the site, Google Business Profile, Instagram, Yelp, and every menu reprint for years.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Real food photography" data-popover-body="Genuine photos of your room, your food, and your people - shot in the actual space, ideally by a professional. Stock photos read as dishonest; grainy phone pics read as amateur. A single two-hour shoot per year covers almost everything." data-popover-glossary="real-photos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Real food photography" data-popover-body="Genuine photos of your room, your food, and your people - shot in the actual space, ideally by a professional. Stock photos read as dishonest; grainy phone pics read as amateur. A single two-hour shoot per year covers almost everything." data-popover-glossary="real-photos"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="14">
@@ -1841,7 +1853,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Load your homepage on mobile. Before you scroll, can you see a review quote, press mention, or star rating?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Move one or two short quotes into the hero or immediately beneath it. A press logo row or a star rating from Google also works. Rotate them occasionally so regulars don't get bored.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Social proof above the fold" data-popover-body="A review quote, press mention, or rating surfaced in the hero - not buried on a testimonials page. A first-time visitor is trying to answer &quot;is this place any good?&quot; in about four seconds. A quoted line from Eater or the NYT does that job faster than any carousel." data-popover-glossary="social-proof" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Social proof above the fold" data-popover-body="A review quote, press mention, or rating surfaced in the hero - not buried on a testimonials page. A first-time visitor is trying to answer &quot;is this place any good?&quot; in about four seconds. A quoted line from Eater or the NYT does that job faster than any carousel." data-popover-glossary="social-proof" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="26">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 26 complete">
@@ -1852,7 +1864,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">From your homepage, can you buy a $50 gift card in three taps? If 'Gift cards' isn't in the main nav or footer, it effectively doesn't exist for the 90% of visitors who won't hunt for it.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Toast, Square, and most modern POS systems offer one-click gift-card storefronts. Turn yours on, add 'Gift cards' to the main nav and the footer, and add a hero-adjacent callout every November.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Gift-card checkout" data-popover-body="A visible purchase flow for physical or e-gift cards. Roughly 20-30% of cards go unredeemed, which is pure revenue, and redeemed cards bring in a new customer plus whatever they spend above the face value." data-popover-glossary="gift-card-checkout" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Gift-card checkout" data-popover-body="A visible purchase flow for physical or e-gift cards. Roughly 20-30% of cards go unredeemed, which is pure revenue, and redeemed cards bring in a new customer plus whatever they spend above the face value." data-popover-glossary="gift-card-checkout" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="27">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 27 complete">
@@ -1863,7 +1875,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Scroll your homepage all the way down. Is there an email-capture form you could fill in without opening a modal? If the only form is a contact form buried on a Contact page, you're missing the easiest owned-channel win.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Add an inline email form to your homepage footer and any long-form page (blog post, about page). Use Mailchimp, Klaviyo, ConvertKit, or whatever your POS integrates with. Avoid modal popups — they convert worse than inline placements and annoy visitors.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Newsletter capture" data-popover-body="An email-input form that adds visitors to your owned marketing list. It&#39;s the one channel you own outright - Instagram and Google can change the rules, but your list keeps delivering. 3-5× higher repeat-visit rates from subscribers." data-popover-glossary="newsletter-capture" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Newsletter capture" data-popover-body="An email-input form that adds visitors to your owned marketing list. It&#39;s the one channel you own outright - Instagram and Google can change the rules, but your list keeps delivering. 3-5× higher repeat-visit rates from subscribers." data-popover-glossary="newsletter-capture" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="28">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 28 complete">
@@ -1874,7 +1886,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Search 'catering [your neighborhood]' on Google. Does your site appear? Then click through to your own site and try to book an event. If the path isn't obvious in two clicks, you're losing planners to competitors whose page is.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Build a dedicated /catering/ page with packages, per-head pricing, minimum lead time, service radius, and a structured quote-request form. ezCater, CaterTrax, and Tripleseat all slot in with minimal dev work. For fine-dining restaurants, a private-dining-room page is the same idea.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Catering / private-events page" data-popover-body="A dedicated landing page for corporate catering, weddings, private dining, and buyouts. Event planners search &#39;catering [neighborhood]&#39; and land directly on catering pages — without one you rank for nothing and convert nothing." data-popover-glossary="catering-page" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Catering / private-events page" data-popover-body="A dedicated landing page for corporate catering, weddings, private dining, and buyouts. Event planners search &#39;catering [neighborhood]&#39; and land directly on catering pages — without one you rank for nothing and convert nothing." data-popover-glossary="catering-page" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
     </div>
   </div>
@@ -1891,7 +1903,7 @@ header.nav{min-height:64px}
         <p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);">The 30 items above keep the website doing its job. The <a href="/tools/menu-engineering/" style="color:inherit;border-bottom:1px dashed var(--teal);">Menu Engineering Matrix</a> is the 30-minute exercise that keeps the menu <em>on</em> the website doing its job — Stars / Plowhorses / Puzzles / Dogs, run on your own numbers.</p>
       </div>
       <a href="/tools/menu-engineering/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Open Menu Engineering
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
   </div>
@@ -1904,7 +1916,7 @@ header.nav{min-height:64px}
       <div class="cat-header">
         <div class="cat-header-title">
           <span class="cat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2 a 14 14 0 0 1 0 20 a 14 14 0 0 1 0 -20"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2 a 14 14 0 0 1 0 20 a 14 14 0 0 1 0 -20"/></svg>
           </span>
           <h2>Findability.</h2>
         </div>
@@ -1921,7 +1933,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Search your restaurant name in Google Maps. Is there a claimed listing with correct hours, photos, menu link, and category? Does it show a "claimed" badge or let you edit it?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Claim yours at <code>google.com/business</code>. Free. Setup takes thirty minutes, verification by postcard or phone takes a week. Then fill in hours, categories, photos, menu URL, and service areas. Post at least once a month.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Google Business Profile" data-popover-body="Your free Google listing shown in Maps, in &quot;restaurants near me,&quot; and in branded search sidebars. Roughly 60% of restaurant discovery happens inside Maps, not the open web. Claim at google.com/business, fill hours/photos/menu link, keep it consistent with the site." data-popover-glossary="gbp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Google Business Profile" data-popover-body="Your free Google listing shown in Maps, in &quot;restaurants near me,&quot; and in branded search sidebars. Roughly 60% of restaurant discovery happens inside Maps, not the open web. Claim at google.com/business, fill hours/photos/menu link, keep it consistent with the site." data-popover-glossary="gbp"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="16">
@@ -1933,7 +1945,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">View the source of your homepage and find the <code>&lt;title&gt;</code> tag. Does it contain your cuisine and your city? Is it under 60 characters?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Rewrite your title to include restaurant name + cuisine + city. Keep it under 60 characters or Google will truncate it in the search results.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Title tag" data-popover-body="The HTML <title> element that shows up as the headline of your Google search result and the label on every browser tab. Rewrite to include restaurant name, cuisine, and city. Keep it under 60 characters so Google doesn&#39;t truncate." data-popover-glossary="title-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Title tag" data-popover-body="The HTML <title> element that shows up as the headline of your Google search result and the label on every browser tab. Rewrite to include restaurant name, cuisine, and city. Keep it under 60 characters so Google doesn&#39;t truncate." data-popover-glossary="title-tag"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="17">
@@ -1945,7 +1957,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Run your URL through Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results Test ↗</a>. A "Restaurant" (or FastFoodRestaurant, Bakery, BarOrPub, etc.) detection passes; "No items detected" is a fail.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Add a <code>&lt;script type="application/ld+json"&gt;</code> block to your <code>&lt;head&gt;</code> with <code>@type: "Restaurant"</code> (or the subtype that matches you), <code>name</code>, full <code>address</code>, <code>servesCuisine</code>, <code>priceRange</code>, <code>telephone</code>, <code>acceptsReservations</code>, <code>hasMenu</code>, and an <code>openingHoursSpecification</code> array with an entry for every day of the week. Closed days can have opens/closes set to null. Validate every change against the Rich Results Test.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Restaurant JSON-LD schema" data-popover-body="A hidden structured-data block that declares your business to Google in a machine-readable format. Sites with proper Restaurant schema earn rich results (hours, price, photos, menu snippets); sites without it get a plain blue link." data-popover-glossary="schema" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Restaurant JSON-LD schema" data-popover-body="A hidden structured-data block that declares your business to Google in a machine-readable format. Sites with proper Restaurant schema earn rich results (hours, price, photos, menu snippets); sites without it get a plain blue link." data-popover-glossary="schema" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="18">
@@ -1957,7 +1969,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Inspect each photo on your homepage in your browser's dev tools. Does each <code>&lt;img&gt;</code> have an <code>alt</code> attribute that actually describes the image?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Rewrite alt text as real sentences. Describe what's in the photo and — where it's natural — name your restaurant and city. Decorative images can have <code>alt=""</code>, but nothing should be missing the attribute entirely.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Meaningful alt text" data-popover-body="A short text description of each image in the alt attribute. Screen readers read it aloud, Google Images indexes it, browsers show it when the image fails to load. Replace filenames like IMG_2041.jpg with real sentences naming the dish and the room." data-popover-glossary="alt-text" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Meaningful alt text" data-popover-body="A short text description of each image in the alt attribute. Screen readers read it aloud, Google Images indexes it, browsers show it when the image fails to load. Replace filenames like IMG_2041.jpg with real sentences naming the dish and the room." data-popover-glossary="alt-text" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="19">
@@ -1969,7 +1981,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Visit <code>yoursite.com/sitemap.xml</code>. If it 404s, you don't have one. Then log into Search Console and check the "Sitemaps" section.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Generate a sitemap (most static site generators and CMSes do this automatically; there are also free online tools for handwritten sites). Upload to your site root. Verify your domain in Google Search Console and submit the sitemap URL.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Sitemap submitted to Google" data-popover-body="A list of every URL on your site that Google should crawl, served at /sitemap.xml and registered in Google Search Console. Accelerates indexing for new pages (a just-launched catering page, a seasonal menu) and reminds Google of pages it might skip." data-popover-glossary="sitemap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Sitemap submitted to Google" data-popover-body="A list of every URL on your site that Google should crawl, served at /sitemap.xml and registered in Google Search Console. Accelerates indexing for new pages (a just-launched catering page, a seasonal menu) and reminds Google of pages it might skip." data-popover-glossary="sitemap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="29">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 29 complete">
@@ -1980,7 +1992,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your homepage in one tab and google.com/business in another. Do today's hours match? What about Sunday? Holiday hours during November-December? Daylight Saving transitions?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Pick one canonical source (usually GBP, since it feeds Google's rich results directly) and update it first whenever hours change. Reflect the change on your site AND in your Restaurant JSON-LD schema the same day. The audit tool runs a three-way cross-check and flags mismatches.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Hours accuracy" data-popover-body="Whether the hours on your site, in your Google Business Profile, and in your openingHoursSpecification schema all say the same thing. Drift triggers a &#39;hours may vary&#39; hint in Google search, which tanks click-through." data-popover-glossary="hours-visibility" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Hours accuracy" data-popover-body="Whether the hours on your site, in your Google Business Profile, and in your openingHoursSpecification schema all say the same thing. Drift triggers a &#39;hours may vary&#39; hint in Google search, which tanks click-through." data-popover-glossary="hours-visibility" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
     </div>
   </div>
@@ -1997,7 +2009,7 @@ header.nav{min-height:64px}
         <p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);">Hours wrong in one place is the #1 driver of bad reviews after stale menus. <a href="/tools/open-hours/" style="color:inherit;border-bottom:1px dashed var(--teal);">Open Hours</a> is the 15-minute fix-up — a sign for the door, the exact text to paste into Google, and a block of code to send your website builder. Run it once a quarter.</p>
       </div>
       <a href="/tools/open-hours/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Open Open Hours
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
   </div>
@@ -2010,7 +2022,7 @@ header.nav{min-height:64px}
       <div class="cat-header">
         <div class="cat-header-title">
           <span class="cat-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 16.5 16.5 19.5 12 21 C7.5 19.5 4 16.5 4 12 V6 Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg>
           </span>
           <h2>Trust.</h2>
         </div>
@@ -2027,7 +2039,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Load your site and look at the URL bar. Is there a padlock icon? Is the URL <code>https://</code> not <code>http://</code>? No warning banner?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">If your host doesn't offer free HTTPS (via Let's Encrypt or Cloudflare) in 2026, switch hosts. Immediately. There is no good excuse left.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="HTTPS / SSL certificate" data-popover-body="Encrypted HTTP. Modern browsers flag plain-HTTP sites as &quot;Not secure&quot; in the address bar, which instantly destroys first-visit trust. Free certificates via Let&#39;s Encrypt or Cloudflare mean there&#39;s no cost reason not to have one." data-popover-glossary="https"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="HTTPS / SSL certificate" data-popover-body="Encrypted HTTP. Modern browsers flag plain-HTTP sites as &quot;Not secure&quot; in the address bar, which instantly destroys first-visit trust. Free certificates via Let&#39;s Encrypt or Cloudflare mean there&#39;s no cost reason not to have one." data-popover-glossary="https"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="21">
@@ -2039,7 +2051,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your menu page. Can you see the price of every dish without clicking through to a PDF or a separate page?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Show the prices. If you're prix fixe or tasting-menu only, state the total price prominently. If you're a pub with forty items and weekly rotation, keep the top sellers priced and update them in under a minute.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Transparent menu pricing" data-popover-body="Every dish shows its price, or (for tasting-menu formats) the total prix-fixe cost is stated prominently. Hidden prices lose first-time diners before they ever book. For legitimate market fluctuation, a range like &quot;$38-52 market&quot; beats &quot;MP&quot;." data-popover-glossary="honest-pricing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Transparent menu pricing" data-popover-body="Every dish shows its price, or (for tasting-menu formats) the total prix-fixe cost is stated prominently. Hidden prices lose first-time diners before they ever book. For legitimate market fluctuation, a range like &quot;$38-52 market&quot; beats &quot;MP&quot;." data-popover-glossary="honest-pricing"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="22">
@@ -2051,7 +2063,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Look at your homepage. Is there anything — a date, a seasonal badge, an event, a weekly feature — that proves the site was touched in the last three months?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Add "Seasonal menu · Fall 2026" to your menu header. Keep a small "This week" section on the homepage with a rotating special or event. Or display the last content update date in the footer.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Freshness signal" data-popover-body="Any visible indicator that the site is actively maintained - a &quot;Spring menu&quot; badge, a this-week specials block, a dated blog post. Stale sites read as closed. A visitor who lands in May and sees a January hero assumes you shuttered." data-popover-glossary="last-updated-signal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Freshness signal" data-popover-body="Any visible indicator that the site is actively maintained - a &quot;Spring menu&quot; badge, a this-week specials block, a dated blog post. Stale sites read as closed. A visitor who lands in May and sees a January hero assumes you shuttered." data-popover-glossary="last-updated-signal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="23">
@@ -2063,7 +2075,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Fill out your own contact form with a real test message. Does it land in your inbox within five minutes? Is that inbox actually checked every day?</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Test it every week. If the form isn't delivering reliably, rip it out and replace it with a <code>mailto:</code> link and your phone number. A working simple thing beats a broken sophisticated thing every time.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Working contact form" data-popover-body="A form that actually delivers submissions to an inbox someone reads daily, tested end-to-end monthly. Broken forms are common and costly: high-value catering or press inquiries vanish into misconfigured webhooks and visitors never know." data-popover-glossary="working-contact-form"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Working contact form" data-popover-body="A form that actually delivers submissions to an inbox someone reads daily, tested end-to-end monthly. Broken forms are common and costly: high-value catering or press inquiries vanish into misconfigured webhooks and visitors never know." data-popover-glossary="working-contact-form"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
 
       <label class="check-item" data-check-id="24">
@@ -2075,7 +2087,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your site on your phone. Step outside at mid-day if you can. Can you read a menu description without shading the screen with your other hand? If the answer is no, you fail — and if you're not sure, <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">WebAIM's contrast checker</a> will give you a precise number for any foreground/background pair.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Darken body text to at least <code>#4a4a4a</code> on a cream or white background, or lift the background slightly. For menu item names specifically, go one step bolder than you think you need. Never use pure gray-on-cream for anything a hungry person needs to read.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Readable text in sunlight" data-popover-body="WCAG AA contrast for body text - at least a 4.5:1 contrast ratio against its background; 3:1 for large headings. Thin grey serif on cream looks refined in a studio and disappears in direct sun, which is exactly where the over-40 demographic that dines out most will be reading." data-popover-glossary="wcag-contrast" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Readable text in sunlight" data-popover-body="WCAG AA contrast for body text - at least a 4.5:1 contrast ratio against its background; 3:1 for large headings. Thin grey serif on cream looks refined in a studio and disappears in direct sun, which is exactly where the over-40 demographic that dines out most will be reading." data-popover-glossary="wcag-contrast" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
       <label class="check-item" data-check-id="30">
         <input type="checkbox" class="check-toggle" aria-label="Mark item 30 complete">
@@ -2086,7 +2098,7 @@ header.nav{min-height:64px}
           <div class="field"><div class="k">10-sec test</div><div class="v">Open your homepage. Scroll only the first screen. Can you spot a press mention, award, or chef bio without scrolling further? If all your credibility lives on a /press/ page three clicks deep, it isn't converting anyone.</div></div>
           <div class="field"><div class="k">Fix</div><div class="v">Pull your three strongest press quotes or awards into a hero-adjacent strip. For fine-dining, a chef-bio block with a real photo (not a stock headshot) says 'there's a human accountable to what comes out of this kitchen' — which is itself social proof.</div></div>
         </div>
-        <button type="button" class="learn-more-btn" data-popover-title="Press, awards &amp; chef bio" data-popover-body="Visible credibility signals placed above the fold rather than buried on a testimonials page. A quoted line from Eater or NYT, a Michelin callout, or a chef-bio block with a real photo answers &#39;is this place any good?&#39; in four seconds." data-popover-glossary="social-proof" data-popover-audit="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
+        <button type="button" class="learn-more-btn" data-popover-title="Press, awards &amp; chef bio" data-popover-body="Visible credibility signals placed above the fold rather than buried on a testimonials page. A quoted line from Eater or NYT, a Michelin callout, or a chef-bio block with a real photo answers &#39;is this place any good?&#39; in four seconds." data-popover-glossary="social-proof" data-popover-audit="1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Learn more</button>
       </label>
     </div>
   </div>
@@ -2105,7 +2117,7 @@ header.nav{min-height:64px}
         <p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);">The 30 items above keep the website pulling its weight. The <a href="/tools/menu-copy/" style="color:inherit;border-bottom:1px dashed var(--teal);">Menu Copy Inspector</a> is the language-layer companion — paste a description, see what's missing, what's working, what's dragging, and why. A teaching tool, not a rewriter.</p>
       </div>
       <a href="/tools/menu-copy/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Open Menu Copy Inspector
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
   </div>
@@ -2122,7 +2134,7 @@ header.nav{min-height:64px}
         <p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);">Several of the checks above (hero photo, OG card, real photos) silently depend on this. The <a href="/tools/photo-brief/" style="color:inherit;border-bottom:1px dashed var(--teal);">Photo Brief Builder</a> turns your dish list and destinations (Yelp, Google, Instagram, the menu) into a one-page brief — so the photos that come back actually fit the slots the website needs.</p>
       </div>
       <a href="/tools/photo-brief/" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:var(--teal);color:var(--cream);border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;">Open Photo Brief Builder
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px;"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
   </div>
@@ -2149,7 +2161,7 @@ header.nav{min-height:64px}
         </ul>
         <a class="btn btn-primary js-window band-cta" href="/window/" style="margin-top:16px; justify-content:center;">
           Have me fix this for you
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
       <div class="service" data-band="middling" style="border-top:3px solid var(--stone-2);">
@@ -2163,7 +2175,7 @@ header.nav{min-height:64px}
         </ul>
         <a class="btn btn-ghost js-window band-cta" href="/window/" style="margin-top:16px; justify-content:center;">
           Get a second pair of eyes
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
       <div class="service" data-band="solid" style="border-top:3px solid var(--teal);">
@@ -2177,7 +2189,7 @@ header.nav{min-height:64px}
         </ul>
         <a class="btn btn-ghost js-window band-cta" href="/window/" style="margin-top:16px; justify-content:center;">
           Talk about a Care Plan
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
       </div>
     </div>
@@ -2196,7 +2208,7 @@ header.nav{min-height:64px}
     <div class="reveal" style="text-align:center; margin-top:28px;">
       <button type="button" class="btn btn-primary" onclick="window.print()" style="justify-content:center;">
         Save or print this checklist
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       </button>
       <p style="font-size:13px; color:var(--stone); margin:12px 0 0;">Your browser's Save as PDF option works great — Letter size, pen-friendly layout.</p>
     </div>
@@ -2230,7 +2242,7 @@ header.nav{min-height:64px}
 
       <button type="submit" class="btn btn-primary" style="justify-content:center; margin-top:12px;">
         Email me the PDF
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </button>
 
       <p style="font-size:12px; color:var(--stone); text-align:center; margin:4px 0 0;">
@@ -2245,7 +2257,7 @@ header.nav{min-height:64px}
       <p style="margin:0 0 12px; font-size:14px; color:var(--ink);">While you wait — if you'd rather have me run the checks for you:</p>
       <a class="btn btn-primary js-window" href="/window/" style="justify-content:center;">
         Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
     </div>
     </details>
@@ -2263,7 +2275,7 @@ header.nav{min-height:64px}
 
     <div class="hero-ctas reveal" style="justify-content:center; margin-top:32px;">
       <a class="btn btn-primary js-window" href="/window/">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
       </a>
       <a class="btn btn-ghost" href="/for/restaurants/">See restaurant services</a>
     </div>
@@ -2320,7 +2332,7 @@ header.nav{min-height:64px}
     <div class="foot-cta">
       <div class="foot-cta-text">Got a question? The Window is open.</div>
       <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Email Don
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       </a>
     </div>
 
@@ -2426,11 +2438,11 @@ header.nav{min-height:64px}
        footer block and stays idempotent across re-syncs. -->
   <aside class="mobile-cta-bar" id="mobileCtaBar" aria-label="Quick actions">
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--primary" href="/tools/audits/restaurant/" data-event="sticky-cta-audit">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
       Run free audit
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
       Email Don
     </a>
   </aside>
@@ -2478,7 +2490,7 @@ header.nav{min-height:64px}
     <header class="checklist-popover-head">
       <h3 id="checklistPopoverTitle">—</h3>
       <button type="button" class="checklist-popover-close" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </header>
     <p id="checklistPopoverBody" class="checklist-popover-body">—</p>

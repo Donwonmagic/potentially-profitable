@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1361-1454) ===== */
+/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1379-1407) ===== */
 /* ============ CITATION DRAWER ============
    <details class="cite"> with a <summary> trigger and a body
    containing: source name, brief overview, and a link. Uses the
@@ -27,81 +27,16 @@
 .cite-body a:hover{color:var(--teal-dark)}
 @media print{.cite{border:1px solid #ccc}.cite summary::after{display:none}.cite-body a::after{content:' (' attr(href) ')';font-size:11px;color:#666;word-break:break-all}}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 800ms var(--ease-out),transform 800ms var(--ease-out)}
-.reveal.in{opacity:1;transform:translateY(0)}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}
+/* `.reveal` was opacity:0 by default — JS observer added `.in` to fade
+   it in. Below-the-fold was INVISIBLE until site.js loaded; "bottom
+   takes a few seconds." Default to visible; `.in` is a visual no-op.
+   Correctness over decoration. */
 .reveal{opacity:1;transform:none}
-}
-:focus{outline:none}
-/* Sprint 3: global focus affordance. The 2px solid outline reads as
-   a browser-default; the layered halo from --ring-focus reads as
-   "designed." Both land together so keyboard users on legacy
-   browsers without focus-visible support still get the outline
-   fallback. The 3-px 22% teal halo is soft enough to feel like a
-   brand element, visible enough to satisfy WCAG focus contrast. */
-a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;box-shadow:var(--ring-focus)}
-.btn:focus-visible{outline-offset:4px;border-radius:999px}
-.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream);box-shadow:0 0 0 3px rgba(250,247,242,.32)}
-.skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:0 0 8px 0;font-size:14px;font-weight:500;z-index:100}
-.skip-link:focus{left:0;outline:2px solid var(--cream);outline-offset:2px}
-/* Screen-reader-only text. Used to annotate icon-only buttons and links
-   whose visible text doesn't fully describe them (e.g. "opens in a new
-   tab" on external links). Keeps a 1px footprint so the browser keeps
-   it in the focus/tab order. */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-/* Authored line break that only fires on wide viewports. Used on
-   hero H1s where a hard <br> gives the desktop layout the intended
-   two-line cadence but, at narrow widths, stacks on top of the
-   natural wrap and produces a three- or four-line headline that
-   reads as "off-center". Hiding it below 820px lets the browser wrap
-   the H1 on its own; at 820px+ the authored break takes over. 820 is
-   the width at which the services H1 first clause ("Everything one
-   website needs," / "Todo lo que un sitio necesita,") fits on a
-   single line for both locales. */
-br.br-lg{display:none}
-@media (min-width:820px){br.br-lg{display:inline}}
-.nav-toggle{display:none;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;border-radius:8px;padding:0;margin-left:8px}
-.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink);transition:transform var(--t-med) var(--ease),opacity var(--t-fast) var(--ease)}
-.nav.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.nav.menu-open .nav-toggle span:nth-child(2){opacity:0}
-.nav.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;flex-direction:column;gap:6px;padding:20px var(--pad-x) 28px;background:var(--cream);border-top:1px solid var(--line);
-  /* When the menu is open and the library drawer is expanded, content
-     can exceed viewport height. .nav is position:fixed, which means
-     anything past the bottom of the viewport is unreachable unless
-     this container scrolls itself. Cap height to the viewport minus
-     the top nav-row, and let inner content scroll. -webkit-overflow-
-     scrolling for older iOS Safari momentum. */
-  /* Bug B3.1 (proactive audit): the 100vh fallback clipped the
-     bottom of the mobile menu on iOS < 15 when the URL bar was
-     visible (vh includes that bar; the menu overflowed). 100svh
-     (small viewport height) — supported in iOS ≥ 15.4 — uses the
-     smallest stable height and clips correctly. dvh remains the
-     preferred unit; svh is the fallback used when dvh isn't. */
-  max-height:calc(100dvh - 64px);
-  max-height:calc(100svh - 64px); /* fallback for browsers without dvh */
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
-}
-.nav.scrolled .mobile-menu{
-  /* When the nav has shrunk on scroll its row is shorter (12px+12px
-     padding + ~40px controls ≈ 56px) — give the drawer those few px
-     back so the bottom isn't clipped. svh fallback per B3.1. */
-  max-height:calc(100dvh - 56px);
-  max-height:calc(100svh - 56px);
-}
-.mobile-menu a{padding:14px 2px;font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
-.mobile-menu a.btn-primary{margin-top:14px;border-bottom:0;justify-content:center;padding:15px 26px;font-family:var(--font-body);font-size:15px;background:var(--teal);color:var(--cream);border-radius:999px}
-.mobile-menu a.btn-primary:hover,.mobile-menu a.btn-primary:focus{background:var(--teal-dark);color:var(--cream)}
-.mobile-menu[hidden]{display:none}
-/* Keep the nav CTA pill at its intrinsic width on desktop. Without
-   flex-shrink:0 it compresses when a long translated label (e.g. the
-   Spanish "Agenda una llamada de 20 min") pushes the nav over the
-   container width — the compression shoves the text against one side
-   of the pill, which reads as "the text isn't centered". */
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+/* (kept for line-count parity with the previous .reveal block) */
 
-/* ===== [article] Listen / audio player (lines 1476-2004) ===== */
+/* ===== [article] Listen / audio player (lines 1497-2025) ===== */
 /* ============ LISTEN / AUDIO PLAYER ============
    Two surfaces share one engine:
    1. .listen-card — the inline "Audio edition" card rendered under the
@@ -632,7 +567,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [article] Glossary scannability (lines 2899-3053) ===== */
+/* ===== [article] Glossary scannability (lines 2920-3074) ===== */
 /* ---------- Glossary scannability (Phase 4 cohesion pass) ----------
    Adds two new chip rows to the existing .gloss-filterbar:
    1) topic-cluster filter (.gloss-topic-filter) using the same six
@@ -789,7 +724,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] "Recently added" strip on /learn/ (lines 3054-3128) ===== */
+/* ===== [article] "Recently added" strip on /learn/ (lines 3075-3149) ===== */
 /* ---------- "Recently added" strip on /learn/ (Phase 5) -----------
    Three-card row of the newest items across tools + articles, sorted
    by date desc. Generated by scripts/build-library-recent.mjs from
@@ -866,7 +801,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media (max-width:560px){ .recently-added__grid{ grid-template-columns:1fr; } }
 
 
-/* ===== [article] Learn hub + Start here pages (lines 3448-3550) ===== */
+/* ===== [article] Learn hub + Start here pages (lines 3469-3571) ===== */
 /* ============================================================
    LEARN HUB + START HERE PAGES
    Component styles for /learn/ and /learn/start-here/ (and ES
@@ -971,7 +906,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Research notes (/learn/research/) (lines 3795-3811) ===== */
+/* ===== [article] Research notes (/learn/research/) (lines 3824-3840) ===== */
 /* ============================================================
    RESEARCH NOTES (/learn/research/)
    The internal-summary-of-external-studies layer. Keeps readers
@@ -990,7 +925,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .research-index-uses strong{color:var(--teal);font-weight:600}
 
 
-/* ===== [article] Library topics (/learn/topics/) (lines 3812-3993) ===== */
+/* ===== [article] Library topics (/learn/topics/) (lines 3841-4022) ===== */
 /* ============================================================
    LIBRARY TOPICS — /learn/topics/ + /learn/topics/<slug>/
    The Phase 2 aggregation layer. Topics hub is a 6-card grid;
@@ -1174,7 +1109,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 3994-4588) ===== */
+/* ===== [article] Glossary term pages (/glossary/<slug>/) (lines 4023-4136) ===== */
 /* ============================================================
    GLOSSARY TERM PAGES — /glossary/<slug>/
    Generated by scripts/build-library.mjs from the single source
@@ -1289,90 +1224,8 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   color:var(--stone);font-size:13.5px;
 }
 
-/* Tool deep-links — the Phase-3.5 block at the bottom of every
-   /tools/* page. Closes the loop from a tool's result back into
-   the Library by surfacing one curated glossary term and one
-   curated article, plus the topic page(s) the tool belongs to.
-   Generated by scripts/build-library.mjs. */
-.tool-deep-links{
-  padding:clamp(56px,7vw,80px) 0;
-  background:var(--cream-2);
-  border-top:1px solid var(--line);
-}
-.tool-deep-head{
-  max-width:680px;margin:0 auto 32px;text-align:center;
-}
-.tool-deep-head h2{
-  font-family:var(--font-display);
-  font-size:clamp(28px,3.4vw,40px);
-  font-weight:500;letter-spacing:-0.01em;line-height:1.1;
-  margin:8px 0 14px;
-}
-.tool-deep-blurb{
-  font-size:16px;line-height:1.6;color:var(--ink-soft);
-  margin:0 0 18px;
-}
-.tool-deep-topics{
-  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
-}
-.tool-deep-topic{
-  display:inline-block;padding:6px 14px;
-  border:1px solid var(--line-dark);
-  border-radius:999px;
-  font-size:13px;font-weight:500;letter-spacing:0.02em;
-  color:var(--ink-soft);text-decoration:none;
-  background:var(--white);
-  transition:border-color var(--t-fast) var(--ease),background var(--t-fast) var(--ease),color var(--t-fast) var(--ease);
-}
-.tool-deep-topic:hover{
-  border-color:var(--teal);
-  background:var(--teal-tint);
-  color:var(--teal);
-}
-.tool-deep-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:18px;
-  max-width:880px;margin:0 auto;
-}
-@media (max-width:760px){ .tool-deep-grid{ grid-template-columns:1fr; } }
-.tool-deep-card{
-  display:flex;flex-direction:column;height:100%;
-  padding:28px 30px 26px;
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:var(--r-md);
-  text-decoration:none;color:inherit;
-  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast) var(--ease);
-}
-.tool-deep-card:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--elev-2);
-  border-color:var(--teal);
-}
-.tool-deep-kind{
-  font-family:var(--font-body);font-size:11px;font-weight:700;
-  letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);
-  margin-bottom:12px;
-}
-.tool-deep-card h3{
-  font-family:var(--font-display);
-  font-size:clamp(20px,2.2vw,24px);
-  font-weight:500;letter-spacing:-0.01em;line-height:1.25;
-  margin:0 0 6px;color:var(--ink);
-}
-.tool-deep-aka{
-  font-family:var(--font-display);font-style:italic;
-  font-size:14px;color:var(--stone);
-  margin:0 0 10px;
-}
-.tool-deep-snippet{
-  font-size:14.5px;line-height:1.55;color:var(--ink-soft);
-  margin:0 0 14px;flex:1;
-}
-.tool-deep-cta{
-  font-family:var(--font-body);font-size:13.5px;font-weight:600;
-  color:var(--teal);
-}
 
+/* ===== [article] Resume article — services-aside-cta + see-also + research notes (lines 4221-4617) ===== */
 /* /services/ inline secondary CTA — sits between Web Builds and
    Process, breaking the run of "Book a 20-min call" buttons with
    a no-commit "Run a free audit first" affordance. */
@@ -1771,7 +1624,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-chip svg{width:11px;height:11px}
 
 
-/* ===== [article] Research-note CTA inside cite drawer (lines 4589-4609) ===== */
+/* ===== [article] Research-note CTA inside cite drawer (lines 4618-4638) ===== */
 /* ===== Research-note CTA inside a .cite details block =====
    The .cite-body now leads with an internal "Read Don's summary"
    link (new tab) and keeps the external source link below it.
@@ -1794,7 +1647,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .cite-note-link:hover span{opacity:1}
 
 
-/* ===== [article] Research drawer (inline preview) (lines 4610-4749) ===== */
+/* ===== [article] Research drawer (inline preview) (lines 4639-4778) ===== */
 /* ============================================================
    RESEARCH DRAWER (inline research-note preview)
    Opened when a reader clicks a .cite-note-link or .link-research
@@ -1936,7 +1789,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary term → research note cross-link (lines 4750-4794) ===== */
+/* ===== [article] Glossary term → research note cross-link (lines 4779-4823) ===== */
 /* ===== Glossary term → research note cross-link =====
    Compact "See the research" line added by scripts/
    wire-glossary-research.mjs after .gloss-term-why on selected
@@ -1983,7 +1836,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] "Recently added" rail (under glossary hero) (lines 4795-4852) ===== */
+/* ===== [article] "Recently added" rail (under glossary hero) (lines 4824-4881) ===== */
 /* ===== "Recently added" rail (under glossary hero) =====
  * Surfaces newest terms to returning readers; populated by
  * scripts/inject-glossary-recent.mjs from data/glossary-added.json.
@@ -2043,7 +1896,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4853-4873) ===== */
+/* ===== [article] Glossary index "▶ 90s explainer" chip (lines 4882-4902) ===== */
 /* ===== Glossary index "▶ 90s explainer" chip =====
  * Variant of .gloss-tag (defined inline on glossary/index.html) used
  * on the five flagship-term cards. Sits inside .gloss-tags next to
@@ -2066,7 +1919,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4874-5139) ===== */
+/* ===== [article] Glossary explainer (90-second narrated diagram) (lines 4903-5168) ===== */
 /* ===== Glossary explainer (90-second narrated diagram) =====
  * Inline-SVG explainer for the five flagship glossary terms (menu
  * engineering, prime cost, plate cost, contribution margin, aspect
@@ -2334,7 +2187,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Inline glossary popover (lines 5140-5206) ===== */
+/* ===== [article] Inline glossary popover (lines 5169-5235) ===== */
 /* ===== Inline glossary popover =====
  * Hover/focus tooltip rendered by site.js when a reader interacts with
  * an in-article autolink (a[data-glossary-blurb]). Single shared popover
@@ -2403,7 +2256,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Print view for glossary section landing pages (lines 5207-5263) ===== */
+/* ===== [article] Print view for glossary section landing pages (lines 5236-5292) ===== */
 /* ===== Print view for glossary section landing pages =====
  * Activates only on /glossary/<section>/ pages. Strips site chrome
  * (nav, footer, CTAs, the print button itself) and reflows the
@@ -2462,7 +2315,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Editorial callouts (lines 5373-5456) ===== */
+/* ===== [article] Editorial callouts (lines 5402-5485) ===== */
 /* ============ Editorial callouts (Sprint 10 — cohesion) ============
    .callout--field is the "Field note from the kitchen" — a per-
    glossary-term italic aside that adds Don's operator anecdote
@@ -2548,7 +2401,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .field-notes-rail__more a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 
 
-/* ===== [article] Post-end Workshop CTA (lines 5475-5490) ===== */
+/* ===== [article] Post-end Workshop CTA (lines 5504-5519) ===== */
 /* ============ Post-end Workshop CTA (Sprint 13 — cohesion) ============
    The "Workshop next step" card at the close of every blog post.
    Sits between .post-end-mark and the see-also block — the moment
@@ -2566,7 +2419,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .post-end-cta .btn-primary:hover{background:var(--teal-dark)}
 
 
-/* ===== [article] Inline graphics — globalized from gold articles (lines 6004-6064) ===== */
+/* ===== [article] Inline graphics — globalized from gold articles (lines 6033-6093) ===== */
 /* ============ INLINE GRAPHICS — globalized from gold articles ============ */
 /* .recovery-stack: vertical stacked rows with row tints + dark total cap.
    Pattern from blog/five-restaurant-website-changes-recover-one-percent-margin/.
@@ -2629,7 +2482,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 @media(max-width:640px){.report-decider,.photo-aspect-decoder{padding:18px 20px}.report-decider__item summary,.photo-aspect-decoder__item summary{font-size:15.5px}}
 
 
-/* ===== [article] KnitRail — "what’s next" component for articles (lines 6127-6201) ===== */
+/* ===== [article] KnitRail — "what’s next" component for articles (lines 6156-6230) ===== */
 /* ============================================================
    KnitRail — unified four-lane "what's next" component for
    articles. Replaces the smart-next 3-line CTA with a 4-column
@@ -2704,3 +2557,104 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
     gap: 14px;
   }
 }
+
+
+/* ===== [article] Article viz components (.viz-* family) (lines 6372-6470) ===== */
+/* ============ ARTICLE VIZ COMPONENTS ============
+   Namespaced .viz-* family for inline article graphics. Tokens-only
+   (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
+   compositor-only animation (transform/opacity), explicit width/height
+   on every SVG. Reduced-motion: components render at final state
+   without animation. Animation is opt-in via data-animate attribute
+   plus the .reveal class (the existing IntersectionObserver in
+   assets/site.js adds .in on viewport entry).
+
+   Phase-1 components in this section:
+     .viz-figure       — figure wrapper (caption + a11y)
+     .viz-bars         — animated horizontal bar chart (replaces .dist-chart)
+
+   Future phases extend this with .viz-ring / .viz-spark / .viz-ba /
+   .viz-flow / .viz-tree / .viz-waterfall / .viz-gauge / .viz-hero /
+   .viz-scroll. */
+
+.viz-figure{margin:32px 0;padding:0}
+.viz-figure>figcaption{font-family:var(--font-body);font-size:13px;line-height:1.5;color:var(--stone);margin-top:14px;font-style:italic;text-align:center}
+.viz-figure .viz-sr-table{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.viz-bars{display:grid;grid-template-columns:auto 1fr auto;gap:8px 14px;align-items:center;margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+.viz-bars__label{font-variant-numeric:tabular-nums;line-height:1.3}
+.viz-bars__track{background:var(--cream-2);border-radius:4px;height:20px;overflow:hidden;position:relative}
+.viz-bars__fill{display:block;height:100%;background:var(--teal);border-radius:4px;transform:scaleX(var(--w,1));transform-origin:left center;width:100%}
+.viz-bars__fill[data-tone="rust"]{background:var(--rust)}
+.viz-bars__fill[data-tone="stone"]{background:var(--stone)}
+.viz-bars__fill[data-tone="ink"]{background:var(--ink)}
+.viz-bars__num{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;line-height:1.3}
+@media (prefers-reduced-motion:no-preference){
+  /* Bars start at scaleX(0) and grow to scaleX(var(--w)) when the
+     wrapper enters the viewport (.in is added by the existing IO in
+     assets/site.js for elements carrying class .reveal). Compositor-
+     only transform — passes check-cls-animation.mjs. Stagger via
+     inline --delay (renderer writes "--delay:Nms" on each track). */
+  .viz-bars[data-animate="grow"] .viz-bars__fill{transform:scaleX(0);transition:transform 900ms cubic-bezier(0.2,0.8,0.2,1);transition-delay:var(--delay,0ms)}
+  .viz-bars[data-animate="grow"].in .viz-bars__fill{transform:scaleX(var(--w,1))}
+}
+@media (max-width:520px){
+  .viz-bars{font-size:13px;gap:6px 10px}
+  .viz-bars__track{height:16px}
+}
+
+/* .viz-waterfall — single horizontal bar segmented by where each
+   dollar of a fixed-amount transaction goes (commission, processing,
+   packaging, food cost, labor, keep). Each segment grows along the
+   inline-flex axis to flex-basis: calc(var(--w) * 100%); --w is the
+   segment's share of the whole (0..1). The "keep" segment is rendered
+   in the brand teal so the reader's eye lands on it. Live-recompute
+   driver lives in assets/article-viz.js (data-viz-waterfall hook). */
+.viz-waterfall{margin:24px 0;font-family:var(--font-body)}
+.viz-waterfall__title{font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.005em}
+.viz-waterfall__bar{display:flex;height:64px;border-radius:8px;overflow:hidden;background:var(--cream-2);margin:0 0 18px;border:1px solid var(--line)}
+.viz-waterfall__seg{display:flex;align-items:center;justify-content:center;flex-grow:0;flex-shrink:0;flex-basis:calc(var(--w,0)*100%);min-width:0;font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;white-space:nowrap;overflow:hidden;background:var(--stone)}
+.viz-waterfall__seg[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__seg[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:var(--ink)}
+.viz-waterfall__seg[data-tone="teal"],.viz-waterfall__seg--keep{background:var(--teal);color:var(--cream)}
+.viz-waterfall__legend{display:grid;grid-template-columns:1fr;gap:0;font-size:14.5px;border-top:1px solid var(--line);border-radius:6px;overflow:hidden}
+.viz-waterfall__row{display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);color:var(--ink)}
+.viz-waterfall__row:last-child{border-bottom:0}
+.viz-waterfall__row[data-keep="true"]{border-top:2px solid var(--ink);background:linear-gradient(90deg,rgba(31,78,91,0.08),transparent);padding:14px 4px;font-weight:600;border-bottom:0}
+.viz-waterfall__row[data-keep="true"] .viz-waterfall__num{color:var(--teal);font-family:var(--font-display);font-size:20px;font-weight:500}
+.viz-waterfall__swatch{width:14px;height:14px;border-radius:3px;background:var(--stone);align-self:center}
+.viz-waterfall__swatch[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__swatch[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__swatch[data-tone="teal"]{background:var(--teal)}
+.viz-waterfall__num{font-variant-numeric:tabular-nums;text-align:right;min-width:72px}
+.viz-waterfall__pct{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;min-width:60px;font-size:13px}
+@media (prefers-reduced-motion:no-preference){
+  .viz-waterfall__seg{transition:flex-basis 480ms cubic-bezier(0.2,0.8,0.2,1),background-color var(--t-fast) var(--ease)}
+}
+@media (max-width:520px){
+  .viz-waterfall__bar{height:52px}
+  .viz-waterfall__row{grid-template-columns:14px 1fr auto;gap:10px;font-size:13.5px}
+  .viz-waterfall__row .viz-waterfall__pct{display:none}
+}
+
+/* .viz-slider — labeled range input that drives a viz widget. Pairs
+   with .viz-waterfall (commission rate) but is generic; data-vw-slider
+   on the input attaches the widget driver in assets/article-viz.js.
+   The thumb is styled in the brand teal so the affordance reads as
+   editorial, not OS-default. */
+.viz-slider{display:grid;gap:10px;margin:18px 0;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.viz-slider__label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--font-body)}
+.viz-slider__title{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.005em}
+.viz-slider__readout{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:24px;color:var(--teal);font-weight:500;letter-spacing:-0.01em}
+.viz-slider input[type="range"]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:24px;margin:0;cursor:pointer}
+.viz-slider input[type="range"]:focus{outline:none}
+.viz-slider input[type="range"]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(to right,var(--teal) 0%,var(--teal) calc(var(--p,50%) * 1),var(--line) calc(var(--p,50%) * 1),var(--line) 100%)}
+.viz-slider input[type="range"]::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}
+.viz-slider input[type="range"]::-moz-range-progress{height:6px;border-radius:999px;background:var(--teal)}
+.viz-slider input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);margin-top:-8px;cursor:grab}
+.viz-slider input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);cursor:grab}
+.viz-slider input[type="range"]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider input[type="range"]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider__hint{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
+.viz-slider__hint b{color:var(--ink);font-weight:600}
