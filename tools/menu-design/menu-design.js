@@ -5500,6 +5500,43 @@
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
   }
 
+  // Wave C1 finish — ESC/POS thermal-printer .bin export. The
+  // emitter (tools/menu-design/menu-render-escpos.js) is small (~5
+  // KB gz, no external deps) and lazy-loaded only on click.
+  var exportEscposBtn = document.getElementById('mdExportEscpos');
+  if (exportEscposBtn) exportEscposBtn.addEventListener('click', function () {
+    withRenderer(ensureMdEscpos, exportEscposBtn, tt('Loading…', 'Cargando…'), function () { _doExportEscpos(); });
+  });
+  function ensureMdEscpos() {
+    if (typeof MD_ESCPOS !== 'undefined' && MD_ESCPOS.exportEscpos) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-escpos.js?v=20260504-c1');
+  }
+  function _doExportEscpos() {
+    if (typeof MD_ESCPOS === 'undefined' || typeof MD_ESCPOS.exportEscpos !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting a thermal-printer file.',
+                        'Agrega al menos un plato antes de exportar el archivo para impresora térmica.'), 'error');
+      return;
+    }
+    var opts = {
+      rows:    rows,
+      theme:   resolveTheme(),
+      meta:    meta,
+      title:   meta.businessName || 'Menu',
+      locale:  LOCALE
+    };
+    var result = MD_ESCPOS.exportEscpos(opts);
+    downloadBlob(result.blob, result.filename, 'application/octet-stream');
+    setDownloadMsg(tt(
+      'Thermal printer file downloaded (' + result.byteCount + ' bytes). Pipe to /dev/usb/lp0 or your POS raw-print endpoint.',
+      'Archivo para impresora térmica descargado (' + result.byteCount + ' bytes). Envíalo a /dev/usb/lp0 o al endpoint raw-print de tu POS.'
+    ), 'success');
+    if (window.plausible) {
+      try { window.plausible('Menu Design Thermal Exported'); } catch (_) {}
+    }
+  }
+
   // -------------------- Wave B5 — Menu Pack ZIP ------------------
   // The handoff packet the UX agent named as the missing primitive.
   // One click → a single .zip with: print PDF, QR-menu HTML (with

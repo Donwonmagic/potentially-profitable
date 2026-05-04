@@ -2286,6 +2286,20 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </button>
               <span class="md-format-hint">Grade 1 (uncontracted) Braille Ready Format file. Send to a Braille embosser; meets ADA Title III for accessible menus.</span>
             </div>
+            <!-- Wave C1 finish — ESC/POS thermal-printer .bin export.
+                 Output is raw bytes the operator pipes to a thermal
+                 receipt printer (Epson TM, Star TSP, etc.) for the
+                 most common operator artifact you can't get out of
+                 Canva: a printed "today's specials" or "delivery
+                 only" receipt at the pickup window, or a stamp on
+                 the bottom of every kitchen slip. -->
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportEscpos" aria-label="Download ESC/POS thermal printer .bin">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><polyline points="6 14 18 14 18 22 6 22 6 14"/></svg>
+                <span>Thermal printer (.bin)</span>
+              </button>
+              <span class="md-format-hint">Raw ESC/POS bytes for an 80 mm thermal receipt printer. Pipe the .bin to /dev/usb/lp0 (Linux), or to your POS's "raw print" endpoint. Niche, but a Canva-can't artifact.</span>
+            </div>
           </div>
         </div>
       </details>
