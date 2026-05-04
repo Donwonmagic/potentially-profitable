@@ -1272,8 +1272,19 @@
     if (emptyEl) emptyEl.hidden = anyMatch;
   }
   var themeFilterInputEl = document.getElementById('mdThemeFilter');
+  // Wave studio-quality (perf) — rAF-debounced theme filter. 37 cards
+  // × hidden-flag write per keystroke is fine, but the handler also
+  // walks group headers to compute visibility — skip the duplicate
+  // work when the operator's typing fast.
   if (themeFilterInputEl) {
-    themeFilterInputEl.addEventListener('input', applyThemeFilter);
+    var __themeFilterRaf = null;
+    themeFilterInputEl.addEventListener('input', function () {
+      if (__themeFilterRaf) return;
+      __themeFilterRaf = requestAnimationFrame(function () {
+        __themeFilterRaf = null;
+        applyThemeFilter();
+      });
+    });
   }
 
   if (themesEl) {
@@ -2387,27 +2398,69 @@
       ['shrink-1','shrink-2','shrink-3','shrink-4','promote-2col'].forEach(function (c) {
         paperEl.classList.remove('md-' + c);
       });
+      // Wave studio-quality (perf) — Warm-start the cascade from the
+      // previously-picked step. If the operator just edited a
+      // description by 5 chars, the previously-picked step almost
+      // always still fits — we save 9 measurement passes (each one
+      // forces a reflow). When it stops fitting (e.g. operator added
+      // a dish that breaks the budget), we fall through to the full
+      // cascade and pick the next-larger step. Always validates;
+      // no staleness risk.
       var fitOk = false;
       var firstStepBuckets = null;
       var pickedStep = null;
-      for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
-        var step = STEPS[stepIdx];
-        if (step.cls) paperEl.classList.add('md-' + step.cls);
-        if (step.twoCol) paperEl.classList.add('md-promote-2col');
-        // Force a reflow before re-measure.
+      var warmStartIdx = -1;
+      if (paginatePreviewDom._lastPickedLabel) {
+        for (var ws = 0; ws < STEPS.length; ws++) {
+          if (STEPS[ws].label === paginatePreviewDom._lastPickedLabel) {
+            warmStartIdx = ws;
+            break;
+          }
+        }
+      }
+      if (warmStartIdx >= 0) {
+        var wstep = STEPS[warmStartIdx];
+        if (wstep.cls) paperEl.classList.add('md-' + wstep.cls);
+        if (wstep.twoCol) paperEl.classList.add('md-promote-2col');
         // eslint-disable-next-line no-unused-expressions
         paperEl.offsetHeight;
-        var buckets = _measureBuckets(paperEl, contentAreaH);
-        if (stepIdx === 0) firstStepBuckets = buckets;
-        if (buckets.length <= targetPages) {
+        var wbuckets = _measureBuckets(paperEl, contentAreaH);
+        if (wbuckets.length <= targetPages) {
           fitOk = true;
-          pickedStep = step;
-          break;
+          pickedStep = wstep;
+          firstStepBuckets = wbuckets;
+        } else {
+          // Warm start didn't fit; clear and fall through.
+          if (wstep.cls) paperEl.classList.remove('md-' + wstep.cls);
+          if (wstep.twoCol) paperEl.classList.remove('md-promote-2col');
         }
-        // Remove this step's classes before trying the next.
-        if (step.cls) paperEl.classList.remove('md-' + step.cls);
-        if (step.twoCol) paperEl.classList.remove('md-promote-2col');
       }
+      // Full cascade only fires when warm-start missed (or no prior
+      // pick exists). Mirrors the original behaviour exactly.
+      if (!fitOk) {
+        for (var stepIdx = 0; stepIdx < STEPS.length; stepIdx++) {
+          var step = STEPS[stepIdx];
+          if (step.cls) paperEl.classList.add('md-' + step.cls);
+          if (step.twoCol) paperEl.classList.add('md-promote-2col');
+          // Force a reflow before re-measure.
+          // eslint-disable-next-line no-unused-expressions
+          paperEl.offsetHeight;
+          var buckets = _measureBuckets(paperEl, contentAreaH);
+          if (stepIdx === 0) firstStepBuckets = buckets;
+          if (buckets.length <= targetPages) {
+            fitOk = true;
+            pickedStep = step;
+            break;
+          }
+          // Remove this step's classes before trying the next.
+          if (step.cls) paperEl.classList.remove('md-' + step.cls);
+          if (step.twoCol) paperEl.classList.remove('md-promote-2col');
+        }
+      }
+      // Stash the picked step's label so the next render's warm-start
+      // can try it first. Cleared (set to null) on overflow so we
+      // start from native next time the operator trims content.
+      paginatePreviewDom._lastPickedLabel = (pickedStep && pickedStep.label) || null;
       // Stash the picked step on the paper so the export-PDF flow can
       // mirror it (effectiveShrinkFactor + effectiveTwoColPromote).
       paperEl.dataset.fitStep = (pickedStep && pickedStep.label) || (fitOk ? 'fit' : 'overflow');
@@ -3136,7 +3189,21 @@
       }
     });
   }
-  if (searchEl) searchEl.addEventListener('input', applySearchFilter);
+  // Wave studio-quality (perf) — rAF-debounced search filter. The
+  // filter does a linear scan + per-row inline-style write that costs
+  // ~5ms per call on a 100-dish menu; without debouncing the handler
+  // fires 5-6× per typing burst and the input feels janky. rAF
+  // coalesces to one filter pass per frame.
+  var __searchRaf = null;
+  if (searchEl) {
+    searchEl.addEventListener('input', function () {
+      if (__searchRaf) return;
+      __searchRaf = requestAnimationFrame(function () {
+        __searchRaf = null;
+        applySearchFilter();
+      });
+    });
+  }
 
   function persistDraft() {
     if (!__saveDraftEnabled) return;
