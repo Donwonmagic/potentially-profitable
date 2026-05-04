@@ -4317,6 +4317,32 @@
     downloadMsg.textContent = text || '';
   }
 
+  // Wave studio-quality (perf/UX) — Export busy-state coordinator.
+  // PDF generation on a 53-dish tabloid blocks the main thread for
+  // 4-6s. The button label change ("Building PDF…") is the only
+  // signal today, so operators staring at the preview wonder if
+  // anything is happening. This counter-based helper toggles a soft
+  // pulse on the preview frame whenever ANY export is in flight,
+  // and clears when all exports finish (operators sometimes click
+  // Download PDF + Pack ZIP back-to-back; the counter handles that).
+  var __exportBusy = 0;
+  function setExportBusy(running) {
+    if (running) {
+      __exportBusy++;
+    } else {
+      __exportBusy = Math.max(0, __exportBusy - 1);
+    }
+    var pf = document.getElementById('mdPreviewFrame');
+    if (pf) {
+      pf.classList.toggle('md-preview-busy', __exportBusy > 0);
+      if (__exportBusy > 0) {
+        pf.setAttribute('aria-busy', 'true');
+      } else {
+        pf.removeAttribute('aria-busy');
+      }
+    }
+  }
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
       withRenderer(ensureMdPdf, downloadBtn, tt('Loading PDF tools…', 'Cargando…'), function () {
@@ -4368,6 +4394,7 @@
       var originalLabel = downloadBtn.innerHTML;
       downloadBtn.innerHTML = tt('Building PDF…', 'Generando PDF…');
       setDownloadMsg('');
+      setExportBusy(true);
 
       MD_PDF.exportPdf({
         rows:         rows,
@@ -4514,6 +4541,7 @@
       }).then(function () {
         downloadBtn.disabled = false;
         downloadBtn.innerHTML = originalLabel;
+        setExportBusy(false);
       });
   }
 
@@ -4728,7 +4756,7 @@
       var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
       var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
       var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-large-print';
-      largePrintBtn.disabled = true;
+      largePrintBtn.disabled = true; setExportBusy(true);
       var origLabel = largePrintBtn.innerHTML;
       largePrintBtn.textContent = tt('Building large-print PDF…', 'Generando letra grande…');
       // Wave studio-quality (C2) — large-print prefers descPlain.
@@ -4797,7 +4825,7 @@
       try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) title = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
       if (!title) title = tt('Menu', 'Menú');
       var fnameBase = (title.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'menu') + '-high-contrast';
-      highContrastBtn.disabled = true;
+      highContrastBtn.disabled = true; setExportBusy(true);
       var origLabel = highContrastBtn.innerHTML;
       highContrastBtn.textContent = tt('Building high-contrast PDF…', 'Generando alto contraste…');
       // Wave studio-quality (C2) — high-contrast prefers descPlain.
@@ -4887,7 +4915,7 @@
     })();
     var fnameBase = slug + '-specials-' + ymd;
 
-    exportSpecialsBtn.disabled = true;
+    exportSpecialsBtn.disabled = true; setExportBusy(true);
     var origLabel = exportSpecialsBtn.innerHTML;
     exportSpecialsBtn.textContent = tt('Building specials card…', 'Generando especiales…');
 
@@ -4938,7 +4966,7 @@
         try { window.plausible('Menu Design Export Failed', { props: { format: 'specials', reason: 'unknown' } }); } catch (_) {}
       }
     }).then(function () {
-      exportSpecialsBtn.disabled = false;
+      exportSpecialsBtn.disabled = false; setExportBusy(false);
       exportSpecialsBtn.innerHTML = origLabel;
     });
   }
@@ -5144,6 +5172,7 @@
     var origLabel = exportPackBtn.innerHTML;
     exportPackBtn.textContent = tt('Building pack…', 'Generando pack…');
     setDownloadMsg('', 'success');
+    setExportBusy(true);
 
     MD_PACK.exportPack({
       canonicalMenu: canonicalMenu,
@@ -5197,6 +5226,7 @@
     }).then(function () {
       exportPackBtn.disabled = false;
       exportPackBtn.innerHTML = origLabel;
+      setExportBusy(false);
     });
   }
 
@@ -5276,6 +5306,7 @@
     var origLabelBl = exportBilingualBtn.innerHTML;
     exportBilingualBtn.textContent = tt('Building bilingual pack…', 'Generando pack bilingüe…');
     setDownloadMsg('', 'success');
+    setExportBusy(true);
 
     MD_PACK.exportBilingualPack({
       canonicalMenu: canonicalMenuBl,
@@ -5328,6 +5359,7 @@
     }).then(function () {
       exportBilingualBtn.disabled = false;
       exportBilingualBtn.innerHTML = origLabelBl;
+      setExportBusy(false);
     });
   }
 
@@ -5406,7 +5438,7 @@
         theme = MD_THEMES.applyPalette(theme, palette);
       }
       var title = (rows.find(function (r) { return r.kind === 'section' && (r.name || '').trim(); }) || { name: 'Menu' }).name || 'Menu';
-      exportQrBtn.disabled = true;
+      exportQrBtn.disabled = true; setExportBusy(true);
       var origLabel = exportQrBtn.innerHTML;
       exportQrBtn.textContent = tt('Building zip…', 'Empacando zip…');
       setDownloadMsg('', 'success');
@@ -5458,7 +5490,7 @@
           'No se pudo armar el zip — revisa tu red e intenta de nuevo.'
         ), 'error');
       }).then(function () {
-        exportQrBtn.disabled = false;
+        exportQrBtn.disabled = false; setExportBusy(false);
         exportQrBtn.innerHTML = origLabel;
       });
   }

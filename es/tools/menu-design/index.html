@@ -203,6 +203,15 @@ header.nav{min-height:64px}
 .md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
+/* Wave studio-quality (perf/UX) — busy state. */
+.md-preview-frame.md-preview-busy{outline:2px solid color-mix(in srgb,var(--teal) 60%,transparent);outline-offset:4px;animation:md-preview-busy-pulse 1.4s ease-in-out infinite}
+.md-preview-frame.md-preview-busy::after{content:'';position:absolute;inset:18px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--teal) 18%,transparent),transparent);background-size:30% 100%;background-position:-30% 0;background-repeat:no-repeat;animation:md-preview-busy-shimmer 1.6s linear infinite;pointer-events:none;border-radius:8px}
+@keyframes md-preview-busy-pulse{0%,100%{outline-offset:4px;outline-color:color-mix(in srgb,var(--teal) 35%,transparent)}50%{outline-offset:6px;outline-color:color-mix(in srgb,var(--teal) 75%,transparent)}}
+@keyframes md-preview-busy-shimmer{from{background-position:-30% 0}to{background-position:130% 0}}
+@media (prefers-reduced-motion: reduce){
+  .md-preview-frame.md-preview-busy{animation:none}
+  .md-preview-frame.md-preview-busy::after{animation:none;background:color-mix(in srgb,var(--teal) 8%,transparent)}
+}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
 .md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 26px;color:var(--ink);letter-spacing:0}
 .md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}

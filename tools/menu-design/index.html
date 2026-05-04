@@ -472,6 +472,19 @@ header.nav{min-height:64px}
 /* W24-2 — frame is now the multi-page host; document scroll
    handles tall menus instead of nested overflow. */
 .md-preview-frame{position:relative;padding:18px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+/* Wave studio-quality (perf/UX) — busy state during slow exports
+   (PDF generation can take 4-6s on a 53-dish tabloid). The frame
+   gets a soft animated outline so operators see visual confirmation
+   that work is happening even when the button label change is far
+   from where they're looking. */
+.md-preview-frame.md-preview-busy{outline:2px solid color-mix(in srgb,var(--teal) 60%,transparent);outline-offset:4px;animation:md-preview-busy-pulse 1.4s ease-in-out infinite}
+.md-preview-frame.md-preview-busy::after{content:'';position:absolute;inset:18px 12px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--teal) 18%,transparent),transparent);background-size:30% 100%;background-position:-30% 0;background-repeat:no-repeat;animation:md-preview-busy-shimmer 1.6s linear infinite;pointer-events:none;border-radius:8px}
+@keyframes md-preview-busy-pulse{0%,100%{outline-offset:4px;outline-color:color-mix(in srgb,var(--teal) 35%,transparent)}50%{outline-offset:6px;outline-color:color-mix(in srgb,var(--teal) 75%,transparent)}}
+@keyframes md-preview-busy-shimmer{from{background-position:-30% 0}to{background-position:130% 0}}
+@media (prefers-reduced-motion: reduce){
+  .md-preview-frame.md-preview-busy{animation:none}
+  .md-preview-frame.md-preview-busy::after{animation:none;background:color-mix(in srgb,var(--teal) 8%,transparent)}
+}
 /* W24-2 — preview paper now respects the operator's paper choice
    via aspect-ratio + padding-percent driven by JS. Default to
    Letter portrait when no paper is selected. */
