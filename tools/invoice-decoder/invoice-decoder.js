@@ -1606,6 +1606,187 @@
     if (saveBtn) try { saveBtn.click(); } catch (_) {}
   }
 
+  // Wave 12 — Owner-grade insights renderer. Reads each insight,
+  // renders only the cards whose data passes their threshold gate.
+  function renderInsights(parsed) {
+    var host = document.getElementById('idInsights');
+    if (!host) return;
+    if (typeof MID_INSIGHTS === 'undefined') { host.hidden = true; return; }
+    var cards = [];
+    var vendor = parsed && parsed.vendor;
+    // 12.3 forecast vs actual.
+    try {
+      var fcast = MID_INSIGHTS.forecastInvoiceTotal(parsed.rows, vendor);
+      if (fcast && fcast.sampleSize >= 4 && Math.abs(fcast.deltaPct) >= 7) {
+        var sign = fcast.deltaPct > 0 ? '+' : '';
+        var driverStr = fcast.categoryDriver
+          ? ' Biggest mover: ' + fcast.categoryDriver.category + ' $' + fcast.categoryDriver.actual.toFixed(0) +
+            ' vs typical $' + fcast.categoryDriver.expected.toFixed(0) + '.'
+          : '';
+        cards.push({
+          id: 'forecast',
+          tone: Math.abs(fcast.deltaPct) >= 15 ? 'warn' : 'info',
+          headline: vendor + ' typical $' + fcast.expectedRange[0].toFixed(0) + '–$' + fcast.expectedRange[1].toFixed(0) +
+                    '. This one: $' + fcast.actual.toFixed(0) + ' (' + sign + fcast.deltaPct + '%)',
+          body: driverStr || 'Within normal range.',
+          analytics: 'Invoice Decoder Forecast Shown'
+        });
+      }
+    } catch (_) {}
+    // 12.5 menu bridge — top dishes affected.
+    try {
+      if (typeof MuntinDishDrift !== 'undefined' && MuntinDishDrift.compute) {
+        var driftedDishes = MuntinDishDrift.compute();
+        if (driftedDishes.length) {
+          var top = driftedDishes.slice(0, 3);
+          var lines = top.map(function (d) {
+            var s = d.deltaPctOnDish > 0 ? '+' : '';
+            return d.dish + ' ' + s + d.deltaPctOnDish.toFixed(1) + '%';
+          });
+          cards.push({
+            id: 'menu-bridge',
+            tone: 'warn',
+            headline: 'This invoice shifts ' + top.length + ' dish' + (top.length === 1 ? '' : 'es') + '’ plate cost',
+            body: lines.join(' · ')
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.1 shrinkage anomaly.
+    try {
+      var shrink = MID_INSIGHTS.detectShrinkage();
+      if (shrink && shrink.length) {
+        var top = shrink[0];
+        cards.push({
+          id: 'shrinkage',
+          tone: 'warn',
+          headline: top.label + ': ' + top.recentCount + ' orders this week vs your usual ' + top.expectedCount,
+          body: '$' + top.dollarExposure.toFixed(0) + ' exposure across recent orders. Either business is up sharply, or worth a sanity-check.',
+          analytics: 'Invoice Decoder Theft Flag'
+        });
+      }
+    } catch (_) {}
+    // 12.2 reorder shortlist.
+    try {
+      var reorder = MID_INSIGHTS.buildReorderShortlist({ max: 6 });
+      if (reorder && reorder.length >= 3) {
+        cards.push({
+          id: 'reorder',
+          tone: 'info',
+          headline: reorder.length + ' SKUs likely due for reorder',
+          body: reorder.slice(0, 4).map(function (r) { return r.stem; }).join(', ') + (reorder.length > 4 ? '…' : ''),
+          actions: [{ label: 'Copy order pad', kind: 'primary', handler: function () {
+            var note = MID_INSIGHTS.formatOrderPad(reorder);
+            try { navigator.clipboard && navigator.clipboard.writeText(note); } catch (_) {}
+            if (window.plausible) try { window.plausible('Invoice Decoder Reorder Copied', { props: { count_bucket: reorder.length < 5 ? '<5' : reorder.length < 10 ? '5-9' : '10+' } }); } catch (_) {}
+          }}]
+        });
+      }
+    } catch (_) {}
+    // 12.4 vendor-switch ROI.
+    try {
+      var swaps = MID_INSIGHTS.aggregateVendorSwitchRoi({ max: 3 });
+      if (swaps && swaps.length) {
+        var s0 = swaps[0];
+        cards.push({
+          id: 'vendor-switch-roi',
+          tone: 'info',
+          headline: 'Switching from ' + s0.from + ' to ' + s0.to + ' projects $' + s0.monthlyDelta.toFixed(0) + '/mo',
+          body: 'Across ' + s0.stems.length + ' SKUs in your history. Top: ' + s0.stems.slice(0, 3).map(function (st) { return st.stem; }).join(', '),
+          analytics: 'Invoice Decoder Vendor Switch ROI'
+        });
+      }
+    } catch (_) {}
+    // 12.8 supplier health (only when vendor present + ≥3 invoices).
+    try {
+      if (vendor) {
+        var health = MID_INSIGHTS.supplierHealth(vendor);
+        if (health && health.score < 75) {
+          cards.push({
+            id: 'supplier-health',
+            tone: health.score < 60 ? 'warn' : 'info',
+            headline: vendor + ' supplier health: ' + health.score + '/100',
+            body: 'Backorder ' + health.stats.backorderRate + '%, price stability CV ' + health.stats.priceCV + '%, ' + health.stats.invoicesSeen + ' invoices observed.',
+            analytics: 'Invoice Decoder Supplier Health'
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.7 seasonality — sample one anomaly row to demonstrate the
+    // pre-threshold signal (only fires when ≥1 row has ≥10 mo history).
+    try {
+      var anchorRow = (parsed.rows || []).find(function (r) { return r && r.name && (!r.kind || r.kind === 'item'); });
+      if (anchorRow) {
+        var season = MID_INSIGHTS.detectSeasonality(null, { byName: anchorRow.name });
+        if (season && season.unlocked && season.deltaPct != null && Math.abs(season.deltaPct) >= 10) {
+          var dirS = season.deltaPct > 0 ? '+' : '';
+          cards.push({
+            id: 'seasonality',
+            tone: 'info',
+            headline: season.stem + ' year-over-year: ' + dirS + season.deltaPct + '%',
+            body: 'Same month last year: $' + season.sameMonthLastYear.toFixed(2) + '/unit. This month: $' + season.thisMonth.toFixed(2) + '/unit.',
+            analytics: 'Invoice Decoder Seasonality'
+          });
+        }
+      }
+    } catch (_) {}
+    // 12.6 daily food-cost run-rate. We need weekly revenue from the
+    // operator; if MuntinContext.weeklyRevenue is set surface, else
+    // skip silently.
+    try {
+      var ctx = (typeof MuntinContext !== 'undefined' && MuntinContext.read) ? MuntinContext.read() : null;
+      var weeklyRev = ctx && ctx.weeklyRevenue;
+      if (weeklyRev && weeklyRev > 0) {
+        var rate = MID_INSIGHTS.dailyFoodCostRunRate(weeklyRev);
+        if (rate && rate.menuFcPct != null && Math.abs(rate.leakPct) >= 0.02) {
+          var sign = rate.leakPct > 0 ? '+' : '';
+          cards.push({
+            id: 'run-rate',
+            tone: rate.leakPct > 0 ? 'warn' : 'info',
+            headline: 'Menu says ' + (rate.menuFcPct * 100).toFixed(1) + '% FC, invoices say ' + (rate.invoicedFcPct * 100).toFixed(1) + '% (' + sign + (rate.leakPct * 100).toFixed(1) + ' pp)',
+            body: 'Roughly $' + Math.abs(rate.leakDollars).toFixed(0) + '/week ' + (rate.leakPct > 0 ? 'leak' : 'gain') + ' across ' + rate.sampleSize + ' invoices.',
+            analytics: 'Invoice Decoder Run Rate'
+          });
+        }
+      }
+    } catch (_) {}
+    if (!cards.length) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    host.innerHTML = cards.map(function (c) {
+      var actionHtml = '';
+      if (c.actions && c.actions.length) {
+        actionHtml = '<div class="id-insight-actions">' + c.actions.map(function (a, i) {
+          var cls = 'id-insight-btn' + (a.kind === 'primary' ? ' id-insight-btn-primary' : '');
+          return '<button type="button" class="' + cls + '" data-card="' + c.id + '" data-act="' + i + '">' + escHtml(a.label) + '</button>';
+        }).join('') + '</div>';
+      }
+      return '<div class="id-insight-card" data-tone="' + c.tone + '" data-card-id="' + c.id + '">' +
+        '<p class="id-insight-headline">' + escHtml(c.headline) + '</p>' +
+        '<p class="id-insight-body">' + escHtml(c.body) + '</p>' +
+        actionHtml +
+      '</div>';
+    }).join('');
+    host.hidden = false;
+    // Wire action handlers.
+    cards.forEach(function (c) {
+      if (!c.actions) return;
+      c.actions.forEach(function (a, i) {
+        var btn = host.querySelector('[data-card="' + c.id + '"][data-act="' + i + '"]');
+        if (btn) btn.addEventListener('click', function () {
+          a.handler();
+          btn.textContent = '✓ ' + a.label;
+          setTimeout(function () { btn.textContent = a.label; }, 1800);
+        });
+      });
+      if (c.analytics && window.plausible) {
+        try { window.plausible(c.analytics); } catch (_) {}
+      }
+    });
+  }
+
   // Wave 2.3 — Vendor Pulse Strip. One line per visible invoice:
   //   "Sysco · Tue Apr 28 · 41 lines · $1,842.10"
   //   then up to three pill-deltas (top movers via sku-history).
@@ -2495,6 +2676,7 @@
     // Wave 2.3 — vendor pulse strip with this invoice's top movers.
     renderTrustSummary(parsed);
     renderVendorPulse(parsed);
+    renderInsights(parsed);
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
     // Wave 4.3 — auto-learn observation. When no vendor matched

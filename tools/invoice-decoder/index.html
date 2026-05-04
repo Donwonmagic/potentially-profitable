@@ -447,6 +447,19 @@ header.nav{min-height:64px}
 
 /* Wave 2.3 — Vendor Pulse Strip */
 .id-vendor-pulse{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0c2826 0%,#1f4e5b 100%);color:#fff;border-radius:10px}
+/* Wave 12 — Owner insights cards */
+.id-insights{margin:0 0 12px;display:flex;flex-direction:column;gap:8px}
+.id-insights[hidden]{display:none}
+.id-insight-card{padding:11px 14px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13px;color:var(--ink);line-height:1.55}
+.id-insight-card[data-tone="warn"]{border-left-color:#B25C2A;background:#FFF6E5}
+.id-insight-card[data-tone="alert"]{border-left-color:#7a2e1f;background:#fce0d7}
+.id-insight-card[data-tone="info"]{border-left-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,var(--cream))}
+.id-insight-headline{font-weight:600;margin:0 0 4px;font-size:13.5px}
+.id-insight-body{margin:0;font-size:12.5px;color:var(--ink-soft)}
+.id-insight-actions{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.id-insight-btn{font:inherit;font-size:12px;padding:4px 10px;border-radius:5px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer}
+.id-insight-btn:hover{border-color:var(--ink-soft)}
+.id-insight-btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .id-vendor-pulse[hidden]{display:none}
 .id-pulse-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;font-size:14px}
 .id-pulse-vendor{font-family:var(--font-display);font-weight:500;font-size:16px}
@@ -1170,6 +1183,12 @@ header.nav{min-height:64px}
            sum + top movers vs. operator's history. -->
       <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Vendor pulse"></aside>
 
+      <!-- Wave 12 — Owner-grade insights surface. Each card is hidden
+           until its trigger fires (≥sample-count, anomaly threshold,
+           pre-threshold gate for seasonality). Cards render after the
+           vendor pulse so the operator sees the high-level view first. -->
+      <aside class="id-insights" id="idInsights" hidden aria-label="Owner insights"></aside>
+
       <div class="id-diff-strip" id="idDiffStrip" hidden></div>
 
       <!-- Wave 1.3 — Math reconciliation candidate-fix card. -->
@@ -1364,6 +1383,7 @@ header.nav{min-height:64px}
 <script src="./calibration.js?v=20260504-w11-1"></script>
 <script src="./confusion-matrix.js?v=20260504-w11-2"></script>
 <script src="./reconcile.js?v=20260504-w11-4"></script>
+<script src="./insights.js?v=20260504-w12"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
