@@ -82,6 +82,16 @@ header.nav{min-height:64px}
 .cp-ripple-delta[data-dir="up"]{background:#fce0d7;color:#7a2e1f}
 .cp-ripple-delta[data-dir="down"]{background:#c7e4d4;color:#0c4a26}
 .cp-ripple-driver{color:var(--ink-soft);font-size:12px}
+/* Wave 10.11 — Contract-drift dish list */
+.cp-driftdish-list{margin:0;padding:0;list-style:none}
+.cp-driftdish-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.cp-driftdish-row:last-child{border-bottom:0}
+.cp-driftdish-name{font-weight:600;color:var(--ink);min-width:120px}
+.cp-driftdish-delta{font-weight:600;font-variant-numeric:tabular-nums;padding:2px 6px;border-radius:4px}
+.cp-driftdish-delta[data-dir="up"]{background:#fce0d7;color:#7a2e1f}
+.cp-driftdish-delta[data-dir="down"]{background:#c7e4d4;color:#0c4a26}
+.cp-driftdish-amount{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.cp-driftdish-drivers{color:var(--ink-soft);font-size:12px}
 .cp-drift-cat{font-weight:600;color:var(--ink);min-width:96px;text-transform:capitalize}
 .cp-drift-delta{font-variant-numeric:tabular-nums;font-weight:600;min-width:64px;text-align:right}
 .cp-drift-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
@@ -143,6 +153,16 @@ header.nav{min-height:64px}
     <h2>Recipe ripple</h2>
     <p>Dishes whose plate cost shifted ≥5% on your latest invoice update. The driver is named when we know which vendor's price moved.</p>
     <ul class="cp-ripple-list" id="cpRippleList"></ul>
+  </div>
+
+  <!-- Wave 10.11 — Per-portion contract drift. Computed via
+       MuntinDishDrift across contractPrices × latestSkuByStem ×
+       dishes. Surfaces dishes whose plate cost has drifted >1%
+       above contract. -->
+  <div class="cp-card" id="cpDriftDishCard" hidden>
+    <h2>Contract drift on plate</h2>
+    <p>Dishes whose plate cost has moved off your negotiated contract. The driver list names which ingredient's vendor is over.</p>
+    <ul class="cp-driftdish-list" id="cpDriftDishList"></ul>
   </div>
 
   <div class="cp-card" id="cpSparkCard" hidden>
@@ -230,9 +250,12 @@ header.nav{min-height:64px}
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
-<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
+<script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
+<script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
+<script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
+<script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script>
 (function () {
   'use strict';
@@ -345,6 +368,34 @@ header.nav{min-height:64px}
             if (window.plausible) {
               try { window.plausible('Cost Pulse Recipe Ripple', { props: { count_bucket: top.length === 1 ? '1' : top.length === 2 ? '2' : '3+' } }); } catch (_) {}
             }
+          }
+        }
+      }
+    } catch (_) {}
+
+    // Wave 10.11 — Per-portion contract drift. Surface dishes whose
+    // plate cost has shifted above contract.
+    try {
+      if (typeof MuntinDishDrift !== 'undefined' && typeof MuntinDishDrift.compute === 'function') {
+        var driftDishes = MuntinDishDrift.compute();
+        if (driftDishes.length) {
+          var ddCard = document.getElementById('cpDriftDishCard');
+          var ddList = document.getElementById('cpDriftDishList');
+          if (ddCard && ddList) {
+            ddList.innerHTML = driftDishes.slice(0, 5).map(function (d) {
+              var sign = d.deltaPctOnDish > 0 ? '+' : '';
+              var dir = d.deltaPctOnDish > 0 ? 'up' : 'down';
+              var driverNames = d.drivers.slice(0, 2).map(function (drv) {
+                return drv.ingredient + (drv.vendor ? ' (' + drv.vendor + ')' : '');
+              }).join(', ');
+              return '<li class="cp-driftdish-row">' +
+                '<span class="cp-driftdish-name">' + (d.dish || '').replace(/[<>&]/g, '') + '</span>' +
+                '<span class="cp-driftdish-delta" data-dir="' + dir + '">' + sign + d.deltaPctOnDish.toFixed(1) + '%</span>' +
+                '<span class="cp-driftdish-amount">' + (d.overchargeOnDish > 0 ? '+' : '') + '$' + Math.abs(d.overchargeOnDish).toFixed(2) + '/plate</span>' +
+                '<span class="cp-driftdish-drivers">' + (driverNames ? 'driven by ' + driverNames : '') + '</span>' +
+              '</li>';
+            }).join('');
+            ddCard.hidden = false;
           }
         }
       }
