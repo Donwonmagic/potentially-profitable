@@ -1945,7 +1945,7 @@
     // section header land in an unnamed group at the top.
     var groups = [];
     var current = { name: null, dishes: [], blurb: '', glyph: '', availability: '', specials: false, hero: null };
-    rows.forEach(function (r) {
+    rows.forEach(function (r, ri) {
       if (r.kind === 'section') {
         if (current.name !== null || current.dishes.length) groups.push(current);
         current = {
@@ -1955,10 +1955,18 @@
           glyph: (r.glyph || '').trim(),
           availability: (r.availability || '').trim(),
           specials: !!r.specials,
-          hero: r.hero || null
+          hero: r.hero || null,
+          // Wave studio-quality (perf/UX) — preserve the editor's
+          // row index so the live preview can stamp data-preview-i
+          // on the rendered DOM. The instant-update path uses this
+          // to find the right element on each input event.
+          _editorIdx: ri
         };
       } else if ((r.name || '').trim()) {
-        current.dishes.push(r);
+        // Shallow-copy the row + add _editorIdx so consumers can
+        // still read d.name, d.desc etc. unchanged.
+        var d = Object.assign({}, r, { _editorIdx: ri });
+        current.dishes.push(d);
       }
     });
     if (current.name !== null || current.dishes.length) groups.push(current);
@@ -2097,8 +2105,16 @@
         var priceHtml = escHtml(formatPriceDisplay(price, displayCurrency));
         if (halfPrice) priceHtml += ' <span class="md-pp-half-price">/ ½ ' +
           escHtml(formatPriceDisplay(halfPrice, displayCurrency)) + '</span>';
-        html += '<div class="md-pp-row">';
-        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml + escHtml(name) + glyphsHtml + '</div>';
+        // Wave studio-quality (perf/UX) — data-preview-i stamps the
+        // editor's row index on the preview row so the input handler
+        // can find this element instantly on each keystroke.
+        // <span.md-pp-name-text> wraps just the name text so we can
+        // update it without touching adjacent thumb / badges / glyphs.
+        var pi = (typeof d._editorIdx === 'number') ? d._editorIdx : -1;
+        html += '<div class="md-pp-row" data-preview-i="' + pi + '">';
+        html += '<div class="md-pp-name">' + thumbHtml + badgesHtml +
+                '<span class="md-pp-name-text">' + escHtml(name) + '</span>' +
+                glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
         if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
         // W14-1 — portion + calories rendered as a small muted suffix.
@@ -2760,6 +2776,55 @@
   // Debounce live-preview re-render so each keystroke during fast
   // typing doesn't recompute layout — matches the 300ms cadence
   // mentioned in the cohesive plan's A2 spec.
+  // Wave studio-quality (perf/UX) — Instant preview update for
+  // dish name / desc / price.
+  //
+  // The 120ms debounced render is fast but still feels lagging on
+  // dish-name typing. This helper updates the corresponding preview
+  // DOM element directly on each input event so operators see their
+  // text reflected immediately. The eventual debounced render still
+  // fires (full cascade + allergen-key + pre-flight) but the operator
+  // already saw their change.
+  //
+  // Tradeoffs handled:
+  //   - Caret preservation: we touch ONLY preview-side DOM, never
+  //     the editor input — caret stays put.
+  //   - Multi-page split: the preview can be paginated into sibling
+  //     .md-preview-paper elements; querySelectorAll on the frame
+  //     finds the row regardless of which page it landed on.
+  //   - Price formatter: applies the same formatPriceDisplay() the
+  //     debounced render uses, so no flicker between instant + final.
+  //   - Element absence: when desc was empty and operator types the
+  //     first char, the .md-pp-desc span doesn't exist. Skip the
+  //     instant path; the debounced render will create it.
+  //   - Glyphs: the dish name is wrapped in <span.md-pp-name-text>
+  //     so we update only the text, leaving allergen pills alone.
+  function _instantUpdatePreview(rowI, field, value) {
+    var frame = paper && paper.parentElement;
+    if (!frame) return;
+    var rowEl = frame.querySelector('[data-preview-i="' + rowI + '"]');
+    if (!rowEl) return;
+    if (field === 'name') {
+      var nameEl = rowEl.querySelector('.md-pp-name-text');
+      if (nameEl) nameEl.textContent = String(value == null ? '' : value);
+    } else if (field === 'desc') {
+      var descEl = rowEl.querySelector('.md-pp-desc');
+      if (descEl) {
+        descEl.textContent = String(value == null ? '' : value);
+      }
+      // When desc element doesn't exist (was empty before this
+      // keystroke), let the debounced render insert it.
+    } else if (field === 'price') {
+      var priceEl = rowEl.querySelector('.md-pp-price');
+      if (priceEl) {
+        // Apply the same formatter the debounced render uses so no
+        // flicker between instant and final rendered text.
+        var displayCurrency = (meta && meta.currency) || 'USD';
+        priceEl.textContent = formatPriceDisplay(value, displayCurrency);
+      }
+    }
+  }
+
   var previewTimer = null;
   // Wave studio-quality (perf) — debounce reduced 300ms → 120ms.
   // The cascade warm-start (1 measurement pass on stable content)
@@ -3195,9 +3260,16 @@
     var q = (searchEl.value || '').toLowerCase().trim();
     var trs = rowsEl.querySelectorAll('tr[data-i]');
     if (!q) {
-      trs.forEach(function (tr) { tr.style.display = ''; });
+      trs.forEach(function (tr) {
+        tr.style.display = '';
+        tr.classList.remove('md-search-match');
+      });
+      // Also clear the rowsEl-level "search active" class so the
+      // visual style returns to default.
+      rowsEl.classList.remove('md-search-active');
       return;
     }
+    rowsEl.classList.add('md-search-active');
     // Determine which sections retain at least one matching dish.
     var keepSections = {};
     var lastSec = null;
@@ -3212,11 +3284,18 @@
       var i = parseInt(tr.dataset.i, 10);
       if (!isFinite(i) || !rows[i]) return;
       var r = rows[i];
+      // Wave studio-quality (UX) — search highlight. Matched rows
+      // stay visible AND get a subtle highlight (teal left-edge
+      // stripe + warm tint) so operators see at-a-glance which
+      // dishes match — not just "the unmatched ones disappeared."
       if (r.kind === 'section') {
         tr.style.display = keepSections[i] ? '' : 'none';
+        tr.classList.remove('md-search-match');
       } else {
         var hay = ((r.name || '') + ' ' + (r.desc || '')).toLowerCase();
-        tr.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+        var matches = hay.indexOf(q) !== -1;
+        tr.style.display = matches ? '' : 'none';
+        tr.classList.toggle('md-search-match', matches);
       }
     });
   }
@@ -3493,6 +3572,20 @@
         return;
       }
       rows[i][t.dataset.field] = t.value;
+      // Wave studio-quality (perf/UX) — instant preview update for
+      // the three trivial fields. Bypasses the 120ms debounce so the
+      // operator sees their typing reflected in the live preview
+      // immediately. The full debounced render still fires after to
+      // pick up downstream consequences (cascade, allergen-key, etc).
+      // Only touches preview-side DOM; never the input the operator
+      // is typing in, so the caret is preserved.
+      if (rows[i].kind === 'dish' && (
+            t.dataset.field === 'name' ||
+            t.dataset.field === 'desc' ||
+            t.dataset.field === 'price'
+          )) {
+        _instantUpdatePreview(i, t.dataset.field, t.value);
+      }
       schedulePreview();
       scheduleSaveDraft();    // W5-8
     });
