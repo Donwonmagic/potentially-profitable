@@ -223,6 +223,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="monthly-pnl-snapshot">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">80-seat dinner-only restaurant, suburban DC</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Total sales (April, 30 days)</th><td>$187,400</td></tr><tr><th scope="row">COGS — food + beverage</th><td>$58,300</td></tr><tr><th scope="row">Total labor (hourly + salary + taxes)</th><td>$61,500</td></tr><tr><th scope="row">Variable costs (cc fees + supplies)</th><td>$11,200</td></tr><tr><th scope="row">Fixed costs (rent + insurance + utilities)</th><td>$33,400</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Prime cost</th><td>63.9% · green</td></tr><tr><th scope="row">Restaurant operating profit</th><td>$23,000</td></tr><tr><th scope="row">Operating margin</th><td>12.3%</td></tr></tbody></table>
+        <p class="swe-punchline">Green band on prime cost, double-digit operating margin — a healthy month. The watch-line is fixed costs at 17.8% of sales: their lease renews in October, and a single-digit rent bump tips next quarter into yellow. The conversation is rent before it's anything in the kitchen.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -353,10 +370,45 @@ header.nav{min-height:64px}
           <span class="sheet-output-value" data-output="breakeven_per_day">$0.00</span>
         </div>
         <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);" data-output="callout">
-          Type the period numbers above. Independent full-service typically targets prime cost in the 55–65% band; profit lives in the gap below 65%.
+          Type the period numbers above. Independent full-service typically targets <a class="sheet-glossary-popover-link" href="/glossary/prime-cost/" data-glossary-head="Prime cost" data-glossary-aka="Cost of goods sold + labor" data-glossary-blurb="Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in." data-sheet-popover="1">prime cost</a> in the 55–65% band; profit lives in the gap below 65%.
         </p>
       </div>
     </form>
+
+    <!-- D8 · What-if sliders. Three multiplicative deltas frame the
+         operator's most common monthly questions: a labor wage change,
+         a COGS movement, and a lease-renewal rent bump. Re-run recalc()
+         on top of the typed numbers without touching them. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if labor, COGS, or rent shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the verdict re-runs on top of your typed numbers. Lease-renewal pressure is one-sided — rent goes up or it stays.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Labor change (wages, all categories)</span>
+          <input type="range" name="whatif_labor" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">COGS change (food + beverage)</span>
+          <input type="range" name="whatif_cogs" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_cogs_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Occupancy change (lease-renewal scenario)</span>
+          <input type="range" name="whatif_occ" min="0" max="25" step="1" value="0" style="flex:2;" />
+          <output name="whatif_occ_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">+0%</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         monthly P&L economics — fixed costs, the three numbers
+         operators conflate, and the lease-renewal scenario. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      What the month adds that the week can't see, the three numbers operators conflate (operating profit vs cash flow vs owner's pay), the breakeven sales-per-day number, and what to do when the lease renewal slider goes red. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">Where the month lands &mdash; What the monthly P&amp;L tells you that weekly can't &rarr;</a>
+    </p>
 
     <script>
       (function () {
@@ -449,6 +501,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -601,22 +654,46 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + (Math.round(abs * 100) / 100).toFixed(2); }
         function fmtPct(v) { return (Math.round(v * 10) / 10).toFixed(1) + '%'; }
 
+        // D8 · Read what-if slider state. All three are multiplicative
+        // percent deltas applied on top of the typed line items.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_labor) return { labor: 0, cogs: 0, occ: 0 };
+          return {
+            labor: n(f.whatif_labor.value),
+            cogs:  n(f.whatif_cogs.value),
+            occ:   n(f.whatif_occ.value),
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
+          var w = whatif();
           var sales = n(f.sales_lunch.value) + n(f.sales_dinner.value) + n(f.sales_bar.value) + n(f.sales_togo.value) + n(f.sales_other.value);
-          var cogs  = n(f.cogs_food.value) + n(f.cogs_bev.value);
-          var labor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes.value);
+          var rawCogs  = n(f.cogs_food.value) + n(f.cogs_bev.value);
+          var rawLabor = n(f.labor_hourly.value) + n(f.labor_salary.value) + n(f.labor_taxes.value);
+          var rawOcc   = n(f.fixed_occupancy.value);
+          // D8 — multiplicative deltas on top of the typed line items.
+          var cogs  = rawCogs  * (1 + w.cogs  / 100);
+          var labor = rawLabor * (1 + w.labor / 100);
+          var occ   = rawOcc   * (1 + w.occ   / 100);
           var prime = cogs + labor;
           var variable = n(f.var_cc_fees.value) + n(f.var_supplies.value);
-          var fixed = n(f.fixed_occupancy.value) + n(f.fixed_utilities.value) + n(f.fixed_insurance.value) + n(f.fixed_marketing.value) + n(f.fixed_other.value);
+          var fixed = occ + n(f.fixed_utilities.value) + n(f.fixed_insurance.value) + n(f.fixed_marketing.value) + n(f.fixed_other.value);
           var primePct = sales > 0 ? (prime / sales) * 100 : 0;
           var contribPct = sales > 0 ? ((sales - prime - variable) / sales) * 100 : 0;
           var profit = sales - prime - variable - fixed;
@@ -627,11 +704,24 @@ header.nav{min-height:64px}
           var days = Math.max(1, n(f.days.value));
           var breakevenDay = breakevenMonth / days;
 
+          // Update what-if output labels.
+          if (f.whatif_labor_out) f.whatif_labor_out.value = (w.labor >= 0 ? '+' : '') + w.labor.toFixed(0) + '%';
+          if (f.whatif_cogs_out)  f.whatif_cogs_out.value  = (w.cogs  >= 0 ? '+' : '') + w.cogs.toFixed(1)  + '%';
+          if (f.whatif_occ_out)   f.whatif_occ_out.value   = '+' + w.occ.toFixed(0) + '%';
+
           document.querySelector('[data-output="total_sales"]').textContent = fmt$(sales);
           document.querySelector('[data-output="prime_dollars"]').textContent = fmt$(prime);
           var primeEl = document.querySelector('[data-output="prime_pct"]');
           primeEl.textContent = fmtPct(primePct);
-          primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          // D9 — band routes through centralized benchmarks. Same
+          // metric key as weekly-prime-cost-worksheet so the two
+          // sheets agree on what "healthy" means.
+          if (window.Bench && window.Bench.evaluate) {
+            var bp = window.Bench.evaluate('prime_cost_pct', primePct);
+            if (bp && bp.band) primeEl.dataset.band = bp.band;
+          } else {
+            primeEl.dataset.band = primePct < 60 ? 'good' : (primePct < 65 ? 'warn' : 'bad');
+          }
           var contribEl = document.querySelector('[data-output="contrib_pct"]');
           contribEl.textContent = fmtPct(contribPct);
           contribEl.dataset.band = contribPct > 30 ? 'good' : (contribPct > 20 ? 'warn' : 'bad');
@@ -694,6 +784,19 @@ header.nav{min-height:64px}
             ['Callout',                document.querySelector('[data-output="callout"]').textContent],
           ];
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_labor) f.whatif_labor.value = 0;
+            if (f.whatif_cogs)  f.whatif_cogs.value  = 0;
+            if (f.whatif_occ)   f.whatif_occ.value   = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         if (window.SheetPage) {
           window.SheetPage.register({ slug: 'monthly-pnl-snapshot', collect: collect, recalc: recalc });
@@ -797,7 +900,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

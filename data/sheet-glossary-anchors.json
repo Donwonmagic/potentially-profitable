@@ -1,0 +1,102 @@
+{
+  "_doc": "Inline glossary popovers on sheet pages (Phase A6). Maps technical terms appearing in sheet prose (field-help, mistakes bullets, callout text, when-to-use bullets) to existing /glossary/<slug>/ pages. scripts/inject-sheet-glossary-popovers.mjs walks each live sheet's rendered <main> body and wraps the FIRST occurrence of each term in a popover-bearing <a> element. The existing assets/js/glossary.js renders the popover; inject-glossary-script.mjs auto-stamps it on any page with data-glossary-blurb triggers, so no separate script wiring is needed. Cap: one popover per fieldset / one per prose block enforced by the injector. Curated, hand-authored — not auto-extracted from the 140-term glossary.",
+
+  "terms": {
+    "prime-cost": {
+      "head_en": "Prime cost",
+      "head_es": "Costo primo",
+      "aka_en": "Cost of goods sold + labor",
+      "aka_es": "Costo de mercancía + mano de obra",
+      "blurb_en": "Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in.",
+      "blurb_es": "Costo total de comida + bebida más mano de obra cargada, expresado como porcentaje de ventas netas. Banda saludable para full-service independiente: 55–65%. Sobre 65% el modelo se rompe una vez entran los costos fijos."
+    },
+    "food-cost": {
+      "head_en": "Food cost",
+      "head_es": "Costo de comida",
+      "aka_en": "COGS food",
+      "aka_es": "COGS de comida",
+      "blurb_en": "Cost of food sold as percent of food revenue, on a used-cost basis (purchases minus inventory adjustment). Independent full-service typically targets 28–32%; pizza and high-margin formats run lower.",
+      "blurb_es": "Costo de comida vendida como porcentaje de ventas de comida, base costo usado (compras menos ajuste de inventario). Full-service independiente típicamente apunta a 28–32%; pizza y formatos de alto margen corren más bajo."
+    },
+    "labor-cost": {
+      "head_en": "Labor cost",
+      "head_es": "Costo de mano de obra",
+      "aka_en": "Fully-loaded labor",
+      "aka_es": "Mano de obra cargada",
+      "blurb_en": "Hourly + tipped wages + salaried wages + employer payroll taxes + benefits, all in. Forgetting taxes and benefits reads labor 4–6 points low — the most common cause of an artificially good prime cost.",
+      "blurb_es": "Sueldos por hora + propinas + salariados + impuestos del empleador + beneficios, todo. Olvidar impuestos y beneficios lee mano de obra 4–6 puntos bajo — la causa más común de un costo primo artificialmente bueno."
+    },
+    "edible-portion": {
+      "head_en": "Edible portion (EP)",
+      "head_es": "Porción comestible (EP)",
+      "aka_en": "EP cost",
+      "aka_es": "Costo EP",
+      "blurb_en": "What you actually plate after trim and yield loss. The kitchen pays the EP cost, not the AP (as-purchased) price — multiply AP by 1/yield to get the real per-plate number.",
+      "blurb_es": "Lo que realmente sirves después de la merma y pérdida de rendimiento. La cocina paga el costo EP, no el precio AP — multiplica AP por 1/rendimiento para obtener el número real por plato."
+    },
+    "yield-percent": {
+      "head_en": "Yield percent",
+      "head_es": "Porcentaje de rendimiento",
+      "aka_en": "Trim ratio",
+      "aka_es": "Ratio de merma",
+      "blurb_en": "What's left after trimming, deboning, peeling, draining. A whole chicken at 70% yield means 30% goes in the trash or stock pot before plating. Yield is multiplicative against AP cost — never additive.",
+      "blurb_es": "Lo que queda después de recortar, deshuesar, pelar, drenar. Un pollo entero al 70% de rendimiento significa que 30% va al bote o a la olla de fondo antes de servir. El rendimiento es multiplicativo contra el costo AP — nunca aditivo."
+    },
+    "average-check": {
+      "head_en": "Average check",
+      "head_es": "Cheque promedio",
+      "aka_en": "Net sales per cover",
+      "aka_es": "Ventas netas por cubierto",
+      "blurb_en": "Net sales divided by covers (guests served). The number to watch when sales dip — it tells you whether you lost guests, lost spend per guest, or both.",
+      "blurb_es": "Ventas netas divididas por cubiertos (clientes servidos). El número a observar cuando bajan las ventas — te dice si perdiste clientes, gasto por cliente, o ambos."
+    },
+    "contribution-margin": {
+      "head_en": "Contribution margin",
+      "head_es": "Margen de contribución",
+      "aka_en": "Contribution rate",
+      "aka_es": "Tasa de contribución",
+      "blurb_en": "Sales minus variable costs (COGS + labor + cards + supplies) as percent of sales. The dollars per dollar of sales available to cover fixed costs and profit. The lever between revenue and breakeven.",
+      "blurb_es": "Ventas menos costos variables (COGS + mano de obra + tarjetas + insumos) como porcentaje de ventas. Los pesos por peso de venta disponibles para cubrir costos fijos y utilidad. La palanca entre ingreso y punto de equilibrio."
+    },
+    "break-even": {
+      "head_en": "Breakeven",
+      "head_es": "Punto de equilibrio",
+      "aka_en": "Breakeven sales",
+      "aka_es": "Ventas de equilibrio",
+      "blurb_en": "The sales level where revenue exactly covers all costs. Below it: you lose money. Above it: every contribution-margin dollar drops to profit. Calculated as fixed costs divided by contribution-margin rate.",
+      "blurb_es": "El nivel de ventas donde el ingreso cubre exactamente todos los costos. Debajo: pierdes dinero. Arriba: cada peso de margen de contribución cae a utilidad. Se calcula como costos fijos divididos entre la tasa de margen de contribución."
+    },
+    "commission": {
+      "head_en": "Commission",
+      "head_es": "Comisión",
+      "aka_en": "Platform fee",
+      "aka_es": "Tarifa de plataforma",
+      "blurb_en": "Percentage a third-party delivery platform takes per order. DoorDash, Uber Eats, and Grubhub publish tiers around 15% / 25% / 30% — the higher tiers add marketing reach the operator pays for, often without measurable lift.",
+      "blurb_es": "Porcentaje que una plataforma de delivery de terceros toma por pedido. DoorDash, Uber Eats y Grubhub publican niveles alrededor de 15% / 25% / 30% — los niveles altos agregan alcance de marketing que el operador paga, a menudo sin lift medible."
+    },
+    "fixed-costs": {
+      "head_en": "Fixed costs",
+      "head_es": "Costos fijos",
+      "aka_en": "Occupancy + overhead",
+      "aka_es": "Ocupación + overhead",
+      "blurb_en": "Costs that do not move with sales: rent, occupancy, utilities (mostly), insurance, licenses, loan payments, accounting subscription. Cutting them is a structural change, not an operational adjustment.",
+      "blurb_es": "Costos que no se mueven con las ventas: renta, ocupación, servicios (mayormente), seguro, licencias, pagos de préstamo, suscripciones de contabilidad. Cortarlos es un cambio estructural, no un ajuste operacional."
+    },
+    "gbp": {
+      "head_en": "Google Business Profile (GBP)",
+      "head_es": "Perfil de Google Business (GBP)",
+      "aka_en": "Google listing",
+      "aka_es": "Ficha de Google",
+      "blurb_en": "The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&A all live here. The single highest-leverage marketing asset for an independent restaurant.",
+      "blurb_es": "El producto gratuito de Google que impulsa la apariencia de tu restaurante en Búsqueda y Maps. Horarios, categoría principal, fotos, reseñas, posts y Q&A viven aquí. El activo de marketing de mayor palanca para un restaurante independiente."
+    },
+    "nap-consistency": {
+      "head_en": "NAP consistency",
+      "head_es": "Consistencia NAP",
+      "aka_en": "Name / Address / Phone",
+      "aka_es": "Nombre / Dirección / Teléfono",
+      "blurb_en": "The exact-match requirement for your name, address, and phone across Google, Yelp, Apple, OpenTable, your own website, and your schema. One mismatch and Google starts doubting which entity is you.",
+      "blurb_es": "El requisito de coincidencia exacta de tu nombre, dirección y teléfono en Google, Yelp, Apple, OpenTable, tu propio sitio y tu schema. Una inconsistencia y Google empieza a dudar cuál entidad eres."
+    }
+  }
+}

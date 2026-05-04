@@ -368,7 +368,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow" style="color:var(--rust,#B8541A);">Common mistakes</span>
     </div>
     <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">What operators get wrong</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Mixing dine-in and to-go in one cell. The labor cost of each daypart differs by channel; combining hides the truth.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Mixing dine-in and to-go in one cell. The <a class="sheet-glossary-popover-link" href="/glossary/labor-cost/" data-glossary-head="Labor cost" data-glossary-aka="Fully-loaded labor" data-glossary-blurb="Hourly + tipped wages + salaried wages + employer payroll taxes + benefits, all in. Forgetting taxes and benefits reads labor 4–6 points low — the most common cause of an artificially good prime cost." data-sheet-popover="1">labor cost</a> of each daypart differs by channel; combining hides the truth.</li>
       <li>Cutting labor on the slowest hour without checking the trend. One slow Wednesday at 4pm is noise; eight slow Wednesdays is signal.</li>
       <li>Forgetting opening labor (prep cooks, BOH setup) — they don't show in covers but they are real.</li></ul>
   </article>
@@ -407,6 +407,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -559,8 +560,14 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + bestEff.toFixed(1) + ' sales / $1 labor)') : '—';
@@ -703,7 +710,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

@@ -225,6 +225,23 @@ header.nav{min-height:64px}
 
         <p class="sheet-paper-hint">Open your Google Business Profile in another tab. Walk these rows. Mark each one. About fifteen minutes.</p>
 
+    <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="gbp-monthly-audit">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">60-seat neighborhood bistro, May audit</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Hours of operation, special-day hours, primary + secondary categories</th><td>All Pass</td></tr><tr><th scope="row">Phone, address, website link, links to menu</th><td>Pass · Pass · Pass · Fail (broken)</td></tr><tr><th scope="row">Photos posted in last 30 days</th><td>2</td></tr><tr><th scope="row">GBP posts in last 30 days</th><td>0</td></tr><tr><th scope="row">Q&amp;A unanswered</th><td>3</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Listing fundamentals</th><td>7 of 8 pass</td></tr><tr><th scope="row">Content cadence</th><td>Below threshold (4 photos + 4 posts target)</td></tr><tr><th scope="row">This month's punch list</th><td>4 items</td></tr></tbody></table>
+        <p class="swe-punchline">The broken menu link is the priority — that's the link Google was sending people to. Behind it: the three Q&amp;As (probably about parking, dietary options, and reservations — answer them once and they sit there forever) and the post cadence. The audit takes fifteen minutes; the punch list takes the rest of the morning if you batch it. The next month's audit walks a healthier listing.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
     <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Audit context</legend>
@@ -296,14 +313,12 @@ header.nav{min-height:64px}
       <fieldset>
         <legend>Content cadence (last 30 days)</legend>
         <label>
-          <span><span>Owner-uploaded photos in last 30 days</span></span>
+          <span><span>Owner-uploaded photos (auto-imports don't count) — target ≥ 8/month</span></span>
           <input type="number" name="photos_30d" min="0" step="1" value="0" />
-          <span class="field-help">Auto-imported user photos do not count. Healthy cadence: ≥ 8 owner photos per month.</span>
         </label>
         <label>
-          <span><span>GBP posts published in last 30 days</span></span>
+          <span><span>GBP posts (special / event / product) — target ≥ 2/month</span></span>
           <input type="number" name="posts_30d" min="0" step="1" value="0" />
-          <span class="field-help">Healthy: ≥ 2 posts per month (special, event, or product).</span>
         </label>
         <label>
           <span><span>Q&amp;A questions still unanswered</span></span>
@@ -351,6 +366,14 @@ header.nav{min-height:64px}
         </p>
       </div>
     </form>
+
+    <!-- D7 · Long-form companion essay link. The slow think piece on
+         GBP economics — the eight pass-fail fundamentals, freshness
+         signals, the Q&A graveyard, and the four operator lies. -->
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#F3EEE3);font-size:14px;line-height:1.55;color:var(--ink,#14161A);">
+      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      What the GBP actually does for a restaurant, the eight pass-fail fundamentals, the content cadence Google reads as a freshness signal, the Q&amp;A graveyard, and the four lies operators tell themselves about Google. <a href="./why/" style="color:var(--teal,#1F4E5B);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The listing that earns its keep &mdash; Why fifteen minutes a month decides where Google sends people &rarr;</a>
+    </p>
 
     <script>
       (function () {
@@ -489,7 +512,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>First Monday of every month — fifteen minutes, with the GBP open in another tab.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>First Monday of every month — fifteen minutes, with the <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> open in another tab.</li>
       <li>Any time bookings dip and you have not changed anything on the website.</li>
       <li>Right after a menu change, holiday week, or hours update.</li></ul>
   </article>
@@ -544,6 +567,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -696,7 +720,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

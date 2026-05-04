@@ -256,7 +256,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/security/#claim-list",
-      "numberOfItems": 10,
+      "numberOfItems": 11,
       "itemListElement": [
         {
           "@type": "Claim",
@@ -366,6 +366,17 @@ header.nav{min-height:64px}
           "appearance": {
             "@type": "WebPageElement",
             "url": "https://muntin.digital/security/#claim-10"
+          }
+        },
+        {
+          "@type": "Claim",
+          "@id": "https://muntin.digital/security/#claim-11",
+          "position": 11,
+          "name": "Operator Sheets stay on your device.",
+          "text": "Every sheet at /sheets/<slug>/ runs entirely in your browser. The math, the bands, the recommendations — all client-side. Drafts auto-save to localStorage on your device only. The only network requests a sheet page makes are user-initiated: clicking Save sends one POST to your own Workshop, and (when you're signed in) the page reads back your prior saves of the same sheet to draw the trend sparkline. Anonymous visitors trigger zero network calls from the sheet itself.",
+          "appearance": {
+            "@type": "WebPageElement",
+            "url": "https://muntin.digital/security/#claim-11"
           }
         }
       ]
@@ -478,6 +489,16 @@ header.nav{min-height:64px}
           <p class="security-claim__text">Invoices saved through Advanced Invoice Decoder are encrypted in your browser before they leave your device — AES-GCM 256, key derived via PBKDF2 from a passphrase you choose. We won&#39;t sell aggregated cost data, share it with vendors, include it in marketing, train ML on it, or backfill historical invoices into a future benchmark dataset. The server stores ciphertext + IV; it has no decryption capability and no path to plaintext.</p>
           <details class="security-claim__inspect"><summary>Inspect this</summary>
             <p class="security-claim__verify">Three ways to verify, in order of difficulty: (1) After every save, the tool surfaces a Proof flyout with a try-to-break demo — type any wrong passphrase and watch SubtleCrypto throw OperationError. (2) On the tool page, expand &#39;Verify it yourself: open DevTools → Network&#39; for a 4-step coachmark; the only request after Read is the Tesseract WASM, and the only request after Save is one POST whose body is { envelope: { v:1, salt, iv, ct, aad } } where ct is opaque base64. (3) View source of /tools/invoice-decoder/encrypt.js — only SubtleCrypto, no third-party SDK, no analytics export. The localStorage handoff to Plate Cost / Menu Engineering / Margin Math is also AES-GCM-wrapped via /tools/invoice-decoder/device-key.js, so dish names + prices don&#39;t sit plaintext in the browser profile either.</p>
+          </details>
+        </div>
+      </article>
+      <article class="security-claim" id="claim-11">
+        <span class="security-claim__num" aria-hidden="true">11</span>
+        <div class="security-claim__body">
+          <h3 class="security-claim__title">Operator Sheets stay on your device.</h3>
+          <p class="security-claim__text">Every sheet at /sheets/&lt;slug&gt;/ runs entirely in your browser. The math, the bands, the recommendations — all client-side. Drafts auto-save to localStorage on your device only. The only network requests a sheet page makes are user-initiated: clicking Save sends one POST to your own Workshop, and (when you&#39;re signed in) the page reads back your prior saves of the same sheet to draw the trend sparkline. Anonymous visitors trigger zero network calls from the sheet itself.</p>
+          <details class="security-claim__inspect"><summary>Inspect this</summary>
+            <p class="security-claim__verify">Open DevTools (Cmd+Opt+I / Ctrl+Shift+I) → Network tab. Open any sheet — e.g. /sheets/recipe-cost-card/. Type ingredients and watch the request list. The list does not grow as you type. The only requests on initial load are static assets (CSS, fonts, the shared sheets.js / sheet-csv.js / sheet-viz.js / sheet-parse.js / sheet-benchmarks.gen.js). Click Save (only visible when signed in): one POST to /api/workbench/save with { kind: &#39;sheet&#39;, payload: { v:1, slug, inputs, outputs, savedAt } }. The build-time check `node scripts/check-sheet-no-fetch.mjs` greps every sheet fragment for forbidden network calls; CI fails if any fragment contacts any URL.</p>
           </details>
         </div>
       </article>

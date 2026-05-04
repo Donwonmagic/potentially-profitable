@@ -197,6 +197,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Mete tus números — la matemática corre en tu navegador. Imprime, exporta a CSV o guárdala en el Taller.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="reservation-no-show-log">
+      <summary>
+        <span class="swe-eyebrow">Ejemplo trabajado</span>
+        <span class="swe-subject">Lugar de menú de degustación de 32 asientos, solo vie+sáb</span>
+        <span class="swe-cta">Ve cómo se ve un llenado de un martes en la mañana</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">Lo que tipearon</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Reservas registradas (período de dos semanas)</th><td>48</td></tr><tr><th scope="row">Cancelaciones tardías (≤24h)</th><td>3</td></tr><tr><th scope="row">No-shows</th><td>5</td></tr><tr><th scope="row">Cuenta promedio</th><td>$145</td></tr><tr><th scope="row">De los 5 no-shows, con depósito</th><td>0</td></tr></tbody></table>
+        <p class="swe-section-label">Lo que la hoja les regresó</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Tasa de no-show</th><td>10.4% · rojo</td></tr><tr><th scope="row">Ingreso perdido estimado</th><td>$725</td></tr><tr><th scope="row">Tasa de no-show entre quienes pusieron depósito</th><td>0%</td></tr></tbody></table>
+        <p class="swe-punchline">Cada uno de los no-shows vino de una reserva sin depósito. El patrón decide el siguiente paso: una prueba de dos semanas con depósito requerido para mesas de 4+ los vie/sáb. La mesa de la ventana a las 8pm es la que duele — es la que nadie pide al último momento.</p>
+        <p class="swe-note">Números compuestos típicos — no un local real. Usa el ritmo, no las cifras.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -349,6 +366,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -470,8 +488,14 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
  + Math.round(v).toLocaleString('en-US'); }
@@ -503,7 +527,13 @@ header.nav{min-height:64px}
           var lcRate = total > 0 ? (lc / total) * 100 : 0;
           var nsEl = document.querySelector('[data-output="ns_rate"]');
           nsEl.textContent = fmtPct(nsRate);
-          nsEl.dataset.band = nsRate < 5 ? 'good' : (nsRate < 10 ? 'warn' : 'bad');
+          // D9 — band via centralized benchmarks.
+          if (window.Bench && window.Bench.evaluate) {
+            var bn = window.Bench.evaluate('noshow_rate_pct', nsRate);
+            if (bn && bn.band) nsEl.dataset.band = bn.band;
+          } else {
+            nsEl.dataset.band = nsRate < 5 ? 'good' : (nsRate < 10 ? 'warn' : 'bad');
+          }
           var lcEl = document.querySelector('[data-output="lc_rate"]');
           lcEl.textContent = fmtPct(lcRate);
           lcEl.dataset.band = lcRate < 8 ? 'good' : (lcRate < 15 ? 'warn' : 'bad');
@@ -629,8 +659,14 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>
 , 'Notes'],
@@ -751,7 +787,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

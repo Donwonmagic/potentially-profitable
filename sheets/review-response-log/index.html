@@ -223,6 +223,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="review-response-log">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">60-seat neighborhood bistro, two weeks of reviews</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Reviews logged (across Google, Yelp, OpenTable)</th><td>18</td></tr><tr><th scope="row">Negatives (≤3 stars)</th><td>3</td></tr><tr><th scope="row">Owner responses</th><td>7</td></tr><tr><th scope="row">Owner responses to negatives</th><td>1</td></tr><tr><th scope="row">Repeated theme in negatives</th><td>Dishroom noise (3 of 3)</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Response rate</th><td>38.9% · red</td></tr><tr><th scope="row">Negative response rate</th><td>33.3% · red</td></tr><tr><th scope="row">Anomaly flag</th><td>Negs unanswered (≥2)</td></tr></tbody></table>
+        <p class="swe-punchline">The unanswered negatives are this Tuesday's first task — three customers named the same dishroom-noise issue with no public response. The pattern is also the punch list: schedule the dishroom acoustic fix that's been on the maintenance log since February. The reply and the fix are the same conversation, three weeks apart.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Period</legend>
@@ -307,7 +324,13 @@ header.nav{min-height:64px}
           var negRate = negs > 0 ? Math.round((negsResp / negs) * 100) : null;
           var rEl = document.querySelector('[data-output="response_rate"]');
           rEl.textContent = rate + '%';
-          rEl.dataset.band = rate >= 70 ? 'good' : (rate >= 40 ? 'warn' : 'bad');
+          // D9 — band via centralized benchmarks.
+          if (window.Bench && window.Bench.evaluate) {
+            var br = window.Bench.evaluate('review_response_rate_pct', rate);
+            if (br && br.band) rEl.dataset.band = br.band;
+          } else {
+            rEl.dataset.band = rate >= 70 ? 'good' : (rate >= 40 ? 'warn' : 'bad');
+          }
           var nEl = document.querySelector('[data-output="neg_rate"]');
           if (negRate == null) { nEl.textContent = 'no negatives'; nEl.dataset.band = 'good'; }
           else { nEl.textContent = negRate + '% (' + negsResp + ' / ' + negs + ')'; nEl.dataset.band = negRate === 100 ? 'good' : (negRate >= 75 ? 'warn' : 'bad'); }
@@ -318,8 +341,15 @@ header.nav{min-height:64px}
 
           var c = document.querySelector('[data-output="callout"]');
           if (!c) return;
+          // D9 — Bench.flag walks data/benchmarks.json's anomalies
+          // for this slug. The negs-unanswered rule lives there.
+          var flagMsgs = (window.Bench && window.Bench.flag)
+            ? window.Bench.flag('review-response-log', { neg_unanswered: negs - negsResp })
+            : [];
           if (total === 0) {
             c.textContent = 'Log every review. Theme tags surface the patterns; responses set the public tone. Aim for 100% response on negatives and ≥50% overall.';
+          } else if (flagMsgs.length) {
+            c.textContent = flagMsgs.join(' ') + ' (' + (negs - negsResp) + ' of ' + negs + ' unanswered.)';
           } else if (negRate != null && negRate < 100) {
             c.textContent = 'Negatives missed: ' + (negs - negsResp) + ' of ' + negs + ' unanswered. These need a response within 48 hours, every time.';
           } else if (topTheme && topCount >= 2) {
@@ -396,7 +426,7 @@ header.nav{min-height:64px}
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
     <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Weekly — fifteen minutes, with the GBP / Yelp / Tripadvisor inboxes open.</li>
+    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Weekly — fifteen minutes, with the <a class="sheet-glossary-popover-link" href="/glossary/gbp/" data-glossary-head="Google Business Profile" data-glossary-aka="Google listing" data-glossary-blurb="The free Google product that powers your restaurant's appearance in Search and Maps. Hours, primary category, photos, reviews, posts, and Q&amp;A all live here. The single highest-leverage marketing asset for an independent restaurant." data-sheet-popover="1">GBP</a> / Yelp / Tripadvisor inboxes open.</li>
       <li>After every 1- or 2-star review — those need a response within 48 hours, every time.</li>
       <li>When a complaint theme repeats — the log surfaces the pattern that one-off reviews hide.</li></ul>
   </article>
@@ -445,6 +475,7 @@ header.nav{min-height:64px}
 </div></section>
 
 </main>
+<!-- sheet-glossary-popovers:applied -->
 
 <footer>
   <div class="container">
@@ -597,7 +628,13 @@ header.nav{min-height:64px}
 
 <script src="/assets/js/sheet-csv.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-viz.js?v=20260504" defer></script>
+<script src="/assets/js/sheet-parse.js?v=20260504" defer></script>
 <script src="/assets/js/sheet-benchmarks.gen.js?v=20260504" defer></script>
 <script src="/assets/js/sheets.js?v=20260504" defer></script>
+<!-- Inline glossary popovers (Phase A6). Self-contained IIFE; early-exits
+     when no [data-glossary-blurb] triggers exist on the page, so safe to
+     load on every sheet regardless of whether the popover injector
+     wrapped any terms. -->
+<script src="/assets/js/glossary.js?v=20260504" defer></script>
 </body>
 </html>

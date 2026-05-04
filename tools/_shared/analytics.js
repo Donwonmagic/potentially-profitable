@@ -250,6 +250,9 @@
       // Phase D (Storefront Health) — fired when intent=watch param
       // auto-opens the watch panel on tool arrival.
       'Workbench Watch Open',
+      // B7 (Operator Sheets) — fired when the Workshop's Reopen button
+      // hands the operator off to a sheet with prefilled values.
+      'Workbench Sheet Reopen',
       // Phase C (Storefront Health) — property lifecycle.
       'Property Created',
       'Property Verified',

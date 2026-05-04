@@ -98,6 +98,7 @@ const CHECKS = [
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
+  ['Article sheet callouts (idem)','inject-article-sheet-callouts.mjs','--check'],
   ['Glossary OG seed (idem)','seed-glossary-og.mjs',       '--check'],
   ['Glossary OG meta (idem)','inject-glossary-og.mjs',     '--check'],
   ['OG template grid',    'check-og-template-grid.mjs',    '--check'],
@@ -156,6 +157,12 @@ const CHECKS = [
   ['Glossary sheet sidecar (idem)','inject-glossary-sheet-sidecar.mjs','--check'],
   ['Topic sheets rail (idem)','inject-topic-sheets-rail.mjs','--check'],
   ['Tool sheet rail (idem)','inject-tool-sheet-rail.mjs','--check'],
+  ['Sheet glossary popovers (idem)','inject-sheet-glossary-popovers.mjs','--check'],
+  ['Sheet worked examples (idem)','inject-sheet-worked-examples.mjs','--check'],
+  // Warn-only — the cap-counter + duplicate-of-label rules are scriptable;
+  // the "skip-it-changes-result-by-5%" judgment is in docs/voice-canon-sheets.md
+  // and lives with the human reviewer.
+  ['Sheet help-cadence (warn)','check-sheet-help-cadence.mjs'],
   ['Sheet OG cards (idem)','sync-sheet-og-cards.mjs','--check'],
   ['Sheet benchmarks (idem)','build-sheet-benchmarks.mjs','--check'],
   ['Window field-notes rail (idem)','inject-window-fieldnotes-rail.mjs','--check'],
@@ -186,6 +193,7 @@ const CHECKS = [
   ['Security page schema (idem)','inject-security-page-schema.mjs','--check'],
   ['Tool data-promise (idem)','inject-tool-data-promise.mjs','--check'],
   ['Tool no-fetch invariant','check-tool-no-fetch.mjs'],
+  ['Sheet no-fetch invariant','check-sheet-no-fetch.mjs'],
   ['Menu-Design consistency','check-menu-design.mjs'],
   ['Themes lint',          'check-themes-lint.mjs'],
   ['Security claims',      'check-security-claims.mjs'],
