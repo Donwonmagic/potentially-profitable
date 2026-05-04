@@ -146,6 +146,88 @@
   }
 
   // ============================================================
+  // Cost waterfall ([data-viz-waterfall])
+  //
+  // Drives a .viz-waterfall widget from a single range input. Config
+  // is JSON on the wrapper:
+  //
+  //   <div class="viz-waterfall" data-viz-waterfall
+  //        data-vw-config='{"ticket":42,"variableSeg":"commission",
+  //                         "baseRate":0.30,"baseKeep":0.184}'>
+  //     ...segments + legend rows...
+  //     <input type="range" data-vw-slider min="15" max="35" value="30">
+  //   </div>
+  //
+  // When the slider moves, the segment marked
+  // [data-vw-seg="commission"] grows/shrinks and the [data-vw-seg=
+  // "keep"] segment absorbs the difference (so total stays 1.0). The
+  // matching legend rows update their dollar + percent text. Other
+  // segments stay constant. Layout properties (flex-basis) are ok to
+  // animate here because the parent .viz-waterfall has a fixed height
+  // and width — no document reflow.
+  // ============================================================
+  function bindWaterfall(root) {
+    var slider = root.querySelector('input[type="range"][data-vw-slider]');
+    if (!slider) return;
+    var cfg;
+    try { cfg = JSON.parse(root.dataset.vwConfig || '{}'); }
+    catch (_) { cfg = {}; }
+    var ticket    = +cfg.ticket    || 0;
+    var variable  = cfg.variableSeg || 'commission';
+    var baseRate  = +cfg.baseRate  || 0;
+    var baseKeep  = +cfg.baseKeep  || 0;
+    if (!ticket || !baseRate || !baseKeep) return;
+
+    var variableSeg = root.querySelector('[data-vw-seg="' + variable + '"]');
+    var keepSeg     = root.querySelector('[data-vw-seg="keep"]');
+    var variableRow = root.querySelector('[data-vw-row="' + variable + '"]');
+    var keepRow     = root.querySelector('[data-vw-row="keep"]');
+    var displays    = root.querySelectorAll('[data-vw-display]');
+
+    function setText(el, sel, val) {
+      if (!el) return;
+      var t = el.querySelector(sel);
+      if (t) t.textContent = val;
+    }
+
+    function update() {
+      var rate = parseFloat(slider.value) / 100;
+      if (!isFinite(rate)) return;
+
+      // Range-shape the slider track fill (--p custom property)
+      var min = parseFloat(slider.min) || 0;
+      var max = parseFloat(slider.max) || 100;
+      var pct = ((parseFloat(slider.value) - min) / (max - min)) * 100;
+      slider.style.setProperty('--p', pct + '%');
+
+      var keepRate = baseKeep - (rate - baseRate);
+      if (keepRate < 0) keepRate = 0;
+
+      if (variableSeg) variableSeg.style.setProperty('--w', rate.toFixed(4));
+      if (keepSeg)     keepSeg.style.setProperty('--w', keepRate.toFixed(4));
+
+      // Segment text labels (the percent badge inside each segment).
+      if (variableSeg) variableSeg.textContent = (rate * 100).toFixed(rate < 0.10 ? 1 : 0) + '%';
+      if (keepSeg)     keepSeg.textContent     = (keepRate * 100).toFixed(1) + '%';
+
+      // Legend rows — dollar amount + percent of ticket.
+      setText(variableRow, '[data-vw-amount]', (ticket * rate).toFixed(2));
+      setText(variableRow, '[data-vw-pct]',    (rate * 100).toFixed(1));
+      setText(keepRow,     '[data-vw-amount]', (ticket * keepRate).toFixed(2));
+      setText(keepRow,     '[data-vw-pct]',    (keepRate * 100).toFixed(1));
+
+      // Any [data-vw-display] echoes the rate as an integer percent
+      // (e.g., the "30%" inline in the prose / slider readout).
+      for (var i = 0; i < displays.length; i++) {
+        displays[i].textContent = (rate * 100).toFixed(0);
+      }
+    }
+
+    slider.addEventListener('input', update);
+    update();
+  }
+
+  // ============================================================
   // Boot
   // ============================================================
   function boot() {
@@ -154,6 +236,9 @@
 
     var sliders = document.querySelectorAll('input[type="range"][data-viz-slider]');
     for (var j = 0; j < sliders.length; j++) bindLinkedSlider(sliders[j]);
+
+    var waterfalls = document.querySelectorAll('[data-viz-waterfall]');
+    for (var k = 0; k < waterfalls.length; k++) bindWaterfall(waterfalls[k]);
   }
 
   // Suppress unused-var warning while preserving the reference for

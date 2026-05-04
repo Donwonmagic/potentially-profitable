@@ -64,11 +64,10 @@
 
 <style>
 .breadcrumb{padding-top:100px}
-.op-table{width:100%;border-collapse:collapse;font-size:14.5px;margin:24px 0;background:var(--cream)}
-.op-table th,.op-table td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left}
-.op-table th{font-family:var(--font-display);font-weight:500;font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:0.04em;background:var(--cream-2)}
-.op-table td.num{text-align:right;font-variant-numeric:tabular-nums}
-.op-table tfoot td{font-weight:600;border-top:2px solid var(--ink);border-bottom:0}
+/* The two .op-table margin-walk tables previously inlined here are
+   now rendered as .viz-waterfall + .viz-slider components (Phase-2
+   graphics refresh). The remaining .callout below the waterfalls
+   uses the global rule in assets/site-article.css. */
 .callout{padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:24px 0}
 .callout p{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink)}
 </style>
@@ -99,8 +98,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=bb57bc02f27f" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=bb57bc02f27f"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -295,45 +294,137 @@ header.nav{min-height:64px}
 
     <p>Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.</p>
 
-    <div class="table-scroll"><table class="op-table" aria-label="Margin walk for a $42 DoorDash ticket">
-      <thead>
-        <tr><th scope="col">Line</th><th scope="col" style="text-align:right">$ on a $42 ticket</th><th scope="col" style="text-align:right">% of ticket</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Gross ticket</td><td class="num">$42.00</td><td class="num">100.0%</td></tr>
-        <tr><td>DoorDash commission (Marketplace Plus, 30%)</td><td class="num">&minus;$12.60</td><td class="num">&minus;30.0%</td></tr>
-        <tr><td>Payment processing (~3.4%)</td><td class="num">&minus;$1.43</td><td class="num">&minus;3.4%</td></tr>
-        <tr><td>DoorDash &ldquo;promotion&rdquo; / sponsored listing fee (avg, when used)</td><td class="num">&minus;$1.20</td><td class="num">&minus;2.9%</td></tr>
-        <tr><td>Packaging (clamshell, lid, bag, sticker, plasticware)</td><td class="num">&minus;$1.40</td><td class="num">&minus;3.3%</td></tr>
-        <tr><td>Food cost (28% of menu price, kitchen-side)</td><td class="num">&minus;$11.76</td><td class="num">&minus;28.0%</td></tr>
-        <tr><td>Variable labor (line cook, runner, ~14% of revenue)</td><td class="num">&minus;$5.88</td><td class="num">&minus;14.0%</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td>What stays in the restaurant</td><td class="num">$7.73</td><td class="num">18.4%</td></tr>
-      </tfoot>
-    </table></div>
+    <figure class="viz-figure">
+      <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>
+        <p class="viz-waterfall__title">Where each dollar of a $42 DoorDash ticket goes</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown: 30% DoorDash commission, 3.4% payment processing, 2.9% promotion fee, 3.3% packaging, 28% food cost, 14% labor, 18.4% kept by the restaurant.">
+          <span class="viz-waterfall__seg" data-tone="rust" data-vw-seg="commission" style="--w:0.300">30%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.034">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.029">3%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" data-vw-seg="keep" style="--w:0.184">18.4%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row" data-vw-row="commission">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>DoorDash commission (Marketplace Plus, <span data-vw-display>30</span>%)</span>
+            <span class="viz-waterfall__num">&minus;$<span data-vw-amount>12.60</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>30.0</span>%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Payment processing (~3.4%)</span>
+            <span class="viz-waterfall__num">&minus;$1.43</span>
+            <span class="viz-waterfall__pct">3.4%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>DoorDash &ldquo;promotion&rdquo; / sponsored listing fee (avg, when used)</span>
+            <span class="viz-waterfall__num">&minus;$1.20</span>
+            <span class="viz-waterfall__pct">2.9%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Packaging (clamshell, lid, bag, sticker, plasticware)</span>
+            <span class="viz-waterfall__num">&minus;$1.40</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost (28% of menu price, kitchen-side)</span>
+            <span class="viz-waterfall__num">&minus;$11.76</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Variable labor (line cook, runner, ~14% of revenue)</span>
+            <span class="viz-waterfall__num">&minus;$5.88</span>
+            <span class="viz-waterfall__pct">14.0%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true" data-vw-row="keep">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>What stays in the restaurant</span>
+            <span class="viz-waterfall__num">$<span data-vw-amount>7.73</span></span>
+            <span class="viz-waterfall__pct"><span data-vw-pct>18.4</span>%</span>
+          </div>
+        </div>
+        <div class="viz-slider">
+          <div class="viz-slider__label">
+            <span class="viz-slider__title">DoorDash commission rate</span>
+            <span class="viz-slider__readout"><span data-vw-display>30</span>%</span>
+          </div>
+          <input type="range" min="15" max="35" step="1" value="30" data-vw-slider aria-label="DoorDash commission rate, percent">
+          <p class="viz-slider__hint">Marketplace tiers: <b>Basic 15%</b>, <b>Plus 25%</b>, <b>Premier 30%</b>. Most independents pay 30%; some negotiate down with volume.</p>
+        </div>
+      </div>
+      <figcaption>Drag the slider to see how the commission rate eats into what stays in the restaurant. The teal segment is your keep.</figcaption>
+    </figure>
 
     <p>Eighteen percent. That&rsquo;s before fixed costs &mdash; rent, utilities, salaried management, insurance &mdash; which on a typical DMV independent run another 12 to 14 points. The contribution margin to fixed costs and profit is, if you&rsquo;re lucky, around four percent. If you ran a sponsored listing on that order, or if your packaging is heavier than average, you&rsquo;re working for free.</p>
 
     <p>Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.</p>
 
-    <div class="table-scroll"><table class="op-table" aria-label="Margin walk for a $42 direct-channel ticket">
-      <thead>
-        <tr><th scope="col">Line</th><th scope="col" style="text-align:right">$ on a $42 ticket</th><th scope="col" style="text-align:right">% of ticket</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Gross ticket</td><td class="num">$42.00</td><td class="num">100.0%</td></tr>
-        <tr><td>Stripe / Square payment processing</td><td class="num">&minus;$1.51</td><td class="num">&minus;3.6%</td></tr>
-        <tr><td>Direct-channel marketing amortization (your time, ~$0.80/order)</td><td class="num">&minus;$0.80</td><td class="num">&minus;1.9%</td></tr>
-        <tr><td>Packaging</td><td class="num">&minus;$1.40</td><td class="num">&minus;3.3%</td></tr>
-        <tr><td>Food cost</td><td class="num">&minus;$11.76</td><td class="num">&minus;28.0%</td></tr>
-        <tr><td>Variable labor</td><td class="num">&minus;$5.88</td><td class="num">&minus;14.0%</td></tr>
-        <tr><td>Last-mile (DoorDash Drive flat fee, optional)</td><td class="num">&minus;$8.50</td><td class="num">&minus;20.2%</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td>What stays in the restaurant (with own delivery)</td><td class="num">$12.15</td><td class="num">28.9%</td></tr>
-      </tfoot>
-    </table></div>
+    <figure class="viz-figure">
+      <div class="viz-waterfall">
+        <p class="viz-waterfall__title">The same $42 ticket, ordered direct (with your own last-mile)</p>
+        <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown of a direct-channel ticket: 3.6% processing, 1.9% marketing, 3.3% packaging, 28% food cost, 14% labor, 20.2% last-mile, 28.9% kept by the restaurant.">
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.036">4%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.019">2%</span>
+          <span class="viz-waterfall__seg" data-tone="stone" style="--w:0.033">3%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.280">28%</span>
+          <span class="viz-waterfall__seg" data-tone="ink" style="--w:0.140">14%</span>
+          <span class="viz-waterfall__seg" data-tone="rust" style="--w:0.202">20%</span>
+          <span class="viz-waterfall__seg viz-waterfall__seg--keep" style="--w:0.289">28.9%</span>
+        </div>
+        <div class="viz-waterfall__legend">
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Stripe / Square payment processing</span>
+            <span class="viz-waterfall__num">&minus;$1.51</span>
+            <span class="viz-waterfall__pct">3.6%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Direct-channel marketing amortization (your time, ~$0.80/order)</span>
+            <span class="viz-waterfall__num">&minus;$0.80</span>
+            <span class="viz-waterfall__pct">1.9%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch"></span>
+            <span>Packaging</span>
+            <span class="viz-waterfall__num">&minus;$1.40</span>
+            <span class="viz-waterfall__pct">3.3%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Food cost</span>
+            <span class="viz-waterfall__num">&minus;$11.76</span>
+            <span class="viz-waterfall__pct">28.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="ink"></span>
+            <span>Variable labor</span>
+            <span class="viz-waterfall__num">&minus;$5.88</span>
+            <span class="viz-waterfall__pct">14.0%</span>
+          </div>
+          <div class="viz-waterfall__row">
+            <span class="viz-waterfall__swatch" data-tone="rust"></span>
+            <span>Last-mile (DoorDash Drive flat fee, optional)</span>
+            <span class="viz-waterfall__num">&minus;$8.50</span>
+            <span class="viz-waterfall__pct">20.2%</span>
+          </div>
+          <div class="viz-waterfall__row" data-keep="true">
+            <span class="viz-waterfall__swatch" data-tone="teal"></span>
+            <span>What stays in the restaurant (with own delivery)</span>
+            <span class="viz-waterfall__num">$12.15</span>
+            <span class="viz-waterfall__pct">28.9%</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>Same ticket, direct channel. The teal segment grows from 18.4% to 28.9% &mdash; a $4.42 swing per order.</figcaption>
+    </figure>
 
     <p>Twenty-nine percent kept on the same ticket. The marginal lift &mdash; the answer to &ldquo;what does it pay to move an order from DoorDash&rsquo;s app to your own website?&rsquo;&rsquo; &mdash; is <strong>$4.42 per order</strong>. Even if you eat the entire DoorDash Drive last-mile fee yourself, you&rsquo;re ten points better. If your customer picks up, twenty-eight points better.</p>
 
@@ -576,5 +667,9 @@ header.nav{min-height:64px}
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- Article viz module — drives the interactive cost-waterfall +
+     commission slider above. Defer-loaded; bails cleanly if the
+     widget markup is absent. -->
+<script src="/assets/article-viz.js" defer></script>
 </body>
 </html>

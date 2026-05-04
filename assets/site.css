@@ -6411,3 +6411,59 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
   .viz-bars{font-size:13px;gap:6px 10px}
   .viz-bars__track{height:16px}
 }
+
+/* .viz-waterfall — single horizontal bar segmented by where each
+   dollar of a fixed-amount transaction goes (commission, processing,
+   packaging, food cost, labor, keep). Each segment grows along the
+   inline-flex axis to flex-basis: calc(var(--w) * 100%); --w is the
+   segment's share of the whole (0..1). The "keep" segment is rendered
+   in the brand teal so the reader's eye lands on it. Live-recompute
+   driver lives in assets/article-viz.js (data-viz-waterfall hook). */
+.viz-waterfall{margin:24px 0;font-family:var(--font-body)}
+.viz-waterfall__title{font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--ink);margin:0 0 12px;letter-spacing:-0.005em}
+.viz-waterfall__bar{display:flex;height:64px;border-radius:8px;overflow:hidden;background:var(--cream-2);margin:0 0 18px;border:1px solid var(--line)}
+.viz-waterfall__seg{display:flex;align-items:center;justify-content:center;flex-grow:0;flex-shrink:0;flex-basis:calc(var(--w,0)*100%);min-width:0;font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;white-space:nowrap;overflow:hidden;background:var(--stone)}
+.viz-waterfall__seg[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__seg[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__seg[data-tone="gold"]{background:#C5A059;color:var(--ink)}
+.viz-waterfall__seg[data-tone="teal"],.viz-waterfall__seg--keep{background:var(--teal);color:var(--cream)}
+.viz-waterfall__legend{display:grid;grid-template-columns:1fr;gap:0;font-size:14.5px;border-top:1px solid var(--line);border-radius:6px;overflow:hidden}
+.viz-waterfall__row{display:grid;grid-template-columns:14px 1fr auto auto;gap:12px;align-items:baseline;padding:10px 4px;border-bottom:1px solid var(--line);color:var(--ink)}
+.viz-waterfall__row:last-child{border-bottom:0}
+.viz-waterfall__row[data-keep="true"]{border-top:2px solid var(--ink);background:linear-gradient(90deg,rgba(31,78,91,0.08),transparent);padding:14px 4px;font-weight:600;border-bottom:0}
+.viz-waterfall__row[data-keep="true"] .viz-waterfall__num{color:var(--teal);font-family:var(--font-display);font-size:20px;font-weight:500}
+.viz-waterfall__swatch{width:14px;height:14px;border-radius:3px;background:var(--stone);align-self:center}
+.viz-waterfall__swatch[data-tone="rust"]{background:var(--rust)}
+.viz-waterfall__swatch[data-tone="ink"]{background:var(--ink)}
+.viz-waterfall__swatch[data-tone="teal"]{background:var(--teal)}
+.viz-waterfall__num{font-variant-numeric:tabular-nums;text-align:right;min-width:72px}
+.viz-waterfall__pct{font-variant-numeric:tabular-nums;color:var(--stone);text-align:right;min-width:60px;font-size:13px}
+@media (prefers-reduced-motion:no-preference){
+  .viz-waterfall__seg{transition:flex-basis 480ms cubic-bezier(0.2,0.8,0.2,1),background-color var(--t-fast) var(--ease)}
+}
+@media (max-width:520px){
+  .viz-waterfall__bar{height:52px}
+  .viz-waterfall__row{grid-template-columns:14px 1fr auto;gap:10px;font-size:13.5px}
+  .viz-waterfall__row .viz-waterfall__pct{display:none}
+}
+
+/* .viz-slider — labeled range input that drives a viz widget. Pairs
+   with .viz-waterfall (commission rate) but is generic; data-vw-slider
+   on the input attaches the widget driver in assets/article-viz.js.
+   The thumb is styled in the brand teal so the affordance reads as
+   editorial, not OS-default. */
+.viz-slider{display:grid;gap:10px;margin:18px 0;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
+.viz-slider__label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--font-body)}
+.viz-slider__title{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.005em}
+.viz-slider__readout{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:24px;color:var(--teal);font-weight:500;letter-spacing:-0.01em}
+.viz-slider input[type="range"]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:24px;margin:0;cursor:pointer}
+.viz-slider input[type="range"]:focus{outline:none}
+.viz-slider input[type="range"]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(to right,var(--teal) 0%,var(--teal) calc(var(--p,50%) * 1),var(--line) calc(var(--p,50%) * 1),var(--line) 100%)}
+.viz-slider input[type="range"]::-moz-range-track{height:6px;border-radius:999px;background:var(--line)}
+.viz-slider input[type="range"]::-moz-range-progress{height:6px;border-radius:999px;background:var(--teal)}
+.viz-slider input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);margin-top:-8px;cursor:grab}
+.viz-slider input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 1px 4px rgba(20,22,26,0.18);cursor:grab}
+.viz-slider input[type="range"]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider input[type="range"]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
+.viz-slider__hint{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
+.viz-slider__hint b{color:var(--ink);font-weight:600}
