@@ -698,19 +698,38 @@
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
       parsed._rawOcrText = fullText;
-      renderParsed(parsed);
-      clearPhaseLadder();
-      setProgress(100);
-      hideStatus();
-      if (window.plausible) {
-        window.plausible('Invoice Decoder Read', { props: {
-          rows_bucket: parsed.rows.length < 10 ? '<10' :
-                       parsed.rows.length < 25 ? '10-24' :
-                       parsed.rows.length < 50 ? '25-49' : '50+',
-          vendor_detected: parsed.vendor ? 'true' : 'false',
-          delta_known: parsed.deltaPct != null ? 'true' : 'false'
-        } });
+      // Wave 14.7 — column-aware refinement. Runs ONLY when the
+      // matched vendor template carries columnsEnabled:true (Sysco
+      // first; other vendors enable as their fixtures validate).
+      // Costs one extra OCR pass on page-1 gentle canvas to surface
+      // word bboxes — gated so non-Sysco invoices pay nothing.
+      var columnsRefinePromise = Promise.resolve(parsed);
+      if (enrichment && enrichment.columnsEnabled &&
+          typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
+          typeof MID_OCR.recognizeCanvasWithWords === 'function' &&
+          pendingPages.length && pendingPages[0].gentle) {
+        columnsRefinePromise = MID_OCR.recognizeCanvasWithWords(pendingPages[0].gentle, {
+          lang: 'eng+spa', psm: 6
+        }).then(function (wordResult) {
+          var words = (wordResult && wordResult.words) || [];
+          return MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, words);
+        }).catch(function () { return parsed; });
       }
+      columnsRefinePromise.then(function () {
+        renderParsed(parsed);
+        clearPhaseLadder();
+        setProgress(100);
+        hideStatus();
+        if (window.plausible) {
+          window.plausible('Invoice Decoder Read', { props: {
+            rows_bucket: parsed.rows.length < 10 ? '<10' :
+                         parsed.rows.length < 25 ? '10-24' :
+                         parsed.rows.length < 50 ? '25-49' : '50+',
+            vendor_detected: parsed.vendor ? 'true' : 'false',
+            delta_known: parsed.deltaPct != null ? 'true' : 'false'
+          } });
+        }
+      });   // close columnsRefinePromise.then
       });   // close enrichmentPromise.then
     }).catch(function (err) {
       clearPhaseLadder();
