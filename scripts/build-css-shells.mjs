@@ -71,6 +71,13 @@ const SECTIONS = [
   { start: 701,  shell: 'core',    label: 'Button vocabulary (.btn family)' },
   { start: 1264, shell: 'core',    label: 'Footer' },
   { start: 1361, shell: 'article', label: 'Citation drawer (.cite, .cite-body)' },
+  // Lines 1394-1454 in the source are global chrome (focus-visible
+  // rules, .skip-link, .sr-only, nav-toggle, mobile-menu) that landed
+  // inside the visual proximity of the citation-drawer section but
+  // are used on EVERY page. Without this split, sheet pages and other
+  // core-only consumers shipped without `.skip-link` / `.sr-only` /
+  // mobile menu styles even though the markup is on every page.
+  { start: 1390, shell: 'core',    label: 'Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome)' },
   // The "CITATION DRAWER" section header at line 1361 actually carries
   // about 95 lines of cite styles followed by ~20 lines of nav refinements
   // + the share-widget UI before the next section header. Split here so
@@ -115,6 +122,14 @@ const SECTIONS = [
   { start: 5747, shell: 'tool',    label: '.edu-result — interpretation card under tool output' },
   { start: 5786, shell: 'tool',    label: 'Statistical disclosure components' },
   { start: 5829, shell: 'tool',    label: 'Tool-internal type minimums' },
+  // foot-newsletter lives in the global footer partial, so it needs to
+  // be in core — every page renders the form, not just /tools/*. The
+  // historical bucket (Tool-internal type minimums) extended past the
+  // newsletter block; splitting here pulls the .foot-newsletter* rules
+  // out of site-tool.css where they were inert on /blog/, /glossary/,
+  // /sheets/, and other non-tool pages. (Line 5986 = 5983 in the
+  // pre-#284 site.css + the 3-line .reveal block #284 added at line 1382.)
+  { start: 5986, shell: 'core',    label: 'Newsletter capture (in global footer; on every page)' },
   { start: 6007, shell: 'article', label: 'Inline graphics — globalized from gold articles' },
   { start: 6068, shell: 'core',    label: 'Touch-device hover hygiene' },
   { start: 6107, shell: 'core',    label: 'Hero mobile reorder (homepage)' },

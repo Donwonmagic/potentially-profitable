@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1361-1457) ===== */
+/* ===== [article] Citation drawer (.cite, .cite-body) (lines 1361-1389) ===== */
 /* ============ CITATION DRAWER ============
    <details class="cite"> with a <summary> trigger and a body
    containing: source name, brief overview, and a link. Uses the
@@ -35,74 +35,6 @@
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 /* (kept for line-count parity with the previous .reveal block) */
-:focus{outline:none}
-/* Sprint 3: global focus affordance. The 2px solid outline reads as
-   a browser-default; the layered halo from --ring-focus reads as
-   "designed." Both land together so keyboard users on legacy
-   browsers without focus-visible support still get the outline
-   fallback. The 3-px 22% teal halo is soft enough to feel like a
-   brand element, visible enough to satisfy WCAG focus contrast. */
-a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;box-shadow:var(--ring-focus)}
-.btn:focus-visible{outline-offset:4px;border-radius:999px}
-.final a:focus-visible,.process a:focus-visible,footer a:focus-visible{outline-color:var(--cream);box-shadow:0 0 0 3px rgba(250,247,242,.32)}
-.skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:0 0 8px 0;font-size:14px;font-weight:500;z-index:100}
-.skip-link:focus{left:0;outline:2px solid var(--cream);outline-offset:2px}
-/* Screen-reader-only text. Used to annotate icon-only buttons and links
-   whose visible text doesn't fully describe them (e.g. "opens in a new
-   tab" on external links). Keeps a 1px footprint so the browser keeps
-   it in the focus/tab order. */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-/* Authored line break that only fires on wide viewports. Used on
-   hero H1s where a hard <br> gives the desktop layout the intended
-   two-line cadence but, at narrow widths, stacks on top of the
-   natural wrap and produces a three- or four-line headline that
-   reads as "off-center". Hiding it below 820px lets the browser wrap
-   the H1 on its own; at 820px+ the authored break takes over. 820 is
-   the width at which the services H1 first clause ("Everything one
-   website needs," / "Todo lo que un sitio necesita,") fits on a
-   single line for both locales. */
-br.br-lg{display:none}
-@media (min-width:820px){br.br-lg{display:inline}}
-.nav-toggle{display:none;width:44px;height:44px;flex-direction:column;justify-content:center;align-items:center;gap:5px;border-radius:8px;padding:0;margin-left:8px}
-.nav-toggle span{display:block;width:22px;height:2px;background:var(--ink);transition:transform var(--t-med) var(--ease),opacity var(--t-fast) var(--ease)}
-.nav.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.nav.menu-open .nav-toggle span:nth-child(2){opacity:0}
-.nav.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;flex-direction:column;gap:6px;padding:20px var(--pad-x) 28px;background:var(--cream);border-top:1px solid var(--line);
-  /* When the menu is open and the library drawer is expanded, content
-     can exceed viewport height. .nav is position:fixed, which means
-     anything past the bottom of the viewport is unreachable unless
-     this container scrolls itself. Cap height to the viewport minus
-     the top nav-row, and let inner content scroll. -webkit-overflow-
-     scrolling for older iOS Safari momentum. */
-  /* Bug B3.1 (proactive audit): the 100vh fallback clipped the
-     bottom of the mobile menu on iOS < 15 when the URL bar was
-     visible (vh includes that bar; the menu overflowed). 100svh
-     (small viewport height) — supported in iOS ≥ 15.4 — uses the
-     smallest stable height and clips correctly. dvh remains the
-     preferred unit; svh is the fallback used when dvh isn't. */
-  max-height:calc(100dvh - 64px);
-  max-height:calc(100svh - 64px); /* fallback for browsers without dvh */
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
-}
-.nav.scrolled .mobile-menu{
-  /* When the nav has shrunk on scroll its row is shorter (12px+12px
-     padding + ~40px controls ≈ 56px) — give the drawer those few px
-     back so the bottom isn't clipped. svh fallback per B3.1. */
-  max-height:calc(100dvh - 56px);
-  max-height:calc(100svh - 56px);
-}
-.mobile-menu a{padding:14px 2px;font-size:18px;font-family:var(--font-display);font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
-.mobile-menu a.btn-primary{margin-top:14px;border-bottom:0;justify-content:center;padding:15px 26px;font-family:var(--font-body);font-size:15px;background:var(--teal);color:var(--cream);border-radius:999px}
-.mobile-menu a.btn-primary:hover,.mobile-menu a.btn-primary:focus{background:var(--teal-dark);color:var(--cream)}
-.mobile-menu[hidden]{display:none}
-/* Keep the nav CTA pill at its intrinsic width on desktop. Without
-   flex-shrink:0 it compresses when a long translated label (e.g. the
-   Spanish "Agenda una llamada de 20 min") pushes the nav over the
-   container width — the compression shoves the text against one side
-   of the pill, which reads as "the text isn't centered". */
 
 /* ===== [article] Listen / audio player (lines 1479-2007) ===== */
 /* ============ LISTEN / AUDIO PLAYER ============
