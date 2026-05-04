@@ -581,6 +581,21 @@ header.nav{min-height:64px}
 .id-sc-row-fail td:first-child{color:#7a2e1f}
 .id-sc-row-fail{background:rgba(252,224,215,0.4)}
 .id-sc-table td:nth-child(2){word-break:break-all;max-width:380px}
+/* Wave 14.2 — Privacy Self-Check v2 channel verdicts */
+.id-sc-h{margin:14px 0 6px;font-size:13px;font-weight:600;color:var(--ink);text-transform:none;letter-spacing:0}
+.id-sc-channels{margin-top:12px;padding-top:8px;border-top:1px dashed var(--line)}
+.id-sc-channels-blurb{margin:0 0 10px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.id-sc-channel-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.id-sc-channel{display:flex;gap:10px;padding:8px 10px;background:var(--white);border:1px solid var(--line);border-radius:6px;align-items:flex-start}
+.id-sc-channel-glyph{flex:0 0 24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;border-radius:50%;background:var(--cream-2);color:var(--ink-soft)}
+.id-sc-channel.id-sc-ch-unused{opacity:0.7}
+.id-sc-channel.id-sc-ch-unused .id-sc-channel-glyph{color:var(--stone)}
+.id-sc-channel.id-sc-ch-ok .id-sc-channel-glyph{background:#c7e4d4;color:#0c4a26}
+.id-sc-channel.id-sc-ch-warn .id-sc-channel-glyph{background:#fef0d9;color:#7a4413}
+.id-sc-channel-body{flex:1 1 auto;min-width:0}
+.id-sc-channel-name{margin:0 0 2px;font-size:12.5px;color:var(--ink);font-weight:500}
+.id-sc-channel-name em{font-style:normal;color:var(--ink-soft);font-weight:400;font-size:11.5px}
+.id-sc-channel-note{margin:0;font-size:11.5px;color:var(--ink-soft);line-height:1.5}
 .id-sc-actions{margin:10px 0 0}
 .id-sc-download{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);color:var(--ink);font-size:12.5px;cursor:pointer;font-family:inherit}
 .id-sc-download:hover{border-color:var(--ink-soft)}
@@ -1359,6 +1374,22 @@ header.nav{min-height:64px}
       <details class="id-honesty-fact">
         <summary><strong>Open DevTools → Network. It stays empty.</strong></summary>
         <p>Until you press Save, no requests carry your image or your line items. After Save, exactly one POST goes out — and its body is base64-encoded ciphertext. Search the body for any of your dish names. You won't find them.</p>
+      </details>
+      <!-- Wave 14.2 — Privacy Self-Check v2 honesty card. The
+           "image bytes never leave" claim covers the dominant
+           privacy concern, but five other channels exist and we
+           call them out by name. -->
+      <details class="id-honesty-fact">
+        <summary><strong>Five other channels — each opt-in, each disclosed.</strong></summary>
+        <p>Beyond image bytes and saved invoices, five surfaces exist that can move data <em>off-page</em> when you choose to use them. Every one is opt-in, none is required, and each gets its own verdict in the Privacy Self-Check.</p>
+        <ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--ink-soft);line-height:1.55">
+          <li><strong>Voice query (audio).</strong> The mic FAB sends audio to your platform's speech service (Apple on iOS / Safari, Google on Chrome / Android). Muntin servers never see audio. Don't tap the mic, don't speak.</li>
+          <li><strong>Distributor portal bookmarklet.</strong> A piece of operator-installed JavaScript runs on your authenticated session at sysco.com / usfoods.com / gfs.com and hands rows back via URL hash. Data crosses origins inside your own browser; Muntin servers never see the portal payload.</li>
+          <li><strong>PWA share-target intake.</strong> When you forward a file from the OS share sheet, the file arrives in this page's service-worker cache and is read same-origin. Same posture as a manual drag-and-drop.</li>
+          <li><strong>OS clipboard writes.</strong> Reconciliation notes, order pads, and comparison notes write to your OS clipboard when you tap "Copy". Operator-initiated; the OS clipboard is outside Muntin's control.</li>
+          <li><strong>Native share sheet.</strong> "Share this catch" opens the OS share sheet with a 1080×1350 PNG. SKU names are redacted by default. The receiving app — Messages, Slack, Mail — is your choice.</li>
+        </ul>
+        <p>Tap "Run the Privacy Self-Check yourself" below to see which channels fired in this session.</p>
       </details>
       <!-- Wave 8.7 — one-tap Privacy Self-Check. Runs a synthetic
            OCR pass, captures every network request in a JSON report,

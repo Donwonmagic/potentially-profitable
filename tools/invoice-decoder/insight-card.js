@@ -144,9 +144,12 @@
       var file = new File([blob], fname, { type: 'image/png' });
       // Try Web Share API first (mobile-native).
       if (root.navigator && root.navigator.canShare && root.navigator.canShare({ files: [file] })) {
+        // Wave 14.2 (Self-Check v2) — mark native-share channel.
+        try { if (root.MID_SELF_CHECK && root.MID_SELF_CHECK.markChannel) root.MID_SELF_CHECK.markChannel('nativeShare'); } catch (_) {}
         return root.navigator.share({ files: [file], title: 'Muntin Invoice Decoder' });
       }
-      // Fallback: trigger download.
+      // Fallback: trigger download. Download is on-device — no
+      // channel mark needed.
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url; a.download = fname;

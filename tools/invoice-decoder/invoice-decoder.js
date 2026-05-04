@@ -2668,6 +2668,8 @@
       try {
         history.replaceState({}, '', window.location.pathname);
       } catch (_) {}
+      // Wave 14.2 (Self-Check v2) — mark share-target channel as used.
+      try { if (typeof MID_SELF_CHECK !== 'undefined' && MID_SELF_CHECK.markChannel) MID_SELF_CHECK.markChannel('shareTarget'); } catch (_) {}
       if (window.plausible) {
         try { window.plausible('Invoice Decoder Share Received'); } catch (_) {}
       }
@@ -2724,6 +2726,8 @@
           }
           classifyRows(parsed.rows, { vendor: parsed.vendor });
           renderParsed(parsed);
+          // Wave 14.2 (Self-Check v2) — mark bookmarklet channel.
+          try { if (typeof MID_SELF_CHECK !== 'undefined' && MID_SELF_CHECK.markChannel) MID_SELF_CHECK.markChannel('bookmarklet'); } catch (_) {}
           if (window.plausible) {
             try { window.plausible('Invoice Decoder Bookmarklet Receive', { props: { vendor: payload.vendor || 'unknown' } }); } catch (_) {}
           }

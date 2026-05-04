@@ -93,6 +93,9 @@
       rec.onresult = function (ev) {
         var heard = ev.results && ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript;
         if (!heard) return;
+        // Wave 14.2 (Self-Check v2) — mark voice channel as used so
+        // the Privacy report surfaces an honest verdict.
+        try { if (root.MID_SELF_CHECK && root.MID_SELF_CHECK.markChannel) root.MID_SELF_CHECK.markChannel('voice'); } catch (_) {}
         var r = MID_VOICE_QUERY.query(heard);
         if (r && r.answer) {
           MID_VOICE_QUERY.speak(r.answer);
