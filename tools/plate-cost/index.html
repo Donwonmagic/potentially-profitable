@@ -962,6 +962,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/cross-vendor.js?v=20260504-w10-13"></script>
+<script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
 <script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260504-w10-7"></script>
 <script src="/tools/plate-cost/stale-banner.js?v=20260504-w10-5" defer></script>
@@ -2301,6 +2302,38 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
   rerenderRows(Array.from({ length: 5 }, blankRow));
   hydrateFromFragment();
   if (!driftBaseline) renderResults();
+
+  // Wave 14.8 — discoverability pulse for cross-tool surfaces operators
+  // gained when the Invoice Decoder spine landed. Each pill is per-
+  // operator dismissible and auto-expires 60 days after shipDate.
+  if (window.MuntinWhatsNew) {
+    window.MuntinWhatsNew.register({
+      toolKey: 'plate-cost',
+      surfaces: [
+        {
+          id: 'stale-banner',
+          target: '#pcStaleBanner',
+          title: 'New: invoice-aware recipe updates',
+          body: 'When you save an invoice in the Invoice Decoder, this banner offers to refresh your recipe prices in one tap. Bytes stay on this device.',
+          shipDate: '2026-04-21'
+        },
+        {
+          id: 'ghost-chip',
+          target: '.pc-ghost-chip',
+          title: 'New: gentle yield + portion suggestions',
+          body: 'When your past invoices imply a different pack size or yield, a dashed chip suggests it. Tap to accept or ignore — never auto-applied.',
+          shipDate: '2026-04-25'
+        },
+        {
+          id: 'match-health',
+          target: '#pcMatchHealth',
+          title: 'New: invoice → recipe match health',
+          body: 'See at a glance how many invoice items found a recipe row. Lower coverage = more SKUs to bind.',
+          shipDate: '2026-04-28'
+        }
+      ]
+    });
+  }
 })();
 </script>
 </body>
