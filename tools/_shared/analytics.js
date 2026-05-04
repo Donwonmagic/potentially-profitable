@@ -65,6 +65,7 @@
       'Audit Dev Brief Emailed',
       'Audit Dev Brief Printed',
       'Audit Dev-Prompt Copy',
+      'Audit Error: Client Timeout',
       'Audit Error: Referrer Blocked',
       'Audit Feedback',
       'Audit PDF Email Failed',
