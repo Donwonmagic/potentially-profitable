@@ -35,6 +35,105 @@
 (function (root) {
   'use strict';
 
+  // -------------------- EXIF orientation --------------------
+  //
+  // iPhone (and most modern cameras) record the physical sensor
+  // orientation in EXIF tag 0x0112. The actual pixel buffer is
+  // stored landscape; the orientation tag tells the renderer to
+  // rotate it 0/90/180/270 for display. <img> elements honor this
+  // automatically in modern browsers, but canvases drawn from the
+  // image inherit the SENSOR orientation, not the display
+  // orientation. Without an explicit rotate, every iPhone portrait
+  // photo OCRs sideways — the operator never sees the issue, just
+  // wonders why accuracy is bad.
+  //
+  // parseExifOrientation(file) → 1..8 (or 1 default).
+  //   1: normal      2: flipped horizontal
+  //   3: rotated 180 4: flipped vertical
+  //   5: rotated 90 CW + flipped horizontal
+  //   6: rotated 90 CW (most iPhone portrait)
+  //   7: rotated 90 CCW + flipped horizontal
+  //   8: rotated 90 CCW
+  //
+  // Reads only the first ~64 KB so it's cheap on multi-megabyte
+  // photos. The EXIF segment in JPEG always lives near the start.
+  function parseExifOrientation(file) {
+    if (!file || !file.slice) return Promise.resolve(1);
+    return file.slice(0, 65536).arrayBuffer().then(function (buf) {
+      var v = new Uint8Array(buf);
+      // JPEG SOI marker
+      if (v[0] !== 0xFF || v[1] !== 0xD8) return 1;
+      var offset = 2;
+      while (offset < v.length - 8) {
+        // Each segment: FF marker + 1-byte type + 2-byte length BE
+        if (v[offset] !== 0xFF) break;
+        var marker = v[offset + 1];
+        if (marker === 0xDA) break;             // SOS — image data starts
+        var segLen = (v[offset + 2] << 8) | v[offset + 3];
+        if (marker === 0xE1) {
+          // APP1 segment — check for "Exif\0\0"
+          if (v[offset + 4] === 0x45 && v[offset + 5] === 0x78 &&
+              v[offset + 6] === 0x69 && v[offset + 7] === 0x66 &&
+              v[offset + 8] === 0x00 && v[offset + 9] === 0x00) {
+            var tiffStart = offset + 10;
+            // TIFF byte-order
+            var bigEndian = (v[tiffStart] === 0x4D);
+            function u16(off) { return bigEndian ? (v[off] << 8) | v[off + 1] : v[off + 1] << 8 | v[off]; }
+            function u32(off) {
+              return bigEndian
+                ? ((v[off] << 24) | (v[off + 1] << 16) | (v[off + 2] << 8) | v[off + 3]) >>> 0
+                : ((v[off + 3] << 24) | (v[off + 2] << 16) | (v[off + 1] << 8) | v[off]) >>> 0;
+            }
+            // Magic 0x002A
+            if (u16(tiffStart + 2) !== 0x002A) return 1;
+            var ifd0 = tiffStart + u32(tiffStart + 4);
+            var entryCount = u16(ifd0);
+            for (var i = 0; i < entryCount && i < 200; i++) {
+              var entry = ifd0 + 2 + i * 12;
+              var tag = u16(entry);
+              if (tag === 0x0112) {
+                var orient = u16(entry + 8);
+                if (orient >= 1 && orient <= 8) return orient;
+                return 1;
+              }
+            }
+            return 1;
+          }
+        }
+        offset += 2 + segLen;
+      }
+      return 1;
+    }).catch(function () { return 1; });
+  }
+
+  // Apply an EXIF orientation (1..8) to a canvas, returning a new
+  // canvas with pixels in the correct display orientation. Idempotent
+  // when orientation === 1 (no-op).
+  function applyExifOrientation(canvas, orientation) {
+    if (!canvas || !canvas.getContext) return canvas;
+    if (!orientation || orientation === 1) return canvas;
+    var w = canvas.width, h = canvas.height;
+    var swap = (orientation >= 5 && orientation <= 8);
+    var dw = swap ? h : w;
+    var dh = swap ? w : h;
+    var out = document.createElement('canvas');
+    out.width = dw; out.height = dh;
+    var ctx = out.getContext('2d');
+    if (!ctx) return canvas;
+    // Compose the affine transform per EXIF spec.
+    switch (orientation) {
+      case 2: ctx.translate(dw, 0); ctx.scale(-1, 1); break;
+      case 3: ctx.translate(dw, dh); ctx.rotate(Math.PI); break;
+      case 4: ctx.translate(0, dh); ctx.scale(1, -1); break;
+      case 5: ctx.rotate(0.5 * Math.PI); ctx.scale(1, -1); break;
+      case 6: ctx.rotate(0.5 * Math.PI); ctx.translate(0, -dw); break;
+      case 7: ctx.rotate(0.5 * Math.PI); ctx.translate(dh, -dw); ctx.scale(-1, 1); break;
+      case 8: ctx.rotate(-0.5 * Math.PI); ctx.translate(-dh, 0); break;
+    }
+    ctx.drawImage(canvas, 0, 0);
+    return out;
+  }
+
   // -------------------- Image decode + downscale --------------------
   // Returns a canvas with the source image painted at most maxEdge
   // pixels on the long edge. Aspect ratio preserved. Bilinear
@@ -149,13 +248,12 @@
     return __utifPromise;
   }
   function _tiffToCanvas(file, maxEdge) {
+    // Single-page entry point (kept for backwards-compat with the
+    // fileToCanvas fallback chain). Decodes only the first IFD.
     return _loadUtif().then(function (UTIF) {
       return file.arrayBuffer().then(function (buf) {
         var ifds = UTIF.decode(buf);
         if (!ifds || !ifds.length) throw new Error('utif: no IFDs');
-        // Render the FIRST page; multi-page TIFF support is a future
-        // enhancement (would call handlePhotoFiles with multiple
-        // synthesized JPEG Files).
         var ifd = ifds[0];
         UTIF.decodeImage(buf, ifd);
         var rgba = UTIF.toRGBA8(ifd);
@@ -167,6 +265,64 @@
         imageData.data.set(rgba);
         ctx.putImageData(imageData, 0, 0);
         return imageToCanvas(canvas, maxEdge || 2000);
+      });
+    });
+  }
+
+  // Multi-page TIFF support. ScanSnap commonly produces multi-page
+  // TIFFs from multi-page documents; the single-page _tiffToCanvas
+  // silently dropped pages 2+. Returns an array of File-shaped Blobs
+  // (rasterised JPEGs), one per IFD, so the controller can feed them
+  // through handlePhotoFiles as a multi-page batch — the same flow
+  // ScanSnap-PDF already uses (pdf-extract.js:rasterizeImageOnlyPdf).
+  // Page count capped at 8 to match the existing photo-batch ceiling.
+  function tiffToPageFiles(file, opts) {
+    opts = opts || {};
+    var maxPages = opts.maxPages || 8;
+    var maxEdge  = opts.maxEdge  || 2400;
+    var jpegQuality = opts.jpegQuality || 0.92;
+    var baseName = (file.name || 'scan.tif').replace(/\.(tiff?|tif)$/i, '');
+    return _loadUtif().then(function (UTIF) {
+      return file.arrayBuffer().then(function (buf) {
+        var ifds = UTIF.decode(buf);
+        if (!ifds || !ifds.length) throw new Error('utif: no IFDs');
+        var totalPages = ifds.length;
+        var truncated = totalPages > maxPages;
+        var pageCount = Math.min(totalPages, maxPages);
+        var files = [];
+
+        function renderOne(idx) {
+          if (idx >= pageCount) {
+            return Promise.resolve({ files: files, totalPages: totalPages, truncated: truncated });
+          }
+          if (typeof opts.onProgress === 'function') {
+            try { opts.onProgress(idx + 1, pageCount); } catch (_) {}
+          }
+          var ifd = ifds[idx];
+          UTIF.decodeImage(buf, ifd);
+          var rgba = UTIF.toRGBA8(ifd);
+          var w = ifd.width, h = ifd.height;
+          var canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          var imageData = ctx.createImageData(w, h);
+          imageData.data.set(rgba);
+          ctx.putImageData(imageData, 0, 0);
+          // Downscale via imageToCanvas so a 4000-px scan doesn't
+          // blow up memory for the OCR pipeline.
+          var scaled = imageToCanvas(canvas, maxEdge);
+          // Release source canvas backing buffer before encoding.
+          try { canvas.width = 0; canvas.height = 0; } catch (_) {}
+          return new Promise(function (resolve, reject) {
+            scaled.toBlob(function (blob) {
+              if (!blob) { reject(new Error('TIFF page ' + (idx + 1) + ' encode failed')); return; }
+              files.push(new File([blob], baseName + '-p' + (idx + 1) + '.jpg', { type: 'image/jpeg' }));
+              try { scaled.width = 0; scaled.height = 0; } catch (_) {}
+              resolve();
+            }, 'image/jpeg', jpegQuality);
+          }).then(function () { return renderOne(idx + 1); });
+        }
+        return renderOne(0);
       });
     });
   }
@@ -266,7 +422,18 @@
         try {
           var c = imageToCanvas(img, maxEdge || 2000);
           URL.revokeObjectURL(url);
-          resolve(c);
+          // EXIF orientation correction. iPhone portrait shots arrive
+          // with sensor-orientation pixels + an Orientation tag of 6
+          // (rotate 90 CW). <img> displays correctly, but the canvas
+          // we just drew inherits the raw sensor pixels — sideways
+          // for the OCR. parseExifOrientation reads the tag from the
+          // raw file (not the decoded image) and applyExifOrientation
+          // rotates the canvas to match the operator's intent. No-op
+          // when orientation is 1 or absent.
+          parseExifOrientation(file).then(function (orient) {
+            try { resolve(applyExifOrientation(c, orient)); }
+            catch (_) { resolve(c); }
+          }).catch(function () { resolve(c); });
         } catch (e) { reject(e); }
       };
       img.onerror = function () {
@@ -1868,7 +2035,10 @@
     // sniffer can't silently break TIFF/HEIC/AVIF routing.
     _sniffImageMagicBytes: _sniffImageMagicBytes,
     _isTiffFile:           _isTiffFile,
-    _isHeicFile:           _isHeicFile
+    _isHeicFile:           _isHeicFile,
+    parseExifOrientation:  parseExifOrientation,
+    applyExifOrientation:  applyExifOrientation,
+    tiffToPageFiles:       tiffToPageFiles
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_PREPROCESS = api;

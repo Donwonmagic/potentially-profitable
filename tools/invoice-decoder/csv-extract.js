@@ -64,20 +64,52 @@
   }
 
   // -------------------- CSV / TSV parser --------------------
-  // RFC 4180 friendly. Auto-detects delimiter from the first
-  // ~500 chars (highest count among ',', '\t', ';' wins).
+  // RFC 4180 friendly. Auto-detects delimiter from the first row
+  // (header) and corroborates with row 2 — weighting a delimiter
+  // higher when both rows yield the same column count. This catches
+  // European Excel (semicolon-delimited because comma is the decimal
+  // separator) and TSV exports without misclassifying invoices that
+  // happen to mention semicolons in description text.
   function detectDelim(text) {
-    var sample = String(text || '').slice(0, 500);
-    var counts = { ',': 0, '\t': 0, ';': 0 };
-    for (var i = 0; i < sample.length; i++) {
-      var c = sample[i];
-      if (counts[c] != null) counts[c]++;
+    var s = String(text || '');
+    // Strip UTF-8 BOM so the first byte doesn't wedge into header[0].
+    if (s.charCodeAt(0) === 0xFEFF) s = s.slice(1);
+    var firstNL = s.search(/\r?\n/);
+    var firstLine = firstNL >= 0 ? s.slice(0, firstNL) : s.slice(0, 500);
+    var rest = firstNL >= 0 ? s.slice(firstNL + 1) : '';
+    var secondNL = rest.search(/\r?\n/);
+    var secondLine = secondNL >= 0 ? rest.slice(0, secondNL) : rest.slice(0, 500);
+    var candidates = [',', '\t', ';', '|'];
+    function countOutside(line, delim) {
+      // Count delim chars NOT inside double-quotes, so a description
+      // like "olive oil; extra virgin" doesn't mis-vote semicolon.
+      var n = 0, inQ = false;
+      for (var i = 0; i < line.length; i++) {
+        var c = line[i];
+        if (c === '"') { inQ = !inQ; continue; }
+        if (!inQ && c === delim) n++;
+      }
+      return n;
     }
-    var best = ',', bestN = -1;
-    Object.keys(counts).forEach(function (k) {
-      if (counts[k] > bestN) { best = k; bestN = counts[k]; }
+    var best = ',', bestScore = -1;
+    candidates.forEach(function (d) {
+      var h = countOutside(firstLine, d);
+      var r = countOutside(secondLine, d);
+      // Primary signal: header field count. Bonus when row 2 matches.
+      var score = h * 4 + (h > 0 && h === r ? 8 : 0) + r;
+      if (score > bestScore) { bestScore = score; best = d; }
     });
     return best;
+  }
+
+  // Strip UTF-8 BOM from the start of CSV text. QuickBooks / Excel /
+  // some payroll tools always emit it; without this strip, the first
+  // header field comes back as "﻿Name" and mapHeaders fails to
+  // match it.
+  function _stripBom(text) {
+    if (typeof text !== 'string' || !text.length) return text;
+    if (text.charCodeAt(0) === 0xFEFF) return text.slice(1);
+    return text;
   }
 
   function parseDelimited(text, delim) {
@@ -197,8 +229,9 @@
 
   // -------------------- Public entry --------------------
   function extractCsv(text) {
-    var delim = detectDelim(text);
-    var matrix = parseDelimited(text, delim);
+    var clean = _stripBom(text);
+    var delim = detectDelim(clean);
+    var matrix = parseDelimited(clean, delim);
     return matrixToParsedShape(matrix);
   }
 
@@ -248,7 +281,8 @@
     _detectDelim:              detectDelim,
     _parseDelimited:           parseDelimited,
     _mapHeaders:               mapHeaders,
-    _matrixToParsedShape:      matrixToParsedShape
+    _matrixToParsedShape:      matrixToParsedShape,
+    _stripBom:                 _stripBom
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_CSV_EXTRACT = api;
