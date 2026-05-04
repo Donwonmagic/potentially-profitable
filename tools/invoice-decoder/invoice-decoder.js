@@ -554,6 +554,7 @@
     var invoiceBiasReplacements   = 0;  // Wave 4.4 — sum across pages
     var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
     var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
+    var page1WordsForColumns      = [];  // Layout-aware OCR refinement source
 
     // Wave 9.4 — heavy-tier language packs (chi_sim/chi_tra/jpn/kor)
     // when the operator's preferences or vendor history imply them.
@@ -624,6 +625,17 @@
           if (pageIdx === 0) {
             // First page: trust everything.
             allLines = allLines.concat(newLines);
+            // Wave 14.7+ — capture page-1 word data once for the
+            // column-aware orchestrator. Wave 4.4 made lines[].words
+            // populated on every recognize() call, so we can derive
+            // the flat words list from the data we already have
+            // instead of paying for an extra recognize pass.
+            page1WordsForColumns = [];
+            newLines.forEach(function (ln) {
+              if (Array.isArray(ln.words) && ln.words.length) {
+                page1WordsForColumns = page1WordsForColumns.concat(ln.words);
+              }
+            });
           } else {
             var seenHashes = new Set();
             allLines.forEach(function (l) { seenHashes.add(normalizeForDedup(l.text)); });
@@ -760,22 +772,20 @@
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
       parsed._rawOcrText = fullText;
-      // Wave 14.7 — column-aware refinement. Runs ONLY when the
-      // matched vendor template carries columnsEnabled:true (Sysco
-      // first; other vendors enable as their fixtures validate).
-      // Costs one extra OCR pass on page-1 gentle canvas to surface
-      // word bboxes — gated so non-Sysco invoices pay nothing.
+      // Column-aware refinement. Runs for every vendor — the
+      // orchestrator's internal guards (≥30 words with bboxes, ≥3
+      // detected columns, ±50% sanity check, math-coherence guard)
+      // bypass cleanly on inputs that don't have a clean grid
+      // (thermal receipts, screenshots). Words are sourced from the
+      // multipass OCR result we already have (Wave 4.4 made
+      // lines[].words populated on every recognize call), so this
+      // costs nothing additional on top of the regular pipeline.
       var columnsRefinePromise = Promise.resolve(parsed);
-      if (enrichment && enrichment.columnsEnabled &&
-          typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
-          typeof MID_OCR.recognizeCanvasWithWords === 'function' &&
-          pendingPages.length && pendingPages[0].gentle) {
-        columnsRefinePromise = MID_OCR.recognizeCanvasWithWords(pendingPages[0].gentle, {
-          lang: 'eng+spa', psm: 6
-        }).then(function (wordResult) {
-          var words = (wordResult && wordResult.words) || [];
-          return MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, words);
-        }).catch(function () { return parsed; });
+      if (typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
+          pendingPages.length && pendingPages[0].gentle &&
+          page1WordsForColumns.length >= 30) {
+        columnsRefinePromise = MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, page1WordsForColumns)
+          .catch(function () { return parsed; });
       }
       columnsRefinePromise.then(function () {
         renderParsed(parsed);

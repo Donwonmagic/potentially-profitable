@@ -13,28 +13,20 @@
  *                                                 canvas with column-tuned
  *                                                 whitelists.
  *
- * Gated by per-vendor `columnsEnabled: true` flags. Sysco gets the
- * flag first; other vendors enable as their fixtures validate. When
- * the vendor template doesn't carry the flag, the orchestrator
- * silently returns the input parsed result unchanged — zero risk to
- * the existing 100%-accuracy soak fixtures.
+ * Runs for EVERY invoice with a structured layout. The internal
+ * guards keep it safe on non-tabular inputs:
  *
- * Pipeline:
+ *   - bypass when fewer than 30 words have bboxes (sparse OCR / image)
+ *   - bypass when reconstructColumns can't find ≥3 columns (receipts,
+ *     screenshots, free-form text)
+ *   - bypass when no parsed rows carry bboxes
+ *   - cap at MAX_REFINES re-OCRs per invoice to bound wall clock
+ *   - re-read must be within ±50% of the multipass value
+ *   - re-read must improve math coherence (qty × unitPrice ≈ lineTotal)
  *
- *   1. After standard multipass parse + classifyRows, the controller
- *      calls MID_COLUMNS.refineParsed(parsed, canvas, words).
- *   2. If the vendor's columnsEnabled flag is set AND the words array
- *      has ≥ 30 entries with bboxes, project columns.
- *   3. For each parsed row, find the row's vertical band and the
- *      price column's x-range. Re-OCR that crop with the price
- *      whitelist (PSM 7, '0123456789.,$()-').
- *   4. If the re-read yields a numeric value within ±50% of the
- *      multipass value AND fixes a math gap (qty × re-read ≈
- *      lineTotal), commit the re-read as the new lineTotal and bump
- *      fieldConf.price.
- *
- * Conservative: never replaces a multipass read with a worse re-read;
- * never commits a re-read whose number isn't even plausible.
+ * The conservatism is in the data shape the orchestrator looks at,
+ * not in a per-vendor allowlist. Thermal receipts and free-form
+ * text simply don't satisfy the guards and get skipped automatically.
  *
  * Privacy: all OCR runs in-tab via existing pool workers. No new
  * network surface.
@@ -42,14 +34,11 @@
 (function (root) {
   'use strict';
 
-  function _vendorTpl(vendorId) {
-    if (!vendorId || !root || !root.MID_VENDORS) return null;
-    var registry = root.MID_VENDORS.REGISTRY || [];
-    for (var i = 0; i < registry.length; i++) {
-      if (registry[i].id === vendorId) return registry[i];
-    }
-    return null;
-  }
+  // Cap re-OCRs per invoice. Each region recognize is ~1.5s on a
+  // mid-tier phone; bounding to 12 keeps worst-case under 20s on
+  // photos with many amber rows while still catching the most
+  // important fixes (sorted by lowest fieldConf first).
+  var MAX_REFINES = 12;
 
   function _columnByLabel(columns, label) {
     if (!columns || !columns.length) return null;
@@ -69,17 +58,11 @@
   }
 
   // Public — extend a parsed result with column-aware refinements.
-  // Returns a Promise<parsed> (mutated in place). Bypasses on:
-  //   - vendor without columnsEnabled flag
-  //   - missing canvas / words array
-  //   - too few words (< 30) to form a reliable column projection
-  //   - reconstructColumns returns null
+  // Returns a Promise<parsed> (mutated in place). Bypasses cleanly on
+  // any input that doesn't satisfy the internal guards.
   function refineParsed(parsed, canvas, words, opts) {
     opts = opts || {};
     if (!parsed || !parsed.rows || !parsed.rows.length) return Promise.resolve(parsed);
-    var vendorId = parsed.vendor;
-    var tpl = _vendorTpl(vendorId);
-    if (!tpl || !tpl.columnsEnabled) return Promise.resolve(parsed);
     if (!canvas || !words || words.length < 30) return Promise.resolve(parsed);
     if (!root || !root.MID_PARSE || !root.MID_PARSE.reconstructColumns) return Promise.resolve(parsed);
     if (!root.MID_OCR || !root.MID_OCR.recognizeRegion) return Promise.resolve(parsed);
@@ -93,9 +76,6 @@
     var priceCol = _columnByLabel(columns, 'price') || _columnByLabel(columns, 'total');
     if (!priceCol) return Promise.resolve(parsed);
 
-    // Build row-bband list from the parsed rows' OCR-line bboxes (set
-    // by recognizeCanvas when withWords is true). Skip rows without
-    // bbox; they'd require fuzzy y-match against words.
     var rowsWithBands = parsed.rows
       .map(function (r, idx) {
         var bb = _rowBbox(r);
@@ -107,15 +87,19 @@
 
     // Limit to amber/red rows where the multipass read isn't already
     // confident — running re-OCR on every row is wasteful and risks
-    // regressing high-confidence reads.
+    // regressing high-confidence reads. Sort by lowest min(price,qty)
+    // so we attack the most uncertain reads first within the cap.
     var candidates = rowsWithBands.filter(function (entry) {
       var fc = entry.row.fieldConf || {};
       var minF = Math.min(fc.price || 0, fc.qty || 0);
       return minF < 80;
-    });
+    }).sort(function (a, b) {
+      var fa = a.row.fieldConf || {}, fb = b.row.fieldConf || {};
+      return Math.min(fa.price || 0, fa.qty || 0) - Math.min(fb.price || 0, fb.qty || 0);
+    }).slice(0, MAX_REFINES);
     if (!candidates.length) return Promise.resolve(parsed);
 
-    var stats = { attempted: 0, accepted: 0, rejected: 0 };
+    var stats = { attempted: 0, accepted: 0, rejected: 0, capped: rowsWithBands.length > MAX_REFINES };
     var chain = Promise.resolve();
     candidates.forEach(function (entry) {
       chain = chain.then(function () {
