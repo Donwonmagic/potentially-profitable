@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var SW_VERSION = 'id-decoder-v10-2026-05-01';
+var SW_VERSION = 'id-decoder-v11-2026-05-04-briefing';
 var SHELL_CACHE = 'id-shell-' + SW_VERSION;
 var ASSET_CACHE = 'id-asset-' + SW_VERSION;
 var VENDOR_CACHE = 'id-vendor-' + SW_VERSION;
@@ -55,6 +55,12 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/vendors/_index.json',
   '/tools/invoice-decoder/auto-learn.js',
   '/tools/invoice-decoder/vendor-config.js',
+  // Decision Brief layer (Wave A–E)
+  '/tools/invoice-decoder/decision-brief.js',
+  '/tools/invoice-decoder/briefing-card.js',
+  '/tools/invoice-decoder/briefing-actions.js',
+  '/tools/invoice-decoder/notify-templates.js',
+  '/tools/invoice-decoder/proactive.js',
   // Wave 6.4 — self-hosted vendor JS entry points. The integrity
   // manifest at /assets/vendor/_integrity.json (also precached) is
   // consulted at runtime by vendor-config.js to set SRI on each load.
@@ -280,4 +286,62 @@ self.addEventListener('message', function (event) {
       event.source.postMessage({ type: 'SW_VERSION', version: SW_VERSION });
     }
   }
+});
+
+// ---------- Wave E: notification click → deep-link routing ----------
+// When the operator taps a proactive notification, open the page
+// scoped to the trigger's deep-link. The link carries a short
+// SHA-1 hash of the stem/vendor (NOT plaintext) — the page reverses
+// via MuntinContext.read() lookup. URL never carries operator data.
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  var deepLink = (event.notification.data && event.notification.data.deepLink) ||
+                 '/tools/invoice-decoder/';
+  event.waitUntil((function () {
+    return self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (windows) {
+      // Reuse an open window if one matches the origin.
+      for (var i = 0; i < windows.length; i++) {
+        var w = windows[i];
+        if (w.url && w.url.indexOf(self.location.origin) === 0 && 'focus' in w) {
+          w.navigate ? w.navigate(deepLink) : w.postMessage({ type: 'PROACTIVE_OPEN', deepLink: deepLink });
+          return w.focus();
+        }
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(deepLink);
+    });
+  })());
+});
+
+// ---------- Wave E: periodicsync — background re-evaluation ----------
+// Fires when the browser decides (typically every 12h on capable
+// devices, only after the operator has installed the PWA AND
+// granted background-sync permission). The SW reads a precomputed
+// "snapshot" the page wrote to a Cache and dispatches stored
+// notifications. We don't import proactive.js here — the page is
+// the source of truth; SW only fires already-decided notifications.
+self.addEventListener('periodicsync', function (event) {
+  if (event.tag !== 'mid-reckon') return;
+  event.waitUntil((function () {
+    return caches.open('mid-reckon-snapshot').then(function (cache) {
+      return cache.match('/__reckon_pending__').then(function (resp) {
+        if (!resp) return;
+        return resp.json().then(function (pending) {
+          if (!Array.isArray(pending)) return;
+          return Promise.all(pending.map(function (item) {
+            if (!item.title || !item.body) return null;
+            return self.registration.showNotification(item.title, {
+              body:  item.body,
+              icon:  '/tools/invoice-decoder/icon-192.png',
+              badge: '/tools/invoice-decoder/icon-192.png',
+              tag:   item.tag || ('mid-reckon-' + Date.now()),
+              data:  { deepLink: item.deepLink || '/tools/invoice-decoder/' }
+            }).catch(function () {});
+          }));
+        });
+      }).then(function () {
+        // Drain the snapshot after dispatch.
+        return cache.delete('/__reckon_pending__');
+      });
+    });
+  })());
 });
