@@ -6165,9 +6165,71 @@
     ctx.textAlign = 'center';
     ctx.fillText(label, w / 2, h - 4);
   }
+  // Wave studio-quality (perf) — lazy-paint theme thumbnails via
+  // IntersectionObserver. The 27-theme thumb bundle is ~89KB raw of
+  // inline SVG markup; painting all 27 at boot does ~80KB of
+  // innerHTML writes + reflows. Only ~6-8 cards are visible above
+  // the fold on a typical viewport — paint those, lazy-paint the
+  // rest as the operator scrolls. On browsers without IO (very old)
+  // the function falls back to immediate full paint.
+  function _paintSingleThumb(card) {
+    if (card.dataset.thumbLoaded === '1') return;
+    if (typeof MD_THEMES === 'undefined') return;
+    var id = card.dataset.id;
+    var t = MD_THEMES.get(id);
+    if (!t) return;
+    var oldCanvas = card.querySelector('canvas.md-theme-thumb');
+    if (oldCanvas) oldCanvas.parentNode.removeChild(oldCanvas);
+    var oldImg = card.querySelector('img.md-theme-thumb');
+    if (oldImg) oldImg.parentNode.removeChild(oldImg);
+    var holder = card.querySelector('.md-theme-thumb');
+    if (!holder) {
+      holder = document.createElement('div');
+      holder.className = 'md-theme-thumb';
+      holder.setAttribute('aria-hidden', 'true');
+      card.appendChild(holder);
+    }
+    var svgString = (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get)
+      ? MD_THUMBS.get(id) : null;
+    if (svgString) {
+      holder.innerHTML = svgString;
+      var inlineSvg = holder.querySelector('svg');
+      if (inlineSvg) {
+        inlineSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        inlineSvg.style.width = '100%';
+        inlineSvg.style.height = '100%';
+        inlineSvg.style.display = 'block';
+      }
+    }
+    card.dataset.thumbLoaded = '1';
+  }
+
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
     var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
+    if (typeof IntersectionObserver === 'function' && cards.length > 8) {
+      // Set up (or reuse) a single observer that paints each card
+      // as it enters the viewport. rootMargin pre-paints just below
+      // the fold so the next-row cards are ready by the time they
+      // scroll into view.
+      if (!paintAllThemeThumbs._observer) {
+        paintAllThemeThumbs._observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              _paintSingleThumb(entry.target);
+              paintAllThemeThumbs._observer.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px 0px' });
+      }
+      cards.forEach(function (card) {
+        if (card.dataset.thumbLoaded !== '1') {
+          paintAllThemeThumbs._observer.observe(card);
+        }
+      });
+      return;
+    }
+    // Fallback: paint everything synchronously (small picker, no IO).
     cards.forEach(function (card) {
       if (card.dataset.thumbLoaded === '1') return;
       var id = card.dataset.id;
