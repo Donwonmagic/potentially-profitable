@@ -327,10 +327,21 @@
         } });
       }
     }).catch(function (err) {
+      // Surface a specific, actionable message when the decode failure
+      // mode is identifiable (HEIC the most common). The error
+      // messages thrown by fileToCanvas now carry the right guidance
+      // verbatim — pass through when present.
+      var msg = (err && err.message) || '';
+      var isHeicGuidance = /HEIC|heic|share as JPG|Photos → Share/i.test(msg);
+      var detail = isHeicGuidance
+        ? msg
+        : tt(
+            'Try a clearer shot, share as JPG (Photos → Share → Options → Most Compatible on iPhone), or a PDF if your distributor offers one.' + (msg ? ' (' + msg + ')' : ''),
+            'Prueba una foto más clara, comparte como JPG (Fotos → Compartir → Opciones → Más compatible en iPhone), o un PDF si tu distribuidor lo ofrece.' + (msg ? ' (' + msg + ')' : '')
+          );
       showStatus(
         tt('Could not read this photo.', 'No se pudo leer esta foto.'),
-        tt('Try a clearer shot or a PDF if your distributor offers one. ' + (err && err.message ? '(' + err.message + ')' : ''),
-           'Prueba una foto más clara o un PDF si tu distribuidor lo ofrece. ' + (err && err.message ? '(' + err.message + ')' : '')),
+        detail,
         'error'
       );
     });

@@ -82,8 +82,106 @@
   function _isHeicFile(file) {
     if (!file) return false;
     var t = String(file.type || '').toLowerCase();
-    if (t === 'image/heic' || t === 'image/heif') return true;
-    return /\.(heic|heif)$/i.test(String(file.name || ''));
+    if (t === 'image/heic' || t === 'image/heif' ||
+        t === 'image/heic-sequence' || t === 'image/heif-sequence') return true;
+    return /\.(heic|heif|hif)$/i.test(String(file.name || ''));
+  }
+
+  // Magic-bytes format sniff. Detects file types whose MIME and
+  // extension both lied (iPhone HEIC shares; ScanSnap TIFF without
+  // .tif extension; etc). Reading 16 bytes is cheap; we only call
+  // this when the standard <img> decode has already failed.
+  // Returns 'heic' | 'tiff' | 'avif' | null.
+  function _sniffImageMagicBytes(file) {
+    if (!file || !file.slice || typeof file.slice !== 'function') return Promise.resolve(null);
+    return file.slice(0, 16).arrayBuffer()
+      .then(function (buf) {
+        var v = new Uint8Array(buf);
+        if (v.length < 8) return null;
+        // TIFF: little-endian 'II*\0' (49 49 2A 00) or big-endian 'MM\0*' (4D 4D 00 2A).
+        if ((v[0] === 0x49 && v[1] === 0x49 && v[2] === 0x2A && v[3] === 0x00) ||
+            (v[0] === 0x4D && v[1] === 0x4D && v[2] === 0x00 && v[3] === 0x2A)) {
+          return 'tiff';
+        }
+        // HEIC/AVIF: 'ftyp' box at bytes 4-7, brand at 8-11.
+        if (v.length >= 12 && v[4] === 0x66 && v[5] === 0x74 && v[6] === 0x79 && v[7] === 0x70) {
+          var brand = String.fromCharCode(v[8]) + String.fromCharCode(v[9]) +
+                      String.fromCharCode(v[10]) + String.fromCharCode(v[11]);
+          if (/^(avif|avis)$/i.test(brand)) return 'avif';
+          if (/^(heic|heix|heim|heis|hevc|hevx|mif1|msf1)$/i.test(brand)) return 'heic';
+        }
+        return null;
+      })
+      .catch(function () { return null; });
+  }
+  // Backwards-compat alias used by older call-sites.
+  function _sniffHeicMagicBytes(file) {
+    return _sniffImageMagicBytes(file).then(function (kind) { return kind === 'heic' || kind === 'avif'; });
+  }
+
+  function _isTiffFile(file) {
+    if (!file) return false;
+    var t = String(file.type || '').toLowerCase();
+    if (t === 'image/tiff' || t === 'image/tif') return true;
+    return /\.(tiff?|tif)$/i.test(String(file.name || ''));
+  }
+
+  // Lazy utif.js loader — TIFF decoder. utif.js is ~30 KB minified
+  // and decodes single + multi-page TIFF (which ScanSnap commonly
+  // produces when the operator hasn't configured PDF output). Self-
+  // hosted at /assets/vendor/utif/UTIF.js by the vendor-pin step.
+  var __utifPromise = null;
+  function _loadUtif() {
+    if (__utifPromise) return __utifPromise;
+    __utifPromise = new Promise(function (resolve, reject) {
+      var url = '/assets/vendor/utif/UTIF.js';
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.onload = function () {
+        if (root && root.UTIF) resolve(root.UTIF);
+        else reject(new Error('utif loaded but global missing'));
+      };
+      s.onerror = function () { reject(new Error('utif unavailable')); };
+      document.head.appendChild(s);
+    }).catch(function (err) { __utifPromise = null; throw err; });
+    return __utifPromise;
+  }
+  function _tiffToCanvas(file, maxEdge) {
+    return _loadUtif().then(function (UTIF) {
+      return file.arrayBuffer().then(function (buf) {
+        var ifds = UTIF.decode(buf);
+        if (!ifds || !ifds.length) throw new Error('utif: no IFDs');
+        // Render the FIRST page; multi-page TIFF support is a future
+        // enhancement (would call handlePhotoFiles with multiple
+        // synthesized JPEG Files).
+        var ifd = ifds[0];
+        UTIF.decodeImage(buf, ifd);
+        var rgba = UTIF.toRGBA8(ifd);
+        var w = ifd.width, h = ifd.height;
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        var imageData = ctx.createImageData(w, h);
+        imageData.data.set(rgba);
+        ctx.putImageData(imageData, 0, 0);
+        return imageToCanvas(canvas, maxEdge || 2000);
+      });
+    });
+  }
+
+  // Last-resort decode via createImageBitmap. Some browsers (newer
+  // Edge, recent Firefox) can decode formats their <img> path can't
+  // — most notably some HEIC subtypes, AVIF, and uncommon JPEG
+  // profiles. Cheap to try when the standard path has already failed.
+  function _imageBitmapToCanvas(file, maxEdge) {
+    if (typeof createImageBitmap !== 'function') return Promise.reject(new Error('no createImageBitmap'));
+    return createImageBitmap(file).then(function (bitmap) {
+      var canvas = imageToCanvas(bitmap, maxEdge || 2000);
+      try { bitmap.close && bitmap.close(); } catch (_) {}
+      return canvas;
+    });
   }
   // Lazy libheif-js loader. Looks for a self-hosted ESM at
   // /assets/vendor/libheif/libheif.js (added by Wave 8 vendor-pin).
@@ -148,6 +246,19 @@
   // on browsers that can't decode HEIC natively.
   function fileToCanvas(file, maxEdge) {
     var heic = _isHeicFile(file);
+    var tiff = _isTiffFile(file);
+    // TIFF has no <img> support in any browser. Skip the standard
+    // path entirely — go straight to utif.js. ScanSnap configured
+    // for TIFF output is the most common operator-facing trigger.
+    if (tiff) {
+      return _tiffToCanvas(file, maxEdge || 2000).catch(function () {
+        return Promise.reject(new Error(
+          'TIFF photos can\'t be read in this browser. ' +
+          'In ScanSnap Manager: File Format → PDF (or JPEG). ' +
+          'Or convert this file to PDF / JPEG before dropping.'
+        ));
+      });
+    }
     return new Promise(function (resolve, reject) {
       var url = URL.createObjectURL(file);
       var img = new Image();
@@ -160,20 +271,74 @@
       };
       img.onerror = function () {
         URL.revokeObjectURL(url);
+        // Multi-stage fallback chain. The standard <img> decode fails
+        // on (a) HEIC files Chrome/Firefox can't read, (b) some
+        // AVIF/WebP variants, (c) photos with unusual JPEG profiles.
+        // Each stage is cheap and bails fast when it fails.
+        //
+        // Stage 1: magic-bytes HEIC sniff. Catches HEIC files whose
+        //          MIME and extension both lied (iPhone shares).
+        //          Routes to libheif fallback when matched.
+        // Stage 2: libheif fallback for confirmed HEIC.
+        // Stage 3: createImageBitmap last-resort. Some browsers can
+        //          decode formats their <img> path can't.
+        // Stage 4: surface a specific, actionable error.
+        function _tryImageBitmap(reason) {
+          return _imageBitmapToCanvas(file, maxEdge || 2000)
+            .then(resolve)
+            .catch(function () {
+              reject(new Error(reason || 'image decode failed — try sharing as JPG (Photos → Share → Options → Most Compatible on iPhone)'));
+            });
+        }
         if (heic) {
-          // Native decode failed — try libheif-js fallback.
           _heicToCanvas(file, maxEdge || 2000)
             .then(resolve)
             .catch(function () {
-              reject(new Error(
+              // libheif unavailable; try createImageBitmap before
+              // giving up — newer Edge can decode HEIC this way.
+              _tryImageBitmap(
                 'This HEIC photo can\'t be read in your browser. ' +
-                'On iPhone, share it as JPG (Photos → Share → Options → Most Compatible), ' +
-                'or use Chrome on a phone for native HEIC.'
-              ));
+                'On iPhone, share as JPG (Photos → Share → Options → Most Compatible).'
+              );
             });
           return;
         }
-        reject(new Error('image decode failed'));
+        // Standard decode failed AND extension/MIME didn't flag a
+        // known-quirky format. Sniff the actual magic bytes —
+        // iPhone shares often strip extension AND lie in MIME;
+        // ScanSnap-output TIFFs sometimes arrive with .jpg extension.
+        _sniffImageMagicBytes(file).then(function (kind) {
+          if (kind === 'heic') {
+            _heicToCanvas(file, maxEdge || 2000)
+              .then(resolve)
+              .catch(function () {
+                _tryImageBitmap(
+                  'This is an iPhone HEIC photo your browser can\'t decode. ' +
+                  'On iPhone, share as JPG (Photos → Share → Options → Most Compatible).'
+                );
+              });
+            return;
+          }
+          if (kind === 'tiff') {
+            _tiffToCanvas(file, maxEdge || 2000)
+              .then(resolve)
+              .catch(function () {
+                reject(new Error(
+                  'This is a TIFF file your browser can\'t decode. ' +
+                  'In ScanSnap Manager: File Format → PDF (or JPEG). ' +
+                  'Or convert this file to PDF / JPEG before dropping.'
+                ));
+              });
+            return;
+          }
+          if (kind === 'avif') {
+            // AVIF: <img> path failed but createImageBitmap may decode.
+            _tryImageBitmap('AVIF photo your browser can\'t decode — try a PNG or JPG export.');
+            return;
+          }
+          // Unrecognized format — try createImageBitmap as a last resort.
+          _tryImageBitmap();
+        }).catch(function () { _tryImageBitmap(); });
       };
       img.src = url;
     });

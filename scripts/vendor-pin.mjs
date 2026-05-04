@@ -125,6 +125,37 @@ const VENDORS = [
     publicPrefix: '/assets/vendor/paddleocr@2.2.5',
     rename: { 'lib/index.mjs': 'index.mjs' },
     optional: true
+  },
+  {
+    // Wave 1.6 fix — libheif-js for HEIC photo decode on browsers
+    // that can't decode HEIC natively (Chrome/Firefox/Edge desktop).
+    // iPhone photos default to HEIC; without this fallback every
+    // operator who drops an iPhone photo on a desktop browser sees
+    // 'Could not read this photo'. The runtime lazy-loads from
+    // /assets/vendor/libheif/libheif.js — vendor-pin writes it from
+    // the npm tarball at deploy time. Marked optional so an offline
+    // build still succeeds (in that case the runtime falls back to
+    // createImageBitmap or surfaces a specific HEIC-share-as-JPG
+    // error message).
+    name: 'libheif-js',
+    version: '1.17.1',
+    files: ['libheif/libheif.js'],
+    publicPrefix: '/assets/vendor/libheif',
+    rename: { 'libheif/libheif.js': 'libheif.js' },
+    optional: true
+  },
+  {
+    // utif.js — TIFF decoder for browsers (no browser supports TIFF
+    // via <img> or createImageBitmap). ScanSnap commonly outputs
+    // TIFF when the operator hasn't switched to PDF; without this
+    // every ScanSnap operator who drops a .tif file sees "image
+    // decode failed". ~30 KB minified, lazy-loaded only when a TIFF
+    // is detected (extension, MIME, or magic-byte sniff).
+    name: 'utif',
+    version: '3.1.0',
+    files: ['UTIF.js'],
+    publicPrefix: '/assets/vendor/utif',
+    optional: true
   }
 ];
 
