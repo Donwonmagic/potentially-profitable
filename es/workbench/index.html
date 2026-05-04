@@ -626,6 +626,12 @@ header.nav{min-height:64px}
           statusPillHtml = ' <span class="wsh-item-status">· ' + escapeHtml(item._submission.statusLabel) + '</span>';
           openUrl = '/es/blog/' + encodeURIComponent(item._submission.articleSlug) + '/#field-note-form';
           actionsHtml = '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Abrir</a>';
+        } else if (item.kind === 'sheet') {
+          // B7 — filas de hoja: Abrir pasa por el handoff de prefill
+          // (carga el payload guardado, construye /es/sheets/<slug>/?prefill=...).
+          actionsHtml = watchSlot +
+            '<a class="btn btn-ghost btn-sm js-wb-open-sheet" href="#" data-id="' + escapeHtml(item.id) + '">Reabrir</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm btn-danger js-wb-delete">Eliminar</button>';
         } else {
           actionsHtml = watchSlot +
             '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Abrir</a>' +
@@ -661,6 +667,77 @@ header.nav{min-height:64px}
       });
       listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
         btn.addEventListener('click', function () { onWatchDetach(btn); });
+      });
+
+      // B7 — Reabrir hoja con prefill
+      listEl.querySelectorAll('.js-wb-open-sheet').forEach(function (btn) {
+        btn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (btn.disabled) return;
+          var id = btn.getAttribute('data-id');
+          if (!id) return;
+          var row = btn.closest('.wsh-item');
+          var titleEl = row && row.querySelector('.wsh-item-title');
+          var sourceTitle = titleEl ? titleEl.textContent.trim() : '';
+          btn.disabled = true;
+          var orig = btn.textContent;
+          btn.textContent = '…';
+          fetch('/api/workbench/get?id=' + encodeURIComponent(id), {
+            credentials: 'same-origin',
+          }).then(function (r) {
+            if (!r.ok) throw new Error('get-failed');
+            return r.json();
+          }).then(function (data) {
+            var item = data && data.item;
+            var p = item && item.payload;
+            if (!p || !p.slug || p.v !== 1 || !p.inputs) {
+              alert('Esta hoja se guardó antes del formato de prefill. Ábrela directamente.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var slug = String(p.slug).replace(/[^a-zA-Z0-9_-]/g, '');
+            if (!slug) {
+              alert('No se pudo identificar la hoja para esta entrada.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var pairs = [];
+            var totalLen = 0;
+            Object.keys(p.inputs).forEach(function (k) {
+              if (pairs.length >= 30) return;
+              if (!/^[a-zA-Z0-9_]{1,40}$/.test(k)) return;
+              var v = p.inputs[k];
+              if (v == null) return;
+              var s = String(v);
+              if (s.length > 200 || !s.length) return;
+              var enc = k + ':' + encodeURIComponent(s);
+              if (totalLen + enc.length + 1 > 1800) return;
+              totalLen += enc.length + 1;
+              pairs.push(enc);
+            });
+            if (!pairs.length) {
+              alert('Esta entrada no tiene campos para pre-llenar.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var url = '/es/sheets/' + slug + '/?prefill=' + pairs.join(',');
+            url += '&prefill_source=' + encodeURIComponent(slug);
+            if (sourceTitle) url += '&prefill_label=' + encodeURIComponent(sourceTitle.slice(0, 80));
+            try {
+              if (typeof window.plausible === 'function') {
+                window.plausible('Workbench Sheet Reopen', { props: { slug: slug } });
+              }
+            } catch (_) { /* analytics best-effort */ }
+            window.location.href = url;
+          }).catch(function () {
+            alert('No se pudo cargar esta hoja guardada. Inténtalo de nuevo.');
+            btn.disabled = false;
+            btn.textContent = orig;
+          });
+        });
       });
 
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {

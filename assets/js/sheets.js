@@ -94,6 +94,12 @@
     updateClearLinks();
     // B10 — Reset button two-tap confirm replacement.
     installResetConfirm();
+    // B7 — URL-param prefill. Reads ?prefill=key:value,key:value and
+    // ?prefill_source=<slug> on boot, stamps matching form fields, and
+    // surfaces a dismissable banner above the form. The values go to
+    // input.value (not innerHTML), so this is safe against XSS by
+    // construction. Capped at 30 fields and 2048 chars total.
+    if (fieldsRoot) applyUrlPrefill(fieldsRoot, locale);
 
     // Action buttons.
     document.addEventListener('click', function (ev) {
@@ -196,11 +202,115 @@
   }
 
   // ─────────────────────────────────────────────────────────────────
-  // B11 · Progress strip — counts non-empty fieldsets, names the next.
+  // B7 · URL-param prefill receiver. The Workshop hand-off (and any
+  // future stepping-stone link) constructs a prefill URL; this reads
+  // it on boot, stamps matching form fields, marks them with
+  // data-prefilled="1", and surfaces a banner the operator can dismiss.
+  // Safety: keys must match /^[a-zA-Z0-9_]{1,40}$/, values capped at
+  // 200 chars, total at 30 fields / 2048 chars. Values are written via
+  // input.value (never innerHTML), so XSS is not in scope.
   // ─────────────────────────────────────────────────────────────────
 
-  function fieldsetIsTouched(fs) {
-    var inputs = fs.querySelectorAll('input, select, textarea');
+  var PREFILL_COPY = {
+    en: {
+      banner: function (n, source) { return 'Prefilled ' + n + ' field' + (n === 1 ? '' : 's') + (source ? ' from your saved ' + source : '') + '.'; },
+      clear:  'Clear and start fresh',
+    },
+    es: {
+      banner: function (n, source) { return 'Pre-llenamos ' + n + ' campo' + (n === 1 ? '' : 's') + (source ? ' de tu ' + source + ' guardada' : '') + '.'; },
+      clear:  'Limpiar y empezar de cero',
+    },
+  };
+
+  function applyUrlPrefill(fieldsRoot, locale) {
+    var search;
+    try { search = window.location.search || ''; } catch (_) { return; }
+    if (!search || search.length > 2048) return;
+    var params = new URLSearchParams(search);
+    var raw = params.get('prefill');
+    if (!raw) return;
+    var sourceSlug  = (params.get('prefill_source') || '').trim();
+    var sourceLabel = (params.get('prefill_label')  || '').trim().slice(0, 80) || sourceSlug;
+
+    var form = fieldsRoot.querySelector('#sheet-fields') || (fieldsRoot.id === 'sheet-fields' ? fieldsRoot : null);
+    if (!form) return;
+
+    var pairs = raw.split(',').slice(0, 30);
+    var filled = 0;
+    for (var i = 0; i < pairs.length; i++) {
+      var pair = pairs[i];
+      var idx = pair.indexOf(':');
+      if (idx < 1) continue;
+      var name  = pair.slice(0, idx);
+      var valueRaw = pair.slice(idx + 1);
+      if (!/^[a-zA-Z0-9_]{1,40}$/.test(name)) continue;
+      var value;
+      try { value = decodeURIComponent(valueRaw); } catch (_) { continue; }
+      if (value.length > 200) continue;
+      var field = form.elements && form.elements.namedItem(name);
+      if (!field) continue;
+      // namedItem can return a RadioNodeList; we only handle scalars.
+      if (field.length != null && field.tagName == null) continue;
+      if (field.type === 'checkbox' || field.type === 'radio') {
+        var v = value.toLowerCase();
+        // Accept the values collectInputsObject() emits ('yes'/'no')
+        // alongside generic truthy strings.
+        field.checked = (v === '1' || v === 'true' || v === 'on' || v === 'yes');
+      } else {
+        field.value = value;
+      }
+      field.dataset.prefilled = '1';
+      filled++;
+    }
+    if (filled === 0) return;
+
+    showPrefillBanner(form, filled, sourceLabel, locale);
+    // Trigger recalc + draft save.
+    form.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function showPrefillBanner(form, count, sourceLabel, locale) {
+    var copy = PREFILL_COPY[locale] || PREFILL_COPY.en;
+    var existing = document.getElementById('sheet-prefill-banner');
+    if (existing) existing.remove();
+    var banner = document.createElement('div');
+    banner.id = 'sheet-prefill-banner';
+    banner.className = 'sheet-prefill-banner';
+    banner.setAttribute('role', 'status');
+    var msg = document.createElement('span');
+    msg.className = 'sheet-prefill-banner__msg';
+    msg.textContent = copy.banner(count, sourceLabel);
+    banner.appendChild(msg);
+    var clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'sheet-prefill-banner__clear';
+    clearBtn.textContent = copy.clear;
+    clearBtn.addEventListener('click', function () {
+      // Strip the prefilled values, drop the banner, and rewrite the URL
+      // without prefill params so a refresh starts truly fresh.
+      var prefilled = form.querySelectorAll('[data-prefilled="1"]');
+      for (var i = 0; i < prefilled.length; i++) {
+        var el = prefilled[i];
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+        else el.value = '';
+        el.removeAttribute('data-prefilled');
+      }
+      banner.remove();
+      try {
+        var u = new URL(window.location.href);
+        u.searchParams.delete('prefill');
+        u.searchParams.delete('prefill_source');
+        u.searchParams.delete('prefill_label');
+        window.history.replaceState({}, '', u.pathname + (u.search || '') + u.hash);
+      } catch (_) { /* ignore */ }
+      form.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    banner.appendChild(clearBtn);
+    // Insert before the form.
+    form.parentNode.insertBefore(banner, form);
+  }
+
+
     for (var i = 0; i < inputs.length; i++) {
       var el = inputs[i];
       if (el.type === 'checkbox' || el.type === 'radio') {

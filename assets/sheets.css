@@ -819,3 +819,55 @@
   .sheet-worked-example { display: none; }
 }
 
+/* B7 · URL-param prefill banner. Sits above the form when the operator
+   arrives via a "use these values to prefill another sheet" link. The
+   prefilled fields themselves carry data-prefilled="1" and get a soft
+   teal hairline so the operator can see at a glance what was stamped. */
+.sheet-prefill-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--line, #E5DFD2);
+  border-left: 3px solid var(--teal, #1F4E5B);
+  border-radius: 6px;
+  background: var(--cream-2, #F3EEE3);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink, #14161A);
+}
+.sheet-prefill-banner__msg { flex: 1 1 auto; }
+.sheet-prefill-banner__clear {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal, #1F4E5B);
+  cursor: pointer;
+}
+.sheet-prefill-banner__clear:hover { color: var(--teal-deep, #143A45); }
+.sheet-prefill-banner__clear:focus-visible {
+  outline: 3px solid var(--teal, #1F4E5B);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.sheet-form input[data-prefilled="1"],
+.sheet-form select[data-prefilled="1"],
+.sheet-form textarea[data-prefilled="1"] {
+  border-color: var(--teal, #1F4E5B);
+  background: rgba(31, 78, 91, 0.04);
+}
+@media print {
+  .sheet-prefill-banner { display: none; }
+  .sheet-form input[data-prefilled="1"],
+  .sheet-form select[data-prefilled="1"],
+  .sheet-form textarea[data-prefilled="1"] { background: transparent; }
+}
+

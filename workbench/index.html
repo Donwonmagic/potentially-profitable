@@ -715,6 +715,14 @@ header.nav{min-height:64px}
           statusPillHtml = ' <span class="wsh-item-status">· ' + escapeHtml(item._submission.statusLabel) + '</span>';
           openUrl = '/blog/' + encodeURIComponent(item._submission.articleSlug) + '/#field-note-form';
           actionsHtml = '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>';
+        } else if (item.kind === 'sheet') {
+          // B7 — sheet-kind rows route Open through the prefill hand-off:
+          // fetch the saved payload, read v:1 inputs + slug, build a
+          // /sheets/<slug>/?prefill=... URL, navigate. The receiving
+          // sheet stamps the values and shows the prefill banner.
+          actionsHtml = watchSlot +
+            '<a class="btn btn-ghost btn-sm js-wb-open-sheet" href="#" data-id="' + escapeHtml(item.id) + '">Reopen</a>' +
+            '<button type="button" class="btn btn-ghost btn-sm btn-danger js-wb-delete">Delete</button>';
         } else {
           actionsHtml = watchSlot +
             '<a class="btn btn-ghost btn-sm" href="' + openUrl + '">Open</a>' +
@@ -754,6 +762,81 @@ header.nav{min-height:64px}
       });
       listEl.querySelectorAll('.js-wb-watch-detach').forEach(function (btn) {
         btn.addEventListener('click', function () { onWatchDetach(btn); });
+      });
+
+      // B7 — sheet-kind Reopen button: fetch the saved payload, read
+      // v:1 inputs + slug, build /sheets/<slug>/?prefill=... and go.
+      listEl.querySelectorAll('.js-wb-open-sheet').forEach(function (btn) {
+        btn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (btn.disabled) return;
+          var id = btn.getAttribute('data-id');
+          if (!id) return;
+          var row = btn.closest('.wsh-item');
+          var titleEl = row && row.querySelector('.wsh-item-title');
+          var sourceTitle = titleEl ? titleEl.textContent.trim() : '';
+          btn.disabled = true;
+          var orig = btn.textContent;
+          btn.textContent = '…';
+          fetch('/api/workbench/get?id=' + encodeURIComponent(id), {
+            credentials: 'same-origin',
+          }).then(function (r) {
+            if (!r.ok) throw new Error('get-failed');
+            return r.json();
+          }).then(function (data) {
+            var item = data && data.item;
+            var p = item && item.payload;
+            if (!p || !p.slug || p.v !== 1 || !p.inputs) {
+              alert('This save is older than the prefill format. Open the sheet directly and use the saved payload manually.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var slug = String(p.slug).replace(/[^a-zA-Z0-9_-]/g, '');
+            if (!slug) {
+              alert('Could not resolve the sheet for this save.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            // Build the prefill query. Cap pairs and length defensively.
+            var pairs = [];
+            var totalLen = 0;
+            Object.keys(p.inputs).forEach(function (k) {
+              if (pairs.length >= 30) return;
+              if (!/^[a-zA-Z0-9_]{1,40}$/.test(k)) return;
+              var v = p.inputs[k];
+              if (v == null) return;
+              var s = String(v);
+              if (s.length > 200 || !s.length) return;
+              var enc = k + ':' + encodeURIComponent(s);
+              if (totalLen + enc.length + 1 > 1800) return;
+              totalLen += enc.length + 1;
+              pairs.push(enc);
+            });
+            if (!pairs.length) {
+              alert('This save has no fields the sheet can prefill.');
+              btn.disabled = false;
+              btn.textContent = orig;
+              return;
+            }
+            var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+            var basePath = locale === 'es' ? '/es/sheets/' : '/sheets/';
+            var url = basePath + slug + '/?prefill=' + pairs.join(',');
+            url += '&prefill_source=' + encodeURIComponent(slug);
+            if (sourceTitle) url += '&prefill_label=' + encodeURIComponent(sourceTitle.slice(0, 80));
+            try {
+              if (typeof window.plausible === 'function') {
+                window.plausible('Workbench Sheet Reopen', { props: { slug: slug } });
+              }
+            } catch (_) { /* analytics best-effort */ }
+            window.location.href = url;
+          }).catch(function () {
+            alert('Could not load this saved sheet. Try again in a moment.');
+            btn.disabled = false;
+            btn.textContent = orig;
+          });
+        });
       });
 
       listEl.querySelectorAll('.js-wb-delete').forEach(function (btn) {
