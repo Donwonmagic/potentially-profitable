@@ -2591,7 +2591,12 @@
         // eslint-disable-next-line no-unused-expressions
         paperEl.offsetHeight;
         var wbuckets = _measureBuckets(paperEl, contentAreaH);
-        if (wbuckets.length <= targetPages) {
+        // Pull-It-Back invariant — 2-col promotion is a 1-page-fit
+        // primitive only (page-split breaks 2-col layout visually).
+        // If warm-start was 2-col and now needs multi-page, drop the
+        // warm hit and let the full cascade pick a single-col fallback.
+        var warmInvalid = (wstep.twoCol && wbuckets.length > 1);
+        if (!warmInvalid && wbuckets.length <= targetPages) {
           fitOk = true;
           pickedStep = wstep;
           firstStepBuckets = wbuckets;
@@ -2613,6 +2618,23 @@
           paperEl.offsetHeight;
           var buckets = _measureBuckets(paperEl, contentAreaH);
           if (stepIdx === 0) firstStepBuckets = buckets;
+          // Pull-It-Back invariant — 2-col promotion is a 1-page-fit
+          // primitive only. The page-split machinery clones the
+          // paperEl per page; 2-col content cloned across multi-page
+          // breaks visually (section headers overlap dishes that
+          // flowed into the wrong column). When the cascade is in
+          // multi-page-allowed mode and a 2-col step would still
+          // produce >1 bucket, skip it and try the next step. The
+          // cascade's later 1-col steps (88%, 84% floor) WILL fit
+          // single-col multi-page cleanly because the page-split
+          // was designed for single-column flow.
+          if (step.twoCol && buckets.length > 1) {
+            // 2-col can't make this fit one page at this shrink.
+            // Strip and try the next step.
+            if (step.cls) paperEl.classList.remove('md-' + step.cls);
+            paperEl.classList.remove('md-promote-2col');
+            continue;
+          }
           if (buckets.length <= targetPages) {
             fitOk = true;
             pickedStep = step;
