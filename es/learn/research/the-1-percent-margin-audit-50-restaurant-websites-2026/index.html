@@ -108,8 +108,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=159748505eaa" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=159748505eaa"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -274,17 +274,17 @@ header.nav{min-height:64px}
 
     <p>El n&uacute;mero del 1% no es una corazonada. Es la suma a trav&eacute;s de seis fugas medidas, cada una con una cifra de alza publicada en investigaci&oacute;n primaria, aplicada al ingreso reportado por el propio operador. La metodolog&iacute;a est&aacute; abajo; el resultado titular est&aacute; en esta tabla.</p>
 
-    <div class="table-scroll"><table class="note-table" aria-label="Seis fugas, impacto promedio en 50 restaurantes">
+    <div class="table-scroll"><table class="note-table" data-viz-sortable aria-label="Seis fugas, impacto promedio en 50 restaurantes. Haz clic en cualquier encabezado para ordenar.">
       <thead>
         <tr><th scope="col">Fuga</th><th scope="col">% de operadores con esta fuga</th><th scope="col" style="text-align:right">Impacto mediano sobre el ingreso cuando est&aacute; presente</th></tr>
       </thead>
       <tbody>
-        <tr><td>El bot&oacute;n de reserva no hace deeplink al local</td><td class="num">59%</td><td class="num">&minus;0.34%</td></tr>
-        <tr><td>Horarios enterrados debajo del fold en m&oacute;vil</td><td class="num">52%</td><td class="num">&minus;0.21%</td></tr>
-        <tr><td>LCP m&oacute;vil &gt; 3.0s</td><td class="num">68%</td><td class="num">&minus;0.18%</td></tr>
-        <tr><td>Sin CTA de pedido directo arriba de los enlaces de terceros</td><td class="num">71%</td><td class="num">&minus;0.27%</td></tr>
-        <tr><td>Solo en ingl&eacute;s en una zona biling&uuml;e</td><td class="num">38%</td><td class="num">&minus;0.31%</td></tr>
-        <tr><td>Pedidos solo por agregador (sin camino directo)</td><td class="num">22%</td><td class="num">&minus;0.45%</td></tr>
+        <tr><td>El bot&oacute;n de reserva no hace deeplink al local</td><td class="num">59%<span class="viz-magbar" data-tone="teal" style="--w:0.831" aria-hidden="true"></span></td><td class="num">&minus;0.34%<span class="viz-magbar" style="--w:0.756" aria-hidden="true"></span></td></tr>
+        <tr><td>Horarios enterrados debajo del fold en m&oacute;vil</td><td class="num">52%<span class="viz-magbar" data-tone="teal" style="--w:0.732" aria-hidden="true"></span></td><td class="num">&minus;0.21%<span class="viz-magbar" style="--w:0.467" aria-hidden="true"></span></td></tr>
+        <tr><td>LCP m&oacute;vil &gt; 3.0s</td><td class="num">68%<span class="viz-magbar" data-tone="teal" style="--w:0.958" aria-hidden="true"></span></td><td class="num">&minus;0.18%<span class="viz-magbar" style="--w:0.400" aria-hidden="true"></span></td></tr>
+        <tr><td>Sin CTA de pedido directo arriba de los enlaces de terceros</td><td class="num">71%<span class="viz-magbar" data-tone="teal" style="--w:1.000" aria-hidden="true"></span></td><td class="num">&minus;0.27%<span class="viz-magbar" style="--w:0.600" aria-hidden="true"></span></td></tr>
+        <tr><td>Solo en ingl&eacute;s en una zona biling&uuml;e</td><td class="num">38%<span class="viz-magbar" data-tone="teal" style="--w:0.535" aria-hidden="true"></span></td><td class="num">&minus;0.31%<span class="viz-magbar" style="--w:0.689" aria-hidden="true"></span></td></tr>
+        <tr><td>Pedidos solo por agregador (sin camino directo)</td><td class="num">22%<span class="viz-magbar" data-tone="teal" style="--w:0.310" aria-hidden="true"></span></td><td class="num">&minus;0.45%<span class="viz-magbar" style="--w:1.000" aria-hidden="true"></span></td></tr>
       </tbody>
       <tfoot>
         <tr><td colspan="2">Fuga total mediana (entre fugas presentes)</td><td class="num">&minus;0.94%</td></tr>
@@ -409,5 +409,9 @@ header.nav{min-height:64px}
 </footer>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- M&oacute;dulo de gr&aacute;ficos de art&iacute;culo &mdash; activa
+     la tabla ordenable de fugas. Carga diferida; falla limpio si los
+     hooks no est&aacute;n presentes. -->
+<script src="/assets/article-viz.js" defer></script>
 </body>
 </html>

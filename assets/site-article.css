@@ -2559,7 +2559,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6372-6470) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6372-6496) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -2658,3 +2658,29 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .viz-slider input[type="range"]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
 .viz-slider__hint{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
 .viz-slider__hint b{color:var(--ink);font-weight:600}
+
+/* .viz-magbar — small inline magnitude bar for use inside table
+   cells. Drops a subtle row-level data viz next to a number ("the
+   impact column") so the eye can scan magnitude without doing
+   arithmetic. Right-anchored (margin-left:auto) so it tracks
+   right-aligned .num cells. Width is 120px × var(--w) where --w is
+   the cell's share of the column's max (0..1). Hidden on narrow
+   viewports — the number alone carries the meaning when the
+   table is also vertically scroll-wrapped. */
+.viz-magbar{display:block;height:4px;width:calc(var(--w,0)*120px);max-width:100%;background:var(--rust);border-radius:2px;margin:5px 0 0 auto}
+.viz-magbar[data-tone="teal"]{background:var(--teal)}
+.viz-magbar[data-tone="stone"]{background:var(--stone)}
+.viz-magbar[data-tone="ink"]{background:var(--ink)}
+@media (max-width:520px){.viz-magbar{display:none}}
+
+/* Sortable-table affordance — appears when article-viz.js attaches
+   the click handler. The .reveal IO doesn't apply here; this is a
+   one-shot visual nudge that the column header is clickable. The
+   aria-sort attribute is the source of truth (set by the JS); the
+   ::after caret is purely visual. */
+table[data-viz-sortable] th[aria-sort]{position:relative;cursor:pointer;user-select:none}
+table[data-viz-sortable] th[aria-sort]:hover{color:var(--teal)}
+table[data-viz-sortable] th[aria-sort]:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+table[data-viz-sortable] th[aria-sort]::after{content:"\2195";font-size:10px;margin-left:6px;color:var(--stone);opacity:0.55;font-variant-numeric:tabular-nums;display:inline-block;vertical-align:middle}
+table[data-viz-sortable] th[aria-sort="ascending"]::after{content:"\2191";color:var(--teal);opacity:1}
+table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color:var(--teal);opacity:1}

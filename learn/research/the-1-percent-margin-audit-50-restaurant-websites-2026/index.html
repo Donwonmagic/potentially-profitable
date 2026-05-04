@@ -111,8 +111,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=159748505eaa" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=159748505eaa"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -303,17 +303,17 @@ header.nav{min-height:64px}
 
     <p>The 1% number isn&rsquo;t a hunch. It&rsquo;s a sum across six measured leaks, each with a published lift figure from primary research, applied to the operator&rsquo;s own reported revenue. The methodology is below; the headline result is in this table.</p>
 
-    <div class="table-scroll"><table class="note-table" aria-label="Six leaks, average impact across 50 restaurants">
+    <div class="table-scroll"><table class="note-table" data-viz-sortable aria-label="Six leaks, average impact across 50 restaurants. Click any column header to sort.">
       <thead>
         <tr><th scope="col">Leak</th><th scope="col">% of operators with this leak</th><th scope="col" style="text-align:right">Median revenue impact when present</th></tr>
       </thead>
       <tbody>
-        <tr><td>Reservation button doesn&rsquo;t deeplink to your venue</td><td class="num">59%</td><td class="num">&minus;0.34%</td></tr>
-        <tr><td>Hours buried below the fold on mobile</td><td class="num">52%</td><td class="num">&minus;0.21%</td></tr>
-        <tr><td>Mobile LCP &gt; 3.0s</td><td class="num">68%</td><td class="num">&minus;0.18%</td></tr>
-        <tr><td>No direct-order CTA above third-party links</td><td class="num">71%</td><td class="num">&minus;0.27%</td></tr>
-        <tr><td>EN-only on a bilingual block</td><td class="num">38%</td><td class="num">&minus;0.31%</td></tr>
-        <tr><td>Aggregator-only ordering (no direct path)</td><td class="num">22%</td><td class="num">&minus;0.45%</td></tr>
+        <tr><td>Reservation button doesn&rsquo;t deeplink to your venue</td><td class="num">59%<span class="viz-magbar" data-tone="teal" style="--w:0.831" aria-hidden="true"></span></td><td class="num">&minus;0.34%<span class="viz-magbar" style="--w:0.756" aria-hidden="true"></span></td></tr>
+        <tr><td>Hours buried below the fold on mobile</td><td class="num">52%<span class="viz-magbar" data-tone="teal" style="--w:0.732" aria-hidden="true"></span></td><td class="num">&minus;0.21%<span class="viz-magbar" style="--w:0.467" aria-hidden="true"></span></td></tr>
+        <tr><td>Mobile LCP &gt; 3.0s</td><td class="num">68%<span class="viz-magbar" data-tone="teal" style="--w:0.958" aria-hidden="true"></span></td><td class="num">&minus;0.18%<span class="viz-magbar" style="--w:0.400" aria-hidden="true"></span></td></tr>
+        <tr><td>No direct-order CTA above third-party links</td><td class="num">71%<span class="viz-magbar" data-tone="teal" style="--w:1.000" aria-hidden="true"></span></td><td class="num">&minus;0.27%<span class="viz-magbar" style="--w:0.600" aria-hidden="true"></span></td></tr>
+        <tr><td>EN-only on a bilingual block</td><td class="num">38%<span class="viz-magbar" data-tone="teal" style="--w:0.535" aria-hidden="true"></span></td><td class="num">&minus;0.31%<span class="viz-magbar" style="--w:0.689" aria-hidden="true"></span></td></tr>
+        <tr><td>Aggregator-only ordering (no direct path)</td><td class="num">22%<span class="viz-magbar" data-tone="teal" style="--w:0.310" aria-hidden="true"></span></td><td class="num">&minus;0.45%<span class="viz-magbar" style="--w:1.000" aria-hidden="true"></span></td></tr>
       </tbody>
       <tfoot>
         <tr><td colspan="2">Median total leak (across present leaks)</td><td class="num">&minus;0.94%</td></tr>
@@ -556,5 +556,9 @@ header.nav{min-height:64px}
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- Article viz module — drives the sortable leak table above
+     (table[data-viz-sortable]). Defer-loaded; bails cleanly if
+     the hooks are absent. -->
+<script src="/assets/article-viz.js" defer></script>
 </body>
 </html>
