@@ -166,6 +166,7 @@
       'Menu Design QR Exported',
       'Menu Design Quiz Picked',
       'Menu Design SSML Exported',
+      'Menu Design Specials Exported',
       'Menu Design Tablet Exported',
       'Menu Design Template Loaded',
       'Menu Design Text Exported',

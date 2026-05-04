@@ -106,6 +106,8 @@
   var downloadMsg = document.getElementById('mdDownloadMsg');
   var exportQrBtn = document.getElementById('mdExportQr');
   var largePrintBtn = document.getElementById('mdLargePrint');
+  // Wave studio-quality (C1 partial) — daily specials card export.
+  var exportSpecialsBtn = document.getElementById('mdExportSpecials');
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -4560,6 +4562,116 @@
         highContrastBtn.disabled = false;
         highContrastBtn.innerHTML = origLabel;
       });
+  }
+
+  // Wave studio-quality (C1 partial) — Daily specials card export.
+  // Operators tag a section "Today's specials" via the per-section
+  // checkbox. This handler filters to JUST those sections and routes
+  // the export to the existing 'specials' paper format (5×7). Print
+  // a fresh card nightly without redoing the whole menu.
+  if (exportSpecialsBtn) {
+    exportSpecialsBtn.addEventListener('click', function () {
+      withRenderer(ensureMdPdf, exportSpecialsBtn, tt('Loading…', 'Cargando…'), function () { _doExportSpecials(); });
+    });
+  }
+  function _doExportSpecials() {
+    if (typeof MD_PDF === 'undefined' || typeof MD_THEMES === 'undefined') {
+      setDownloadMsg(tt(
+        'PDF generator not loaded. Refresh and try again.',
+        'El generador de PDF no se cargó. Recarga e intenta de nuevo.'
+      ), 'error');
+      return;
+    }
+    // Filter rows to: any section flagged specials + the dishes that
+    // belong to it (until the next section header or end of list).
+    var realRows = rows.filter(function (r) { return !r.ghost; });
+    var filtered = [];
+    var inSpecial = false;
+    realRows.forEach(function (r) {
+      if (r.kind === 'section') {
+        inSpecial = !!r.specials;
+        if (inSpecial) filtered.push(r);
+      } else if (inSpecial) {
+        filtered.push(r);
+      }
+    });
+    var dishCount = filtered.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); }).length;
+    if (dishCount === 0) {
+      setDownloadMsg(tt(
+        'No specials sections found. Mark a section as "Today\'s specials" via the per-section settings, then try again.',
+        'No hay secciones marcadas como especiales. Marca una sección como "Especiales del día" en sus ajustes y vuelve a intentar.'
+      ), 'error');
+      return;
+    }
+    var theme = MD_THEMES.get(themeId) || MD_THEMES.get('modern-minimal');
+    theme = applyCustomizer(theme);
+    var title = (meta && meta.businessName)
+      ? meta.businessName + ' — ' + tt('Specials', 'Especiales')
+      : tt('Today\'s specials', 'Especiales del día');
+    var slug = String((meta && meta.businessName) || 'menu').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+    var ymd = (function () {
+      var d = new Date();
+      return d.getFullYear() + '-' +
+        String(d.getMonth() + 1).padStart(2, '0') + '-' +
+        String(d.getDate()).padStart(2, '0');
+    })();
+    var fnameBase = slug + '-specials-' + ymd;
+
+    exportSpecialsBtn.disabled = true;
+    var origLabel = exportSpecialsBtn.innerHTML;
+    exportSpecialsBtn.textContent = tt('Building specials card…', 'Generando especiales…');
+
+    MD_PDF.exportPdf({
+      rows:        filtered,
+      theme:       theme,
+      paperKey:    'specials',
+      title:       title,
+      tagline:     '',
+      story:       '',
+      currency:    (meta && meta.currency) || 'USD',
+      allowMultiPage: false,
+      quietMode:   !!(meta && meta.quietMode),
+      footer: {
+        address:       meta.address,
+        hours:         meta.hours,
+        serviceCharge: '',
+        sourcing:      '',
+        disclaimer:    effectiveDisclaimer(),
+        askYourServer: meta.askYourServer
+      },
+      coverPage:    false,
+      paperTexture: !!customize.paperTexture,
+      logoDataUrl:  logoUrl,
+      logoMeta:     logoMeta,
+      filename:     fnameBase,
+      locale:       LOCALE,
+      printVendor:  false
+    }).then(function (result) {
+      var pages = result.pageCount || 1;
+      setDownloadMsg(tt(
+        'Specials card downloaded — ' + dishCount + ' special' + (dishCount === 1 ? '' : 's') + ' on a 5×7 card. Print a fresh one nightly.',
+        'Especiales descargado — ' + dishCount + ' especial' + (dishCount === 1 ? '' : 'es') + ' en una tarjeta 5×7. Imprime uno fresco cada noche.'
+      ), 'success');
+      if (window.plausible) {
+        try {
+          window.plausible('Menu Design Specials Exported', { props: {
+            dishCount_bucket: dishCount < 4 ? '<4' : dishCount < 8 ? '4-7' : '8+'
+          }});
+        } catch (_) {}
+      }
+    }).catch(function (err) {
+      setDownloadMsg(tt(
+        'Specials card failed: ' + (err && err.message ? err.message : 'unknown error'),
+        'Falló especiales: ' + (err && err.message ? err.message : 'error desconocido')
+      ), 'error');
+      if (window.plausible) {
+        try { window.plausible('Menu Design Export Failed', { props: { format: 'specials', reason: 'unknown' } }); } catch (_) {}
+      }
+    }).then(function () {
+      exportSpecialsBtn.disabled = false;
+      exportSpecialsBtn.innerHTML = origLabel;
+    });
   }
 
   // W18 — downloadBlob extracted to infra/dom.js.
