@@ -127,6 +127,12 @@ const CHECKS = [
   ['Include coverage',     'check-include-coverage.mjs'],
   ['Bare-sentinel fix (idem)','fix-bare-include-sentinels.mjs','--check'],
   ['CSS shells injected (idem)','inject-css-shells.mjs','--check'],
+  // Cache-bust uniformity (PR #290's stale-cache class of bug). Hashes
+  // each /assets/site*.css file's content; stamps the hash as the
+  // ?v=… cache-bust on every <link href="/assets/site*.css?v=...">
+  // reference site-wide. If CSS content changes, hash changes, URL
+  // changes, browser refetches. Zero stale-cache risk; zero hand-bumping.
+  ['CSS cache-bust (idem)','inject-css-cache-bust.mjs','--check'],
   // Image-formats: every raster source must have AVIF + WebP siblings
   // so the <picture> wrappers (inject-picture-tags) can serve modern
   // formats to capable browsers. --check is sharp-free; only the
