@@ -58,7 +58,40 @@
         var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, tw, th);
         try {
-          var mime = (file.type === 'image/png') ? 'image/png' : 'image/jpeg';
+          // Wave B8 partial — WebP-first encoding. Phone shots from
+          // operators (12 MP from a modern iPhone, ~8 MP Android) are
+          // typically JPEGs at 1–4 MB. Re-encoding to WebP at 0.85
+          // quality routinely cuts the data-URL size by 30–50% over
+          // JPEG at the same visual fidelity, which matters because
+          // (1) the data URL is base64-embedded in the live preview's
+          // <img src="data:...">, paying ~33% size overhead before
+          // decompression, and (2) we persist photos in localStorage
+          // (capped at 5 MB total). Smaller photos = more dishes can
+          // carry photos within the budget.
+          //
+          // Fallback to JPEG when toDataURL('image/webp') doesn't
+          // return a webp-prefixed URL (older Safari, embedded
+          // browsers). PNG inputs stay as PNG to preserve transparency
+          // (logos, illustrations).
+          var mime;
+          if (file.type === 'image/png') {
+            mime = 'image/png';
+          } else {
+            // Probe WebP support: canvas.toDataURL returns a JPEG-
+            // shaped URL when the codec isn't available. Cheap one-
+            // shot test, cached on the canvas constructor.
+            var supportsWebp = (function () {
+              if (downscaleImage._webp != null) return downscaleImage._webp;
+              try {
+                var probe = document.createElement('canvas');
+                probe.width = probe.height = 1;
+                var probeUrl = probe.toDataURL('image/webp');
+                downscaleImage._webp = (probeUrl.indexOf('data:image/webp') === 0);
+              } catch (_) { downscaleImage._webp = false; }
+              return downscaleImage._webp;
+            })();
+            mime = supportsWebp ? 'image/webp' : 'image/jpeg';
+          }
           var url = canvas.toDataURL(mime, quality || 0.82);
           cb(url, tw, th);
         } catch (_) { cb(null); }
