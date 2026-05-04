@@ -311,6 +311,10 @@
           position: dishPos++,
           name: r.name || '',
           desc: r.desc || '',
+          // Wave studio-quality (C2) — plain-language sibling carries
+          // through the migrate path so the canonical menu schema
+          // preserves it across draft restore + JSON file load.
+          descPlain: r.descPlain || '',
           price: r.price || '',
           allergens: Array.isArray(r.allergens) ? r.allergens.slice() : [],
           spice: typeof r.spice === 'number' ? r.spice : 0,

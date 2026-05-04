@@ -304,6 +304,15 @@ header.nav{min-height:64px}
 @media(max-width:640px){
   .md-more-formats-hint{display:none}
 }
+/* Wave studio-quality (C2) — Plain-language sibling description. */
+.md-desc-plain{margin-top:6px}
+.md-desc-plain-trigger{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink-soft);list-style:none;padding:3px 8px;border:1px dashed var(--line-dark);border-radius:999px;line-height:1.3}
+.md-desc-plain-trigger::-webkit-details-marker{display:none}
+.md-desc-plain-trigger:hover{color:var(--teal);border-color:var(--teal)}
+.md-desc-plain[open] .md-desc-plain-trigger{color:var(--teal);border-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,transparent)}
+.md-desc-plain-on{color:var(--status-good,#1F6B3A);font-weight:700}
+.md-input-desc-plain{margin-top:6px;width:100%;font-size:13px;line-height:1.5;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-family:inherit;color:var(--ink);background:var(--cream-2);resize:vertical}
+.md-input-desc-plain:focus{border-color:var(--teal);outline:0}
 .md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
 .md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
 @media(max-width:640px){.md-help-desc{display:block;text-align:center}}

@@ -38,7 +38,8 @@
     //   altName / altDesc: multilingual mirror (renders when locale
     //                      switches OR when the operator wants to
     //                      ship a bilingual menu in one PDF)
-    return { kind: 'dish', name: '', price: '', desc: '', allergens: [], spice: 0, photo: null,
+    return { kind: 'dish', name: '', price: '', desc: '', descPlain: '',
+             allergens: [], spice: 0, photo: null,
              pairing: '', modifier: '', halfPrice: '', badges: [],
              portion: '', calories: '', altName: '', altDesc: '' };
   }
@@ -108,6 +109,23 @@
   var largePrintBtn = document.getElementById('mdLargePrint');
   // Wave studio-quality (C1 partial) — daily specials card export.
   var exportSpecialsBtn = document.getElementById('mdExportSpecials');
+
+  // Wave studio-quality (C2) — Plain-language preference helper.
+  // When operators provide a descPlain sibling on a dish, the
+  // accessibility-flavored exports (large-print PDF, high-contrast,
+  // plain text, SSML, BRF, tablet kiosk) prefer it over the
+  // sensory `desc` field. Returns a NEW array; never mutates inputs.
+  // WCAG 3.1.5 Reading Level (AAA): one source, two voices — the
+  // operator's marketing copy AND a simpler reading-level variant.
+  function withPlainLanguageDesc(rs) {
+    if (!Array.isArray(rs)) return rs;
+    return rs.map(function (r) {
+      if (!r || r.kind !== 'dish') return r;
+      var p = (r.descPlain || '').trim();
+      if (!p) return r;
+      return Object.assign({}, r, { desc: p });
+    });
+  }
 
   // Locale-detected from <html lang>; affects ES-vs-EN copy in
   // status, theme labels, and overflow warnings. ES theme labels
@@ -1027,6 +1045,26 @@
             '</div>' +
           '</details>';
 
+        // Wave studio-quality (C2) — Plain-language sibling. Optional
+        // simpler description that BRF + large-print + plain-text
+        // emitters prefer when present (WCAG 3.1.5 Reading Level AAA).
+        // Hidden by default behind a small affordance; opens inline
+        // with a sibling textarea. Operator types whatever sensory
+        // copy they want in `desc` and an "easier to read" version
+        // in `descPlain`. The accessibility variants then ship the
+        // simpler version automatically.
+        var hasDescPlain = !!(r.descPlain || '').trim();
+        var descPlainBlock =
+          '<details class="md-desc-plain" data-i="' + i + '"' + (hasDescPlain ? ' open' : '') + '>' +
+            '<summary class="md-desc-plain-trigger">' +
+              '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' +
+              '<span>' + tt('Plain-language version', 'Versión en lenguaje sencillo') +
+              (hasDescPlain ? ' <span class="md-desc-plain-on">✓</span>' : '') +
+              '</span>' +
+            '</summary>' +
+            '<textarea class="md-input md-input-desc-plain" data-field="descPlain" data-i="' + i +
+            '" rows="2" placeholder="' + tt('Lettuce salad with creamy dressing and crunchy cheese.', 'Ensalada de lechuga con aderezo cremoso y queso crujiente.') + '" aria-label="' + tt('Plain-language description', 'Descripción en lenguaje sencillo') + '">' + escHtml(r.descPlain || '') + '</textarea>' +
+          '</details>';
         html += '<tr data-i="' + i + '"' + ghostAttr + draggable + '>' +
           handleCell +
           '<td data-label="' + tt('Dish', 'Plato') + '"><input type="text" class="md-input" data-field="name" data-i="' + i +
@@ -1035,6 +1073,7 @@
           '" value="' + escHtml(r.price) + '" placeholder="$14" aria-label="' + tt('Price', 'Precio') + '" autocomplete="off" /></td>' +
           '<td data-label="' + tt('Description', 'Descripción') + '" class="md-cell-desc"><textarea class="md-input md-input-desc" data-field="desc" data-i="' + i +
           '" rows="2" placeholder="' + tt('Crisp little gems, buttermilk dressing, parmesan crisp', 'Hojas tiernas, aderezo de buttermilk, parmesano') + '" aria-label="' + tt('Description', 'Descripción') + '">' + escHtml(r.desc) + '</textarea>' +
+          descPlainBlock +
           allergenPop +
           helpHtml + touchReorder + '</td>' +
           '<td class="md-remove-cell">' +
@@ -4466,8 +4505,10 @@
       largePrintBtn.disabled = true;
       var origLabel = largePrintBtn.innerHTML;
       largePrintBtn.textContent = tt('Building large-print PDF…', 'Generando letra grande…');
+      // Wave studio-quality (C2) — large-print prefers descPlain.
+      var rowsForLargePrint = withPlainLanguageDesc(realRows);
       MD_PDF.exportPdf({
-        rows:        realRows,
+        rows:        rowsForLargePrint,
         theme:       theme,
         paperKey:    paperKey,
         customDims:  paperKey === 'custom' ? customDims : null,
@@ -4533,8 +4574,10 @@
       highContrastBtn.disabled = true;
       var origLabel = highContrastBtn.innerHTML;
       highContrastBtn.textContent = tt('Building high-contrast PDF…', 'Generando alto contraste…');
+      // Wave studio-quality (C2) — high-contrast prefers descPlain.
+      var rowsForHighContrast = withPlainLanguageDesc(realRows);
       MD_PDF.exportPdf({
-        rows:         realRows,
+        rows:         rowsForHighContrast,
         theme:        theme,
         paperKey:     paperKey,
         customDims:   paperKey === 'custom' ? customDims : null,
@@ -4685,8 +4728,17 @@
     a.click();
     setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(a.href); }, 4000);
   }
-  function buildEmitterOpts() {
+  function buildEmitterOpts(opts) {
+    opts = opts || {};
     var realRows = rows.filter(function (r) { return !r.ghost; });
+    // Wave studio-quality (C2) — accessibility-coded callers pass
+    // preferPlainLanguage: true so the rows[] swap descPlain → desc
+    // before the emitter sees them. Operators with an A11y-friendly
+    // sibling description ship that variant on the screen-reader,
+    // braille, large-print, and audio surfaces.
+    if (opts.preferPlainLanguage) {
+      realRows = withPlainLanguageDesc(realRows);
+    }
     var theme = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
     var titleVal = '';
     try { if (typeof MuntinContext !== 'undefined' && MuntinContext.read) titleVal = (MuntinContext.read() || {}).businessName || ''; } catch (_) {}
@@ -4728,7 +4780,7 @@
         setDownloadMsg(tt('Add at least one dish before exporting plain text.', 'Agrega al menos un plato antes de exportar.'), 'error');
         return;
       }
-      var opts = buildEmitterOpts();
+      var opts = buildEmitterOpts({ preferPlainLanguage: true });
       var md  = MD_TEXT.exportMarkdown(opts);
       var txt = MD_TEXT.exportPlainText(opts);
       var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
@@ -4751,7 +4803,7 @@
         setDownloadMsg(tt('Add at least one dish before exporting SSML.', 'Agrega al menos un plato antes de exportar SSML.'), 'error');
         return;
       }
-      var opts = buildEmitterOpts();
+      var opts = buildEmitterOpts({ preferPlainLanguage: true });
       var ssml = MD_TEXT.exportSsml(opts);
       var slug = String(opts.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
       downloadBlob(ssml, slug + '-menu.ssml', 'application/ssml+xml');
@@ -4772,7 +4824,7 @@
                         'Agrega al menos un plato antes de exportar Braille.'), 'error');
       return;
     }
-    var optsB = buildEmitterOpts();
+    var optsB = buildEmitterOpts({ preferPlainLanguage: true });
     var brf = MD_TEXT.exportBrf(optsB);
     var slug = String(optsB.title || 'menu').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'menu';
     downloadBlob(brf, slug + '-menu.brf', 'application/x-brf');
@@ -6317,6 +6369,8 @@
                 name: d.name || '',
                 price: d.price || '',
                 desc: d.desc || '',
+                // Wave studio-quality (C2) — plain-language sibling.
+                descPlain: d.descPlain || '',
                 allergens: Array.isArray(d.allergens) ? d.allergens.slice() : [],
                 allergenStates: d.allergenStates || null,
                 badges: Array.isArray(d.badges) ? d.badges.slice() : [],
