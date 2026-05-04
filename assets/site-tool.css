@@ -5,7 +5,7 @@
  * the SECTIONS map in scripts/build-css-shells.mjs.
  */
 
-/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2402-2499) ===== */
+/* ===== [tool] TOOL SHELL — shared primitives for /tools/* pages (lines 2389-2486) ===== */
 /* ============================================================
    TOOL SHELL — shared primitives for /tools/* pages
    Promoted from seven near-identical inline <style> blocks
@@ -105,7 +105,7 @@
 .tool-card .cta svg{ width:16px; height:16px; }
 
 
-/* ===== [tool] Tools-landing cluster layout (lines 2500-2790) ===== */
+/* ===== [tool] Tools-landing cluster layout (lines 2487-2777) ===== */
 /* ---------- Tools-landing cluster layout (Phase 2 cohesion pass) -----
    The /tools/ page is now grouped by the same 6-topic taxonomy used at
    /learn/topics/. Generated from data/tools.json by
@@ -398,7 +398,7 @@
 @media (max-width:560px){ .tool-roadmap .tool-grid{ grid-template-columns:1fr; } }
 
 
-/* ===== [tool] Per-tool "Keep going" knit-in (lines 2791-2901) ===== */
+/* ===== [tool] Per-tool "Keep going" knit-in (lines 2778-2888) ===== */
 /* ---------- Per-tool "Keep going" knit-in (Phase 3 cohesion pass) ----
    Renders at the bottom of every live tool page (between
    <!-- tool-knit -->...<!-- /tool-knit --> sentinels) by
@@ -511,7 +511,7 @@
 }
 
 
-/* ===== [tool] Tool states (loading / error / empty) (lines 5331-5375) ===== */
+/* ===== [tool] Tool states (loading / error / empty) (lines 5318-5362) ===== */
 /* ============ Tool states (Sprint 5 — cohesion) ============
    Shared loading + error patterns for tool result regions. Every
    URL-fetching tool today ships its own bespoke loading/error UX
@@ -558,7 +558,7 @@
 .tool-error-meta{margin-top:12px;font-size:12.5px;color:var(--stone);font-variant-numeric:tabular-nums}
 
 
-/* ===== [tool] Learn-back (in tool result region) (lines 5460-5477) ===== */
+/* ===== [tool] Learn-back (in tool result region) (lines 5447-5464) ===== */
 /* ============ Learn-back (Sprint 12 — cohesion) ============
    A thin, prose-shaped row that sits inside a tool's result region
    to teach the concept behind the score. Distinct from the
@@ -578,7 +578,7 @@
 .learn-back-body a:hover,.learn-back-body a:focus-visible{color:var(--teal-dark)}
 
 
-/* ===== [tool] .edu-result — interpretation card under tool output (lines 5747-5785) ===== */
+/* ===== [tool] .edu-result — interpretation card under tool output (lines 5734-5772) ===== */
 /* ============ .edu-result — interpretation card under tool output ============
    Every calculator emits a number; this block lives directly under
    the result panel and answers the two questions a small-business
@@ -619,7 +619,7 @@
 @media print{.edu-result{display:none}}
 
 
-/* ===== [tool] Statistical disclosure components (lines 5786-5828) ===== */
+/* ===== [tool] Statistical disclosure components (lines 5773-5815) ===== */
 /* ============ Statistical disclosure components ============
    Phase 3 — building on .edu-result so calculators can disclose
    uncertainty bands, hard-coded assumptions, and the formula behind
@@ -664,7 +664,7 @@
 @media print{.edu-range,.edu-source,.edu-formula,.edu-caveat{display:none}}
 
 
-/* ===== [tool] Tool-internal type minimums (lines 5829-5985) ===== */
+/* ===== [tool] Tool-internal type minimums (lines 5816-5972) ===== */
 /* ============ Tool-internal type minimums ============
    Utility floor for text inside tool result panels, tables, and
    helpers. Tools previously drifted to 10.5–12px in tight grids; the

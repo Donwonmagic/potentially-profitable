@@ -540,69 +540,56 @@
 
 /* ============ SELF-HOSTED WEB FONTS ============
    Fraunces (display) and Inter (body) are served from /assets/fonts/
-   instead of Google Fonts. Each @font-face is scoped to a single
-   weight + style so the browser only downloads what a given page
-   actually needs. font-display:swap keeps first paint fast and works
+   as VARIABLE font files: one woff2 per font/style covers every weight
+   from 100 (Thin) to 900 (Black) via font-weight:100 900. font-display:
+   swap keeps first paint fast and works
    with the metric-matched fallbacks defined further below to prevent
    CLS. unicode-range is set to the Latin subset the woff2 files were
    generated against by google-webfonts-helper.
 */
+/* Variable woff2 — one file covers every weight from 100 (Thin) to 900
+   (Black). Replaces the 7 per-weight @font-face rules that used to live
+   here (Fraunces 400/500/600 + italic, Inter 400/500/600). Single-file
+   source means: one HTTP fetch unlocks every weight (no on-demand fetch
+   for h2 vs h3 vs body bold), and h1 → h2 → body weight transitions
+   render correctly from first paint instead of waiting for the right
+   per-weight file to arrive. unicode-range matches the latin subset the
+   fontsource-variable packages were generated against. */
 @font-face{
   font-family:'Fraunces';
   font-style:normal;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-regular.woff2') format('woff2');
+  src:url('/assets/fonts/fraunces-variable-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Fraunces';
   font-style:italic;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-italic.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face{
-  font-family:'Fraunces';
-  font-style:normal;
-  font-weight:500;
-  font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-500.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face{
-  font-family:'Fraunces';
-  font-style:normal;
-  font-weight:600;
-  font-display:swap;
-  src:url('/assets/fonts/fraunces-v38-latin-600.woff2') format('woff2');
+  src:url('/assets/fonts/fraunces-variable-latin-wght-italic.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Inter';
   font-style:normal;
-  font-weight:400;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-regular.woff2') format('woff2');
+  src:url('/assets/fonts/inter-variable-latin-wght-normal.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Inter';
-  font-style:normal;
-  font-weight:500;
+  font-style:italic;
+  font-weight:100 900;
   font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-500.woff2') format('woff2');
+  src:url('/assets/fonts/inter-variable-latin-wght-italic.woff2') format('woff2-variations');
   unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
-@font-face{
-  font-family:'Inter';
-  font-style:normal;
-  font-weight:600;
-  font-display:swap;
-  src:url('/assets/fonts/inter-v20-latin-600.woff2') format('woff2');
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
+/* (block kept at 7 + 1 padding lines so build-css-shells SECTIONS map
+   line numbers stay stable past line 605.)
+   --------------------------------------------------------------- */
 
 /* Web font CLS prevention. Fraunces (display) and Inter (body) load
    from /assets/fonts, so the browser first paints text in the fallback
@@ -614,8 +601,8 @@
    in the layout. The fallback names are inserted into the --font-display
    and --font-body chains above so the cascade picks them up before
    falling through to system fonts. */
-@font-face{font-family:'Fraunces Fallback';src:local('Georgia');size-adjust:105%;ascent-override:92%;descent-override:24%;line-gap-override:0%}
-@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:107%;ascent-override:90%;descent-override:22%;line-gap-override:0%}
+@font-face{font-family:'Fraunces Fallback';src:local('Times New Roman');size-adjust:100%;ascent-override:97.8%;descent-override:25.5%;line-gap-override:0%}
+@font-face{font-family:'Inter Fallback';src:local('Arial');size-adjust:100%;ascent-override:96.875%;descent-override:24.121%;line-gap-override:0%}
 
 /* ============ BREAKPOINT SCALE ============
    The site transitions at exactly these widths, everywhere:
