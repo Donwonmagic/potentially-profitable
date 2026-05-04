@@ -3650,6 +3650,14 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   border-radius:4px;color:var(--stone-2);background:var(--cream-2);line-height:1.3;
 }
 .nav-search-kbd-mod{font-size:12px}
+/* Platform-aware kbd hint. Default to Ctrl+K (Windows/Linux); a tiny
+   inline script in nav.html sets <html data-platform="mac"> on Apple
+   devices, swapping to ⌘K. Defaulting to Ctrl avoids showing the wrong
+   symbol to PC users (the larger audience) while the script runs. */
+.nav-search-kbd-mac{display:none}
+.nav-search-kbd-pc{display:inline}
+[data-platform="mac"] .nav-search-kbd-mac{display:inline}
+[data-platform="mac"] .nav-search-kbd-pc{display:none}
 @media (max-width:1060px){
   .nav-search-label,.nav-search-kbd{display:none}
   .nav-search-btn{padding:8px;gap:0;aspect-ratio:1}

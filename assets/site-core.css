@@ -2275,7 +2275,7 @@ br.br-lg{display:none}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
 
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3624-3790) ===== */
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3624-3798) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2305,6 +2305,14 @@ br.br-lg{display:none}
   border-radius:4px;color:var(--stone-2);background:var(--cream-2);line-height:1.3;
 }
 .nav-search-kbd-mod{font-size:12px}
+/* Platform-aware kbd hint. Default to Ctrl+K (Windows/Linux); a tiny
+   inline script in nav.html sets <html data-platform="mac"> on Apple
+   devices, swapping to ⌘K. Defaulting to Ctrl avoids showing the wrong
+   symbol to PC users (the larger audience) while the script runs. */
+.nav-search-kbd-mac{display:none}
+.nav-search-kbd-pc{display:inline}
+[data-platform="mac"] .nav-search-kbd-mac{display:inline}
+[data-platform="mac"] .nav-search-kbd-pc{display:none}
 @media (max-width:1060px){
   .nav-search-label,.nav-search-kbd{display:none}
   .nav-search-btn{padding:8px;gap:0;aspect-ratio:1}
@@ -2444,7 +2452,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5260-5271) ===== */
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5268-5279) ===== */
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
    the script finishes loading + the iframe paints. The "managed"
@@ -2458,7 +2466,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5272-5323) ===== */
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5280-5331) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2512,7 +2520,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop rationale (lines 5487-5502) ===== */
+/* ===== [core] Workshop rationale (lines 5495-5510) ===== */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2530,7 +2538,7 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
 
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5503-5619) ===== */
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5511-5627) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -2649,7 +2657,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin strong{color:var(--ink)}
 
 
-/* ===== [core] Window composer (Phase-2 redesign) (lines 5620-5652) ===== */
+/* ===== [core] Window composer (Phase-2 redesign) (lines 5628-5660) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -2684,7 +2692,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5653-5739) ===== */
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5661-5747) ===== */
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
 .admin-window__head{margin-bottom:24px}
@@ -2773,7 +2781,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 5979-5999) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 5987-6007) ===== */
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
    "join our community" CTA. Mirrors the Window's "I read every one"
@@ -2796,7 +2804,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6061-6099) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6069-6107) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -2837,7 +2845,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6100-6122) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6108-6130) ===== */
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
    The accessibility audit flagged that on a 667-tall phone, the
@@ -2862,7 +2870,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6198-6228) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6206-6236) ===== */
 /* ============================================================
    Hero count chips — small pill row showing library counts
    under the homepage subhead. Mobile-first; the per-chip
@@ -2895,7 +2903,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Trust strip (homepage) (lines 6229-6254) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6237-6262) ===== */
 /* ============================================================
    Trust strip — single thin band immediately under flagship
    tools, before the library section. Operator-language facts
@@ -2923,7 +2931,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Compare cards (homepage) (lines 6255-6338) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6263-6346) ===== */
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
    positioning block. The Muntin card is teal-bordered with a
