@@ -4471,6 +4471,126 @@
     });
   }
 
+  // Wave studio-quality (C1 partial) — Social PNG export.
+  //
+  // Operators post their menus on Instagram / Facebook / X every
+  // week, especially around specials. Until now they screenshotted
+  // the live preview manually. This ships four standard social
+  // dimensions and renders the live preview into each, fitted with
+  // the theme's paper color as the matte (so a Letter-shaped menu
+  // landing on a 1080×1920 story doesn't sit on a random white
+  // bar — it sits on the menu's own paper color).
+  //
+  // Output is a single PNG per click. Reuses the html2canvas lazy-
+  // load already wired for the PNG fallback path.
+  var SOCIAL_FORMATS = {
+    'instagram-square': { w: 1080, h: 1080, label_en: 'Instagram square (1080×1080)', label_es: 'Instagram cuadrado (1080×1080)' },
+    'instagram-story':  { w: 1080, h: 1920, label_en: 'Story 9:16 (1080×1920)',       label_es: 'Story 9:16 (1080×1920)' },
+    'facebook-cover':   { w: 1640, h: 924,  label_en: 'Facebook cover (1640×924)',     label_es: 'Portada Facebook (1640×924)' },
+    'x-header':         { w: 1500, h: 500,  label_en: 'X / Twitter header (1500×500)', label_es: 'Cabecera X / Twitter (1500×500)' }
+  };
+  function _doExportSocial(formatKey) {
+    var fmt = SOCIAL_FORMATS[formatKey];
+    if (!fmt) return;
+    var preview = document.getElementById('mdPaper');
+    if (!preview) {
+      setDownloadMsg(tt('No preview to capture.', 'Sin vista previa para capturar.'), 'error');
+      return;
+    }
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt(
+        'Add at least one dish before exporting a social PNG.',
+        'Agrega al menos un plato antes de exportar un PNG social.'
+      ), 'error');
+      return;
+    }
+    setDownloadMsg(tt(
+      'Capturing ' + fmt.label_en.split(' (')[0] + '…',
+      'Capturando ' + fmt.label_es.split(' (')[0] + '…'
+    ));
+    loadHtml2Canvas().then(function (h2c) {
+      // Capture the live preview at high res. scale=2 gives ~retina
+      // crispness on a Letter-sized preview.
+      return h2c(preview, { backgroundColor: null, scale: 2, useCORS: true });
+    }).then(function (sourceCanvas) {
+      // Compose into a target-sized canvas, fitting the preview
+      // proportionally with the theme's paper color as the matte.
+      var t = (typeof MD_THEMES !== 'undefined' && MD_THEMES.get(themeId)) || null;
+      var paperColor = (t && (customize.paper || t.paper)) || '#FAF6EE';
+      var target = document.createElement('canvas');
+      target.width  = fmt.w;
+      target.height = fmt.h;
+      var ctx = target.getContext('2d');
+      ctx.fillStyle = paperColor;
+      ctx.fillRect(0, 0, fmt.w, fmt.h);
+      // Compute fitted size — leave a 6% margin on each side so the
+      // menu doesn't crash into the social-platform UI overlays.
+      var marginX = Math.round(fmt.w * 0.06);
+      var marginY = Math.round(fmt.h * 0.06);
+      var availW = fmt.w - 2 * marginX;
+      var availH = fmt.h - 2 * marginY;
+      var srcRatio = sourceCanvas.width / sourceCanvas.height;
+      var dstRatio = availW / availH;
+      var dw, dh;
+      if (srcRatio > dstRatio) {
+        dw = availW;
+        dh = Math.round(availW / srcRatio);
+      } else {
+        dh = availH;
+        dw = Math.round(availH * srcRatio);
+      }
+      var dx = Math.round((fmt.w - dw) / 2);
+      var dy = Math.round((fmt.h - dh) / 2);
+      // Smooth high-quality downscale.
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.width, sourceCanvas.height, dx, dy, dw, dh);
+      target.toBlob(function (blob) {
+        if (!blob) {
+          setDownloadMsg(tt('Couldn\'t make the PNG.', 'No se pudo armar el PNG.'), 'error');
+          return;
+        }
+        var biz = (meta && meta.businessName) ? String(meta.businessName) : 'menu';
+        var slug = biz.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'menu';
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = slug + '-' + formatKey + '.png';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 4000);
+        setDownloadMsg(tt(
+          'Downloaded ' + fmt.label_en.split(' (')[0] + ' PNG. Drop into Instagram / Facebook / X.',
+          'Descargado PNG ' + fmt.label_es.split(' (')[0] + '. Súbelo a Instagram / Facebook / X.'
+        ), 'success');
+        if (window.plausible) {
+          try {
+            window.plausible('Menu Design Social Exported', {
+              props: { format: formatKey }
+            });
+          } catch (_) {}
+        }
+      }, 'image/png');
+    }).catch(function () {
+      setDownloadMsg(tt(
+        'Couldn\'t capture the preview as a social PNG. Check your network and retry.',
+        'No se pudo capturar la vista previa como PNG. Revisa tu red e intenta de nuevo.'
+      ), 'error');
+    });
+  }
+  // Delegate click handler for the social-format buttons.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest && e.target.closest('[data-social-format]');
+    if (!btn) return;
+    var fmt = btn.dataset.socialFormat;
+    if (SOCIAL_FORMATS[fmt]) {
+      e.preventDefault();
+      _doExportSocial(fmt);
+    }
+  });
+
   // ----------------------------------------------------------------
   // W6-3 — Large-print accessibility variant. Reuses the existing
   // PDF flow with largePrint: true. Override bumps body to 18pt /
