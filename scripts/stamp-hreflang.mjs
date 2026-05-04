@@ -48,7 +48,17 @@ const SKIP_DIRS = new Set([
 // land, the alternate URL may 404 temporarily; Google tolerates that
 // in the interim as long as the alternate is declared consistently
 // on both sides once they ship.
-const SKIP_PATH_PREFIXES = [];
+//
+// Auto-generated landing pages (cuisine + theme story pages) ARE
+// skipped — their generator already emits hreflang + og:locale tags
+// inside the page <head>. Stamping a second block here would duplicate
+// the alternates and cause the generator's idempotency check to fail.
+const SKIP_PATH_PREFIXES = [
+  'library/menu-design-cuisines/',
+  'library/menu-design-themes/',
+  'es/library/menu-design-cuisines/',
+  'es/library/menu-design-themes/'
+];
 
 function collectHtml(dir, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

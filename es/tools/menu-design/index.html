@@ -84,6 +84,10 @@ header.nav{min-height:64px}
 .md-ctx-use:hover{background:var(--teal)}
 .md-grid{margin-top:18px;border:1px solid var(--line);border-radius:var(--r-input);overflow:hidden;background:var(--white)}
 .md-grid table{width:100%;border-collapse:collapse}
+/* Wave studio-quality (UX) — Drag-and-drop visual feedback. */
+.md-grid tr.md-drag-source{opacity:.45}
+.md-grid tr.md-drag-over-top{box-shadow:inset 0 3px 0 0 var(--teal),inset 0 -1px 0 0 color-mix(in srgb,var(--teal) 25%,transparent);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
+.md-grid tr.md-drag-over-bottom{box-shadow:inset 0 -3px 0 0 var(--teal),inset 0 1px 0 0 color-mix(in srgb,var(--teal) 25%,transparent);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
 .md-grid thead{background:var(--cream-2);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
 .md-grid th,.md-grid td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
 .md-grid input,.md-grid textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);box-sizing:border-box;resize:vertical}
@@ -149,6 +153,17 @@ header.nav{min-height:64px}
 .md-themes-empty[hidden]{display:none}
 .md-customize-badge{margin-left:auto;padding:2px 8px;background:var(--teal);color:#fff;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;line-height:1.4}
 .md-customize-badge[hidden]{display:none}
+/* Wave studio-quality (C14) — Theme story affordance. */
+.md-theme-story{margin-bottom:14px;padding:10px 14px;background:var(--cream-2);border:1px dashed var(--line);border-radius:6px}
+.md-theme-story-summary{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink-soft);list-style:none}
+.md-theme-story-summary::-webkit-details-marker{display:none}
+.md-theme-story-summary:hover{color:var(--teal)}
+.md-theme-story-body{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.md-theme-story-meta{font-size:11.5px;color:var(--stone);margin:0 0 8px;line-height:1.5}
+.md-theme-story-text{font-size:12.5px;color:var(--ink);line-height:1.6;margin:0}
+.md-theme-story-link{margin:10px 0 0;font-size:12px}
+.md-theme-story-link a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor;font-weight:600}
+.md-theme-story-link a:hover{color:var(--ink)}
 .md-customize-lint{margin-top:12px;padding:10px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:6px;font-size:12.5px;color:#7a4408;line-height:1.55}
 .md-customize-lint[hidden]{display:none}
 .md-customize-lint ul{margin:6px 0 0 18px;padding:0}
@@ -188,11 +203,101 @@ header.nav{min-height:64px}
 .md-paper-row label{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink);background:var(--white)}
 .md-paper-row label:has(input:checked){border-color:var(--teal);background:color-mix(in srgb,var(--teal) 7%,var(--white));color:var(--teal);font-weight:600}
 .md-paper-row input{accent-color:var(--teal)}
-.md-preview-wrap{margin:28px 0 0}
+.md-preview-wrap{margin:28px 0 0;transition:transform .25s ease, opacity .25s ease}
+
+/* Wave studio-quality (T3.1) — two-column shell. Sidecar on desktop,
+   bottom-sheet on mobile. See EN build for the full pattern. */
+@media (min-width: 1280px) {
+  .md-tool-menu-design main#main > section.block > .container {
+    max-width: 1240px;
+    padding-right: 420px;
+    position: relative;
+  }
+  .md-tool-menu-design .md-preview-wrap {
+    position: fixed;
+    top: 92px;
+    right: max(16px, calc((100vw - 1240px) / 2 + 16px));
+    width: 380px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    margin: 0;
+    z-index: 40;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.10);
+    padding: 14px;
+  }
+  .md-tool-menu-design .md-preview-frame { padding: 8px 6px; background: transparent; border: 0 }
+  .md-tool-menu-design .md-preview-paper { max-width: 340px; box-shadow: 0 2px 10px rgba(0,0,0,.08) }
+  .md-show-preview-pill { display: none !important; }
+}
+.md-show-preview-pill {
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  border: 0;
+  background: var(--teal);
+  color: var(--cream);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.md-show-preview-pill:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+@media (max-width: 1279.98px) {
+  .md-show-preview-pill { display: inline-flex; }
+}
+.md-preview-backdrop { display: none; position: fixed; inset: 0; background: rgba(20,20,20,.45); z-index: 99; animation: mdBackdropFadeIn .2s ease; }
+@keyframes mdBackdropFadeIn { from { opacity: 0 } to { opacity: 1 } }
+@media (max-width: 1279.98px) {
+  body.md-show-preview .md-preview-backdrop { display: block; }
+  body.md-show-preview .md-preview-wrap {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    margin: 0;
+    z-index: 100;
+    background: var(--white);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    box-shadow: 0 -8px 32px rgba(0,0,0,.20);
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 14px 14px calc(20px + env(safe-area-inset-bottom));
+    animation: mdBottomSheetIn .22s ease;
+  }
+  body.md-show-preview .md-preview-wrap::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    margin: 4px auto 12px;
+  }
+}
+@keyframes mdBottomSheetIn { from { transform: translateY(100%) } to { transform: translateY(0) } }
+@media (prefers-reduced-motion: reduce) {
+  .md-preview-wrap, .md-preview-backdrop { animation: none !important; transition: none !important; }
+}
 .md-preview-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
 .md-preview-label-text{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 .md-preview-label-meta{font-size:12px;color:var(--stone)}
 .md-preview-frame{position:relative;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:720px}
+/* Wave studio-quality (perf/UX) — busy state. */
+.md-preview-frame.md-preview-busy{outline:2px solid color-mix(in srgb,var(--teal) 60%,transparent);outline-offset:4px;animation:md-preview-busy-pulse 1.4s ease-in-out infinite}
+.md-preview-frame.md-preview-busy::after{content:'';position:absolute;inset:18px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--teal) 18%,transparent),transparent);background-size:30% 100%;background-position:-30% 0;background-repeat:no-repeat;animation:md-preview-busy-shimmer 1.6s linear infinite;pointer-events:none;border-radius:8px}
+@keyframes md-preview-busy-pulse{0%,100%{outline-offset:4px;outline-color:color-mix(in srgb,var(--teal) 35%,transparent)}50%{outline-offset:6px;outline-color:color-mix(in srgb,var(--teal) 75%,transparent)}}
+@keyframes md-preview-busy-shimmer{from{background-position:-30% 0}to{background-position:130% 0}}
+@media (prefers-reduced-motion: reduce){
+  .md-preview-frame.md-preview-busy{animation:none}
+  .md-preview-frame.md-preview-busy::after{animation:none;background:color-mix(in srgb,var(--teal) 8%,transparent)}
+}
 .md-preview-paper{margin:0 auto;background:var(--paper);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.10);padding:48px;width:100%;max-width:680px;box-sizing:border-box;font-family:var(--bodyFamily)}
 .md-preview-paper h1.md-pp-title{font-family:var(--displayFamily);font-size:var(--h1px);font-weight:500;text-align:center;margin:0 0 26px;color:var(--ink);letter-spacing:0}
 .md-preview-paper h2.md-pp-section{font-family:var(--displayFamily);font-weight:500;text-align:center;margin:24px 0 12px;color:var(--ink);letter-spacing:.04em}
@@ -201,6 +306,23 @@ header.nav{min-height:64px}
 .md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
 .md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
 .md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+/* Wave studio-quality (C1 partial) — Round preview (beer-mat). */
+.md-preview-paper[data-shape="round"]{border-radius:50%;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 25%,transparent),0 1px 2px rgba(0,0,0,0.08)}
+
+/* Wave studio-quality (T6) — paper-stock aware preview overlay.
+   Mirrored from /tools/menu-design/. Each paper format's stock
+   field drives a subtle CSS overlay so operators see the
+   difference between text, cover, coaster, board, screen. */
+.md-preview-paper[data-stock]{position:relative;overflow:hidden}
+.md-preview-paper[data-stock]::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;mix-blend-mode:multiply;opacity:.55}
+.md-preview-paper[data-stock="24lb-text"]::after,
+.md-preview-paper[data-stock="32lb-text"]::after{background:radial-gradient(ellipse at 30% 20%,rgba(255,250,235,.25),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(255,250,235,.15),transparent 60%)}
+.md-preview-paper[data-stock="80lb-cover"]::after{background:repeating-radial-gradient(circle at 20% 30%,rgba(160,140,110,.04) 0 1px,transparent 1px 4px),radial-gradient(ellipse at 50% 50%,rgba(200,180,150,.10),transparent 70%)}
+.md-preview-paper[data-stock="100lb-cover"]::after{background:repeating-radial-gradient(circle at 30% 70%,rgba(140,115,80,.05) 0 1px,transparent 1px 5px),repeating-radial-gradient(circle at 70% 30%,rgba(140,115,80,.04) 0 1px,transparent 1px 6px),radial-gradient(ellipse at 50% 40%,rgba(210,185,150,.16),transparent 75%);opacity:.65}
+.md-preview-paper[data-stock="120lb-coaster"]::after{background:repeating-linear-gradient(38deg,rgba(170,140,100,.05) 0 1px,transparent 1px 3px),repeating-linear-gradient(-22deg,rgba(170,140,100,.04) 0 1px,transparent 1px 4px),radial-gradient(ellipse at center,rgba(190,160,120,.20),transparent 80%);opacity:.75}
+.md-preview-paper[data-stock="70lb-uncoated"]::after{background:repeating-linear-gradient(45deg,rgba(150,125,90,.06) 0 1px,transparent 1px 3px),radial-gradient(ellipse at 50% 50%,rgba(180,150,110,.12),transparent 70%);opacity:.7}
+.md-preview-paper[data-stock="rigid-board"]::after{background:radial-gradient(ellipse at center,rgba(220,225,230,.10),transparent 75%);opacity:.5}
+.md-preview-paper[data-stock="screen-rgb"]::after{background:radial-gradient(ellipse at 50% 100%,rgba(180,210,255,.12),transparent 60%),radial-gradient(ellipse at 50% 0%,rgba(180,210,255,.08),transparent 60%);mix-blend-mode:screen;opacity:.7}
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section{position:relative;padding:0 22px}
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::before,
 .md-preview-paper[data-divider="hand-rule"] h2.md-pp-section::after{content:'';position:absolute;top:50%;width:48px;height:1px;background:var(--ink);opacity:.45}
@@ -218,6 +340,16 @@ header.nav{min-height:64px}
 .md-preview-paper[data-section-case="uppercase"] h2.md-pp-section{text-transform:uppercase;letter-spacing:.18em}
 .md-preview-paper[data-section-case="small-caps"] h2.md-pp-section{font-variant:small-caps;letter-spacing:.06em}
 .md-preview-paper[data-section-case="capitalize"] h2.md-pp-section{text-transform:none}
+.md-preview-paper[data-section-case="normal"] h2.md-pp-section{text-transform:none;font-variant:normal;letter-spacing:normal}
+/* Wave studio-quality (B12) — Theme Tuner divider + letter-spacing. */
+.md-preview-paper[data-divider="rule-thin"] h2.md-pp-section{border-bottom:0.5pt solid var(--ink);padding-bottom:6px}
+.md-preview-paper[data-divider="double-rule"] h2.md-pp-section{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;background:transparent}
+.md-preview-paper[data-divider="whitespace"] h2.md-pp-section{border:0;padding-bottom:0;margin-top:24px;margin-bottom:14px}
+.md-preview-paper[data-letter-spacing="wide"]{letter-spacing:0.04em}
+.md-customize-tuner{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tuner select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer}
+.md-customize-tuner select:hover{border-color:var(--teal)}
+.md-customize-tuner select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .md-pp-logo{display:block;margin:0 auto 18px;max-height:80px;max-width:240px}
 .md-preview-paper[data-logo-slot="header-left"] .md-pp-logo{margin-left:0}
 .md-preview-paper[data-logo-slot="header-right"] .md-pp-logo{margin-left:auto;margin-right:0}
@@ -276,6 +408,14 @@ header.nav{min-height:64px}
 .md-format-row:first-of-type{border-top:0}
 .md-format-btn{flex:0 0 auto;width:100%;justify-content:center}
 .md-format-hint{flex:1;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.md-format-btn-group{display:flex;flex-wrap:wrap;gap:6px;flex:0 0 auto}
+.md-format-btn-sm{padding:8px 12px;font-size:12.5px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font:inherit;font-weight:600;line-height:1}
+.md-format-btn-sm:hover{background:var(--ink);color:var(--cream)}
+.md-format-btn-sm:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+@media(max-width:540px){
+  .md-format-btn-group{flex-direction:column;width:100%}
+  .md-format-btn-sm{justify-content:center}
+}
 @media(min-width:641px){
   .md-format-row{flex-direction:row}
   .md-format-btn{width:auto;min-width:240px;justify-content:flex-start}
@@ -284,6 +424,15 @@ header.nav{min-height:64px}
 @media(max-width:640px){
   .md-more-formats-hint{display:none}
 }
+/* Wave studio-quality (C2) — Plain-language sibling description. */
+.md-desc-plain{margin-top:6px}
+.md-desc-plain-trigger{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink-soft);list-style:none;padding:3px 8px;border:1px dashed var(--line-dark);border-radius:999px;line-height:1.3}
+.md-desc-plain-trigger::-webkit-details-marker{display:none}
+.md-desc-plain-trigger:hover{color:var(--teal);border-color:var(--teal)}
+.md-desc-plain[open] .md-desc-plain-trigger{color:var(--teal);border-color:var(--teal);background:color-mix(in srgb,var(--teal) 6%,transparent)}
+.md-desc-plain-on{color:var(--status-good,#1F6B3A);font-weight:700}
+.md-input-desc-plain{margin-top:6px;width:100%;font-size:13px;line-height:1.5;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-family:inherit;color:var(--ink);background:var(--cream-2);resize:vertical}
+.md-input-desc-plain:focus{border-color:var(--teal);outline:0}
 .md-help-desc{display:inline-block;margin-top:6px;padding:4px 10px;border:1px dashed var(--line-dark);border-radius:999px;background:transparent;font-size:11.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;line-height:1.3}
 .md-help-desc:hover{border-color:var(--teal);color:var(--teal);border-style:solid}
 @media(max-width:640px){.md-help-desc{display:block;text-align:center}}
@@ -352,10 +501,10 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles a partir de una lista de platos. 37 temas tipográficos, 22 tamaños de papel, 17 códigos de alérgenos en 5 regímenes regulatorios (US/EU/UK/CA/AU), bilingüe EN+ES, metadatos PDF accesibles, PWA offline. Gratis, sin registro, todo en tu navegador.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","applicationSubCategory":"Diseño de menú","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"featureList":["37 temas curados","22 tamaños de papel","17 alérgenos × 5 regímenes regulatorios","Bilingüe EN/ES","Metadatos PDF/UA accesibles","JSON-LD Schema.org","PDF para imprenta (PDF/X-3, sangría + marcas de corte)","Versiones letra grande + alto contraste","Texto plano + Markdown + SSML + Braille (BRF)","HTML para QR","HTML para tablet kiosko","Listo para impresora térmica ESC/POS","ZIP bilingüe (EN+ES lado a lado)","Guardar/Cargar menú como JSON","Service worker — funciona offline","PWA instalable"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
+{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/menu-design/#tool","name":"Suite de Diseño de Menú","description":"Acomodo automático de menús imprimibles a partir de una lista de platos. 37 temas tipográficos, 22 tamaños de papel, 17 códigos de alérgenos en 5 regímenes regulatorios (US/EU/UK/CA/AU), bilingüe EN+ES, metadatos PDF accesibles, PWA offline. Gratis, sin registro, todo en tu navegador.","url":"https://muntin.digital/es/tools/menu-design/","applicationCategory":"BusinessApplication","applicationSubCategory":"Diseño de menú","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"featureList":["37 temas curados","22 tamaños de papel","17 alérgenos × 5 regímenes regulatorios","Bilingüe EN/ES","Metadatos PDF accesibles (Lang + Título + XMP)","JSON-LD Schema.org","PDF para imprenta (PDF/X-3, sangría + marcas de corte)","Versiones letra grande + alto contraste","Texto plano + Markdown + SSML + Braille (BRF)","HTML para QR","HTML para tablet kiosko","Listo para impresora térmica ESC/POS","ZIP bilingüe (EN+ES lado a lado)","Guardar/Cargar menú como JSON","Service worker — funciona offline","PWA instalable"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
 {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Suite de Diseño de Menú","item":"https://muntin.digital/es/tools/menu-design/"}]},
 {"@type":"HowTo","name":"Cómo hacer un menú imprimible en 4 pasos","description":"Construye un PDF de menú listo para imprenta a partir de una lista de platos. Sin necesidad de habilidad de diseño.","totalTime":"PT5M","tool":[{"@type":"HowToTool","name":"Navegador web"}],"step":[{"@type":"HowToStep","name":"Escribe o pega tus platos","text":"Pega tu menú existente, o escribe tu primer plato en el editor. Los encabezados de sección se detectan automáticamente. Alérgenos, precios y descripciones van en sus propias columnas.","url":"https://muntin.digital/es/tools/menu-design/#mdGrid"},{"@type":"HowToStep","name":"Elige un tema","text":"Elige entre 37 temas curados — Trattoria, Modern Minimal, Brasserie, Steakhouse, Izakaya Lantern, India Moderna, Korean BBQ Counter, Mezze Levantino, Costa Peruana, Azafrán Persa, Banquete Filipino, Mostrador Deli, Quesos + Carnicería, Mostrador del Chef, Servicio a la Habitación, Cuadrícula Bagel, y más. Cada uno está restringido para que el resultado nunca se vea amateur.","url":"https://muntin.digital/es/tools/menu-design/#mdThemes"},{"@type":"HowToStep","name":"Elige un tamaño de papel","text":"22 tamaños incluyendo Carta, A4, Tabloide, media página, postal, plegado, tríptico, mantel individual, lista de vinos, A2, A1, pantalla digital, y dimensiones personalizadas. Promoción automática a 2 columnas cuando hace falta.","url":"https://muntin.digital/es/tools/menu-design/#mdPaperRow"},{"@type":"HowToStep","name":"Descarga el PDF","text":"Toca Descargar PDF. Tu menú se genera en tu navegador; nada se sube. El archivo lleva metadatos de accesibilidad (idioma, título, XMP) para que los lectores de pantalla lo anuncien correctamente. El modo imprenta agrega sangría, marcas de corte y metadatos PDF/X-3.","url":"https://muntin.digital/es/tools/menu-design/#mdDownload"}]},
-{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Es realmente gratis? ¿Cuál es la trampa?","acceptedAnswer":{"@type":"Answer","text":"Es gratis de verdad, sin registro, sin gate de email, sin marca de agua, sin tope de uso. La trampa es que no nos quedamos con tus datos — toda la herramienta corre en tu navegador. Los únicos servicios pagos son menu polish ($249) y menu drop-in ($1,500), y ambos tienen lista de espera."}},{"@type":"Question","name":"¿Mis datos del menú salen de mi computadora?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe un plato, pega un menú, cambia el tema, exporta el PDF. La pestaña Network queda vacía (después de que carga la página). Todo pasa en el navegador. Tu menú se guarda como borrador en localStorage; también puedes guardarlo como archivo JSON en tus descargas."}},{"@type":"Question","name":"¿Por qué no soporta menús de 3 páginas?","acceptedAnswer":{"@type":"Answer","text":"Los menús reales son de 1 o 2 páginas (frente + dorso). Los menús de 3 páginas no existen — confunden a los comensales y suben el costo de impresión. La cascada de auto-ajuste prueba el tamaño nativo, luego cuatro niveles de reducción, luego promoción a 2 columnas. Si tu contenido aun no cabe, surge un aviso claro (quita N platos, activa frente+dorso, elige un papel más grande)."}},{"@type":"Question","name":"¿Para qué sirve el selector de régimen de alérgenos?","acceptedAnswer":{"@type":"Answer","text":"Las reglas varían por región. US-FDA-9 es el predeterminado (Big 9, incluye sésamo). EU-FIC-14 agrega mostaza, apio, lupin, moluscos, sulfitos. UK-PPDS agrega la distinción contiene/puede contener (Ley Natasha). Canadá y Australia/Nueva Zelanda tienen sus propias reglas. El selector cambia el aviso predeterminado y el catálogo de alérgenos para que el PDF coincida con tu régimen regulatorio."}},{"@type":"Question","name":"¿El PDF servirá para mi imprenta?","acceptedAnswer":{"@type":"Answer","text":"Sí. Activa 'Modo imprenta' antes de exportar y el PDF llevará 3mm de sangría, marcas de corte en cada esquina, OutputIntent sRGB, TrimBox y BleedBox según el spec PDF/X-3, y metadatos PDF (Título, Asunto, Creador). Tu imprenta local lo aceptará directamente. También incluimos una plantilla mailto en español plano para enviarlo."}},{"@type":"Question","name":"¿Puedo exportar un menú QR para mi sitio web?","acceptedAnswer":{"@type":"Answer","text":"Sí. Toca 'Exportar menú QR' y proporciona la URL donde alojarás menu.html. La herramienta devuelve un zip con una página HTML autónoma estilizada (con JSON-LD Schema.org Menu para los rich results de Google), un PNG del código QR, e instrucciones. Súbelo a Wix / Squarespace / WordPress / S3 / GitHub Pages — el QR apunta ahí, los clientes escanean, la página carga al instante."}},{"@type":"Question","name":"¿Funciona offline?","acceptedAnswer":{"@type":"Answer","text":"Sí. Después de la primera visita el service worker cachea toda la herramienta. Puedes instalarla como app de teléfono o escritorio desde el affordance del navegador. Editor, vista previa y exportación funcionan sin internet. La biblioteca PDF lazy-cargada se cachea en la primera exportación y luego también funciona offline."}},{"@type":"Question","name":"¿En qué se diferencia de Canva?","acceptedAnswer":{"@type":"Answer","text":"Canva ofrece templates genéricos que no entienden de restaurantes — asumen 12 platos, sin regulación de alérgenos, sin auto-ajuste. Nosotros estamos hechos para restaurantes específicamente: cada constraint, cada palabra. Metadatos de accesibilidad PDF/UA, JSON-LD Schema.org Menu, salida ESC/POS para impresoras térmicas, regímenes regionales de alérgenos, bilingüe EN+ES, totalmente offline. Canva no puede igualar esto porque sus bytes tienen que aterrizar en sus servidores."}},{"@type":"Question","name":"¿Y si quiero mi menú profesionalmente pulido?","acceptedAnswer":{"@type":"Answer","text":"Ofrecemos dos servicios pagos. Menu Polish ($249, entrega en 3 días hábiles, una revisión) toma tu brief exportado y devuelve un PDF listo para imprenta + fuente InDesign. Menu Drop-In ($1,500) es un diseño de menú a medida desde cero con entrevista al operador. Ambos los corre un solo diseñador con 14 años en pisos de restaurante, con cupo de 6 polishes y 1 drop-in por semana."}},{"@type":"Question","name":"¿Soportan idiomas además de inglés y español?","acceptedAnswer":{"@type":"Answer","text":"EN y ES son de primera clase hoy (UI completa, avisos de alérgenos por régimen + locale, formato de moneda por locale). FR, PT-BR, VI, AM, ZH, KO, JA, AR, HE están en el roadmap con tipografía profunda (subset de fuentes CJK, espejo HTML RTL). El contenido del plato se puede escribir en cualquier idioma."}}]}
+{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Es realmente gratis? ¿Cuál es la trampa?","acceptedAnswer":{"@type":"Answer","text":"Es gratis de verdad, sin registro, sin gate de email, sin marca de agua, sin tope de uso. La trampa es que no nos quedamos con tus datos — toda la herramienta corre en tu navegador. Los únicos servicios pagos son menu polish ($249) y menu drop-in ($1,500), y ambos tienen lista de espera."}},{"@type":"Question","name":"¿Mis datos del menú salen de mi computadora?","acceptedAnswer":{"@type":"Answer","text":"No. Abre DevTools → Network. Escribe un plato, pega un menú, cambia el tema, exporta el PDF. La pestaña Network queda vacía (después de que carga la página). Todo pasa en el navegador. Tu menú se guarda como borrador en localStorage; también puedes guardarlo como archivo JSON en tus descargas."}},{"@type":"Question","name":"¿Por qué no soporta menús de 3 páginas?","acceptedAnswer":{"@type":"Answer","text":"Los menús reales son de 1 o 2 páginas (frente + dorso). Los menús de 3 páginas no existen — confunden a los comensales y suben el costo de impresión. La cascada de auto-ajuste prueba el tamaño nativo, luego cuatro niveles de reducción, luego promoción a 2 columnas. Si tu contenido aun no cabe, surge un aviso claro (quita N platos, activa frente+dorso, elige un papel más grande)."}},{"@type":"Question","name":"¿Para qué sirve el selector de régimen de alérgenos?","acceptedAnswer":{"@type":"Answer","text":"Las reglas varían por región. US-FDA-9 es el predeterminado (Big 9, incluye sésamo). EU-FIC-14 agrega mostaza, apio, lupin, moluscos, sulfitos. UK-PPDS agrega la distinción contiene/puede contener (Ley Natasha). Canadá y Australia/Nueva Zelanda tienen sus propias reglas. El selector cambia el aviso predeterminado y el catálogo de alérgenos para que el PDF coincida con tu régimen regulatorio."}},{"@type":"Question","name":"¿El PDF servirá para mi imprenta?","acceptedAnswer":{"@type":"Answer","text":"Sí. Activa 'Modo imprenta' antes de exportar y el PDF llevará 3mm de sangría, marcas de corte en cada esquina, OutputIntent sRGB, TrimBox y BleedBox según el spec PDF/X-3, y metadatos PDF (Título, Asunto, Creador). Tu imprenta local lo aceptará directamente. También incluimos una plantilla mailto en español plano para enviarlo."}},{"@type":"Question","name":"¿Puedo exportar un menú QR para mi sitio web?","acceptedAnswer":{"@type":"Answer","text":"Sí. Toca 'Exportar menú QR' y proporciona la URL donde alojarás menu.html. La herramienta devuelve un zip con una página HTML autónoma estilizada (con JSON-LD Schema.org Menu para los rich results de Google), un PNG del código QR, e instrucciones. Súbelo a Wix / Squarespace / WordPress / S3 / GitHub Pages — el QR apunta ahí, los clientes escanean, la página carga al instante."}},{"@type":"Question","name":"¿Funciona offline?","acceptedAnswer":{"@type":"Answer","text":"Sí. Después de la primera visita el service worker cachea toda la herramienta. Puedes instalarla como app de teléfono o escritorio desde el affordance del navegador. Editor, vista previa y exportación funcionan sin internet. La biblioteca PDF lazy-cargada se cachea en la primera exportación y luego también funciona offline."}},{"@type":"Question","name":"¿En qué se diferencia de Canva?","acceptedAnswer":{"@type":"Answer","text":"Canva ofrece templates genéricos que no entienden de restaurantes — asumen 12 platos, sin regulación de alérgenos, sin auto-ajuste. Nosotros estamos hechos para restaurantes específicamente: cada constraint, cada palabra. metadatos PDF accesibles (Lang, Título, XMP), JSON-LD Schema.org Menu, salida ESC/POS para impresoras térmicas, regímenes regionales de alérgenos, bilingüe EN+ES, totalmente offline. Canva no puede igualar esto porque sus bytes tienen que aterrizar en sus servidores."}},{"@type":"Question","name":"¿Y si quiero mi menú profesionalmente pulido?","acceptedAnswer":{"@type":"Answer","text":"Ofrecemos dos servicios pagos. Menu Polish ($249, entrega en 3 días hábiles, una revisión) toma tu brief exportado y devuelve un PDF listo para imprenta + fuente InDesign. Menu Drop-In ($1,500) es un diseño de menú a medida desde cero con entrevista al operador. Ambos los corre un solo diseñador con 14 años en pisos de restaurante, con cupo de 6 polishes y 1 drop-in por semana."}},{"@type":"Question","name":"¿Soportan idiomas además de inglés y español?","acceptedAnswer":{"@type":"Answer","text":"EN y ES son de primera clase hoy (UI completa, avisos de alérgenos por régimen + locale, formato de moneda por locale). FR, PT-BR, VI, AM, ZH, KO, JA, AR, HE están en el roadmap con tipografía profunda (subset de fuentes CJK, espejo HTML RTL). El contenido del plato se puede escribir en cualquier idioma."}}]}
 ]}
 </script>
 </head>
@@ -495,7 +644,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <p class="md-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Herramienta gratis · Acomodo de menú para cualquier cantidad de platos</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Un menú, acomodado para los platos <span class="serif-italic" style="color:var(--teal);">que realmente tienes</span>.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -717,6 +866,18 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
           <span class="md-customize-badge" id="mdCustomizeBadge" hidden></span>
         </summary>
         <div class="md-customize-body">
+          <!-- Wave studio-quality (C14) — Historia del tema. -->
+          <details class="md-theme-story" id="mdThemeStory">
+            <summary class="md-theme-story-summary">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <span>Historia del tema &mdash; <span id="mdThemeStoryName">—</span></span>
+            </summary>
+            <div class="md-theme-story-body" id="mdThemeStoryBody">
+              <p class="md-theme-story-meta" id="mdThemeStoryMeta"></p>
+              <p class="md-theme-story-text" id="mdThemeStoryText"></p>
+              <p class="md-theme-story-link"><a href="/es/library/menu-design-themes/" rel="noopener">Ver las historias de los 37 temas →</a></p>
+            </div>
+          </details>
           <div class="md-customize-grid">
             <label class="md-customize-field">
               <span>Acento</span>
@@ -729,6 +890,39 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             <label class="md-customize-field">
               <span>Tinta</span>
               <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <!-- Wave studio-quality (B12) — Theme Tuner. -->
+          <div class="md-customize-grid md-customize-tuner">
+            <label class="md-customize-field">
+              <span>Espaciado de letras</span>
+              <select id="mdCustomLetterSpacing">
+                <option value="">Predeterminado del tema</option>
+                <option value="normal">Normal</option>
+                <option value="wide">Amplio (+0.04em)</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Encabezados de sección</span>
+              <select id="mdCustomSectionCase">
+                <option value="">Predeterminado del tema</option>
+                <option value="normal">Como se escribió</option>
+                <option value="uppercase">MAYÚSCULAS</option>
+                <option value="small-caps">Versalitas</option>
+                <option value="capitalize">Capitalizado</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Estilo de divisor</span>
+              <select id="mdCustomDividerStyle">
+                <option value="">Predeterminado del tema</option>
+                <option value="rule-thin">Línea fina</option>
+                <option value="hand-rule">Línea a mano</option>
+                <option value="double-rule">Línea doble</option>
+                <option value="box">Recuadro</option>
+                <option value="ornament">Ornamento</option>
+                <option value="whitespace">Solo espacio</option>
+              </select>
             </label>
           </div>
           <div class="md-customize-toggles">
@@ -911,6 +1105,36 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
               </button>
               <span class="md-format-hint">Un solo archivo HTML para iPad / tablet en la entrada o por si el cliente quiere consultar. Sin internet.</span>
             </div>
+            <!-- Wave studio-quality (C1 partial) — Especiales del día. -->
+            <div class="md-format-row">
+              <button type="button" class="md-download-btn md-download-qr md-format-btn" id="mdExportSpecials" aria-label="Descargar los especiales de hoy en una tarjeta 5x7">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>Especiales del día (tarjeta 5×7)</span>
+              </button>
+              <span class="md-format-hint">Imprime una tarjeta fresca cada noche sin rehacer todo el menú. Marca una sección como "Especiales del día" en el editor; esto exporta solo esa sección en una tarjeta de 5×7.</span>
+            </div>
+            <!-- Wave studio-quality (C1 partial) — PNG sociales. -->
+            <div class="md-format-row">
+              <div class="md-format-btn-group" role="group" aria-label="Formatos PNG sociales">
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="instagram-square" aria-label="Exportar PNG cuadrado de Instagram (1080×1080)">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+                  <span>IG cuadrado</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="instagram-story" aria-label="Exportar PNG story 9:16 de Instagram (1080×1920)">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+                  <span>Story 9:16</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="facebook-cover" aria-label="Exportar PNG portada de Facebook (1640×924)">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+                  <span>Portada FB</span>
+                </button>
+                <button type="button" class="md-download-btn md-download-qr md-format-btn-sm" data-social-format="x-header" aria-label="Exportar PNG cabecera de X (1500×500)">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="9" width="20" height="6" rx="1"/></svg>
+                  <span>Cabecera X</span>
+                </button>
+              </div>
+              <span class="md-format-hint">PNG en dimensiones sociales estándar, ajustado al color de papel del tema para que el menú se vea intencional en tu feed. Combina con un caption "menú de hoy →".</span>
+            </div>
           </div>
           <div class="md-format-group">
             <p class="md-format-group-label">Accesibilidad</p>
@@ -1081,6 +1305,29 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 
 </main>
 
+<button type="button" class="md-show-preview-pill" id="mdShowPreviewPill" aria-label="Ver vista previa del menú" title="Vista previa">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+</button>
+<div class="md-preview-backdrop" id="mdPreviewBackdrop" aria-hidden="true"></div>
+<script>
+(function () {
+  document.body.classList.add('md-tool-menu-design');
+  var pill = document.getElementById('mdShowPreviewPill');
+  var backdrop = document.getElementById('mdPreviewBackdrop');
+  if (!pill || !backdrop) return;
+  function open() { document.body.classList.add('md-show-preview'); }
+  function close() { document.body.classList.remove('md-show-preview'); }
+  pill.addEventListener('click', function () {
+    if (document.body.classList.contains('md-show-preview')) close();
+    else open();
+  });
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('md-show-preview')) close();
+  });
+})();
+</script>
+
 <footer class="site-footer" id="footer"></footer>
 
 <script src="/assets/site.js?v=20260430-cohesion" defer></script>
@@ -1107,6 +1354,8 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
 <script src="/tools/menu-design/theme-thumbs.js?v=20260503-wsq"></script>
 <script src="/tools/menu-design/themes.js?v=20260501-w15"></script>
+<!-- Wave studio-quality (C14) — Theme review-board credits. -->
+<script src="/tools/menu-design/data/theme-credits.js?v=20260503-c14"></script>
 <!-- Wave studio-quality (code-split) — boot-loaded papers catalog. -->
 <script src="/tools/menu-design/data/papers.js?v=20260503-cs"></script>
 <!-- Wave studio-quality (code-split) — renderers lazy-loaded on first export. -->

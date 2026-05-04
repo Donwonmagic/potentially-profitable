@@ -25,20 +25,53 @@
   var SVG2PDF_CDN = 'https://cdn.jsdelivr.net/npm/svg2pdf.js@2.4.0/dist/svg2pdf.umd.min.js';
   var __pdfLibPromise = null;
   var __svg2pdfPromise = null;
+
+  // Wave studio-quality — bounded script-load timeout. Without this,
+  // a partial load (200 OK then connection drop) leaves the script
+  // tag pending forever and the operator's "Download PDF" button
+  // stays disabled with no error. 15s is generous for jsPDF/pdf-lib
+  // on slow cell, plenty for jsdelivr's edge cache.
+  var SCRIPT_LOAD_TIMEOUT_MS = 15000;
+  function withScriptTimeout(promiseFactory, label) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var to = setTimeout(function () {
+        if (done) return;
+        done = true;
+        reject(new Error(label + ' load timed out after ' + (SCRIPT_LOAD_TIMEOUT_MS / 1000) + 's — check your network'));
+      }, SCRIPT_LOAD_TIMEOUT_MS);
+      promiseFactory().then(function (v) {
+        if (done) return;
+        done = true;
+        clearTimeout(to);
+        resolve(v);
+      }, function (e) {
+        if (done) return;
+        done = true;
+        clearTimeout(to);
+        reject(e);
+      });
+    });
+  }
   function loadSvg2Pdf() {
     if (root.svg2pdf) return Promise.resolve(root.svg2pdf);
     if (__svg2pdfPromise) return __svg2pdfPromise;
-    __svg2pdfPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = SVG2PDF_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.svg2pdf) resolve(root.svg2pdf);
-        else { __svg2pdfPromise = null; reject(new Error('svg2pdf loaded but global missing')); }
-      };
-      s.onerror = function () { __svg2pdfPromise = null; reject(new Error('svg2pdf load failed')); };
-      document.head.appendChild(s);
+    __svg2pdfPromise = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = SVG2PDF_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          if (root.svg2pdf) resolve(root.svg2pdf);
+          else reject(new Error('svg2pdf loaded but global missing'));
+        };
+        s.onerror = function () { reject(new Error('svg2pdf load failed')); };
+        document.head.appendChild(s);
+      });
+    }, 'svg2pdf').catch(function (e) {
+      __svg2pdfPromise = null;
+      throw e;
     });
     return __svg2pdfPromise;
   }
@@ -112,21 +145,25 @@
   function loadJsPdf() {
     if (root.jspdf && root.jspdf.jsPDF) return Promise.resolve(root.jspdf.jsPDF);
     if (__pdfLibPromise) return __pdfLibPromise;
-    __pdfLibPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = JSPDF_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        var lib = (root.jspdf && root.jspdf.jsPDF) || null;
-        if (lib) resolve(lib);
-        else { __pdfLibPromise = null; reject(new Error('jsPDF loaded but global missing')); }
-      };
-      s.onerror = function () {
-        __pdfLibPromise = null;
-        reject(new Error('Could not load jsPDF — check your network'));
-      };
-      document.head.appendChild(s);
+    __pdfLibPromise = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = JSPDF_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          var lib = (root.jspdf && root.jspdf.jsPDF) || null;
+          if (lib) resolve(lib);
+          else reject(new Error('jsPDF loaded but global missing'));
+        };
+        s.onerror = function () {
+          reject(new Error('Could not load jsPDF — check your network'));
+        };
+        document.head.appendChild(s);
+      });
+    }, 'jsPDF').catch(function (e) {
+      __pdfLibPromise = null;
+      throw e;
     });
     return __pdfLibPromise;
   }
@@ -246,6 +283,13 @@
     'table-tent':   { w: 360, h: 720, flow: 'panel', cat: 'table', orient: 'portrait', panels: 2, fold: 'tent',
                       panelMap: ['side-A', 'side-B'], gutter: 6, margin: 18,
                       label: 'Table tent (5×10 folded to 5×5)', stock: '100lb-cover' },
+    'table-tent-4panel': { w: 612, h: 1008, flow: 'panel', cat: 'table', orient: 'portrait', panels: 4, fold: 'tent',
+                           panelMap: ['side-A', 'side-B', 'side-C', 'side-D'],
+                           panelWidths: [612, 612, 612, 612], gutter: 6, margin: 18,
+                           label: 'Table tent 4-panel (8.5×14 folded to 4-sided)', stock: '100lb-cover' },
+    'beer-mat-round':   { w: 306, h: 306, flow: 'page',  cat: 'table', orient: 'square', margin: 32,
+                          shape: 'round',
+                          label: 'Beer-mat (4.25" round)', stock: '120lb-coaster' },
     'table-card':   { w: 360, h: 504, flow: 'page',  cat: 'table', orient: 'portrait', margin: 18, label: 'Table card (5×7)',   stock: '100lb-cover' },
     'placemat':     { w: 720, h: 1008, flow: 'page', cat: 'table', orient: 'landscape', margin: 36, label: 'Placemat (10×14)',  stock: '70lb-uncoated' },
     'wine-narrow':  { w: 306, h: 792, flow: 'page',  cat: 'table', orient: 'portrait',  margin: 24, label: 'Wine list (4.25×11)', stock: '32lb-text' },
@@ -376,6 +420,34 @@
     return 'helvetica';
   }
 
+  // ----------------------------------------------------------------
+  // Wave studio-quality (T5.2) — size-aware tracking helper.
+  //
+  // High-end print typography uses a tracking ladder: smaller body
+  // sizes get slightly more letter-spacing to stay open at low x-
+  // height; larger display sizes get slightly tighter spacing so
+  // they don't feel airy. Most jsPDF menus ship at the default zero
+  // tracking, which is why they read as "rendered" instead of "set".
+  //
+  // Values are in jsPDF text-units (points). Tested against Fraunces
+  // and Inter at 8–24pt. Resets to 0 with sizeTracking(doc, null).
+  // ----------------------------------------------------------------
+  function sizeTracking(doc, pt) {
+    if (!doc || typeof doc.setCharSpace !== 'function') return;
+    if (pt == null) { doc.setCharSpace(0); return; }
+    // Ladder: 8pt → +0.10, 10pt → +0.06, 14pt → +0.02,
+    //         20pt → -0.02, 30pt → -0.06.
+    var t;
+    if      (pt <=  8)  t =  0.10;
+    else if (pt <= 10)  t =  0.06;
+    else if (pt <= 12)  t =  0.04;
+    else if (pt <= 14)  t =  0.02;
+    else if (pt <= 18)  t =  0;
+    else if (pt <= 24)  t = -0.02;
+    else                t = -0.05;
+    doc.setCharSpace(t);
+  }
+
   // Convert hex to {r,g,b} for jsPDF.setTextColor / setDrawColor.
   function hexToRgb(hex) {
     var h = String(hex || '').replace(/^#/, '');
@@ -393,131 +465,58 @@
   // theme)` returning {width, height} and a `draw(x, y, doc, theme)`
   // mutating the page. This shape lets us swap in a column packer
   // later (Wave A4) without touching block draw code.
-  // W11-3 — Per-cuisine vector ornament library. Each ornament is a
-  // small drawing routine that paints into the doc at (x, y, size).
-  // Programmatic vectors keep the bundle small (no SVG ornaments to
-  // ship) while delivering theme-coherent decorative marks.
-  var CUISINE_ORNAMENTS = {
-    'olive-branch': function (doc, x, y, size, color) {
-      // A simple olive branch — stem with three ovals.
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setFillColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.5);
-      doc.line(x - size * 0.5, y, x + size * 0.5, y);
-      // Three olive-shaped fills above/below the stem
-      var leaves = [[-0.35, -0.25], [0.05, 0.3], [0.35, -0.2]];
-      leaves.forEach(function (p) {
-        doc.ellipse(x + size * p[0], y + size * p[1], size * 0.1, size * 0.18, 'F');
+  // ----------------------------------------------------------------
+  // Wave studio-quality (T5.1) — single canonical ornament library.
+  //
+  // Previously this file shipped TWO parallel ornament systems:
+  //   1. A jsPDF-primitive library (~100 LOC of olive-branch / agave /
+  //      flame / etc. drawn from arcs + ellipses + triangles)
+  //   2. The MD_DECOR SVG library at tools/_shared/menu-renderers/
+  //      cuisine-decor.js, which drives the picker thumbnails, the
+  //      live preview, the QR-menu HTML, and (already) the page-edge
+  //      decoration in the PDF via svg2pdf.
+  //
+  // The jsPDF-primitive library was strictly inferior — coarser
+  // strokes, no cuisine-hint inference (themeId lookup table only),
+  // and divergent visual identity between picker thumbnail and the
+  // printed deliverable. It's gone. The two callers (cover-page
+  // accent, footer-ornament rule) now route through MD_DECOR via
+  // svg2pdf, matching the rest of the rendering pipeline.
+  //
+  // Renders the operator's actual cuisine motif (paisley for Indian,
+  // talavera for Mexican, crane for Japanese, fleur-de-lis for
+  // French, etc.) instead of a generic diamond.
+  // ----------------------------------------------------------------
+  function drawCuisineOrnament(doc, theme, cx, cy, size, color) {
+    try {
+      var DECOR = root && root.MD_DECOR;
+      if (!DECOR || typeof DECOR.svgWrapped !== 'function') return false;
+      if (!root.svg2pdf || !doc.svg) return false;
+      // svgWrapped renders into a 220×120 viewBox by default. We
+      // pass smaller width/height tuned to the call-site request
+      // and override color/opacity so the cover-page + footer
+      // rules pick up the operator's accent color cleanly.
+      var hex = color
+        ? '#' + ((1 << 24) + (color.r << 16) + (color.g << 8) + color.b).toString(16).slice(1)
+        : null;
+      var svgText = DECOR.svgWrapped(theme, {
+        color: hex || theme.accent || '#7C6F60',
+        opacity: 0.85,
+        width: 180,
+        height: 100
       });
-    },
-    'agave': function (doc, x, y, size, color) {
-      // Agave fronds radiating from a center point.
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setFillColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.6);
-      for (var i = 0; i < 7; i++) {
-        var ang = (Math.PI / 6) * (i - 3);
-        var fx = x + Math.cos(ang) * size * 0.5;
-        var fy = y - Math.sin(ang) * size * 0.45;
-        doc.line(x, y, fx, fy);
-      }
-    },
-    'fish': function (doc, x, y, size, color) {
-      // Tiny fish silhouette — two arcs + tail.
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setFillColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.5);
-      doc.ellipse(x, y, size * 0.4, size * 0.15, 'S');
-      // Tail
-      doc.triangle(x + size * 0.4, y, x + size * 0.6, y - size * 0.18, x + size * 0.6, y + size * 0.18, 'S');
-    },
-    'wheat': function (doc, x, y, size, color) {
-      // Wheat sheaf — central stem with grains.
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.5);
-      doc.line(x, y - size * 0.45, x, y + size * 0.4);
-      // Grains
-      for (var g = 0; g < 4; g++) {
-        var gy = y - size * 0.3 + g * size * 0.18;
-        doc.setFillColor(color.r, color.g, color.b);
-        doc.ellipse(x - size * 0.18, gy, size * 0.06, size * 0.1, 'F');
-        doc.ellipse(x + size * 0.18, gy, size * 0.06, size * 0.1, 'F');
-      }
-    },
-    'wine-glass': function (doc, x, y, size, color) {
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.6);
-      // Bowl
-      doc.ellipse(x, y - size * 0.15, size * 0.25, size * 0.18, 'S');
-      // Stem
-      doc.line(x, y, x, y + size * 0.35);
-      // Foot
-      doc.line(x - size * 0.18, y + size * 0.35, x + size * 0.18, y + size * 0.35);
-    },
-    'coffee-bean': function (doc, x, y, size, color) {
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setFillColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.5);
-      doc.ellipse(x, y, size * 0.3, size * 0.18, 'F');
-      doc.setDrawColor(255, 255, 255);
-      doc.setLineWidth(0.4);
-      doc.line(x - size * 0.2, y, x + size * 0.2, y);
-    },
-    'flame': function (doc, x, y, size, color) {
-      // BBQ flame — three vertical strokes
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setLineWidth(0.6);
-      doc.line(x - size * 0.18, y + size * 0.2, x - size * 0.05, y - size * 0.3);
-      doc.line(x, y + size * 0.2, x, y - size * 0.4);
-      doc.line(x + size * 0.18, y + size * 0.2, x + size * 0.05, y - size * 0.3);
-    },
-    'lemon': function (doc, x, y, size, color) {
-      doc.setDrawColor(color.r, color.g, color.b);
-      doc.setFillColor(color.r, color.g, color.b);
-      doc.ellipse(x, y, size * 0.25, size * 0.18, 'F');
-    },
-    'fleuron': function (doc, x, y, size, color) {
-      // Stylized fleur-de-lis style ornament: three diamonds.
-      doc.setFillColor(color.r, color.g, color.b);
-      var s = size * 0.18;
-      doc.triangle(x, y - s * 1.4, x - s, y - s * 0.4, x + s, y - s * 0.4, 'F');
-      doc.triangle(x, y - s * 1.4, x - s, y - s * 0.4, x + s, y - s * 0.4, 'F');
-      doc.triangle(x - s * 1.2, y, x - s * 0.4, y + s * 0.4, x - s * 0.4, y - s * 0.4, 'F');
-      doc.triangle(x + s * 1.2, y, x + s * 0.4, y + s * 0.4, x + s * 0.4, y - s * 0.4, 'F');
-    },
-    'diamond': function (doc, x, y, size, color) {
-      doc.setFillColor(color.r, color.g, color.b);
-      var s = size * 0.18;
-      doc.triangle(x, y - s, x - s, y, x + s, y, 'F');
-      doc.triangle(x, y + s, x - s, y, x + s, y, 'F');
-    }
-  };
-  function ornamentForTheme(themeId) {
-    // Map theme -> ornament token. Falls back to 'diamond' for any
-    // theme without an explicit pairing.
-    var map = {
-      trattoria:           'olive-branch',
-      cantina:             'agave',
-      'coastal-raw-bar':   'fish',
-      'bistro-paris':      'fleuron',
-      brasserie:           'fleuron',
-      'wine-list-formal':  'wine-glass',
-      'cocktail-deco':     'wine-glass',
-      'cafe-counter':      'coffee-bean',
-      'bakery-coffee':     'wheat',
-      'dessert-only':      'lemon',
-      steakhouse:          'flame',
-      'bbq-smoke':         'flame',
-      'tapas-rustic':      'olive-branch',
-      'gastropub-oak':     'wheat',
-      'plant-forward':     'olive-branch'
-    };
-    return map[themeId] || 'diamond';
-  }
-  function drawCuisineOrnament(doc, themeId, x, y, size, color) {
-    var token = ornamentForTheme(themeId);
-    var fn = CUISINE_ORNAMENTS[token] || CUISINE_ORNAMENTS.diamond;
-    fn(doc, x, y, size, color);
+      if (!svgText) return false;
+      var parser = new DOMParser();
+      var parsed = parser.parseFromString(svgText, 'image/svg+xml');
+      var svgEl = parsed && parsed.documentElement;
+      if (!svgEl) return false;
+      // Convert center-anchored (cx, cy, size) to top-left for doc.svg.
+      // Aspect-preserving: width = size * (180/100), height = size.
+      var w = size * 1.8;
+      var h = size;
+      doc.svg(svgEl, { x: cx - w / 2, y: cy - h / 2, width: w, height: h });
+      return true;
+    } catch (_) { return false; }
   }
 
   // Wave studio-quality — locale-aware price display in PDF.
@@ -806,7 +805,7 @@
         doc.text(block.tagline, pageW / 2, coverY + 28, { align: 'center' });
       }
       // Centered cuisine ornament at the bottom-third
-      drawCuisineOrnament(doc, block.themeId || theme.id, pageW / 2, pageH * 0.72, 36, accentRgb);
+      drawCuisineOrnament(doc, theme, pageW / 2, pageH * 0.72, 36, accentRgb);
       // Subtle bottom rule
       doc.setDrawColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
       doc.setLineWidth(0.4);
@@ -1056,6 +1055,7 @@
     if (block.kind === 'dish') {
       doc.setFont(pickPdfFont(theme.bodyFamily, doc.__brandsLoaded), 'normal');
       doc.setFontSize(theme.bodyPt);
+      sizeTracking(doc, theme.bodyPt);
       doc.setTextColor(inkRgb.r, inkRgb.g, inkRgb.b);
       // Reserve right margin for price.
       var priceWidth = 60;
@@ -1224,6 +1224,7 @@
       var nextY = y + theme.bodyPt * 1.25;
       if (block.desc) {
         doc.setFontSize(theme.descPt);
+        sizeTracking(doc, theme.descPt);
         doc.setTextColor(mutedRgb.r, mutedRgb.g, mutedRgb.b);
         var lines = doc.splitTextToSize(block.desc, contentWidth - priceWidth);
         for (var i = 0; i < lines.length; i++) {
@@ -1289,7 +1290,7 @@
       try {
         if (doc.GState) doc.setGState(new doc.GState({ opacity: 0.4 }));
       } catch (_) {}
-      drawCuisineOrnament(doc, block.themeId || theme.id, x + contentWidth / 2, ornY, 22, accentRgb);
+      drawCuisineOrnament(doc, theme, x + contentWidth / 2, ornY, 22, accentRgb);
       try {
         if (doc.GState) doc.setGState(new doc.GState({ opacity: 1 }));
       } catch (_) {}
@@ -1886,17 +1887,22 @@
   function loadPdfLib() {
     if (root.PDFLib) return Promise.resolve(root.PDFLib);
     if (__pdfLibPromise2) return __pdfLibPromise2;
-    __pdfLibPromise2 = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = PDFLIB_CDN;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.PDFLib) resolve(root.PDFLib);
-        else { __pdfLibPromise2 = null; reject(new Error('pdf-lib loaded but global missing')); }
-      };
-      s.onerror = function () { __pdfLibPromise2 = null; reject(new Error('pdf-lib load failed')); };
-      document.head.appendChild(s);
+    __pdfLibPromise2 = withScriptTimeout(function () {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = PDFLIB_CDN;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () {
+          if (root.PDFLib) resolve(root.PDFLib);
+          else reject(new Error('pdf-lib loaded but global missing'));
+        };
+        s.onerror = function () { reject(new Error('pdf-lib load failed')); };
+        document.head.appendChild(s);
+      });
+    }, 'pdf-lib').catch(function (e) {
+      __pdfLibPromise2 = null;
+      throw e;
     });
     return __pdfLibPromise2;
   }
@@ -2074,8 +2080,63 @@
     });
   }
 
+  // ----------------------------------------------------------------
+  // Script-detection guard. The PDF font subsets are Latin-only
+  // (Fraunces + Inter + Cormorant), so Arabic / Hebrew / CJK / Thai /
+  // Devanagari / Cyrillic-extended / Ethiopic content silently emits
+  // boxes or wrong glyphs. We refuse PDF export with an explicit
+  // message instead of shipping unreadable output. Operators can use
+  // the HTML, text, or kiosk export paths until proper subsets ship.
+  //
+  // Returns null when content is safe to export, or an i18n object
+  // { en, es } with operator-tone copy when content must be refused.
+  // ----------------------------------------------------------------
+  var NON_LATIN_RE = /[֐-׿؀-ۿ܀-ݏऀ-ॿ฀-๿ሀ-፿　-ヿ぀-ゟ㐀-䶿一-鿿가-힯יִ-﷿ﹰ-﻿]/;
+  function detectUnsupportedScript(opts) {
+    var fields = [];
+    function collect(s) { if (s) fields.push(String(s)); }
+    var meta = opts && opts.meta;
+    if (meta) {
+      collect(meta.tagline); collect(meta.story); collect(meta.coverPage);
+      collect(meta.address); collect(meta.hours); collect(meta.serviceCharge);
+      collect(meta.sourcing); collect(meta.disclaimer); collect(meta.askYourServer);
+      collect(meta.businessName);
+    }
+    var sections = (opts && opts.sections) || [];
+    for (var s = 0; s < sections.length; s++) {
+      collect(sections[s].name);
+      var dishes = sections[s].dishes || [];
+      for (var d = 0; d < dishes.length; d++) {
+        collect(dishes[d].name); collect(dishes[d].desc);
+      }
+    }
+    var joined = fields.join('\n');
+    if (NON_LATIN_RE.test(joined)) {
+      return {
+        en: 'PDF export needs Arabic / Hebrew / CJK / Thai / Devanagari / Ethiopic font subsets we have not shipped yet. ' +
+            'Use the HTML, kiosk, or text export — those handle every script your browser can render. ' +
+            '(Multi-script PDF is on the roadmap.)',
+        es: 'La exportación a PDF necesita subsets de fuentes árabe / hebreo / CJK / tailandés / devanagari / etíope que aún no enviamos. ' +
+            'Usa la exportación HTML, kiosko o texto — esas manejan cualquier script que tu navegador pueda renderizar. ' +
+            '(PDF multiscript está en el roadmap.)'
+      };
+    }
+    return null;
+  }
+
   function exportPdf(opts) {
     opts = opts || {};
+    // Wave studio-quality — fail-loud guard for non-Latin scripts.
+    // Better to refuse than to ship boxes / reversed Arabic to print.
+    var unsupported = detectUnsupportedScript(opts);
+    if (unsupported) {
+      var locale = (opts.locale || 'en').toLowerCase().slice(0, 2);
+      var msg = locale === 'es' ? unsupported.es : unsupported.en;
+      var err = new Error(msg);
+      err.code = 'unsupported-script';
+      err.unsupported = true;
+      return Promise.reject(err);
+    }
     // W9-2 — kick off the brand-font fetch in parallel with jsPDF.
     // W13-1 — also load svg2pdf when the operator's logo is SVG so
     // the doc.svg() call in the logo drawer has the plugin available.
@@ -2096,6 +2157,21 @@
     // ~150KB lib is lazy and cached after first load.
     loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
+      // Wave studio-quality (perf) — yield a frame after loaders
+      // resolve, before the heavy sync work (dry-run measure +
+      // paginate + draw, 4-6s on a 53-dish tabloid). The yield
+      // lets the operator's busy-state animation paint at least
+      // one frame before the main thread locks. Without this, the
+      // pulse-state CSS animation never shows up on big menus —
+      // it stays at the initial frame for the entire build.
+      return new Promise(function (resolve) {
+        if (typeof requestAnimationFrame === 'function') {
+          requestAnimationFrame(function () { setTimeout(function () { resolve(results); }, 0); });
+        } else {
+          setTimeout(function () { resolve(results); }, 0);
+        }
+      });
+    }).then(function (results) {
       var jsPDF = results[0];
       var brandFonts = results[1]; // null on failure
       if (!jsPDF) throw new Error('jsPDF unavailable');

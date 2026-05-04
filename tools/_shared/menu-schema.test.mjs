@@ -230,3 +230,26 @@ test('applyAutoDisclaimer is idempotent', () => {
   const twice = SCHEMA.applyAutoDisclaimer(once);
   assert.equal(once.meta.disclaimer, twice.meta.disclaimer);
 });
+
+// ============== Plain-language sibling (Wave C2) ==============
+test('migrate carries descPlain through the v2 → v3 path', () => {
+  const m = SCHEMA.migrate({
+    rows: [
+      { kind: 'section', name: 'Salads' },
+      { kind: 'dish', name: 'Caesar',
+        desc: 'Crisp little gems, buttermilk-anchovy, parmesan crisp.',
+        descPlain: 'Lettuce salad with creamy dressing and crunchy cheese.',
+        price: '14' },
+      { kind: 'dish', name: 'Soup', desc: 'Ask your server.', price: '10' }
+    ]
+  });
+  const caesar = m.dishes.find(d => d.name === 'Caesar');
+  assert.equal(caesar.descPlain, 'Lettuce salad with creamy dressing and crunchy cheese.');
+  const soup = m.dishes.find(d => d.name === 'Soup');
+  assert.equal(soup.descPlain, '');
+});
+
+test('blankDish initializes descPlain as empty string', () => {
+  const d = SCHEMA.blankDish({ name: 'X' });
+  assert.equal(d.descPlain, '');
+});

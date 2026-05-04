@@ -45,6 +45,24 @@
     'table-tent':   { w: 360, h: 720, flow: 'panel', cat: 'table', orient: 'portrait', panels: 2, fold: 'tent',
                       panelMap: ['side-A', 'side-B'], gutter: 6, margin: 18,
                       label: 'Table tent (5×10 folded to 5×5)', stock: '100lb-cover' },
+    // Wave studio-quality (C1 partial) — 4-panel table tent. Operators
+    // running a "front + back + sides" tent (rotating specials, drink
+    // list, kids menu, dessert menu on the four faces) currently have
+    // to use two separate 2-panel tents. This 4-panel single-print
+    // covers it. Legal-sheet sized so all four panels fit one sheet.
+    'table-tent-4panel': { w: 612, h: 1008, flow: 'panel', cat: 'table', orient: 'portrait', panels: 4, fold: 'tent',
+                           panelMap: ['side-A', 'side-B', 'side-C', 'side-D'],
+                           panelWidths: [612, 612, 612, 612], gutter: 6, margin: 18,
+                           label: 'Table tent 4-panel (8.5×14 folded to 4-sided)', stock: '100lb-cover' },
+    // Wave studio-quality (C1 partial) — Beer-mat round. Square
+    // bleed-aware paper (4.25" round). Operators at brewery taprooms
+    // and beer halls hand customers a beer-mat-sized menu on each
+    // round of beers; reorders happen on flips. Renderer treats the
+    // square stock as a circle-trimmed canvas with conservative
+    // inner safety zone so dish names don't sit on the trim line.
+    'beer-mat-round':   { w: 306, h: 306, flow: 'page',  cat: 'table', orient: 'square', margin: 32,
+                          shape: 'round',
+                          label: 'Beer-mat (4.25" round)', stock: '120lb-coaster' },
     'table-card':   { w: 360, h: 504, flow: 'page',  cat: 'table', orient: 'portrait', margin: 18, label: 'Table card (5×7)',   stock: '100lb-cover' },
     'placemat':     { w: 720, h: 1008, flow: 'page', cat: 'table', orient: 'landscape', margin: 36, label: 'Placemat (10×14)',  stock: '70lb-uncoated' },
     'wine-narrow':  { w: 306, h: 792, flow: 'page',  cat: 'table', orient: 'portrait',  margin: 24, label: 'Wine list (4.25×11)', stock: '32lb-text' },
