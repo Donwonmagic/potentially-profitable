@@ -119,7 +119,7 @@ function emitTheme(themeId, locale) {
           <dd>${escHtml(paperFloors) || '—'}</dd>
         </dl>
       </details>
-      <p class="md-rb-cta"><a href="${escHtml(toolHref)}">${tryLabel}</a></p>
+      <p class="md-rb-cta"><a href="${escHtml(toolHref)}">${tryLabel}</a> · <a href="${locale === 'es' ? '/es' : ''}/library/menu-design-themes/${escHtml(themeId)}/">${locale === 'es' ? 'Leer la historia del tema →' : 'Read the theme story →'}</a></p>
     </article>`;
 }
 
