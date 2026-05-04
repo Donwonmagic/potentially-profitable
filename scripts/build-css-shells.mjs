@@ -144,6 +144,13 @@ const SECTIONS = [
   { start: 6231, shell: 'core',    label: 'Hero count chips (homepage)' },
   { start: 6262, shell: 'core',    label: 'Trust strip (homepage)' },
   { start: 6288, shell: 'core',    label: 'Compare cards (homepage)' },
+  // Article viz components — Phase-1 foundation for the graphics
+  // refresh. Namespaced .viz-* family for inline article charts
+  // (.viz-figure, .viz-bars today; .viz-ring/.viz-spark/.viz-ba/
+  // .viz-flow/.viz-tree/.viz-waterfall/.viz-gauge/.viz-hero/.viz-scroll
+  // land in subsequent phases). Article shell — only loaded on
+  // /blog/, /learn/, /glossary/.
+  { start: 6372, shell: 'article', label: 'Article viz components (.viz-* family)' },
 ];
 
 // === Validation ===

@@ -230,6 +230,12 @@ const CHECKS = [
   ['Experiments parity',   'check-experiments-parity.mjs',   '--check'],
   ['No fixed min-width',   'check-no-fixed-min-width.mjs'],
   ['Table scroll wrap',    'check-table-scroll-wrap.mjs'],
+  // Article graphics — Phase-1 graphics refresh. Manifest-driven SVG
+  // generator at brand/article-svg/graphics.json. Schema validation,
+  // locale parity (EN/ES twin enforcement), and idempotency in
+  // --check mode. Empty manifest is allowed; entries get filled in
+  // as articles are refreshed in Phase 2+.
+  ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
 ];
 
 const results = [];
