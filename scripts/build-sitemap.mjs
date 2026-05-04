@@ -153,6 +153,26 @@ if (xml === prev) {
   console.log(`Sitemap: ${en.size} EN + ${es.size} ES URLs; no changes.`);
   process.exit(0);
 }
+
+// --check tolerance: every commit that touches a content file shifts
+// that URL's git-mtime (and therefore its <lastmod>), so a fresh
+// checkout of main almost always reports "sitemap stale" — net zero
+// signal, all noise. Three regen PRs in the past week have just been
+// "rerun build-sitemap so check-all goes green again."
+//
+// Normalize <lastmod> tags before comparison: if the URL SET is
+// identical and only lastmod values drifted, treat as no-change in
+// --check mode. URL set additions / removals (real new pages, real
+// deletions) still surface as regen signals. The writer mode is
+// unchanged — `node scripts/build-sitemap.mjs` (no --check) still
+// rewrites sitemap.xml with today's git-mtimes when run, which is
+// what the deploy pipeline does.
+const stripLastmod = (s) => s.replace(/<lastmod>[^<]+<\/lastmod>/g, '<lastmod>NORMALIZED</lastmod>');
+if (checkOnly && stripLastmod(xml) === stripLastmod(prev)) {
+  console.log(`Sitemap: ${en.size} EN + ${es.size} ES URLs; lastmod drift only (within --check tolerance).`);
+  process.exit(0);
+}
+
 if (!checkOnly) fs.writeFileSync(OUT_PATH, xml);
 console.log(`${checkOnly ? 'would update' : 'updated'}: sitemap.xml (${en.size} EN + ${es.size} ES = ${en.size + es.size} URLs)`);
 if (checkOnly) process.exit(1);
