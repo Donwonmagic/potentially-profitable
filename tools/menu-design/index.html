@@ -337,6 +337,10 @@ header.nav{min-height:64px}
    tablet, 2-up on phone, 1-up below 280px. Replaces the hard
    3-column grid that squeezed color pickers at 390pt viewport. */
 .md-customize-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));gap:10px}
+.md-customize-tuner{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tuner select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer}
+.md-customize-tuner select:hover{border-color:var(--teal)}
+.md-customize-tuner select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .md-customize-field{display:flex;flex-direction:column;gap:4px}
 .md-customize-field span{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone)}
 .md-customize-field input[type="color"]{width:100%;height:36px;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:2px}
@@ -734,6 +738,16 @@ header.nav{min-height:64px}
 .md-preview-paper[data-section-case="uppercase"] h2.md-pp-section{text-transform:uppercase;letter-spacing:.18em}
 .md-preview-paper[data-section-case="small-caps"] h2.md-pp-section{font-variant:small-caps;letter-spacing:.06em}
 .md-preview-paper[data-section-case="capitalize"] h2.md-pp-section{text-transform:none}
+.md-preview-paper[data-section-case="normal"] h2.md-pp-section{text-transform:none;font-variant:normal;letter-spacing:normal}
+/* Wave studio-quality (B12) — Theme Tuner divider overrides applied
+   to the live preview. The PDF renderer reads the theme.dividerStyle
+   token directly and is already wired. These rules give parity in
+   the live preview when the operator toggles the divider knob. */
+.md-preview-paper[data-divider="rule-thin"] h2.md-pp-section{border-bottom:0.5pt solid var(--ink);padding-bottom:6px}
+.md-preview-paper[data-divider="double-rule"] h2.md-pp-section{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;background:transparent}
+.md-preview-paper[data-divider="whitespace"] h2.md-pp-section{border:0;padding-bottom:0;margin-top:24px;margin-bottom:14px}
+/* Wave studio-quality (B12) — Letter-spacing knob. */
+.md-preview-paper[data-letter-spacing="wide"]{letter-spacing:0.04em}
 /* Logo placement variants. */
 .md-pp-logo{display:block;margin:0 auto 18px;max-height:80px;max-width:240px}
 .md-preview-paper[data-logo-slot="header-left"] .md-pp-logo{margin-left:0}
@@ -1240,7 +1254,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <p class="md-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Free tool · Menu layout for any dish count</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">A menu, laid out for the dishes <span class="serif-italic" style="color:var(--teal);">you actually have</span>.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-03">May 3, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-04">May 4, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -1539,6 +1553,42 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             <label class="md-customize-field">
               <span>Ink</span>
               <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <!-- Wave studio-quality (B12) — Theme Tuner. Three closed-
+               enum knobs that let operators tune typography within
+               the taste-floor lints. Each picker writes to customize
+               state; "Theme default" leaves it at the theme's value. -->
+          <div class="md-customize-grid md-customize-tuner">
+            <label class="md-customize-field">
+              <span>Letter spacing</span>
+              <select id="mdCustomLetterSpacing">
+                <option value="">Theme default</option>
+                <option value="normal">Normal</option>
+                <option value="wide">Wide (+0.04em)</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Section headers</span>
+              <select id="mdCustomSectionCase">
+                <option value="">Theme default</option>
+                <option value="normal">As typed</option>
+                <option value="uppercase">UPPERCASE</option>
+                <option value="small-caps">Small caps</option>
+                <option value="capitalize">Capitalized</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Divider style</span>
+              <select id="mdCustomDividerStyle">
+                <option value="">Theme default</option>
+                <option value="rule-thin">Thin rule</option>
+                <option value="hand-rule">Hand-drawn</option>
+                <option value="double-rule">Double rule</option>
+                <option value="box">Boxed</option>
+                <option value="ornament">Ornament</option>
+                <option value="whitespace">Whitespace only</option>
+              </select>
             </label>
           </div>
           <div class="md-customize-toggles">

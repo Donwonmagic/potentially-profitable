@@ -715,7 +715,17 @@
   // PDF + preview applyCustomizer() helper merges these onto the
   // active theme tokens before render. paperTexture flag enables
   // a subtle linen-grain background overlay.
-  var customize = { accent: null, paper: null, ink: null, paperTexture: false };
+  // Wave studio-quality (B12) — Theme Tuner state. Three new knobs
+  // expose typography choices that were previously locked to the
+  // theme's defaults. Each value is a closed enum (matches the
+  // themes-lint refusal rules); null means "use the theme default."
+  //   letterSpacing: null | 'normal' | 'wide'
+  //   sectionCase:   null | 'normal' | 'uppercase' | 'small-caps' | 'capitalize'
+  //   dividerStyle:  null | 'rule-thin' | 'hand-rule' | 'box' | 'whitespace' | 'double-rule' | 'ornament'
+  var customize = {
+    accent: null, paper: null, ink: null, paperTexture: false,
+    letterSpacing: null, sectionCase: null, dividerStyle: null
+  };
 
   function applyCustomizer(theme) {
     if (!theme) return theme;
@@ -729,6 +739,10 @@
     if (customize.accent) out.accent = customize.accent;
     if (customize.paper)  out.paper  = customize.paper;
     if (customize.ink)    out.ink    = customize.ink;
+    // Wave studio-quality (B12) — Theme Tuner overlays.
+    if (customize.letterSpacing) out.letterSpacing = customize.letterSpacing;
+    if (customize.sectionCase)   out.sectionCase   = customize.sectionCase;
+    if (customize.dividerStyle)  out.dividerStyle  = customize.dividerStyle;
     return out;
   }
 
@@ -1841,10 +1855,14 @@
     paper.style.setProperty('--h2px', theme.h2Pt + 'px');
     paper.style.setProperty('--bodypx', theme.bodyPt + 'px');
     paper.style.setProperty('--descpx', theme.descPt + 'px');
-    paper.dataset.divider     = theme.dividerStyle;
-    paper.dataset.price       = theme.priceStyle;
-    paper.dataset.cols        = String(theme.columns);
-    paper.dataset.sectionCase = theme.sectionCase;
+    paper.dataset.divider       = theme.dividerStyle;
+    paper.dataset.price         = theme.priceStyle;
+    paper.dataset.cols          = String(theme.columns);
+    paper.dataset.sectionCase   = theme.sectionCase;
+    // Wave studio-quality (B12) — Theme Tuner letter-spacing wired
+    // to the preview via a data-attribute so a CSS rule can reflect
+    // 'normal' / 'wide' on the rendered DOM.
+    paper.dataset.letterSpacing = theme.letterSpacing || 'normal';
     // W24-2 — apply paper aspect ratio + scaled padding so the
     // preview is shaped like the actual deliverable. Sheet flow
     // (Letter, A4, etc.) gets a portrait/landscape paper-shape;
@@ -3108,7 +3126,14 @@
           quietMode:      !!meta.quietMode,
           businessName:   meta.businessName || ''
         },
-        customize: { accent: customize.accent, paper: customize.paper, ink: customize.ink, paperTexture: customize.paperTexture, mods: customize.mods },
+        customize: {
+          accent: customize.accent, paper: customize.paper, ink: customize.ink,
+          paperTexture: customize.paperTexture, mods: customize.mods,
+          // Wave studio-quality (B12) — Theme Tuner state persisted too.
+          letterSpacing: customize.letterSpacing,
+          sectionCase: customize.sectionCase,
+          dividerStyle: customize.dividerStyle
+        },
         logoMeta: logoMeta,
         savedAt: Date.now()
       };
@@ -3232,6 +3257,10 @@
           customize.ink    = d.customize.ink    || null;
           customize.paperTexture = !!d.customize.paperTexture;
           customize.mods   = d.customize.mods   || { season: 'none', daypart: 'none', event: 'none' };
+          // Wave studio-quality (B12) — Theme Tuner restore.
+          customize.letterSpacing = d.customize.letterSpacing || null;
+          customize.sectionCase   = d.customize.sectionCase   || null;
+          customize.dividerStyle  = d.customize.dividerStyle  || null;
           if (customAccentEl && customize.accent) customAccentEl.value = customize.accent;
           if (customPaperEl  && customize.paper)  customPaperEl.value  = customize.paper;
           if (customInkEl    && customize.ink)    customInkEl.value    = customize.ink;
@@ -3239,8 +3268,15 @@
           if (modSeasonEl)  modSeasonEl.value  = customize.mods.season  || 'none';
           if (modDaypartEl) modDaypartEl.value = customize.mods.daypart || 'none';
           if (modEventEl)   modEventEl.value   = customize.mods.event   || 'none';
+          var lsEl = document.getElementById('mdCustomLetterSpacing');
+          var scEl = document.getElementById('mdCustomSectionCase');
+          var dsEl = document.getElementById('mdCustomDividerStyle');
+          if (lsEl) lsEl.value = customize.letterSpacing || '';
+          if (scEl) scEl.value = customize.sectionCase   || '';
+          if (dsEl) dsEl.value = customize.dividerStyle  || '';
           var anyMod = customize.mods.season !== 'none' || customize.mods.daypart !== 'none' || customize.mods.event !== 'none';
-          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod) {
+          var anyTuner = customize.letterSpacing || customize.sectionCase || customize.dividerStyle;
+          if (customize.accent || customize.paper || customize.ink || customize.paperTexture || anyMod || anyTuner) {
             var custEl = document.getElementById('mdCustomize');
             if (custEl) custEl.open = true;
           }
@@ -5773,6 +5809,10 @@
   var customInkEl    = document.getElementById('mdCustomInk');
   var customResetEl  = document.getElementById('mdCustomizeReset');
   var paperTextureEl = document.getElementById('mdPaperTexture');
+  // Wave studio-quality (B12) — Theme Tuner picker refs.
+  var customLetterSpacingEl = document.getElementById('mdCustomLetterSpacing');
+  var customSectionCaseEl   = document.getElementById('mdCustomSectionCase');
+  var customDividerStyleEl  = document.getElementById('mdCustomDividerStyle');
 
   function syncCustomizeFromTheme() {
     // When the operator switches theme without explicitly overriding
@@ -5834,19 +5874,39 @@
     updateLintFeedback();
     schedulePreview(); scheduleSaveDraft();
   });
+  // Wave studio-quality (B12) — Theme Tuner change handlers. Each
+  // picker writes to customize state; empty value means "use the
+  // theme default." Reset clears them.
+  if (customLetterSpacingEl) customLetterSpacingEl.addEventListener('change', function () {
+    customize.letterSpacing = customLetterSpacingEl.value || null;
+    updateCustomizeBadge();
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customSectionCaseEl) customSectionCaseEl.addEventListener('change', function () {
+    customize.sectionCase = customSectionCaseEl.value || null;
+    updateCustomizeBadge();
+    schedulePreview(); scheduleSaveDraft();
+  });
+  if (customDividerStyleEl) customDividerStyleEl.addEventListener('change', function () {
+    customize.dividerStyle = customDividerStyleEl.value || null;
+    updateCustomizeBadge();
+    schedulePreview(); scheduleSaveDraft();
+  });
   if (customResetEl) customResetEl.addEventListener('click', function () {
     // Wave studio-quality — comprehensive reset. The button label says
     // "Reset to theme default" so it should mean it: clear colors AND
-    // paper-texture AND all three modifiers (season/daypart/event).
-    // Operators previously had to walk each dropdown back to "None"
-    // by hand after picking a few. Sync the UI controls to match.
+    // paper-texture AND all three modifiers AND the Theme Tuner knobs.
     customize.accent = customize.paper = customize.ink = null;
     customize.paperTexture = false;
     customize.mods = { season: 'none', daypart: 'none', event: 'none' };
+    customize.letterSpacing = customize.sectionCase = customize.dividerStyle = null;
     if (paperTextureEl) paperTextureEl.checked = false;
     if (modSeasonEl)  modSeasonEl.value  = 'none';
     if (modDaypartEl) modDaypartEl.value = 'none';
     if (modEventEl)   modEventEl.value   = 'none';
+    if (customLetterSpacingEl) customLetterSpacingEl.value = '';
+    if (customSectionCaseEl)   customSectionCaseEl.value   = '';
+    if (customDividerStyleEl)  customDividerStyleEl.value  = '';
     syncCustomizeFromTheme();
     updateCustomizeBadge();
     updateLintFeedback();
@@ -5872,6 +5932,10 @@
       if (customize.mods.daypart && customize.mods.daypart !== 'none') overrides++;
       if (customize.mods.event   && customize.mods.event   !== 'none') overrides++;
     }
+    // Wave studio-quality (B12) — Theme Tuner knobs count too.
+    if (customize.letterSpacing) overrides++;
+    if (customize.sectionCase)   overrides++;
+    if (customize.dividerStyle)  overrides++;
     if (overrides === 0) {
       badgeEl.hidden = true;
       badgeEl.textContent = '';
@@ -6169,6 +6233,9 @@
           customize.paper  = c.paper  || null;
           customize.ink    = c.ink    || null;
           customize.paperTexture = !!c.paperTexture;
+          customize.letterSpacing = c.letterSpacing || null;
+          customize.sectionCase   = c.sectionCase   || null;
+          customize.dividerStyle  = c.dividerStyle  || null;
           if (c.mods) customize.mods = c.mods;
         }
         // Restore logo if the file embedded one.
@@ -6227,6 +6294,9 @@
           customize.ink    = parsed.customize.ink    || null;
           customize.paperTexture = !!parsed.customize.paperTexture;
           customize.mods = parsed.customize.mods || { season:'none', daypart:'none', event:'none' };
+          customize.letterSpacing = parsed.customize.letterSpacing || null;
+          customize.sectionCase   = parsed.customize.sectionCase   || null;
+          customize.dividerStyle  = parsed.customize.dividerStyle  || null;
         }
         if (parsed.meta) {
           meta.tagline = parsed.meta.tagline || '';

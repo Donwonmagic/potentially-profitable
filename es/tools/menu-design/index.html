@@ -228,6 +228,16 @@ header.nav{min-height:64px}
 .md-preview-paper[data-section-case="uppercase"] h2.md-pp-section{text-transform:uppercase;letter-spacing:.18em}
 .md-preview-paper[data-section-case="small-caps"] h2.md-pp-section{font-variant:small-caps;letter-spacing:.06em}
 .md-preview-paper[data-section-case="capitalize"] h2.md-pp-section{text-transform:none}
+.md-preview-paper[data-section-case="normal"] h2.md-pp-section{text-transform:none;font-variant:normal;letter-spacing:normal}
+/* Wave studio-quality (B12) — Theme Tuner divider + letter-spacing. */
+.md-preview-paper[data-divider="rule-thin"] h2.md-pp-section{border-bottom:0.5pt solid var(--ink);padding-bottom:6px}
+.md-preview-paper[data-divider="double-rule"] h2.md-pp-section{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:6px 0;background:transparent}
+.md-preview-paper[data-divider="whitespace"] h2.md-pp-section{border:0;padding-bottom:0;margin-top:24px;margin-bottom:14px}
+.md-preview-paper[data-letter-spacing="wide"]{letter-spacing:0.04em}
+.md-customize-tuner{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.md-customize-tuner select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--white);font:inherit;font-size:12.5px;color:var(--ink);cursor:pointer}
+.md-customize-tuner select:hover{border-color:var(--teal)}
+.md-customize-tuner select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 .md-pp-logo{display:block;margin:0 auto 18px;max-height:80px;max-width:240px}
 .md-preview-paper[data-logo-slot="header-left"] .md-pp-logo{margin-left:0}
 .md-preview-paper[data-logo-slot="header-right"] .md-pp-logo{margin-left:auto;margin-right:0}
@@ -505,7 +515,7 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
       <p class="md-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Herramienta gratis · Acomodo de menú para cualquier cantidad de platos</span></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Un menú, acomodado para los platos <span class="serif-italic" style="color:var(--teal);">que realmente tienes</span>.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -751,6 +761,39 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
             <label class="md-customize-field">
               <span>Tinta</span>
               <input type="color" id="mdCustomInk" value="#14161A" />
+            </label>
+          </div>
+          <!-- Wave studio-quality (B12) — Theme Tuner. -->
+          <div class="md-customize-grid md-customize-tuner">
+            <label class="md-customize-field">
+              <span>Espaciado de letras</span>
+              <select id="mdCustomLetterSpacing">
+                <option value="">Predeterminado del tema</option>
+                <option value="normal">Normal</option>
+                <option value="wide">Amplio (+0.04em)</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Encabezados de sección</span>
+              <select id="mdCustomSectionCase">
+                <option value="">Predeterminado del tema</option>
+                <option value="normal">Como se escribió</option>
+                <option value="uppercase">MAYÚSCULAS</option>
+                <option value="small-caps">Versalitas</option>
+                <option value="capitalize">Capitalizado</option>
+              </select>
+            </label>
+            <label class="md-customize-field">
+              <span>Estilo de divisor</span>
+              <select id="mdCustomDividerStyle">
+                <option value="">Predeterminado del tema</option>
+                <option value="rule-thin">Línea fina</option>
+                <option value="hand-rule">Línea a mano</option>
+                <option value="double-rule">Línea doble</option>
+                <option value="box">Recuadro</option>
+                <option value="ornament">Ornamento</option>
+                <option value="whitespace">Solo espacio</option>
+              </select>
             </label>
           </div>
           <div class="md-customize-toggles">
