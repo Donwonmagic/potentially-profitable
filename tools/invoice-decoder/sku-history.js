@@ -680,6 +680,39 @@
     writeStore({ skuHistory: {}, contractPrices: {} });
   }
 
+  // Wave 11.5 — per-(stem, vendor) price corridor for numeric
+  // coherence checks. Returns { p10, median, p90, n } over the last
+  // 8 observations matching the optional vendor filter, or null when
+  // the operator's history doesn't have ≥4 samples for that key.
+  // Used by parse.js to flag rows whose unit price falls outside
+  // the operator's typical band — catches OCR digit-swaps that the
+  // qty × price = lineTotal check misses.
+  function priceCorridor(stemKey, opts) {
+    if (!stemKey) return null;
+    var s = readStore();
+    var list = (s.skuHistory && s.skuHistory[stemKey]) || [];
+    if (!list.length) return null;
+    var vendor = opts && opts.vendor;
+    var pool = list.filter(function (e) {
+      if (vendor && e.vendor !== vendor) return false;
+      return typeof e.unitPrice === 'number' && e.unitPrice > 0;
+    }).slice(0, 8);
+    if (pool.length < 4) return null;
+    var sorted = pool.map(function (e) { return e.unitPrice; }).sort(function (a, b) { return a - b; });
+    var pct = function (p) {
+      var i = (sorted.length - 1) * p;
+      var lo = Math.floor(i), hi = Math.ceil(i);
+      if (lo === hi) return sorted[lo];
+      return sorted[lo] + (i - lo) * (sorted[hi] - sorted[lo]);
+    };
+    return {
+      p10:    +pct(0.1).toFixed(4),
+      median: +pct(0.5).toFixed(4),
+      p90:    +pct(0.9).toFixed(4),
+      n:      pool.length
+    };
+  }
+
   // Wave 10.3 — sync projection of latest observation per stem.
   //
   // Cross-tool consumers (Plate Cost, Menu Engineering, Margin Math)
@@ -741,6 +774,7 @@
     recordObservations: recordObservations,
     lookupHistory:      lookupHistory,
     findClosestVendorMemory: findClosestVendorMemory,
+    priceCorridor:      priceCorridor,
     rollingMedian:      rollingMedian,
     summarizeRow:       summarizeRow,
     topMovers:          topMovers,

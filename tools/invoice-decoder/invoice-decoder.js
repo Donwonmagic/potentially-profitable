@@ -345,6 +345,21 @@
     if (!Array.isArray(rows)) return;
     opts = opts || {};
     var vendor = opts.vendor || null;
+    // Wave 11.4 — cross-page + cross-invoice SKU vote. Mutates rows
+    // in place to lift confidence on history-confirmed names.
+    try {
+      if (typeof MID_RECONCILE !== 'undefined' && MID_RECONCILE.reconcileRows) {
+        MID_RECONCILE.reconcileRows(rows);
+      }
+    } catch (_) {}
+    // Wave 11.1 — apply per-operator calibration to per-row + per-
+    // field confidences. After ~30 operator corrections the curve
+    // begins meaningfully diverging from the global prior.
+    try {
+      if (typeof MID_CALIBRATION !== 'undefined' && MID_CALIBRATION.applyToRow) {
+        for (var ci = 0; ci < rows.length; ci++) MID_CALIBRATION.applyToRow(rows[ci]);
+      }
+    } catch (_) {}
     if (typeof MID_CATEGORIZE !== 'undefined' && MID_CATEGORIZE.classify) {
       // Wave 5.6 — pass a rolling context window into the classifier
       // so the co-occurrence Tier 0.8 can read the previous 5 rows.
@@ -792,6 +807,11 @@
         MID_TELEMETRY.bump('manualCorrections', 1);
       }
     } catch (_) {}
+    // Wave 11.2 — record name corrections in the confusion matrix.
+    // Also Wave 11.1 — feed the calibration sample (this row's
+    // pre-edit OCR confidence vs "was correct" = false).
+    var _preEditName = row.name;
+    var _preEditConf = row.confidence;
     if (field === 'name')      row.name = String(value).trim();
     else if (field === 'qty')  row.qty = parseFloat(value) || 0;
     else if (field === 'unitPrice' || field === 'lineTotal') row[field] = parseFloat(value) || 0;
@@ -804,6 +824,18 @@
         try { MID_LEARNINGS.recordOverride(row.name, value); } catch (_) {}
       }
     }
+    // Wave 11.1/11.2 — learn from this correction.
+    try {
+      if (field === 'name' && _preEditName && _preEditName !== row.name) {
+        if (typeof MID_CONFUSION !== 'undefined' && MID_CONFUSION.recordCorrection) {
+          MID_CONFUSION.recordCorrection(_preEditName, row.name);
+        }
+      }
+      if (typeof MID_CALIBRATION !== 'undefined' && MID_CALIBRATION.recordSample &&
+          typeof _preEditConf === 'number') {
+        MID_CALIBRATION.recordSample(_preEditConf, false);   // edit means OCR was wrong
+      }
+    } catch (_) {}
     // Owner-touched rows flip to confirmed at full confidence.
     row.confidence = 100;
     row.ownerConfirmed = true;

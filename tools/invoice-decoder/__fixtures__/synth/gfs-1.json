@@ -1,0 +1,417 @@
+{
+  "vendor": "gfs",
+  "seed": 950133811,
+  "fullText": "gfs\n\n2 GAL OLIVE OIL EXTRA VIRGIN $70.30\n5 CS PAPER NAPKIN 250CT $94.00\n4 LB GROUND CHUCK 80/20 $14.24\n5 CS ROMAINE HEARTS 24CT $271.95\n4 CS OYSTER PANKO 5LB $95.88\n2 LB BONELESS CHICKEN BREAST $8.74\n3 BN CILANTRO $6.69\n3 LB CHEDDAR BLOCK $10.02\n\nTOTAL: $571.82",
+  "expectedRows": [
+    {
+      "name": "OLIVE OIL EXTRA VIRGIN",
+      "qty": 2,
+      "unit": "gal",
+      "unitPrice": 35.15,
+      "lineTotal": 70.3,
+      "category": "dry-goods"
+    },
+    {
+      "name": "PAPER NAPKIN 250CT",
+      "qty": 5,
+      "unit": "cs",
+      "unitPrice": 18.8,
+      "lineTotal": 94,
+      "category": "paper"
+    },
+    {
+      "name": "GROUND CHUCK 80/20",
+      "qty": 4,
+      "unit": "lb",
+      "unitPrice": 3.56,
+      "lineTotal": 14.24,
+      "category": "protein"
+    },
+    {
+      "name": "ROMAINE HEARTS 24CT",
+      "qty": 5,
+      "unit": "cs",
+      "unitPrice": 54.39,
+      "lineTotal": 271.95,
+      "category": "produce"
+    },
+    {
+      "name": "OYSTER PANKO 5LB",
+      "qty": 4,
+      "unit": "cs",
+      "unitPrice": 23.97,
+      "lineTotal": 95.88,
+      "category": "dry-goods"
+    },
+    {
+      "name": "BONELESS CHICKEN BREAST",
+      "qty": 2,
+      "unit": "lb",
+      "unitPrice": 4.37,
+      "lineTotal": 8.74,
+      "category": "protein"
+    },
+    {
+      "name": "CILANTRO",
+      "qty": 3,
+      "unit": "bn",
+      "unitPrice": 2.23,
+      "lineTotal": 6.69,
+      "category": "produce"
+    },
+    {
+      "name": "CHEDDAR BLOCK",
+      "qty": 3,
+      "unit": "lb",
+      "unitPrice": 3.34,
+      "lineTotal": 10.02,
+      "category": "dairy"
+    }
+  ],
+  "expectedTotal": 571.82,
+  "wordBoxes": [
+    {
+      "text": "gfs",
+      "x0": 0,
+      "y0": 0,
+      "x1": 21,
+      "y1": 14
+    },
+    {
+      "text": "2",
+      "x0": 0,
+      "y0": 28,
+      "x1": 7,
+      "y1": 42
+    },
+    {
+      "text": "GAL",
+      "x0": 14,
+      "y0": 28,
+      "x1": 35,
+      "y1": 42
+    },
+    {
+      "text": "OLIVE",
+      "x0": 42,
+      "y0": 28,
+      "x1": 77,
+      "y1": 42
+    },
+    {
+      "text": "OIL",
+      "x0": 84,
+      "y0": 28,
+      "x1": 105,
+      "y1": 42
+    },
+    {
+      "text": "EXTRA",
+      "x0": 112,
+      "y0": 28,
+      "x1": 147,
+      "y1": 42
+    },
+    {
+      "text": "VIRGIN",
+      "x0": 154,
+      "y0": 28,
+      "x1": 196,
+      "y1": 42
+    },
+    {
+      "text": "$70.30",
+      "x0": 203,
+      "y0": 28,
+      "x1": 245,
+      "y1": 42
+    },
+    {
+      "text": "5",
+      "x0": 0,
+      "y0": 42,
+      "x1": 7,
+      "y1": 56
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 42,
+      "x1": 28,
+      "y1": 56
+    },
+    {
+      "text": "PAPER",
+      "x0": 35,
+      "y0": 42,
+      "x1": 70,
+      "y1": 56
+    },
+    {
+      "text": "NAPKIN",
+      "x0": 77,
+      "y0": 42,
+      "x1": 119,
+      "y1": 56
+    },
+    {
+      "text": "250CT",
+      "x0": 126,
+      "y0": 42,
+      "x1": 161,
+      "y1": 56
+    },
+    {
+      "text": "$94.00",
+      "x0": 168,
+      "y0": 42,
+      "x1": 210,
+      "y1": 56
+    },
+    {
+      "text": "4",
+      "x0": 0,
+      "y0": 56,
+      "x1": 7,
+      "y1": 70
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 56,
+      "x1": 28,
+      "y1": 70
+    },
+    {
+      "text": "GROUND",
+      "x0": 35,
+      "y0": 56,
+      "x1": 77,
+      "y1": 70
+    },
+    {
+      "text": "CHUCK",
+      "x0": 84,
+      "y0": 56,
+      "x1": 119,
+      "y1": 70
+    },
+    {
+      "text": "80/20",
+      "x0": 126,
+      "y0": 56,
+      "x1": 161,
+      "y1": 70
+    },
+    {
+      "text": "$14.24",
+      "x0": 168,
+      "y0": 56,
+      "x1": 210,
+      "y1": 70
+    },
+    {
+      "text": "5",
+      "x0": 0,
+      "y0": 70,
+      "x1": 7,
+      "y1": 84
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 70,
+      "x1": 28,
+      "y1": 84
+    },
+    {
+      "text": "ROMAINE",
+      "x0": 35,
+      "y0": 70,
+      "x1": 84,
+      "y1": 84
+    },
+    {
+      "text": "HEARTS",
+      "x0": 91,
+      "y0": 70,
+      "x1": 133,
+      "y1": 84
+    },
+    {
+      "text": "24CT",
+      "x0": 140,
+      "y0": 70,
+      "x1": 168,
+      "y1": 84
+    },
+    {
+      "text": "$271.95",
+      "x0": 175,
+      "y0": 70,
+      "x1": 224,
+      "y1": 84
+    },
+    {
+      "text": "4",
+      "x0": 0,
+      "y0": 84,
+      "x1": 7,
+      "y1": 98
+    },
+    {
+      "text": "CS",
+      "x0": 14,
+      "y0": 84,
+      "x1": 28,
+      "y1": 98
+    },
+    {
+      "text": "OYSTER",
+      "x0": 35,
+      "y0": 84,
+      "x1": 77,
+      "y1": 98
+    },
+    {
+      "text": "PANKO",
+      "x0": 84,
+      "y0": 84,
+      "x1": 119,
+      "y1": 98
+    },
+    {
+      "text": "5LB",
+      "x0": 126,
+      "y0": 84,
+      "x1": 147,
+      "y1": 98
+    },
+    {
+      "text": "$95.88",
+      "x0": 154,
+      "y0": 84,
+      "x1": 196,
+      "y1": 98
+    },
+    {
+      "text": "2",
+      "x0": 0,
+      "y0": 98,
+      "x1": 7,
+      "y1": 112
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 98,
+      "x1": 28,
+      "y1": 112
+    },
+    {
+      "text": "BONELESS",
+      "x0": 35,
+      "y0": 98,
+      "x1": 91,
+      "y1": 112
+    },
+    {
+      "text": "CHICKEN",
+      "x0": 98,
+      "y0": 98,
+      "x1": 147,
+      "y1": 112
+    },
+    {
+      "text": "BREAST",
+      "x0": 154,
+      "y0": 98,
+      "x1": 196,
+      "y1": 112
+    },
+    {
+      "text": "$8.74",
+      "x0": 203,
+      "y0": 98,
+      "x1": 238,
+      "y1": 112
+    },
+    {
+      "text": "3",
+      "x0": 0,
+      "y0": 112,
+      "x1": 7,
+      "y1": 126
+    },
+    {
+      "text": "BN",
+      "x0": 14,
+      "y0": 112,
+      "x1": 28,
+      "y1": 126
+    },
+    {
+      "text": "CILANTRO",
+      "x0": 35,
+      "y0": 112,
+      "x1": 91,
+      "y1": 126
+    },
+    {
+      "text": "$6.69",
+      "x0": 98,
+      "y0": 112,
+      "x1": 133,
+      "y1": 126
+    },
+    {
+      "text": "3",
+      "x0": 0,
+      "y0": 126,
+      "x1": 7,
+      "y1": 140
+    },
+    {
+      "text": "LB",
+      "x0": 14,
+      "y0": 126,
+      "x1": 28,
+      "y1": 140
+    },
+    {
+      "text": "CHEDDAR",
+      "x0": 35,
+      "y0": 126,
+      "x1": 84,
+      "y1": 140
+    },
+    {
+      "text": "BLOCK",
+      "x0": 91,
+      "y0": 126,
+      "x1": 126,
+      "y1": 140
+    },
+    {
+      "text": "$10.02",
+      "x0": 133,
+      "y0": 126,
+      "x1": 175,
+      "y1": 140
+    },
+    {
+      "text": "TOTAL:",
+      "x0": 0,
+      "y0": 154,
+      "x1": 42,
+      "y1": 168
+    },
+    {
+      "text": "$571.82",
+      "x0": 49,
+      "y0": 154,
+      "x1": 98,
+      "y1": 168
+    }
+  ]
+}
