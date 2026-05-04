@@ -4930,22 +4930,52 @@
   // a high-res PNG. Lower fidelity than PDF (rasterized), but the
   // operator never leaves empty-handed.
   // ----------------------------------------------------------------
-  var H2C_CDN = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  // Wave A4 — html2canvas with same-origin vendored fallback.
+  // CDN tried first; on error, /assets/vendor/html2canvas@1.4.1/...
+  // takes over and a Plausible event surfaces the fallback rate.
+  var H2C_CDN    = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  var H2C_VENDOR = '/assets/vendor/html2canvas@1.4.1/html2canvas.min.js';
   var __h2cLoadPromise = null;
   function loadHtml2Canvas() {
     if (window.html2canvas) return Promise.resolve(window.html2canvas);
     if (__h2cLoadPromise) return __h2cLoadPromise;
-    __h2cLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = H2C_CDN; s.async = true; s.crossOrigin = 'anonymous'; s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (window.html2canvas) resolve(window.html2canvas);
-        else { __h2cLoadPromise = null; reject(new Error('html2canvas missing after load')); }
-      };
-      s.onerror = function () { __h2cLoadPromise = null; reject(new Error('html2canvas load failed')); };
-      document.head.appendChild(s);
+    __h2cLoadPromise = _loadCdnOrVendorMd(H2C_CDN, H2C_VENDOR, 'html2canvas').then(function () {
+      if (window.html2canvas) return window.html2canvas;
+      throw new Error('html2canvas missing after load');
+    }).catch(function (e) {
+      __h2cLoadPromise = null;
+      throw e;
     });
     return __h2cLoadPromise;
+  }
+  // Local helper (mirrors loadOneOrFallback in menu-render-pdf.js
+  // and _loadCdnOrVendor in menu-render-html.js — kept inline rather
+  // than extracted to avoid an extra script load order constraint).
+  function _loadCdnOrVendorMd(cdnUrl, vendorUrl, label) {
+    return new Promise(function (resolve, reject) {
+      function loadFrom(src, isFallback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () { resolve({ src: src, fallback: !!isFallback }); };
+        s.onerror = function () {
+          if (!isFallback) {
+            try {
+              if (window.plausible) {
+                window.plausible('Menu Design CDN Fallback', { props: { lib: label } });
+              }
+            } catch (_) {}
+            loadFrom(vendorUrl, true);
+          } else {
+            reject(new Error(label + ' failed to load from CDN and vendored copy'));
+          }
+        };
+        document.head.appendChild(s);
+      }
+      loadFrom(cdnUrl, false);
+    });
   }
 
   function downloadAsPng(filenameBase, title) {

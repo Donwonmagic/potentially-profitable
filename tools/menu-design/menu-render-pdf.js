@@ -18,13 +18,56 @@
 (function (root) {
   'use strict';
 
-  var JSPDF_CDN = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+  // Wave A4 — every CDN URL has a same-origin vendored fallback.
+  // The vendor-pin script (scripts/vendor-pin.mjs) downloads each
+  // npm tarball at build time and extracts the dist file to
+  // /assets/vendor/<lib>@<version>/. The runtime tries CDN first
+  // (warm caches, edge speed), then falls back to local on any
+  // error. This gives us the brand promise: PDF export works even
+  // when jsdelivr is blocked / down / region-firewalled.
+  var JSPDF_CDN      = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+  var JSPDF_VENDOR   = '/assets/vendor/jspdf@2.5.2/jspdf.umd.min.js';
   // W13-1 — svg2pdf.js plugin lets jsPDF embed SVG logos as vectors.
   // Lazy-loaded only when the operator uploads an SVG logo. Adds
   // ~80KB to the wire when used; zero bytes otherwise.
-  var SVG2PDF_CDN = 'https://cdn.jsdelivr.net/npm/svg2pdf.js@2.4.0/dist/svg2pdf.umd.min.js';
+  var SVG2PDF_CDN    = 'https://cdn.jsdelivr.net/npm/svg2pdf.js@2.4.0/dist/svg2pdf.umd.min.js';
+  var SVG2PDF_VENDOR = '/assets/vendor/svg2pdf.js@2.4.0/svg2pdf.umd.min.js';
   var __pdfLibPromise = null;
   var __svg2pdfPromise = null;
+
+  // Wave A4 — try CDN first, fall back to local vendored copy on
+  // any error. Fires a Plausible event on fallback so the operator
+  // base's resilience tail is visible. Same-origin fallback URL
+  // means the local copy is served by the static-site host (CF
+  // Workers ASSETS), which the vendor-pin script populates at build.
+  function loadOneOrFallback(cdnUrl, vendorUrl, label) {
+    return new Promise(function (resolve, reject) {
+      function loadFrom(src, isFallback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () { resolve({ src: src, fallback: !!isFallback }); };
+        s.onerror = function () {
+          if (!isFallback) {
+            // Fire fallback event so we can see the rate of CDN
+            // failures in production analytics.
+            try {
+              if (typeof window !== 'undefined' && window.plausible) {
+                window.plausible('Menu Design CDN Fallback', { props: { lib: label } });
+              }
+            } catch (_) {}
+            loadFrom(vendorUrl, true);
+          } else {
+            reject(new Error(label + ' failed to load from CDN and vendored copy'));
+          }
+        };
+        document.head.appendChild(s);
+      }
+      loadFrom(cdnUrl, false);
+    });
+  }
 
   // Wave studio-quality — bounded script-load timeout. Without this,
   // a partial load (200 OK then connection drop) leaves the script
@@ -57,17 +100,9 @@
     if (root.svg2pdf) return Promise.resolve(root.svg2pdf);
     if (__svg2pdfPromise) return __svg2pdfPromise;
     __svg2pdfPromise = withScriptTimeout(function () {
-      return new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = SVG2PDF_CDN;
-        s.crossOrigin = 'anonymous';
-        s.referrerPolicy = 'no-referrer';
-        s.onload = function () {
-          if (root.svg2pdf) resolve(root.svg2pdf);
-          else reject(new Error('svg2pdf loaded but global missing'));
-        };
-        s.onerror = function () { reject(new Error('svg2pdf load failed')); };
-        document.head.appendChild(s);
+      return loadOneOrFallback(SVG2PDF_CDN, SVG2PDF_VENDOR, 'svg2pdf').then(function () {
+        if (root.svg2pdf) return root.svg2pdf;
+        throw new Error('svg2pdf loaded but global missing');
       });
     }, 'svg2pdf').catch(function (e) {
       __svg2pdfPromise = null;
@@ -146,20 +181,10 @@
     if (root.jspdf && root.jspdf.jsPDF) return Promise.resolve(root.jspdf.jsPDF);
     if (__pdfLibPromise) return __pdfLibPromise;
     __pdfLibPromise = withScriptTimeout(function () {
-      return new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = JSPDF_CDN;
-        s.crossOrigin = 'anonymous';
-        s.referrerPolicy = 'no-referrer';
-        s.onload = function () {
-          var lib = (root.jspdf && root.jspdf.jsPDF) || null;
-          if (lib) resolve(lib);
-          else reject(new Error('jsPDF loaded but global missing'));
-        };
-        s.onerror = function () {
-          reject(new Error('Could not load jsPDF — check your network'));
-        };
-        document.head.appendChild(s);
+      return loadOneOrFallback(JSPDF_CDN, JSPDF_VENDOR, 'jspdf').then(function () {
+        var lib = (root.jspdf && root.jspdf.jsPDF) || null;
+        if (lib) return lib;
+        throw new Error('jsPDF loaded but global missing');
       });
     }, 'jsPDF').catch(function (e) {
       __pdfLibPromise = null;
@@ -1938,23 +1963,16 @@
   // W17 — pdf-lib lazy-loader for post-process TrimBox/BleedBox/
   // MediaBox injection. Only loaded when print-vendor mode is on
   // (saves ~360KB on the typical Share PDF flow).
-  var PDFLIB_CDN = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+  var PDFLIB_CDN    = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+  var PDFLIB_VENDOR = '/assets/vendor/pdf-lib@1.17.1/pdf-lib.min.js';
   var __pdfLibPromise2 = null;
   function loadPdfLib() {
     if (root.PDFLib) return Promise.resolve(root.PDFLib);
     if (__pdfLibPromise2) return __pdfLibPromise2;
     __pdfLibPromise2 = withScriptTimeout(function () {
-      return new Promise(function (resolve, reject) {
-        var s = document.createElement('script');
-        s.src = PDFLIB_CDN;
-        s.crossOrigin = 'anonymous';
-        s.referrerPolicy = 'no-referrer';
-        s.onload = function () {
-          if (root.PDFLib) resolve(root.PDFLib);
-          else reject(new Error('pdf-lib loaded but global missing'));
-        };
-        s.onerror = function () { reject(new Error('pdf-lib load failed')); };
-        document.head.appendChild(s);
+      return loadOneOrFallback(PDFLIB_CDN, PDFLIB_VENDOR, 'pdf-lib').then(function () {
+        if (root.PDFLib) return root.PDFLib;
+        throw new Error('pdf-lib loaded but global missing');
       });
     }, 'pdf-lib').catch(function (e) {
       __pdfLibPromise2 = null;
