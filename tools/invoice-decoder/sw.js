@@ -55,6 +55,11 @@ var SHELL_URLS = [
   '/tools/invoice-decoder/vendors/_index.json',
   '/tools/invoice-decoder/auto-learn.js',
   '/tools/invoice-decoder/vendor-config.js',
+  // libheif + utif fallbacks for HEIC and TIFF decode. Optional —
+  // missing entries 404 silently and the runtime falls through to
+  // createImageBitmap or specific actionable error messaging.
+  '/assets/vendor/libheif/libheif.js',
+  '/assets/vendor/utif/UTIF.js',
   // Decision Brief layer (Wave A–E)
   '/tools/invoice-decoder/decision-brief.js',
   '/tools/invoice-decoder/briefing-card.js',

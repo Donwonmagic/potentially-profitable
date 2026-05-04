@@ -41,6 +41,33 @@
   // invoice" is tapped. Wave B5 will let the user remove pages
   // before reading; for B2 we read all pages in order.
   var pendingPages = [];
+  // Race-condition guard. Without this, dropping a second file
+  // while OCR is still running on the first clobbers pendingPages
+  // mid-flight and merges the two invoices' OCR output. We refuse
+  // a second drop until the first read finishes (renderParsed) or
+  // an error path bails. A 120s watchdog auto-releases so an
+  // operator stuck on an unreleased lock can recover without a
+  // page reload.
+  var _processingLock = null;
+  var _processingWatchdog = null;
+  function _isProcessing() { return !!_processingLock; }
+  function _acquireProcessingLock(label) {
+    if (_processingLock) return false;
+    _processingLock = label || 'busy';
+    if (_processingWatchdog) clearTimeout(_processingWatchdog);
+    _processingWatchdog = setTimeout(function () {
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[invoice-decoder] processing lock auto-released after 120s:', _processingLock);
+      }
+      _processingLock = null;
+      _processingWatchdog = null;
+    }, 120000);
+    return true;
+  }
+  function _releaseProcessingLock() {
+    _processingLock = null;
+    if (_processingWatchdog) { clearTimeout(_processingWatchdog); _processingWatchdog = null; }
+  }
   // Wave 8.7 — wire the Privacy Self-Check button.
   if (typeof document !== 'undefined') {
     document.addEventListener('click', function (e) {
@@ -327,12 +354,24 @@
         } });
       }
     }).catch(function (err) {
+      // Surface a specific, actionable message when the decode failure
+      // mode is identifiable (HEIC the most common). The error
+      // messages thrown by fileToCanvas now carry the right guidance
+      // verbatim — pass through when present.
+      var msg = (err && err.message) || '';
+      var isHeicGuidance = /HEIC|heic|share as JPG|Photos → Share/i.test(msg);
+      var detail = isHeicGuidance
+        ? msg
+        : tt(
+            'Try a clearer shot, share as JPG (Photos → Share → Options → Most Compatible on iPhone), or a PDF if your distributor offers one.' + (msg ? ' (' + msg + ')' : ''),
+            'Prueba una foto más clara, comparte como JPG (Fotos → Compartir → Opciones → Más compatible en iPhone), o un PDF si tu distribuidor lo ofrece.' + (msg ? ' (' + msg + ')' : '')
+          );
       showStatus(
         tt('Could not read this photo.', 'No se pudo leer esta foto.'),
-        tt('Try a clearer shot or a PDF if your distributor offers one. ' + (err && err.message ? '(' + err.message + ')' : ''),
-           'Prueba una foto más clara o un PDF si tu distribuidor lo ofrece. ' + (err && err.message ? '(' + err.message + ')' : '')),
+        detail,
         'error'
       );
+      _releaseProcessingLock();
     });
   }
 
@@ -2837,6 +2876,10 @@
 
   function renderParsed(parsed) {
     lastReadParsed = parsed;
+    // Race-condition lock acquired in dispatchUnifiedFile is released
+    // here — OCR + parse have completed, the operator can drop the
+    // next invoice safely.
+    _releaseProcessingLock();
     // Wave 5 — record that the operator has run something so the
     // first-run banner stops showing on subsequent visits.
     try {
@@ -3945,6 +3988,19 @@
   // coaching to the operator.
   function dispatchUnifiedFile(file) {
     if (!file) return;
+    if (_isProcessing()) {
+      // Another file is mid-flight. Don't clobber pendingPages —
+      // surface a one-line nudge and ignore the new drop. Operator
+      // can clear and re-drop after the current run finishes.
+      showStatus(
+        tt('One invoice at a time, please.', 'Una factura a la vez, por favor.'),
+        tt('Wait for this read to finish (or tap Clear) before dropping another.',
+           'Espera a que termine esta lectura (o toca Limpiar) antes de soltar otra.'),
+        'info'
+      );
+      return;
+    }
+    _acquireProcessingLock('dispatch:' + (file.name || 'unnamed'));
     var coarse = (typeof MID_SOURCE_CLASSIFIER !== 'undefined')
       ? MID_SOURCE_CLASSIFIER.classifySync(file)
       : { kind: _looksLikePdf(file) ? 'pdf-hybrid' : (_looksLikeCsv(file) ? 'tabular' : (_looksLikeImage(file) ? 'image-phone' : 'unknown')) };
@@ -3967,6 +4023,48 @@
       } else if (/^pdf-/.test(result.kind) || _looksLikePdf(file)) {
         processPdfFile(file, { classification: result });
       } else if (/^image-/.test(result.kind) || _looksLikeImage(file)) {
+        // Multi-page TIFF (ScanSnap default for multi-page scans):
+        // expand to N synthetic JPEG Files BEFORE handing to the
+        // photo pipeline. Single-page TIFFs and other images go
+        // through unchanged.
+        var isTiff = (typeof MID_PREPROCESS !== 'undefined' &&
+                      MID_PREPROCESS._isTiffFile && MID_PREPROCESS._isTiffFile(file));
+        if (isTiff && MID_PREPROCESS.tiffToPageFiles) {
+          showStatus(
+            tt('Multi-page TIFF — splitting into pages…',
+               'TIFF de varias páginas — separando en páginas…'),
+            tt('We render each page on this device, then OCR them as a batch.',
+               'Renderizamos cada página en este dispositivo y aplicamos OCR como lote.')
+          );
+          MID_PREPROCESS.tiffToPageFiles(file, { maxPages: 8 })
+            .then(function (raster) {
+              if (!raster || !raster.files || !raster.files.length) {
+                showStatus(
+                  tt('Could not read this TIFF.', 'No se pudo leer este TIFF.'),
+                  tt('Try splitting it into smaller files, or change ScanSnap output to PDF.',
+                     'Prueba dividirlo, o cambia la salida de ScanSnap a PDF.'),
+                  'error'
+                );
+                return;
+              }
+              handlePhotoFiles(raster.files, { classification: result });
+            })
+            .catch(function (err) {
+              // utif unavailable (offline build) — fall back to the
+              // single-page path which surfaces the ScanSnap → PDF
+              // guidance.
+              if (/utif/i.test(err && err.message || '')) {
+                handlePhotoFiles([file], { classification: result });
+              } else {
+                showStatus(
+                  tt('Could not read this TIFF.', 'No se pudo leer este TIFF.'),
+                  err && err.message || tt('Try a different file.', 'Prueba con otro archivo.'),
+                  'error'
+                );
+              }
+            });
+          return;
+        }
         handlePhotoFiles([file], { classification: result });
       }
     });
@@ -4393,6 +4491,7 @@
           tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
         'error'
       );
+      _releaseProcessingLock();
     });
   }
   // Wave 1.5 — inline PDF password prompt. Resolves to the entered
@@ -4538,6 +4637,7 @@
         (err && err.message) ? err.message : tt('Try the photo path or re-export the file.', 'Usa la ruta de foto o re-exporta el archivo.'),
         'error'
       );
+      _releaseProcessingLock();
     });
   }
   if (csvInput) csvInput.addEventListener('change', function (e) {

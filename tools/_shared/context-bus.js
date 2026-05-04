@@ -86,11 +86,28 @@
   function write(obj) {
     var ls = safeStorage();
     if (!ls) return false;
+    var clean = obj && typeof obj === 'object' ? obj : {};
+    clean.v = SCHEMA_VERSION;
+    clean.updatedAt = Date.now();
+    var serialised = JSON.stringify(clean);
+    // Prefer the quota-aware MuntinSafeStorage when it's loaded (it
+    // raises a 'quota-warning' event the UI can surface). Falls
+    // through to a plain setItem when running in node tests or if
+    // the helper hasn't loaded yet.
+    var safe = (typeof root !== 'undefined' && root && root.MuntinSafeStorage)
+      ? root.MuntinSafeStorage : null;
+    if (safe && typeof safe.set === 'function') {
+      var status = safe.set(STORAGE_KEY, serialised, {
+        // Cold-key eviction: if quota is hit, drop one-off resume
+        // records (24h TTL) and abandoned tombstone keys before
+        // retrying. Never evicts the main MuntinContext payload
+        // itself.
+        evictPattern: /^mtn:invoice-decoder:(resume|abandoned-)/
+      });
+      return status === 'ok';
+    }
     try {
-      var clean = obj && typeof obj === 'object' ? obj : {};
-      clean.v = SCHEMA_VERSION;
-      clean.updatedAt = Date.now();
-      ls.setItem(STORAGE_KEY, JSON.stringify(clean));
+      ls.setItem(STORAGE_KEY, serialised);
       return true;
     } catch (e) {
       return false;
