@@ -256,6 +256,28 @@
   }
 
   // ============================================================
+  // BeforeAfterSlider ([data-viz-ba])
+  //
+  // Two stacked layers in a fixed-aspect frame, with a range input
+  // covering the whole frame. The clip-path on the front layer reads
+  // the wrapper's --split custom property; this listener just
+  // translates the input value (0-100) into a percent and writes it.
+  // Pure CSS does the visual work; this is ~12 lines of JS.
+  //
+  // The wrapper carries data-viz-ba; the input carries class
+  // .viz-ba__input. No additional configuration needed.
+  // ============================================================
+  function bindBeforeAfter(root) {
+    var input = root.querySelector('input[type="range"].viz-ba__input');
+    if (!input) return;
+    function update() {
+      root.style.setProperty('--split', input.value + '%');
+    }
+    input.addEventListener('input', update);
+    update();
+  }
+
+  // ============================================================
   // Boot
   // ============================================================
   function boot() {
@@ -267,6 +289,9 @@
 
     var waterfalls = document.querySelectorAll('[data-viz-waterfall]');
     for (var k = 0; k < waterfalls.length; k++) bindWaterfall(waterfalls[k]);
+
+    var bas = document.querySelectorAll('[data-viz-ba]');
+    for (var m = 0; m < bas.length; m++) bindBeforeAfter(bas[m]);
   }
 
   // Suppress unused-var warning while preserving the reference for

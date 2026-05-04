@@ -195,8 +195,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=530324a82096" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=530324a82096"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT (shared with other posts; will extract to site.css in a later refactor) ============ */
@@ -270,6 +270,25 @@ header.nav{min-height:64px}
     .price-tier .tier-move { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 12px; }
     .price-tier.recovery .tier-move { border-top-color: rgba(250,247,242,0.2); }
   }
+  /* Bare-vs-rich menu mockups — both sides of the .viz-ba slider
+     in the "Don't change the numbers" section. Same $24 chicken,
+     two different stories: a bare line-item vs a description-rich
+     entry. The bare side leans on Inter, the rich side leans on
+     Fraunces, mirroring how the article frames the difference. */
+  .menu-mock { width: 100%; height: 100%; padding: clamp(20px, 4vw, 40px) clamp(28px, 5vw, 56px); background: var(--cream); display: flex; flex-direction: column; justify-content: center; gap: 18px; box-sizing: border-box; }
+  .menu-mock + .menu-mock { background: var(--white); }
+  .menu-mock__head { font-family: var(--font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--stone); }
+  .menu-mock__row { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px dotted var(--line); padding-bottom: 12px; }
+  .menu-mock__row:last-of-type { border-bottom: 0; }
+  .menu-mock__name { font-family: var(--font-display); font-size: clamp(18px, 2.6vw, 22px); font-weight: 500; color: var(--ink); letter-spacing: -0.005em; flex: 0 0 auto; }
+  .menu-mock__dots { flex: 1 1 auto; height: 1px; border-bottom: 1px dotted var(--line-dark); transform: translateY(-3px); }
+  .menu-mock__price { font-family: var(--font-display); font-size: clamp(18px, 2.6vw, 22px); font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .menu-mock--rich .menu-mock__name { font-size: clamp(20px, 2.9vw, 26px); }
+  .menu-mock--rich .menu-mock__row { display: grid; grid-template-columns: 1fr auto; row-gap: 6px; column-gap: 18px; align-items: baseline; }
+  .menu-mock--rich .menu-mock__name { grid-column: 1; grid-row: 1; }
+  .menu-mock--rich .menu-mock__price { grid-column: 2; grid-row: 1; text-align: right; }
+  .menu-mock--rich .menu-mock__desc { grid-column: 1 / -1; grid-row: 2; font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--ink-soft); font-style: italic; max-width: 52ch; }
+  .menu-mock--rich .menu-mock__source { grid-column: 1 / -1; grid-row: 3; font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-top: 2px; }
 </style>
 <!-- article-howto:start -->
 <script type="application/ld+json">
@@ -695,6 +714,37 @@ header.nav{min-height:64px}
 
       <p>When you raise a price, <em>rewrite the description at the same time</em>. Two sentences. Something specific. The guest who opens your site this week and sees "Chicken $24 &mdash; pan-roasted half-bird, brown-butter jus, two-hour brine" reads that as a restaurant investing in its product. The guest who sees "Chicken $24" reads a restaurant that just got more expensive.</p>
 
+      <figure class="viz-figure article-figure" data-audio-alt="Drag the slider in this image to compare the same chicken, at the same twenty-four dollar price, presented two ways. On the left: 'Chicken, twenty-four dollars' &mdash; a bare line item. On the right: 'Half chicken, twenty-four dollars, pan-roasted with brown-butter jus, two-hour brine, from Polyface Farm.' Same dish, same price. The bare version reads as a price hike. The rich version reads as a restaurant investing in its product. The number on the page is the smallest part of the price.">
+        <div class="viz-ba" data-viz-ba style="aspect-ratio: 16 / 7;">
+          <div class="viz-ba__layer viz-ba__layer--after" aria-hidden="true">
+            <div class="menu-mock menu-mock--rich">
+              <div class="menu-mock__head"><span class="i18n">Mains</span></div>
+              <div class="menu-mock__row">
+                <span class="menu-mock__name">Half chicken</span>
+                <span class="menu-mock__price">$24</span>
+                <p class="menu-mock__desc">Pan-roasted, brown-butter jus, two-hour brine, served with bitter greens.</p>
+                <span class="menu-mock__source">Polyface Farm &middot; Swoope, VA</span>
+              </div>
+            </div>
+          </div>
+          <div class="viz-ba__layer viz-ba__layer--before" aria-hidden="true">
+            <div class="menu-mock menu-mock--bare">
+              <div class="menu-mock__head"><span class="i18n">Mains</span></div>
+              <div class="menu-mock__row">
+                <span class="menu-mock__name">Chicken</span>
+                <span class="menu-mock__dots"></span>
+                <span class="menu-mock__price">$24</span>
+              </div>
+            </div>
+          </div>
+          <span class="viz-ba__handle" aria-hidden="true"></span>
+          <span class="viz-ba__label viz-ba__label--before"><span class="i18n">Bare</span></span>
+          <span class="viz-ba__label viz-ba__label--after"><span class="i18n">Rich</span></span>
+          <input type="range" class="viz-ba__input" min="0" max="100" value="50" aria-label="Drag to compare a bare menu line versus a description-rich one. Same dish, same price.">
+        </div>
+        <figcaption class="i18n">Drag to compare. Same chicken, same $24 &mdash; the only difference is the story around the number.</figcaption>
+      </figure>
+
       <h3>2. Update at least one photograph</h3>
 
       <p>This sounds superficial. It isn't. Menu items that have visually <em>moved</em> — a new plating, a new garnish, a new photograph — get priced against the new image, not the old price memory. A guest scrolling your menu page on a phone will evaluate "the new version of this dish at $24" very differently from "the same dish I had last year, but $24 now."</p>
@@ -1066,5 +1116,9 @@ header.nav{min-height:64px}
   <!-- listen-script:start -->
   <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
   <!-- listen-script:end -->
+  <!-- Article viz module — drives the bare-vs-rich BeforeAfterSlider
+       in the "Don't change the numbers" section. Defer-loaded; bails
+       cleanly if the hooks aren't present. -->
+  <script src="/assets/article-viz.js" defer></script>
 </body>
 </html>

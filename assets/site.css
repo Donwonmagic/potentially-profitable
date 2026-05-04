@@ -6579,3 +6579,33 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .recovery-stack.reveal .recovery-row:nth-child(8){transition-delay:560ms}
   .recovery-stack.reveal .recovery-total{transition-delay:640ms}
 }
+
+/* .viz-ba — BeforeAfterSlider. Two stacked layers (back: --after,
+   front: --before) inside a fixed-aspect-ratio frame. The front
+   layer is clipped via clip-path inset(0 right 0 0) where right =
+   100% - --split. A range input sits over the whole frame as the
+   underlying control (touch + keyboard + mouse for free, screen
+   readers announce a slider position). The visual handle is a
+   pseudo-element pinned to --split; the input itself is invisible
+   but receives all events. Article-viz.js bindBeforeAfter()
+   listens for input and writes --split.
+
+   Reduced motion: no entry animation. Even with motion enabled the
+   slider is interactive, not animated — moving the input is the
+   point. */
+.viz-ba{position:relative;margin:24px 0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--cream-2);--split:50%}
+.viz-ba__layer{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.viz-ba__layer--after{z-index:1}
+.viz-ba__layer--before{z-index:2;clip-path:inset(0 calc(100% - var(--split)) 0 0)}
+.viz-ba__handle{position:absolute;top:0;bottom:0;left:var(--split);width:2px;background:var(--ink);z-index:3;pointer-events:none;transform:translateX(-1px)}
+.viz-ba__handle::before{content:"";position:absolute;top:50%;left:50%;width:38px;height:38px;border-radius:50%;background:var(--cream);border:2px solid var(--ink);transform:translate(-50%,-50%);box-shadow:0 2px 6px rgba(20,22,26,0.18)}
+.viz-ba__handle::after{content:"\2194";position:absolute;top:50%;left:50%;font-family:var(--font-body);font-size:18px;font-weight:700;color:var(--ink);transform:translate(-50%,-52%);z-index:1}
+.viz-ba__label{position:absolute;top:12px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(20,22,26,0.78);color:var(--cream);z-index:4;pointer-events:none}
+.viz-ba__label--before{left:14px}
+.viz-ba__label--after{right:14px}
+.viz-ba__input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;background:transparent;margin:0;padding:0;border:0;cursor:ew-resize;z-index:5;opacity:0}
+/* Restore an actual focus outline on the wrapper when the (invisible)
+   input is keyboard-focused, so keyboard users see the affordance. */
+.viz-ba:has(.viz-ba__input:focus-visible) .viz-ba__handle::before{box-shadow:0 0 0 4px rgba(31,78,91,0.35),0 2px 6px rgba(20,22,26,0.18)}
+.viz-ba__input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
+.viz-ba__input::-moz-range-thumb{width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
