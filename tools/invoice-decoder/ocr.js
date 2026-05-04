@@ -200,13 +200,30 @@
               return { text: t.trim(), confidence: result.data.confidence || 60, bbox: null };
             });
           }
+          // Wave 4.4 — operator-corpus user-words bias. Only the
+          // withWords path carries per-word data, so this layer is
+          // gated to that path. Kicks in once the operator's
+          // dictionary crosses MIN_DICT_SIZE; before that it's a
+          // no-op. Mutates lines[].words and rebuilds lines[].text
+          // for any line with replacements.
+          var biasReplacements = 0;
+          if (withWords && typeof root !== 'undefined' && root && root.MID_USER_WORDS_BIAS) {
+            try { biasReplacements = root.MID_USER_WORDS_BIAS.applyToLines(lines) || 0; } catch (_) {}
+          }
+          var rebuiltText = result.data.text || '';
+          if (biasReplacements > 0) {
+            // Reassemble the flat text blob from the corrected lines so
+            // downstream consumers (parse.js) see the bias too.
+            rebuiltText = lines.map(function (l) { return l.text; }).join('\n');
+          }
           var meanConf = lines.length ? lines.reduce(function (a, b) { return a + b.confidence; }, 0) / lines.length : 0;
           _releaseWorker(lease);
           return {
-            text: result.data.text || '',
+            text: rebuiltText,
             lines: lines,
             meanConfidence: meanConf,
-            words: allWords
+            words: allWords,
+            userWordsBiasCount: biasReplacements
           };
         }).catch(function (err) {
           _releaseWorker(lease);
