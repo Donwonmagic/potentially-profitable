@@ -89,6 +89,23 @@ header.nav{min-height:64px}
    six large tappable tiles. Disappears once any choice is made
    or skipped; never re-appears for the same browser unless the
    draft is fully cleared. */
+/* Wave A8 — paste-or-type onboarding. Centered card, big textarea
+   front and center. Visually similar to the quiz card it lives next
+   to, but with a different action: paste your menu, get a working
+   editor immediately. Quiz reachable from a "Don't have a menu?"
+   secondary button. */
+.md-onboard{margin:18px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--teal) 4%,var(--white)) 0%,var(--white) 100%);box-shadow:var(--elev-1)}
+.md-onboard[hidden]{display:none}
+.md-onboard-inner{max-width:680px;margin:0 auto}
+.md-onboard-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink);margin:0 0 6px;text-align:center;line-height:1.25}
+.md-onboard-sub{font-size:13px;color:var(--ink-soft);margin:0 0 16px;text-align:center}
+.md-onboard-area{width:100%;min-height:140px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--white);color:var(--ink);box-sizing:border-box;resize:vertical}
+.md-onboard-area:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.md-onboard-actions{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.md-onboard-go{padding:10px 18px;border:0;border-radius:999px;background:var(--teal);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:44px}
+.md-onboard-go:hover{background:color-mix(in srgb,var(--teal) 88%,#000)}
+.md-onboard-quiz{padding:10px 14px;border:0;background:transparent;color:var(--ink-soft);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.md-onboard-quiz:hover{color:var(--teal)}
 .md-quiz{margin:18px 0 0;padding:22px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--teal) 4%,var(--white)) 0%,var(--white) 100%);box-shadow:var(--elev-1)}
 .md-quiz[hidden]{display:none}
 .md-quiz-inner{max-width:680px;margin:0 auto}
@@ -161,7 +178,26 @@ header.nav{min-height:64px}
 /* W8-1 — Editor toolbar: saved indicator, undo/redo buttons, dish
    search input. Calm visual weight; left-cluster has the Saved
    pill, right-cluster has the action chips. */
-.md-toolbar{margin:18px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* Wave A7 finish — sticky toolbar.
+   When the operator is editing dish row 47, scrolling past the
+   header to reach the row, the saved indicator + undo/redo + search
+   chip used to scroll out of view. Now they pin at the top of the
+   viewport (just below the site nav at 64px), staying reachable
+   while the operator works. Keeps the "saved" reassurance visible
+   as a glance during long edits.
+
+   The site's primary nav (header.nav) is ~56-64px tall depending on
+   viewport; we offset by 64px to ensure no overlap. On screens with
+   a sticky bottom-sheet preview drawer (mobile), this toolbar pins
+   above the dish grid and stays accessible. */
+.md-toolbar{margin:18px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:64px;z-index:10;background:var(--cream);padding:8px 0;margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px;border-bottom:1px solid color-mix(in srgb, var(--line) 40%, transparent)}
+@media (max-width: 640px){
+  /* Don't pin on phones — sticky over dish-add inputs causes touch
+     conflicts (the toolbar would intercept taps meant for the row
+     below it). The bottom-sheet preview-drawer + a sticky toolbar
+     would also fight for attention. Keep mobile toolbar in flow. */
+  .md-toolbar{position:static;border-bottom:0;background:transparent;padding:0;margin-left:0;margin-right:0}
+}
 .md-saved{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);font-weight:600}
 .md-saved svg{color:var(--stone-2)}
 .md-saved.is-saved svg{color:var(--status-good,#1F6B3A)}
@@ -1595,6 +1631,26 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
          is empty AND no draft exists. Six large tiles; one tap
          picks a fitting theme + suggests a starter template.
          Replaces the older ghost-rows + overlay pattern. -->
+    <!-- Wave A8 — paste-or-type onboarding. Replaces the cuisine
+         quiz as the primary cold-start. Operators paste an existing
+         menu (CSV / TSV / pasted text from another tool) and we
+         parse it via the existing parsePaste() machinery, dropping
+         them into a populated grid in < 30 s. The quiz is reachable
+         as a P2 fallback ("Browse by cuisine") for operators who
+         don't have a menu to paste yet. -->
+    <aside class="md-onboard" id="mdOnboard" hidden role="region" aria-labelledby="mdOnboardTitle">
+      <div class="md-onboard-inner">
+        <h2 class="md-onboard-title" id="mdOnboardTitle">Paste your menu, or type your first dish.</h2>
+        <p class="md-onboard-sub">CSV, TSV, or just pasted text — we'll detect sections and dish rows. Or type one dish below and we'll seed the rest.</p>
+        <textarea class="md-onboard-area" id="mdOnboardArea" spellcheck="false" autocomplete="off" rows="6"
+                  placeholder="## Starters&#10;Caesar Salad,$14,Crisp little gems with our buttermilk dressing&#10;House Bread,$6&#10;## Mains&#10;Roast Chicken,$28,Half a Path Valley chicken with pan jus"></textarea>
+        <div class="md-onboard-actions">
+          <button type="button" class="md-onboard-go" id="mdOnboardGo">Use this menu</button>
+          <button type="button" class="md-onboard-quiz" id="mdOnboardQuiz">Don't have a menu? Browse by cuisine →</button>
+        </div>
+      </div>
+    </aside>
+
     <aside class="md-quiz" id="mdQuiz" hidden role="region" aria-labelledby="mdQuizTitle">
       <div class="md-quiz-inner">
         <h2 class="md-quiz-title" id="mdQuizTitle">What kind of restaurant is this?</h2>

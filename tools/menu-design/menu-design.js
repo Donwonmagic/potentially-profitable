@@ -6120,17 +6120,91 @@
   }
   function showQuizIfFresh() {
     var quizEl = document.getElementById('mdQuiz');
+    var onboardEl = document.getElementById('mdOnboard');
     if (!quizEl) return;
     // Only show on a truly cold load: no rows, no draft, no ctx menu data.
     if (rows.filter(function (r) { return !r.ghost; }).length) return;
     if (loadDraft()) return;
+
+    // Wave A8 — paste-or-type onboarding is the primary cold-start.
+    // Quiz is reachable via the "Don't have a menu? Browse by cuisine"
+    // button. If the operator immediately taps the cuisine link
+    // without pasting, we fall through to the existing quiz path.
+    if (onboardEl) {
+      onboardEl.hidden = false;
+      var areaEl = document.getElementById('mdOnboardArea');
+      var goBtn  = document.getElementById('mdOnboardGo');
+      var quizFallbackBtn = document.getElementById('mdOnboardQuiz');
+      function applyOnboardPaste() {
+        var raw = (areaEl && areaEl.value || '').trim();
+        if (!raw) {
+          // Empty submit — just close the onboard and seed ghost rows
+          // so the editor isn't a void. Operator can still type or
+          // hit the quiz fallback.
+          onboardEl.hidden = true;
+          try {
+            if (!rows.length && seedGhostRows()) {
+              render();
+              renderGhostOverlay();
+            }
+          } catch (_) {}
+          return;
+        }
+        // > 1 line OR contains a comma/tab — treat as paste. Otherwise
+        // seed a single dish row from the typed name.
+        var lineCount = raw.split('\n').filter(function (s) { return s.trim(); }).length;
+        var looksTabular = /[,\t]/.test(raw) || lineCount >= 2;
+        if (looksTabular && typeof parsePaste === 'function') {
+          var parsed = parsePaste(raw);
+          if (parsed && parsed.length) {
+            rows = parsed;
+            __ghostActive = false;
+            onboardEl.hidden = true;
+            render();
+            renderThemePicker();
+            scheduleSaveDraft();
+            if (window.plausible) {
+              try { window.plausible('Menu Design Paste', { props: { added: String(parsed.length) } }); } catch (_) {}
+            }
+            return;
+          }
+        }
+        // Single-dish typed: seed a blank dish row with the typed name.
+        var firstName = raw.split('\n')[0].trim();
+        rows = [{ kind: 'dish', name: firstName, price: '', desc: '', allergens: [] }];
+        __ghostActive = false;
+        onboardEl.hidden = true;
+        render();
+        renderThemePicker();
+        scheduleSaveDraft();
+        if (window.plausible) {
+          try { window.plausible('Menu Design First Dish', { props: { trigger: 'onboard-typed' } }); } catch (_) {}
+        }
+      }
+      if (goBtn) goBtn.addEventListener('click', applyOnboardPaste);
+      if (areaEl) {
+        areaEl.addEventListener('keydown', function (e) {
+          // Cmd-Enter or Ctrl-Enter submits. Plain Enter inserts newline
+          // (operators are pasting CSV; newlines must work).
+          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            e.preventDefault();
+            applyOnboardPaste();
+          }
+        });
+      }
+      if (quizFallbackBtn) quizFallbackBtn.addEventListener('click', function () {
+        onboardEl.hidden = true;
+        renderQuizTiles();
+        quizEl.hidden = false;
+      });
+    }
+
+    // Quiz wiring — same as before, just doesn't auto-show. Reachable
+    // via the onboarding card's "Browse by cuisine" link.
     renderQuizTiles();
-    quizEl.hidden = false;
     var skipBtn = document.getElementById('mdQuizSkip');
     if (skipBtn) skipBtn.addEventListener('click', function () {
       quizEl.hidden = true;
-      // Fall through to the existing ghost-rows seed for those who
-      // skipped — keeps the empty-state visually anchored.
       try {
         if (!rows.length && seedGhostRows()) {
           render();
@@ -6145,10 +6219,7 @@
       var entry = null;
       for (var i = 0; i < QUIZ_TILES.length; i++) if (QUIZ_TILES[i].id === cuisine) { entry = QUIZ_TILES[i]; break; }
       if (!entry) return;
-      // Apply theme suggestion immediately.
       themeId = entry.theme;
-      // If the tile names a starter template, load it; else seed
-      // the standard SAMPLE_MENU as a working starting point.
       if (entry.template && TEMPLATES[entry.template]) {
         rows = TEMPLATES[entry.template].rows.map(function (r) { return Object.assign({}, r); });
       } else {
