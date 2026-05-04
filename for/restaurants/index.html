@@ -175,7 +175,7 @@
 <!-- FOUC guard: keep breadcrumb hidden until site.css applies.
      Without this, a slow stylesheet fetch briefly renders the raw
      'Home > Page' links at the top-left of the viewport. -->
-<style>.breadcrumb{visibility:hidden;padding-top:100px}
+<style>.breadcrumb{padding-top:100px}
 
 /* ============================================================
    Restaurant hero — editorial "live menu" portfolio piece.
@@ -678,8 +678,8 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=20260503-perf" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=20260503-perf"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=20260504-fouc" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=20260504-fouc"></noscript>
 </head>
 <body>
 
