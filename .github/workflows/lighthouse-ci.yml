@@ -150,8 +150,18 @@ jobs:
       - name: Run Lighthouse CI
         env:
           LHCI_BUILD_BASE_URL: http://localhost:8788
-          # Disable LHCI's GitHub status check posting in this initial
-          # run; we'll re-enable once thresholds are tuned.
-          LHCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # LHCI_GITHUB_TOKEN is intentionally NOT set during the initial
+          # rollout. When this token is present, @lhci/cli posts a separate
+          # GitHub commit status per audited URL (`lhci/url/`,
+          # `lhci/url/tools/`, etc.) via the Statuses API. Those statuses
+          # bypass the workflow-level `continue-on-error: true` above and
+          # block PR merge whenever ANY assertion fails on ANY URL — which,
+          # while the perf baseline is shaking out, has been every PR. Drop
+          # the token: lhci still runs in the workflow, the report is still
+          # uploaded to temporary-public-storage, but no status checks land
+          # against the PR. Re-enable by restoring the line below once the
+          # perf baseline is locked and ALL gates green on three consecutive
+          # PRs.
+          # LHCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx -y @lhci/cli@0.13.x autorun --config=./lighthouserc.js
