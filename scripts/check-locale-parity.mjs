@@ -40,8 +40,30 @@ const SKIP_DIRS = new Set([
   'docs', 'src', 'brand', 'assets', 'scripts'
 ]);
 
-// Paths excluded from parity entirely. Blog is handled separately.
+// Paths excluded from EN→ES parity. Blog is handled separately on the
+// EN side because the slug-map (data/i18n-slug-map.json) governs
+// EN→ES blog pairing — translated-slug posts map an EN slug to a
+// different ES slug, so a naive "es/<same-en-slug>/" lookup would
+// always 404 for them. The reverse direction (ES→EN orphan check)
+// IS slug-map-aware below.
 const SKIP_PATH_PREFIXES = ['blog/'];
+
+// EN↔ES blog slug map. Used by the reverse-direction check so that
+// an ES blog post under a translated slug isn't flagged as orphan
+// just because /blog/<es-slug>/ doesn't exist on the EN side. The
+// real EN counterpart lives at /blog/<mapped-en-slug>/.
+//
+// Three cases for an ES blog page:
+//   1. Slug is a value in slugMap.blog{}            — translated counterpart
+//      exists at /blog/<corresponding-key>/index.html
+//   2. Slug appears in slugMap.esOriginal[]         — legitimately ES-only
+//                                                     (no EN counterpart by design)
+//   3. Slug matches an EN file 1:1                  — same-slug pair, fall
+//                                                     through to default lookup
+const slugMapPath = path.join(repoRoot, 'data', 'i18n-slug-map.json');
+const slugMap     = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : { blog: {}, esOriginal: [] };
+const esToEnSlug  = Object.fromEntries(Object.entries(slugMap.blog || {}).map(([en, es]) => [es, en]));
+const esOriginal  = new Set(slugMap.esOriginal || []);
 
 // Locales whose absence from an EN counterpart should be reported.
 // English is always the authoritative source; if you want to add a
@@ -79,7 +101,21 @@ function counterpartFor(posix, locale) {
     return posix === 'index.html' ? 'es/index.html' : `es/${posix}`;
   }
   const m = posix.match(new RegExp(`^${locale}/(.*)$`));
-  return m ? (m[1] === 'index.html' ? 'index.html' : m[1]) : null;
+  if (!m) return null;
+  const stripped = m[1] === 'index.html' ? 'index.html' : m[1];
+
+  // Slug-map awareness for blog. An ES blog post under a translated
+  // slug needs to point at /blog/<mapped-en-slug>/ on the EN side.
+  // Posts in esOriginal[] return null — legitimately no EN counterpart,
+  // signalled by a sentinel value the caller treats as "skip".
+  const blogMatch = stripped.match(/^blog\/([^/]+)\/index\.html$/);
+  if (blogMatch) {
+    const slug = blogMatch[1];
+    if (esOriginal.has(slug)) return '__ES_ORIGINAL__'; // intentional, no EN
+    if (esToEnSlug[slug])     return `blog/${esToEnSlug[slug]}/index.html`;
+    // else fall through to same-slug pair (e.g. an EN+ES post that share a slug)
+  }
+  return stripped;
 }
 
 function extractSignal(src) {
@@ -143,6 +179,7 @@ for (const file of files) {
     }
   } else {
     const cpPath = counterpartFor(posix, locale);
+    if (cpPath === '__ES_ORIGINAL__') continue; // intentional ES-only post
     if (cpPath && !fs.existsSync(path.join(repoRoot, cpPath))) {
       reverseMissing.push({ lang: locale, page: posix, expected: cpPath });
     }
