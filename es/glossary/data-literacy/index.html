@@ -63,9 +63,9 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=96f0a1021cf4" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=a9f1bbe2e4da" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=96f0a1021cf4"><link rel="stylesheet" href="/assets/site-article.css?v=a9f1bbe2e4da"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=a42b5dba963a" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=9be3b32cc4dd" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a42b5dba963a"><link rel="stylesheet" href="/assets/site-article.css?v=9be3b32cc4dd"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -130,6 +130,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -170,7 +180,7 @@ header.nav{min-height:64px}
         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
       </svg>
       <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mod">⌘</span>K</kbd>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
     </button>
     <nav class="lang-switch" aria-label="Idioma">
       <a href="/glossary/data-literacy/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
