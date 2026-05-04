@@ -156,6 +156,7 @@ const CHECKS = [
   ['Menu-Design consistency','check-menu-design.mjs'],
   ['Themes lint',          'check-themes-lint.mjs'],
   ['Themes metadata',      'check-themes-metadata.mjs'],
+  ['Themes review board (idem)','build-themes-review-board.mjs','--check'],
   ['Security claims',      'check-security-claims.mjs'],
   ['Data promise rail',    'check-data-promise-rail.mjs'],
   ['Security locale parity','check-security-locale-parity.mjs'],
