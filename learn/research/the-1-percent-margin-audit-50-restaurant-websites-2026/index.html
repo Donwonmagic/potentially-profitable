@@ -79,11 +79,10 @@
 .note-table tfoot td{font-weight:600;border-top:2px solid var(--ink);border-bottom:0}
 .note-callout{padding:18px 22px;background:var(--cream-2);border-left:3px solid var(--teal);border-radius:8px;margin:24px 0}
 .note-callout p{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink)}
-.dist-chart{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;align-items:center;margin:16px 0;font-size:13.5px;color:var(--ink)}
-.dist-chart__label{font-variant-numeric:tabular-nums}
-.dist-chart__bar{background:var(--cream-2);border-radius:4px;height:18px;overflow:hidden}
-.dist-chart__bar span{display:block;height:100%;background:var(--teal);border-radius:4px}
-.dist-chart__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
+/* The leakage-distribution chart now uses the shared .viz-bars
+   component (assets/site-article.css → "Article viz components").
+   .dist-chart was the per-page predecessor; superseded as part of
+   the Phase-1 graphics refresh. */
 </style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
@@ -112,8 +111,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=f070a070a286" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=f070a070a286"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=bb57bc02f27f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=bb57bc02f27f"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -327,13 +326,16 @@ header.nav{min-height:64px}
 
     <p>The distribution isn&rsquo;t flat. It clusters: most operators are in the 0.5%&ndash;1.5% band, but a long tail of operators is leaking well over 2% &mdash; usually because they have all six leaks active at once.</p>
 
-    <div class="dist-chart" aria-label="Leakage distribution across 50 restaurants">
-      <span class="dist-chart__label">Under 0.5%</span><span class="dist-chart__bar"><span style="width:14%"></span></span><span class="dist-chart__num">7 of 50</span>
-      <span class="dist-chart__label">0.5&ndash;1.0%</span><span class="dist-chart__bar"><span style="width:34%"></span></span><span class="dist-chart__num">17 of 50</span>
-      <span class="dist-chart__label">1.0&ndash;1.5%</span><span class="dist-chart__bar"><span style="width:30%"></span></span><span class="dist-chart__num">15 of 50</span>
-      <span class="dist-chart__label">1.5&ndash;2.0%</span><span class="dist-chart__bar"><span style="width:14%"></span></span><span class="dist-chart__num">7 of 50</span>
-      <span class="dist-chart__label">Over 2.0%</span><span class="dist-chart__bar"><span style="width:8%"></span></span><span class="dist-chart__num">4 of 50</span>
-    </div>
+    <figure class="viz-figure">
+      <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Leakage distribution across 50 restaurants. Under 0.5%: 7 of 50. 0.5 to 1.0%: 17 of 50. 1.0 to 1.5%: 15 of 50. 1.5 to 2.0%: 7 of 50. Over 2.0%: 4 of 50.">
+        <span class="viz-bars__label">Under 0.5%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.41"></span></span><span class="viz-bars__num">7 of 50</span>
+        <span class="viz-bars__label">0.5&ndash;1.0%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:1;--delay:80ms"></span></span><span class="viz-bars__num">17 of 50</span>
+        <span class="viz-bars__label">1.0&ndash;1.5%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.88;--delay:160ms"></span></span><span class="viz-bars__num">15 of 50</span>
+        <span class="viz-bars__label">1.5&ndash;2.0%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.41;--delay:240ms" data-tone="rust"></span></span><span class="viz-bars__num">7 of 50</span>
+        <span class="viz-bars__label">Over 2.0%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.24;--delay:320ms" data-tone="rust"></span></span><span class="viz-bars__num">4 of 50</span>
+      </div>
+      <figcaption>Most operators cluster in the 0.5&ndash;1.5% band; the rust tail is the worst-quartile.</figcaption>
+    </figure>
 
     <p>The operators in the under-0.5% band shared three things: they were all on custom-coded or BentoBox-hosted sites (no Wix), they all had a real <code>/es/</code> mirror or were in non-bilingual neighborhoods, and they all had a direct-order button positioned above their third-party links. They were also overrepresented in the &ldquo;family-owned for 20+ years&rdquo; category &mdash; not because old operators are tech-forward, but because they&rsquo;ve been quietly fixing one leak per quarter for a long time.</p>
 

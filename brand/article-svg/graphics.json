@@ -1,0 +1,4 @@
+{
+  "_comment": "Manifest of inline article graphics. Each entry produces one inlinable SVG (and a 2x PNG fallback) under brand/article-svg/out/<slug>/<figId>.{svg,png}. Required fields: slug, figId, kind, locale, data. Locale parity is enforced — every entry with locale 'en' must have a sibling with locale 'es' (same slug + figId). See scripts/build-article-graphics.mjs for the schema.",
+  "entries": []
+}
