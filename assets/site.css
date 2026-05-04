@@ -996,6 +996,12 @@ to{opacity:1;transform:translateZ(0)}
 }
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+/* Mobile: the decorative .window is purely brand identity (aria-hidden)
+   and at full mobile width with aspect-ratio:5/6 it becomes ~480px tall —
+   a giant black-grid overlay between the contact line and the count chips
+   that pushes real content off-screen. Hide it under 720px so mobile
+   readers see content, not an oversized window-mark flash. */
+@media (max-width:720px){.window,.window-caption{display:none}}
 .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;background:var(--cream)}
 .proof-inner{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:space-between}
 .proof-label{font-size:13px;color:var(--stone);letter-spacing:0.04em}

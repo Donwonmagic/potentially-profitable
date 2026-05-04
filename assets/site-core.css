@@ -710,7 +710,7 @@ pre code{overflow-wrap:normal;word-break:normal;white-space:pre}
 .post-end-mark p{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--stone);margin:0}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 
-/* ===== [core] Button vocabulary (.btn family) (lines 688-1250) ===== */
+/* ===== [core] Button vocabulary (.btn family) (lines 688-1256) ===== */
 /* ============ Button vocabulary (Sprint 4 — locked) ============
    The site has ONE button family. Every interactive control should
    compose from these primitives unless it is a registered exception
@@ -1022,6 +1022,12 @@ to{opacity:1;transform:translateZ(0)}
 }
 .window:hover .pane{transform:translateY(-1px)}
 .window-caption{margin-top:18px;display:flex;justify-content:space-between;font-size:13px;color:var(--stone);font-variant-numeric:tabular-nums}
+/* Mobile: the decorative .window is purely brand identity (aria-hidden)
+   and at full mobile width with aspect-ratio:5/6 it becomes ~480px tall —
+   a giant black-grid overlay between the contact line and the count chips
+   that pushes real content off-screen. Hide it under 720px so mobile
+   readers see content, not an oversized window-mark flash. */
+@media (max-width:720px){.window,.window-caption{display:none}}
 .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 0;background:var(--cream)}
 .proof-inner{display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:space-between}
 .proof-label{font-size:13px;color:var(--stone);letter-spacing:0.04em}
@@ -1275,7 +1281,7 @@ section.block{padding:clamp(80px,10vw,140px) 0}
 .final .btn-ghost{color:var(--cream);border-color:rgba(250,247,242,0.3)}
 .final .btn-ghost:hover{background:rgba(250,247,242,0.08);border-color:var(--cream)}
 
-/* ===== [core] Footer (lines 1251-1347) ===== */
+/* ===== [core] Footer (lines 1257-1353) ===== */
 /* ============ FOOTER ============
    Three-section footer: a top CTA row, a 3-column discovery grid,
    and a thin bottom row with copyright + legal. Unified across all
@@ -1374,7 +1380,7 @@ body:has(.block.final) .foot-cta{display:none}
 @media (max-width:640px){.foot-bottom{flex-direction:column;align-items:flex-start;gap:14px}}
 
 
-/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1377-1444) ===== */
+/* ===== [core] Global focus-visible + skip-link + sr-only + nav-toggle + mobile-menu (every-page chrome) (lines 1383-1450) ===== */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
@@ -1444,7 +1450,7 @@ br.br-lg{display:none}
    container width — the compression shoves the text against one side
    of the pill, which reads as "the text isn't centered". */
 
-/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1445-1465) ===== */
+/* ===== [core] Nav refinements + share widget (was inside CITATION DRAWER section) (lines 1451-1471) ===== */
 .nav-inner .btn-primary{flex-shrink:0}
 @media (max-width:1100px){.nav-inner .btn-primary{display:none}
 .nav-toggle{display:flex}
@@ -1467,7 +1473,7 @@ br.br-lg{display:none}
 .share-item:hover,.share-item:focus-visible{background-color:var(--cream-2);outline:none}
 .share-item.copied{color:var(--teal);font-weight:600}
 
-/* ===== [core] Breadcrumbs (lines 1995-2020) ===== */
+/* ===== [core] Breadcrumbs (lines 2001-2026) ===== */
 /* ============ BREADCRUMBS ============
    Visual counterpart to the BreadcrumbList schema already present in
    JSON-LD on secondary pages. Sits between the nav and the page hero,
@@ -1495,7 +1501,7 @@ br.br-lg{display:none}
 @media (max-width:640px){.breadcrumb{font-size:12px;padding:88px 0 12px}.breadcrumb + .hero{padding-top:24px}}
 
 
-/* ===== [core] Homepage utility classes (lines 2021-2072) ===== */
+/* ===== [core] Homepage utility classes (lines 2027-2078) ===== */
 /* ============ HOMEPAGE UTILITY CLASSES ============
    Extracted from inline style= attributes during the Sprint 1 cleanup.
    Keep these tightly scoped — prefer new semantic classes over atomic
@@ -1549,7 +1555,7 @@ br.br-lg{display:none}
 .honeypot{display:none}
 
 
-/* ===== [core] Legal pages (lines 2073-2098) ===== */
+/* ===== [core] Legal pages (lines 2079-2104) ===== */
 /* ===== Legal pages (accessibility, privacy, cookies, terms) ===== */
 .legal{max-width:760px;margin:0 auto;padding:calc(80px + 64px) var(--pad-x) 96px}
 .legal h1{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;margin:0 0 8px;color:var(--ink)}
@@ -1577,7 +1583,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2099-2388) ===== */
+/* ===== [core] Homepage primary tool CTA (restaurant audit) (lines 2105-2394) ===== */
 /* ============================================================
    Homepage primary tool CTA (restaurant audit)
    ============================================================
@@ -1869,7 +1875,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3119-3437) ===== */
+/* ===== [core] Library nav-mega regroup (nav is everywhere) (lines 3125-3443) ===== */
 /* ---------- Library nav-mega regroup (Phase 5) ---------------------
    The Library dropdown was an 8-item linear list. Now grouped into
    three labeled columns (Read / Do / Learn) with a "Library home →"
@@ -2190,7 +2196,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] /system/ colophon page (small, kept in core) (lines 3541-3617) ===== */
+/* ===== [core] /system/ colophon page (small, kept in core) (lines 3547-3623) ===== */
 /* ============================================================
    /system/ COLOPHON PAGE
    Shows the stack, design tokens, i18n pipeline, URL restructure
@@ -2269,7 +2275,7 @@ br.br-lg{display:none}
 .sys-a11y p{font-size:14.5px;line-height:1.6;color:var(--stone);margin:0}
 
 
-/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3618-3784) ===== */
+/* ===== [core] Search modal (Pagefind-backed; on every page) (lines 3624-3790) ===== */
 /* ============================================================
    SEARCH MODAL (Pagefind-backed)
    Keyboard opens via Cmd/Ctrl+K or the nav search button. Modal
@@ -2438,7 +2444,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5254-5265) ===== */
+/* ===== [core] Cloudflare Turnstile widget (reservation min-height) (lines 5260-5271) ===== */
 /* ============ Cloudflare Turnstile widget (Phase 3B) ============
    Reserve the widget's render height so layout doesn't shift when
    the script finishes loading + the iframe paints. The "managed"
@@ -2452,7 +2458,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5266-5317) ===== */
+/* ===== [core] Workshop save banner (multi-context, kept in core) (lines 5272-5323) ===== */
 /* ============ Workshop (Sprint 3 — cohesion) ============
    /workbench/ + /es/workbench/ saved-items page. Shares the
    global frame (.nav + <footer>) with every other page so the
@@ -2506,7 +2512,7 @@ br.br-lg{display:none}
 }
 
 
-/* ===== [core] Workshop rationale (lines 5481-5496) ===== */
+/* ===== [core] Workshop rationale (lines 5487-5502) ===== */
 /* ============ Workshop rationale (Sprint 14 — cohesion) ============
    A small editorial block on /tools/, /glossary/, and a few other
    pages that explains the Workshop to anonymous visitors. The two
@@ -2524,7 +2530,7 @@ br.br-lg{display:none}
 .workshop-rationale-cta .js-nav-signin:hover,.workshop-rationale-cta .js-nav-workshop:hover{color:var(--teal-dark)}
 
 
-/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5497-5613) ===== */
+/* ===== [core] The Window (/window/ — kept in core to avoid a 4th shell) (lines 5503-5619) ===== */
 /* ============ THE WINDOW (Phase W.3) ============
    Full-page editorial canvas at /window/ and /es/window/. Suppresses
    the standard nav via body.window-canvas. The muntin hairline at
@@ -2643,7 +2649,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin strong{color:var(--ink)}
 
 
-/* ===== [core] Window composer (Phase-2 redesign) (lines 5614-5646) ===== */
+/* ===== [core] Window composer (Phase-2 redesign) (lines 5620-5652) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
    On-ramp chips moved above the form, surface productized offers
    with prices. Optional context grid (Name / Restaurant / Site)
@@ -2678,7 +2684,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5647-5733) ===== */
+/* ===== [core] ADMIN /admin/window/ (kept in core; admin is auth-gated noindex) (lines 5653-5739) ===== */
 /* ============ ADMIN /admin/window/ (Phase W.3) ============ */
 .admin-window{max-width:760px;margin:0 auto;padding:32px 16px}
 .admin-window__head{margin-bottom:24px}
@@ -2767,7 +2773,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .tool-data-promise__links a:hover{border-bottom-color:var(--teal)}
 
 
-/* ===== [core] Newsletter capture (in global footer; on every page) (lines 5973-5993) ===== */
+/* ===== [core] Newsletter capture (in global footer; on every page) (lines 5979-5999) ===== */
 /* Phase G.10 (Growth) — quiet newsletter capture in the global footer.
    Two short lines, one input, one button — no badges, no pop-ups, no
    "join our community" CTA. Mirrors the Window's "I read every one"
@@ -2790,7 +2796,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 
 
 
-/* ===== [core] Touch-device hover hygiene (lines 6055-6093) ===== */
+/* ===== [core] Touch-device hover hygiene (lines 6061-6099) ===== */
 /* ============================================================
    Touch-device hover hygiene — neutralize sticky :hover effects
    on devices that don't have a hover capability. CSS :hover on
@@ -2831,7 +2837,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero mobile reorder (homepage) (lines 6094-6116) ===== */
+/* ===== [core] Hero mobile reorder (homepage) (lines 6100-6122) ===== */
 /* ============================================================
    Hero mobile reorder — phones first, primary CTA above the fold.
    The accessibility audit flagged that on a 667-tall phone, the
@@ -2856,7 +2862,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Hero count chips (homepage) (lines 6192-6222) ===== */
+/* ===== [core] Hero count chips (homepage) (lines 6198-6228) ===== */
 /* ============================================================
    Hero count chips — small pill row showing library counts
    under the homepage subhead. Mobile-first; the per-chip
@@ -2889,7 +2895,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Trust strip (homepage) (lines 6223-6248) ===== */
+/* ===== [core] Trust strip (homepage) (lines 6229-6254) ===== */
 /* ============================================================
    Trust strip — single thin band immediately under flagship
    tools, before the library section. Operator-language facts
@@ -2917,7 +2923,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 }
 
 
-/* ===== [core] Compare cards (homepage) (lines 6249-6332) ===== */
+/* ===== [core] Compare cards (homepage) (lines 6255-6338) ===== */
 /* ============================================================
    Compare cards — three-column Patchwork / Agency / Muntin
    positioning block. The Muntin card is teal-bordered with a

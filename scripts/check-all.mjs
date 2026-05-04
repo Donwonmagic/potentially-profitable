@@ -139,6 +139,12 @@ const CHECKS = [
   // writer mode (no --check) requires `npm i sharp`.
   ['AVIF/WebP siblings (idem)','build-image-formats.mjs','--check'],
   ['Picture tags (idem)','inject-picture-tags.mjs','--check'],
+  // Critical-CSS link color (PR May 2026). Adds `a{color:inherit}` to
+  // every page's inline <style> so the brief unstyled-render window
+  // before site-core.css applies doesn't show <a> tags in browser
+  // default link blue — which inline SVGs that use stroke=currentColor
+  // (envelope, search, hamburger) inherit, producing a blue-icon flash.
+  ['Critical-CSS link color (idem)','inject-critical-link-color.mjs','--check'],
   // Pricing consistency — warn-only during initial rollout. Promotes to
   // --strict once the ~11 inline service-link backlog is worked off
   // (mostly /learn/research/, /learn/topics/, /studio/<city>/ pages
