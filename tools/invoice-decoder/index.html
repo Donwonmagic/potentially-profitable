@@ -446,6 +446,30 @@ header.nav{min-height:64px}
 .id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
 
 /* Wave 2.3 — Vendor Pulse Strip */
+/* Wave 13.7 — receipt-trail print stylesheet. One-page clean print
+   with operator annotations + corrections; bookkeeper-friendly. */
+@media print {
+  body { background: #fff !important; }
+  header, footer, nav, .id-honesty, .id-input-chip, .id-folder-btn,
+  .id-quality-gate, .id-classify-hint, .id-coming, .id-update,
+  .id-install, .id-firstrun, .id-resume, .id-status, .id-trust-summary,
+  .id-mathfix, .id-row-act, .id-bulk-confirm, .id-handoff,
+  .id-coming, .id-vendor-pulse, .id-insights { display: none !important; }
+  .id-parsed { display: block !important; box-shadow: none; border: none; }
+  .id-parsed-row { page-break-inside: avoid; border-bottom: 1px solid #ccc; padding: 6px 0; }
+  .id-parsed-row[data-conf="amber"] { background: #fef9e7; }
+  .id-parsed-row[data-conf="red"] { background: #fde0e0; }
+  .id-parsed-name, .id-parsed-qty, .id-parsed-price { color: #000 !important; }
+  body::before {
+    content: 'Invoice annotation copy — Muntin Invoice Decoder';
+    display: block;
+    font: 700 14px sans-serif;
+    color: #333;
+    border-bottom: 2px solid #333;
+    padding: 6px 0;
+    margin-bottom: 12px;
+  }
+}
 .id-vendor-pulse{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0c2826 0%,#1f4e5b 100%);color:#fff;border-radius:10px}
 /* Wave 12 — Owner insights cards */
 .id-insights{margin:0 0 12px;display:flex;flex-direction:column;gap:8px}
@@ -1384,6 +1408,10 @@ header.nav{min-height:64px}
 <script src="./confusion-matrix.js?v=20260504-w11-2"></script>
 <script src="./reconcile.js?v=20260504-w11-4"></script>
 <script src="./insights.js?v=20260504-w12"></script>
+<script src="./insight-card.js?v=20260504-w13-1"></script>
+<script src="./voice-query.js?v=20260504-w13-2"></script>
+<script src="./whatif.js?v=20260504-w13-6"></script>
+<script src="./cell-history.js?v=20260504-w13-8"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>

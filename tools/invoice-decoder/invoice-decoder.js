@@ -2550,6 +2550,52 @@
       try { photoInput.click(); } catch (_) {}
       try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
     }
+    // Wave 13.5 — ?intake=portal#<encoded-payload> — bookmarklet
+    // hands off scraped distributor-portal rows. Decode, build a
+    // synthetic CSV-shaped invoice, route via processCsvFile-like
+    // path. The hash payload is operator-side data the bookmarklet
+    // built on the third-party origin; we treat it as untrusted
+    // input and validate shape before consuming.
+    if (params.get('intake') === 'portal' && window.location.hash) {
+      try {
+        var raw = decodeURIComponent(window.location.hash.slice(1));
+        var payload = JSON.parse(raw);
+        if (payload && Array.isArray(payload.rows) && payload.rows.length) {
+          // Synthesize a parsed shape and feed through the existing
+          // render pipeline.
+          var synthRows = payload.rows.map(function (r) {
+            return {
+              name:      String(r.name || '').slice(0, 80),
+              qty:       (typeof r.qty === 'number') ? r.qty : null,
+              unit:      r.unit || null,
+              unitPrice: (typeof r.unitPrice === 'number') ? r.unitPrice : null,
+              lineTotal: (typeof r.lineTotal === 'number') ? r.lineTotal : null,
+              confidence: 99,        // bookmarklet → authoritative
+              fieldConf: { name: 99, qty: 99, price: 99, category: 70 },
+              kind: 'item'
+            };
+          });
+          var sumParsed = synthRows.reduce(function (s, r) { return s + (r.lineTotal || 0); }, 0);
+          var parsed = {
+            rows: synthRows,
+            sumParsed: +sumParsed.toFixed(2),
+            vendor: payload.vendor || null,
+            _intakeSource: 'bookmarklet'
+          };
+          if (typeof MID_VENDORS !== 'undefined' && payload.vendor) {
+            var registry = MID_VENDORS.REGISTRY || [];
+            var stub = registry.find(function (v) { return v.id === payload.vendor; });
+            if (stub) MID_VENDORS.applyVendorBoost(parsed.rows, { id: stub.id, label: stub.label_en, score: 0.95, vendor: stub });
+          }
+          classifyRows(parsed.rows, { vendor: parsed.vendor });
+          renderParsed(parsed);
+          if (window.plausible) {
+            try { window.plausible('Invoice Decoder Bookmarklet Receive', { props: { vendor: payload.vendor || 'unknown' } }); } catch (_) {}
+          }
+        }
+      } catch (_) { /* malformed payload — silent fail */ }
+      try { history.replaceState({}, '', window.location.pathname); } catch (_) {}
+    }
   }
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
