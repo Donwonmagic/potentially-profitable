@@ -190,6 +190,11 @@ const CHECKS = [
   ['Image dimensions',    'check-image-dimensions.mjs',     '--check'],
   ['Lazy images',         'check-lazy-images.mjs',          '--check'],
   ['CLS animation',       'check-cls-animation.mjs',        '--check'],
+  // SVG dimensions — fail-CI from day 1 (the regression cost was 4,366
+  // unsized inline SVGs flashing at 300×150 on every page load before
+  // CSS arrived; fixed in PR #285). Catches any new SVG without
+  // explicit width+height attributes from re-introducing the bug.
+  ['SVG dimensions',      'check-svg-dimensions.mjs'],
   ['Image formats (warn)','check-image-formats.mjs',         '--check'],
   ['Newsletter copy',     'check-newsletter-copy.mjs',      '--check'],
   ['Lifecycle locale parity','check-lifecycle-locale-parity.mjs','--check'],

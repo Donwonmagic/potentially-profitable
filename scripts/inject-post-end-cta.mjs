@@ -72,7 +72,7 @@ function buildBlock(slug, entry, locale) {
     '    <aside class="post-end-cta" aria-label="Workshop next step">',
     `      <p class="post-end-cta-headline">${escapeText(head)}</p>`,
     `      <p class="post-end-cta-body">${escapeText(body)}</p>`,
-    `      <a class="btn btn-primary" href="${escapeAttr(href)}">${escapeText(label)}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>`,
+    `      <a class="btn btn-primary" href="${escapeAttr(href)}">${escapeText(label)}<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></a>`,
     '    </aside>',
     '    <!-- post-end-cta:end -->',
   ].join('\n');
