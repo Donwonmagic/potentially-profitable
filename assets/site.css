@@ -6531,3 +6531,28 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .reveal .viz-gauge__needle{transform:rotate(-90deg);transition:transform 1100ms cubic-bezier(0.2,0.85,0.3,1.05);transition-delay:var(--delay,0ms)}
   .reveal.in .viz-gauge__needle{transform:rotate(calc((var(--score,50) - 50) * 1.8deg))}
 }
+
+/* .funnel cascade reveal. The .funnel component (lives in the
+   "INLINE GRAPHICS" block earlier in this file) was static; this
+   block layers a viewport-entry cascade on top when the funnel
+   itself carries class="reveal". Each row's kept and lost segments
+   wipe in from left to right via clip-path inset, with a 100ms-per-
+   row stagger. clip-path animations are compositor-friendly — the
+   check-cls-animation guard only flags `inset` as a CSS property,
+   not as a clip-path value, so this passes. Reduced-motion users
+   skip the animation entirely (the @media gate keeps the static
+   final state). */
+@media (prefers-reduced-motion:no-preference){
+  .funnel.reveal .funnel-bar .kept,
+  .funnel.reveal .funnel-bar .lost{clip-path:inset(0 100% 0 0);transition:clip-path 800ms cubic-bezier(0.2,0.8,0.2,1)}
+  .funnel.reveal.in .funnel-bar .kept,
+  .funnel.reveal.in .funnel-bar .lost{clip-path:inset(0 0 0 0)}
+  .funnel.reveal .funnel-row:nth-child(1) .funnel-bar > *{transition-delay:0ms}
+  .funnel.reveal .funnel-row:nth-child(2) .funnel-bar > *{transition-delay:100ms}
+  .funnel.reveal .funnel-row:nth-child(3) .funnel-bar > *{transition-delay:200ms}
+  .funnel.reveal .funnel-row:nth-child(4) .funnel-bar > *{transition-delay:300ms}
+  .funnel.reveal .funnel-row:nth-child(5) .funnel-bar > *{transition-delay:400ms}
+  .funnel.reveal .funnel-row:nth-child(6) .funnel-bar > *{transition-delay:500ms}
+  .funnel.reveal .funnel-row:nth-child(7) .funnel-bar > *{transition-delay:600ms}
+  .funnel.reveal .funnel-row:nth-child(8) .funnel-bar > *{transition-delay:700ms}
+}
