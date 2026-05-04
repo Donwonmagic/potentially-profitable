@@ -2348,8 +2348,17 @@
     } else {
       var pages = (typeof countOrPages === 'number' ? countOrPages : 1);
       var pageWord = pages === 1 ? tt('page', 'página') : tt('pages', 'páginas');
+      // Wave studio-quality (Pull-It-Back, Wave 5) — surface the
+      // cascade's column decision in the preview-meta strip. When
+      // the cascade promoted to 2-col (auto or theme-native), tell
+      // the operator. Lets them see "10 dishes · 1 page · 2 columns"
+      // and understand the layout at a glance.
+      var twoColTag = '';
+      if (paper && paper.classList && paper.classList.contains('md-promote-2col')) {
+        twoColTag = ' · ' + tt('2 columns', '2 columnas');
+      }
       previewMeta.textContent = paperLabel + ' · ' + dishCount + ' ' + tt('dishes', 'platos') +
-        ' · ' + pages + ' ' + pageWord;
+        ' · ' + pages + ' ' + pageWord + twoColTag;
     }
   }
 
