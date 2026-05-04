@@ -105,6 +105,8 @@
       'Cost Pulse Loaded',
       'Invoice Decoder Accountant Export',
       'Invoice Decoder Adaptive Reread',
+      'Invoice Decoder Briefing Action',
+      'Invoice Decoder Briefing Undo',
       'Invoice Decoder Bulk Confirm',
       'Invoice Decoder Coach Capture',
       'Invoice Decoder Coach Done',

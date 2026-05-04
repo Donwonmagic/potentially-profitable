@@ -3737,12 +3737,13 @@
     refreshBulkCount();
   };
 
-  function showBulkUndo(message, undoFn) {
+  function showBulkUndo(message, undoFn, opts) {
     var host = document.getElementById('idBulkUndo');
     var msg = document.getElementById('idBulkUndoMsg');
     var btn = document.getElementById('idBulkUndoBtn');
     var fill = document.getElementById('idBulkUndoFill');
     if (!host || !msg || !btn || !fill) return;
+    var ttl = (opts && typeof opts.ttl === 'number') ? opts.ttl : 5000;
     if (host.__timer) clearTimeout(host.__timer);
     host.hidden = false;
     msg.textContent = message;
@@ -3750,7 +3751,7 @@
     fill.style.width = '100%';
     // Force reflow then animate the fill.
     void fill.offsetWidth;
-    fill.style.transition = 'width 5000ms linear';
+    fill.style.transition = 'width ' + ttl + 'ms linear';
     fill.style.width = '0%';
     var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
@@ -3759,8 +3760,10 @@
       try { undoFn(); } catch (_) {}
       host.hidden = true;
     });
-    host.__timer = setTimeout(function () { host.hidden = true; }, 5000);
+    host.__timer = setTimeout(function () { host.hidden = true; }, ttl);
   }
+  // Expose for the briefing action layer (Wave C).
+  if (typeof window !== 'undefined') window.MID_DECODER_UNDO = showBulkUndo;
 
   if (bulkConfirm) {
     bulkConfirm.addEventListener('click', function () {

@@ -151,6 +151,12 @@
   // Render MID_DECISION_BRIEF output into #idBriefing.
   function render(host, briefResult) {
     if (!host || !briefResult) return;
+    // Stash the result so the action layer (Wave C) can resolve a
+    // findingId back to its full Finding object on click.
+    host.__brief = briefResult;
+    if (root && root.MID_BRIEFING_ACTIONS && root.MID_BRIEFING_ACTIONS.attachBrief) {
+      root.MID_BRIEFING_ACTIONS.attachBrief(host, briefResult);
+    }
     if (briefResult.state === 'ok-to-save') {
       host.dataset.tone = 'ok';
       host.innerHTML = _greenPathHtml(briefResult.positives);
