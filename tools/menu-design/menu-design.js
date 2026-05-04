@@ -1038,8 +1038,12 @@
             '</summary>' +
             '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens, photo, and dietary tags', 'Alérgenos, foto y etiquetas') + '">' +
               '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
-              '<div class="md-spice-row">' +
-                '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
+              // Wave B9 finish — accessible group label so screen readers
+              // announce the spice-button cluster as a coherent control,
+              // not three loose chips. Each dot still carries its own
+              // aria-label + aria-pressed for individual state.
+              '<div class="md-spice-row" role="group" aria-label="' + tt('Spice level', 'Nivel de picante') + '">' +
+                '<span class="md-spice-label" aria-hidden="true">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
                 '<button type="button" class="md-spice-dot md-spice-zero' + (dishSpice === 0 ? ' is-on' : '') +
                   '" data-act="spice" data-i="' + i + '" data-level="0" aria-label="' +
                   tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
