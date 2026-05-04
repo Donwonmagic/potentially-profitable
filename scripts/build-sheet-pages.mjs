@@ -122,7 +122,7 @@ const PACK_GLYPHS = {
 function renderPackGlyph(packId) {
   const paths = PACK_GLYPHS[packId];
   if (!paths) return '';
-  return `<span class="sheet-pack-glyph" aria-hidden="true"><svg viewBox="0 0 24 24">${paths}</svg></span>`;
+  return `<span class="sheet-pack-glyph" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24">${paths}</svg></span>`;
 }
 
 function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;'); }

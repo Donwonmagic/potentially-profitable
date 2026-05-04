@@ -212,6 +212,14 @@ header.nav{min-height:64px}
     color: var(--ink);
     outline: none;
     min-width: 0;
+    /* macOS Safari draws a default 1px gray rectangle around <input
+       type="url"> regardless of border:0 because of the platform
+       textfield appearance. appearance:none + -webkit-appearance:none
+       lets the input sit flush inside the pill. */
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    box-shadow: none;
   }
   .audit-form input[type="url"]::placeholder { color: var(--stone-2); }
   .audit-form button {
@@ -5282,7 +5290,7 @@ header.nav{min-height:64px}
         actually doing?
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-03">3 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -6420,7 +6428,20 @@ header.nav{min-height:64px}
     params.append('url', targetUrl);
     params.append('strategy', 'mobile');
     CATEGORIES.forEach(function(c){ params.append('category', c); });
-    return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString()).then(function(res){
+    // Client-side hard cap. The /api/psi worker has its own 30s
+    // AbortSignal.timeout, but if the Cloudflare edge buffers or the
+    // connection stalls, the fetch can hang indefinitely from the
+    // browser's perspective. 45s gives the worker its full 30s budget
+    // (+ retry on 429) plus a small grace window, then trips the
+    // client error path so the loader doesn't spin forever.
+    var ctrl;
+    var signal;
+    try {
+      ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
+      signal = ctrl ? ctrl.signal : undefined;
+      if (ctrl) setTimeout(function(){ try { ctrl.abort(); } catch (_) {} }, 45000);
+    } catch (_) { signal = undefined; }
+    return fetch(PSI_PROXY_ENDPOINT + '?' + params.toString(), { signal: signal }).then(function(res){
       if (res.ok) return res.json();
       return res.json().then(function(body){
         var msg = (body && body.error && body.error.message)
@@ -14862,7 +14883,18 @@ header.nav{min-height:64px}
         finishProgress();
         console.error('[audit] fetch failed', err);
         var msg = (err && err.message) || '';
-        if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
+        var isAbort = err && (err.name === 'AbortError' || err.name === 'TimeoutError');
+        if (isAbort) {
+          // 45s client-side cap tripped. PSI legitimately stalls on
+          // sites with very large JS bundles (Tacombi, Toast-hosted
+          // sites, etc.) — surface it as a soft error rather than a
+          // permanent failure so the user can retry without panic.
+          showError(
+            "Google's audit is taking longer than expected.",
+            "This sometimes happens with large or slow-loading sites. Give it a minute and try again. If it keeps timing out, email don@muntin.digital and I'll run the audit manually."
+          );
+          if (window.plausible) window.plausible('Audit Error: Client Timeout');
+        } else if (/unable to process|fetched.*failed|lighthouse returned error|chrome.*crashed/i.test(msg)) {
           // DYM2: the URL was unreachable — this is the strongest
           // typo-suggestion signal, so pass the URL through so the
           // error card async-fetches /api/did-you-mean.
