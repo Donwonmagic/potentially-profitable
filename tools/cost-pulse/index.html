@@ -72,6 +72,16 @@ header.nav{min-height:64px}
 .cp-drift-list{margin:0;padding:0;list-style:none}
 .cp-drift-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
 .cp-drift-row:last-child{border-bottom:0}
+/* Wave 10.9 — Recipe ripple list */
+.cp-ripple-list{margin:0;padding:0;list-style:none}
+.cp-ripple-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.cp-ripple-row:last-child{border-bottom:0}
+.cp-ripple-dish{font-weight:600;color:var(--ink);min-width:120px}
+.cp-ripple-prices{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.cp-ripple-delta{font-weight:600;font-variant-numeric:tabular-nums;padding:2px 6px;border-radius:4px}
+.cp-ripple-delta[data-dir="up"]{background:#fce0d7;color:#7a2e1f}
+.cp-ripple-delta[data-dir="down"]{background:#c7e4d4;color:#0c4a26}
+.cp-ripple-driver{color:var(--ink-soft);font-size:12px}
 .cp-drift-cat{font-weight:600;color:var(--ink);min-width:96px;text-transform:capitalize}
 .cp-drift-delta{font-variant-numeric:tabular-nums;font-weight:600;min-width:64px;text-align:right}
 .cp-drift-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
@@ -123,6 +133,16 @@ header.nav{min-height:64px}
     <h2>Drift this week</h2>
     <p>Categories whose latest spend deviates by more than 15% from the rolling 4-week median. Big swings worth attention.</p>
     <ul class="cp-drift-list" id="cpDriftList"></ul>
+  </div>
+
+  <!-- Wave 10.9 — Recipe ripple. Top dishes whose plate cost shifted
+       this week, sourced from MuntinContext.dishCostHistory entries
+       Plate Cost writes when the stale banner accepts an invoice
+       update. Pure sync read, no decrypt path. -->
+  <div class="cp-card" id="cpRippleCard" hidden>
+    <h2>Recipe ripple</h2>
+    <p>Dishes whose plate cost shifted ≥5% on your latest invoice update. The driver is named when we know which vendor's price moved.</p>
+    <ul class="cp-ripple-list" id="cpRippleList"></ul>
   </div>
 
   <div class="cp-card" id="cpSparkCard" hidden>
@@ -276,6 +296,59 @@ header.nav{min-height:64px}
         }).join('');
       }
     }
+
+    // Wave 10.9 — Recipe-ripple strip. When dishCostHistory has ≥1
+    // dish whose latest entry differs >5% from prior, surface the
+    // top three movers as inline rows beside the trend strip. Pure
+    // sync read; no decrypt path.
+    try {
+      if (typeof MuntinContext.readDishCostHistory === 'function') {
+        var dishMap = MuntinContext.readDishCostHistory();
+        var rippleRows = [];
+        Object.keys(dishMap || {}).forEach(function (dishKey) {
+          var ring = dishMap[dishKey];
+          if (!Array.isArray(ring) || ring.length < 2) return;
+          var newest = ring[0], prior = ring[1];
+          if (!newest || !prior) return;
+          var oldFc = prior.foodCost, newFc = newest.foodCost;
+          if (typeof oldFc !== 'number' || typeof newFc !== 'number' || oldFc <= 0) return;
+          var deltaPct = (newFc - oldFc) / oldFc;
+          if (Math.abs(deltaPct) < 0.05) return;
+          rippleRows.push({
+            dish: dishKey,
+            oldFc: oldFc,
+            newFc: newFc,
+            deltaPct: deltaPct,
+            vendor: newest.vendorTrigger || null,
+            ts: newest.ts || 0
+          });
+        });
+        rippleRows.sort(function (a, b) { return Math.abs(b.deltaPct) - Math.abs(a.deltaPct); });
+        var top = rippleRows.slice(0, 3);
+        if (top.length) {
+          var rippleCard = document.getElementById('cpRippleCard');
+          var rippleList = document.getElementById('cpRippleList');
+          if (rippleCard && rippleList) {
+            rippleList.innerHTML = top.map(function (r) {
+              var sign = r.deltaPct > 0 ? '+' : '';
+              var dir  = r.deltaPct > 0 ? 'up' : 'down';
+              var when = new Date(r.ts).toLocaleDateString(LOCALE === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric' });
+              var driver = r.vendor ? (' (' + r.vendor + ' on ' + when + ')') : '';
+              return '<li class="cp-ripple-row">' +
+                '<span class="cp-ripple-dish">' + (r.dish || '').replace(/[<>&]/g, '') + '</span>' +
+                '<span class="cp-ripple-prices">$' + r.oldFc.toFixed(2) + ' → $' + r.newFc.toFixed(2) + '</span>' +
+                '<span class="cp-ripple-delta" data-dir="' + dir + '">' + sign + (r.deltaPct * 100).toFixed(1) + '%</span>' +
+                '<span class="cp-ripple-driver">' + driver + '</span>' +
+              '</li>';
+            }).join('');
+            rippleCard.hidden = false;
+            if (window.plausible) {
+              try { window.plausible('Cost Pulse Recipe Ripple', { props: { count_bucket: top.length === 1 ? '1' : top.length === 2 ? '2' : '3+' } }); } catch (_) {}
+            }
+          }
+        }
+      }
+    } catch (_) {}
 
     // Sparkline strip — needs ≥3 entries.
     if (trend.length >= 3) {

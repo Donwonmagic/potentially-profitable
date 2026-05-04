@@ -2179,6 +2179,7 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
     if (!Array.isArray(entries) || !entries.length) return;
     var rows = readRows();
     var changed = 0;
+    var changedDishes = {};  // dish name → was-touched
     entries.forEach(function (entry) {
       if (!entry || !entry.stem) return;
       // Match by current ingredient name → stem. We re-derive via
@@ -2204,10 +2205,34 @@ Contribution margin per plate = menu price &minus; plate cost</pre>
         r._apPriceSource = entry.source || ('invoice:' + Date.now());
         changed++;
       });
+      if (entry.dish) changedDishes[entry.dish] = true;
     });
     if (changed) {
       rerenderRows(rows);
       renderResults();
+      // Wave 10.8 cascade — push per-dish cost-history entries so
+      // Menu Engineering / Margin Math / Cost Pulse pick up the
+      // delta. Uses the latestSummary that renderResults computed
+      // for the current recipe; for any other dish in the change
+      // set we recompute from MuntinContext.dishes if available.
+      try {
+        if (window.MuntinContext && typeof window.MuntinContext.pushDishCostEntry === 'function') {
+          var ts = Date.now();
+          var vendor = (entries[0] && entries[0].vendor) || null;
+          // Current recipe in editor.
+          if (latestSummary && nameEl && nameEl.value) {
+            var dishName = nameEl.value.trim();
+            if (dishName && changedDishes[dishName]) {
+              window.MuntinContext.pushDishCostEntry(dishName, {
+                ts: ts,
+                foodCost: latestSummary.batchCost / Math.max(1, Number(portionsEl.value) || 1),
+                foodCostPct: null,    // requires menu-price; left null here
+                vendorTrigger: vendor
+              });
+            }
+          }
+        }
+      } catch (_) {}
     }
   }
 
