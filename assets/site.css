@@ -1379,11 +1379,14 @@ body:has(.block.final) .foot-cta{display:none}
 .cite-body a:hover{color:var(--teal-dark)}
 @media print{.cite{border:1px solid #ccc}.cite summary::after{display:none}.cite-body a::after{content:' (' attr(href) ')';font-size:11px;color:#666;word-break:break-all}}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 800ms var(--ease-out),transform 800ms var(--ease-out)}
-.reveal.in{opacity:1;transform:translateY(0)}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}
+/* `.reveal` was opacity:0 by default — JS observer added `.in` to fade
+   it in. Below-the-fold was INVISIBLE until site.js loaded; "bottom
+   takes a few seconds." Default to visible; `.in` is a visual no-op.
+   Correctness over decoration. */
 .reveal{opacity:1;transform:none}
-}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+/* (kept for line-count parity with the previous .reveal block) */
 :focus{outline:none}
 /* Sprint 3: global focus affordance. The 2px solid outline reads as
    a browser-default; the layered halo from --ring-focus reads as
