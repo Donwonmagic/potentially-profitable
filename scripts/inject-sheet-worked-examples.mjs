@@ -26,7 +26,10 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
 const SENTINEL_RE = /\n[ \t]*<!-- sheet-worked-example:start -->[\s\S]*?<!-- sheet-worked-example:end -->/g;
-const FORM_RE     = /<form id="sheet-fields"/;
+// Capture the form line's leading indent so injection reuses it on
+// both the block and the form line — keeps strip+inject round-trips
+// byte-for-byte idempotent.
+const FORM_LINE_RE = /\n([ \t]*)<form id="sheet-fields"/;
 
 const dataPath = path.join(repoRoot, 'data', 'sheet-worked-examples.json');
 if (!fs.existsSync(dataPath)) { console.log('sheet-worked-examples.json missing — skipping'); process.exit(0); }
@@ -91,12 +94,14 @@ function buildBlock(slug, ex, locale) {
 function injectBlock(html, block) {
   // Strip any prior worked-example blocks (idempotency).
   let out = html.replace(SENTINEL_RE, '');
-  // Inject right before `<form id="sheet-fields"`.
-  const m = FORM_RE.exec(out);
+  // Inject right before <form id="sheet-fields">, reusing the form
+  // line's existing indent for the block + the new form line. This
+  // makes the strip-then-reinject round trip byte-identical.
+  const m = FORM_LINE_RE.exec(out);
   if (!m) return null;
-  const before = out.slice(0, m.index);
-  const after  = out.slice(m.index);
-  return before + block + '\n        ' + after;
+  const indent   = m[1];
+  const insertAt = m.index + 1; // position right after the leading \n
+  return out.slice(0, insertAt) + indent + block + '\n' + indent + out.slice(insertAt + indent.length);
 }
 
 let changed = 0;

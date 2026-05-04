@@ -177,6 +177,96 @@
       "punchline_en": "The yield slider is the lever — winter chickens come in heavier-boned and the 72% drops to 68%. At 68% the plate cost lands at $6.91, and the same target moves to $23.95. The decision isn't whether to raise the menu price — the decision is when. Try the yield slider now and see what the price would need to be.",
       "punchline_es": "El control deslizante de rendimiento es la palanca — los pollos de invierno vienen con más hueso y el 72% baja a 68%. A 68%, el costo del plato llega a $6.91, y el mismo objetivo mueve el precio a $23.95. La decisión no es si subir el precio del menú — es cuándo. Mueve el control deslizante de rendimiento ahora y ve a cuánto debería subir el precio."
     },
+    "gbp-monthly-audit": {
+      "subject_en": "60-seat neighborhood bistro, May audit",
+      "subject_es": "Bistró de barrio de 60 asientos, auditoría de mayo",
+      "inputs_en": [
+        ["Hours of operation, special-day hours, primary + secondary categories", "All Pass"],
+        ["Phone, address, website link, links to menu", "Pass · Pass · Pass · Fail (broken)"],
+        ["Photos posted in last 30 days", "2"],
+        ["GBP posts in last 30 days", "0"],
+        ["Q&A unanswered", "3"]
+      ],
+      "inputs_es": [
+        ["Horarios, horarios especiales, categorías primaria + secundaria", "Todo Aprobado"],
+        ["Teléfono, dirección, sitio web, enlaces al menú", "Aprobado · Aprobado · Aprobado · Falló (roto)"],
+        ["Fotos publicadas en últimos 30 días", "2"],
+        ["Posts de GBP en últimos 30 días", "0"],
+        ["Preguntas sin responder", "3"]
+      ],
+      "result_en": [
+        ["Listing fundamentals", "7 of 8 pass"],
+        ["Content cadence", "Below threshold (4 photos + 4 posts target)"],
+        ["This month's punch list", "4 items"]
+      ],
+      "result_es": [
+        ["Fundamentos del listado", "7 de 8 aprobados"],
+        ["Cadencia de contenido", "Bajo el umbral (objetivo 4 fotos + 4 posts)"],
+        ["Lista de tareas de este mes", "4 elementos"]
+      ],
+      "punchline_en": "The broken menu link is the priority — that's the link Google was sending people to. Behind it: the three Q&As (probably about parking, dietary options, and reservations — answer them once and they sit there forever) and the post cadence. The audit takes fifteen minutes; the punch list takes the rest of the morning if you batch it. The next month's audit walks a healthier listing.",
+      "punchline_es": "El enlace roto del menú es la prioridad — ese es el enlace al que Google enviaba a la gente. Detrás de eso: las tres preguntas sin responder (probablemente sobre estacionamiento, opciones dietéticas y reservas — respóndelas una vez y se quedan ahí para siempre) y la cadencia de posts. La auditoría toma quince minutos; la lista de tareas toma el resto de la mañana si la haces en bloque. La auditoría del próximo mes camina sobre un listado más sano."
+    },
+    "waste-log": {
+      "subject_en": "32-seat bistro, one slow week",
+      "subject_es": "Bistró de 32 asientos, una semana lenta",
+      "inputs_en": [
+        ["Salmon, 6oz portions — 4 portions, $6.40 each, spoilage, Sunday", "$25.60"],
+        ["Mixed greens — 3 lb, $1.80/lb, overprep, Tuesday", "$5.40"],
+        ["Bread — 6 loaves, $2.20 each, staff meal, Mon-Wed", "$13.20"],
+        ["Heirloom tomatoes — 2 lb, $4.20/lb, spoilage, Thursday", "$8.40"],
+        ["Beurre blanc — 8 oz, $0.85/oz, dropped, Saturday", "$6.80"]
+      ],
+      "inputs_es": [
+        ["Salmón, porciones de 6oz — 4 porciones, $6.40 c/u, descomposición, domingo", "$25.60"],
+        ["Mix de hojas verdes — 3 lb, $1.80/lb, sobreproducción, martes", "$5.40"],
+        ["Pan — 6 piezas, $2.20 c/u, comida del personal, lun-mié", "$13.20"],
+        ["Tomate heirloom — 2 lb, $4.20/lb, descomposición, jueves", "$8.40"],
+        ["Beurre blanc — 8 oz, $0.85/oz, derramado, sábado", "$6.80"]
+      ],
+      "result_en": [
+        ["Total weekly waste", "$59.40"],
+        ["Pattern: spoilage", "$34.00 (57% of waste)"],
+        ["Pattern: where it lands", "Sunday + Thursday — slow days following heavy prep"]
+      ],
+      "result_es": [
+        ["Desperdicio semanal total", "$59.40"],
+        ["Patrón: descomposición", "$34.00 (57% del desperdicio)"],
+        ["Patrón: dónde aterriza", "Domingo + jueves — días lentos después de prep pesado"]
+      ],
+      "punchline_en": "The waste-log is a pattern detector, not a moral ledger. Two weeks of entries make the spoilage line obvious — too much prep on Wednesday and Saturday for the Sunday and Thursday traffic that actually walks in. The fix isn't shouting at the line; it's the prep par sheet getting Sunday's salmon allocation cut by 30% next week.",
+      "punchline_es": "El registro de desperdicio es un detector de patrones, no un libro moral. Dos semanas de entradas hacen obvia la línea de descomposición — demasiado prep el miércoles y sábado para el tráfico real del domingo y jueves. El arreglo no es gritarle a la línea; es la hoja par de prep recortando 30% la asignación de salmón del domingo la próxima semana."
+    },
+    "vendor-contact-sheet": {
+      "subject_en": "60-seat full-service, one binder",
+      "subject_es": "60 asientos servicio completo, una carpeta",
+      "inputs_en": [
+        ["Sysco — Dry goods · rep + after-hours line + Tue/Fri 6am · Net 14", "Filled"],
+        ["Baldor Specialty — Produce · rep cell + Mon/Wed/Fri 5am · Net 7", "Filled"],
+        ["Pat LaFrieda — Protein · rep + after-hours · Tue/Fri AM · Net 14", "Filled"],
+        ["Local dairy co-op — Dairy · cell only · Mon/Thu · COD", "Filled"],
+        ["Equipment service (refrigeration) — emergency line, contract #", "Filled"]
+      ],
+      "inputs_es": [
+        ["Sysco — Abarrotes · rep + línea fuera de horario + mar/vie 6am · Net 14", "Lleno"],
+        ["Baldor Specialty — Frutas y verduras · cel del rep + lun/mié/vie 5am · Net 7", "Lleno"],
+        ["Pat LaFrieda — Proteína · rep + fuera de horario · mar/vie AM · Net 14", "Lleno"],
+        ["Cooperativa local de lácteos — Lácteos · solo cel · lun/jue · COD", "Lleno"],
+        ["Servicio de equipo (refrigeración) — línea de emergencia, # de contrato", "Lleno"]
+      ],
+      "result_en": [
+        ["Vendors filled", "10 of 10"],
+        ["Emergency numbers (landlord, insurance, utility, bank)", "All present"],
+        ["Last verified", "Yesterday — by GM"]
+      ],
+      "result_es": [
+        ["Proveedores llenados", "10 de 10"],
+        ["Números de emergencia (arrendador, seguro, servicio público, banco)", "Todos presentes"],
+        ["Última verificación", "Ayer — por el gerente"]
+      ],
+      "punchline_en": "The print version goes on the wall by the manager's desk and inside the fridge gasket on a magnetized clip. The night the walk-in dies at 11pm, the GM doesn't text the owner asking for the refrigeration tech's number — they read it off the wall. Re-verify quarterly; phone numbers and reps churn faster than you think.",
+      "punchline_es": "La versión impresa va en la pared junto al escritorio del gerente y dentro del empaque del refrigerador en un clip magnetizado. La noche que muere el walk-in a las 11pm, el gerente no le manda mensaje al dueño pidiendo el número del técnico de refrigeración — lo lee de la pared. Re-verifica cada trimestre; teléfonos y reps cambian más rápido de lo que crees."
+    },
     "review-response-log": {
       "subject_en": "60-seat neighborhood bistro, two weeks of reviews",
       "subject_es": "Bistró de barrio de 60 asientos, dos semanas de reseñas",

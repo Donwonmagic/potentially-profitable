@@ -223,6 +223,23 @@ header.nav{min-height:64px}
     </div>
     <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
+        <!-- sheet-worked-example:start -->
+    <details class="sheet-worked-example" data-sheet="waste-log">
+      <summary>
+        <span class="swe-eyebrow">Worked example</span>
+        <span class="swe-subject">32-seat bistro, one slow week</span>
+        <span class="swe-cta">See what a Tuesday-morning fill-in looks like</span>
+      </summary>
+      <div class="swe-body">
+        <p class="swe-section-label">What they typed in</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Salmon, 6oz portions — 4 portions, $6.40 each, spoilage, Sunday</th><td>$25.60</td></tr><tr><th scope="row">Mixed greens — 3 lb, $1.80/lb, overprep, Tuesday</th><td>$5.40</td></tr><tr><th scope="row">Bread — 6 loaves, $2.20 each, staff meal, Mon-Wed</th><td>$13.20</td></tr><tr><th scope="row">Heirloom tomatoes — 2 lb, $4.20/lb, spoilage, Thursday</th><td>$8.40</td></tr><tr><th scope="row">Beurre blanc — 8 oz, $0.85/oz, dropped, Saturday</th><td>$6.80</td></tr></tbody></table>
+        <p class="swe-section-label">What the sheet returned</p>
+        <table class="swe-rows"><tbody><tr><th scope="row">Total weekly waste</th><td>$59.40</td></tr><tr><th scope="row">Pattern: spoilage</th><td>$34.00 (57% of waste)</td></tr><tr><th scope="row">Pattern: where it lands</th><td>Sunday + Thursday — slow days following heavy prep</td></tr></tbody></table>
+        <p class="swe-punchline">The waste-log is a pattern detector, not a moral ledger. Two weeks of entries make the spoilage line obvious — too much prep on Wednesday and Saturday for the Sunday and Thursday traffic that actually walks in. The fix isn't shouting at the line; it's the prep par sheet getting Sunday's salmon allocation cut by 30% next week.</p>
+        <p class="swe-note">Composite-typical numbers — not a real shop. Use the rhythm, not the figures.</p>
+      </div>
+    </details>
+    <!-- sheet-worked-example:end -->
         <form id="sheet-fields" class="sheet-form" autocomplete="off" novalidate>
       <fieldset>
         <legend>Week ending</legend>
