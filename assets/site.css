@@ -6556,3 +6556,26 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .funnel.reveal .funnel-row:nth-child(7) .funnel-bar > *{transition-delay:600ms}
   .funnel.reveal .funnel-row:nth-child(8) .funnel-bar > *{transition-delay:700ms}
 }
+
+/* .recovery-stack cascade reveal. Same pattern as .funnel.reveal but
+   for the vertical "stacked rows with row tints + dark total cap"
+   component (defined in the INLINE GRAPHICS block earlier). Each row
+   fades up from translateY(16px); transform + opacity only —
+   compositor-friendly, no layout reflow. Used across ~10 articles
+   wherever the pattern lands (margin-recovery, schema-coverage, GSC,
+   tool-safety, photo-specs, when-to-rebuild). */
+@media (prefers-reduced-motion:no-preference){
+  .recovery-stack.reveal .recovery-row,
+  .recovery-stack.reveal .recovery-total{opacity:0;transform:translateY(16px);transition:opacity 600ms cubic-bezier(0.2,0.8,0.2,1),transform 600ms cubic-bezier(0.2,0.8,0.2,1)}
+  .recovery-stack.reveal.in .recovery-row,
+  .recovery-stack.reveal.in .recovery-total{opacity:1;transform:translateY(0)}
+  .recovery-stack.reveal .recovery-row:nth-child(1){transition-delay:0ms}
+  .recovery-stack.reveal .recovery-row:nth-child(2){transition-delay:80ms}
+  .recovery-stack.reveal .recovery-row:nth-child(3){transition-delay:160ms}
+  .recovery-stack.reveal .recovery-row:nth-child(4){transition-delay:240ms}
+  .recovery-stack.reveal .recovery-row:nth-child(5){transition-delay:320ms}
+  .recovery-stack.reveal .recovery-row:nth-child(6){transition-delay:400ms}
+  .recovery-stack.reveal .recovery-row:nth-child(7){transition-delay:480ms}
+  .recovery-stack.reveal .recovery-row:nth-child(8){transition-delay:560ms}
+  .recovery-stack.reveal .recovery-total{transition-delay:640ms}
+}
