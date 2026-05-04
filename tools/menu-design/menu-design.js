@@ -1889,6 +1889,7 @@
       paper.removeAttribute('data-logo-slot');
       paper.removeAttribute('data-paper');
       paper.removeAttribute('data-flow');
+      paper.removeAttribute('data-stock');
       paper.style.removeProperty('--paper-aspect');
       paper.style.removeProperty('--paper-margin-pct');
       paper.style.removeProperty('--panels');
@@ -1938,6 +1939,18 @@
         String((paperInfo.margin || 48) / paperInfo.w * 100) + '%');
       paper.dataset.paper = paperKey;
       paper.dataset.flow  = paperInfo.flow || 'page';
+      // Wave studio-quality (T6) — paper-stock awareness. The stock
+      // field on each paper format (24lb-text, 80lb-cover,
+      // 100lb-cover, 120lb-coaster, 70lb-uncoated, rigid-board,
+      // screen-rgb) drives a subtle CSS overlay that gives each
+      // stock its own look in the live preview: cream-leaning hue
+      // shift on uncoated stock, a fiber-grain shadow on cover
+      // stock, a cooler gloss tint on screen output. Operators
+      // pick paper consciously instead of treating it as metadata
+      // that doesn't render. The data attribute is also a hook
+      // for stock-aware templates ("are you printing on cover or
+      // text? — text won't fold cleanly for a tri-fold").
+      paper.dataset.stock = paperInfo.stock || 'standard';
       // Wave studio-quality (C1 partial) — round-shape paper hint.
       // beer-mat-round and similar use a CSS clip-path on the live
       // preview so operators see the actual die-cut shape, not a
@@ -2127,7 +2140,7 @@
                 '<span class="md-pp-name-text">' + escHtml(name) + '</span>' +
                 glyphsHtml + '</div>';
         html += '<div class="md-pp-price">' + priceHtml + '</div>';
-        if (desc) html += '<div class="md-pp-desc">' + escHtml(desc) + '</div>';
+        if (desc) html += '<div class="md-pp-desc" lang="' + LOCALE + '">' + escHtml(desc) + '</div>';
         // W14-1 — portion + calories rendered as a small muted suffix.
         var portionBits = [];
         if (d.portion)  portionBits.push(escHtml(d.portion));

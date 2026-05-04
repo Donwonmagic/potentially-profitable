@@ -657,6 +657,93 @@ header.nav{min-height:64px}
    render a guide-circle so the operator places content inside the
    safe zone. */
 .md-preview-paper[data-shape="round"]{border-radius:50%;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 25%,transparent),0 1px 2px rgba(0,0,0,0.08)}
+
+/* ----------------------------------------------------------------
+   Wave studio-quality (T6) — paper-stock aware preview overlay.
+
+   Each paper format declares a stock (data/papers.js). Until now
+   that field drove nothing visible. Now the preview surfaces a
+   stock-specific overlay so operators see the difference between
+   24lb-text (everyday office paper), 80lb-cover (postcard-weight),
+   100lb-cover (premium uncoated, table-tents and table-cards),
+   120lb-coaster (rigid pulp board, beer-mats), 70lb-uncoated
+   (recycled-feel placemats), rigid-board (foam-core posters),
+   screen-rgb (digital displays).
+
+   Each overlay is implemented via CSS pseudo-elements + radial /
+   repeating gradients keyed to the data-stock attribute. The
+   underlying --paper color is preserved; we ADD a thin overlay
+   so contrast doesn't suffer. Subtle by design — operators
+   should feel the stock, not be distracted by it. */
+
+.md-preview-paper[data-stock]{position:relative;overflow:hidden}
+.md-preview-paper[data-stock]::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;mix-blend-mode:multiply;opacity:.55;
+}
+
+/* 24lb-text & 32lb-text — everyday office cream, very light grain */
+.md-preview-paper[data-stock="24lb-text"]::after,
+.md-preview-paper[data-stock="32lb-text"]::after{
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,250,235,.25), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(255,250,235,.15), transparent 60%);
+}
+
+/* 80lb-cover — postcard / brochure weight: subtle warm paper hue +
+   very faint stipple (looks like fine cover stock under print light) */
+.md-preview-paper[data-stock="80lb-cover"]::after{
+  background:
+    repeating-radial-gradient(circle at 20% 30%, rgba(160,140,110,.04) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 50% 50%, rgba(200,180,150,.10), transparent 70%);
+}
+
+/* 100lb-cover — premium uncoated. Stronger creamy warm tint +
+   fiber-suggestive radial glow.  */
+.md-preview-paper[data-stock="100lb-cover"]::after{
+  background:
+    repeating-radial-gradient(circle at 30% 70%, rgba(140,115,80,.05) 0 1px, transparent 1px 5px),
+    repeating-radial-gradient(circle at 70% 30%, rgba(140,115,80,.04) 0 1px, transparent 1px 6px),
+    radial-gradient(ellipse at 50% 40%, rgba(210,185,150,.16), transparent 75%);
+  opacity:.65;
+}
+
+/* 120lb-coaster — pulp board. Beige tint + visible fiber pattern */
+.md-preview-paper[data-stock="120lb-coaster"]::after{
+  background:
+    repeating-linear-gradient(38deg, rgba(170,140,100,.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-22deg, rgba(170,140,100,.04) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at center, rgba(190,160,120,.20), transparent 80%);
+  opacity:.75;
+}
+
+/* 70lb-uncoated — recycled placemat. Warmer + visible fiber */
+.md-preview-paper[data-stock="70lb-uncoated"]::after{
+  background:
+    repeating-linear-gradient(45deg, rgba(150,125,90,.06) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 50%, rgba(180,150,110,.12), transparent 70%);
+  opacity:.7;
+}
+
+/* rigid-board — A1/A2 menu board. Smooth, slightly cooler */
+.md-preview-paper[data-stock="rigid-board"]::after{
+  background: radial-gradient(ellipse at center, rgba(220,225,230,.10), transparent 75%);
+  opacity:.5;
+}
+
+/* screen-rgb — digital display. Cooler tint, slight backlit glow */
+.md-preview-paper[data-stock="screen-rgb"]::after{
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(180,210,255,.12), transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(180,210,255,.08), transparent 60%);
+  mix-blend-mode:screen;
+  opacity:.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No animation involved, but if a future iteration adds one,
+     the reduced-motion query is a single source of truth. */
+}
 .md-pp-panel-role{position:absolute;top:6px;left:8px;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55;pointer-events:none}
 @media(max-width:640px){
   .md-preview-paper[data-flow="panel"]{grid-template-columns:1fr;aspect-ratio:auto}
@@ -842,9 +929,33 @@ header.nav{min-height:64px}
 /* Dish row — generous baseline padding (10px) so dishes have room
    to breathe; description hangs below the name without crowding. */
 .md-preview-paper .md-pp-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;padding:10px 0;break-inside:avoid;position:relative}
-.md-preview-paper .md-pp-name{font-weight:500;color:var(--ink)}
-.md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums}
-.md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4}
+.md-preview-paper .md-pp-name{font-weight:500;color:var(--ink);font-feature-settings:"kern" 1,"liga" 1,"calt" 1}
+.md-preview-paper .md-pp-price{color:var(--ink);font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1,"frac" 1}
+/* Wave studio-quality (T5.2) — typesetting craft on dish descriptions.
+   - hyphens: auto       — soft-break long words (e.g. caponata-rigatoni)
+                           via the browser's hyphenation engine instead
+                           of leaving an awful right-rag gap
+   - hanging-punctuation — quote marks + opening parens hang outside
+                           the column edge for cleaner optical alignment
+                           (Safari + Firefox; Chromium ignores)
+   - text-wrap: pretty   — Chrome 117+/Safari 17+: optimizes orphans
+                           and last-line balance; older browsers ignore
+   - font-feature-settings — kerning + ligatures + contextual alts on,
+                             default off in many user-agent stylesheets
+   - text-rendering: optimizeLegibility — pulls in opsz axis on
+                                          variable fonts that have it */
+.md-preview-paper .md-pp-desc{grid-column:1/-1;color:var(--muted);font-size:0.86em;margin-top:2px;line-height:1.4;hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto;text-wrap:pretty;hanging-punctuation:first last;font-feature-settings:"kern" 1,"liga" 1,"clig" 1,"calt" 1,"onum" 1;text-rendering:optimizeLegibility}
+.md-preview-paper{font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+/* Tracking by point size — match high-end print typography practice.
+   Smaller body sizes need slightly more letter-spacing to stay open;
+   large display sizes need slightly tighter spacing to feel set. The
+   md-shrink classes override below for tight cascades. */
+.md-preview-paper{letter-spacing:0.005em}
+.md-preview-paper.md-shrink-1{letter-spacing:0.008em}
+.md-preview-paper.md-shrink-2{letter-spacing:0.012em}
+.md-preview-paper.md-shrink-3{letter-spacing:0.014em}
+.md-preview-paper.md-shrink-4{letter-spacing:0.016em}
+.md-preview-paper h2.md-pp-section{letter-spacing:.04em}  /* unchanged display tracking */
 /* W12-2 — pairing italic line in accent color, modifier muted, half-price inline tag */
 .md-preview-paper .md-pp-pairing{grid-column:1/-1;color:var(--accent);font-size:0.78em;font-style:italic;margin-top:2px;line-height:1.45}
 .md-preview-paper .md-pp-pairing::before{content:'\2737  ';opacity:.7}
