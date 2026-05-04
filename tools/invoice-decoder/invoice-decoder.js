@@ -623,6 +623,35 @@
             );
           }
         }).then(function (ocrResult) {
+          // Rotation fallback: if the first ensemble pass returned
+          // suspiciously little text, try a 90°-rotated canvas. This
+          // catches PDFs whose page rotation metadata didn't make it
+          // through and phone shots whose EXIF orientation was
+          // missing or wrong. Only fires when the original returned
+          // < 3 usable lines AND we have an applyExifOrientation
+          // helper to do the rotation cheaply.
+          var lineCount = (ocrResult && ocrResult.lines) ? ocrResult.lines.length : 0;
+          if (lineCount < 3 && typeof MID_PREPROCESS !== 'undefined' &&
+              MID_PREPROCESS.applyExifOrientation) {
+            try {
+              var rotated = MID_PREPROCESS.applyExifOrientation(page.gentle, 6); // 90° CW
+              return MID_OCR.recognizeMultiPass(rotated, rotated, {
+                lang: langArg, psm: 6
+              }).then(function (rotResult) {
+                if ((rotResult.lines || []).length > lineCount) {
+                  if (window.plausible) {
+                    try { window.plausible('Invoice Decoder Rotation Fallback', {
+                      props: { rotated_lines: rotResult.lines.length, original_lines: lineCount }
+                    }); } catch (_) {}
+                  }
+                  return rotResult;
+                }
+                return ocrResult;
+              }).catch(function () { return ocrResult; });
+            } catch (_) { /* fall through to original */ }
+          }
+          return ocrResult;
+        }).then(function (ocrResult) {
           // W2-4: per-line adaptive bbox re-OCR. Lines that came
           // back amber (<70% confidence) and carry a bbox get
           // re-read with PSM 7 + widened whitelist on a tight crop.
@@ -2913,10 +2942,46 @@
     } catch (_) {}
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
-      parsedList.innerHTML = '<li class="id-parsed-empty">' +
-        tt('Couldn\'t find any line items. Try a sharper photo or your distributor\'s PDF if available.',
-           'No se encontraron partidas. Intenta con una foto más nítida o el PDF de tu distribuidor si lo tienes.') +
-        '</li>';
+      // Specific diagnostic: was this an OCR-returned-zero-text problem
+      // (small or rotated source) or a parser-found-zero-items problem
+      // (text was readable but didn't fit any known line shape)?
+      var rawOcr = parsed._rawOcrText || '';
+      var hadAnyText = /\S/.test(rawOcr);
+      var dim = (pendingPages && pendingPages[0] && pendingPages[0].gentle)
+        ? (pendingPages[0].gentle.width + '×' + pendingPages[0].gentle.height)
+        : null;
+      var hint;
+      if (!hadAnyText) {
+        // OCR found no text at all — almost always a resolution or
+        // rotation issue. Surface the actual canvas size so the
+        // operator can see the source was tiny.
+        hint = tt(
+          'OCR returned no text from this image' + (dim ? ' (' + dim + ' px)' : '') + '. ' +
+          'Most common causes: scan resolution too low, page rotated 90°, or image-only PDF saved at low DPI. ' +
+          'Try: (1) re-scan at 300 DPI or higher; (2) photograph the page directly with your phone camera; ' +
+          '(3) if your distributor offers a text-based PDF, use that instead.',
+          'OCR no encontró texto en esta imagen' + (dim ? ' (' + dim + ' px)' : '') + '. ' +
+          'Causas más comunes: resolución baja, página rotada 90°, o PDF escaneado a baja resolución. ' +
+          'Intenta: (1) re-escanea a 300 DPI o más; (2) toma una foto directa con tu cámara; ' +
+          '(3) si tu distribuidor ofrece un PDF basado en texto, úsalo.'
+        );
+      } else {
+        // OCR had text, parser couldn't find line shapes. Different
+        // failure mode — likely a free-form receipt or unusual layout.
+        hint = tt(
+          'OCR read text but no item rows fit a known invoice layout. ' +
+          'The raw text is below if you want to copy it manually. ' +
+          'For best results, your distributor\'s PDF (if available) reads cleanest.',
+          'OCR leyó texto pero no encontró partidas en un formato conocido. ' +
+          'El texto crudo está abajo si quieres copiarlo manualmente. ' +
+          'Para mejores resultados, usa el PDF de tu distribuidor si está disponible.'
+        );
+      }
+      parsedList.innerHTML = '<li class="id-parsed-empty">' + escHtml(hint) + '</li>';
+      // Hide the "0 items" header since the real message is in the
+      // empty-state body above. Operator shouldn't see a contradictory
+      // count alongside a "no rows" diagnostic.
+      if (parsedCount) parsedCount.textContent = '';
       parsedEl.hidden = false;
       return;
     }

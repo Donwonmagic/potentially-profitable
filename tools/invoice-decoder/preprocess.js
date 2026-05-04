@@ -690,14 +690,27 @@
     return dst;
   }
   // Compute target scale for a low-DPI canvas. Returns 1 when no
-  // upscale is needed (canvas already ≥ MIN_DPI long edge).
-  function suggestUpscale(canvas, minLongEdge) {
+  // upscale is needed.
+  //
+  // Pre-fix: this used long-edge as the threshold, which mis-handled
+  // narrow tall images (a 540×2000 macOS-Quartz scanned PDF page —
+  // the "thermal-receipt-shaped" capture — read 'long edge already
+  // > 1600, no upscale needed' and skipped, leaving Tesseract with
+  // ~10px-tall glyphs it couldn't read. The SHORT edge is the real
+  // DPI proxy: text columns run horizontally, so width=column-width
+  // is what determines whether characters are legible.
+  //
+  // New rule: upscale when the SHORT edge is below the floor.
+  // minShortEdge defaults to 1100 (a letter page at ~140 DPI; below
+  // that Tesseract begins struggling). Cap factor at 3.0 — beyond
+  // that we're rendering noise as bigger noise.
+  function suggestUpscale(canvas, minShortEdge) {
     if (!canvas) return 1;
-    minLongEdge = minLongEdge || 1600;
-    var le = Math.max(canvas.width, canvas.height);
-    if (le >= minLongEdge) return 1;
-    var s = minLongEdge / le;
-    return Math.min(s, 2.5);   // cap at 2.5× to bound memory
+    minShortEdge = minShortEdge || 1100;
+    var shortEdge = Math.min(canvas.width, canvas.height);
+    if (shortEdge >= minShortEdge) return 1;
+    var s = minShortEdge / shortEdge;
+    return Math.min(s, 3.0);
   }
 
   // -------------------- Wave 4.7: Drop-shadow detection --------------------
@@ -1686,15 +1699,21 @@
         }
       } catch (_) { /* never block on rectification failure */ }
     }
-    // Wave 9.3 — bicubic super-resolution on low-DPI inputs when
-    // heavy mode is enabled. Only fires when the canvas long-edge is
-    // below MIN_DPI; expensive on capable devices, never runs on
-    // lean. Output is a larger canvas with the same content shape.
+    // Bicubic upscale on low-DPI inputs.
+    //
+    // Pre-fix: this was gated to heavy-mode, with long-edge threshold.
+    // Real-world failure (macOS Quartz scanned PDF, 540×2000 px): a
+    // tall narrow image read 'long edge already > 1600, skip' AND
+    // 'lean device, skip', producing a 10-px-glyph canvas Tesseract
+    // could not read at all. Symptom: "0 items" with no hint why.
+    //
+    // New rule: ALWAYS run when suggestUpscale (now short-edge based)
+    // returns > 1.05. The cost is a few hundred ms on tiny images;
+    // the benefit is OCR works at all on low-resolution sources. On
+    // already-large inputs the suggester returns 1 and this is free.
     try {
-      if (root && root.MID_DEVICE_TIER && root.MID_DEVICE_TIER.heavyEnabled && root.MID_DEVICE_TIER.heavyEnabled()) {
-        var s = suggestUpscale(canvas, 1600);
-        if (s > 1.05) canvas = bicubicUpscale(canvas, s);
-      }
+      var s = suggestUpscale(canvas, 1100);
+      if (s > 1.05) canvas = bicubicUpscale(canvas, s);
     } catch (_) {}
     // Wave 9.5 — curled-receipt dewarping. Phone shots of long thermal
     // receipts (Costco Business, restaurant supply receipts) commonly

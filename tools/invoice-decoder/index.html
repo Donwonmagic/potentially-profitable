@@ -811,8 +811,10 @@ header.nav{min-height:64px}
     align-self:start;
   }
   .id-preview-wrap{
-    position:sticky;
-    top:96px;
+    /* Preview tile scrolls naturally with column 1 (no rail-pin).
+       Earlier rail-pin behavior overlapped the keyboard-shortcuts
+       block and bled into the next section on short parsed lists,
+       so the pin was removed in favor of natural scroll. */
     margin-top:0;
     /* Compact the preview tiles into a single-column rail-friendly
        stack. Smaller thumb height; meta wraps cleanly. */

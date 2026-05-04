@@ -1326,10 +1326,14 @@ console.log(`\nDesktop split-pane (Wave 6.10):`);
   console.log(`  ${okContents ? '✓' : '✗'} EN page applies display:contents to .id-parsed inside the breakpoint`);
   if (okContents) splitPass++; else splitFail++;
 
-  // Sticky preview rail.
-  const okSticky = /\.id-preview-wrap\{position:sticky/.test(enHtml.replace(/\s+/g, ''));
-  console.log(`  ${okSticky ? '✓' : '✗'} EN page makes .id-preview-wrap sticky in the rail`);
-  if (okSticky) splitPass++; else splitFail++;
+  // Preview rail is NOT sticky on parsed pages. The sticky behavior
+  // overlapped the keyboard-shortcut rail and bled into the next
+  // section on short parsed lists; removed in favor of natural
+  // scroll. The :has(.id-parsed[hidden]) rule still applies static
+  // positioning on the pre-OCR state separately.
+  const noSticky = !/\.id-preview-wrap\{[^}]*position:sticky/.test(enHtml.replace(/\s+/g, ''));
+  console.log(`  ${noSticky ? '✓' : '✗'} EN page no longer pins .id-preview-wrap sticky (avoids scroll-overlap)`);
+  if (noSticky) splitPass++; else splitFail++;
 
   // The :has() guard for hidden parsed panel — fallback to single column pre-OCR.
   const okHas = /\.id-result-area:has\(\.id-parsed\[hidden\]\)/.test(enHtml);

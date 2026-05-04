@@ -127,6 +127,7 @@
       'Invoice Decoder Read',
       'Invoice Decoder Recon Note Copied',
       'Invoice Decoder Recovery Set',
+      'Invoice Decoder Rotation Fallback',
       'Invoice Decoder Row Confirmed',
       'Invoice Decoder Row Ignored',
       'Invoice Decoder Saved',
