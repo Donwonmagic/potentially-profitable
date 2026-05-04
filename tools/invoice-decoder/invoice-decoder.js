@@ -551,11 +551,30 @@
     var doneShare = 0;
     var allLines = [];
     var fullText = '';
+    var invoiceBiasReplacements   = 0;  // Wave 4.4 — sum across pages
+    var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
+    var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
+    var page1WordsForColumns      = [];  // Layout-aware OCR refinement source
+
+    // Wave 9.4 — heavy-tier language packs (chi_sim/chi_tra/jpn/kor)
+    // when the operator's preferences or vendor history imply them.
+    // Lean devices collapse to eng+spa.
+    var langArg = (typeof MID_LANG_PACK !== 'undefined' && MID_LANG_PACK.languageArg)
+      ? MID_LANG_PACK.languageArg()
+      : 'eng+spa';
 
     pendingPages.reduce(function (chain, page, pageIdx) {
       return chain.then(function () {
-        return MID_OCR.recognizeMultiPass(page.aggressive, page.gentle, {
-          lang: 'eng+spa',
+        // Wave 9.2 — ensemble OCR: Tesseract multipass + PaddleOCR
+        // when heavy mode is enabled by the device-tier detector.
+        // The ensemble degrades to Tesseract-only on lean devices,
+        // when Paddle's model fails to load, or when the JS bundle
+        // isn't available — no operator-visible failure.
+        var recognize = (typeof MID_OCR.recognizeMultiPassEnsemble === 'function')
+          ? MID_OCR.recognizeMultiPassEnsemble
+          : MID_OCR.recognizeMultiPass;
+        return recognize(page.aggressive, page.gentle, {
+          lang: langArg,
           psm: 6,
           onProgress: function (p) {
             setProgress(2 + doneShare + p * pageShare);
@@ -606,6 +625,17 @@
           if (pageIdx === 0) {
             // First page: trust everything.
             allLines = allLines.concat(newLines);
+            // Wave 14.7+ — capture page-1 word data once for the
+            // column-aware orchestrator. Wave 4.4 made lines[].words
+            // populated on every recognize() call, so we can derive
+            // the flat words list from the data we already have
+            // instead of paying for an extra recognize pass.
+            page1WordsForColumns = [];
+            newLines.forEach(function (ln) {
+              if (Array.isArray(ln.words) && ln.words.length) {
+                page1WordsForColumns = page1WordsForColumns.concat(ln.words);
+              }
+            });
           } else {
             var seenHashes = new Set();
             allLines.forEach(function (l) { seenHashes.add(normalizeForDedup(l.text)); });
@@ -627,13 +657,57 @@
             }
           }
           fullText += '\n' + (ocrResult.text || '');
+          if (typeof ocrResult.userWordsBiasCount === 'number') {
+            invoiceBiasReplacements += ocrResult.userWordsBiasCount;
+          }
+          // Wave 9.2 — ensemble attribution. When Paddle contributed
+          // (replaced ≥1 Tesseract line on this page), bump the
+          // counters once per page. Telemetry is bounded to small
+          // bucket counts; no row text, no bbox.
+          if (ocrResult.ensembleStats && ocrResult.ensembleStats.replacedByPaddle > 0) {
+            invoicePaddleReplacements += ocrResult.ensembleStats.replacedByPaddle;
+            invoicePaddlePages++;
+          }
           doneShare += pageShare;
         });
       });
     }, Promise.resolve()).then(function () {
       setProgress(96);
       advancePhase(2);  // Wave 5.2 — sorting now
+      // Wave 4.4 — bump telemetry once per invoice so the
+      // returning-visitor banner can report compounding accuracy
+      // gains. The replacements counter is a sum; the invoices
+      // counter ticks once when ≥1 replacement happened.
+      if (invoiceBiasReplacements > 0 &&
+          typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+        try {
+          MID_TELEMETRY.bump('userWordsBiasReplacements', invoiceBiasReplacements);
+          MID_TELEMETRY.bump('userWordsBiasInvoices', 1);
+        } catch (_) {}
+      }
+      // Wave 9.2 — Paddle ensemble attribution. Same posture: pure
+      // tallies, bumped once per invoice where the second engine
+      // changed at least one line.
+      if (invoicePaddleReplacements > 0 &&
+          typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+        try {
+          MID_TELEMETRY.bump('paddleEnsembleReplacements', invoicePaddleReplacements);
+          MID_TELEMETRY.bump('paddleEnsembleInvoices', 1);
+        } catch (_) {}
+        if (window.plausible) {
+          try {
+            window.plausible('Invoice Decoder Paddle Ensemble', { props: {
+              replaced_bucket: invoicePaddleReplacements < 3 ? '<3' :
+                              invoicePaddleReplacements < 10 ? '3-9' : '10+',
+              pages_bucket:    invoicePaddlePages < 2 ? '1' :
+                              invoicePaddlePages < 4 ? '2-3' : '4+'
+            } });
+          } catch (_) {}
+        }
+      }
       var parsed = MID_PARSE.parseLines(allLines, fullText);
+      parsed._userWordsBiasCount   = invoiceBiasReplacements;
+      parsed._paddleReplacements   = invoicePaddleReplacements;
       // Wave B3 — vendor detection. When detect() crosses
       // threshold the rows get a confidence boost (knowing the
       // column layout removes a chunk of OCR uncertainty) and
@@ -698,22 +772,20 @@
       // Wave 5.3 — preserve raw OCR text so the operator can debug
       // when the parsed-row count is unexpectedly low.
       parsed._rawOcrText = fullText;
-      // Wave 14.7 — column-aware refinement. Runs ONLY when the
-      // matched vendor template carries columnsEnabled:true (Sysco
-      // first; other vendors enable as their fixtures validate).
-      // Costs one extra OCR pass on page-1 gentle canvas to surface
-      // word bboxes — gated so non-Sysco invoices pay nothing.
+      // Column-aware refinement. Runs for every vendor — the
+      // orchestrator's internal guards (≥30 words with bboxes, ≥3
+      // detected columns, ±50% sanity check, math-coherence guard)
+      // bypass cleanly on inputs that don't have a clean grid
+      // (thermal receipts, screenshots). Words are sourced from the
+      // multipass OCR result we already have (Wave 4.4 made
+      // lines[].words populated on every recognize call), so this
+      // costs nothing additional on top of the regular pipeline.
       var columnsRefinePromise = Promise.resolve(parsed);
-      if (enrichment && enrichment.columnsEnabled &&
-          typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
-          typeof MID_OCR.recognizeCanvasWithWords === 'function' &&
-          pendingPages.length && pendingPages[0].gentle) {
-        columnsRefinePromise = MID_OCR.recognizeCanvasWithWords(pendingPages[0].gentle, {
-          lang: 'eng+spa', psm: 6
-        }).then(function (wordResult) {
-          var words = (wordResult && wordResult.words) || [];
-          return MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, words);
-        }).catch(function () { return parsed; });
+      if (typeof MID_COLUMNS !== 'undefined' && MID_COLUMNS.refineParsed &&
+          pendingPages.length && pendingPages[0].gentle &&
+          page1WordsForColumns.length >= 30) {
+        columnsRefinePromise = MID_COLUMNS.refineParsed(parsed, pendingPages[0].gentle, page1WordsForColumns)
+          .catch(function () { return parsed; });
       }
       columnsRefinePromise.then(function () {
         renderParsed(parsed);
@@ -2887,6 +2959,17 @@
     renderTrustSummary(parsed);
     renderVendorPulse(parsed);
     renderInsights(parsed);
+    // Decision Brief (Wave A+B) — synthesises findings from every
+    // detector into one ranked card at #idBriefing. Renders after
+    // the legacy surfaces so it sits visually FIRST in the DOM
+    // (the briefing aside is positioned above #idTrustSummary in
+    // index.html). The briefing module gracefully no-ops when
+    // MID_DECISION_BRIEF or MID_BRIEFING_CARD aren't loaded.
+    try {
+      if (typeof MID_BRIEFING_CARD !== 'undefined' && MID_BRIEFING_CARD.renderFromParsed) {
+        MID_BRIEFING_CARD.renderFromParsed(parsed, parsed.vendor || null);
+      }
+    } catch (_) {}
     // Wave 2.6 — margin-impact callout if Plate Cost dishes exist.
     renderMarginImpact(parsed);
     // Wave 4.3 — auto-learn observation. When no vendor matched
@@ -3392,12 +3475,28 @@
                 if (!r.category || r.lineTotal == null) return;
                 totalsByCategory[r.category] = +(((totalsByCategory[r.category] || 0) + r.lineTotal).toFixed(2));
               });
+              // Wave 9.4 — propagate vendor's required language packs
+              // into the trend entry so the next invoice can opportunistically
+              // pre-load chi_sim/kor/jpn etc. Only the lang strings are
+              // persisted; no PII.
+              var trendVendorLangs = null;
+              try {
+                if (typeof MID_VENDORS !== 'undefined' && payload.vendor) {
+                  var vTpl = MID_VENDORS.REGISTRY && MID_VENDORS.REGISTRY.find &&
+                             MID_VENDORS.REGISTRY.find(function (v) { return v.id === payload.vendor; });
+                  if (vTpl) {
+                    if (Array.isArray(vTpl.requiresLangs)) trendVendorLangs = vTpl.requiresLangs.slice();
+                    else if (typeof vTpl.requiresLang === 'string') trendVendorLangs = [vTpl.requiresLang];
+                  }
+                }
+              } catch (_) {}
               MuntinContext.pushTrendEntry({
                 vendor:           payload.vendor || null,
                 savedAt:          payload.savedAt,
                 totalsByCategory: totalsByCategory,
                 parsedSum:        payload.parsedSum,
-                itemCount:        payload.itemCount
+                itemCount:        payload.itemCount,
+                requiresLangs:    trendVendorLangs
               });
             }
           } catch (_) {}
@@ -3638,12 +3737,13 @@
     refreshBulkCount();
   };
 
-  function showBulkUndo(message, undoFn) {
+  function showBulkUndo(message, undoFn, opts) {
     var host = document.getElementById('idBulkUndo');
     var msg = document.getElementById('idBulkUndoMsg');
     var btn = document.getElementById('idBulkUndoBtn');
     var fill = document.getElementById('idBulkUndoFill');
     if (!host || !msg || !btn || !fill) return;
+    var ttl = (opts && typeof opts.ttl === 'number') ? opts.ttl : 5000;
     if (host.__timer) clearTimeout(host.__timer);
     host.hidden = false;
     msg.textContent = message;
@@ -3651,7 +3751,7 @@
     fill.style.width = '100%';
     // Force reflow then animate the fill.
     void fill.offsetWidth;
-    fill.style.transition = 'width 5000ms linear';
+    fill.style.transition = 'width ' + ttl + 'ms linear';
     fill.style.width = '0%';
     var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
@@ -3660,8 +3760,10 @@
       try { undoFn(); } catch (_) {}
       host.hidden = true;
     });
-    host.__timer = setTimeout(function () { host.hidden = true; }, 5000);
+    host.__timer = setTimeout(function () { host.hidden = true; }, ttl);
   }
+  // Expose for the briefing action layer (Wave C).
+  if (typeof window !== 'undefined') window.MID_DECODER_UNDO = showBulkUndo;
 
   if (bulkConfirm) {
     bulkConfirm.addEventListener('click', function () {

@@ -132,7 +132,20 @@
     'manualCorrections', 'bulkConfirms',
     'trustAlls', 'trustAllsUndone',
     'rowsConfirmedAsIs', 'rowsTotal',
-    'invoicesSaved', 'invoicesShadowEvaluated'
+    'invoicesSaved', 'invoicesShadowEvaluated',
+    // Wave 4.4 — operator-corpus user-words bias metrics. The
+    // replacements counter ticks once per OCR token snapped to a
+    // user-word; the invoices counter ticks once per invoice that
+    // benefited at all. Both are pure tallies — no SKU text, no
+    // filename, no operator data. Drives the "tool got smarter on
+    // your last N invoices" surface in the returning-visitor banner.
+    'userWordsBiasReplacements', 'userWordsBiasInvoices',
+    // Wave 9.2 — PaddleOCR ensemble attribution. Replacements counter
+    // ticks once per Tesseract line whose text Paddle's second engine
+    // beat (by ≥5pp confidence on the same bbox region). Invoices
+    // counter ticks once per invoice where Paddle won ≥1 line. Pure
+    // tallies; same privacy posture as above.
+    'paddleEnsembleReplacements', 'paddleEnsembleInvoices'
   ];
   var COUNTER_LS_KEY = 'mtn:id-telemetry-counters';
   function _readCounters() {

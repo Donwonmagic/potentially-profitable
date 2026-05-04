@@ -1364,6 +1364,21 @@
         if (s > 1.05) canvas = bicubicUpscale(canvas, s);
       }
     } catch (_) {}
+    // Wave 9.5 — curled-receipt dewarping. Phone shots of long thermal
+    // receipts (Costco Business, restaurant supply receipts) commonly
+    // bow upward in the middle as the paper curls. The dewarp fits a
+    // quadratic baseline through the dominant text line at three
+    // x-positions and shifts each column to flatten the bow. Cheap
+    // enough to run unconditionally on thermal inputs; phone-photo
+    // inputs run it after rectification so a curl on top of a quad-
+    // corrected page also gets handled. Skipped on flat/screenshot.
+    try {
+      if (root && root.MID_DEVICE_TIER && root.MID_DEVICE_TIER.heavyEnabled && root.MID_DEVICE_TIER.heavyEnabled()) {
+        if (profile === 'thermal' || profile === 'phone') {
+          canvas = dewarpCurledReceipt(canvas, { thresholdPx: 6 });
+        }
+      }
+    } catch (_) {}
     // 1. Deskew. Screenshots are pixel-aligned by definition; skip.
     var skew = doDeskew ? detectSkewAngle(canvas) : 0;
     var deskewed = doDeskew ? rotateCanvas(canvas, -skew) : canvas;

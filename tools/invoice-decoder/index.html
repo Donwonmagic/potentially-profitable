@@ -629,6 +629,46 @@ header.nav{min-height:64px}
 /* Wave 5.5 — Trust summary panel above the vendor pulse */
 .id-trust-summary{margin:0 0 12px;padding:14px 16px;background:#f4f7f5;border:1px solid var(--line);border-radius:10px}
 .id-trust-summary[hidden]{display:none}
+/* Decision Brief — ranked "what mattered today" card */
+.id-briefing{margin:0 0 12px;padding:14px 16px;background:var(--cream-2,#FAF7F2);border:1px solid var(--line);border-left:3px solid var(--teal,#1F4E5B);border-radius:10px}
+.id-briefing[hidden]{display:none}
+.id-briefing[data-tone="alert"]{border-left-color:#7a2e1f;background:color-mix(in srgb,#fce0d7 30%,var(--cream-2,#FAF7F2))}
+.id-briefing[data-tone="warn"]{border-left-color:#B25C2A;background:color-mix(in srgb,#FFF6E5 30%,var(--cream-2,#FAF7F2))}
+.id-briefing[data-tone="ok"]{border-left-color:#0c4a26}
+.id-briefing-head{display:flex;align-items:baseline;justify-content:space-between;margin:0 0 10px;gap:10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.id-briefing-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.id-brief-row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:10px 0;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.id-brief-row:first-child{border-top:0;padding-top:2px}
+.id-brief-glyph{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff}
+.id-brief-glyph[data-tone="alert"]{background:#7a2e1f}
+.id-brief-glyph[data-tone="warn"]{background:#B25C2A}
+.id-brief-glyph[data-tone="info"]{background:var(--teal,#1F4E5B)}
+.id-brief-glyph[data-tone="ok"]{background:#0c4a26}
+.id-brief-glyph[data-tone="positive"]{background:#0c4a26}
+.id-brief-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.id-brief-msg{margin:0;font-size:13.5px;color:var(--ink);line-height:1.45;font-variant-numeric:tabular-nums}
+.id-brief-msg strong{font-weight:600}
+.id-brief-sub{margin:0;font-size:12px;color:var(--ink-soft);line-height:1.4}
+.id-brief-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.id-brief-action{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer;font-weight:500}
+.id-brief-action:hover{border-color:var(--ink-soft)}
+.id-brief-action--primary{background:var(--teal,#1F4E5B);color:#fff;border-color:var(--teal,#1F4E5B)}
+.id-brief-action--primary:hover{filter:brightness(1.08)}
+.id-brief-action--alert{background:#7a2e1f;color:#fff;border-color:#7a2e1f}
+.id-brief-action:focus-visible{outline:2px solid var(--teal,#1F4E5B);outline-offset:2px}
+.id-brief-evidence{font:inherit;font-size:11.5px;padding:4px 0;background:none;border:0;color:var(--ink-soft);cursor:pointer;text-decoration:underline;align-self:flex-start}
+.id-brief-evidence:hover{color:var(--ink)}
+.id-brief-more{margin:8px 0 0;padding:0;border:0;background:none;font:inherit;font-size:12px;color:var(--ink-soft);cursor:pointer;text-decoration:underline}
+.id-brief-more:hover{color:var(--ink)}
+.id-brief-extra{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.id-brief-extra[hidden]{display:none}
+.id-brief-green{margin:0;padding:6px 0;font-size:13.5px;color:var(--ink);line-height:1.4}
+.id-brief-green strong{color:#0c4a26}
+@media (prefers-reduced-motion:no-preference){
+  .id-briefing{animation:id-brief-fadein .18s ease-out}
+  @keyframes id-brief-fadein{from{opacity:0;transform:translateY(-2px)}to{opacity:1;transform:translateY(0)}}
+}
+@media print{.id-brief-action,.id-brief-evidence,.id-brief-more{display:none}}
 .id-ts-line{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.55;font-variant-numeric:tabular-nums}
 .id-ts-row{display:flex;gap:8px;flex-wrap:wrap}
 .id-ts-saveas,.id-ts-trustall{padding:8px 16px;border-radius:6px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:inherit}
@@ -983,6 +1023,17 @@ header.nav{min-height:64px}
   .id-honesty-fact{background:#1B1E23;border-color:#2C3036}
   .id-honesty-fact summary{color:#F0EBE0}
   .id-honesty-fact p{color:#C8C2B6}
+  .id-briefing{background:#1B1E23;border-color:#2C3036}
+  .id-briefing[data-tone="alert"]{background:#2A1B16}
+  .id-briefing[data-tone="warn"]{background:#2A2418}
+  .id-briefing-head{color:#A8A294}
+  .id-brief-msg{color:#F0EBE0}
+  .id-brief-sub{color:#C8C2B6}
+  .id-brief-action{background:#1B1E23;color:#F0EBE0;border-color:#2C3036}
+  .id-brief-action--primary{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
+  .id-brief-action--alert{background:#7a2e1f;color:#fff;border-color:#7a2e1f}
+  .id-brief-evidence{color:#C8C2B6}
+  .id-brief-row{border-top-color:#2C3036}
   .id-mathfix{background:#2A2418;border-color:#5A4A30;color:#F0EBE0}
   .id-mathfix-msg{color:#F0EBE0}
   .id-mathfix-apply{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
@@ -1316,11 +1367,16 @@ header.nav{min-height:64px}
     <p class="id-coming" id="idComing" hidden><strong>Next step:</strong> tap "Read this invoice" below to extract every line. We'll show categories, totals, and let you save the result in Wave B5.</p>
 
     <div class="id-parsed" id="idParsed" hidden>
-      <!-- Wave 5.5 — One-tap "this looks right" summary. Surfaces above
-           the vendor pulse with two CTAs gated by math + anomaly checks.
-           Trust-all is disabled if math fails or any row exceeds the
-           anomaly threshold; that disabled-state copy explains why. -->
-      <aside class="id-trust-summary" id="idTrustSummary" hidden role="region" aria-label="Invoice summary"></aside>
+      <!-- Decision Brief — actionable intelligence at the top of every
+           invoice result. Renders the synthesised "what mattered today"
+           card from MID_DECISION_BRIEF + briefing-card.js. Replaces the
+           wall-of-eight-cards with one ranked surface. -->
+      <aside class="id-briefing" id="idBriefing" hidden role="region" aria-label="What mattered on this invoice"></aside>
+
+      <!-- Save / Trust-all decision footer (formerly the trust summary;
+           now stripped to its action row). Briefing card carries the
+           reasoning; this carries the buttons. -->
+      <aside class="id-trust-summary" id="idTrustSummary" hidden role="region" aria-label="Save decision"></aside>
 
       <!-- Wave 2.3 — Vendor Pulse Strip. Shows vendor + line count +
            sum + top movers vs. operator's history. -->
@@ -1537,13 +1593,21 @@ header.nav{min-height:64px}
 <script src="./source-classifier.js?v=20260503-w1-2"></script>
 <script src="./preprocess.js?v=20260501-w8-1"></script>
 <script src="./capture-coach.js?v=20260501-w8-6"></script>
-<script src="./ocr.js?v=20260501-w8-4"></script>
+<script src="./ocr.js?v=20260504-w9-2"></script>
+<script src="./device-tier.js?v=20260504-w9-1" defer></script>
+<script src="./ocr-paddle.js?v=20260504-w9-2" defer></script>
+<script src="./lang-pack.js?v=20260504-w9-4" defer></script>
 <script src="./parse.js?v=20260504-w11-3"></script>
 <script src="./calibration.js?v=20260504-w11-1"></script>
 <script src="./confusion-matrix.js?v=20260504-w11-2"></script>
 <script src="./reconcile.js?v=20260504-w11-4"></script>
 <script src="./columns-orchestrator.js?v=20260504-w14-7"></script>
 <script src="./insights.js?v=20260504-w12"></script>
+<script src="./decision-brief.js?v=20260504-wA"></script>
+<script src="./briefing-card.js?v=20260504-wB" defer></script>
+<script src="./briefing-actions.js?v=20260504-wC" defer></script>
+<script src="./notify-templates.js?v=20260504-wE" defer></script>
+<script src="./proactive.js?v=20260504-wE" defer></script>
 <script src="./insight-card.js?v=20260504-w13-1"></script>
 <script src="./voice-query.js?v=20260504-w13-2"></script>
 <script src="./voice-fab.js?v=20260504-w14-1" defer></script>
@@ -1556,6 +1620,7 @@ header.nav{min-height:64px}
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="./learnings.js?v=20260504-w10-0a"></script>
+<script src="./user-words-bias.js?v=20260504-w14-9"></script>
 <script src="./categorize.js?v=20260501-w8-1"></script>
 <script src="./pack-pricing.js?v=20260501-w8-8"></script>
 <script src="./auto-learn.js?v=20260501-w8-3"></script>
@@ -1582,7 +1647,6 @@ header.nav{min-height:64px}
 <script src="./samples.js?v=20260503-w6-6"></script>
 <script src="./resume.js?v=20260503-w6-10"></script>
 <script src="./self-check.js?v=20260503-w8-7"></script>
-<script src="./device-tier.js?v=20260503-w9-1"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
 <script src="./invoice-decoder.js?v=20260501-w8-9"></script>
 

@@ -33,6 +33,10 @@
   // never paid by non-users. Pinned alongside the other vendors so
   // the SRI manifest covers it once vendor-pin.mjs runs.
   var PDFLIB_VERSION = '1.17.1';
+  // Wave 9.2 — PaddleOCR-WASM (mobile-v3) as a second OCR engine on
+  // capable devices. The @paddlejs-models/ocr package + its model
+  // weights ship from our own origin; no external fetch at runtime.
+  var PADDLEOCR_VERSION = '2.2.5';
 
   // Self-hosted URLs the runtime prefers.
   var SELF = {
@@ -44,7 +48,8 @@
     tessCorePath:  '/assets/vendor/tesseract.js-core@' + TESSCORE_VERSION + '/',
     tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/',
     argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js',
-    pdflib:        '/assets/vendor/pdf-lib@'           + PDFLIB_VERSION   + '/pdf-lib.min.js'
+    pdflib:        '/assets/vendor/pdf-lib@'           + PDFLIB_VERSION   + '/pdf-lib.min.js',
+    paddleocr:     '/assets/vendor/paddleocr@'         + PADDLEOCR_VERSION + '/index.mjs'
   };
 
   // Legacy CDN fallbacks. Only used when the build's vendor-pin
@@ -156,6 +161,7 @@
     TESSDATA_VERSION:  TESSDATA_VERSION,
     HASHWASM_VERSION:  HASHWASM_VERSION,
     PDFLIB_VERSION:    PDFLIB_VERSION,
+    PADDLEOCR_VERSION: PADDLEOCR_VERSION,
     loadManifest:   loadManifest,
     resolve:        resolve,
     loadScript:     loadScript,

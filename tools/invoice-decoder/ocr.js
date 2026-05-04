@@ -185,11 +185,16 @@
                   };
                 }).filter(function (w) { return w.text.length > 0; });
                 if (allWords && lineWords.length) Array.prototype.push.apply(allWords, lineWords);
+                // Always attach lineWords to the line so the
+                // user-words bias (Wave 4.4) has data to work on for
+                // every recognize() call, not just the column-
+                // orchestrator path. Memory cost is transient — the
+                // OCR result is discarded after parse.
                 lines.push({
                   text: (ln.text || '').replace(/\s+/g, ' ').trim(),
                   confidence: typeof ln.confidence === 'number' ? ln.confidence : 0,
                   bbox: ln.bbox || null,
-                  words: withWords ? lineWords : undefined
+                  words: lineWords
                 });
               });
             });
@@ -200,13 +205,28 @@
               return { text: t.trim(), confidence: result.data.confidence || 60, bbox: null };
             });
           }
+          // Wave 4.4 — operator-corpus user-words bias. Runs on every
+          // recognize() call; no-op until the operator's dictionary
+          // crosses MIN_DICT_SIZE. Mutates lines[].words and rebuilds
+          // lines[].text for any line with replacements.
+          var biasReplacements = 0;
+          if (typeof root !== 'undefined' && root && root.MID_USER_WORDS_BIAS) {
+            try { biasReplacements = root.MID_USER_WORDS_BIAS.applyToLines(lines) || 0; } catch (_) {}
+          }
+          var rebuiltText = result.data.text || '';
+          if (biasReplacements > 0) {
+            // Reassemble the flat text blob from the corrected lines so
+            // downstream consumers (parse.js) see the bias too.
+            rebuiltText = lines.map(function (l) { return l.text; }).join('\n');
+          }
           var meanConf = lines.length ? lines.reduce(function (a, b) { return a + b.confidence; }, 0) / lines.length : 0;
           _releaseWorker(lease);
           return {
-            text: result.data.text || '',
+            text: rebuiltText,
             lines: lines,
             meanConfidence: meanConf,
-            words: allWords
+            words: allWords,
+            userWordsBiasCount: biasReplacements
           };
         }).catch(function (err) {
           _releaseWorker(lease);
@@ -256,7 +276,134 @@
         else                                     { merged = g.lines; bestText = g.text; }
       }
       var meanConf = merged.length ? merged.reduce(function (s, b) { return s + b.confidence; }, 0) / merged.length : 0;
-      return { text: bestText, lines: merged, meanConfidence: meanConf, perPass: { aggressive: a, gentle: g } };
+      // Wave 4.4 — surface the per-pass bias counts so the controller
+      // can attribute each invoice's compounding learning. The merged
+      // count is the SUM of both passes (each pass's bias is independent
+      // since recognize() runs the bias on its own line set).
+      var biasCount = (a.userWordsBiasCount || 0) + (g.userWordsBiasCount || 0);
+      return {
+        text: bestText, lines: merged, meanConfidence: meanConf,
+        perPass: { aggressive: a, gentle: g },
+        userWordsBiasCount: biasCount
+      };
+    });
+  }
+
+  // -------------------- Wave 9.2: Tesseract+Paddle ensemble --------------------
+  //
+  // Run the existing Tesseract multipass AND the PaddleOCR adapter in
+  // parallel, then merge by spatial bbox alignment. For each Tesseract
+  // line, look for an overlapping Paddle line; the per-line winner is
+  // whichever engine reported higher confidence on that text region.
+  // Lines with no Paddle counterpart fall through to the Tesseract
+  // result; lines that Paddle found but Tesseract missed get appended.
+  //
+  // Privacy: no network, both engines run locally. The Paddle path
+  // gracefully degrades — when the engine isn't loaded (lean device,
+  // model unavailable, init error) the merge collapses to Tesseract-
+  // only and the operator sees no error.
+  //
+  // Returns the same shape as recognizeMultiPass with one extra field:
+  //   ensembleStats: { tesseractLines, paddleLines, merged, replacedByPaddle }
+  function recognizeMultiPassEnsemble(canvasAggressive, canvasGentle, opts) {
+    var paddle = (typeof root !== 'undefined' && root && root.MID_OCR_PADDLE) || null;
+    if (!paddle || !paddle.shouldTryEngine || !paddle.shouldTryEngine()) {
+      // Lean-device / Paddle-disabled path: same as before.
+      return recognizeMultiPass(canvasAggressive, canvasGentle, opts);
+    }
+    var onProgress = (opts && opts.onProgress) || function () {};
+    return Promise.all([
+      recognizeMultiPass(canvasAggressive, canvasGentle, {
+        lang: (opts && opts.lang) || 'eng+spa',
+        psm:  (opts && opts.psm) || 6,
+        onProgress: function (p) { onProgress(p * 0.7); }
+      }),
+      paddle.recognizeCanvas(canvasGentle, { onProgress: function (p) { onProgress(0.7 + p * 0.25); } })
+    ]).then(function (parts) {
+      var t = parts[0];          // Tesseract multipass result
+      var p = parts[1];          // Paddle result, or null
+      onProgress(0.97);
+      if (!p || !Array.isArray(p.lines) || !p.lines.length) {
+        return Object.assign({}, t, {
+          ensembleStats: { tesseractLines: t.lines.length, paddleLines: 0, merged: t.lines.length, replacedByPaddle: 0 }
+        });
+      }
+
+      // Spatial alignment: for each Tesseract line, find the Paddle
+      // line whose bbox center sits inside the Tesseract bbox (with
+      // 4px slack). When the Paddle line is more confident on the
+      // same region, take Paddle's text. The merge is over content,
+      // not coordinates — Tesseract's per-word data + bbox are
+      // preserved on the merged line so downstream layers (columns,
+      // user-words bias) keep their inputs.
+      var paddleMatched = new Array(p.lines.length);
+      for (var pi = 0; pi < p.lines.length; pi++) paddleMatched[pi] = false;
+      var replaced = 0;
+      var merged = t.lines.map(function (tLine) {
+        if (!tLine.bbox) return tLine;
+        var tbb = tLine.bbox;
+        var bestIdx = -1;
+        var bestConf = -1;
+        for (var i = 0; i < p.lines.length; i++) {
+          if (paddleMatched[i]) continue;
+          var pLine = p.lines[i];
+          if (!pLine.bbox) continue;
+          var pbb = pLine.bbox;
+          var pcx = (pbb.x0 + pbb.x1) / 2;
+          var pcy = (pbb.y0 + pbb.y1) / 2;
+          // Center of Paddle box must fall inside the Tesseract box
+          // (with 4px slack). Tight test — avoids matching neighbors
+          // on dense receipts.
+          if (pcx >= tbb.x0 - 4 && pcx <= tbb.x1 + 4 &&
+              pcy >= tbb.y0 - 4 && pcy <= tbb.y1 + 4) {
+            if (pLine.confidence > bestConf) { bestConf = pLine.confidence; bestIdx = i; }
+          }
+        }
+        if (bestIdx === -1) return tLine;
+        paddleMatched[bestIdx] = true;
+        var pLine2 = p.lines[bestIdx];
+        if (pLine2.confidence > tLine.confidence + 5) {
+          // Paddle wins by a meaningful margin; replace text + conf
+          // but keep Tesseract's bbox + per-word data so downstream
+          // layers don't regress.
+          replaced++;
+          return Object.assign({}, tLine, {
+            text: pLine2.text,
+            confidence: pLine2.confidence,
+            engine: 'paddle',
+            _tesseractText: tLine.text,
+            _tesseractConfidence: tLine.confidence
+          });
+        }
+        return tLine;
+      });
+
+      // Append Paddle-only lines (text Tesseract didn't pick up at
+      // all). Useful on rotated tables where Tesseract drops rows.
+      for (var pi2 = 0; pi2 < p.lines.length; pi2++) {
+        if (!paddleMatched[pi2] && p.lines[pi2].text && p.lines[pi2].confidence >= 60) {
+          merged.push(p.lines[pi2]);
+        }
+      }
+
+      var bestText = merged.map(function (l) { return l.text; }).join('\n');
+      var meanConf = merged.length
+        ? merged.reduce(function (s, b) { return s + (b.confidence || 0); }, 0) / merged.length
+        : 0;
+      onProgress(1);
+      return {
+        text: bestText,
+        lines: merged,
+        meanConfidence: meanConf,
+        perPass: { aggressive: t.perPass.aggressive, gentle: t.perPass.gentle, paddle: p },
+        userWordsBiasCount: t.userWordsBiasCount || 0,
+        ensembleStats: {
+          tesseractLines:    t.lines.length,
+          paddleLines:       p.lines.length,
+          merged:            merged.length,
+          replacedByPaddle:  replaced
+        }
+      };
     });
   }
 
@@ -486,6 +633,7 @@
     loadTesseract:        loadTesseract,
     recognizeCanvas:      recognizeCanvas,
     recognizeMultiPass:   recognizeMultiPass,
+    recognizeMultiPassEnsemble: recognizeMultiPassEnsemble,
     adaptiveReread:       adaptiveReread,
     recognizeRegion:      recognizeRegion,
     recognizeCanvasWithWords: recognizeCanvasWithWords,

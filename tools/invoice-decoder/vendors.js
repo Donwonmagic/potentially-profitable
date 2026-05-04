@@ -274,11 +274,7 @@
       headerLines:      headerLines,
       categoryBias:     stub.categoryBias || null,
       format:           stub.format || 'pdf',
-      alcoholTax:       !!stub.alcoholTax,
-      // Wave 14.7 — column-aware OCR opt-in flag, set per-vendor in
-      // the JSON template. Sysco gets the flag first; other vendors
-      // enable as their fixtures validate.
-      columnsEnabled:   !!(enrichment && enrichment.columnsEnabled)
+      alcoholTax:       !!stub.alcoholTax
     };
     if (enrichment) {
       // Only memoize the facade once enrichment landed.
