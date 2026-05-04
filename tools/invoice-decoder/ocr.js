@@ -205,18 +205,34 @@
               return { text: t.trim(), confidence: result.data.confidence || 60, bbox: null };
             });
           }
-          // Wave 4.4 — operator-corpus user-words bias. Runs on every
-          // recognize() call; no-op until the operator's dictionary
-          // crosses MIN_DICT_SIZE. Mutates lines[].words and rebuilds
-          // lines[].text for any line with replacements.
+          // Wave 4.4 + pattern atlas 4/5 — two-tier OCR bias:
+          //   1. UNIVERSAL confusion atlas — fires from invoice #1
+          //      against canonical digit/letter substitutions on the
+          //      fonts distributors use (8↔B, 0↔O, 5↔S, 1↔I/l/L,
+          //      2↔Z, 6↔G, $↔S, %↔9, /↔1).
+          //   2. OPERATOR vocabulary bias — once the operator has
+          //      ≥5 corrections, edit-distance matches into their
+          //      personal SKU dictionary.
+          // Universal runs first so user-words sees a cleaner token
+          // pool; the two layers compound. Mutates lines[].words and
+          // rebuilds lines[].text on every change.
           var biasReplacements = 0;
+          var universalBiasReplacements = 0;
           if (typeof root !== 'undefined' && root && root.MID_USER_WORDS_BIAS) {
-            try { biasReplacements = root.MID_USER_WORDS_BIAS.applyToLines(lines) || 0; } catch (_) {}
+            try {
+              if (root.MID_USER_WORDS_BIAS.applyAllToLines) {
+                var both = root.MID_USER_WORDS_BIAS.applyAllToLines(lines);
+                universalBiasReplacements = both.universal || 0;
+                biasReplacements          = both.operator  || 0;
+              } else {
+                biasReplacements = root.MID_USER_WORDS_BIAS.applyToLines(lines) || 0;
+              }
+            } catch (_) {}
           }
           var rebuiltText = result.data.text || '';
-          if (biasReplacements > 0) {
+          if (biasReplacements > 0 || universalBiasReplacements > 0) {
             // Reassemble the flat text blob from the corrected lines so
-            // downstream consumers (parse.js) see the bias too.
+            // downstream consumers (parse.js) see both bias layers.
             rebuiltText = lines.map(function (l) { return l.text; }).join('\n');
           }
           var meanConf = lines.length ? lines.reduce(function (a, b) { return a + b.confidence; }, 0) / lines.length : 0;
@@ -226,7 +242,8 @@
             lines: lines,
             meanConfidence: meanConf,
             words: allWords,
-            userWordsBiasCount: biasReplacements
+            userWordsBiasCount: biasReplacements,
+            universalBiasCount: universalBiasReplacements
           };
         }).catch(function (err) {
           _releaseWorker(lease);
