@@ -2160,7 +2160,31 @@
       html += '</div>';
     }
 
+    // Wave studio-quality (perf) — short-circuit when the rendered
+    // HTML matches the previous render AND the cascade-affecting
+    // inputs (paper width, theme sizing tokens, columns, paper key)
+    // are all unchanged. Catches typed-then-deleted, focus-triggered
+    // schedulePreview(), and meta-edits that didn't affect the
+    // preview output. Theme switches invalidate the cache because
+    // the size tokens flow into the cache key. Width going stale
+    // (window resize) also invalidates so the cascade re-fits.
+    var paperRect = paper.getBoundingClientRect();
+    var widthBucket = Math.round(paperRect.width / 4);
+    var fitCacheKey = [
+      widthBucket,
+      paperKey,
+      theme.bodyPt, theme.h1Pt, theme.h2Pt, theme.descPt,
+      theme.columns, theme.dividerStyle, theme.sectionCase,
+      theme.letterSpacing || 'normal',
+      !!(meta && meta.allowMultiPage),
+      !!(meta && meta.quietMode)
+    ].join('|');
+    if (paper.__lastHtml === html && paper.__lastFitCacheKey === fitCacheKey) {
+      return;
+    }
     paper.innerHTML = html;
+    paper.__lastHtml = html;
+    paper.__lastFitCacheKey = fitCacheKey;
     // W24-2 — clear any leftover sibling pages + page-break shims
     // from the previous render. The frame is the multi-page host.
     var frame = paper.parentElement;
