@@ -173,6 +173,7 @@
       // close the diagnosis gap between Tool Loaded and Outbound CTA
       // (the studio handoff). Bounded prop sets enforced by
       // scripts/check-event-prop-cardinality.mjs.
+      'Menu Design CDN Fallback',
       'Menu Design Custom Logo Added',
       'Menu Design Disclaimer Read',
       'Menu Design Downloaded',
@@ -198,6 +199,7 @@
       'Menu Design Specials Exported',
       'Menu Design Tablet Exported',
       'Menu Design Template Loaded',
+      'Menu Design Thermal Exported',
       'Menu Design Text Exported',
       'Menu Design Theme Changed',
       'Menu Design Tool Loaded',

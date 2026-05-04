@@ -125,6 +125,65 @@ const VENDORS = [
     publicPrefix: '/assets/vendor/paddleocr@2.2.5',
     rename: { 'lib/index.mjs': 'index.mjs' },
     optional: true
+  },
+  // ----------------------------------------------------------------
+  // Wave A4 — Menu Design Suite CDN libraries.
+  //
+  // The orchestrator currently lazy-loads these from cdn.jsdelivr.net
+  // on first export. Pinning them locally gives us:
+  //   1. Privacy posture: no outbound request to jsdelivr after first
+  //      cache hit; offline-after-first-use stays the brand promise.
+  //   2. Resilience: if jsdelivr is blocked (corporate network, CDN
+  //      outage, country block), the operator's PDF still ships from
+  //      our origin.
+  //   3. Optional SRI: the runtime can read the SHA-384 from the
+  //      manifest at /assets/vendor/_integrity.json and pin every
+  //      <script integrity> attribute, killing CDN-supply-chain risk.
+  //
+  // All entries are `optional: true` so a build that can't reach the
+  // npm registry succeeds with the runtime falling back to CDN.
+  // ----------------------------------------------------------------
+  {
+    name: 'jspdf',
+    version: '2.5.2',
+    files: ['dist/jspdf.umd.min.js'],
+    publicPrefix: '/assets/vendor/jspdf@2.5.2',
+    optional: true
+  },
+  {
+    name: 'svg2pdf.js',
+    version: '2.4.0',
+    files: ['dist/svg2pdf.umd.min.js'],
+    publicPrefix: '/assets/vendor/svg2pdf.js@2.4.0',
+    optional: true
+  },
+  {
+    name: 'pdf-lib',
+    version: '1.17.1',
+    files: ['dist/pdf-lib.min.js'],
+    publicPrefix: '/assets/vendor/pdf-lib@1.17.1',
+    optional: true
+  },
+  {
+    name: 'html2canvas',
+    version: '1.4.1',
+    files: ['dist/html2canvas.min.js'],
+    publicPrefix: '/assets/vendor/html2canvas@1.4.1',
+    optional: true
+  },
+  {
+    name: 'jszip',
+    version: '3.10.1',
+    files: ['dist/jszip.min.js'],
+    publicPrefix: '/assets/vendor/jszip@3.10.1',
+    optional: true
+  },
+  {
+    name: 'qrcode-generator',
+    version: '1.4.4',
+    files: ['qrcode.js'],
+    publicPrefix: '/assets/vendor/qrcode-generator@1.4.4',
+    optional: true
   }
 ];
 

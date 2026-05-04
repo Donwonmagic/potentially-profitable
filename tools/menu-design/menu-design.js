@@ -247,6 +247,15 @@
     if (typeof MD_TEXT !== 'undefined' && MD_TEXT.exportPlainText) return Promise.resolve(true);
     return loadScript('/tools/menu-design/menu-render-text.js?v=20260503-cs');
   }
+  // Wave A3 — defer theme-thumbs.js (91 KB raw / ~28 KB gz) from boot.
+  // It contains pre-built inline SVG thumbnails for the picker UI,
+  // never used until the operator scrolls to the picker section.
+  // The picker's IntersectionObserver lazy-paints visible thumbs;
+  // ensureMdThumbs() is the gate it consults before reading MD_THUMBS.
+  function ensureMdThumbs() {
+    if (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/theme-thumbs.js?v=20260503-wsq');
+  }
 
   // Convenience: load PDF + HTML + TEXT in parallel for the big-pack
   // exports (Menu Pack ZIP, Bilingual ZIP) that touch all three.
@@ -304,6 +313,10 @@
     ensureMdPdf().catch(function () {});
     ensureMdHtml().catch(function () {});
     ensureMdText().catch(function () {});
+    // Wave A3 — also preload theme-thumbs so the picker thumbnails
+    // materialize without a visible delay on first scroll. Same
+    // gating as the renderers (idle, post-interaction).
+    ensureMdThumbs().catch(function () {});
   }
   if (typeof requestIdleCallback === 'function') {
     var __preloadIdle = false;
@@ -1025,8 +1038,12 @@
             '</summary>' +
             '<div class="md-allergen-panel" role="group" aria-label="' + tt('Allergens, photo, and dietary tags', 'Alérgenos, foto y etiquetas') + '">' +
               '<div class="md-allergen-grid">' + allergenGrid + '</div>' +
-              '<div class="md-spice-row">' +
-                '<span class="md-spice-label">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
+              // Wave B9 finish — accessible group label so screen readers
+              // announce the spice-button cluster as a coherent control,
+              // not three loose chips. Each dot still carries its own
+              // aria-label + aria-pressed for individual state.
+              '<div class="md-spice-row" role="group" aria-label="' + tt('Spice level', 'Nivel de picante') + '">' +
+                '<span class="md-spice-label" aria-hidden="true">' + tt('Spice level', 'Nivel de picante') + ':</span>' +
                 '<button type="button" class="md-spice-dot md-spice-zero' + (dishSpice === 0 ? ' is-on' : '') +
                   '" data-act="spice" data-i="' + i + '" data-level="0" aria-label="' +
                   tt('No spice', 'Sin picante') + '" aria-pressed="' + (dishSpice === 0) + '">∅</button>' +
@@ -4917,22 +4934,52 @@
   // a high-res PNG. Lower fidelity than PDF (rasterized), but the
   // operator never leaves empty-handed.
   // ----------------------------------------------------------------
-  var H2C_CDN = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  // Wave A4 — html2canvas with same-origin vendored fallback.
+  // CDN tried first; on error, /assets/vendor/html2canvas@1.4.1/...
+  // takes over and a Plausible event surfaces the fallback rate.
+  var H2C_CDN    = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+  var H2C_VENDOR = '/assets/vendor/html2canvas@1.4.1/html2canvas.min.js';
   var __h2cLoadPromise = null;
   function loadHtml2Canvas() {
     if (window.html2canvas) return Promise.resolve(window.html2canvas);
     if (__h2cLoadPromise) return __h2cLoadPromise;
-    __h2cLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = H2C_CDN; s.async = true; s.crossOrigin = 'anonymous'; s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (window.html2canvas) resolve(window.html2canvas);
-        else { __h2cLoadPromise = null; reject(new Error('html2canvas missing after load')); }
-      };
-      s.onerror = function () { __h2cLoadPromise = null; reject(new Error('html2canvas load failed')); };
-      document.head.appendChild(s);
+    __h2cLoadPromise = _loadCdnOrVendorMd(H2C_CDN, H2C_VENDOR, 'html2canvas').then(function () {
+      if (window.html2canvas) return window.html2canvas;
+      throw new Error('html2canvas missing after load');
+    }).catch(function (e) {
+      __h2cLoadPromise = null;
+      throw e;
     });
     return __h2cLoadPromise;
+  }
+  // Local helper (mirrors loadOneOrFallback in menu-render-pdf.js
+  // and _loadCdnOrVendor in menu-render-html.js — kept inline rather
+  // than extracted to avoid an extra script load order constraint).
+  function _loadCdnOrVendorMd(cdnUrl, vendorUrl, label) {
+    return new Promise(function (resolve, reject) {
+      function loadFrom(src, isFallback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () { resolve({ src: src, fallback: !!isFallback }); };
+        s.onerror = function () {
+          if (!isFallback) {
+            try {
+              if (window.plausible) {
+                window.plausible('Menu Design CDN Fallback', { props: { lib: label } });
+              }
+            } catch (_) {}
+            loadFrom(vendorUrl, true);
+          } else {
+            reject(new Error(label + ' failed to load from CDN and vendored copy'));
+          }
+        };
+        document.head.appendChild(s);
+      }
+      loadFrom(cdnUrl, false);
+    });
   }
 
   function downloadAsPng(filenameBase, title) {
@@ -5451,6 +5498,43 @@
     setDownloadMsg(tt('Braille (BRF) downloaded — Grade 1 (uncontracted).',
                       'Braille (BRF) descargado — Grado 1 (sin contracciones).'), 'success');
     if (window.plausible) { try { window.plausible('Menu Design BRF Exported'); } catch (_) {} }
+  }
+
+  // Wave C1 finish — ESC/POS thermal-printer .bin export. The
+  // emitter (tools/menu-design/menu-render-escpos.js) is small (~5
+  // KB gz, no external deps) and lazy-loaded only on click.
+  var exportEscposBtn = document.getElementById('mdExportEscpos');
+  if (exportEscposBtn) exportEscposBtn.addEventListener('click', function () {
+    withRenderer(ensureMdEscpos, exportEscposBtn, tt('Loading…', 'Cargando…'), function () { _doExportEscpos(); });
+  });
+  function ensureMdEscpos() {
+    if (typeof MD_ESCPOS !== 'undefined' && MD_ESCPOS.exportEscpos) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/menu-render-escpos.js?v=20260504-c1');
+  }
+  function _doExportEscpos() {
+    if (typeof MD_ESCPOS === 'undefined' || typeof MD_ESCPOS.exportEscpos !== 'function') return;
+    var realRows = rows.filter(function (r) { return r.kind === 'dish' && !r.ghost && (r.name || '').trim(); });
+    if (!realRows.length) {
+      setDownloadMsg(tt('Add at least one dish before exporting a thermal-printer file.',
+                        'Agrega al menos un plato antes de exportar el archivo para impresora térmica.'), 'error');
+      return;
+    }
+    var opts = {
+      rows:    rows,
+      theme:   resolveTheme(),
+      meta:    meta,
+      title:   meta.businessName || 'Menu',
+      locale:  LOCALE
+    };
+    var result = MD_ESCPOS.exportEscpos(opts);
+    downloadBlob(result.blob, result.filename, 'application/octet-stream');
+    setDownloadMsg(tt(
+      'Thermal printer file downloaded (' + result.byteCount + ' bytes). Pipe to /dev/usb/lp0 or your POS raw-print endpoint.',
+      'Archivo para impresora térmica descargado (' + result.byteCount + ' bytes). Envíalo a /dev/usb/lp0 o al endpoint raw-print de tu POS.'
+    ), 'success');
+    if (window.plausible) {
+      try { window.plausible('Menu Design Thermal Exported'); } catch (_) {}
+    }
   }
 
   // -------------------- Wave B5 — Menu Pack ZIP ------------------
@@ -6077,17 +6161,91 @@
   }
   function showQuizIfFresh() {
     var quizEl = document.getElementById('mdQuiz');
+    var onboardEl = document.getElementById('mdOnboard');
     if (!quizEl) return;
     // Only show on a truly cold load: no rows, no draft, no ctx menu data.
     if (rows.filter(function (r) { return !r.ghost; }).length) return;
     if (loadDraft()) return;
+
+    // Wave A8 — paste-or-type onboarding is the primary cold-start.
+    // Quiz is reachable via the "Don't have a menu? Browse by cuisine"
+    // button. If the operator immediately taps the cuisine link
+    // without pasting, we fall through to the existing quiz path.
+    if (onboardEl) {
+      onboardEl.hidden = false;
+      var areaEl = document.getElementById('mdOnboardArea');
+      var goBtn  = document.getElementById('mdOnboardGo');
+      var quizFallbackBtn = document.getElementById('mdOnboardQuiz');
+      function applyOnboardPaste() {
+        var raw = (areaEl && areaEl.value || '').trim();
+        if (!raw) {
+          // Empty submit — just close the onboard and seed ghost rows
+          // so the editor isn't a void. Operator can still type or
+          // hit the quiz fallback.
+          onboardEl.hidden = true;
+          try {
+            if (!rows.length && seedGhostRows()) {
+              render();
+              renderGhostOverlay();
+            }
+          } catch (_) {}
+          return;
+        }
+        // > 1 line OR contains a comma/tab — treat as paste. Otherwise
+        // seed a single dish row from the typed name.
+        var lineCount = raw.split('\n').filter(function (s) { return s.trim(); }).length;
+        var looksTabular = /[,\t]/.test(raw) || lineCount >= 2;
+        if (looksTabular && typeof parsePaste === 'function') {
+          var parsed = parsePaste(raw);
+          if (parsed && parsed.length) {
+            rows = parsed;
+            __ghostActive = false;
+            onboardEl.hidden = true;
+            render();
+            renderThemePicker();
+            scheduleSaveDraft();
+            if (window.plausible) {
+              try { window.plausible('Menu Design Paste', { props: { added: String(parsed.length) } }); } catch (_) {}
+            }
+            return;
+          }
+        }
+        // Single-dish typed: seed a blank dish row with the typed name.
+        var firstName = raw.split('\n')[0].trim();
+        rows = [{ kind: 'dish', name: firstName, price: '', desc: '', allergens: [] }];
+        __ghostActive = false;
+        onboardEl.hidden = true;
+        render();
+        renderThemePicker();
+        scheduleSaveDraft();
+        if (window.plausible) {
+          try { window.plausible('Menu Design First Dish', { props: { trigger: 'onboard-typed' } }); } catch (_) {}
+        }
+      }
+      if (goBtn) goBtn.addEventListener('click', applyOnboardPaste);
+      if (areaEl) {
+        areaEl.addEventListener('keydown', function (e) {
+          // Cmd-Enter or Ctrl-Enter submits. Plain Enter inserts newline
+          // (operators are pasting CSV; newlines must work).
+          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            e.preventDefault();
+            applyOnboardPaste();
+          }
+        });
+      }
+      if (quizFallbackBtn) quizFallbackBtn.addEventListener('click', function () {
+        onboardEl.hidden = true;
+        renderQuizTiles();
+        quizEl.hidden = false;
+      });
+    }
+
+    // Quiz wiring — same as before, just doesn't auto-show. Reachable
+    // via the onboarding card's "Browse by cuisine" link.
     renderQuizTiles();
-    quizEl.hidden = false;
     var skipBtn = document.getElementById('mdQuizSkip');
     if (skipBtn) skipBtn.addEventListener('click', function () {
       quizEl.hidden = true;
-      // Fall through to the existing ghost-rows seed for those who
-      // skipped — keeps the empty-state visually anchored.
       try {
         if (!rows.length && seedGhostRows()) {
           render();
@@ -6102,10 +6260,7 @@
       var entry = null;
       for (var i = 0; i < QUIZ_TILES.length; i++) if (QUIZ_TILES[i].id === cuisine) { entry = QUIZ_TILES[i]; break; }
       if (!entry) return;
-      // Apply theme suggestion immediately.
       themeId = entry.theme;
-      // If the tile names a starter template, load it; else seed
-      // the standard SAMPLE_MENU as a working starting point.
       if (entry.template && TEMPLATES[entry.template]) {
         rows = TEMPLATES[entry.template].rows.map(function (r) { return Object.assign({}, r); });
       } else {
@@ -6552,6 +6707,16 @@
 
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
+    // Wave A3 — theme-thumbs.js is lazy-loaded. Ensure MD_THUMBS is
+    // available before painting; if not, kick off the load and return.
+    // The orchestrator will re-call paintAllThemeThumbs after the load
+    // resolves (see ensureMdThumbs().then below).
+    if (typeof MD_THUMBS === 'undefined' || !MD_THUMBS.get) {
+      ensureMdThumbs().then(function () { paintAllThemeThumbs(); }, function () {
+        // Load failed; degrade to no-thumb picker (cards still readable).
+      });
+      return;
+    }
     var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
     if (typeof IntersectionObserver === 'function' && cards.length > 8) {
       // Set up (or reuse) a single observer that paints each card

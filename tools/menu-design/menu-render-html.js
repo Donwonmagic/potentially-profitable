@@ -22,26 +22,22 @@
 (function (root) {
   'use strict';
 
-  var QR_CDN = 'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
+  // Wave A4 — self-hosted vendored fallback for the QR generator.
+  // CDN tried first; on failure, the local copy at /assets/vendor/
+  // qrcode-generator@1.4.4/qrcode.js (vendored at build time by
+  // scripts/vendor-pin.mjs) takes over and a Plausible event fires.
+  var QR_CDN    = 'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
+  var QR_VENDOR = '/assets/vendor/qrcode-generator@1.4.4/qrcode.js';
   var __qrLoadPromise = null;
   function loadQrCode() {
     if (root.qrcode) return Promise.resolve(root.qrcode);
     if (__qrLoadPromise) return __qrLoadPromise;
-    __qrLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = QR_CDN;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.qrcode) resolve(root.qrcode);
-        else { __qrLoadPromise = null; reject(new Error('qrcode-generator loaded but global missing')); }
-      };
-      s.onerror = function () {
-        __qrLoadPromise = null;
-        reject(new Error('Could not load QR generator — check your network'));
-      };
-      document.head.appendChild(s);
+    __qrLoadPromise = _loadCdnOrVendor(QR_CDN, QR_VENDOR, 'qrcode-generator').then(function () {
+      if (root.qrcode) return root.qrcode;
+      throw new Error('qrcode-generator loaded but global missing');
+    }).catch(function (e) {
+      __qrLoadPromise = null;
+      throw e;
     });
     return __qrLoadPromise;
   }
@@ -370,28 +366,52 @@ jsonldHtml +
   // -------------------- ZIP helper --------------------
   // Lazy-loads jszip and returns a Blob containing menu.html +
   // menu-qr.png. Caller triggers download via createObjectURL.
-  var JSZIP_CDN = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+  var JSZIP_CDN    = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+  var JSZIP_VENDOR = '/assets/vendor/jszip@3.10.1/jszip.min.js';
   var __jszipLoadPromise = null;
   function loadJsZip() {
     if (root.JSZip) return Promise.resolve(root.JSZip);
     if (__jszipLoadPromise) return __jszipLoadPromise;
-    __jszipLoadPromise = new Promise(function (resolve, reject) {
-      var s = document.createElement('script');
-      s.src = JSZIP_CDN;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      s.referrerPolicy = 'no-referrer';
-      s.onload = function () {
-        if (root.JSZip) resolve(root.JSZip);
-        else { __jszipLoadPromise = null; reject(new Error('JSZip loaded but global missing')); }
-      };
-      s.onerror = function () {
-        __jszipLoadPromise = null;
-        reject(new Error('Could not load JSZip — check your network'));
-      };
-      document.head.appendChild(s);
+    __jszipLoadPromise = _loadCdnOrVendor(JSZIP_CDN, JSZIP_VENDOR, 'jszip').then(function () {
+      if (root.JSZip) return root.JSZip;
+      throw new Error('JSZip loaded but global missing');
+    }).catch(function (e) {
+      __jszipLoadPromise = null;
+      throw e;
     });
     return __jszipLoadPromise;
+  }
+
+  // Wave A4 — shared CDN-with-vendor-fallback helper (mirror of
+  // loadOneOrFallback in menu-render-pdf.js). Tries CDN; on error,
+  // tries the same-origin vendored copy and fires a Plausible
+  // 'Menu Design CDN Fallback' event so we can see the rate of
+  // operator-base CDN failures in production.
+  function _loadCdnOrVendor(cdnUrl, vendorUrl, label) {
+    return new Promise(function (resolve, reject) {
+      function loadFrom(src, isFallback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.referrerPolicy = 'no-referrer';
+        s.onload = function () { resolve({ src: src, fallback: !!isFallback }); };
+        s.onerror = function () {
+          if (!isFallback) {
+            try {
+              if (typeof window !== 'undefined' && window.plausible) {
+                window.plausible('Menu Design CDN Fallback', { props: { lib: label } });
+              }
+            } catch (_) {}
+            loadFrom(vendorUrl, true);
+          } else {
+            reject(new Error(label + ' failed to load from CDN and vendored copy'));
+          }
+        };
+        document.head.appendChild(s);
+      }
+      loadFrom(cdnUrl, false);
+    });
   }
 
   function exportZip(opts) {
