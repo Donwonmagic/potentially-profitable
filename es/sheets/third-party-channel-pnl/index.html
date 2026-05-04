@@ -293,6 +293,33 @@ header.nav{min-height:64px}
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three real worries on a delivery channel:
+         platform commission pressure, marketing-fee drift, and the
+         labor-honesty question (under-counting incremental labor is
+         the most common error). -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if commission, marketing, or your labor estimate shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the contribution margin re-runs on top of your typed numbers. The labor multiplier is the honest one — if you typed $1,800 but the real number is closer to $3,600, slide it to 2x and watch what happens.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Commission rate change (% of gross)</span>
+          <input type="range" name="whatif_comm" min="-5" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_comm_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Marketing-fee change (% of gross)</span>
+          <input type="range" name="whatif_mkt" min="-3" max="5" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_mkt_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Incremental labor honesty (multiplier)</span>
+          <input type="range" name="whatif_labor" min="0.5" max="2" step="0.1" value="1" style="flex:2;" />
+          <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">1.0x</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
     <script>
       (function () {
         function n(v) { var x = parseFloat(v); return isFinite(x) ? x : 0; }
@@ -527,15 +554,41 @@ header.nav{min-height:64px}
           return sign + (Math.round(Math.abs(v) * 10) / 10).toFixed(1) + '%';
         }
 
+        // D8 · Read what-if slider state. Commission/marketing are
+        // additive points-of-gross; labor is a multiplier on the typed
+        // incremental_labor line.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_comm) return { comm: 0, mkt: 0, laborMult: 1 };
+          var lm = n(f.whatif_labor.value);
+          if (!isFinite(lm) || lm <= 0) lm = 1;
+          return {
+            comm: n(f.whatif_comm.value),
+            mkt:  n(f.whatif_mkt.value),
+            laborMult: lm,
+          };
+        }
+
         function recalc() {
           var f = document.getElementById('sheet-fields');
           if (!f) return;
+          var w = whatif();
           var gross   = n(f.gross_sales.value);
-          var deducts = n(f.commission.value) + n(f.marketing_fees.value) + n(f.refunds.value);
-          var costs   = n(f.food_cost.value) + n(f.packaging.value) + n(f.incremental_labor.value);
+          // D8 — apply commission/marketing point deltas as a fraction
+          // of gross; labor multiplier scales the typed incremental.
+          var commission = n(f.commission.value)     + (w.comm / 100) * gross;
+          var marketing  = n(f.marketing_fees.value) + (w.mkt  / 100) * gross;
+          var labor      = n(f.incremental_labor.value) * w.laborMult;
+          var deducts = commission + marketing + n(f.refunds.value);
+          var costs   = n(f.food_cost.value) + n(f.packaging.value) + labor;
           var payout  = gross - deducts;
           var contrib = payout - costs;
           var pct     = gross > 0 ? (contrib / gross) * 100 : 0;
+
+          // Update what-if output labels.
+          if (f.whatif_comm_out)  f.whatif_comm_out.value  = (w.comm >= 0 ? '+' : '') + w.comm.toFixed(1) + 'pt';
+          if (f.whatif_mkt_out)   f.whatif_mkt_out.value   = (w.mkt  >= 0 ? '+' : '') + w.mkt.toFixed(1)  + 'pt';
+          if (f.whatif_labor_out) f.whatif_labor_out.value = w.laborMult.toFixed(1) + 'x';
 
           document.querySelector('[data-output="net_payout"]').textContent  = fmt$(payout);
           document.querySelector('[data-output="total_costs"]').textContent = fmt$(costs);
@@ -598,6 +651,19 @@ header.nav{min-height:64px}
             ['Effective margin (%)',      document.querySelector('[data-output="contrib_pct"]').textContent],
           ];
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_comm)  f.whatif_comm.value  = 0;
+            if (f.whatif_mkt)   f.whatif_mkt.value   = 0;
+            if (f.whatif_labor) f.whatif_labor.value = 1;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         if (window.SheetPage) {
           window.SheetPage.register({
