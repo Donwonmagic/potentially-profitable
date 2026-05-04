@@ -247,6 +247,15 @@
     if (typeof MD_TEXT !== 'undefined' && MD_TEXT.exportPlainText) return Promise.resolve(true);
     return loadScript('/tools/menu-design/menu-render-text.js?v=20260503-cs');
   }
+  // Wave A3 — defer theme-thumbs.js (91 KB raw / ~28 KB gz) from boot.
+  // It contains pre-built inline SVG thumbnails for the picker UI,
+  // never used until the operator scrolls to the picker section.
+  // The picker's IntersectionObserver lazy-paints visible thumbs;
+  // ensureMdThumbs() is the gate it consults before reading MD_THUMBS.
+  function ensureMdThumbs() {
+    if (typeof MD_THUMBS !== 'undefined' && MD_THUMBS.get) return Promise.resolve(true);
+    return loadScript('/tools/menu-design/theme-thumbs.js?v=20260503-wsq');
+  }
 
   // Convenience: load PDF + HTML + TEXT in parallel for the big-pack
   // exports (Menu Pack ZIP, Bilingual ZIP) that touch all three.
@@ -304,6 +313,10 @@
     ensureMdPdf().catch(function () {});
     ensureMdHtml().catch(function () {});
     ensureMdText().catch(function () {});
+    // Wave A3 — also preload theme-thumbs so the picker thumbnails
+    // materialize without a visible delay on first scroll. Same
+    // gating as the renderers (idle, post-interaction).
+    ensureMdThumbs().catch(function () {});
   }
   if (typeof requestIdleCallback === 'function') {
     var __preloadIdle = false;
@@ -6552,6 +6565,16 @@
 
   function paintAllThemeThumbs() {
     if (typeof MD_THEMES === 'undefined') return;
+    // Wave A3 — theme-thumbs.js is lazy-loaded. Ensure MD_THUMBS is
+    // available before painting; if not, kick off the load and return.
+    // The orchestrator will re-call paintAllThemeThumbs after the load
+    // resolves (see ensureMdThumbs().then below).
+    if (typeof MD_THUMBS === 'undefined' || !MD_THUMBS.get) {
+      ensureMdThumbs().then(function () { paintAllThemeThumbs(); }, function () {
+        // Load failed; degrade to no-thumb picker (cards still readable).
+      });
+      return;
+    }
     var cards = themesEl ? themesEl.querySelectorAll('.md-theme') : [];
     if (typeof IntersectionObserver === 'function' && cards.length > 8) {
       // Set up (or reuse) a single observer that paints each card

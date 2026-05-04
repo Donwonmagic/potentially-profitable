@@ -2427,10 +2427,13 @@ tr[data-ghost="1"] input,tr[data-ghost="1"] textarea{color:var(--ink-soft)}
 <script src="/tools/_shared/menu-renderers/jsonld.js?v=20260503-wB6"></script>
 <script src="/tools/_shared/menu-renderers/studio-brief.js?v=20260503-wB"></script>
 <script src="/tools/_shared/menu-renderers/menu-pack.js?v=20260503-wB5"></script>
-<!-- Auto-generated bundle of inline SVG thumbnails per theme. Lets the
-     theme picker show real cuisine-specific previews that inherit the
-     page's @font-face fonts. Built by scripts/build-theme-thumbnails.mjs. -->
-<script src="./theme-thumbs.js?v=20260503-wsq"></script>
+<!-- Auto-generated bundle of inline SVG thumbnails per theme.
+     Wave A3 — code-split: theme-thumbs.js (~28 KB gz) used to load
+     synchronously here. It's now lazy-loaded by menu-design.js's
+     paintAllThemeThumbs() via ensureMdThumbs(), keeping ~28 KB off
+     the boot path. Picker thumbnails materialize on first scroll
+     into the picker (IntersectionObserver) or via the boot-time
+     requestIdleCallback preload below. -->
 <script src="./themes.js?v=20260501-w15"></script>
 <!-- Wave studio-quality (C14) — Theme review-board credits. Each
      theme has a named reviewer + inspiredBy + dateAdded + story. -->
