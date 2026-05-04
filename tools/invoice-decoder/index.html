@@ -446,6 +446,32 @@ header.nav{min-height:64px}
 .id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
 
 /* Wave 2.3 — Vendor Pulse Strip */
+/* Wave 14.6 — manual tour launcher (re-entry for skipped tour) */
+.id-tour-launcher{margin:8px 0 0;text-align:right}
+.id-tour-launcher[hidden]{display:none}
+.id-tour-launcher-btn{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:6px;border:1px dashed var(--teal);background:transparent;color:var(--teal);cursor:pointer}
+.id-tour-launcher-btn:hover{background:color-mix(in srgb,var(--teal) 8%,transparent)}
+.id-tour-launcher-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Wave 14.6 — first-run tour overlay (5-step spotlight) */
+.id-tour-overlay{position:fixed;inset:0;pointer-events:none;z-index:1000;opacity:0;transition:opacity 200ms ease}
+.id-tour-overlay.is-open{pointer-events:auto;opacity:1}
+.id-tour-overlay::before{content:'';position:fixed;inset:0;background:rgba(20,22,26,0.62);pointer-events:auto}
+.id-tour-spotlight{position:absolute;border-radius:12px;box-shadow:0 0 0 9999px rgba(20,22,26,0.62),0 0 0 4px rgba(31,78,91,0.85);transition:top 240ms ease,left 240ms ease,width 240ms ease,height 240ms ease;pointer-events:none}
+.id-tour-tip{position:absolute;left:50%;transform:translateX(-50%);max-width:min(440px,calc(100vw - 32px));padding:18px 20px;background:var(--cream);border-radius:12px;box-shadow:0 12px 32px rgba(20,22,26,0.32);opacity:0;transition:opacity 220ms ease,top 240ms ease;pointer-events:auto;z-index:1001}
+.id-tour-step{margin:0 0 4px;font-size:11px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+.id-tour-title{margin:0 0 8px;font:500 18px/1.3 Georgia,serif;color:var(--ink)}
+.id-tour-body{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+.id-tour-actions{display:flex;align-items:center;gap:8px}
+.id-tour-skip{font:inherit;font-size:12px;background:transparent;border:none;color:var(--ink-soft);cursor:pointer;text-decoration:underline;padding:4px 0}
+.id-tour-back,.id-tour-next{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink);cursor:pointer}
+.id-tour-back:disabled{opacity:0.5;cursor:not-allowed}
+.id-tour-primary{background:var(--teal);color:var(--white);border-color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.id-tour-primary:hover{filter:brightness(1.05)}
+.id-tour-cta{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){.id-tour-overlay,.id-tour-spotlight,.id-tour-tip{transition:none}}
+@media print{.id-tour-overlay{display:none !important}}
+
 /* Wave 14.4 — cell-history clock + popover */
 .id-cell-clock{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:4px;padding:0;border:none;background:transparent;color:var(--stone);font-size:13px;cursor:pointer;line-height:1;border-radius:3px;vertical-align:middle;opacity:0.55;transition:opacity var(--t-fast),color var(--t-fast)}
 .id-cell-clock:hover{opacity:1;color:var(--teal)}
@@ -1213,13 +1239,20 @@ header.nav{min-height:64px}
          Visible only on first run (controller checks
          MuntinContext.invoiceDecoder.hasRun). -->
     <div class="id-firstrun" id="idFirstRun" hidden>
-      <p class="id-firstrun-msg"><strong>First time?</strong> Run a sample first — no upload, all on your phone.</p>
+      <p class="id-firstrun-msg"><strong>First time?</strong> Run a sample first — no upload, all on your phone. The tour walks you through what happens after Save (the cross-tool spine).</p>
       <div class="id-firstrun-row">
         <button type="button" class="id-firstrun-btn" data-sample="sysco">Sysco invoice</button>
         <button type="button" class="id-firstrun-btn" data-sample="rest-depot">Restaurant Depot</button>
         <button type="button" class="id-firstrun-btn" data-sample="produce">Produce jobber</button>
       </div>
     </div>
+
+    <!-- Wave 14.6 — manual tour entry. Operators who already ran a
+         sample (or skipped the auto-tour) can re-open it from here.
+         Hidden until the result panel renders. -->
+    <p class="id-tour-launcher" id="idTourLauncher" hidden>
+      <button type="button" class="id-tour-launcher-btn" id="idTourLaunch">🎓 Take the 60-second tour</button>
+    </p>
 
     <div class="id-resume" id="idResume" hidden role="status" aria-live="polite">
       <p class="id-resume-msg">You had an invoice in progress yesterday. <button type="button" class="id-resume-btn">Pick it up</button> · <button type="button" class="id-resume-dismiss">Dismiss</button></p>
@@ -1510,6 +1543,7 @@ header.nav{min-height:64px}
 <script src="./whatif.js?v=20260504-w13-6"></script>
 <script src="./whatif-panel.js?v=20260504-w14-3" defer></script>
 <script src="./cell-history.js?v=20260504-w13-8"></script>
+<script src="./first-run-tour.js?v=20260504-w14-6" defer></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/sku-match.js?v=20260504-w10-1"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>

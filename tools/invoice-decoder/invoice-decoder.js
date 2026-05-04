@@ -2753,6 +2753,12 @@
         MID_ONBOARDING.markFirstRun();
       }
     } catch (_) {}
+    // Wave 14.6 — surface the manual tour launcher so operators who
+    // skipped the auto-tour (or want a refresher) can re-enter.
+    try {
+      var tl = document.getElementById('idTourLauncher');
+      if (tl) tl.hidden = false;
+    } catch (_) {}
     // Wave 5.3 — auto-confirm shadow-then-on. Run the predicate
     // before render so the row badges and counters reflect it. Math
     // gate: if the parser flagged a fix, all auto-confirms hold.
