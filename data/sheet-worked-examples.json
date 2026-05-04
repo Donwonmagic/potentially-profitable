@@ -147,6 +147,36 @@
       "punchline_en": "Every single no-show came from a non-deposit reservation. The pattern decides the next move: a two-week test on deposit-required for Fri/Sat parties of 4 or more. The window table at 8pm is what hurts — it's the one nobody walks in for at the last minute.",
       "punchline_es": "Cada uno de los no-shows vino de una reserva sin depósito. El patrón decide el siguiente paso: una prueba de dos semanas con depósito requerido para mesas de 4+ los vie/sáb. La mesa de la ventana a las 8pm es la que duele — es la que nadie pide al último momento."
     },
+    "recipe-cost-card": {
+      "subject_en": "Roasted half-chicken, 4-plate batch",
+      "subject_es": "Medio pollo asado, lote de 4 platos",
+      "inputs_en": [
+        ["Whole chicken — 1.5 lb each, $3.20/lb, 72% yield", "$4.80 AP / plate"],
+        ["Olive oil — 0.5 floz, $0.18/floz, 100% yield", "$0.09"],
+        ["Herb sachet (rosemary, thyme) — 0.25 oz, $1.40/oz, 90% yield", "$0.39"],
+        ["Pan-roasted potatoes — 6 oz, $0.12/oz, 88% yield", "$0.82"],
+        ["Lemon-shallot pan jus — 1.5 floz, $0.28/floz, 100% yield", "$0.42"]
+      ],
+      "inputs_es": [
+        ["Pollo entero — 1.5 lb c/u, $3.20/lb, rendimiento 72%", "$4.80 AP / plato"],
+        ["Aceite de oliva — 0.5 floz, $0.18/floz, rendimiento 100%", "$0.09"],
+        ["Sachet de hierbas (romero, tomillo) — 0.25 oz, $1.40/oz, rendimiento 90%", "$0.39"],
+        ["Papas asadas en sartén — 6 oz, $0.12/oz, rendimiento 88%", "$0.82"],
+        ["Jugo de limón-chalote — 1.5 floz, $0.28/floz, rendimiento 100%", "$0.42"]
+      ],
+      "result_en": [
+        ["Plate cost (yield-adjusted)", "$6.52"],
+        ["At 30% target food cost, target price", "$21.73"],
+        ["Charm price (rounded up to .95)", "$21.95"]
+      ],
+      "result_es": [
+        ["Costo del plato (ajustado por rendimiento)", "$6.52"],
+        ["Al 30% de costo de comida objetivo, precio objetivo", "$21.73"],
+        ["Precio charm (redondeado a .95)", "$21.95"]
+      ],
+      "punchline_en": "The yield slider is the lever — winter chickens come in heavier-boned and the 72% drops to 68%. At 68% the plate cost lands at $6.91, and the same target moves to $23.95. The decision isn't whether to raise the menu price — the decision is when. Try the yield slider now and see what the price would need to be.",
+      "punchline_es": "El control deslizante de rendimiento es la palanca — los pollos de invierno vienen con más hueso y el 72% baja a 68%. A 68%, el costo del plato llega a $6.91, y el mismo objetivo mueve el precio a $23.95. La decisión no es si subir el precio del menú — es cuándo. Mueve el control deslizante de rendimiento ahora y ve a cuánto debería subir el precio."
+    },
     "review-response-log": {
       "subject_en": "60-seat neighborhood bistro, two weeks of reviews",
       "subject_es": "Bistró de barrio de 60 asientos, dos semanas de reseñas",

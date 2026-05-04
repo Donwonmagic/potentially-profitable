@@ -140,6 +140,33 @@
       </div>
     </form>
 
+    <!-- D8 · What-if sliders. Three questions an operator asks while
+         pricing a dish: vendor price drift, kitchen yield reality,
+         and house food-cost target. Re-runs recalc() over the typed
+         numbers without touching them. -->
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
+      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#1F4E5B);letter-spacing:0.02em;">Try a scenario — what if vendor prices, yield, or your target shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#2A2D33);">Slide one or more, the plate cost and target price re-run on top of your typed numbers. Yield drop is one-sided — kitchens lose yield in winter, on holidays, with new line cooks.</p>
+      <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Vendor price drift (every ingredient AP)</span>
+          <input type="range" name="whatif_ap" min="-15" max="15" step="1" value="0" style="flex:2;" />
+          <output name="whatif_ap_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Yield drop (kitchen reality)</span>
+          <input type="range" name="whatif_yield" min="-10" max="0" step="0.5" value="0" style="flex:2;" />
+          <output name="whatif_yield_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+          <span style="flex:1;">Target food-cost % change</span>
+          <input type="range" name="whatif_target" min="-3" max="3" step="0.25" value="0" style="flex:2;" />
+          <output name="whatif_target_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0pt</output>
+        </label>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#2A2D33);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+      </div>
+    </details>
+
     <script>
       (function () {
         // Unit normalization to a baseline weight (oz) and volume (floz)
@@ -168,14 +195,32 @@
           return n(qty) * n(ap);
         }
 
+        // D8 · Read what-if slider state. AP drift is multiplicative,
+        // yield drop is additive on the typed yield (one-sided), target
+        // delta is additive in percentage points.
+        function whatif() {
+          var f = document.getElementById('sheet-fields');
+          if (!f || !f.whatif_ap) return { ap: 0, yld: 0, target: 0 };
+          return {
+            ap:     n(f.whatif_ap.value),
+            yld:    n(f.whatif_yield.value),
+            target: n(f.whatif_target.value),
+          };
+        }
+
         function recalc() {
           var form  = document.getElementById('sheet-fields');
           if (!form) return;
+          var w = whatif();
+          var apMult = 1 + w.ap / 100;
           var total = 0;
           for (var i = 1; i <= 5; i++) {
             var qty   = n(form['ing_qty_'   + i].value);
-            var ap    = n(form['ing_ap_'    + i].value);
-            var yld   = Math.max(1, n(form['ing_yield_' + i].value));
+            var rawAp = n(form['ing_ap_'    + i].value);
+            var ap    = rawAp * apMult;
+            // Effective yield: typed minus the (one-sided) drop, floor 1.
+            var rawYld = Math.max(1, n(form['ing_yield_' + i].value));
+            var yld    = Math.max(1, Math.min(100, rawYld + w.yld));
             // Yield % expresses what's usable after trim. Effective
             // unit cost goes UP by the inverse: $/EP = ($/AP) / (yield/100)
             var line  = (qty * ap) / (yld / 100);
@@ -185,10 +230,17 @@
           }
           var plates = Math.max(1, n(form.plates_yielded.value));
           var perPlate = total / plates;
-          var pct = Math.max(1, Math.min(60, n(form.target_food_cost_pct.value))) / 100;
+          var rawPct = Math.max(1, Math.min(60, n(form.target_food_cost_pct.value)));
+          var pct = Math.max(1, Math.min(60, rawPct + w.target)) / 100;
           var target = pct > 0 ? perPlate / pct : 0;
           form.total_ingredient_cost.value = fmt$(total);
           form.cost_per_plate.value        = fmt$(perPlate);
+
+          // Update what-if output labels.
+          if (form.whatif_ap_out)     form.whatif_ap_out.value     = (w.ap     >= 0 ? '+' : '') + w.ap.toFixed(0)     + '%';
+          if (form.whatif_yield_out)  form.whatif_yield_out.value  = w.yld.toFixed(1) + 'pt';
+          if (form.whatif_target_out) form.whatif_target_out.value = (w.target >= 0 ? '+' : '') + w.target.toFixed(2) + 'pt';
+
           var pc = document.querySelector('[data-output="plate_cost"]');
           if (pc) pc.textContent = fmt$(perPlate);
           var tp = document.querySelector('[data-output="target_price"]');
@@ -196,6 +248,19 @@
           var cp = document.querySelector('[data-output="charm_price"]');
           if (cp) cp.textContent = fmt$(charm(target));
         }
+
+        // D8 · Reset scenario sliders.
+        document.addEventListener('click', function (ev) {
+          if (ev.target && ev.target.matches && ev.target.matches('[data-whatif-reset]')) {
+            ev.preventDefault();
+            var f = document.getElementById('sheet-fields');
+            if (!f) return;
+            if (f.whatif_ap)     f.whatif_ap.value     = 0;
+            if (f.whatif_yield)  f.whatif_yield.value  = 0;
+            if (f.whatif_target) f.whatif_target.value = 0;
+            f.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
 
         // Per-sheet collect: shape rows for CSV export — recipe header,
         // then ingredients table, then summary outputs. Mirrors what
