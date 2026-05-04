@@ -185,11 +185,16 @@
                   };
                 }).filter(function (w) { return w.text.length > 0; });
                 if (allWords && lineWords.length) Array.prototype.push.apply(allWords, lineWords);
+                // Always attach lineWords to the line so the
+                // user-words bias (Wave 4.4) has data to work on for
+                // every recognize() call, not just the column-
+                // orchestrator path. Memory cost is transient — the
+                // OCR result is discarded after parse.
                 lines.push({
                   text: (ln.text || '').replace(/\s+/g, ' ').trim(),
                   confidence: typeof ln.confidence === 'number' ? ln.confidence : 0,
                   bbox: ln.bbox || null,
-                  words: withWords ? lineWords : undefined
+                  words: lineWords
                 });
               });
             });
@@ -200,14 +205,12 @@
               return { text: t.trim(), confidence: result.data.confidence || 60, bbox: null };
             });
           }
-          // Wave 4.4 — operator-corpus user-words bias. Only the
-          // withWords path carries per-word data, so this layer is
-          // gated to that path. Kicks in once the operator's
-          // dictionary crosses MIN_DICT_SIZE; before that it's a
-          // no-op. Mutates lines[].words and rebuilds lines[].text
-          // for any line with replacements.
+          // Wave 4.4 — operator-corpus user-words bias. Runs on every
+          // recognize() call; no-op until the operator's dictionary
+          // crosses MIN_DICT_SIZE. Mutates lines[].words and rebuilds
+          // lines[].text for any line with replacements.
           var biasReplacements = 0;
-          if (withWords && typeof root !== 'undefined' && root && root.MID_USER_WORDS_BIAS) {
+          if (typeof root !== 'undefined' && root && root.MID_USER_WORDS_BIAS) {
             try { biasReplacements = root.MID_USER_WORDS_BIAS.applyToLines(lines) || 0; } catch (_) {}
           }
           var rebuiltText = result.data.text || '';
@@ -273,7 +276,16 @@
         else                                     { merged = g.lines; bestText = g.text; }
       }
       var meanConf = merged.length ? merged.reduce(function (s, b) { return s + b.confidence; }, 0) / merged.length : 0;
-      return { text: bestText, lines: merged, meanConfidence: meanConf, perPass: { aggressive: a, gentle: g } };
+      // Wave 4.4 — surface the per-pass bias counts so the controller
+      // can attribute each invoice's compounding learning. The merged
+      // count is the SUM of both passes (each pass's bias is independent
+      // since recognize() runs the bias on its own line set).
+      var biasCount = (a.userWordsBiasCount || 0) + (g.userWordsBiasCount || 0);
+      return {
+        text: bestText, lines: merged, meanConfidence: meanConf,
+        perPass: { aggressive: a, gentle: g },
+        userWordsBiasCount: biasCount
+      };
     });
   }
 

@@ -551,6 +551,7 @@
     var doneShare = 0;
     var allLines = [];
     var fullText = '';
+    var invoiceBiasReplacements = 0;  // Wave 4.4 — sum across pages
 
     pendingPages.reduce(function (chain, page, pageIdx) {
       return chain.then(function () {
@@ -627,13 +628,28 @@
             }
           }
           fullText += '\n' + (ocrResult.text || '');
+          if (typeof ocrResult.userWordsBiasCount === 'number') {
+            invoiceBiasReplacements += ocrResult.userWordsBiasCount;
+          }
           doneShare += pageShare;
         });
       });
     }, Promise.resolve()).then(function () {
       setProgress(96);
       advancePhase(2);  // Wave 5.2 — sorting now
+      // Wave 4.4 — bump telemetry once per invoice so the
+      // returning-visitor banner can report compounding accuracy
+      // gains. The replacements counter is a sum; the invoices
+      // counter ticks once when ≥1 replacement happened.
+      if (invoiceBiasReplacements > 0 &&
+          typeof MID_TELEMETRY !== 'undefined' && MID_TELEMETRY.bump) {
+        try {
+          MID_TELEMETRY.bump('userWordsBiasReplacements', invoiceBiasReplacements);
+          MID_TELEMETRY.bump('userWordsBiasInvoices', 1);
+        } catch (_) {}
+      }
       var parsed = MID_PARSE.parseLines(allLines, fullText);
+      parsed._userWordsBiasCount = invoiceBiasReplacements;
       // Wave B3 — vendor detection. When detect() crosses
       // threshold the rows get a confidence boost (knowing the
       // column layout removes a chunk of OCR uncertainty) and

@@ -264,6 +264,23 @@
         ? '<span class="id-returning-stat">' + stat.averagePct + '%</span> de tus filas se leyeron bien al primer intento en tus últimas ' + stat.sampleSize + ' facturas.'
         : '<span class="id-returning-stat">' + stat.averagePct + '%</span> of rows read correctly first time across your last ' + stat.sampleSize + ' invoices.')
       : '';
+    // Wave 4.4 — compounding learning surface. After ≥3 invoices have
+    // benefited from the user-words bias, surface the cumulative count
+    // so the operator sees the tool is getting smarter on their own
+    // vocabulary. Threshold gates so it only appears when the message
+    // is genuinely interesting.
+    var biasText = '';
+    try {
+      if (typeof root.MID_TELEMETRY !== 'undefined' && root.MID_TELEMETRY.get) {
+        var biasReps = root.MID_TELEMETRY.get('userWordsBiasReplacements') || 0;
+        var biasInvs = root.MID_TELEMETRY.get('userWordsBiasInvoices') || 0;
+        if (biasInvs >= 3 && biasReps >= 10) {
+          biasText = ' ' + (es
+            ? 'La herramienta corrigió <strong>' + biasReps + '</strong> errores de OCR a partir de tu vocabulario antes de que los vieras.'
+            : 'The tool caught <strong>' + biasReps + '</strong> OCR errors from your own SKU vocabulary before you saw them.');
+        }
+      }
+    } catch (_) {}
     var lastSum = trend[0] && trend[0].parsedSum ? '$' + trend[0].parsedSum.toFixed(2) : '—';
     banner.innerHTML =
       '<p class="id-returning-msg">' +
@@ -271,7 +288,7 @@
         s.runs + (es ? ' factura' : ' invoice') + (s.runs === 1 ? '' : (es ? 's' : 's')) +
         (es ? ' guardada' : ' saved') + (s.runs === 1 ? '' : (es ? 's' : 's')) +
         ' · ' + (es ? 'última' : 'last') + ': ' + lastSum + '. ' +
-        statText +
+        statText + biasText +
       '</p>';
     host.parentNode.insertBefore(banner, host);
   }
