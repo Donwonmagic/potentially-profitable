@@ -2103,6 +2103,21 @@
     // ~150KB lib is lazy and cached after first load.
     loaders.push(loadPdfLib().catch(function () { return null; }));
     return Promise.all(loaders).then(function (results) {
+      // Wave studio-quality (perf) — yield a frame after loaders
+      // resolve, before the heavy sync work (dry-run measure +
+      // paginate + draw, 4-6s on a 53-dish tabloid). The yield
+      // lets the operator's busy-state animation paint at least
+      // one frame before the main thread locks. Without this, the
+      // pulse-state CSS animation never shows up on big menus —
+      // it stays at the initial frame for the entire build.
+      return new Promise(function (resolve) {
+        if (typeof requestAnimationFrame === 'function') {
+          requestAnimationFrame(function () { setTimeout(function () { resolve(results); }, 0); });
+        } else {
+          setTimeout(function () { resolve(results); }, 0);
+        }
+      });
+    }).then(function (results) {
       var jsPDF = results[0];
       var brandFonts = results[1]; // null on failure
       if (!jsPDF) throw new Error('jsPDF unavailable');
