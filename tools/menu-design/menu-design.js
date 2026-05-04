@@ -2761,6 +2761,13 @@
   // typing doesn't recompute layout — matches the 300ms cadence
   // mentioned in the cohesive plan's A2 spec.
   var previewTimer = null;
+  // Wave studio-quality (perf) — debounce reduced 300ms → 120ms.
+  // The cascade warm-start (1 measurement pass on stable content)
+  // + HTML memoization (no-op renders skip the innerHTML write +
+  // cascade entirely) made renders cheap enough that 120ms feels
+  // responsive without thrashing. Operators typing fast see the
+  // preview track their edits visibly instead of lagging behind.
+  var PREVIEW_DEBOUNCE_MS = 120;
   function schedulePreview() {
     if (previewTimer) clearTimeout(previewTimer);
     previewTimer = setTimeout(function () {
@@ -2783,7 +2790,7 @@
           });
         });
       }
-    }, 300);
+    }, PREVIEW_DEBOUNCE_MS);
   }
 
   // ----------------------------------------------------------------
