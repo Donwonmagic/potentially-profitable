@@ -330,6 +330,16 @@ const ONNX_MODEL_FILES = [
   ]},
 
   // ---------- Apache-2.0 NOTICE / LICENSE files (redistribution requirement) ----------
+  // Audit fix (build H5): PP-OCRv3 ships on EVERY device (the lean
+  // tier — every operator gets it whether they trigger V2 escalation
+  // or not), but its LICENSE was missing from this list. PaddleOCR
+  // is Apache-2.0; redistribution requires the LICENSE alongside the
+  // weights. Add ppocr@v3-en/LICENSE with the same source as v4
+  // (single LICENSE file at the repo root covers both versions
+  // since they share lineage).
+  { local: 'ppocr@v3-en/LICENSE', urls: [
+    'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'
+  ]},
   { local: 'ppocr@v4-en/LICENSE', urls: [
     'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'
   ]},

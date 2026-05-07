@@ -168,6 +168,18 @@
 /assets/vendor/*
   Cache-Control: public, max-age=2592000, immutable
 
+# Audit fix (build H7): ORT and other WASM blobs need
+# Content-Type: application/wasm so the browser uses the
+# streaming compile path (WebAssembly.instantiateStreaming).
+# Cloudflare's default MIME inference often serves .wasm as
+# application/octet-stream, which forces ORT to fall back to
+# the slower non-streaming ArrayBuffer path or — in strict
+# mode — fail the load. Path-scoped to .wasm files so other
+# vendor assets (.mjs, .js, .onnx) keep their inferred types.
+/assets/vendor/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=2592000, immutable
+
 
 # ------------------------------------------------------------
 # Per-theme SVG thumbnails (build-time generated from themes.js).
