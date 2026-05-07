@@ -77,6 +77,14 @@ function seedMeta() {
   };
 }
 
+// Pinned date so the "Last updated: …" footer in the rendered
+// output is deterministic across runs. Production callers omit
+// lastUpdated; the renderer falls back to new Date(). The test
+// injects this fixed string so snapshots don't drift each day —
+// before this gate landed the snapshot test broke 24 hours after
+// being written.
+const PINNED_DATE = 'May 4, 2026';
+
 function loadRenderer(rel, extras = {}) {
   const src = fs.readFileSync(path.join(__dirname, rel), 'utf8');
   const win = {};
@@ -127,7 +135,8 @@ test('menu-render-html.js — snapshot for trattoria seed', () => {
     meta: seedMeta(),
     title: 'Da Marco',
     locale: 'en',
-    hostUrl: 'https://example.com/menu'
+    hostUrl: 'https://example.com/menu',
+    lastUpdated: PINNED_DATE
   });
   // The output may be a string or { html, ... }
   const html = typeof out === 'string' ? out : (out && out.html);
@@ -153,7 +162,8 @@ test('menu-render-text.js — plain-text snapshot for trattoria seed', () => {
     theme: seedTheme(),
     meta: seedMeta(),
     title: 'Da Marco',
-    locale: 'en'
+    locale: 'en',
+    lastUpdated: PINNED_DATE
   });
   const text = typeof out === 'string' ? out : (out && (out.text || out.body));
   assert.ok(text && typeof text === 'string', 'exportPlainText must return text string');
@@ -173,7 +183,8 @@ test('menu-render-text.js — markdown snapshot for trattoria seed', () => {
     theme: seedTheme(),
     meta: seedMeta(),
     title: 'Da Marco',
-    locale: 'en'
+    locale: 'en',
+    lastUpdated: PINNED_DATE
   });
   const out = typeof md === 'string' ? md : (md && (md.markdown || md.text));
   assert.ok(out && typeof out === 'string', 'exportMarkdown must return markdown string');
