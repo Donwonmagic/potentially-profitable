@@ -78,10 +78,25 @@
         if (ort.env && ort.env.wasm) {
           var ortVer = cfg.ORT_VERSION || '1.20.1';
           ort.env.wasm.wasmPaths = '/assets/vendor/onnxruntime-web@' + ortVer + '/';
-          // Single-thread by default. Multi-thread WASM needs
-          // cross-origin isolation (COOP/COEP); we deferred those
-          // headers per the plan. Operators on capable devices
-          // get WebGPU when navigator.gpu is present.
+          // Single-thread by default. Multi-thread WASM requires
+          // crossOriginIsolated (Cross-Origin-Opener-Policy: same-
+          // origin + Cross-Origin-Embedder-Policy: require-corp).
+          //
+          // Audit fix (build H1) — explicit decision to stay
+          // single-thread for this branch. Enabling COOP/COEP site-
+          // wide breaks embedded cross-origin resources (Google
+          // Fonts at gstatic.com, third-party blog embeds, etc.)
+          // that don't ship Cross-Origin-Resource-Policy headers.
+          // A path-scoped /tools/invoice-decoder/* COOP+COEP block
+          // would limit blast radius but still requires every
+          // external asset the page loads (gstatic fonts in CSS,
+          // analytics, etc.) to have the right CORP header. Deferred
+          // until a deploy-time smoke test verifies no resource is
+          // broken — single-thread WASM is functional, just slower
+          // (the lean-tier ORT runs invoices in 5-15s on a 2024
+          // mid-tier phone vs 2-5s threaded; acceptable for now).
+          // Operators on capable devices already get WebGPU when
+          // navigator.gpu is present, which sidesteps WASM threading.
           ort.env.wasm.numThreads = 1;
           ort.env.wasm.simd = true;
         }
