@@ -101,8 +101,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=76272c21c97a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=76272c21c97a"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
 <body>
 
@@ -261,6 +261,39 @@ header.nav{min-height:64px}
         <p>Cada restaurantero que ha pasado su sitio por PageSpeed Insights ha visto un número — 34, 61, 88 — y se ha preguntado qué significa. La respuesta honesta: es el resumen ponderado de Google sobre qué tan rápido pinta el contenido principal, qué tan estable es el layout mientras carga, y qué tan responsiva se siente la página mientras el navegador sigue trabajando. Cada uno de esos tiene una definición y un peso, y una vez que los conoces, la calificación deja de sentirse como una caja negra.</p>
         <p>Para un sitio de restaurante, la implicación práctica es que <strong>dos métricas representan cerca del 55% de la calificación</strong> — Largest Contentful Paint y Total Blocking Time. Arregla esas dos y todo lo demás sigue. La herramienta de diagnóstico de este sitio devuelve el desglose por métrica para que veas exactamente qué rubro está arrastrando tu calificación.</p>
       </div>
+
+      <figure class="viz-figure article-figure reveal" data-audio-alt="Tres anillos de calificación Lighthouse de muestra, uno por banda. Un 35 cae en la banda Pobre (0 a 49), pintado en color &oacute;xido. Un 65 cae en la banda Necesita mejorar (50 a 89), pintado en dorado. Un 95 cae en la banda Buena (90 a 100), pintado en verde. El diagrama de colores en cualquier reporte de PageSpeed Insights o Lighthouse usa exactamente estos umbrales.">
+        <div class="viz-rings">
+          <div class="viz-ring" data-band="bad" style="--score:35;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-poor-label-es" focusable="false">
+              <title id="ring-poor-label-es">Calificaci&oacute;n 35 de 100 &mdash; banda Pobre</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">35</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Pobre</strong>0&ndash;49</p>
+          </div>
+          <div class="viz-ring" data-band="warn" style="--score:65;--delay:120ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-warn-label-es" focusable="false">
+              <title id="ring-warn-label-es">Calificaci&oacute;n 65 de 100 &mdash; banda Necesita mejorar</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">65</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Necesita mejorar</strong>50&ndash;89</p>
+          </div>
+          <div class="viz-ring" data-band="good" style="--score:95;--delay:240ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-good-label-es" focusable="false">
+              <title id="ring-good-label-es">Calificaci&oacute;n 95 de 100 &mdash; banda Buena</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">95</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Buena</strong>90&ndash;100</p>
+          </div>
+        </div>
+        <figcaption>Las tres bandas de Lighthouse &mdash; el diagrama de colores en cualquier reporte de PageSpeed Insights usa exactamente estos umbrales.</figcaption>
+      </figure>
 
       <h2>Hallazgos clave</h2>
       <ul class="research-findings">

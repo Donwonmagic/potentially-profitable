@@ -6677,3 +6677,33 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .viz-tree__node summary{padding:12px 14px;font-size:15px;gap:12px}
   .viz-tree__body{padding:0 14px 16px 58px;font-size:14.5px}
 }
+
+/* .viz-rings / .viz-ring — circular progress / Lighthouse-style
+   score ring. SVG circle with stroke-dasharray; the filled portion
+   is computed from --score (0–100) using the constant 326.726
+   (the circumference of a 52-radius circle). Animated reveal sweeps
+   the dashoffset from full circle (empty) to the target on viewport
+   entry. The center number lives inside the SVG as a <text> element
+   so it scales with the viewBox and never causes layout shift.
+   data-band tints both stroke and number color to match the
+   Lighthouse Poor / Needs work / Good convention. */
+.viz-rings{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin:24px 0;align-items:start}
+.viz-ring{text-align:center;padding:8px 4px}
+.viz-ring__svg{display:block;margin:0 auto;max-width:160px;height:auto;overflow:visible}
+.viz-ring__track{stroke:var(--cream-2)}
+.viz-ring__fill{stroke:var(--teal);stroke-linecap:round;stroke-dasharray:326.726;stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
+.viz-ring[data-band="bad"]  .viz-ring__fill{stroke:var(--rust)}
+.viz-ring[data-band="warn"] .viz-ring__fill{stroke:#C5A059}
+.viz-ring[data-band="good"] .viz-ring__fill{stroke:#1F9D55}
+.viz-ring__num{font-family:var(--font-display);font-size:38px;font-weight:500;letter-spacing:-0.02em;fill:var(--ink);dominant-baseline:central}
+.viz-ring[data-band="bad"]  .viz-ring__num{fill:var(--rust)}
+.viz-ring[data-band="warn"] .viz-ring__num{fill:#C5A059}
+.viz-ring[data-band="good"] .viz-ring__num{fill:#1F9D55}
+.viz-ring__label{font-family:var(--font-body);font-size:13px;color:var(--stone);margin:14px 0 0;line-height:1.4}
+.viz-ring__label strong{display:block;font-weight:600;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+@media (prefers-reduced-motion:no-preference){
+  /* Sweeping dashoffset from full circumference to target on .reveal
+     entry. Per-ring stagger via inline --delay on the wrapper. */
+  .reveal .viz-ring__fill{stroke-dashoffset:326.726;transition:stroke-dashoffset 1100ms cubic-bezier(0.2,0.85,0.3,1.05);transition-delay:var(--delay,0ms)}
+  .reveal.in .viz-ring__fill{stroke-dashoffset:calc(326.726 * (1 - var(--score,50) / 100))}
+}
