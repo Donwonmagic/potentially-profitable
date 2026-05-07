@@ -2420,6 +2420,42 @@ function v1NormalizeForDedup(s) {
   if (edgeOk) v2Pass++; else v2Fail++;
 }
 
+// ---------- _compare/ FIXTURE_VENDORS parity ----------
+{
+  const comparePath = path.join(repoRoot, 'tools/invoice-decoder/_compare/index.html');
+  const synthDir    = path.join(repoRoot, 'tools/invoice-decoder/__fixtures__/synth');
+  let parityOk = false;
+  let detail   = '';
+  try {
+    const html = fs.readFileSync(comparePath, 'utf8');
+    const m = /var FIXTURE_VENDORS\s*=\s*\[([\s\S]*?)\];/.exec(html);
+    if (!m) {
+      detail = 'FIXTURE_VENDORS array not found';
+    } else {
+      const inPage = Array.from(m[1].matchAll(/'([^']+)'/g)).map(x => x[1]).sort();
+      const onDisk = Array.from(new Set(
+        fs.readdirSync(synthDir)
+          .filter(f => f.endsWith('.json'))
+          .map(f => f.replace(/\.json$/, '').replace(/-\d+$/, ''))
+      )).sort();
+      const sameSet = inPage.length === onDisk.length &&
+                      inPage.every((v, i) => v === onDisk[i]);
+      if (sameSet) {
+        parityOk = true;
+        detail = inPage.length + ' vendor stems';
+      } else {
+        const extra   = inPage.filter(v => !onDisk.includes(v));
+        const missing = onDisk.filter(v => !inPage.includes(v));
+        detail = 'extra=[' + extra.join(',') + '] missing=[' + missing.join(',') + ']';
+      }
+    }
+  } catch (err) {
+    detail = err.message;
+  }
+  console.log(`  ${parityOk ? '✓' : '✗'} _compare/index.html FIXTURE_VENDORS matches __fixtures__/synth on disk (${detail})`);
+  if (parityOk) v2Pass++; else v2Fail++;
+}
+
 // ---------- ocr-shim.js routing ----------
 {
   const W = newSyntheticWindow();
