@@ -263,13 +263,36 @@
       // the heuristic so the v2 OCR pipeline still has regions to
       // work with. Telemetry surfaces the failure category so we
       // know which FIXME needs work first.
+      //
+      // Audit fix (privacy H1): the previous version sent
+      // `String(err.message).slice(0, 80)` directly to plausible.
+      // Most failures here are model-shape mismatches with terse
+      // English messages, but a future change to
+      // _postprocessLayoutOutput could throw with a message that
+      // quotes coordinates or text fragments derived from the
+      // invoice canvas. Map every error to one of a small enum of
+      // reason codes so no input-derived data can ever flow into
+      // the analytics props.
       try {
         if (root.plausible) root.plausible('Invoice Decoder Layout Model Failed', { props: {
-          reason: (err && err.message) ? String(err.message).slice(0, 80) : 'unknown'
+          reason: _classifyLayoutError(err)
         } });
       } catch (_) {}
       return _wholePageHeuristic(canvas);
     });
+  }
+
+  function _classifyLayoutError(err) {
+    var msg = (err && err.message) ? String(err.message) : '';
+    if (!msg) return 'unknown';
+    // Order matters — the postprocess "no regions above threshold"
+    // message must be matched before the generic shape-mismatch.
+    if (/no regions above threshold/i.test(msg))   return 'no-regions';
+    if (/missing dims or data/i.test(msg))          return 'missing-output';
+    if (/not YOLOX-style/i.test(msg))               return 'shape-mismatch';
+    if (/failed to load|404|http /i.test(msg))      return 'load-fail';
+    if (/wasm|webassembly|out of memory/i.test(msg)) return 'wasm-fail';
+    return 'unknown';
   }
 
   var api = {
