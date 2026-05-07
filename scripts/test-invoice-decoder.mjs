@@ -2241,6 +2241,230 @@ console.log(`\nEdge-case hardening (Wave 8.1):`);
 
 console.log(`\nWave 8.1 edge-case fixtures: ${edgePass} passed.`);
 
+// =====================================================================
+// Slice 4 — v2 pipeline module tests.
+//
+// Loads the new IIFE modules (normalize, layout, ocr-engine, tables,
+// assemble, ocr-shim) under a synthetic window-shaped object and
+// asserts contract + behavior. Pure logic, no canvas/DOM.
+//
+// We intentionally re-implement the v1 normalizeForDedup here as
+// the parity baseline so any drift between invoice-decoder.js's
+// dedup helper and assemble.js's MID_ASSEMBLE._normalizeForDedup
+// trips a loud test failure instead of silently regressing flagged
+// operators.
+// =====================================================================
+console.log('\nSlice 4 — v2 pipeline module tests:');
+let v2Pass = 0, v2Fail = 0;
+
+function newSyntheticWindow() {
+  return {
+    location:     { search: '' },
+    localStorage: {
+      _: {},
+      getItem(k) { return Object.prototype.hasOwnProperty.call(this._, k) ? this._[k] : null; },
+      setItem(k, v) { this._[k] = String(v); }
+    }
+  };
+}
+function loadV2Module(win, file) {
+  const src = fs.readFileSync(path.join(repoRoot, 'tools/invoice-decoder', file), 'utf8');
+  new Function('window', 'module', src)(win, undefined);
+}
+
+// MUST stay byte-equivalent to invoice-decoder.js:463 normalizeForDedup
+function v1NormalizeForDedup(s) {
+  if (!s) return '';
+  const n = String(s).toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return (n.length >= 4) ? n : '';
+}
+
+// ---------- assemble.js ----------
+{
+  const W = newSyntheticWindow();
+  loadV2Module(W, 'assemble.js');
+  const A = W.MID_ASSEMBLE;
+
+  const samples = [
+    'SYSCO HOUSTON, INC.',
+    'SYSCO HOUSTON, INC.,',
+    'PAGE 1 OF 2',
+    'EA',
+    '   ',
+    null,
+    'BEEF 10LB $24.50',
+    'Beef  10LB,  $24.50',
+    '¡Hola, Restaurante!'
+  ];
+  let parityOk = true;
+  for (const s of samples) {
+    if (A._normalizeForDedup(s) !== v1NormalizeForDedup(s)) {
+      parityOk = false;
+      console.log(`    drift on ${JSON.stringify(s)}: assemble=${JSON.stringify(A._normalizeForDedup(s))} v1=${JSON.stringify(v1NormalizeForDedup(s))}`);
+    }
+  }
+  console.log(`  ${parityOk ? '✓' : '✗'} assemble._normalizeForDedup parity vs invoice-decoder.normalizeForDedup`);
+  if (parityOk) v2Pass++; else v2Fail++;
+
+  const kA = A._normalizeForDedup('SYSCO HOUSTON, INC.');
+  const kB = A._normalizeForDedup('SYSCO HOUSTON, INC.,');
+  const driftOk = kA === kB && kA.length > 0;
+  console.log(`  ${driftOk ? '✓' : '✗'} dedup absorbs trailing-comma OCR drift (key=${JSON.stringify(kA)})`);
+  if (driftOk) v2Pass++; else v2Fail++;
+
+  const shortOk = A._normalizeForDedup('EA') === '' && A._normalizeForDedup('CT') === '';
+  console.log(`  ${shortOk ? '✓' : '✗'} short tokens ("EA", "CT") return empty key (passthrough)`);
+  if (shortOk) v2Pass++; else v2Fail++;
+
+  const emptyOut = A.merge({});
+  const emptyOk = Array.isArray(emptyOut.lines) && emptyOut.lines.length === 0
+    && emptyOut.fullText === '' && Array.isArray(emptyOut.perPage) && emptyOut.perPage.length === 0;
+  console.log(`  ${emptyOk ? '✓' : '✗'} merge({}) returns empty result without throwing`);
+  if (emptyOk) v2Pass++; else v2Fail++;
+
+  const twoPage = A.merge({
+    pages: [{ source: 'image' }, { source: 'image' }],
+    layouts: [null, null],
+    ocrResults: [
+      { lines: [
+        { text: 'SYSCO HOUSTON, INC.', confidence: 0.9 },
+        { text: 'EA',                  confidence: 0.8 },
+        { text: 'BEEF 10LB $24.50',    confidence: 0.9 }
+      ]},
+      { lines: [
+        { text: 'SYSCO HOUSTON, INC.,', confidence: 0.9 },
+        { text: 'EA',                   confidence: 0.8 },
+        { text: 'CHICKEN 5LB $12.00',   confidence: 0.9 }
+      ]}
+    ],
+    tableResults: [null, null]
+  });
+  const twoPageOk = twoPage.lines.length === 5
+    && twoPage.lines.map(l => l.text).join('|') === 'SYSCO HOUSTON, INC.|EA|BEEF 10LB $24.50|EA|CHICKEN 5LB $12.00';
+  console.log(`  ${twoPageOk ? '✓' : '✗'} two-page merge dedupes drift header, preserves short tokens`);
+  if (twoPageOk) v2Pass++; else v2Fail++;
+
+  const pdfText = A.merge({
+    pages: [{ source: 'pdf-text', textLayer: {
+      lines: [{ text: 'INVOICE 12345', confidence: 1.0 }],
+      fullText: 'INVOICE 12345'
+    }}],
+    layouts: [null],
+    ocrResults: [{ lines: [] }],
+    tableResults: [null]
+  });
+  const pdfTextOk = pdfText.lines.length === 1 && pdfText.lines[0].text === 'INVOICE 12345';
+  console.log(`  ${pdfTextOk ? '✓' : '✗'} pdf-text fast path uses textLayer.lines verbatim`);
+  if (pdfTextOk) v2Pass++; else v2Fail++;
+
+  const withTable = A.merge({
+    pages: [{ source: 'image' }],
+    layouts: [null],
+    ocrResults: [{ lines: [] }],
+    tableResults: [{
+      rows: [
+        [{ text: 'BEEF',    confidence: 0.9 }, { text: '10LB', confidence: 0.9 }, { text: '$24.50', confidence: 0.9 }],
+        [{ text: 'CHICKEN', confidence: 0.9 }, { text: '5LB',  confidence: 0.9 }, { text: '$12.00', confidence: 0.9 }]
+      ]
+    }]
+  });
+  const tableOk = withTable.lines.length === 2
+    && withTable.lines[0].text === 'BEEF\t10LB\t$24.50'
+    && withTable.lines[1].text === 'CHICKEN\t5LB\t$12.00';
+  console.log(`  ${tableOk ? '✓' : '✗'} table.rows flatten to tab-joined lines per row`);
+  if (tableOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- ocr-engine.js ----------
+{
+  const W = newSyntheticWindow();
+  loadV2Module(W, 'ocr-engine.js');
+  const E = W.MID_OCR_V2;
+
+  let stubOk = false;
+  await E.recognize(null, [], {}).then(() => {}).catch(err => {
+    stubOk = err && err.code === 'ENGINE_NOT_LOADED' && err.retryable === true;
+  });
+  console.log(`  ${stubOk ? '✓' : '✗'} ocr-engine stub rejects with code=ENGINE_NOT_LOADED, retryable=true`);
+  if (stubOk) v2Pass++; else v2Fail++;
+
+  const e1 = E.OcrError('IMAGE_QUALITY', 'too blurry');
+  const e2 = E.OcrError('MODEL_LOAD',    'fetch failed');
+  const e3 = E.OcrError('OUT_OF_MEMORY', 'heap');
+  const taxOk = e1.code === 'IMAGE_QUALITY' && e1.retryable === false
+             && e2.code === 'MODEL_LOAD'    && e2.retryable === true
+             && e3.code === 'OUT_OF_MEMORY' && e3.retryable === false;
+  console.log(`  ${taxOk ? '✓' : '✗'} OcrError taxonomy sets retryable correctly per code`);
+  if (taxOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- layout.js ----------
+{
+  const W = newSyntheticWindow();
+  loadV2Module(W, 'layout.js');
+  const L = W.MID_LAYOUT;
+
+  const r = await L.analyze({ width: 1275, height: 1650 }, { tier: 'lean' });
+  const layOk = r.usedHeuristic === true && r.usedModel === false
+    && r.regions.length === 1 && r.regions[0].kind === 'page'
+    && r.regions[0].bbox.w === 1275 && r.regions[0].bbox.h === 1650;
+  console.log(`  ${layOk ? '✓' : '✗'} layout.analyze returns single 'page' region matching canvas dims`);
+  if (layOk) v2Pass++; else v2Fail++;
+
+  const r2 = await L.analyze(null, {});
+  const edgeOk = r2.regions.length === 0 && r2.usedHeuristic === false;
+  console.log(`  ${edgeOk ? '✓' : '✗'} layout.analyze(null) returns empty regions without throwing`);
+  if (edgeOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- ocr-shim.js routing ----------
+{
+  const W = newSyntheticWindow();
+  W.MID_OCR = {
+    recognizeMultiPass: () => Promise.resolve({ text: 'V1', lines: [{ text: 'V1', confidence: 0.9 }], meanConfidence: 0.9 }),
+    recognizeMultiPassEnsemble: () => Promise.resolve({ text: 'V1-ENS', lines: [], meanConfidence: 0.95 }),
+    adaptiveReread: (c, r) => Promise.resolve(r)
+  };
+  loadV2Module(W, 'normalize.js');
+  loadV2Module(W, 'layout.js');
+  loadV2Module(W, 'ocr-engine.js');
+  loadV2Module(W, 'tables.js');
+  loadV2Module(W, 'assemble.js');
+  loadV2Module(W, 'ocr-shim.js');
+
+  const r1 = await W.MID_OCR.recognizeMultiPass('a', 'g', {});
+  const passthroughOk = r1.text === 'V1';
+  console.log(`  ${passthroughOk ? '✓' : '✗'} flag default OFF → recognizeMultiPass passes through to v1`);
+  if (passthroughOk) v2Pass++; else v2Fail++;
+
+  W.localStorage.setItem('id-engine-v2', 'on');
+  const r2 = await W.MID_OCR.recognizeMultiPass('a', 'g', {});
+  const fallbackOk = r2.text === 'V1';
+  console.log(`  ${fallbackOk ? '✓' : '✗'} flag ON + ENGINE_NOT_LOADED → shim falls back to v1 (operator unaffected)`);
+  if (fallbackOk) v2Pass++; else v2Fail++;
+
+  W.location.search = '?engine=v1';
+  const usingV2withV1url = W.MID_OCR._shouldUseV2();
+  W.location.search = '?engine=v2';
+  const usingV2withV2url = W.MID_OCR._shouldUseV2();
+  const urlOk = usingV2withV1url === false && usingV2withV2url === true;
+  console.log(`  ${urlOk ? '✓' : '✗'} URL ?engine=v1|v2 overrides localStorage / window flag`);
+  if (urlOk) v2Pass++; else v2Fail++;
+
+  const wrapped = W.MID_OCR;
+  const surfaceOk = typeof wrapped.recognizeMultiPass === 'function'
+    && typeof wrapped.recognizeMultiPassEnsemble === 'function'
+    && typeof wrapped.adaptiveReread === 'function'
+    && wrapped._v1 && typeof wrapped._v1.recognizeMultiPass === 'function';
+  console.log(`  ${surfaceOk ? '✓' : '✗'} shim wrapper exposes the v1 API surface + ._v1 escape hatch`);
+  if (surfaceOk) v2Pass++; else v2Fail++;
+}
+
+console.log(`\nSlice 4 v2 module tests: ${v2Pass} passed, ${v2Fail} failed.`);
+
 const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandFail + abbrFail + tagFail + vendorFail + skuFail + exportFail
   + homFail + warpFail + quadFail + sobelFail + pipeFail
   + alFail
@@ -2254,5 +2478,6 @@ const grandFail = totalFail + totalNew + kindFail + packFail + mathFail + brandF
   + pairFail
   + ppFail
   + dxFail
-  + edgeFail;
+  + edgeFail
+  + v2Fail;
 process.exit(grandFail === 0 ? 0 : 1);

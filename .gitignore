@@ -24,3 +24,9 @@ scripts/voice-refs/*.flac
 # Python bytecode cache from scripts/lib helpers.
 __pycache__/
 *.pyc
+
+# Slice 4 — invoice fixture renderer output. SVG variants are
+# generated deterministically by scripts/render-invoice-fixtures.mjs
+# from the committed JSON fixtures in __fixtures__/synth/; never
+# committed (regenerate locally / in CI as needed).
+tools/invoice-decoder/__fixtures__/images/
