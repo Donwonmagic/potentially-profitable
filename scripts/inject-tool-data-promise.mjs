@@ -57,6 +57,11 @@ function findToolPages() {
       const full = path.join(fullRoot, rel);
       for (const entry of fs.readdirSync(full, { withFileTypes: true })) {
         if (!entry.isDirectory()) continue;
+        // Internal diagnostic surfaces (_compare/, _diag/, etc.) are
+        // noindex,nofollow dev pages, not public tool pages — skip
+        // them so the data-promise rail isn't injected into a
+        // surface where it makes no sense.
+        if (entry.name.startsWith('_')) continue;
         const sub = path.posix.join(rel, entry.name);
         const idx = path.join(fullRoot, sub, 'index.html');
         if (fs.existsSync(idx)) out.push({ file: idx, locale });

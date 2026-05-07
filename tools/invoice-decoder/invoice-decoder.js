@@ -548,6 +548,34 @@
     });
   }
 
+  // Slice 6 telemetry — module-private session state. Persists across
+  // multiple readPendingInvoice() calls in the same tab so we can
+  // distinguish cold (first OCR run this session) from warm (later
+  // runs that benefit from already-loaded vendors + warm worker pool).
+  var _ocrSessionWarm = false;
+
+  // Slice 6 telemetry helpers. Bucketing keeps the plausible
+  // dimension cardinality bounded (Plausible charges per unique
+  // value) and dodges any chance of a numeric leak.
+  function _confBucket(c) {
+    var n = (c == null) ? 0 : c;
+    // Tesseract reports 0..100; PP-OCR (v2) reports 0..1. Normalize
+    // so a single bucket function works across both engines.
+    if (n > 0 && n <= 1) n = n * 100;
+    if (n >= 80) return '80+';
+    if (n >= 50) return '50-79';
+    if (n > 0)   return '<50';
+    return 'unknown';
+  }
+  function _msBucket(ms) {
+    if (ms == null || !isFinite(ms)) return 'unknown';
+    if (ms <  2000) return '<2s';
+    if (ms <  5000) return '2-5s';
+    if (ms < 10000) return '5-10s';
+    if (ms < 20000) return '10-20s';
+    return '20s+';
+  }
+
   function readPendingInvoice() {
     if (!pendingPages.length) return;
     if (typeof MID_OCR === 'undefined' || typeof MID_PARSE === 'undefined') {
@@ -594,6 +622,15 @@
     var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
     var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
     var page1WordsForColumns      = [];  // Layout-aware OCR refinement source
+    // Slice 6 telemetry — capture state at start of read + accumulate
+    // across pages so we can attribute v1↔v2 outcomes per session.
+    var _readStartMs       = (typeof performance !== 'undefined') ? performance.now() : Date.now();
+    var _readColdOrWarm    = _ocrSessionWarm ? 'warm' : 'cold';
+    _ocrSessionWarm        = true;
+    var _readEngineRequested = (MID_OCR && typeof MID_OCR._shouldUseV2 === 'function' && MID_OCR._shouldUseV2()) ? 'v2' : 'v1';
+    var _readSawV2Result   = false;     // any per-page result tagged engineVersion: 'v2'
+    var _readSumConfXLines = 0;
+    var _readSumLines      = 0;
 
     // Wave 9.4 — heavy-tier language packs (chi_sim/chi_tra/jpn/kor)
     // when the operator's preferences or vendor history imply them.
@@ -677,6 +714,17 @@
               }
               return improved;
             });
+          }
+          // Slice 6 telemetry — accumulate per-page signals here, before
+          // dedup. `engineVersion` is set by ocr-engine.js (v2) or absent
+          // (v1 / fallback). Both engines report meanConfidence in 0..100.
+          if (ocrResult) {
+            if (ocrResult.engineVersion === 'v2') _readSawV2Result = true;
+            var pageLineCount = (ocrResult.lines && ocrResult.lines.length) || 0;
+            if (pageLineCount > 0 && typeof ocrResult.meanConfidence === 'number') {
+              _readSumConfXLines += ocrResult.meanConfidence * pageLineCount;
+              _readSumLines      += pageLineCount;
+            }
           }
           return ocrResult;
         }).then(function (ocrResult) {
@@ -861,28 +909,45 @@
         setProgress(100);
         hideStatus();
         if (window.plausible) {
+          // Slice 6 telemetry — `engine_version` distinguishes v1
+          // pass-through ('v1'), v2 success ('v2'), and v2-attempted-
+          // but-fell-back ('v2-fallback'). `mean_conf_bucket` and
+          // `cold_or_warm` let us see whether v2 actually outperforms
+          // v1 in production, gating the eventual default flip.
+          var _ocrMeanConf = _readSumLines ? (_readSumConfXLines / _readSumLines) : 0;
+          var _ocrEngineActual = _readSawV2Result ? 'v2'
+                              : (_readEngineRequested === 'v2' ? 'v2-fallback' : 'v1');
+          var _ocrElapsedMs = ((typeof performance !== 'undefined') ? performance.now() : Date.now()) - _readStartMs;
           window.plausible('Invoice Decoder Read', { props: {
             rows_bucket: parsed.rows.length < 10 ? '<10' :
                          parsed.rows.length < 25 ? '10-24' :
                          parsed.rows.length < 50 ? '25-49' : '50+',
             vendor_detected: parsed.vendor ? 'true' : 'false',
-            delta_known: parsed.deltaPct != null ? 'true' : 'false'
+            delta_known: parsed.deltaPct != null ? 'true' : 'false',
+            engine_version:   _ocrEngineActual,
+            mean_conf_bucket: _confBucket(_ocrMeanConf),
+            cold_or_warm:     _readColdOrWarm,
+            ocr_ms_bucket:    _msBucket(_ocrElapsedMs)
           } });
         }
       });   // close columnsRefinePromise.then
       });   // close enrichmentPromise.then
     }).catch(function (err) {
       clearPhaseLadder();
-      showStatus(
-        tt('OCR failed', 'OCR falló'),
-        tt('The reader couldn\'t process this image. ' + (err && err.message ? '(' + err.message + ')' : ''),
-           'El lector no pudo procesar esta imagen. ' + (err && err.message ? '(' + err.message + ')' : '')),
-        'error'
-      );
-      // Wave 5.3 — actionable error recovery. Tesseract CDN failures
-      // tend to be the most common one; offer a retry path + the
-      // manual-entry fallback so the operator isn't stuck.
-      renderErrorActions(err);
+      // Audience-friendly error handling. Owners aren't engineers —
+      // the user-visible copy must avoid jargon ("Tesseract", "OCR
+      // engine", "worker") and end with one concrete next step.
+      // Internal codes are only used for telemetry + recovery routing.
+      var classified = _classifyOcrError(err);
+      var copy = _ocrErrorCopy(classified);
+      showStatus(copy.title, copy.body, 'error');
+      if (window.plausible) {
+        try { window.plausible('Invoice Decoder Error', { props: {
+          code: classified.code,
+          retryable: classified.retryable ? 'true' : 'false'
+        } }); } catch (_) {}
+      }
+      renderErrorActions(err, classified);
     }).then(function () {
       if (readBtn) {
         readBtn.disabled = false;
@@ -891,32 +956,143 @@
     });
   }
 
+  // Internal error taxonomy. Codes drive recovery routing (which
+  // buttons to show) and telemetry. They are NEVER shown to the
+  // operator — _ocrErrorCopy maps each code to plain-English /
+  // plain-Spanish copy that ends with one concrete next step.
+  function _classifyOcrError(err) {
+    // Honor explicit OcrError codes from the v2 engine first.
+    // ocr-engine.js throws errors with .code already set
+    // (IMAGE_QUALITY, MODEL_LOAD, WASM_COMPILE, OUT_OF_MEMORY,
+    // ENGINE_LOAD, UNKNOWN); when one of those leaks through the
+    // shim's fallback (i.e., V1 also failed and we re-threw the
+    // V2 error), it should classify by code, not by message regex.
+    if (err && typeof err.code === 'string' && /^[A-Z_]+$/.test(err.code)) {
+      var nonRetryable = (err.code === 'IMAGE_QUALITY' || err.code === 'OUT_OF_MEMORY' || err.code === 'IMAGE_FORMAT');
+      // Map the engine codes onto the controller's existing copy buckets:
+      // Audit fix — split IMAGE_QUALITY (blurry / sideways /
+      // confidence-floor) from IMAGE_FORMAT (HEIC / TIFF / decode
+      // failure). The previous mapping showed the iPhone HEIC
+      // "share as JPG" instructions when the actual cause was a
+      // blurry photo, which left operators puzzled.
+      var copyCode =
+        (err.code === 'WASM_COMPILE' || err.code === 'MODEL_LOAD' || err.code === 'ENGINE_LOAD') ? 'ENGINE_LOAD' :
+        (err.code === 'OUT_OF_MEMORY')                                                            ? 'OOM'         :
+        (err.code === 'IMAGE_QUALITY')                                                            ? 'IMAGE_QUALITY':
+        (err.code === 'IMAGE_FORMAT')                                                             ? 'IMAGE_FORMAT':
+        (err.code === 'TIMEOUT')                                                                  ? 'TIMEOUT'     :
+        (err.code === 'NETWORK')                                                                  ? 'NETWORK'     :
+                                                                                                    'UNKNOWN';
+      return { code: copyCode, retryable: !nonRetryable, message: String(err.message || err.code) };
+    }
+    var msg = String((err && err.message) || err || '');
+    if (/tesseract|workerPath|corePath|langPath|vendor-config|module missing|loaded but global|onnx|wasm/i.test(msg)) {
+      return { code: 'ENGINE_LOAD', retryable: true,  message: msg };
+    }
+    if (/networkerror|failed to fetch|offline|econn|net::|err_internet|could not load/i.test(msg)) {
+      return { code: 'NETWORK',     retryable: true,  message: msg };
+    }
+    if (/memory|heap|alloc|maximum call stack|quota/i.test(msg)) {
+      return { code: 'OOM',         retryable: false, message: msg };
+    }
+    if (/heic|tiff|avif|decode failed|canvas 2d|libheif|utif|image decode/i.test(msg)) {
+      return { code: 'IMAGE_FORMAT', retryable: false, message: msg };
+    }
+    if (/timeout|timed out/i.test(msg)) {
+      return { code: 'TIMEOUT',     retryable: true,  message: msg };
+    }
+    return { code: 'UNKNOWN',       retryable: true,  message: msg };
+  }
+
+  // Plain-language copy for each error code. Audience: small
+  // restaurant owners. No jargon, no apology spirals, one action.
+  function _ocrErrorCopy(classified) {
+    switch (classified.code) {
+      case 'ENGINE_LOAD':
+        return {
+          title: tt('We couldn\'t start the reader', 'No pudimos iniciar el lector'),
+          body:  tt('Check your internet connection, then tap "Try again". You can also type one row by hand to keep going.',
+                    'Revisa tu conexión a internet y toca "Reintentar". También puedes escribir un renglón a mano para seguir.')
+        };
+      case 'NETWORK':
+        return {
+          title: tt('Connection dropped', 'Se cayó la conexión'),
+          body:  tt('Looks like the internet is offline. Reconnect and tap "Try again", or type one row by hand for now.',
+                    'Parece que se cayó el internet. Reconéctate y toca "Reintentar", o escribe un renglón a mano por ahora.')
+        };
+      case 'OOM':
+        return {
+          title: tt('Your phone ran out of room', 'El teléfono se quedó sin espacio'),
+          body:  tt('Close other tabs and apps, then try again. A smaller photo of the same page also helps.',
+                    'Cierra otras pestañas y apps, y vuelve a intentar. Una foto más pequeña de la misma página también ayuda.')
+        };
+      case 'IMAGE_FORMAT':
+        return {
+          title: tt('We couldn\'t open this photo', 'No pudimos abrir esta foto'),
+          body:  tt('On iPhone: open Photos, tap Share, then Options, and choose "Most Compatible". That saves it as a JPG we can read.',
+                    'En iPhone: abre Fotos, toca Compartir, luego Opciones, y elige "Más compatible". Eso la guarda como JPG que sí podemos leer.')
+        };
+      case 'IMAGE_QUALITY':
+        // Audit fix — distinct from IMAGE_FORMAT. The new reader
+        // surfaces this when the photo is blurry, sideways, or
+        // the page is too large for in-browser reading; suggest
+        // concrete capture-quality fixes, not an iPhone format
+        // tip.
+        return {
+          title: tt('This photo\'s a little hard to read', 'Esta foto está difícil de leer'),
+          body:  tt('Try: take a fresh photo of the whole page in good light, hold the camera flat over the page, or upload the PDF your supplier emailed if they sent one.',
+                    'Intenta: toma otra foto de la página completa con buena luz, sostén la cámara plana sobre la página, o sube el PDF que te mandó tu proveedor si te lo enviaron.')
+        };
+      case 'TIMEOUT':
+        return {
+          title: tt('This is taking longer than expected', 'Esto está tardando más de lo esperado'),
+          body:  tt('Tap "Try again". A clearer or smaller photo usually reads faster.',
+                    'Toca "Reintentar". Una foto más clara o más pequeña suele leerse más rápido.')
+        };
+      default:
+        return {
+          title: tt('Something went wrong reading this', 'Algo salió mal al leer esto'),
+          body:  tt('Tap "Try again", or type one row by hand for now.',
+                    'Toca "Reintentar", o escribe un renglón a mano por ahora.')
+        };
+    }
+  }
+
   // Wave 5.3 — error-recovery action buttons. Renders inside the
   // status panel; each button gives the operator a clear next step.
-  function renderErrorActions(err) {
+  // Audience: small restaurant owners. Labels avoid technical
+  // vocabulary ("OCR", "reader engine") and use everyday phrasing.
+  function renderErrorActions(err, classified) {
     if (!statusEl) return;
     var existing = document.getElementById('idErrorActions');
     if (existing) existing.parentNode.removeChild(existing);
     var wrap = document.createElement('div');
     wrap.id = 'idErrorActions';
     wrap.className = 'id-error-actions';
-    var msg = String(err && err.message || '');
-    var isCdnFail = /Tesseract|network|fetch/i.test(msg);
+    classified = classified || _classifyOcrError(err);
     var html = '';
-    if (isCdnFail) {
-      html += '<button type="button" id="idRetryReader">' + escHtml(tt('Retry reader', 'Reintentar lector')) + '</button>';
+    if (classified.retryable) {
+      html += '<button type="button" id="idRetryReader">' + escHtml(tt('Try again', 'Reintentar')) + '</button>';
     }
-    html += '<button type="button" id="idTypeManually">' + escHtml(tt('Type one row manually', 'Escribir un renglón a mano')) + '</button>';
-    html += '<button type="button" id="idShowRawOcr">' + escHtml(tt('Show raw OCR', 'Ver OCR crudo')) + '</button>';
+    if (classified.code === 'IMAGE_FORMAT') {
+      html += '<button type="button" id="idTryDifferentPhoto">' + escHtml(tt('Use a different photo', 'Usa otra foto')) + '</button>';
+    }
+    html += '<button type="button" id="idTypeManually">' + escHtml(tt('Type one row by hand', 'Escribir un renglón a mano')) + '</button>';
+    html += '<button type="button" id="idShowRawOcr">' + escHtml(tt('Show what we read', 'Ver lo que leímos')) + '</button>';
     wrap.innerHTML = html;
     var rawHost = document.createElement('pre');
     rawHost.id = 'idRawOcr';
     rawHost.className = 'id-raw-ocr';
-    rawHost.textContent = (lastReadParsed && lastReadParsed._rawOcrText) || tt('(no raw text yet — run a read first)', '(sin texto crudo todavía)');
+    rawHost.textContent = (lastReadParsed && lastReadParsed._rawOcrText) || tt('(nothing read yet — try once first)', '(aún no hemos leído nada — intenta una vez)');
     statusEl.appendChild(wrap);
     statusEl.appendChild(rawHost);
     var retryBtn = document.getElementById('idRetryReader');
     if (retryBtn) retryBtn.addEventListener('click', function () { readPendingInvoice(); });
+    var diffPhotoBtn = document.getElementById('idTryDifferentPhoto');
+    if (diffPhotoBtn) diffPhotoBtn.addEventListener('click', function () {
+      var input = document.getElementById('idAnyInput');
+      if (input) try { input.click(); } catch (_) {}
+    });
     var manualBtn = document.getElementById('idTypeManually');
     if (manualBtn) manualBtn.addEventListener('click', function () {
       // Synthesize a single empty row the operator can edit into.
@@ -2942,39 +3118,33 @@
     } catch (_) {}
     if (!parsedEl || !parsedList) return;
     if (!parsed.rows.length) {
-      // Specific diagnostic: was this an OCR-returned-zero-text problem
-      // (small or rotated source) or a parser-found-zero-items problem
-      // (text was readable but didn't fit any known line shape)?
+      // Audience-friendly zero-rows diagnostic. Owners aren't
+      // engineers — copy avoids "DPI", "image-only PDF", "resolution"
+      // and ends with one or two concrete actions to try next.
+      // Two failure modes: (a) we read no words at all, or (b) we
+      // read words but none looked like rows of an invoice.
+      // (Smarter detection-stat branching arrives with the new
+      // engine; for now we branch on "did we read any text".)
       var rawOcr = parsed._rawOcrText || '';
       var hadAnyText = /\S/.test(rawOcr);
-      var dim = (pendingPages && pendingPages[0] && pendingPages[0].gentle)
-        ? (pendingPages[0].gentle.width + '×' + pendingPages[0].gentle.height)
-        : null;
       var hint;
       if (!hadAnyText) {
-        // OCR found no text at all — almost always a resolution or
-        // rotation issue. Surface the actual canvas size so the
-        // operator can see the source was tiny.
         hint = tt(
-          'OCR returned no text from this image' + (dim ? ' (' + dim + ' px)' : '') + '. ' +
-          'Most common causes: scan resolution too low, page rotated 90°, or image-only PDF saved at low DPI. ' +
-          'Try: (1) re-scan at 300 DPI or higher; (2) photograph the page directly with your phone camera; ' +
-          '(3) if your distributor offers a text-based PDF, use that instead.',
-          'OCR no encontró texto en esta imagen' + (dim ? ' (' + dim + ' px)' : '') + '. ' +
-          'Causas más comunes: resolución baja, página rotada 90°, o PDF escaneado a baja resolución. ' +
-          'Intenta: (1) re-escanea a 300 DPI o más; (2) toma una foto directa con tu cámara; ' +
-          '(3) si tu distribuidor ofrece un PDF basado en texto, úsalo.'
+          'We couldn\'t find any words on this image. Some photos are too small, blurry, or sideways for the reader to handle. ' +
+          'Try: take a fresh photo of the whole page in good light, hold the camera flat over the page, ' +
+          'or upload the PDF your supplier emailed if they sent one.',
+          'No encontramos palabras en esta imagen. Algunas fotos están muy chicas, borrosas, o de lado para que las leamos. ' +
+          'Intenta: toma otra foto de la página completa con buena luz, sostén la cámara plana sobre la página, ' +
+          'o sube el PDF que te mandó tu proveedor si te lo enviaron.'
         );
       } else {
-        // OCR had text, parser couldn't find line shapes. Different
-        // failure mode — likely a free-form receipt or unusual layout.
         hint = tt(
-          'OCR read text but no item rows fit a known invoice layout. ' +
-          'The raw text is below if you want to copy it manually. ' +
-          'For best results, your distributor\'s PDF (if available) reads cleanest.',
-          'OCR leyó texto pero no encontró partidas en un formato conocido. ' +
-          'El texto crudo está abajo si quieres copiarlo manualmente. ' +
-          'Para mejores resultados, usa el PDF de tu distribuidor si está disponible.'
+          'We read words on the page but none looked like the rows of an invoice. ' +
+          'The text is below — you can copy items by hand. ' +
+          'Tip: the PDF your supplier emails reads cleanest, if they send one.',
+          'Leímos palabras en la página pero ninguna parecía un renglón de factura. ' +
+          'El texto está abajo — puedes copiar las partidas a mano. ' +
+          'Tip: el PDF que te manda tu proveedor se lee mejor, si te lo envían.'
         );
       }
       parsedList.innerHTML = '<li class="id-parsed-empty">' + escHtml(hint) + '</li>';

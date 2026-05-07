@@ -69,6 +69,10 @@ function listToolPages(dir, baseUrl) {
     const full = path.join(root, rel);
     if (!fs.existsSync(full)) return;
     for (const entry of fs.readdirSync(full)) {
+      // Skip internal diagnostic surfaces (_compare/, _diag/, etc.)
+      // — noindex,nofollow dev pages, not public tool pages, so
+      // they don't belong in llms.txt.
+      if (entry.startsWith('_')) continue;
       const sub = path.join(rel, entry);
       const subFull = path.join(full, entry);
       if (fs.statSync(subFull).isDirectory()) {
