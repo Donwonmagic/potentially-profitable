@@ -78,6 +78,17 @@
     return Boolean(root.MID_INVOICE_DECODER_FLAGS && root.MID_INVOICE_DECODER_FLAGS.engineV2);
   }
 
+  // The "Only the standard reader" setting in the operator panel
+  // writes 'off' to localStorage. When set, suppress the
+  // escalation path entirely so V1 owns every read on this device
+  // — useful as a kill-switch if a recent invoice came back wrong
+  // and the operator wants to isolate the cause.
+  function _v2Suppressed() {
+    try {
+      return root.localStorage && root.localStorage.getItem('id-engine-v2') === 'off';
+    } catch (_) { return false; }
+  }
+
   // Build a v2 OcrResult by running the assembled pipeline on a
   // single canvas. We accept the v1 API shape (canvasA, canvasG)
   // and use the gentle canvas — it's closest to source-grade for
@@ -120,41 +131,87 @@
     });
   }
 
-  // Wrapped recognizeMultiPass. Keeps the existing v1 signature
-  // verbatim so invoice-decoder.js doesn't need to change today.
-  function recognizeMultiPass(canvasAggressive, canvasGentle, opts) {
-    if (!shouldUseV2()) {
-      return V1.recognizeMultiPass(canvasAggressive, canvasGentle, opts);
-    }
-    var canvas = canvasGentle || canvasAggressive;
-    return _runV2(canvas, opts).catch(function (err) {
-      // V2 failed — surface telemetry and fall back so the
-      // operator gets a working read instead of an error screen.
+  // Threshold at which V1's output is considered "broken enough"
+  // to escalate to V2. The user's reported failure mode is "picks
+  // up no words at all" — when V1 returns fewer than this, V2
+  // gets a chance to do better.
+  var V1_ESCALATION_THRESHOLD = 2;
+
+  // Quality-driven escalation: V1 first, V2 only if V1 returns
+  // suspiciously little. This pattern means EVERY operator gets
+  // V2's help on the cases where V1 was already failing them
+  // (the actual user complaint), with zero risk of regression
+  // on cases V1 already handles correctly.
+  function _escalateIfV1Insufficient(v1Result, canvasGentle, opts, ensembleVariant) {
+    var v1Lines = (v1Result && v1Result.lines && v1Result.lines.length) || 0;
+    if (v1Lines >= V1_ESCALATION_THRESHOLD) return Promise.resolve(v1Result);
+    // V1 returned suspiciously little — escalate to V2.
+    return _runV2(canvasGentle, opts).then(function (v2Result) {
+      var v2Lines = (v2Result && v2Result.lines && v2Result.lines.length) || 0;
+      if (v2Lines > v1Lines) {
+        try {
+          if (root.plausible) root.plausible('Invoice Decoder V2 Escalation Win', { props: {
+            v1_lines:        String(v1Lines),
+            v2_lines_bucket: v2Lines < 5 ? '<5' : v2Lines < 15 ? '5-14' : '15+',
+            variant:         ensembleVariant ? 'ensemble' : 'multipass'
+          } });
+        } catch (_) {}
+        return v2Result;
+      }
+      return v1Result;     // V2 didn't beat V1 — return V1's result unchanged
+    }).catch(function (err) {
+      try {
+        if (root.plausible) root.plausible('Invoice Decoder V2 Escalation Fail', { props: {
+          code: (err && err.code) || 'UNKNOWN'
+        } });
+      } catch (_) {}
+      return v1Result;     // V2 errored — V1 result still valid, return it
+    });
+  }
+
+  // V2-first path: used when the operator has explicitly opted into
+  // V2 (URL ?engine=v2 or localStorage 'id-engine-v2'='on').
+  function _v2FirstThenV1(canvasA, canvasG, opts, v1Fn) {
+    return _runV2(canvasG || canvasA, opts).catch(function (err) {
       try {
         if (root.plausible) root.plausible('Invoice Decoder V2 Fallback', { props: {
           code: (err && err.code) || 'UNKNOWN'
         } });
       } catch (_) {}
+      return v1Fn(canvasA, canvasG, opts);
+    });
+  }
+
+  // Wrapped recognizeMultiPass. Two routing modes:
+  //   1. Default (engineV2 flag off): V1 first; on V1 success with
+  //      enough lines, ship it. Only escalate to V2 when V1 returns
+  //      suspiciously little — the user's actual complaint.
+  //   2. V2-first (engineV2 flag on): try V2 first; on V2 error,
+  //      fall back to V1. Used by beta testers who want to dogfood
+  //      V2 directly.
+  function recognizeMultiPass(canvasAggressive, canvasGentle, opts) {
+    if (shouldUseV2()) {
+      return _v2FirstThenV1(canvasAggressive, canvasGentle, opts, V1.recognizeMultiPass);
+    }
+    if (_v2Suppressed()) {
+      // Operator chose "Only the standard reader" — V1 owns this read.
       return V1.recognizeMultiPass(canvasAggressive, canvasGentle, opts);
+    }
+    return V1.recognizeMultiPass(canvasAggressive, canvasGentle, opts).then(function (v1Result) {
+      return _escalateIfV1Insufficient(v1Result, canvasGentle || canvasAggressive, opts, false);
     });
   }
 
   function recognizeMultiPassEnsemble(canvasAggressive, canvasGentle, opts) {
-    if (!shouldUseV2()) {
-      return V1.recognizeMultiPassEnsemble
-        ? V1.recognizeMultiPassEnsemble(canvasAggressive, canvasGentle, opts)
-        : V1.recognizeMultiPass(canvasAggressive, canvasGentle, opts);
+    var v1Fn = V1.recognizeMultiPassEnsemble || V1.recognizeMultiPass;
+    if (shouldUseV2()) {
+      return _v2FirstThenV1(canvasAggressive, canvasGentle, opts, v1Fn);
     }
-    var canvas = canvasGentle || canvasAggressive;
-    return _runV2(canvas, opts).catch(function (err) {
-      try {
-        if (root.plausible) root.plausible('Invoice Decoder V2 Fallback', { props: {
-          code: (err && err.code) || 'UNKNOWN'
-        } });
-      } catch (_) {}
-      return V1.recognizeMultiPassEnsemble
-        ? V1.recognizeMultiPassEnsemble(canvasAggressive, canvasGentle, opts)
-        : V1.recognizeMultiPass(canvasAggressive, canvasGentle, opts);
+    if (_v2Suppressed()) {
+      return v1Fn(canvasAggressive, canvasGentle, opts);
+    }
+    return v1Fn(canvasAggressive, canvasGentle, opts).then(function (v1Result) {
+      return _escalateIfV1Insufficient(v1Result, canvasGentle || canvasAggressive, opts, true);
     });
   }
 

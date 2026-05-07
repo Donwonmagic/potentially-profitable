@@ -1509,6 +1509,33 @@ header.nav{min-height:64px}
         <div id="idSelfCheckOut"></div>
       </details>
 
+      <!-- Reader settings. Audience: small restaurant owners.
+           No jargon — "the standard reader" / "the new reader",
+           not "v1" / "v2" / "OCR engine". Default behavior already
+           helps automatically (the new reader steps in when the
+           standard one struggles); this panel is for owners who
+           want explicit control. -->
+      <details class="id-honesty-fact" id="idReaderSettings">
+        <summary><strong>Reader settings.</strong> <span class="id-rs-status" id="idReaderSettingsStatus" style="color:var(--stone);font-weight:400;font-size:14px;margin-left:6px"></span></summary>
+        <p>By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default.</p>
+        <fieldset id="idReaderSettingsFs" style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 0">
+          <legend style="font-size:13px;color:var(--ink-soft);padding:0 4px">Which reader should we use first?</legend>
+          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="radio" name="idReaderChoice" value="auto" id="idReaderAuto" checked style="margin-top:3px">
+            <span><strong>Standard reader, with help when stuck.</strong> The default. Fast, proven; the newer reader takes over only when the standard one finds nothing.</span>
+          </label></p>
+          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2" style="margin-top:3px">
+            <span><strong>Try the newer reader first (beta).</strong> Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble.</span>
+          </label></p>
+          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="radio" name="idReaderChoice" value="v1" id="idReaderV1" style="margin-top:3px">
+            <span><strong>Only the standard reader.</strong> Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader.</span>
+          </label></p>
+          <p style="margin:10px 0 0;font-size:13px;color:var(--stone)">Your choice stays on this device only &mdash; nothing about your invoices is shared with us. You can change it any time.</p>
+        </fieldset>
+      </details>
+
       <details class="id-verify" itemscope itemtype="https://schema.org/HowTo">
         <summary>Verify it yourself: open DevTools → Network <span class="id-verify-badge">2-minute walk-through</span></summary>
         <meta itemprop="name" content="Verify invoice decoder runs in your browser, not on a server" />
@@ -1678,6 +1705,66 @@ header.nav{min-height:64px}
 <script src="./self-check.js?v=20260503-w8-7"></script>
 <script src="./onboarding.js?v=20260501-w8-1"></script>
 <script src="./invoice-decoder.js?v=20260501-w8-9"></script>
+<script>
+  // Reader settings panel wiring. Reads/writes the same
+  // localStorage key 'id-engine-v2' that ocr-shim.js consumes:
+  //   absent / null  → 'auto'  (default; smart escalation)
+  //   'on'           → 'v2'    (V2 first; V1 fallback on error)
+  //   'off'          → 'v1'    (suppress V2 entirely)
+  // Audience: small restaurant owners. Avoids jargon in user-
+  // visible strings ("standard reader" / "newer reader (beta)").
+  (function () {
+    'use strict';
+    var auto = document.getElementById('idReaderAuto');
+    var v2   = document.getElementById('idReaderV2');
+    var v1   = document.getElementById('idReaderV1');
+    var status = document.getElementById('idReaderSettingsStatus');
+    if (!auto || !v2 || !v1) return;
+
+    function readChoice() {
+      try {
+        var v = localStorage.getItem('id-engine-v2');
+        if (v === 'on')  return 'v2';
+        if (v === 'off') return 'v1';
+        return 'auto';
+      } catch (_) { return 'auto'; }
+    }
+    function writeChoice(choice) {
+      try {
+        if (choice === 'v2')      localStorage.setItem('id-engine-v2', 'on');
+        else if (choice === 'v1') localStorage.setItem('id-engine-v2', 'off');
+        else                      localStorage.removeItem('id-engine-v2');
+      } catch (_) { /* private mode — silent no-op */ }
+    }
+    function paintStatus(choice) {
+      if (!status) return;
+      if (choice === 'v2')      status.textContent = '— newer reader first';
+      else if (choice === 'v1') status.textContent = '— standard only';
+      else                      status.textContent = '';
+    }
+
+    var current = readChoice();
+    if (current === 'v2') v2.checked = true;
+    else if (current === 'v1') v1.checked = true;
+    else auto.checked = true;
+    paintStatus(current);
+
+    [auto, v2, v1].forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (!radio.checked) return;
+        writeChoice(radio.value);
+        paintStatus(radio.value);
+        if (window.plausible) {
+          try {
+            window.plausible('Invoice Decoder Reader Setting Changed', {
+              props: { choice: radio.value }
+            });
+          } catch (_) {}
+        }
+      });
+    });
+  })();
+</script>
 
 <!--
   Wave 6.8 — PWA registration + update prompt + install affordance.
