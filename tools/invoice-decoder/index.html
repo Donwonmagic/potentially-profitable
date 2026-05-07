@@ -1610,6 +1610,19 @@ header.nav{min-height:64px}
 <script src="./ocr.js?v=20260504-w9-2"></script>
 <script src="./device-tier.js?v=20260504-w9-1" defer></script>
 <script src="./ocr-paddle.js?v=20260504-w9-2" defer></script>
+<!-- Slice 3 — v2 OCR pipeline modules (Docling-inspired, ONNX-based).
+     Gated behind the engineV2 feature flag in ocr-shim.js; default
+     is OFF so production users stay on the v1 Tesseract path while
+     we wire up + verify the new engine. The shim must load AFTER
+     ocr.js so it can capture window.MID_OCR as the v1 fallback,
+     and BEFORE invoice-decoder.js so the controller sees the
+     wrapped MID_OCR. -->
+<script src="./normalize.js?v=20260507-slice3-1"></script>
+<script src="./layout.js?v=20260507-slice3-1"></script>
+<script src="./ocr-engine.js?v=20260507-slice3-1"></script>
+<script src="./tables.js?v=20260507-slice3-1"></script>
+<script src="./assemble.js?v=20260507-slice3-1"></script>
+<script src="./ocr-shim.js?v=20260507-slice3-1"></script>
 <script src="./lang-pack.js?v=20260504-w9-4" defer></script>
 <script src="./family-classifier.js?v=20260504-atlas1"></script>
 <script src="./invoice-grammar.js?v=20260504-atlas2"></script>
