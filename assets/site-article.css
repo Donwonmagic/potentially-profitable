@@ -2559,7 +2559,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6372-6612) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6372-6648) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -2800,3 +2800,39 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-ba:has(.viz-ba__input:focus-visible) .viz-ba__handle::before{box-shadow:0 0 0 4px rgba(31,78,91,0.35),0 2px 6px rgba(20,22,26,0.18)}
 .viz-ba__input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
 .viz-ba__input::-moz-range-thumb{width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
+
+/* .viz-flow — vertical numbered ProcessTimeline. Each step is a
+   numbered circle (the "station") plus a body block (title +
+   optional meta line). Stations are connected by a 2px line that
+   sits between consecutive circles via ::after on each step except
+   the last. State colors via data-state="ok|done|warn|bad" tint
+   the station ring; "done" fills the circle in teal so checked-off
+   steps read as completed at a glance. Reveal cascade: when
+   .viz-flow itself carries .reveal, each station fades up with an
+   80ms-per-row stagger, same compositor-only treatment as
+   .recovery-stack. */
+.viz-flow{list-style:none;margin:24px 0;padding:0;font-family:var(--font-body)}
+.viz-flow__step{display:grid;grid-template-columns:48px 1fr;gap:18px;padding:0 0 26px;position:relative;align-items:start}
+.viz-flow__step:last-child{padding-bottom:0}
+.viz-flow__step:not(:last-child)::after{content:"";position:absolute;left:23px;top:48px;bottom:-2px;width:2px;background:var(--line-dark);z-index:0}
+.viz-flow__num{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;background:var(--cream);border:2px solid var(--teal);color:var(--teal);font-family:var(--font-display);font-size:22px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
+.viz-flow__step[data-state="done"] .viz-flow__num{background:var(--teal);color:var(--cream)}
+.viz-flow__step[data-state="warn"] .viz-flow__num{border-color:#C5A059;color:#C5A059}
+.viz-flow__step[data-state="bad"] .viz-flow__num{border-color:var(--rust);color:var(--rust)}
+.viz-flow__body{padding-top:8px;min-width:0}
+.viz-flow__title{font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);margin:0 0 4px;letter-spacing:-0.005em;line-height:1.35}
+.viz-flow__meta{font-size:13px;color:var(--stone);margin:0;line-height:1.5}
+.viz-flow__meta strong{color:var(--ink);font-weight:600}
+@media (prefers-reduced-motion:no-preference){
+  .viz-flow.reveal .viz-flow__step{opacity:0;transform:translateY(12px);transition:opacity 500ms cubic-bezier(0.2,0.8,0.2,1),transform 500ms cubic-bezier(0.2,0.8,0.2,1)}
+  .viz-flow.reveal.in .viz-flow__step{opacity:1;transform:translateY(0)}
+  .viz-flow.reveal .viz-flow__step:nth-child(1){transition-delay:0ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(2){transition-delay:80ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(3){transition-delay:160ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(4){transition-delay:240ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(5){transition-delay:320ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(6){transition-delay:400ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(7){transition-delay:480ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(8){transition-delay:560ms}
+  .viz-flow.reveal .viz-flow__step:nth-child(9){transition-delay:640ms}
+}
