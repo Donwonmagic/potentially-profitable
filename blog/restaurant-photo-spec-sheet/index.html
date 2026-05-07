@@ -134,8 +134,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <style>
   .spec-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px;line-height:1.55}
@@ -535,6 +535,76 @@ header.nav{min-height:64px}
       <p>Run <a href="/tools/photo-brief/">Photo Brief</a>. It generates a per-surface shot list with the spec sheet attached — exactly the document you'd hand a photographer the morning of the shoot. Save the brief to your <a href="/tools/audits/restaurant/">Workshop</a> so you can re-run it for the next seasonal shoot.</p>
 
       <p>The shoot itself is usually 2-3 hours for a 30-photo deliverable: the hero, 10-15 dishes, 4-6 room shots, 2-3 detail shots (a hand pouring wine, smoke off a grill, the chef plating). Done in one go, you have material for every surface for the next 12 months.</p>
+
+      <h2>The 6-second pre-publish gut check</h2>
+
+      <p>Before any photo lands on the site, run it through this check. Six questions, one click each, takes about as long as it sounds. If you can't answer "yes" to all six, the photo isn't ready &mdash; not because the photo is bad, but because something around the photo is.</p>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Six questions for any photo before it lands on the site. One: is the dish the sharpest thing in the frame? If not, it competes with whatever else is in focus. Two: was it shot in daylight, or at least with a daylight-balanced source? Restaurant overhead lighting reads orange and dingy on phone sensors. Three: are the edges clean? Garnish bleeding off the plate, a thumb in the corner, a stack of menus behind the dish &mdash; all visible at thumbnail size. Four: does the alt text name the dish specifically? &lsquo;Plate of carnitas&rsquo;, not &lsquo;delicious food.&rsquo; Five: is it shot at three thousand pixels or more on the long edge so it can serve every surface from hero down to thumbnail? Six: is it less than six months old, or matching the current plating? If you can&rsquo;t answer yes to all six, the photo isn&rsquo;t ready &mdash; usually because something around the photo is wrong, not the photo itself.">
+        <ol class="viz-tree" aria-label="Six checks every photo passes before it goes on the site">
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">1</span><span class="viz-tree__title">Is the dish the sharpest thing in the frame?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>The eye should land on the food before anything else in the photo. Garnish, props, table linens &mdash; all of it should be at least one stop softer than the dish.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> The plate is in tack-sharp focus; the wineglass behind it is gently soft.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Fail</span> The whole table is in focus; the eye doesn&rsquo;t know where to land.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">2</span><span class="viz-tree__title">Was it shot in daylight (or daylight-balanced)?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Restaurant overhead lighting reads orange and dingy on phone sensors. Natural daylight from a window between 11&nbsp;AM and 2&nbsp;PM is the easiest path to a clean shot.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> Window light from camera-left, no overhead competing with it.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Fail</span> Mixed light at 7&nbsp;PM under tungsten cans &mdash; the photo will need 20 minutes of color work to feel right.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">3</span><span class="viz-tree__title">Are the edges clean?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>At thumbnail size every distracting edge gets amplified. A thumb in the corner, a garnish bleeding off the plate, a stack of menus behind the dish &mdash; all of it telegraphs at 200 pixels wide.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> Every edge intentional. Negative space around the plate.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Crop it</span> A bottle cap clipping the frame on the right? Crop tighter. Don&rsquo;t reshoot.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">4</span><span class="viz-tree__title">Does the alt text name the dish?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Alt text is the most-skipped 5 seconds per photo. It&rsquo;s also the highest-leverage 5 seconds for SEO and AI search. Name the dish, name the plate type, optional one detail.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> &ldquo;Carnitas plate with pickled onion and lime, on a stoneware platter.&rdquo;</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Fail</span> &ldquo;Delicious food at our restaurant.&rdquo; That sentence helps no one and ranks for nothing.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">5</span><span class="viz-tree__title">Is it 3000&nbsp;px+ on the long edge?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>You&rsquo;ll crop down for menu thumbnails (600&nbsp;px), GBP gallery (2048&nbsp;px), and the hero (3000&nbsp;px). You can&rsquo;t crop up. Always shoot at the largest reasonable size and downsize on export.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> Source file is 4096&nbsp;&times;&nbsp;3072 or larger.</p>
+                <p><span class="viz-tree__verdict" data-tone="fail">Fail</span> 1200&nbsp;&times;&nbsp;800. Fine for a thumbnail, useless for a hero.</p>
+              </div>
+            </details>
+          </li>
+          <li class="viz-tree__node">
+            <details>
+              <summary><span class="viz-tree__num">6</span><span class="viz-tree__title">Is it less than 6 months old (or matches current plating)?</span><span class="viz-tree__icon" aria-hidden="true">+</span></summary>
+              <div class="viz-tree__body">
+                <p>Photos drift. The plating shifts, the garnish swaps, the linens change. A photo of a dish as it was last spring sets an expectation guests will price the current plate against &mdash; and write reviews against.</p>
+                <p><span class="viz-tree__verdict" data-tone="pass">Pass</span> Shot in the past 6 months, or the dish hasn&rsquo;t changed.</p>
+                <p><span class="viz-tree__verdict" data-tone="warn">Reshoot soon</span> 18 months old and the new plate has different garnish? It&rsquo;s costing you.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+        <figcaption>Six questions, one click each. Click a row to expand the pass/fail rule.</figcaption>
+      </figure>
 
       <h2>The "shoot it yourself with a phone" version</h2>
 

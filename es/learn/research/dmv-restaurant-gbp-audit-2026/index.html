@@ -105,8 +105,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -293,6 +293,18 @@ header.nav{min-height:64px}
     <p>El hallazgo titular: los horarios festivos faltan en el 81% de los listados. Es el campo m&aacute;s saltado por mucho margen, y es tambi&eacute;n el que provoca el peor desenlace para el cliente &mdash; llegar a un restaurante cerrado en un festivo que el sitio dec&iacute;a abierto.</p>
 
     <h2>Los campos m&aacute;s saltados, ordenados</h2>
+
+    <figure class="viz-figure article-figure">
+      <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Seis campos m&aacute;s saltados en Google Business Profile entre 100 restaurantes auditados del DMV. Horarios festivos: 81 por ciento sin llenar. Actividad en preguntas: 71 por ciento sin actividad. Enlace al men&uacute;: 62 por ciento ausente o incorrecto. Deeplink de reservas: 59 por ciento ausente o incorrecto. Respuestas a rese&ntilde;as: 56 por ciento por debajo del umbral. Enlace al sitio: 34 por ciento ausente.">
+        <span class="viz-bars__label">Horarios festivos</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1"></span></span><span class="viz-bars__num">81% sin llenar</span>
+        <span class="viz-bars__label">Actividad en preguntas</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.877;--delay:80ms"></span></span><span class="viz-bars__num">71% sin actividad</span>
+        <span class="viz-bars__label">Enlace al men&uacute;</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.765;--delay:160ms"></span></span><span class="viz-bars__num">62% incorrecto</span>
+        <span class="viz-bars__label">Deeplink de reservas</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.728;--delay:240ms"></span></span><span class="viz-bars__num">59% incorrecto</span>
+        <span class="viz-bars__label">Respuestas a rese&ntilde;as</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.691;--delay:320ms"></span></span><span class="viz-bars__num">56% bajo umbral</span>
+        <span class="viz-bars__label">Enlace al sitio</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.420;--delay:400ms"></span></span><span class="viz-bars__num">34% ausente</span>
+      </div>
+      <figcaption>Ordenados por proporci&oacute;n de listados auditados a los que les falta el campo. Las barras se escalan al 81% (la mayor); el color &oacute;xido marca los tres peores, la cola larga en teal y stone.</figcaption>
+    </figure>
 
     <ol>
       <li style="margin-bottom:14px"><strong>Horarios festivos (81% sin llenar).</strong> Es el error m&aacute;s barato de prevenir y el que nadie previene. El arreglo toma diez minutos por festivo, cuatro veces al a&ntilde;o. Care Plan Light maneja esto en agenda.</li>

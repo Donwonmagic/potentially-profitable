@@ -109,8 +109,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
 <body>
 
@@ -302,6 +302,16 @@ header.nav{min-height:64px}
         <p>This is the single statistic I cite most often on calls with restaurant owners, because it reframes the problem correctly. A slow site isn't a comfort issue — it's a <strong>revenue leak that runs every night your restaurant is open</strong>. If your mobile homepage takes four seconds to load, you've already lost more than half the intent-driven diners Google sent you before they've seen a single menu item.</p>
         <p>The number is worth knowing, but the <em>shape</em> of the finding matters more. Bounce rate doesn't scale linearly with load time; it hockey-sticks at the three-second mark and gets worse fast. Going from 2s → 3s costs you much less than 3s → 4s. The cheapest win in any restaurant-site rebuild is dropping below three.</p>
       </div>
+
+      <figure class="viz-figure article-figure">
+        <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Bounce probability by mobile page-load time, indexed against a one-second baseline. At 1 second: baseline reference. At 3 seconds: 32 percent higher bounce probability. At 6 seconds: 106 percent higher. At 10 seconds: 123 percent higher.">
+          <span class="viz-bars__label">1 second</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.10"></span></span><span class="viz-bars__num">baseline</span>
+          <span class="viz-bars__label">3 seconds</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.26;--delay:80ms"></span></span><span class="viz-bars__num">+32%</span>
+          <span class="viz-bars__label">6 seconds</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.86;--delay:160ms"></span></span><span class="viz-bars__num">+106%</span>
+          <span class="viz-bars__label">10 seconds</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1;--delay:240ms"></span></span><span class="viz-bars__num">+123%</span>
+        </div>
+        <figcaption>Bounce probability indexed to a 1-second load. The hockey stick lives between 3 and 6 seconds &mdash; that&rsquo;s where the cheapest mobile-perf wins are.</figcaption>
+      </figure>
 
       <h2>Key findings</h2>
       <ul class="research-findings">

@@ -317,7 +317,7 @@ jsonldHtml +
      : '') +
 '  <footer class="ml-foot">' +
     (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') +
-    new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) +
+    (opts.lastUpdated || new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })) +
 '  </footer>\n' +
 '</main>\n' +
 '</body>\n' +

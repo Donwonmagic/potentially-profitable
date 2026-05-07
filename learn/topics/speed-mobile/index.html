@@ -66,8 +66,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <!-- topic-schema:start -->
 <script type="application/ld+json">
@@ -324,6 +324,23 @@ header.nav{min-height:64px}
   </div>
 </section>
 
+<section class="block">
+  <div class="container" style="max-width:760px">
+    <figure class="viz-figure reveal" data-audio-alt="The headline number behind every article in this topic: 53 percent of mobile site visits are abandoned if a page takes longer than three seconds to load. Bounce probability hockey-sticks between three and six seconds. Drop below three and the rest of the speed work is downstream optimization.">
+      <div class="viz-rings">
+        <div class="viz-ring" data-band="bad" style="--score:53;">
+          <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="topic-speed-ring" focusable="false">
+            <title id="topic-speed-ring">53% of mobile visits bounce after 3 seconds of load</title>
+            <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+            <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+            <text class="viz-ring__num" x="60" y="60" text-anchor="middle">53%</text>
+          </svg>
+          <p class="viz-ring__label"><strong>Of mobile visits bounce</strong>after 3 seconds of load (Google) &middot; <a href="/learn/research/mobile-page-speed-3-second-rule/">read the research</a></p>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
 
 <section class="topic-section">
   <div class="container">

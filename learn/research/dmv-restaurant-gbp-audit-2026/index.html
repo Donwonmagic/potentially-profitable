@@ -107,8 +107,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -321,6 +321,18 @@ header.nav{min-height:64px}
     <p>The headline finding: holiday hours are missing on 81% of the listings. That&rsquo;s the most-skipped field by a wide margin, and it&rsquo;s also the one that prompts the worst customer outcome &mdash; arriving to a closed restaurant on a holiday the website said was open.</p>
 
     <h2>The most-skipped fields, ranked</h2>
+
+    <figure class="viz-figure article-figure">
+      <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Six most-skipped Google Business Profile fields across 100 audited DMV restaurants. Holiday hours: 81 percent missing. Q and A activity: 71 percent missing. Menu link: 62 percent missing or wrong. Reservation deeplink: 59 percent missing or wrong. Review responses: 56 percent under threshold. Website link: 34 percent missing.">
+        <span class="viz-bars__label">Holiday hours</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1"></span></span><span class="viz-bars__num">81% missing</span>
+        <span class="viz-bars__label">Q&amp;A activity</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.877;--delay:80ms"></span></span><span class="viz-bars__num">71% missing</span>
+        <span class="viz-bars__label">Menu link</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.765;--delay:160ms"></span></span><span class="viz-bars__num">62% wrong</span>
+        <span class="viz-bars__label">Reservation deeplink</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.728;--delay:240ms"></span></span><span class="viz-bars__num">59% wrong</span>
+        <span class="viz-bars__label">Review responses</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.691;--delay:320ms"></span></span><span class="viz-bars__num">56% under</span>
+        <span class="viz-bars__label">Website link</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.420;--delay:400ms"></span></span><span class="viz-bars__num">34% missing</span>
+      </div>
+      <figcaption>Ranked by share of audited listings missing the field. Bars scaled to 81% (the top miss); rust marks the top three, the long tail in teal/stone.</figcaption>
+    </figure>
 
     <ol>
       <li style="margin-bottom:14px"><strong>Holiday hours (81% missing).</strong> This is the cheapest mistake to prevent and the one nobody prevents. The fix takes ten minutes per holiday, four times a year. Care Plan Light handles this on a schedule.</li>

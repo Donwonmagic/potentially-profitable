@@ -101,8 +101,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
 <body>
 
@@ -287,6 +287,39 @@ header.nav{min-height:64px}
         <p>Every restaurant owner who has ever run their site through PageSpeed Insights has seen a number — 34, 61, 88 — and wondered what it means. The honest answer: it's Google's weighted roll-up of how quickly the page's main content paints, how stable the layout is while it loads, and how responsive the page feels while the browser is still working. Each of those has a definition and a weight, and once you know them, the score stops feeling like a black box.</p>
         <p>For a restaurant site, the practical implication is that <strong>two metrics account for roughly 55% of the score</strong> — Largest Contentful Paint and Total Blocking Time. Fix those two and everything else follows. The audit tool on this site returns the per-metric breakdown so you can see exactly which bucket is dragging your score down.</p>
       </div>
+
+      <figure class="viz-figure article-figure reveal" data-audio-alt="Three sample Lighthouse score rings, one per band. A 35 sits in the Poor band (0 to 49), painted rust. A 65 sits in the Needs work band (50 to 89), painted gold. A 95 sits in the Good band (90 to 100), painted green. The colored dial in any PageSpeed Insights or Lighthouse report maps to these same thresholds.">
+        <div class="viz-rings">
+          <div class="viz-ring" data-band="bad" style="--score:35;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-poor-label" focusable="false">
+              <title id="ring-poor-label">Score 35 of 100 &mdash; Poor band</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">35</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Poor</strong>0&ndash;49</p>
+          </div>
+          <div class="viz-ring" data-band="warn" style="--score:65;--delay:120ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-warn-label" focusable="false">
+              <title id="ring-warn-label">Score 65 of 100 &mdash; Needs work band</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">65</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Needs work</strong>50&ndash;89</p>
+          </div>
+          <div class="viz-ring" data-band="good" style="--score:95;--delay:240ms;">
+            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-good-label" focusable="false">
+              <title id="ring-good-label">Score 95 of 100 &mdash; Good band</title>
+              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
+              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">95</text>
+            </svg>
+            <p class="viz-ring__label"><strong>Good</strong>90&ndash;100</p>
+          </div>
+        </div>
+        <figcaption>The three Lighthouse bands &mdash; the colored dial in any PageSpeed Insights report uses these same thresholds.</figcaption>
+      </figure>
 
       <h2>Key findings</h2>
       <ul class="research-findings">
