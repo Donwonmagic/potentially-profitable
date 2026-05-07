@@ -123,7 +123,7 @@
       lines.push('> ' + String(opts.disclaimer).trim());
     }
     lines.push('');
-    var when = new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    var when = opts.lastUpdated || new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     lines.push('_' + (locale === 'es' ? 'Última actualización: ' : 'Last updated: ') + when + '_');
     return lines.join('\n');
   }
@@ -203,7 +203,7 @@
       if (line) out.push(line);
     }
     out.push('');
-    out.push((locale === 'es' ? 'Última actualización: ' : 'Last updated: ') + new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
+    out.push((locale === 'es' ? 'Última actualización: ' : 'Last updated: ') + (opts.lastUpdated || new Date().toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })));
     return out.join('\n');
   }
 

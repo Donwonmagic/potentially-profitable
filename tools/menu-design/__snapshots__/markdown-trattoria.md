@@ -32,4 +32,4 @@
 - **VG** = Vegetarian
 - **E** = Contains eggs
 
-_Last updated: Jan 15, 2026_
+_Last updated: May 4, 2026_

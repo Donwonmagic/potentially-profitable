@@ -77,39 +77,13 @@ function seedMeta() {
   };
 }
 
-// Fixed clock used inside the renderer VM context so the "Last
-// updated: <date>" footer line each renderer emits is deterministic
-// across runs. Without this, the snapshot drifts on day 2 onward
-// (the renderer calls `new Date()` at render time, the snapshot
-// was recorded on a single day, and the toLocaleDateString output
-// changes daily).
-//
-// The chosen instant — 2026-01-15T12:00:00Z — renders as:
-//   en-US: "Jan 15, 2026"
-//   es-MX: "15 ene 2026"
-// Picking a mid-month, mid-day timestamp avoids any timezone-edge
-// effect (the Workers runtime + the Cloudflare Pages build environ
-// both use UTC, but local devs may run in any timezone — noon UTC
-// stays on the same date for every common DC).
-const FIXED_NOW_MS = Date.UTC(2026, 0, 15, 12, 0, 0);
-const RealDate = Date;
-function makeFixedDate() {
-  // A Date subclass that, when invoked with no args, returns the
-  // pinned timestamp; otherwise behaves identically to the real
-  // Date. Date.now() is also pinned, in case the renderer reaches
-  // for it. Static methods (parse, UTC) pass through.
-  function FixedDate(...args) {
-    if (!new.target) return new RealDate(FIXED_NOW_MS).toString();
-    if (args.length === 0) return new RealDate(FIXED_NOW_MS);
-    return new RealDate(...args);
-  }
-  FixedDate.now   = () => FIXED_NOW_MS;
-  FixedDate.parse = RealDate.parse;
-  FixedDate.UTC   = RealDate.UTC;
-  Object.setPrototypeOf(FixedDate.prototype, RealDate.prototype);
-  Object.setPrototypeOf(FixedDate, RealDate);
-  return FixedDate;
-}
+// Pinned date so the "Last updated: …" footer in the rendered
+// output is deterministic across runs. Production callers omit
+// lastUpdated; the renderer falls back to new Date(). The test
+// injects this fixed string so snapshots don't drift each day —
+// before this gate landed the snapshot test broke 24 hours after
+// being written.
+const PINNED_DATE = 'May 4, 2026';
 
 function loadRenderer(rel, extras = {}) {
   const src = fs.readFileSync(path.join(__dirname, rel), 'utf8');
@@ -124,8 +98,7 @@ function loadRenderer(rel, extras = {}) {
     module:   moduleObj,
     Promise,
     setTimeout, clearTimeout,
-    console,
-    Date: makeFixedDate(),
+    console
   });
   vm.runInContext(src, ctx);
   return moduleObj.exports;
@@ -162,7 +135,8 @@ test('menu-render-html.js — snapshot for trattoria seed', () => {
     meta: seedMeta(),
     title: 'Da Marco',
     locale: 'en',
-    hostUrl: 'https://example.com/menu'
+    hostUrl: 'https://example.com/menu',
+    lastUpdated: PINNED_DATE
   });
   // The output may be a string or { html, ... }
   const html = typeof out === 'string' ? out : (out && out.html);
@@ -188,7 +162,8 @@ test('menu-render-text.js — plain-text snapshot for trattoria seed', () => {
     theme: seedTheme(),
     meta: seedMeta(),
     title: 'Da Marco',
-    locale: 'en'
+    locale: 'en',
+    lastUpdated: PINNED_DATE
   });
   const text = typeof out === 'string' ? out : (out && (out.text || out.body));
   assert.ok(text && typeof text === 'string', 'exportPlainText must return text string');
@@ -208,7 +183,8 @@ test('menu-render-text.js — markdown snapshot for trattoria seed', () => {
     theme: seedTheme(),
     meta: seedMeta(),
     title: 'Da Marco',
-    locale: 'en'
+    locale: 'en',
+    lastUpdated: PINNED_DATE
   });
   const out = typeof md === 'string' ? md : (md && (md.markdown || md.text));
   assert.ok(out && typeof out === 'string', 'exportMarkdown must return markdown string');

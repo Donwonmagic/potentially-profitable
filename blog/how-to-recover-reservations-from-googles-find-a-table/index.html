@@ -188,8 +188,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 
 <style>
   /* ============ SHARED BLOG POST LAYOUT ============ */
@@ -567,6 +567,33 @@ header.nav{min-height:64px}
       <p>There&rsquo;s a second cost that&rsquo;s harder to see until it&rsquo;s too late: platform dependency. Google&rsquo;s whole playbook over the last decade &mdash; in travel, in local services, in reviews, in shopping &mdash; is to insert itself as an intermediary, prove you can live without the click-through to your own site, then eventually start charging for the traffic it used to give you for free. If your reservation flow doesn&rsquo;t touch your website, you&rsquo;re one algorithm change away from being fully disintermediated. You own nothing. Google owns the guest.</p>
 
       <h2>Three moves that recover the flow</h2>
+
+      <figure class="viz-figure article-figure" data-audio-alt="Three moves, in order. One: make your Google Business Profile website link unmissable &mdash; this is the free real estate Google gives you, point it at a URL designed to beat the inline widget. Two: out-design the inline widget on your own site &mdash; if your reservation experience on your own page is worse than the one inside Google Maps, the guest will rationally pick the inline one. Three: capture the email before Google can &mdash; the booking is the half-win; the email is the whole win because it lets you bring the guest back without paying Google or OpenTable a second time. Move three is the one most operators skip.">
+        <ol class="viz-flow reveal" aria-label="Three moves to recover reservations from Google's inline widget">
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">1</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Make your GBP website link unmissable</h4>
+              <p class="viz-flow__meta"><strong>~10 min</strong> &middot; one-time, then quarterly review</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="ok">
+            <span class="viz-flow__num">2</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Out-design the inline widget on your own site</h4>
+              <p class="viz-flow__meta"><strong>2&ndash;6 hours</strong> &middot; one-time engineering, recurring polish</p>
+            </div>
+          </li>
+          <li class="viz-flow__step" data-state="warn">
+            <span class="viz-flow__num">3</span>
+            <div class="viz-flow__body">
+              <h4 class="viz-flow__title">Capture the email before Google can</h4>
+              <p class="viz-flow__meta"><strong>1 hour</strong> &middot; the move most operators skip &mdash; and the highest leverage</p>
+            </div>
+          </li>
+        </ol>
+        <figcaption>Move three is the bridge from booking to relationship. The booking is the half-win; the email is the whole one.</figcaption>
+      </figure>
 
       <h3>1. Make your Google Business Profile website link unmissable</h3>
 

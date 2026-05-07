@@ -109,8 +109,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=47810dd9477a" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=47810dd9477a"></noscript>
 </head>
 <body>
 
@@ -276,6 +276,16 @@ header.nav{min-height:64px}
         <p>Esta es la estadística que más cito en llamadas con restauranteros, porque replantea el problema correctamente. Un sitio lento no es un asunto de comodidad — es una <strong>fuga de ingresos que corre cada noche que tu restaurante está abierto</strong>. Si tu página principal tarda cuatro segundos en cargar en móvil, ya perdiste a más de la mitad de los comensales con intención que Google te mandó antes de que vieran un solo platillo del menú.</p>
         <p>El número vale la pena conocerlo, pero la <em>forma</em> del hallazgo importa más. La tasa de rebote no escala linealmente con el tiempo de carga; se dispara en la marca de los tres segundos y empeora rápido. Pasar de 2s → 3s te cuesta mucho menos que 3s → 4s. La victoria más barata en cualquier rediseño de sitio de restaurante es bajar de tres.</p>
       </div>
+
+      <figure class="viz-figure article-figure">
+        <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Probabilidad de rebote por tiempo de carga m&oacute;vil, indexada contra una l&iacute;nea base de un segundo. A 1 segundo: l&iacute;nea base. A 3 segundos: 32 por ciento m&aacute;s alta. A 6 segundos: 106 por ciento m&aacute;s alta. A 10 segundos: 123 por ciento m&aacute;s alta.">
+          <span class="viz-bars__label">1 segundo</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.10"></span></span><span class="viz-bars__num">l&iacute;nea base</span>
+          <span class="viz-bars__label">3 segundos</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.26;--delay:80ms"></span></span><span class="viz-bars__num">+32%</span>
+          <span class="viz-bars__label">6 segundos</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.86;--delay:160ms"></span></span><span class="viz-bars__num">+106%</span>
+          <span class="viz-bars__label">10 segundos</span><span class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1;--delay:240ms"></span></span><span class="viz-bars__num">+123%</span>
+        </div>
+        <figcaption>Probabilidad de rebote indexada a una carga de 1 segundo. El palo de hockey vive entre los 3 y los 6 segundos &mdash; ah&iacute; est&aacute;n las victorias de rendimiento m&oacute;vil m&aacute;s baratas.</figcaption>
+      </figure>
 
       <h2>Hallazgos clave</h2>
       <ul class="research-findings">
