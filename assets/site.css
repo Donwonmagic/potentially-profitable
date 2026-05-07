@@ -6645,3 +6645,35 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
   .viz-flow.reveal .viz-flow__step:nth-child(8){transition-delay:560ms}
   .viz-flow.reveal .viz-flow__step:nth-child(9){transition-delay:640ms}
 }
+
+/* .viz-tree — DecisionTree using native <details>/<summary>. Each
+   node is a numbered, collapsible row: the summary holds a
+   numbered chip + question/title; the body holds the answer +
+   verdict pills. Native expand/collapse means full keyboard a11y
+   and screen-reader semantics for free; no JS required. The +/−
+   in the corner flips on [open]. Verdict pills (--tone="pass" or
+   "fail") let body content carry inline outcome tags. */
+.viz-tree{list-style:none;padding:0;margin:24px 0;border:1px solid var(--line);border-radius:12px;background:var(--cream-2);overflow:hidden}
+.viz-tree__node{padding:0;margin:0}
+.viz-tree__node+.viz-tree__node{border-top:1px solid var(--line)}
+.viz-tree__node details{padding:0}
+.viz-tree__node summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:36px 1fr 24px;gap:14px;align-items:center;padding:14px 18px;font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);letter-spacing:-0.005em}
+.viz-tree__node summary::-webkit-details-marker{display:none}
+.viz-tree__node summary:hover{background:rgba(20,22,26,0.03)}
+.viz-tree__node summary:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;border-radius:6px}
+.viz-tree__num{width:36px;height:36px;border-radius:50%;background:var(--cream);border:1.5px solid var(--line-dark);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.viz-tree__title{flex:1;line-height:1.35}
+.viz-tree__icon{font-size:22px;color:var(--teal);text-align:right;font-weight:300;line-height:1;transition:transform var(--t-fast) var(--ease)}
+.viz-tree__node details[open] .viz-tree__icon{transform:rotate(45deg)}
+.viz-tree__body{padding:0 18px 18px 68px;color:var(--ink-soft);font-size:15px;line-height:1.6}
+.viz-tree__body p{margin:0 0 10px}
+.viz-tree__body p:last-child{margin-bottom:0}
+.viz-tree__body strong{color:var(--ink);font-weight:600}
+.viz-tree__verdict{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-right:8px;vertical-align:middle}
+.viz-tree__verdict[data-tone="pass"]{background:rgba(31,157,85,0.14);color:#1F9D55}
+.viz-tree__verdict[data-tone="fail"]{background:rgba(184,84,26,0.14);color:var(--rust)}
+.viz-tree__verdict[data-tone="warn"]{background:rgba(197,160,89,0.18);color:#9A7A35}
+@media (max-width:600px){
+  .viz-tree__node summary{padding:12px 14px;font-size:15px;gap:12px}
+  .viz-tree__body{padding:0 14px 16px 58px;font-size:14.5px}
+}
