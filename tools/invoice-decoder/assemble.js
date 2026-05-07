@@ -22,17 +22,35 @@
 (function (root) {
   'use strict';
 
-  // Footer-repeat dedup. Identical to the heuristic at
-  // invoice-decoder.js:687-727 — multi-page invoices repeat the
-  // SYSCO HOUSTON / Customer Number / column-header band on every
-  // page; without dedup the parser inflates row counts.
+  // OCR-noise-tolerant dedup key. Mirrors normalizeForDedup at
+  // invoice-decoder.js:463 — collapses ALL punctuation (not just
+  // leading/trailing), lowercases, and refuses to dedup very
+  // short strings (under 4 word-chars) so legitimate short row
+  // data like "1 LB" or "EA" isn't dropped on page 2. Keeping the
+  // two implementations in lockstep avoids regressions when the
+  // shim flips an operator between v1 and v2.
+  function _normalizeForDedup(s) {
+    if (!s) return '';
+    var n = String(s).toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return (n.length >= 4) ? n : '';
+  }
+
+  // Footer-repeat dedup. Identical heuristic to invoice-decoder.js
+  // W2-5 — multi-page invoices (a 2-page Sysco for example)
+  // repeat the SYSCO HOUSTON / Customer Number / column-header
+  // band on every page; without dedup the parser inflates row
+  // counts. The OCR-noise-tolerant key tolerates trailing-comma /
+  // glyph-flip drift between page reads.
   function _dedupRepeats(allLines) {
     var seen = Object.create(null);
     var out  = [];
     for (var i = 0; i < allLines.length; i++) {
       var l = allLines[i];
-      var key = (l.text || '').replace(/\s+/g, ' ').trim().toLowerCase();
-      if (!key) continue;
+      var key = _normalizeForDedup(l.text);
+      if (!key) { out.push(l); continue; }   // un-keyable lines pass through
       if (seen[key]) continue;
       seen[key] = 1;
       out.push(l);
@@ -50,6 +68,7 @@
     var allLines    = [];
     var perPage     = [];
     var perPageMeta = [];
+    var earlierKeys = Object.create(null);  // running window of seen keys
 
     for (var i = 0; i < pages.length; i++) {
       var page    = pages[i];
@@ -88,22 +107,21 @@
         dpi:     page ? page.dpi    : null,
         regions: layout ? layout.regions : null
       });
-      // First page: trust everything. Subsequent pages: dedup
-      // against earlier-seen lines (matches v1 invoice-decoder.js
-      // pageIdx === 0 vs pageIdx > 0 logic).
-      if (i === 0) {
-        allLines = allLines.concat(pageLines);
-      } else {
-        // Dedup against the running set across all earlier pages.
-        var earlier = Object.create(null);
-        for (var j = 0; j < allLines.length; j++) {
-          var k = (allLines[j].text || '').replace(/\s+/g, ' ').trim().toLowerCase();
-          if (k) earlier[k] = 1;
-        }
-        for (var k2 = 0; k2 < pageLines.length; k2++) {
-          var key = (pageLines[k2].text || '').replace(/\s+/g, ' ').trim().toLowerCase();
-          if (!key || earlier[key]) continue;
-          allLines.push(pageLines[k2]);
+      // First page: trust everything and seed the dedup window.
+      // Subsequent pages: dedup against the running window using
+      // the OCR-noise-tolerant key. Un-keyable (very short) lines
+      // pass through unconditionally so legitimate "1 LB" / "EA"
+      // rows don't get dropped on page 2+.
+      for (var j = 0; j < pageLines.length; j++) {
+        var l = pageLines[j];
+        var key = _normalizeForDedup(l.text);
+        if (i === 0) {
+          allLines.push(l);
+          if (key) earlierKeys[key] = 1;
+        } else {
+          if (key && earlierKeys[key]) continue;
+          allLines.push(l);
+          if (key) earlierKeys[key] = 1;
         }
       }
     }
@@ -118,8 +136,9 @@
   }
 
   var api = {
-    merge:        merge,
-    _dedupRepeats: _dedupRepeats
+    merge:               merge,
+    _dedupRepeats:       _dedupRepeats,
+    _normalizeForDedup:  _normalizeForDedup
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root) root.MID_ASSEMBLE = api;
