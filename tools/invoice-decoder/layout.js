@@ -199,7 +199,27 @@
       var inputName = (session.inputNames && session.inputNames[0]) || 'images';
       var feeds = {}; feeds[inputName] = packed.tensor;
       return session.run(feeds).then(function (outputs) {
-        var regions = _postprocessLayoutOutput(outputs, packed.scaleX, packed.scaleY);
+        // Audit fix: copy WASM-heap-backed output data + dims into JS-side
+        // structures BEFORE disposing tensors. _postprocessLayoutOutput
+        // reads t.dims + t.data which become invalid after dispose.
+        // Without the copy + dispose chain, every call leaks the input
+        // tensor (~19 MB float32 at 1280×1280×3) plus every output tensor
+        // (often tens of MB) — 50 invoices in a row OOMs iPhone Safari.
+        // We dispose BEFORE postprocess so a shape-mismatch throw still
+        // releases tensors instead of leaking on the error path.
+        var firstName = Object.keys(outputs)[0];
+        var firstOut  = outputs[firstName];
+        var dataCopy  = (firstOut && firstOut.data) ? new Float32Array(firstOut.data) : null;
+        var dimsCopy  = (firstOut && firstOut.dims) ? Array.from(firstOut.dims) : null;
+        try {
+          if (packed.tensor.dispose) packed.tensor.dispose();
+          Object.keys(outputs).forEach(function (k) {
+            if (outputs[k] && outputs[k].dispose) outputs[k].dispose();
+          });
+        } catch (_) {}
+        var synthOutputs = {};
+        synthOutputs[firstName] = { dims: dimsCopy, data: dataCopy };
+        var regions = _postprocessLayoutOutput(synthOutputs, packed.scaleX, packed.scaleY);
         if (!regions.length) {
           throw new Error('DocLayNet produced no regions above threshold');
         }
