@@ -1530,38 +1530,47 @@ header.nav{min-height:64px}
            panicked owner finds the safe rollback before the beta
            option. Audit fix — status span has aria-live so screen-
            reader users hear the choice persist. -->
+      <!-- This is a disclosure (<details>), not a modal. Tab order
+           passes through it; Escape does not collapse it; opening
+           does not move focus. Browser-default behavior is what we
+           want (no JS focus trap). -->
       <details class="id-honesty-fact" id="idReaderSettings">
         <summary>
-          <strong data-en="Reader settings." data-es="Ajustes del lector.">Reader settings.</strong>
+          <strong data-en="Reader settings" data-es="Ajustes del lector">Reader settings</strong>
           <span class="id-rs-status" id="idReaderSettingsStatus" aria-live="polite" aria-atomic="true" style="color:var(--stone);font-weight:400;font-size:14px;margin-left:6px"></span>
         </summary>
-        <p data-en="By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default."
-           data-es="Por defecto usamos un lector estándar para cada factura. Cuando el lector estándar no encuentra palabras en una página, un lector más nuevo (aún en pruebas) entra automáticamente para intentar leer mejor. No tienes que hacer nada &mdash; esto está aquí solo si quieres otro comportamiento por defecto.">By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default.</p>
-        <fieldset id="idReaderSettingsFs" style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 0">
+        <fieldset id="idReaderSettingsFs" aria-describedby="idRSDesc" style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 0">
           <legend data-en="Which reader should we use first?"
                   data-es="¿Qué lector usamos primero?"
                   style="font-size:13px;color:var(--ink-soft);padding:0 4px">Which reader should we use first?</legend>
+          <p id="idRSDesc"
+             data-en="By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default."
+             data-es="Por defecto usamos un lector estándar para cada factura. Cuando el lector estándar no encuentra palabras en una página, un lector más nuevo (aún en pruebas) entra automáticamente para intentar leer mejor. No tienes que hacer nada &mdash; esto está aquí solo si quieres otro comportamiento por defecto."
+             style="margin:0 0 10px;font-size:13.5px;color:var(--ink-soft);line-height:1.55">By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default.</p>
           <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="auto" id="idReaderAuto" checked>
+            <input type="radio" name="idReaderChoice" value="auto" id="idReaderAuto" aria-describedby="idRSDescAuto" checked>
             <span><strong data-en="Standard reader, with help when stuck."
                           data-es="Lector estándar, con ayuda cuando se atora.">Standard reader, with help when stuck.</strong>
-              <span data-en=" The default. Fast, proven; the newer reader takes over only when the standard one finds nothing."
+              <span id="idRSDescAuto"
+                    data-en=" The default. Fast, proven; the newer reader takes over only when the standard one finds nothing."
                     data-es=" Lo predeterminado. Rápido y probado; el nuevo lector entra solo cuando el estándar no encuentra nada."> The default. Fast, proven; the newer reader takes over only when the standard one finds nothing.</span>
             </span>
           </label>
           <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="v1" id="idReaderV1">
+            <input type="radio" name="idReaderChoice" value="v1" id="idReaderV1" aria-describedby="idRSDescV1">
             <span><strong data-en="Only the standard reader."
                           data-es="Solo el lector estándar.">Only the standard reader.</strong>
-              <span data-en=" Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader."
+              <span id="idRSDescV1"
+                    data-en=" Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader."
                     data-es=" Omite el lector más nuevo por completo en este dispositivo. Úsalo si una factura reciente salió mal y quieres descartar al nuevo lector."> Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader.</span>
             </span>
           </label>
           <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2">
+            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2" aria-describedby="idRSDescV2">
             <span><strong data-en="Try the newer reader first (beta)."
                           data-es="Probar el lector más nuevo primero (beta).">Try the newer reader first (beta).</strong>
-              <span data-en=" Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble."
+              <span id="idRSDescV2"
+                    data-en=" Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble."
                     data-es=" Usa el nuevo lector en cada factura de este dispositivo. Puede leer mejor algunas páginas, puede ser más lento la primera vez. El lector estándar entra si el nuevo tiene algún problema."> Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble.</span>
             </span>
           </label>
@@ -1790,13 +1799,21 @@ header.nav{min-height:64px}
         else                      localStorage.removeItem('id-engine-v2');
       } catch (_) { /* private mode — silent no-op */ }
     }
+    // Audit fix (UX H4): dash-prefixed sentence fragments read
+    // poorly on screen readers ("dash newer reader first") and
+    // produced no announcement on 'auto', leaving keyboard /
+    // SR users uncertain whether their click registered. Complete
+    // sentences for every state, including 'auto' so a flip back
+    // to default is also announced.
     function paintStatus(choice) {
       if (!status) return;
-      var msg = '';
+      var msg;
       if (choice === 'v2') {
-        msg = isEs ? '— lector nuevo primero' : '— newer reader first';
+        msg = isEs ? 'Lector nuevo primero (beta).' : 'Newer reader first (beta).';
       } else if (choice === 'v1') {
-        msg = isEs ? '— solo el estándar' : '— standard only';
+        msg = isEs ? 'Solo el lector estándar.' : 'Standard reader only.';
+      } else {
+        msg = isEs ? 'Lector estándar, con ayuda cuando se atora.' : 'Standard reader, with help when stuck.';
       }
       status.textContent = msg;
     }
