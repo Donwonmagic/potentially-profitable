@@ -339,6 +339,35 @@
       return canvas;
     });
   }
+
+  // Modern decode path. createImageBitmap with imageOrientation:
+  // 'from-image' honors EXIF natively across modern browsers
+  // (Chrome 81+, Safari 13.1+, Firefox 90+) regardless of where
+  // the EXIF segment sits in the file. The legacy <img> +
+  // parseExifOrientation path silently returned orientation=1
+  // when the EXIF block lived past the first 64 KB scan window —
+  // exactly the failure mode the comment block at the top of
+  // this file describes. Preferred over the legacy path; falls
+  // back to it on browsers that don't recognize the option, on
+  // formats createImageBitmap can't decode (e.g., HEIC on Chrome
+  // desktop), or on unusual JPEG profiles.
+  function _imageBitmapWithOrientation(file, maxEdge) {
+    if (typeof createImageBitmap !== 'function') {
+      return Promise.reject(new Error('no createImageBitmap'));
+    }
+    var p;
+    try {
+      p = createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch (e) {
+      // Synchronous throw on the option (very old browsers) — reject.
+      return Promise.reject(e);
+    }
+    return p.then(function (bitmap) {
+      var canvas = imageToCanvas(bitmap, maxEdge || 2000);
+      try { bitmap.close && bitmap.close(); } catch (_) {}
+      return canvas;
+    });
+  }
   // Lazy libheif-js loader. Looks for a self-hosted ESM at
   // /assets/vendor/libheif/libheif.js (added by Wave 8 vendor-pin).
   // Returns a function that decodes a Blob to a Canvas, or rejects.
@@ -415,6 +444,15 @@
         ));
       });
     }
+    // Try the modern decode path first. createImageBitmap with
+    // imageOrientation: 'from-image' honors EXIF natively, which
+    // bypasses the legacy parseExifOrientation 64KB scan window
+    // bug that silently returned orientation=1 for files whose
+    // EXIF block sat further into the buffer. On iOS Safari this
+    // also handles HEIC. On Chrome desktop the call rejects for
+    // HEIC/AVIF and we fall through to the legacy <img> path,
+    // which keeps the libheif + magic-byte sniff fallback chain.
+    return _imageBitmapWithOrientation(file, maxEdge || 2000).catch(function () {
     return new Promise(function (resolve, reject) {
       var url = URL.createObjectURL(file);
       var img = new Image();
@@ -422,14 +460,13 @@
         try {
           var c = imageToCanvas(img, maxEdge || 2000);
           URL.revokeObjectURL(url);
-          // EXIF orientation correction. iPhone portrait shots arrive
-          // with sensor-orientation pixels + an Orientation tag of 6
-          // (rotate 90 CW). <img> displays correctly, but the canvas
-          // we just drew inherits the raw sensor pixels — sideways
-          // for the OCR. parseExifOrientation reads the tag from the
-          // raw file (not the decoded image) and applyExifOrientation
-          // rotates the canvas to match the operator's intent. No-op
-          // when orientation is 1 or absent.
+          // Legacy EXIF orientation correction. Only reached when the
+          // modern createImageBitmap({imageOrientation:'from-image'})
+          // path failed — on those older browsers, <img>→canvas
+          // inherits raw sensor pixels and we still need
+          // parseExifOrientation + applyExifOrientation to match
+          // the operator's intent. No-op when orientation is 1 or
+          // absent.
           parseExifOrientation(file).then(function (orient) {
             try { resolve(applyExifOrientation(c, orient)); }
             catch (_) { resolve(c); }
@@ -508,6 +545,7 @@
         }).catch(function () { _tryImageBitmap(); });
       };
       img.src = url;
+    });
     });
   }
 
