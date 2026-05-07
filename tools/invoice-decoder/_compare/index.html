@@ -12,14 +12,9 @@
 <meta name="theme-color" content="#1F4E5B">
 <link rel="stylesheet" href="/assets/site-core.css">
 <style>
-  :root {
-    --cream:#FAF7F2; --ink:#14161A; --ink-soft:#2A2D33;
-    --teal:#1F4E5B; --teal-dark:#143640; --teal-tint:#E8F1F3;
-    --rust:#B8541A; --stone:#6B6B6B; --line:#E8E2D6;
-    --r-sm:8px; --r-md:14px;
-    --font-display:'Fraunces',Georgia,serif;
-    --font-body:'Inter',-apple-system,'Segoe UI',sans-serif;
-  }
+  /* Brand tokens (--cream, --ink, --teal, --font-display,
+     --font-body, --r-sm, --r-md, etc.) inherit from site-core.css.
+     This page only adds compare-specific layout. */
   *{box-sizing:border-box}
   body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5}
   .wrap{max-width:1240px;margin:0 auto;padding:32px 24px 80px}
