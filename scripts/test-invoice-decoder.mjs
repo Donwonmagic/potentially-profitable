@@ -3033,6 +3033,145 @@ let rtPass = 0, rtFail = 0;
 console.log(`\nRound-trip parser tests: ${rtPass} passed, ${rtFail} failed.`);
 
 // =====================================================================
+// Audit fix (test gap #1 + LOW L1) — decimal-separator parser cases.
+//
+// Mexican / EU vendors increasingly land on this tool's roadmap via
+// the bilingual ES copy. The previous normPrice unconditionally
+// stripped commas, so "€1,50" parsed as 150 — a 100× error.
+// These cases lock the inferred-locale-by-position behavior.
+// =====================================================================
+console.log('\n=== Decimal-separator parser cases ===');
+const dpCases = [
+  // Inputs that exercise both locales + edge cases.
+  // [input, expected output, description]
+  ['1,50',       1.50,    'EU 2-decimal comma'],
+  ['1,5',        1.5,     'EU 1-decimal comma'],
+  ['€1,50',      1.50,    'EU with euro symbol'],
+  ['1.50',       1.50,    'US decimal dot'],
+  ['$1.50',      1.50,    'US with dollar symbol'],
+  ['1,234',      1234,    'US thousands comma (3 digits after)'],
+  ['1,234.56',   1234.56, 'US: comma=thousands, dot=decimal'],
+  ['1.234,56',   1234.56, 'EU: dot=thousands, comma=decimal'],
+  ['1.500.000,75', 1500000.75, 'EU multi-thousands + decimal'],
+  ['1,000,000',  1000000, 'US large thousands'],
+  ['1500',       1500,    'no separator'],
+  ['',           null,    'empty → null'],
+  ['abc',        null,    'no digits → null'],
+  ['-12.50',     -12.50,  'negative US'],
+  ['-12,50',     -12.50,  'negative EU'],
+  ['0',          0,       'zero'],
+  ['0,99',       0.99,    'less than 1, EU'],
+  ['0.99',       0.99,    'less than 1, US']
+];
+let dpPass = 0, dpFail = 0;
+for (const [input, expected, desc] of dpCases) {
+  const got = PARSE.normPrice(input);
+  const ok = (got === expected) || (got === null && expected === null) ||
+             (typeof got === 'number' && typeof expected === 'number' && Math.abs(got - expected) < 1e-9);
+  console.log(`  ${ok ? '✓' : '✗'} normPrice(${JSON.stringify(input).padEnd(16)}) = ${String(got).padEnd(10)} (${desc})`);
+  if (ok) dpPass++; else { dpFail++; console.log(`        expected ${expected}`); }
+}
+console.log(`\nDecimal-separator parser cases: ${dpPass} passed, ${dpFail} failed.`);
+
+// =====================================================================
+// Audit fix (test gap #3 + privacy contract) — Plausible event prop
+// discipline. Two-layer guard:
+//   1. For events the OCR overhaul ADDED, prop keys must be in the
+//      narrow allowlist (no surprise additions, no rename drift).
+//   2. For EVERY event firing across invoice-decoder client code,
+//      no string-literal prop value may match the LEAKY_VALUE regex
+//      (rough proxy for invoice line text or dollar amounts leaking
+//      into telemetry).
+// Event-name registration is already enforced by
+// scripts/check-analytics-vocabulary.mjs at the build gate; we don't
+// duplicate that here.
+// =====================================================================
+console.log('\n=== Plausible event prop discipline ===');
+const OCR_AUDIT_EVENTS_PROP_KEYS = {
+  'Invoice Decoder Error':                    new Set(['code', 'retryable']),
+  'Invoice Decoder Reader Setting Changed':   new Set(['choice']),
+  'Invoice Decoder V2 Escalation Win':        new Set(['v1_lines_bucket', 'v2_lines_bucket', 'variant']),
+  'Invoice Decoder V2 Escalation Fail':       new Set(['code']),
+  'Invoice Decoder V2 Fallback':              new Set(['code']),
+  'Invoice Decoder Layout Model Failed':      new Set(['reason'])
+};
+// Match a $-prefixed amount or any run of 4+ uppercase letters that
+// isn't a known engineering token. Engineering enum values are
+// allowed via the OCR_AUDIT exemptions; we additionally allowlist
+// a few known short engineering identifiers ('UNKNOWN', 'WASM',
+// 'IMAGE_FORMAT', etc.) so the regex doesn't false-trip on
+// fallback-code constants.
+const LEAKY_VALUE = /\$\s*\d/;
+const KNOWN_ENG_TOKENS = new Set([
+  // Error / fallback codes used by the shim and engine.
+  'UNKNOWN', 'MODEL_LOAD', 'WASM_COMPILE', 'IMAGE_QUALITY', 'IMAGE_FORMAT',
+  'OUT_OF_MEMORY', 'ENGINE_NOT_LOADED', 'NO_REGIONS',
+  // Layout-failed enum codes (privacy H1 fix).
+  'no-regions', 'missing-output', 'shape-mismatch', 'load-fail',
+  'wasm-fail', 'unknown',
+  // Variant + bucket labels.
+  'ensemble', 'multipass', 'v1', 'v2', 'auto'
+]);
+function valueLeaks(v) {
+  if (!v) return false;
+  if (LEAKY_VALUE.test(v)) return true;
+  if (KNOWN_ENG_TOKENS.has(v)) return false;
+  // 4+ consecutive uppercase letters that aren't in the known tokens
+  return /[A-Z]{4,}/.test(v);
+}
+const plPass = (() => {
+  let pass = 0, fail = 0;
+  const shimSrc   = fs.readFileSync(path.join(repoRoot, 'tools/invoice-decoder/ocr-shim.js'), 'utf8');
+  const layoutSrc = fs.readFileSync(path.join(repoRoot, 'tools/invoice-decoder/layout.js'), 'utf8');
+  const idjsSrc   = fs.readFileSync(path.join(repoRoot, 'tools/invoice-decoder/invoice-decoder.js'), 'utf8');
+  function findCallSites(src) {
+    const sites = [];
+    const re = /(?:root\.|window\.)?plausible\s*\(\s*['"]([^'"]+)['"]\s*,\s*\{\s*props:\s*\{([\s\S]*?)\}\s*\}\s*\)/g;
+    let m;
+    while ((m = re.exec(src)) !== null) sites.push({ event: m[1], propsBody: m[2] });
+    return sites;
+  }
+  const sites = [...findCallSites(shimSrc), ...findCallSites(layoutSrc), ...findCallSites(idjsSrc)];
+  // Layer 1 — OCR-overhaul events get strict prop-key allowlist.
+  for (const { event, propsBody } of sites) {
+    if (!OCR_AUDIT_EVENTS_PROP_KEYS[event]) continue;
+    const allowedKeys = OCR_AUDIT_EVENTS_PROP_KEYS[event];
+    const keys = [...propsBody.matchAll(/(\w+)\s*:/g)].map(m => m[1]);
+    const unknownKeys = keys.filter(k => !allowedKeys.has(k));
+    if (unknownKeys.length) {
+      console.log(`  ✗ ${event}: unknown prop key(s) ${JSON.stringify(unknownKeys)} — allowlist: ${JSON.stringify([...allowedKeys])}`);
+      fail++;
+    } else {
+      console.log(`  ✓ ${event}: ${keys.length} prop key(s) match allowlist`);
+      pass++;
+    }
+  }
+  // Layer 2 — every event's prop-string-literal values scanned for
+  // leaks. Numeric and templated values can't be checked statically;
+  // we only assert string LITERALS in the source aren't suspicious.
+  let totalLiteralChecks = 0, totalLeakHits = 0;
+  for (const { event, propsBody } of sites) {
+    const stringLiterals = [...propsBody.matchAll(/['"]([^'"]*)['"]/g)].map(m => m[1]);
+    for (const v of stringLiterals) {
+      totalLiteralChecks++;
+      if (valueLeaks(v)) {
+        console.log(`  ✗ ${event}: string literal '${v}' matches leaky pattern`);
+        totalLeakHits++;
+      }
+    }
+  }
+  if (totalLeakHits === 0) {
+    console.log(`  ✓ leak scan: ${totalLiteralChecks} string literal value(s) across ${sites.length} call site(s); no $-amount or unrecognized 4+-uppercase token`);
+    pass++;
+  } else {
+    fail++;
+  }
+  return { pass, fail };
+})();
+console.log(`\nPlausible event prop discipline: ${plPass.pass} passed, ${plPass.fail} failed.`);
+
+
+// =====================================================================
 // Acceptance gate — the verification the plan called for.
 //
 // The round-trip test above feeds parser perfect input (fullText
