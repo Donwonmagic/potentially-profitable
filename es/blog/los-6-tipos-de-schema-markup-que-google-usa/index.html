@@ -99,8 +99,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
 <!-- article-abstract-mentions:start -->
 <script type="application/ld+json">
 {
@@ -317,7 +317,7 @@ header.nav{min-height:64px}
       <p>El patrón se repite: la mayoría de los sitios tienen dos de los seis tipos de schema que Google lee primero; los otros cuatro están ausentes o mal formados. Cada pieza faltante es una superficie distinta en los resultados de Google para la que no eres elegible. Lo que compone es que los tipos faltantes desbloquean superficies distintas — la tarjeta del local-pack, las citas en AI Overviews, el botón Reservar, el rich snippet, el badge de horarios feriados — así que la diferencia entre &ldquo;algo de schema&rdquo; y &ldquo;los seis&rdquo; no es lineal.</p>
 
       <figure class="article-figure" data-audio-alt="Los 6 tipos que Google lee primero.">
-        <div class="recovery-stack" role="img" aria-label="Los 6 tipos que Google lee primero">
+        <div class="recovery-stack reveal" role="img" aria-label="Los 6 tipos que Google lee primero">
           <div class="recovery-row recovery-1"><div class="recovery-num">1</div><div><h4 class="i18n">Restaurant</h4><p class="recovery-sub i18n">Queries de cocina, elegibilidad para local-pack, la tarjeta básica.</p></div><div class="recovery-val">fundacional</div></div>
           <div class="recovery-row recovery-2"><div class="recovery-num">2</div><div><h4 class="i18n">Menu</h4><p class="recovery-sub i18n">Ranking a nivel de plato + citas literales en AI Overviews.</p></div><div class="recovery-val">long-tail</div></div>
           <div class="recovery-row recovery-3"><div class="recovery-num">3</div><div><h4 class="i18n">OpeningHoursSpecification</h4><p class="recovery-sub i18n">Badge de &ldquo;Abierto ahora&rdquo; + precisión en horarios feriados.</p></div><div class="recovery-val">walk-ins</div></div>
@@ -354,7 +354,7 @@ header.nav{min-height:64px}
       <p>Casi cada sitio de restaurante que audito tiene Menu schema ausente, o el platform lo estampó como un blob de string. Sin la estructura correcta, Google no puede rankear platos individuales. Usa <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> con descripciones reales — la descripción es lo que las AI Overviews citan textualmente.</p>
 
       <figure class="article-figure">
-        <div class="recovery-stack" role="img" aria-label="El campo del schema Menu que hace el trabajo · description, no name">
+        <div class="recovery-stack reveal" role="img" aria-label="El campo del schema Menu que hace el trabajo · description, no name">
           <div class="recovery-row recovery-1">
             <div>
               <h4 class="i18n">name</h4>
@@ -396,7 +396,7 @@ header.nav{min-height:64px}
       <p>FAQ schema no es específico de restaurantes, pero es la mayor superficie de cita por IA para páginas de restaurante en 2026. ChatGPT, Perplexity, y las AI Overviews de Google leen los bloques FAQ primero cuando responden preguntas operativas. Seis entradas FAQ bien escritas suben típicamente el tráfico de búsqueda con IA un 20-40% en 60 días.</p>
 
       <figure class="article-figure" data-audio-alt="Cobertura típica de schema en sitios SEO-sweep.">
-        <div class="funnel" role="img" aria-label="Cobertura típica de schema en sitios SEO-sweep">
+        <div class="funnel reveal" role="img" aria-label="Cobertura típica de schema en sitios SEO-sweep">
           <div class="funnel-row"><div class="funnel-label"><strong>Restaurant</strong> &middot; <span class="i18n">presente, a menudo incompleto</span></div><div class="funnel-bar"><div class="kept" style="width:80%;">presente</div><div class="lost" style="width:20%;">huecos</div></div></div>
           <div class="funnel-row"><div class="funnel-label"><strong>Menu</strong> &middot; <span class="i18n">blob de string o ausente</span></div><div class="funnel-bar"><div class="kept" style="width:25%;">parsea</div><div class="lost" style="width:75%;">roto</div></div></div>
           <div class="funnel-row"><div class="funnel-label"><strong>OpeningHours</strong> &middot; <span class="i18n">presente pero obsoleto</span></div><div class="funnel-bar"><div class="kept" style="width:60%;">válido</div><div class="lost" style="width:40%;">obsoleto</div></div></div>

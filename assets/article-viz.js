@@ -184,6 +184,19 @@
     var keepRow     = root.querySelector('[data-vw-row="keep"]');
     var displays    = root.querySelectorAll('[data-vw-display]');
 
+    // The aria-label on the inline-SVG-equivalent .viz-waterfall__bar is
+    // the screen-reader description; the data-audio-alt on the wrapping
+    // <figure> is what assets/js/listen.js voices when the figure is
+    // the current spoken chunk. Both must track the live commission
+    // rate, otherwise a screen reader hears "30%" while the visual
+    // shows "25%". The originals (with $ amounts at the default 30%
+    // rate) are captured here and rewritten as a single sentence per
+    // update — keeps the reading concise while staying truthful. */
+    var bar      = root.querySelector('.viz-waterfall__bar');
+    var figure   = root.closest('figure');
+    var origAria = bar ? (bar.getAttribute('aria-label') || '') : '';
+    var origAudio = figure ? (figure.getAttribute('data-audio-alt') || '') : '';
+
     function setText(el, sel, val) {
       if (!el) return;
       var t = el.querySelector(sel);
@@ -221,9 +234,46 @@
       for (var i = 0; i < displays.length; i++) {
         displays[i].textContent = (rate * 100).toFixed(0);
       }
+
+      // Keep the screen-reader aria-label and the audio-narration
+      // [data-audio-alt] in sync with the live numbers. We append a
+      // short status sentence to the original description so the rest
+      // of the text (the steady non-variable segments) stays the
+      // canonical authored version.
+      var ratePct = (rate * 100).toFixed(0);
+      var keepPct = (keepRate * 100).toFixed(1);
+      var commissionDollars = (ticket * rate).toFixed(2);
+      var keepDollars = (ticket * keepRate).toFixed(2);
+      var liveSentence = ' Currently set to ' + ratePct + ' percent commission: ' +
+        commissionDollars + ' dollars to DoorDash, ' + keepDollars +
+        ' dollars stays in the restaurant (' + keepPct + ' percent).';
+      if (bar)    bar.setAttribute('aria-label', origAria + liveSentence);
+      if (figure && origAudio) figure.setAttribute('data-audio-alt', origAudio + liveSentence);
     }
 
     slider.addEventListener('input', update);
+    update();
+  }
+
+  // ============================================================
+  // BeforeAfterSlider ([data-viz-ba])
+  //
+  // Two stacked layers in a fixed-aspect frame, with a range input
+  // covering the whole frame. The clip-path on the front layer reads
+  // the wrapper's --split custom property; this listener just
+  // translates the input value (0-100) into a percent and writes it.
+  // Pure CSS does the visual work; this is ~12 lines of JS.
+  //
+  // The wrapper carries data-viz-ba; the input carries class
+  // .viz-ba__input. No additional configuration needed.
+  // ============================================================
+  function bindBeforeAfter(root) {
+    var input = root.querySelector('input[type="range"].viz-ba__input');
+    if (!input) return;
+    function update() {
+      root.style.setProperty('--split', input.value + '%');
+    }
+    input.addEventListener('input', update);
     update();
   }
 
@@ -239,6 +289,9 @@
 
     var waterfalls = document.querySelectorAll('[data-viz-waterfall]');
     for (var k = 0; k < waterfalls.length; k++) bindWaterfall(waterfalls[k]);
+
+    var bas = document.querySelectorAll('[data-viz-ba]');
+    for (var m = 0; m < bas.length; m++) bindBeforeAfter(bas[m]);
   }
 
   // Suppress unused-var warning while preserving the reference for

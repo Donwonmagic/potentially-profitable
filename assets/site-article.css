@@ -2559,7 +2559,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 }
 
 
-/* ===== [article] Article viz components (.viz-* family) (lines 6372-6470) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 6372-6612) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -2658,3 +2658,145 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
 .viz-slider input[type="range"]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 4px rgba(31,78,91,0.25)}
 .viz-slider__hint{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
 .viz-slider__hint b{color:var(--ink);font-weight:600}
+
+/* .viz-magbar — small inline magnitude bar for use inside table
+   cells. Drops a subtle row-level data viz next to a number ("the
+   impact column") so the eye can scan magnitude without doing
+   arithmetic. Right-anchored (margin-left:auto) so it tracks
+   right-aligned .num cells. Width is 120px × var(--w) where --w is
+   the cell's share of the column's max (0..1). Hidden on narrow
+   viewports — the number alone carries the meaning when the
+   table is also vertically scroll-wrapped. */
+.viz-magbar{display:block;height:4px;width:calc(var(--w,0)*120px);max-width:100%;background:var(--rust);border-radius:2px;margin:5px 0 0 auto}
+.viz-magbar[data-tone="teal"]{background:var(--teal)}
+.viz-magbar[data-tone="stone"]{background:var(--stone)}
+.viz-magbar[data-tone="ink"]{background:var(--ink)}
+@media (max-width:520px){.viz-magbar{display:none}}
+
+/* Sortable-table affordance — appears when article-viz.js attaches
+   the click handler. The .reveal IO doesn't apply here; this is a
+   one-shot visual nudge that the column header is clickable. The
+   aria-sort attribute is the source of truth (set by the JS); the
+   ::after caret is purely visual. */
+table[data-viz-sortable] th[aria-sort]{position:relative;cursor:pointer;user-select:none}
+table[data-viz-sortable] th[aria-sort]:hover{color:var(--teal)}
+table[data-viz-sortable] th[aria-sort]:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+table[data-viz-sortable] th[aria-sort]::after{content:"\2195";font-size:10px;margin-left:6px;color:var(--stone);opacity:0.55;font-variant-numeric:tabular-nums;display:inline-block;vertical-align:middle}
+table[data-viz-sortable] th[aria-sort="ascending"]::after{content:"\2191";color:var(--teal);opacity:1}
+table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color:var(--teal);opacity:1}
+
+/* .viz-gauges / .viz-gauge — Lighthouse-style half-donut gauges
+   with an animated needle. The colored band (rust/gold/green) sits
+   behind the needle as a faint background ring; the needle itself
+   is the focal point and rotates from -90° (score 0, pointing left)
+   to (score - 50) × 1.8° on viewport entry — a classic speedometer
+   sweep. Score number lives in the bowl of the half-donut and is
+   color-tinted by Lighthouse band (data-band="bad|warn|good").
+   Reduced-motion: needle renders at the target score statically,
+   no sweep. Compositor-only transform; passes check-cls-animation.
+   transform-box: view-box maps the rotation origin to the SVG's
+   internal coordinates regardless of the rendered pixel size. */
+.viz-gauges{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin:24px 0}
+@media (max-width:600px){.viz-gauges{grid-template-columns:1fr;gap:16px}}
+.viz-gauge{text-align:center;padding:8px 4px}
+.viz-gauge__svg{display:block;margin:0 auto;max-width:100%;height:auto;overflow:visible}
+.viz-gauge__track{stroke:var(--cream-2)}
+.viz-gauge__band{opacity:0.22}
+.viz-gauge__tick{stroke:var(--ink);stroke-width:1.5;opacity:0.35}
+.viz-gauge__needle{stroke:var(--ink);stroke-width:3;stroke-linecap:round;fill:var(--ink);transform-box:view-box;transform-origin:110px 110px;transform:rotate(calc((var(--score,50) - 50) * 1.8deg))}
+.viz-gauge__pivot{fill:var(--ink)}
+.viz-gauge__num{font-family:var(--font-display);font-size:38px;font-weight:500;line-height:1;letter-spacing:-0.02em;margin:-44px 0 0;color:var(--ink);position:relative;z-index:1}
+.viz-gauge[data-band="bad"]  .viz-gauge__num,.viz-gauge[data-band="bad"]  .viz-gauge__needle{color:var(--rust)}
+.viz-gauge[data-band="bad"]  .viz-gauge__needle{stroke:var(--rust);fill:var(--rust)}
+.viz-gauge[data-band="warn"] .viz-gauge__num{color:#C5A059}
+.viz-gauge[data-band="warn"] .viz-gauge__needle{stroke:#C5A059;fill:#C5A059}
+.viz-gauge[data-band="good"] .viz-gauge__num{color:#1F9D55}
+.viz-gauge[data-band="good"] .viz-gauge__needle{stroke:#1F9D55;fill:#1F9D55}
+.viz-gauge__label{font-family:var(--font-body);font-size:13px;color:var(--stone);margin-top:14px;line-height:1.4}
+.viz-gauge__label strong{display:block;font-weight:600;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+@media (prefers-reduced-motion:no-preference){
+  /* On viewport entry (.reveal.in ancestor), needles sweep from -90°
+     (score 0, pointing left) to their target rotation. The cubic-
+     bezier overshoots slightly so the needle settles into place
+     instead of arriving sterile-flat. */
+  .reveal .viz-gauge__needle{transform:rotate(-90deg);transition:transform 1100ms cubic-bezier(0.2,0.85,0.3,1.05);transition-delay:var(--delay,0ms)}
+  .reveal.in .viz-gauge__needle{transform:rotate(calc((var(--score,50) - 50) * 1.8deg))}
+}
+
+/* .funnel cascade reveal. The .funnel component (lives in the
+   "INLINE GRAPHICS" block earlier in this file) was static; this
+   block layers a viewport-entry cascade on top when the funnel
+   itself carries class="reveal". Each row's kept and lost segments
+   wipe in from left to right via clip-path inset, with a 100ms-per-
+   row stagger. clip-path animations are compositor-friendly — the
+   check-cls-animation guard only flags `inset` as a CSS property,
+   not as a clip-path value, so this passes. Reduced-motion users
+   skip the animation entirely (the @media gate keeps the static
+   final state). */
+@media (prefers-reduced-motion:no-preference){
+  .funnel.reveal .funnel-bar .kept,
+  .funnel.reveal .funnel-bar .lost{clip-path:inset(0 100% 0 0);transition:clip-path 800ms cubic-bezier(0.2,0.8,0.2,1)}
+  .funnel.reveal.in .funnel-bar .kept,
+  .funnel.reveal.in .funnel-bar .lost{clip-path:inset(0 0 0 0)}
+  .funnel.reveal .funnel-row:nth-child(1) .funnel-bar > *{transition-delay:0ms}
+  .funnel.reveal .funnel-row:nth-child(2) .funnel-bar > *{transition-delay:100ms}
+  .funnel.reveal .funnel-row:nth-child(3) .funnel-bar > *{transition-delay:200ms}
+  .funnel.reveal .funnel-row:nth-child(4) .funnel-bar > *{transition-delay:300ms}
+  .funnel.reveal .funnel-row:nth-child(5) .funnel-bar > *{transition-delay:400ms}
+  .funnel.reveal .funnel-row:nth-child(6) .funnel-bar > *{transition-delay:500ms}
+  .funnel.reveal .funnel-row:nth-child(7) .funnel-bar > *{transition-delay:600ms}
+  .funnel.reveal .funnel-row:nth-child(8) .funnel-bar > *{transition-delay:700ms}
+}
+
+/* .recovery-stack cascade reveal. Same pattern as .funnel.reveal but
+   for the vertical "stacked rows with row tints + dark total cap"
+   component (defined in the INLINE GRAPHICS block earlier). Each row
+   fades up from translateY(16px); transform + opacity only —
+   compositor-friendly, no layout reflow. Used across ~10 articles
+   wherever the pattern lands (margin-recovery, schema-coverage, GSC,
+   tool-safety, photo-specs, when-to-rebuild). */
+@media (prefers-reduced-motion:no-preference){
+  .recovery-stack.reveal .recovery-row,
+  .recovery-stack.reveal .recovery-total{opacity:0;transform:translateY(16px);transition:opacity 600ms cubic-bezier(0.2,0.8,0.2,1),transform 600ms cubic-bezier(0.2,0.8,0.2,1)}
+  .recovery-stack.reveal.in .recovery-row,
+  .recovery-stack.reveal.in .recovery-total{opacity:1;transform:translateY(0)}
+  .recovery-stack.reveal .recovery-row:nth-child(1){transition-delay:0ms}
+  .recovery-stack.reveal .recovery-row:nth-child(2){transition-delay:80ms}
+  .recovery-stack.reveal .recovery-row:nth-child(3){transition-delay:160ms}
+  .recovery-stack.reveal .recovery-row:nth-child(4){transition-delay:240ms}
+  .recovery-stack.reveal .recovery-row:nth-child(5){transition-delay:320ms}
+  .recovery-stack.reveal .recovery-row:nth-child(6){transition-delay:400ms}
+  .recovery-stack.reveal .recovery-row:nth-child(7){transition-delay:480ms}
+  .recovery-stack.reveal .recovery-row:nth-child(8){transition-delay:560ms}
+  .recovery-stack.reveal .recovery-total{transition-delay:640ms}
+}
+
+/* .viz-ba — BeforeAfterSlider. Two stacked layers (back: --after,
+   front: --before) inside a fixed-aspect-ratio frame. The front
+   layer is clipped via clip-path inset(0 right 0 0) where right =
+   100% - --split. A range input sits over the whole frame as the
+   underlying control (touch + keyboard + mouse for free, screen
+   readers announce a slider position). The visual handle is a
+   pseudo-element pinned to --split; the input itself is invisible
+   but receives all events. Article-viz.js bindBeforeAfter()
+   listens for input and writes --split.
+
+   Reduced motion: no entry animation. Even with motion enabled the
+   slider is interactive, not animated — moving the input is the
+   point. */
+.viz-ba{position:relative;margin:24px 0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--cream-2);--split:50%}
+.viz-ba__layer{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.viz-ba__layer--after{z-index:1}
+.viz-ba__layer--before{z-index:2;clip-path:inset(0 calc(100% - var(--split)) 0 0)}
+.viz-ba__handle{position:absolute;top:0;bottom:0;left:var(--split);width:2px;background:var(--ink);z-index:3;pointer-events:none;transform:translateX(-1px)}
+.viz-ba__handle::before{content:"";position:absolute;top:50%;left:50%;width:38px;height:38px;border-radius:50%;background:var(--cream);border:2px solid var(--ink);transform:translate(-50%,-50%);box-shadow:0 2px 6px rgba(20,22,26,0.18)}
+.viz-ba__handle::after{content:"\2194";position:absolute;top:50%;left:50%;font-family:var(--font-body);font-size:18px;font-weight:700;color:var(--ink);transform:translate(-50%,-52%);z-index:1}
+.viz-ba__label{position:absolute;top:12px;font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(20,22,26,0.78);color:var(--cream);z-index:4;pointer-events:none}
+.viz-ba__label--before{left:14px}
+.viz-ba__label--after{right:14px}
+.viz-ba__input{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:100%;background:transparent;margin:0;padding:0;border:0;cursor:ew-resize;z-index:5;opacity:0}
+/* Restore an actual focus outline on the wrapper when the (invisible)
+   input is keyboard-focused, so keyboard users see the affordance. */
+.viz-ba:has(.viz-ba__input:focus-visible) .viz-ba__handle::before{box-shadow:0 0 0 4px rgba(31,78,91,0.35),0 2px 6px rgba(20,22,26,0.18)}
+.viz-ba__input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}
+.viz-ba__input::-moz-range-thumb{width:38px;height:38px;background:transparent;border:0;cursor:ew-resize}

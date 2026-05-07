@@ -108,8 +108,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -274,17 +274,17 @@ header.nav{min-height:64px}
 
     <p>El n&uacute;mero del 1% no es una corazonada. Es la suma a trav&eacute;s de seis fugas medidas, cada una con una cifra de alza publicada en investigaci&oacute;n primaria, aplicada al ingreso reportado por el propio operador. La metodolog&iacute;a est&aacute; abajo; el resultado titular est&aacute; en esta tabla.</p>
 
-    <div class="table-scroll"><table class="note-table" aria-label="Seis fugas, impacto promedio en 50 restaurantes">
+    <div class="table-scroll"><table class="note-table" data-viz-sortable aria-label="Seis fugas, impacto promedio en 50 restaurantes. Haz clic en cualquier encabezado para ordenar." data-audio-alt="Seis fugas, ordenadas por impacto cuando est&aacute;n presentes. La fuga m&aacute;s grande individual es pedidos solo por agregador, casi medio punto del ingreso, presente en 22 por ciento de los operadores. La m&aacute;s frecuente es la falta de bot&oacute;n de pedido directo, presente en 71 por ciento de los operadores, con un costo de 0.27 puntos cada vez. Los errores de deeplink de reservas afectan al 59 por ciento con 0.34 puntos. LCP m&oacute;vil sobre 3 segundos afecta al 68 por ciento con 0.18 puntos. Solo ingl&eacute;s en zonas biling&uuml;es afecta al 38 por ciento con 0.31 puntos. Horarios enterrados debajo del fold afectan al 52 por ciento con 0.21 puntos. Fuga total mediana entre fugas presentes: 0.94 por ciento.">
       <thead>
         <tr><th scope="col">Fuga</th><th scope="col">% de operadores con esta fuga</th><th scope="col" style="text-align:right">Impacto mediano sobre el ingreso cuando est&aacute; presente</th></tr>
       </thead>
       <tbody>
-        <tr><td>El bot&oacute;n de reserva no hace deeplink al local</td><td class="num">59%</td><td class="num">&minus;0.34%</td></tr>
-        <tr><td>Horarios enterrados debajo del fold en m&oacute;vil</td><td class="num">52%</td><td class="num">&minus;0.21%</td></tr>
-        <tr><td>LCP m&oacute;vil &gt; 3.0s</td><td class="num">68%</td><td class="num">&minus;0.18%</td></tr>
-        <tr><td>Sin CTA de pedido directo arriba de los enlaces de terceros</td><td class="num">71%</td><td class="num">&minus;0.27%</td></tr>
-        <tr><td>Solo en ingl&eacute;s en una zona biling&uuml;e</td><td class="num">38%</td><td class="num">&minus;0.31%</td></tr>
-        <tr><td>Pedidos solo por agregador (sin camino directo)</td><td class="num">22%</td><td class="num">&minus;0.45%</td></tr>
+        <tr><td>El bot&oacute;n de reserva no hace deeplink al local</td><td class="num">59%<span class="viz-magbar" data-tone="teal" style="--w:0.831" aria-hidden="true"></span></td><td class="num">&minus;0.34%<span class="viz-magbar" style="--w:0.756" aria-hidden="true"></span></td></tr>
+        <tr><td>Horarios enterrados debajo del fold en m&oacute;vil</td><td class="num">52%<span class="viz-magbar" data-tone="teal" style="--w:0.732" aria-hidden="true"></span></td><td class="num">&minus;0.21%<span class="viz-magbar" style="--w:0.467" aria-hidden="true"></span></td></tr>
+        <tr><td>LCP m&oacute;vil &gt; 3.0s</td><td class="num">68%<span class="viz-magbar" data-tone="teal" style="--w:0.958" aria-hidden="true"></span></td><td class="num">&minus;0.18%<span class="viz-magbar" style="--w:0.400" aria-hidden="true"></span></td></tr>
+        <tr><td>Sin CTA de pedido directo arriba de los enlaces de terceros</td><td class="num">71%<span class="viz-magbar" data-tone="teal" style="--w:1.000" aria-hidden="true"></span></td><td class="num">&minus;0.27%<span class="viz-magbar" style="--w:0.600" aria-hidden="true"></span></td></tr>
+        <tr><td>Solo en ingl&eacute;s en una zona biling&uuml;e</td><td class="num">38%<span class="viz-magbar" data-tone="teal" style="--w:0.535" aria-hidden="true"></span></td><td class="num">&minus;0.31%<span class="viz-magbar" style="--w:0.689" aria-hidden="true"></span></td></tr>
+        <tr><td>Pedidos solo por agregador (sin camino directo)</td><td class="num">22%<span class="viz-magbar" data-tone="teal" style="--w:0.310" aria-hidden="true"></span></td><td class="num">&minus;0.45%<span class="viz-magbar" style="--w:1.000" aria-hidden="true"></span></td></tr>
       </tbody>
       <tfoot>
         <tr><td colspan="2">Fuga total mediana (entre fugas presentes)</td><td class="num">&minus;0.94%</td></tr>
@@ -297,7 +297,7 @@ header.nav{min-height:64px}
 
     <p>La distribuci&oacute;n no es plana. Se concentra: la mayor&iacute;a de los operadores est&aacute;n en la banda de 0.5% a 1.5%, pero una cola larga est&aacute; fugando bien por encima del 2% &mdash; usualmente porque tienen las seis fugas activas a la vez.</p>
 
-    <figure class="viz-figure">
+    <figure class="viz-figure article-figure" data-audio-alt="Distribuci&oacute;n de fuga entre los 50 restaurantes. El grupo m&aacute;s grande es la banda de 0.5 a 1 por ciento, con 17 de 50 operadores. 15 est&aacute;n en la banda de 1 a 1.5 por ciento. 7 est&aacute;n bajo medio por ciento y 7 entre 1.5 y 2 por ciento. La cola del peor cuartil, arriba del 2 por ciento, tiene 4 operadores.">
       <div class="viz-bars reveal" data-animate="grow" role="img" aria-label="Distribuci&oacute;n de fuga en los 50 restaurantes. Bajo 0.5%: 7 de 50. 0.5 a 1.0%: 17 de 50. 1.0 a 1.5%: 15 de 50. 1.5 a 2.0%: 7 de 50. Sobre 2.0%: 4 de 50.">
         <span class="viz-bars__label">Bajo 0.5%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:0.41"></span></span><span class="viz-bars__num">7 de 50</span>
         <span class="viz-bars__label">0.5 a 1.0%</span><span class="viz-bars__track"><span class="viz-bars__fill" style="--w:1;--delay:80ms"></span></span><span class="viz-bars__num">17 de 50</span>
@@ -409,5 +409,9 @@ header.nav{min-height:64px}
 </footer>
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
+<!-- M&oacute;dulo de gr&aacute;ficos de art&iacute;culo &mdash; activa
+     la tabla ordenable de fugas. Carga diferida; falla limpio si los
+     hooks no est&aacute;n presentes. -->
+<script src="/assets/article-viz.js" defer></script>
 </body>
 </html>

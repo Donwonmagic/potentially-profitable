@@ -98,8 +98,8 @@ header.nav{min-height:64px}
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
 <link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=80d5877efcdc" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=80d5877efcdc"></noscript>
+<link rel="preload" as="style" href="/assets/site-article.css?v=358c455b6972" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-article.css?v=358c455b6972"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -294,7 +294,7 @@ header.nav{min-height:64px}
 
     <p>Below is the full margin walk. The line items are familiar to anyone who&rsquo;s read a partner statement, but it&rsquo;s rare to see them stacked in one column with the actual percentages applied. I&rsquo;m using DoorDash Marketplace Plus (30% commission tier, the most common one for independents under three locations) and the standard payment-processing rate they pass through.</p>
 
-    <figure class="viz-figure">
+    <figure class="viz-figure article-figure" data-audio-alt="Where each dollar of a 42-dollar DoorDash ticket goes. DoorDash commission, at the Marketplace Plus tier of 30 percent, takes 12 dollars 60. Payment processing takes another dollar 43. The promotion or sponsored-listing fee takes a dollar 20 on average. Packaging takes another dollar 40. Food cost is 28 percent, or 11 dollars 76. Variable labor is 14 percent, or 5 dollars 88. What stays in the restaurant: 7 dollars 73, or 18.4 percent of the ticket. The slider below lets you swap the commission rate from 15 to 35 percent and watch the kept share recompute.">
       <div class="viz-waterfall" data-viz-waterfall data-vw-config='{"ticket":42,"variableSeg":"commission","baseRate":0.30,"baseKeep":0.184}'>
         <p class="viz-waterfall__title">Where each dollar of a $42 DoorDash ticket goes</p>
         <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown: 30% DoorDash commission, 3.4% payment processing, 2.9% promotion fee, 3.3% packaging, 28% food cost, 14% labor, 18.4% kept by the restaurant.">
@@ -366,7 +366,7 @@ header.nav{min-height:64px}
 
     <p>Now run the same exercise on the same $42 ticket, ordered direct from your own website, paid through your own Stripe account.</p>
 
-    <figure class="viz-figure">
+    <figure class="viz-figure article-figure" data-audio-alt="The same 42-dollar ticket, ordered direct from your own website with your own last-mile delivery. Stripe or Square processing takes a dollar 51. Direct-channel marketing amortization takes 80 cents per order. Packaging stays at a dollar 40. Food cost stays at 11 dollars 76. Variable labor stays at 5 dollars 88. Last-mile DoorDash Drive flat fee, optional, is 8 dollars 50. What stays in the restaurant with your own delivery: 12 dollars 15, or 28.9 percent. Compared to the DoorDash channel, that is a 4 dollar 42 swing per order toward the restaurant.">
       <div class="viz-waterfall">
         <p class="viz-waterfall__title">The same $42 ticket, ordered direct (with your own last-mile)</p>
         <div class="viz-waterfall__bar" role="img" aria-label="Stacked breakdown of a direct-channel ticket: 3.6% processing, 1.9% marketing, 3.3% packaging, 28% food cost, 14% labor, 20.2% last-mile, 28.9% kept by the restaurant.">
