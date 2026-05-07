@@ -693,6 +693,30 @@ async function main() {
     console.log(`  ✓ ${publicUrl}  ${data.length}b`);
   }
 
+  // Audit fix: minimum-file-count guard. Without this, an HF/CDN
+  // partial outage can produce a "successful" build that ships
+  // with no ONNX models and no integrity manifest entries — the
+  // tool then runs V1-only forever and no telemetry surfaces the
+  // regression. The threshold (20) is below the expected total
+  // (~27: VENDORS + 5 PaddleOCR + 11 ONNX + 6 lang packs) but high
+  // enough that any meaningful category-wide failure trips it.
+  // Local dev with --allow-offline can still skip by passing
+  // --skip-min-writes-check, but production deploys (which run
+  // without --allow-offline since the deploy-blocker fix) must
+  // hit the floor.
+  const MIN_TOTAL_WRITES = 20;
+  const skipMinCheck = process.argv.includes('--skip-min-writes-check');
+  if (writes < MIN_TOTAL_WRITES && !skipMinCheck) {
+    const msg = `vendor-pin: only ${writes} file(s) written (minimum ${MIN_TOTAL_WRITES}). ` +
+                `Refusing to write integrity.json — this would silently ship a deploy ` +
+                `without ONNX models / lang packs.`;
+    if (allowOffline) {
+      console.warn('  ! ' + msg + ' (allowed because --allow-offline)');
+    } else {
+      throw new Error(msg);
+    }
+  }
+
   fs.writeFileSync(INTEGRITY_FILE, JSON.stringify(integrity, null, 2));
   console.log(`\nvendor-pin: wrote ${writes} file(s) to dist/assets/vendor (${warnings} warning(s))`);
 
