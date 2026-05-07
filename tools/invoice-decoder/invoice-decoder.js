@@ -548,6 +548,34 @@
     });
   }
 
+  // Slice 6 telemetry — module-private session state. Persists across
+  // multiple readPendingInvoice() calls in the same tab so we can
+  // distinguish cold (first OCR run this session) from warm (later
+  // runs that benefit from already-loaded vendors + warm worker pool).
+  var _ocrSessionWarm = false;
+
+  // Slice 6 telemetry helpers. Bucketing keeps the plausible
+  // dimension cardinality bounded (Plausible charges per unique
+  // value) and dodges any chance of a numeric leak.
+  function _confBucket(c) {
+    var n = (c == null) ? 0 : c;
+    // Tesseract reports 0..100; PP-OCR (v2) reports 0..1. Normalize
+    // so a single bucket function works across both engines.
+    if (n > 0 && n <= 1) n = n * 100;
+    if (n >= 80) return '80+';
+    if (n >= 50) return '50-79';
+    if (n > 0)   return '<50';
+    return 'unknown';
+  }
+  function _msBucket(ms) {
+    if (ms == null || !isFinite(ms)) return 'unknown';
+    if (ms <  2000) return '<2s';
+    if (ms <  5000) return '2-5s';
+    if (ms < 10000) return '5-10s';
+    if (ms < 20000) return '10-20s';
+    return '20s+';
+  }
+
   function readPendingInvoice() {
     if (!pendingPages.length) return;
     if (typeof MID_OCR === 'undefined' || typeof MID_PARSE === 'undefined') {
@@ -594,6 +622,15 @@
     var invoicePaddleReplacements = 0;  // Wave 9.2 — Paddle ensemble wins
     var invoicePaddlePages        = 0;  // Wave 9.2 — pages that benefited
     var page1WordsForColumns      = [];  // Layout-aware OCR refinement source
+    // Slice 6 telemetry — capture state at start of read + accumulate
+    // across pages so we can attribute v1↔v2 outcomes per session.
+    var _readStartMs       = (typeof performance !== 'undefined') ? performance.now() : Date.now();
+    var _readColdOrWarm    = _ocrSessionWarm ? 'warm' : 'cold';
+    _ocrSessionWarm        = true;
+    var _readEngineRequested = (MID_OCR && typeof MID_OCR._shouldUseV2 === 'function' && MID_OCR._shouldUseV2()) ? 'v2' : 'v1';
+    var _readSawV2Result   = false;     // any per-page result tagged engineVersion: 'v2'
+    var _readSumConfXLines = 0;
+    var _readSumLines      = 0;
 
     // Wave 9.4 — heavy-tier language packs (chi_sim/chi_tra/jpn/kor)
     // when the operator's preferences or vendor history imply them.
@@ -677,6 +714,17 @@
               }
               return improved;
             });
+          }
+          // Slice 6 telemetry — accumulate per-page signals here, before
+          // dedup. `engineVersion` is set by ocr-engine.js (v2) or absent
+          // (v1 / fallback). Both engines report meanConfidence in 0..100.
+          if (ocrResult) {
+            if (ocrResult.engineVersion === 'v2') _readSawV2Result = true;
+            var pageLineCount = (ocrResult.lines && ocrResult.lines.length) || 0;
+            if (pageLineCount > 0 && typeof ocrResult.meanConfidence === 'number') {
+              _readSumConfXLines += ocrResult.meanConfidence * pageLineCount;
+              _readSumLines      += pageLineCount;
+            }
           }
           return ocrResult;
         }).then(function (ocrResult) {
@@ -861,12 +909,25 @@
         setProgress(100);
         hideStatus();
         if (window.plausible) {
+          // Slice 6 telemetry — `engine_version` distinguishes v1
+          // pass-through ('v1'), v2 success ('v2'), and v2-attempted-
+          // but-fell-back ('v2-fallback'). `mean_conf_bucket` and
+          // `cold_or_warm` let us see whether v2 actually outperforms
+          // v1 in production, gating the eventual default flip.
+          var _ocrMeanConf = _readSumLines ? (_readSumConfXLines / _readSumLines) : 0;
+          var _ocrEngineActual = _readSawV2Result ? 'v2'
+                              : (_readEngineRequested === 'v2' ? 'v2-fallback' : 'v1');
+          var _ocrElapsedMs = ((typeof performance !== 'undefined') ? performance.now() : Date.now()) - _readStartMs;
           window.plausible('Invoice Decoder Read', { props: {
             rows_bucket: parsed.rows.length < 10 ? '<10' :
                          parsed.rows.length < 25 ? '10-24' :
                          parsed.rows.length < 50 ? '25-49' : '50+',
             vendor_detected: parsed.vendor ? 'true' : 'false',
-            delta_known: parsed.deltaPct != null ? 'true' : 'false'
+            delta_known: parsed.deltaPct != null ? 'true' : 'false',
+            engine_version:   _ocrEngineActual,
+            mean_conf_bucket: _confBucket(_ocrMeanConf),
+            cold_or_warm:     _readColdOrWarm,
+            ocr_ms_bucket:    _msBucket(_ocrElapsedMs)
           } });
         }
       });   // close columnsRefinePromise.then
@@ -900,6 +961,24 @@
   // operator — _ocrErrorCopy maps each code to plain-English /
   // plain-Spanish copy that ends with one concrete next step.
   function _classifyOcrError(err) {
+    // Honor explicit OcrError codes from the v2 engine first.
+    // ocr-engine.js throws errors with .code already set
+    // (IMAGE_QUALITY, MODEL_LOAD, WASM_COMPILE, OUT_OF_MEMORY,
+    // ENGINE_LOAD, UNKNOWN); when one of those leaks through the
+    // shim's fallback (i.e., V1 also failed and we re-threw the
+    // V2 error), it should classify by code, not by message regex.
+    if (err && typeof err.code === 'string' && /^[A-Z_]+$/.test(err.code)) {
+      var nonRetryable = (err.code === 'IMAGE_QUALITY' || err.code === 'OUT_OF_MEMORY' || err.code === 'IMAGE_FORMAT');
+      // Map the engine codes onto the controller's existing copy buckets:
+      var copyCode =
+        (err.code === 'WASM_COMPILE' || err.code === 'MODEL_LOAD' || err.code === 'ENGINE_LOAD') ? 'ENGINE_LOAD' :
+        (err.code === 'OUT_OF_MEMORY')                                                            ? 'OOM'         :
+        (err.code === 'IMAGE_QUALITY' || err.code === 'IMAGE_FORMAT')                             ? 'IMAGE_FORMAT':
+        (err.code === 'TIMEOUT')                                                                  ? 'TIMEOUT'     :
+        (err.code === 'NETWORK')                                                                  ? 'NETWORK'     :
+                                                                                                    'UNKNOWN';
+      return { code: copyCode, retryable: !nonRetryable, message: String(err.message || err.code) };
+    }
     var msg = String((err && err.message) || err || '');
     if (/tesseract|workerPath|corePath|langPath|vendor-config|module missing|loaded but global|onnx|wasm/i.test(msg)) {
       return { code: 'ENGINE_LOAD', retryable: true,  message: msg };

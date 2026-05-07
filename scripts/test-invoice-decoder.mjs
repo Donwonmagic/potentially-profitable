@@ -2384,12 +2384,14 @@ function v1NormalizeForDedup(s) {
   loadV2Module(W, 'ocr-engine.js');
   const E = W.MID_OCR_V2;
 
-  let stubOk = false;
+  // Engine rejects bad input early with IMAGE_QUALITY so the shim's
+  // V1 fallback covers it. Real ORT inference is exercised in-browser.
+  let badInputOk = false;
   await E.recognize(null, [], {}).then(() => {}).catch(err => {
-    stubOk = err && err.code === 'ENGINE_NOT_LOADED' && err.retryable === true;
+    badInputOk = err && err.code === 'IMAGE_QUALITY';
   });
-  console.log(`  ${stubOk ? '✓' : '✗'} ocr-engine stub rejects with code=ENGINE_NOT_LOADED, retryable=true`);
-  if (stubOk) v2Pass++; else v2Fail++;
+  console.log(`  ${badInputOk ? '✓' : '✗'} engine rejects null canvas with code=IMAGE_QUALITY (shim falls back)`);
+  if (badInputOk) v2Pass++; else v2Fail++;
 
   const e1 = E.OcrError('IMAGE_QUALITY', 'too blurry');
   const e2 = E.OcrError('MODEL_LOAD',    'fetch failed');
@@ -2399,6 +2401,77 @@ function v1NormalizeForDedup(s) {
              && e3.code === 'OUT_OF_MEMORY' && e3.retryable === false;
   console.log(`  ${taxOk ? '✓' : '✗'} OcrError taxonomy sets retryable correctly per code`);
   if (taxOk) v2Pass++; else v2Fail++;
+
+  // Tier resolution → model key selection
+  const lean    = E._modelKeysForTier('lean');
+  const capable = E._modelKeysForTier('capable');
+  const tierOk = lean.det === 'ppocrV3Det' && lean.rec === 'ppocrV3Rec'
+              && capable.det === 'ppocrV4Det' && capable.rec === 'ppocrV4Rec';
+  console.log(`  ${tierOk ? '✓' : '✗'} _modelKeysForTier picks v3 for lean, v4 for capable`);
+  if (tierOk) v2Pass++; else v2Fail++;
+
+  // CTC decode pure-logic test. Build a synthetic logits tensor
+  // [N=1, T=4, C=4] where the dict is ['<blank>', 'a', 'b', 'c'].
+  // Sequence at each timestep (argmax): a, a (collapse), 0 (blank), c
+  // → expected text "ac", confidence > 0
+  const dict = ['<blank>', 'a', 'b', 'c'];
+  const logits = new Float32Array([
+    /* t=0 */ -10, 5, -10, -10,    // argmax: 'a'
+    /* t=1 */ -10, 5, -10, -10,    // argmax: 'a' (collapse)
+    /* t=2 */   5,-10, -10, -10,   // argmax: blank
+    /* t=3 */ -10,-10, -10,  5     // argmax: 'c'
+  ]);
+  const decoded = E._ctcDecode(logits, [1, 4, 4], dict);
+  const ctcOk = decoded.length === 1 && decoded[0].text === 'ac' && decoded[0].confidence > 0.5;
+  console.log(`  ${ctcOk ? '✓' : '✗'} _ctcDecode collapses repeats + drops blanks (got "${decoded[0].text}")`);
+  if (ctcOk) v2Pass++; else v2Fail++;
+
+  // DB postprocess pure-logic test. Build a small probability map
+  // with one obvious "text" region in the middle (8x4 high-prob block).
+  const w = 16, h = 16;
+  const prob = new Float32Array(w * h);
+  for (let yy = 6; yy < 10; yy++) {
+    for (let xx = 4; xx < 12; xx++) {
+      prob[yy * w + xx] = 0.85;
+    }
+  }
+  const components = E._dbPostprocess(prob, w, h, { threshold: 0.3, minArea: 4, minMeanProb: 0.5 });
+  const dbOk = components.length === 1
+            && components[0].x0 === 4 && components[0].x1 === 12
+            && components[0].y0 === 6 && components[0].y1 === 10
+            && components[0].area === 32;
+  console.log(`  ${dbOk ? '✓' : '✗'} _dbPostprocess finds a single 8x4 component at the right bbox`);
+  if (dbOk) v2Pass++; else v2Fail++;
+
+  // Unclip should expand by N px without going off-canvas
+  const unclipped = E._unclip(
+    [{ x0: 10, y0: 10, x1: 20, y1: 20, meanProb: 0.9 }],
+    100, 100, 6
+  );
+  const unclipOk = unclipped[0].x0 === 4 && unclipped[0].y0 === 4
+                && unclipped[0].x1 === 26 && unclipped[0].y1 === 26;
+  console.log(`  ${unclipOk ? '✓' : '✗'} _unclip expands bbox by N px and clamps to canvas`);
+  if (unclipOk) v2Pass++; else v2Fail++;
+
+  const clamp = E._unclip(
+    [{ x0: 0, y0: 0, x1: 5, y1: 5, meanProb: 0.9 }],
+    100, 100, 10
+  );
+  const clampOk = clamp[0].x0 === 0 && clamp[0].y0 === 0;   // can't go negative
+  console.log(`  ${clampOk ? '✓' : '✗'} _unclip clamps to canvas top-left`);
+  if (clampOk) v2Pass++; else v2Fail++;
+
+  // Group lines by Y: three bboxes — two share a Y row, one is below
+  const grouped = E._groupLinesByY([
+    { text: 'BEEF',     confidence: 0.9, bbox: { x0: 100, y0: 50, x1: 150, y1: 70 } },
+    { text: '$24.50',   confidence: 0.9, bbox: { x0: 250, y0: 51, x1: 320, y1: 70 } },  // same row
+    { text: 'CHICKEN',  confidence: 0.9, bbox: { x0: 100, y0: 110, x1: 180, y1: 130 } } // new row
+  ], { yTol: 8 });
+  const groupOk = grouped.length === 2
+               && grouped[0].text === 'BEEF $24.50'    // sorted L→R within row
+               && grouped[1].text === 'CHICKEN';
+  console.log(`  ${groupOk ? '✓' : '✗'} _groupLinesByY clusters by Y, sorts left→right within line`);
+  if (groupOk) v2Pass++; else v2Fail++;
 }
 
 // ---------- layout.js ----------
@@ -2479,7 +2552,7 @@ function v1NormalizeForDedup(s) {
   W.localStorage.setItem('id-engine-v2', 'on');
   const r2 = await W.MID_OCR.recognizeMultiPass('a', 'g', {});
   const fallbackOk = r2.text === 'V1';
-  console.log(`  ${fallbackOk ? '✓' : '✗'} flag ON + ENGINE_NOT_LOADED → shim falls back to v1 (operator unaffected)`);
+  console.log(`  ${fallbackOk ? '✓' : '✗'} flag ON + v2 engine error → shim falls back to v1 (operator unaffected)`);
   if (fallbackOk) v2Pass++; else v2Fail++;
 
   W.location.search = '?engine=v1';
