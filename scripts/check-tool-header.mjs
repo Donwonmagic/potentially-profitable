@@ -28,11 +28,15 @@ const checkMode  = process.argv.includes('--check');
 // list multiple tools and use a different eyebrow vocabulary
 // (e.g. "Free tools" / "Free audits"). Individual tool pages are
 // the only ones the "Free tool · <qualifier>" rule applies to.
+// Internal diagnostic surfaces (noindex,nofollow, no nav link)
+// like the invoice-decoder _compare/ page also get a different
+// shell — no eyebrow, dev-flavoured layout — and are excluded.
 const EXCLUDE = new Set([
   'tools/index.html',
   'es/tools/index.html',
   'tools/audits/index.html',
   'es/tools/audits/index.html',
+  'tools/invoice-decoder/_compare/index.html',
 ]);
 
 // EN + ES tool-meta prefixes. The eyebrow must START with one of
@@ -54,7 +58,13 @@ function collectToolPages(root, out = [], rel = '') {
 
 const enPages = collectToolPages(path.join(repoRoot, 'tools')).map((p) => `tools/${p}`);
 const esPages = collectToolPages(path.join(repoRoot, 'es', 'tools')).map((p) => `es/tools/${p}`);
-const all     = [...enPages, ...esPages].filter((p) => !EXCLUDE.has(p));
+// Filter out hard-coded EXCLUDE entries AND any path segment starting
+// with '_' (internal diagnostic surfaces like _compare/, _diag/, etc.).
+// Prefix-based skip means new internal pages don't need a one-off
+// EXCLUDE entry — they just need a leading-underscore directory.
+const all     = [...enPages, ...esPages].filter((p) =>
+  !EXCLUDE.has(p) && !p.split('/').some((seg) => seg.startsWith('_'))
+);
 
 const drift = [];
 

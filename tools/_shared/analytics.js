@@ -116,15 +116,22 @@
       'Invoice Decoder Comparison Opened',
       'Invoice Decoder Contract Set',
       'Invoice Decoder Device Paired',
+      // OCR overhaul — V2 + escalation telemetry (commit ae1a83b2).
+      // Six events surface the new pipeline's behaviour to plausible:
+      // hard error taxonomy, V2 success/fail/fallback paths, layout-
+      // model failure mode, operator-driven setting changes.
+      'Invoice Decoder Error',
       'Invoice Decoder Filter Used',
       'Invoice Decoder Ghost Accepted',
       'Invoice Decoder Installed',
+      'Invoice Decoder Layout Model Failed',
       'Invoice Decoder Math Fix Applied',
       'Invoice Decoder Paddle Ensemble',
       'Invoice Decoder PDF Extract',
       'Invoice Decoder Page Dedup',
       'Invoice Decoder Preprocess',
       'Invoice Decoder Read',
+      'Invoice Decoder Reader Setting Changed',
       'Invoice Decoder Recon Note Copied',
       'Invoice Decoder Recovery Set',
       'Invoice Decoder Rotation Fallback',
@@ -134,6 +141,9 @@
       'Invoice Decoder Self Check',
       'Invoice Decoder Share Received',
       'Invoice Decoder Unlocked',
+      'Invoice Decoder V2 Escalation Fail',
+      'Invoice Decoder V2 Escalation Win',
+      'Invoice Decoder V2 Fallback',
       'Invoice Decoder Vendor Learned',
       'Invoice Decoder Verify Speed',
       // Wave 10-13 — gold-standard push: cross-tool spine, owner-grade

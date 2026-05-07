@@ -27,6 +27,8 @@ function findToolPages() {
       const full = path.join(fullRoot, rel);
       for (const entry of fs.readdirSync(full, { withFileTypes: true })) {
         if (!entry.isDirectory()) continue;
+        // Skip internal diagnostic surfaces (_compare/, _diag/, etc.).
+        if (entry.name.startsWith('_')) continue;
         const sub = path.posix.join(rel, entry.name);
         const idx = path.join(fullRoot, sub, 'index.html');
         if (fs.existsSync(idx)) out.push(idx);
