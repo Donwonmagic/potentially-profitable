@@ -380,8 +380,19 @@ const DIST_VENDOR_DIR = path.join(repoRoot, 'dist', 'assets', 'vendor');
 const TESSDATA_DIR    = path.join(DIST_VENDOR_DIR, 'tessdata-4.0.0');
 const INTEGRITY_FILE  = path.join(DIST_VENDOR_DIR, '_integrity.json');
 
+// Audit fix: hash-drift verification. expected-integrity.json is
+// committed to the repo. Each entry is a sha384 the build expects
+// to match; any drift fails the build. The first time this is
+// enabled in CI, run `node scripts/vendor-pin.mjs --bootstrap-expected`
+// once to write the expected file, commit it, and from then on
+// upstream re-uploads (HuggingFace `resolve/main` is mutable —
+// supply-chain vector noted in the build audit) trigger a deploy
+// failure instead of silently swapping model weights.
+const EXPECTED_INTEGRITY_FILE = path.join(repoRoot, 'scripts', 'expected-integrity.json');
+
 const isCheck = process.argv.includes('--check');
 const allowOffline = process.argv.includes('--allow-offline');
+const bootstrapExpected = process.argv.includes('--bootstrap-expected');
 
 // ---------------------------------------------------------------
 // HTTPS GET that follows redirects and returns the response body
@@ -405,9 +416,27 @@ function fetchBuffer(url, redirects = 5) {
         res.resume();
         return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
       }
+      // Audit fix: capture Content-Length up front so we can verify
+      // the body wasn't truncated mid-fetch (a CDN edge fail can
+      // close the connection cleanly with partial content and the
+      // 'end' event still fires; without this guard, vendor-pin
+      // would write a malformed ONNX model and the tool would throw
+      // MODEL_LOAD at every operator).
+      const declaredLength = res.headers['content-length']
+        ? parseInt(res.headers['content-length'], 10)
+        : null;
       const chunks = [];
       res.on('data', (c) => chunks.push(c));
-      res.on('end', () => resolve(Buffer.concat(chunks)));
+      res.on('end', () => {
+        const buf = Buffer.concat(chunks);
+        if (declaredLength !== null && buf.length !== declaredLength) {
+          return reject(new Error(
+            `Content-Length mismatch: ${url} declared ${declaredLength} bytes, ` +
+            `body is ${buf.length} bytes (likely truncated)`
+          ));
+        }
+        resolve(buf);
+      });
       res.on('error', reject);
     });
     req.on('error', reject);
@@ -715,6 +744,58 @@ async function main() {
     } else {
       throw new Error(msg);
     }
+  }
+
+  // Audit fix: hash-drift verification against committed expected
+  // hashes. Catches the supply-chain attack vector where HuggingFace
+  // upstream silently re-uploads model weights at the same
+  // resolve/main URL. If expected-integrity.json doesn't exist yet,
+  // we warn (first-deploy bootstrap mode); --bootstrap-expected
+  // overwrites the file with current hashes for legitimate updates.
+  let expected = null;
+  if (fs.existsSync(EXPECTED_INTEGRITY_FILE)) {
+    try { expected = JSON.parse(fs.readFileSync(EXPECTED_INTEGRITY_FILE, 'utf8')); }
+    catch (_) { expected = null; }
+  }
+  if (expected && expected.files && !bootstrapExpected) {
+    const drifts = [];
+    for (const [url, expHash] of Object.entries(expected.files)) {
+      const actual = integrity.files[url];
+      if (!actual) continue;  // file not in this build; not a drift
+      const actualHash = `sha384-${actual.sha384}`;
+      if (actualHash !== expHash) {
+        drifts.push(`  - ${url}\n      expected: ${expHash.slice(0, 48)}...\n      actual:   ${actualHash.slice(0, 48)}...`);
+      }
+    }
+    if (drifts.length) {
+      throw new Error(
+        `vendor-pin: hash drift on ${drifts.length} file(s) vs expected-integrity.json:\n` +
+        drifts.join('\n') + '\n' +
+        `If this drift is intentional (e.g., legitimate model upgrade), run:\n` +
+        `  node scripts/vendor-pin.mjs --bootstrap-expected\n` +
+        `to update expected-integrity.json, review the diff, and commit.`
+      );
+    }
+    console.log(`vendor-pin: integrity drift check passed (${Object.keys(expected.files).length} expected entries).`);
+  } else if (!bootstrapExpected) {
+    console.warn(
+      `  ! no ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)} found — supply-chain ` +
+      `drift detection is OFF. Run \`node scripts/vendor-pin.mjs --bootstrap-expected\` ` +
+      `once and commit the result to enable.`
+    );
+  }
+  if (bootstrapExpected) {
+    const bootstrap = {
+      version: 1,
+      generatedAt: new Date().toISOString(),
+      note: 'Hashes the build expects to find. Hash drift fails the build (catches supply-chain attacks via mutable URLs like HuggingFace resolve/main). Update via: node scripts/vendor-pin.mjs --bootstrap-expected',
+      files: {}
+    };
+    for (const [url, info] of Object.entries(integrity.files)) {
+      bootstrap.files[url] = `sha384-${info.sha384}`;
+    }
+    fs.writeFileSync(EXPECTED_INTEGRITY_FILE, JSON.stringify(bootstrap, null, 2));
+    console.log(`\nvendor-pin: bootstrapped ${Object.keys(bootstrap.files).length} entries to ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)}`);
   }
 
   fs.writeFileSync(INTEGRITY_FILE, JSON.stringify(integrity, null, 2));
