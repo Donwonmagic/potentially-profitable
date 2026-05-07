@@ -1514,25 +1514,51 @@ header.nav{min-height:64px}
            not "v1" / "v2" / "OCR engine". Default behavior already
            helps automatically (the new reader steps in when the
            standard one struggles); this panel is for owners who
-           want explicit control. -->
+           want explicit control. Bilingual via data-en / data-es
+           on every user-visible string; the inline script swaps
+           textContent based on documentElement.lang on load.
+           Audit fix — kill-switch is now option 2 (not 3) so a
+           panicked owner finds the safe rollback before the beta
+           option. Audit fix — status span has aria-live so screen-
+           reader users hear the choice persist. -->
       <details class="id-honesty-fact" id="idReaderSettings">
-        <summary><strong>Reader settings.</strong> <span class="id-rs-status" id="idReaderSettingsStatus" style="color:var(--stone);font-weight:400;font-size:14px;margin-left:6px"></span></summary>
-        <p>By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default.</p>
+        <summary>
+          <strong data-en="Reader settings." data-es="Ajustes del lector.">Reader settings.</strong>
+          <span class="id-rs-status" id="idReaderSettingsStatus" aria-live="polite" aria-atomic="true" style="color:var(--stone);font-weight:400;font-size:14px;margin-left:6px"></span>
+        </summary>
+        <p data-en="By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default."
+           data-es="Por defecto usamos un lector estándar para cada factura. Cuando el lector estándar no encuentra palabras en una página, un lector más nuevo (aún en pruebas) entra automáticamente para intentar leer mejor. No tienes que hacer nada &mdash; esto está aquí solo si quieres otro comportamiento por defecto.">By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default.</p>
         <fieldset id="idReaderSettingsFs" style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 0">
-          <legend style="font-size:13px;color:var(--ink-soft);padding:0 4px">Which reader should we use first?</legend>
-          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+          <legend data-en="Which reader should we use first?"
+                  data-es="¿Qué lector usamos primero?"
+                  style="font-size:13px;color:var(--ink-soft);padding:0 4px">Which reader should we use first?</legend>
+          <label class="id-rs-row" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin:6px 0">
             <input type="radio" name="idReaderChoice" value="auto" id="idReaderAuto" checked style="margin-top:3px">
-            <span><strong>Standard reader, with help when stuck.</strong> The default. Fast, proven; the newer reader takes over only when the standard one finds nothing.</span>
-          </label></p>
-          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
-            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2" style="margin-top:3px">
-            <span><strong>Try the newer reader first (beta).</strong> Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble.</span>
-          </label></p>
-          <p style="margin:6px 0"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <span><strong data-en="Standard reader, with help when stuck."
+                          data-es="Lector estándar, con ayuda cuando se atora.">Standard reader, with help when stuck.</strong>
+              <span data-en=" The default. Fast, proven; the newer reader takes over only when the standard one finds nothing."
+                    data-es=" Lo predeterminado. Rápido y probado; el nuevo lector entra solo cuando el estándar no encuentra nada."> The default. Fast, proven; the newer reader takes over only when the standard one finds nothing.</span>
+            </span>
+          </label>
+          <label class="id-rs-row" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin:6px 0">
             <input type="radio" name="idReaderChoice" value="v1" id="idReaderV1" style="margin-top:3px">
-            <span><strong>Only the standard reader.</strong> Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader.</span>
-          </label></p>
-          <p style="margin:10px 0 0;font-size:13px;color:var(--stone)">Your choice stays on this device only &mdash; nothing about your invoices is shared with us. You can change it any time.</p>
+            <span><strong data-en="Only the standard reader."
+                          data-es="Solo el lector estándar.">Only the standard reader.</strong>
+              <span data-en=" Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader."
+                    data-es=" Omite el lector más nuevo por completo en este dispositivo. Úsalo si una factura reciente salió mal y quieres descartar al nuevo lector."> Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader.</span>
+            </span>
+          </label>
+          <label class="id-rs-row" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin:6px 0">
+            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2" style="margin-top:3px">
+            <span><strong data-en="Try the newer reader first (beta)."
+                          data-es="Probar el lector más nuevo primero (beta).">Try the newer reader first (beta).</strong>
+              <span data-en=" Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble."
+                    data-es=" Usa el nuevo lector en cada factura de este dispositivo. Puede leer mejor algunas páginas, puede ser más lento la primera vez. El lector estándar entra si el nuevo tiene algún problema."> Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble.</span>
+            </span>
+          </label>
+          <p data-en="Your choice stays on this device only &mdash; nothing about your invoices is shared with us. You can change it any time."
+             data-es="Tu elección se queda solo en este dispositivo &mdash; nada de tus facturas se comparte con nosotros. Puedes cambiarla cuando quieras."
+             style="margin:10px 0 0;font-size:13px;color:var(--stone)">Your choice stays on this device only &mdash; nothing about your invoices is shared with us. You can change it any time.</p>
         </fieldset>
       </details>
 
@@ -1712,9 +1738,28 @@ header.nav{min-height:64px}
   //   'on'           → 'v2'    (V2 first; V1 fallback on error)
   //   'off'          → 'v1'    (suppress V2 entirely)
   // Audience: small restaurant owners. Avoids jargon in user-
-  // visible strings ("standard reader" / "newer reader (beta)").
+  // visible strings. Audit fix — bilingual via data-en/data-es
+  // attributes on every visible string in the panel; this script
+  // swaps textContent on load based on document language. Status
+  // string also localized.
   (function () {
     'use strict';
+    var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
+    var isEs = (locale === 'es');
+
+    // Walk the panel and apply data-es content on Spanish pages.
+    // Skipped on EN so default HTML stays the source of truth.
+    if (isEs) {
+      var panel = document.getElementById('idReaderSettings');
+      if (panel) {
+        var nodes = panel.querySelectorAll('[data-es]');
+        for (var i = 0; i < nodes.length; i++) {
+          var es = nodes[i].getAttribute('data-es');
+          if (es) nodes[i].textContent = es;
+        }
+      }
+    }
+
     var auto = document.getElementById('idReaderAuto');
     var v2   = document.getElementById('idReaderV2');
     var v1   = document.getElementById('idReaderV1');
@@ -1738,9 +1783,13 @@ header.nav{min-height:64px}
     }
     function paintStatus(choice) {
       if (!status) return;
-      if (choice === 'v2')      status.textContent = '— newer reader first';
-      else if (choice === 'v1') status.textContent = '— standard only';
-      else                      status.textContent = '';
+      var msg = '';
+      if (choice === 'v2') {
+        msg = isEs ? '— lector nuevo primero' : '— newer reader first';
+      } else if (choice === 'v1') {
+        msg = isEs ? '— solo el estándar' : '— standard only';
+      }
+      status.textContent = msg;
     }
 
     var current = readChoice();

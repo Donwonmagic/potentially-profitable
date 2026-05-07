@@ -65,7 +65,7 @@
   <h1>V1 ↔ V2 OCR comparison</h1>
   <p class="subtitle">Internal diagnostic. Drop a file or pick a fixture; both engines run on the same canvas.</p>
   <div class="lede">
-    The <code>engineV2</code> flag is currently a stub — V2 throws <code>ENGINE_NOT_LOADED</code> and the shim falls back to V1. So both columns will agree until <code>ocr-engine.js</code> is wired with ORT inference. This page validates the integration mechanics now and becomes the dogfood surface for the real comparison after.
+    V2 now runs real PP-OCRv3 ONNX inference (det + DB postprocess + CTC decode). Default routing is <strong>V1 first, V2 escalates when V1 returns &lt; 2 lines</strong> — so on most invoices both columns will use V1 and agree. To force V2 first set <code>?engine=v2</code>; to force V1 only set <code>?engine=v1</code>. The shim's V1 fallback covers any V2 failure.
   </div>
 
   <div class="controls">
@@ -104,7 +104,7 @@
     </div>
 
     <div class="col" id="v2col">
-      <h2>V2 (ONNX / PP-OCR) <span class="badge v2">Slice 3 stub</span></h2>
+      <h2>V2 (ONNX / PP-OCRv3) <span class="badge v2">Real inference</span></h2>
       <dl class="stats">
         <dt>Time</dt><dd id="v2Time">—</dd>
         <dt>Lines</dt><dd id="v2LineCount">—</dd>
@@ -124,8 +124,13 @@
 <script src="../preprocess.js"></script>
 <script src="../pdf-extract.js"></script>
 <script src="../ocr.js"></script>
-<script src="../device-tier.js" defer></script>
-<script src="../ocr-paddle.js" defer></script>
+<script src="../device-tier.js"></script>
+<!-- Audit fix: drop `defer` on ocr-paddle.js so V1's ensemble has
+     MID_OCR_PADDLE wired before the first comparison. Without
+     this the deferred load races the inline runComparison call,
+     making V1's column silently degrade to plain Tesseract on the
+     cold-cache first run. -->
+<script src="../ocr-paddle.js"></script>
 <script src="../normalize.js"></script>
 <script src="../layout.js"></script>
 <script src="../ocr-engine.js"></script>

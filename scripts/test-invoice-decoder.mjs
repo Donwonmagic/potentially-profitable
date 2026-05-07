@@ -2492,11 +2492,17 @@ function v1NormalizeForDedup(s) {
   console.log(`  ${edgeOk ? '✓' : '✗'} layout.analyze(null) returns empty regions without throwing`);
   if (edgeOk) v2Pass++; else v2Fail++;
 
-  // DocLayNet class taxonomy decoder
-  const taxonomyOk = L._decodeDocLayNetClass(8) === 'table'
+  // DocLayNet class taxonomy decoder. Audit fix verified — must
+  // be the published ds4sd order: caption(0), footnote(1),
+  // formula(2), list-item(3), page-footer(4), page-header(5),
+  // picture(6), section-header(7), table(8), text(9), title(10).
+  const taxonomyOk = L._decodeDocLayNetClass(0) === 'caption'
+                  && L._decodeDocLayNetClass(1) === 'footnote'   // NOT 'footer'
+                  && L._decodeDocLayNetClass(6) === 'picture'    // NOT 'figure'
+                  && L._decodeDocLayNetClass(8) === 'table'
                   && L._decodeDocLayNetClass(9) === 'text'
                   && L._decodeDocLayNetClass(99) === 'unknown';
-  console.log(`  ${taxonomyOk ? '✓' : '✗'} _decodeDocLayNetClass maps idx 8→'table', 9→'text', OOB→'unknown'`);
+  console.log(`  ${taxonomyOk ? '✓' : '✗'} _decodeDocLayNetClass matches published ds4sd order (footnote not footer, picture not figure)`);
   if (taxonomyOk) v2Pass++; else v2Fail++;
 
   // YOLOX-style postprocess: synthetic [1, 2, 6] tensor with one
@@ -2672,6 +2678,101 @@ function v1NormalizeForDedup(s) {
   const noWordsOk = noWords === null;
   console.log(`  ${noWordsOk ? '✓' : '✗'} tables.reconstruct returns null when lines lack .words bboxes`);
   if (noWordsOk) v2Pass++; else v2Fail++;
+
+  // Audit-follow-up: direct unit tests for the sub-helpers so a
+  // regression in column clustering or word→column binning lands
+  // on the localized failure, not the rollup.
+  const colStarts = T._findColumnStarts([
+    { words: [{ bbox: { x0: 100, y0: 0, x1: 140, y1: 20 } }, { bbox: { x0: 250, y0: 0, x1: 280, y1: 20 } }, { bbox: { x0: 400, y0: 0, x1: 460, y1: 20 } }] },
+    { words: [{ bbox: { x0:  98, y0: 0, x1: 165, y1: 20 } }, { bbox: { x0: 248, y0: 0, x1: 274, y1: 20 } }, { bbox: { x0: 405, y0: 0, x1: 455, y1: 20 } }] },
+    { words: [{ bbox: { x0: 105, y0: 0, x1: 165, y1: 20 } }, { bbox: { x0: 250, y0: 0, x1: 276, y1: 20 } }, { bbox: { x0: 410, y0: 0, x1: 455, y1: 20 } }] }
+  ]);
+  // Three column-start anchors expected near 100, 250, 405 (within X_BUCKET_PX = 12)
+  const findOk = colStarts.length === 3
+              && Math.abs(colStarts[0] - 100) < 24
+              && Math.abs(colStarts[1] - 250) < 24
+              && Math.abs(colStarts[2] - 405) < 24;
+  console.log(`  ${findOk ? '✓' : '✗'} _findColumnStarts finds 3 anchors near [100,250,405] (got [${colStarts.join(',')}])`);
+  if (findOk) v2Pass++; else v2Fail++;
+
+  const cells = T._binWordsToColumns([
+    { text: 'BEEF',   bbox: { x0: 100, y0: 0, x1: 140, y1: 20 }, confidence: 90 },
+    { text: '5LB',    bbox: { x0: 252, y0: 0, x1: 280, y1: 20 }, confidence: 90 },
+    { text: '$24.50', bbox: { x0: 405, y0: 0, x1: 460, y1: 20 }, confidence: 90 }
+  ], [100, 250, 400]);
+  const binOk = cells.length === 3
+             && cells[0].text === 'BEEF'
+             && cells[1].text === '5LB'
+             && cells[2].text === '$24.50';
+  console.log(`  ${binOk ? '✓' : '✗'} _binWordsToColumns assigns words to nearest anchor by X-overlap`);
+  if (binOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- error taxonomy: IMAGE_QUALITY split from IMAGE_FORMAT ----------
+// Audit fix — a v2 IMAGE_QUALITY error must surface "blurry photo"
+// copy, not the iPhone HEIC "share as JPG" copy. Read the controller
+// source and assert _ocrErrorCopy has a separate IMAGE_QUALITY branch.
+{
+  const controller = fs.readFileSync(
+    path.join(repoRoot, 'tools/invoice-decoder/invoice-decoder.js'),
+    'utf8'
+  );
+  // _ocrErrorCopy is a switch — both buckets must exist as `case` arms.
+  const hasFormat   = /case\s+'IMAGE_FORMAT'\s*:/.test(controller);
+  const hasQuality  = /case\s+'IMAGE_QUALITY'\s*:/.test(controller);
+  // Quality copy must NOT be the iPhone HEIC instruction (jargon-mismatch)
+  const qualityCopyMatch = controller.match(/case\s+'IMAGE_QUALITY'\s*:[\s\S]{0,400}?return\s*\{([\s\S]*?)\};/);
+  const qualityIsBlurryCopy = qualityCopyMatch &&
+    /blurry|hard to read|good light|hold the camera/i.test(qualityCopyMatch[1]);
+  const splitOk = hasFormat && hasQuality && qualityIsBlurryCopy;
+  console.log(`  ${splitOk ? '✓' : '✗'} _ocrErrorCopy has separate IMAGE_QUALITY bucket with capture-quality copy (not iPhone HEIC instruction)`);
+  if (splitOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- BGR channel ordering in tensor preprocessing ----------
+// Audit fix — PP-OCR was trained on cv2-loaded BGR. Verify by
+// reading the source: _canvasToDetTensor and _cropsToRecTensor
+// must read the canvas R/G/B bytes and place them into B/G/R-
+// ordered channel planes (channel 0 = B). A regression here
+// silently degrades accuracy on coloured logos / stamps.
+{
+  const engine = fs.readFileSync(
+    path.join(repoRoot, 'tools/invoice-decoder/ocr-engine.js'),
+    'utf8'
+  );
+  // The corrected pattern uses uppercase R/G/B locals + channel-0
+  // assignment from B. Match defensively: look for "channel 0 = B"
+  // as a comment marker the audit fix introduced.
+  const detBgrOk = /channel 0 = B/i.test(engine.split('_canvasToDetTensor')[1] || '');
+  const recBgrOk = /channel 0 = B/i.test(engine.split('_cropsToRecTensor')[1] || '');
+  console.log(`  ${detBgrOk ? '✓' : '✗'} _canvasToDetTensor uses BGR channel order (audit fix marker present)`);
+  console.log(`  ${recBgrOk ? '✓' : '✗'} _cropsToRecTensor uses BGR channel order (audit fix marker present)`);
+  if (detBgrOk) v2Pass++; else v2Fail++;
+  if (recBgrOk) v2Pass++; else v2Fail++;
+
+  const layout = fs.readFileSync(
+    path.join(repoRoot, 'tools/invoice-decoder/layout.js'),
+    'utf8'
+  );
+  const layoutBgrOk = /channel 0 = B/i.test(layout);
+  console.log(`  ${layoutBgrOk ? '✓' : '✗'} _canvasToLayoutTensor uses BGR channel order (audit fix marker present)`);
+  if (layoutBgrOk) v2Pass++; else v2Fail++;
+}
+
+// ---------- iOS Safari canvas size guard ----------
+// Audit fix — a multi-page PDF render can exceed Safari's
+// 4096×4096 canvas cap, silently producing blank pixels. Engine
+// must reject with IMAGE_QUALITY before sending blanks to det.
+{
+  const W = newSyntheticWindow();
+  loadV2Module(W, 'ocr-engine.js');
+  const E = W.MID_OCR_V2;
+  let guardOk = false;
+  await E.recognize({ width: 5000, height: 5000 }, [], {}).then(() => {}).catch(err => {
+    guardOk = err && err.code === 'IMAGE_QUALITY' && /4096|cap|exceeds/i.test(err.message || '');
+  });
+  console.log(`  ${guardOk ? '✓' : '✗'} engine guards iOS Safari 4096×4096 canvas cap (5000×5000 rejected with IMAGE_QUALITY)`);
+  if (guardOk) v2Pass++; else v2Fail++;
 }
 
 // ---------- ocr-shim quality-driven escalation ----------

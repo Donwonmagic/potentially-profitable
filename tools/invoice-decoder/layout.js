@@ -41,13 +41,18 @@
 (function (root) {
   'use strict';
 
-  // DocLayNet class taxonomy. The order is the standard published
-  // by ds4sd; if a different export uses a different ordering,
-  // _decodeDocLayNetClass returns 'unknown' and the region is
-  // treated as a generic 'text' region.
+  // DocLayNet class taxonomy. Audit fix — corrected to match the
+  // published ds4sd order from their model card / annotations.json:
+  //   1=caption, 2=footnote, 3=formula, 4=list-item, 5=page-footer,
+  //   6=page-header, 7=picture, 8=section-header, 9=table,
+  //   10=text, 11=title
+  // The previous version had 'figure' instead of 'picture' (idx 7)
+  // and 'footer' instead of 'footnote' (idx 2), which would have
+  // mis-typed regions for any caller relying on `kind === 'picture'`
+  // or `kind === 'footnote'`.
   var DOCLAYNET_CLASSES = [
-    'caption', 'footer', 'formula', 'list-item', 'page-footer',
-    'page-header', 'figure', 'section-header', 'table', 'text',
+    'caption', 'footnote', 'formula', 'list-item', 'page-footer',
+    'page-header', 'picture', 'section-header', 'table', 'text',
     'title'
   ];
 
@@ -120,10 +125,18 @@
     var d = img.data;
     var n = sz * sz;
     var arr = new Float32Array(3 * n);
+    // BGR channel order to match DocLayNet training (Detectron2 /
+    // YOLOX-style models from cv2-loaded images). Audit fix — see
+    // ocr-engine.js _canvasToDetTensor for the same rationale.
+    // Canvas getImageData returns RGBA byte order; we read
+    // explicitly and place into BGR-ordered planes.
     for (var i = 0; i < n; i++) {
-      arr[i]         = (d[i*4]/255   - LAYOUT_MEAN[0]) / LAYOUT_STD[0];
-      arr[i + n]     = (d[i*4+1]/255 - LAYOUT_MEAN[1]) / LAYOUT_STD[1];
-      arr[i + 2*n]   = (d[i*4+2]/255 - LAYOUT_MEAN[2]) / LAYOUT_STD[2];
+      var R = d[i*4]     / 255;
+      var G = d[i*4 + 1] / 255;
+      var B = d[i*4 + 2] / 255;
+      arr[i]       = (B - LAYOUT_MEAN[0]) / LAYOUT_STD[0];   // channel 0 = B
+      arr[i + n]   = (G - LAYOUT_MEAN[1]) / LAYOUT_STD[1];   // channel 1 = G
+      arr[i + 2*n] = (R - LAYOUT_MEAN[2]) / LAYOUT_STD[2];   // channel 2 = R
     }
     return {
       tensor: new ort.Tensor('float32', arr, [1, 3, sz, sz]),

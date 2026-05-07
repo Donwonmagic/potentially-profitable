@@ -47,8 +47,14 @@
   var MIN_LINES_FOR_TABLE = 3;
   var MIN_COLUMNS         = 2;
   var X_BUCKET_PX         = 12;        // resolution of the column histogram
-  var COLUMN_HISTOGRAM_MIN_VOTES = 3;  // a column must appear in this many lines
+  // Vote threshold scales with input size — fixed 3-vote threshold
+  // missed legitimate columns on short tables (3-5 rows) where word
+  // X-positions drift across adjacent buckets and no single bucket
+  // accumulates 3 hits. Audit-driven fix.
   var WORD_TO_COLUMN_TOLERANCE_PX = 30;
+  function _voteThreshold(lineCount) {
+    return Math.max(2, Math.ceil(lineCount / 3));
+  }
 
   // Find consensus column-start X positions by histogramming each
   // word's left edge across all lines. Buckets with at least
@@ -64,6 +70,9 @@
       }
     }
     if (maxX <= 0) return [];
+    // Defensive cap — a corrupt OCR output with a stray x1 in the
+    // millions shouldn't allocate gigabytes of histogram.
+    if (maxX > 50000) return [];
     var bucketCount = Math.ceil(maxX / X_BUCKET_PX) + 1;
     var hist = new Int32Array(bucketCount);
     for (var li = 0; li < lines.length; li++) {
@@ -74,15 +83,21 @@
         if (bucket >= 0 && bucket < bucketCount) hist[bucket]++;
       }
     }
+    // Adaptive vote threshold (audit-driven fix). Short tables with
+    // word X-positions split across adjacent buckets used to under-
+    // shoot a fixed 3-vote threshold; scaling lets a 3-row table
+    // pass with 2 votes per bucket while a 30-row table still
+    // requires 10 votes for a true column.
+    var threshold = _voteThreshold(lines.length);
     // Walk the histogram, collapsing adjacent above-threshold
     // buckets into single column-start anchors at their centre.
     var anchors = [];
     var i2 = 0;
     while (i2 < bucketCount) {
-      if (hist[i2] >= COLUMN_HISTOGRAM_MIN_VOTES) {
+      if (hist[i2] >= threshold) {
         var start = i2;
         var sum = 0, count = 0;
-        while (i2 < bucketCount && hist[i2] >= COLUMN_HISTOGRAM_MIN_VOTES) {
+        while (i2 < bucketCount && hist[i2] >= threshold) {
           sum += i2 * hist[i2];
           count += hist[i2];
           i2++;

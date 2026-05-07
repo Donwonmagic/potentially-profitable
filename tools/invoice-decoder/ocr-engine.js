@@ -118,9 +118,13 @@
     var cfg = root.MID_VENDORS_CFG;
     var url = (cfg && cfg.SELF && cfg.SELF[urlKey]) || null;
     if (!url) return Promise.reject(OcrError('MODEL_LOAD', 'no URL for ' + urlKey));
+    // cache: 'force-cache' — the dict file is content-addressed via
+    // the vendor-config version and never changes for a given
+    // PPOCR_V*_VERSION. Audit fix to drop the 200-800 ms cellular
+    // revalidation cost on every cold start.
     _dictCache[urlKey] = fetch(url, {  // h8-exempt: same-origin PP-OCR dict file load (vendor bootstrap)
       credentials: 'omit',
-      cache:       'no-cache'
+      cache:       'force-cache'
     }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
@@ -171,8 +175,12 @@
   function _resizeForDet(canvas) {
     var w = canvas.width, h = canvas.height;
     var scale = DET_LONG_EDGE / Math.max(w, h);
-    var resizedW = Math.round(w * scale / 32) * 32 || 32;
-    var resizedH = Math.round(h * scale / 32) * 32 || 32;
+    // Math.ceil (audit fix) so a 1000×750 canvas with scale 0.736
+    // resizes to a stride-32-aligned 736×576 instead of dropping 8
+    // px of content via Math.round-down. Floor of 32 prevents zero
+    // dims on tiny inputs.
+    var resizedW = Math.max(32, Math.ceil(w * scale / 32) * 32);
+    var resizedH = Math.max(32, Math.ceil(h * scale / 32) * 32);
     var out = root.document.createElement('canvas');
     out.width = resizedW;
     out.height = resizedH;
@@ -190,14 +198,22 @@
     var d = img.data;
     var n = c.width * c.height;
     var arr = new Float32Array(3 * n);
-    // NCHW layout. Each channel is a contiguous block of size n.
+    // NCHW layout in **BGR channel order**. PP-OCR was trained on
+    // cv2-loaded BGR images; the mean/std vectors below are
+    // applied to BGR-ordered channels (channel 0 = B, 1 = G,
+    // 2 = R). Audit catch from senior-CV review — ImageNet
+    // [0.485, 0.456, 0.406] looks RGB but PaddleOCR's inference
+    // pipeline uses it against cv2-native BGR pixels with no
+    // cvtColor step. Canvas getImageData always returns RGBA
+    // (byte 0 = R, byte 1 = G, byte 2 = B), so we explicitly
+    // swap byte-0 and byte-2 here.
     for (var i = 0; i < n; i++) {
-      var r = d[i * 4]     / 255;
-      var g = d[i * 4 + 1] / 255;
-      var b = d[i * 4 + 2] / 255;
-      arr[i]         = (r - DET_MEAN[0]) / DET_STD[0];
-      arr[i + n]     = (g - DET_MEAN[1]) / DET_STD[1];
-      arr[i + 2 * n] = (b - DET_MEAN[2]) / DET_STD[2];
+      var R = d[i * 4]     / 255;
+      var G = d[i * 4 + 1] / 255;
+      var B = d[i * 4 + 2] / 255;
+      arr[i]         = (B - DET_MEAN[0]) / DET_STD[0];   // channel 0 = B
+      arr[i + n]     = (G - DET_MEAN[1]) / DET_STD[1];   // channel 1 = G
+      arr[i + 2 * n] = (R - DET_MEAN[2]) / DET_STD[2];   // channel 2 = R
     }
     return new ort.Tensor('float32', arr, [1, 3, c.height, c.width]);
   }
@@ -272,6 +288,18 @@
   // Unclip each bbox: expand by `unclipPx` on each side. Without
   // this, the recognition crops cut off ascenders / descenders,
   // costing accuracy on most fonts.
+  //
+  // FIXME (CV-audit follow-up): replace with PP-OCR's Vatti-style
+  // proportional unclip — `dist = (boxArea * 1.6) / boxPerimeter`,
+  // expand by `dist` in det-space before the scale-back to source.
+  // The current fixed-px expansion is wrong for two reasons:
+  //   (1) det-space expansion of N px scales differently per
+  //       canvas (a 6 px expansion = ~25 src-px on a 4000-px
+  //       photo, ~2 src-px on an 800-px capture)
+  //   (2) small bboxes need proportionally more unclip than large
+  //       ones to capture full glyph extents
+  // Closed-form, ~6 lines. Lands when the team gets browser
+  // verification time on real PP-OCR output.
   function _unclip(bboxes, w, h, unclipPx) {
     if (unclipPx == null) unclipPx = 6;
     var out = new Array(bboxes.length);
@@ -301,6 +329,16 @@
   var REC_MEAN = [0.5, 0.5, 0.5];
   var REC_STD  = [0.5, 0.5, 0.5];
 
+  // FIXME (CV-audit follow-up): for invoice rows running >10:1
+  // aspect at 48 px height (long descriptions like "BONELESS
+  // CHICKEN BREAST 5LB CASE QUANTITY 12"), targetW hits the
+  // REC_MAX_WIDTH cap and we resize-down the source horizontally.
+  // PP-OCR reference splits at >10:1 into N=ceil(targetW/320)
+  // overlapping crops (~16 px overlap), recognizes each, then
+  // concatenates the decoded strings dropping the overlap. The
+  // single highest-leverage rec-accuracy fix on long line items.
+  // Lands with the Vatti unclip in the same browser-verification
+  // session.
   function _cropToCanvas(srcCanvas, bbox) {
     var bw = bbox.x1 - bbox.x0;
     var bh = bbox.y1 - bbox.y0;
@@ -337,19 +375,27 @@
       var img = ctx.getImageData(0, 0, crops[c].width, crops[c].height);
       var d = img.data;
       widths[c] = crops[c].width;
-      // Walk the raw RGBA into the right offsets. Pad pixels
-      // beyond the crop's actual width are left as zero (already
-      // from new Float32Array).
+      // BGR channel order to match PP-OCR training (audit fix —
+      // see _canvasToDetTensor for the full rationale). REC_MEAN
+      // and REC_STD are channel-symmetric [0.5,0.5,0.5] so this
+      // change is conservative for rec specifically, but kept
+      // consistent across all three tensor builders so a future
+      // dict / model swap to a non-symmetric normalization
+      // doesn't silently regress.
+      // Padding (cells past crops[c].width) stays 0 in normalized
+      // space — matches RapidOCR / PaddleOCR reference's np.zeros
+      // padding (mid-grey in raw pixel terms; the model is
+      // trained to ignore it).
       for (var y = 0; y < REC_HEIGHT; y++) {
         for (var x = 0; x < crops[c].width; x++) {
           var pi = (y * crops[c].width + x) * 4;
-          var r = d[pi]     / 255;
-          var g = d[pi + 1] / 255;
-          var b = d[pi + 2] / 255;
+          var R = d[pi]     / 255;
+          var G = d[pi + 1] / 255;
+          var B = d[pi + 2] / 255;
           var off = c * perCrop + y * maxW + x;
-          arr[off]               = (r - REC_MEAN[0]) / REC_STD[0];
-          arr[off + perChan]     = (g - REC_MEAN[1]) / REC_STD[1];
-          arr[off + perChan * 2] = (b - REC_MEAN[2]) / REC_STD[2];
+          arr[off]               = (B - REC_MEAN[0]) / REC_STD[0];   // channel 0 = B
+          arr[off + perChan]     = (G - REC_MEAN[1]) / REC_STD[1];   // channel 1 = G
+          arr[off + perChan * 2] = (R - REC_MEAN[2]) / REC_STD[2];   // channel 2 = R
         }
       }
     }
@@ -480,8 +526,21 @@
                       Object.keys(out)[0];
         var t = out[outName];
         var dims = t.dims;
-        var data = t.data;
+        // COPY the data before disposing — OrtTensor.data is a
+        // typed-array view into the WASM heap and gets invalidated
+        // on dispose. Audit fix: without the copy + dispose chain
+        // a 200-line invoice processed in 25 batches leaks ~25
+        // [8, 80, 6625] float32 tensors (~17 MB each) until the
+        // next GC, which is enough to OOM iPhone Safari.
+        var data = new Float32Array(t.data);
         var decoded = _ctcDecode(data, dims, dict);
+        try {
+          if (t.dispose) t.dispose();
+          Object.keys(out).forEach(function (k) {
+            if (out[k] !== t && out[k].dispose) out[k].dispose();
+          });
+        } catch (_) {}
+        try { if (packed.tensor.dispose) packed.tensor.dispose(); } catch (_) {}
         for (var i = 0; i < decoded.length; i++) results[start + i] = decoded[i];
         done += batch.length;
         if (onProgress) try { onProgress(done / crops.length); } catch (_) {}
@@ -498,10 +557,24 @@
   // each gets its own OCR pass with optional per-region biasing.
   // (Per-region biasing is a follow-up; today every region uses
   // the same det+rec models.)
+  // iOS Safari caps <canvas> total area at ~16.7 M px (effectively
+  // 4096 × 4096 on iPhone). Multi-page PDF renders that exceed
+  // this limit silently produce a blank canvas — feeding all-zero
+  // pixels to the det model returns no detections and we'd surface
+  // a misleading IMAGE_QUALITY error. Audit fix: clamp explicitly
+  // here and surface a specific code that the controller can copy
+  // for ("the page is too large; try splitting").
+  var IOS_CANVAS_MAX_AREA = 16777216;   // 4096 * 4096
+
   function recognize(canvas, regions, opts) {
     opts = opts || {};
     if (!canvas || !canvas.width || !canvas.height) {
       return Promise.reject(OcrError('IMAGE_QUALITY', 'no canvas given'));
+    }
+    if (canvas.width * canvas.height > IOS_CANVAS_MAX_AREA) {
+      return Promise.reject(OcrError('IMAGE_QUALITY',
+        'canvas exceeds iOS Safari area cap (' + canvas.width + '×' +
+        canvas.height + ' > 4096×4096) — page too large for in-browser OCR'));
     }
     var tier = _resolveTier();
     var keys = _modelKeysForTier(tier);
@@ -531,18 +604,29 @@
           // [1, H, W] without the channel dim.
           var probH = probDims[probDims.length - 2];
           var probW = probDims[probDims.length - 1];
-          var probData = probMapTensor.data;
+          // COPY before disposing — see _runRec for the same
+          // pattern and rationale (OrtTensor.data is a WASM-heap
+          // view that gets invalidated on dispose).
+          var probData = new Float32Array(probMapTensor.data);
+          try {
+            if (detTensor.dispose) detTensor.dispose();
+            Object.keys(detOut).forEach(function (k) {
+              if (detOut[k].dispose) detOut[k].dispose();
+            });
+          } catch (_) {}
           // DB postprocess in detection-input coordinates
           var bboxesIn = _dbPostprocess(probData, probW, probH, opts.dbOpts);
           // Unclip slightly for ascender/descender capture
           var unclipped = _unclip(bboxesIn, probW, probH, opts.unclipPx);
-          // Map back to original canvas coordinates
+          // Map back to original canvas coordinates. Use floor on
+          // x0/y0 + ceil on x1/y1 (audit fix) so a 1-px-wide bbox
+          // never collapses to zero after rounding.
           var bboxesSrc = unclipped.map(function (b) {
             return {
-              x0: Math.round(b.x0 * resized.scaleX),
-              y0: Math.round(b.y0 * resized.scaleY),
-              x1: Math.round(b.x1 * resized.scaleX),
-              y1: Math.round(b.y1 * resized.scaleY),
+              x0: Math.floor(b.x0 * resized.scaleX),
+              y0: Math.floor(b.y0 * resized.scaleY),
+              x1: Math.ceil(b.x1 * resized.scaleX),
+              y1: Math.ceil(b.y1 * resized.scaleY),
               meanProb: b.meanProb
             };
           });

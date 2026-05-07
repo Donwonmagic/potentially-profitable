@@ -970,10 +970,16 @@
     if (err && typeof err.code === 'string' && /^[A-Z_]+$/.test(err.code)) {
       var nonRetryable = (err.code === 'IMAGE_QUALITY' || err.code === 'OUT_OF_MEMORY' || err.code === 'IMAGE_FORMAT');
       // Map the engine codes onto the controller's existing copy buckets:
+      // Audit fix — split IMAGE_QUALITY (blurry / sideways /
+      // confidence-floor) from IMAGE_FORMAT (HEIC / TIFF / decode
+      // failure). The previous mapping showed the iPhone HEIC
+      // "share as JPG" instructions when the actual cause was a
+      // blurry photo, which left operators puzzled.
       var copyCode =
         (err.code === 'WASM_COMPILE' || err.code === 'MODEL_LOAD' || err.code === 'ENGINE_LOAD') ? 'ENGINE_LOAD' :
         (err.code === 'OUT_OF_MEMORY')                                                            ? 'OOM'         :
-        (err.code === 'IMAGE_QUALITY' || err.code === 'IMAGE_FORMAT')                             ? 'IMAGE_FORMAT':
+        (err.code === 'IMAGE_QUALITY')                                                            ? 'IMAGE_QUALITY':
+        (err.code === 'IMAGE_FORMAT')                                                             ? 'IMAGE_FORMAT':
         (err.code === 'TIMEOUT')                                                                  ? 'TIMEOUT'     :
         (err.code === 'NETWORK')                                                                  ? 'NETWORK'     :
                                                                                                     'UNKNOWN';
@@ -1025,6 +1031,17 @@
           title: tt('We couldn\'t open this photo', 'No pudimos abrir esta foto'),
           body:  tt('On iPhone: open Photos, tap Share, then Options, and choose "Most Compatible". That saves it as a JPG we can read.',
                     'En iPhone: abre Fotos, toca Compartir, luego Opciones, y elige "Más compatible". Eso la guarda como JPG que sí podemos leer.')
+        };
+      case 'IMAGE_QUALITY':
+        // Audit fix — distinct from IMAGE_FORMAT. The new reader
+        // surfaces this when the photo is blurry, sideways, or
+        // the page is too large for in-browser reading; suggest
+        // concrete capture-quality fixes, not an iPhone format
+        // tip.
+        return {
+          title: tt('This photo\'s a little hard to read', 'Esta foto está difícil de leer'),
+          body:  tt('Try: take a fresh photo of the whole page in good light, hold the camera flat over the page, or upload the PDF your supplier emailed if they sent one.',
+                    'Intenta: toma otra foto de la página completa con buena luz, sostén la cámara plana sobre la página, o sube el PDF que te mandó tu proveedor si te lo enviaron.')
         };
       case 'TIMEOUT':
         return {
