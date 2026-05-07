@@ -127,6 +127,34 @@ const VENDORS = [
     optional: true
   },
   {
+    // Slice 2 — onnxruntime-web powers the next-generation OCR pipeline
+    // built on ONNX models (PP-OCRv4 + DocLayNet + TableFormer) borrowed
+    // from Docling's architecture. Replaces Tesseract.js as the primary
+    // recognition engine in the v2 path. Optional so a build can succeed
+    // offline; the runtime falls back to the Tesseract pipeline when
+    // ORT is missing or the engineV2 flag is off.
+    //
+    // We pin both the ESM entry point and the WASM kernel binaries.
+    // ORT lazy-imports the WASM blob whose name matches the build
+    // mode it picks (SIMD-threaded preferred, plain WASM fallback for
+    // iOS Safari without cross-origin isolation). MJS files are loaded
+    // via dynamic import; WASM files are streamed via instantiate-
+    // Streaming from same-origin URLs the runtime resolves through
+    // MID_VENDORS_CFG.
+    name: 'onnxruntime-web',
+    version: '1.20.1',
+    files: [
+      'dist/ort.min.mjs',
+      'dist/ort.min.js',
+      'dist/ort-wasm-simd-threaded.mjs',
+      'dist/ort-wasm-simd-threaded.wasm',
+      'dist/ort-wasm-simd-threaded.jsep.mjs',
+      'dist/ort-wasm-simd-threaded.jsep.wasm'
+    ],
+    publicPrefix: '/assets/vendor/onnxruntime-web@1.20.1',
+    optional: true
+  },
+  {
     // Wave 1.6 fix — libheif-js for HEIC photo decode on browsers
     // that can't decode HEIC natively (Chrome/Firefox/Edge desktop).
     // iPhone photos default to HEIC; without this fallback every
@@ -241,6 +269,75 @@ const PADDLEOCR_MODEL_FILES = [
   ]}
 ];
 const PADDLEOCR_PUBLIC_PREFIX = '/assets/vendor/paddleocr@2.2.5';
+
+// Slice 2 — ONNX model weights for the next-generation pipeline.
+// Apache-2.0 licensed throughout; redistribution permitted with the
+// NOTICE files captured below. Total payload at full tier:
+//   lean   (every device):    ~10 MB compressed (PP-OCRv3 det+rec+dict+cls)
+//   capable (silent upgrade): ~17 MB compressed (PP-OCRv4 det+rec+dict)
+//   heavy  (lazy on demand):  ~65 MB compressed (DocLayNet heron + TableFormer fast)
+// All entries follow the same warn-and-continue posture as
+// PADDLEOCR_MODEL_FILES — a build that can't reach the source
+// succeeds with a console warning, and the runtime gracefully
+// degrades to the legacy Tesseract pipeline.
+//
+// Source URLs are best-known mirrors as of 2026-05; if a mirror
+// 404s during a build, add a fallback URL to the entry's `urls`
+// array. ONNX exports of PP-OCR live on swhl/RapidOCR (the
+// upstream RapidOCR project's official HF mirror); Docling
+// layout + table models live on ds4sd/docling-models (IBM
+// Research's official repo behind the Docling Python package).
+const ONNX_MODEL_FILES = [
+  // ---------- PP-OCRv3 mobile (lean tier — every device) ----------
+  { local: 'ppocr@v3-en/det.onnx', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv3/ch_PP-OCRv3_det_infer.onnx',
+    'https://github.com/RapidAI/RapidOCR/releases/download/v1.3.0/ch_PP-OCRv3_det_infer.onnx'
+  ]},
+  { local: 'ppocr@v3-en/rec.onnx', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv3/en_PP-OCRv3_rec_infer.onnx',
+    'https://github.com/RapidAI/RapidOCR/releases/download/v1.3.0/en_PP-OCRv3_rec_infer.onnx'
+  ]},
+  { local: 'ppocr@v3-en/dict.txt', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv3/en_dict.txt',
+    'https://raw.githubusercontent.com/RapidAI/RapidOCR/main/python/rapidocr_onnxruntime/models/dict/en_dict.txt'
+  ]},
+  { local: 'ppocr@v3-en/cls.onnx', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv3/ch_ppocr_mobile_v2.0_cls_infer.onnx'
+  ]},
+
+  // ---------- PP-OCRv4 mobile (capable tier — silent background upgrade) ----------
+  { local: 'ppocr@v4-en/det.onnx', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv4/ch_PP-OCRv4_det_infer.onnx',
+    'https://github.com/RapidAI/RapidOCR/releases/download/v1.4.0/ch_PP-OCRv4_det_infer.onnx'
+  ]},
+  { local: 'ppocr@v4-en/rec.onnx', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv4/en_PP-OCRv4_rec_infer.onnx',
+    'https://github.com/RapidAI/RapidOCR/releases/download/v1.4.0/en_PP-OCRv4_rec_infer.onnx'
+  ]},
+  { local: 'ppocr@v4-en/dict.txt', urls: [
+    'https://huggingface.co/swhl/RapidOCR/resolve/main/PP-OCRv4/en_dict.txt',
+    'https://raw.githubusercontent.com/RapidAI/RapidOCR/main/python/rapidocr_onnxruntime/models/dict/en_dict.txt'
+  ]},
+
+  // ---------- Docling layout + table models (heavy tier — lazy) ----------
+  { local: 'ds4sd@v2/docling-layout-heron.onnx', urls: [
+    'https://huggingface.co/ds4sd/docling-models/resolve/main/model_artifacts/layout/onnx/heron.onnx',
+    'https://huggingface.co/ds4sd/docling-layout-heron/resolve/main/model.onnx'
+  ]},
+  { local: 'ds4sd@v2/tableformer-fast.onnx', urls: [
+    'https://huggingface.co/ds4sd/docling-models/resolve/main/model_artifacts/tableformer/onnx/fast.onnx',
+    'https://huggingface.co/ds4sd/docling-tableformer-fast/resolve/main/model.onnx'
+  ]},
+
+  // ---------- Apache-2.0 NOTICE / LICENSE files (redistribution requirement) ----------
+  { local: 'ppocr@v4-en/LICENSE', urls: [
+    'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'
+  ]},
+  { local: 'ds4sd@v2/LICENSE', urls: [
+    'https://raw.githubusercontent.com/DS4SD/docling-models/main/LICENSE'
+  ]}
+];
+const ONNX_MODELS_PUBLIC_PREFIX = '/assets/vendor';
 
 // Language packs are not tarballed via npm. We try the project's
 // own CDN first, then fall back to the official tesseract-ocr GitHub
@@ -516,6 +613,38 @@ async function main() {
       package:    'paddleocr-models',
       version:    '2.2.5',
       sourcePath: m.urls[0]
+    };
+    console.log(`  ✓ ${publicUrl}  ${data.length}b`);
+  }
+
+  // Slice 2 — ONNX models (PP-OCRv3, PP-OCRv4, DocLayNet, TableFormer).
+  // Same warn-and-continue posture as PaddleOCR weights above. Failed
+  // entries trip a single console warning and the runtime falls back
+  // to the legacy Tesseract pipeline at first invoice.
+  for (const m of ONNX_MODEL_FILES) {
+    let data = null;
+    let lastErr = null;
+    let usedUrl = null;
+    for (const u of m.urls) {
+      try { data = await fetchBuffer(u); usedUrl = u; break; }
+      catch (e) { lastErr = e; }
+    }
+    if (!data) {
+      console.warn(`  ! onnx-model ${m.local}: ${(lastErr && lastErr.message) || 'all sources failed'} (skipping)`);
+      warnings++;
+      continue;
+    }
+    const outPath = path.join(DIST_VENDOR_DIR, m.local);
+    ensureDir(path.dirname(outPath));
+    fs.writeFileSync(outPath, data);
+    writes++;
+    const publicUrl = `${ONNX_MODELS_PUBLIC_PREFIX}/${m.local}`;
+    integrity.files[publicUrl] = {
+      sha384:     sha384(data),
+      bytes:      data.length,
+      package:    'onnx-models',
+      version:    'v3+v4+ds4sd-v2',
+      sourcePath: usedUrl
     };
     console.log(`  ✓ ${publicUrl}  ${data.length}b`);
   }

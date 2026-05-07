@@ -38,6 +38,24 @@
   // weights ship from our own origin; no external fetch at runtime.
   var PADDLEOCR_VERSION = '2.2.5';
 
+  // Slice 2 — onnxruntime-web powers the v2 OCR pipeline. ESM entry
+  // point + WASM kernels (SIMD-threaded preferred; the runtime
+  // falls back to single-thread WASM on iOS Safari without
+  // cross-origin isolation). All paths are same-origin, no
+  // outbound fetch required at runtime.
+  var ORT_VERSION = '1.20.1';
+
+  // Slice 2 — ONNX model weights for the v2 pipeline.
+  // PP-OCRv3 mobile is the lean tier (every device, ~10 MB);
+  // PP-OCRv4 mobile is the capable tier (silent background upgrade,
+  // ~17 MB more); DocLayNet heron + TableFormer fast are the
+  // heavy tier (lazy on demand for difficult invoices).
+  // Versions track the directory layout vendor-pin writes; bumping
+  // requires re-running vendor-pin.mjs.
+  var PPOCR_V3_VERSION = 'v3-en';
+  var PPOCR_V4_VERSION = 'v4-en';
+  var DOCLING_MODELS_VERSION = 'v2';
+
   // Self-hosted URLs the runtime prefers.
   var SELF = {
     tesseract:     '/assets/vendor/tesseract.js@'      + TESSERACT_VERSION + '/tesseract.min.js',
@@ -49,7 +67,33 @@
     tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/',
     argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js',
     pdflib:        '/assets/vendor/pdf-lib@'           + PDFLIB_VERSION   + '/pdf-lib.min.js',
-    paddleocr:     '/assets/vendor/paddleocr@'         + PADDLEOCR_VERSION + '/index.mjs'
+    paddleocr:     '/assets/vendor/paddleocr@'         + PADDLEOCR_VERSION + '/index.mjs',
+    // Slice 2 — onnxruntime-web (ESM entry + WASM kernels).
+    // ortMjs is loaded via dynamic import; the WASM blobs are
+    // streamed from these paths by ORT itself when it picks an
+    // execution provider.
+    ortMjs:                 '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort.min.mjs',
+    ortJs:                  '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort.min.js',
+    ortWasmSimdThreadedMjs: '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort-wasm-simd-threaded.mjs',
+    ortWasmSimdThreaded:    '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort-wasm-simd-threaded.wasm',
+    ortJsepMjs:             '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort-wasm-simd-threaded.jsep.mjs',
+    ortJsepWasm:            '/assets/vendor/onnxruntime-web@' + ORT_VERSION + '/ort-wasm-simd-threaded.jsep.wasm',
+    // Slice 2 — PP-OCR ONNX weights. v3 ships on every device;
+    // v4 is fetched silently in the background after the first
+    // successful read on capable devices and supersedes v3 from
+    // the second invoice onward.
+    ppocrV3Det:  '/assets/vendor/ppocr@'  + PPOCR_V3_VERSION + '/det.onnx',
+    ppocrV3Rec:  '/assets/vendor/ppocr@'  + PPOCR_V3_VERSION + '/rec.onnx',
+    ppocrV3Cls:  '/assets/vendor/ppocr@'  + PPOCR_V3_VERSION + '/cls.onnx',
+    ppocrV3Dict: '/assets/vendor/ppocr@'  + PPOCR_V3_VERSION + '/dict.txt',
+    ppocrV4Det:  '/assets/vendor/ppocr@'  + PPOCR_V4_VERSION + '/det.onnx',
+    ppocrV4Rec:  '/assets/vendor/ppocr@'  + PPOCR_V4_VERSION + '/rec.onnx',
+    ppocrV4Dict: '/assets/vendor/ppocr@'  + PPOCR_V4_VERSION + '/dict.txt',
+    // Slice 2 — Docling layout + table models. Heavy-tier lazy;
+    // the runtime only fetches these when layout heuristics
+    // report a low-confidence table region on a difficult invoice.
+    doclingLayoutHeron: '/assets/vendor/ds4sd@' + DOCLING_MODELS_VERSION + '/docling-layout-heron.onnx',
+    tableformerFast:    '/assets/vendor/ds4sd@' + DOCLING_MODELS_VERSION + '/tableformer-fast.onnx'
   };
 
   // Legacy CDN fallbacks. Only used when the build's vendor-pin
@@ -162,6 +206,10 @@
     HASHWASM_VERSION:  HASHWASM_VERSION,
     PDFLIB_VERSION:    PDFLIB_VERSION,
     PADDLEOCR_VERSION: PADDLEOCR_VERSION,
+    ORT_VERSION:            ORT_VERSION,
+    PPOCR_V3_VERSION:       PPOCR_V3_VERSION,
+    PPOCR_V4_VERSION:       PPOCR_V4_VERSION,
+    DOCLING_MODELS_VERSION: DOCLING_MODELS_VERSION,
     loadManifest:   loadManifest,
     resolve:        resolve,
     loadScript:     loadScript,
