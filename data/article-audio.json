@@ -1,0 +1,71 @@
+{
+  "_doc": "Audio coverage manifest for the Muntin library. Source of truth for which written pieces ship a 'Listen to this article' studio audio edition, in which languages.",
+  "_status": "v1 — 2026-05-08. Tracks the studio-tier audio rollout. The pipeline that consumes this is scripts/render-post-audio.mjs (synthesis) + scripts/lib/translate.py (translation) + scripts/check-audio-coverage.mjs (audit).",
+  "_render_command": "node scripts/render-post-audio.mjs --manifest data/article-audio.json --languages en,es,fr,it,pt,zh --kokoro-model <path> --kokoro-voices <path>",
+  "_audit_command": "node scripts/check-audio-coverage.mjs",
+  "_languages": {
+    "en": "English — primary, narrated by F5-TTS voice clone (Don) when available, otherwise Kokoro am_michael",
+    "es": "Spanish — Kokoro em_alex",
+    "fr": "French — Kokoro ff_siwis",
+    "it": "Italian — Kokoro im_nicola",
+    "pt": "Portuguese (Brazilian) — Kokoro pm_alex",
+    "zh": "Mandarin — Kokoro zm_yunxi"
+  },
+  "_voice_canon": "One curated Kokoro voice per language, used across the entire library so brand recognition compounds. Don may swap voices via render-post-audio.mjs --kokoro-voice-<lang> when a better voice ships.",
+  "_translation_canon": "Each non-EN edition runs the source EN chunks through scripts/lib/translate.py — document-context batched translation with the GLOSSARY of brand + restaurant-industry terms preserved. The ES edition for posts with a hand-translated ES mirror SHOULD use --use-existing-translations against the ES article HTML so the audio matches Don's authored Spanish prose. Other languages use translate.py.",
+  "_pronunciation_canon": "data/audio-pronunciation.json holds per-locale phonetic overrides. Kokoro applies them via the espeak phonemizer hint; terms not in the dictionary use Kokoro's default pronunciation.",
+  "_pieces": {
+    "_doc": "Each entry: { path, title, languages, status, owner }. Path is repo-root-relative without /index.html. Languages declare which audio editions this piece SHOULD ship; the audit complains when an entry is missing on disk. Status: 'rendered' (audio exists for every declared lang), 'partial' (some langs missing or stale), 'pending' (no audio yet). Owner is who narrated (kokoro, f5)."
+  },
+  "blog": {
+    "an-honest-doordash-math-for-independent-restaurants-2026":           { "languages": ["en","es","fr","it","pt","zh"], "status": "pending"  },
+    "can-chatgpt-write-your-restaurant-website":                          { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "does-my-restaurant-need-a-website":                                  { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "five-restaurant-website-changes-recover-one-percent-margin":         { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-much-does-a-custom-restaurant-website-cost-in-2026":             { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-get-more-google-reviews-for-your-restaurant":                 { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-raise-restaurant-menu-prices-without-losing-reservations":    { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-read-restaurant-google-search-console":                       { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-recover-reservations-from-googles-find-a-table":              { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-set-up-google-business-profile-for-your-restaurant":          { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "how-to-tell-if-a-restaurant-tool-is-safe":                           { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "is-doordash-worth-it-for-restaurants-in-2026":                       { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "restaurant-photo-spec-sheet":                                        { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "restaurant-schema-markup-6-types-google-uses":                       { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "should-your-restaurant-have-an-app-in-2026":                         { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "toast-vs-square-vs-clover-for-restaurants":                          { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "what-should-be-on-a-restaurant-website":                             { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "when-to-rebuild-your-restaurant-website":                            { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "why-your-restaurant-loses-reservations-every-night":                 { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  },
+    "wix-vs-custom-for-restaurants":                                      { "languages": ["en","es","fr","it","pt","zh"], "status": "partial"  }
+  },
+  "es-blog": {
+    "_doc": "Spanish-only blog slugs (no EN counterpart). Their audio chunks come from the ES article HTML directly; other languages translate from the ES source.",
+    "como-hacer-sitio-web-para-mi-restaurante":                           { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" },
+    "como-salir-de-doordash-mi-restaurante":                              { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" },
+    "cuanto-cuesta-una-pagina-web-para-restaurante-2026":                 { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" },
+    "mi-restaurante-no-aparece-en-google-maps":                           { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" },
+    "schema-markup-para-restaurante-ejemplo":                             { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "source_lang": "es" }
+  },
+  "research": {
+    "the-1-percent-margin-audit-50-restaurant-websites-2026":             { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "lighthouse-performance-scoring":                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "dmv-restaurant-gbp-audit-2026":                                      { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "cart-abandonment-rate":                                              { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "mobile-page-speed-3-second-rule":                                    { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "local-business-websites":                                            { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "fittss-law":                                                         { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" }
+  },
+  "checklists": {
+    "_doc": "Long-form structured pieces. The 2,500-line restaurant-website-checklist gets chapter markers in audio (configured by the renderer's --chapters flag).",
+    "audit-any-tool":                                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
+    "restaurant-website-checklist":                                       { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "chapters": true }
+  },
+  "_skipped": {
+    "_doc": "Sections deliberately excluded from audio narration.",
+    "topics":  "/learn/topics/<slug>/ — nav hubs (a few sentences + lists of articles); audio narration of a nav hub doesn't serve the listener.",
+    "glossary": "/glossary/<slug>/ — definitional pages (often <300 words); the per-term popover already reads the definition; no value in standalone audio editions.",
+    "tools":    "/tools/<slug>/ — interactive tools, not articles; audio narration would describe a UI the listener should be touching.",
+    "sheets":   "/sheets/<slug>/ — operator worksheets; the value is in filling them in, not listening to them."
+  }
+}

@@ -248,6 +248,16 @@ header.nav{min-height:64px}
         <p class="post-meta">
           <time datetime="2026-04-30">30 de abril, 2026</time> · 7 min de lectura · Por <a href="/es/about/#don-goldstein" class="author-chip"><strong>Don</strong></a>
         </p>
+      <div class="row-center">
+        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-languages="en,es,fr,it,pt,zh">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="listen-label i18n">Escuchar este artículo</span>
+        </button>
+      </div>
       </div>
     </div>
   </section>
@@ -472,6 +482,9 @@ header.nav{min-height:64px}
 <!-- Skip Turnstile on localhost / 127.0.0.1 / dev hosts (ver footer EN para detalle). -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+<script src="/assets/site.js?v=20260503-modsplit" defer></script>
+  <!-- listen-script:start -->
+  <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
+  <!-- listen-script:end -->
 </body>
 </html>
