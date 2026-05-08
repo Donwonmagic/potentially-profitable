@@ -295,15 +295,29 @@
 #
 # Two blocks because Cloudflare Pages _headers doesn't accept
 # multi-path patterns. EN at /tools/invoice-decoder/*, ES at
-# /es/tools/invoice-decoder/*. Other headers (X-Frame-Options,
-# Referrer-Policy, etc.) still come from the global /* block;
-# only the Content-Security-Policy header is overridden here.
-/tools/invoice-decoder/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
-
-/es/tools/invoice-decoder/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
-
+# /es/tools/invoice-decoder/*. These come AFTER the /* block
+# below because Cloudflare Pages applies _headers rules in
+# order, with later rules overriding earlier ones for the
+# same header. Production sighting: the previous version had
+# /* placed last in the file, so its CSP (without
+# 'wasm-unsafe-eval') silently overrode the path-scoped
+# directive — Tesseract's WebAssembly.instantiate() failed
+# with a clear CSP violation, the worker hung, and the
+# operator saw "Reading the lines — about 48s left" until
+# the per-page timeout fired.
+#
+# Additions in this version (also driven by the same console-
+# error diagnosis):
+#   connect-src adds data:  — Tesseract.js v5 ships its WASM
+#     as base64-inlined data: URL inside the .wasm.js shim;
+#     the shim does fetch(dataURL) which requires connect-src
+#     to allow data:. Inline data: URLs are JS-constructed
+#     and self-contained, so this doesn't widen the network
+#     surface beyond what JS could already see.
+#   img-src adds blob: — preprocess.js renders the cleaned
+#     image into a blob URL for the "CLEANED FOR READING"
+#     preview pane. Same-origin blob URL; same posture as
+#     data:.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
@@ -311,3 +325,9 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+
+/tools/invoice-decoder/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+
+/es/tools/invoice-decoder/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
