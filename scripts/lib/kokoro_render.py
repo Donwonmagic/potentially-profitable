@@ -35,8 +35,23 @@ import os
 import sys
 import time
 
+import numpy as np
 from kokoro_onnx import Kokoro
 import soundfile as sf
+
+
+# Sample rate Kokoro emits — used for the silent-placeholder fallback
+# when a chunk has empty text or synthesis raises. Keeping placeholders
+# at the same rate as real chunks avoids resample seams in ffmpeg concat.
+SILENCE_RATE = 24000
+SILENCE_SECONDS = 0.3
+
+
+def _write_silence(path: str) -> float:
+    """Write a short silent WAV at SILENCE_RATE. Returns its duration."""
+    samples = np.zeros(int(SILENCE_RATE * SILENCE_SECONDS), dtype=np.float32)
+    sf.write(path, samples, SILENCE_RATE)
+    return SILENCE_SECONDS
 
 
 def main() -> int:
@@ -66,25 +81,47 @@ def main() -> int:
 
     total_audio = 0.0
     total_wall  = 0.0
+    skipped     = 0
     for c in chunks:
         cid  = int(c["id"])
         text = (c.get("text") or "").strip()
+        out  = os.path.join(args.output_dir, f"c{cid:04d}.wav")
+        # Empty text after strip: write a tiny silence so the parent
+        # ffmpeg concat list stays contiguous. The on-page highlight
+        # for this chunk still resolves; it just doesn't speak.
         if not text:
+            dur = _write_silence(out)
+            total_audio += dur
+            print(f"{cid} {dur:.3f} 0.000 (empty)", file=sys.stderr, flush=True)
+            skipped += 1
             continue
         t0 = time.time()
-        samples, rate = k.create(text, voice=args.voice, speed=args.speed, lang=args.lang)
+        try:
+            samples, rate = k.create(text, voice=args.voice, speed=args.speed, lang=args.lang)
+        except Exception as e:
+            # Phonemizer hiccups on certain non-ASCII tokens or punctuation
+            # combos. We don't want one bad chunk to torch the whole batch
+            # — write a silent placeholder, log the failure, keep going.
+            dt = time.time() - t0
+            dur = _write_silence(out)
+            total_audio += dur
+            total_wall  += dt
+            preview = text[:60].replace("\n", " ")
+            print(f"{cid} {dur:.3f} {dt:.3f} (fallback: {type(e).__name__}: {preview!r})",
+                  file=sys.stderr, flush=True)
+            skipped += 1
+            continue
         dt = time.time() - t0
         dur = len(samples) / rate
         total_audio += dur
         total_wall  += dt
-        out = os.path.join(args.output_dir, f"c{cid:04d}.wav")
         sf.write(out, samples, rate)
-        # One compact progress line per chunk — parent can parse or ignore
         print(f"{cid} {dur:.3f} {dt:.3f}", file=sys.stderr, flush=True)
 
     print(json.dumps({
         "ok": True,
         "count": len(chunks),
+        "skipped": skipped,
         "audio_seconds": round(total_audio, 2),
         "wall_seconds":  round(total_wall, 2),
     }))

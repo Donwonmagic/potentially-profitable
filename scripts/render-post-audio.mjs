@@ -455,6 +455,83 @@ function renderPost(postDir) {
     }
     renderLanguage(postDir, langChunks, lang);
   }
+
+  // Auto-commit + push each article's audio as soon as its full
+  // language set is on disk, so a crash mid-bulk-render never costs
+  // more than the in-flight article's worth of work. Opt-in: pass
+  // --commit-per-article. Failures here log a warning but never
+  // abort the run — the next article keeps rendering.
+  if (flags.has('--commit-per-article') && !dryRun) {
+    commitArticleAudio(postDir);
+  }
+}
+
+/* -------------------- per-article auto-commit -------------------- */
+// Stages the audio.* files for `postDir`, makes a focused commit, and
+// pushes to the current branch's upstream. Best-effort: any git error
+// (no upstream, push rejected, hook failure) gets logged and the
+// render keeps going with the next article. The local commit still
+// stands so the operator can sort it out manually later.
+function commitArticleAudio(postDir) {
+  const slug = path.relative(repoRoot, postDir);
+  // Build the explicit file list rather than a glob — spawnSync with
+  // an args array doesn't expand globs, and we want to be precise
+  // about what we stage anyway (audio.*.mp3 + audio.*.json only,
+  // no other files in the post directory).
+  const filesToAdd = [];
+  for (const lang of languages) {
+    const mp3Name  = lang === 'en' ? 'audio.mp3'  : `audio.${lang}.mp3`;
+    const jsonName = lang === 'en' ? 'audio.json' : `audio.${lang}.json`;
+    for (const name of [mp3Name, jsonName]) {
+      const p = path.join(postDir, name);
+      if (fs.existsSync(p)) filesToAdd.push(path.relative(repoRoot, p));
+    }
+  }
+  if (!filesToAdd.length) {
+    console.log(`  ↑ nothing to commit for ${slug}`);
+    return;
+  }
+
+  const gitOpts = { cwd: repoRoot, encoding: 'utf8' };
+  const add = spawnSync('git', ['add', ...filesToAdd], gitOpts);
+  if (add.status !== 0) {
+    console.warn(`  ⚠ git add failed for ${slug}: ${add.stderr || add.stdout}`);
+    return;
+  }
+  // If everything we staged was already at HEAD, there's nothing
+  // new to commit — skip cleanly. `git diff --cached --quiet` exits
+  // 0 when staged tree matches HEAD, 1 when there's a real diff.
+  const diff = spawnSync('git', ['diff', '--cached', '--quiet'], gitOpts);
+  if (diff.status === 0) {
+    console.log(`  ↑ no audio changes to commit for ${slug}`);
+    return;
+  }
+
+  const subject = `audio: ${slug}`;
+  const body = `https://claude.ai/code/session_01U1euc349u61qrXArzPm8HT`;
+  const commit = spawnSync('git', ['commit', '-m', subject, '-m', body], gitOpts);
+  if (commit.status !== 0) {
+    console.warn(`  ⚠ git commit failed for ${slug}: ${commit.stderr || commit.stdout}`);
+    return;
+  }
+  console.log(`  ✓ committed ${slug}`);
+
+  // Push to the current branch's upstream. The Don-side use case is a
+  // long bulk render on his Mac pushing to the cloud session's branch,
+  // so we always push (no --no-push escape hatch needed yet). Two
+  // network-failure retries with linear backoff cover most flakes.
+  const branch = spawnSync('git', ['rev-parse', '--abbrev-ref', 'HEAD'], gitOpts).stdout.trim();
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const push = spawnSync('git', ['push', 'origin', branch], gitOpts);
+    if (push.status === 0) {
+      console.log(`  ↑ pushed ${slug} to origin/${branch}`);
+      return;
+    }
+    const wait = 2000 * (attempt + 1);
+    console.warn(`  ⚠ git push attempt ${attempt + 1} failed (retrying in ${wait}ms): ${push.stderr || ''}`);
+    spawnSync('sleep', [String(wait / 1000)]);
+  }
+  console.warn(`  ⚠ git push gave up for ${slug} — commit is local; push manually with: git push origin ${branch}`);
 }
 
 function renderLanguage(postDir, chunks, lang) {
@@ -544,7 +621,12 @@ function renderLanguage(postDir, chunks, lang) {
   fs.writeFileSync(concatList,
     segments.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
   const combinedWav = path.join(tmpDir, '_all.wav');
-  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c', 'copy', combinedWav]);
+  // Re-encode to PCM during concat (instead of `-c copy`) so any minor
+  // DTS misalignment between segments — including the 0.3s silent
+  // placeholders that kokoro_render writes for empty/failed chunks —
+  // gets normalized into a contiguous WAV. The cost is a few seconds
+  // of CPU per article; the codec stays lossless.
+  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c:a', 'pcm_s16le', combinedWav]);
 
   // English keeps the legacy audio.mp3 / audio.json filenames for
   // backward compatibility with existing HTML (data-audio-src="audio.mp3");

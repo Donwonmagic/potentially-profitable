@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-08T22:28:19.765Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 477.8,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "专栏文章 &middot; 二零二六年五月二日 &middot; 7分钟阅读 &middot; 作者：Don Goldstein",
+      "start": 0,
+      "end": 8.73
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "我经营着两家DMV餐厅。每个季度，我都会对DoorDash合作伙伴的对账单进行相同的计算，结果几乎每次都相同：这个平台不是一个营销渠道，而是一个带有外卖附加福利的利润税。以下是数学计算、盈亏平衡点和网站解决方案，它可以在两个月内自付。",
+      "start": 9.08,
+      "end": 28.41
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "我将使用真实的平均票价和可以辩护的真实数字来进行计算。票价为42美元——这是我经营的其中一家餐厅在二零二五年 DoorDash 的平均票价。你的票价可能更高或更低；百分比才是支持论点的关键。",
+      "start": 28.76,
+      "end": 43.76
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "一张42美元的DoorDash票，分解如下。",
+      "start": 44.86,
+      "end": 48.23
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "以下是完整的利润率计算。这些项目对于任何阅读过合作伙伴对账单的人来说都很熟悉，但很少有人将它们堆叠在一列中并应用实际百分比。我使用的是DoorDash Marketplace Plus（30%的佣金等级，对于独立经营的三个地点以下的餐厅来说是最常见的）和他们传递的标准支付处理费率。",
+      "start": 48.93,
+      "end": 71.55
+    },
+    {
+      "id": 5,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "每一美元42美元的DoorDash票将如何分配。DoorDash的佣金，在Marketplace Plus的30%等级中，占12美元60。支付处理费再占1美元43。促销或赞助列表费平均占1美元20。包装再占1美元40。食物成本占28%，即11美元76。变动劳动力成本占14%，即5美元88。餐厅保留的金额是7美元73，占票价的18.4%。下面的滑块允许您将佣金率从15%切换到35%，并观看保留份额的重新计算。",
+      "start": 72.35,
+      "end": 109.77
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "18%。这是在考虑固定成本——租金、水电费、固定管理费、保险——之前的，这些成本对于典型的DMV独立餐厅来说，又增加了12到14个百分点。如果你幸运的话，贡献利润率可能在4%左右。如果你在该订单上运行了赞助列表，或者你的包装比平均重，基本上你是在白干。",
+      "start": 110.52,
+      "end": 132.5
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "现在，对同一张42美元的票，直接从你的网站下单，通过你的Stripe账户支付。",
+      "start": 132.85,
+      "end": 140.29
+    },
+    {
+      "id": 8,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "同样的42美元票，直接从你的网站下单，使用自己的最后一公里配送。Stripe或Square处理费占1美元51。直接渠道营销分摊费每订单占0.80美元。包装保持在1美元40。食物成本保持在11美元76。变动劳动力成本保持在5美元88。最后一公里DoorDash Drive固定费，选项，是8美元50。使用自己的配送，餐厅保留的金额是12美元15，占票价的28.9%。与DoorDash渠道相比，这意味着每订单向餐厅倾斜4美元42。",
+      "start": 141.09,
+      "end": 176.65
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "保留29%的票价。边际提升——“将订单从DoorDash的应用程序转移到自己的网站，能带来什么？”——的答案是每订单4.42美元。即使你自己承担整个DoorDash Drive最后一公里的费用，你也会好10个百分点。如果顾客自取，好28个百分点。",
+      "start": 177.4,
+      "end": 195.52
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "这对你的年度意味着什么。",
+      "start": 196.62,
+      "end": 198.92
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "以平均每年处理2,400个第三方应用订单的DMV独立经营者为例——大约每天七个订单，属于休闲经营者的较低端。如果在十二个月内将其中40%的订单转移到直接订单，数学计算是：",
+      "start": 199.62,
+      "end": 214.28
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "如果您经营的是高端餐厅——比如一家忙碌的午餐地点，每年处理6,000个第三方订单——并且实现了40%的转换，相同的数学计算每年将返回10,608美元。第二年会产生复利，因为您转换为直接订单的顾客已经学会了流程。",
+      "start": 214.63,
+      "end": 232.47
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "能够实现这一切的网站修复。",
+      "start": 233.57,
+      "end": 236.27
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "您不需要应用程序，您不需要CRM。转换发生在现有的菜单页面上，只需一个按钮，并且按钮的标示方式很重要。按照以下三个步骤：",
+      "start": 236.97,
+      "end": 247.41
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "在菜单页面上（手机和电脑版），在第三方链接上方添加一个主要的“直接下单”按钮。按钮较大，使用品牌颜色，放在页面的最上方。第三方应用链接放在下面，较小，标示为“其他下单方式”。",
+      "start": 247.76,
+      "end": 262.2
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "通过您的P O S——Toast在线下单，Square在线，ChowNow，或如果您有开发人员，可以使用Stripe支持的自定义流程。不要使用Wix表单页面，它会通过电子邮件发送订单。",
+      "start": 262.52,
+      "end": 276.1
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "与第三方价格相匹配或降低。独立经营者害怕低于DoorDash的价格，但他们不应该这样做。30%的佣金意味着您可以在直接渠道上提供2美元-4美元的折扣，并且仍然可以保持比平台留给您的更多的利润。顾客会注意到——他们正在支付“DoorDash服务费”以外的菜单价格；您向他们展示了他们的餐费实际上是多少。",
+      "start": 276.42,
+      "end": 300.52
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "在现有的网站上运行这三个变化，平均独立经营者可以在两个月内收回4,243美元的第一年提升。网站本身的建设成本可能低于这个金额，即使是以工作室价格计算。",
+      "start": 300.87,
+      "end": 314.37
+    },
+    {
+      "id": 19,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "不取消listing的理由。",
+      "start": 315.47,
+      "end": 317.43
+    },
+    {
+      "id": 20,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "我并不是建议您取消listing。DoorDash在结构上是一个客户获取工具，成本为您30%。对于一家拥有60%增量容量的厨房的独立餐厅来说，这30%是您为边际cover支付的价格——如果您将该平台视为发现渠道，而不是关系渠道，那么这是一个公平的价格。",
+      "start": 318.13,
+      "end": 339.94
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "问题不在于您是否在DoorDash上，而在于您在DoorDash上，但没有积极地将这些顾客转换为直接下单。第一次DoorDash订单与直接下单相比，损失4.42美元。第二次订单，同样通过DoorDash，也是如此。顾客的第三次订单是利润复利的订单——但大多数独立经营者无法收回这一订单，因为没有网站的呼吁行动来要求他们这样做。",
+      "start": 340.29,
+      "end": 365.47
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "通过DoorDash自己的客户收据流程发送的订单确认收据，附有5%-off优惠券到您的直接网站，是一个免费的转换杠杆。外卖袋上的二维码也是如此。袋子里的卡片上用平实的英语写着“下次直接下单可节省3美元”，也是如此。",
+      "start": 365.82,
+      "end": 382.13
+    },
+    {
+      "id": 23,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "运行您自己的版本。",
+      "start": 383.23,
+      "end": 384.68
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "你的数字和我的不同 —— 不同的佣金等级，不同的订单（ticket），不同的厨房劳动模式。免费的 Margin Math 工具（利润计算工具）会根据你的输入在浏览器中运行计算，结果只属于你 —— 页面上不会留下任何信息：",
+      "start": 385.38,
+      "end": 400.78
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "运行 Margin Math &rarr;",
+      "start": 401.13,
+      "end": 403.67
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "如果你的网站需要重建“直接下单”按钮（deeplink），而你更愿意让别人处理，那么 1,500 美元的 menu drop-in 就是一个较小的承诺。499 美元的审计会先给你一个书面诊断，如果你更愿意在花钱之前看到书面报告。",
+      "start": 404.02,
+      "end": 419.74
+    },
+    {
+      "id": 27,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "对于“DoorDash 是否值得使用”的问题，诚实的答案与大多数运营问题的答案一样：这取决于你做的其他事情。如果你的直接渠道（direct channel）处于休眠状态，那么它不值得使用。但如果你的直接渠道正在运行并转化，DoorDash 就是一个薄利润的营销预算，它会支付下一个常规订单的费用。",
+      "start": 420.09,
+      "end": 442.09
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Don Goldstein 管理两家 DMV 餐厅，并运行 Muntin Digital 。他是 RAMW 的成员，获得了 ServSafe 认证，上述数学计算的日期是二十二十六年五月。",
+      "start": 442.44,
+      "end": 454.47
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "继续",
+      "start": 454.82,
+      "end": 455.16
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Margin Math 工具 —— 在你的数字上运行计算",
+      "start": 455.51,
+      "end": 459.12
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "二十二十六年 DoorDash 是否值得餐厅使用 —— 战略框架",
+      "start": 459.44,
+      "end": 464.58
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "五个可以恢复 1% 利润的网站变化",
+      "start": 464.9,
+      "end": 468.38
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "1,500 美元的 menu drop-in —— 在你的现有网站上快速添加一个页面",
+      "start": 468.7,
+      "end": 474.31
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "499 美元的审计 —— 书面诊断",
+      "start": 474.63,
+      "end": 477.8
+    }
+  ]
+}
