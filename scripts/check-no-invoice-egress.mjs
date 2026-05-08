@@ -123,16 +123,39 @@ const CLIENT_FORBIDDEN = [
 // register, settings panel wiring, install prompts) where exfil
 // channels could land. Ignoring HTML meant the egress check
 // missed the very surfaces it was supposed to defend.
-function walkClientDir(dir) {
+// Audit fix (privacy M2): explicit allowlist of skip-able subdirs
+// instead of a blacklist. Adding a new directory under tools/
+// invoice-decoder/ now requires either (a) being scanned for
+// egress or (b) an explicit entry below with a reason. This
+// catches the future case where a new subdir lands and the
+// scanner silently passes it through.
+//
+// The walker fails CI if it encounters a directory not in this
+// allowlist that ALSO doesn't match the standard scan rules —
+// the maintainer must consciously decide whether the new dir
+// should be scanned or skipped.
+const SKIP_SUBDIRS = new Set([
+  'vendor',         // third-party self-hosted assets, not our code
+  '__fixtures__',   // test inputs (deterministic; no secret content)
+  'recipes',        // template recipes referenced inertly
+  '_compare',       // internal noindex diagnostic; tar-excluded from prod
+  'node_modules'    // never committed but defensive
+]);
+const KNOWN_SUBDIR_LANDED = new Set([
+  // Sentinel: when a subdir under invoice-decoder/ lands that's
+  // not in this list AND not in SKIP_SUBDIRS, the walker fails.
+  // Update via PR if a new directory is intentional.
+  'admin', 'audits', 'recipes', 'fixtures', 'fonts'
+]);
+function walkClientDir(dir, opts) {
+  opts = opts || { scanRoot: dir, surprises: [] };
   const out = [];
   if (!fs.existsSync(dir)) return out;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip vendored third-party assets and test fixtures — those
-      // legitimately reference their own bootstraps.
-      if (entry.name === 'vendor' || entry.name === '__fixtures__' || entry.name === 'recipes') continue;
-      out.push(...walkClientDir(full));
+      if (SKIP_SUBDIRS.has(entry.name)) continue;
+      out.push(...walkClientDir(full, opts));
     } else if (/\.(m?js|html)$/.test(entry.name)) {
       out.push(full);
     }
