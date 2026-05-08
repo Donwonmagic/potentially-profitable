@@ -98,34 +98,10 @@
 # Service worker (Wave 6.8 — Invoice Decoder PWA)
 # ------------------------------------------------------------
 # Tools sunset (Sprint M, 2026-05-08): invoice-decoder + menu-design
-# retired. The SW kill-switches at /tools/{invoice-decoder,menu-
-# design}/sw.js need no-cache + must-revalidate so the browser
-# fetches the replacement on next navigation, runs activate, and
-# unregisters cleanly. Once the tool directories are deleted the
-# kill-switches go with them and these rules become no-ops.
-/tools/invoice-decoder/sw.js
-  Cache-Control: no-cache, max-age=0, must-revalidate
-  Content-Type: application/javascript; charset=utf-8
-/tools/menu-design/sw.js
-  Cache-Control: no-cache, max-age=0, must-revalidate
-  Content-Type: application/javascript; charset=utf-8
-
-# Sunset notice pages keep their own short cache so any final flip
-# (e.g. Phase B → Phase E) propagates quickly through the edge.
-/tools/invoice-decoder/
-  Cache-Control: public, max-age=300, s-maxage=300
-  X-Robots-Tag: noindex, follow
-/tools/menu-design/
-  Cache-Control: public, max-age=300, s-maxage=300
-  X-Robots-Tag: noindex, follow
-/es/tools/invoice-decoder/
-  Cache-Control: public, max-age=300, s-maxage=300
-  Content-Language: es
-  X-Robots-Tag: noindex, follow
-/es/tools/menu-design/
-  Cache-Control: public, max-age=300, s-maxage=300
-  Content-Language: es
-  X-Robots-Tag: noindex, follow
+# retired. The directories are gone; bare paths and sub-paths return
+# HTTP 410 via _redirects rules, so no path-scoped Cache-Control or
+# Content-Type headers are needed here. Cloudflare emits its own
+# default headers on 410 responses, which is correct for "Gone."
 
 
 # ------------------------------------------------------------

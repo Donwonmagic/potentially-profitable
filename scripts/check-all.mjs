@@ -68,6 +68,11 @@ const CHECKS = [
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
   ['Banned words',        'check-banned-words.mjs'],
+  // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
+  // if either retired slug is reintroduced anywhere outside the
+  // documented allow list (_redirects, 404.html, historical
+  // citation snapshots, this script).
+  ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   ['Tool header',         'check-tool-header.mjs',         '--check'],
