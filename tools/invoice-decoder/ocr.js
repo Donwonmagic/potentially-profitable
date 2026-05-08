@@ -323,105 +323,18 @@
   // Returns the same shape as recognizeMultiPass with one extra field:
   //   ensembleStats: { tesseractLines, paddleLines, merged, replacedByPaddle }
   function recognizeMultiPassEnsemble(canvasAggressive, canvasGentle, opts) {
-    var paddle = (typeof root !== 'undefined' && root && root.MID_OCR_PADDLE) || null;
-    if (!paddle || !paddle.shouldTryEngine || !paddle.shouldTryEngine()) {
-      // Lean-device / Paddle-disabled path: same as before.
-      return recognizeMultiPass(canvasAggressive, canvasGentle, opts);
-    }
-    var onProgress = (opts && opts.onProgress) || function () {};
-    return Promise.all([
-      recognizeMultiPass(canvasAggressive, canvasGentle, {
-        lang: (opts && opts.lang) || 'eng+spa',
-        psm:  (opts && opts.psm) || 6,
-        onProgress: function (p) { onProgress(p * 0.7); }
-      }),
-      paddle.recognizeCanvas(canvasGentle, { onProgress: function (p) { onProgress(0.7 + p * 0.25); } })
-    ]).then(function (parts) {
-      var t = parts[0];          // Tesseract multipass result
-      var p = parts[1];          // Paddle result, or null
-      onProgress(0.97);
-      if (!p || !Array.isArray(p.lines) || !p.lines.length) {
-        return Object.assign({}, t, {
-          ensembleStats: { tesseractLines: t.lines.length, paddleLines: 0, merged: t.lines.length, replacedByPaddle: 0 }
-        });
-      }
-
-      // Spatial alignment: for each Tesseract line, find the Paddle
-      // line whose bbox center sits inside the Tesseract bbox (with
-      // 4px slack). When the Paddle line is more confident on the
-      // same region, take Paddle's text. The merge is over content,
-      // not coordinates — Tesseract's per-word data + bbox are
-      // preserved on the merged line so downstream layers (columns,
-      // user-words bias) keep their inputs.
-      var paddleMatched = new Array(p.lines.length);
-      for (var pi = 0; pi < p.lines.length; pi++) paddleMatched[pi] = false;
-      var replaced = 0;
-      var merged = t.lines.map(function (tLine) {
-        if (!tLine.bbox) return tLine;
-        var tbb = tLine.bbox;
-        var bestIdx = -1;
-        var bestConf = -1;
-        for (var i = 0; i < p.lines.length; i++) {
-          if (paddleMatched[i]) continue;
-          var pLine = p.lines[i];
-          if (!pLine.bbox) continue;
-          var pbb = pLine.bbox;
-          var pcx = (pbb.x0 + pbb.x1) / 2;
-          var pcy = (pbb.y0 + pbb.y1) / 2;
-          // Center of Paddle box must fall inside the Tesseract box
-          // (with 4px slack). Tight test — avoids matching neighbors
-          // on dense receipts.
-          if (pcx >= tbb.x0 - 4 && pcx <= tbb.x1 + 4 &&
-              pcy >= tbb.y0 - 4 && pcy <= tbb.y1 + 4) {
-            if (pLine.confidence > bestConf) { bestConf = pLine.confidence; bestIdx = i; }
-          }
-        }
-        if (bestIdx === -1) return tLine;
-        paddleMatched[bestIdx] = true;
-        var pLine2 = p.lines[bestIdx];
-        if (pLine2.confidence > tLine.confidence + 5) {
-          // Paddle wins by a meaningful margin; replace text + conf
-          // but keep Tesseract's bbox + per-word data so downstream
-          // layers don't regress.
-          replaced++;
-          return Object.assign({}, tLine, {
-            text: pLine2.text,
-            confidence: pLine2.confidence,
-            engine: 'paddle',
-            _tesseractText: tLine.text,
-            _tesseractConfidence: tLine.confidence
-          });
-        }
-        return tLine;
-      });
-
-      // Append Paddle-only lines (text Tesseract didn't pick up at
-      // all). Useful on rotated tables where Tesseract drops rows.
-      for (var pi2 = 0; pi2 < p.lines.length; pi2++) {
-        if (!paddleMatched[pi2] && p.lines[pi2].text && p.lines[pi2].confidence >= 60) {
-          merged.push(p.lines[pi2]);
-        }
-      }
-
-      var bestText = merged.map(function (l) { return l.text; }).join('\n');
-      var meanConf = merged.length
-        ? merged.reduce(function (s, b) { return s + (b.confidence || 0); }, 0) / merged.length
-        : 0;
-      onProgress(1);
-      return {
-        text: bestText,
-        lines: merged,
-        meanConfidence: meanConf,
-        perPass: { aggressive: t.perPass.aggressive, gentle: t.perPass.gentle, paddle: p },
-        userWordsBiasCount: t.userWordsBiasCount || 0,
-        ensembleStats: {
-          tesseractLines:    t.lines.length,
-          paddleLines:       p.lines.length,
-          merged:            merged.length,
-          replacedByPaddle:  replaced
-        }
-      };
-    });
+    // Post-audit cleanup: the V1 PaddleOCR ensemble (Wave 9.2) was
+    // removed because the upstream @paddlejs-models/ocr package
+    // disappeared from npm and the model paths at the Paddle.js
+    // repo rotted. The integration was always falling back to
+    // Tesseract-only via the heavyEnabled() check anyway.
+    //
+    // The function name is preserved because shim and controller
+    // call sites assume it exists on V1; ocr-shim.js then
+    // escalates to the V2 ONNX path when V1 returns suspiciously
+    // little, which is where the actual ensemble effect now lives
+    // (V1 Tesseract → V2 PP-OCRv3 ONNX).
+    return recognizeMultiPass(canvasAggressive, canvasGentle, opts);
   }
 
   // Wave 7 W2-4 — per-line adaptive re-read.

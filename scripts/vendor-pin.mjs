@@ -92,8 +92,24 @@ const VENDORS = [
     name: 'tesseract.js-core',
     version: '5.0.0',
     files: [
+      // Audit fix (production hotfix): Tesseract.js v5 picks the
+      // core variant at runtime based on language + browser
+      // capability. English uses LSTM models; modern desktop
+      // browsers support SIMD. The default pick on a Mac with
+      // a recent Chrome / Safari / Firefox is `simd-lstm`. We
+      // were only shipping the non-LSTM variants — every desktop
+      // operator hit a 404 the moment they tapped Read, with no
+      // friendly recovery (the SW retried 4× and then surfaced a
+      // misclassified "Connection dropped" until commit b35411c9).
+      // Ship all 4 variants so Tesseract's runtime variant-pick
+      // never lands on a missing file regardless of language /
+      // SIMD support combination.
       'tesseract-core-simd.wasm.js',
       'tesseract-core-simd.wasm',
+      'tesseract-core-simd-lstm.wasm.js',
+      'tesseract-core-simd-lstm.wasm',
+      'tesseract-core-lstm.wasm.js',
+      'tesseract-core-lstm.wasm',
       'tesseract-core.wasm.js',
       'tesseract-core.wasm'
     ],
@@ -112,20 +128,16 @@ const VENDORS = [
     publicPrefix: '/assets/vendor/hash-wasm@4.11.0',
     optional: true
   },
-  {
-    // Wave 9.2 — PaddleOCR-mobile-v3 as a second OCR engine on
-    // capable devices. The package itself is the JS shim; the
-    // ppocr-mobile-v3 model weights are downloaded into a sibling
-    // /models/ tree by PADDLEOCR_MODEL_FILES below. Optional so a
-    // build can succeed offline without Paddle (the runtime
-    // gracefully degrades to Tesseract-only).
-    name: '@paddlejs-models/ocr',
-    version: '2.2.5',
-    files: ['lib/index.mjs'],
-    publicPrefix: '/assets/vendor/paddleocr@2.2.5',
-    rename: { 'lib/index.mjs': 'index.mjs' },
-    optional: true
-  },
+  // Wave 9.2 — PaddleOCR-via-Paddle.js was originally pinned here
+  // as the V1 ensemble's second engine. The upstream restructured
+  // (the @paddlejs-models/ocr@2.2.5 we listed never existed; latest
+  // on npm is 1.2.4, and the model weights at the Paddle.js GitHub
+  // paths we tried have since moved). The V1 ensemble was never
+  // actually loading in production — it always fell through to the
+  // graceful-degradation path in ocr-paddle.js's heavyEnabled()
+  // check. Removed entirely as part of the post-audit cleanup;
+  // V2's PP-OCRv3 ONNX path (further down) provides the same
+  // accuracy boost via the V1→V2 escalation in ocr-shim.js.
   {
     // Slice 2 — onnxruntime-web powers the next-generation OCR pipeline
     // built on ONNX models (PP-OCRv4 + DocLayNet + TableFormer) borrowed
@@ -246,29 +258,10 @@ const VENDORS = [
   }
 ];
 
-// Wave 9.2 — PaddleOCR-mobile-v3 model weights. These are NOT npm-
-// distributed; they ship from the PaddleJS-models GitHub release
-// assets and are content-addressed via SHA-384 once we record the
-// hash on the first successful pin. Each weight file is ~3-5 MB;
-// total ~12 MB across the four files.
-const PADDLEOCR_MODEL_FILES = [
-  { local: 'models/det_db.json',           urls: [
-    'https://raw.githubusercontent.com/PaddlePaddle/Paddle.js/master/packages/paddlejs-models/ocr/src/static/det_db_mobile.json'
-  ]},
-  { local: 'models/det_db.bin',            urls: [
-    'https://raw.githubusercontent.com/PaddlePaddle/Paddle.js/master/packages/paddlejs-models/ocr/src/static/det_db_mobile.bin'
-  ]},
-  { local: 'models/rec_crnn.json',         urls: [
-    'https://raw.githubusercontent.com/PaddlePaddle/Paddle.js/master/packages/paddlejs-models/ocr/src/static/rec_crnn_mobile.json'
-  ]},
-  { local: 'models/rec_crnn.bin',          urls: [
-    'https://raw.githubusercontent.com/PaddlePaddle/Paddle.js/master/packages/paddlejs-models/ocr/src/static/rec_crnn_mobile.bin'
-  ]},
-  { local: 'models/dict.txt',              urls: [
-    'https://raw.githubusercontent.com/PaddlePaddle/Paddle.js/master/packages/paddlejs-models/ocr/src/dict/dict.txt'
-  ]}
-];
-const PADDLEOCR_PUBLIC_PREFIX = '/assets/vendor/paddleocr@2.2.5';
+// (Wave 9.2 PaddleOCR-via-Paddle.js model weights were pinned here
+//  but the upstream paths rotted — see VENDORS comment above.
+//  Removed in the post-audit cleanup. PP-OCRv3 recognition still
+//  ships via the V2 ONNX path, downloaded by ONNX_MODEL_FILES.)
 
 // Slice 2 — ONNX model weights for the next-generation pipeline.
 // Apache-2.0 licensed throughout; redistribution permitted with the
@@ -623,38 +616,9 @@ async function main() {
     }
   }
 
-  // Wave 9.2 — PaddleOCR-mobile-v3 model weights. Downloaded from the
-  // PaddleJS-models GitHub source tree; SHA-384 hashed at first pin
-  // and persisted in _integrity.json. Same fall-through-on-failure
-  // posture as the optional npm vendors above.
-  const paddleDir = path.join(DIST_VENDOR_DIR, 'paddleocr@2.2.5');
-  ensureDir(paddleDir);
-  for (const m of PADDLEOCR_MODEL_FILES) {
-    let data = null;
-    let lastErr = null;
-    for (const u of m.urls) {
-      try { data = await fetchBuffer(u); break; }
-      catch (e) { lastErr = e; }
-    }
-    if (!data) {
-      console.warn(`  ! paddleocr model ${m.local}: ${(lastErr && lastErr.message) || 'all sources failed'} (skipping)`);
-      warnings++;
-      continue;
-    }
-    const outPath = path.join(paddleDir, m.local);
-    ensureDir(path.dirname(outPath));
-    fs.writeFileSync(outPath, data);
-    writes++;
-    const publicUrl = `${PADDLEOCR_PUBLIC_PREFIX}/${m.local}`;
-    integrity.files[publicUrl] = {
-      sha384:     sha384(data),
-      bytes:      data.length,
-      package:    'paddleocr-models',
-      version:    '2.2.5',
-      sourcePath: m.urls[0]
-    };
-    console.log(`  ✓ ${publicUrl}  ${data.length}b`);
-  }
+  // (Wave 9.2 PaddleOCR-mobile-v3 model fetch removed in the
+  //  post-audit cleanup — see PADDLEOCR_MODEL_FILES comment.
+  //  PP-OCRv3 recognition ships via the V2 ONNX path below.)
 
   // Slice 2 — ONNX models (PP-OCRv3, PP-OCRv4, DocLayNet, TableFormer).
   // Same warn-and-continue posture as PaddleOCR weights above. Failed

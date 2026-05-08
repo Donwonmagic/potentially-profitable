@@ -1680,7 +1680,9 @@ header.nav{min-height:64px}
 <script src="./capture-coach.js?v=20260501-w8-6"></script>
 <script src="./ocr.js?v=20260504-w9-2"></script>
 <script src="./device-tier.js?v=20260504-w9-1" defer></script>
-<script src="./ocr-paddle.js?v=20260504-w9-2" defer></script>
+<!-- ocr-paddle.js retired — see post-audit cleanup notes in
+     scripts/vendor-pin.mjs. PP-OCRv3 recognition now lives in the
+     V2 ONNX path; the V1 path is Tesseract-only. -->
 <!-- Slice 3 — v2 OCR pipeline modules (Docling-inspired, ONNX-based).
      Gated behind the engineV2 feature flag in ocr-shim.js; default
      is OFF so production users stay on the v1 Tesseract path while

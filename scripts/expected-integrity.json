@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-08T00:04:12.620Z",
+  "generatedAt": "2026-05-08T03:40:17.342Z",
   "note": "Hashes the build expects to find. Hash drift fails the build (catches supply-chain attacks via mutable URLs like HuggingFace resolve/main). Re-run --bootstrap-expected from CF Pages CI to add any HuggingFace-hosted entries the local sandbox can't reach.",
   "files": {
     "/assets/vendor/hash-wasm@4.11.0/argon2.umd.min.js": "sha384-6mJke07CAj4K6ugAGS0QPHLljuO28/vFpEliPzBQS50ap5NYTFLfJCsgTZs8CvUB",
@@ -27,6 +27,10 @@
     "/assets/vendor/tessdata-4.0.0/jpn.traineddata": "sha384-HuwuQY/qeHe/qZ6G+QRClncTfb0WuA3XyRTGePtSware9Zc+/R7tCw6UXNCWLHHm",
     "/assets/vendor/tessdata-4.0.0/kor.traineddata": "sha384-nQi/NP3XR4Ma3PblyZCIvg3LQh4YENo9zUerNdZBrEXv869Tb6Fl49TIZK+YbG6/",
     "/assets/vendor/tessdata-4.0.0/spa.traineddata": "sha384-LyRK6BxvPyftGG80ISKvv6bAwOH2GqAy2HJFt/O2yT6j4zGdf6VovA9NKfgED8Xq",
+    "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-lstm.wasm": "sha384-B8/xQorulD1PCndzwXQXZTS6jqDwCldI065f2rMhhjsvo+Hk31PwJNPsbFJCEo5O",
+    "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-lstm.wasm.js": "sha384-i4kfVk6PMpcB7U6bC+5IoM2cSmLfUcEwqXUuLykSAj/EfY/NP06FkML9RyVxFQbr",
+    "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-simd-lstm.wasm": "sha384-zazZa3Ad7lYQyAkoWy0lD96QJTljcroj2CufaemVbqZC1wMwePJtArm4w0MOP+XM",
+    "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-simd-lstm.wasm.js": "sha384-6aCxvKh1YXSSk2w7/FAPQHeRkqV3I+u21GJYMHlrG1ekFFlzjQ9Td1Ll3oldPNJY",
     "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-simd.wasm": "sha384-6ZQLhdet6dN+4p998GifBBAV+PLhEBCh4oIOPeLO1ynjx1nbSP4yHa0HkggXKnF2",
     "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core-simd.wasm.js": "sha384-K7ujyIrwBqAwmGk2JEaMcKNIRgofpphTeB1S5wDT0hiTH6spOvZi9NDfXnU8N35O",
     "/assets/vendor/tesseract.js-core@5.0.0/tesseract-core.wasm": "sha384-84UXNBWWr+1wMVnJ3r271ZnYkn0JsCfgyOPlW6th6Vpj3h3R/jWB+vc4jQFQa9sH",
