@@ -156,7 +156,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/tools/#items",
-      "numberOfItems": 23,
+      "numberOfItems": 21,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -197,102 +197,90 @@ header.nav{min-height:64px}
         {
           "@type": "ListItem",
           "position": 7,
-          "url": "https://muntin.digital/es/tools/invoice-decoder/",
-          "name": "Lector de facturas OCR gratis para restaurantes"
-        },
-        {
-          "@type": "ListItem",
-          "position": 8,
           "url": "https://muntin.digital/es/tools/margin-math/",
           "name": "Cálculo de Margen"
         },
         {
           "@type": "ListItem",
-          "position": 9,
+          "position": 8,
           "url": "https://muntin.digital/es/tools/menu-converter/",
           "name": "Conversor de men&uacute; &mdash; pega texto, recibe HTML + JSON-LD schema"
         },
         {
           "@type": "ListItem",
-          "position": 10,
+          "position": 9,
           "url": "https://muntin.digital/es/tools/menu-copy/",
           "name": "Inspector de Copy de Menú"
         },
         {
           "@type": "ListItem",
-          "position": 11,
-          "url": "https://muntin.digital/es/tools/menu-design/",
-          "name": "Generador de menús de restaurante gratis"
-        },
-        {
-          "@type": "ListItem",
-          "position": 12,
+          "position": 10,
           "url": "https://muntin.digital/es/tools/menu-engineering/",
           "name": "Matriz de Ingeniería de Menú"
         },
         {
           "@type": "ListItem",
-          "position": 13,
+          "position": 11,
           "url": "https://muntin.digital/es/tools/mobile-check/",
           "name": "¿Mi sitio es apto para móvil? Revisión gratis"
         },
         {
           "@type": "ListItem",
-          "position": 14,
+          "position": 12,
           "url": "https://muntin.digital/es/tools/open-hours/",
           "name": "Horario Abierto"
         },
         {
           "@type": "ListItem",
-          "position": 15,
+          "position": 13,
           "url": "https://muntin.digital/es/tools/photo-brief/",
           "name": "Constructor de Brief de Fotos"
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 14,
           "url": "https://muntin.digital/es/tools/plate-cost/",
           "name": "Costo del Plato"
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 15,
           "url": "https://muntin.digital/es/tools/schema-check/",
           "name": "¿Google entiende mi negocio? Revisión gratis de schema"
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 16,
           "url": "https://muntin.digital/es/tools/search-ideas/",
           "name": "¿Qué busca la gente cerca de mí? Ideas gratis de búsqueda local"
         },
         {
           "@type": "ListItem",
-          "position": 19,
+          "position": 17,
           "url": "https://muntin.digital/es/tools/seo-grader/",
           "name": "Calificador SEO de título y descripción"
         },
         {
           "@type": "ListItem",
-          "position": 20,
+          "position": 18,
           "url": "https://muntin.digital/es/tools/speed-test/",
           "name": "¿Qué tan rápido es mi sitio? Prueba gratis de velocidad móvil"
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 19,
           "url": "https://muntin.digital/es/tools/start/",
           "name": "Empieza aquí"
         },
         {
           "@type": "ListItem",
-          "position": 22,
+          "position": 20,
           "url": "https://muntin.digital/es/tools/storefront-health/",
           "name": "Salud del Storefront"
         },
         {
           "@type": "ListItem",
-          "position": 23,
+          "position": 21,
           "url": "https://muntin.digital/es/tools/tech-stack/",
           "name": "¿Con qué está hecho mi sitio? Detector gratis de tecnologías"
         }
@@ -307,6 +295,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -467,7 +465,7 @@ header.nav{min-height:64px}
         Las herramientas de SEO genéricas te dan un PDF lleno de abstracciones. Estas son distintas: cada una está hecha para un tipo de negocio específico, y cada una traduce sus hallazgos al idioma que el dueño realmente usa. Elige la tuya.
       </p>
       <p class="hero-sub hero-sub-narrow" style="margin-top:14px;font-size:14.5px;color:var(--ink-soft);">
-        Diecisiete herramientas es mucho para una primera visita. <a href="/es/tools/start/" style="color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);text-decoration:none;">Contesta cinco preguntas</a> y te apuntamos a las dos o tres que coinciden con lo que de verdad está goteando.
+        Veintiuna herramientas es mucho para una primera visita. <a href="/es/tools/start/" style="color:var(--teal);font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--teal) 35%, transparent);text-decoration:none;">Contesta cinco preguntas</a> y te apuntamos a las dos o tres que coinciden con lo que de verdad está goteando.
       </p>
     </div>
   </div>
@@ -476,24 +474,7 @@ header.nav{min-height:64px}
 <!-- tools:auto -->
 <section class="block">
   <div class="container container-wide">
-    <section class="tool-spotlight" aria-labelledby="tool-spotlight-heading">
-    <span class="eyebrow">Destacado</span>
-    <h2 id="tool-spotlight-heading" class="tool-spotlight__heading">Las dos herramientas que construimos diferente.</h2>
-    <div class="tool-spotlight__grid">
-      <a href="/es/tools/menu-design/" class="tool-card-spotlight live">
-        <span class="tool-card-spotlight__chip">vs plantillas de Canva</span>
-        <h3 class="tool-card-spotlight__title">Suite de Diseño de Menú</h3>
-        <p class="tool-card-spotlight__headline">La única herramienta de menú que acomoda 14 o 53 platos desde una pasada — sin pelearte con Canva.</p>
-        <span class="tool-card-spotlight__cta">Abrir la herramienta <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-      <a href="/es/tools/invoice-decoder/" class="tool-card-spotlight live">
-        <span class="tool-card-spotlight__chip">vs Restaurant365 · MarginEdge · Plate IQ</span>
-        <h3 class="tool-card-spotlight__title">Decodificador de Facturas</h3>
-        <p class="tool-card-spotlight__headline">Una herramienta de facturas que bloquea tus datos con un secreto que solo tú conoces — Restaurant365 lee todo; nosotros no leemos nada.</p>
-        <span class="tool-card-spotlight__cta">Abrir la herramienta <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
-    </div>
-  </section>
+    
 
     <aside class="tool-goals" aria-labelledby="tool-goals-heading">
   <span class="eyebrow">Cuando ya sabes qué duele</span>
@@ -501,8 +482,8 @@ header.nav{min-height:64px}
   <ul>
       <li><strong>Subir precios</strong> <a href="/es/tools/plate-cost/">Costo del Plato</a> &middot; <a href="/es/tools/menu-engineering/">Matriz de Ingeniería de Menú</a> &middot; <a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
       <li><strong>Arreglar tu ficha de Google</strong> <a href="/es/tools/gbp-grader/">Calificador de Google Business Profile</a> &middot; <a href="/es/tools/audits/restaurant/">Diagnóstico de sitio de restaurante</a> &middot; <a href="/es/tools/open-hours/">Horario Abierto</a></li>
-      <li><strong>Refrescar tu marca</strong> <a href="/es/tools/brand-suite/">Suite de Marca</a> &middot; <a href="/es/tools/photo-brief/">Constructor de Brief de Fotos</a> &middot; <a href="/es/tools/menu-copy/">Inspector de Copy de Menú</a> &middot; <a href="/es/tools/menu-design/">Suite de Diseño de Menú</a></li>
-      <li><strong>Lleva tus costos sin hoja de cálculo</strong> <a href="/es/tools/invoice-decoder/">Decodificador de Facturas</a> &middot; <a href="/es/tools/plate-cost/">Costo del Plato</a> &middot; <a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
+      <li><strong>Refrescar tu marca</strong> <a href="/es/tools/brand-suite/">Suite de Marca</a> &middot; <a href="/es/tools/photo-brief/">Constructor de Brief de Fotos</a> &middot; <a href="/es/tools/menu-copy/">Inspector de Copy de Menú</a> &middot; <a href="/es/tools/menu-converter/">Conversor de menú</a></li>
+      <li><strong>Lleva tus costos sin hoja de cálculo</strong> <a href="/es/tools/plate-cost/">Costo del Plato</a> &middot; <a href="/es/tools/margin-math/">Cálculo de Margen</a> &middot; <a href="/es/tools/cost-pulse/">Pulso de Costos</a></li>
   </ul>
 </aside>
 
@@ -521,13 +502,6 @@ header.nav{min-height:64px}
       <a class="tool-cluster__topic" href="/es/learn/topics/operations-margin/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/es/tools/invoice-decoder/" class="tool-card tool-card--compact live">
-        <span class="status">En vivo</span>
-        <h3>Decodificador de Facturas</h3>
-        <p>Saca foto a tu factura de Sysco o de verduras. Obtén partidas ordenadas para pasar al Costo del Plato — sin hoja de cálculo.</p>
-        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Partidas categorizadas guardadas en tu Taller, listas para Costo del Plato.</p>
-        <span class="cta">Abrir Decodificador de Facturas <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
       <a href="/es/tools/cost-pulse/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Pulso de Costos</h3>
@@ -642,13 +616,6 @@ header.nav{min-height:64px}
       <a class="tool-cluster__topic" href="/es/learn/topics/brand-design/">Ver el tema completo <span aria-hidden="true">&rarr;</span></a>
     </header>
     <div class="tool-grid">
-      <a href="/es/tools/menu-design/" class="tool-card tool-card--compact live">
-        <span class="status">En vivo</span>
-        <h3>Suite de Diseño de Menú</h3>
-        <p>Escribe tus platos, marca alérgenos, elige un tema, sube tu logo. Acomoda 14 o 53 platos en 22 formatos — carta, tríptico, tabla, carta de vinos, personalizado — sin pelearte con plantillas de 12.</p>
-        <p class="tool-card__walkaway"><span class="tool-card__walkaway-label">Te llevas:</span> Un PDF de menú imprimible que se adapta a la cantidad de platos que realmente tienes, con glifos de alérgenos y una variante con sangrado/marcas de corte para imprenta.</p>
-        <span class="cta">Abrir Suite de Diseño de Menú <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></span>
-      </a>
       <a href="/es/tools/brand-suite/" class="tool-card tool-card--compact live">
         <span class="status">En vivo</span>
         <h3>Suite de Marca</h3>

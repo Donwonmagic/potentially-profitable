@@ -382,6 +382,16 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -502,7 +512,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">¿Cuánto cuesta de verdad cada plato?</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-08">8 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -830,9 +840,9 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
           </a>
         </li>
         <li>
-          <a class="topic-tool-card" href="/es/sheets/line-check-sheet/">
-            <h4>Chequeo de línea pre-servicio</h4>
-            <p>Recorrido de diez minutos antes de abrir — temperaturas, par de prep, lista 86, notas de expo. Vive en una tabla; hecho para imprimir.</p>
+          <a class="topic-tool-card" href="/es/sheets/weekly-prime-cost-worksheet/">
+            <h4>Hoja semanal de costo primo</h4>
+            <p>El número más importante que un operador pequeño puede seguir. Mete costos de comida, bebida y mano de obra contra las ventas netas. Mira tu costo primo y dónde queda frente al techo del 60 por ciento.</p>
             <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
           </a>
         </li>
@@ -852,7 +862,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
 <script src="/assets/site.js?v=20260422-cohesion" defer></script>
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
-<script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
+<script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
 <script>

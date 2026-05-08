@@ -380,27 +380,15 @@
   }
 
   // ----------------------------------------------------------------
-  // W3-6 — global clear-on-leave hook for invoice-decoder secrets.
+  // Defensive global clear-on-leave hook for in-memory crypto state.
   //
-  // The Invoice Decoder caches two pieces of in-memory state across
-  // saves on a single tab: the derived AES-GCM key (encrypt.js
-  // __keyCache) and the passphrase memory (passphrase-modal.js
-  // __ppMemory). Both are good UX — saving 4 invoices in a session
-  // shouldn't require typing the secret 4 times. But we want them
-  // gone on tab close, on extended tab-hide, and when the operator
-  // signs out.
-  //
-  // The two modules each register their own beforeunload listener,
-  // but those only fire on tab close. This adds:
-  //   1. pagehide → same as beforeunload but Safari-friendly.
-  //   2. visibilitychange (>5 min hidden) → defensive zero-out so a
-  //      shared device doesn't leave keys in memory across a long
-  //      gap.
-  //   3. delegated click on any a[href*="sign-out"] or
-  //      a[data-act="signout"] → wipes immediately, before the
-  //      navigation lands.
-  //
-  // No-ops cleanly when the modules aren't loaded on the page.
+  // Originally added (Wave 3.6) for the Invoice Decoder, which cached
+  // a derived AES-GCM key and a passphrase across saves. That tool
+  // was retired 2026-05-08; the wipe calls below now no-op cleanly
+  // because the modules don't load on any surviving surface. Kept
+  // as a defensive backstop in case any future tool reintroduces
+  // an in-memory secret cache — the plumbing costs nothing when the
+  // module hooks are absent, and removing it would bury the pattern.
   // ----------------------------------------------------------------
   (function () {
     function wipeSecrets() {

@@ -173,6 +173,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -331,7 +341,7 @@ header.nav{min-height:64px}
     <p class="ts-eyebrow" aria-hidden="true">Start here</p>
     <h1 class="ts-h1">Pick the right tool first.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-04">May 4, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-08">May 8, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -450,8 +460,6 @@ header.nav{min-height:64px}
       'search-ideas':      { name: 'Search Ideas',                   url: '/tools/search-ideas/' },
       'tech-stack':        { name: 'Tech Stack Detector',            url: '/tools/tech-stack/' },
       'compare':           { name: 'Compare',                        url: '/tools/compare/' },
-      'menu-design':       { name: 'Menu Design Suite',              url: '/tools/menu-design/' },
-      'invoice-decoder':   { name: 'Advanced Invoice Decoder',        url: '/tools/invoice-decoder/' },
       'cost-pulse':        { name: 'Cost Pulse',                      url: '/tools/cost-pulse/' }
     };
 
@@ -477,8 +485,6 @@ header.nav{min-height:64px}
       'search-ideas':      { leaveWith: 'The phrases real customers use for your category + city', time: '30 sec',      needs: 'your business type + city' },
       'tech-stack':        { leaveWith: 'What your site is built on + what that means for fixes',  time: '10 sec',      needs: 'your URL' },
       'compare':           { leaveWith: 'A side-by-side scorecard vs. a competitor',               time: '60 sec',      needs: 'two URLs' },
-      'menu-design':       { leaveWith: 'A printable PDF menu laid out for whatever dish count you have', time: '20 min',  needs: 'your dish list + a logo' },
-      'invoice-decoder':   { leaveWith: 'Sorted invoice line items saved to your Workshop',               time: '3 min',       needs: 'phone camera + one invoice' },
       'cost-pulse':        { leaveWith: 'A drift dashboard across your saved invoices — see which category jumped',         time: '60 sec',      needs: 'at least one saved invoice (use Invoice Decoder first)' }
     };
 
@@ -523,12 +529,8 @@ header.nav{min-height:64px}
 
       if (answers.leak === 'margin') {
         // W10-8 — Invoice Decoder routes when the operator hasn't
-        // recipe-costed yet. The fastest path from "I think margin
-        // is leaking" to a structured cost view is one invoice photo
-        // → 12 line items in their workshop, then plate cost, then
-        // margin math. Cost Pulse is the dashboard view they get
-        // after a few saves.
-        path.push({ k: 'invoice-decoder', why: 'A 30-second snap of one invoice gives you the line-item costs the rest of the margin tools need.' });
+        // recipe-costed yet. Start with plate-cost: type ingredients,
+        // get a per-plate number, then layer on the margin math.
         if (answers.recipe === 'yes' || answers.recipe === 'partial') {
           path.push({ k: 'plate-cost', why: 'Recipe-level cost per plate is the input every other margin tool needs.' });
         }
@@ -562,7 +564,7 @@ header.nav{min-height:64px}
         // the printable menu is the single biggest brand artifact a
         // kitchen-focused operator updates monthly. Doing it AFTER
         // plate-cost so prices reflect the costed math.
-        path.push({ k: 'menu-design', why: 'A printable PDF menu in the theme that matches your cuisine — refresh it when you update prices.' });
+        path.push({ k: 'menu-converter', why: 'Paste your menu, get HTML + JSON-LD schema you can drop into your site.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Per-dish profitability + popularity. Tells you which Stars to protect and which Dogs to retire.' });
         }

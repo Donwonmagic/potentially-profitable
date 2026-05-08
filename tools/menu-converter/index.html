@@ -158,6 +158,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -313,7 +323,7 @@ header.nav{min-height:64px}
         Paste your menu. <span class="serif-italic">Get clean HTML and schema.</span>
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-04">May 4, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-08">May 8, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -405,11 +415,11 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
            next move is often "give me a printable too" — the styled
            PDF / table-tent / placemat that the schema'd HTML can't
            produce. We push the parsed structure (sections + items)
-           into MuntinContext + deeplink into Menu Design where the
-           dishes pre-load and the operator just picks a theme. -->
-      <aside class="mc-handoff-card" id="mcvHandoffMenuDesign" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
+           into MuntinContext + deeplink into Menu Engineering where
+           the dishes pre-load for star/dog analysis. -->
+      <aside class="mc-handoff-card" id="mcvHandoffMenuDesign" data-handoff="menu-engineering" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
         <p id="mcvHandoffHeadline" style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;"></p>
-        <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your structured menu and lays out a print-ready PDF + QR-menu HTML in your chosen theme. Same dishes, eight more deliverables.</p>
+        <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Engineering reads your structured menu, lets you tag star/plowhorse/puzzle/dog, and tells you which items to protect and which to retire.</p>
         <button type="button" id="mcvHandoffMenuDesignBtn" class="mc-btn" style="font-size:13px;padding:8px 14px;"></button>
       </aside>
 
@@ -430,7 +440,6 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     <section class="mc-deeplinks">
       <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/tools/menu-design/">Menu Design Suite</a> &mdash; layout the printed/PDF version after the HTML one</li>
         <li><a href="/tools/menu-engineering/">Menu Engineering</a> &mdash; star/plowhorse/puzzle/dog analysis on your menu</li>
         <li><a href="/glossary/menu-schema/">Glossary: Menu schema</a></li>
         <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google actually uses</a></li>
@@ -451,9 +460,9 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
       <div class="tool-knit__col">
         <h3>Related tools</h3>
         <ul>
-          <li><a href="/tools/menu-design/">Menu Design Suite</a></li>
           <li><a href="/tools/menu-engineering/">Menu Engineering Matrix</a></li>
           <li><a href="/tools/menu-copy/">Menu Copy Inspector</a></li>
+          <li><a href="/tools/plate-cost/">Plate Cost Calculator</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -475,6 +484,33 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     </div>
   </aside>
 <!-- /tool-knit -->
+<!-- tool-sheet-rail:start -->
+<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Pair with paperwork</span>
+      <h2 id="tool-sheet-rail-h">Operator sheets that use this tool — printable, fillable, exports to CSV.</h2>
+    </header>
+    <ul class="topic-tool-list">
+        <li>
+          <a class="topic-tool-card" href="/sheets/menu-redesign-brief/">
+            <h4>Menu Redesign Brief</h4>
+            <p>What the designer needs to do the work — top 10 sellers, dogs to cut, price changes, callout items, dietary flags, print and digital and POS targets.</p>
+            <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="topic-tool-card" href="/sheets/allergen-matrix/">
+            <h4>Menu Allergen Matrix</h4>
+            <p>Menu item by top-9 US allergens grid, with modifications-on-request notes. Updates with every menu change. Server reference, liability defense.</p>
+            <span class="topic-tool-cta">Open the sheet <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+    </ul>
+  </div>
+</section>
+<!-- tool-sheet-rail:end -->
+
 </main>
 
 <footer>
@@ -929,12 +965,12 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
       if (window.plausible) {
         try {
           window.plausible('Menu Converter Handoff', { props: {
-            to: 'menu-design',
+            to: 'menu-engineering',
             itemCount_bucket: totalItems < 6 ? '<6' : totalItems < 12 ? '6-11' : totalItems < 25 ? '12-24' : '25+'
           }});
         } catch (_) {}
       }
-      window.location.href = '/tools/menu-design/?from=menu-converter';
+      window.location.href = '/tools/menu-engineering/?from=menu-converter';
     });
   }
 

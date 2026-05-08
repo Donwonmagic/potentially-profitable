@@ -61,8 +61,8 @@ function loadModule(relPath) {
   return moduleObj.exports;
 }
 
-const THEMES  = loadModule('tools/menu-design/themes.js');
-const CREDITS = loadModule('tools/menu-design/data/theme-credits.js');
+const THEMES  = loadModule('data/menu-design-themes.js');
+const CREDITS = loadModule('data/menu-design-theme-credits.js');
 const groups  = THEMES.groups();
 
 // ---- Cuisine bucket lookup (mirrors build-cuisine-landing-pages.mjs)
@@ -145,7 +145,7 @@ function emitJsonLd(themeId, locale) {
         ...(c ? { 'dateCreated': c.dateAdded } : {}),
         'inLanguage': locale === 'es' ? 'es' : 'en',
         'url': baseUrl,
-        'isPartOf': { '@id': 'https://muntin.digital/tools/menu-design/#tool' }
+        'isPartOf': { '@id': locale === 'es' ? 'https://muntin.digital/es/library/menu-design-themes/#collection' : 'https://muntin.digital/library/menu-design-themes/#collection' }
       },
       { '@type': 'BreadcrumbList', 'itemListElement': breadcrumb }
     ]
@@ -171,8 +171,8 @@ function emitThemePage(themeId, locale) {
   const reviewedLabel = locale === 'es' ? 'Revisado por' : 'Reviewed by';
   const addedLabel    = locale === 'es' ? 'Añadido'      : 'Added';
   const inspiredLabel = locale === 'es' ? 'Inspirado en' : 'Inspired by';
-  const tryLabel      = locale === 'es' ? 'Abrir este tema en el editor →' : 'Open this theme in the editor →';
-  const tryHref       = `${baseSlash}/tools/menu-design/?theme=${themeId}`;
+  const tryLabel      = locale === 'es' ? 'Pídelo con Menu Drop-In →' : 'Get it built — Menu Drop-In →';
+  const tryHref       = `${baseSlash}/services/menu-drop-in/`;
 
   const inspiredHtml = (c.inspiredBy || []).map(s => `<li>${escHtml(s)}</li>`).join('');
 
@@ -385,7 +385,7 @@ header.nav{min-height:64px}
     <h2>${escHtml(sectionPaperLabel)}</h2>
     <div class="md-ts-chips">${paperFloors || '—'}</div>
   </section>
-  ${cuisineLinks ? `<section class="md-ts-related"><h2 style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 12px">${locale === 'es' ? 'Páginas relacionadas' : 'Related pages'}</h2><ul>${cuisineLinks}<li><a href="${baseSlash}/library/menu-design-themes/">${locale === 'es' ? 'Mesa de revisión de temas' : 'Theme review board'}</a></li><li><a href="${baseSlash}/tools/menu-design/?theme=${themeId}">${tryLabel}</a></li></ul></section>` : ''}
+  ${cuisineLinks ? `<section class="md-ts-related"><h2 style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 12px">${locale === 'es' ? 'Páginas relacionadas' : 'Related pages'}</h2><ul>${cuisineLinks}<li><a href="${baseSlash}/library/menu-design-themes/">${locale === 'es' ? 'Mesa de revisión de temas' : 'Theme review board'}</a></li><li><a href="${tryHref}">${tryLabel}</a></li></ul></section>` : ''}
 </div>
 </main>
 <footer class="site-footer" id="footer"></footer>

@@ -124,6 +124,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -281,6 +291,9 @@ header.nav{min-height:64px}
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px">
         Most restaurant websites have one page that&rsquo;s costing them dinners: the menu. We&rsquo;ll build a single custom HTML menu page &mdash; mobile-fast, properly marked up, EN/ES &mdash; and plug it into your existing Wix, Squarespace, or Shopify site without the rebuild. Seven business days, flat fee.
       </p>
+      <p style="font-size:15.5px;line-height:1.55;color:var(--ink);margin:0 0 24px;font-weight:500">
+        No DIY tool. No AI guesswork. Hand-coded, by one person, in writing.
+      </p>
       <p class="offer-price">$1,500<small>flat &middot; 7 business days</small></p>
     </header>
 
@@ -335,7 +348,7 @@ header.nav{min-height:64px}
         <li><a href="/services/audit/">$499 website audit</a> &mdash; the diagnostic that often comes first</li>
         <li><a href="/services/care-plan-light/">$99/mo Care Plan Light</a> &mdash; keeping the new page current</li>
         <li><a href="/services/">Services &amp; pricing</a> &mdash; the three full-build tiers</li>
-        <li><a href="/tools/menu-design/">Free menu design tool</a> &mdash; preview your menu before you commission</li>
+        <li><a href="/tools/audits/restaurant/">Free 30-second restaurant audit</a> &mdash; see your menu page&rsquo;s specific issues before you commission</li>
         <li><a href="/blog/restaurant-photo-spec-sheet/">Photo spec sheet</a> &mdash; the photo brief I send to operators before a build</li>
       </ul>
     </section>

@@ -36,7 +36,6 @@ const EXCLUDE = new Set([
   'es/tools/index.html',
   'tools/audits/index.html',
   'es/tools/audits/index.html',
-  'tools/invoice-decoder/_compare/index.html',
 ]);
 
 // EN + ES tool-meta prefixes. The eyebrow must START with one of

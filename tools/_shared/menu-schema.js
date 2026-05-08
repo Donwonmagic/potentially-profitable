@@ -26,9 +26,8 @@
  * writes on save. Conflict resolution is the responsibility of the
  * tool surfacing the load banner — never overwrite silently.
  *
- * Backwards compat: `migrate(obj)` accepts v1 / v2 drafts (the
- * shapes already living in `tools/menu-design/state/draft.js`)
- * and returns a clean v3. Each step is reversible-friendly:
+ * Backwards compat: `migrate(obj)` accepts v1 / v2 drafts and
+ * returns a clean v3. Each step is reversible-friendly:
  * the v3 reducer never drops fields it does not understand,
  * so a Wave-B tool that adds a new optional field does not
  * brick a Wave-A tool that doesn't know about it.
@@ -47,10 +46,11 @@
 
   var SCHEMA_VERSION = 3;
 
-  // -------- Allergen regimes (referenced from data/allergens.js) -----
-  // The catalog of codes lives in tools/menu-design/data/allergens.js;
-  // this module just declares which regimes ship and what their
-  // disclaimer text is. Renderers consume both.
+  // -------- Allergen regimes ----------------------------------------
+  // This module declares which regimes ship and what their
+  // disclaimer text is. The full code catalog (US-FDA, EU, UK,
+  // CA-CFIA) was housed in the now-retired Menu Design Suite;
+  // surviving consumers can reference REGIMES below directly.
   var REGIMES = {
     'us-fda9': {
       label_en: 'United States — FDA Big 9',

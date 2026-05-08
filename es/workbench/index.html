@@ -90,6 +90,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -406,7 +416,6 @@ header.nav{min-height:64px}
       'search-ideas': { label: 'Ideas de búsqueda',   url: '/es/tools/search-ideas/',      watchable: false },
       'storefront-health': { label: 'Storefront Health', url: '/es/tools/storefront-health/', watchable: false },
       submission:     { label: 'Apunte',              url: '/es/workbench/',              watchable: false },
-      'invoice-decoder': { label: 'Factura',          url: '/es/tools/invoice-decoder/',  watchable: false },
       sheet:          { label: 'Hoja',                url: '/es/sheets/',                  watchable: false }
     };
 
@@ -633,11 +642,8 @@ header.nav{min-height:64px}
         }
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/es/tools/';
-        // Phase 7 W1-8 — invoice-decoder cards route to ?reload=
-        var openUrl = (item.kind === 'invoice-decoder')
-          ? openBase + '?reload=' + encodeURIComponent(item.id)
-          : openBase + '?saved=' + encodeURIComponent(item.id);
-        var isInvoice = item.kind === 'invoice-decoder';
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var isInvoice = false;
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);

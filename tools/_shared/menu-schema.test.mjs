@@ -4,8 +4,12 @@
  *            (or via scripts/check-tests.mjs in CI)
  *
  * Coverage focus: migration paths (v1 / v2 / v3 inputs), validation,
- * round-trip lossless v3 → toV2Draft → migrate, ID minting, and the
- * regime registry parity with the allergens catalog.
+ * round-trip lossless v3 → toV2Draft → migrate, ID minting.
+ *
+ * Note: the previous "REGIMES match allergens catalog" parity test
+ * was retired alongside tools/menu-design/data/allergens.js when
+ * Menu Design Suite was sunset (2026-05-08). REGIMES now lives only
+ * in menu-schema.js, so there is nothing to drift against.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,19 +17,9 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const SCHEMA = require('./menu-schema.js');
-const ALLERGENS = require('../menu-design/data/allergens.js');
 
 test('SCHEMA_VERSION is 3', () => {
   assert.equal(SCHEMA.SCHEMA_VERSION, 3);
-});
-
-test('REGIMES match allergens catalog regime registry', () => {
-  // The schema and the data catalog declare the same set of regimes;
-  // if either drifts, this catches it before a release.
-  assert.deepEqual(
-    Object.keys(SCHEMA.REGIMES).sort(),
-    Object.keys(ALLERGENS.REGIMES).sort()
-  );
 });
 
 test('migrate(null) returns a blank v3 menu', () => {

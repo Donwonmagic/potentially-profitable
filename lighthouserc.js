@@ -17,10 +17,9 @@
  *   /window/                           — contact, JS-heavy
  *   /tools/                            — tools index (cards, mostly static)
  *   /tools/seo-grader/                 — a fetch-light tool result
- *   /tools/menu-design/                — flagship: largest tool surface, gated
- *                                         to catch the 350KB-on-load regression
- *                                         we're code-splitting away from
- *   /es/tools/menu-design/             — bilingual parity gate: ES-mirrored
+ *   /tools/storefront-health/          — flagship: storefront scorecard tool,
+ *                                         gated as the largest live surface
+ *   /es/tools/storefront-health/       — bilingual parity gate: ES-mirrored
  *                                         flagship must hit the same budget
  *   /library/                          — (post-IA migration) library hub; today /learn/
  *   /blog/why-your-restaurant-loses-reservations-every-night/
@@ -35,8 +34,8 @@ const PATHS = [
   '/window/',
   '/tools/',
   '/tools/seo-grader/',
-  '/tools/menu-design/',
-  '/es/tools/menu-design/',
+  '/tools/storefront-health/',
+  '/es/tools/storefront-health/',
   '/learn/',
   '/blog/why-your-restaurant-loses-reservations-every-night/',
   '/glossary/conversion-rate/',

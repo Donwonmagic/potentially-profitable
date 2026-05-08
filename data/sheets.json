@@ -104,7 +104,7 @@
       "stay_paper": false,
       "es_locale_hazard": false,
       "pairsWith": {
-        "tools":    ["margin-math", "cost-pulse", "invoice-decoder"],
+        "tools":    ["margin-math", "cost-pulse", "plate-cost"],
         "glossary": ["prime-cost", "food-cost", "labor-cost"],
         "blog":     ["is-doordash-worth-it-for-restaurants-in-2026", "five-restaurant-website-changes-recover-one-percent-margin"]
       },
@@ -290,7 +290,7 @@
       "format": "checklist",
       "stay_paper": true,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["invoice-decoder", "cost-pulse"], "glossary": ["edible-portion"], "blog": [] },
+      "pairsWith": { "tools": ["plate-cost", "cost-pulse"], "glossary": ["edible-portion"], "blog": [] },
       "when_to_use_en": [
         "Standing at the back door while the driver is still there.",
         "Whenever a substitution shows up that you did not approve in writing.",
@@ -641,7 +641,7 @@
       "format": "report",
       "stay_paper": false,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["menu-engineering", "menu-design", "brand-suite"], "glossary": ["menu-engineering", "menu-mix"], "blog": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"] },
+      "pairsWith": { "tools": ["menu-engineering", "menu-converter", "brand-suite"], "glossary": ["menu-engineering", "menu-mix"], "blog": ["how-to-raise-restaurant-menu-prices-without-losing-reservations"] },
       "when_to_use_en": [
         "Six to eighteen months in — when the menu has drifted enough that the printout no longer matches the kitchen.",
         "Before sending to the designer. The brief is what makes their work fast and yours predictable.",
@@ -786,7 +786,7 @@
       "format": "table",
       "stay_paper": true,
       "es_locale_hazard": false,
-      "pairsWith": { "tools": ["invoice-decoder"], "glossary": [], "blog": [] },
+      "pairsWith": { "tools": ["plate-cost"], "glossary": [], "blog": [] },
       "when_to_use_en": [
         "When the dishwasher breaks at 7pm on a Saturday and you need the equipment vendor's after-hours number.",
         "Quarterly review — call each contact, verify they still work there, update the sheet.",
@@ -961,7 +961,7 @@
       "format": "table",
       "stay_paper": false,
       "es_locale_hazard": true,
-      "pairsWith": { "tools": ["menu-design"], "glossary": ["dietary-markers"], "blog": [] },
+      "pairsWith": { "tools": ["menu-converter"], "glossary": ["dietary-markers"], "blog": [] },
       "when_to_use_en": [
         "Quarterly — every menu change, every supplier swap, every new prep recipe.",
         "Before training a new server — the matrix is the reference they cite to a guest.",

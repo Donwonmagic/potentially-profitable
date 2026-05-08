@@ -139,7 +139,7 @@ header.nav{min-height:64px}
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-menu-engineering-es.png",
-      "datePublished": "2026-04-30T03:45:15+00:00",
+      "datePublished": "2026-05-03T15:32:30-04:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -160,6 +160,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -374,7 +384,6 @@ header.nav{min-height:64px}
         <h3>Aparece en</h3>
         <ul>
           <li><a href="/es/tools/menu-engineering/#matrix">Matriz de Ingeniería de Menú</a></li>
-          <li><a href="/es/tools/menu-design/">Suite de Diseño de Menú</a></li>
           <li><a href="/es/tools/menu-converter/">Conversor de menú</a></li>
         </ul>
       </div>
@@ -382,10 +391,10 @@ header.nav{min-height:64px}
         <h3>Lee</h3>
         <ul>
           <li><a href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a></li>
-          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
-          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
           <li><a href="/es/blog/what-should-be-on-a-restaurant-website/">Qué debe llevar un sitio de restaurante</a></li>
+          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
           <li><a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">Cómo saber si una herramienta es segura</a></li>
+          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

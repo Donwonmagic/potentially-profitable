@@ -97,55 +97,11 @@
 # ------------------------------------------------------------
 # Service worker (Wave 6.8 — Invoice Decoder PWA)
 # ------------------------------------------------------------
-# Service workers MUST NOT be aggressively cached — the browser
-# checks the SW URL on every navigation to detect updates. A long
-# cache here would trap users on stale tool versions for weeks.
-# We use no-cache (the browser still keeps a copy but revalidates
-# every time) plus max-age=0 for older caches that ignore no-cache.
-# The Service-Worker-Allowed header is unnecessary because the SW
-# is registered at the same path it lives in (/tools/invoice-decoder/).
-/tools/invoice-decoder/sw.js
-  Cache-Control: no-cache, max-age=0, must-revalidate
-  Content-Type: application/javascript; charset=utf-8
-
-# Tool-scoped manifest. Refresh window aligned with site manifest
-# (1 hour) so a manifest-content change propagates within reasonable
-# time without forcing re-downloads on every visit.
-/tools/invoice-decoder/manifest.webmanifest
-  Cache-Control: public, max-age=3600
-  Content-Type: application/manifest+json; charset=utf-8
-
-
-# ------------------------------------------------------------
-# Menu Design Suite — tool-scoped JS / CSS / future SW
-# ------------------------------------------------------------
-# Menu Design is the largest tool surface (renderers + themes).
-# Its filenames aren't fingerprinted (we ship `?v=` query stamps
-# in HTML), so we mirror the global /assets/*.js policy: 1-day
-# browser cache + a week of stale-while-revalidate. Rule order
-# matters — the more specific /tools/menu-design/* rules go
-# before any future /tools/* catch-all.
-/tools/menu-design/*.js
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-/tools/menu-design/*.css
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-# Future code-split sub-modules (state/, infra/, data/, exports/).
-/tools/menu-design/*/*.js
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-# Service worker — when the menu-design PWA ships, mirror the
-# invoice-decoder posture: never aggressively cache, always
-# revalidate so an update can ship without trapping operators
-# on a stale shell.
-/tools/menu-design/sw.js
-  Cache-Control: no-cache, max-age=0, must-revalidate
-  Content-Type: application/javascript; charset=utf-8
-
-/tools/menu-design/manifest.webmanifest
-  Cache-Control: public, max-age=3600
-  Content-Type: application/manifest+json; charset=utf-8
+# Tools sunset (Sprint M, 2026-05-08): invoice-decoder + menu-design
+# retired. The directories are gone; bare paths and sub-paths return
+# HTTP 410 via _redirects rules, so no path-scoped Cache-Control or
+# Content-Type headers are needed here. Cloudflare emits its own
+# default headers on 410 responses, which is correct for "Gone."
 
 
 # ------------------------------------------------------------
@@ -179,17 +135,6 @@
 /assets/vendor/*.wasm
   Content-Type: application/wasm
   Cache-Control: public, max-age=2592000, immutable
-
-
-# ------------------------------------------------------------
-# Per-theme SVG thumbnails (build-time generated from themes.js).
-# 1-day browser cache + week-long stale-while-revalidate to match
-# the global asset policy. Cache-busted via ?v= when themes.js
-# changes (the picker JS sets the v stamp).
-# ------------------------------------------------------------
-/assets/menu-design-thumbs/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-  Content-Type: image/svg+xml; charset=utf-8
 
 
 # ------------------------------------------------------------

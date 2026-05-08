@@ -67,18 +67,12 @@ const CHECKS = [
   ['CSS shells',          'check-css-shells.mjs',          '--check'],
   // Invoice-Decoder safety: the four server files in src/ that touch
   // the decoder pipeline must NOT contain any outbound network paths
-  // for invoice content. Cheap regex check; high-blast-radius bug if
-  // it ever regresses (the whole "your numbers never leave this page"
-  // promise depends on it).
-  ['No invoice egress',   'check-no-invoice-egress.mjs'],
-  // Audit fix (C6) — invoice-decoder bilingual parity. Catches the
-  // class of regression where a feature ships to the EN page but
-  // never makes it into /es/tools/invoice-decoder/ (or vice versa).
-  // Narrow check: structural IDs / class hooks / event names that
-  // gate access to user features. Translation quality stays a
-  // human review concern.
-  ['Invoice decoder ES parity','check-invoice-decoder-bilingual-parity.mjs','--check'],
   ['Banned words',        'check-banned-words.mjs'],
+  // Sprint M (2026-05-08): retired-slug regression guard. Fails CI
+  // if either retired slug is reintroduced anywhere outside the
+  // documented allow list (_redirects, 404.html, historical
+  // citation snapshots, this script).
+  ['Removed slugs',       'check-removed-slugs.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],
   ['Tool header',         'check-tool-header.mjs',         '--check'],
@@ -91,17 +85,6 @@ const CHECKS = [
   // ship their tests next to the source and the runner picks
   // them up by glob.
   ['Unit tests',          'check-tests.mjs'],
-  // Wave B13 — LLM citation companion auto-derived from themes +
-  // allergens. Idempotent: --check fails if themes.js or
-  // allergens.js drifted without a corresponding regen of the
-  // /tools/menu-design/llm.md companion.
-  ['Menu Design LLM (idem)','build-menu-design-llm.mjs',     '--check'],
-  // Studio-quality push — per-theme SVG thumbnails generated from
-  // themes.js. The picker uses these as <img> instead of canvas
-  // approximations so each theme renders with its real typography
-  // (browser uses whichever @font-face fonts are loaded). Idempotent
-  // check fails if themes drifted without a regen.
-  ['Theme thumbnails (idem)','build-theme-thumbnails.mjs',   '--check'],
   ['Glossary knit (idem)','wire-glossary-knit.mjs',        '--check'],
   ['Fieldnotes (idem)',   'inject-glossary-fieldnotes.mjs','--check'],
   ['Post-end CTA (idem)', 'inject-post-end-cta.mjs',       '--check'],
@@ -224,9 +207,6 @@ const CHECKS = [
   ['Tool data-promise (idem)','inject-tool-data-promise.mjs','--check'],
   ['Tool no-fetch invariant','check-tool-no-fetch.mjs'],
   ['Sheet no-fetch invariant','check-sheet-no-fetch.mjs'],
-  ['Menu-Design consistency','check-menu-design.mjs'],
-  ['Themes lint',          'check-themes-lint.mjs'],
-  ['Themes metadata',      'check-themes-metadata.mjs'],
   ['Themes review board (idem)','build-themes-review-board.mjs','--check'],
   ['Theme story pages (idem)','build-theme-story-pages.mjs','--check'],
   ['Cuisine landing pages (idem)','build-cuisine-landing-pages.mjs','--check'],

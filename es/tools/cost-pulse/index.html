@@ -101,7 +101,7 @@ header.nav{min-height:64px}
     <span class="eyebrow">Herramienta gratis · Tendencias de tus facturas guardadas</span>
     <h1>Tu pulso de costos.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-08">8 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -110,14 +110,14 @@ header.nav{min-height:64px}
               <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">Un panel sobre las facturas que has guardado con el <a href="/es/tools/invoice-decoder/">Decodificador de Facturas</a>. Detecta deriva, mira cambios de participación por categoría y encuentra la peor semana sin abrir QuickBooks.</p>
+    <p class="cp-lede">Un panel sobre las facturas que guardaste antes de que retiráramos el decodificador en vivo. Detecta deriva en tu data histórica, mira cambios de participación por categoría y encuentra la peor semana sin abrir QuickBooks. (Sin nuevas capturas &mdash; <a href="/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">lee la guía sin OCR</a> para el flujo manual.)</p>
   </div>
 
   <div id="cpStatus"></div>
 
   <div class="cp-card cp-empty" id="cpEmpty" hidden>
-    <p><strong>Guarda tu primera factura — toma 30 segundos.</strong> Cuando tengas al menos una factura guardada, este panel se llena con sparklines, alertas de deriva y medianas móviles entre las categorías que importan (proteína, verduras, lácteos, papel, limpieza).</p>
-    <a class="cp-cta" href="/es/tools/invoice-decoder/">Abrir Decodificador de Facturas →</a>
+    <p><strong>No hay facturas guardadas en este navegador.</strong> Pulso de Costos lee facturas guardadas con el Decodificador de Facturas antes de su retiro el 2026-05-08. Si no tienes ninguna, el panel no tiene nada que mostrar.</p>
+    <p><a class="cp-cta" href="/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">Leer una factura sin OCR &rarr;</a></p>
   </div>
 
   <div class="cp-card" id="cpDriftCard" hidden>
@@ -139,7 +139,7 @@ header.nav{min-height:64px}
 
   <div class="cp-card">
     <h2>Lo que este panel no es.</h2>
-    <p><strong>No es tu contabilidad.</strong> Pulso de Costos solo ve las facturas que activamente has guardado con el Decodificador. No detecta una factura olvidada, no se sincroniza con QuickBooks o Restaurant365, y no concilia con tu banco.</p>
+    <p><strong>No es tu contabilidad.</strong> Pulso de Costos solo lee facturas que se guardaron con el Decodificador de Facturas antes de su retiro el 2026-05-08. No detecta una factura olvidada, no se sincroniza con QuickBooks o Restaurant365, y no concilia con tu banco.</p>
     <p><strong>Sin benchmark.</strong> Las tendencias que ves son <em>tus</em> datos. No agrupamos datos entre operadores, no vendemos benchmarks de costos, y no rellenamos retroactivamente facturas históricas si más adelante hay un opt-in.</p>
     <p><strong>vs Restaurant365 / MarginEdge:</strong> sus dashboards viven en su nube y leen todo lo que subes. Pulso de Costos solo lee lo que activamente guardaste, todo encriptado con una llave derivada de tu sesión. La matemática es local.</p>
   </div>
@@ -156,7 +156,7 @@ header.nav{min-height:64px}
       <div class="tool-knit__col">
         <h3>Herramientas relacionadas</h3>
         <ul>
-          <li><a href="/es/tools/invoice-decoder/">Decodificador de Facturas</a></li>
+          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
           <li><a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
         </ul>
       </div>
@@ -245,8 +245,7 @@ header.nav{min-height:64px}
     lastLine.innerHTML = '<strong>$' + (latest.parsedSum || 0).toFixed(2) + '</strong> · ' +
       latest.itemCount + ' ' + (latest.itemCount === 1 ? 'partida' : 'partidas') +
       ' · ' + when.toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' }) +
-      (latest.vendor ? ' · ' + latest.vendor : '') +
-      ' · <a href="/es/tools/invoice-decoder/">Abrir en Decodificador de Facturas →</a>';
+      (latest.vendor ? ' · ' + latest.vendor : '') + '.';
     lastCard.hidden = false;
 
     if (trend.length >= 2) {

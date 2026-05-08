@@ -531,6 +531,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#main" class="logo" aria-label="Muntin Digital home">
@@ -712,7 +722,7 @@ header.nav{min-height:64px}
       </p>
       <ul class="hero-counts" aria-label="Library at a glance">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
-        <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;free tools</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;free tools</li>
         <li class="hero-counts__chip"><strong><!-- count:articles -->20<!-- /count --></strong>&nbsp;articles</li>
         <li class="hero-counts__chip">All free</li>
       </ul>
@@ -789,28 +799,28 @@ header.nav{min-height:64px}
   <div class="container">
     <div class="tool-cta-flagships__head">
       <span class="eyebrow">Free flagship tools &middot; on your device &middot; no signup</span>
-      <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Two tools we built differently.</h2>
+      <h2 id="tool-cta-heading" class="tool-cta-flagships__heading">Find the leak before you fix it.</h2>
     </div>
     <div class="tool-cta-flagships__grid">
-      <a class="tool-card-flagship" href="/tools/menu-design/">
-        <span class="tool-card-flagship__chip">vs Canva templates</span>
-        <h3 class="tool-card-flagship__title">Menu Design Suite</h3>
-        <p class="tool-card-flagship__headline">The only restaurant menu tool that auto-lays out 14 or 53 dishes from one paste &mdash; no Canva fight with templates that assume 12.</p>
-        <span class="tool-card-flagship__cta">Try it free
+      <a class="tool-card-flagship" href="/tools/storefront-health/">
+        <span class="tool-card-flagship__chip">One URL &middot; six checks</span>
+        <h3 class="tool-card-flagship__title">Storefront Health</h3>
+        <p class="tool-card-flagship__headline">The unified scorecard for your full restaurant storefront &mdash; speed, mobile, schema, GBP, copy, photos. The next fix links to the tool that runs it.</p>
+        <span class="tool-card-flagship__cta">Run the check
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
-      <a class="tool-card-flagship" href="/tools/invoice-decoder/">
-        <span class="tool-card-flagship__chip">vs Restaurant365 &middot; MarginEdge &middot; Plate IQ</span>
-        <h3 class="tool-card-flagship__title">Advanced Invoice Decoder</h3>
-        <p class="tool-card-flagship__headline">An invoice tool that locks your data with a secret only you know &mdash; Restaurant365 reads everything; we read nothing.</p>
-        <span class="tool-card-flagship__cta">Try it free
+      <a class="tool-card-flagship" href="/tools/audits/restaurant/">
+        <span class="tool-card-flagship__chip">About 30 seconds &middot; no signup</span>
+        <h3 class="tool-card-flagship__title">Restaurant Website Audit</h3>
+        <p class="tool-card-flagship__headline">A real mobile Lighthouse audit plus ten restaurant-specific checks, in plain English. Drop your URL.</p>
+        <span class="tool-card-flagship__cta">Run the audit
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </span>
       </a>
     </div>
     <p class="tool-cta-flagships__secondary">
-      Need to diagnose your site first? <a href="/tools/audits/restaurant/">Run the free 30-second restaurant audit &rarr;</a>
+      Tracking margin instead? <a href="/tools/plate-cost/">Plate Cost</a> and <a href="/tools/margin-math/">Margin Math</a> run in your browser &mdash; no spreadsheet, no signup.
     </p>
   </div>
 </section>
@@ -922,7 +932,7 @@ header.nav{min-height:64px}
       </a>
       <a class="learn-tool" href="/tools/">
         <span class="learn-tool-kicker">Free tools · no signup</span>
-        <h3><!-- count:tools.live -->15<!-- /count --> free tools across <!-- count:topics -->8<!-- /count --> topics — pricing, SEO, brand, hours, content, ops.</h3>
+        <h3><!-- count:tools.live -->13<!-- /count --> free tools across <!-- count:topics -->8<!-- /count --> topics — pricing, SEO, brand, hours, content, ops.</h3>
         <p>Restaurant-aware audits, calculators, generators &mdash; pricing, menu mix, plate cost, brand palette, photo brief, hours, GBP grading, and more. Every tool runs in your browser, groups under the same six topics as the rest of the library, and links back to the research that justifies it.</p>
         <span class="learn-tool-cta">Browse the toolkit &rarr;</span>
       </a>
@@ -978,18 +988,6 @@ header.nav{min-height:64px}
         <td class="lib-idx-contributor">Don Goldstein</td>
       </tr>
       <tr>
-        <td class="lib-idx-title"><a href="/tools/menu-design/">Menu Design Suite</a></td>
-        <td class="lib-idx-section">Tools</td>
-        <td class="lib-idx-date" aria-label="2026-05-01"><time datetime="2026-05-01">2026-05-01</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
-        <td class="lib-idx-title"><a href="/tools/invoice-decoder/">Advanced Invoice Decoder</a></td>
-        <td class="lib-idx-section">Tools</td>
-        <td class="lib-idx-date" aria-label="2026-05-01"><time datetime="2026-05-01">2026-05-01</time></td>
-        <td class="lib-idx-contributor">Don Goldstein</td>
-      </tr>
-      <tr>
         <td class="lib-idx-title"><a href="/tools/cost-pulse/">Cost Pulse</a></td>
         <td class="lib-idx-section">Tools</td>
         <td class="lib-idx-date" aria-label="2026-05-01"><time datetime="2026-05-01">2026-05-01</time></td>
@@ -1009,6 +1007,18 @@ header.nav{min-height:64px}
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/how-to-read-restaurant-google-search-console/">Reading Google Search Console</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>

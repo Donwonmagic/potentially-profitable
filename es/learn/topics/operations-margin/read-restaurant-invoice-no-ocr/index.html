@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<title>C&oacute;mo leer una factura de restaurante sin OCR &mdash; el chequeo de siete l&iacute;neas | Muntin Digital</title>
+<meta name="description" content="El flujo de cinco minutos con papel y l&aacute;piz para la revisi&oacute;n semanal de facturas. Siete cosas a detectar antes de firmar &mdash; cambios de unidad, shrinkflation de pack, recargos crecientes &mdash; sin escaneos, sin OCR, sin software nuevo." />
+<link rel="canonical" href="https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="C&oacute;mo leer una factura de restaurante sin OCR" />
+<meta property="og:description" content="El flujo de cinco minutos con papel y l&aacute;piz para la revisi&oacute;n semanal de facturas." />
+<meta property="og:url" content="https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" />
+<meta property="og:site_name" content="Muntin Digital" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/#article",
+      "headline": "C&oacute;mo leer una factura de restaurante sin OCR",
+      "url": "https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+      "datePublished": "2026-05-08",
+      "dateModified": "2026-05-08",
+      "inLanguage": "es",
+      "author": { "@type": "Person", "name": "Don Goldstein" },
+      "publisher": { "@type": "Organization", "name": "Muntin Digital", "url": "https://muntin.digital/" },
+      "isPartOf": { "@id": "https://muntin.digital/es/learn/topics/operations-margin/#topic" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://muntin.digital/es/" },
+        { "@type": "ListItem", "position": 2, "name": "Aprende", "item": "https://muntin.digital/es/learn/" },
+        { "@type": "ListItem", "position": 3, "name": "Operaciones y M&aacute;rgenes", "item": "https://muntin.digital/es/learn/topics/operations-margin/" },
+        { "@type": "ListItem", "position": 4, "name": "Leer factura sin OCR", "item": "https://muntin.digital/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--rust:#B5523A;--line:#E5DFD1;--line-dark:#C9C2B0;--white:#fff;--max:740px;--pad-x:clamp(20px,4vw,40px)}
+*,*:before,*:after{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+a{color:var(--teal)}
+.nav-bar{padding:18px 0;border-bottom:1px solid var(--line);background:var(--white)}
+.nav-bar a{color:var(--ink);text-decoration:none;font-weight:500;font-size:14px}
+main{padding:48px 0 80px}
+h1{font-size:clamp(30px,4.5vw,40px);line-height:1.2;margin:0 0 12px;font-weight:600;letter-spacing:-0.01em}
+h2{font-size:22px;line-height:1.3;margin:36px 0 14px;font-weight:600}
+h3{font-size:18px;line-height:1.35;margin:24px 0 8px;font-weight:600}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.lede{font-size:18.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 8px}
+.tldr{margin:24px 0 32px;padding:16px 20px;border-left:3px solid var(--teal);background:var(--cream-2);border-radius:6px;font-size:15.5px}
+.tldr strong{color:var(--ink)}
+ol li,ul li{margin:6px 0}
+.step{padding:18px 22px;border:1px solid var(--line);border-radius:8px;margin:16px 0;background:var(--white)}
+.step h3{margin:0 0 6px;font-size:17px}
+.step .why{font-size:14.5px;color:var(--ink-soft);margin:0 0 4px}
+.step .red-flag{font-size:14px;color:var(--rust);font-weight:500;margin:6px 0 0}
+.related{margin:48px 0 0;padding:24px;background:var(--cream-2);border-radius:10px}
+.related h2{margin:0 0 12px;font-size:18px}
+.related ul{list-style:none;padding:0;margin:0}
+.related li{padding:8px 0;border-top:1px solid var(--line)}
+.related li:first-child{border-top:0}
+.related a{font-weight:500;color:var(--ink);text-decoration:none}
+.related .blurb{display:block;font-size:14px;color:var(--ink-soft);margin-top:2px}
+footer.site-footer{padding:40px 0;border-top:1px solid var(--line);font-size:14px;color:var(--ink-soft);margin-top:60px}
+footer.site-footer a{color:var(--ink-soft)}
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
+</style>
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<div class="nav-bar">
+  <div class="container">
+    <a href="/es/">Muntin Digital</a> &middot; <a href="/es/learn/">Aprende</a> &middot; <a href="/es/learn/topics/operations-margin/">Operaciones y M&aacute;rgenes</a>
+  </div>
+</div>
+
+<main id="main">
+  <article class="container">
+    <span class="eyebrow">Operaciones y M&aacute;rgenes &middot; Lista de 5 minutos</span>
+    <h1>C&oacute;mo leer una factura de restaurante sin OCR.</h1>
+    <p class="lede">Un flujo semanal de cinco minutos con papel y l&aacute;piz. Siete cosas a detectar antes de firmar &mdash; sin escaneos, sin OCR, sin software nuevo.</p>
+
+    <div class="tldr">
+      <strong>El trabajo en una sola frase:</strong> tres minutos por factura, un resaltador amarillo y una columna con los precios de la semana pasada al lado de los de esta semana. La fuga se esconde donde no la buscas &mdash; en cambios de unidad, cambios de pack y recargos que no se sienten como subidas de precio pero cuestan lo mismo.</p>
+    </div>
+
+    <p>El OCR es seductor: foto a la factura, partidas en pantalla, guardar cifrado. Lo construimos. Lo retiramos porque las lecturas err&oacute;neas en concesiones multil&iacute;nea de Sysco y cambios de pack en Restaurant Depot eran demasiado altas para confiar sin revisi&oacute;n. La soluci&oacute;n no era OCR mejor. Era una lista que un cocinero puede correr en tres minutos. Esto es eso.</p>
+
+    <h2>Lo que necesitas</h2>
+    <ul>
+      <li>La factura de la semana pasada del mismo proveedor (papel, foto o PDF, da igual).</li>
+      <li>La factura de esta semana.</li>
+      <li>Un resaltador amarillo y un l&aacute;piz.</li>
+      <li>Cinco minutos. La primera vez ser&aacute;n doce. En la semana tres son menos de tres.</li>
+    </ul>
+
+    <h2>El chequeo de siete l&iacute;neas</h2>
+
+    <div class="step">
+      <h3>1. &iquest;Cambi&oacute; la unidad de medida?</h3>
+      <p class="why">Los cambios de unidad son la subida silenciosa m&aacute;s com&uacute;n. La &ldquo;Tomate Roma 25 lb&rdquo; de la semana pasada se vuelve &ldquo;Tomate Roma 20 lb&rdquo; al mismo precio de l&iacute;nea. Subida efectiva del 25% sin que ning&uacute;n n&uacute;mero en la p&aacute;gina haya cambiado.</p>
+      <p class="red-flag">Bandera roja: mismo &iacute;tem, n&uacute;mero distinto despu&eacute;s de la unidad (lb, oz, ct, ea, cs, dz, gal). Resalta cada l&iacute;nea donde la unidad no coincida con la semana pasada.</p>
+    </div>
+
+    <div class="step">
+      <h3>2. &iquest;Cambi&oacute; el tama&ntilde;o del pack?</h3>
+      <p class="why">El &ldquo;pack&rdquo; es la unidad secundaria &mdash; cu&aacute;ntas unidades vienen en una caja. &ldquo;6/10&rdquo; (seis latas #10), &ldquo;4/1 gal&rdquo; (cuatro botellas de 1 gal&oacute;n). Cuando 6/10 se vuelve 4/10 sin avisar, recibiste 33% menos producto al precio de la semana pasada.</p>
+      <p class="red-flag">Bandera roja: la notaci&oacute;n de pack en la descripci&oacute;n no coincide. Com&uacute;n en Sysco, US Foods, Restaurant Depot y PFG cuando un fabricante reformula.</p>
+    </div>
+
+    <div class="step">
+      <h3>3. &iquest;El precio de l&iacute;nea se movi&oacute; m&aacute;s del 8%?</h3>
+      <p class="why">La mayor&iacute;a de movimientos semanales leg&iacute;timos son menores al 5%. Prote&iacute;na y verdura de temporada pueden oscilar 15&ndash;20% en clima normal; eso es ruido, no se&ntilde;al. La bandera est&aacute; en lo intermedio &mdash; el rango 8&ndash;14% es donde los reps pasan costo silenciosamente sin avisar.</p>
+      <p class="red-flag">Bandera roja: anota el porcentaje al lado de la l&iacute;nea. Cualquier cosa en el rango 8&ndash;14% se circula. Llamar&aacute;s al rep por unas tres de estas al mes.</p>
+    </div>
+
+    <div class="step">
+      <h3>4. &iquest;Hay SKUs nuevos que no pediste?</h3>
+      <p class="why">Sustituciones. Tu &ldquo;tocino artesanal 18 lb&rdquo; no est&aacute; en stock as&iacute; que mandan &ldquo;tocino applewood 15 lb&rdquo; a 1.4&times; el precio. No lo aprobaste. Puedes rechazar la entrega por sustituciones en la mayor&iacute;a de contratos &mdash; pero solo si lo detectas antes de firmar.</p>
+      <p class="red-flag">Bandera roja: l&iacute;nea con un c&oacute;digo de &iacute;tem que no est&aacute; en la factura de la semana pasada ni en tu hoja de pedido recurrente.</p>
+    </div>
+
+    <div class="step">
+      <h3>5. &iquest;Hay recargos, fee de combustible o &ldquo;ajustes de mercado&rdquo;?</h3>
+      <p class="why">Los recargos son l&iacute;neas que parecen comisiones, no precios. El recargo de combustible es normal pero deber&iacute;a ser un monto fijo, no un porcentaje. &ldquo;Ajuste de mercado&rdquo; es eufemismo para &ldquo;subimos precios y no queremos imprimir nuevo cat&aacute;logo.&rdquo;</p>
+      <p class="red-flag">Bandera roja: cualquier l&iacute;nea en el subtotal que no reconozcas de facturas anteriores. Resalta, pregunta al rep, y pide en escrito si es un porcentaje recurrente.</p>
+    </div>
+
+    <div class="step">
+      <h3>6. &iquest;La columna de cr&eacute;dito / devoluciones est&aacute; poblada?</h3>
+      <p class="why">Los cr&eacute;ditos de items cortos o rechazados aparecen la semana siguiente, no la semana del corto. F&aacute;ciles de pasar por alto porque aparecen como un peque&ntilde;o n&uacute;mero negativo arriba del subtotal.</p>
+      <p class="red-flag">Bandera roja: marcaste un corto la semana pasada, no aparece cr&eacute;dito esta semana. Llama al rep en 48 horas; muchos proveedores cierran la ventana de cr&eacute;dito a 7 d&iacute;as.</p>
+    </div>
+
+    <div class="step">
+      <h3>7. &iquest;La suma cuadra?</h3>
+      <p class="why">Suma los totales de l&iacute;nea con calculadora y compara con el subtotal impreso. Errores de matem&aacute;ticas a nivel l&iacute;nea son raros pero pasan, y casi siempre favorecen al proveedor.</p>
+      <p class="red-flag">Bandera roja: tu suma &ne; el subtotal impreso. Anota la diferencia exacta y llama antes de pagar.</p>
+    </div>
+
+    <h2>Qu&eacute; hacer con lo que encuentras</h2>
+    <p>Tres banderas o menos es variabilidad normal. An&oacute;talas en l&aacute;piz y archiva. Cuatro o m&aacute;s es una conversaci&oacute;n: texto o llamada al rep antes de pagar. Los recargos y cambios de unidad/pack que no se cuestionan se vuelven la nueva l&iacute;nea base en dos meses &mdash; esa es la fuga que estamos tapando.</p>
+
+    <p>Si quieres capturar esto sistem&aacute;ticamente, la <a href="/es/sheets/invoice-receiving-checklist/">Lista de Recepci&oacute;n de Facturas</a> es una hoja que se llena en el navegador y mira el chequeo de siete l&iacute;neas &mdash; una fila por entrega, persistente en tu dispositivo. Empareja con <a href="/es/tools/plate-cost/">Costo del Plato</a> cuando est&eacute;s listo para pasar cambios de precio al men&uacute;.</p>
+
+    <h2>Por qu&eacute; no recomendamos volver a un OCR</h2>
+    <p>Dos razones. Primero, ning&uacute;n producto OCR del mercado lee concesiones multil&iacute;nea y anotaciones de pack con suficiente confiabilidad para saltar la revisi&oacute;n manual &mdash; la &ldquo;automatizaci&oacute;n&rdquo; reconstruye el trabajo como tarea de verificaci&oacute;n. Segundo, la fuga no est&aacute; en las partidas. Est&aacute; en las siete cosas de arriba, seis de las cuales OCR no puede ver (no detecta que cambi&oacute; una unidad; solo lee la unidad). La revisi&oacute;n a ojo es el trabajo, no la captura de datos.</p>
+
+    <div class="related">
+      <h2>Relacionados</h2>
+      <ul>
+        <li><a href="/es/sheets/invoice-receiving-checklist/">Lista de Recepci&oacute;n de Facturas &rarr;</a><span class="blurb">Versi&oacute;n llenable del chequeo de siete l&iacute;neas, persistente en tu dispositivo.</span></li>
+        <li><a href="/es/tools/plate-cost/">Costo del Plato &rarr;</a><span class="blurb">Cuando detectes un cambio de precio, p&aacute;salo al costo por plato.</span></li>
+        <li><a href="/es/glossary/food-cost/">Costo de comida (glosario) &rarr;</a><span class="blurb">El n&uacute;mero que protege este art&iacute;culo.</span></li>
+        <li><a href="/es/glossary/prime-cost/">Costo prime (glosario) &rarr;</a><span class="blurb">Por qu&eacute; la disciplina de food cost importa al margen operativo.</span></li>
+      </ul>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <a href="/es/">Muntin Digital</a> &middot; <a href="/es/learn/">Aprende</a> &middot; <a href="/es/tools/">Herramientas</a> &middot; <a href="/es/services/">Servicios</a> &middot; <a href="/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">English</a>
+  </div>
+</footer>
+</body>
+</html>

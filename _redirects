@@ -26,6 +26,35 @@
 /audit/                      /tools/                      301
 /audit/*                     /tools/:splat                301
 
+# Tools sunset (Sprint M, 2026-05-08): invoice-decoder + menu-design
+# retired. No replacement was built; redirect to the tools catalog
+# so visitors land on a clean index of what is shipping. Sub-paths
+# included so stale service-worker / manifest / chunked-JS bookmarks
+# don't 404 noisily.
+#
+# Why 301 instead of 410: Cloudflare Workers Builds rejects 410 in
+# _redirects (validation error 10021 — only 200/301/302/303/307/308
+# accepted). Pages would accept 410, but this site deploys via
+# `wrangler versions upload`. 301 to /tools/ is the closest honest
+# alternative — the catalog is where someone looking for a retired
+# tool should land. The 404.html sunset-path scrub still handles
+# orphan-PWA cleanup for any path that slips through.
+#
+# menu-polish is gone with no replacement; 301 to the surviving Menu
+# Drop-In offer.
+/tools/invoice-decoder/                          /tools/                        301
+/tools/invoice-decoder/*                         /tools/                        301
+/tools/menu-design/                              /tools/                        301
+/tools/menu-design/*                             /tools/                        301
+/es/tools/invoice-decoder/                       /es/tools/                     301
+/es/tools/invoice-decoder/*                      /es/tools/                     301
+/es/tools/menu-design/                           /es/tools/                     301
+/es/tools/menu-design/*                          /es/tools/                     301
+/services/menu-polish/                           /services/menu-drop-in/        301
+/services/menu-polish/*                          /services/menu-drop-in/        301
+/es/services/menu-polish/                        /es/services/menu-drop-in/     301
+/es/services/menu-polish/*                       /es/services/menu-drop-in/     301
+
 # Wellness retirement (Sprint K): the wellness audit and checklist
 # were removed in favor of a restaurant-first focus. Any inbound
 # link — search-engine index, bookmark, or published citation —

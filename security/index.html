@@ -94,6 +94,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -282,7 +292,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/security/#claim-list",
-      "numberOfItems": 11,
+      "numberOfItems": 10,
       "itemListElement": [
         {
           "@type": "Claim",
@@ -381,17 +391,6 @@ header.nav{min-height:64px}
           "appearance": {
             "@type": "WebPageElement",
             "url": "https://muntin.digital/security/#claim-9"
-          }
-        },
-        {
-          "@type": "Claim",
-          "@id": "https://muntin.digital/security/#claim-10",
-          "position": 10,
-          "name": "Saved cost data isn't sold, shared, or trained on.",
-          "text": "Invoices saved through Advanced Invoice Decoder are encrypted in your browser before they leave your device — AES-GCM 256, key derived via PBKDF2 from a passphrase you choose. We won't sell aggregated cost data, share it with vendors, include it in marketing, train ML on it, or backfill historical invoices into a future benchmark dataset. The server stores ciphertext + IV; it has no decryption capability and no path to plaintext.",
-          "appearance": {
-            "@type": "WebPageElement",
-            "url": "https://muntin.digital/security/#claim-10"
           }
         },
         {
@@ -505,16 +504,6 @@ header.nav{min-height:64px}
           <p class="security-claim__text">&quot;Print this report&quot; opens your browser&#39;s native print dialog — we never see the output. &quot;Add to calendar&quot; generates an .ics file in your browser and downloads it locally. The calendar event includes only values already visible to you.</p>
           <details class="security-claim__inspect"><summary>Inspect this</summary>
             <p class="security-claim__verify">DevTools → Network. Click Print this report — no new requests. Click Add to calendar — still no new requests; a .ics download appears. Open it with a text editor: every field in the event is plain text.</p>
-          </details>
-        </div>
-      </article>
-      <article class="security-claim" id="claim-10">
-        <span class="security-claim__num" aria-hidden="true">10</span>
-        <div class="security-claim__body">
-          <h3 class="security-claim__title">Saved cost data isn&#39;t sold, shared, or trained on.</h3>
-          <p class="security-claim__text">Invoices saved through Advanced Invoice Decoder are encrypted in your browser before they leave your device — AES-GCM 256, key derived via PBKDF2 from a passphrase you choose. We won&#39;t sell aggregated cost data, share it with vendors, include it in marketing, train ML on it, or backfill historical invoices into a future benchmark dataset. The server stores ciphertext + IV; it has no decryption capability and no path to plaintext.</p>
-          <details class="security-claim__inspect"><summary>Inspect this</summary>
-            <p class="security-claim__verify">Three ways to verify, in order of difficulty: (1) After every save, the tool surfaces a Proof flyout with a try-to-break demo — type any wrong passphrase and watch SubtleCrypto throw OperationError. (2) On the tool page, expand &#39;Verify it yourself: open DevTools → Network&#39; for a 4-step coachmark; the only request after Read is the Tesseract WASM, and the only request after Save is one POST whose body is { envelope: { v:1, salt, iv, ct, aad } } where ct is opaque base64. (3) View source of /tools/invoice-decoder/encrypt.js — only SubtleCrypto, no third-party SDK, no analytics export. The localStorage handoff to Plate Cost / Menu Engineering / Margin Math is also AES-GCM-wrapped via /tools/invoice-decoder/device-key.js, so dish names + prices don&#39;t sit plaintext in the browser profile either.</p>
           </details>
         </div>
       </article>

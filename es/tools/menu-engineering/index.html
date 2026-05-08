@@ -302,6 +302,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -421,7 +431,7 @@ header.nav{min-height:64px}
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Deja de adivinar qué platos están cargando su peso.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-08">8 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -742,8 +752,8 @@ header.nav{min-height:64px}
         <h3>Herramientas relacionadas</h3>
         <ul>
           <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
-          <li><a href="/es/tools/menu-design/">Suite de Diseño de Menú</a></li>
           <li><a href="/es/tools/margin-math/">Cálculo de Margen</a></li>
+          <li><a href="/es/tools/menu-converter/">Conversor de menú</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">

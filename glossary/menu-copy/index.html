@@ -141,7 +141,7 @@ header.nav{min-height:64px}
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-menu-copy.png",
-      "datePublished": "2026-04-30T03:45:15+00:00",
+      "datePublished": "2026-05-03T15:32:30-04:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -155,6 +155,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -392,17 +402,16 @@ header.nav{min-height:64px}
         <h3>Used in</h3>
         <ul>
           <li><a href="/tools/menu-copy/">Menu Copy Inspector</a></li>
-          <li><a href="/tools/menu-design/">Menu Design Suite</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">
         <h3>Read</h3>
         <ul>
           <li><a href="/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Raising prices without losing reservations</a></li>
-          <li><a href="/blog/five-restaurant-website-changes-recover-one-percent-margin/">Five website changes that recover 1% margin</a></li>
           <li><a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/">How to tell if a tool is safe</a></li>
           <li><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></li>
           <li><a href="/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/">What a custom restaurant site costs in 2026</a></li>
+          <li><a href="/blog/is-doordash-worth-it-for-restaurants-in-2026/">Is DoorDash worth it in 2026?</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

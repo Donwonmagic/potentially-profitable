@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 // Regenerates TTF font files at /assets/fonts/pdf/ from the WOFF2
 // sources at /assets/fonts/. The TTFs are consumed by jsPDF (via
-// addFileToVFS + addFont) inside two tools:
-//
-//   1. tools/audits/restaurant/ — Fraunces + Inter (Muntin's body faces).
-//   2. tools/menu-design/      — adds Cormorant Garamond, Playfair
-//                                Display, Quattrocento, Noto Serif,
-//                                Cormorant SC, Bebas Neue, Alfa Slab.
-//                                Each face matches a theme's display
-//                                font so the printed menu looks set,
-//                                not rendered.
+// addFileToVFS + addFont) inside tools/audits/restaurant/ —
+// Fraunces + Inter (Muntin's body faces). Earlier versions also
+// shipped a per-theme display-font pack (Cormorant Garamond,
+// Playfair Display, Quattrocento, Noto Serif, Cormorant SC, Bebas
+// Neue, Alfa Slab) for the Menu Design Suite; that tool was retired
+// 2026-05-08 and the fonts are no longer bundled.
 //
 // jsPDF 2.x's addFont API only understands uncompressed TTF/OTF, so
 // the site's WOFF2 assets need a one-time conversion. The generated
@@ -36,11 +33,10 @@ const FONTS = [
   ['inter-v20-latin-regular.woff2',    'inter-400.ttf'],
   ['inter-v20-latin-500.woff2',        'inter-500.ttf'],
   ['inter-v20-latin-600.woff2',        'inter-600.ttf'],
-  // Menu Design Suite display + body faces. Matches the theme display
-  // hints in tools/menu-design/themes.js so cocktail-deco prints in
-  // Playfair, trattoria in Quattrocento, tasting-omakase in Cormorant,
-  // pizza-counter / food-truck / bbq-smoke in Bebas, kids-bright in
-  // Alfa Slab, and Noto Serif as a general European fallback.
+  // Menu Design Suite display + body faces. Retained because the
+  // theme registry in data/menu-design-themes.js still references
+  // these fonts for the library hub thumbnails and the per-theme
+  // story pages, even after the live tool was retired 2026-05-08.
   ['cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-regular.woff2', 'cormorant-400.ttf'],
   ['cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-italic.woff2',  'cormorant-400i.ttf'],
   ['cormorant-garamond-v21-latin/cormorant-garamond-v21-latin-600.woff2',     'cormorant-600.ttf'],

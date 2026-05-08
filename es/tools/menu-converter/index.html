@@ -157,6 +157,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -286,7 +296,7 @@ header.nav{min-height:64px}
         Pega tu men&uacute;. <span class="serif-italic">Lleva HTML limpio y schema.</span>
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-08">8 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -390,7 +400,6 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
     <section class="mc-deeplinks">
       <p class="eyebrow" style="margin-bottom:10px">Sigue</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/es/tools/menu-design/">Suite de Dise&ntilde;o de Men&uacute;</a> &mdash; el layout para PDF/impresi&oacute;n</li>
         <li><a href="/es/tools/menu-engineering/">Ingenier&iacute;a de Men&uacute;</a> &mdash; an&aacute;lisis estrella/caballo/puzzle/perro</li>
         <li><a href="/es/blog/los-6-tipos-de-schema-markup-que-google-usa/">Los 6 tipos de schema que Google usa</a></li>
         <li><a href="/services/menu-drop-in/">Drop-in de men&uacute; $1.500</a> &mdash; la versi&oacute;n estilada por el estudio</li>
@@ -410,9 +419,9 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
       <div class="tool-knit__col">
         <h3>Herramientas relacionadas</h3>
         <ul>
-          <li><a href="/es/tools/menu-design/">Suite de Diseño de Menú</a></li>
           <li><a href="/es/tools/menu-engineering/">Matriz de Ingeniería de Menú</a></li>
           <li><a href="/es/tools/menu-copy/">Inspector de Copy de Menú</a></li>
+          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -434,6 +443,33 @@ Pimienta Tellicherry, pecorino romano, terminado en mesa.</pre>
     </div>
   </aside>
 <!-- /tool-knit -->
+<!-- tool-sheet-rail:start -->
+<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
+  <div class="container">
+    <header class="topic-section-head">
+      <span class="eyebrow">Empareja con papeleo</span>
+      <h2 id="tool-sheet-rail-h">Hojas del operador que usan esta herramienta — imprimibles, llenables, exportan a CSV.</h2>
+    </header>
+    <ul class="topic-tool-list">
+        <li>
+          <a class="topic-tool-card" href="/es/sheets/menu-redesign-brief/">
+            <h4>Brief de rediseño del menú</h4>
+            <p>Lo que el diseñador necesita para trabajar — top 10 ventas, items a cortar, cambios de precio, items destacados, marcas dietéticas, objetivos impresos, digitales y POS.</p>
+            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="topic-tool-card" href="/es/sheets/allergen-matrix/">
+            <h4>Matriz de alérgenos del menú</h4>
+            <p>Item del menú por los 9 alérgenos principales de EE.UU., con notas de modificaciones a pedido. Se actualiza con cada cambio de menú. Referencia para meseros, defensa legal.</p>
+            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+    </ul>
+  </div>
+</section>
+<!-- tool-sheet-rail:end -->
+
 </main>
 
 <footer>

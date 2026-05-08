@@ -124,6 +124,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -255,6 +265,9 @@ header.nav{min-height:64px}
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0 0 24px">
         La mayor&iacute;a de los sitios de restaurante tienen una p&aacute;gina que les cuesta cenas: la del men&uacute;. Construyo una sola p&aacute;gina de men&uacute; HTML a medida &mdash; r&aacute;pida en m&oacute;vil, con marcado correcto, EN/ES &mdash; y la conecto a tu sitio actual de Wix, Squarespace o Shopify sin reconstruir todo. Siete d&iacute;as h&aacute;biles, tarifa fija.
       </p>
+      <p style="font-size:15.5px;line-height:1.55;color:var(--ink);margin:0 0 24px;font-weight:500">
+        Sin herramienta DIY. Sin adivinanzas de IA. Hecho a mano, por una persona, en escrito.
+      </p>
       <p class="offer-price">USD 1,500<small>fijos &middot; 7 d&iacute;as h&aacute;biles</small></p>
     </header>
 
@@ -309,7 +322,7 @@ header.nav{min-height:64px}
         <li><a href="/es/services/audit/">Auditor&iacute;a de USD 499</a> &mdash; el diagn&oacute;stico que suele venir primero</li>
         <li><a href="/es/services/care-plan-light/">Care Plan Light de USD 99/mes</a> &mdash; mantener al d&iacute;a la nueva p&aacute;gina</li>
         <li><a href="/es/services/">Servicios y precios</a> &mdash; las tres tiers de build completo</li>
-        <li><a href="/es/tools/menu-design/">Herramienta gratis de dise&ntilde;o de men&uacute;</a> &mdash; previsualiza tu men&uacute; antes de encargarlo</li>
+        <li><a href="/es/tools/audits/restaurant/">Diagn&oacute;stico gratis de 30 segundos</a> &mdash; ve los problemas espec&iacute;ficos de tu p&aacute;gina de men&uacute; antes de encargarla</li>
         <li><a href="/es/blog/restaurant-photo-spec-sheet/">Hoja de especificaciones de fotos</a> &mdash; el brief de fotos que mando a los operadores antes de un build</li>
       </ul>
     </section>

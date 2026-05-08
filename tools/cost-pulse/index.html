@@ -127,7 +127,7 @@ header.nav{min-height:64px}
     <span class="eyebrow">Free tool · Trends from your saved invoices</span>
     <h1>Your cost pulse.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-04">May 4, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-08">May 8, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -136,14 +136,14 @@ header.nav{min-height:64px}
               <p class="tool-data-promise__links"><a href="/security/">Read the full data promise &rarr;</a> &middot; <a href="/learn/checklists/audit-any-tool/">Audit any tool &rarr;</a></p>
             </aside>
             <!-- data-promise:end -->
-    <p class="cp-lede">A dashboard across the invoices you've saved with the <a href="/tools/invoice-decoder/">Invoice Decoder</a>. Spot drift, see category-share moves, and find the worst-offender week without opening QuickBooks.</p>
+    <p class="cp-lede">A dashboard across the invoices you saved before we retired the live decoder. Spot drift in your historical data, see category-share moves, and find the worst-offender week without opening QuickBooks. (No new captures &mdash; <a href="/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">read the no-OCR guide</a> for the manual workflow.)</p>
   </div>
 
   <div id="cpStatus"></div>
 
   <div class="cp-card cp-empty" id="cpEmpty" hidden>
-    <p><strong>Save your first invoice — it takes 30 seconds.</strong> Once you have at least one saved invoice, this dashboard fills with sparklines, drift alerts, and rolling medians across the categories that matter (protein, produce, dairy, paper, cleaning).</p>
-    <a class="cp-cta" href="/tools/invoice-decoder/">Open Invoice Decoder →</a>
+    <p><strong>No saved invoices in this browser.</strong> Cost Pulse reads invoices saved through the Invoice Decoder before we retired it on 2026-05-08. If you don&rsquo;t have any, the dashboard has nothing to show.</p>
+    <p><a class="cp-cta" href="/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/">Read a restaurant invoice without OCR &rarr;</a></p>
   </div>
 
   <div class="cp-card" id="cpDriftCard" hidden>
@@ -185,7 +185,7 @@ header.nav{min-height:64px}
 
   <div class="cp-card">
     <h2>What this dashboard isn't.</h2>
-    <p><strong>Not your books.</strong> Cost Pulse only sees the invoices you've actively saved through the Invoice Decoder. It won't catch a forgotten invoice, won't sync to QuickBooks or Restaurant365, and won't reconcile against your bank.</p>
+    <p><strong>Not your books.</strong> Cost Pulse only reads invoices that were saved through the Invoice Decoder before its 2026-05-08 retirement. It won't catch a forgotten invoice, won't sync to QuickBooks or Restaurant365, and won't reconcile against your bank.</p>
     <p><strong>Not benchmarked.</strong> The trends you see here are <em>your</em> data only. We don't pool data across operators, don't sell aggregated cost benchmarks, and don't backfill historical invoices into a future opt-in even if one ships.</p>
     <p><strong>vs Restaurant365 / MarginEdge:</strong> their dashboards live in their cloud and read everything you upload. Cost Pulse reads only what you've actively saved here, all encrypted with a key derived from your sign-in. The math is local.</p>
   </div>
@@ -202,7 +202,7 @@ header.nav{min-height:64px}
       <div class="tool-knit__col">
         <h3>Related tools</h3>
         <ul>
-          <li><a href="/tools/invoice-decoder/">Advanced Invoice Decoder</a></li>
+          <li><a href="/tools/plate-cost/">Plate Cost Calculator</a></li>
           <li><a href="/tools/margin-math/">Margin Math</a></li>
         </ul>
       </div>
@@ -305,9 +305,7 @@ header.nav{min-height:64px}
                                    latest.itemCount === 1 ? 'partida' : 'partidas') +
       ' · ' + when.toLocaleDateString(LOCALE === 'es' ? 'es-MX' : 'en-US',
                                       { year: 'numeric', month: 'short', day: 'numeric' }) +
-      (latest.vendor ? ' · ' + latest.vendor : '') +
-      ' · <a href="/tools/invoice-decoder/">' +
-      tt('Open in Invoice Decoder', 'Abrir en Decodificador de Facturas') + ' →</a>';
+      (latest.vendor ? ' · ' + latest.vendor : '') + '.';
     lastCard.hidden = false;
 
     // Drift list — only renders when ≥2 entries.
