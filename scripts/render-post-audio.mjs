@@ -237,8 +237,6 @@ const targetsFromAll = flags.has('--all') ? findPostsWithListenBtn() : [];
 const allTargets = [...new Set([...targetsFromAll, ...targetsFromManifest, ...positional])];
 if (!allTargets.length) fail('Pass --manifest <path>, --all, or a post directory (e.g. blog/post-slug).');
 
-for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
-
 /* -------------------- pronunciation overrides -------------------- */
 // Loaded lazily on first synthesizeKokoro call. The dictionary lives at
 // data/audio-pronunciation.json (overridable via --pronunciation <path>).
@@ -250,7 +248,14 @@ for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
 // CANONICAL text (what's on screen) — the substitution is purely for
 // the audio path. The on-page highlight stays in sync because it tracks
 // the canonical text through the runtime DOM.
+//
+// NOTE: must be declared *before* the renderPost() loop kicks off, since
+// renderPost → synthesizeKokoro → applyPronunciation → loadPronunciation
+// reads this binding synchronously. Hoisting it above the loop avoids a
+// TDZ error from `let`.
 let _pronunciationCache = null;
+
+for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
 function loadPronunciation() {
   if (_pronunciationCache !== null) return _pronunciationCache;
   const customPath = optVal('--pronunciation');
