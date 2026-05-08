@@ -177,19 +177,67 @@
   // Helper: load a script tag with SRI when available. Resolves
   // to the script element on load, rejects on error. Used for
   // classic <script src> loads (Tesseract.js).
+  //
+  // Audit fix (production hotfix): the previous onerror handler
+  // emitted a generic "Could not load X" message that the error
+  // classifier in invoice-decoder.js misread as a network failure.
+  // Script-tag onerror has multiple causes: 404 (deploy didn't
+  // ship the file), SRI hash mismatch (browser blocked execution
+  // because integrity didn't match — usually means a stale SW
+  // cache vs a freshly-deployed _integrity.json), CSP violation,
+  // or actual network drop. The browser doesn't tell us which
+  // via onerror alone, so we run a head-of-line `fetch` probe
+  // BEFORE the script tag to surface the actual HTTP status, log
+  // the result to console for DevTools-driven diagnosis, and
+  // include it in the rejection message so the controller can
+  // route to the right error copy. Probe is cheap (<1KB headers,
+  // browser-cache-aware) and same-origin, so it doesn't add a
+  // network surface beyond what the script tag was already going
+  // to fetch.
   function loadScript(name) {
     return resolve(name).then(function (r) {
       if (!r.url) return Promise.reject(new Error('no URL for ' + name));
-      return new Promise(function (res, rej) {
-        var s = document.createElement('script');
-        s.src = r.url;
-        s.async = true;
-        s.crossOrigin = 'anonymous';
-        s.referrerPolicy = 'no-referrer';
-        if (r.integrity) s.integrity = r.integrity;
-        s.onload = function () { res(s); };
-        s.onerror = function () { rej(new Error('Could not load ' + name + ' from ' + r.url)); };
-        document.head.appendChild(s);
+      // Probe the URL via fetch first so the actual failure mode
+      // (HTTP status, CORS issue, etc.) is visible to the
+      // classifier and to DevTools.
+      var probe = (typeof fetch === 'function')
+        ? fetch(r.url, { method: 'GET', credentials: 'omit', cache: 'no-cache' })  // h8-exempt: same-origin vendor probe
+            .then(function (resp) { return { ok: resp.ok, status: resp.status }; })
+            .catch(function (e) { return { ok: false, status: 0, fetchErr: e.message || String(e) }; })
+        : Promise.resolve({ ok: true, status: 200 });
+      return probe.then(function (probeResult) {
+        return new Promise(function (res, rej) {
+          var s = document.createElement('script');
+          s.src = r.url;
+          s.async = true;
+          s.crossOrigin = 'anonymous';
+          s.referrerPolicy = 'no-referrer';
+          if (r.integrity) s.integrity = r.integrity;
+          s.onload = function () { res(s); };
+          s.onerror = function () {
+            var detail;
+            if (!probeResult.ok && probeResult.status === 0) {
+              detail = 'fetch-network-error: ' + (probeResult.fetchErr || 'unknown');
+            } else if (!probeResult.ok) {
+              detail = 'http-' + probeResult.status;   // 404, 403, 500, etc.
+            } else if (r.integrity) {
+              detail = 'sri-mismatch-or-csp-or-parse-error (probe was 200; check console + Network tab)';
+            } else {
+              detail = 'csp-or-parse-error (probe was 200; check console)';
+            }
+            // Surface the diagnostic to DevTools so a maintainer
+            // looking at this on a phone via remote debugging can
+            // see the underlying cause without setting breakpoints.
+            try {
+              if (typeof console !== 'undefined' && console.error) {
+                console.error('[vendor-config] loadScript(' + name + ') failed:',
+                              { url: r.url, integrity: r.integrity, probeResult: probeResult, detail: detail });
+              }
+            } catch (_) {}
+            rej(new Error('Could not load ' + name + ' from ' + r.url + ' [' + detail + ']'));
+          };
+          document.head.appendChild(s);
+        });
       });
     });
   }
