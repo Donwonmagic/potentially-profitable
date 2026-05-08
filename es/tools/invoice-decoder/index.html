@@ -3,1374 +3,370 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<meta name="referrer" content="no-referrer" />
-<title>Lector de facturas OCR gratis para restaurantes — Sysco / US Foods / GFS (alternativa a Restaurant365) | Muntin Digital</title>
-<meta name="description" content="Lector de facturas gratis para restaurantes independientes. Foto, PDF o CSV — leemos 7 formatos de distribuidor (Sysco, US Foods, GFS, Restaurant Depot, Shamrock, Sygma, PFG), ordenamos partidas en grupos, y las guardamos encriptadas en tu dispositivo. Sin suscripción. Sin agregación de datos. Alternativa a Restaurant365." />
-<meta name="keywords" content="lector facturas OCR restaurante gratis, escáner facturas Sysco, alternativa Restaurant365 gratis, lector facturas US Foods, categorización facturas restaurante, control costos restaurante app gratis, alternativa MarginEdge" />
+<meta name="robots" content="noindex, follow" />
+<title>Decodificador de Facturas retirado &mdash; exporta tus datos | Muntin Digital</title>
+<meta name="description" content="El Decodificador de Facturas se retiró el 2026-05-08. Exporta tus datos guardados desde esta página y pasa a las listas estáticas y a Costo del Plato." />
 <meta name="theme-color" content="#1F4E5B" />
 <link rel="canonical" href="https://muntin.digital/es/tools/invoice-decoder/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/tools/invoice-decoder/" />
 <link rel="alternate" hreflang="es" href="https://muntin.digital/es/tools/invoice-decoder/" />
 <link rel="alternate" hreflang="x-default" href="https://muntin.digital/tools/invoice-decoder/" />
-<meta property="og:locale" content="es_US" />
-<meta property="og:locale:alternate" content="en_US" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Decodificador de Facturas — Saca foto. Ordenamos. Es tuya." />
-<meta property="og:description" content="Foto, PDF o CSV — ordenamos las partidas en grupos y guardamos en tu Taller, encriptado en tu dispositivo. Gratis." />
-<meta property="og:url" content="https://muntin.digital/es/tools/invoice-decoder/" />
-<meta property="og:site_name" content="Muntin Digital" />
-<meta property="og:image" content="https://muntin.digital/brand/og/tool-invoice-decoder-es.png" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Decodificador de Facturas" />
-<meta name="twitter:description" content="Foto. Ordena. Guarda. Encriptado en tu dispositivo. Gratis." />
-<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-invoice-decoder-es.png" />
 <link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicons/favicon-32x32.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
-<link rel="manifest" href="/tools/invoice-decoder/manifest.webmanifest" />
-<script src="/assets/p.js?v=20260503" defer></script>
-<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+
 <style>
-/* Critical CSS — prevents flash of unstyled content while the main
-   stylesheet (assets/site.css) loads non-render-blocking via the
-   <link> below. Carries: token vars used in inline styles elsewhere,
-   body baseline (cream + ink + body-size + line-height), container
-   width, skip-link affordance, and a min-height reservation for the
-   fixed nav so layout doesn't shift when site.css applies. ~600
-   bytes. Documented in Phase 3B perf cutover; the full token set
-   reapplies once site.css arrives. */
-:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
-html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+:root{--cream:#FAF7F2;--cream-2:#F3EEE3;--ink:#14161A;--ink-soft:#2A2D33;--teal:#1F4E5B;--rust:#B5523A;--line:#E5DFD1;--line-dark:#C9C2B0;--white:#fff;--max:780px;--pad-x:clamp(20px,4vw,40px)}
+*,*:before,*:after{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
+a{color:var(--teal)}
+.nav-bar{padding:18px 0;border-bottom:1px solid var(--line);background:var(--white)}
+.nav-bar a{color:var(--ink);text-decoration:none;font-weight:500;font-size:14px}
+.nav-bar a:hover{text-decoration:underline}
+main{padding:48px 0 80px}
+h1{font-size:clamp(28px,4vw,36px);line-height:1.2;margin:0 0 16px;font-weight:600}
+h2{font-size:21px;line-height:1.3;margin:32px 0 12px;font-weight:600}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rust);margin-bottom:12px}
+.deadline{background:#fff5ed;border:1px solid #f0d5c2;border-radius:8px;padding:14px 18px;font-size:14.5px;color:var(--ink-soft);margin:24px 0}
+.deadline strong{color:var(--ink)}
+.export-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:24px;margin:32px 0}
+.export-card label{display:block;font-size:14px;font-weight:500;margin:0 0 6px;color:var(--ink)}
+.export-card input[type=password],.export-card input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line-dark);border-radius:6px;font:inherit;font-size:15px;background:var(--white)}
+.export-card input:focus{outline:2px solid var(--teal);outline-offset:1px}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;cursor:pointer;border:0;font-family:inherit}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-primary:hover{background:var(--ink-soft)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-dark)}
+.btn-ghost:hover{border-color:var(--ink-soft)}
+.btn-danger{background:var(--rust);color:var(--white)}
+.btn-danger:hover{background:#943f2b}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.muted{color:var(--ink-soft);font-size:14.5px}
+.next-steps{margin:32px 0 0;padding:0;list-style:none}
+.next-steps li{padding:14px 0;border-top:1px solid var(--line)}
+.next-steps li:last-child{border-bottom:1px solid var(--line)}
+.next-steps a{font-weight:500;color:var(--ink);text-decoration:none}
+.next-steps a:hover{color:var(--teal)}
+.next-steps .nx-blurb{display:block;font-size:14px;color:var(--ink-soft);margin-top:2px}
+.status{margin-top:14px;padding:10px 14px;border-radius:6px;font-size:14px}
+.status.ok{background:#eef7e8;border:1px solid #b8d8a4;color:#2d5e1a}
+.status.err{background:#fdebe7;border:1px solid #f0bdb1;color:#8e2c19}
+.status.info{background:#e8f0f4;border:1px solid #b1c5d1;color:#1f4e5b}
+.tiny{font-size:13px;color:var(--ink-soft);margin-top:18px}
+[hidden]{display:none!important}
 .skip-link{position:absolute;left:-9999px;top:0}
 .skip-link:focus{position:static;display:inline-block;background:#14161A;color:#FAF7F2;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-a{color:inherit}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}
-header.nav{min-height:64px}
-</style>
-<!-- Preload the two above-the-fold web fonts so they arrive in
-     parallel with site.css instead of being discovered after parse. -->
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
-<!-- Async-load the main stylesheet. Pattern: preload + onload-swap
-     (with a <noscript> fallback for the JS-disabled path). The
-     onload assigns this.rel='stylesheet', which the browser then
-     applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
-<style>.breadcrumb{padding-top:100px}
-/* === Invoice Decoder tool-scoped styles. Page-prefix .id-*. === */
-.id-hero{max-width:760px;margin:0 auto;padding:32px 0 8px;text-align:center}
-.id-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
-.id-walkaway{margin:14px auto 0;max-width:540px;padding:10px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:13.5px;color:var(--ink);line-height:1.5}
-.id-walkaway strong{color:var(--ink-soft);font-weight:600;margin-right:4px}
-
-/* Three input chips above the fold. Single-column on phones. */
-.id-drop-wrap{margin:28px 0 0}
-.id-drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px 22px;background:var(--white);border:2px dashed var(--line);border-radius:14px;cursor:pointer;text-align:center;transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast)}
-.id-drop:hover,.id-drop:focus-within{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 4%,var(--white))}
-.id-drop[data-dragging="true"]{border-color:var(--teal);border-style:solid;background:color-mix(in srgb,var(--teal) 8%,var(--white));transform:translateY(-1px)}
-.id-drop input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.id-drop-icon{font-size:32px;line-height:1}
-.id-drop-title{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0}
-.id-drop-blurb{font-size:13px;color:var(--stone);margin:0;line-height:1.55;max-width:48ch}
-.id-drop-types{font-size:11px;color:var(--stone);letter-spacing:.06em;text-transform:uppercase;margin:4px 0 0;opacity:.85}
-.id-inputs-label{font-size:12px;color:var(--stone);margin:18px 0 8px;text-align:center;letter-spacing:.04em}
-.id-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0}
-@media(max-width:720px){.id-inputs{grid-template-columns:1fr}}
-.id-input-chip{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px 18px 16px;background:var(--white);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
-.id-input-chip:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 4px 14px rgba(20,22,26,.08)}
-.id-input-chip[data-active="true"]{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
-.id-input-chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.id-input-icon{font-size:20px;line-height:1}
-.id-input-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0}
-.id-input-blurb{font-size:12.5px;color:var(--stone);margin:0;line-height:1.5}
-.id-input-tag{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--cream-2);border:1px solid var(--line);padding:2px 8px;border-radius:999px}
-
-/* Status / progress bar surfaced once an input is chosen. */
-.id-status{margin:18px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
-.id-status[hidden]{display:none}
-.id-status-title{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 6px}
-.id-status-msg{font-size:12.5px;color:var(--ink-soft);margin:0 0 8px;line-height:1.5}
-.id-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.id-progress-fill{height:100%;background:var(--teal);width:0;transition:width 220ms ease}
-.id-status.error .id-progress-bar{display:none}
-.id-status.error .id-status-msg{color:var(--rust)}
-
-/* Cleaned-up image preview — proves preprocessing landed before
-   B2 wires OCR. Side-by-side raw + cleaned thumbs. */
-.id-preview-wrap{margin:18px 0 0}
-.id-preview-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:540px){.id-preview-row{grid-template-columns:1fr}}
-.id-preview-tile{padding:10px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-align:center}
-.id-preview-tile-label{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin:0 0 8px}
-.id-preview-tile img{max-width:100%;max-height:280px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.id-preview-meta{margin-top:14px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-.id-preview-meta strong{color:var(--ink);font-weight:600}
-
-.id-coming{margin:18px 0 0;padding:14px 16px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #b86c0f;border-radius:8px;font-size:12.5px;color:#7a4408;line-height:1.55}
-/* Parsed-rows panel — Wave B2's read-only proof. B5 will turn this
-   into the editable verification card-stack. */
-.id-parsed{margin:18px 0 0}
-.id-parsed[hidden]{display:none}
-.id-parsed-summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin:0 0 12px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px}
-.id-parsed-count{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--ink)}
-.id-parsed-meta{font-size:12.5px;color:var(--ink-soft)}
-.id-parsed-vendor{padding:3px 10px;font-size:11.5px;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:999px;color:var(--ink)}
-.id-parsed-list{margin:0;padding:0;list-style:none;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--white)}
-.id-parsed-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
-.id-parsed-row:last-child{border-bottom:0}
-.id-parsed-row[data-conf="green"]{border-left:3px solid var(--status-good)}
-.id-parsed-row[data-conf="amber"]{border-left:3px solid #c89a3c;background:#FFFBF0}
-.id-parsed-row[data-conf="red"]  {border-left:3px solid var(--rust);background:#FFF6F0}
-.id-parsed-row .id-parsed-name{font-weight:500;color:var(--ink)}
-.id-parsed-row .id-parsed-qty{color:var(--stone);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.id-parsed-row .id-parsed-price{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
-.id-parsed-cat{display:inline-block;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;color:var(--ink);background:var(--cream-2);border:1px solid var(--line);vertical-align:middle}
-.id-parsed-cat[data-cat="protein"]    {background:#FCE9E1;color:#7a2e1f;border-color:#f3cab8}
-.id-parsed-cat[data-cat="seafood"]    {background:#E1F0F4;color:#0f5063;border-color:#bcdce4}
-.id-parsed-cat[data-cat="produce"]    {background:#E8F4E1;color:#3a6a1f;border-color:#c4dfb6}
-.id-parsed-cat[data-cat="dairy"]      {background:#FAF1DC;color:#7a5a14;border-color:#ecdaa9}
-.id-parsed-cat[data-cat="dry-goods"]  {background:#F0EBE0;color:#5a4a30;border-color:#d8cdb6}
-.id-parsed-cat[data-cat="herbs-spices"]{background:#E8E1F0;color:#4a2f6a;border-color:#cdbcdf}
-.id-parsed-cat[data-cat="paper"]      {background:#EEEEEE;color:#444;border-color:#cccccc}
-.id-parsed-cat[data-cat="cleaning"]   {background:#E1EFF0;color:#1f5663;border-color:#b8d8de}
-.id-parsed-cat[data-cat="beverage"]   {background:#F0E1F0;color:#5a1f5a;border-color:#dfbbdf}
-.id-parsed-cat-none{color:var(--stone);background:transparent;border-style:dashed}
-.id-parsed-conf{display:inline-block;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:999px;font-variant-numeric:tabular-nums;vertical-align:middle}
-.id-parsed-conf[data-conf="green"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
-.id-parsed-conf[data-conf="amber"]{background:#FFF1D7;color:#8a5e0c;border:1px solid #ecd6a8}
-.id-parsed-conf[data-conf="red"]{background:#FCE0DA;color:#7a2419;border:1px solid #f0c0b3}
-/* B5-2: inline cell editors. Tap-to-edit replaces the span with
-   a styled input; Enter or blur commits, Escape reverts. */
-.id-parsed-row [data-edit]{cursor:text;border-radius:4px;padding:2px 4px}
-.id-parsed-row [data-edit]:hover{background:rgba(31,78,91,.06)}
-.id-parsed-input{font:inherit;font-size:13.5px;padding:4px 6px;border:1px solid var(--teal);border-radius:4px;background:var(--white);color:var(--ink);width:100%;box-sizing:border-box;min-width:60px}
-.id-parsed-input:focus{outline:2px solid color-mix(in srgb,var(--teal) 35%,transparent);outline-offset:1px}
-.id-parsed-cat-select{font:inherit;font-size:11px;padding:2px 6px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--ink)}
-/* B5-4: bulk-action sticky bar. Sits at the bottom of the parsed
-   panel; sticky so the Save CTA follows the scroll on long
-   invoices. The Save button activates in Wave B6 — until then
-   it stays disabled with a "Save lands in next sprint" tooltip. */
-.id-bulkbar{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-top:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:0 -4px 14px rgba(20,22,26,.06);z-index:5}
-.id-bulkbar[hidden]{display:none}
-.id-bulk-confirm{padding:9px 16px;border:1px solid var(--line-dark);border-radius:999px;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
-.id-bulk-confirm:hover{border-color:var(--teal);color:var(--teal)}
-.id-bulk-save{margin-left:auto;padding:11px 20px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-fast)}
-.id-bulk-save:hover{background:var(--teal)}
-.id-bulk-save[disabled]{opacity:.55;cursor:not-allowed}
-/* B6-4: cross-tool handoff panel — three big tappable cards. */
-.id-handoff{margin-top:18px;padding:18px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px}
-.id-handoff[hidden]{display:none}
-.id-handoff-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 10px}
-.id-handoff-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:640px){.id-handoff-row{grid-template-columns:1fr}}
-.id-handoff-btn{display:flex;flex-direction:column;gap:4px;padding:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);transition:border-color var(--t-fast),transform var(--t-fast)}
-.id-handoff-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,22,26,.06)}
-.id-handoff-btn strong{font-family:var(--font-display);font-size:15px;font-weight:500;color:var(--ink)}
-.id-handoff-btn span{font-size:12.5px;color:var(--stone)}
-@media(max-width:540px){
-  .id-parsed-row{grid-template-columns:1fr;gap:2px}
-  .id-parsed-row .id-parsed-qty,.id-parsed-row .id-parsed-price{justify-self:start}
-}
-.id-parsed-totals{margin:10px 0 0;padding:10px 14px;background:var(--white);border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--ink-soft);line-height:1.55}
-.id-parsed-totals strong{color:var(--ink);font-weight:600}
-.id-parsed-totals.warn{border-left:3px solid #c89a3c;background:#FFFBF0}
-.id-parsed-empty{padding:24px 16px;text-align:center;color:var(--stone);font-size:13px}
-.id-read-btn{margin-top:14px;padding:12px 22px;border:0;border-radius:999px;background:var(--ink);color:var(--cream);font:inherit;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background var(--t-fast)}
-.id-read-btn:hover{background:var(--teal)}
-.id-read-btn[disabled]{opacity:.55;cursor:wait}
-
-/* Honesty card. */
-.id-honesty{margin:36px auto 0;max-width:720px;padding:22px 24px;background:var(--surface-1,var(--white));border:1px solid var(--line);border-radius:14px;box-shadow:var(--elev-1)}
-.id-honesty h3{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);margin:0 0 8px}
-.id-honesty p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 14px}
-.id-honesty p:last-child{margin-bottom:0}
-.id-honesty strong{color:var(--ink);font-weight:600}
-
-/* W3-2 — verify-it-yourself disclosure inside the honesty card. */
-.id-verify{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
-.id-verify summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.id-verify summary::-webkit-details-marker{display:none}
-.id-verify summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
-.id-verify[open] summary::before{transform:rotate(90deg)}
-.id-verify-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
-.id-verify-steps{margin:10px 0 8px 22px;padding:0;font-size:13.5px;color:var(--ink);line-height:1.6}
-.id-verify-steps li{margin:0 0 8px}
-.id-verify-steps strong{color:var(--ink);font-weight:600}
-.id-verify-steps code{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;background:#f3efe7;padding:1px 4px;border-radius:3px;color:var(--ink)}
-.id-verify-foot{font-size:13px;color:var(--ink-soft);font-style:italic;margin:8px 0 6px}
-.id-verify-measure{font-size:13px;padding:6px 12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer;margin-top:6px}
-.id-verify-measure:hover{background:var(--accent,#1f6f6a);color:#fff}
-.id-verify-measure-out{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
-
-/* W3-3 — comparison-vs-competitors table inside the honesty card. */
-.id-compare{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
-.id-compare summary{font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;list-style:none;padding:6px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.id-compare summary::-webkit-details-marker{display:none}
-.id-compare summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
-.id-compare[open] summary::before{transform:rotate(90deg)}
-.id-compare-badge{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px;letter-spacing:.02em}
-.id-compare-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
-.id-compare-table th{text-align:left;font-weight:500;padding:8px 10px;background:#f6f1e7;border-bottom:1px solid var(--line);color:var(--ink-soft);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
-.id-compare-table th:first-child{width:36%}
-.id-compare-table td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;color:var(--ink)}
-.id-compare-table td.id-compare-axis{color:var(--ink-soft);font-weight:500}
-.id-compare-table td.id-compare-ours{background:#eef7f4;color:var(--ink);font-weight:500}
-.id-compare-table td.id-compare-ours::before{content:'✓ ';color:var(--accent,#1f6f6a);font-weight:600}
-.id-compare-table td.id-compare-theirs{color:var(--ink-soft)}
-.id-compare-foot{font-size:13px;color:var(--ink-soft);line-height:1.55;font-style:italic;margin:8px 0 0}
-@media(max-width:540px){.id-compare-table th:first-child,.id-compare-table td.id-compare-axis{width:auto}.id-compare-table th,.id-compare-table td{font-size:12.5px;padding:7px 8px}}
-
-/* W3-7 — differentiator strip pinned above the result panel. Reads chipLabel + headline from MuntinDifferentiators. */
-.id-diff-strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:10px 10px 0 0;font-size:13px;line-height:1.4;margin:0 0 -1px}
-.id-diff-strip-chip{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:10px;white-space:nowrap}
-.id-diff-strip-text{flex:1 1 200px;font-size:13px;color:#e0f3ef}
-.id-diff-strip-text strong{color:#fff;font-weight:600}
-@media(max-width:540px){.id-diff-strip{font-size:12px;padding:8px 12px}.id-diff-strip-chip{font-size:10px}}
-
-/* W4-1 — filter chip bar above the parsed list. Reduces 40-line invoices to the ~8 amber rows that need eyeballing. */
-.id-filter-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:6px}
-.id-filter-chip{font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px;transition:background .12s,color .12s,border-color .12s}
-.id-filter-chip:hover{background:#f3efe7;color:var(--ink)}
-.id-filter-chip[aria-selected="true"]{background:var(--ink,#14161A);color:#fff;border-color:var(--ink,#14161A)}
-.id-filter-chip[aria-selected="true"] .id-filter-count{color:rgba(255,255,255,.75)}
-.id-filter-count{font-size:11px;color:var(--ink-soft);font-weight:400;font-variant-numeric:tabular-nums}
-.id-filter-cat{margin-left:auto;font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-@media(max-width:540px){.id-filter-bar{gap:5px}.id-filter-chip{font-size:12px;padding:4px 9px}.id-filter-cat{margin-left:0;flex:1 1 100%;margin-top:4px}}
-
-/* W4-3 — swipe undo toast (4-second). */
-.id-undo-toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(60px);background:var(--ink,#14161A);color:var(--cream,#FAF6EE);font-size:14px;padding:10px 14px;border-radius:24px;box-shadow:0 12px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:14px;opacity:0;pointer-events:none;transition:transform .24s ease,opacity .24s ease;z-index:1100}
-.id-undo-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-.id-undo-toast button{background:transparent;border:0;color:var(--accent-on-ink,#7be0d4);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:4px}
-.id-undo-toast button:hover{background:rgba(255,255,255,.08)}
-.id-parsed-row{transition:background .12s ease}
-@media(prefers-reduced-motion:reduce){.id-parsed-row,.id-undo-toast{transition:none}}
-
-/* W4-4 — keyboard shortcut legend. */
-.id-kbd-legend{margin:6px 0 0;font-size:13px;color:var(--ink-soft)}
-.id-kbd-legend summary{cursor:pointer;list-style:none;padding:4px 0;display:inline-flex;align-items:center;gap:8px}
-.id-kbd-legend summary::-webkit-details-marker{display:none}
-.id-kbd-legend summary::before{content:'▸';font-size:11px;transition:transform .2s}
-.id-kbd-legend[open] summary::before{transform:rotate(90deg)}
-.id-kbd-hint{font-size:11px;font-weight:400;color:var(--accent,#1f6f6a);background:#e7f5f2;padding:2px 8px;border-radius:10px}
-.id-kbd-list{margin:6px 0 0;padding:0 0 0 18px;font-size:12.5px;line-height:1.7}
-.id-kbd-list kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;padding:1px 5px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink);min-width:18px;display:inline-block;text-align:center}
-
-/* W4-5 — celebratory "all reviewed" tail. */
-.id-parsed-done{background:#eef7f4;border:1px solid #bfe2d6;border-left:3px solid var(--accent,#1f6f6a);padding:12px 14px;border-radius:8px;margin-top:6px;font-size:13.5px;color:var(--ink)}
-.id-parsed-done strong{color:var(--accent,#1f6f6a)}
-
-/* W4-8 — drift banner above the result panel. */
-.id-drift-banner{position:relative;margin:14px 0;padding:12px 40px 12px 16px;background:#fbf2e1;border:1px solid #e6cf9b;border-left:3px solid var(--rust,#B25C2A);border-radius:8px;font-size:13.5px;line-height:1.55;color:var(--ink)}
-.id-drift-banner strong{color:var(--ink);font-weight:600;display:inline}
-.id-drift-dismiss{position:absolute;top:6px;right:8px;background:transparent;border:0;font-size:22px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:4px}
-.id-drift-dismiss:hover{background:rgba(0,0,0,.06);color:var(--ink)}
-
-/* W4-9 — trend sparkline strip below result panel. */
-.id-trend-strip{margin:14px 0 0;padding:12px 14px;background:var(--surface-2,#f9f7f1);border:1px solid var(--line);border-radius:10px}
-.id-trend-heading{margin:0 0 8px;font-size:13.5px;color:var(--ink-soft)}
-.id-trend-heading strong{color:var(--ink);font-weight:600}
-.id-trend-empty{margin:0;font-size:13px;color:var(--ink-soft);font-style:italic}
-.mtn-spark-strip{display:grid;grid-template-columns:1fr;gap:6px}
-.mtn-spark-row{display:grid;grid-template-columns:90px 1fr 64px;align-items:center;gap:8px;font-size:12.5px;color:var(--ink)}
-.mtn-spark-label{color:var(--ink-soft);text-transform:capitalize}
-.mtn-spark{display:block;width:100%;max-width:220px;height:36px}
-.mtn-spark-delta{font-size:12px;font-variant-numeric:tabular-nums;text-align:right;font-weight:500}
-.mtn-spark-delta[data-dir="up"]{color:var(--rust,#B25C2A)}
-.mtn-spark-delta[data-dir="down"]{color:var(--accent,#1f6f6a)}
-.mtn-spark-delta[data-dir="flat"]{color:var(--ink-soft)}
-@media(max-width:540px){.mtn-spark-row{grid-template-columns:80px 1fr 54px;font-size:11.5px}}
-
-/* W3-1 — proof-of-encryption flyout. Shown after every successful save. */
-.mid-pf-backdrop{position:fixed;inset:0;background:rgba(20,30,30,.62);display:flex;align-items:flex-start;justify-content:center;padding:32px 16px;overflow-y:auto;z-index:1200;animation:mid-pf-fade .25s ease}
-@keyframes mid-pf-fade{from{opacity:0}to{opacity:1}}
-.mid-pf-sheet{position:relative;background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 64px rgba(0,0,0,.28);max-width:680px;width:100%;padding:24px 22px 22px;display:grid;gap:18px;animation:mid-pf-rise .35s ease}
-@keyframes mid-pf-rise{from{transform:translateY(8px);opacity:.7}to{transform:none;opacity:1}}
-.mid-pf-close{position:absolute;top:8px;right:10px;background:transparent;border:0;font-size:28px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:4px 8px;border-radius:6px}
-.mid-pf-close:hover{background:rgba(0,0,0,.06);color:var(--ink)}
-.mid-pf-card{background:var(--surface-2,#f9f7f1);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.mid-pf-h3{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.35}
-.mid-pf-label{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.mid-pf-row-plain{font-size:13.5px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px;margin-bottom:4px;font-variant-numeric:tabular-nums}
-.mid-pf-arrow{margin:8px 0;font-size:11px;color:var(--ink-soft);text-align:center;letter-spacing:.04em;text-transform:uppercase}
-.mid-pf-after{background:#0c1817;border:1px solid #2b3a3a;border-radius:8px;padding:10px 12px}
-.mid-pf-after .mid-pf-label{color:#9ad6cd}
-.mid-pf-ct{display:block;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:#7be0d4;word-break:break-all;line-height:1.45}
-.mid-pf-algo{font-size:11.5px;color:#7c9590;margin-top:8px}
-.mid-pf-pre{background:#0c1817;color:#cfe5e1;border-radius:8px;padding:12px 14px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;line-height:1.55;overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0}
-.mid-pf-note{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.5}
-.mid-pf-tryrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.mid-pf-tryinput{flex:1 1 160px;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
-.mid-pf-trybtn{font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer}
-.mid-pf-trybtn:hover{filter:brightness(1.06)}
-.mid-pf-tryout{margin-top:10px;font-size:13px;line-height:1.5;padding:8px 10px;border-radius:6px;min-height:1.4em}
-.mid-pf-tryout--neutral{background:#f3efe7;color:var(--ink-soft)}
-.mid-pf-tryout--proof{background:#1f3a37;color:#a8e6dd}
-.mid-pf-tryout--ok{background:#2a4a2a;color:#cfeacb}
-.mid-pf-diff{font-size:14px;color:var(--ink);line-height:1.55;margin:0 0 14px}
-.mid-pf-diff strong{color:var(--ink);font-weight:600}
-.mid-pf-actions{display:flex;flex-wrap:wrap;gap:8px}
-.mid-pf-cta{font-size:13.5px;padding:9px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:var(--accent,#1f6f6a);color:#fff;cursor:pointer;font-weight:500}
-.mid-pf-cta--quiet{background:#fff;color:var(--accent,#1f6f6a)}
-.mid-pf-cta:hover{filter:brightness(1.05)}
-@media(prefers-reduced-motion:reduce){.mid-pf-backdrop,.mid-pf-sheet{animation:none}}
-@media(max-width:540px){.mid-pf-sheet{padding:20px 14px 18px}.mid-pf-card{padding:14px}}
-
-/* ======================================================================
-   Wave 8 — upgraded row layout, per-field dots, drift chips,
-   contract badges, Vendor Pulse, math-fix card, accountant export,
-   margin-impact callout, sort toggle, row history, action buttons.
-   ====================================================================== */
-
-/* Row grid — disciplined columns, leading glyph, fielddots + actions on right. */
-.id-parsed-row{display:grid;grid-template-columns:24px 1fr auto 88px auto auto;align-items:center;column-gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13.5px;transition:background .12s ease,box-shadow .12s ease}
-.id-row-glyph-cell{display:flex;align-items:center;justify-content:center;width:24px}
-.id-row-glyph{width:18px;height:18px;flex:none}
-@media(prefers-reduced-motion:reduce){.id-parsed-row{transition:none}}
-.id-parsed-row[data-anomaly="true"]{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}
-.id-parsed-row[data-kind="credit"]{background:#FBF1E5}
-.id-parsed-row[data-kind="deposit"]{background:#F1F4FB}
-.id-parsed-row[data-kind="surcharge"]{background:#FAF1F4}
-.id-parsed-row[data-kind="backorder"]{background:#F4F4F4;opacity:.85}
-
-.id-row-kind{display:inline-block;margin-left:8px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;background:#F1ECE0;color:#6a4a14;border:1px solid #d9c5a3}
-.id-row-kind[data-kind="credit"]{background:#FBE9E0;color:#7a3019;border-color:#e9bfaa}
-.id-row-kind[data-kind="deposit"]{background:#E0EAF9;color:#1f3a6e;border-color:#b8c8e0}
-.id-row-kind[data-kind="surcharge"]{background:#F9E0F2;color:#5a1f4a;border-color:#dfb8d0}
-
-/* Wave 1.7 — per-field dots */
-.id-row-fielddots{display:inline-flex;gap:5px;align-items:center;justify-content:flex-end}
-.id-field-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink-soft);background:transparent}
-.id-field-dot[data-band="green"]{background:#1f6e3a;border-color:#1f6e3a}
-.id-field-dot[data-band="amber"]{background:#D9A93B;border-color:#9A6A12}
-.id-field-dot[data-band="red"]{background:transparent;border-color:#7a2419;box-shadow:inset 0 0 0 2px #7a2419}
-
-/* Wave 1.1 — drift chip + Wave 1.2 — contract badge */
-.id-row-drift{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:999px;font-variant-numeric:tabular-nums;cursor:pointer}
-.id-row-drift[data-dir="up"]{background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
-.id-row-drift[data-dir="down"]{background:#E6F4EC;color:#1f6e3a;border:1px solid #c4e3cf}
-.id-row-drift[data-dir="flat"]{background:#F1ECE0;color:#5a4a30;border:1px solid #d9c5a3}
-.id-row-drift--anomaly{outline:2px solid var(--rust,#B25C2A);outline-offset:1px}
-.id-row-contract{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#FBE9E0;color:#7a3019;border:1px solid #e9bfaa}
-.id-row-contract--over{background:#7a3019;color:#fff;border-color:#7a3019}
-
-/* Cross-vendor savings chip — domain-expert layer. Surfaced when
-   the operator could save by switching suppliers for this stem. */
-.id-row-crossvendor{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2;cursor:help;font-variant-numeric:tabular-nums}
-.id-row-crossvendor:hover{background:#1f6e3a;color:#fff;border-color:#1f6e3a}
-
-/* Substitution chip — looks like a sub for what you usually buy. */
-.id-row-sub{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 8px;font-size:10.5px;font-weight:600;letter-spacing:.02em;border-radius:4px;background:#E5EAF6;color:#1f3a6e;border:1px solid #B0BFE0;cursor:help}
-
-/* Volume-weighted invoice drift line in the Vendor Pulse strip. */
-.id-pulse-drift{margin-top:6px;font-size:13px;color:rgba(255,255,255,0.92);font-variant-numeric:tabular-nums}
-.id-pulse-drift[data-dir="up"]{color:#fcd0c0}
-.id-pulse-drift[data-dir="down"]{color:#aee7d4}
-
-/* Wave 1.1 — toggleable mini-history */
-.id-row-history{grid-column:1 / -1;margin-top:8px;padding:10px 12px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px}
-.id-row-history-label{margin:0 0 6px;font-size:12px;color:var(--ink-soft)}
-.id-row-history-list{margin:6px 0 0;padding:0;list-style:none;font-size:11.5px;color:var(--ink-soft);line-height:1.55;font-variant-numeric:tabular-nums}
-.id-row-history-list li{padding:2px 0}
-.id-row-history-contract{margin-top:8px;padding:6px 11px;font-size:12px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);border-radius:6px;cursor:pointer}
-.id-row-history-contract:hover{background:var(--accent,#1f6f6a);color:#fff}
-
-/* Wave 3.1 — visible Y/N action buttons on each row (single-pointer
-   alternative to swipe; 32×32 hit target meets WCAG 2.5.8 24×24 min). */
-.id-row-actions{display:inline-flex;gap:6px;align-items:center}
-.id-row-act{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1}
-.id-row-act-yes:hover{border-color:#1f6e3a;color:#1f6e3a;background:#E6F4EC}
-.id-row-act-no:hover{border-color:#7a2419;color:#7a2419;background:#FCE0DA}
-.id-row-act:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
-
-/* Wave 2.3 — Vendor Pulse Strip */
-.id-vendor-pulse{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0c2826 0%,#1f4e5b 100%);color:#fff;border-radius:10px}
-.id-vendor-pulse[hidden]{display:none}
-.id-pulse-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;font-size:14px}
-.id-pulse-vendor{font-family:var(--font-display);font-weight:500;font-size:16px}
-.id-pulse-meta{font-size:12.5px;color:rgba(255,255,255,0.78)}
-.id-pulse-pills{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
-.id-pulse-pill{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,0.16);color:#fff;font-variant-numeric:tabular-nums}
-.id-pulse-pill[data-dir="up"]{background:rgba(252,224,215,0.95);color:#7a2e1f}
-.id-pulse-pill[data-dir="down"]{background:rgba(199,228,212,0.92);color:#0c4a26}
-.id-pulse-empty{font-size:12.5px;color:rgba(255,255,255,0.86);font-style:italic}
-
-/* Wave 1.3 — math-fix card */
-.id-mathfix{margin:0 0 12px;padding:14px 16px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px;color:var(--ink)}
-.id-mathfix[hidden]{display:none}
-.id-mathfix-msg{margin:0 0 8px;font-size:13.5px;line-height:1.55}
-.id-mathfix-actions{margin:0;display:flex;flex-wrap:wrap;gap:8px}
-.id-mathfix-apply,.id-mathfix-dismiss{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--line-dark,#7d7d7d);background:#fff;color:var(--ink);cursor:pointer}
-.id-mathfix-apply{background:var(--ink);color:#fff;border-color:var(--ink)}
-.id-mathfix-apply:hover{background:var(--accent,#1f6f6a)}
-.id-mathfix-dismiss:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
-
-/* Wave 2.4 — sort toggle */
-.id-sort-toggle{font:inherit;font-size:12px;padding:4px 10px;margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
-.id-sort-toggle:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
-.id-sort-toggle[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-
-/* Wave 2.6 — margin-impact callout inside handoff */
-.id-margin-impact{margin-top:14px;padding:12px 14px;background:#FFF6F0;border:1px solid #F1D6BC;border-left:3px solid #B25C2A;border-radius:8px;font-size:13px;color:var(--ink);line-height:1.55}
-.id-margin-impact[hidden]{display:none}
-.id-margin-label{margin:0 0 6px;font-size:11.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.id-margin-list{margin:0;padding:0;list-style:none}
-.id-margin-line{padding:3px 0}
-.id-margin-line[data-dir="up"]{color:#7a3019}
-.id-margin-line[data-dir="down"]{color:#1f6e3a}
-
-/* Wave 4.6 — accountant export drawer */
-.id-export-drawer{margin-top:14px;padding:8px 12px;background:#fff;border:1px solid var(--line);border-radius:8px}
-.id-export-drawer summary{cursor:pointer;font-weight:500;font-size:13.5px;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
-.id-export-drawer summary::-webkit-details-marker{display:none}
-.id-export-drawer summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
-.id-export-drawer[open] summary::before{transform:rotate(90deg)}
-.id-export-blurb{margin:8px 0 10px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-.id-export-row{display:flex;flex-wrap:wrap;gap:6px}
-.id-export-btn{font:inherit;font-size:12.5px;padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-.id-export-btn:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a);background:#f0f9f7}
-.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
-
-/* Wave 3.1 — focus rings + larger tap targets across the board */
-.id-input-chip:focus-within{border-color:var(--accent,#1f6f6a);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#1f6f6a) 22%,transparent)}
-.id-bulk-confirm:focus-visible,.id-bulk-save:focus-visible,.id-handoff-btn:focus-visible,.id-read-btn:focus-visible,.id-filter-chip:focus-visible,.mid-pf-close:focus-visible,.id-drift-dismiss:focus-visible,.id-export-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:6px}
-[data-edit]:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px;border-radius:4px}
-[data-edit]{min-height:32px;display:inline-block;padding:4px 6px}
-
-@media(max-width:540px){
-  .id-parsed-row{grid-template-columns:24px 1fr auto auto;column-gap:6px}
-  .id-row-fielddots{display:none}
-  .id-row-act{width:28px;height:28px;font-size:12px}
-  .id-vendor-pulse{padding:11px 13px}
-  .id-pulse-vendor{font-size:14px}
-}
-
-/* Wave 3.5 — honesty card accordion. Each declarative claim opens to
-   reveal the detail behind it. First claim opens by default. */
-.id-honesty-fact{padding:12px 14px;margin:0 0 8px;background:var(--white);border:1px solid var(--line);border-radius:8px}
-.id-honesty-fact summary{cursor:pointer;font-size:14.5px;color:var(--ink);padding:2px 0;list-style:none;display:flex;align-items:center;gap:8px}
-.id-honesty-fact summary::-webkit-details-marker{display:none}
-.id-honesty-fact summary::before{content:'▸';font-size:11px;color:var(--ink-soft);transition:transform .2s}
-.id-honesty-fact[open] summary::before{transform:rotate(90deg)}
-.id-honesty-fact summary strong{font-weight:500;color:var(--ink)}
-.id-honesty-fact p{margin:8px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
-/* Audit fix (C7) — Reader settings radio rows. min-height:44px
-   clears WCAG 2.5.8 Target Size + Apple HIG for touch on phones;
-   padding keeps adjacent rows visually distinct. :focus-within
-   gives keyboard users a visible group highlight (UX H1). */
-.id-rs-row{display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin:0;min-height:44px;padding:8px 4px;border-radius:6px}
-.id-rs-row + .id-rs-row{margin-top:4px}
-.id-rs-row:focus-within{outline:2px solid var(--teal);outline-offset:2px}
-.id-rs-row > input[type="radio"]{width:20px;height:20px;margin-top:11px;flex-shrink:0}
-@media (prefers-reduced-motion:reduce){.id-honesty-fact summary::before{transition:none}}
-
-/* Wave 3.3 — compact keyboard legend pinned in bottom corner */
-.id-kbd-compact{margin:8px 0 0;font-size:11px;color:var(--ink-soft);text-align:right}
-.id-kbd-compact kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:10.5px;padding:1px 4px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink)}
-
-/* ======================================================================
-   Wave 6.10 — desktop split-pane layout.
-   ====================================================================== */
-
-/* Default (mobile + tablet): existing block flow. The wrapper is
-   transparent — no extra padding, no visual chrome. */
-.id-result-area{display:block}
-
-/* Above 1024px, the wrapper becomes a 2-column CSS grid.
-   .id-parsed uses display:contents so its children participate
-   directly in the parent grid; we then assign each child to the
-   left rail or main column via grid-column rules. */
-@media (min-width: 1024px){
-  .id-result-area{
-    display:grid;
-    grid-template-columns:300px 1fr;
-    column-gap:28px;
-    align-items:start;
-    margin-top:18px;
-  }
-  /* `display:contents` flattens .id-parsed so its children are
-     grid items of .id-result-area. Hidden state still hides via
-     [hidden] (display:none has higher specificity). */
-  .id-parsed{display:contents}
-  .id-parsed[hidden]{display:none}
-
-  /* LEFT RAIL — sticky so it follows the page scroll while the
-     parsed list grows. Top offset accounts for the site header. */
-  .id-preview-wrap,
-  .id-filter-bar,
-  .id-kbd-compact,
-  .id-kbd-legend{
-    grid-column:1;
-    align-self:start;
-  }
-  .id-preview-wrap{
-    position:sticky;
-    top:96px;
-    margin-top:0;
-    /* Compact the preview tiles into a single-column rail-friendly
-       stack. Smaller thumb height; meta wraps cleanly. */
-  }
-  .id-preview-wrap .id-preview-row{grid-template-columns:1fr;gap:8px}
-  .id-preview-wrap .id-preview-tile img{max-height:160px}
-  .id-preview-wrap .id-read-btn{width:100%;justify-content:center}
-  .id-filter-bar{
-    position:sticky;
-    top:340px;          /* below the sticky preview block */
-    z-index:2;
-    background:var(--cream,#FAF6EE);
-    margin:0 -8px;
-    padding:10px 8px;
-  }
-  .id-kbd-compact{margin-top:6px;text-align:left}
-  .id-kbd-legend{margin-top:0}
-
-  /* MAIN COLUMN — everything else. */
-  .id-vendor-pulse,
-  .id-diff-strip,
-  .id-mathfix,
-  .id-learn-vendor,
-  .id-parsed-summary,
-  .id-parsed-list,
-  .id-parsed-totals,
-  .id-bulkbar,
-  .id-bulk-undo,
-  .id-handoff{
-    grid-column:2;
-  }
-  /* The bulkbar's sticky-bottom positioning still works inside the
-     grid main column thanks to position:sticky operating relative
-     to the nearest scrolling ancestor. */
-
-  /* The "coming next" banner stays full-width within the grid
-     since it appears in the pre-result phase. (#idStatus is
-     positioned outside .id-result-area entirely.) */
-  .id-coming{
-    grid-column:1 / -1;
-  }
-
-  /* Pre-OCR phase: when only the preview-wrap is visible (parsed
-     panel hidden), the main column is empty. Suppress the grid
-     in that intermediate state to avoid an awkward 300px-wide
-     image floating with empty whitespace. We do this by detecting
-     the ".id-parsed[hidden]" sibling — if the result panel is
-     hidden, fall back to single-column. */
-  .id-result-area:has(.id-parsed[hidden]){
-    grid-template-columns:1fr;
-  }
-  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap{
-    position:static;
-    max-width:760px;
-    margin:0 auto;
-  }
-  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-row{grid-template-columns:1fr 1fr}
-  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-preview-tile img{max-height:280px}
-  .id-result-area:has(.id-parsed[hidden]) .id-preview-wrap .id-read-btn{width:auto}
-
-  /* Wider container above 1100px so the split has room to breathe. */
-}
-@media (min-width: 1100px){
-  .block .container{max-width:1100px !important}
-  .id-hero,
-  .id-honesty,
-  .id-result-area .id-status{max-width:760px;margin-left:auto;margin-right:auto}
-}
-
-/* Tablet (720–1023) — single column with a slightly relaxed max
-   width so the parsed list isn't cramped. */
-@media (min-width: 720px) and (max-width: 1023px){
-  .id-result-area{margin-top:14px}
-}
-
-/* Wave 3.1 — visually-hidden utility for SR-only headings */
-.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-/* Wave 5 — first-run sample strip */
-.id-firstrun{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
-.id-firstrun[hidden]{display:none}
-.id-firstrun-msg{margin:0 0 10px;font-size:13.5px;color:var(--ink);line-height:1.5}
-.id-firstrun-row{display:flex;flex-wrap:wrap;gap:8px}
-.id-firstrun-btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
-.id-firstrun-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
-.id-firstrun-btn:focus-visible{outline:2px solid var(--accent,#1f6f6a);outline-offset:2px}
-
-/* Wave 4.3 — Auto-learn vendor prompt. Sits above the parsed list
-   when the operator has run 3 invoices from the same unrecognized
-   letterhead. Friendly name input + save/dismiss. */
-.id-learn-vendor{margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
-.id-learn-vendor[hidden]{display:none}
-.id-learn-msg{margin:0 0 8px;font-size:14px;color:var(--ink);line-height:1.55}
-.id-learn-msg--saved{color:var(--accent,#1f6f6a);font-weight:500}
-.id-learn-sample{margin:0 0 10px;padding:6px 10px;background:#f3efe7;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.id-learn-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.id-learn-input{flex:1 1 220px;font:inherit;font-size:13.5px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box}
-.id-learn-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
-.id-learn-save{font:inherit;font-size:13px;padding:8px 14px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;font-weight:500}
-.id-learn-save:hover{background:var(--accent,#1f6f6a);border-color:var(--accent,#1f6f6a)}
-.id-learn-dismiss{font:inherit;font-size:13px;padding:7px 11px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer}
-.id-learn-dismiss:hover{border-color:var(--ink-soft);color:var(--ink)}
-
-/* Wave 6.8 — PWA update + install prompts. Slim banners that sit
-   between the input chips and the result panel; never sticky, never
-   block scrolling. */
-.id-update,.id-install{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
-.id-install{background:linear-gradient(135deg,#FAF6EE 0%,#fff 100%);border-color:var(--line);border-left-color:var(--accent,#1f6f6a)}
-.id-update[hidden],.id-install[hidden]{display:none}
-.id-update-msg,.id-install-msg{margin:0;font-size:13.5px;color:var(--ink);line-height:1.5}
-.id-update-msg strong,.id-install-msg strong{color:var(--ink);font-weight:600}
-.id-update-btn,.id-install-btn,.id-update-dismiss,.id-install-dismiss{font:inherit;font-size:13px;padding:5px 12px;margin-left:6px;border-radius:6px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer}
-.id-update-btn,.id-install-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
-.id-update-btn:hover,.id-install-btn:hover{background:var(--accent,#1f6f6a)}
-.id-update-dismiss,.id-install-dismiss{padding:3px 9px;font-weight:600}
-.id-update-dismiss:hover,.id-install-dismiss:hover{border-color:var(--ink);color:var(--ink)}
-
-/* Wave 5 — abandonment resume banner */
-.id-resume{margin:14px 0 0;padding:10px 14px;background:#FFF6E5;border:1px solid #E8C97A;border-left:3px solid #B25C2A;border-radius:8px}
-.id-resume[hidden]{display:none}
-.id-resume-msg{margin:0;font-size:13px;color:var(--ink);line-height:1.5}
-.id-resume-btn,.id-resume-dismiss{font:inherit;font-size:13px;padding:4px 10px;border-radius:4px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink);cursor:pointer;margin-left:6px}
-.id-resume-btn{background:var(--ink);color:#fff;border-color:var(--ink)}
-.id-resume-btn:hover{background:var(--accent,#1f6f6a)}
-
-/* Wave 2.4 — bulk-count badge + wide undo banner */
-.id-bulk-count{display:inline-block;margin-left:6px;padding:1px 7px;font-size:11px;font-weight:600;border-radius:999px;background:rgba(31,111,106,.18);color:var(--accent,#1f6f6a);min-width:20px;text-align:center}
-.id-bulk-confirm[disabled]{opacity:.55;cursor:not-allowed}
-.id-bulk-undo{position:sticky;bottom:0;display:flex;align-items:center;gap:12px;padding:11px 14px;margin-top:0;background:var(--ink,#14161A);color:var(--cream,#FAF6EE);border-radius:0 0 10px 10px;box-shadow:0 -4px 14px rgba(20,22,26,.18);z-index:6;overflow:hidden}
-.id-bulk-undo[hidden]{display:none}
-.id-bulk-undo-msg{flex:1 1 auto;font-size:13.5px}
-.id-bulk-undo-btn{font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid var(--accent-on-ink,#7be0d4);background:transparent;color:var(--accent-on-ink,#7be0d4);cursor:pointer}
-.id-bulk-undo-btn:hover{background:var(--accent-on-ink,#7be0d4);color:var(--ink,#14161A)}
-.id-bulk-undo-bar{position:absolute;left:0;bottom:0;width:100%;height:3px;background:rgba(255,255,255,.06);overflow:hidden}
-.id-bulk-undo-fill{display:block;height:100%;background:var(--accent-on-ink,#7be0d4)}
-
-/* Wave 3.4 — skeleton loading + edit-commit color rise + save underline */
-.id-parsed-skel{padding:10px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:24px 1fr auto 88px;column-gap:12px;align-items:center}
-.id-parsed-skel-bar{height:12px;background:linear-gradient(90deg,#f3efe7 0%,#fdf9f1 50%,#f3efe7 100%);background-size:200% 100%;border-radius:6px;animation:id-shimmer 1.6s infinite linear}
-.id-parsed-skel-bar--sm{height:10px;width:60%}
-.id-parsed-skel-bar--md{height:12px;width:100%}
-.id-parsed-skel-bar--xs{height:10px;width:40%}
-@keyframes id-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@media(prefers-reduced-motion:reduce){.id-parsed-skel-bar{animation:none;background:#f3efe7}}
-.id-parsed-row.is-confirmed-rise{animation:id-conf-rise .48s ease}
-@keyframes id-conf-rise{0%{box-shadow:inset 3px 0 0 var(--rust,#B25C2A)}50%{box-shadow:inset 3px 0 0 #c89a3c}100%{box-shadow:inset 3px 0 0 var(--status-good,#1f6e3a)}}
-.id-save-underline{display:inline-block;height:2px;width:0;background:var(--accent,#1f6f6a);transition:width .48s ease;vertical-align:middle;margin-left:8px}
-.id-save-underline.show{width:42px}
-
-/* Wave 5.2 — phase ladder + tip carousel inside id-status */
-.id-phase-ladder{margin:8px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--ink-soft);line-height:1.55}
-.id-phase-ladder li{padding:1px 0;display:flex;align-items:center;gap:6px}
-.id-phase-ladder li::before{content:'○';color:var(--ink-soft);font-size:11px}
-.id-phase-ladder li[data-state="active"]{color:var(--ink);font-weight:500}
-.id-phase-ladder li[data-state="active"]::before{content:'●';color:var(--accent,#1f6f6a)}
-.id-phase-ladder li[data-state="done"]::before{content:'✓';color:var(--status-good,#1f6e3a)}
-.id-phase-eta{margin-top:4px;font-size:11.5px;color:var(--ink-soft);font-style:italic}
-.id-tip-carousel{margin-top:8px;padding:8px 12px;background:var(--white);border:1px dashed var(--line);border-radius:6px;font-size:12px;color:var(--ink-soft);min-height:1.5em;line-height:1.55}
-.id-tip-carousel strong{color:var(--ink);font-weight:600}
-
-/* Wave 4.5 — auto-applied trust chip on learned rows */
-.id-row-learned{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 7px;font-size:10px;font-weight:600;letter-spacing:.04em;border-radius:4px;background:#E0F4ED;color:#0c4a26;border:1px solid #A8D9C2}
-.id-row-learned[data-source="bilingual"]{background:#F0E5FA;color:#4a1f6a;border-color:#C9B0E5}
-.id-row-learned[data-source="stem"]{background:#F4ECE0;color:#5A4A30;border-color:#D9C5A3}
-
-/* Wave 5.3 — error-recovery panel */
-.id-error-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
-.id-error-actions button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-.id-error-actions button:hover{border-color:var(--accent,#1f6f6a);color:var(--accent,#1f6f6a)}
-.id-raw-ocr{margin-top:10px;padding:8px 10px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;display:none}
-.id-raw-ocr.show{display:block}
-
-/* Wave 5.5 — returning-visitor banner */
-.id-returning{margin:18px 0 0;padding:14px 16px;background:linear-gradient(135deg,var(--cream-2) 0%,#fff 100%);border:1px solid var(--line);border-left:3px solid var(--accent,#1f6f6a);border-radius:10px}
-.id-returning[hidden]{display:none}
-.id-returning-msg{margin:0;font-size:14px;color:var(--ink);line-height:1.55}
-.id-returning-msg strong{color:var(--ink);font-weight:600}
-.id-returning-stat{display:inline-block;margin-right:8px;padding:1px 8px;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:999px;background:var(--accent,#1f6f6a);color:#fff;text-transform:uppercase}
-
-/* Wave 5.4 — passphrase generator chip */
-.midpass-generate{margin-top:6px;padding:5px 10px;font-size:12px;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
-.midpass-generate:hover{background:var(--accent,#1f6f6a);color:#fff}
-
-/* Wave 3.3 — Cmd-K command palette */
-.id-cmdk-backdrop{position:fixed;inset:0;background:rgba(20,22,26,.45);display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 40px;z-index:1300}
-.id-cmdk-backdrop[hidden]{display:none}
-.id-cmdk-sheet{width:100%;max-width:520px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.28);padding:14px 16px}
-.id-cmdk-input{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);box-sizing:border-box}
-.id-cmdk-input:focus{outline:2px solid var(--accent,#1f6f6a);outline-offset:1px}
-.id-cmdk-list{margin:10px 0 0;padding:0;list-style:none;max-height:50vh;overflow-y:auto}
-.id-cmdk-item{padding:9px 12px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
-.id-cmdk-item:hover,.id-cmdk-item[aria-selected="true"]{background:var(--cream-2)}
-.id-cmdk-item kbd{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;padding:1px 5px;background:#f3efe7;border:1px solid var(--line);border-radius:3px;color:var(--ink-soft)}
-.id-cmdk-empty{padding:14px 12px;color:var(--ink-soft);font-size:13px;font-style:italic}
-
-/* Wave 6.6 — Privacy Self-Check panel */
-.id-selfcheck{margin-top:14px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:10px}
-.id-selfcheck-btn{padding:9px 16px;font:inherit;font-size:13px;font-weight:600;border-radius:6px;border:1px solid var(--accent,#1f6f6a);background:#fff;color:var(--accent,#1f6f6a);cursor:pointer}
-.id-selfcheck-btn:hover{background:var(--accent,#1f6f6a);color:#fff}
-.id-selfcheck-out{margin-top:10px;padding:10px 12px;background:#0c1817;color:#cfe5e1;border-radius:6px;font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-size:11px;line-height:1.55;white-space:pre-wrap;display:none}
-.id-selfcheck-out.show{display:block}
-
-/* Wave 6.11 — dark-mode Stage 1. Honors prefers-color-scheme so
-   kitchens with dim lighting + auto-dark phones get a readable
-   surface without a manual toggle. Only the tool-scoped surfaces
-   are themed here; the sitewide design system handles the rest. */
-@media (prefers-color-scheme: dark){
-  .id-vendor-pulse{background:linear-gradient(135deg,#0c1817 0%,#1f3a37 100%)}
-  .id-honesty-fact{background:#1B1E23;border-color:#2C3036}
-  .id-honesty-fact summary{color:#F0EBE0}
-  .id-honesty-fact p{color:#C8C2B6}
-  .id-mathfix{background:#2A2418;border-color:#5A4A30;color:#F0EBE0}
-  .id-mathfix-msg{color:#F0EBE0}
-  .id-mathfix-apply{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
-  .id-mathfix-dismiss{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
-  .id-export-drawer{background:#1B1E23;border-color:#2C3036}
-  .id-export-btn{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
-  .id-export-btn:hover{background:#2C3036;color:#F0EBE0}
-  .id-firstrun{background:linear-gradient(135deg,#1B1E23 0%,#2C3036 100%);border-color:#2C3036}
-  .id-firstrun-msg{color:#F0EBE0}
-  .id-firstrun-btn{background:#1B1E23;color:#7be0d4;border-color:#7be0d4}
-  .id-firstrun-btn:hover{background:#7be0d4;color:#0c1817}
-  .id-row-history{background:#1B1E23;border-color:#2C3036}
-  .id-row-history-label{color:#C8C2B6}
-  .id-row-history-list{color:#C8C2B6}
-  .id-resume{background:#2A2418;border-color:#5A4A30}
-  .id-resume-msg{color:#F0EBE0}
-  .id-resume-btn{background:#7be0d4;color:#0c1817;border-color:#7be0d4}
-  .id-row-act{background:#1B1E23;color:#C8C2B6;border-color:#2C3036}
-  .id-row-act-yes:hover{background:#1f3a37;color:#7be0d4;border-color:#7be0d4}
-  .id-row-act-no:hover{background:#3a1f1f;color:#f5b8a8;border-color:#7a2419}
-}
+footer.site-footer{padding:40px 0;border-top:1px solid var(--line);font-size:14px;color:var(--ink-soft);margin-top:60px}
+footer.site-footer a{color:var(--ink-soft)}
 </style>
 
-<script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[
-{"@type":"WebApplication","@id":"https://muntin.digital/es/tools/invoice-decoder/#tool","name":"Decodificador de Facturas","description":"Lee facturas de proveedores (foto, PDF o CSV), ordena las partidas en grupos operativos (proteína, verduras, lácteos, abarrotes, papel, limpieza, bebidas, hierbas-especias) y guarda el resultado encriptado en el Taller del operador. OCR en el dispositivo; nada se sube.","url":"https://muntin.digital/es/tools/invoice-decoder/","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":["es","en"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"creator":{"@id":"https://muntin.digital/#business"}},
-{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Muntin Digital","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Herramientas","item":"https://muntin.digital/es/tools/"},{"@type":"ListItem","position":3,"name":"Decodificador de Facturas","item":"https://muntin.digital/es/tools/invoice-decoder/"}]}
-]}
+<script src="/assets/p.js?v=20260503" defer></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ endpoint: '/api/event', logging: false });
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
 
-<a class="skip-link" href="#main">Saltar al contenido principal</a>
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
-<script>
-  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
-     Apple devices. Runs early in <body> so the swap is essentially
-     invisible — script tags execute synchronously when the parser hits
-     them, before .nav-search-kbd renders below. CSS in site-core.css
-     conditions on <html data-platform="mac">. */
-  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
-    document.documentElement.dataset.platform = 'mac';
-  }
-</script>
-<header class="nav" id="nav">
-  <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
-             Placed inside <header> so sync-includes replaces it atomically
-             along with the rest of the nav block on every build, keeping
-             the partial strictly idempotent. Valid HTML5: <script> may
-             appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
-  <div class="container nav-inner">
-    <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
-      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
-        <g stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter">
-          <rect x="18" y="18" width="92" height="92"/>
-          <line x1="64" y1="18" x2="64" y2="110"/>
-          <line x1="18" y1="49" x2="110" y2="49"/>
-        </g>
-      </svg>
-      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
-    </a>
-    <!-- Phase 7: nav de 5 elementos, según el plan de lanzamiento Parte II.
-         Biblioteca / Herramientas / Proyectos / Estudio / Acceder.
-         Biblioteca apunta al hub canónico /es/library/. Herramientas
-         se promueve del antiguo mega-menú a un elemento de primer
-         nivel. Estudio reemplaza Servicios + Restaurantes + Sobre
-         Don &mdash; todo vive bajo /es/studio/ ahora. El mega-menú
-         se retira (el hub ES el menú); el controlador del script
-         también desaparece. -->
-    <nav class="nav-links" aria-label="Principal">
-      <a href="/es/library/">Biblioteca</a>
-      <a href="/es/tools/">Herramientas</a>
-      <a href="/es/work/">Proyectos</a>
-      <a href="/es/studio/">Estudio</a>
-      <a class="js-nav-signin nav-link-auth" href="/es/sign-in/" hidden>Acceder</a>
-      <a class="js-nav-workshop nav-link-auth" href="/es/workbench/" hidden>El Taller</a>
-    </nav>
-    <button type="button" class="nav-search-btn js-open-search" aria-label="Abrir búsqueda (Cmd+K)" title="Buscar — Cmd K">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"/>
-        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
-      </svg>
-      <span class="nav-search-label">Buscar</span>
-      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
-    </button>
-    <nav class="lang-switch" aria-label="Idioma">
-      <a href="/tools/invoice-decoder/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
-      <span class="lang-switch-current" aria-current="true">ES</span>
-    </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+<div class="nav-bar">
+  <div class="container">
+    <a href="/es/">Muntin Digital</a> &middot; <a href="/es/tools/">Herramientas gratis</a>
   </div>
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
-    <a href="/es/library/">Biblioteca</a>
-    <a href="/es/tools/">Herramientas</a>
-    <a href="/es/work/">Proyectos</a>
-    <a href="/es/studio/">Estudio</a>
-    <a class="js-nav-signin mobile-auth" href="/es/sign-in/" hidden>Acceder</a>
-    <a class="js-nav-workshop mobile-auth" href="/es/workbench/" hidden>El Taller</a>
-    <button type="button" class="mobile-search js-open-search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-      <span>Buscar en la biblioteca</span>
-    </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Escríbele a Don</a>
-    <a href="/tools/invoice-decoder/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
-  </nav>
-
-  <!-- Mega-menu controller retired in Phase 7: Biblioteca is now a
-       single link to /es/library/ (the canonical three-doors hub IS
-       the menu). Las reglas CSS de .nav-library-* permanecen para
-       reusar el patrón si vuelve un mega-menú en el futuro. -->
-
-  <!-- Phase 2 (Workshop) — toggle del estado de auth para el nav.
-       Llama a /api/auth/me y revela el enlace "Acceder" o "El Taller"
-       según la respuesta. Ambos enlaces empiezan ocultos para que un
-       visitante anónimo sin JS no vea ninguno (la biblioteca y las
-       herramientas funcionan completas sin acceso, así que la
-       affordance ausente es aceptable). -->
-  <script>
-    (function () {
-      var signin   = document.querySelectorAll('.js-nav-signin');
-      var workshop = document.querySelectorAll('.js-nav-workshop');
-      if (!signin.length && !workshop.length) return;
-      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
-      fetch('/api/auth/me', { credentials: 'same-origin' })
-        .then(function (r) {
-          if (r.status === 200) {
-            show(workshop);
-            fetch('/api/workbench/count', { credentials: 'same-origin' })
-              .then(function (r2) { return r2.ok ? r2.json() : null; })
-              .then(function (j) {
-                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
-                workshop.forEach(function (n) {
-                  if (n.querySelector('.nav-workshop-count')) return;
-                  var b = document.createElement('span');
-                  b.className = 'nav-workshop-count';
-                  b.textContent = ' (' + j.count + ')';
-                  n.appendChild(b);
-                });
-              })
-              .catch(function () {});
-            return;
-          }
-          show(signin);
-        })
-        .catch(function () { show(signin); });
-    })();
-  </script>
-</header>
+</div>
 
 <main id="main">
-
-<nav class="breadcrumb container" aria-label="Ruta de navegación">
-  <a href="/es/">Inicio</a>
-  <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <a href="/es/tools/">Herramientas</a>
-  <span class="breadcrumb-sep" aria-hidden="true">›</span>
-  <span aria-current="page">Decodificador de Facturas</span>
-</nav>
-
-<section class="block">
-  <div class="container" style="max-width:880px;">
-    <div class="id-hero">
-      <p class="id-eyebrow"><span class="eyebrow" style="font:inherit;color:inherit;letter-spacing:inherit;display:inline">Herramienta gratis · Saca foto. Ordena. Guarda.</span></p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(30px,4vw,42px);font-weight:500;color:var(--ink);margin:0 0 14px;line-height:1.15;">Saca foto a tu factura. <span class="serif-italic" style="color:var(--teal);">La ordenamos.</span> Es tuya.</h1>
-      <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-04">4 de mayo de 2026</time></p>
-            <!-- tool-verified:end -->
-      <!-- data-promise:start -->
-            <aside class="tool-data-promise" aria-label="Promesa de datos">
-              <p class="tool-data-promise__line">Corre en tu navegador. Sin cuentas, sin fetches, sin tracking.</p>
-              <p class="tool-data-promise__line">Verifícalo: abre DevTools → Network → usa la herramienta. La pestaña Network se mantiene vacía.</p>
-              <p class="tool-data-promise__links"><a href="/es/security/">Lee la promesa completa &rarr;</a> &middot; <a href="/es/learn/checklists/audit-any-tool/">Audita cualquier herramienta &rarr;</a></p>
-            </aside>
-            <!-- data-promise:end -->
-      <p style="font-size:16px;color:var(--ink-soft);line-height:1.6;margin:0 0 0;">Toma una foto de la factura de tu proveedor — Sysco, US Foods, Restaurant Depot, tu mayorista de verduras, quien sea. Leemos cada línea, ordenamos cada partida en grupos de restaurante y guardamos el resultado en tu Taller. Encriptado en tu dispositivo. Nunca vendido, nunca usado para entrenar IA, nunca juntado con otros restaurantes.</p>
-      <p class="id-walkaway"><strong>Te llevas:</strong> Tu última factura — ordenada por grupos, guardada en tu Taller, lista para pasar al Costo del Plato.</p>
-    </div>
-
-    <!-- Wave A — Captura universal. Una sola zona acepta cualquier
-         archivo: foto, PDF escaneado (p.ej. ScanSnap), PDF de texto,
-         CSV o Excel. El despachador en invoice-decoder.js detecta el
-         tipo y enruta al pipeline correcto. -->
-    <h2 id="idInputsHeading" class="visually-hidden">Envía tu factura</h2>
-    <div class="id-drop-wrap">
-      <label class="id-drop" id="idDropzone" for="idAnyInput" role="region" aria-labelledby="idInputsHeading" aria-describedby="idDropBlurb">
-        <span class="id-drop-icon" aria-hidden="true">📥</span>
-        <p class="id-drop-title">Suelta una factura aquí, o toca para elegir</p>
-        <p class="id-drop-blurb" id="idDropBlurb">Foto, PDF (texto o escaneado), CSV o Excel — lo que sea que tu distribuidor envíe. También puedes pegar una captura con Ctrl+V. Todo se procesa en este dispositivo.</p>
-        <p class="id-drop-types">JPG · PNG · HEIC · PDF · PDF escaneado · CSV · TSV · XLSX</p>
-        <input type="file" id="idAnyInput" accept="image/*,application/pdf,.csv,.tsv,.xlsx,text/csv,text/tab-separated-values,text/plain" multiple aria-label="Suelta o elige un archivo de factura" aria-describedby="idDropBlurb" />
-      </label>
-      <p class="id-inputs-label">O elige una fuente específica:</p>
-    </div>
-    <div class="id-inputs" id="idInputs">
-      <label class="id-input-chip" data-input="photo">
-        <span class="id-input-icon" aria-hidden="true">📷</span>
-        <p class="id-input-title">Foto o escaneo</p>
-        <p class="id-input-blurb">Saca foto con tu teléfono o sube una imagen de app de escaneo. Hasta 8 páginas.</p>
-        <input type="file" id="idPhotoInput" accept="image/*" capture="environment" multiple />
-      </label>
-      <label class="id-input-chip" data-input="pdf">
-        <span class="id-input-icon" aria-hidden="true">📄</span>
-        <p class="id-input-title">PDF</p>
-        <p class="id-input-blurb">Sube el PDF que tu distribuidor manda por correo, o un PDF escaneado de ScanSnap y similares — ambos se leen en el dispositivo.</p>
-        <span class="id-input-tag">Mejor</span>
-        <input type="file" id="idPdfInput" accept="application/pdf" />
-      </label>
-      <label class="id-input-chip" data-input="csv">
-        <span class="id-input-icon" aria-hidden="true">📊</span>
-        <p class="id-input-title">CSV / Excel</p>
-        <p class="id-input-blurb">Las exportaciones de historial de Sysco / US Foods / Restaurant Depot funcionan tal cual.</p>
-        <input type="file" id="idCsvInput" accept=".csv,.tsv,.xlsx" />
-      </label>
-    </div>
-
-    <!-- Wave 5 — abandonment-resume banner. ES mirror. -->
-    <div class="id-resume" id="idResume" hidden role="status" aria-live="polite">
-      <p class="id-resume-msg">Tenías una factura en proceso ayer. <button type="button" class="id-resume-btn">Continuar</button> · <button type="button" class="id-resume-dismiss">Cerrar</button></p>
-    </div>
-
-    <!-- Wave 6.8 — PWA update / install affordances. ES copy. -->
-    <div class="id-update" id="idUpdate" hidden role="status" aria-live="polite">
-      <p class="id-update-msg"><strong>Hay una actualización.</strong> Una nueva versión está lista. <button type="button" class="id-update-btn" id="idUpdateBtn">Recargar</button> <button type="button" class="id-update-dismiss" id="idUpdateDismiss" aria-label="Cerrar">×</button></p>
-    </div>
-    <div class="id-install" id="idInstall" hidden>
-      <p class="id-install-msg">Agregar al inicio — funciona sin internet una vez instalado. <button type="button" class="id-install-btn" id="idInstallBtn">Instalar</button> <button type="button" class="id-install-dismiss" id="idInstallDismiss" aria-label="Cerrar">×</button></p>
-    </div>
-
-    <div class="id-status" id="idStatus" hidden role="status" aria-live="polite">
-      <p class="id-status-title" id="idStatusTitle">Leyendo la foto…</p>
-      <p class="id-status-msg" id="idStatusMsg">Limpiando la imagen para que el siguiente paso (lectura línea por línea) tenga la mejor base.</p>
-      <div class="id-progress-bar"><div class="id-progress-fill" id="idProgressFill"></div></div>
-    </div>
-
-    <!-- Wave 6.10 — desktop split-pane wrapper (ES mirror). -->
-    <div class="id-result-area">
-
-    <div class="id-preview-wrap" id="idPreview" hidden>
-      <div class="id-preview-row">
-        <div class="id-preview-tile">
-          <p class="id-preview-tile-label">Tu foto</p>
-          <img id="idRawImg" alt="" />
-        </div>
-        <div class="id-preview-tile">
-          <p class="id-preview-tile-label">Limpia para leer</p>
-          <img id="idCleanImg" alt="" />
-        </div>
-      </div>
-      <p class="id-preview-meta" id="idPreviewMeta"></p>
-      <button type="button" class="id-read-btn" id="idReadBtn" hidden aria-label="Leer esta factura">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-        Leer esta factura
-      </button>
-    </div>
-
-    <p class="id-coming" id="idComing" hidden><strong>Siguiente paso:</strong> toca "Leer esta factura" para extraer cada línea. Mostraremos categorías, totales, y te dejaremos guardar el resultado en B5.</p>
-
-    <div class="id-parsed" id="idParsed" hidden>
-      <!-- Wave 2.3 — Vendor Pulse Strip. ES mirror. -->
-      <aside class="id-vendor-pulse" id="idVendorPulse" hidden aria-label="Pulso del proveedor"></aside>
-
-      <div class="id-diff-strip" id="idDiffStrip" hidden></div>
-
-      <!-- Wave 1.3 — Math reconciliation candidate-fix card. ES mirror. -->
-      <div class="id-mathfix" id="idMathFix" hidden role="region" aria-label="Reconciliación de totales"></div>
-
-      <!-- Wave 4.3 — Auto-learn vendor prompt. ES mirror. -->
-      <div class="id-learn-vendor" id="idLearnVendor" hidden role="region" aria-label="Guardar este formato de proveedor"></div>
-
-      <div class="id-parsed-summary">
-        <span class="id-parsed-count" id="idParsedCount">0 partidas</span>
-        <span class="id-parsed-vendor" id="idParsedVendor" hidden></span>
-        <span class="id-parsed-meta" id="idParsedMeta"></span>
-      </div>
-      <details class="id-kbd-legend">
-        <summary>Atajos de teclado <span class="id-kbd-hint">más rápido en una laptop</span></summary>
-        <ul class="id-kbd-list">
-          <li><kbd>Y</kbd> / <kbd>Espacio</kbd> — confirmar renglón</li>
-          <li><kbd>N</kbd> — marcar y quitar (deshacer en 4 seg)</li>
-          <li><kbd>J</kbd> / <kbd>↓</kbd> — siguiente · <kbd>K</kbd> / <kbd>↑</kbd> — anterior</li>
-          <li><kbd>1</kbd>-<kbd>9</kbd> — categoría (1=proteína, 2=verduras, 3=lácteos, 4=mariscos, 5=bebidas, 6=papel, 7=limpieza, 8=abarrotes, 9=hierbas/especias)</li>
-          <li><kbd>/</kbd> — enfocar el filtro de categoría</li>
-        </ul>
-      </details>
-      <div class="id-filter-bar" id="idFilterBar" hidden role="tablist" aria-label="Filtrar partidas">
-        <button type="button" class="id-filter-chip" data-filter="all"        role="tab" aria-selected="false">Todas <span class="id-filter-count">0</span></button>
-        <button type="button" class="id-filter-chip" data-filter="needReview" role="tab" aria-selected="true">Por revisar <span class="id-filter-count">0</span></button>
-        <button type="button" class="id-filter-chip" data-filter="confirmed"  role="tab" aria-selected="false">Confirmadas <span class="id-filter-count">0</span></button>
-        <button type="button" class="id-filter-chip" data-filter="red"        role="tab" aria-selected="false">Rojas <span class="id-filter-count">0</span></button>
-        <select class="id-filter-cat" id="idFilterCat" aria-label="Filtrar por categoría">
-          <option value="">Todas las categorías</option>
-        </select>
-      </div>
-      <ul class="id-parsed-list" id="idParsedList"></ul>
-      <p class="id-parsed-totals" id="idParsedTotals" hidden></p>
-      <div class="id-bulkbar" id="idBulkbar" hidden>
-        <button type="button" class="id-bulk-confirm" id="idBulkConfirm">Marcar ámbar como verificadas</button>
-        <button type="button" class="id-bulk-save" id="idBulkSave" disabled>Guardar en mi Taller →</button>
-      </div>
-      <div class="id-handoff" id="idHandoff" hidden></div>
-    </div>
-    </div><!-- /.id-result-area (Wave 6.10) -->
-
-    <div class="id-honesty">
-      <h3>Qué es, y qué no es.</h3>
-      <p><strong>Es:</strong> una forma rápida de convertir una foto, escaneo o PDF de factura en partidas ordenadas que son tuyas. Encriptado al guardar, atado solo a tu sesión. Categorizado en grupos reales de restaurante (proteína, verduras, lácteos, abarrotes, papel, limpieza, bebidas, hierbas-especias).</p>
-      <p><strong>No es:</strong> tu contabilidad. No se sincroniza con QuickBooks, Restaurant365 ni Toast. No detecta cada error de precio — úsalo como segundo par de ojos, no un auditor. Los costos de plato sólo se actualizan cuando tú confirmas.</p>
-      <p><strong>vs. Restaurant365:</strong> tus facturas se quedan en tu dispositivo hasta que decidas guardar. Las guardadas se encriptan con una llave derivada de tu sesión. No hay benchmark, no hay pool de proveedores, no entrenamos IA con tus costos — y nunca se rellenan retroactivamente si más adelante hay un opt-in.</p>
-      <p><strong>Postura de privacidad:</strong> Abre DevTools → Network. Elige una foto. La versión limpia se renderiza aquí. La pestaña Network sigue vacía. Los bytes de la imagen nunca salen de tu dispositivo.</p>
-
-      <!-- Audit fix (C6) — mirror of EN tools/invoice-decoder/index.html
-           lines 1524-1563. Spanish-speaking owners must be able to
-           opt out of the beta engine, read the privacy assertion,
-           and persist a kill-switch on this device. The panic-flow
-           order matches the EN page: kill-switch listed BEFORE
-           "try the newer reader first (beta)" so a panicked owner
-           finds the safe rollback before the beta option. The
-           wiring script below honors the same localStorage key
-           ('id-engine-v2') that ocr-shim.js consumes site-wide. -->
-      <!-- This is a disclosure (<details>), not a modal. Tab order
-           passes through it; Escape does not collapse it; opening
-           does not move focus. Browser-default behavior is what we
-           want (no JS focus trap). -->
-      <details class="id-honesty-fact" id="idReaderSettings">
-        <summary>
-          <strong data-en="Reader settings" data-es="Ajustes del lector">Ajustes del lector</strong>
-          <span class="id-rs-status" id="idReaderSettingsStatus" aria-live="polite" aria-atomic="true" style="color:var(--stone);font-weight:400;font-size:14px;margin-left:6px"></span>
-        </summary>
-        <fieldset id="idReaderSettingsFs" aria-describedby="idRSDesc" style="border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 0">
-          <legend data-en="Which reader should we use first?"
-                  data-es="¿Qué lector usamos primero?"
-                  style="font-size:13px;color:var(--ink-soft);padding:0 4px">¿Qué lector usamos primero?</legend>
-          <p id="idRSDesc"
-             data-en="By default we use a standard reader for every invoice. When the standard reader can't find any words on a page, a newer reader (still being tested) steps in automatically and tries to do better. You don't have to do anything &mdash; this is just here if you want a different default."
-             data-es="Por defecto usamos un lector estándar para cada factura. Cuando el lector estándar no encuentra palabras en una página, un lector más nuevo (aún en pruebas) entra automáticamente para intentar leer mejor. No tienes que hacer nada &mdash; esto está aquí solo si quieres otro comportamiento por defecto."
-             style="margin:0 0 10px;font-size:13.5px;color:var(--ink-soft);line-height:1.55">Por defecto usamos un lector estándar para cada factura. Cuando el lector estándar no encuentra palabras en una página, un lector más nuevo (aún en pruebas) entra automáticamente para intentar leer mejor. No tienes que hacer nada &mdash; esto está aquí solo si quieres otro comportamiento por defecto.</p>
-          <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="auto" id="idReaderAuto" aria-describedby="idRSDescAuto" checked>
-            <span><strong data-en="Standard reader, with help when stuck."
-                          data-es="Lector estándar, con ayuda cuando se atora.">Lector estándar, con ayuda cuando se atora.</strong>
-              <span id="idRSDescAuto"
-                    data-en=" The default. Fast, proven; the newer reader takes over only when the standard one finds nothing."
-                    data-es=" Lo predeterminado. Rápido y probado; el nuevo lector entra solo cuando el estándar no encuentra nada."> Lo predeterminado. Rápido y probado; el nuevo lector entra solo cuando el estándar no encuentra nada.</span>
-            </span>
-          </label>
-          <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="v1" id="idReaderV1" aria-describedby="idRSDescV1">
-            <span><strong data-en="Only the standard reader."
-                          data-es="Solo el lector estándar.">Solo el lector estándar.</strong>
-              <span id="idRSDescV1"
-                    data-en=" Skip the newer reader entirely on this device. Use this if a recent invoice came back wrong and you want to rule out the newer reader."
-                    data-es=" Omite el lector más nuevo por completo en este dispositivo. Úsalo si una factura reciente salió mal y quieres descartar al nuevo lector."> Omite el lector más nuevo por completo en este dispositivo. Úsalo si una factura reciente salió mal y quieres descartar al nuevo lector.</span>
-            </span>
-          </label>
-          <label class="id-rs-row">
-            <input type="radio" name="idReaderChoice" value="v2" id="idReaderV2" aria-describedby="idRSDescV2">
-            <span><strong data-en="Try the newer reader first (beta)."
-                          data-es="Probar el lector más nuevo primero (beta).">Probar el lector más nuevo primero (beta).</strong>
-              <span id="idRSDescV2"
-                    data-en=" Uses the new reader for every invoice on this device. May read some pages better, may be slower the first time. The standard reader still steps in if the new one has any trouble."
-                    data-es=" Usa el nuevo lector en cada factura de este dispositivo. Puede leer mejor algunas páginas, puede ser más lento la primera vez. El lector estándar entra si el nuevo tiene algún problema."> Usa el nuevo lector en cada factura de este dispositivo. Puede leer mejor algunas páginas, puede ser más lento la primera vez. El lector estándar entra si el nuevo tiene algún problema.</span>
-            </span>
-          </label>
-          <p data-en="Your choice stays on this device only &mdash; nothing about your invoices is shared with us. You can change it any time."
-             data-es="Tu elección se queda solo en este dispositivo &mdash; nada de tus facturas se comparte con nosotros. Puedes cambiarla cuando quieras."
-             style="margin:10px 0 0;font-size:13px;color:var(--stone)">Tu elección se queda solo en este dispositivo &mdash; nada de tus facturas se comparte con nosotros. Puedes cambiarla cuando quieras.</p>
-        </fieldset>
-      </details>
-
-      <details class="id-verify">
-        <summary>Verifícalo tú mismo: abre DevTools → Network <span class="id-verify-badge">2 minutos</span></summary>
-        <ol class="id-verify-steps">
-          <li><strong>Abre DevTools en Chrome / Firefox / Safari.</strong> Click derecho en cualquier parte de la página → <em>Inspeccionar</em>. (En iPhone o Android, conecta a un navegador de escritorio y usa inspección remota — DevTools del teléfono es ilegible.)</li>
-          <li><strong>Cambia a la pestaña Network y marca "Preserve log".</strong> Eso mantiene la lista de peticiones visible entre acciones.</li>
-          <li><strong>Elige una foto y léela.</strong> Mira el Network mientras corre el OCR. Las únicas peticiones son el WASM de Tesseract + paquetes de idioma (cacheados después del primer uso) — y cero peticiones llevando los bytes de tu imagen. La imagen vive en un <code>&lt;canvas&gt;</code> de esta pestaña.</li>
-          <li><strong>Guarda en tu Taller.</strong> Ahora el Network muestra UN POST a <code>/api/workbench/save</code>. Click → Payload. El cuerpo trae un campo <code>envelope.ct</code> con bytes base64 — eso es el ciphertext AES-GCM. Busca en el cuerpo cualquier nombre de tus platos. No los encontrarás.</li>
-        </ol>
-        <p class="id-verify-foot">Si en algún paso ves algo que parece contenido de tu factura saliendo de la página, avísanos — sería un bug que arreglaríamos de inmediato.</p>
-        <button type="button" id="idVerifyMeasureBtn" class="id-verify-measure" hidden>Medir el tamaño del último guardado</button>
-        <p id="idVerifyMeasureOut" class="id-verify-measure-out" role="status" aria-live="polite"></p>
-      </details>
-
-      <div id="idCompareMount"></div>
-    </div>
-
-  </div>
-</section>
-
-<!-- tool-knit -->
-<aside class="tool-knit" aria-labelledby="tool-knit-heading-invoice-decoder">
-    <div class="container">
-      <h2 id="tool-knit-heading-invoice-decoder" class="tool-knit__h">Sigue.</h2>
-      <div class="tool-knit__grid">
-      <div class="tool-knit__col">
-        <h3>Tema</h3>
-        <a href="/es/learn/topics/operations-margin/">Operaciones y margen</a>
-      </div>
-      <div class="tool-knit__col">
-        <h3>Herramientas relacionadas</h3>
-        <ul>
-          <li><a href="/es/tools/plate-cost/">Costo del Plato</a></li>
-          <li><a href="/es/tools/cost-pulse/">Pulso de Costos</a></li>
-        </ul>
-      </div>
-      <div class="tool-knit__col">
-        <h3>Lee</h3>
-        <ul>
-          <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
-          <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
-        </ul>
-      </div>
-      <div class="tool-knit__col">
-        <h3>Palabras</h3>
-        <ul>
-          <li><a href="/es/glossary/food-cost/">Food cost</a></li>
-          <li><a href="/es/glossary/prime-cost/">Prime cost</a></li>
-          <li><a href="/es/glossary/variable-costs/">Costos variables</a></li>
-        </ul>
-      </div>
-      </div>
-    </div>
-  </aside>
-<!-- /tool-knit -->
-<!-- tool-sheet-rail:start -->
-<section class="topic-section tool-sheet-rail" aria-labelledby="tool-sheet-rail-h">
   <div class="container">
-    <header class="topic-section-head">
-      <span class="eyebrow">Empareja con papeleo</span>
-      <h2 id="tool-sheet-rail-h">Hojas del operador que usan esta herramienta — imprimibles, llenables, exportan a CSV.</h2>
-    </header>
-    <ul class="topic-tool-list">
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/weekly-prime-cost-worksheet/">
-            <h4>Hoja semanal de costo primo</h4>
-            <p>El número más importante que un operador pequeño puede seguir. Mete costos de comida, bebida y mano de obra contra las ventas netas. Mira tu costo primo y dónde queda frente al techo del 60 por ciento.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li>
-          <a class="topic-tool-card" href="/es/sheets/invoice-receiving-checklist/">
-            <h4>Lista de recepción de factura</h4>
-            <p>Atrapa items cortos, sustituidos o con precio inflado en la puerta trasera — antes de que el camión se vaya. Proveedor, línea, cantidad pedida versus recibida, cambio de precio unitario, temperaturas de proteínas y lácteos.</p>
-            <span class="topic-tool-cta">Abrir la hoja <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-    </ul>
-  </div>
-</section>
-<!-- tool-sheet-rail:end -->
+    <span class="eyebrow">Herramienta retirada &middot; 2026-05-08</span>
+    <h1>El Decodificador de Facturas ya no está disponible.</h1>
+    <p class="muted">Lo construimos como una app de navegador completa con OCR para facturas. No cumplió nuestro estándar &mdash; un OCR que lee mal media factura de Sysco no es una herramienta, es un destructor de confianza con botón de guardar. Así que lo retiramos. El objetivo siempre fue empoderarte, nunca el JavaScript: saber qué buscar en una factura. Abajo: cómo recuperar los datos que guardaste, y tres reemplazos estáticos que dan la misma respuesta en cinco minutos.</p>
 
+    <div class="deadline">
+      <strong>Aviso.</strong> El <strong>2026-05-22</strong> esta URL pasa a HTTP&nbsp;410 (Gone) y los datos cifrados de facturas guardados en este navegador no serán accesibles desde esta URL. Expórtalos ahora si quieres una copia.
+    </div>
+
+    <h2>Recupera tus datos guardados</h2>
+    <p class="muted">Tus facturas se cifraron con AES-GCM usando un secreto que tú elegiste. Escríbelo abajo para descifrar y descargar. Nada sale de esta página; el descifrado corre en tu navegador.</p>
+
+    <div class="export-card" id="exportCard">
+      <label for="passphrase">Tu secreto (passphrase)</label>
+      <input id="passphrase" type="password" autocomplete="off" placeholder="Escribe el secreto que usaste al guardar" />
+      <div class="row">
+        <button class="btn btn-primary" id="btnExport" type="button">Descifrar y descargar (CSV + JSON)</button>
+        <button class="btn btn-ghost" id="btnSkipReveal" type="button">Olvidé mi secreto</button>
+      </div>
+      <div id="exportStatus" class="status info" hidden></div>
+    </div>
+
+    <div class="export-card" id="skipCard" hidden>
+      <h2 style="margin-top:0">Saltar la exportación y borrar</h2>
+      <p class="muted">Si no recuerdas tu secreto, los datos cifrados son irrecuperables. Puedes borrarlos de este navegador para liberar el espacio. Escribe <code>BORRAR</code> abajo para confirmar.</p>
+      <label for="skipConfirm">Escribe <code>BORRAR</code> para confirmar</label>
+      <input id="skipConfirm" type="text" autocomplete="off" placeholder="BORRAR" />
+      <div class="row">
+        <button class="btn btn-danger" id="btnSkipClear" type="button" disabled>Borrar todos los datos</button>
+        <button class="btn btn-ghost" id="btnSkipCancel" type="button">Cancelar</button>
+      </div>
+      <div id="skipStatus" class="status info" hidden></div>
+    </div>
+
+    <h2>Tres cosas que puedes usar en su lugar</h2>
+    <ul class="next-steps">
+      <li>
+        <a href="/es/learn/topics/operations-margin/leer-factura-restaurante-sin-ocr/">Leer una factura de restaurante sin OCR &rarr;</a>
+        <span class="nx-blurb">Un flujo imprimible de papel-y-lápiz para la revisión semanal de facturas. Siete cosas a detectar en cinco minutos.</span>
+      </li>
+      <li>
+        <a href="/es/sheets/invoice-receiving-checklist/">Lista de Recepción de Facturas &rarr;</a>
+        <span class="nx-blurb">Hoja existente que se llena en el navegador. Detecta cambios de unidad, shrinkflation y recargos crecientes.</span>
+      </li>
+      <li>
+        <a href="/es/tools/plate-cost/">Costo del Plato &rarr;</a>
+        <span class="nx-blurb">Si estás costeando recetas, ésta es la herramienta que consumía la salida del Decodificador. Mete los números a mano.</span>
+      </li>
+    </ul>
+
+    <p class="tiny">Si una herramienta no se gana la pantalla, no debería tenerla. Lee cómo <a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">evaluamos las herramientas</a> &mdash; incluyendo las nuestras.</p>
+  </div>
 </main>
 
-<footer class="site-footer" id="footer"></footer>
+<footer class="site-footer">
+  <div class="container">
+    <a href="/es/">Muntin Digital</a> &middot; <a href="/es/tools/">Herramientas</a> &middot; <a href="/es/services/">Servicios</a> &middot; <a href="/es/security/">Seguridad</a> &middot; <a href="/tools/invoice-decoder/">English</a>
+  </div>
+</footer>
 
-<script src="/assets/site.js?v=20260430-cohesion" defer></script>
-<script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
-<script src="/tools/_shared/differentiators.js?v=20260501-w1-9"></script>
-<script src="/tools/_shared/cost-trend.js?v=20260501-w4-8"></script>
-<script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
-<script src="/tools/invoice-decoder/vendor-config.js?v=20260501-w8-4"></script>
-<script src="/tools/invoice-decoder/preprocess.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/capture-coach.js?v=20260501-w8-6"></script>
-<script src="/tools/invoice-decoder/ocr.js?v=20260501-w8-4"></script>
-<script src="/tools/invoice-decoder/parse.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/learnings.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/categorize.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/pack-pricing.js?v=20260501-w8-8"></script>
-<script src="/tools/invoice-decoder/auto-learn.js?v=20260501-w8-3"></script>
-<script src="/tools/invoice-decoder/vendors.js?v=20260501-w8-3"></script>
-<script src="/tools/invoice-decoder/kdf.js?v=20260501-w8-5"></script>
-<script src="/tools/invoice-decoder/encrypt.js?v=20260501-w8-5"></script>
-<script src="/tools/invoice-decoder/recovery.js?v=20260501-w8-5"></script>
-<script src="/tools/invoice-decoder/pairing.js?v=20260501-w8-7"></script>
-<script src="/tools/invoice-decoder/passphrase-modal.js?v=20260501-w8-5"></script>
-<script src="/tools/invoice-decoder/pdf-extract.js?v=20260501-w8-4"></script>
-<script src="/tools/invoice-decoder/csv-extract.js?v=20260501-w8-4"></script>
-<script src="/tools/invoice-decoder/proof-flyout.js?v=20260501-w3-1"></script>
-<script src="/tools/invoice-decoder/device-key.js?v=20260501-w3-4"></script>
-<script src="/tools/invoice-decoder/sku-history.js?v=20260501-w8-9"></script>
-<script src="/tools/invoice-decoder/substitution.js?v=20260501-w8-9"></script>
-<script src="/tools/invoice-decoder/margin-impact.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/accountant-export.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/telemetry.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/onboarding.js?v=20260501-w8-1"></script>
-<script src="/tools/invoice-decoder/invoice-decoder.js?v=20260501-w8-9"></script>
+<script src="/tools/_shared/kdf.js?v=20260508-sunset"></script>
+<script src="/tools/_shared/encrypt.js?v=20260508-sunset"></script>
+<script src="/tools/_shared/device-key.js?v=20260508-sunset"></script>
 
-<!-- Audit fix (C6) — Reader settings panel wiring, ES mirror of
-     the EN script at tools/invoice-decoder/index.html lines
-     1735-1815. Reads/writes the same localStorage key
-     'id-engine-v2' that ocr-shim.js consumes:
-       absent / null  → 'auto'  (default; smart escalation)
-       'on'           → 'v2'    (V2 first; V1 fallback on error)
-       'off'          → 'v1'    (suppress V2 entirely)
-     The data-en/data-es swap path is a no-op on this page (text
-     is already ES-primary) but the radio-wiring + status-paint +
-     plausible-event paths all need to run on every locale. -->
-<script>
-  (function () {
-    'use strict';
-    var locale = (document.documentElement.getAttribute('lang') || 'en').toLowerCase().slice(0, 2);
-    var isEs = (locale === 'es');
-
-    if (isEs) {
-      var panel = document.getElementById('idReaderSettings');
-      if (panel) {
-        var nodes = panel.querySelectorAll('[data-es]');
-        for (var i = 0; i < nodes.length; i++) {
-          var es = nodes[i].getAttribute('data-es');
-          if (es) nodes[i].textContent = es;
-        }
-      }
-    }
-
-    var auto = document.getElementById('idReaderAuto');
-    var v2   = document.getElementById('idReaderV2');
-    var v1   = document.getElementById('idReaderV1');
-    var status = document.getElementById('idReaderSettingsStatus');
-    if (!auto || !v2 || !v1) return;
-
-    function readChoice() {
-      try {
-        var v = localStorage.getItem('id-engine-v2');
-        if (v === 'on')  return 'v2';
-        if (v === 'off') return 'v1';
-        return 'auto';
-      } catch (_) { return 'auto'; }
-    }
-    function writeChoice(choice) {
-      try {
-        if (choice === 'v2')      localStorage.setItem('id-engine-v2', 'on');
-        else if (choice === 'v1') localStorage.setItem('id-engine-v2', 'off');
-        else                      localStorage.removeItem('id-engine-v2');
-      } catch (_) {}
-    }
-    // Audit fix (UX H4): complete sentences for every state so
-    // screen readers announce a sensible message on every change,
-    // including 'auto'. Mirror of the EN paintStatus.
-    function paintStatus(choice) {
-      if (!status) return;
-      var msg;
-      if (choice === 'v2') {
-        msg = isEs ? 'Lector nuevo primero (beta).' : 'Newer reader first (beta).';
-      } else if (choice === 'v1') {
-        msg = isEs ? 'Solo el lector estándar.' : 'Standard reader only.';
-      } else {
-        msg = isEs ? 'Lector estándar, con ayuda cuando se atora.' : 'Standard reader, with help when stuck.';
-      }
-      status.textContent = msg;
-    }
-
-    var current = readChoice();
-    if (current === 'v2') v2.checked = true;
-    else if (current === 'v1') v1.checked = true;
-    else auto.checked = true;
-    paintStatus(current);
-
-    [auto, v2, v1].forEach(function (radio) {
-      radio.addEventListener('change', function () {
-        if (!radio.checked) return;
-        writeChoice(radio.value);
-        paintStatus(radio.value);
-        if (window.plausible) {
-          try {
-            window.plausible('Invoice Decoder Reader Setting Changed', {
-              props: { choice: radio.value }
-            });
-          } catch (_) {}
-        }
-      });
-    });
-  })();
-</script>
-
-<!-- Wave 6.8 — PWA registration, identical to the EN page. -->
 <script>
 (function () {
   'use strict';
-  if (!('serviceWorker' in navigator)) return;
-  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
-  var swUrl = '/tools/invoice-decoder/sw.js';
-  navigator.serviceWorker.register(swUrl, { scope: '/tools/invoice-decoder/' })
-    .then(function (registration) {
-      window.__MID_SW_REG = registration;
-      registration.addEventListener('updatefound', function () {
-        var newWorker = registration.installing;
-        if (!newWorker) return;
-        newWorker.addEventListener('statechange', function () {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            var host = document.getElementById('idUpdate');
-            var btn  = document.getElementById('idUpdateBtn');
-            var dis  = document.getElementById('idUpdateDismiss');
-            if (host && btn) {
-              host.hidden = false;
-              btn.addEventListener('click', function () { newWorker.postMessage({ type: 'SKIP_WAITING' }); });
-              if (dis) dis.addEventListener('click', function () { host.hidden = true; });
-            }
-          }
-        });
-      });
-    })
-    .catch(function () { /* SW registration failed — degrade silently. */ });
-  var refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
-    if (refreshing) return;
-    refreshing = true;
-    location.reload();
-  });
-  var deferredPrompt = null;
-  window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    var host = document.getElementById('idInstall');
-    var btn  = document.getElementById('idInstallBtn');
-    var dis  = document.getElementById('idInstallDismiss');
-    if (!host || !btn) return;
-    host.hidden = false;
-    btn.addEventListener('click', function () {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function () { host.hidden = true; deferredPrompt = null; });
+
+  var IDB_PRIMARY = 'mtn-invoice-decoder';
+  var IDB_TOMBS   = 'mtn-invoice-decoder-tomb';
+  var LS_KEYS_TO_CLEAR = [
+    'mtn:device-id',
+    'invoiceItems',
+    'invoiceItemsEnc',
+    'mtn-invoice-decoder:draft',
+    'mtn-invoice-decoder:settings'
+  ];
+  var CACHE_NAMES_TO_CLEAR = ['mid-reckon-snapshot'];
+  var CONFIRM_TOKEN = 'BORRAR';
+
+  function trackEvent(name) {
+    try { if (window.plausible) window.plausible(name); } catch (e) {}
+  }
+
+  function setStatus(el, kind, message) {
+    el.hidden = false;
+    el.className = 'status ' + kind;
+    el.textContent = message;
+  }
+
+  function openIDB(name) {
+    return new Promise(function (resolve, reject) {
+      if (!window.indexedDB) return reject(new Error('IndexedDB no disponible.'));
+      var req = indexedDB.open(name);
+      req.onerror = function () { reject(req.error || new Error('Falló abrir ' + name)); };
+      req.onsuccess = function () { resolve(req.result); };
     });
-    if (dis) dis.addEventListener('click', function () { host.hidden = true; deferredPrompt = null; });
+  }
+
+  function readAllRows(db) {
+    return new Promise(function (resolve, reject) {
+      try {
+        var stores = Array.prototype.slice.call(db.objectStoreNames);
+        if (stores.length === 0) return resolve([]);
+        var tx = db.transaction(stores, 'readonly');
+        var out = [];
+        stores.forEach(function (storeName) {
+          var store = tx.objectStore(storeName);
+          var cursorReq = store.openCursor();
+          cursorReq.onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (cursor) {
+              out.push({ store: storeName, key: cursor.key, value: cursor.value });
+              cursor.continue();
+            }
+          };
+        });
+        tx.oncomplete = function () { resolve(out); };
+        tx.onerror    = function () { reject(tx.error || new Error('Falló lectura IDB')); };
+      } catch (err) { reject(err); }
+    });
+  }
+
+  function deleteIDB(name) {
+    return new Promise(function (resolve) {
+      try {
+        var req = indexedDB.deleteDatabase(name);
+        req.onsuccess = req.onerror = req.onblocked = function () { resolve(); };
+      } catch (e) { resolve(); }
+    });
+  }
+
+  function clearAllLocal() {
+    return Promise.resolve()
+      .then(function () { return deleteIDB(IDB_PRIMARY); })
+      .then(function () { return deleteIDB(IDB_TOMBS); })
+      .then(function () {
+        LS_KEYS_TO_CLEAR.forEach(function (k) { try { localStorage.removeItem(k); } catch (_) {} });
+      })
+      .then(function () {
+        if (window.caches && caches.delete) {
+          return Promise.all(CACHE_NAMES_TO_CLEAR.map(function (n) { return caches.delete(n).catch(function () {}); }));
+        }
+      });
+  }
+
+  function downloadBlob(filename, mime, content) {
+    var blob = new Blob([content], { type: mime });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1000);
+  }
+
+  function rowsToCsv(rows) {
+    if (!rows.length) return '';
+    var keys = Object.keys(rows[0]);
+    var esc = function (v) {
+      if (v == null) return '';
+      var s = String(v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    return keys.map(esc).join(',') + '\n' + rows.map(function (r) { return keys.map(function (k) { return esc(r[k]); }).join(','); }).join('\n');
+  }
+
+  function flattenForCsv(decryptedItems) {
+    var out = [];
+    decryptedItems.forEach(function (env) {
+      var savedAt = env._savedAt || '';
+      var vendor  = (env.meta && env.meta.vendor) || env.vendor || '';
+      var docDate = (env.meta && env.meta.docDate) || env.date || '';
+      var lines   = env.items || env.lines || [];
+      if (!Array.isArray(lines) || !lines.length) {
+        out.push({ savedAt: savedAt, vendor: vendor, docDate: docDate });
+      } else {
+        lines.forEach(function (it) {
+          out.push({
+            savedAt: savedAt, vendor: vendor, docDate: docDate,
+            description: it.description || it.name || '',
+            qty: it.qty != null ? it.qty : (it.quantity != null ? it.quantity : ''),
+            unit: it.unit || it.uom || '',
+            price: it.price != null ? it.price : (it.unitPrice != null ? it.unitPrice : ''),
+            total: it.total != null ? it.total : ''
+          });
+        });
+      }
+    });
+    return out;
+  }
+
+  function decryptEnvelopes(rawRows, passphrase) {
+    if (!window.MID_ENCRYPT && !window.ENCRYPT) {
+      return Promise.reject(new Error('El módulo de cifrado no cargó. Recarga e intenta de nuevo.'));
+    }
+    var ENC = window.MID_ENCRYPT || window.ENCRYPT;
+    var fn = ENC.decryptEnvelope || ENC.decrypt;
+    if (typeof fn !== 'function') {
+      return Promise.reject(new Error('Función de descifrado no encontrada.'));
+    }
+    return Promise.all(rawRows.map(function (row) {
+      var env = row.value && row.value.envelope ? row.value.envelope : row.value;
+      return fn(env, passphrase).then(function (plain) {
+        return Object.assign({}, plain, { _savedAt: (row.value && row.value.savedAt) || '' });
+      });
+    }));
+  }
+
+  trackEvent('invoice-decoder sunset-view');
+
+  var pp = document.getElementById('passphrase');
+  var btnExport = document.getElementById('btnExport');
+  var btnSkipReveal = document.getElementById('btnSkipReveal');
+  var statusEl = document.getElementById('exportStatus');
+
+  var skipCard = document.getElementById('skipCard');
+  var skipInput = document.getElementById('skipConfirm');
+  var btnSkipClear = document.getElementById('btnSkipClear');
+  var btnSkipCancel = document.getElementById('btnSkipCancel');
+  var skipStatus = document.getElementById('skipStatus');
+
+  btnExport.addEventListener('click', function () {
+    var pass = pp.value || '';
+    if (!pass) { setStatus(statusEl, 'err', 'Escribe tu secreto primero.'); return; }
+    btnExport.disabled = true;
+    setStatus(statusEl, 'info', 'Leyendo y descifrando…');
+    trackEvent('invoice-decoder export-started');
+
+    openIDB(IDB_PRIMARY)
+      .then(readAllRows)
+      .then(function (rows) {
+        if (!rows.length) {
+          setStatus(statusEl, 'info', 'No se encontraron facturas guardadas en este navegador.');
+          btnExport.disabled = false;
+          throw new Error('__no_data__');
+        }
+        return decryptEnvelopes(rows, pass);
+      })
+      .then(function (decrypted) {
+        var json = JSON.stringify(decrypted, null, 2);
+        var csv  = rowsToCsv(flattenForCsv(decrypted));
+        downloadBlob('invoice-decoder-export-' + Date.now() + '.json', 'application/json', json);
+        downloadBlob('invoice-decoder-export-' + Date.now() + '.csv',  'text/csv', csv);
+        setStatus(statusEl, 'ok', 'Exportadas ' + decrypted.length + ' factura(s). Las descargas deben aparecer en tu navegador. Limpiando datos locales…');
+        trackEvent('invoice-decoder export-completed');
+        return clearAllLocal().then(function () {
+          setStatus(statusEl, 'ok', 'Exportadas ' + decrypted.length + ' factura(s) y borrado este navegador. Listo.');
+        });
+      })
+      .catch(function (err) {
+        if (err && err.message === '__no_data__') return;
+        var msg = (err && err.message) || 'Algo salió mal.';
+        if (/decrypt|operation|invalid|wrong/i.test(msg)) {
+          msg = 'Ese secreto no descifró tus datos. Verifica e intenta de nuevo.';
+        }
+        setStatus(statusEl, 'err', msg);
+        btnExport.disabled = false;
+      });
   });
-  window.addEventListener('appinstalled', function () {
-    var host = document.getElementById('idInstall');
-    if (host) host.hidden = true;
-    if (window.plausible) { try { window.plausible('Invoice Decoder Installed'); } catch (_) {} }
+
+  btnSkipReveal.addEventListener('click', function () {
+    skipCard.hidden = false;
+    skipInput.focus();
+  });
+
+  skipInput.addEventListener('input', function () {
+    btnSkipClear.disabled = (skipInput.value !== CONFIRM_TOKEN);
+  });
+
+  btnSkipCancel.addEventListener('click', function () {
+    skipCard.hidden = true;
+    skipInput.value = '';
+    btnSkipClear.disabled = true;
+    skipStatus.hidden = true;
+  });
+
+  btnSkipClear.addEventListener('click', function () {
+    if (skipInput.value !== CONFIRM_TOKEN) return;
+    btnSkipClear.disabled = true;
+    setStatus(skipStatus, 'info', 'Borrando…');
+    trackEvent('invoice-decoder skip-clear-confirmed');
+    clearAllLocal().then(function () {
+      setStatus(skipStatus, 'ok', 'Borrado. Nada queda en este navegador.');
+    });
   });
 })();
 </script>
+
 </body>
 </html>

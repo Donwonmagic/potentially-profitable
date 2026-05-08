@@ -54,8 +54,8 @@ function loadModule(relPath) {
   return moduleObj.exports;
 }
 
-const THEMES  = loadModule('tools/menu-design/themes.js');
-const CREDITS = loadModule('tools/menu-design/data/theme-credits.js');
+const THEMES  = loadModule('data/menu-design-themes.js');
+const CREDITS = loadModule('data/menu-design-theme-credits.js');
 
 // ---- Cuisine buckets ------------------------------------------------
 // Each bucket: slug + matchers (regex against cuisineHint strings) +

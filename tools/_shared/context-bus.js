@@ -168,12 +168,12 @@
   // unencrypted in the browser profile so other tools could pre-fill.
   //
   // Now: writeInvoiceItems wraps the array via MID_DEVICE_KEY (per-
-  // device AES-GCM key, see tools/invoice-decoder/device-key.js) and
+  // device AES-GCM key, see tools/_shared/device-key.js) and
   // stores the envelope under `invoiceItemsEnc`. readInvoiceItems
   // resolves to the decrypted array — async because SubtleCrypto is.
   //
   // Failure mode: when MID_DEVICE_KEY is absent (it loads only on
-  // pages that include invoice-decoder/device-key.js), these helpers
+  // pages that include _shared/device-key.js), these helpers
   // resolve to null on read and reject on write so the caller can
   // detect and surface a "module missing" hint instead of falling
   // back to plaintext writes.

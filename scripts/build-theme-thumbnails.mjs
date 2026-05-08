@@ -49,7 +49,7 @@ const VW = 220, VH = 120;
 
 // ---- Load themes.js via vm sandbox -------------------------------
 function loadThemes() {
-  const src = fs.readFileSync(path.join(repoRoot, 'tools/menu-design/themes.js'), 'utf8');
+  const src = fs.readFileSync(path.join(repoRoot, 'data/menu-design-themes.js'), 'utf8');
   const win = {};
   const moduleObj = { exports: {} };
   const ctx = vm.createContext({
