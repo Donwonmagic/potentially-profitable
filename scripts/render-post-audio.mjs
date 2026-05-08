@@ -370,6 +370,14 @@ function loadManifestTargets(manifestRel) {
     for (const [slug, spec] of Object.entries(entries)) {
       if (slug.startsWith('_')) continue;
       if (!spec || typeof spec !== 'object' || !Array.isArray(spec.languages)) continue;
+      // Skip pieces marked deferred — usually because their HTML
+      // structure needs a fix before chunks extract cleanly. They're
+      // still in the manifest so the audit can track them; they just
+      // don't render until the defer_reason is resolved.
+      if (spec.status === 'deferred') {
+        console.log(`[manifest] skipping ${section}/${slug}: deferred — ${spec.defer_reason || 'no reason given'}`);
+        continue;
+      }
       out.push(path.join(dir, slug));
     }
   }

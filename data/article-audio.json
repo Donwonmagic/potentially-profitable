@@ -57,9 +57,9 @@
     "fittss-law":                                                         { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" }
   },
   "checklists": {
-    "_doc": "Long-form structured pieces. The 2,500-line restaurant-website-checklist may eventually get chapter markers in audio (TODO: implement chapters in render-post-audio.mjs + listen.js). For now it renders as one long file.",
-    "audit-any-tool":                                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
-    "restaurant-website-checklist":                                       { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" }
+    "_doc": "Long-form structured pieces. Both deferred from the studio-audio rollout pending a structural fix: their <main id='post-body'> wraps multiple sibling <section> elements with nested <div class='container'> wrappers. The chunk extractor's nth-of-type direct-child selectors don't resolve through that nesting, so the on-page highlight would silently fail on every chunk. Two routes forward: (a) restructure each checklist's HTML so audio-eligible h2/p/li are direct children of post-body, or (b) ship a recursive chunk extractor with stable data-audio-chunk-id attributes (TODO).",
+    "audit-any-tool":                                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "deferred", "defer_reason": "post-body wraps <main> with nested <section><div class='container'><h2/p/li>... — extractor selectors don't resolve at runtime" },
+    "restaurant-website-checklist":                                       { "languages": ["en","es","fr","it","pt","zh"], "status": "deferred", "defer_reason": "same as audit-any-tool, plus 2,500-line length amplifies the impact of any selector misalignment" }
   },
   "_skipped": {
     "_doc": "Sections deliberately excluded from audio narration.",

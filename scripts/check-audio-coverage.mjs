@@ -154,6 +154,17 @@ for (const section of SECTIONS) {
   for (const [slug, spec] of Object.entries(entries)) {
     if (slug.startsWith('_')) continue;
     if (!spec || typeof spec !== 'object' || !Array.isArray(spec.languages)) continue;
+    // Pieces marked "deferred" are intentionally excluded from the
+    // current rollout — usually because the article's HTML structure
+    // needs a fix before chunks extract cleanly. The audit reports
+    // them as deferred (not as MISSING) so the bulk render command
+    // doesn't waste compute trying to render them and the audit
+    // exit code stays clean.
+    if (spec.status === 'deferred') {
+      issues.push({ kind: 'DEFERRED', section: section.key, slug, lang: '*',
+        detail: spec.defer_reason || 'manifest entry marked status: deferred' });
+      continue;
+    }
 
     const articlePath = path.join(section.root, slug, 'index.html');
     if (!fs.existsSync(articlePath)) {
@@ -233,7 +244,10 @@ if (jsonOut) {
   process.exit(issues.length && !warnOnly ? 1 : 0);
 }
 
-const hardIssues = issues.filter((i) => i.kind !== 'NO-HASH');
+// NO-HASH is a soft warn (pre-contentHash audio); DEFERRED is by-design.
+// Anything else is a hard issue that should fail the gate when it's
+// promoted from --warn to --check.
+const hardIssues = issues.filter((i) => i.kind !== 'NO-HASH' && i.kind !== 'DEFERRED');
 
 if (issues.length === 0) {
   console.log(`Audio coverage: ${totalCurrent} of ${totalDeclared} declared editions current; everything in manifest is rendered and content-current.`);
