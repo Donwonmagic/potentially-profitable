@@ -2524,15 +2524,65 @@ function v1NormalizeForDedup(s) {
   console.log(`  ${layoutPostOk ? '✓' : '✗'} _postprocessLayoutOutput decodes YOLOX [N,6] + applies score threshold + scaling`);
   if (layoutPostOk) v2Pass++; else v2Fail++;
 
-  // Wrong shape → throws (so analyze() falls back to heuristic)
+  // Wrong shape (boxes-only, no logits) → throws so analyze()
+  // falls back to heuristic. Tightened message regex matches the
+  // new diagnostic format which lists every output shape.
   let throwsOk = false;
   try {
     L._postprocessLayoutOutput({ 'out': { dims: [1, 100, 4], data: new Float32Array(400) } }, 1, 1);
   } catch (e) {
-    throwsOk = /not YOLOX-style|verification/.test(e.message);
+    throwsOk = /unrecognized|inspect|YOLOX-style|RT-DETR-style/.test(e.message);
   }
-  console.log(`  ${throwsOk ? '✓' : '✗'} _postprocessLayoutOutput throws on non-YOLOX shape (drives heuristic fallback)`);
+  console.log(`  ${throwsOk ? '✓' : '✗'} _postprocessLayoutOutput throws on shape with no recognizable head`);
   if (throwsOk) v2Pass++; else v2Fail++;
+
+  // RT-DETR-style two-tensor decode: boxes [1, Q, 4] in cxcywh
+  // normalized + logits [1, Q, K] requiring softmax + argmax.
+  // This is the heron variant from IBM Zurich's Docling models.
+  // Two queries — one is class 9 (table per the DocLayNet
+  // taxonomy at layout.js:46), one is the last index which the
+  // default opts.skipClasses treats as background.
+  const Q = 2, K = 11;
+  const boxes = new Float32Array([
+    // Query 0: cxcywh = (0.5, 0.5, 0.4, 0.2) → cx=640 cy=640 w=512 h=256
+    //          → x1=384 y1=512 x2=896 y2=768 (in 1280x1280 input pixels)
+    //          With scaleX=2 scaleY=2 → final x1=768 y1=1024 x2=1792 y2=1536
+    0.5, 0.5, 0.4, 0.2,
+    // Query 1: small box, high score on bg class — should be skipped
+    0.01, 0.01, 0.02, 0.02
+  ]);
+  const logits = new Float32Array(Q * K);
+  // Query 0: argmax index 8 = 'table' (DOCLAYNET_CLASSES is
+  // 0-indexed; the published 1-indexed taxonomy says "9=table"
+  // but our array stores it at slot 8). Logit 10 vs zeros →
+  // softmax prob ≈ 0.9995.
+  logits[0 * K + 8] = 10.0;
+  // Query 1: argmax = K-1 (background; default opts skip 0 and K-1)
+  logits[1 * K + (K - 1)] = 10.0;
+  const detrOutputs = {
+    'pred_boxes':  { dims: [1, Q, 4], data: boxes },
+    'pred_logits': { dims: [1, Q, K], data: logits }
+  };
+  const detrRegions = L._postprocessLayoutOutput(detrOutputs, 2, 2, {
+    scoreThresh: 0.3,
+    inputSize:   1280
+  });
+  const detrOk = detrRegions.length === 1
+              && detrRegions[0].kind === 'table'
+              && detrRegions[0].bbox.x > 700 && detrRegions[0].bbox.x < 800
+              && detrRegions[0].bbox.w > 1000 && detrRegions[0].bbox.w < 1100
+              && detrRegions[0].confidence > 0.95;
+  console.log(`  ${detrOk ? '✓' : '✗'} _postprocessLayoutOutput decodes RT-DETR-style (boxes [Q,4] cxcywh + logits [Q,K]) — heron variant path`);
+  if (detrOk) v2Pass++; else v2Fail++;
+
+  // Diagnostic helper for _compare/ verification
+  const inspect = L._inspectModelOutput(detrOutputs);
+  const inspectOk = inspect.keys.length === 2
+                 && inspect.tensors[0].dims[2] === 4
+                 && inspect.tensors[1].dims[2] === K
+                 && Array.isArray(inspect.tensors[0].sampleHead);
+  console.log(`  ${inspectOk ? '✓' : '✗'} _inspectModelOutput returns shape + sample head for browser-side verification`);
+  if (inspectOk) v2Pass++; else v2Fail++;
 }
 
 // ---------- _compare/ FIXTURE_VENDORS parity ----------
@@ -2678,6 +2728,58 @@ function v1NormalizeForDedup(s) {
   const noWordsOk = noWords === null;
   console.log(`  ${noWordsOk ? '✓' : '✗'} tables.reconstruct returns null when lines lack .words bboxes`);
   if (noWordsOk) v2Pass++; else v2Fail++;
+
+  // tables.reconstruct stamps source='heuristic' on the default
+  // path so consumers (assemble.js / telemetry) can distinguish
+  // heuristic results from TableFormer-derived results.
+  const stampedLines = [
+    { text: 'q u 1', words: [
+      { text:'5',    bbox:{x0:50,  y0:100, x1:80,  y1:120}, confidence:90 },
+      { text:'CS',   bbox:{x0:120, y0:100, x1:160, y1:120}, confidence:90 },
+      { text:'BREAD',bbox:{x0:200, y0:100, x1:300, y1:120}, confidence:90 },
+      { text:'12.50',bbox:{x0:400, y0:100, x1:460, y1:120}, confidence:90 } ] },
+    { text: 'q u 2', words: [
+      { text:'2',    bbox:{x0:50,  y0:140, x1:80,  y1:160}, confidence:90 },
+      { text:'LB',   bbox:{x0:120, y0:140, x1:160, y1:160}, confidence:90 },
+      { text:'EGGS', bbox:{x0:200, y0:140, x1:300, y1:160}, confidence:90 },
+      { text:'5.50', bbox:{x0:400, y0:140, x1:460, y1:160}, confidence:90 } ] },
+    { text: 'q u 3', words: [
+      { text:'3',    bbox:{x0:50,  y0:180, x1:80,  y1:200}, confidence:90 },
+      { text:'EA',   bbox:{x0:120, y0:180, x1:160, y1:200}, confidence:90 },
+      { text:'LIMES',bbox:{x0:200, y0:180, x1:300, y1:200}, confidence:90 },
+      { text:'4.00', bbox:{x0:400, y0:180, x1:460, y1:200}, confidence:90 } ] }
+  ];
+  const stamped = await T.reconstruct({ width: 600, height: 800 }, stampedLines, {});
+  const stampOk = stamped && stamped.source === 'heuristic';
+  console.log(`  ${stampOk ? '✓' : '✗'} tables.reconstruct stamps source='heuristic' on the default path`);
+  if (stampOk) v2Pass++; else v2Fail++;
+
+  // _heavyTierEnabled gates the TableFormer attempt. With the
+  // localStorage flag off, the TableFormer path is skipped
+  // entirely (heuristic only). With the flag on but no MID_OCR_V2
+  // ORT loader available, _loadTableFormerSession rejects and
+  // reconstruct() falls through to heuristic — which is what we
+  // assert here. Tests the TableFormer LOAD-AND-FALLBACK path
+  // without needing a real ORT session.
+  W.localStorage.setItem('id-tableformer-model', 'on');
+  W.MID_VENDORS_CFG = { SELF: { tableformerFast: '/assets/vendor/ds4sd@v2/tableformer-fast.onnx' } };
+  // No MID_OCR_V2 → _loadTableFormerSession rejects → reconstruct
+  // falls back to heuristic.
+  const tfFallback = await T.reconstruct({ width: 600, height: 800 }, stampedLines, {
+    regions: [ { kind: 'table', bbox: { x: 40, y: 90, w: 440, h: 130 } } ]
+  });
+  const tfFallbackOk = tfFallback && tfFallback.source === 'heuristic';
+  console.log(`  ${tfFallbackOk ? '✓' : '✗'} TableFormer load failure falls through to heuristic gracefully`);
+  if (tfFallbackOk) v2Pass++; else v2Fail++;
+
+  // _heavyTierEnabled honors localStorage flag explicitly
+  W.localStorage.setItem('id-tableformer-model', 'on');
+  const tierOn = T._heavyTierEnabled();
+  W.localStorage.removeItem ? W.localStorage.removeItem('id-tableformer-model') : delete W.localStorage._['id-tableformer-model'];
+  const tierOff = T._heavyTierEnabled();
+  const tierOk = tierOn === true && tierOff === false;
+  console.log(`  ${tierOk ? '✓' : '✗'} tables._heavyTierEnabled honors localStorage 'id-tableformer-model' flag`);
+  if (tierOk) v2Pass++; else v2Fail++;
 
   // Audit-follow-up: direct unit tests for the sub-helpers so a
   // regression in column clustering or word→column binning lands
@@ -3198,7 +3300,7 @@ console.log('\n=== Plausible event prop discipline ===');
 const OCR_AUDIT_EVENTS_PROP_KEYS = {
   'Invoice Decoder Error':                    new Set(['code', 'retryable']),
   'Invoice Decoder Reader Setting Changed':   new Set(['choice']),
-  'Invoice Decoder V2 Escalation Win':        new Set(['v1_lines_bucket', 'v2_lines_bucket', 'variant']),
+  'Invoice Decoder V2 Escalation Win':        new Set(['v1_lines_bucket', 'v2_lines_bucket', 'variant', 'layout_kind', 'table_kind']),
   'Invoice Decoder V2 Escalation Fail':       new Set(['code']),
   'Invoice Decoder V2 Fallback':              new Set(['code']),
   'Invoice Decoder Layout Model Failed':      new Set(['reason'])

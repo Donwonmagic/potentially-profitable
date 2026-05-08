@@ -279,6 +279,55 @@
     if (v1Result && v2Result) {
       highlightDiffs(v1Result.lines || [], v2Result.lines || []);
     }
+
+    // Layout-model diagnostic. The DocLayNet postprocess in
+    // tools/invoice-decoder/layout.js handles three common ONNX
+    // export shapes (YOLOX, RT-DETR, DETR). When the upstream
+    // model variant changes (e.g., upgrading the heron weights),
+    // the engineer running this page can read the actual output
+    // shape from this section rather than tracing through to the
+    // ORT session manually. Only fires if the layout model is
+    // opted in via localStorage 'id-layout-model'='on'.
+    try {
+      if (localStorage.getItem('id-layout-model') === 'on' &&
+          window.MID_LAYOUT && window.MID_LAYOUT._inspectModelOutput) {
+        var probeCanvas = document.createElement('canvas');
+        probeCanvas.width = gentle.width; probeCanvas.height = gentle.height;
+        probeCanvas.getContext('2d').drawImage(gentle, 0, 0);
+        // Use the raw analyze() and grab the inspected output if we
+        // can. analyze() doesn't currently expose the raw outputs
+        // dict, so this prints from the postprocess error path
+        // (which lists every output's shape) when shape is unknown.
+        var analyzeResult = await window.MID_LAYOUT.analyze(probeCanvas, {});
+        var diagBox = document.getElementById('layoutDiag');
+        if (!diagBox) {
+          diagBox = document.createElement('details');
+          diagBox.id = 'layoutDiag';
+          diagBox.style.cssText = 'margin:14px 0;padding:10px 14px;background:#f5f5f7;border:1px solid #d0d0d6;border-radius:6px;font-size:13px;font-family:ui-monospace,monospace';
+          diagBox.innerHTML = '<summary style="cursor:pointer;font-weight:600">Layout model diagnostic</summary><pre style="margin:8px 0 0;white-space:pre-wrap"></pre>';
+          document.querySelector('main').appendChild(diagBox);
+        }
+        var pre = diagBox.querySelector('pre');
+        pre.textContent = JSON.stringify({
+          regions: (analyzeResult.regions || []).length,
+          usedHeuristic: !!analyzeResult.usedHeuristic,
+          usedModel:     !!analyzeResult.usedModel,
+          regionKinds:   (analyzeResult.regions || []).map(function (r) { return r.kind; })
+        }, null, 2);
+      }
+    } catch (diagErr) {
+      var diagBox2 = document.getElementById('layoutDiag') || (function () {
+        var d = document.createElement('details');
+        d.id = 'layoutDiag';
+        d.open = true;
+        d.style.cssText = 'margin:14px 0;padding:10px 14px;background:#fdecea;border:1px solid #f5c6c6;border-radius:6px;font-size:13px;font-family:ui-monospace,monospace';
+        d.innerHTML = '<summary style="cursor:pointer;font-weight:600">Layout model diagnostic — ERROR</summary><pre style="margin:8px 0 0;white-space:pre-wrap"></pre>';
+        document.querySelector('main').appendChild(d);
+        return d;
+      })();
+      diagBox2.querySelector('pre').textContent = (diagErr.message || String(diagErr));
+    }
+
     setStatus('Done — V1 ' + Math.round(v1Ms) + 'ms, V2 ' + Math.round(v2Ms) + 'ms', 'ok');
   }
 

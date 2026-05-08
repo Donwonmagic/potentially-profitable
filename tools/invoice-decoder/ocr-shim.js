@@ -132,10 +132,12 @@
     // UI works without further engine changes.
     return L.analyze(canvas, opts).then(function (layout) {
       return E.recognize(canvas, layout.regions, opts).then(function (ocrResult) {
-        // tables.js currently no-ops; keeping the call here for
-        // the heavy-tier upgrade path.
+        // tables.js attempts TableFormer when the heavy-tier flag
+        // is on AND a 'table' region was detected; otherwise runs
+        // the heuristic. tables.reconstruct stamps source on the
+        // result so we can surface it to telemetry.
         return (T && T.reconstruct
-          ? T.reconstruct(canvas, ocrResult.lines, opts || {})
+          ? T.reconstruct(canvas, ocrResult.lines, Object.assign({}, opts, { regions: layout.regions }))
           : Promise.resolve(null)
         ).then(function (tableResult) {
           // Single-page wrapper for assemble.merge so the output
@@ -147,13 +149,23 @@
             ocrResults:   [ocrResult],
             tableResults: [tableResult]
           });
+          // layoutKind tracks whether DocLayNet's model produced
+          // the regions or the heuristic's whole-page fallback
+          // did. tableKind tracks heuristic vs tableformer the
+          // same way. Both surface in V2 Escalation Win telemetry
+          // so the dashboard can distinguish "PaddleOCR found
+          // text V1 missed" (the easy win) from "Docling
+          // identified region structure that produced a better
+          // parse" (the IBM-derived win).
           return {
             text:           assembled.fullText,
             lines:          assembled.lines,
             meanConfidence: ocrResult.meanConfidence,
             detectionStats: ocrResult.detectionStats || null,
             ensembleStats:  ocrResult.ensembleStats || null,
-            engineVersion:  'v2'
+            engineVersion:  'v2',
+            layoutKind:     (layout && layout.usedModel) ? 'doclaynet' : 'heuristic',
+            tableKind:      (tableResult && tableResult.source) || 'none'
           };
         });
       });
@@ -190,7 +202,14 @@
           if (root.plausible) root.plausible('Invoice Decoder V2 Escalation Win', { props: {
             v1_lines_bucket: v1Lines < 1 ? '0' : '1',
             v2_lines_bucket: v2Lines < 5 ? '<5' : v2Lines < 15 ? '5-14' : '15+',
-            variant:         ensembleVariant ? 'ensemble' : 'multipass'
+            variant:         ensembleVariant ? 'ensemble' : 'multipass',
+            // layout_kind + table_kind distinguish "PaddleOCR found
+            // text V1 missed" (layout='heuristic', table='heuristic'|'none')
+            // from "Docling region structure produced a better parse"
+            // (layout='doclaynet'). Lets the dashboard separate easy
+            // OCR wins from IBM-Zurich-derived layout wins.
+            layout_kind:     (v2Result && v2Result.layoutKind) || 'heuristic',
+            table_kind:      (v2Result && v2Result.tableKind)  || 'none'
           } });
         } catch (_) {}
         return v2Result;
