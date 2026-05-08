@@ -140,6 +140,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -298,7 +308,7 @@ header.nav{min-height:64px}
       <ul class="lib-strip" aria-label="Library at a glance">
         <li><strong><!-- count:articles -->20<!-- /count --></strong> articles</li>
         <li><strong><!-- count:glossary.terms -->139<!-- /count --></strong> glossary terms</li>
-        <li><strong><!-- count:tools.live -->15<!-- /count --></strong> free tools</li>
+        <li><strong><!-- count:tools.live -->13<!-- /count --></strong> free tools</li>
         <li><strong><!-- count:topics -->8<!-- /count --></strong> topic pillars</li>
         <li>4 quarterly research notes</li>
       </ul>
@@ -334,7 +344,7 @@ header.nav{min-height:64px}
         <h2>Tools, sheets &amp; checklists.</h2>
         <p class="lead">Things you run on your own site, fill in at the line, or hand to your bookkeeper. Every one runs in your browser; nothing is sent to a server. Test it yourself before you trust it.</p>
         <ul class="lib-door__list">
-          <li><strong>Free tools</strong><small><!-- count:tools.live -->15<!-- /count --> live · calculate</small></li>
+          <li><strong>Free tools</strong><small><!-- count:tools.live -->13<!-- /count --> live · calculate</small></li>
           <li><strong>Operator sheets</strong><small>31 live · run the shift</small></li>
           <li><strong>Checklists</strong><small>Workbooks you can save</small></li>
         </ul>

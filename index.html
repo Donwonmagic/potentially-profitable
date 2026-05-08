@@ -531,6 +531,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#main" class="logo" aria-label="Muntin Digital home">
@@ -712,7 +722,7 @@ header.nav{min-height:64px}
       </p>
       <ul class="hero-counts" aria-label="Library at a glance">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
-        <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;free tools</li>
+        <li class="hero-counts__chip"><strong><!-- count:tools.live -->13<!-- /count --></strong>&nbsp;free tools</li>
         <li class="hero-counts__chip"><strong><!-- count:articles -->20<!-- /count --></strong>&nbsp;articles</li>
         <li class="hero-counts__chip">All free</li>
       </ul>
@@ -922,7 +932,7 @@ header.nav{min-height:64px}
       </a>
       <a class="learn-tool" href="/tools/">
         <span class="learn-tool-kicker">Free tools · no signup</span>
-        <h3><!-- count:tools.live -->15<!-- /count --> free tools across <!-- count:topics -->8<!-- /count --> topics — pricing, SEO, brand, hours, content, ops.</h3>
+        <h3><!-- count:tools.live -->13<!-- /count --> free tools across <!-- count:topics -->8<!-- /count --> topics — pricing, SEO, brand, hours, content, ops.</h3>
         <p>Restaurant-aware audits, calculators, generators &mdash; pricing, menu mix, plate cost, brand palette, photo brief, hours, GBP grading, and more. Every tool runs in your browser, groups under the same six topics as the rest of the library, and links back to the research that justifies it.</p>
         <span class="learn-tool-cta">Browse the toolkit &rarr;</span>
       </a>
@@ -997,6 +1007,18 @@ header.nav{min-height:64px}
       </tr>
       <tr>
         <td class="lib-idx-title"><a href="/blog/when-to-rebuild-your-restaurant-website/">When to rebuild your site</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/restaurant-photo-spec-sheet/">The photo spec sheet</a></td>
+        <td class="lib-idx-section">Articles</td>
+        <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
+        <td class="lib-idx-contributor">Don Goldstein</td>
+      </tr>
+      <tr>
+        <td class="lib-idx-title"><a href="/blog/how-to-read-restaurant-google-search-console/">Reading Google Search Console</a></td>
         <td class="lib-idx-section">Articles</td>
         <td class="lib-idx-date" aria-label="2026-04-30"><time datetime="2026-04-30">2026-04-30</time></td>
         <td class="lib-idx-contributor">Don Goldstein</td>
