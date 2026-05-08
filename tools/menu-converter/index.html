@@ -405,11 +405,11 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
            next move is often "give me a printable too" — the styled
            PDF / table-tent / placemat that the schema'd HTML can't
            produce. We push the parsed structure (sections + items)
-           into MuntinContext + deeplink into Menu Design where the
-           dishes pre-load and the operator just picks a theme. -->
-      <aside class="mc-handoff-card" id="mcvHandoffMenuDesign" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
+           into MuntinContext + deeplink into Menu Engineering where
+           the dishes pre-load for star/dog analysis. -->
+      <aside class="mc-handoff-card" id="mcvHandoffMenuDesign" data-handoff="menu-engineering" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px" hidden>
         <p id="mcvHandoffHeadline" style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;"></p>
-        <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your structured menu and lays out a print-ready PDF + QR-menu HTML in your chosen theme. Same dishes, eight more deliverables.</p>
+        <p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Engineering reads your structured menu, lets you tag star/plowhorse/puzzle/dog, and tells you which items to protect and which to retire.</p>
         <button type="button" id="mcvHandoffMenuDesignBtn" class="mc-btn" style="font-size:13px;padding:8px 14px;"></button>
       </aside>
 
@@ -430,7 +430,6 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
     <section class="mc-deeplinks">
       <p class="eyebrow" style="margin-bottom:10px">Keep going</p>
       <ul style="font-size:15.5px;line-height:1.7;color:var(--teal);margin:0;padding-left:22px">
-        <li><a href="/tools/menu-design/">Menu Design Suite</a> &mdash; layout the printed/PDF version after the HTML one</li>
         <li><a href="/tools/menu-engineering/">Menu Engineering</a> &mdash; star/plowhorse/puzzle/dog analysis on your menu</li>
         <li><a href="/glossary/menu-schema/">Glossary: Menu schema</a></li>
         <li><a href="/blog/restaurant-schema-markup-6-types-google-uses/">The 6 schema types Google actually uses</a></li>
@@ -451,7 +450,6 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
       <div class="tool-knit__col">
         <h3>Related tools</h3>
         <ul>
-          <li><a href="/tools/menu-design/">Menu Design Suite</a></li>
           <li><a href="/tools/menu-engineering/">Menu Engineering Matrix</a></li>
           <li><a href="/tools/menu-copy/">Menu Copy Inspector</a></li>
         </ul>
@@ -929,12 +927,12 @@ Tellicherry pepper, pecorino romano, finished tableside.</pre>
       if (window.plausible) {
         try {
           window.plausible('Menu Converter Handoff', { props: {
-            to: 'menu-design',
+            to: 'menu-engineering',
             itemCount_bucket: totalItems < 6 ? '<6' : totalItems < 12 ? '6-11' : totalItems < 25 ? '12-24' : '25+'
           }});
         } catch (_) {}
       }
-      window.location.href = '/tools/menu-design/?from=menu-converter';
+      window.location.href = '/tools/menu-engineering/?from=menu-converter';
     });
   }
 

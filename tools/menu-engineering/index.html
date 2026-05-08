@@ -780,7 +780,6 @@ header.nav{min-height:64px}
         <h3>Related tools</h3>
         <ul>
           <li><a href="/tools/plate-cost/">Plate Cost Calculator</a></li>
-          <li><a href="/tools/menu-design/">Menu Design Suite</a></li>
           <li><a href="/tools/margin-math/">Margin Math</a></li>
         </ul>
       </div>
@@ -1310,12 +1309,12 @@ header.nav{min-height:64px}
                    ' — give ' + (nStar === 1 ? 'it' : 'them') + ' the layout treatment ' +
                    (nStar === 1 ? 'it' : 'they') + ' deserve' + (nStar === 1 ? 's' : '');
       } else {
-        headline = 'Re-lay-out this menu with the data you just gathered';
+        headline = 'Ship the structured menu HTML with the data you just gathered';
       }
-      html += '<aside class="me-handoff-card" data-handoff="menu-design" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px">' +
+      html += '<aside class="me-handoff-card" data-handoff="menu-converter" style="margin-top:18px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px">' +
               '<p style="margin:0 0 4px;font-weight:600;color:var(--ink);font-size:14px;">' + escHtml(headline) + '.</p>' +
-              '<p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Design Suite reads your items + their quadrants so Stars land in hero positions, Puzzles get hero ornaments, and Plowhorses get re-described in the layout.</p>' +
-              '<button type="button" id="meHandoffMenuDesign" class="me-btn" style="font-size:13px;padding:8px 14px;">Open ' + allItems.length + ' item' + (allItems.length === 1 ? '' : 's') + ' in Menu Design Suite &rarr;</button>' +
+              '<p style="margin:0 0 10px;font-size:12.5px;color:var(--stone);">Menu Converter reads your items + their quadrants and emits HTML + JSON-LD schema you can paste into your site &mdash; Stars in hero positions, Plowhorses re-described.</p>' +
+              '<button type="button" id="meHandoffMenuDesign" class="me-btn" style="font-size:13px;padding:8px 14px;">Open ' + allItems.length + ' item' + (allItems.length === 1 ? '' : 's') + ' in Menu Converter &rarr;</button>' +
               '</aside>';
     }
     actionsEl.innerHTML = html;
@@ -1347,12 +1346,12 @@ header.nav{min-height:64px}
         if (window.plausible) {
           try {
             window.plausible('Menu Engineering Handoff', { props: {
-              to: 'menu-design',
+              to: 'menu-converter',
               itemCount_bucket: allItems.length < 6 ? '<6' : allItems.length < 12 ? '6-11' : allItems.length < 25 ? '12-24' : '25+'
             }});
           } catch (_) {}
         }
-        window.location.href = '/tools/menu-design/?from=menu-engineering';
+        window.location.href = '/tools/menu-converter/?from=menu-engineering';
       });
     }
   }

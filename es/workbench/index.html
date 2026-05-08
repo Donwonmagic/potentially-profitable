@@ -406,7 +406,6 @@ header.nav{min-height:64px}
       'search-ideas': { label: 'Ideas de búsqueda',   url: '/es/tools/search-ideas/',      watchable: false },
       'storefront-health': { label: 'Storefront Health', url: '/es/tools/storefront-health/', watchable: false },
       submission:     { label: 'Apunte',              url: '/es/workbench/',              watchable: false },
-      'invoice-decoder': { label: 'Factura',          url: '/es/tools/invoice-decoder/',  watchable: false },
       sheet:          { label: 'Hoja',                url: '/es/sheets/',                  watchable: false }
     };
 
@@ -633,11 +632,8 @@ header.nav{min-height:64px}
         }
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/es/tools/';
-        // Phase 7 W1-8 — invoice-decoder cards route to ?reload=
-        var openUrl = (item.kind === 'invoice-decoder')
-          ? openBase + '?reload=' + encodeURIComponent(item.id)
-          : openBase + '?saved=' + encodeURIComponent(item.id);
-        var isInvoice = item.kind === 'invoice-decoder';
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var isInvoice = false;
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);

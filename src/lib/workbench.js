@@ -52,12 +52,6 @@ const ALLOWED_KINDS = new Set([
   // /api/admin/submissions/decide → approved-fieldnote: KV →
   // data/article-fieldnotes.json → article HTML.
   'submission',
-  // Phase 6 / Wave B6 (Advanced Invoice Decoder) — encrypted
-  // line-item payload from a parsed supplier invoice. Payload
-  // shape: { ciphertext, iv, v: 1, source, invoiceDate, ... }.
-  // Saved rows MUST go through the envelope-encryption branch
-  // in saveItem (B6-2); plaintext writes are rejected.
-  'invoice-decoder',
   // Operator Sheets — printable + fillable paperwork (recipe
   // cost cards, weekly prime cost, GBP audit, etc.). ONE kind
   // shape for the entire sheet layer; the sheet slug lives

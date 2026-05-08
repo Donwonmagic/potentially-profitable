@@ -470,7 +470,6 @@ header.nav{min-height:64px}
       'search-ideas': { label: 'Search ideas',   url: '/tools/search-ideas/',      watchable: false },
       'storefront-health': { label: 'Storefront Health', url: '/tools/storefront-health/', watchable: false },
       submission:     { label: 'Field Note',     url: '/workbench/',               watchable: false },
-      'invoice-decoder': { label: 'Invoice',     url: '/tools/invoice-decoder/',  watchable: false },
       sheet:          { label: 'Sheet',         url: '/sheets/',                  watchable: false }
     };
 
@@ -716,16 +715,8 @@ header.nav{min-height:64px}
         }
         var label = KIND_LABELS[item.kind] || item.kind;
         var openBase = KIND_URLS[item.kind] || '/tools/';
-        // Phase 7 W1-8: Invoice Decoder rows are encrypted. The
-        // generic ?saved= rehydrate path doesn't work for them
-        // (the saved payload is opaque ciphertext). Route to
-        // ?reload= instead so the W1-5 decrypt-and-reload flow
-        // catches it on the tool page and prompts for the
-        // passphrase.
-        var openUrl = (item.kind === 'invoice-decoder')
-          ? openBase + '?reload=' + encodeURIComponent(item.id)
-          : openBase + '?saved=' + encodeURIComponent(item.id);
-        var isInvoice = item.kind === 'invoice-decoder';
+        var openUrl = openBase + '?saved=' + encodeURIComponent(item.id);
+        var isInvoice = false;
         var watchSlot = '';
         if (WATCHABLE_KINDS[item.kind]) {
           watchSlot = renderWatchSlotHtml(item.id, watchIndex[item.id] || null);

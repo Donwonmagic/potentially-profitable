@@ -405,8 +405,6 @@ header.nav{min-height:64px}
       'search-ideas':      { name: 'Ideas de Búsqueda',                      url: '/es/tools/search-ideas/' },
       'tech-stack':        { name: 'Detector de Stack Técnico',              url: '/es/tools/tech-stack/' },
       'compare':           { name: 'Comparar',                               url: '/es/tools/compare/' },
-      'menu-design':       { name: 'Suite de Diseño de Menú',                url: '/es/tools/menu-design/' },
-      'invoice-decoder':   { name: 'Decodificador de Facturas',               url: '/es/tools/invoice-decoder/' },
       'cost-pulse':        { name: 'Pulso de Costos',                         url: '/es/tools/cost-pulse/' }
     };
 
@@ -428,8 +426,6 @@ header.nav{min-height:64px}
       'search-ideas':      { leaveWith: 'Las frases reales que tus clientes usan para tu rubro + ciudad', time: '30 seg',      needs: 'tu tipo de negocio + ciudad' },
       'tech-stack':        { leaveWith: 'En qué está construido tu sitio + qué significa para los arreglos', time: '10 seg',  needs: 'tu URL' },
       'compare':           { leaveWith: 'Una tarjeta de puntaje lado a lado contra un competidor',       time: '60 seg',       needs: 'dos URLs' },
-      'menu-design':       { leaveWith: 'Un PDF imprimible del menú acomodado para tu cantidad de platos',time: '20 min',       needs: 'tu lista de platos + un logo' },
-      'invoice-decoder':   { leaveWith: 'Partidas de factura ordenadas y guardadas en tu Taller',         time: '3 min',        needs: 'cámara del teléfono + una factura' },
       'cost-pulse':        { leaveWith: 'Un panel de deriva entre tus facturas guardadas — ve qué categoría brincó',         time: '60 seg',       needs: 'al menos una factura guardada (usa Decodificador primero)' }
     };
 
@@ -474,7 +470,6 @@ header.nav{min-height:64px}
         // W10-8 — el Decodificador de Facturas es la ruta más
         // rápida desde "creo que el margen está fugándose" hasta
         // costos por línea estructurados.
-        path.push({ k: 'invoice-decoder', why: 'Una foto de 30 segundos a una factura te da los costos por línea que las demás herramientas de margen necesitan.' });
         if (answers.recipe === 'yes' || answers.recipe === 'partial') {
           path.push({ k: 'plate-cost', why: 'El costo por plato es el insumo que toda otra herramienta de margen necesita.' });
         }
@@ -507,7 +502,7 @@ header.nav{min-height:64px}
         // W10-8 — Suite de Diseño de Menú entra después del costo
         // del plato porque el menú imprimible refleja precios ya
         // costeados.
-        path.push({ k: 'menu-design', why: 'Un PDF de menú imprimible en el tema que va con tu cocina — refréscalo cuando actualices precios.' });
+        path.push({ k: 'menu-converter', why: 'Pega tu menú, recibe HTML + JSON-LD listos para tu sitio.' });
         if (answers.pnl === 'yes' || answers.pnl === 'approx') {
           path.push({ k: 'menu-engineering', why: 'Rentabilidad por plato + popularidad. Te dice qué Estrellas proteger y qué Perros retirar.' });
         }
