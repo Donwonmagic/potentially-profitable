@@ -66,12 +66,45 @@
     return __workerPools[key];
   }
 
+  // iOS WebKit (every iOS browser — Safari, Chrome, Opera, etc.
+  // uses WKWebView under the hood per Apple's app-store policy)
+  // has a long history of WASM SIMD regressions. Tesseract.js v5
+  // auto-selects `tesseract-core-simd-lstm.wasm.js` when SIMD is
+  // claimed available; on iOS, the worker can hang silently in
+  // recognize() with no error, no progress callback, no timeout
+  // signal. Production sighting: a 4-page PDF stuck at "Reading
+  // page 1 of 4 — about 48s left" indefinitely on iPhone Opera
+  // Mobile (private mode, so not a SW caching issue).
+  //
+  // Fix: on iOS, force the non-SIMD LSTM variant by pointing
+  // corePath at the specific JS shim. ~30% slower per page on
+  // average phone CPUs (sub-second on a typical invoice; the
+  // difference is well below the per-page timeout) but stable.
+  // Desktop and Android browsers keep auto-selection.
+  function _isIOS() {
+    try {
+      var ua = (root.navigator && root.navigator.userAgent) || '';
+      // Modern iPad reports as Mac in UA; check touchpoints too.
+      if (/iPad|iPhone|iPod/.test(ua)) return true;
+      if (/Macintosh/.test(ua) && root.navigator && root.navigator.maxTouchPoints > 1) return true;
+    } catch (_) {}
+    return false;
+  }
+
   function _vendorWorkerOpts() {
     var workerOpts = {};
     try {
       if (root.MID_VENDORS_CFG) {
         var cfg = root.MID_VENDORS_CFG;
-        workerOpts.corePath   = cfg.SELF.tessCorePath;
+        if (_isIOS() && cfg.SELF.tessCorePath) {
+          // Pin to the LSTM-only variant (no SIMD) on iOS WebKit.
+          // Tesseract.js accepts a specific .wasm.js URL in
+          // corePath as well as a directory; pointing at the JS
+          // shim wires up the matching .wasm sibling.
+          workerOpts.corePath = cfg.SELF.tessCorePath + 'tesseract-core-lstm.wasm.js';
+        } else {
+          workerOpts.corePath = cfg.SELF.tessCorePath;
+        }
         workerOpts.langPath   = cfg.SELF.tessLangPath;
         workerOpts.workerPath = cfg.SELF.tesseractWorker;
       }

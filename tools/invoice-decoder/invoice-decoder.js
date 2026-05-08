@@ -649,7 +649,18 @@
         var recognize = (typeof MID_OCR.recognizeMultiPassEnsemble === 'function')
           ? MID_OCR.recognizeMultiPassEnsemble
           : MID_OCR.recognizeMultiPass;
-        return recognize(page.aggressive, page.gentle, {
+        // Per-page recognize timeout. Tesseract.js has no built-in
+        // hang detection — if the worker stalls (stale SW cache
+        // serving an SRI-mismatched WASM, model fetch hangs, iOS
+        // tab throttling pauses execution past wake-up budget),
+        // the progress callback stops firing and the operator
+        // watches a frozen "Reading page X of Y" forever. 90s is
+        // generous for a 4-page PDF on a mid-tier phone — typical
+        // single-page recognize is 5-15s — but firmly less than
+        // "I gave up and force-quit Safari". Throws TIMEOUT, which
+        // the classifier already maps to retryable copy.
+        var PER_PAGE_TIMEOUT_MS = 90 * 1000;
+        var ocrPromise = recognize(page.aggressive, page.gentle, {
           lang: langArg,
           psm: 6,
           onProgress: function (p) {
@@ -659,7 +670,15 @@
               'Leyendo página ' + (pageIdx + 1) + ' de ' + pendingPages.length + '…'
             );
           }
-        }).then(function (ocrResult) {
+        });
+        var timeoutPromise = new Promise(function (_, rej) {
+          setTimeout(function () {
+            var e = new Error('Per-page recognize exceeded ' + (PER_PAGE_TIMEOUT_MS / 1000) + 's — likely hung worker (stale SW cache, slow network, or background-tab throttling)');
+            e.code = 'TIMEOUT';
+            rej(e);
+          }, PER_PAGE_TIMEOUT_MS);
+        });
+        return Promise.race([ocrPromise, timeoutPromise]).then(function (ocrResult) {
           // Rotation fallback: if the first ensemble pass returned
           // suspiciously little text, try a 90°-rotated canvas. This
           // catches PDFs whose page rotation metadata didn't make it
