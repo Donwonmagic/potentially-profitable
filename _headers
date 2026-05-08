@@ -318,16 +318,47 @@
 #     image into a blob URL for the "CLEANED FOR READING"
 #     preview pane. Same-origin blob URL; same posture as
 #     data:.
+# ------------------------------------------------------------
+# Global CSP — applied to every response
+# ------------------------------------------------------------
+# Audit fix retraction (2026-05-08): commit C5 (d7b71106) tried
+# to path-scope 'wasm-unsafe-eval' to /tools/invoice-decoder/*
+# only, on the security-purist principle that pages without
+# WASM shouldn't permit it. The path-scoped block in Cloudflare
+# Pages _headers turned out NOT to match the index page
+# `/tools/invoice-decoder/` (with trailing slash) — the
+# `*` glob requires at least one character after it. The global
+# `/*` block kept winning, served a CSP without wasm-unsafe-eval,
+# and Tesseract's WebAssembly.instantiate() failed silently.
+# Six hotfixes today were dragnet attempts to find this; only
+# console.log of the actual served CSP confirmed it.
+#
+# Pragmatic resolution: put the wide CSP in /* (the only block
+# that matches every URL reliably). The "loss" is small:
+#   wasm-unsafe-eval — only unlocks WebAssembly compilation;
+#     does NOT unlock JS eval(), so an inline script on a
+#     non-decoder page can compile WASM but can't execute
+#     arbitrary script via eval. A compromised inline script
+#     could already do anything 'unsafe-inline' allows; WASM
+#     compile is a marginal addition.
+#   data: in connect-src — allows fetch() of inline data URLs.
+#     Tesseract's .wasm.js shim ships its WASM as base64-
+#     inlined data: URL and fetches it. Inline data URLs are
+#     constructed in JS, not from external sources, so this
+#     doesn't widen the network surface.
+#   blob: in img-src — preprocess.js renders the cleaned
+#     image into a same-origin blob URL for the preview pane.
+#     Blob URLs are local references, not external.
+# Rolling these site-wide is preferable to letting the tool
+# stay broken. The audit's privacy contract on /tools/invoice-
+# decoder/ specifically — connect-src 'self', no third-party
+# script-src, no plausible.io — is unchanged. This widening
+# is for ANY-page WASM compilation + same-origin local data
+# URLs, neither of which is an exfil channel.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
-
-/tools/invoice-decoder/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
-
-/es/tools/invoice-decoder/*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
