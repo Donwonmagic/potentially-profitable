@@ -33,10 +33,11 @@
   // never paid by non-users. Pinned alongside the other vendors so
   // the SRI manifest covers it once vendor-pin.mjs runs.
   var PDFLIB_VERSION = '1.17.1';
-  // Wave 9.2 — PaddleOCR-WASM (mobile-v3) as a second OCR engine on
-  // capable devices. The @paddlejs-models/ocr package + its model
-  // weights ship from our own origin; no external fetch at runtime.
-  var PADDLEOCR_VERSION = '2.2.5';
+  // (Wave 9.2 PADDLEOCR_VERSION removed in the post-audit cleanup —
+  //  the @paddlejs-models/ocr@2.2.5 we listed never existed on npm,
+  //  and the model weights at the upstream Paddle.js GitHub paths
+  //  rotted. PP-OCRv3 recognition is now exclusively the V2 ONNX
+  //  path; see ORT_VERSION + the ppocr* entries below.)
 
   // Slice 2 — onnxruntime-web powers the v2 OCR pipeline. ESM entry
   // point + WASM kernels (SIMD-threaded preferred; the runtime
@@ -67,7 +68,6 @@
     tessLangPath:  '/assets/vendor/tessdata-'          + TESSDATA_VERSION + '/',
     argon2:        '/assets/vendor/hash-wasm@'         + HASHWASM_VERSION + '/argon2.umd.min.js',
     pdflib:        '/assets/vendor/pdf-lib@'           + PDFLIB_VERSION   + '/pdf-lib.min.js',
-    paddleocr:     '/assets/vendor/paddleocr@'         + PADDLEOCR_VERSION + '/index.mjs',
     // Slice 2 — onnxruntime-web (ESM entry + WASM kernels).
     // ortMjs is loaded via dynamic import; the WASM blobs are
     // streamed from these paths by ORT itself when it picks an
@@ -263,7 +263,6 @@
     TESSDATA_VERSION:  TESSDATA_VERSION,
     HASHWASM_VERSION:  HASHWASM_VERSION,
     PDFLIB_VERSION:    PDFLIB_VERSION,
-    PADDLEOCR_VERSION: PADDLEOCR_VERSION,
     ORT_VERSION:            ORT_VERSION,
     PPOCR_V3_VERSION:       PPOCR_V3_VERSION,
     PPOCR_V4_VERSION:       PPOCR_V4_VERSION,

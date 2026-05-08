@@ -11,9 +11,16 @@
  *   vendor-config.js              ← MID_VENDORS_CFG
  *   preprocess.js                 ← MID_PREPROCESS
  *   ocr.js                        ← MID_OCR (v1 — captured here)
- *   ocr-paddle.js (defer)         ← MID_OCR_PADDLE (used by v1 ensemble)
  *   normalize.js / layout.js / ocr-engine.js / tables.js / assemble.js
  *   ocr-shim.js                   ← THIS FILE; replaces MID_OCR
+ *
+ * (Historical note: a defer-loaded ocr-paddle.js used to ship a
+ *  Paddle.js-based PaddleOCR path here as the V1 ensemble's second
+ *  engine. The upstream restructured and the package + model paths
+ *  rotted; the integration was always falling back to Tesseract-only
+ *  in production. Removed in the post-audit cleanup. PP-OCRv3
+ *  recognition now ships exclusively via the V2 ONNX path that this
+ *  shim escalates to when V1 returns suspiciously little.)
  *
  * The shim captures the V1 api at load time and replaces
  * window.MID_OCR with a routing wrapper. When the engineV2 flag
@@ -40,9 +47,7 @@
 
   // Capture V1 at the moment this file loads. ocr.js has already
   // run and exposed MID_OCR (it's a non-defer script earlier in
-  // the tag list); ocr-paddle.js may or may not have run yet
-  // because it's defer — that's fine, V1's recognizeMultiPassEnsemble
-  // checks MID_OCR_PADDLE at call time, not load time.
+  // the tag list).
   var V1 = root.MID_OCR;
 
   // Build-time / page-level default. Setting this to true on the
