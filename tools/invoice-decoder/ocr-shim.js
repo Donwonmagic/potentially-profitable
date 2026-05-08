@@ -117,6 +117,7 @@
   // and use the gentle canvas — it's closest to source-grade for
   // the new engine which does its own normalization.
   function _runV2(canvas, opts) {
+    opts = opts || {};
     var L = root.MID_LAYOUT;
     var E = root.MID_OCR_V2;
     var T = root.MID_TABLES;
@@ -124,8 +125,13 @@
     if (!L || !E || !A) {
       return Promise.reject(new Error('v2 modules missing — falling back'));
     }
-    return L.analyze(canvas, opts || {}).then(function (layout) {
-      return E.recognize(canvas, layout.regions, opts || {}).then(function (ocrResult) {
+    // Audit fix (shim H4): if the caller passes opts.signal, the
+    // engine checks it at every microtask boundary. Today no
+    // caller passes one, but threading it through the API surface
+    // means a future cancel-on-navigate or a "Stop" button in the
+    // UI works without further engine changes.
+    return L.analyze(canvas, opts).then(function (layout) {
+      return E.recognize(canvas, layout.regions, opts).then(function (ocrResult) {
         // tables.js currently no-ops; keeping the call here for
         // the heavy-tier upgrade path.
         return (T && T.reconstruct
