@@ -103,9 +103,9 @@ function emitTheme(themeId, locale) {
   const paperFloors   = (t.paperFloors || []).join(' · ');
   const inspBits = (c.inspiredBy || []).map(s => `<li>${escHtml(s)}</li>`).join('');
   const toolHref = locale === 'es'
-    ? `/es/tools/menu-design/?theme=${themeId}`
-    : `/tools/menu-design/?theme=${themeId}`;
-  const tryLabel = locale === 'es' ? 'Probar este tema en el editor →' : 'Try this theme in the editor →';
+    ? `/es/library/menu-design-themes/${themeId}/`
+    : `/library/menu-design-themes/${themeId}/`;
+  const tryLabel = locale === 'es' ? 'Leer la historia del tema →' : 'Read the theme story →';
 
   return `
     <article class="md-rb-card" id="theme-${escHtml(themeId)}">
@@ -155,7 +155,7 @@ function emitJsonLd(locale) {
         'creator': { '@type': 'Person', 'name': c.reviewedBy },
         'dateCreated': c.dateAdded,
         'inLanguage': locale === 'es' ? 'es' : 'en',
-        'isPartOf': { '@id': 'https://muntin.digital/tools/menu-design/#tool' }
+        'isPartOf': { '@id': locale === 'es' ? 'https://muntin.digital/es/library/menu-design-themes/#collection' : 'https://muntin.digital/library/menu-design-themes/#collection' }
       }
     };
   }).filter(Boolean);
@@ -242,7 +242,7 @@ function emitPage(locale) {
   const ogLocale       = locale === 'es' ? 'es_US' : 'en_US';
   const ogLocaleAlt    = locale === 'es' ? 'en_US' : 'es_US';
   const libraryHref    = locale === 'es' ? '/es/library/' : '/library/';
-  const toolHref       = locale === 'es' ? '/es/tools/menu-design/' : '/tools/menu-design/';
+  const toolHref       = locale === 'es' ? '/es/services/menu-drop-in/' : '/services/menu-drop-in/';
   const breadcrumbHome = locale === 'es' ? 'Inicio' : 'Home';
   const breadcrumbLib  = locale === 'es' ? 'Biblioteca' : 'Library';
   const breadcrumbThis = locale === 'es' ? 'Mesa de revisión de temas' : 'Theme review board';
@@ -375,7 +375,7 @@ header.nav{min-height:64px}
     <h2>${escHtml(introH2)}</h2>
     <p>${escHtml(intro1)}</p>
     <p>${escHtml(intro2)}</p>
-    <p><a href="${escHtml(toolHref)}" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${locale === 'es' ? 'Abrir Menu Design Suite →' : 'Open Menu Design Suite →'}</a></p>
+    <p><a href="${escHtml(toolHref)}" style="color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none">${locale === 'es' ? 'Pídelo con Menu Drop-In →' : 'Get it built — Menu Drop-In →'}</a></p>
   </section>
 ${groupBlocks}${orphanBlock}
 </div>

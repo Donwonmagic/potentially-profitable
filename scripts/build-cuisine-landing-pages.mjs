@@ -176,9 +176,9 @@ function emitThemeCard(themeId, locale) {
   const label = locale === 'es' ? t.label_es : t.label_en;
   const blurb = locale === 'es' ? t.blurb_es : t.blurb_en;
   const tryHref = locale === 'es'
-    ? `/es/tools/menu-design/?theme=${themeId}`
-    : `/tools/menu-design/?theme=${themeId}`;
-  const tryLabel = locale === 'es' ? 'Probar este tema →' : 'Try this theme →';
+    ? `/es/library/menu-design-themes/${themeId}/`
+    : `/library/menu-design-themes/${themeId}/`;
+  const tryLabel = locale === 'es' ? 'Leer la historia del tema →' : 'Read the theme story →';
   const reviewerLine = c
     ? `<p class="md-c-card-meta">${locale === 'es' ? 'Revisado por' : 'Reviewed by'} ${escHtml(c.reviewedBy)} · ${escHtml(c.dateAdded)}</p>`
     : '';
@@ -383,9 +383,9 @@ header.nav{min-height:64px}
         : 'Want to see all 37 themes with their reviewer and the cuisine that inspired each?'}
        <a href="${baseSlash}/library/menu-design-themes/">${locale === 'es' ? 'Ver la mesa de revisión completa →' : 'See the full review board →'}</a></p>
     <p>${locale === 'es'
-        ? '¿Quieres construir tu menú ahora?'
-        : 'Want to build your menu right now?'}
-       <a href="${baseSlash}/tools/menu-design/">${locale === 'es' ? 'Abrir Menu Design Suite →' : 'Open Menu Design Suite →'}</a></p>
+        ? '¿Quieres que construyamos tu menú?'
+        : 'Want it built for you?'}
+       <a href="${baseSlash}/services/menu-drop-in/">${locale === 'es' ? 'Pídelo con Menu Drop-In →' : 'Get it built — Menu Drop-In →'}</a></p>
   </section>
 </div>
 </main>
