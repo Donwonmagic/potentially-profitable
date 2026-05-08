@@ -78,10 +78,25 @@
         if (ort.env && ort.env.wasm) {
           var ortVer = cfg.ORT_VERSION || '1.20.1';
           ort.env.wasm.wasmPaths = '/assets/vendor/onnxruntime-web@' + ortVer + '/';
-          // Single-thread by default. Multi-thread WASM needs
-          // cross-origin isolation (COOP/COEP); we deferred those
-          // headers per the plan. Operators on capable devices
-          // get WebGPU when navigator.gpu is present.
+          // Single-thread by default. Multi-thread WASM requires
+          // crossOriginIsolated (Cross-Origin-Opener-Policy: same-
+          // origin + Cross-Origin-Embedder-Policy: require-corp).
+          //
+          // Audit fix (build H1) — explicit decision to stay
+          // single-thread for this branch. Enabling COOP/COEP site-
+          // wide breaks embedded cross-origin resources (Google
+          // Fonts at gstatic.com, third-party blog embeds, etc.)
+          // that don't ship Cross-Origin-Resource-Policy headers.
+          // A path-scoped /tools/invoice-decoder/* COOP+COEP block
+          // would limit blast radius but still requires every
+          // external asset the page loads (gstatic fonts in CSS,
+          // analytics, etc.) to have the right CORP header. Deferred
+          // until a deploy-time smoke test verifies no resource is
+          // broken — single-thread WASM is functional, just slower
+          // (the lean-tier ORT runs invoices in 5-15s on a 2024
+          // mid-tier phone vs 2-5s threaded; acceptable for now).
+          // Operators on capable devices already get WebGPU when
+          // navigator.gpu is present, which sidesteps WASM threading.
           ort.env.wasm.numThreads = 1;
           ort.env.wasm.simd = true;
         }
@@ -566,11 +581,29 @@
   // for ("the page is too large; try splitting").
   var IOS_CANVAS_MAX_AREA = 16777216;   // 4096 * 4096
 
+  // Audit fix (shim H4 minimum): defensive abort awareness. The
+  // engine accepts an opts.signal and checks it at every microtask
+  // boundary that's about to enter a long-running operation
+  // (model load, session.run). If the signal aborts mid-call, we
+  // throw an OcrError('ABORTED') instead of completing. The
+  // _sessionCache + _ortPromise survive (they're shared module-
+  // scope state and might be useful to the next call); only the
+  // current invocation tears down. Today no caller passes a
+  // signal — but having the engine honor it means a future
+  // abort wiring in invoice-decoder.js doesn't need engine
+  // changes.
+  function _checkAbort(signal) {
+    if (signal && signal.aborted) {
+      throw OcrError('ABORTED', 'recognize aborted by signal');
+    }
+  }
+
   function recognize(canvas, regions, opts) {
     opts = opts || {};
     if (!canvas || !canvas.width || !canvas.height) {
       return Promise.reject(OcrError('IMAGE_QUALITY', 'no canvas given'));
     }
+    _checkAbort(opts.signal);
     if (canvas.width * canvas.height > IOS_CANVAS_MAX_AREA) {
       return Promise.reject(OcrError('IMAGE_QUALITY',
         'canvas exceeds iOS Safari area cap (' + canvas.width + '×' +
@@ -581,12 +614,14 @@
     var onProgress = opts.onProgress || function () {};
 
     return loadOrt().then(function (ort) {
+      _checkAbort(opts.signal);
       onProgress(0.05);
       return Promise.all([
         _loadSession(ort, keys.det),
         _loadSession(ort, keys.rec),
         _loadDict(keys.dict)
       ]).then(function (parts) {
+        _checkAbort(opts.signal);
         onProgress(0.20);
         var detSession = parts[0], recSession = parts[1], dict = parts[2];
         // Detection
@@ -728,10 +763,37 @@
     });
   }
 
+  // Audit fix (shim H4 belt-and-braces): nuke the session cache
+  // on page lifecycle teardown so any in-flight load can't leak
+  // session memory past navigation. The browser GCs the JS
+  // context anyway when the page goes away, but explicit
+  // disposal during the bfcache freeze gives the user a
+  // smoother experience on back-button restores (the page
+  // re-pins fresh sessions instead of running against a
+  // half-dead bfcache copy).
+  function _disposeSessionCache() {
+    try {
+      Object.keys(_sessionCache).forEach(function (k) {
+        var p = _sessionCache[k];
+        if (p && typeof p.then === 'function') {
+          p.then(function (s) { try { if (s && s.release) s.release(); } catch (_) {} },
+                 function () {});
+        }
+        delete _sessionCache[k];
+      });
+    } catch (_) {}
+  }
+  if (typeof addEventListener === 'function') {
+    try {
+      addEventListener('pagehide', _disposeSessionCache);
+    } catch (_) {}
+  }
+
   var api = {
     recognize:        recognize,
     OcrError:         OcrError,
     _resolveTier:     _resolveTier,
+    _disposeSessionCache: _disposeSessionCache,
     // Pure-function exports for the Node test harness
     _ctcDecode:       _ctcDecode,
     _dbPostprocess:   _dbPostprocess,

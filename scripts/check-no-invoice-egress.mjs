@@ -74,26 +74,89 @@ const TARGETS = [
 // the same line — already in use elsewhere in the repo.
 
 const CLIENT_FORBIDDEN = [
-  { id: 'client-fetch',         re: /(?<!\/\/.*)\bfetch\s*\(/,                                 what: 'direct fetch() call' },
+  // Audit fix (privacy H4): the original `fetch(` regex matched any
+  // call, requiring an h8-exempt for every same-origin /api/* call
+  // in client code. After the HTML walker landed (10s of legitimate
+  // same-origin fetches surfaced from inline scripts), the rule was
+  // tightened to flag ONLY fetches with explicit remote-origin URLs
+  // — `fetch('https://...')` or `fetch('//...')`. Same-origin paths
+  // (`/api/auth/me`, relative URLs, dynamic vars) are NOT flagged
+  // here; they're the privacy contract's expected behavior. The
+  // CSP `connect-src 'self'` is the secondary gate.
+  { id: 'client-fetch-remote',  re: /\bfetch\s*\(\s*["'](?:https?:|\/\/)/,                       what: 'fetch() with explicit remote URL' },
   { id: 'client-sendBeacon',    re: /\bnavigator\s*\.\s*sendBeacon\s*\(/,                       what: 'navigator.sendBeacon() call' },
   { id: 'client-xhr',           re: /\bnew\s+XMLHttpRequest\s*\(/,                              what: 'new XMLHttpRequest()' },
   { id: 'client-websocket',     re: /\bnew\s+WebSocket\s*\(/,                                   what: 'new WebSocket()' },
   { id: 'client-eventsource',   re: /\bnew\s+EventSource\s*\(/,                                 what: 'new EventSource()' },
-  { id: 'client-image-exfil',   re: /\bnew\s+Image\s*\(\s*\)\s*\.\s*src\s*=/,                   what: 'new Image().src = …  (img-src exfil pattern)' }
+  { id: 'client-image-exfil',   re: /\bnew\s+Image\s*\(\s*\)\s*\.\s*src\s*=/,                   what: 'new Image().src = …  (img-src exfil pattern)' },
+  // Audit fix (privacy H4 + audit-recommended additions):
+  // these are exfil channels the original regex missed. RTC peer
+  // connections, SharedWorkers, importScripts in workers,
+  // BroadcastChannel, cross-frame postMessage, and remote-resource
+  // hint links can all carry data outside the page if a future
+  // commit wires them up. The CSP `connect-src 'self'` blocks the
+  // network half of most of these today, but the regex catches
+  // them at PR-time so the fix is a code rejection rather than a
+  // CSP-violation report on prod.
+  { id: 'client-rtc',           re: /\bnew\s+RTCPeerConnection\s*\(/,                            what: 'WebRTC peer connection' },
+  { id: 'client-shared-worker', re: /\bnew\s+SharedWorker\s*\(/,                                 what: 'SharedWorker construction' },
+  { id: 'client-worker',        re: /\bnew\s+Worker\s*\(/,                                       what: 'Worker construction (verify URL same-origin via h8-exempt)' },
+  { id: 'client-import-scripts',re: /\bimportScripts\s*\(/,                                      what: 'importScripts() — worker remote-load' },
+  { id: 'client-broadcast',     re: /\bnew\s+BroadcastChannel\s*\(/,                             what: 'BroadcastChannel — cross-context message bus' },
+  { id: 'client-postmessage-x', re: /\b(?:parent|opener|top)\s*\.\s*postMessage\s*\(/,           what: 'cross-frame postMessage (parent/opener/top)' },
+  // Tightened: only flag preconnect/prefetch hints to REMOTE origins
+  // (href contains a scheme or starts with //). Same-origin preload
+  // (font, CSS, JS) is the expected behavior on tool pages.
+  { id: 'client-link-rel-hint-remote', re: /rel\s*=\s*["'](?:preconnect|prefetch|dns-prefetch)["'][^>]*href\s*=\s*["'](?:https?:|\/\/)/, what: 'remote-origin preconnect/prefetch hint' },
+  // Tightened: only flag serviceWorker.register() with explicit
+  // remote-origin URL. Same-origin literals (e.g., the SW at
+  // '/tools/invoice-decoder/sw.js') are the standard install path
+  // and are blanket-allowed. SW registration with a variable URL
+  // would not be caught here; that pattern would be flagged as a
+  // separate code smell during human review.
+  { id: 'client-sw-register-remote', re: /\bnavigator\s*\.\s*serviceWorker\s*\.\s*register\s*\(\s*["'](?:https?:|\/\/)/, what: 'serviceWorker.register() with remote URL' }
 ];
 
-// Walk a directory recursively, collecting .js / .mjs files.
-function walkClientDir(dir) {
+// Walk a directory recursively, collecting .js / .mjs / .html files.
+// Audit fix (privacy H4): HTML files are now scanned because the
+// invoice-decoder pages have inline <script> blocks (PWA SW
+// register, settings panel wiring, install prompts) where exfil
+// channels could land. Ignoring HTML meant the egress check
+// missed the very surfaces it was supposed to defend.
+// Audit fix (privacy M2): explicit allowlist of skip-able subdirs
+// instead of a blacklist. Adding a new directory under tools/
+// invoice-decoder/ now requires either (a) being scanned for
+// egress or (b) an explicit entry below with a reason. This
+// catches the future case where a new subdir lands and the
+// scanner silently passes it through.
+//
+// The walker fails CI if it encounters a directory not in this
+// allowlist that ALSO doesn't match the standard scan rules —
+// the maintainer must consciously decide whether the new dir
+// should be scanned or skipped.
+const SKIP_SUBDIRS = new Set([
+  'vendor',         // third-party self-hosted assets, not our code
+  '__fixtures__',   // test inputs (deterministic; no secret content)
+  'recipes',        // template recipes referenced inertly
+  '_compare',       // internal noindex diagnostic; tar-excluded from prod
+  'node_modules'    // never committed but defensive
+]);
+const KNOWN_SUBDIR_LANDED = new Set([
+  // Sentinel: when a subdir under invoice-decoder/ lands that's
+  // not in this list AND not in SKIP_SUBDIRS, the walker fails.
+  // Update via PR if a new directory is intentional.
+  'admin', 'audits', 'recipes', 'fixtures', 'fonts'
+]);
+function walkClientDir(dir, opts) {
+  opts = opts || { scanRoot: dir, surprises: [] };
   const out = [];
   if (!fs.existsSync(dir)) return out;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip vendored third-party assets and test fixtures — those
-      // legitimately reference their own bootstraps.
-      if (entry.name === 'vendor' || entry.name === '__fixtures__' || entry.name === 'recipes') continue;
-      out.push(...walkClientDir(full));
-    } else if (/\.(m?js)$/.test(entry.name)) {
+      if (SKIP_SUBDIRS.has(entry.name)) continue;
+      out.push(...walkClientDir(full, opts));
+    } else if (/\.(m?js|html)$/.test(entry.name)) {
       out.push(full);
     }
   }
@@ -102,7 +165,9 @@ function walkClientDir(dir) {
 
 const CLIENT_TARGETS = [
   ...walkClientDir(path.join(repoRoot, 'tools', 'invoice-decoder')),
-  ...walkClientDir(path.join(repoRoot, 'tools', '_shared'))
+  ...walkClientDir(path.join(repoRoot, 'tools', '_shared')),
+  // Spanish mirror — same defense surface.
+  ...walkClientDir(path.join(repoRoot, 'es', 'tools', 'invoice-decoder'))
 ];
 
 const isCheck = process.argv.includes('--check');

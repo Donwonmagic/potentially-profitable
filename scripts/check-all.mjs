@@ -71,6 +71,13 @@ const CHECKS = [
   // it ever regresses (the whole "your numbers never leave this page"
   // promise depends on it).
   ['No invoice egress',   'check-no-invoice-egress.mjs'],
+  // Audit fix (C6) — invoice-decoder bilingual parity. Catches the
+  // class of regression where a feature ships to the EN page but
+  // never makes it into /es/tools/invoice-decoder/ (or vice versa).
+  // Narrow check: structural IDs / class hooks / event names that
+  // gate access to user features. Translation quality stays a
+  // human review concern.
+  ['Invoice decoder ES parity','check-invoice-decoder-bilingual-parity.mjs','--check'],
   ['Banned words',        'check-banned-words.mjs'],
   ['Knit coverage',       'check-knit-coverage.mjs',       '--check'],
   ['Button vocabulary',   'check-button-vocabulary.mjs',   '--check'],

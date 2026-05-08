@@ -264,9 +264,48 @@
     });
   }
 
+  // Audit fix (test gap #1): the previous version stripped commas
+  // unconditionally, so a Mexican / EU invoice line "€1,50" parsed
+  // as $150 — a literal 100× error in the operator's accounting.
+  // Now we infer comma-vs-dot by position:
+  //   "1,234.56" — both present, dot rightmost → US: comma=thousands,
+  //                                              dot=decimal      → 1234.56
+  //   "1.234,56" — both present, comma rightmost → EU: dot=thousands,
+  //                                                comma=decimal   → 1234.56
+  //   "1,50"     — only comma, 2 digits after → EU decimal         → 1.50
+  //   "1,5"      — only comma, 1 digit after  → EU decimal         → 1.5
+  //   "1,234"    — only comma, 3 digits after → US thousands       → 1234
+  //   "1.50"     — only dot                   → decimal             → 1.50
+  //   "1500"     — neither                    → integer             → 1500
+  //
+  // We don't try to guess EU thousands via dot-only ("1.500" stays
+  // 1.5) — too risky vs the US case "1.500" being a price. Pure-dot
+  // case stays decimal-by-default.
   function normPrice(s) {
-    var v = String(s || '').replace(/,/g, '').replace(/[^0-9.\-]/g, '');
+    var raw = String(s || '');
+    // Keep digits, comma, dot, and a leading minus.
+    var v = raw.replace(/[^0-9,.\-]/g, '');
     if (!v) return null;
+    var lastComma = v.lastIndexOf(',');
+    var lastDot   = v.lastIndexOf('.');
+    if (lastComma === -1 && lastDot === -1) {
+      var n0 = parseFloat(v);
+      return isFinite(n0) ? n0 : null;
+    }
+    if (lastComma !== -1 && lastDot !== -1) {
+      if (lastComma > lastDot) {
+        v = v.replace(/\./g, '').replace(',', '.');
+      } else {
+        v = v.replace(/,/g, '');
+      }
+    } else if (lastComma !== -1) {
+      var afterComma = v.length - lastComma - 1;
+      if (afterComma >= 1 && afterComma <= 2) {
+        v = v.replace(',', '.');
+      } else {
+        v = v.replace(/,/g, '');
+      }
+    }
     var n = parseFloat(v);
     return isFinite(n) ? n : null;
   }
@@ -890,6 +929,9 @@
     mergeWrappedLines: mergeWrappedLines,
     reconstructColumns: reconstructColumns,
     beamSearchRepair:  beamSearchRepair,
+    // Exposed for the test harness's locale-numeric coverage —
+    // see scripts/test-invoice-decoder.mjs (decimal-separator tests).
+    normPrice: normPrice,
     UNITS_RE: UNITS_RE
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

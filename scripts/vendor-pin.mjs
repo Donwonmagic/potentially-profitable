@@ -330,6 +330,16 @@ const ONNX_MODEL_FILES = [
   ]},
 
   // ---------- Apache-2.0 NOTICE / LICENSE files (redistribution requirement) ----------
+  // Audit fix (build H5): PP-OCRv3 ships on EVERY device (the lean
+  // tier — every operator gets it whether they trigger V2 escalation
+  // or not), but its LICENSE was missing from this list. PaddleOCR
+  // is Apache-2.0; redistribution requires the LICENSE alongside the
+  // weights. Add ppocr@v3-en/LICENSE with the same source as v4
+  // (single LICENSE file at the repo root covers both versions
+  // since they share lineage).
+  { local: 'ppocr@v3-en/LICENSE', urls: [
+    'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'
+  ]},
   { local: 'ppocr@v4-en/LICENSE', urls: [
     'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'
   ]},
@@ -380,8 +390,19 @@ const DIST_VENDOR_DIR = path.join(repoRoot, 'dist', 'assets', 'vendor');
 const TESSDATA_DIR    = path.join(DIST_VENDOR_DIR, 'tessdata-4.0.0');
 const INTEGRITY_FILE  = path.join(DIST_VENDOR_DIR, '_integrity.json');
 
+// Audit fix: hash-drift verification. expected-integrity.json is
+// committed to the repo. Each entry is a sha384 the build expects
+// to match; any drift fails the build. The first time this is
+// enabled in CI, run `node scripts/vendor-pin.mjs --bootstrap-expected`
+// once to write the expected file, commit it, and from then on
+// upstream re-uploads (HuggingFace `resolve/main` is mutable —
+// supply-chain vector noted in the build audit) trigger a deploy
+// failure instead of silently swapping model weights.
+const EXPECTED_INTEGRITY_FILE = path.join(repoRoot, 'scripts', 'expected-integrity.json');
+
 const isCheck = process.argv.includes('--check');
 const allowOffline = process.argv.includes('--allow-offline');
+const bootstrapExpected = process.argv.includes('--bootstrap-expected');
 
 // ---------------------------------------------------------------
 // HTTPS GET that follows redirects and returns the response body
@@ -405,9 +426,27 @@ function fetchBuffer(url, redirects = 5) {
         res.resume();
         return reject(new Error(`HTTP ${res.statusCode}: ${url}`));
       }
+      // Audit fix: capture Content-Length up front so we can verify
+      // the body wasn't truncated mid-fetch (a CDN edge fail can
+      // close the connection cleanly with partial content and the
+      // 'end' event still fires; without this guard, vendor-pin
+      // would write a malformed ONNX model and the tool would throw
+      // MODEL_LOAD at every operator).
+      const declaredLength = res.headers['content-length']
+        ? parseInt(res.headers['content-length'], 10)
+        : null;
       const chunks = [];
       res.on('data', (c) => chunks.push(c));
-      res.on('end', () => resolve(Buffer.concat(chunks)));
+      res.on('end', () => {
+        const buf = Buffer.concat(chunks);
+        if (declaredLength !== null && buf.length !== declaredLength) {
+          return reject(new Error(
+            `Content-Length mismatch: ${url} declared ${declaredLength} bytes, ` +
+            `body is ${buf.length} bytes (likely truncated)`
+          ));
+        }
+        resolve(buf);
+      });
       res.on('error', reject);
     });
     req.on('error', reject);
@@ -691,6 +730,119 @@ async function main() {
       sourcePath: usedUrl
     };
     console.log(`  ✓ ${publicUrl}  ${data.length}b`);
+  }
+
+  // Audit fix: minimum-file-count guard. Without this, an HF/CDN
+  // partial outage can produce a "successful" build that ships
+  // with no ONNX models and no integrity manifest entries — the
+  // tool then runs V1-only forever and no telemetry surfaces the
+  // regression. The threshold (20) is below the expected total
+  // (~27: VENDORS + 5 PaddleOCR + 11 ONNX + 6 lang packs) but high
+  // enough that any meaningful category-wide failure trips it.
+  // Local dev with --allow-offline can still skip by passing
+  // --skip-min-writes-check, but production deploys (which run
+  // without --allow-offline since the deploy-blocker fix) must
+  // hit the floor.
+  const MIN_TOTAL_WRITES = 20;
+  const skipMinCheck = process.argv.includes('--skip-min-writes-check');
+  if (writes < MIN_TOTAL_WRITES && !skipMinCheck) {
+    const msg = `vendor-pin: only ${writes} file(s) written (minimum ${MIN_TOTAL_WRITES}). ` +
+                `Refusing to write integrity.json — this would silently ship a deploy ` +
+                `without ONNX models / lang packs.`;
+    if (allowOffline) {
+      console.warn('  ! ' + msg + ' (allowed because --allow-offline)');
+    } else {
+      throw new Error(msg);
+    }
+  }
+
+  // Audit fix (build M6): Cloudflare Pages refuses to upload any
+  // single file > 25 MB. ONNX layout models (docling-layout-heron
+  // typically 30-80 MB; tableformer-fast 40-60 MB) can blow past
+  // this limit silently — Pages simply skips the file with a
+  // generic warning, the deploy "succeeds", and the runtime
+  // 404s on every operator's first heavy-tier load. Catch it
+  // here so the build hard-fails BEFORE pagefind runs and the
+  // operator gets a deploy that ships V1-only by accident.
+  // 25 MB == 26214400 bytes; we use 24 MB as the actionable
+  // threshold (1 MB of headroom for header + framing + future
+  // CF policy tightening).
+  const CF_PAGES_FILE_LIMIT = 24 * 1024 * 1024;
+  const oversized = Object.entries(integrity.files)
+    .filter(([, info]) => info.bytes > CF_PAGES_FILE_LIMIT)
+    .map(([url, info]) => ({ url, mb: (info.bytes / 1024 / 1024).toFixed(1) }));
+  if (oversized.length) {
+    const msg = `vendor-pin: ${oversized.length} file(s) exceed Cloudflare Pages' 25 MB per-file limit (using 24 MB threshold for headroom):\n` +
+                oversized.map(o => `  - ${o.url}  ${o.mb} MB`).join('\n') + '\n' +
+                'Cloudflare Pages will silently skip these files; the runtime will 404 on first load. ' +
+                'Either (a) split the model into shards loaded on demand, (b) host the file on R2 / Bunny / a separate CDN ' +
+                'and update vendor-config.js to point to that origin (you also need to add the origin to _headers connect-src), ' +
+                'or (c) drop the file from ONNX_MODEL_FILES if the pipeline can run without it.';
+    throw new Error(msg);
+  }
+
+  // Audit fix: hash-drift verification against committed expected
+  // hashes. Catches the supply-chain attack vector where HuggingFace
+  // upstream silently re-uploads model weights at the same
+  // resolve/main URL. If expected-integrity.json doesn't exist yet,
+  // we warn (first-deploy bootstrap mode); --bootstrap-expected
+  // overwrites the file with current hashes for legitimate updates.
+  let expected = null;
+  if (fs.existsSync(EXPECTED_INTEGRITY_FILE)) {
+    try { expected = JSON.parse(fs.readFileSync(EXPECTED_INTEGRITY_FILE, 'utf8')); }
+    catch (_) { expected = null; }
+  }
+  if (expected && expected.files && !bootstrapExpected) {
+    const drifts = [];
+    for (const [url, expHash] of Object.entries(expected.files)) {
+      const actual = integrity.files[url];
+      if (!actual) continue;  // file not in this build; not a drift
+      // info.sha384 already includes the 'sha384-' prefix (the sha384()
+      // helper above returns 'sha384-' + base64). Compare raw.
+      if (actual.sha384 !== expHash) {
+        drifts.push(`  - ${url}\n      expected: ${expHash.slice(0, 48)}...\n      actual:   ${actual.sha384.slice(0, 48)}...`);
+      }
+    }
+    if (drifts.length) {
+      throw new Error(
+        `vendor-pin: hash drift on ${drifts.length} file(s) vs expected-integrity.json:\n` +
+        drifts.join('\n') + '\n' +
+        `If this drift is intentional (e.g., legitimate model upgrade), run:\n` +
+        `  node scripts/vendor-pin.mjs --bootstrap-expected\n` +
+        `to update expected-integrity.json, review the diff, and commit.`
+      );
+    }
+    console.log(`vendor-pin: integrity drift check passed (${Object.keys(expected.files).length} expected entries).`);
+  } else if (!bootstrapExpected) {
+    console.warn(
+      `  ! no ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)} found — supply-chain ` +
+      `drift detection is OFF. Run \`node scripts/vendor-pin.mjs --bootstrap-expected\` ` +
+      `once and commit the result to enable.`
+    );
+  }
+  if (bootstrapExpected) {
+    // Preserve any entries that already exist in expected-integrity.json
+    // but didn't make it into THIS build (e.g., HuggingFace blocked in
+    // local sandbox but reachable from CF Pages). Otherwise running
+    // --bootstrap-expected from a partial environment would silently
+    // strip the entries the rest of the build relies on.
+    const priorFiles = (expected && expected.files) ? expected.files : {};
+    const bootstrap = {
+      version: 1,
+      generatedAt: new Date().toISOString(),
+      note: 'Hashes the build expects to find. Hash drift fails the build (catches supply-chain attacks via mutable URLs like HuggingFace resolve/main). Re-run --bootstrap-expected from CF Pages CI to add any HuggingFace-hosted entries the local sandbox can\'t reach.',
+      files: {}
+    };
+    // Take the union: prior entries + this build's entries; on overlap,
+    // this build wins (latest hashes). Keys are sorted for stable diff.
+    const allKeys = new Set([...Object.keys(priorFiles), ...Object.keys(integrity.files)]);
+    for (const url of [...allKeys].sort()) {
+      bootstrap.files[url] = integrity.files[url]
+        ? integrity.files[url].sha384
+        : priorFiles[url];
+    }
+    fs.writeFileSync(EXPECTED_INTEGRITY_FILE, JSON.stringify(bootstrap, null, 2));
+    console.log(`\nvendor-pin: bootstrapped ${Object.keys(bootstrap.files).length} entries to ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)} (${Object.keys(integrity.files).length} fresh + ${Object.keys(priorFiles).length} preserved from prior file)`);
   }
 
   fs.writeFileSync(INTEGRITY_FILE, JSON.stringify(integrity, null, 2));

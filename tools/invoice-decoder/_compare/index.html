@@ -61,6 +61,13 @@
 </style>
 </head>
 <body>
+<!-- Audit fix (UX M3): operator-facing escape hatch. Anyone who
+     follows a stale URL into this page sees the diagnostic
+     framing AND a clear way back to the real tool. -->
+<aside role="status" style="background:#fff8e6;border:1px solid #f0d896;color:#7c4a00;padding:10px 14px;margin:0;font-family:system-ui,sans-serif;font-size:13.5px">
+  This page is for engineers debugging the V1 vs V2 reader. Looking for the tool? <a href="../" style="color:inherit;font-weight:600;text-decoration:underline">Go back to the invoice decoder</a>.
+</aside>
+<main>
 <div class="wrap">
   <h1>V1 ↔ V2 OCR comparison</h1>
   <p class="subtitle">Internal diagnostic. Drop a file or pick a fixture; both engines run on the same canvas.</p>
@@ -378,5 +385,6 @@
   }, 800);
 })();
 </script>
+</main>
 </body>
 </html>

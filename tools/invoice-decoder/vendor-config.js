@@ -96,18 +96,17 @@
     tableformerFast:    '/assets/vendor/ds4sd@' + DOCLING_MODELS_VERSION + '/tableformer-fast.onnx'
   };
 
-  // Legacy CDN fallbacks. Only used when the build's vendor-pin
-  // step didn't run (rare / dev / offline build). Once we ship a
-  // CSP that excludes these, the fallback becomes a hard error —
-  // intentional, because shipping without SRI is a privacy
-  // regression we want to surface loudly.
-  var LEGACY = {
-    tesseract:   'https://cdn.jsdelivr.net/npm/tesseract.js@'   + TESSERACT_VERSION + '/dist/tesseract.min.js',
-    pdfjs:       'https://cdn.jsdelivr.net/npm/pdfjs-dist@'     + PDFJS_VERSION    + '/build/pdf.min.mjs',
-    pdfjsWorker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@'     + PDFJS_VERSION    + '/build/pdf.worker.min.mjs',
-    xlsx:        'https://cdn.jsdelivr.net/npm/xlsx@'           + XLSX_VERSION     + '/xlsx.mjs',
-    pdflib:      'https://cdn.jsdelivr.net/npm/pdf-lib@'        + PDFLIB_VERSION   + '/dist/pdf-lib.min.js'
-  };
+  // Audit fix (privacy H2): the LEGACY CDN-fallback map is gone.
+  // Previously, when /assets/vendor/_integrity.json was missing
+  // or empty, resolve(name) would fall through to a cdn.jsdelivr
+  // .net URL with no SRI. The CSP `connect-src 'self'` already
+  // blocked the network request, but the dead-code path obscured
+  // the privacy posture and tripped the egress-check linter on
+  // any future scanner that walks string literals. By deleting
+  // the map and returning a clean rejection from resolve() when
+  // the manifest is absent, we make "the manifest must exist or
+  // the load fails loudly" the explicit contract — which matches
+  // the comment block at line 28 of vendor-pin.mjs.
 
   // Cached integrity manifest (loaded once per session).
   var __manifestPromise = null;
@@ -133,8 +132,12 @@
 
   // Resolve a logical name to { url, integrity }. When the integrity
   // manifest loaded successfully, the same-origin URL + SHA-384 are
-  // returned. Otherwise we fall back to the legacy CDN URL with no
-  // integrity (browser will load via the existing CSP).
+  // returned. Audit fix (privacy H2): when the manifest is absent
+  // and SELF has no entry for the name (or has only a self-hosted
+  // path that the manifest doesn't cover), we hand back the
+  // same-origin path with no SRI rather than reaching for a CDN.
+  // The browser still loads from /assets/vendor/* as long as the
+  // build wrote the file; if it didn't, the load fails loudly.
   function resolve(name) {
     return loadManifest().then(function (manifest) {
       if (manifest && manifest.files && manifest.files[SELF[name]]) {
@@ -152,14 +155,22 @@
         return {
           url:       SELF[name],
           integrity: null,
-          source:    manifest ? 'self-hosted' : 'cdn-fallback'
+          source:    manifest ? 'self-hosted' : 'self-hosted-no-sri'
         };
       }
-      return {
-        url:       LEGACY[name] || null,
-        integrity: null,
-        source:    'cdn-fallback'
-      };
+      // No manifest, but SELF still has the path. Same-origin only;
+      // if the file isn't there, the load fails — we never reach
+      // for a CDN. (See audit privacy H2: the LEGACY map was
+      // deleted; CSP `connect-src 'self'` was the only thing
+      // saving us before.)
+      if (SELF[name]) {
+        return {
+          url:       SELF[name],
+          integrity: null,
+          source:    'self-hosted-no-sri'
+        };
+      }
+      return { url: null, integrity: null, source: 'unresolved' };
     });
   }
 
@@ -197,7 +208,6 @@
 
   var api = {
     SELF:           SELF,
-    LEGACY:         LEGACY,
     TESSERACT_VERSION: TESSERACT_VERSION,
     PDFJS_VERSION:     PDFJS_VERSION,
     XLSX_VERSION:      XLSX_VERSION,

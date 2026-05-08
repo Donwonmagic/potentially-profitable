@@ -168,6 +168,18 @@
 /assets/vendor/*
   Cache-Control: public, max-age=2592000, immutable
 
+# Audit fix (build H7): ORT and other WASM blobs need
+# Content-Type: application/wasm so the browser uses the
+# streaming compile path (WebAssembly.instantiateStreaming).
+# Cloudflare's default MIME inference often serves .wasm as
+# application/octet-stream, which forces ORT to fall back to
+# the slower non-streaming ArrayBuffer path or — in strict
+# mode — fail the load. Path-scoped to .wasm files so other
+# vendor assets (.mjs, .js, .onnx) keep their inferred types.
+/assets/vendor/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=2592000, immutable
+
 
 # ------------------------------------------------------------
 # Per-theme SVG thumbnails (build-time generated from themes.js).
@@ -230,12 +242,15 @@
 #                                    form endpoints, 'unsafe-inline'
 #                                    because we still use inline JSON-LD
 #                                    blocks and the Plausible init shim,
-#                                    'wasm-unsafe-eval' (Slice 2) so the
-#                                    invoice decoder's onnxruntime-web
-#                                    can compile its WASM kernels — same-
-#                                    origin only, no eval() unlocked,
-#                                    strictly bounded to WebAssembly
-#                                    module instantiation
+#                                    NOTE: 'wasm-unsafe-eval' is
+#                                    NOT in the global /* CSP. It's
+#                                    only enabled in the path-scoped
+#                                    /tools/invoice-decoder/* +
+#                                    /es/tools/invoice-decoder/*
+#                                    blocks because that's the only
+#                                    surface that loads onnxruntime-
+#                                    web for PP-OCRv3 inference. The
+#                                    rest of the site stays tighter.
 #   style-src                      — self + fonts.googleapis.com (the four
 #                                    pages still on Google Fonts) + inline
 #                                    since we use style attributes and
@@ -266,10 +281,33 @@
 #   object-src 'none'              — no legacy plugins allowed
 #   base-uri 'self'                — prevents <base href> injection
 #   upgrade-insecure-requests      — auto-upgrade any stray http:// refs
+# ------------------------------------------------------------
+# Path-scoped CSP override — invoice decoder ONLY
+# ------------------------------------------------------------
+# Audit fix: 'wasm-unsafe-eval' is required for onnxruntime-web
+# to compile its WASM kernels (PP-OCRv3 inference, DocLayNet
+# layout, etc.). It does NOT need to be allowed on every page
+# of muntin.digital — the homepage, glossary, blog, sheets,
+# admin, etc. don't run WASM. Scoping it to the only paths
+# that need it tightens the global posture: a compromised
+# inline script on a non-decoder page can no longer compile
+# arbitrary WASM modules.
+#
+# Two blocks because Cloudflare Pages _headers doesn't accept
+# multi-path patterns. EN at /tools/invoice-decoder/*, ES at
+# /es/tools/invoice-decoder/*. Other headers (X-Frame-Options,
+# Referrer-Policy, etc.) still come from the global /* block;
+# only the Content-Security-Policy header is overridden here.
+/tools/invoice-decoder/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+
+/es/tools/invoice-decoder/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googleapis.com https://challenges.cloudflare.com; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; worker-src 'self' blob:; upgrade-insecure-requests

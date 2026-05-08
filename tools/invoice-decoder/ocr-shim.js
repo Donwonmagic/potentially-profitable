@@ -89,11 +89,35 @@
     } catch (_) { return false; }
   }
 
+  // Audit fix (shim H2): ORT-Web WASM session.run() is not
+  // re-entrant. Two concurrent V2 calls (operator double-tap on
+  // Decode, or rapid back-to-back invoice processing) can confuse
+  // each other's output tensors because they share _sessionCache
+  // and call session.run() in parallel. Serialize V2 invocations
+  // through a per-call in-flight promise: the second caller
+  // awaits the first, then runs cleanly. V1 still runs in
+  // parallel (Tesseract worker has its own concurrency model).
+  // The chain resets when the in-flight call settles so a single
+  // failed V2 attempt doesn't poison subsequent calls.
+  var _v2InFlight = null;
+  function _runV2Serialized(canvas, opts) {
+    var prior = _v2InFlight;
+    var thisCall = (prior ? prior.catch(function(){}) : Promise.resolve())
+      .then(function () { return _runV2(canvas, opts); });
+    _v2InFlight = thisCall;
+    thisCall.then(
+      function () { if (_v2InFlight === thisCall) _v2InFlight = null; },
+      function () { if (_v2InFlight === thisCall) _v2InFlight = null; }
+    );
+    return thisCall;
+  }
+
   // Build a v2 OcrResult by running the assembled pipeline on a
   // single canvas. We accept the v1 API shape (canvasA, canvasG)
   // and use the gentle canvas — it's closest to source-grade for
   // the new engine which does its own normalization.
   function _runV2(canvas, opts) {
+    opts = opts || {};
     var L = root.MID_LAYOUT;
     var E = root.MID_OCR_V2;
     var T = root.MID_TABLES;
@@ -101,8 +125,13 @@
     if (!L || !E || !A) {
       return Promise.reject(new Error('v2 modules missing — falling back'));
     }
-    return L.analyze(canvas, opts || {}).then(function (layout) {
-      return E.recognize(canvas, layout.regions, opts || {}).then(function (ocrResult) {
+    // Audit fix (shim H4): if the caller passes opts.signal, the
+    // engine checks it at every microtask boundary. Today no
+    // caller passes one, but threading it through the API surface
+    // means a future cancel-on-navigate or a "Stop" button in the
+    // UI works without further engine changes.
+    return L.analyze(canvas, opts).then(function (layout) {
+      return E.recognize(canvas, layout.regions, opts).then(function (ocrResult) {
         // tables.js currently no-ops; keeping the call here for
         // the heavy-tier upgrade path.
         return (T && T.reconstruct
@@ -142,37 +171,53 @@
   // V2's help on the cases where V1 was already failing them
   // (the actual user complaint), with zero risk of regression
   // on cases V1 already handles correctly.
+  //
+  // Audit fix (shim H1): re-check _v2Suppressed() at the boundary
+  // before V2 actually fires AND after V2 returns, so an operator
+  // who flips the kill-switch mid-call is honored. Without these
+  // re-checks, a panicked owner could flip "Only the standard
+  // reader" while V1 is still resolving and still receive a V2
+  // result.
   function _escalateIfV1Insufficient(v1Result, canvasGentle, opts, ensembleVariant) {
     var v1Lines = (v1Result && v1Result.lines && v1Result.lines.length) || 0;
     if (v1Lines >= V1_ESCALATION_THRESHOLD) return Promise.resolve(v1Result);
-    // V1 returned suspiciously little — escalate to V2.
-    return _runV2(canvasGentle, opts).then(function (v2Result) {
+    if (_v2Suppressed()) return Promise.resolve(v1Result);
+    return _runV2Serialized(canvasGentle, opts).then(function (v2Result) {
+      if (_v2Suppressed()) return v1Result;
       var v2Lines = (v2Result && v2Result.lines && v2Result.lines.length) || 0;
       if (v2Lines > v1Lines) {
         try {
           if (root.plausible) root.plausible('Invoice Decoder V2 Escalation Win', { props: {
-            v1_lines:        String(v1Lines),
+            v1_lines_bucket: v1Lines < 1 ? '0' : '1',
             v2_lines_bucket: v2Lines < 5 ? '<5' : v2Lines < 15 ? '5-14' : '15+',
             variant:         ensembleVariant ? 'ensemble' : 'multipass'
           } });
         } catch (_) {}
         return v2Result;
       }
-      return v1Result;     // V2 didn't beat V1 — return V1's result unchanged
+      return v1Result;
     }).catch(function (err) {
       try {
         if (root.plausible) root.plausible('Invoice Decoder V2 Escalation Fail', { props: {
           code: (err && err.code) || 'UNKNOWN'
         } });
       } catch (_) {}
-      return v1Result;     // V2 errored — V1 result still valid, return it
+      return v1Result;
     });
   }
 
   // V2-first path: used when the operator has explicitly opted into
-  // V2 (URL ?engine=v2 or localStorage 'id-engine-v2'='on').
+  // V2 (URL ?engine=v2 or localStorage 'id-engine-v2'='on'). Audit
+  // fix (shim H1): same mid-flight re-check posture as the
+  // escalation path. If the operator flips to 'off' between
+  // shouldUseV2() returning true and _runV2 actually firing, honor
+  // the new setting.
   function _v2FirstThenV1(canvasA, canvasG, opts, v1Fn) {
-    return _runV2(canvasG || canvasA, opts).catch(function (err) {
+    if (_v2Suppressed()) return v1Fn(canvasA, canvasG, opts);
+    return _runV2Serialized(canvasG || canvasA, opts).then(function (v2Result) {
+      if (_v2Suppressed()) return v1Fn(canvasA, canvasG, opts);
+      return v2Result;
+    }).catch(function (err) {
       try {
         if (root.plausible) root.plausible('Invoice Decoder V2 Fallback', { props: {
           code: (err && err.code) || 'UNKNOWN'

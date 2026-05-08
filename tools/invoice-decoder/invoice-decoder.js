@@ -1027,10 +1027,16 @@
                     'Cierra otras pestañas y apps, y vuelve a intentar. Una foto más pequeña de la misma página también ayuda.')
         };
       case 'IMAGE_FORMAT':
+        // Audit fix (UX M1 + M2): cover Android operators too
+        // (the previous version was iPhone-only and confusing
+        // for Galaxy / Pixel users), and tighten the Spanish
+        // phrasing — "que sí podemos leer" reads as defensive
+        // emphasis; "un formato que podemos leer" is calmer +
+        // explains what JPG actually is in passing.
         return {
           title: tt('We couldn\'t open this photo', 'No pudimos abrir esta foto'),
-          body:  tt('On iPhone: open Photos, tap Share, then Options, and choose "Most Compatible". That saves it as a JPG we can read.',
-                    'En iPhone: abre Fotos, toca Compartir, luego Opciones, y elige "Más compatible". Eso la guarda como JPG que sí podemos leer.')
+          body:  tt('On iPhone: open Photos, tap Share → Options, and choose "Most Compatible" — that saves the photo as JPG, a format we can read. On Android: open the photo, tap Share, and pick "Save as JPG" if your gallery offers it. Or take a fresh photo from this page.',
+                    'En iPhone: abre Fotos, toca Compartir → Opciones y elige "Más compatible" — eso guarda la foto como JPG, un formato que podemos leer. En Android: abre la foto, toca Compartir y elige "Guardar como JPG" si tu galería lo ofrece. O toma una foto nueva desde esta página.')
         };
       case 'IMAGE_QUALITY':
         // Audit fix — distinct from IMAGE_FORMAT. The new reader

@@ -107,7 +107,17 @@ var SHELL_URLS = [
 // so the SW's behavior never extends the network surface.
 // Wave 6.4 — jsdelivr dropped out of this list because Tesseract /
 // pdfjs / SheetJS now load from /assets/vendor/ on our own origin.
-var ALLOW_HOSTS = ['plausible.io'];
+//
+// Audit fix (privacy H3): plausible.io was removed in the OCR
+// overhaul branch. Phase 3B moved analytics off the third-party
+// domain and onto the /api/event proxy that lives on this same
+// worker (see _headers comment at line 249, "analytics beacons go
+// through /api/event proxy"). The CSP `connect-src` no longer
+// allowlists plausible.io. The SW allowlist matched it via an
+// overly-broad `endsWith('.plausible.io')` matcher that also let
+// any subdomain through — vestigial after the self-host cutover.
+// Empty allowlist now: same-origin only.
+var ALLOW_HOSTS = [];
 
 function isAllowedHost(url) {
   try {
