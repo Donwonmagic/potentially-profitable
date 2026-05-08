@@ -544,7 +544,12 @@ function renderLanguage(postDir, chunks, lang) {
   fs.writeFileSync(concatList,
     segments.map((p) => `file '${p.replace(/'/g, "'\\''")}'`).join('\n'));
   const combinedWav = path.join(tmpDir, '_all.wav');
-  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c', 'copy', combinedWav]);
+  // Re-encode to PCM during concat (instead of `-c copy`) so any minor
+  // DTS misalignment between segments — including the 0.3s silent
+  // placeholders that kokoro_render writes for empty/failed chunks —
+  // gets normalized into a contiguous WAV. The cost is a few seconds
+  // of CPU per article; the codec stays lossless.
+  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', concatList, '-c:a', 'pcm_s16le', combinedWav]);
 
   // English keeps the legacy audio.mp3 / audio.json filenames for
   // backward compatibility with existing HTML (data-audio-src="audio.mp3");
