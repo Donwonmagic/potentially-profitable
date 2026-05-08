@@ -92,8 +92,24 @@ const VENDORS = [
     name: 'tesseract.js-core',
     version: '5.0.0',
     files: [
+      // Audit fix (production hotfix): Tesseract.js v5 picks the
+      // core variant at runtime based on language + browser
+      // capability. English uses LSTM models; modern desktop
+      // browsers support SIMD. The default pick on a Mac with
+      // a recent Chrome / Safari / Firefox is `simd-lstm`. We
+      // were only shipping the non-LSTM variants — every desktop
+      // operator hit a 404 the moment they tapped Read, with no
+      // friendly recovery (the SW retried 4× and then surfaced a
+      // misclassified "Connection dropped" until commit b35411c9).
+      // Ship all 4 variants so Tesseract's runtime variant-pick
+      // never lands on a missing file regardless of language /
+      // SIMD support combination.
       'tesseract-core-simd.wasm.js',
       'tesseract-core-simd.wasm',
+      'tesseract-core-simd-lstm.wasm.js',
+      'tesseract-core-simd-lstm.wasm',
+      'tesseract-core-lstm.wasm.js',
+      'tesseract-core-lstm.wasm',
       'tesseract-core.wasm.js',
       'tesseract-core.wasm'
     ],
