@@ -94,6 +94,45 @@ header.nav{min-height:64px}
   plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ endpoint: '/api/event', logging: false });
   try { plausible('404 view', { props: { path: location.pathname } }); } catch (_) {}
+
+  // Sunset-path scrub. invoice-decoder + menu-design were retired
+  // 2026-05-08. Returning visitors with the old PWA shells installed
+  // can land here with stale service workers + encrypted IndexedDB
+  // data they can't reach. Run a one-shot unregister + IDB delete
+  // when the request path matches the dead-tool regex. Best-effort,
+  // wrapped in try/catch — a bad runtime mustn't break the 404 page.
+  try {
+    var p = location.pathname || '';
+    var sunsetMatch = /^\/(?:es\/)?tools\/(?:invoice-decoder|menu-design)(?:\/|$)/.test(p);
+    if (sunsetMatch) {
+      try { plausible('404 sunset-path', { props: { path: p } }); } catch (_) {}
+      // Unregister any service workers the old PWA shell installed.
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { try { r.unregister(); } catch (_) {} });
+        }).catch(function () {});
+      }
+      // Drop the invoice-decoder cache the old SW owned.
+      if (window.caches && caches.delete) {
+        caches.delete('mid-reckon-snapshot').catch(function () {});
+      }
+      // Delete the IndexedDB databases. The data inside is AES-GCM
+      // ciphertext that can't be recovered without the user's
+      // passphrase (the export flow on the sunset page would have
+      // handled that, but the page is gone). Free the storage.
+      if (window.indexedDB && indexedDB.deleteDatabase) {
+        try { indexedDB.deleteDatabase('mtn-invoice-decoder'); } catch (_) {}
+        try { indexedDB.deleteDatabase('mtn-invoice-decoder-tomb'); } catch (_) {}
+      }
+      // Clear the menu-design draft + invoice handoff localStorage keys.
+      try {
+        ['mtn:menu-design:draft','mtn:menu-design:logo','mtn:menu-design:settings',
+         'mtn:device-id','invoiceItems','invoiceItemsEnc',
+         'mtn-invoice-decoder:draft','mtn-invoice-decoder:settings'
+        ].forEach(function (k) { try { localStorage.removeItem(k); } catch (_) {} });
+      } catch (_) {}
+    }
+  } catch (_) { /* best-effort */ }
 </script>
 </head>
 <body>
