@@ -756,6 +756,31 @@ async function main() {
     }
   }
 
+  // Audit fix (build M6): Cloudflare Pages refuses to upload any
+  // single file > 25 MB. ONNX layout models (docling-layout-heron
+  // typically 30-80 MB; tableformer-fast 40-60 MB) can blow past
+  // this limit silently — Pages simply skips the file with a
+  // generic warning, the deploy "succeeds", and the runtime
+  // 404s on every operator's first heavy-tier load. Catch it
+  // here so the build hard-fails BEFORE pagefind runs and the
+  // operator gets a deploy that ships V1-only by accident.
+  // 25 MB == 26214400 bytes; we use 24 MB as the actionable
+  // threshold (1 MB of headroom for header + framing + future
+  // CF policy tightening).
+  const CF_PAGES_FILE_LIMIT = 24 * 1024 * 1024;
+  const oversized = Object.entries(integrity.files)
+    .filter(([, info]) => info.bytes > CF_PAGES_FILE_LIMIT)
+    .map(([url, info]) => ({ url, mb: (info.bytes / 1024 / 1024).toFixed(1) }));
+  if (oversized.length) {
+    const msg = `vendor-pin: ${oversized.length} file(s) exceed Cloudflare Pages' 25 MB per-file limit (using 24 MB threshold for headroom):\n` +
+                oversized.map(o => `  - ${o.url}  ${o.mb} MB`).join('\n') + '\n' +
+                'Cloudflare Pages will silently skip these files; the runtime will 404 on first load. ' +
+                'Either (a) split the model into shards loaded on demand, (b) host the file on R2 / Bunny / a separate CDN ' +
+                'and update vendor-config.js to point to that origin (you also need to add the origin to _headers connect-src), ' +
+                'or (c) drop the file from ONNX_MODEL_FILES if the pipeline can run without it.';
+    throw new Error(msg);
+  }
+
   // Audit fix: hash-drift verification against committed expected
   // hashes. Catches the supply-chain attack vector where HuggingFace
   // upstream silently re-uploads model weights at the same
