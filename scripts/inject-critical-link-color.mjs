@@ -43,14 +43,41 @@ function walk(dir, out = []) {
   return out;
 }
 
-// Sentinel rule. Inserted right before the critical-CSS </style> tag.
-// `header.nav{min-height:64px}` is the last rule in the canonical
-// critical-CSS block; we splice in before it so search regexes that
-// key off that line still work.
-const RULE = 'a{color:inherit}';
+// Critical-CSS rules. Inserted right before `header.nav{min-height:64px}`
+// (the existing tail of every page's inline <style>). All three together
+// guarantee that the visible above-the-fold UI — body color, link color,
+// and the .btn / .btn-primary nav CTA — is correctly shaped at first
+// paint, regardless of whether site-core.css's preload+swap fires
+// quickly or at all (Opera private-mode and aggressive ad blockers
+// have been observed dropping the swap).
+const RULES = [
+  // <a> color inheritance — kills the brief blue-link flash on inline
+  // SVGs that use stroke=currentColor (envelope, search, hamburger).
+  'a{color:inherit}',
+  // .btn base — the pill shape, padding, inline-flex layout, and
+  // text-decoration:none. Without this, an <a class="btn"> renders as
+  // a default underlined link and stacks its inline SVG below the text.
+  '.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}',
+  // .btn-primary — filled ink + cream variant used by Email Don and
+  // Run free audit. Background+color only; hover/focus styling lives
+  // in site-core.css (cosmetic, not load-blocking).
+  '.btn-primary{background:var(--ink);color:var(--cream)}',
+  // .btn-ghost — outlined variant used by See pricing and other
+  // secondary actions. --line-dark isn't declared in critical CSS so
+  // hardcode the value here (#D9D5CB matches the token).
+  '.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D9D5CB}',
+];
+const SENTINEL = '/* injected by inject-critical-link-color.mjs */';
+
+// Block to inject. The sentinel comment lets us match-and-replace any
+// older partial injection (legacy `a{color:inherit}\nheader.nav` shape)
+// with the full block, so re-runs reconcile shapes from previous deploys.
+const BLOCK = SENTINEL + '\n' + RULES.join('\n') + '\n';
 
 let touched = 0, scanned = 0;
 const files = walk(REPO);
+const ANCHOR = 'header.nav{min-height:64px}';
+const LEGACY_LINE = 'a{color:inherit}';
 
 for (const f of files) {
   scanned++;
@@ -58,15 +85,22 @@ for (const f of files) {
 
   // Only operate on pages that already carry the critical-CSS block.
   if (!html.includes('Critical CSS — prevents flash')) continue;
+  if (!html.includes(ANCHOR)) continue;
 
-  // Already injected? skip.
-  if (html.includes(RULE)) continue;
+  // If the new sentinel + block is already in place, no-op.
+  if (html.includes(SENTINEL) && RULES.every((r) => html.includes(r))) continue;
 
-  // Insert before `header.nav{min-height:64px}` to keep the rule order
-  // stable (token decl → element resets → body → utilities → nav reservation).
-  const before = 'header.nav{min-height:64px}';
-  if (!html.includes(before)) continue;
-  const next = html.replace(before, RULE + '\n' + before);
+  // Strip the legacy `a{color:inherit}\n` line (if present) so we don't
+  // leave a stale duplicate when re-inserting the full block.
+  let next = html.replace(LEGACY_LINE + '\n', '');
+  // Also strip any prior version of the new block (sentinel + rules).
+  next = next.replace(
+    new RegExp('\\s*' + SENTINEL.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '[\\s\\S]*?(?=' + ANCHOR.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + ')', 'g'),
+    ''
+  );
+
+  // Insert the canonical block right before the anchor.
+  next = next.replace(ANCHOR, BLOCK + ANCHOR);
 
   if (next !== html) {
     if (!checkOnly) fs.writeFileSync(f, next);
@@ -76,7 +110,7 @@ for (const f of files) {
 
 console.log(
   `${checkOnly ? 'would touch' : 'touched'} ${touched} of ${scanned} HTML file(s) ` +
-  `(adding ${RULE} to critical CSS)`
+  `(critical-CSS block: link-color + .btn shape)`
 );
 if (checkOnly && touched > 0) process.exit(1);
 process.exit(0);
