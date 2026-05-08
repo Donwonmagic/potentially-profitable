@@ -4740,12 +4740,38 @@
         });
         return;
       }
-      showStatus(
-        tt('Could not read this PDF.', 'No se pudo leer este PDF.'),
-        (err && err.message) ? err.message :
-          tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.'),
-        'error'
-      );
+      // Map common platform-level FileReader / FilePicker errors
+      // to plain-English copy with concrete remediation steps.
+      // The default raw err.message is the browser's terse
+      // DOMException string — useful for engineering, useless for
+      // a restaurant owner who got "permission problems that have
+      // occurred after a reference to a file was acquired".
+      var rawMsg = (err && err.message) || '';
+      var errName = (err && err.name) || '';
+      var title, body;
+      if (errName === 'NotReadableError' || /not be read|permission problems that have occurred|reference to a file was acquired/i.test(rawMsg)) {
+        // Platform couldn't get the bytes off disk. On macOS this
+        // is almost always an iCloud-only file (cloud icon in
+        // Finder) or a drag from Mail.app / Preview / another tab
+        // where the source held the bytes in memory and they're
+        // now gone. Remediation is to land the file on local disk
+        // first (Finder → Download Now, or save the file from
+        // Preview to Desktop) and try again.
+        title = tt('Your computer couldn\'t open this PDF.',
+                   'Tu computadora no pudo abrir este PDF.');
+        body  = tt('On a Mac, this usually means the file is in iCloud and hasn\'t downloaded yet (look for a tiny cloud icon next to the filename in Finder — right-click it and choose Download Now). Or you dragged it from Mail or Preview — try saving the PDF to your Desktop first, then drag it from there.',
+                   'En Mac, esto suele significar que el archivo está en iCloud y aún no se ha descargado (busca un pequeño ícono de nube junto al nombre en Finder — haz clic derecho y elige Descargar ahora). O si lo arrastraste desde Mail o Vista Previa, primero guarda el PDF en el Escritorio y luego arrástralo desde allí.');
+      } else if (errName === 'NotFoundError') {
+        title = tt('We couldn\'t find this PDF anymore.',
+                   'Ya no pudimos encontrar este PDF.');
+        body  = tt('Looks like the file moved or was deleted between when you picked it and when we tried to open it. Drop it again from Finder.',
+                   'Parece que el archivo se movió o se borró entre el momento en que lo elegiste y cuando intentamos abrirlo. Suéltalo de nuevo desde Finder.');
+      } else {
+        title = tt('Could not read this PDF.', 'No se pudo leer este PDF.');
+        body  = rawMsg ||
+                tt('Try a different file or the photo path.', 'Prueba con otro archivo o la ruta de foto.');
+      }
+      showStatus(title, body, 'error');
       _releaseProcessingLock();
     });
   }
