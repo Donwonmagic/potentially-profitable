@@ -772,9 +772,10 @@ async function main() {
     for (const [url, expHash] of Object.entries(expected.files)) {
       const actual = integrity.files[url];
       if (!actual) continue;  // file not in this build; not a drift
-      const actualHash = `sha384-${actual.sha384}`;
-      if (actualHash !== expHash) {
-        drifts.push(`  - ${url}\n      expected: ${expHash.slice(0, 48)}...\n      actual:   ${actualHash.slice(0, 48)}...`);
+      // info.sha384 already includes the 'sha384-' prefix (the sha384()
+      // helper above returns 'sha384-' + base64). Compare raw.
+      if (actual.sha384 !== expHash) {
+        drifts.push(`  - ${url}\n      expected: ${expHash.slice(0, 48)}...\n      actual:   ${actual.sha384.slice(0, 48)}...`);
       }
     }
     if (drifts.length) {
@@ -795,17 +796,28 @@ async function main() {
     );
   }
   if (bootstrapExpected) {
+    // Preserve any entries that already exist in expected-integrity.json
+    // but didn't make it into THIS build (e.g., HuggingFace blocked in
+    // local sandbox but reachable from CF Pages). Otherwise running
+    // --bootstrap-expected from a partial environment would silently
+    // strip the entries the rest of the build relies on.
+    const priorFiles = (expected && expected.files) ? expected.files : {};
     const bootstrap = {
       version: 1,
       generatedAt: new Date().toISOString(),
-      note: 'Hashes the build expects to find. Hash drift fails the build (catches supply-chain attacks via mutable URLs like HuggingFace resolve/main). Update via: node scripts/vendor-pin.mjs --bootstrap-expected',
+      note: 'Hashes the build expects to find. Hash drift fails the build (catches supply-chain attacks via mutable URLs like HuggingFace resolve/main). Re-run --bootstrap-expected from CF Pages CI to add any HuggingFace-hosted entries the local sandbox can\'t reach.',
       files: {}
     };
-    for (const [url, info] of Object.entries(integrity.files)) {
-      bootstrap.files[url] = `sha384-${info.sha384}`;
+    // Take the union: prior entries + this build's entries; on overlap,
+    // this build wins (latest hashes). Keys are sorted for stable diff.
+    const allKeys = new Set([...Object.keys(priorFiles), ...Object.keys(integrity.files)]);
+    for (const url of [...allKeys].sort()) {
+      bootstrap.files[url] = integrity.files[url]
+        ? integrity.files[url].sha384
+        : priorFiles[url];
     }
     fs.writeFileSync(EXPECTED_INTEGRITY_FILE, JSON.stringify(bootstrap, null, 2));
-    console.log(`\nvendor-pin: bootstrapped ${Object.keys(bootstrap.files).length} entries to ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)}`);
+    console.log(`\nvendor-pin: bootstrapped ${Object.keys(bootstrap.files).length} entries to ${path.relative(repoRoot, EXPECTED_INTEGRITY_FILE)} (${Object.keys(integrity.files).length} fresh + ${Object.keys(priorFiles).length} preserved from prior file)`);
   }
 
   fs.writeFileSync(INTEGRITY_FILE, JSON.stringify(integrity, null, 2));
