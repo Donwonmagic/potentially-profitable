@@ -2912,6 +2912,114 @@ function v1NormalizeForDedup(s) {
   if (escalateWinOk) v2Pass++; else v2Fail++;
 }
 
+// =====================================================================
+// Audit fix (concurrency tests added after shim 2-pack landed):
+// verify V2 serialization (H2) and mid-flight kill-switch (H1)
+// behave as designed under the only stress conditions a unit test
+// can model — controllable resolution timing on a fake V2 engine.
+// =====================================================================
+{
+  // H2 verification — Two parallel V2-first calls. V2 mock resolves
+  // when externally signaled. Verify the second call's V2 doesn't
+  // fire until the first call's V2 has settled.
+  const W = newSyntheticWindow();
+  // Add removeItem support since shim's writeChoice path uses it.
+  W.localStorage.removeItem = function (k) { delete this._[k]; };
+  W.localStorage.setItem('id-engine-v2', 'on');
+  W.MID_OCR = {
+    recognizeMultiPass: () => Promise.resolve({ text: 'X', lines: [{ text: 'X', confidence: 0.5 }], meanConfidence: 0.5 })
+  };
+  loadV2Module(W, 'preprocess.js');
+  loadV2Module(W, 'normalize.js');
+  loadV2Module(W, 'layout.js');
+  loadV2Module(W, 'ocr-engine.js');
+  loadV2Module(W, 'tables.js');
+  loadV2Module(W, 'assemble.js');
+  // Replace recognize with a controllable mock that records invocation
+  // start times, so we can verify only one V2 call is in flight at any
+  // given moment.
+  const callOrder = [];
+  let resolveCall1, resolveCall2;
+  let inFlightCount = 0;
+  let maxConcurrent = 0;
+  W.MID_OCR_V2.recognize = function (canvas, regions, opts) {
+    inFlightCount++;
+    if (inFlightCount > maxConcurrent) maxConcurrent = inFlightCount;
+    callOrder.push('start-' + (callOrder.length + 1));
+    return new Promise(function (res) {
+      const callIdx = callOrder.length;
+      if (callIdx === 1) resolveCall1 = res;
+      else               resolveCall2 = res;
+    }).then(function (r) {
+      inFlightCount--;
+      callOrder.push('end-' + callOrder.filter(s => s.startsWith('end-')).length === 0 ? '1' : '2');
+      return r;
+    });
+  };
+  loadV2Module(W, 'ocr-shim.js');
+
+  // Fire both calls. They should serialize: call 1 starts immediately,
+  // call 2 must wait for call 1's V2 promise to settle.
+  const p1 = W.MID_OCR.recognizeMultiPass({ width: 100, height: 100 }, { width: 100, height: 100 }, {});
+  const p2 = W.MID_OCR.recognizeMultiPass({ width: 100, height: 100 }, { width: 100, height: 100 }, {});
+  await new Promise(r => setTimeout(r, 10));  // let microtasks flush
+  const startedBeforeFirstSettle = inFlightCount;
+  resolveCall1({ text:'X', lines:[{text:'X',confidence:90}], meanConfidence: 90 });
+  await new Promise(r => setTimeout(r, 10));
+  const startedAfterFirstSettle = inFlightCount;
+  if (resolveCall2) resolveCall2({ text:'Y', lines:[{text:'Y',confidence:90}], meanConfidence: 90 });
+  await Promise.all([p1, p2]);
+  const serializeOk = (startedBeforeFirstSettle === 1) && (maxConcurrent === 1);
+  console.log(`  ${serializeOk ? '✓' : '✗'} concurrent V2 calls serialize (max in-flight = ${maxConcurrent}, expected 1)`);
+  if (serializeOk) v2Pass++; else v2Fail++;
+}
+
+{
+  // H1 verification — kill-switch flip BETWEEN V1 resolving and V2
+  // firing in the escalation path. V1 resolves with 1 line (under
+  // threshold). Before the V2 escalation fires, we flip localStorage
+  // to 'off'. The escalation path's _v2Suppressed() re-check should
+  // honor the flip and return V1's result without invoking V2.
+  const W = newSyntheticWindow();
+  W.localStorage.removeItem = function (k) { delete this._[k]; };
+  let v1Done = false;
+  W.MID_OCR = {
+    recognizeMultiPass: () => new Promise(function (res) {
+      // Resolve V1 only after the test has had time to flip
+      // localStorage. We wait 30ms; the test flips at 10ms and
+      // awaits the full chain. This way V1 resolves AFTER the
+      // flip, escalation runs the _v2Suppressed re-check, and
+      // returns V1's result instead of firing V2.
+      setTimeout(function () {
+        v1Done = true;
+        res({ text: 'X', lines: [{ text: 'X', confidence: 0.4 }], meanConfidence: 0.4 });
+      }, 30);
+    })
+  };
+  loadV2Module(W, 'preprocess.js');
+  loadV2Module(W, 'normalize.js');
+  loadV2Module(W, 'layout.js');
+  loadV2Module(W, 'ocr-engine.js');
+  loadV2Module(W, 'tables.js');
+  loadV2Module(W, 'assemble.js');
+  let v2Called = false;
+  W.MID_OCR_V2.recognize = function () {
+    v2Called = true;
+    return Promise.resolve({ text:'V2RESULT', lines:[{text:'X',confidence:90},{text:'Y',confidence:90}], meanConfidence: 90 });
+  };
+  loadV2Module(W, 'ocr-shim.js');
+
+  // Start the call. Wait briefly so V1 resolves but escalation hasn't
+  // re-checked _v2Suppressed yet (it's in the next microtask).
+  const p = W.MID_OCR.recognizeMultiPass({ width: 100, height: 100 }, { width: 100, height: 100 }, {});
+  await new Promise(r => setTimeout(r, 10));   // V1 should be done
+  W.localStorage.setItem('id-engine-v2', 'off');  // flip mid-flight
+  const r = await p;
+  const midFlipOk = v1Done && !v2Called && r.lines.length === 1;
+  console.log(`  ${midFlipOk ? '✓' : '✗'} mid-flight kill-switch flip honored (V2 not called after 'off' set, V1 result returned)`);
+  if (midFlipOk) v2Pass++; else v2Fail++;
+}
+
 console.log(`\nSlice 4 v2 module tests: ${v2Pass} passed, ${v2Fail} failed.`);
 
 // =====================================================================
