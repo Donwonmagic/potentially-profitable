@@ -986,10 +986,24 @@
       return { code: copyCode, retryable: !nonRetryable, message: String(err.message || err.code) };
     }
     var msg = String((err && err.message) || err || '');
-    if (/tesseract|workerPath|corePath|langPath|vendor-config|module missing|loaded but global|onnx|wasm/i.test(msg)) {
+    // Audit fix (production hotfix): vendor-config.js's loadScript()
+    // throws `Could not load <name> from <url>` when ANY <script>
+    // tag fires onerror — which can mean 404, SRI hash mismatch,
+    // CSP block, stale service-worker cache, or actual network
+    // failure. Misclassifying all of those as NETWORK shows the
+    // operator "Connection dropped — looks like the internet is
+    // offline" when their 5G is fine. Move "could not load" to
+    // the ENGINE_LOAD bucket where the copy ("We couldn't start
+    // the reader. Check your internet connection, then tap Try
+    // again") is more honest about uncertainty.
+    if (/tesseract|workerPath|corePath|langPath|vendor-config|module missing|loaded but global|onnx|wasm|could not load/i.test(msg)) {
       return { code: 'ENGINE_LOAD', retryable: true,  message: msg };
     }
-    if (/networkerror|failed to fetch|offline|econn|net::|err_internet|could not load/i.test(msg)) {
+    // Tightened: only true network signals. NetworkError, fetch
+    // failure, explicit "offline" string from the platform, ECONN*,
+    // and chrome's net::ERR_INTERNET_DISCONNECTED prefix. Removed
+    // "could not load" (handled above).
+    if (/networkerror|failed to fetch|offline|econn|net::|err_internet/i.test(msg)) {
       return { code: 'NETWORK',     retryable: true,  message: msg };
     }
     if (/memory|heap|alloc|maximum call stack|quota/i.test(msg)) {
