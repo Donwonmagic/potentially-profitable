@@ -129,6 +129,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -277,12 +287,22 @@ header.nav{min-height:64px}
     </ol>
   </nav>
 
-  <article class="container article-body" data-content-pending="2026-05-03" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
+  <article class="container article-body" id="post-body" data-content-pending="2026-05-03" style="max-width:720px;margin:32px auto 80px;padding:0 var(--pad-x)">
     <header style="margin-bottom:32px">
       <p class="eyebrow">Op-ed &middot; May 2, 2026 &middot; 7 min read &middot; By <a href="/about/#don-goldstein" style="color:var(--teal)">Don Goldstein</a></p>
       <h1 style="font-family:var(--font-display);font-size:clamp(36px,5.5vw,56px);font-weight:500;line-height:1.05;letter-spacing:-0.5px;margin:0 0 18px">
         An honest DoorDash math for independent restaurants, <span class="serif-italic">2026.</span>
       </h1>
+      <div class="row-center">
+        <button type="button" id="listen-btn" class="listen-btn" aria-pressed="false" data-state="idle" data-audio-languages="en,es,fr,it,pt,zh">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="listen-label i18n">Listen to this article</span>
+        </button>
+      </div>
       <p style="font-size:18px;line-height:1.55;color:var(--ink-soft);margin:0">
         I manage two DMV restaurants. Every quarter I run the same calculation against the same DoorDash partner statement, and every quarter the answer is more or less the same: the platform isn&rsquo;t a marketing channel. It&rsquo;s a margin tax with delivery as a side benefit. Here&rsquo;s the math, the breakeven, and the website fix that pays for itself in two months.
       </p>
@@ -666,7 +686,10 @@ header.nav{min-height:64px}
      production traffic where forms actually submit. -->
 <script>(function(){var h=location.hostname;if(h==='localhost'||h==='127.0.0.1'||h==='0.0.0.0'||/^\[?::1?\]?$/.test(h))return;var s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js';s.async=true;s.defer=true;document.head.appendChild(s);})();</script>
 
-<script src="/assets/site.js?v=20260501-engagement" defer></script>
+<script src="/assets/site.js?v=20260503-modsplit" defer></script>
+  <!-- listen-script:start -->
+  <script src="/assets/js/listen.js?v=20260503-modsplit" defer></script>
+  <!-- listen-script:end -->
 <!-- Article viz module — drives the interactive cost-waterfall +
      commission slider above. Defer-loaded; bails cleanly if the
      widget markup is absent. -->

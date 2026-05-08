@@ -80,7 +80,8 @@ signals.
 | How Much Does a Custom Restaurant Website Cost in 2026? | `how-much-does-a-custom-restaurant-website-cost-in-2026` | Apr 13, 2026 | **Live** |
 | Wix vs. Custom for Restaurants: What Breaks First | `wix-vs-custom-for-restaurants` | Apr 15, 2026 | **Live** |
 | Why Your Restaurant Loses Reservations Every Night | `why-your-restaurant-loses-reservations-every-night` | Apr 17, 2026 | **Live** |
-| Toast, Square, Clover: Which POS Integrates Best? | `toast-vs-square-vs-clover-for-restaurants` | Apr 24, 2026 | Queued |
+| Should You Actually Make a Restaurant App in 2026? | `should-your-restaurant-have-an-app-in-2026` | May 7, 2026 | **Live** |
+| Toast, Square, Clover: Which POS Integrates Best? | `toast-vs-square-vs-clover-for-restaurants` | May 7, 2026 | **Live** |
 
 ## Why a drafts directory and not a separate branch
 

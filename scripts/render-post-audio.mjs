@@ -83,6 +83,8 @@ const VALUED = new Set([
   '--kokoro-voice-pt', '--kokoro-voice-hi', '--kokoro-voice-ja',
   '--kokoro-voice-zh',
   '--languages',
+  '--manifest',
+  '--pronunciation',
   '--f5-ref-audio', '--f5-ref-text', '--f5-speed', '--f5-nfe-step',
   '--f5-cfg-strength', '--f5-device',
 ]);
@@ -218,10 +220,169 @@ if (!dryRun) {
   }
 }
 
-const targets = flags.has('--all') ? findPostsWithListenBtn() : positional;
-if (!targets.length) fail('Pass a post directory (e.g. blog/post-slug) or --all.');
+// Three ways to specify what to render:
+//   --manifest <path>  : read data/article-audio.json (or any compatible
+//                        spec file) and render every declared piece. The
+//                        manifest is the source of truth for the studio-
+//                        audio rollout — see docs/audio-pipeline.md.
+//   --all              : walk blog/ + blog/drafts/ for every page that
+//                        already has id="listen-btn" markup. Predates
+//                        the manifest; covers blog only.
+//   <positional paths> : render just those specific post directories.
+//
+// The three are additive — pass any combination, the targets get deduped.
+const manifestPath = optVal('--manifest');
+const targetsFromManifest = manifestPath ? loadManifestTargets(manifestPath) : [];
+const targetsFromAll = flags.has('--all') ? findPostsWithListenBtn() : [];
+const allTargets = [...new Set([...targetsFromAll, ...targetsFromManifest, ...positional])];
+if (!allTargets.length) fail('Pass --manifest <path>, --all, or a post directory (e.g. blog/post-slug).');
 
-for (const t of targets) renderPost(path.resolve(repoRoot, t));
+for (const t of allTargets) renderPost(path.resolve(repoRoot, t));
+
+/* -------------------- pronunciation overrides -------------------- */
+// Loaded lazily on first synthesizeKokoro call. The dictionary lives at
+// data/audio-pronunciation.json (overridable via --pronunciation <path>).
+// Format: { "global": {...}, "<lang>": { "<term>": { "say-as"|"ipa"|"spell" } } }
+//
+// At synthesis time we substitute terms in the chunk text BEFORE Kokoro
+// sees them, so the model speaks the phonetic respelling instead of
+// mangling the proper noun. The audio.<lang>.json manifest stores the
+// CANONICAL text (what's on screen) — the substitution is purely for
+// the audio path. The on-page highlight stays in sync because it tracks
+// the canonical text through the runtime DOM.
+let _pronunciationCache = null;
+function loadPronunciation() {
+  if (_pronunciationCache !== null) return _pronunciationCache;
+  const customPath = optVal('--pronunciation');
+  const defaultPath = path.join(repoRoot, 'data', 'audio-pronunciation.json');
+  const tryPath = customPath || defaultPath;
+  if (!fs.existsSync(tryPath)) {
+    _pronunciationCache = { global: {}, byLang: {} };
+    return _pronunciationCache;
+  }
+  let parsed;
+  try { parsed = JSON.parse(fs.readFileSync(tryPath, 'utf8')); }
+  catch (_) {
+    console.warn(`pronunciation dict at ${tryPath} not parseable — skipping overrides`);
+    _pronunciationCache = { global: {}, byLang: {} };
+    return _pronunciationCache;
+  }
+  // Strip top-level _doc / _format / _status fields — those are
+  // documentation, not entries.
+  const stripMeta = (obj) => {
+    const out = {};
+    for (const [k, v] of Object.entries(obj || {})) {
+      if (k.startsWith('_')) continue;
+      if (v && typeof v === 'object') out[k] = v;
+    }
+    return out;
+  };
+  _pronunciationCache = {
+    global: stripMeta(parsed.global || {}),
+    byLang: {
+      en: stripMeta(parsed.en || {}),
+      es: stripMeta(parsed.es || {}),
+      fr: stripMeta(parsed.fr || {}),
+      it: stripMeta(parsed.it || {}),
+      pt: stripMeta(parsed.pt || {}),
+      hi: stripMeta(parsed.hi || {}),
+      ja: stripMeta(parsed.ja || {}),
+      zh: stripMeta(parsed.zh || {}),
+    },
+  };
+  return _pronunciationCache;
+}
+
+/**
+ * Apply per-locale pronunciation overrides to a chunk's text. The
+ * substitution is applied to a COPY for synthesis — the original
+ * `text` field on the chunk (which lands in audio.<lang>.json) is
+ * untouched, so the on-page highlighter still tracks the canonical
+ * prose word-by-word.
+ *
+ * We escape regex specials in the source term, do a global case-
+ * sensitive replace, and prefer locale-specific entries over global
+ * entries. For acronyms with `spell: true` (GBP → "G B P"), the
+ * substitution is the spaced spelling. For `say-as` (Polyface →
+ * "POH-lee-face"), the substitution is the respelling. For `ipa`
+ * (some terms), Kokoro doesn't support IPA inline — we fall back to
+ * `say-as` if both are present, or skip the entry if only IPA is.
+ *
+ * `expand_first_use` (e.g. "GBP" → expand to "Google Business Profile"
+ * the first time it appears, then leave subsequent occurrences) is
+ * tracked per-render via a Set the caller passes in.
+ */
+function applyPronunciation(text, lang, expanded /* Set */) {
+  const dict = loadPronunciation();
+  const merged = { ...(dict.global || {}), ...(dict.byLang[lang] || {}) };
+  let out = text;
+  // Order entries by descending term length so multi-word entries
+  // (e.g. "Google Business Profile") substitute before single-word
+  // entries (e.g. "Google") that are substrings.
+  const entries = Object.entries(merged).sort((a, b) => b[0].length - a[0].length);
+  for (const [term, rule] of entries) {
+    if (!rule || typeof rule !== 'object') continue;
+    let replacement;
+    if (rule.spell) {
+      replacement = String(term).split('').join(' ');
+    } else if (rule['say-as']) {
+      replacement = rule['say-as'];
+    } else if (rule.espeak) {
+      replacement = rule.espeak;
+    } else if (rule.ipa) {
+      // Kokoro plain-text engine can't ingest raw IPA — skip rather
+      // than mispronounce. Operator should add a `say-as` fallback.
+      continue;
+    } else {
+      continue;
+    }
+    if (rule.expand_first_use) {
+      const key = `${lang}::${term}`;
+      if (!expanded.has(key)) {
+        replacement = `${rule.expand_first_use} (${replacement})`;
+        expanded.add(key);
+      }
+    }
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('\\b' + escaped + '\\b', 'g');
+    out = out.replace(re, replacement);
+  }
+  return out;
+}
+
+/**
+ * Read the article-audio.json-shaped manifest and return the post
+ * directory paths (repo-relative) that need rendering.
+ */
+function loadManifestTargets(manifestRel) {
+  const p = path.resolve(repoRoot, manifestRel);
+  if (!fs.existsSync(p)) fail(`--manifest path does not exist: ${p}`);
+  const m = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const SECTION_DIRS = {
+    blog:        'blog',
+    'es-blog':   'es/blog',
+    research:    'learn/research',
+    checklists:  'learn/checklists',
+  };
+  const out = [];
+  for (const [section, dir] of Object.entries(SECTION_DIRS)) {
+    const entries = m[section] || {};
+    for (const [slug, spec] of Object.entries(entries)) {
+      if (slug.startsWith('_')) continue;
+      if (!spec || typeof spec !== 'object' || !Array.isArray(spec.languages)) continue;
+      // Skip pieces marked deferred — usually because their HTML
+      // structure needs a fix before chunks extract cleanly. They're
+      // still in the manifest so the audit can track them; they just
+      // don't render until the defer_reason is resolved.
+      if (spec.status === 'deferred') {
+        console.log(`[manifest] skipping ${section}/${slug}: deferred — ${spec.defer_reason || 'no reason given'}`);
+        continue;
+      }
+      out.push(path.join(dir, slug));
+    }
+  }
+  return out;
+}
 
 /* -------------------- main -------------------- */
 function renderPost(postDir) {
@@ -474,9 +635,17 @@ function synthesizeKokoro(chunks, outDir, opts = {}) {
     '--lang',       opts.lang  || kokoroLang,
     '--output-dir', outDir,
   ];
-  const payload = JSON.stringify({
-    chunks: chunks.map((c, i) => ({ id: i, text: c.text })),
-  });
+  // Apply per-locale pronunciation overrides ONLY to what Kokoro hears.
+  // The original chunk.text — which lands in audio.<lang>.json and
+  // drives the on-page highlight — stays canonical. Acronym expansion
+  // (`expand_first_use`) is tracked across the whole render via the
+  // shared Set so "GBP (Google Business Profile)" only appears once.
+  const expanded = new Set();
+  const phoneticChunks = chunks.map((c, i) => ({
+    id: i,
+    text: applyPronunciation(c.text, (opts.lang || 'en-us').split('-')[0], expanded),
+  }));
+  const payload = JSON.stringify({ chunks: phoneticChunks });
   const proc = spawnSync(PYTHON_BIN, args, {
     input: payload,
     encoding: 'utf8',
@@ -593,10 +762,29 @@ function wavDuration(wav) {
  */
 function extractChunks(html) {
   // Narrow the search to the article body. We look for id="post-body"
-  // and read until the closing </article> of that element.
-  const bodyMatch = /<article[^>]*id="post-body"[^>]*>([\s\S]*?)<\/article>/i.exec(html);
+  // — usually on an <article> in blog/research articles, sometimes on
+  // a <div> in long-form structured pieces (checklists). Either is
+  // fine; the runtime player (assets/js/listen.js) uses
+  // document.getElementById('post-body') without caring about element
+  // type, so the extractor matches that flexibility.
+  let bodyMatch = /<(article|div|main|section)[^>]*\bid="post-body"[^>]*>([\s\S]*?)<\/\1>/i.exec(html);
+  if (!bodyMatch) {
+    // Fallback: tolerant scan that finds the open tag and the matching
+    // close, useful when the close tag isn't the same element type
+    // (rare but happens with hand-written wrappers).
+    const openRe = /<(?:article|div|main|section)[^>]*\bid="post-body"[^>]*>/i;
+    const m = openRe.exec(html);
+    if (m) {
+      // Best-effort: take everything after the opening tag until the
+      // first </article> or </main> or </section>.
+      const after = html.slice(m.index + m[0].length);
+      const closeRe = /<\/(article|main|section)>/i;
+      const cm = closeRe.exec(after);
+      if (cm) bodyMatch = [m[0] + after.slice(0, cm.index) + cm[0], '', after.slice(0, cm.index)];
+    }
+  }
   if (!bodyMatch) return [];
-  const body = bodyMatch[1];
+  const body = bodyMatch[2] || bodyMatch[1];
 
   // Walk through top-level-ish elements. We use a minimal hand-rolled
   // parser so we can preserve document order and build nth-of-type

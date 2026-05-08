@@ -1,11 +1,9 @@
 {
   "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post. scripts/inject-article-tldr.mjs reads this file and stamps two sentinel-bracketed <aside> blocks into each article: a TL;DR within the first 800 chars of #post-body, and a Key Takeaways block before the article-foot CTA. AI search engines (ChatGPT, Perplexity, Google AI Overviews, Claude) lift these blocks nearly verbatim — keeping the language tight and operator-specific is the work. Slug must match a directory under blog/. ES counterparts go in article-content.es.json (translated, not regenerated, so the editorial voice carries). When an article is added to data/post-end-cta.json + data/library-tags.json + data/tool-knit.json, ALSO add a TL;DR + key_takeaways here.",
-
   "_status": {
     "review_required": "First-draft content, written from each article's H2 outline + first paragraph. Don should review for voice + accuracy before promoting.",
     "voice_check": "Each TL;DR uses 3-5 imperative-or-indicative bullets, no hedging language. Key Takeaways use declarative one-liners — never starting with 'You should' or 'Always' (corporate-rubric register)."
   },
-
   "articles": {
     "wix-vs-custom-for-restaurants": {
       "tldr": [
@@ -173,6 +171,34 @@
         "The five-minute test: if every regular found you a different way, you don't need a site yet.",
         "If you genuinely don't need one, do the 30-minute GBP audit and walk away.",
         "When you do need one, a $2,500 template site is enough to start; full custom comes when the room demands it."
+      ]
+    },
+    "should-your-restaurant-have-an-app-in-2026": {
+      "tldr": [
+        "Most restaurant operators who ask for an app actually want one of five cheaper tools that already exist.",
+        "The install problem alone kills most app projects: regulars won’t download it, and one-time visitors won’t bother.",
+        "Two narrow situations make an app the right call: 5,000+ weekly app-relevant transactions, or a concept that genuinely requires app-level behavior."
+      ],
+      "key_takeaways": [
+        "POS-native loyalty (Square, Toast) handles “I want a loyalty program” for $0 extra.",
+        "SMS opens at 90%+ vs push notifications at 5–15%; SMS is the better channel for “tell my regulars something.”",
+        "A mobile-excellent website plus a well-built Google Business Profile delivers “brand in their hand” without an install.",
+        "A progressive web app (saved to home screen) covers own-pocket ordering without an app store at all.",
+        "A POS-connected CRM gives you regulars data without owning custom code."
+      ]
+    },
+    "toast-vs-square-vs-clover-for-restaurants": {
+      "tldr": [
+        "POS integration with a restaurant website is either real or theatrical: Toast and Square deliver the real version, Clover delivers the theatrical one.",
+        "Toast and Square both score 7 confident-yes marks out of 10 on the integration features that matter; Clover scores 1.",
+        "Clover wins on hardware variety; loses on every other feature that touches a website integration."
+      ],
+      "key_takeaways": [
+        "Native online ordering eliminates the tablet-handoff middleman that Clover still leans on.",
+        "Square is the only POS with public, transparent pricing on its own site — that matters for trust at small-restaurant scale.",
+        "Toast is restaurant-specific from day one; Square retrofitted from retail; Clover was aimed at general SMB.",
+        "Contract flexibility (month-to-month, low switching cost) is a Square-only win at this scale.",
+        "Match the POS to your operating model, not the sales-rep pitch — kitchen-ticket pipeline matters more than brand fit."
       ]
     }
   }

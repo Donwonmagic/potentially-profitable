@@ -134,7 +134,7 @@ header.nav{min-height:64px}
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-conversion-rate-es.png",
-      "datePublished": "2026-04-30T03:45:15+00:00",
+      "datePublished": "2026-05-03T16:59:12+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -148,6 +148,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -357,11 +367,11 @@ header.nav{min-height:64px}
       <div class="glossary-knit__col">
         <h3>Lee</h3>
         <ul>
+          <li><a href="/es/blog/should-your-restaurant-have-an-app-in-2026/">should-your-restaurant-have-an-app-in-2026</a></li>
           <li><a href="/es/blog/restaurant-photo-spec-sheet/">Hoja de especificaciones de fotos</a></li>
           <li><a href="/es/blog/why-your-restaurant-loses-reservations-every-night/">Por qué pierdes reservas cada noche</a></li>
           <li><a href="/es/blog/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
           <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
-          <li><a href="/es/blog/how-to-recover-reservations-from-googles-find-a-table/">Recuperar reservas de Find a Table de Google</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

@@ -126,6 +126,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -282,7 +292,7 @@ header.nav{min-height:64px}
         The library is the part of the studio that&rsquo;s free to anyone, free of email gates, and free of trackers on the article body. Three entry verbs, named the way owners actually speak. Pick the one that matches what you came for.
       </p>
       <ul class="lib-strip" aria-label="Library at a glance">
-        <li><strong><!-- count:articles -->18<!-- /count --></strong> articles</li>
+        <li><strong><!-- count:articles -->20<!-- /count --></strong> articles</li>
         <li><strong><!-- count:glossary.terms -->139<!-- /count --></strong> glossary terms</li>
         <li><strong><!-- count:tools.live -->15<!-- /count --></strong> free tools</li>
         <li><strong><!-- count:topics -->8<!-- /count --></strong> topic pillars</li>
@@ -296,7 +306,7 @@ header.nav{min-height:64px}
         <h2>Articles &amp; research.</h2>
         <p class="lead">Long-form pieces and dated research notes &mdash; the way I write up an answer once, so it doesn&rsquo;t need to be re-asked.</p>
         <ul class="lib-door__list">
-          <li><strong>Articles</strong><small><!-- count:articles -->18<!-- /count --> &middot; weekly</small></li>
+          <li><strong>Articles</strong><small><!-- count:articles -->20<!-- /count --> &middot; weekly</small></li>
           <li><strong>Research notes</strong><small>4 &middot; quarterly</small></li>
           <li><strong>Topics</strong><small><!-- count:topics -->8<!-- /count --> pillars</small></li>
         </ul>

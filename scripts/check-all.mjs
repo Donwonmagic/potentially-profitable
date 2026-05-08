@@ -243,6 +243,15 @@ const CHECKS = [
   // --check mode. Empty manifest is allowed; entries get filled in
   // as articles are refreshed in Phase 2+.
   ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
+  // Audio coverage — manifest-driven audit of which written pieces
+  // ship a studio audio edition in which languages. Warn-only during
+  // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
+  // on FR/IT/PT/ZH tracks need a re-render with --force-retranslate;
+  // the 14 prose pages without listen-btn markup need first-time
+  // rendering). Promote to fail-CI by removing --warn from this
+  // entry once `node scripts/check-audio-coverage.mjs` reports a
+  // clean run. Operator runbook: docs/audio-pipeline.md.
+  ['Audio coverage (warn)',  'check-audio-coverage.mjs',    '--warn'],
 ];
 
 const results = [];

@@ -132,6 +132,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -368,7 +378,7 @@ header.nav{min-height:64px}
 
       <p>En la barra lateral izquierda, bajo &ldquo;Indexing,&rdquo; haz clic en &ldquo;Pages.&rdquo; Esto te dice cuántas de tus páginas Google ha agregado realmente a su índice. Si 50% de tus páginas están &ldquo;Excluded&rdquo; o &ldquo;Discovered — not indexed,&rdquo; tienes un problema fundacional — usualmente carga lenta, canonical roto, o contenido pobre.</p>
 
-      <figure class="article-figure">
+      <figure class="article-figure" data-audio-alt="Tres banderas rojas en Coverage de Google Search Console, en orden de prioridad. Estado A &mdash; Descubierta, no indexada: Google encontr&oacute; la URL y decidi&oacute; no indexarla. Casi siempre es contenido superficial o una plantilla duplicada. El arreglo es reescribir la p&aacute;gina. Estado B &mdash; Rastreada, actualmente no indexada: Google mir&oacute;, despu&eacute;s esper&oacute;. Se&ntilde;al de velocidad o confianza demasiado baja. Arregla el L C P y el canonical. Estado C &mdash; Excluida por &lsquo;noindex&rsquo;: una etiqueta meta o cabecera H T T P le est&aacute; diciendo a Google que se salte la p&aacute;gina. Si fue sin querer, es el arreglo m&aacute;s barato de la lista &mdash; busca &lsquo;noindex&rsquo; en tu c&oacute;digo y lo encuentras.">
         <div class="recovery-stack reveal" role="img" aria-label="Banderas rojas en Coverage · los tres hallazgos que vale atender primero">
           <div class="recovery-row recovery-1">
             <div class="recovery-num">A</div>

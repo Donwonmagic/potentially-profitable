@@ -136,6 +136,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -353,7 +363,7 @@ header.nav{min-height:64px}
 
       <p>Casi cada sitio de restaurante que audito tiene Menu schema ausente, o el platform lo estampó como un blob de string. Sin la estructura correcta, Google no puede rankear platos individuales. Usa <code>Menu</code> + <code>MenuSection</code> + <code>MenuItem</code> con descripciones reales — la descripción es lo que las AI Overviews citan textualmente.</p>
 
-      <figure class="article-figure">
+      <figure class="article-figure" data-audio-alt="El campo del schema Menu que hace el trabajo para las citas de I A: description, no name. El campo name es obligatorio, pero solo se usa para el t&iacute;tulo del listado &mdash; rol de solo t&iacute;tulo, sin peso extra. El campo description es opcional en la especificaci&oacute;n, pero es el campo que A I Overviews cita textualmente. S&aacute;ltalo y tus platos no se citan. Ese es el campo de I A.">
         <div class="recovery-stack reveal" role="img" aria-label="El campo del schema Menu que hace el trabajo · description, no name">
           <div class="recovery-row recovery-1">
             <div>

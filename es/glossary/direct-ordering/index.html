@@ -135,7 +135,7 @@ header.nav{min-height:64px}
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-direct-ordering-es.png",
-      "datePublished": "2026-04-30T03:45:15+00:00",
+      "datePublished": "2026-05-03T16:59:12+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -149,6 +149,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -371,8 +381,8 @@ header.nav{min-height:64px}
           <li><a href="/es/blog/five-restaurant-website-changes-recover-one-percent-margin/">Cinco cambios de sitio que recuperan 1% de margen</a></li>
           <li><a href="/es/blog/how-to-set-up-google-business-profile-for-your-restaurant/">Configurar Google Business Profile</a></li>
           <li><a href="/es/blog/is-doordash-worth-it-for-restaurants-in-2026/">¿Vale la pena DoorDash en 2026?</a></li>
+          <li><a href="/es/blog/toast-vs-square-vs-clover-for-restaurants/">toast-vs-square-vs-clover-for-restaurants</a></li>
           <li><a href="/es/blog/how-to-tell-if-a-restaurant-tool-is-safe/">Cómo saber si una herramienta es segura</a></li>
-          <li><a href="/es/blog/when-to-rebuild-your-restaurant-website/">Cuándo rehacer tu sitio</a></li>
         </ul>
       </div>
       <div class="glossary-knit__col">

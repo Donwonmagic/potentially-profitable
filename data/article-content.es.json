@@ -1,6 +1,5 @@
 {
   "_doc": "Phase G.5 (Growth) — TL;DR + Key Takeaways content per blog post (ES). Mirror of article-content.json. inject-article-tldr.mjs --es reads this and stamps the EN-counterpart sentinels into es/blog/<slug>/index.html.",
-
   "articles": {
     "wix-vs-custom-for-restaurants": {
       "tldr": [
@@ -168,6 +167,34 @@
         "Prueba de cinco minutos: si cada cliente regular te encontró por una vía distinta, todavía no necesitas sitio.",
         "Si genuinamente no lo necesitas, haz la auditoría de 30 minutos a tu GBP y vete.",
         "Cuando sí lo necesites, un sitio de template de $2,500 es suficiente para empezar; custom completo cuando el salón lo pida."
+      ]
+    },
+    "should-your-restaurant-have-an-app-in-2026": {
+      "tldr": [
+        "La mayoría de los operadores que piden una aplicación en realidad quieren una de cinco herramientas más baratas que ya existen.",
+        "El problema de la instalación por sí solo mata casi todos los proyectos de app: los habituales no la descargan, y los visitantes únicos no se molestan.",
+        "Dos situaciones específicas justifican una app: 5.000+ transacciones semanales relevantes para app, o un concepto que genuinamente exige comportamiento de app."
+      ],
+      "key_takeaways": [
+        "La fidelización nativa del POS (Square, Toast) cubre el “quiero un programa de lealtad” por $0 extra.",
+        "Los SMS se abren al 90%+ frente a push al 5–15%; el SMS es el canal correcto para “avisar a mis habituales.”",
+        "Un sitio web excelente en móvil más un Google Business Profile bien armado entrega “marca en su mano” sin instalación.",
+        "Una progressive web app (guardada en pantalla de inicio) cubre el pedido en bolsillo propio sin app store.",
+        "Un CRM conectado al POS te da datos de habituales sin tener que mantener código a medida."
+      ]
+    },
+    "toast-vs-square-vs-clover-for-restaurants": {
+      "tldr": [
+        "La integración del POS con un sitio de restaurante es real o teatral: Toast y Square entregan la real, Clover la teatral.",
+        "Toast y Square ambos suman 7 marcas de sí-confiado de 10 en las funciones de integración que importan; Clover suma 1.",
+        "Clover gana en variedad de hardware; pierde en casi toda función que toca el sitio web."
+      ],
+      "key_takeaways": [
+        "El pedido en línea nativo elimina el intermediario tablet-en-mano del que Clover todavía depende.",
+        "Square es el único POS con precios públicos y transparentes en su propio sitio — eso importa para confianza a escala pequeña.",
+        "Toast es para restaurantes desde el día uno; Square se adaptó desde retail; Clover apunta a SMB general.",
+        "La flexibilidad contractual (mes a mes, bajo costo de cambio) es una ventaja exclusiva de Square a esta escala.",
+        "Empareja el POS con tu modelo operativo real, no con el pitch del vendedor — el pipeline a la cocina importa más que la afinidad de marca."
       ]
     }
   }

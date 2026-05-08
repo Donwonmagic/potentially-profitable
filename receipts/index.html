@@ -105,6 +105,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="/" class="logo" aria-label="Muntin Digital home">
@@ -267,7 +277,7 @@ header.nav{min-height:64px}
       <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;font-size:15px;line-height:1.5">
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:glossary.terms -->139<!-- /count --></strong>glossary terms</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:tools.live -->15<!-- /count --></strong>free tools live</li>
-        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles -->18<!-- /count --></strong>articles published</li>
+        <li><strong style="color:var(--teal);font-size:24px;display:block"><!-- count:articles -->20<!-- /count --></strong>articles published</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">3</strong>case studies</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">2</strong>locales (EN, ES)</li>
         <li><strong style="color:var(--teal);font-size:24px;display:block">7</strong>library topics</li>

@@ -147,6 +147,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -386,7 +396,7 @@ header.nav{min-height:64px}
 
       <p>Cada imagen necesita <a href="/es/glossary/alt-text/" data-glossary-head="Texto alternativo" data-glossary-blurb="Una descripción escrita breve de cada imagen, puesta mediante el atributo alt=&quot;…&quot; en el HTML." target="_blank" rel="noopener">alt text</a>. No "IMG_4521.jpg," ni el nombre del menú, ni "comida deliciosa." Una oración descriptiva específica: "Plato de carnitas con cilantro, cebolla blanca y limón sobre tabla de madera." Cuesta 5 segundos por foto y te gana SEO + accesibilidad + cita en búsqueda con IA.</p>
 
-      <figure class="article-figure">
+      <figure class="article-figure" data-audio-alt="Tres reglas para el alt text de restaurante &mdash; qu&eacute; guarda el parser de Google y qu&eacute; descarta. Uno: sujeto espec&iacute;fico. &lsquo;Plato de carnitas&rsquo; &mdash; no &lsquo;comida deliciosa&rsquo;, no &lsquo;almuerzo&rsquo;. Nombra el plato. Dos: sustantivo de contexto. &lsquo;Sobre tabla de madera.&rsquo; &lsquo;En el patio.&rsquo; D&oacute;nde est&aacute; la foto, no solo qu&eacute; hay. Tres: sin nombre de archivo, sin marketing. &lsquo;I M G gui&oacute;n bajo 4 5 2 1 punto J P G&rsquo; no sirve. &lsquo;Comida deliciosa&rsquo; sirve menos &mdash; Google descarta el lenguaje de marketing por completo. Describe, no vendas.">
         <div class="recovery-stack" role="img" aria-label="Cómo se ve un buen alt text — tres reglas">
           <div class="recovery-row recovery-1">
             <div class="recovery-num">1</div>
