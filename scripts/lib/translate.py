@@ -353,7 +353,13 @@ def _translate_raw_cf(text, target_lang, retries=3):
     }
 
     last_err = None
-    for attempt in range(retries):
+    rate_limit_waits = 0
+    # Allow up to 4 long-form sleeps for 429s before giving up on the
+    # call. Free-tier CF Workers AI rate windows are ~60s, so 4 × 60
+    # gives the bucket plenty of time to refill on a slow afternoon.
+    MAX_RATE_LIMIT_WAITS = 4
+    attempt = 0
+    while attempt < retries:
         try:
             req = urllib.request.Request(
                 url,
@@ -370,9 +376,26 @@ def _translate_raw_cf(text, target_lang, retries=3):
             if not response or not response.strip():
                 raise RuntimeError("CF AI returned empty response body")
             return response.strip()
+        except urllib.error.HTTPError as e:
+            last_err = e
+            # Rate limit: wait for the free-tier window to refill (60s)
+            # and try again WITHOUT consuming a regular retry slot.
+            if e.code == 429 and rate_limit_waits < MAX_RATE_LIMIT_WAITS:
+                rate_limit_waits += 1
+                print(f"# CF rate limit (429) — waiting 60s ({rate_limit_waits}/{MAX_RATE_LIMIT_WAITS})",
+                      file=sys.stderr, flush=True)
+                time.sleep(60.0)
+                continue
+            # Auth errors: no point retrying. Bubble up immediately
+            # so the router latches and stops calling CF this run.
+            if e.code in (401, 403):
+                raise RuntimeError(f"CF AI auth failed (HTTP {e.code}); check CF_AI_TOKEN scope") from e
+            time.sleep(2.0 * (attempt + 1))
+            attempt += 1
         except Exception as e:
             last_err = e
             time.sleep(2.0 * (attempt + 1))
+            attempt += 1
     raise RuntimeError(f"CF AI translate failed after {retries} attempts: {last_err}")
 
 
@@ -450,9 +473,19 @@ def _translate_raw(text, target_lang, source_lang="en", retries=3):
             _CF_AVAILABLE = True
         return result
     except Exception as e:
-        print(f"# CF Workers AI failed ({e}); falling back to Google Translate for this run.",
-              file=sys.stderr)
-        _CF_AVAILABLE = False
+        msg = str(e)
+        # Auth failures are permanent — latch the circuit breaker so
+        # we don't keep trying CF for the rest of this run.
+        # Rate-limit / network blips are transient — fall back to GT
+        # for THIS call but keep CF eligible for the next one.
+        permanent = ("auth failed" in msg) or ("not configured" in msg)
+        if permanent:
+            print(f"# CF Workers AI failed permanently ({e}); using Google Translate for the rest of this run.",
+                  file=sys.stderr)
+            _CF_AVAILABLE = False
+        else:
+            print(f"# CF Workers AI hiccup ({e}); falling back to Google Translate for this batch only.",
+                  file=sys.stderr)
         return _translate_raw_gt(text, target_lang, source_lang, retries)
 
 
@@ -564,11 +597,12 @@ def translate_chunks(chunks, target_lang):
             out.append({"id": c["id"], "text": p})
 
         print(f"#   batch {bi + 1}/{len(batches)}: {len(batch)} chunks in {dt:.1f}s", file=sys.stderr)
-        # Pause between batches to stay polite with Google's
-        # unauthenticated endpoint — short enough to feel fast,
-        # long enough that a 92-chunk post doesn't trip rate limits.
+        # Inter-batch pause. CF Workers AI free-tier rate windows are
+        # tighter than Google's unauthenticated translate endpoint, so
+        # we pace ourselves harder when CF is active. _CF_AVAILABLE is
+        # True iff CF answered successfully at least once this run.
         if bi + 1 < len(batches):
-            time.sleep(0.3)
+            time.sleep(1.5 if _CF_AVAILABLE else 0.3)
 
     return out
 
