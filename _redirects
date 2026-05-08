@@ -26,6 +26,25 @@
 /audit/                      /tools/                      301
 /audit/*                     /tools/:splat                301
 
+# Tools sunset (Sprint M, 2026-05-08): invoice-decoder + menu-design
+# retired. No replacement was built; 410 Gone is the honest deindex
+# signal so crawlers drop the URL cleanly. Sub-paths included so
+# stale service-worker / manifest / chunked-JS bookmarks don't 404
+# noisily. menu-polish is gone with no replacement; redirect to the
+# surviving Menu Drop-In offer.
+/tools/invoice-decoder/                          /tools/invoice-decoder/        410
+/tools/invoice-decoder/*                         /tools/invoice-decoder/        410
+/tools/menu-design/                              /tools/menu-design/            410
+/tools/menu-design/*                             /tools/menu-design/            410
+/es/tools/invoice-decoder/                       /es/tools/invoice-decoder/     410
+/es/tools/invoice-decoder/*                      /es/tools/invoice-decoder/     410
+/es/tools/menu-design/                           /es/tools/menu-design/         410
+/es/tools/menu-design/*                          /es/tools/menu-design/         410
+/services/menu-polish/                           /services/menu-drop-in/        301
+/services/menu-polish/*                          /services/menu-drop-in/        301
+/es/services/menu-polish/                        /es/services/menu-drop-in/     301
+/es/services/menu-polish/*                       /es/services/menu-drop-in/     301
+
 # Wellness retirement (Sprint K): the wellness audit and checklist
 # were removed in favor of a restaurant-first focus. Any inbound
 # link — search-engine index, bookmark, or published citation —
