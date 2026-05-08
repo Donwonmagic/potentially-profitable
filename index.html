@@ -517,6 +517,16 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#main" class="logo" aria-label="Muntin Digital home">
@@ -699,7 +709,7 @@ header.nav{min-height:64px}
       <ul class="hero-counts" aria-label="Library at a glance">
         <li class="hero-counts__chip"><strong><!-- count:glossary.terms -->139<!-- /count --></strong>&nbsp;glossary terms</li>
         <li class="hero-counts__chip"><strong><!-- count:tools.live -->15<!-- /count --></strong>&nbsp;free tools</li>
-        <li class="hero-counts__chip"><strong><!-- count:articles -->18<!-- /count --></strong>&nbsp;articles</li>
+        <li class="hero-counts__chip"><strong><!-- count:articles -->20<!-- /count --></strong>&nbsp;articles</li>
         <li class="hero-counts__chip">All free</li>
       </ul>
     </div>

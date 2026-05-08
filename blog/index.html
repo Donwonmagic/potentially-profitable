@@ -227,7 +227,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/blog/#items",
-      "numberOfItems": 18,
+      "numberOfItems": 20,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -316,24 +316,36 @@ header.nav{min-height:64px}
         {
           "@type": "ListItem",
           "position": 15,
+          "url": "https://muntin.digital/blog/should-your-restaurant-have-an-app-in-2026/",
+          "name": "Should Your Restaurant Actually Make an App in 2026?"
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "url": "https://muntin.digital/blog/toast-vs-square-vs-clover-for-restaurants/",
+          "name": "Toast vs. Square vs. Clover: Which POS Integrates Best With a Restaurant Website?"
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
           "url": "https://muntin.digital/blog/what-should-be-on-a-restaurant-website/",
           "name": "What Should Be on a Restaurant Website? The 7 Pages That Matter"
         },
         {
           "@type": "ListItem",
-          "position": 16,
+          "position": 18,
           "url": "https://muntin.digital/blog/when-to-rebuild-your-restaurant-website/",
           "name": "When to Rebuild Your Restaurant Website: A Decision Framework"
         },
         {
           "@type": "ListItem",
-          "position": 17,
+          "position": 19,
           "url": "https://muntin.digital/blog/why-your-restaurant-loses-reservations-every-night/",
           "name": "Why Your Restaurant Loses Reservations Every Night (And How to Fix It)"
         },
         {
           "@type": "ListItem",
-          "position": 18,
+          "position": 20,
           "url": "https://muntin.digital/blog/wix-vs-custom-for-restaurants/",
           "name": "Wix vs. Custom for Restaurants: What Breaks First"
         }
@@ -348,6 +360,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -525,6 +547,26 @@ header.nav{min-height:64px}
 <section class="block">
   <div class="container">
     <div class="post-list">
+      <a href="/blog/toast-vs-square-vs-clover-for-restaurants/" class="post-card">
+        <div class="meta">
+          <span class="date">May 7, 2026</span>
+          <span>11 min read</span>
+        </div>
+        <div>
+          <h3>Toast vs. Square vs. Clover: which POS integrates best with a restaurant website?</h3>
+          <p>An honest comparison of how the three dominant restaurant POS systems integrate with a real restaurant website &mdash; what each one does well, what each one quietly limits, and which one I&rsquo;d pick for your restaurant type.</p>
+        </div>
+      </a>
+      <a href="/blog/should-your-restaurant-have-an-app-in-2026/" class="post-card">
+        <div class="meta">
+          <span class="date">May 7, 2026</span>
+          <span>9 min read</span>
+        </div>
+        <div>
+          <h3>Should you actually make a restaurant app in 2026?</h3>
+          <p>Every month an agency pitches you a $20,000 app. Here&rsquo;s the honest answer &mdash; and the three cheaper tools that deliver what you actually wanted the app to do.</p>
+        </div>
+      </a>
       <a href="/blog/how-to-tell-if-a-restaurant-tool-is-safe/" class="post-card">
         <div class="meta">
           <span class="date">Apr 30, 2026</span>

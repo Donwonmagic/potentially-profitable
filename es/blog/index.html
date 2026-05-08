@@ -227,7 +227,7 @@ header.nav{min-height:64px}
     {
       "@type": "ItemList",
       "@id": "https://muntin.digital/es/blog/#items",
-      "numberOfItems": 22,
+      "numberOfItems": 24,
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -346,18 +346,30 @@ header.nav{min-height:64px}
         {
           "@type": "ListItem",
           "position": 20,
+          "url": "https://muntin.digital/es/blog/should-your-restaurant-have-an-app-in-2026/",
+          "name": "&iquest;Deber&iacute;a tu restaurante crear una aplicaci&oacute;n en 2026?"
+        },
+        {
+          "@type": "ListItem",
+          "position": 21,
+          "url": "https://muntin.digital/es/blog/toast-vs-square-vs-clover-for-restaurants/",
+          "name": "Toast, Square y Clover: &iquest;Qu&eacute; POS se integra mejor con el sitio web de un restaurante?"
+        },
+        {
+          "@type": "ListItem",
+          "position": 22,
           "url": "https://muntin.digital/es/blog/what-should-be-on-a-restaurant-website/",
           "name": "¿Qué debe tener el sitio web de un restaurante? Las 7 páginas que importan"
         },
         {
           "@type": "ListItem",
-          "position": 21,
+          "position": 23,
           "url": "https://muntin.digital/es/blog/why-your-restaurant-loses-reservations-every-night/",
           "name": "Por qué tu restaurante pierde reservas cada noche (y cómo arreglarlo)"
         },
         {
           "@type": "ListItem",
-          "position": 22,
+          "position": 24,
           "url": "https://muntin.digital/es/blog/wix-vs-custom-for-restaurants/",
           "name": "Wix vs. a medida para restaurantes: qué se rompe primero"
         }
@@ -372,6 +384,16 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Saltar al contenido principal</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -523,6 +545,26 @@ header.nav{min-height:64px}
 <section class="block">
   <div class="container">
     <div class="post-list">
+      <a href="/es/blog/toast-vs-square-vs-clover-for-restaurants/" class="post-card">
+        <div class="meta">
+          <span class="date">7 may 2026</span>
+          <span>Lectura de 11 minutos</span>
+        </div>
+        <div>
+          <h3>Toast frente a Square frente a Clover: &iquest;cu&aacute;l POS se integra mejor con un sitio de restaurante?</h3>
+          <p>Una comparaci&oacute;n honesta de c&oacute;mo los tres sistemas POS dominantes se integran con un sitio de restaurante real &mdash; qu&eacute; hace bien cada uno, qu&eacute; limita silenciosamente y cu&aacute;l elegir&iacute;a para tu tipo de restaurante.</p>
+        </div>
+      </a>
+      <a href="/es/blog/should-your-restaurant-have-an-app-in-2026/" class="post-card">
+        <div class="meta">
+          <span class="date">7 may 2026</span>
+          <span>Lectura de 9 minutos</span>
+        </div>
+        <div>
+          <h3>&iquest;Deber&iacute;as realmente hacer una aplicaci&oacute;n de restaurante en 2026?</h3>
+          <p>Cada mes una agencia te ofrece una aplicaci&oacute;n de 20.000 d&oacute;lares. Aqu&iacute; est&aacute; la respuesta honesta &mdash; y las tres herramientas m&aacute;s econ&oacute;micas que entregan lo que realmente quer&iacute;as que la aplicaci&oacute;n hiciera.</p>
+        </div>
+      </a>
       <a href="/es/blog/como-saber-si-una-herramienta-de-restaurante-es-segura/" class="post-card">
         <div class="meta">
           <span class="date">30 de abril de 2026</span>
