@@ -168,8 +168,10 @@
   // updated invoice-decoder save handler writes the wrapped envelope
   // under a different field (`invoiceItemsEnc`) so the plaintext
   // shape is gone forever after the next save. This call is a
-  // best-effort scrub on tool load — invoked from the boot of
-  // tools/invoice-decoder/invoice-decoder.js.
+  // best-effort scrub on tool load. (The Invoice Decoder caller
+  // that originally invoked this was retired 2026-05-08; the
+  // function is preserved here in case any future tool reads
+  // legacy plaintext entries from older browser profiles.)
   function migratePlaintextInvoiceItems() {
     try {
       if (typeof root.MuntinContext === 'undefined') return;

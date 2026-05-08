@@ -9,13 +9,9 @@
  *   node scripts/check-tests.mjs
  *
  * Wire into scripts/check-all.mjs alongside the other guards as
- * the test suite grows. Today the suite covers Wave A foundation:
- *   - tools/_shared/menu-schema.test.mjs
- *   - tools/menu-design/state/reducer.test.mjs
- *   - tools/menu-design/data/allergens.test.mjs
- *
- * Each new module ships its tests next to the source — no central
- * test directory. The runner discovers them by glob.
+ * the test suite grows. Each new module ships its tests next to
+ * the source — no central test directory. The runner discovers
+ * them by glob.
  */
 
 import fs from 'node:fs';

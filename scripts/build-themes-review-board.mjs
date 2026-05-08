@@ -3,8 +3,8 @@
  * Wave C14 — Public theme review-board page generator.
  *
  * Emits /library/menu-design-themes/index.html (and ES mirror) from
- * the data already in tools/menu-design/themes.js +
- * tools/menu-design/data/theme-credits.js. Every theme gets a public
+ * the data already in data/menu-design-themes.js +
+ * data/menu-design-theme-credits.js. Every theme gets a public
  * record: label, group, blurb, palette swatches, paper formats,
  * cuisine hints, AND the curator metadata (reviewedBy / inspiredBy /
  * dateAdded / story) that makes the catalog defensible vs Canva.

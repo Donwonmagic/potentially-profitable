@@ -1,10 +1,10 @@
 /**
  * Shared SKU-stem normalization (Wave 10.0a).
  *
- * Lifted out of `tools/invoice-decoder/learnings.js` so cross-tool
- * consumers (Plate Cost, Menu Engineering, Margin Math, Cost Pulse)
- * can normalize ingredient/SKU names identically to Invoice Decoder.
- * Without this lift the per-tool stem extraction would diverge silently
+ * Cross-tool consumers (Plate Cost, Menu Engineering, Margin Math,
+ * Cost Pulse) call this to normalize ingredient/SKU names identically.
+ * Without a single canonical implementation the per-tool stem
+ * extraction would diverge silently
  * the moment the DROP_TOKENS regex evolves.
  *
  * Two functions, both pure:
@@ -21,9 +21,6 @@
  *     - returns the alphabetic core, e.g.
  *       "STELLA ARTOIS 24/12 BTL" → "stella artois"
  *
- * Backward compat: `tools/invoice-decoder/learnings.js` re-exports
- * MID_LEARNINGS.extractStem so existing call sites continue to work
- * unchanged.
  */
 (function (root) {
   'use strict';
