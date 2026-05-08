@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Translate audio chunks from English to a target language with
-document-level context + brand-term glossary preservation.
+document-level context + brand-term glossary preservation +
+editorial-tone-locked LLM backend.
 
 Why this isn't just a sentence-by-sentence call
 -----------------------------------------------
@@ -26,23 +27,44 @@ inconsistently. We do three things better:
    separator to get per-chunk output matching the input chunk layout.
    The runtime's highlight sync stays aligned.
 
-Translation backend
--------------------
-Uses Google Translate's public unauthenticated web endpoint
-(translate_a/single with client=gtx), which is what open-source
-libraries like deep-translator and googletrans use. It's free at our
-scale (~500 requests per full-site render), returns output quality
-on par with Google Cloud Translate, and requires no API key or
-account.
+Translation backend (two-tier)
+------------------------------
+PRIMARY — Cloudflare Workers AI (Llama 3.3 70B Instruct).
+  When CF_ACCOUNT_ID + CF_AI_TOKEN env vars are set, we use the
+  Cloudflare Workers AI endpoint with a structured editorial-tone
+  prompt that locks Don's voice (warm, direct, slightly weary,
+  restaurant-operator-friendly). Free tier on the existing
+  Cloudflare account; ~10k neurons/day covers incremental rendering
+  comfortably.
 
-Caveats to be honest about:
-  * This is an unofficial endpoint — Google may change or rate-limit
-    it without notice. If it stops working, swap in NLLB via the
-    transformers library (see TODO at the bottom of this file).
-  * Technically a ToS gray area for programmatic use; appropriate
-    for periodic one-off renders, NOT for a real-time service.
-  * For highest quality, a paid DeepL or Anthropic/OpenAI API call
-    would beat this — drop-in replaceable by swapping `_translate_raw`.
+  This produces translations that feel native — the LLM picks
+  idioms naturally, preserves Don's pacing (em-dashes, parentheticals,
+  short declaratives), and matches the editorial register that
+  Google Translate can't capture. The glossary substitution happens
+  BEFORE the LLM sees the text so brand terms come back unchanged.
+
+FALLBACK — Google Translate's unauthenticated public endpoint.
+  Used when the CF env vars aren't set OR the CF request fails
+  (network, rate limit). Same endpoint deep-translator and
+  googletrans use. Free, no API key. Solid mechanical translation;
+  doesn't capture editorial register but covers the basics with the
+  glossary protection intact.
+
+Either way, the API contract is identical: chunks in, translated
+chunks out. The pipeline doesn't care which backend ran.
+
+Setup for the LLM path
+----------------------
+  1. Cloudflare dashboard → Workers AI → enable (one click, free).
+  2. My Profile → API Tokens → Create Token. Permissions:
+       Account → Workers AI → Read.
+       (Read here means "may invoke models" — Cloudflare's name.)
+  3. Find your account ID in the dashboard URL or the right sidebar.
+  4. Set env vars before invoking the renderer:
+       export CF_ACCOUNT_ID="..."
+       export CF_AI_TOKEN="..."
+       # Optional model override (default: llama-3.3-70b-instruct-fp8-fast):
+       export CF_AI_MODEL="@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 
 Usage
 -----
@@ -58,6 +80,7 @@ Output JSON:
     "chunks": [{"id": N, "text": "...translated..."}] }
 """
 import json
+import os
 import re
 import sys
 import time
@@ -243,12 +266,123 @@ def _restore_glossary(text, restore_map):
     return text
 
 
+# ---------------------------------------------------------- LLM backend
+# Editorial prompt that locks Don's voice. The LLM gets this as
+# "system" + the source text as "user". Anything in this prompt is
+# part of the canonical translator behavior — edit deliberately.
+EDITORIAL_PROMPT = """You translate editorial restaurant-industry articles for Muntin Digital, a one-person digital studio in the Washington, DC area run by Don Goldstein.
+
+Don's voice you must preserve when translating:
+- Direct and unsentimental. No marketing register, no corporate hedging, no apologetic softening.
+- Warm but slightly weary — he has seen this restaurant industry pattern a hundred times before.
+- Conversational, not formal. Uses contractions where the target language allows. Em-dashes for the redirect. Parenthetical asides.
+- Restaurant industry vocabulary is precise. Cover, ticket, deeplink, GBP, schema, prime cost, two-top, host stand, Marketplace Plus — these are terms with established meaning.
+- Numbers stay as digits ("$42", "30%", "Tuesday", "4 hours"). Never spell out.
+
+Your job: render the input English text into idiomatic, native-feeling {target_lang_name} that preserves Don's voice. The reader should feel like Don is writing in their language — not like a translator left fingerprints.
+
+Hard rules:
+1. Use idiomatic {target_lang_name}, not literal English. Match the natural register of {target_lang_name} editorial writing.
+2. PRESERVE EXACTLY any token of the form SEPNUM###XXZ or TERMNUM###XXZ. These are placeholder markers that get post-processed; if you change them, alignment breaks. Do not translate them. Do not add or remove the surrounding whitespace.
+3. Match Don's pacing — short declarative sentences, em-dashes, parentheticals.
+4. Restaurant terms with an established {target_lang_name} equivalent: use it. Without one: keep the English term and add a brief parenthetical the first time it appears.
+5. Currency: keep "$" for USD. "$15,000" stays "$15,000" — do not convert to local currency.
+6. Output ONLY the translation. No preamble like "Here is the translation:". No commentary. No notes about choices made. Just the translated text, in the same paragraph structure as the input."""
+
+# Display names per locale for the editorial prompt.
+LANG_NAMES = {
+    "es": "Spanish",
+    "fr": "French",
+    "it": "Italian",
+    "pt": "Brazilian Portuguese",
+    "zh": "Mandarin Chinese (simplified)",
+    "hi": "Hindi",
+    "ja": "Japanese",
+}
+
+
+def _cf_ai_endpoint():
+    """Return (url, token) for the Cloudflare Workers AI request, or
+    None if not configured. Reads CF_ACCOUNT_ID and CF_AI_TOKEN; the
+    model defaults to Llama 3.3 70B Instruct (fp8-fast variant) but
+    is overridable via CF_AI_MODEL.
+    """
+    account = os.environ.get("CF_ACCOUNT_ID", "").strip()
+    token   = os.environ.get("CF_AI_TOKEN", "").strip()
+    model   = os.environ.get("CF_AI_MODEL",
+                             "@cf/meta/llama-3.3-70b-instruct-fp8-fast").strip()
+    if not (account and token):
+        return None
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account}/ai/run/{model}"
+    return (url, token)
+
+
+def _translate_raw_cf(text, target_lang, retries=3):
+    """Editorial-tone-locked translation via Cloudflare Workers AI.
+    Returns the translated string, or raises on failure (caller falls
+    back to Google Translate). The system prompt locks Don's voice;
+    the user prompt is just the source text (already glossary-
+    substituted by the caller).
+    """
+    endpoint = _cf_ai_endpoint()
+    if endpoint is None:
+        raise RuntimeError("CF Workers AI not configured (CF_ACCOUNT_ID + CF_AI_TOKEN unset)")
+    url, token = endpoint
+
+    target_name = LANG_NAMES.get(target_lang, target_lang)
+    system = EDITORIAL_PROMPT.format(target_lang_name=target_name)
+    body = {
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user",   "content": text},
+        ],
+        # Llama 3.3 70B supports a generous context. We keep the cap
+        # well above any chunk-batch we'd send (~3500 source chars →
+        # ~5000 target tokens worst case for languages with multi-byte
+        # characters like Mandarin).
+        "max_tokens": 8192,
+        # Low temperature — translation is a constrained task; we
+        # don't want creative liberties on the prose. Editorial tone
+        # is locked via the prompt, not via sampling temperature.
+        "temperature": 0.3,
+    }
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type":  "application/json",
+        "Accept":        "application/json",
+    }
+
+    last_err = None
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(body).encode("utf-8"),
+                headers=headers,
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                payload = json.loads(resp.read().decode("utf-8"))
+            if not payload.get("success"):
+                errs = payload.get("errors") or payload
+                raise RuntimeError(f"CF AI returned not-success: {errs}")
+            response = (payload.get("result") or {}).get("response", "")
+            if not response or not response.strip():
+                raise RuntimeError("CF AI returned empty response body")
+            return response.strip()
+        except Exception as e:
+            last_err = e
+            time.sleep(2.0 * (attempt + 1))
+    raise RuntimeError(f"CF AI translate failed after {retries} attempts: {last_err}")
+
+
 # ---------------------------------------------------------- HTTP backend
-def _translate_raw(text, target_lang, source_lang="en", retries=3):
+def _translate_raw_gt(text, target_lang, source_lang="en", retries=3):
     """Single-shot call to Google's unauthenticated translate endpoint.
     Returns the translated string. Retries with exponential backoff
     on transient network errors — the endpoint is generally reliable
-    but we're polite about it.
+    but we're polite about it. Used as the fallback when CF Workers
+    AI isn't configured or fails.
     """
     url = "https://translate.googleapis.com/translate_a/single"
     params = {
@@ -281,6 +415,45 @@ def _translate_raw(text, target_lang, source_lang="en", retries=3):
             last_err = e
             time.sleep(1.5 * (attempt + 1))
     raise RuntimeError(f"translate failed after {retries} attempts: {last_err}")
+
+
+# Track CF availability across calls so we don't keep retrying CF
+# after the first hard failure for this run (network down, account
+# rate-limited, token revoked). Once flipped to False, stays False
+# until the process exits.
+_CF_AVAILABLE = None  # None = untested, True = working, False = failed once
+
+
+def _translate_raw(text, target_lang, source_lang="en", retries=3):
+    """Router: prefer Cloudflare Workers AI (Llama 3.3 70B with the
+    editorial-tone prompt) when configured and reachable, fall back
+    to Google Translate otherwise. Both honor the same input/output
+    contract; the rest of the translator (batching, glossary,
+    separator alignment) is backend-agnostic.
+    """
+    global _CF_AVAILABLE
+    if _CF_AVAILABLE is False:
+        return _translate_raw_gt(text, target_lang, source_lang, retries)
+    if _cf_ai_endpoint() is None:
+        if _CF_AVAILABLE is None:
+            print("# CF_ACCOUNT_ID/CF_AI_TOKEN not set — using Google Translate fallback.",
+                  file=sys.stderr)
+            print("# For native-feeling editorial translations, see docs/audio-pipeline.md.",
+                  file=sys.stderr)
+            _CF_AVAILABLE = False
+        return _translate_raw_gt(text, target_lang, source_lang, retries)
+    try:
+        result = _translate_raw_cf(text, target_lang, retries=retries)
+        if _CF_AVAILABLE is None:
+            print("# Translation backend: Cloudflare Workers AI (editorial-tone prompt active).",
+                  file=sys.stderr)
+            _CF_AVAILABLE = True
+        return result
+    except Exception as e:
+        print(f"# CF Workers AI failed ({e}); falling back to Google Translate for this run.",
+              file=sys.stderr)
+        _CF_AVAILABLE = False
+        return _translate_raw_gt(text, target_lang, source_lang, retries)
 
 
 # ---------------------------------------------------------- Batching

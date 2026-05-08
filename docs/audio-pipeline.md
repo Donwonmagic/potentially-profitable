@@ -26,7 +26,7 @@ when a better voice ships.
 ## Architecture (zero ongoing cost)
 
 ```
-   data/article-audio.json     ← coverage manifest (declared spec)
+   data/article-audio.json      ← coverage manifest (declared spec)
    data/audio-pronunciation.json← phonetic overrides (proper nouns,
                                   acronyms, neighborhood names)
 
@@ -43,9 +43,22 @@ when a better voice ships.
    │   .mjs                       │
    └──────────────────────────────┘
          │
-         ├───► scripts/lib/translate.py  (EN → target lang, with brand-
-         │                                term glossary preservation)
-         │     uses Google Translate's free unauthenticated endpoint
+         ├───► scripts/lib/translate.py
+         │       │
+         │       ├── PRIMARY: Cloudflare Workers AI (Llama 3.3 70B)
+         │       │   With editorial-tone prompt locking Don's voice.
+         │       │   Free tier on the existing CF account.
+         │       │
+         │       └── FALLBACK: Google Translate unauthenticated endpoint
+         │           Used when CF env vars unset OR CF call fails.
+         │           Solid mechanical translation with glossary lock.
+         │
+         ├───► applyPronunciation()    ← per-locale phonetic overrides
+         │     (in render-post-audio.mjs)  applied to chunk text
+         │                                 BEFORE Kokoro sees it; the
+         │                                 audio.<lang>.json keeps
+         │                                 canonical text for highlight
+         │                                 sync
          │
          └───► scripts/lib/kokoro_render.py  (open-source Kokoro
                                               82M TTS, runs locally
@@ -55,28 +68,83 @@ when a better voice ships.
    <article>/audio.mp3 + audio.<lang>.mp3 + manifests
 ```
 
-Cost: **$0/mo recurring.** Kokoro runs locally on whatever machine
-you invoke it from. The translation backend uses a free public
-endpoint (gracefully fallback-able to NLLB or DeepL Free if it
-ever goes away).
+Cost: **$0/mo recurring.** Kokoro runs locally. Cloudflare Workers
+AI free tier is included with the existing CF account. Google
+Translate fallback is a free public endpoint.
 
 ## First-time setup (once per machine)
 
+### 1. Python + Kokoro
+
 ```sh
-# 1. Python deps for the synthesis + translation helpers
+# Python deps for synthesis + translation helpers
 pip install kokoro-onnx soundfile
 
-# 2. Kokoro model + voices (~330 MB, one-time)
+# Kokoro model + voices (~330 MB, one-time)
 mkdir -p ~/kokoro-models
 curl -L -o ~/kokoro-models/kokoro-v1.0.onnx \
   https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
 curl -L -o ~/kokoro-models/voices-v1.0.bin \
   https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
 
-# 3. ffmpeg (WAV concat + MP3 transcode)
+# ffmpeg (WAV concat + MP3 transcode)
 brew install ffmpeg          # macOS
 # or: apt-get install ffmpeg # Debian/Ubuntu
 ```
+
+### 2. Cloudflare Workers AI (the editorial-tone translator)
+
+This is the difference between "Google Translate Spanish" and
+translations that actually feel like Don's voice in another
+language. Free tier on the existing Cloudflare account.
+
+1. **Enable Workers AI** in the Cloudflare dashboard:
+   - Log in to https://dash.cloudflare.com
+   - Sidebar → AI → Workers AI → Enable (one click; no credit card).
+2. **Create an API token**:
+   - My Profile (top-right) → API Tokens → Create Token.
+   - Use template "Custom token" with these permissions:
+     - **Account → Workers AI → Read**
+       (Cloudflare calls model-invocation permission "Read"; this
+       is what lets the renderer call Llama 3.3.)
+   - Account Resources: Include → your specific account.
+   - TTL: 1 year is reasonable for build credentials.
+   - Copy the token — Cloudflare shows it once.
+3. **Find your account ID** — top-right of the dashboard, or in
+   any URL after `/accounts/`. 32 hex chars.
+4. **Set the env vars** before invoking the renderer:
+   ```sh
+   export CF_ACCOUNT_ID="<your-32-char-account-id>"
+   export CF_AI_TOKEN="<your-api-token>"
+   # Optional model override (default: llama-3.3-70b-instruct-fp8-fast):
+   # export CF_AI_MODEL="@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+   ```
+   Add these to your shell profile (`~/.zshrc` / `~/.bashrc`)
+   or to a `.env.local` file you `source` before running the
+   renderer. Do NOT commit them.
+
+### 3. Verify the LLM is reachable
+
+```sh
+node scripts/render-post-audio.mjs \
+  blog/wix-vs-custom-for-restaurants \
+  --languages fr \
+  --kokoro-model  ~/kokoro-models/kokoro-v1.0.onnx \
+  --kokoro-voices ~/kokoro-models/voices-v1.0.bin \
+  --force-retranslate \
+  --dry-run
+```
+
+The renderer will print one of:
+- `Translation backend: Cloudflare Workers AI (editorial-tone prompt active)` — you're good.
+- `CF_ACCOUNT_ID/CF_AI_TOKEN not set — using Google Translate fallback` — env vars not picked up.
+- `CF Workers AI failed (...); falling back to Google Translate` — token / permission issue.
+
+Without CF AI, translations will go through Google Translate and
+**lose the editorial register** — accurate but generic. The
+runbook will warn you on every run; the audit's `ENGLISH-IN-FOREIGN`
+heuristic won't catch tone drift, so it's worth getting CF AI
+configured before the bulk render.
 
 (F5-TTS for the voice clone of Don's English voice is optional —
 shipped at `scripts/voice-refs/`. See the F5 section below.)

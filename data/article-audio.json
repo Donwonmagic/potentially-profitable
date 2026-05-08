@@ -57,9 +57,9 @@
     "fittss-law":                                                         { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" }
   },
   "checklists": {
-    "_doc": "Long-form structured pieces. The 2,500-line restaurant-website-checklist gets chapter markers in audio (configured by the renderer's --chapters flag).",
+    "_doc": "Long-form structured pieces. The 2,500-line restaurant-website-checklist may eventually get chapter markers in audio (TODO: implement chapters in render-post-audio.mjs + listen.js). For now it renders as one long file.",
     "audit-any-tool":                                                     { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" },
-    "restaurant-website-checklist":                                       { "languages": ["en","es","fr","it","pt","zh"], "status": "pending", "chapters": true }
+    "restaurant-website-checklist":                                       { "languages": ["en","es","fr","it","pt","zh"], "status": "pending" }
   },
   "_skipped": {
     "_doc": "Sections deliberately excluded from audio narration.",
