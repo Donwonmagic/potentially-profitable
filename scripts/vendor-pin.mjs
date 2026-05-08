@@ -675,25 +675,60 @@ async function main() {
       }
       continue;
     }
-    // GitHub mirror serves the uncompressed .traineddata; the
-    // tessdata.projectnaptha.com mirror serves .gz. Tesseract.js
-    // accepts both via langPath (if filename ends .gz it gunzips
-    // first; otherwise it loads raw). We name by source so the
-    // runtime config can pick the right URL.
-    const isGz = /\.gz$/.test(usedUrl);
-    const fname = `${lp.lang}.traineddata` + (isGz ? '.gz' : '');
-    const outPath = path.join(TESSDATA_DIR, fname);
-    fs.writeFileSync(outPath, data);
+    // Audit fix (production hotfix): the previous comment claimed
+    // "Tesseract.js accepts both via langPath (if filename ends
+    // .gz it gunzips first; otherwise it loads raw)". That is
+    // wrong about how Tesseract.js v5 actually works — the worker
+    // ALWAYS constructs `${langPath}/${lang}.traineddata.gz` and
+    // fetches it. If we only ship the uncompressed file, the
+    // worker 404s and hangs in retry. Production sighting: a
+    // 4-page PDF stuck at "Reading the lines — about 48s left"
+    // forever on desktop Opera in private mode (so not a SW
+    // issue), because eng.traineddata.gz returned 404 and the
+    // recognize() promise never resolved or rejected.
+    //
+    // Fix: always write the .gz form. If the source was already
+    // gzipped (tessdata.projectnaptha.com), write its bytes
+    // verbatim. If the source was uncompressed (the GitHub
+    // tessdata-fast mirror), gzip it on the way to disk. Also
+    // write the uncompressed form so anything probing the raw
+    // file directly (debug, integrity check, manual download)
+    // works too.
+    const isGzSource = /\.gz$/.test(usedUrl);
+    let rawData, gzData;
+    if (isGzSource) {
+      gzData  = data;
+      rawData = zlib.gunzipSync(data);
+    } else {
+      rawData = data;
+      gzData  = zlib.gzipSync(data);
+    }
+    // Write .gz (the form Tesseract.js v5 actually fetches).
+    const gzPath = path.join(TESSDATA_DIR, `${lp.lang}.traineddata.gz`);
+    fs.writeFileSync(gzPath, gzData);
     writes++;
-    const publicUrl = `/assets/vendor/tessdata-4.0.0/${fname}`;
-    integrity.files[publicUrl] = {
-      sha384:     sha384(data),
-      bytes:      data.length,
+    const gzPublicUrl = `/assets/vendor/tessdata-4.0.0/${lp.lang}.traineddata.gz`;
+    integrity.files[gzPublicUrl] = {
+      sha384:     sha384(gzData),
+      bytes:      gzData.length,
       package:    'tessdata',
       version:    '4.0.0',
       sourcePath: usedUrl
     };
-    console.log(`  ✓ ${publicUrl}  ${data.length}b`);
+    console.log(`  ✓ ${gzPublicUrl}  ${gzData.length}b`);
+    // Also write the raw file for direct probes / debugging.
+    const rawPath = path.join(TESSDATA_DIR, `${lp.lang}.traineddata`);
+    fs.writeFileSync(rawPath, rawData);
+    writes++;
+    const rawPublicUrl = `/assets/vendor/tessdata-4.0.0/${lp.lang}.traineddata`;
+    integrity.files[rawPublicUrl] = {
+      sha384:     sha384(rawData),
+      bytes:      rawData.length,
+      package:    'tessdata',
+      version:    '4.0.0',
+      sourcePath: usedUrl
+    };
+    console.log(`  ✓ ${rawPublicUrl}  ${rawData.length}b`);
   }
 
   // Audit fix: minimum-file-count guard. Without this, an HF/CDN
