@@ -3300,7 +3300,7 @@ console.log('\n=== Plausible event prop discipline ===');
 const OCR_AUDIT_EVENTS_PROP_KEYS = {
   'Invoice Decoder Error':                    new Set(['code', 'retryable']),
   'Invoice Decoder Reader Setting Changed':   new Set(['choice']),
-  'Invoice Decoder V2 Escalation Win':        new Set(['v1_lines_bucket', 'v2_lines_bucket', 'variant']),
+  'Invoice Decoder V2 Escalation Win':        new Set(['v1_lines_bucket', 'v2_lines_bucket', 'variant', 'layout_kind', 'table_kind']),
   'Invoice Decoder V2 Escalation Fail':       new Set(['code']),
   'Invoice Decoder V2 Fallback':              new Set(['code']),
   'Invoice Decoder Layout Model Failed':      new Set(['reason'])
