@@ -263,6 +263,14 @@ async function upsertAdminIndex(env, thread) {
     entry.kind = 'anon';
     entry.anonId = thread.anonId;
   }
+  // Phase 1b — crisis tier surfaces in the admin queue so Don can
+  // see a red/yellow bar at-a-glance. The kind-of-flag persists at
+  // the thread level (above) AND on the index entry (here) so the
+  // queue scan in iterateAdminQueue doesn't have to re-fetch the
+  // thread row to render.
+  if (thread.crisisTier === 'tier1' || thread.crisisTier === 'tier2') {
+    entry.crisisTier = thread.crisisTier;
+  }
   row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
 }
@@ -716,6 +724,139 @@ export async function migrateAnonThread(env, anonId, sub, email) {
   await upsertAdminIndex(env, subThread);
 
   return { ok: true, thread: subThread, alreadyClaimed: false };
+}
+
+// Phase 1b — PII pre-write gate. Refuses to store a body that
+// looks like it carries credit-card numbers, SSNs, or passwords.
+// Caller surfaces a polite error so the operator emails Don directly
+// (or calls). The plan §2.6 says: "On match: do not store body;
+// reply 'I don't take card numbers or passwords through the Window
+// — email me directly or call.'"
+//
+// Trade-offs: false positives are acceptable (operator just gets
+// nudged toward a more-secure channel); false negatives are NOT
+// (storing a CC means Don's KV is in PCI scope, and we're not).
+//
+// Returns null if the body looks clean, or one of:
+//   { kind: 'credit-card' }
+//   { kind: 'ssn' }
+//   { kind: 'password' }
+export function detectLikelyPII(body) {
+  if (typeof body !== 'string' || !body) return null;
+  const text = body;
+
+  // Credit card: 13-19 digits with common separators (space, dash).
+  // Pre-filter via regex, then verify with Luhn so "1234 5678 9012 3456"
+  // (16 digits but invalid checksum) doesn't trip on receipts/order
+  // numbers a restaurant operator might paste.
+  const ccRegex = /(?:\d[\s-]?){12,18}\d/g;
+  let m;
+  while ((m = ccRegex.exec(text)) !== null) {
+    const digits = m[0].replace(/[\s-]/g, '');
+    if (digits.length >= 13 && digits.length <= 19 && _luhnValid(digits)) {
+      return { kind: 'credit-card' };
+    }
+  }
+
+  // SSN: NNN-NN-NNNN. Boundary anchors prevent the date-format
+  // false positive (e.g., 123-45-6789 vs 2024-01-15 doesn't match).
+  if (/(?:^|[^\d-])\d{3}-\d{2}-\d{4}(?:[^\d]|$)/.test(text)) {
+    return { kind: 'ssn' };
+  }
+
+  // Password keywords (EN + ES). Look for "<word> is/=/:" patterns
+  // that strongly indicate the operator is about to type a credential.
+  // The English alphabet check on the trailing context keeps
+  // common phrases like "password protection is good" from matching.
+  const lower = text.toLowerCase();
+  const passwordPatterns = [
+    /\bpassword\s+is\s+\S/,
+    /\bpassword\s*[:=]\s*\S/,
+    /\bmy\s+password\s+\S/,
+    /\bcontrase[nñ]a\s+es\s+\S/,
+    /\bcontrase[nñ]a\s*[:=]\s*\S/,
+    /\bmi\s+contrase[nñ]a\s+\S/,
+    /\bclave\s+es\s+\S/,
+    /\bclave\s*[:=]\s*\S/,
+  ];
+  for (const re of passwordPatterns) {
+    if (re.test(lower)) return { kind: 'password' };
+  }
+
+  return null;
+}
+
+// Luhn checksum for credit-card validation. Right-to-left, double
+// every second digit, sum digits, mod 10 == 0.
+function _luhnValid(digits) {
+  let sum = 0;
+  let alt = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let d = digits.charCodeAt(i) - 48;
+    if (d < 0 || d > 9) return false;
+    if (alt) {
+      d *= 2;
+      if (d > 9) d -= 9;
+    }
+    sum += d;
+    alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+
+// Phase 1b — crisis-keyword triage (server-side scan only; SMS
+// dispatch deferred to Phase 2). Returns:
+//   null      — no match
+//   'tier1'   — urgent: surface to Don as a red bar in admin
+//   'tier2'   — welfare-check: surface as a yellow bar in admin
+//
+// Allowlist-only matching to avoid pathologizing normal restaurant
+// vocabulary (closing tomorrow could be a planned end-of-week
+// closing, etc — the keyword presence is a signal, not a diagnosis).
+// The crisis path is paired in the worker with an admin-flag write;
+// the operator-facing referral footer (988 / Chefs With Issues /
+// CHOW) lives in the Phase 2 composer UI and is text-only — this
+// scan does not auto-acknowledge or interrupt the send.
+export function detectCrisisTier(body) {
+  if (typeof body !== 'string' || !body) return null;
+  const lower = body.toLowerCase();
+
+  const tier1Keywords = [
+    'kill myself', 'kill my self',
+    'end my life', 'end it all',
+    "can't keep going", 'cant keep going',
+    "can't go on", 'cant go on',
+    'hurt myself', 'harm myself',
+    'suicide', 'suicidal',
+    // ES — narrow allowlist; the Tier-1 set must be specific enough
+    // not to match poetic figures of speech.
+    'suicidio', 'suicida',
+    'quitarme la vida', 'quitar la vida',
+    'acabar con todo', 'acabar conmigo',
+    'no aguanto más', 'no aguanto mas',
+  ];
+  for (const k of tier1Keywords) {
+    if (lower.indexOf(k) !== -1) return 'tier1';
+  }
+
+  const tier2Keywords = [
+    'breakdown', 'mental breakdown',
+    'evicted', 'eviction',
+    'bankruptcy', 'bankrupt',
+    'closing tomorrow', 'closing next week',
+    'domestic violence', 'domestic abuse',
+    'crisis',
+    // ES
+    'quiebra', 'me quiebro',
+    'desahucio', 'desalojo',
+    'crisis',
+    'violencia doméstica', 'violencia domestica',
+  ];
+  for (const k of tier2Keywords) {
+    if (lower.indexOf(k) !== -1) return 'tier2';
+  }
+
+  return null;
 }
 
 // Per-IP throttle — defeats cookie-cycling abuse. 5/day cap on the

@@ -249,6 +249,9 @@ import {
   setAnonThreadEmail,
   migrateAnonThread,
   checkAndStampEmailAttachThrottle,
+  // Phase 1b — PII pre-write gate + crisis keyword scan.
+  detectLikelyPII,
+  detectCrisisTier,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 
@@ -6058,6 +6061,25 @@ async function handleWindowAppend(request, env, ctx) {
     return jsonResponse({ ok: false, ...validated }, 400);
   }
 
+  // Phase 1b — PII pre-write gate. Refuses to store credit-card
+  // numbers, SSNs, or password reveals. Polite redirect to email.
+  // Applies to BOTH identified and anon paths (an authed user can
+  // still accidentally type their own card number).
+  const pii = detectLikelyPII(sanitized);
+  if (pii) {
+    return jsonResponse({
+      ok: false,
+      error: 'pii-blocked',
+      kind: pii.kind,
+    }, 422);
+  }
+
+  // Phase 1b — crisis keyword scan. Returns null / 'tier1' / 'tier2'.
+  // The tier is tagged on the thread row and admin index entry so
+  // Don's queue UI can render a red/yellow bar (UI lands in Phase 2).
+  // SMS dispatch for tier1 is deferred to Phase 2 (Twilio onboarding).
+  const crisisTier = detectCrisisTier(sanitized);
+
   if (session) {
     // ── Identified path (unchanged) ─────────────────────────────
     const sub = session.payload.sub;
@@ -6074,9 +6096,20 @@ async function handleWindowAppend(request, env, ctx) {
       catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
     }
 
+    // Phase 1b — pre-stamp crisis tier on the thread so the
+    // appendMessageToThread → upsertAdminIndex path persists both
+    // the thread row and the index entry with the tier in one pass.
+    if (crisisTier) {
+      thread.crisisTier = crisisTier;
+      thread.crisisFlaggedAt = Date.now();
+    }
+
     const result = await appendMessageToThread(env, sub, thread, 'user', sanitized);
     if (!result.ok) {
       return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+    }
+    if (crisisTier) {
+      console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'identified', tier: crisisTier, sub, threadId: thread.id, msgId: result.msg.id }));
     }
 
     await pushPendingDon(env, sub, result.msg.id);
@@ -6108,6 +6141,16 @@ async function handleWindowAppend(request, env, ctx) {
   }
 
   // ── Anonymous path (Phase 1a) ─────────────────────────────────
+
+  // Phase 1b — Cloudflare threat-score gate. Anon path only;
+  // identified users went through magic-link sign-in which already
+  // checks threat score. Silent 503 keeps the abuse vector
+  // signal-free (an attacker can't probe whether the gate fired
+  // vs the rate limit fired vs the day cap fired).
+  if (isHighThreatIP(request)) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+
   // Mint cookie on first send if not present; reuse on subsequent sends.
   let anonId = _readWindowAnonCookie(request);
   let mintedNewCookie = false;
@@ -6156,9 +6199,20 @@ async function handleWindowAppend(request, env, ctx) {
     }
   }
 
+  // Pre-stamp crisis tier on the anon thread so appendMessageToAnonThread
+  // → upsertAdminIndex carries the flag in one pass (mirrors the
+  // identified path).
+  if (crisisTier) {
+    thread.crisisTier = crisisTier;
+    thread.crisisFlaggedAt = Date.now();
+  }
+
   const result = await appendMessageToAnonThread(env, anonId, thread, 'user', sanitized);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+  }
+  if (crisisTier) {
+    console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'anon', tier: crisisTier, anonId, threadId: thread.id, msgId: result.msg.id }));
   }
 
   // Anon threads notify Don via the pending-don batch tagged with

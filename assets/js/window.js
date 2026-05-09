@@ -26,6 +26,13 @@
       errorDayCap: "You've reached the daily limit. Try again tomorrow.",
       errorAuth: 'Sign in to send your note.',
       errorPaused: 'The Window is on a brief pause.',
+      // Phase 1b — PII pre-write gate. Polite redirect to email
+      // for credit cards / SSNs / passwords. Don's KV isn't PCI scope.
+      errorPii: "I don't take card numbers, passwords, or SSNs through the Window — email me directly at don@muntin.digital or call.",
+      // Phase 1a step 2.2 — stale anon cookie pointing at a thread
+      // that's been migrated to identified storage. Operator should
+      // sign in to recover continuity.
+      errorClaimed: 'This conversation has moved to your account — sign in to keep going.',
       readReceipt: function (rel) { return 'Don opened this · ' + rel; },
       donActive: 'Don is around · last seen ',
       counterFmt: function (n) { return n + ' / 4000'; },
@@ -43,6 +50,8 @@
       errorDayCap: 'Llegaste al límite diario. Inténtalo mañana.',
       errorAuth: 'Inicia sesión para enviar tu nota.',
       errorPaused: 'La Ventana está en pausa breve.',
+      errorPii: 'No acepto números de tarjeta, contraseñas, ni SSN por La Ventana — escríbeme directo a don@muntin.digital o llámame.',
+      errorClaimed: 'Esta conversación se mudó a tu cuenta — inicia sesión para continuar.',
       readReceipt: function (rel) { return 'Don lo leyó · ' + rel; },
       donActive: 'Don está cerca · visto ',
       counterFmt: function (n) { return n + ' / 4000'; },
@@ -347,6 +356,8 @@
       else if (code === 'day-cap-reached') text = copy.errorDayCap;
       else if (code === 'body-too-long') text = copy.errorBodyTooLong;
       else if (code === 'body-too-short' || code === 'body-required') text = copy.errorBodyEmpty;
+      else if (code === 'pii-blocked') text = copy.errorPii;
+      else if (code === 'thread-claimed-please-signin') { text = copy.errorClaimed; showSignin(); }
       else if (code === 'unauthenticated') { showSignin(); return; }
       else if (code === 'not-found') { showPaused(); return; }
       showMsg(text, true);
@@ -381,19 +392,25 @@
     });
   }
 
-  // Boot: check auth, then either load thread or show signin.
+  // Boot: check auth, then either load identified thread or fall
+  // through to the anon path. Phase 1b — no auto-showSignin on 401:
+  // the composer is fully interactive without a session (anon-first).
+  // The signin section reveals only via explicit affordances (Phase 2
+  // success-state upgrade) or via legacy 'unauthenticated' error
+  // codes when WINDOW_ANON_ENABLED is off.
   fetch('/api/auth/me', { credentials: 'same-origin' })
     .then(function (r) {
       if (r.status === 200) {
         state.authed = true;
         return loadThread();
       }
-      // 401 / 404: visitor isn't signed in. Show signin CTA but
-      // keep the composer interactive — submission flow handles
-      // the redirect on first send.
-      showSignin();
+      // 401 / 404: visitor isn't signed in. Try to load the anon
+      // thread (the cookie may exist from a prior visit); if no
+      // thread, the composer renders empty and the visitor can
+      // start fresh.
+      return loadThread();
     })
-    .catch(function () { /* network error: show signin */ showSignin(); })
+    .catch(function () { /* network error: leave the composer open */ })
     .finally(function () {
       startPolling();
     });

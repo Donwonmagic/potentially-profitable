@@ -85,7 +85,7 @@ header.nav{min-height:64px}
     <div class="window-hero__inner">
       <p class="window-hero__eyebrow">A direct line to Don</p>
       <h1 class="window-hero__headline">Tell me what's on your mind.</h1>
-      <p class="window-hero__sub">I read every one. Usually back to you the same business day, always inside two.</p>
+      <p class="window-hero__sub">I read every one. Mondays through Fridays, I usually write back within 4 hours of when I see your note. On weekends, I&rsquo;ll write back by Monday morning. Some weeks I&rsquo;m on the floor and slower &mdash; the page will say so.</p>
     </div>
   </section>
 
@@ -163,7 +163,7 @@ header.nav{min-height:64px}
       <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
     </form>
 
-    <p class="window-composer__reassurance" id="windowReassurance">I read every one. Usually back to you the same business day, always inside two. No commitment, no pitch.</p>
+    <p class="window-composer__reassurance" id="windowReassurance">I read every one. Mondays through Fridays, within 4 hours. Weekends, by Monday morning. No commitment, no pitch.</p>
 
     <!-- Three escape hatches. The library promises no signup; this
          row makes that promise structurally true — every path here
@@ -176,11 +176,14 @@ header.nav{min-height:64px}
     </ul>
   </section>
 
-  <!-- Sign-in CTA: shown when /api/auth/me returns 401. Reframed
-       from a gate ("sign in first") to an upgrade ("keep replies
-       threaded"). The escape hatches above are always reachable. -->
+  <!-- Sign-in CTA: Phase 1b reframe. Anon-first means there is no
+       "gate" — visitors can send without an account. This block now
+       hides by default; the assets/js/window.js script reveals it
+       only when the visitor explicitly opts in via a Phase 2 success-
+       state affordance. The default-hidden state means a fresh
+       visitor sees no sign-in CTA at all on first paint. -->
   <section class="window-signin" id="windowSignin" hidden>
-    <p><strong>Want replies threaded with you?</strong> <a href="/sign-in/?return=%2Fwindow%2F">Sign in &rarr;</a> &mdash; one-click via email, no password. Or send the note as-is and I'll reply to your email above.</p>
+    <p>Already have an account here? <a href="/sign-in/?return=%2Fwindow%2F">Sign in</a> &mdash; you&rsquo;ll see your past notes too.</p>
   </section>
 
 <!-- window-fieldnotes-rail:start -->
