@@ -211,6 +211,15 @@
     // surface shows "Direct line is paused." Flip back to
     // "false" for an emergency rollback — KV state persists.
     "WINDOW_ENABLED": "true",
+    // Phase 1a (Window redesign) — anonymous-first send sub-flag.
+    // When "true", visitors without a session can send messages —
+    // server mints `md_anon_thread_id` cookie (HttpOnly, SameSite=Lax,
+    // 90d), creates a thread keyed by the anonId, and accepts up to
+    // MAX_ANON_MSGS_PER_DAY (5) messages with per-IP throttle on top.
+    // The identified path is unchanged. When "false" (default), the
+    // legacy 401 unauthenticated response is returned for unsigned
+    // requests. See docs/window-redesign-plan.md §2.1, §7 Phase 1a.
+    "WINDOW_ANON_ENABLED": "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.

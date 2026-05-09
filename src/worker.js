@@ -236,6 +236,15 @@ import {
   setActiveMeta as setWindowActiveMeta,
   getActiveMeta as getWindowActiveMeta,
   threadKey as windowThreadKey,
+  // Phase 1a (Window redesign) — anonymous-first send.
+  mintAnonId,
+  anonThreadKey as windowAnonThreadKey,
+  getOpenThreadForAnon,
+  createAnonThread,
+  appendMessageToAnonThread,
+  checkAndStampAnonThrottle,
+  checkAndStampIpThrottle,
+  hashIp,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 
@@ -5848,6 +5857,51 @@ function _windowGate(env) {
   return env && (env.WINDOW_ENABLED === 'true' || env.WINDOW_ENABLED === true);
 }
 
+// Phase 1a (Window redesign) — anonymous-first send.
+// Sub-flag inside the master WINDOW_ENABLED gate. Default off so the
+// path ships dark and Don can flip via `wrangler` vars when ready.
+function _windowAnonGate(env) {
+  return env && (env.WINDOW_ANON_ENABLED === 'true' || env.WINDOW_ANON_ENABLED === true);
+}
+
+const WINDOW_ANON_COOKIE_NAME = 'md_anon_thread_id';
+const WINDOW_ANON_COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
+
+// Read the anon-thread cookie from the request. Returns null if
+// missing or shape-invalid.
+function _readWindowAnonCookie(request) {
+  const raw = request && request.headers ? request.headers.get('cookie') : null;
+  if (!raw || typeof raw !== 'string') return null;
+  const parts = raw.split(';');
+  for (const part of parts) {
+    const eq = part.indexOf('=');
+    if (eq === -1) continue;
+    const name = part.slice(0, eq).trim();
+    if (name !== WINDOW_ANON_COOKIE_NAME) continue;
+    const value = part.slice(eq + 1).trim();
+    return value || null;
+  }
+  return null;
+}
+
+// Append a Set-Cookie header for the anon-thread cookie.
+// HttpOnly + SameSite=Lax + Secure + Path=/ + 90-day Max-Age.
+function _setWindowAnonCookie(headers, anonId) {
+  const cookie =
+    WINDOW_ANON_COOKIE_NAME + '=' + anonId +
+    '; HttpOnly; Secure; SameSite=Lax; Path=/' +
+    '; Max-Age=' + WINDOW_ANON_COOKIE_MAX_AGE;
+  headers.append('Set-Cookie', cookie);
+}
+
+// Read the visitor's IP from Cloudflare's CF-Connecting-IP header.
+// Returns null if absent. Used as input to hashIp() for per-IP
+// throttle (we never store the raw IP).
+function _readClientIp(request) {
+  if (!request || !request.headers) return null;
+  return request.headers.get('cf-connecting-ip') || null;
+}
+
 async function handleWindowStart(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -5855,15 +5909,32 @@ async function handleWindowStart(request, env, ctx) {
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  // Idempotent: returns existing open thread if present.
-  let thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub, auth.email); }
-    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+  // Phase 1a: try identified path first; if no session and the anon
+  // gate is on, return the anon thread (or null if none yet — first
+  // append mints the cookie).
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    let thread = await getOpenThreadForUser(env, sub);
+    if (!thread || (thread.msgCount || 0) >= 100) {
+      try { thread = await createWindowThread(env, sub, session.email); }
+      catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+    }
+    return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
   }
-  return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount }, 200);
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (anonId) {
+      const thread = await getOpenThreadForAnon(env, anonId);
+      if (thread) {
+        return jsonResponse({ ok: true, threadId: thread.id, status: thread.status, msgCount: thread.msgCount, anon: true }, 200);
+      }
+    }
+    // No cookie yet, or no thread for this cookie — let the visitor
+    // start composing; the first append mints the cookie + thread.
+    return jsonResponse({ ok: true, threadId: null, status: null, msgCount: 0, anon: true }, 200);
+  }
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
 }
 
 async function handleWindowAppend(request, env, ctx) {
@@ -5873,8 +5944,18 @@ async function handleWindowAppend(request, env, ctx) {
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
+
+  // Branch 1: identified send (existing behavior, unchanged).
+  // Branch 2 (Phase 1a): anonymous send when no session AND anon gate on.
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  const anonEnabled = _windowAnonGate(env);
+
+  if (!session && !anonEnabled) {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+  if (!session && !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
 
   let body;
   try { body = await parseFormBody(request); } catch (_) {
@@ -5886,93 +5967,189 @@ async function handleWindowAppend(request, env, ctx) {
     return jsonResponse({ ok: false, ...validated }, 400);
   }
 
-  // Throttle: 60s back-pressure + 50/day cap.
-  const t = await checkAndStampWindowThrottle(env, auth.sub);
-  if (!t.ok) {
-    return jsonResponse({ ok: false, ...t }, t.error === 'rate-limited' ? 429 : 409);
+  if (session) {
+    // ── Identified path (unchanged) ─────────────────────────────
+    const sub = session.payload.sub;
+    const email = session.email;
+
+    const t = await checkAndStampWindowThrottle(env, sub);
+    if (!t.ok) {
+      return jsonResponse({ ok: false, ...t }, t.error === 'rate-limited' ? 429 : 409);
+    }
+
+    let thread = await getOpenThreadForUser(env, sub);
+    if (!thread || (thread.msgCount || 0) >= 100) {
+      try { thread = await createWindowThread(env, sub, email); }
+      catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+    }
+
+    const result = await appendMessageToThread(env, sub, thread, 'user', sanitized);
+    if (!result.ok) {
+      return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
+    }
+
+    await pushPendingDon(env, sub, result.msg.id);
+
+    const isFirstUserMessage = (result.thread.msgCount || 0) === 1;
+    if (isFirstUserMessage) {
+      try {
+        if (env.RESEND_API_KEY && email) {
+          const isEs = (request.headers.get('accept-language') || '').toLowerCase().includes('es');
+          const tmpl = windowConfirmationEmail({
+            locale: isEs ? 'es' : 'en',
+            windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+          });
+          await sendEmail({
+            from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
+            to: email,
+            subject: tmpl.subject,
+            html: tmpl.html,
+            text: tmpl.text,
+          }, env.RESEND_API_KEY);
+        }
+      } catch (err) {
+        console.warn('[window] confirmation email failed', { msgId: result.msg.id, err: err && err.message });
+      }
+    }
+
+    console.log(JSON.stringify({ event: 'window.append', sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
+    return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
   }
 
-  // Get or create the open thread (auto-spawn new one when capped).
-  let thread = await getOpenThreadForUser(env, auth.sub);
+  // ── Anonymous path (Phase 1a) ─────────────────────────────────
+  // Mint cookie on first send if not present; reuse on subsequent sends.
+  let anonId = _readWindowAnonCookie(request);
+  let mintedNewCookie = false;
+  if (!anonId) {
+    anonId = mintAnonId();
+    mintedNewCookie = true;
+  }
+
+  // Per-anonId throttle (5/day, 60s back-pressure).
+  const aT = await checkAndStampAnonThrottle(env, anonId);
+  if (!aT.ok) {
+    return jsonResponse({ ok: false, ...aT }, aT.error === 'rate-limited' ? 429 : 409);
+  }
+
+  // Per-IP throttle (5/day) defeats cookie-cycling abuse. Best-effort
+  // — if no IP header, skips silently.
+  const clientIp = _readClientIp(request);
+  const ipHash = clientIp ? await hashIp(clientIp) : null;
+  if (ipHash) {
+    const ipT = await checkAndStampIpThrottle(env, ipHash);
+    if (!ipT.ok) {
+      return jsonResponse({ ok: false, ...ipT }, 429);
+    }
+  }
+
+  // Locale hint for the admin queue and future email templates.
+  const acceptLanguage = (request.headers.get('accept-language') || '').toLowerCase();
+  const locale = acceptLanguage.includes('es') ? 'es' : 'en';
+
+  // Get or create the anon thread (one per cookie lifetime).
+  let thread = await getOpenThreadForAnon(env, anonId);
   if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createWindowThread(env, auth.sub, auth.email); }
+    try { thread = await createAnonThread(env, anonId, locale); }
     catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
   }
 
-  const result = await appendMessageToThread(env, auth.sub, thread, 'user', sanitized);
+  const result = await appendMessageToAnonThread(env, anonId, thread, 'user', sanitized);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
 
-  // Push to Don's pending email batch (cron flushes 2-min windows).
-  await pushPendingDon(env, auth.sub, result.msg.id);
+  // Anon threads still notify Don via the pending-don batch — the
+  // batch row uses anonId as the key suffix to keep the queue
+  // shape consistent.
+  await pushPendingDon(env, anonId, result.msg.id);
 
-  // First-message-in-thread confirmation to the visitor (only fires
-  // when this is the first user message overall — not on every
-  // append). Best-effort.
-  const isFirstUserMessage = (result.thread.msgCount || 0) === 1;
-  if (isFirstUserMessage) {
-    try {
-      if (env.RESEND_API_KEY && auth.email) {
-        const isEs = (request.headers.get('accept-language') || '').toLowerCase().includes('es');
-        const tmpl = windowConfirmationEmail({
-          locale: isEs ? 'es' : 'en',
-          windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
-        });
-        await sendEmail({
-          from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
-          to: auth.email,
-          subject: tmpl.subject,
-          html: tmpl.html,
-          text: tmpl.text,
-        }, env.RESEND_API_KEY);
-      }
-    } catch (err) {
-      console.warn('[window] confirmation email failed', { msgId: result.msg.id, err: err && err.message });
-    }
+  console.log(JSON.stringify({ event: 'window.append.anon', anonId, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: (result.thread.msgCount || 0) === 1, mintedCookie: mintedNewCookie }));
+
+  const headers = new Headers({ 'content-type': 'application/json; charset=utf-8' });
+  if (mintedNewCookie) {
+    _setWindowAnonCookie(headers, anonId);
   }
-
-  console.log(JSON.stringify({ event: 'window.append', sub: auth.sub, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: isFirstUserMessage }));
-  return jsonResponse({ ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount }, 200);
+  const payload = { ok: true, threadId: thread.id, msgId: result.msg.id, createdAt: result.msg.createdAt, msgCount: result.thread.msgCount, anon: true };
+  return new Response(JSON.stringify(payload), { status: 200, headers });
 }
 
 async function handleWindowThread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  const thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread) {
-    return jsonResponse({ ok: true, thread: null, messages: [] }, 200);
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    const thread = await getOpenThreadForUser(env, sub);
+    if (!thread) {
+      return jsonResponse({ ok: true, thread: null, messages: [] }, 200);
+    }
+    const messages = await listThreadMessages(env, thread.id, 100);
+    if (thread.unreadByUser) {
+      thread.unreadByUser = false;
+      await env.AUTH_SESSIONS.put(windowThreadKey(sub, thread.id), JSON.stringify(thread));
+    }
+    return jsonResponse({ ok: true, thread, messages }, 200);
   }
-  const messages = await listThreadMessages(env, thread.id, 100);
-  // Mark unread-by-user clear when the user reads.
-  if (thread.unreadByUser) {
-    thread.unreadByUser = false;
-    await env.AUTH_SESSIONS.put(windowThreadKey(auth.sub, thread.id), JSON.stringify(thread));
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: true, thread: null, messages: [], anon: true }, 200);
+    }
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (!thread) {
+      return jsonResponse({ ok: true, thread: null, messages: [], anon: true }, 200);
+    }
+    const messages = await listThreadMessages(env, thread.id, 100);
+    if (thread.unreadByUser) {
+      thread.unreadByUser = false;
+      await env.AUTH_SESSIONS.put(windowAnonThreadKey(anonId), JSON.stringify(thread));
+    }
+    return jsonResponse({ ok: true, thread, messages, anon: true }, 200);
   }
-  return jsonResponse({ ok: true, thread, messages }, 200);
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
 }
 
 async function handleWindowPoll(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  const auth = await _requireWorkbenchSession(request, env);
-  if (auth.error) return auth.error;
-  const thread = await getOpenThreadForUser(env, auth.sub);
-  if (!thread) {
-    return jsonResponse({ ok: true, hasThread: false }, 200);
+  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  if (session) {
+    const sub = session.payload.sub;
+    const thread = await getOpenThreadForUser(env, sub);
+    if (!thread) {
+      return jsonResponse({ ok: true, hasThread: false }, 200);
+    }
+    return jsonResponse({
+      ok: true,
+      hasThread: true,
+      threadId: thread.id,
+      updatedAt: thread.updatedAt,
+      msgCount: thread.msgCount,
+      unreadByUser: !!thread.unreadByUser,
+    }, 200);
   }
-  return jsonResponse({
-    ok: true,
-    hasThread: true,
-    threadId: thread.id,
-    updatedAt: thread.updatedAt,
-    msgCount: thread.msgCount,
-    unreadByUser: !!thread.unreadByUser,
-  }, 200);
+  if (_windowAnonGate(env)) {
+    const anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      return jsonResponse({ ok: true, hasThread: false, anon: true }, 200);
+    }
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (!thread) {
+      return jsonResponse({ ok: true, hasThread: false, anon: true }, 200);
+    }
+    return jsonResponse({
+      ok: true,
+      hasThread: true,
+      threadId: thread.id,
+      updatedAt: thread.updatedAt,
+      msgCount: thread.msgCount,
+      unreadByUser: !!thread.unreadByUser,
+      anon: true,
+    }, 200);
+  }
+  return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
 }
 
 async function handleWindowActive(request, env, ctx) {

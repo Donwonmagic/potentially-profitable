@@ -328,13 +328,14 @@
         els.body.value = '';
         updateCounter();
         showMsg(copy.sent, false);
-        // Phase 0 baseline: count successful sends so the Phase 1
-        // anonymous-first lift is measurable. Today every send is
-        // 'identified' (auth-required); when Phase 1 ships, the same
-        // event splits into anon vs identified without instrumentation
-        // churn. See docs/window-redesign-plan.md §9.6.
+        // Differentiate anon vs identified sends so the Phase 1a
+        // anonymous-first lift is measurable. Server returns
+        // `anon:true` when the response was minted on the anon
+        // path; identified responses don't carry that flag.
+        // See docs/window-redesign-plan.md §9.6.
         try {
-          window.plausible && window.plausible('Window Send', { props: { kind: 'identified', locale: locale } });
+          var sendKind = (res.body && res.body.anon) ? 'anon' : 'identified';
+          window.plausible && window.plausible('Window Send', { props: { kind: sendKind, locale: locale } });
         } catch (_) { /* analytics blocked or not loaded; do nothing */ }
         // Re-fetch thread to render the new message.
         return loadThread();

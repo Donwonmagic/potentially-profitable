@@ -42,10 +42,22 @@ export const THROTTLE_KEY_PREFIX      = 'window:throttle:';
 export const PENDING_DON_KEY_PREFIX   = 'window:pending-don:';
 export const META_ACTIVE_KEY          = 'window:meta:active';
 
+// Phase 1a (Window redesign) — anonymous-first send keys.
+// Anon threads are cookie-bound (md_anon_thread_id, see worker.js).
+// The cookie's anonId IS the thread index — one thread per cookie
+// lifetime. Message keys remain sub-agnostic (window:msg:<threadId>:
+// <msgId>) so a future migration to a sub-keyed thread is a
+// single-thread-row write, not a bulk re-key. See
+// docs/window-redesign-plan.md §2.1 + §2.3.
+export const THREAD_KEY_PREFIX_ANON   = 'window:thread:anon:';
+export const THROTTLE_KEY_PREFIX_ANON = 'window:throttle:anon:';
+export const THROTTLE_KEY_PREFIX_IP   = 'window:throttle:ip:';
+
 export const MAX_MSG_LENGTH         = 4000;
 export const MIN_MSG_LENGTH         = 1;
 export const MAX_MSGS_PER_THREAD    = 100;
 export const MAX_MSGS_PER_DAY       = 50;
+export const MAX_ANON_MSGS_PER_DAY  = 5;   // tighter cap for unidentified anons
 export const APPEND_BACK_PRESSURE_MS = 60 * 1000;
 export const THROTTLE_TTL_SEC       = 48 * 3600;
 export const PENDING_DON_TTL_SEC    = 5 * 60;
@@ -237,13 +249,21 @@ async function upsertAdminIndex(env, thread) {
   if (!Array.isArray(row.entries)) row.entries = [];
   // Replace any prior entry for this thread in the same bucket.
   row.entries = row.entries.filter((e) => e.threadId !== thread.id);
-  row.entries.push({
+  // Anon threads carry `kind:'anon'` and `anonId` instead of `sub`.
+  // Admin queue consumers branch on `kind` (or `sub == null`) to
+  // render the "not signed in" chip.
+  const entry = {
     threadId: thread.id,
-    sub: thread.sub,
+    sub: thread.sub || null,
     updatedAt: thread.updatedAt,
     unreadByAdmin: !!thread.unreadByAdmin,
     status: thread.status,
-  });
+  };
+  if (thread.kind === 'anon' || thread.anonId) {
+    entry.kind = 'anon';
+    entry.anonId = thread.anonId;
+  }
+  row.entries.push(entry);
   await env.AUTH_SESSIONS.put(key, JSON.stringify(row));
 }
 
@@ -352,4 +372,187 @@ export async function getActiveMeta(env) {
   const raw = await env.AUTH_SESSIONS.get(META_ACTIVE_KEY);
   if (!raw) return null;
   try { return JSON.parse(raw); } catch { return null; }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Phase 1a (Window redesign) — Anonymous-first send.
+//
+// Anon threads are cookie-bound (md_anon_thread_id, see worker.js).
+// The cookie's anonId IS the per-user index — one thread per cookie
+// lifetime. The internal threadId is minted distinct from anonId so
+// a future claim-via-magic-link migration preserves the threadId
+// across the rekey from anon-prefix to sub-prefix.
+//
+// Message keys remain sub-agnostic (`window:msg:<threadId>:<msgId>`)
+// so a claim is a single thread-row write, not a bulk re-key.
+//
+// Lower per-day cap (5 vs 50) because anon identity is unverified.
+// Per-IP throttle on top defeats cookie-cycling abuse.
+//
+// Reference: docs/window-redesign-plan.md §2.1, §2.3.
+
+export const mintAnonId = mintSaveItemId;
+
+export function anonThreadKey(anonId) {
+  return THREAD_KEY_PREFIX_ANON + anonId;
+}
+
+export function anonThrottleKey(anonId) {
+  return THROTTLE_KEY_PREFIX_ANON + anonId;
+}
+
+export function ipThrottleKey(ipHash) {
+  return THROTTLE_KEY_PREFIX_IP + ipHash;
+}
+
+// SHA-256 hex of an IP address. The key-suffix for per-IP throttling
+// on anon paths so we don't write raw IPs into KV.
+export async function hashIp(ip) {
+  if (!ip) return null;
+  const enc = new TextEncoder().encode(String(ip));
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let out = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    out += h.length === 1 ? '0' + h : h;
+  }
+  return out;
+}
+
+// Returns the anon thread for an anonId or null. anonId IS the index;
+// no scanning needed.
+export async function getOpenThreadForAnon(env, anonId) {
+  if (!isValidSaveItemIdShape(anonId)) return null;
+  const raw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!raw) return null;
+  try {
+    const t = JSON.parse(raw);
+    if (t.status === 'open' || t.status === 'closed') return t;
+  } catch (_) { /* drop */ }
+  return null;
+}
+
+// Create an anon thread. Stores under `window:thread:anon:<anonId>`.
+// `locale` (optional) is recorded so the admin queue + email
+// templates can branch.
+export async function createAnonThread(env, anonId, locale = null) {
+  if (!isValidSaveItemIdShape(anonId)) throw new Error('invalid-anon-id');
+  let id = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintThreadId();
+    // Best-effort uniqueness probe via the message-key prefix (msg
+    // keys are global per threadId). Acceptable at 49-bit entropy.
+    const probe = await env.AUTH_SESSIONS.list({ prefix: MSG_KEY_PREFIX + candidate + ':', limit: 1 });
+    if (!probe.keys || probe.keys.length === 0) { id = candidate; break; }
+  }
+  if (!id) throw new Error('mint-collision');
+  const now = Date.now();
+  const thread = {
+    id,
+    kind: 'anon',
+    anonId,
+    sub: null,
+    email: null,
+    locale: locale || null,
+    status: 'open',
+    createdAt: now,
+    updatedAt: now,
+    msgCount: 0,
+    unreadByUser: false,
+    unreadByAdmin: false,
+  };
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+  return thread;
+}
+
+// Same body validation + thread-cap behavior as appendMessageToThread
+// but writes to anonThreadKey + admin index entry tagged with anonId.
+// Message keys remain sub-agnostic so a future claim is a single-row
+// rewrite of the thread metadata, not a bulk re-key.
+export async function appendMessageToAnonThread(env, anonId, thread, from, body) {
+  if (thread.status === 'archived') {
+    return { ok: false, error: 'thread-archived' };
+  }
+  if ((thread.msgCount || 0) >= MAX_MSGS_PER_THREAD) {
+    return { ok: false, error: 'thread-full', max: MAX_MSGS_PER_THREAD };
+  }
+  let msgId = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const candidate = mintMessageId();
+    const probe = await env.AUTH_SESSIONS.get(msgKey(thread.id, candidate));
+    if (!probe) { msgId = candidate; break; }
+  }
+  if (!msgId) return { ok: false, error: 'mint-collision' };
+  const now = Date.now();
+  const msg = { id: msgId, threadId: thread.id, anonId, from, body, createdAt: now };
+  await env.AUTH_SESSIONS.put(msgKey(thread.id, msgId), JSON.stringify(msg));
+
+  thread.msgCount = (thread.msgCount || 0) + 1;
+  thread.updatedAt = now;
+  if (from === 'user') {
+    thread.lastUserMsgAt = now;
+    thread.unreadByAdmin = true;
+    if (thread.status === 'closed') thread.status = 'open';
+  } else {
+    thread.lastDonReplyAt = now;
+    thread.unreadByUser = true;
+  }
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+
+  await upsertAdminIndex(env, thread);
+
+  return { ok: true, msg, thread };
+}
+
+// Per-anonId throttle. 5/day cap (vs 50/day for identified) shares
+// the 60s back-pressure window with the identified path so a
+// signed-in operator who started anon doesn't double-rate-limit.
+export async function checkAndStampAnonThrottle(env, anonId) {
+  const now = Date.now();
+  const today = dayBucket(now);
+  const raw = await env.AUTH_SESSIONS.get(anonThrottleKey(anonId));
+  let row = { lastUserMsgAt: 0, dayCount: 0, dayBucket: today };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  if (row.dayBucket !== today) {
+    row.dayBucket = today;
+    row.dayCount = 0;
+  }
+  const elapsed = now - (row.lastUserMsgAt || 0);
+  if (elapsed < APPEND_BACK_PRESSURE_MS) {
+    return { ok: false, error: 'rate-limited', retryAfter: Math.ceil((APPEND_BACK_PRESSURE_MS - elapsed) / 1000) };
+  }
+  if (row.dayCount >= MAX_ANON_MSGS_PER_DAY) {
+    return { ok: false, error: 'day-cap-reached', max: MAX_ANON_MSGS_PER_DAY };
+  }
+  row.lastUserMsgAt = now;
+  row.dayCount = (row.dayCount || 0) + 1;
+  await env.AUTH_SESSIONS.put(anonThrottleKey(anonId), JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
+}
+
+// Per-IP throttle — defeats cookie-cycling abuse. 5/day cap on the
+// IP-hash regardless of how many anon cookies cycled. Returns ok
+// without writing if no IP is available (best-effort).
+export async function checkAndStampIpThrottle(env, ipHash) {
+  if (!ipHash) return { ok: true };
+  const now = Date.now();
+  const today = dayBucket(now);
+  const raw = await env.AUTH_SESSIONS.get(ipThrottleKey(ipHash));
+  let row = { dayCount: 0, dayBucket: today };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  if (row.dayBucket !== today) {
+    row.dayBucket = today;
+    row.dayCount = 0;
+  }
+  if (row.dayCount >= MAX_ANON_MSGS_PER_DAY) {
+    return { ok: false, error: 'day-cap-reached', max: MAX_ANON_MSGS_PER_DAY };
+  }
+  row.dayCount = (row.dayCount || 0) + 1;
+  await env.AUTH_SESSIONS.put(ipThrottleKey(ipHash), JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
 }
