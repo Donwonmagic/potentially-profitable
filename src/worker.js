@@ -254,6 +254,7 @@ import {
   detectCrisisTier,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
+import { sendCrisisSms } from './lib/sms.js';
 
 
 // ------------------------------------------------------------
@@ -6117,6 +6118,22 @@ async function handleWindowAppend(request, env, ctx) {
     }
     if (crisisTier) {
       console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'identified', tier: crisisTier, sub, threadId: thread.id, msgId: result.msg.id }));
+      // Phase 2.5 — Twilio SMS to Don for tier-1. Best-effort: a
+      // fetch failure here doesn't fail the send. Rate-limited 3/hr.
+      if (crisisTier === 'tier1') {
+        ctx.waitUntil((async () => {
+          try {
+            const out = await sendCrisisSms(env, (sub || 'visitor').slice(0, 8), sanitized);
+            if (!out.ok) {
+              console.warn('[window] crisis-sms', { kind: 'identified', threadId: thread.id, msgId: result.msg.id, skipped: out.skipped || null, error: out.error || null });
+            } else {
+              console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'identified', threadId: thread.id, msgId: result.msg.id, sid: out.sid }));
+            }
+          } catch (err) {
+            console.warn('[window] crisis-sms threw', { err: err && err.message });
+          }
+        })());
+      }
     }
 
     await pushPendingDon(env, sub, result.msg.id);
@@ -6221,6 +6238,20 @@ async function handleWindowAppend(request, env, ctx) {
   }
   if (crisisTier) {
     console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'anon', tier: crisisTier, anonId, threadId: thread.id, msgId: result.msg.id }));
+    if (crisisTier === 'tier1') {
+      ctx.waitUntil((async () => {
+        try {
+          const out = await sendCrisisSms(env, (anonId || 'visitor').slice(0, 8) + ' (anon)', sanitized);
+          if (!out.ok) {
+            console.warn('[window] crisis-sms', { kind: 'anon', threadId: thread.id, msgId: result.msg.id, skipped: out.skipped || null, error: out.error || null });
+          } else {
+            console.log(JSON.stringify({ event: 'window.crisis-sms.sent', kind: 'anon', threadId: thread.id, msgId: result.msg.id, sid: out.sid }));
+          }
+        } catch (err) {
+          console.warn('[window] crisis-sms threw', { err: err && err.message });
+        }
+      })());
+    }
   }
 
   // Anon threads notify Don via the pending-don batch tagged with

@@ -50,4 +50,35 @@ unreadable until the flag flips back on).
 
 ---
 
+## ⏳ PENDING — Phase 2.5 Twilio SMS dispatch (crisis tier 1)
+
+**Status:** code shipped; secrets not yet provisioned. Until the four
+secrets land, `sendCrisisSms` returns `{ skipped: 'sms-not-configured' }`
+on every call — feature stays dark.
+
+**Commit:** `<TBD>` (Phase 2.5 — Twilio crisis SMS)
+
+**Required secrets (set via `wrangler secret put`):**
+
+```bash
+wrangler secret put WINDOW_CRISIS_SMS_TO       # Don's cell, E.164 (e.g., +19499693876)
+wrangler secret put TWILIO_ACCOUNT_SID         # Twilio account SID
+wrangler secret put TWILIO_AUTH_TOKEN          # Twilio auth token
+wrangler secret put TWILIO_FROM                # Twilio from number, E.164
+```
+
+**Behavior:** when a Window message contains a Tier 1 crisis keyword
+("kill myself", "end my life", "suicide", ES "suicidio", etc.), the
+worker fires an SMS to Don's number with the format
+`[Window/urgent] {sender label} — {first 80 chars of message}`.
+Rate-limited 3/hour to defeat SMS-DoS.
+
+**Rollback:** delete any of the four secrets via
+`wrangler secret delete WINDOW_CRISIS_SMS_TO` — the helper short-circuits
+on missing config and SMS dispatch silently no-ops.
+
+**Cost:** Twilio US SMS ≈ $0.0079/msg + ~$1.15/mo for the from-number.
+At the 3/hr rate cap, the absolute worst case is 72 messages/day =
+~$0.57/day if every hour saw a tier1.
+
 ## (No other checkpoints currently pending)
