@@ -62,7 +62,7 @@
 
   var els = {
     paused:     document.getElementById('windowPaused'),
-    hero:       document.getElementById('windowHero'),
+    hero:       document.getElementById('windowHero'), // legacy — Phase 2.1 removed; null is fine
     pulse:      document.getElementById('windowPulse'),
     thread:     document.getElementById('windowThread'),
     threadEmpty: document.getElementById('windowThreadEmpty'),
@@ -74,16 +74,84 @@
     msg:        document.getElementById('windowMsg'),
     onramps:    document.getElementById('windowOnramps'),
     signin:     document.getElementById('windowSignin'),
-    // Phase-2 redesign — optional context inputs above the textarea.
+    // Phase-2 redesign — optional context inputs (now inside <details>).
     // Prepended into the body on submit so the worker's payload
     // schema is unchanged. Persisted in localStorage so a returning
     // operator doesn't retype.
     name:       document.getElementById('windowName'),
     restaurant: document.getElementById('windowRestaurant'),
     site:       document.getElementById('windowSite'),
+    contextDetails: document.getElementById('windowContextDetails'),
+    // Phase 2.1 additions — pre-rendered, JS reveals/wires.
+    crisis:     document.getElementById('windowCrisis'),
+    mic:        document.getElementById('windowMic'),
+    currents:   document.getElementById('windowCurrents'),
+    sash:       document.getElementById('windowSash'),
   };
 
   var CONTEXT_STORAGE_KEY = 'md_window_context_v1';
+  var CRISIS_DEBOUNCE_MS = 600;
+
+  // Phase 2.2 — crisis-keyword detection (composer-side mirror of
+  // server-side detectCrisisTier in src/lib/window.js). Tier 1 only:
+  // the operator-facing referral line reveals BEFORE send so resources
+  // land before the decision to send to Don. Tier 2 is server-only
+  // (admin-internal flag).
+  //
+  // Keep this list narrow — false positives are acceptable (the line
+  // is just a quiet referral; it doesn't block send) but the line
+  // shouldn't fire on poetic figures of speech. Mirrors plan §3.12.
+  var CRISIS_TIER1_KEYWORDS = [
+    'kill myself', 'kill my self',
+    'end my life', 'end it all',
+    "can't keep going", 'cant keep going',
+    "can't go on", 'cant go on',
+    'hurt myself', 'harm myself',
+    'suicide', 'suicidal',
+    'suicidio', 'suicida',
+    'quitarme la vida', 'quitar la vida',
+    'acabar con todo', 'acabar conmigo',
+    'no aguanto más', 'no aguanto mas',
+  ];
+
+  function detectClientCrisis(body) {
+    if (typeof body !== 'string' || !body) return false;
+    var lower = body.toLowerCase();
+    for (var i = 0; i < CRISIS_TIER1_KEYWORDS.length; i++) {
+      if (lower.indexOf(CRISIS_TIER1_KEYWORDS[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  // Phase 2.2 — chip-keyed artifact map for the success-state contextual
+  // link. The chip the operator clicked tells us roughly what they're
+  // here for; the success state hands them one specific reading while
+  // they wait for Don's reply. Plan §3.7 + §9.1.
+  var CHIP_ARTIFACTS = {
+    en: {
+      'not-sure': { url: '/learn/start-here/', label: "While you wait — here's where I'd start." },
+      'not-ready': { url: '/glossary/audit/', label: "While you wait — what an audit actually does." },
+      'new-site':  { url: '/studio/', label: 'While you wait — the room I work in.' },
+      'audit':     { url: '/tools/storefront-health/', label: 'While you wait — run the free storefront check.' },
+      'care':      { url: '/studio/care-plan-light/', label: 'While you wait — what Care Plan covers.' },
+      'else':      { url: '/blog/', label: "While you wait — what I've been writing about." },
+      _default:    { url: '/blog/', label: "While you wait — what I've been writing about." },
+    },
+    es: {
+      'not-sure': { url: '/es/learn/start-here/', label: 'Mientras esperas — por dónde yo empezaría.' },
+      'not-ready': { url: '/es/glossary/audit/', label: 'Mientras esperas — qué hace un diagnóstico.' },
+      'new-site':  { url: '/es/studio/', label: 'Mientras esperas — el local en el que trabajo.' },
+      'audit':     { url: '/es/tools/storefront-health/', label: 'Mientras esperas — corre el chequeo gratis.' },
+      'care':      { url: '/es/studio/care-plan-light/', label: 'Mientras esperas — qué cubre el Plan.' },
+      'else':      { url: '/es/blog/', label: 'Mientras esperas — sobre qué he estado escribiendo.' },
+      _default:    { url: '/es/blog/', label: 'Mientras esperas — sobre qué he estado escribiendo.' },
+    },
+  };
+
+  // Track which chip the operator last tapped (or null when they
+  // typed without clicking a chip). Keyed off the position so the
+  // CHIP_ARTIFACTS lookup is stable even if chip copy changes.
+  var lastChipKey = null;
 
   function loadContextFromStorage() {
     try {
@@ -336,7 +404,15 @@
       if (res.status === 200 && res.body.ok) {
         els.body.value = '';
         updateCounter();
-        showMsg(copy.sent, false);
+        // Phase 2.2 — success state with artifact + contextual link
+        // (replaces the prior "Sent it. Don has the note." line).
+        // Plan §3.7. The crisis line stays visible if it was up
+        // before send (so the resources travel with the operator
+        // into the wait).
+        showSuccessState();
+        // Reset chip-key tracking so a follow-up send doesn't
+        // mis-route to the prior chip's artifact.
+        lastChipKey = null;
         // Differentiate anon vs identified sends so the Phase 1a
         // anonymous-first lift is measurable. Server returns
         // `anon:true` when the response was minted on the anon
@@ -373,6 +449,27 @@
   function updateCounter() {
     if (!els.counter || !els.body) return;
     els.counter.textContent = copy.counterFmt(els.body.value.length);
+    // Phase 2.1 spec — counter only renders at >87.5% of cap (>3500
+    // chars). Below that, it stays hidden so the row is uncluttered.
+    var threshold = Math.floor(4000 * 0.875);
+    els.counter.hidden = els.body.value.length < threshold;
+  }
+
+  // Phase 2.2 — chip-key derivation for the success-state artifact.
+  // Reads from the chip's class list / data attribute; falls back to
+  // position. Deliberately not coupled to chip copy.
+  function chipKeyFor(btn) {
+    if (!btn) return null;
+    var data = btn.getAttribute('data-chip-key');
+    if (data) return data;
+    // Fallback: derive from position in the onramp row.
+    var siblings = els.onramps ? els.onramps.querySelectorAll('.window-onramp') : [];
+    for (var i = 0; i < siblings.length; i++) {
+      if (siblings[i] === btn) {
+        return ['not-sure', 'not-ready', 'new-site', 'audit', 'care', 'else'][i] || 'else';
+      }
+    }
+    return 'else';
   }
 
   function bindOnramps() {
@@ -380,6 +477,8 @@
     els.onramps.querySelectorAll('.window-onramp').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var prepend = btn.getAttribute('data-prepend') || '';
+        // Track for the success-state artifact lookup.
+        lastChipKey = chipKeyFor(btn);
         if (els.body) {
           els.body.value = prepend + (els.body.value || '');
           els.body.focus();
@@ -387,9 +486,70 @@
           var end = els.body.value.length;
           els.body.setSelectionRange(end, end);
           updateCounter();
+          maybeShowCrisis();
         }
       });
     });
+  }
+
+  // Phase 2.2 — composer-side crisis line, debounced 600ms after the
+  // last keystroke. Reveals when Tier-1 keywords appear; hides when
+  // they're deleted. Never blocks send. Plan §3.12.
+  var crisisDebounceTimer = null;
+  function maybeShowCrisis() {
+    if (!els.crisis || !els.body) return;
+    if (crisisDebounceTimer) clearTimeout(crisisDebounceTimer);
+    crisisDebounceTimer = setTimeout(function () {
+      var hit = detectClientCrisis(els.body.value);
+      els.crisis.hidden = !hit;
+    }, CRISIS_DEBOUNCE_MS);
+  }
+
+  // Phase 2.2 — new success state. Replaces the v3-pre 2.5s
+  // reveal-fade-restore (audit and conversion review both flagged
+  // it as breaking the iMessage loop). Inline confirmation that
+  // stays. The "Drop your email" upgrade is gone — the email
+  // arrives because Don replies; the page does not need to ask.
+  // Plan §3.7 + §3.11.
+  function showSuccessState() {
+    if (!els.msg) return;
+    var locale_ = locale;
+    var artifactMap = CHIP_ARTIFACTS[locale_] || CHIP_ARTIFACTS.en;
+    var artifact = artifactMap[lastChipKey || '_default'] || artifactMap._default;
+    var thanks = locale_ === 'es'
+      ? 'Eso cuesta. Gracias por escribir.'
+      : 'That took something. Thank you for writing.';
+
+    // Clear + style the message area + build content via DOM
+    // (no innerHTML on operator-derived content; this content is
+    // page-authored so it's safe but we keep the textContent
+    // discipline as house style — plan §5.6 rule 11 textContent-only).
+    while (els.msg.firstChild) els.msg.removeChild(els.msg.firstChild);
+    els.msg.classList.remove('error');
+    els.msg.style.background = 'var(--cream-2)';
+    els.msg.style.borderLeft = '3px solid var(--teal)';
+    els.msg.style.color = 'var(--ink)';
+
+    var thanksLine = document.createElement('span');
+    thanksLine.style.display = 'block';
+    thanksLine.style.fontWeight = '500';
+    thanksLine.textContent = thanks;
+    els.msg.appendChild(thanksLine);
+
+    var artifactLine = document.createElement('span');
+    artifactLine.style.display = 'block';
+    artifactLine.style.marginTop = '8px';
+    artifactLine.style.fontStyle = 'italic';
+    artifactLine.style.fontSize = '13px';
+    var link = document.createElement('a');
+    link.href = artifact.url;
+    link.textContent = artifact.label;
+    link.style.color = 'var(--teal)';
+    link.style.fontWeight = '500';
+    artifactLine.appendChild(link);
+    els.msg.appendChild(artifactLine);
+
+    els.msg.hidden = false;
   }
 
   // Boot: check auth, then either load identified thread or fall
@@ -416,7 +576,12 @@
     });
 
   if (els.form) els.form.addEventListener('submit', submit);
-  if (els.body) els.body.addEventListener('input', updateCounter);
+  if (els.body) {
+    els.body.addEventListener('input', function () {
+      updateCounter();
+      maybeShowCrisis();
+    });
+  }
   bindOnramps();
   // Phase-2 redesign — boot the optional context fields.
   loadContextFromStorage();
