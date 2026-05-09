@@ -81,4 +81,35 @@ on missing config and SMS dispatch silently no-ops.
 At the 3/hr rate cap, the absolute worst case is 72 messages/day =
 ~$0.57/day if every hour saw a tier1.
 
+## ⏳ PENDING — Phase 2.6 Resend bounce webhook
+
+**Status:** code shipped; Resend webhook + secret not yet provisioned.
+Without `RESEND_WEBHOOK_SECRET`, the endpoint returns 503; without the
+Resend dashboard pointing at us, no bounces ever land — the bounce
+ledger stays empty and admin replies email through normally.
+
+**Required:**
+
+```bash
+# 1. Cloudflare secret
+wrangler secret put RESEND_WEBHOOK_SECRET    # value: whsec_... from Resend dashboard
+
+# 2. Resend dashboard webhook
+#    URL: https://muntin.digital/api/webhook/resend-bounce
+#    Events: email.bounced, email.complained
+#    Method: POST (default)
+#    Auth: Svix-style signing (Resend's default)
+```
+
+**Behavior:** when Resend webhooks a bounce/complaint to us, the
+worker verifies the svix-signature header against the secret, hashes
+the recipient email, and writes `window:bounce:<emailHash>` with
+90-day TTL. The admin reply path skips the outbound email when this
+key exists (logs `window.reply.bounce-skipped`); the visitor still
+sees Don's reply on next /window/ poll.
+
+**Rollback:** delete the Resend webhook in the dashboard, or
+`wrangler secret delete RESEND_WEBHOOK_SECRET` (endpoint then 503's
+on every POST). Existing bounce KV rows expire on their 90-day TTL.
+
 ## (No other checkpoints currently pending)

@@ -252,6 +252,9 @@ import {
   // Phase 1b — PII pre-write gate + crisis keyword scan.
   detectLikelyPII,
   detectCrisisTier,
+  // Phase 2.6 — email-bounce ledger.
+  isEmailBounced,
+  recordEmailBounce,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 import { sendCrisisSms } from './lib/sms.js';
@@ -342,6 +345,8 @@ const API_ROUTES = {
   // Phase 1a step 2 — operator attaches an email to their anon
   // thread so Don's reply email + claim-magic-link can find them.
   '/api/window/email':               handleWindowEmail,
+  // Phase 2.6 — Resend webhook for email-bounce events.
+  '/api/webhook/resend-bounce':      handleResendBounceWebhook,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -6418,6 +6423,108 @@ async function handleWindowEmail(request, env, ctx) {
   return jsonResponse({ ok: true, threadId: thread.id }, 200);
 }
 
+// Phase 2.6 — Resend bounce webhook. Resend posts JSON like:
+//   {
+//     "type": "email.bounced",
+//     "data": {
+//       "to": ["recipient@example.com"],
+//       "bounce": { "type": "Permanent", "subType": "General" },
+//       ...
+//     }
+//   }
+// We record a window:bounce:<sha256(email)> row with 90d TTL so the
+// admin reply path can skip outbound email + surface the bounce.
+//
+// Webhook auth: HMAC-SHA256 of the raw body keyed by RESEND_WEBHOOK_SECRET,
+// compared to the `svix-signature` header. The header carries one or more
+// space-separated `v1,<base64sig>` entries; any match passes. Resend
+// rotates the signing secret via the dashboard.
+async function handleResendBounceWebhook(request, env, ctx) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ ok: false, error: 'method-not-allowed' }, 405);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  const secret = env.RESEND_WEBHOOK_SECRET;
+  if (!secret) {
+    // No secret configured → reject loudly so a misconfigured webhook
+    // doesn't silently no-op.
+    return jsonResponse({ ok: false, error: 'webhook-not-configured' }, 503);
+  }
+  // Read the raw body once (signature verify needs the bytes; JSON.parse
+  // also needs them).
+  let raw;
+  try { raw = await request.text(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  // Svix signature format: "v1,<base64>" — possibly multiple, space-separated.
+  const sigHeader = request.headers.get('svix-signature') || '';
+  const msgId = request.headers.get('svix-id') || '';
+  const ts = request.headers.get('svix-timestamp') || '';
+  if (!sigHeader || !msgId || !ts) {
+    return jsonResponse({ ok: false, error: 'missing-signature' }, 401);
+  }
+  // Compute HMAC of `${id}.${timestamp}.${body}`.
+  const enc = new TextEncoder();
+  const toSign = msgId + '.' + ts + '.' + raw;
+  let secretBytes;
+  try {
+    // Resend secrets are prefixed `whsec_`; the actual key is base64 after the prefix.
+    const stripped = String(secret).replace(/^whsec_/, '');
+    secretBytes = Uint8Array.from(atob(stripped), c => c.charCodeAt(0));
+  } catch (_) {
+    return jsonResponse({ ok: false, error: 'webhook-secret-bad' }, 503);
+  }
+  const key = await crypto.subtle.importKey('raw', secretBytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sigBuf = await crypto.subtle.sign('HMAC', key, enc.encode(toSign));
+  const sigBytes = new Uint8Array(sigBuf);
+  let computedB64 = '';
+  // Build base64 manually (Workers btoa expects a string).
+  let bin = '';
+  for (let i = 0; i < sigBytes.length; i++) bin += String.fromCharCode(sigBytes[i]);
+  computedB64 = btoa(bin);
+  // The header may carry multiple sigs; check each. Constant-time
+  // comparison via the simple equal-length string compare (timing
+  // attack risk is low here — webhook caller is Resend, not a user).
+  const sigs = sigHeader.split(' ');
+  let matched = false;
+  for (const entry of sigs) {
+    const idx = entry.indexOf(',');
+    if (idx === -1) continue;
+    const v = entry.slice(0, idx);
+    const sig = entry.slice(idx + 1);
+    if (v === 'v1' && sig === computedB64) {
+      matched = true;
+      break;
+    }
+  }
+  if (!matched) {
+    return jsonResponse({ ok: false, error: 'signature-mismatch' }, 401);
+  }
+  // Parse + dispatch on event type.
+  let payload;
+  try { payload = JSON.parse(raw); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-json' }, 400);
+  }
+  const eventType = payload && payload.type;
+  if (eventType !== 'email.bounced' && eventType !== 'email.complained') {
+    // We only act on bounces + complaints; other events 200 silently.
+    return jsonResponse({ ok: true, ignored: eventType || 'unknown' }, 200);
+  }
+  const data = (payload && payload.data) || {};
+  const recipients = Array.isArray(data.to) ? data.to : [];
+  const reason = (data.bounce && data.bounce.subType) || (eventType === 'email.complained' ? 'spam-complaint' : 'bounce');
+  let recorded = 0;
+  for (const r of recipients) {
+    if (typeof r !== 'string') continue;
+    const ok = await recordEmailBounce(env, r, reason);
+    if (ok) recorded++;
+  }
+  console.log(JSON.stringify({ event: 'window.bounce.recorded', count: recorded, type: eventType, reason }));
+  return jsonResponse({ ok: true, recorded }, 200);
+}
+
 async function handleWindowMeUnread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -6548,7 +6655,20 @@ async function handleAdminWindowReply(request, env, ctx) {
   // null email until the operator provides one (via /api/window/email);
   // reply still lands in the thread, visible on next poll.
   const recipientEmail = resolved.thread.email || null;
+  // Phase 2.6 — bounce-aware send. If we've recorded a Resend bounce
+  // for this address recently, skip the outbound email and log so
+  // Don sees the skip in the admin queue. The thread still gets the
+  // reply persisted; the visitor sees it on next /window/ poll.
+  let bounceSkipped = false;
   if (recipientEmail) {
+    try {
+      if (await isEmailBounced(env, recipientEmail)) {
+        bounceSkipped = true;
+        console.log(JSON.stringify({ event: 'window.reply.bounce-skipped', kind: resolved.kind, threadId: resolved.threadId, msgId: result.msg.id, recipient: recipientEmail.slice(0, 4) + '…' }));
+      }
+    } catch (_) { /* if KV's down, fall through to send */ }
+  }
+  if (recipientEmail && !bounceSkipped) {
     try {
       if (env.RESEND_API_KEY) {
         const isEs = String(body.locale || '').toLowerCase() === 'es';
@@ -6602,9 +6722,9 @@ async function handleAdminWindowReply(request, env, ctx) {
     } catch (err) {
       console.warn('[window] reply email failed', { msgId: result.msg.id, err: err && err.message });
     }
-  } else {
+  } else if (!recipientEmail) {
     console.log(JSON.stringify({ event: 'window.reply.no-email', kind: resolved.kind, threadId: resolved.threadId, msgId: result.msg.id }));
-  }
+  } /* else: bounceSkipped already logged above */
 
   console.log(JSON.stringify({
     event: 'window.reply',

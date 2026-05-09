@@ -859,6 +859,66 @@ export function detectCrisisTier(body) {
   return null;
 }
 
+// Phase 2.6 — email-bounce ledger. Resend webhook writes a row
+// per bounced address (key: window:bounce:<sha256(email)>) so the
+// admin reply path can skip the outbound email and surface the
+// bounce in the admin queue. 90-day TTL so a transient bounce
+// doesn't blackhole the operator forever; if Don knows the address
+// is good, he can manually delete the KV row.
+//
+// Plan §2.6 + §11.3.
+export const BOUNCE_KEY_PREFIX = 'window:bounce:';
+export const BOUNCE_TTL_SEC = 90 * 24 * 3600;
+
+export function bounceKey(emailHash) {
+  return BOUNCE_KEY_PREFIX + emailHash;
+}
+
+// Check whether an email address has bounced recently. Caller passes
+// the plaintext email; we hash internally so the key shape stays
+// consistent across writers.
+export async function isEmailBounced(env, email) {
+  if (!email || typeof email !== 'string') return false;
+  if (!env || !env.AUTH_SESSIONS) return false;
+  const lower = email.trim().toLowerCase();
+  if (!lower) return false;
+  const enc = new TextEncoder().encode(lower);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  const raw = await env.AUTH_SESSIONS.get(bounceKey(hex));
+  return !!raw;
+}
+
+// Record a bounce. `reason` is the Resend bounce reason (e.g.,
+// 'mailbox-full', 'invalid-address', 'spam-block'). Writes the
+// row idempotently — repeats are harmless because put overwrites.
+export async function recordEmailBounce(env, email, reason) {
+  if (!email || typeof email !== 'string') return false;
+  if (!env || !env.AUTH_SESSIONS) return false;
+  const lower = email.trim().toLowerCase();
+  if (!lower) return false;
+  const enc = new TextEncoder().encode(lower);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  const bytes = new Uint8Array(buf);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) {
+    const h = bytes[i].toString(16);
+    hex += h.length === 1 ? '0' + h : h;
+  }
+  const row = {
+    email: lower,
+    reason: String(reason || 'unknown').slice(0, 60),
+    bouncedAt: Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(bounceKey(hex), JSON.stringify(row), { expirationTtl: BOUNCE_TTL_SEC });
+  return true;
+}
+
 // Per-IP throttle — defeats cookie-cycling abuse. 5/day cap on the
 // IP-hash regardless of how many anon cookies cycled. Returns ok
 // without writing if no IP is available (best-effort).
