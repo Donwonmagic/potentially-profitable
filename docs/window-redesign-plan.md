@@ -102,10 +102,25 @@ fetch (already cache-controlled).
 The visitor sees one calendar-honest line: "Don is writing — give him a
 minute." Never on focus. Never simulated. The anti-fake-presence guarantee.
 
+> **Caveat (review-flagged):** the current `assets/js/admin-window.js` is the
+> queue browser only — there is no per-thread reply-composer wiring in the
+> repo. The keystroke listener + TTL refresher must be built into whichever
+> admin reply UI Don is using; this is a Phase-2/3 dependency, not a "drop
+> in." If admin reply happens via email-out-of-band, this presence
+> mechanism is moot and should be cut.
+
 ### 2.4 Cron
 
-One cron `*/5 * * * *` with a multi-step dispatcher (matches existing
-src/worker.js:670-700 tick lock pattern):
+> **Phase 0 prerequisite (review-flagged):** `triggers.crons` in
+> `wrangler.jsonc:305-307` is currently commented out. The `scheduled()`
+> handler in `src/worker.js:670-700` is dead code today. **Phase 0 must
+> uncomment the cron block and confirm the `PER_TICK_BUDGET=200` and
+> 30s wall-budget hold under 5-minute cadence** before any consumer
+> below relies on cron. Sized originally for daily watch checks, not
+> 5-minute Window flushes.
+
+One cron `*/5 * * * *` with a multi-step dispatcher (matches the existing
+src/worker.js:670-700 tick lock pattern, once enabled):
 
 1. Pending-Don batch flush (every tick) — already designed.
 2. Stale-thread SLA flag (every tick): scan iterateAdminQueue, mark threads
@@ -113,10 +128,38 @@ src/worker.js:670-700 tick lock pattern):
 3. Anon thread cleanup (every 6th tick = 30 min): archive >180d-inactive
    anon threads; hard-delete archived after another 30d.
 4. Attachment R2 lifecycle (every 12th tick = hourly): TTL unpromoted
-   attachments after 90d.
+   attachments. **Voice TTL = 30 days (BIPA-conservative); photo TTL = 90 days.**
 
 Voice transcripts are inline (Workers AI binding `AI`), not crontab —
 fewer moving parts.
+
+### 2.5 Spam, throttle, and email deliverability
+
+Anon-first opens new abuse vectors. Defenses, in layers:
+
+- **Origin gate stays on the anon path.** `handleWindowAppend` already runs
+  `isOriginAllowed(request)` (src/worker.js:5855-5856 pattern); the anon
+  branch must inherit that gate, not bypass it.
+- **Turnstile on first anon POST.** The footer Turnstile widget exists
+  site-wide (`_includes/footer.html:80-85`). Extend it: when posting
+  without a session AND no `md_anon_thread_id` cookie present, require
+  a `cf-turnstile-response` token. Subsequent appends to the same anon
+  thread reuse the cookie and skip the challenge (managed mode is
+  invisible 99% of the time).
+- **Per-IP throttle in addition to per-anonId.** `window:throttle:ip:<sha256(ip)>`
+  defeats cookie-cycling at low cost. Cap: same 5/day as `MAX_ANON_MSGS_PER_DAY`.
+- **Resend free-tier quota awareness.** Magic-link claim emails and Don's
+  reply emails share the 100/day Resend quota (worker.js:131 comment). If
+  an attacker triggers 50+ anon sends to drain the quota, magic-link claims
+  fail silently. Mitigation: (a) Don's reply email IS the claim link
+  (one email serves two purposes — see §2.1), (b) admin metrics surface
+  daily Resend send-count so we see drain attempts, (c) on quota exhaustion,
+  the visitor still has the thread — they just don't get the email; the
+  page-level success state (§3.7) is the primary feedback.
+- **Magic-link email scope.** The email body is **Don's actual reply**
+  with a small footer link: *"Sign in to keep this thread on your other
+  devices."* Do NOT make the entire email a claim ceremony — that smells
+  like a phishing email and trains operators to mistrust it.
 
 ## 3. The composer redesign
 
@@ -176,12 +219,15 @@ the "what's an audit?" persona. The productized name still rides in
 
 ### 3.5 Three soft paralysis layers (no decision tree)
 
-1. **Rotating deterministic placeholder.** `(dayOfYear + locale) % 7`
-   picks one of seven prompts. A reload doesn't cycle anxiously; a
-   returning visitor sees something different. Brand-voice owns the
-   exact strings; baseline: *"A line about what's nudging you to
-   write. The room you run, the URL if you have one, what's bugging
-   you about it. I'll do the rest."*
+1. **Static placeholder (honors Rule 9 "no greeter").** A single line
+   that does not rotate per visit:
+   - **EN:** *"Start anywhere — a line is enough."*
+   - **ES:** *"Empieza por donde sea — con una línea basta."*
+
+   Decision: the rotating-prompt approach (earlier draft) was itself
+   a greeter pattern. We hold the rule and accept that paralysis is
+   carried by layers 2 and 3 below + the chip set in §3.4 + the
+   fieldnotes peek.
 2. **Fieldnotes peek.** Below the textarea, one chip: "I'm not sure
    what to ask — show me what others have written." Click expands the
    (currently empty) fieldnotes rail (window/index.html:187-194)
@@ -191,6 +237,23 @@ the "what's an audit?" persona. The productized name still rides in
    `/sheets/`), append a single italic stone-color line above the
    textarea: "Coming from /studio/audit/? Tell me your URL — I'll
    start there." Context-mirror, not decision-tree.
+
+### 3.6 Thumb-only send path (no typing, no mic permission)
+
+The "owner whose hands are dirty" persona needs a path that requires
+neither typing nor mic permission. Today `MIN_MSG_LENGTH = 1`
+(src/lib/window.js:46) blocks empty-body sends. Override:
+
+- When the message has at least one attachment (photo or — in voice
+  mode — recorded audio that has produced a transcript), `MIN_MSG_LENGTH`
+  is treated as 0 server-side.
+- The chip prepends + a photo + send is a complete message.
+- A photo with an alt-text caption is a complete message even without a
+  chip. The alt-text counts as body content for the purposes of the
+  email digest.
+
+This is the structural answer to Rule 9 worry: the chip is text the
+operator chose, not text the page wrote.
 
 ### 3.6 Mobile
 
@@ -299,10 +362,19 @@ sanity-check?" Print media queries hide the aside on paper.
 
 (`días laborales` over `lunes a viernes` — accommodates holidays.)
 
-This is the line. It replaces window/index.html:88, the reassurance line at
-window/index.html:166, the foot-trust at about/index.html:742, and the ES
-mirror at es/about/index.html:635. Single source: `data/window-config.json`.
-CI guard fails the build on any legacy variant.
+This is the line. It replaces:
+
+- `window/index.html:88` (hero) and `:166` (reassurance) — direct edits.
+- **`_includes/footer.html:66`** — the source of truth for the foot-trust
+  line. About/index.html:742 and every other rendered page is just the
+  stamped output; editing the rendered HTML gets wiped on next
+  `sync-includes` build. The partial is the fix location.
+- ES mirror in `_includes/es/footer.html` (or wherever the ES partial
+  lives) and `es/window/index.html:80,147`.
+
+Single source: `data/window-config.json`. CI guard
+`scripts/check-reply-time-canon.mjs` fails the build on any legacy variant
+of "under 4 hours, Mon–Fri" / "same business day, always inside two."
 
 ### 5.2 Honest-async UI vocabulary
 
@@ -381,20 +453,34 @@ Every agent's proposal is justified against ≥2 of these six situations
 
 ### 6.2 Cognitive load target
 
-**A first-time anonymous send completes in ≤3 user actions.**
+**Target: ≤4 user actions on a first-time send, ≤3 on returning sends.**
+The first-time visitor's mic-permission grant is the unavoidable extra
+gesture; we count it honestly rather than hide it.
 
-- Voice path: tap-hold mic → release + tap send → confirmation. 3 actions.
+- Voice path (first time): tap-hold mic → grant permission → release +
+  tap send → confirmation. 4 actions.
+- Voice path (returning): tap-hold mic → release + tap send → confirmation.
+  3 actions.
 - Text path: type a line → submit → confirmation. 3 actions.
 - Chip path: tap chip → fill → submit → confirmation. 4 actions
-  (acceptable; chip is optional).
+  (acceptable; chip is optional and prepends content for free).
+- Thumb-only path (§3.6): tap chip → tap photo + select → submit →
+  confirmation. 4 actions, no typing, no mic.
 
 The context fields collapsed into `<details>` is a non-negotiable. Any
-proposal that breaks ≤3 actions for the bare-minimum send is rejected.
+proposal that breaks the budget for the bare-minimum send is rejected.
 
 ### 6.3 Voice as literacy
 
-- Mic in textarea right edge, 44×44, real `<button>`, not a custom element.
-  Space/Enter starts/stops; Escape cancels.
+- Mic placement: 44×44 real `<button>`, not a custom element. Space/Enter
+  starts/stops; Escape cancels.
+- **Placement rule** (review-flagged): on desktop, the mic sits inside the
+  textarea's right edge. On mobile with the keyboard open, iOS Safari and
+  some Android keyboards partially occlude the right edge with their own
+  toolbar. **The mic must reposition above-textarea-right when the
+  keyboard is open** (detect via `visualViewport.height < window.innerHeight`).
+  Test path: iOS Safari with keyboard open at 360px viewport must show the
+  mic without scroll.
 - Idle-typist nudge: 5s of focus + 0 chars → polite `aria-live` line:
   *"Or tap and hold the mic — speak it."*
 - Permission denial: do NOT clear the textarea. `role="status"` line:
@@ -414,16 +500,21 @@ proposal that breaks ≤3 actions for the bare-minimum send is rejected.
 
 ### 6.5 Spanish-first posture
 
-- **Server-side redirect on first load.** When `navigator.languages`
-  contains "es" AND no `md_locale` cookie AND URL is `/window/`, the
-  Worker 302s to `/es/window/` before paint. No client-side flash.
-  The `x-locale-hint` plumbing already exists in src/worker.js; this
-  is one new branch.
-- Banner copy upgrade at about/index.html:370:
+- **No redirect.** Honor the existing "we deliberately do NOT redirect"
+  contract in `src/worker.js:512-515` — redirects on root paths are
+  hostile to crawlers, curl, and cache keys, and `/window/` does not
+  earn an exception that's worth breaking that contract.
+- **Banner copy upgrade** in the partial that produces the Spanish-hint
+  banner (currently `about/index.html:370` is the rendered output;
+  source is the language-hint partial referenced by sync-includes):
   *"Todo el sitio en español — 139 términos del glosario, todas las
-  herramientas, todos los artículos."*
-- i18n parity audit checklist (CI): every chip, every error, every
-  voice/photo/callback string ships in EN+ES same PR.
+  herramientas, todos los artículos."* The banner remains opt-in and
+  dismissible. Make Spanish parity legible; don't choose it for the
+  visitor.
+- **i18n parity audit checklist (CI)**: every chip, every error, every
+  voice/photo/callback string ships in EN+ES same PR. New CI script
+  `scripts/check-window-locale-parity.mjs` (already exists per audit
+  — extend it to cover the new strings).
 
 ### 6.6 Late-night-operator path
 
@@ -461,10 +552,11 @@ TalkBack pass on chip aria-pressed.
 
 | Phase | Scope | Flag | Risk |
 |---|---|---|---|
-| **1 (week 1)** | Anonymous-first send + reply-time canonicalization. No UI redesign, just text + auth path. | `WINDOW_ANON_ENABLED` | Low. Biggest WOUND fix. ~6h Worker work. |
-| **2 (week 2)** | Composer redesign + sync-include propagation (nav/footer/sticky pulse) + KnitRail nudge for ~12 articles + axe-core CI. | None (template change) | Medium. Visible UI shift. |
-| **3 (week 3-4)** | Multimodal: photo first → voice second (gated on legal sign-off for BIPA/CPA voice biometrics) → callback third. | `WINDOW_PHOTO_ENABLED`, `WINDOW_VOICE_ENABLED`, `WINDOW_CALLBACK_ENABLED` | Medium. New R2 binding. Workers AI quota. |
-| **4 (week 5+)** | Operator presence (`window:now` widget on /window/, /about/, homepage), tool-result asides on top 5 tools, sheets contact, glossary asides on jargon-heavy terms. | `WINDOW_NOW_ENABLED` | Low. Additive. |
+| **0 (week 0)** | Enable cron trigger: uncomment `triggers.crons` in `wrangler.jsonc:305-307`, confirm `PER_TICK_BUDGET=200` and 30s wall-budget hold under `*/5` cadence, deploy + observe one cycle. | None (config change) | Low. No user-facing change. Prerequisite for everything below. |
+| **1 (week 1)** | Anonymous-first send + reply-time canonicalization + sign-in CTA rewrite at `window/index.html:182-184` + `/sign-in/?claim=&t=` query-param branch. **Honest scope: Phase 1 *does* touch UI** — the existing sign-in section reframes from "Want replies threaded with you?" to a post-send upgrade only, and `/sign-in/` learns to claim anon threads. Reply-time canon edits `_includes/footer.html:66` (the partial, not rendered pages). | `WINDOW_ANON_ENABLED` | Medium. Biggest WOUND fix but auth path is load-bearing. |
+| **2 (week 2)** | Composer redesign (two-pane, static placeholder, `<details>` context fields, mic with keyboard-aware reposition, thumb-only override of `MIN_MSG_LENGTH`) + sync-include propagation (nav/footer/sticky pulse) + KnitRail nudge requires new template branch in `scripts/inject-knit-rail.mjs:213-225` + per-topic data file + new `.knit-rail__nudge` CSS in `assets/site-article.css` + axe-core CI. | None (template change) | Medium. Visible UI shift. |
+| **3 (week 3-4)** | Multimodal: photo first → voice second (BIPA-conservative 30-day R2 retention + privacy disclosure, ships behind flag pending legal sign-off) → callback third. | `WINDOW_PHOTO_ENABLED`, `WINDOW_VOICE_ENABLED`, `WINDOW_CALLBACK_ENABLED` | Medium. New R2 binding. Workers AI quota. |
+| **4 (week 5+)** | Operator presence (`window:now` widget on /window/, /about/, homepage; **14-day staleness circuit-breaker** hides the widget when `updatedAt > 14d`), tool-result asides on top 5 tools, sheets contact, glossary asides on jargon-heavy terms. | `WINDOW_NOW_ENABLED` | Low. Additive. |
 
 Existing `WINDOW_ENABLED` (src/worker.js:5847-5849) remains the master kill.
 
@@ -498,19 +590,85 @@ checks weekly. Not real-time SaaS.
 | Mic placement | Inside textarea right edge, visible without scroll. (Accessibility wins on literacy.) |
 | Submit button copy | "Send the note" (EN parity with ES). |
 
-## 10. Open questions for the user
+## 10. User decisions (post-review)
 
-These remain after synthesis. Two are pricing/copy judgment calls only Don can make; one is a legal go/no-go.
+The four post-review judgment calls landed as follows. These are
+final; the plan above already reflects them.
 
-1. **Voice biometric legal review.** BIPA / Texas CUBI / Washington
-   MHMDA treat voiceprints as biometric. Phase 3 voice ships only after
-   a written legal sign-off. **Cut voice from scope, OR commit to a
-   privacy review checkpoint?**
-2. **Audit chip rename.** Brand-voice agent's "Look at my site and tell
-   me what's broken · $499" reads better for the
-   "what's-an-audit?" persona; some prospects find "Audit" itself
-   reassuring. Brand-voice owns the call — but the chip ships
-   one way or the other.
-3. **/now/ widget cadence.** Don edits weekly? After every shift?
-   The whole standout-presence story falls if it goes stale by week 3.
-   What edit rhythm is Don willing to commit to?
+| Question | Decision |
+|---|---|
+| Voice biometric storage under BIPA / CUBI / MHMDA | **Ship voice in Phase 3 with 30-day R2 retention** + privacy disclosure visible above mic on first use. `WINDOW_VOICE_ENABLED` stays off until written legal sign-off lands. Photos retain 90 days; voice is the BIPA-conservative subset. |
+| Spanish-first on /window/ | **No redirect.** Banner-copy upgrade only — make Spanish parity legible without breaking the existing "deliberately do NOT redirect" contract. (See §6.5.) |
+| Rotating placeholder vs Rule 9 | **Static line wins.** Single placeholder: *"Start anywhere — a line is enough."* / *"Empieza por donde sea — con una línea basta."* Rule 9 holds. (See §3.5.) |
+| `/now/` widget cadence | **Weekly Monday + after notable shifts.** 14-day staleness threshold hides the widget when Don falls behind, rather than showing stale presence. Admin metrics surface a "now is X days old" reminder. |
+
+## 11. Failure-mode coverage (review-additions)
+
+### 11.1 Vacation half-state (Don is around but silent)
+
+Today's pause copy (window/index.html:75-80) handles the all-or-nothing
+case (Window paused, no replies). But "open but Don is on vacation 7
+days" has no honest answer. Resolve:
+
+When `window:now.shift === 'away'` AND `now - lastSeen > 7d`:
+
+- The calendar-honest sentence in the left pane reads:
+  *"Don is back the week of [returnDate] — write now and I'll thread
+  it on return."*
+- The success-state line (§3.7 line 2) softens to:
+  *"Filed for the week of [returnDate]. No rush."*
+- The pulse goes still (no breathing animation), grey ring instead of
+  teal dot. Site-wide.
+
+Distinct from full-pause (`WINDOW_ENABLED=false` returns 404 from the
+poll endpoint and renders the standalone paused section). The half-state
+keeps the form active but tunes expectations down.
+
+### 11.2 Tab-close / double-send race
+
+Same device, two tabs, sender double-posts. The `md_anon_thread_id`
+cookie catches this, but the second-tab UX must reflect it:
+
+- On `/window/` boot, the client always polls `/api/window/thread`
+  before showing the empty composer. If an existing anon thread is
+  found, the page renders **the existing thread** (not a fresh empty
+  composer). Existing message scroll, fresh empty textarea below.
+- 60s back-pressure (`APPEND_BACK_PRESSURE_MS`, src/lib/window.js:49)
+  catches the actual duplicate-send attempt server-side; client surfaces
+  the rate-limit copy from §5.2.
+
+### 11.3 Magic-link email deliverability
+
+Resend free-tier 100/day quota (src/worker.js:131 comment) is a fragile
+pin. Mitigations:
+
+- Don's reply email IS the magic link (one email serves two purposes).
+  No separate "click to claim" email.
+- Admin metrics page (`/admin/window/metrics`) surfaces daily Resend
+  send-count so drain attempts are visible.
+- On quota exhaustion, the visitor's send still succeeds — the page-level
+  success state is the primary feedback. The email is supplemental.
+
+### 11.4 Pulse staleness circuit-breaker
+
+If `window:now.updatedAt > 14d`, the pulse hides site-wide and the
+left-pane presence line reads simply *"Don reads every one"* without a
+last-seen qualifier. Better to be quietly absent than visibly stale.
+
+### 11.5 Admin reply-composer presence prerequisite
+
+The "Don is composing" presence (§2.3) requires keystroke-listener
+instrumentation in the admin reply UI. Today `assets/js/admin-window.js`
+is the queue browser only — there is no per-thread reply composer in
+this repo. Either:
+
+- (a) Build the admin reply composer in Phase 2 (it's needed anyway
+  for the reply-from-browser workflow), and instrument the keystroke
+  listener at the same time, OR
+- (b) Cut the "Don is composing" presence from scope. The pulse +
+  read-receipt + left-pane shift status already cover the visible-Don
+  story without it.
+
+Recommendation: **(b)** cut from initial scope. Add only if the admin
+reply composer ends up built for reasons beyond presence. Anti-fake-
+presence is the rule; absence of presence is honest.
