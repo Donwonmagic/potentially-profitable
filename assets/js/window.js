@@ -245,6 +245,11 @@
 
   function showMsg(text, isError) {
     if (!els.msg) return;
+    // Clear any inline styles set by Phase 2.2's showSuccessState so
+    // a subsequent error/info message renders cleanly.
+    els.msg.style.background = '';
+    els.msg.style.borderLeft = '';
+    els.msg.style.color = '';
     els.msg.textContent = text;
     els.msg.hidden = false;
     if (isError) els.msg.classList.add('error');
@@ -255,6 +260,9 @@
     if (!els.msg) return;
     els.msg.hidden = true;
     els.msg.classList.remove('error');
+    els.msg.style.background = '';
+    els.msg.style.borderLeft = '';
+    els.msg.style.color = '';
   }
 
   function renderMessages(messages) {

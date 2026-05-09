@@ -1316,7 +1316,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 /* CTA row */
 .foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
-.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* Phase 2.3 — site-wide pulse beside the foot-cta. Hidden by default;
+   assets/js/window-state.js reveals when /api/window/active reports
+   Don has been seen in the last 4 hours. The pulse is on a sash, not
+   a muntin (per audit S5: muntins recede, the world beyond moves). */
+.foot-cta-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
