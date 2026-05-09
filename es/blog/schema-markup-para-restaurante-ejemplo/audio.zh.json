@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:58:47.874Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 79.51,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "",
+      "start": 0,
+      "end": 0
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "如何使用。",
+      "start": 1.1,
+      "end": 2
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "复制下面的JSON。",
+      "start": 2.7,
+      "end": 4.48
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "用你的真实数据（名称、地址、电话、菜单、营业时间等）替换每个值。",
+      "start": 4.8,
+      "end": 10.75
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "将代码块粘贴到你的首页的<head>中，放在<script type=\"application/ld+json\">标签内。",
+      "start": 11.07,
+      "end": 19.54
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "在发布前使用Schema Checker进行验证。",
+      "start": 19.86,
+      "end": 23.13
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "完整示例。",
+      "start": 24.23,
+      "end": 25.1
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "在发布前—",
+      "start": 26.2,
+      "end": 27.2
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "将每个URL中的your-restaurant.com替换为你的实际域名。",
+      "start": 27.9,
+      "end": 33.4
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "删除不适用的营业时间范围（如果你周一不营业，就不要填写周一的营业时间）。",
+      "start": 33.72,
+      "end": 40.71
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "aggregateRating仅适用于你在自己的网站上有评论的情况——不要从Google复制评论。",
+      "start": 41.03,
+      "end": 48.43
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "菜单描述是AI概述直接引用的内容——所以值得好好写一下。",
+      "start": 48.75,
+      "end": 54.47
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "粘贴代码后，运行Schema Checker和Google的Rich Results Test。如果两个工具都验证通过，那么就意味着实现正确。",
+      "start": 54.82,
+      "end": 64.81
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "如果你对某个字段有疑问，可以通过La Ventana联系我，我会阅读每条消息。",
+      "start": 65.16,
+      "end": 70.73
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "接下来做什么",
+      "start": 71.08,
+      "end": 72.23
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "阅读：相关词汇表的术语 →",
+      "start": 72.58,
+      "end": 74.55
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "测试：本文配套的工具 →",
+      "start": 74.87,
+      "end": 76.74
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "或者给Don写信：La Ventana →",
+      "start": 77.06,
+      "end": 79.51
+    }
+  ]
+}
