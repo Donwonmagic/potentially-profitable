@@ -49,7 +49,7 @@ success.
 |---|---|
 | **Sign-in friction kills first sends** | Anonymous-first send via cookie-bound thread. Sign-in becomes a post-send byproduct: Don's reply email IS the sign-in link (one email, one purpose). |
 | **Composer feels like a contact form, not a conversation** | Two-pane composer divided by the literal muntin at 1/2 vertical (brand-mark accurate). Three context fields collapse into one optional `<details>`. Onramp chips become operator-note openers. The empty-thread welcome line is promoted above the textarea, not buried inside the placeholder. |
-| **Operators don't know what to say (blank-page paralysis)** | Static welcome line above textarea: *"Whatever you'd type to a friend who knows this stuff — that's enough."* Five chips including a non-priced empathy chip. Context-aware mirror on referrer. Fieldnotes peek shipping with 3 hand-curated seeded notes (not empty). |
+| **Operators don't know what to say (blank-page paralysis)** | Static welcome line above textarea: *"Whatever you'd type to a friend who knows this stuff — that's enough."* Six chips (including two non-priced empathy chips). Context-aware mirror on referrer. Fieldnotes peek shipping with 3 hand-curated seeded notes (not empty). |
 | **The Window is invisible across the rest of the site** | Phase 2: pulse propagates to footer + audit/sheets handoff aside. Phase 4+ extensions deferred — operations review showed site-wide propagation is operationally fragile and conversion lift is bounded. |
 
 ## 2. Architecture
@@ -195,8 +195,9 @@ adopts the brand mark's actual geometry:**
   via `--muntin-weight` CSS var. The muntin is load-bearing here,
   slender elsewhere — weight variation is the carpentry gradient.
 - File change: `assets/site-core.css` — change `.window-muntin
-  { left: 38.2% }` to `left: 50%`. Strike "golden split" comment at
-  css line 92-94. Add `.window-transom { top: 35% }` rule.
+  { left: 38.2% }` declaration at line 2605 to `left: 50%`. Strike
+  the "golden split" comment block at line 2570. Add
+  `.window-transom { top: 35% }` rule.
 
 ### 3.2 Named panes (the deepest muntin move)
 
@@ -264,10 +265,11 @@ Below the chip row, one stone-italic line:
 ES: *"Si la respuesta es 'no necesitas gastar en esto,' eso es lo que
 te voy a decir. Ya ha pasado."*
 
-This inherits the about page voice (about/index.html:644). It's the
-single biggest trust-builder in 200 words and costs no Don-time. The
-operator learns — without being told — that Don will tell them they
-don't need a $2,500 site, if that's true.
+This is new copy in Don's existing register (warm, plainspoken,
+operator-grounded — the same register as about/index.html's narrative
+section). It's the single biggest trust-builder in 200 words and costs
+no Don-time. The operator learns — without being told — that Don will
+tell them they don't need a $2,500 site, if that's true.
 
 ### 3.6 Pulse off the muntin
 
@@ -339,17 +341,33 @@ ceremony.** Replace with an inline confirmation that stays:
   the page does not need to ask. (Muntin-integrity + felt-experience +
   plain-English convergence.)
 
-### 3.12 Crisis allowlist (NEW — see §11.6)
+### 3.12 Crisis allowlist — composer-side, not success-side
 
-When the body matches Tier-1 crisis keywords, a quiet line appears
-below the textarea (visible only when those words are present):
+When the body (live, as the operator types — debounced 600ms after
+last keystroke) matches Tier-1 crisis keywords, a quiet line reveals
+*below the textarea, before send*:
 
 > *"If tonight is heavier than the website, I'm still going to read
 > this — and these folks pick up the phone faster than I can: 988
 > (call or text), Chefs With Issues, CHOW."*
 
-No interception. No blocking. No "are you sure?" modal. Send proceeds.
-Don gets an SMS notification + admin red-bar flag.
+ES: *"Si esta noche pesa más que el sitio web, voy a leer esto igual —
+y estas personas contestan más rápido que yo: 988 (llama o manda
+texto), Chefs With Issues, CHOW."*
+
+**Why composer-side, not success-state:** the operator can see the
+resource BEFORE deciding whether to send to Don or call 988. Putting
+the crisis line in the success state means they've already pressed
+send before the resources surface — too late.
+
+No interception. No blocking. No "are you sure?" modal. The line
+*persists* into the success state if the body still matched at send
+time, so the operator carries the resources with them while they wait
+for Don. If the operator deletes the keyword before sending, the line
+disappears and stays gone.
+
+Don gets an SMS notification (if the message sends with Tier-1
+keywords still present) + admin red-bar flag. See §11.6.
 
 ## 4. Whole-site distribution (v3 — minimum viable cut)
 
@@ -395,13 +413,15 @@ Result-aware copy on sheets per v2.
 
 **Canonical sentence (v3):**
 
-> EN: *"Mondays through Fridays, I usually write back within 4 hours.
-> On weekends, I'll write back by Monday morning. Some weeks I'm on
-> the floor and slower — the page will say so."*
+> EN: *"Mondays through Fridays, I usually write back within 4 hours
+> of when I see your note. On weekends, I'll write back by Monday
+> morning. Some weeks I'm on the floor and slower — the page will
+> say so."*
 >
-> ES: *"De lunes a viernes, normalmente respondo a las 4 horas. Los
-> fines de semana, respondo el lunes en la mañana. Algunas semanas
-> estoy en el restaurante y más lento — la página lo va a decir."*
+> ES: *"De lunes a viernes, normalmente respondo a las 4 horas de
+> haber visto tu mensaje. Los fines de semana, respondo el lunes en
+> la mañana. Algunas semanas estoy en el restaurante y más lento —
+> la página lo va a decir."*
 
 Three shifts from v2:
 - "Within 4 hours" → "within 4 hours of when I see your note"
@@ -488,7 +508,7 @@ showed live calls are 40-60 min/day at scale = unsustainable.**
 | Alt-text capture | *"Describe the photo (helpful for screen readers — and for me)"* | *"Describe la foto (ayuda a lectores de pantalla — y a mí)"* |
 | Voice memo default length | **60 seconds** (was 90s). Extend to 90 on demand. | |
 | Mic blocked | *"Your phone won't let me use the mic. No problem — type your note, or email don@muntin.digital."* | *"Tu teléfono no me deja usar el micrófono. No hay problema — escribe tu nota, o envía un correo a don@muntin.digital."* |
-| Voice memo nudge (idle typist 5s focus + 0 chars) | *"When typing feels like work, the mic is here. I'd rather hear your voice anyway. — D"* | *"Cuando escribir cuesta, el micrófono está aquí. Mejor te oigo. — D"* |
+| Voice memo nudge (idle typist 15s focus + 0 chars) | *"When typing feels like work, the mic is here. I'd rather hear your voice anyway. — D"* | *"Cuando escribir cuesta, el micrófono está aquí. Mejor te oigo. — D"* |
 
 ### 5.3 Empty thread state
 
@@ -553,6 +573,12 @@ review's persona for fluent-spoken / hesitant-written ELL operator).
 ### 6.3 Voice as literacy
 
 - 60s default; extend to 90s on demand (operations review).
+- **Idle-typist nudge fires at 15s of focus + 0 characters typed**
+  (halfway between too-aggressive 5s and too-patient 30s — long enough
+  not to interrupt mid-thought for slower typists, short enough to
+  reach the truly stuck operator before they give up). Polite
+  `aria-live="polite"` line on a sibling element, not a placeholder
+  swap. Hides on first character or on mic engagement.
 - Inline editable transcript before send: *"Here's what I heard. Fix
   anything before sending — or send as-is."* / *"Esto es lo que
   escuché. Corrige lo que quieras antes de enviar — o envíalo tal cual."*
@@ -602,9 +628,10 @@ deferred).
 
 | Phase | Scope | Flag | Risk |
 |---|---|---|---|
-| **0 (week 0)** | Enable cron trigger; uncomment `triggers.crons` in `wrangler.jsonc:305-307`; confirm budget contracts hold under `*/5` cadence; deploy + observe one cycle. | None | Low. Prerequisite. |
-| **1 (week 1-2)** | Anonymous-first send + reply-time canonicalization + sign-in CTA rewrite + `/sign-in/?claim=&t=` claim branch + DMARC/SPF/DKIM posture + Resend-quota partition + magic-link token shape + PII pre-write gate + textContent rendering audit + Cloudflare threat-score gate + crisis allowlist Tier-1 SMS + email-bounce webhook. | `WINDOW_ANON_ENABLED` | Medium. Biggest WOUND fix. Auth path is load-bearing. ~2 weeks. |
-| **2 (week 3-4)** | Composer redesign (named panes, corrected geometry at 50% + 35% transom, hostess line above textarea, six chips with empathy promoted, "Don sometimes says no" tell, static placeholder, mic with keyboard-aware reposition, thumb-only `MIN_MSG_LENGTH=0` override, success state with artifact + contextual link, no email-ask, crisis allowlist UI line) + footer-pulse propagation + tool-result + sheets handoff aside + axe-core CI + measurement (custom Plausible events). | None (template change) | Medium. Visible UI shift. |
+| **0 (week 0)** | Enable cron trigger; uncomment `triggers.crons` in `wrangler.jsonc:305-307`; confirm budget contracts hold under `*/5` cadence; deploy + observe one cycle. **Also:** measure /window/ baseline send-rate for 14 days before shipping anything (per §9.6). | None | Low. Prerequisite. |
+| **1a (week 1)** | Anon plumbing: cookie + new KV prefix + `handleWindowAppend` accepts no-session + magic-link token shape (32-byte, base64url, 10-min TTL, anonId-bound) + DMARC/SPF/DKIM posture + Resend quota partition. | `WINDOW_ANON_ENABLED` | Medium. Auth is load-bearing. |
+| **1b (week 2)** | Reply-time canon edits in `_includes/footer.html:66` + `window/index.html:88,166` + ES mirrors + CI guard + sign-in CTA rewrite at `window/index.html:182-184` + `/sign-in/?claim=&t=` claim branch + Cloudflare threat-score gate + PII pre-write gate (CC/SSN/password regex) + crisis Tier-1 + Tier-2 keyword allowlist (server-side scan only, admin red/yellow bar; SMS dispatch deferred to Phase 2). | `WINDOW_ANON_ENABLED` | Medium. Polish on top of 1a. |
+| **2 (week 3-4)** | Composer redesign (named panes, corrected geometry at 50% + 35% transom, hostess line above textarea, six chips with empathy promoted, "Don sometimes says no" tell, static placeholder, mic with keyboard-aware reposition, thumb-only `MIN_MSG_LENGTH=0` override, success state with artifact + contextual link, no email-ask, crisis allowlist UI line debounced 600ms) + footer-pulse propagation + tool-result + sheets handoff aside + axe-core CI + measurement (custom Plausible events) + textContent rendering audit (lint rule + grep CI) + Twilio SMS dispatch for crisis Tier-1 + email-bounce webhook (Resend → KV → admin flag). | None (template change) | Medium. Visible UI shift + Twilio vendor onboarding. |
 | **3 (week 5-6)** | Multimodal: photo first (server+client EXIF strip, default-blur admin), voice second (60s default, BIPA 30d retention, delete-transcript affordance, behind flag pending legal sign-off), async-voicenote-pickup-time as the callback shim. | `WINDOW_PHOTO_ENABLED`, `WINDOW_VOICE_ENABLED` | Medium. New R2 binding. Workers AI quota. |
 | **4 (deferred — month 2+)** | `window:now` widget on `/window/` ONLY, three-tier privacy (fuzz default, precise blackout 21:00-06:00). Skip /about/ + homepage. | `WINDOW_NOW_ENABLED` | Low. Additive. |
 | **5+ (deferred — when volume/data justifies)** | Live callbacks for Care-Plan clients only with Twilio masking + curated slots. Glossary asides, KnitRail nudges, in-article asides, /about/ presence, homepage muntin strip. Site-wide nav + sticky bar pulse. | Various | Defer until Phase 1-3 conversion data confirms ROI. |
@@ -710,11 +737,16 @@ Derived from `iterateAdminQueue()`; no new instrumentation.
 
 A single-checkbox below the success state (NOT replacing the artifact):
 
-> *"Also send me Don's notes (~2/month)"* — pre-checked.
+> *"Also send me Don's notes (~2/month)"* — **unchecked by default**.
 
-Captures the 50-70% of /window/ visitors who write but won't pay this
-quarter. Newsletter is the most underrated secondary conversion.
-Checkbox state submits with the message.
+The footer newsletter pitch already promises "four notes a quarter, no
+funnels"; a pre-checked box would contradict that voice and create
+CAN-SPAM / CASL / GDPR exposure. Opt-in keeps the brand posture honest
+and gives compliant capture across all geos at the cost of ~30%
+capture-rate vs. pre-checked. The trade is correct.
+
+Captures the cohort of /window/ visitors who write but won't pay this
+quarter. Checkbox state submits with the message.
 
 ### 9.5 Pricing-grounding sentence above chips
 
@@ -802,29 +834,37 @@ in clothes), operations (admin instrumentation overhead), adversarial
 (spoofable presence). The pulse + read-receipt + sash-top status
 already cover visible-Don.
 
-### 11.6 Crisis-message handling (NEW)
+### 11.6 Crisis-message handling (NEW — backend for §3.12)
 
-**Triage signal, not diagnosis.** Server-side keyword scan on send
-(EN+ES), narrow allowlist, no logging of the match.
+**Triage signal, not diagnosis.** Two scans run on every body change
++ on send: (1) client-side debounced scan that drives the §3.12 UI
+reveal, (2) server-side scan on send that drives the SMS + admin flag.
+Narrow allowlists. No logging of the match content (only the tier).
 
 - **Tier 1** (urgent surface): `suicide`, `kill myself`, `end it`,
   `can't go on`, `hurt myself`, `suicidio`, `quitarme la vida`,
-  `acabar con todo`. Tier-1 hits trigger an immediate SMS to Don's
-  phone (Twilio, separate from Resend) + admin queue red bar. **Not**
-  an automated reply to the operator (false positives would be cruel).
+  `acabar con todo`. Tier-1 hits at send time trigger an immediate SMS
+  to Don's phone (Twilio, separate from Resend) + admin queue red bar.
+  **Not** an automated reply to the operator (false positives would be
+  cruel). The composer-side referral line (§3.12) does the operator-
+  facing work; the SMS does the Don-facing work.
+  - **Routing:** Don's real cell number, set via Cloudflare secret
+    `WINDOW_CRISIS_SMS_TO` (`wrangler secret put WINDOW_CRISIS_SMS_TO`).
+    The number never appears in source-controlled files. If exposure
+    becomes a concern at higher volume, swap the secret value to a
+    Twilio masking number — no code change needed.
+  - **Twilio account ID + auth token** stored as
+    `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN` secrets. The Twilio
+    SMS-from number stored as `TWILIO_FROM` secret.
 - **Tier 2** (welfare check): `crisis`, `breakdown`, `evicted`,
-  `closing tomorrow`, `bankruptcy`, `domestic`, `crisis`, `quiebra`.
-  Admin queue yellow bar; no SMS.
-- **Always-on referral footer** in success state (visible only when
-  Tier-1 keywords matched in the body, not as default chrome):
-  > *"If tonight is heavier than the website, I'm still going to
-  > read this — and these folks pick up the phone faster than I can:
-  > 988 (call or text), Chefs With Issues, CHOW."*
+  `closing tomorrow`, `bankruptcy`, `domestic`, `quiebra`. Admin queue
+  yellow bar; no SMS, no operator-side UI change.
 - **Don's reply guidance** (admin templates §8.3): distress-flagged
   threads get a draft template — acknowledges first, business
   second, never reverse.
 - **No 988 widget.** No banner. No "we care about wellness."
-  Appears only when the words appear. Quiet competence.
+  Appears only when the words appear. Quiet competence. (See §3.12
+  for the operator-facing surface.)
 - **Liability:** referral availability documents reasonable care.
   Cap Tier-1 SMS at 3/hour to prevent SMS-DoS; subsequent matches
   go to admin red-bar only.
