@@ -248,6 +248,7 @@ import {
   // Phase 1a step 2 — magic-link claim flow.
   setAnonThreadEmail,
   migrateAnonThread,
+  checkAndStampEmailAttachThrottle,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 
@@ -4791,7 +4792,18 @@ async function handleAuthVerify(request, env, ctx) {
   // Use returnTo from the claim flow first, then the magic-link
   // payload if it's still workbench-allowlisted (defensive — it was
   // at request time, but flags can change), then the query param.
+  // Audit E3 — when the token was a CLAIM token but migration failed,
+  // still honor /window/ + /es/window/ as the landing surface so the
+  // operator doesn't get bounced to /workbench/ from a /window/-flavored
+  // email. The migration log explains the failure for ops; the
+  // operator just sees /window/ standalone (their thread is still
+  // reachable on their device via the anon cookie if it survived).
+  const claimReturnFallback = new Set(['/window/', '/es/window/']);
+  const isClaimToken = typeof parsed.claimAnonId === 'string' && !!parsed.claimAnonId;
   const candidateReturnTo = claimedReturnTo
+    || (isClaimToken && typeof parsed.returnTo === 'string' && claimReturnFallback.has(parsed.returnTo)
+        ? parsed.returnTo
+        : null)
     || ((typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
         ? parsed.returnTo
         : returnTo);
@@ -6128,8 +6140,20 @@ async function handleWindowAppend(request, env, ctx) {
   // Get or create the anon thread (one per cookie lifetime).
   let thread = await getOpenThreadForAnon(env, anonId);
   if (!thread || (thread.msgCount || 0) >= 100) {
-    try { thread = await createAnonThread(env, anonId, locale); }
-    catch (_) { return jsonResponse({ ok: false, error: 'mint-collision' }, 500); }
+    try {
+      thread = await createAnonThread(env, anonId, locale);
+    } catch (err) {
+      if (err && err.message === 'anon-id-claimed') {
+        // Audit S3 — stale cookie pointing at a row that's already
+        // been migrated to sub-keyed storage. Clear the cookie + tell
+        // the visitor to sign in (their thread now lives at
+        // window:thread:<claimedBy>:<threadId>).
+        const headers = new Headers({ 'content-type': 'application/json; charset=utf-8' });
+        headers.append('Set-Cookie', WINDOW_ANON_COOKIE_NAME + '=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
+        return new Response(JSON.stringify({ ok: false, error: 'thread-claimed-please-signin' }), { status: 409, headers });
+      }
+      return jsonResponse({ ok: false, error: 'mint-collision' }, 500);
+    }
   }
 
   const result = await appendMessageToAnonThread(env, anonId, thread, 'user', sanitized);
@@ -6288,6 +6312,11 @@ async function handleWindowEmail(request, env, ctx) {
   if (!email || !isValidEmail(email)) {
     return jsonResponse({ ok: false, error: 'invalid-email' }, 400);
   }
+  // Audit S2 — back-pressure prevents churn-the-email-before-Don-replies abuse.
+  const t = await checkAndStampEmailAttachThrottle(env, anonId);
+  if (!t.ok) {
+    return jsonResponse({ ok: false, ...t }, 429);
+  }
   const thread = await setAnonThreadEmail(env, anonId, email);
   if (!thread) {
     return jsonResponse({ ok: false, error: 'no-thread' }, 404);
@@ -6335,8 +6364,28 @@ async function _resolveAdminWindowThread(env, params) {
   if (anonId) {
     if (!isValidSaveItemIdShape(anonId)) return { error: 'invalid-body', status: 400 };
     const thread = await getOpenThreadForAnon(env, anonId);
-    if (!thread || thread.id !== threadId) return { error: 'not-found', status: 404 };
-    return { kind: 'anon', sub: null, anonId, threadId, thread };
+    if (thread && thread.id === threadId) {
+      return { kind: 'anon', sub: null, anonId, threadId, thread };
+    }
+    // Audit B1 — getOpenThreadForAnon returns null when the row has
+    // a `claimedBy` stamp (step 2.1 defense). For admin replies, that
+    // null doesn't mean "thread gone" — it means "thread migrated."
+    // Read the anon row directly; if it carries claimedBy, route the
+    // admin op to the sub-keyed thread that now lives at
+    // window:thread:<claimedBy>:<threadId>. Failing this re-route,
+    // every concurrent claim+reply would 404.
+    const anonRaw = await env.AUTH_SESSIONS.get(windowAnonThreadKey(anonId));
+    if (anonRaw) {
+      let anonRow;
+      try { anonRow = JSON.parse(anonRaw); } catch (_) { anonRow = null; }
+      if (anonRow && anonRow.claimedBy && anonRow.id === threadId) {
+        const subThread = await getThreadById(env, anonRow.claimedBy, threadId);
+        if (subThread) {
+          return { kind: 'identified', sub: anonRow.claimedBy, anonId: null, threadId, thread: subThread };
+        }
+      }
+    }
+    return { error: 'not-found', status: 404 };
   }
   return { error: 'invalid-body', status: 400 };
 }

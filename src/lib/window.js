@@ -464,8 +464,29 @@ export async function getOpenThreadForAnon(env, anonId) {
 // Create an anon thread. Stores under `window:thread:anon:<anonId>`.
 // `locale` (optional) is recorded so the admin queue + email
 // templates can branch.
+//
+// Audit S3 — refuses to overwrite a row that has been claimed
+// (claimedBy stamp set). Without this, a stale anon-cookie request
+// arriving after migrateAnonThread would clobber the claimed-row
+// audit stamp and replace it with a fresh anon thread (since
+// getOpenThreadForAnon returns null on claimedBy, the caller would
+// otherwise fall straight here). Returns the special error
+// 'anon-id-claimed' so handleWindowAppend can clear the stale cookie
+// and prompt the operator to sign in.
 export async function createAnonThread(env, anonId, locale = null) {
   if (!isValidSaveItemIdShape(anonId)) throw new Error('invalid-anon-id');
+  const existingRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (existingRaw) {
+    try {
+      const existing = JSON.parse(existingRaw);
+      if (existing && existing.claimedBy) {
+        throw new Error('anon-id-claimed');
+      }
+    } catch (err) {
+      if (err && err.message === 'anon-id-claimed') throw err;
+      // Parse error → row is corrupt; safe to overwrite.
+    }
+  }
   let id = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     const candidate = mintThreadId();
@@ -558,6 +579,29 @@ export async function checkAndStampAnonThrottle(env, anonId) {
   row.lastUserMsgAt = now;
   row.dayCount = (row.dayCount || 0) + 1;
   await env.AUTH_SESSIONS.put(anonThrottleKey(anonId), JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
+  return { ok: true };
+}
+
+// Per-anon back-pressure on email-attach (audit S2). Different from
+// the message-send throttle: no day-cap, just a 60s cooldown so an
+// attacker with the cookie can't churn the email field before each
+// of Don's replies arrives. Returns the same shape as the other
+// throttle helpers.
+export async function checkAndStampEmailAttachThrottle(env, anonId) {
+  if (!isValidSaveItemIdShape(anonId)) return { ok: false, error: 'invalid-anon-id' };
+  const key = THROTTLE_KEY_PREFIX_ANON + 'email-attach:' + anonId;
+  const now = Date.now();
+  const raw = await env.AUTH_SESSIONS.get(key);
+  let row = { lastAt: 0 };
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { /* reset */ }
+  }
+  const elapsed = now - (row.lastAt || 0);
+  if (elapsed < APPEND_BACK_PRESSURE_MS) {
+    return { ok: false, error: 'rate-limited', retryAfter: Math.ceil((APPEND_BACK_PRESSURE_MS - elapsed) / 1000) };
+  }
+  row.lastAt = now;
+  await env.AUTH_SESSIONS.put(key, JSON.stringify(row), { expirationTtl: THROTTLE_TTL_SEC });
   return { ok: true };
 }
 

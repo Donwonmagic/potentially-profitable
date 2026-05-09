@@ -73,10 +73,20 @@ per adversarial review.
 
 ### 2.2 Magic-link claim — hardened (adversarial review)
 
-- **Magic-link token shape:** 32 bytes, `crypto.getRandomValues`,
-  base64url, single-use, 10-minute TTL, server-stamped `usedAt` so
-  re-use 410s. Bound to `anonId` at issuance — even if the email is
-  forwarded, the recipient can't claim a different thread.
+- **Magic-link token shape (as shipped):** 10 chars from a 31-char
+  alphabet via the existing `mintMagicLinkToken()` (~49 bits entropy),
+  single-use, 15-minute TTL (matches the existing `/sign-in/` flow's
+  copy: "link expires in 15 minutes"), KV-stored at `magic:<token>`
+  with get-then-delete one-shot semantics. Bound to `anonId` at
+  issuance via the payload's `claimAnonId` field — even if the email
+  is forwarded, the recipient can't claim a different thread.
+  *Justification for the deviation from the v3 spec (32-byte
+  base64url / 10-min TTL): 49 bits is plenty for a one-shot
+  KV-stored token whose keyspace probe rate is hardware-bounded
+  rather than crypto-bounded; the 15-min TTL gives operators one
+  consistent mental model across sign-in and claim links;
+  reuses existing infrastructure rather than introducing a
+  parallel verify path.*
 - **Email auth posture:** SPF, DKIM, DMARC `p=quarantine` for
   `muntin.digital`. Magic-link emails carry an `Authentication-Results`
   warning footer and a non-clickable token preview *("Token starts
