@@ -4798,6 +4798,15 @@ async function handleAuthVerify(request, env, ctx) {
 
   const headers = new Headers({ Location: candidateReturnTo });
   setSessionCookie(headers, cookieValue);
+  // Phase 1a step 2.1 — when the claim flow succeeded, clear the
+  // anon-thread cookie so future requests from this device take the
+  // identified path (the thread now lives at window:thread:<sub>:
+  // <threadId>). Without this, the cookie outlives the session
+  // (90d cookie vs 30d session) and a re-visit after session expiry
+  // would land back on the anon path against a now-claimed thread.
+  if (claimedReturnTo) {
+    headers.append('Set-Cookie', WINDOW_ANON_COOKIE_NAME + '=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
+  }
   return new Response(null, { status: 302, headers });
 }
 

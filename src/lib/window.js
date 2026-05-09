@@ -443,13 +443,19 @@ export async function hashIp(ip) {
 }
 
 // Returns the anon thread for an anonId or null. anonId IS the index;
-// no scanning needed.
+// no scanning needed. Claimed threads are treated as no-thread —
+// after migrateAnonThread runs, the anon row stays in KV with a
+// claimedBy stamp + 30d TTL for audit, but the cookie path must
+// not append to it. (handleAuthVerify also clears the anon cookie
+// on claim; this is defense in depth for the edge case where the
+// cookie outlives session expiry on the same device.)
 export async function getOpenThreadForAnon(env, anonId) {
   if (!isValidSaveItemIdShape(anonId)) return null;
   const raw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
   if (!raw) return null;
   try {
     const t = JSON.parse(raw);
+    if (t.claimedBy) return null;
     if (t.status === 'open' || t.status === 'closed') return t;
   } catch (_) { /* drop */ }
   return null;
