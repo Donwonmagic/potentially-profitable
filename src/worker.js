@@ -245,6 +245,9 @@ import {
   checkAndStampAnonThrottle,
   checkAndStampIpThrottle,
   hashIp,
+  // Phase 1a step 2 — magic-link claim flow.
+  setAnonThreadEmail,
+  migrateAnonThread,
 } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 
@@ -331,6 +334,9 @@ const API_ROUTES = {
   '/api/window/poll':                handleWindowPoll,
   '/api/window/active':              handleWindowActive,
   '/api/window/me-unread':           handleWindowMeUnread,
+  // Phase 1a step 2 — operator attaches an email to their anon
+  // thread so Don's reply email + claim-magic-link can find them.
+  '/api/window/email':               handleWindowEmail,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -4747,12 +4753,48 @@ async function handleAuthVerify(request, env, ctx) {
   };
   const cookieValue = await signSession(sessionPayload, env.AUTH_COOKIE_SECRET);
 
-  // Use returnTo from the magic-link payload if it's still
-  // allowlisted (it was at request time, but be defensive). The
-  // query param overrides only when it's also allowlisted.
-  const candidateReturnTo = (typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
-    ? parsed.returnTo
-    : returnTo;
+  // Phase 1a step 2 — claim-on-verify branch. When the magic-link
+  // payload carries claimAnonId, the operator is verifying through
+  // Don's reply email and we migrate their anon thread to sub-keyed
+  // storage in the same flow. Best-effort: a migration failure does
+  // NOT block sign-in (the operator still gets their session); they
+  // just see the standalone /window/ page without the migrated
+  // thread merged in. Failure logs loud for ops.
+  let claimedReturnTo = null;
+  if (typeof parsed.claimAnonId === 'string' && parsed.claimAnonId) {
+    try {
+      const migration = await migrateAnonThread(env, parsed.claimAnonId, sub, email);
+      if (migration.ok) {
+        // Allow /window/ + /es/window/ as claim-flow return-tos
+        // (separately from the workbench allowlist). When the magic
+        // link came from Don's reply email, the operator wants to
+        // land on /window/, not /workbench/.
+        const claimReturnAllowed = new Set(['/window/', '/es/window/']);
+        if (typeof parsed.returnTo === 'string' && claimReturnAllowed.has(parsed.returnTo)) {
+          claimedReturnTo = parsed.returnTo + '?claimed=1';
+        }
+        console.log(JSON.stringify({
+          event: 'window.claim',
+          sub,
+          anonId: parsed.claimAnonId,
+          threadId: parsed.claimThreadId || null,
+          alreadyClaimed: !!migration.alreadyClaimed,
+        }));
+      } else {
+        console.warn('[auth/verify] anon-thread claim failed', { error: migration.error, anonId: parsed.claimAnonId, sub });
+      }
+    } catch (err) {
+      console.warn('[auth/verify] migrateAnonThread threw', { err: err && err.message, anonId: parsed.claimAnonId, sub });
+    }
+  }
+
+  // Use returnTo from the claim flow first, then the magic-link
+  // payload if it's still workbench-allowlisted (defensive — it was
+  // at request time, but flags can change), then the query param.
+  const candidateReturnTo = claimedReturnTo
+    || ((typeof parsed.returnTo === 'string' && allowedReturnTo.has(parsed.returnTo))
+        ? parsed.returnTo
+        : returnTo);
 
   const headers = new Headers({ Location: candidateReturnTo });
   setSessionCookie(headers, cookieValue);
@@ -6206,6 +6248,45 @@ async function handleWindowActive(request, env, ctx) {
   });
 }
 
+// Phase 1a step 2 — operator attaches an email to their anon thread
+// so Don's reply can include a claim-magic-link. Only mutates the
+// anon thread row; identified threads already have email captured at
+// session creation. Per-anon throttle handles abuse.
+async function handleWindowEmail(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!_windowAnonGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  // Only meaningful on the anon path; identified visitors already
+  // have email on their thread row from sign-in.
+  const anonId = _readWindowAnonCookie(request);
+  if (!anonId) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 400);
+  }
+  let body;
+  try { body = await parseFormBody(request); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  }
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+  if (!email || !isValidEmail(email)) {
+    return jsonResponse({ ok: false, error: 'invalid-email' }, 400);
+  }
+  const thread = await setAnonThreadEmail(env, anonId, email);
+  if (!thread) {
+    return jsonResponse({ ok: false, error: 'no-thread' }, 404);
+  }
+  console.log(JSON.stringify({ event: 'window.email.attached', anonId, threadId: thread.id }));
+  return jsonResponse({ ok: true, threadId: thread.id }, 200);
+}
+
 async function handleWindowMeUnread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -6313,18 +6394,51 @@ async function handleAdminWindowReply(request, env, ctx) {
   // Email the visitor with Don's reply inline. Best-effort — the
   // message is already persisted; visitor will see it on their
   // next visit/poll regardless of email delivery. Anon threads have
-  // null email until the operator provides one (Phase 1a step 2's
-  // claim flow surfaces this); reply still lands in the thread,
-  // visible on next poll.
+  // null email until the operator provides one (via /api/window/email);
+  // reply still lands in the thread, visible on next poll.
   const recipientEmail = resolved.thread.email || null;
   if (recipientEmail) {
     try {
       if (env.RESEND_API_KEY) {
         const isEs = String(body.locale || '').toLowerCase() === 'es';
+
+        // Phase 1a step 2 — when replying to an anon thread with an
+        // email, mint a one-shot claim-magic-link token bound to the
+        // anonId. The reply email IS the claim ceremony (no separate
+        // "click to verify" step). On verify, handleAuthVerify
+        // detects the claimAnonId payload and runs migrateAnonThread.
+        let claimUrl = '';
+        if (resolved.kind === 'anon' && env.AUTH_SESSIONS) {
+          let token = null;
+          for (let attempt = 0; attempt < 3; attempt++) {
+            const candidate = mintMagicLinkToken();
+            const existing = await env.AUTH_SESSIONS.get('magic:' + candidate);
+            if (!existing) { token = candidate; break; }
+          }
+          if (token) {
+            const claimReturnTo = isEs ? '/es/window/' : '/window/';
+            await env.AUTH_SESSIONS.put('magic:' + token, JSON.stringify({
+              email: recipientEmail,
+              returnTo: claimReturnTo,
+              createdAt: Date.now(),
+              claimAnonId: resolved.anonId,
+              claimThreadId: resolved.threadId,
+            }), { expirationTtl: MAGIC_LINK_TTL_SECONDS });
+            const baseUrl = (env.MAGIC_LINK_BASE_URL && String(env.MAGIC_LINK_BASE_URL))
+              || new URL(request.url).origin;
+            claimUrl = baseUrl
+              + '/api/auth/verify?token=' + encodeURIComponent(token)
+              + '&returnTo=' + encodeURIComponent(claimReturnTo);
+          } else {
+            console.warn('[window] claim-token mint exhausted; reply email omits claim footer', { threadId: resolved.threadId });
+          }
+        }
+
         const tmpl = windowReplyToUserEmail({
           locale: isEs ? 'es' : 'en',
           body: sanitized,
           windowUrl: isEs ? 'https://muntin.digital/es/window/' : 'https://muntin.digital/window/',
+          claimUrl,
         });
         await sendEmail({
           from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',

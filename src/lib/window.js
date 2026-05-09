@@ -555,6 +555,119 @@ export async function checkAndStampAnonThrottle(env, anonId) {
   return { ok: true };
 }
 
+// Update an anon thread's email field. Returns the updated thread or
+// null if the thread doesn't exist. Idempotent — no-op when the email
+// is already set to the same value. Used by /api/window/email when
+// the operator opts into email replies post-send.
+export async function setAnonThreadEmail(env, anonId, email) {
+  if (!isValidSaveItemIdShape(anonId)) return null;
+  const raw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!raw) return null;
+  let thread;
+  try { thread = JSON.parse(raw); } catch { return null; }
+  if (thread.email === email) return thread; // idempotent
+  thread.email = email;
+  thread.updatedAt = Date.now();
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(thread));
+  return thread;
+}
+
+// Migrate an anon thread to sub-keyed identified storage. Runs when
+// an operator clicks Don's reply email (which contains a one-shot
+// claim-magic-link token bound to their anonId). The migration is
+// metadata-only:
+//
+//   - Read anon thread row at window:thread:anon:<anonId>
+//   - Skip if missing or already claimed (idempotent re-run)
+//   - Mint a sub-keyed row at window:thread:<sub>:<threadId> carrying
+//     the SAME threadId, sub, email
+//   - Update window:thread-index:<sub> to include threadId
+//   - Stamp the anon row with {claimedBy:sub, claimedAt} + 30d TTL
+//     for safe rollback
+//   - upsertAdminIndex with the new sub-keyed shape (admin queue
+//     stops showing the anon entry; entries dedupe on threadId)
+//
+// Message keys (window:msg:<threadId>:<msgId>) are NOT moved — they're
+// sub-agnostic by design (src/lib/window.js:64-66). The migration
+// preserves the threadId so the messages remain reachable through
+// either keying.
+//
+// Returns { ok, thread } on success or { ok:false, error } on
+// no-op / failure.
+export async function migrateAnonThread(env, anonId, sub, email) {
+  if (!isValidSaveItemIdShape(anonId)) return { ok: false, error: 'invalid-anon-id' };
+  if (typeof sub !== 'string' || !sub) return { ok: false, error: 'invalid-sub' };
+
+  const anonRaw = await env.AUTH_SESSIONS.get(anonThreadKey(anonId));
+  if (!anonRaw) return { ok: false, error: 'anon-thread-not-found' };
+
+  let anonThread;
+  try { anonThread = JSON.parse(anonRaw); } catch { return { ok: false, error: 'anon-thread-corrupt' }; }
+
+  // Idempotent: a duplicate verify (e.g., user opens the email twice
+  // quickly) finds the row already claimed and returns the existing
+  // sub-keyed thread instead of double-migrating.
+  if (anonThread.claimedBy === sub) {
+    const existingRaw = await env.AUTH_SESSIONS.get(threadKey(sub, anonThread.id));
+    if (existingRaw) {
+      try { return { ok: true, thread: JSON.parse(existingRaw), alreadyClaimed: true }; }
+      catch { /* fall through to re-write */ }
+    }
+  }
+  if (anonThread.claimedBy && anonThread.claimedBy !== sub) {
+    return { ok: false, error: 'anon-thread-already-claimed-by-other' };
+  }
+
+  const now = Date.now();
+  const subThread = {
+    id: anonThread.id,
+    sub,
+    email: email || anonThread.email || null,
+    locale: anonThread.locale || null,
+    status: anonThread.status || 'open',
+    createdAt: anonThread.createdAt || now,
+    updatedAt: now,
+    msgCount: anonThread.msgCount || 0,
+    unreadByUser: !!anonThread.unreadByUser,
+    unreadByAdmin: !!anonThread.unreadByAdmin,
+    claimedFromAnon: anonId,
+    claimedAt: now,
+  };
+  // Carry forward the timestamps if present.
+  if (anonThread.lastUserMsgAt) subThread.lastUserMsgAt = anonThread.lastUserMsgAt;
+  if (anonThread.lastDonReplyAt) subThread.lastDonReplyAt = anonThread.lastDonReplyAt;
+
+  await env.AUTH_SESSIONS.put(threadKey(sub, anonThread.id), JSON.stringify(subThread));
+
+  // Update per-user thread index (idempotent — uses Set semantics).
+  const idxRaw = await env.AUTH_SESSIONS.get(threadIndexKey(sub));
+  let idx = { threadIds: [] };
+  if (idxRaw) {
+    try { idx = JSON.parse(idxRaw); } catch (_) { /* reset */ }
+  }
+  if (!Array.isArray(idx.threadIds)) idx.threadIds = [];
+  if (!idx.threadIds.includes(anonThread.id)) {
+    idx.threadIds.push(anonThread.id);
+    await env.AUTH_SESSIONS.put(threadIndexKey(sub), JSON.stringify(idx));
+  }
+
+  // Stamp the anon row as claimed + set 30d TTL for rollback safety.
+  // Keep the row body intact so a future bug investigation can read
+  // exactly what was migrated.
+  anonThread.claimedBy = sub;
+  anonThread.claimedAt = now;
+  await env.AUTH_SESSIONS.put(anonThreadKey(anonId), JSON.stringify(anonThread), {
+    expirationTtl: 30 * 24 * 3600,
+  });
+
+  // Refresh admin index entry so the queue stops showing the anon
+  // shape and starts showing the sub-keyed shape. Same threadId, so
+  // the existing entries.filter(threadId match) replaces in place.
+  await upsertAdminIndex(env, subThread);
+
+  return { ok: true, thread: subThread, alreadyClaimed: false };
+}
+
 // Per-IP throttle — defeats cookie-cycling abuse. 5/day cap on the
 // IP-hash regardless of how many anon cookies cycled. Returns ok
 // without writing if no IP is available (best-effort).

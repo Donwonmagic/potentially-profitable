@@ -872,8 +872,15 @@ export function windowNotifyDonEmail(body) {
 export function windowReplyToUserEmail(body) {
   const replyBody = String(body.body || '').trim();
   const windowUrl = String(body.windowUrl || 'https://muntin.digital/es/window/').trim();
+  const claimUrl = body.claimUrl ? String(body.claimUrl).trim() : '';
 
   const subject = 'Don respondió';
+
+  const claimFooterHtml = claimUrl ? (
+    '<p style="margin:32px 0 0;padding:14px 18px;background:#FAF7F2;border:1px solid #E5DFD0;font-size:13px;color:#2A2D33;line-height:1.55;">' +
+      '¿Quieres esta conversación en tus otros aparatos? <a href="' + escapeHtml(claimUrl) + '" style="color:#1F4E5B;text-decoration:underline;">Inicia sesión con un clic</a> — el enlace expira en 15 minutos.' +
+    '</p>'
+  ) : '';
 
   const html = htmlShell(
     'Don respondió',
@@ -882,9 +889,12 @@ export function windowReplyToUserEmail(body) {
         escapeHtml(replyBody) +
       '</div>',
       '<p style="margin:24px 0 0;">' + primaryCta(windowUrl, 'Continuar la conversación') + '</p>',
+      claimFooterHtml,
       '<p style="margin:32px 0 0;font-size:13px;color:#6B6B6B;font-style:italic;">Leo cada mensaje.</p>',
-    ].join('\n')
+    ].filter(Boolean).join('\n')
   );
+
+  const claimFooterText = claimUrl ? '\nGuardar esta conversación en tus otros aparatos: ' + claimUrl + ' (el enlace expira en 15 minutos)\n' : '';
 
   const txt = [
     'Don respondió',
@@ -892,10 +902,10 @@ export function windowReplyToUserEmail(body) {
     replyBody,
     '',
     'Continuar la conversación: ' + windowUrl,
-    '',
+    claimFooterText,
     '— Don',
     'Leo cada mensaje.',
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 
   return { subject, html, text: txt };
 }
