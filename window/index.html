@@ -80,100 +80,133 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <!-- Hero: shown when no thread exists yet OR when arriving fresh. -->
-  <section class="window-hero" id="windowHero">
-    <div class="window-hero__inner">
-      <p class="window-hero__eyebrow">A direct line to Don</p>
-      <h1 class="window-hero__headline">Tell me what's on your mind.</h1>
-      <p class="window-hero__sub">I read every one. Mondays through Fridays, I usually write back within 4 hours of when I see your note. On weekends, I&rsquo;ll write back by Monday morning. Some weeks I&rsquo;m on the floor and slower &mdash; the page will say so.</p>
-    </div>
-  </section>
+  <!-- Phase 2 redesign: the sash. One structural article holding the
+       named panes — sidelight (portrait + pulse), muntin (vertical
+       hairline at 50%, matching the brand mark), transom (horizontal
+       hairline at 35%), sash--top (calendar-honest presence), sash--
+       bottom (the operable light: chips + textarea), sill (reply-time
+       + escape hatches). Real muntins divide a sash into named lights;
+       the CSS class names mirror that vocabulary so the metaphor is
+       structural in source, not just rendered. -->
+  <article class="sash" id="windowSash" aria-label="Write to Don">
 
-  <!-- The muntin line: a 1px hairline at the 38.2% golden split.
-       The literal brand mullion. Drawn in via clip-path on first
-       paint (W.4 polish). -->
-  <div class="window-muntin" aria-hidden="true">
-    <span class="window-muntin__pulse" id="windowPulse" hidden title="Don is around"></span>
-  </div>
+    <!-- Sidelight: Don's portrait + the breathing pulse (off-muntin
+         per audit — the muntin is quiet; the world beyond the glass
+         moves). Aria-hidden because the same operator presence is
+         conveyed via the sash--top text below for screen readers. -->
+    <aside class="sidelight" aria-hidden="true">
+      <img class="sidelight__portrait" src="/about/portrait/don.webp" alt="" width="64" height="64" loading="lazy" decoding="async">
+      <span class="sidelight__pulse" id="windowPulse" hidden title="Don is around"></span>
+    </aside>
 
-  <!-- Thread scroll: empty until messages exist. -->
+    <!-- Literal hairlines: vertical muntin at 50% (matching the brand
+         mark), horizontal transom at 35%. 2px on /window/ specifically
+         (the muntin is load-bearing here); 1px elsewhere via
+         --muntin-weight. Decorative — aria-hidden. -->
+    <div class="muntin" aria-hidden="true"></div>
+    <div class="transom" aria-hidden="true"></div>
+
+    <!-- Sash—top (above the transom). Calendar-honest presence line
+         read from window:now when present (Phase 4); falls back to
+         the canonical reply-time. -->
+    <header class="sash--top">
+      <p class="sash--top__currents" id="windowCurrents">I read every one. Mondays through Fridays, within 4 hours of when I see your note. On weekends, by Monday morning.</p>
+    </header>
+
+    <!-- Sash—bottom (operable light): the note. -->
+    <section class="sash--bottom" id="windowComposer">
+
+      <!-- Six on-ramp chips. Empathy chips lead (no price); productized
+           offers follow with their canonical labels; "Something else"
+           closes. Audit-pending: prepend strings are operator-note
+           skeletons in plain English (María-tested). -->
+      <div class="window-composer__onramps" id="windowOnramps" aria-label="What brings you in">
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not sure yet. Here's what's going on: ">I&rsquo;m not sure yet &mdash; let me explain</button>
+        <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not ready to hire — just want eyes on this: ">I&rsquo;m not ready to hire &mdash; just want a second pair of eyes</button>
+        <button type="button" class="window-onramp" data-prepend="Your place: . Your website (if you have one): . What I want a new site to fix: ">New website &middot; <em>$2,500&ndash;$15k</em></button>
+        <button type="button" class="window-onramp" data-prepend="My website: . What's bothering me about it: ">Look at my site &middot; <em>$499</em></button>
+        <button type="button" class="window-onramp" data-prepend="My website: . Who works on it now: . What's not working: ">Take care of my site every month &middot; <em>$225/mo</em></button>
+        <button type="button" class="window-onramp" data-prepend="">Something else</button>
+      </div>
+
+      <!-- Trust tell. Inherits the about-page voice into the composer:
+           the operator learns, without being told, that Don will tell
+           them they don't need a $2,500 site if that's true. -->
+      <p class="window-composer__trust-tell">If the answer is &lsquo;you don&rsquo;t need to spend money on this,&rsquo; that&rsquo;s what I&rsquo;ll tell you. Has happened before.</p>
+
+      <!-- Hostess line — visible above the textarea (not buried inside
+           the placeholder). Persistent through the typing flow so the
+           welcome doesn't disappear on first character. -->
+      <p class="window-composer__hostess">Whatever you&rsquo;d type to a friend who knows this stuff &mdash; that&rsquo;s enough.</p>
+
+      <form class="window-composer__form" id="windowForm" autocomplete="off">
+
+        <!-- Optional context, collapsed by default — restaurant first
+             (operators identify by room before name), URL second, name
+             third. localStorage keeps these between visits. -->
+        <details class="window-composer__context-details" id="windowContextDetails">
+          <summary class="window-composer__context-summary">Tell me who you are <span class="window-composer__opt">(optional)</span></summary>
+          <div class="window-composer__context">
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowRestaurant">Restaurant + city</label>
+              <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="e.g. Pupuser&iacute;a Mama Tita, Silver Spring" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowSite">Your website (if you have one)</label>
+              <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
+            </div>
+            <div class="window-composer__field-pair window-composer__field-pair--full">
+              <label for="windowName">Your name</label>
+              <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
+            </div>
+          </div>
+        </details>
+
+        <textarea class="window-composer__field" id="windowBody" name="body" rows="3" placeholder="Start anywhere &mdash; a line is enough." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
+
+        <!-- Crisis allowlist line — revealed by JS (Phase 2.2) when the
+             operator types tier-1 keywords. Stays hidden by default;
+             never auto-fires, never blocks send. -->
+        <p class="window-composer__crisis" id="windowCrisis" hidden role="status">If tonight is heavier than the website, I&rsquo;m still going to read this &mdash; and these folks pick up the phone faster than I can: <a href="tel:988">988</a> (call or text), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
+
+        <div class="window-composer__row">
+          <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Record a voice note (coming soon)" disabled title="Voice notes coming in Phase 3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="2" width="6" height="12" rx="3"/>
+              <path d="M5 10v2a7 7 0 0 0 14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </button>
+          <span class="window-composer__counter" id="windowCounter" hidden aria-live="polite">0 / 4000</span>
+          <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send the note</button>
+        </div>
+        <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
+      </form>
+    </section>
+
+    <!-- Sill: where the note rests once written. Reply-time +
+         escape-hatch row in one editorial sentence (no help-desk
+         fallback flavor). -->
+    <footer class="sill">
+      <p class="sill__reassurance" id="windowReassurance">I read every one. Mondays through Fridays, within 4 hours. Weekends, by Monday morning. No commitment, no pitch.</p>
+      <p class="sill__alt-row">Prefer to talk? <a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-minute call</a>. Prefer email? <a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">don@muntin.digital</a>. Prefer Instagram? <a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">@muntin.digital</a>.</p>
+    </footer>
+  </article>
+
+  <!-- Thread scroll: empty until messages exist. Renders below the
+       composer so a fresh visitor sees the composer first; returning
+       visitors see their thread because the composer collapses to a
+       short reply field via JS once messages exist. -->
   <section class="window-thread" id="windowThread" aria-live="polite">
     <div class="window-thread__empty" id="windowThreadEmpty">
       <div class="window-thread__empty-mark" aria-hidden="true">
-        <svg width="128" height="128" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
+        <svg width="96" height="96" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter">
           <rect x="20" y="20" width="88" height="88"/>
           <line x1="64" y1="20" x2="64" y2="108"/>
           <line x1="20" y1="51" x2="108" y2="51"/>
         </svg>
       </div>
     </div>
-  </section>
-
-  <!-- Composer — Phase-2 redesign.
-       Three sharp on-ramp chips reflect the productized offers on
-       /studio/, prepending sentence stems with the price + scope so
-       a stressed owner picks the right path without thinking. The
-       composer carries optional Name + Restaurant + Current site
-       fields above the textarea — all optional, client-side only,
-       prepended into the body on submit so the worker payload is
-       unchanged. Sign-in is now framed as an upgrade ("keep replies
-       threaded"), not a gate. Email and Cal.com escape hatches are
-       always visible so the "no commitment" promise is structurally
-       true: a visitor can reach Don three ways without signing in. -->
-  <section class="window-composer" id="windowComposer" aria-label="Write to Don">
-
-    <!-- Sharp on-ramp chips (productized offers, exact prices). -->
-    <div class="window-composer__onramps" id="windowOnramps" aria-label="What brings you in">
-      <p class="window-onramps__hint">What brings you in?</p>
-      <button type="button" class="window-onramp" data-prepend="New site — Essentials $2,500 / Full Service $5–9k / Restaurant Group $8–15k+. Here's what I'm thinking: ">New site &middot; <em>$2,500&ndash;$15k</em></button>
-      <button type="button" class="window-onramp" data-prepend="Audit my existing site ($499). Here's the URL and what I'm noticing: ">Audit my existing site &middot; <em>$499</em></button>
-      <button type="button" class="window-onramp" data-prepend="Take over my Care Plan ($225/mo standalone). Here's where the site lives now: ">Take over my Care Plan &middot; <em>$225/mo</em></button>
-      <button type="button" class="window-onramp" data-prepend="">Something else</button>
-    </div>
-
-    <form class="window-composer__form" id="windowForm" autocomplete="off">
-      <span class="window-composer__caption" aria-hidden="true">Don &mdash;</span>
-
-      <!-- Optional context grid. Fields are prepended to the body on
-           submit (see assets/js/window.js). All optional; the only
-           required field is the message body. localStorage keeps the
-           name/restaurant/URL between visits so a returning operator
-           doesn't retype. -->
-      <div class="window-composer__context">
-        <div class="window-composer__field-pair">
-          <label for="windowName">Your name <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowName" name="name" type="text" autocomplete="name" maxlength="120" />
-        </div>
-        <div class="window-composer__field-pair">
-          <label for="windowRestaurant">Restaurant + city <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowRestaurant" name="restaurant" type="text" autocomplete="organization" maxlength="160" placeholder="e.g. The Irish Inn, Glen Echo" />
-        </div>
-        <div class="window-composer__field-pair window-composer__field-pair--full">
-          <label for="windowSite">Current website <span class="window-composer__opt">(optional)</span></label>
-          <input id="windowSite" name="site" type="url" autocomplete="url" inputmode="url" enterkeyhint="next" spellcheck="false" autocapitalize="off" maxlength="240" placeholder="https://" />
-        </div>
-      </div>
-
-      <label for="windowBody" class="window-composer__body-label">What's on your mind <span class="window-composer__req" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
-      <textarea class="window-composer__field" id="windowBody" name="body" rows="4" placeholder="Start anywhere. A line about what's nudging you to write — I'll do the rest." maxlength="4000" required aria-describedby="windowReassurance"></textarea>
-      <div class="window-composer__row">
-        <span class="window-composer__counter" id="windowCounter" aria-live="polite">0 / 4000</span>
-        <button type="submit" class="btn btn-primary window-composer__submit" id="windowSubmit">Send it over</button>
-      </div>
-      <p class="window-composer__msg" id="windowMsg" role="status" hidden></p>
-    </form>
-
-    <p class="window-composer__reassurance" id="windowReassurance">I read every one. Mondays through Fridays, within 4 hours. Weekends, by Monday morning. No commitment, no pitch.</p>
-
-    <!-- Three escape hatches. The library promises no signup; this
-         row makes that promise structurally true — every path here
-         reaches Don without an account. Sign-in (below) becomes the
-         upgrade, not the gate. -->
-    <ul class="window-composer__alt-row" aria-label="Other ways to reach Don">
-      <li><a href="/studio/call/" rel="noopener" data-event="window-cal-link">Book a 20-min call &rarr;</a></li>
-      <li><a href="mailto:don@muntin.digital?subject=Hi%20Don" data-event="window-email-link">Email <span class="serif-italic">don@muntin.digital</span> &rarr;</a></li>
-      <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener" data-event="window-ig-link">DM on Instagram &rarr;</a></li>
-    </ul>
   </section>
 
   <!-- Sign-in CTA: Phase 1b reframe. Anon-first means there is no

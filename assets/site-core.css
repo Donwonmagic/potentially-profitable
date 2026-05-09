@@ -2681,6 +2681,95 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 .window-signin strong{color:var(--ink)}
 
+/* ===== [core] Window Phase 2.1 — named-pane composer (the sash) =====
+   Real muntins divide a sash into named lights. The CSS class names
+   mirror that vocabulary so the metaphor is structural in source,
+   not just rendered. Geometry: 50% vertical muntin + 35% transom
+   match the brand mark exactly (window/index.html:58-66). The
+   --muntin-weight var is 2px on /window/ specifically (load-bearing
+   here); 1px elsewhere on the site (slender). */
+:root{--muntin-weight:1px}
+.window-canvas{--muntin-weight:2px}
+
+/* The sash — outer frame, holds all panes. */
+.sash{position:relative;max-width:680px;margin:24px auto;background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1);overflow:hidden;display:grid;grid-template-columns:108px 1fr;grid-template-rows:auto 1fr auto;grid-template-areas:'sidelight top' 'sidelight bottom' 'sill sill'}
+
+/* Sidelight — narrow vertical pane on the left. Don's portrait + the
+   pulse. The pulse is OFF the muntin (the muntin is quiet); 6px dot
+   beside the portrait. */
+.sidelight{grid-area:sidelight;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;background:var(--cream-2);border-right:1px solid transparent;min-height:120px}
+.sidelight__portrait{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.sidelight__pulse{position:absolute;top:24px;right:18px;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite}
+
+/* The muntin — vertical hairline at exactly 50% of the sash content
+   area (inside the right column, past the sidelight). The literal
+   brand mullion. */
+.sash > .muntin{position:absolute;top:0;bottom:0;left:calc(108px + (100% - 108px) / 2);width:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
+
+/* The transom — horizontal hairline at 35% from the top of the sash.
+   Divides sash--top from sash--bottom inside the right column. */
+.sash > .transom{position:absolute;top:35%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
+
+/* Sash—top: above the transom. Calendar-honest presence sentence. */
+.sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center}
+.sash--top__currents{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink-soft)}
+
+/* Sash—bottom: below the transom. The operable light — chips +
+   textarea + crisis line + submit row. */
+.sash--bottom{grid-area:bottom;padding:18px 32px 24px}
+
+/* Sill: where the note rests once written. Reply-time + escape
+   hatches. Spans full width. */
+.sill{grid-area:sill;padding:18px 32px;background:var(--cream-2);border-top:1px solid var(--line)}
+.sill__reassurance{margin:0 0 8px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic}
+.sill__alt-row{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.sill__alt-row a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none}
+.sill__alt-row a:hover,.sill__alt-row a:focus-visible{border-bottom-style:solid}
+
+/* Mobile: collapse to single column. The muntin/transom hide on small
+   screens — the metaphor stays in the lexicon (class names) but the
+   visual goes away when there's no horizontal room for a divider. */
+@media (max-width:640px){
+  .sash{grid-template-columns:1fr;grid-template-areas:'top' 'sidelight' 'bottom' 'sill';margin:12px}
+  .sidelight{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 18px;border-right:0;border-bottom:1px solid var(--line);min-height:0}
+  .sidelight__portrait{width:48px;height:48px}
+  .sidelight__pulse{top:14px;right:auto;left:54px}
+  .sash > .muntin,.sash > .transom{display:none}
+  .sash--top{padding:16px 18px 12px}
+  .sash--bottom{padding:12px 18px 18px}
+  .sill{padding:14px 18px}
+  .sash--top__currents{font-size:16px}
+}
+
+/* Composer additions — the new pieces inside .sash--bottom. */
+.window-composer__hostess{margin:14px 0 0;font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.5;color:var(--ink-soft)}
+.window-composer__trust-tell{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--stone);font-style:italic}
+.window-composer__crisis{margin:10px 0 0;padding:10px 14px;background:#FBF1D9;border-left:3px solid #B8861F;font-size:13px;line-height:1.55;color:var(--ink)}
+.window-composer__crisis a{color:var(--teal);font-weight:600}
+
+/* Empathy-chip variant — no price, no productized framing. Soft,
+   secondary-feeling visually so the priced offers below them aren't
+   visually demoted. */
+.window-composer__onramps .window-onramp.window-onramp--soft{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-style:italic}
+.window-composer__onramps .window-onramp.window-onramp--soft:hover,.window-composer__onramps .window-onramp.window-onramp--soft:focus-visible{border-color:var(--teal);color:var(--ink)}
+
+/* Optional context — collapsed by default. */
+.window-composer__context-details{margin:14px 0 0;border-top:1px dashed var(--line);padding-top:12px}
+.window-composer__context-summary{cursor:pointer;font-size:13px;color:var(--ink-soft);list-style:none;padding:4px 0}
+.window-composer__context-summary::-webkit-details-marker{display:none}
+.window-composer__context-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.window-composer__context-details[open] .window-composer__context-summary::before{content:'\2212 \00a0'}
+
+/* Mic button placeholder — visible only when WINDOW_VOICE_ENABLED.
+   Disabled in Phase 2.1; Phase 3 wires the recorder. */
+.window-composer__mic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);cursor:not-allowed;opacity:0.5}
+.window-composer__mic:not([disabled]){cursor:pointer;opacity:1;color:var(--teal)}
+.window-composer__mic:hover:not([disabled]),.window-composer__mic:focus-visible:not([disabled]){border-color:var(--teal);background:var(--teal-tint)}
+
+/* Composer field overrides for the new layout (no more left-padding
+   for the absolute "Don —" caption since the caption was removed). */
+.sash--bottom .window-composer__field{padding-left:14px}
+
 
 /* ===== [core] Window composer (Phase-2 redesign) (lines 5653-5685) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
