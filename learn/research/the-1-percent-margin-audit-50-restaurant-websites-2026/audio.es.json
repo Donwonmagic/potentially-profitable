@@ -1,0 +1,363 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:07:21.420Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 605.01,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Nota de investigación &middot; 2 de mayo, veinte veintiséis &middot; 11 min de lectura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 8.6
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Un estudio pequeño, con nombre, fechado. Cincuenta sitios web de restaurantes independientes en la DMV y el noreste de tres estados, auditados para los seis escapes de reserva y conversión más comunes: deeplink-botones de reserva rotos, horas ocultas, LCP lento, enlaces de pedido directo CTA faltantes, español muerto y pedidos solo a través de agregadores. Cada escape se midió en dólares por mes en relación con los ingresos informados por el operador. El operador mediano deja 0,94% de los ingresos sobre la mesa. El peor cuartil está perdiendo 2,3%.",
+      "start": 8.95,
+      "end": 43.27
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "50 Restaurantes independientes auditados",
+      "start": 43.79,
+      "end": 46.64
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "0,94% Ingresos medianos filtrados a través de la fricción del sitio",
+      "start": 46.96,
+      "end": 52.23
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "3.128 dólares Fuga mediana mensual por operador",
+      "start": 52.55,
+      "end": 56.08
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "43/50 Tienen al menos 3 de 6 escapes activos en este momento",
+      "start": 56.4,
+      "end": 61.47
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "De dónde viene el 1%.",
+      "start": 62.57,
+      "end": 64.42
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "El número del 1% no es una corazonada. Es una suma a través de seis escapes medidos, cada uno con una cifra de aumento publicada de la investigación primaria, aplicada a los ingresos informados por el operador. La metodología está a continuación; el resultado principal está en esta tabla.",
+      "start": 65.12,
+      "end": 82.11
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "El escape más grande es el que afecta a los menos operadores: pedidos solo a través de agregadores sin camino directo. Cuando está presente, el impacto es grande —casi medio punto de ingresos— porque cada pedido pasa por una comisión del 30% en lugar de una tarifa de procesamiento del 3,6%. Los dos escapes que afectan a la mayoría de los operadores (LCP móvil y CTA de pedido directo faltante) son más pequeños por incidente, pero se acumulan en más pedidos.",
+      "start": 82.63,
+      "end": 109.99
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Distribución de la fuga.",
+      "start": 111.09,
+      "end": 112.45
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "La distribución no es plana. Se agrupa: la mayoría de los operadores están en la banda del 0,5%–1,5%, pero una cola larga de operadores está perdiendo más del 2% —generalmente porque tienen los seis escapes activos al mismo tiempo.",
+      "start": 113.15,
+      "end": 128.78
+    },
+    {
+      "id": 11,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Distribución de la fuga en los 50 restaurantes. El grupo más grande es la banda del 0,5 al 1 por ciento, con 17 de 50 operadores. 15 se encuentran en la banda del 1 al 1,5 por ciento. 7 están por debajo de medio por ciento y 7 se encuentran entre 1,5 y 2 por ciento. La cola del peor cuartil por encima del 2 por ciento tiene 4 operadores.",
+      "start": 129.58,
+      "end": 150.8
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Los operadores en la banda de menos del 0,5% compartieron tres cosas: todos estaban en sitios personalizados o alojados en BentoBox (no Wix), todos tenían un espejo real /es/ o estaban en barrios no bilingües, y todos tenían un botón de pedido directo posicionado por encima de sus enlaces de terceros. También estaban sobrerepresentados en la categoría de \"familiares con más de 20 años\" —no porque los operadores antiguos sean tecnológicamente avanzados, sino porque han estado arreglando silenciosamente un escape por trimestre durante mucho tiempo.",
+      "start": 151.55,
+      "end": 184.49
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué significa el 0,94% en dólares.",
+      "start": 185.59,
+      "end": 188.93
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Aplicado a los ingresos informados por el operador mediano (~1,6 millones de dólares anuales, 133.000 dólares mensuales), el 0,94% es de 1.250 dólares por mes, o 15.012 dólares por año. Para un operador del peor cuartil en la misma banda de ingresos pero con una fuga del 2,3%, eso es de 3.069 dólares por mes, o 36.830 dólares por año. Para comparar, una reconstrucción de nivel de servicio completo en este estudio es de 5.000 a 9.000 dólares —la reconstrucción se paga sola en 2–7 meses con una fuga mediana, y en menos de dos meses con una fuga del peor cuartil.",
+      "start": 189.63,
+      "end": 230.8
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Dificultad de reparación por escape.",
+      "start": 231.9,
+      "end": 234.05
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "No todos los escapes requieren el mismo esfuerzo para arreglarlos. Clasificados por dificultad (el más fácil primero):",
+      "start": 234.75,
+      "end": 241.48
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "El botón de reserva no deeplink (5 minutos). Reemplaza https://opentable.com con https://www.opentable.com/restref/client/?rid=YOUR_VENUE_ID . La misma corrección se aplica a Resy y Tock. Prueba en móvil.",
+      "start": 241.83,
+      "end": 257.94
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Las horas están enterradas (15 minutos). Mueve el bloque de \"Horas\" por encima de la imagen principal. Agrega las horas del mismo día en texto plano, no solo como parte de una gráfica. La gráfica puede quedarse; el texto tiene que estar allí también.",
+      "start": 258.26,
+      "end": 271.9
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Falta el botón de pedido directo CTA (30 minutos). Agrega un botón \"Pedir directamente\" de color primario por encima de cualquier enlace de pedido de terceros. Conéctalo a la URL de pedido en línea de tu P O S (Toast, Square en línea, Olo, ChowNow). Iguala o supera el precio del menú de terceros.",
+      "start": 272.22,
+      "end": 289.13
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Mobile LCP > 3.0s (1-3 horas). Comprime la imagen principal, cambia a AVIF + WebP de respaldo, elimina el JS no utilizado, carga imágenes debajo de la pantalla de forma diferida. Prueba con Lighthouse en Slow 4G + 4× CPU antes de declarar la victoria.",
+      "start": 289.45,
+      "end": 306.13
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Pedido solo a través de agregadores (4-8 horas de configuración, luego mantenimiento). Establece un flujo de pedido en línea Toast o Square si no lo tienes ya. Iguala los precios del menú. Menciona los ahorros en el recibo del pedido y en el inserto de la bolsa para llevar. La parte más difícil no es la tecnología — es el cambio operativo de ejecutar dos flujos de pedido en paralelo durante el primer mes.",
+      "start": 306.45,
+      "end": 328.11
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Espejo real /es/ (una semana). El más difícil de los seis, y el que tiene el segundo mayor impacto. Un espejo localizado real, no un plugin de traducción Google. El menu drop-in cubre esto para la página de mayor influencia; un espejo de sitio completo es un proyecto de nivel Full Service.",
+      "start": 328.43,
+      "end": 345.05
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Las primeras tres correcciones — combinadas en menos de una hora, sin desarrollador requerido — recuperan aproximadamente la mitad de la fuga mediana. Son un sábado por la tarde, no un proyecto.",
+      "start": 345.57,
+      "end": 356.46
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Lo que esperaba encontrar y que no estaba allí.",
+      "start": 357.56,
+      "end": 360.15
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "La calidad de la fotografía no se correlacionó con la fuga. Los restaurantes con fotos fenomenales y los restaurantes con instantáneas de iPhone del operador tenían tasas de fuga similares. La fotografía impulsa la consideración, no la conversión. Reordena tus prioridades en consecuencia.",
+      "start": 360.85,
+      "end": 377.68
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Los sitios más antiguos no tenían más fugas que los más nuevos. Algunos de los sitios con menor fuga fueron construidos en dos mil dieciocho y nunca se tocaron de nuevo. Las características que causan fugas (JS pesado, widget de reservas de terceros que no deeplink, foto de héroe que bloquea las horas) son patrones de dos mil veintidós a dos mil veinticuatro.",
+      "start": 378,
+      "end": 397.95
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix no es universalmente malo. De 11 sitios Wix en la muestra, 4 estaban en la banda de menos del 1%. Eran aquellos cuyos propietarios habían pasado tiempo arreglando la plantilla, no aceptando los valores predeterminados.",
+      "start": 398.27,
+      "end": 412.11
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La cocina fina no tuvo más fugas que la informal. La fuga de reservas-deeplink golpea a ambos por igual; ambos pierden aproximadamente el mismo porcentaje de ingresos cuando la tienen.",
+      "start": 412.43,
+      "end": 422.97
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Metodología.",
+      "start": 424.07,
+      "end": 425.06
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Muestra: 50 restaurantes de propiedad independiente, sin cadenas nacionales, sin marcas de propiedad de PE. Mezcla geográfica: 60% DMV (DC + MD + VA), 40% tri-estado de NY-NJ-CT. Banda de ingresos: 800 dólaresK–3 dólaresM anuales (el ingreso mediano de los restaurantes independientes de DMV). Mezcla de cocina que roughly coincide con la distribución del corredor de RAMW en dos mil veinticinco.",
+      "start": 425.76,
+      "end": 452.87
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Período de auditoría: febrero-abril de veintiséis. Cada restaurante fue calificado manualmente en los seis escapes. El impacto en los ingresos por escape se aplicó utilizando las cifras de conversión publicadas: Whitespark veinticuatro Factores de clasificación de búsqueda local, Baymard veinticuatro benchmarks de conversión móvil del Instituto, el Informe de la industria de la restauración veinticinco de Toast y los datos de operación directa de Don de Tacombi Bethesda y el Irish Inn at Glen Echo (tamaño de muestra de 2 restaurantes para la calibración del operador).",
+      "start": 453.39,
+      "end": 485.17
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Las cifras de ingresos fueron autoinformadas por el operador y verificadas contra las estimaciones publicadas disponibles (volumen de reservas de Yelp, Índice de ventas de OpenTable, registros públicos de licencias de licores). Donde no se pudo verificar los ingresos, se utilizó la cifra del operador tal como estaba; se excluyó un valor atípico por negarse a confirmar un rango.",
+      "start": 485.69,
+      "end": 506.4
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Lo que este estudio no es: una muestra aleatorizada (los operadores fueron reclutados de los grupos de Slack de restaurantes RAMW + DMV), un estudio controlado (no se tomaron medidas antes/después), o una lista exhaustiva de escapes (se eligieron seis porque cada uno está bien publicado). Es una instantánea direccional, deliberadamente pequeña, con nombre y fecha.",
+      "start": 506.92,
+      "end": 527.1
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Ejecuta el tuyo.",
+      "start": 528.2,
+      "end": 529.41
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "La herramienta de auditoría de restaurantes gratuita califica tu sitio en los mismos seis escapes, en 30 segundos, en tu navegador. El resultado te dice qué escapes tienes y qué es lo que probablemente te están costando por mes.",
+      "start": 530.11,
+      "end": 543.43
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Si prefieres que te realice una auditoría profunda de $499 y te guíe a través de las soluciones en un Loom — /services/audit/ . La auditoría se acredita hacia una construcción dentro de 60 días.",
+      "start": 543.95,
+      "end": 557.46
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein gestiona dos restaurantes DMV y ejecuta Muntin Digital . Es miembro de RAMW y está certificado por ServSafe. La muestra de 50 sitios (anónima) y la rúbrica de puntuación por escape están disponibles a solicitud en don@muntin.digital .",
+      "start": 557.98,
+      "end": 574.39
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Piezas complementarias",
+      "start": 574.91,
+      "end": 576.25
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Una matemática honesta de DoorDash, veintiséis — la matemática por pedido detrás del escape número 6",
+      "start": 576.6,
+      "end": 582.67
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Auditoría de GBP de restaurante DMV, veintiséis — el lado de descubrimiento del mismo problema",
+      "start": 582.99,
+      "end": 588.69
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Por qué tu restaurante pierde reservas cada noche — la pieza complementaria de largo formulario",
+      "start": 589.01,
+      "end": 594.43
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Cinco cambios en el sitio web que recuperan el 1% de margen — la lista de soluciones, clasificada",
+      "start": 594.75,
+      "end": 600.72
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Ejecuta la auditoría gratuita de 30 segundos en tu propio sitio",
+      "start": 601.04,
+      "end": 605.01
+    }
+  ]
+}

@@ -1,0 +1,363 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:22:17.896Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "pm_alex",
+  "language": "pt",
+  "total": 595.17,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Nota de pesquisa &middot; 2 de maio, vinte e seis &middot; 11 min de leitura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 6.43
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Um estudo pequeno, nomeado e datado. Cinquenta sites de restaurantes independentes na DMV e no nordeste tri-estadual foram auditados para os seis vazamentos mais comuns de reserva e conversão: deeplink - botões de reserva quebrados, horas ocultas, LCP lento, links de pedido direto CTA faltantes, espanhol morto e pedidos apenas por agregador. Cada vazamento foi medido em dólares por mês contra a receita relatada pelo próprio operador. O operador mediano deixa 0,94% da receita na mesa. O pior quartil está vazando 2,3%.",
+      "start": 6.78,
+      "end": 39.87
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "50 Restaurantes independentes auditados",
+      "start": 40.39,
+      "end": 43.39
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "0,94% Receita mediana vazada por atrito no site",
+      "start": 43.71,
+      "end": 48.21
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "3.128 dólares Vazamento médio mensal por operador",
+      "start": 48.53,
+      "end": 52.59
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "43/50 Possuem pelo menos 3 dos 6 vazamentos ativos agora",
+      "start": 52.91,
+      "end": 57.51
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "De onde vem o 1%.",
+      "start": 58.61,
+      "end": 60.38
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "O número de 1% não é uma suposição. É uma soma de seis vazamentos medidos, cada um com uma figura de aumento publicada proveniente de pesquisa primária, aplicada à receita relatada pelo próprio operador. A metodologia está abaixo; o resultado principal está nesta tabela.",
+      "start": 61.08,
+      "end": 77.25
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "O maior vazamento é o que afeta o menor número de operadores: pedidos apenas por agregador, sem caminho direto. Quando está presente, o impacto é grande — quase meio ponto de receita — porque todos os pedidos passam por uma comissão de 30% em vez de uma taxa de processamento de 3,6%. Os dois vazamentos que afetam o maior número de operadores (LCP móvel e link de pedido direto C T A faltante) são menores por incidente, mas se somam em mais pedidos.",
+      "start": 77.77,
+      "end": 105.58
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Distribuição do vazamento.",
+      "start": 106.68,
+      "end": 108.4
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "A distribuição não é plana. Ela se agrupa: a maioria dos operadores está na faixa de 0,5% a 1,5%, mas uma longa cauda de operadores está vazando bem mais de 2% — geralmente porque têm todos os seis vazamentos ativos ao mesmo tempo.",
+      "start": 109.1,
+      "end": 125.01
+    },
+    {
+      "id": 11,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Distribuição do vazamento em todos os 50 restaurantes. O maior agrupamento está na faixa de 0,5 a 1 por cento, com 17 dos 50 operadores. 15 estão na faixa de 1 a 1,5 por cento. 7 estão abaixo de meio por cento e 7 estão entre 1,5 e 2 por cento. A cauda do pior quartil acima de 2 por cento tem 4 operadores.",
+      "start": 125.81,
+      "end": 145.68
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Os operadores na faixa abaixo de 0,5% compartilham três coisas: todos estão em sites personalizados ou hospedados em BentoBox (nenhum Wix), todos têm um espelho real /es/ ou estão em bairros não bilíngues, e todos têm um botão de pedido direto posicionado acima dos links de terceiros. Eles também estão super-representados na categoria \"família proprietária por 20+ anos\" — não porque os operadores antigos sejam avançados em tecnologia, mas porque eles vêm consertando um vazamento por trimestre há muito tempo.",
+      "start": 146.43,
+      "end": 177.53
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "O que 0,94% significa em dólares.",
+      "start": 178.63,
+      "end": 182.04
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Aplicado à receita relatada pelo operador mediano (~ 1,6 milhões de dólares anuais, 133 mil dólares mensais), 0,94% é 1.250 dólares por mês, ou 15.012 dólares por ano. Para um operador do pior quartil na mesma faixa de receita, mas com vazamento de 2,3%, isso é 3.069 dólares por mês, ou 36.830 dólares por ano. Para comparação, uma reconstrução do nível de Serviço Completo neste estúdio é de 5.000 a 9.000 dólares — a reconstrução paga por si mesma em 2 a 7 meses com vazamento mediano, e dentro de dois meses com vazamento do pior quartil.",
+      "start": 182.74,
+      "end": 222.09
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Dificuldade de conserto por vazamento.",
+      "start": 223.19,
+      "end": 225.79
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Não todos os vazamentos exigem o mesmo esforço para serem consertados. Classificados por dificuldade (do mais fácil para o mais difícil):",
+      "start": 226.49,
+      "end": 234.84
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Botão de reserva não deeplink (5 minutos). Substitua https://opentable.com por https://www.opentable.com/restref/client/?rid=YOUR_VENUE_ID . Mesma correção em Resy e Tock. Teste em dispositivos móveis.",
+      "start": 235.19,
+      "end": 249.33
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Horário enterrado (15 minutos). Mova o bloco \"Horário\" acima da imagem de destaque. Adicione o horário do mesmo dia em texto simples, não apenas como parte de uma imagem. A imagem pode permanecer; o texto tem que estar lá também.",
+      "start": 249.65,
+      "end": 262.69
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Chamada para ação de pedido direto ausente (30 minutos). Adicione um botão \"Pedir direto\" de cor primária acima de qualquer link de pedido de terceiros. Conecte-o à URL de pedidos online do seu P O S (Toast, Square Online, Olo, ChowNow). Igualize ou supere o preço do menu de terceiros.",
+      "start": 263.01,
+      "end": 279.03
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Tempo de carregamento móvel LCP > 3,0s (1–3 horas). Comprima a imagem de destaque, altere para AVIF + WebP de fallback, remova JS não utilizado, carregue imagens abaixo da dobra de forma lazy. Teste com Lighthouse em Slow 4G + 4× CPU antes de declarar vitória.",
+      "start": 279.35,
+      "end": 296.76
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Pedido apenas por agregador (4–8 horas de configuração, então manutenção). Crie um fluxo de pedido online Toast ou Square se você não tiver um. Igualize os preços do menu. Mencione as economias no recibo do pedido e na inserção da embalagem para viagem. A parte mais difícil não é a tecnologia — é a mudança operacional de executar dois fluxos de pedidos em paralelo durante o primeiro mês.",
+      "start": 297.08,
+      "end": 318.79
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Espelho real /es/ (uma semana). O mais difícil dos seis, e o que tem o segundo maior impacto. Um espelho localizado real, não um plugin Google Translate. O menu drop-in cobre isso para a página de maior alavancagem; um espelho de site completo é um projeto de nível Full Service.",
+      "start": 319.11,
+      "end": 334.53
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "As três primeiras correções — menos de uma hora combinadas, sem desenvolvedor necessário — recuperam cerca da metade do vazamento mediano. Elas são um sábado à tarde, não um projeto.",
+      "start": 335.05,
+      "end": 346.1
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "O que eu esperava encontrar que não estava lá.",
+      "start": 347.2,
+      "end": 349.6
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "A qualidade da fotografia não se correlacionou com o vazamento. Restaurantes com fotos fenomenais e restaurantes com fotos tiradas com iPhone do operador vazaram a taxas aproximadamente iguais. A fotografia impulsiona a consideração, não a conversão. Reorganize suas prioridades de acordo.",
+      "start": 350.3,
+      "end": 367.1
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Sites mais antigos não vazaram mais do que os mais novos. Alguns dos sites com menor vazamento foram construídos em 2018 e nunca mais tocados. Os recursos que causam vazamentos (JS pesado, widget de reservas de terceiros que não deeplink, imagem de destaque que bloqueia as horas) são padrões de 2022–2024.",
+      "start": 367.42,
+      "end": 387.48
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix não é universalmente ruim. De 11 sites Wix na amostra, 4 estavam na faixa de menos de 1%. Eles foram os que os proprietários haviam passado tempo corrigindo o modelo, não aceitando os padrões.",
+      "start": 387.8,
+      "end": 399.97
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "A culinária fina não vazou mais do que a casual. O vazamento de reserva-deeplink atinge ambos igualmente; ambos perdem aproximadamente a mesma porcentagem de receita quando o têm.",
+      "start": 400.29,
+      "end": 411.2
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Metodologia.",
+      "start": 412.3,
+      "end": 413.32
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Amostra: 50 restaurantes independentes, sem cadeias nacionais, sem marcas de propriedade de PE. Mistura geográfica: 60% DMV (DC + MD + VA), 40% região tri-estatal de NY-NJ-CT. Faixa de receita: $800K–$3M anuais (a mediana dos restaurantes independentes DMV). Mistura de culinária aproximadamente igual à distribuição do corredor de 2025 da RAMW.",
+      "start": 414.02,
+      "end": 441.32
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Período de auditoria: fevereiro–abril de vinte e seis. Cada restaurante foi avaliado manualmente nos seis vazamentos. O impacto de receita por vazamento foi aplicado usando figuras de aumento de conversão publicadas: Whitespark vinte e quatro Fatores de Classificação de Pesquisa Local, Baymard benchmarks de conversão móvel do Instituto de vinte e quatro, Relatório da Indústria de Restaurantes de vinte e cinco do Toast, e dados operacionais diretos do Don do Tacombi Bethesda e do Irish Inn at Glen Echo (tamanho da amostra de 2 restaurantes para a calibração do lado do operador).",
+      "start": 441.84,
+      "end": 475.22
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Figuras de receita autodeclaradas pelo operador, verificadas contra estimativas publicadas disponíveis (volume de reservas do Yelp, Índice de Vendas do OpenTable, registros públicos de licenças de bebidas alcoólicas). Onde a receita não pôde ser verificada, a figura do operador foi usada como está; um valor atípico foi excluído por se recusar a confirmar uma faixa.",
+      "start": 475.74,
+      "end": 496.48
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "O que este estudo não é: uma amostra aleatorizada (operadores foram recrutados dos grupos de slack de restaurantes do RAMW + DMV), um estudo controlado (nenhuma medição antes/depois foi realizada), ou uma lista exaustiva de vazamentos (seis foram escolhidos porque cada um é bem publicado). É um instantâneo direcional, deliberadamente pequeno, nomeado e datado.",
+      "start": 497,
+      "end": 517.23
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Execute o seu.",
+      "start": 518.33,
+      "end": 519.44
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "A ferramenta de auditoria de restaurante gratuita avalia seu site nos mesmos seis vazamentos, em 30 segundos, no seu navegador. O resultado diz a você quais vazamentos você tem e o que eles provavelmente estão custando por mês.",
+      "start": 520.14,
+      "end": 533.84
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Se você preferir que eu execute uma auditoria profunda de $499 e o guie pelas soluções em um Loom — /services/audit/. A auditoria é creditada em uma construção dentro de 60 dias.",
+      "start": 534.36,
+      "end": 546.68
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "O Don Goldstein gerencia dois restaurantes do DMV e executa o Muntin Digital. Ele é membro do RAMW e certificado em ServSafe. A amostra de 50 sites (anônima) e a rubrica de pontuação por vazamento estão disponíveis mediante solicitação para don@muntin.digital.",
+      "start": 547.2,
+      "end": 564.09
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Peças complementares",
+      "start": 564.61,
+      "end": 565.94
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Uma matemática honesta do DoorDash, vinte e seis — a matemática por ordem por trás do vazamento número 6",
+      "start": 566.29,
+      "end": 572.65
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Auditoria de GBP do restaurante do DMV, vinte e seis — o lado de descoberta do mesmo problema",
+      "start": 572.97,
+      "end": 578.86
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Por que seu restaurante perde reservas todas as noites — a peça complementar de longo prazo",
+      "start": 579.18,
+      "end": 584.77
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Cinco alterações no site que recuperam 1% de margem — a lista de soluções, classificada",
+      "start": 585.09,
+      "end": 590.65
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Execute a auditoria gratuita de 30 segundos no seu próprio site",
+      "start": 590.97,
+      "end": 595.17
+    }
+  ]
+}
