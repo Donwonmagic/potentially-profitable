@@ -273,39 +273,34 @@
   "kv_namespaces": [
     { "binding": "AUDIT_SNAPSHOTS", "id": "f661208f47644e32bfe965e46f42f88a" },
     { "binding": "AUTH_SESSIONS",   "id": "ee2a0c3542cd44139fb67a4117b0d358" }
-  ]
+  ],
 
   // ─────────────────────────────────────────────────────────────────
-  // Phase 3 (Workshop) — Watch list / scheduled re-audits.
+  // Cron Trigger — Phase 0 (Window redesign) ENABLED.
   //
-  // The /api/workbench/watch{,-list,-delete} endpoints are LIVE in
-  // src/worker.js — operators can attach watches, list them, and
-  // detach. Persistence happens in AUTH_SESSIONS under watch:<sub>:<id>
-  // keys. Until the Cron Trigger below is uncommented, those watches
-  // simply persist with lastCheckedAt = null forever; no upstream
-  // API quota burns and no emails go out.
+  // The scheduled() handler in src/worker.js already does substantial
+  // work: tick lock, watch iteration (a stub today — wakes when
+  // src/lib/watch-checks.js lands), Window pending-Don batch flush
+  // (src/lib/window.js iteratePendingDonReady — LIVE), property
+  // rollups, submission stale sweep, lifecycle email dispatcher.
   //
-  // To turn on:
-  //   1. Uncomment the "triggers.crons" block below.
-  //   2. Implement src/lib/watch-checks.js with one function per
-  //      watchable kind (audit / seo / gbp / mobile / schema / speed)
-  //      that takes (env, savedItem) and returns a 0..100 number.
-  //   3. Wire those functions into the iterateAllWatches loop in
-  //      worker.js's scheduled() handler. Today the loop just counts
-  //      so the cron tick is observable in logs without doing work.
-  //   4. Add a watch-diff email template to src/lib/templates.js +
-  //      templates.es.js (locale-aware).
-  //   5. wrangler deploy. The cron fires on the configured cadence;
-  //      no API keys, no extra secrets, no DNS changes.
+  // Cadence: */5 (every 5 minutes). Sized for the Window batch-flush
+  // promise (PENDING_DON_BATCH_MS = 2 minutes — see src/lib/window.js).
+  // Daily 14:00 UTC was the original Watch cadence; */5 is the right
+  // cadence for the Window redesign's batch + SLA-flag + auto-pause
+  // vital-signs needs (docs/window-redesign-plan.md §2.5).
   //
-  // Daily at 14:00 UTC (≈10am ET) keeps emails out of the late-night
-  // window most operators don't read. Switch to weekly with
-  // "0 14 * * 1" (Mondays only) if daily proves chatty.
+  // The scheduled() handler is single-flight via a 60s tick-lock in
+  // AUTH_SESSIONS (cron:tick:lock). PER_TICK_BUDGET = 200 was sized
+  // for daily; at */5 cadence the actual per-tick load stays small
+  // because most subtasks are no-ops on empty queues.
   //
-  // "triggers": {
-  //   "crons": ["0 14 * * *"]
-  // },
+  // Rollback: comment the "triggers" block and `wrangler deploy`.
   // ─────────────────────────────────────────────────────────────────
+
+  "triggers": {
+    "crons": ["*/5 * * * *"]
+  }
 
   // ─────────────────────────────────────────────────────────────────
   // Optional bindings still staged, provisioned on demand:
