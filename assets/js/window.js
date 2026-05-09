@@ -593,4 +593,62 @@
   bindOnramps();
   // Phase-2 redesign — boot the optional context fields.
   loadContextFromStorage();
+
+  // Phase 2.4 — handoff prefill receiver. URL convention:
+  //   /window/?topic=<key>&prefill=<base64-encoded text>
+  // where <key> is one of: audit, gbp, storefront-health, sheet:plate-cost,
+  // glossary:<term>, blog:<slug>, or any string the source page uses.
+  // The receiver:
+  //   - pre-populates the textarea with the decoded finding
+  //   - sets lastChipKey to the chip whose data-chip-key matches `topic`
+  //     (so the success-state artifact routes correctly)
+  //   - reveals the optional context <details> if a URL is in the prefill
+  //   - never auto-submits — the operator still hits Send
+  // Plan §4.2.
+  (function applyPrefill() {
+    if (!els.body) return;
+    var search;
+    try { search = new URLSearchParams(window.location.search || ''); }
+    catch (_) { return; }
+    var topic = search.get('topic') || '';
+    var prefillRaw = search.get('prefill') || '';
+    if (!prefillRaw) {
+      // Topic alone (without prefill) just sets the chip key for
+      // routing, e.g. /window/?topic=audit from a footer link.
+      if (topic) {
+        var topicKeyMap = { audit: 'audit', 'storefront-health': 'audit', care: 'care', 'care-plan': 'care', 'new-site': 'new-site', 'not-sure': 'not-sure', 'not-ready': 'not-ready' };
+        if (topicKeyMap[topic]) lastChipKey = topicKeyMap[topic];
+      }
+      return;
+    }
+    // Decode base64-url-safe → UTF-8.
+    var decoded;
+    try {
+      var b64 = prefillRaw.replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      decoded = decodeURIComponent(escape(atob(b64)));
+    } catch (_) {
+      // Treat as plain URL-decoded text; sanitize length.
+      try { decoded = decodeURIComponent(prefillRaw); } catch (__) { decoded = prefillRaw; }
+    }
+    if (typeof decoded !== 'string') return;
+    // Cap at MAX_MSG_LENGTH so a malformed param doesn't blow up the textarea.
+    if (decoded.length > 4000) decoded = decoded.slice(0, 4000);
+    els.body.value = decoded;
+    updateCounter();
+    maybeShowCrisis();
+    // Topic → chip-key mapping (mirrors CHIP_ARTIFACTS keys).
+    var topicKeyMap2 = { audit: 'audit', 'storefront-health': 'audit', care: 'care', 'care-plan': 'care', 'new-site': 'new-site', 'not-sure': 'not-sure', 'not-ready': 'not-ready' };
+    if (topicKeyMap2[topic]) lastChipKey = topicKeyMap2[topic];
+    // Reveal context details so the operator sees the URL/restaurant
+    // fields without having to hunt for them.
+    if (els.contextDetails && !els.contextDetails.open) {
+      els.contextDetails.open = true;
+    }
+    // Plausible event: the prefill landed cleanly. Lets us measure
+    // tool-result handoff conversion rate per plan §9.6.
+    try {
+      window.plausible && window.plausible('Window Prefill', { props: { topic: topic || 'unknown', locale: locale } });
+    } catch (_) { /* ignore */ }
+  })();
 })();
