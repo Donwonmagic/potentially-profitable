@@ -327,8 +327,14 @@ export async function checkAndStampThrottle(env, sub) {
 // Add a message id to the pending-don batch (for email coalescing).
 // Creates the row if missing; appends if exists. The cron flushes
 // rows whose firstAt is older than PENDING_DON_BATCH_MS.
-export async function pushPendingDon(env, sub, msgId) {
-  const raw = await env.AUTH_SESSIONS.get(pendingDonKey(sub));
+//
+// `kind` is 'identified' (default — keyed by sub) or 'anon' (keyed by
+// anonId). The cron handler dispatches on this so anon threads get
+// notified through the anon-aware path. Without `kind`, anon rows
+// would route through getOpenThreadForUser (sub-keyed) and silently
+// drop. See docs/window-redesign-plan.md §2.1, audit B1.
+export async function pushPendingDon(env, suffix, msgId, kind = 'identified') {
+  const raw = await env.AUTH_SESSIONS.get(pendingDonKey(suffix));
   const now = Date.now();
   let row;
   if (raw) {
@@ -336,17 +342,23 @@ export async function pushPendingDon(env, sub, msgId) {
       row = JSON.parse(raw);
       row.msgIds = Array.isArray(row.msgIds) ? row.msgIds : [];
       row.msgIds.push(msgId);
+      // Preserve existing kind if present; older rows pre-this-fix
+      // default to 'identified'.
+      if (!row.kind) row.kind = kind;
     } catch (_) {
-      row = { firstAt: now, msgIds: [msgId] };
+      row = { firstAt: now, msgIds: [msgId], kind };
     }
   } else {
-    row = { firstAt: now, msgIds: [msgId] };
+    row = { firstAt: now, msgIds: [msgId], kind };
   }
-  await env.AUTH_SESSIONS.put(pendingDonKey(sub), JSON.stringify(row), { expirationTtl: PENDING_DON_TTL_SEC });
+  await env.AUTH_SESSIONS.put(pendingDonKey(suffix), JSON.stringify(row), { expirationTtl: PENDING_DON_TTL_SEC });
   return row;
 }
 
 // Iterate pending-don rows ready to flush (older than batch window).
+// Yields the suffix (sub OR anonId), the row, the kind, and the key.
+// Pre-fix rows without `kind` default to 'identified' for backward
+// compatibility — they'll route through the existing sub-keyed path.
 export async function* iteratePendingDonReady(env) {
   const result = await env.AUTH_SESSIONS.list({ prefix: PENDING_DON_KEY_PREFIX });
   const now = Date.now();
@@ -356,8 +368,18 @@ export async function* iteratePendingDonReady(env) {
     let row;
     try { row = JSON.parse(raw); } catch (_) { continue; }
     if (!row.firstAt || (now - row.firstAt) < PENDING_DON_BATCH_MS) continue;
-    const sub = k.name.slice(PENDING_DON_KEY_PREFIX.length);
-    yield { sub, row, key: k.name };
+    const suffix = k.name.slice(PENDING_DON_KEY_PREFIX.length);
+    const kind = row.kind === 'anon' ? 'anon' : 'identified';
+    // Backward-compatible alias: callers expecting `sub` get the
+    // suffix only when this is an identified row.
+    yield {
+      suffix,
+      sub: kind === 'identified' ? suffix : null,
+      anonId: kind === 'anon' ? suffix : null,
+      kind,
+      row,
+      key: k.name,
+    };
   }
 }
 

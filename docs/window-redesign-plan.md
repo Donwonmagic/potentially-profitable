@@ -142,13 +142,22 @@ One cron `*/5 * * * *` with multi-step dispatcher:
 
 ### 2.6 Spam, throttle, deliverability (hardened)
 
+> **Phase split (per §7):** the origin gate + the per-anonId / per-IP
+> throttles ship in **Phase 1a step 1** (foundation) because they're
+> the table-stakes for accepting any anonymous POST. The threat-score
+> gate, Turnstile, PII pre-write gate, and `textContent` rendering
+> rule ship in **Phase 1b** because they're the harden-before-flip
+> requirements. The flag (`WINDOW_ANON_ENABLED`) MUST stay off until
+> 1b lands. `docs/DEPLOY-CHECKPOINTS.md` holds the pre-flip checklist.
+
 - Origin gate (`isOriginAllowed`) on the anon path — non-negotiable.
+  *Phase 1a step 1.*
+- Per-IP-hash throttle (5/day for anon). *Phase 1a step 1.*
+- Per-anonId throttle (5/day, 60s back-pressure). *Phase 1a step 1.*
 - Cloudflare threat-score gate (`isHighThreatIP`, 403 at >=30) — already
-  in codebase, must be invoked.
+  in codebase, must be invoked. *Phase 1b.*
 - Turnstile on first anon POST per IP; managed mode invisible 99% of the
-  time.
-- Per-IP-hash throttle (5/day for anon).
-- Per-anonId throttle (5/day, 60s back-pressure).
+  time. *Phase 1b.*
 - **PII pre-write gate (NEW):** regex sweep for credit-card (PAN with
   Luhn), SSN, password-keyword-near-string. On match: do not store body;
   reply *"I don't take card numbers or passwords through the Window —

@@ -937,12 +937,21 @@ export default {
       const WINDOW_BATCH_BUDGET = 20;
       try {
         let processed = 0;
-        for await (const { sub, row, key } of iteratePendingDonReady(env)) {
+        for await (const { suffix, sub, anonId, kind, row, key } of iteratePendingDonReady(env)) {
           if (processed >= WINDOW_BATCH_BUDGET) break;
           processed++;
           try {
-            // Resolve the thread + recent excerpts for the email body.
-            const thread = await getOpenThreadForUser(env, sub);
+            // Resolve the thread for the email body. Identified rows
+            // route through the per-user thread index; anon rows
+            // resolve directly by anonId (the cookie IS the index).
+            // Audit B1: anon rows previously fell through getOpenThreadForUser
+            // and silently dropped — fixed by dispatching on `kind`.
+            let thread;
+            if (kind === 'anon') {
+              thread = await getOpenThreadForAnon(env, anonId);
+            } else {
+              thread = await getOpenThreadForUser(env, sub);
+            }
             if (!thread) {
               await env.AUTH_SESSIONS.delete(key);
               continue;
@@ -955,13 +964,21 @@ export default {
             }
             const excerpts = batch.map((m) => String(m.body || '').slice(0, 240)).reverse();
             const isEs = thread.locale === 'es';
+            // Defensive: anon threads have null email + null sub.
+            // Use anonId.slice for the author label so the template
+            // never receives undefined or null.
+            const authorLabel = thread.email || (suffix && typeof suffix === 'string' ? suffix.slice(0, 8) : 'visitor');
             const tmpl = windowNotifyDonEmail({
               locale: isEs ? 'es' : 'en',
-              author: thread.email || sub.slice(0, 8),
+              author: authorLabel,
               email: thread.email || '',
               excerpts,
               adminUrl: isEs ? 'https://muntin.digital/es/admin/window/' : 'https://muntin.digital/admin/window/',
-              sub,
+              // Pass both: existing templates use `sub`; new admin
+              // queue UI may switch on kind to render anon links.
+              sub: kind === 'identified' ? sub : null,
+              anonId: kind === 'anon' ? anonId : null,
+              kind,
               threadId: thread.id,
             });
             await sendEmail({
@@ -975,7 +992,7 @@ export default {
             windowBatchesFlushed++;
           } catch (err) {
             windowBatchesFailed++;
-            console.warn('[cron] window batch flush failed', { sub, err: err && err.message });
+            console.warn('[cron] window batch flush failed', { suffix, kind, err: err && err.message });
           }
         }
       } catch (err) {
@@ -5868,7 +5885,8 @@ const WINDOW_ANON_COOKIE_NAME = 'md_anon_thread_id';
 const WINDOW_ANON_COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
 
 // Read the anon-thread cookie from the request. Returns null if
-// missing or shape-invalid.
+// missing or shape-invalid (audit B4: malformed cookies must not
+// reach KV — they'd amplify abuse and confuse the throttle).
 function _readWindowAnonCookie(request) {
   const raw = request && request.headers ? request.headers.get('cookie') : null;
   if (!raw || typeof raw !== 'string') return null;
@@ -5879,7 +5897,13 @@ function _readWindowAnonCookie(request) {
     const name = part.slice(0, eq).trim();
     if (name !== WINDOW_ANON_COOKIE_NAME) continue;
     const value = part.slice(eq + 1).trim();
-    return value || null;
+    if (!value) return null;
+    // Shape-validate so a malformed cookie is treated as no-cookie:
+    // the next append re-mints a fresh anonId. Defends against
+    // attacker-forged cookies creating bogus throttle rows or
+    // 500-ing the createAnonThread path with `invalid-anon-id`.
+    if (!isValidSaveItemIdShape(value)) return null;
+    return value;
   }
   return null;
 }
@@ -5944,17 +5968,21 @@ async function handleWindowAppend(request, env, ctx) {
   if (!isOriginAllowed(request)) {
     return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
+  // 503 first if the binding is missing (matches pre-commit ordering;
+  // audit minor #8 — service-unavailable should out-rank
+  // unauthenticated so monitoring distinguishes config errors from
+  // expected anonymous reads).
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
 
   // Branch 1: identified send (existing behavior, unchanged).
   // Branch 2 (Phase 1a): anonymous send when no session AND anon gate on.
-  const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
+  const session = await getSessionFromRequest(request, env);
   const anonEnabled = _windowAnonGate(env);
 
   if (!session && !anonEnabled) {
     return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
-  }
-  if (!session && !env.AUTH_SESSIONS) {
-    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
   }
 
   let body;
@@ -6058,10 +6086,11 @@ async function handleWindowAppend(request, env, ctx) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
 
-  // Anon threads still notify Don via the pending-don batch — the
-  // batch row uses anonId as the key suffix to keep the queue
-  // shape consistent.
-  await pushPendingDon(env, anonId, result.msg.id);
+  // Anon threads notify Don via the pending-don batch tagged with
+  // kind:'anon'. The cron flush dispatches on kind to use
+  // getOpenThreadForAnon (anonId-keyed) instead of the sub-keyed path.
+  // Audit B1.
+  await pushPendingDon(env, anonId, result.msg.id, 'anon');
 
   console.log(JSON.stringify({ event: 'window.append.anon', anonId, threadId: thread.id, msgId: result.msg.id, ts: result.msg.createdAt, firstMsg: (result.thread.msgCount || 0) === 1, mintedCookie: mintedNewCookie }));
 
@@ -6076,6 +6105,13 @@ async function handleWindowAppend(request, env, ctx) {
 async function handleWindowThread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  // Origin gate on read endpoints: anon cookies travel SameSite=Lax
+  // on top-level navigations. A cross-origin top-level GET to
+  // /api/window/thread would otherwise leak the visitor's anon
+  // thread. Cheap defense; matches handleWindowAppend's gate.
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
   const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
   if (session) {
@@ -6113,6 +6149,9 @@ async function handleWindowThread(request, env, ctx) {
 async function handleWindowPoll(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
   }
   const session = env && env.AUTH_SESSIONS ? await getSessionFromRequest(request, env) : null;
   if (session) {
@@ -6187,6 +6226,31 @@ async function handleAdminWindowList(request, env, ctx) {
   return jsonResponse({ ok: true, items: queue, count: queue.length }, 200);
 }
 
+// Phase 1a step 1 (audit B3) — resolve the admin's target thread
+// regardless of identified vs anonymous. Callers pass sub OR anonId
+// (mutually exclusive); the helper returns a normalized envelope
+// `{ kind, sub|null, anonId|null, threadId, thread }` on success
+// or `{ error }` on shape failure / not-found.
+async function _resolveAdminWindowThread(env, params) {
+  const sub = typeof params.sub === 'string' ? params.sub.trim() : '';
+  const anonId = typeof params.anonId === 'string' ? params.anonId.trim() : '';
+  const threadId = typeof params.threadId === 'string' ? params.threadId.trim() : '';
+  if (!threadId) return { error: 'invalid-body', status: 400 };
+  if (sub && anonId) return { error: 'invalid-body', status: 400 };
+  if (sub) {
+    const thread = await getThreadById(env, sub, threadId);
+    if (!thread) return { error: 'not-found', status: 404 };
+    return { kind: 'identified', sub, anonId: null, threadId, thread };
+  }
+  if (anonId) {
+    if (!isValidSaveItemIdShape(anonId)) return { error: 'invalid-body', status: 400 };
+    const thread = await getOpenThreadForAnon(env, anonId);
+    if (!thread || thread.id !== threadId) return { error: 'not-found', status: 404 };
+    return { kind: 'anon', sub: null, anonId, threadId, thread };
+  }
+  return { error: 'invalid-body', status: 400 };
+}
+
 async function handleAdminWindowThread(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
@@ -6194,17 +6258,17 @@ async function handleAdminWindowThread(request, env, ctx) {
   const auth = await _requireAdminSession(request, env);
   if (auth.error) return auth.error;
   const u = new URL(request.url);
-  const sub = u.searchParams.get('sub') || '';
-  const threadId = u.searchParams.get('id') || '';
-  if (!sub || !threadId) {
-    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  const params = {
+    sub: u.searchParams.get('sub') || '',
+    anonId: u.searchParams.get('anonId') || '',
+    threadId: u.searchParams.get('id') || '',
+  };
+  const resolved = await _resolveAdminWindowThread(env, params);
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
-  }
-  const messages = await listThreadMessages(env, threadId, 100);
-  return jsonResponse({ ok: true, thread, messages }, 200);
+  const messages = await listThreadMessages(env, resolved.threadId, 100);
+  return jsonResponse({ ok: true, thread: resolved.thread, messages, kind: resolved.kind }, 200);
 }
 
 async function handleAdminWindowReply(request, env, ctx) {
@@ -6220,31 +6284,39 @@ async function handleAdminWindowReply(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  if (!sub || !threadId) {
-    return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
   const sanitized = sanitizeWindowBody(body.body);
   const validated = validateWindowMessageBody({ body: sanitized });
   if (!validated.ok) {
     return jsonResponse({ ok: false, ...validated }, 400);
   }
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  // Append Don's message via the kind-appropriate path.
+  let result;
+  if (resolved.kind === 'anon') {
+    result = await appendMessageToAnonThread(env, resolved.anonId, resolved.thread, 'don', sanitized);
+  } else {
+    result = await appendMessageToThread(env, resolved.sub, resolved.thread, 'don', sanitized);
   }
-  const result = await appendMessageToThread(env, sub, thread, 'don', sanitized);
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
   // Update Don's "active" signal so the breathing dot lights up.
-  await setWindowActiveMeta(env, { replyingTo: threadId });
+  await setWindowActiveMeta(env, { replyingTo: resolved.threadId });
 
   // Email the visitor with Don's reply inline. Best-effort — the
   // message is already persisted; visitor will see it on their
-  // next visit/poll regardless of email delivery.
-  const recipientEmail = thread.email || null;
+  // next visit/poll regardless of email delivery. Anon threads have
+  // null email until the operator provides one (Phase 1a step 2's
+  // claim flow surfaces this); reply still lands in the thread,
+  // visible on next poll.
+  const recipientEmail = resolved.thread.email || null;
   if (recipientEmail) {
     try {
       if (env.RESEND_API_KEY) {
@@ -6266,10 +6338,18 @@ async function handleAdminWindowReply(request, env, ctx) {
       console.warn('[window] reply email failed', { msgId: result.msg.id, err: err && err.message });
     }
   } else {
-    console.log(JSON.stringify({ event: 'window.reply.no-email', sub, threadId, msgId: result.msg.id }));
+    console.log(JSON.stringify({ event: 'window.reply.no-email', kind: resolved.kind, threadId: resolved.threadId, msgId: result.msg.id }));
   }
 
-  console.log(JSON.stringify({ event: 'window.reply', sub, threadId, msgId: result.msg.id, ts: result.msg.createdAt }));
+  console.log(JSON.stringify({
+    event: 'window.reply',
+    kind: resolved.kind,
+    sub: resolved.sub,
+    anonId: resolved.anonId,
+    threadId: resolved.threadId,
+    msgId: result.msg.id,
+    ts: result.msg.createdAt,
+  }));
   return jsonResponse({ ok: true, msgId: result.msg.id, createdAt: result.msg.createdAt }, 200);
 }
 
@@ -6286,16 +6366,21 @@ async function handleAdminWindowClose(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  thread.status = 'closed';
-  thread.updatedAt = Date.now();
-  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
-  console.log(JSON.stringify({ event: 'window.close', sub, threadId, ts: thread.updatedAt }));
+  resolved.thread.status = 'closed';
+  resolved.thread.updatedAt = Date.now();
+  const writeKey = resolved.kind === 'anon'
+    ? windowAnonThreadKey(resolved.anonId)
+    : windowThreadKey(resolved.sub, resolved.threadId);
+  await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
+  console.log(JSON.stringify({ event: 'window.close', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'closed' }, 200);
 }
 
@@ -6312,20 +6397,25 @@ async function handleAdminWindowArchive(request, env, ctx) {
   try { body = await parseFormBody(request); } catch (_) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
-  const sub = typeof body.sub === 'string' ? body.sub.trim() : '';
-  const threadId = typeof body.threadId === 'string' ? body.threadId.trim() : '';
-  const thread = await getThreadById(env, sub, threadId);
-  if (!thread) {
-    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  const resolved = await _resolveAdminWindowThread(env, {
+    sub: body.sub,
+    anonId: body.anonId,
+    threadId: body.threadId,
+  });
+  if (resolved.error) {
+    return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
-  thread.status = 'archived';
-  thread.updatedAt = Date.now();
-  await env.AUTH_SESSIONS.put(windowThreadKey(sub, threadId), JSON.stringify(thread));
+  resolved.thread.status = 'archived';
+  resolved.thread.updatedAt = Date.now();
+  const writeKey = resolved.kind === 'anon'
+    ? windowAnonThreadKey(resolved.anonId)
+    : windowThreadKey(resolved.sub, resolved.threadId);
+  await env.AUTH_SESSIONS.put(writeKey, JSON.stringify(resolved.thread));
   // Note: thread stays in admin-index buckets but the iterator
   // could filter status='archived' if needed. For now, archived
   // threads still appear (visually deprioritized) so Don can
   // un-archive if needed.
-  console.log(JSON.stringify({ event: 'window.archive', sub, threadId, ts: thread.updatedAt }));
+  console.log(JSON.stringify({ event: 'window.archive', kind: resolved.kind, sub: resolved.sub, anonId: resolved.anonId, threadId: resolved.threadId, ts: resolved.thread.updatedAt }));
   return jsonResponse({ ok: true, status: 'archived' }, 200);
 }
 

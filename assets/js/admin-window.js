@@ -117,12 +117,27 @@
     }
     [els.empty, els.error, els.paused, els.forbidden].forEach(function (n) { if (n) n.hidden = true; });
     items.forEach(function (it) {
+      // Phase 1a step 1 (audit B2) — anon entries have it.sub === null
+      // and it.kind === 'anon'. Render with anonId in the label and
+      // route via &anonId= instead of &sub=. Pre-fix code crashed
+      // on .slice of null and killed the whole list.
+      var isAnon = it.kind === 'anon' || (!it.sub && it.anonId);
+      var idLabel, hashLink;
+      if (isAnon) {
+        var aid = String(it.anonId || '');
+        idLabel = (aid ? aid.slice(0, 12) : 'anon') + '… · anon';
+        hashLink = '#thread=' + encodeURIComponent(it.threadId) + '&anonId=' + encodeURIComponent(aid);
+      } else {
+        var s = String(it.sub || '');
+        idLabel = (s ? s.slice(0, 12) : '?') + '…';
+        hashLink = '#thread=' + encodeURIComponent(it.threadId) + '&sub=' + encodeURIComponent(s);
+      }
       var a = document.createElement('a');
       a.className = 'admin-window__row' + (it.unreadByAdmin ? ' admin-window__row--unread' : '');
-      a.href = '#thread=' + encodeURIComponent(it.threadId) + '&sub=' + encodeURIComponent(it.sub);
+      a.href = hashLink;
       a.innerHTML =
         '<div class="admin-window__row-head">' +
-          '<span class="admin-window__row-id">' + escHtml(it.sub.slice(0, 12) + '…') + '</span>' +
+          '<span class="admin-window__row-id">' + escHtml(idLabel) + '</span>' +
           '<span class="admin-window__row-time">' + fmtRelative(it.updatedAt) + '</span>' +
         '</div>' +
         '<p class="admin-window__row-status">' + escHtml(it.status) + (it.unreadByAdmin ? ' · unread' : '') + '</p>';
@@ -179,10 +194,25 @@
     });
   }
 
-  function loadThread(threadId, sub) {
+  // Set form/query params from a parsed hash identity. Identity
+  // carries either a `sub` (identified) OR an `anonId` (anonymous);
+  // never both (server rejects with invalid-body).
+  function setIdentityParams(params, identity) {
+    if (identity.anonId) params.set('anonId', identity.anonId);
+    else if (identity.sub) params.set('sub', identity.sub);
+  }
+
+  function identityLabel(identity, threadEmail) {
+    if (threadEmail) return threadEmail;
+    if (identity.anonId) return identity.anonId.slice(0, 12) + '… · anon';
+    if (identity.sub) return identity.sub.slice(0, 20);
+    return 'unknown';
+  }
+
+  function loadThread(threadId, identity) {
     var params = new URLSearchParams();
     params.set('id', threadId);
-    params.set('sub', sub);
+    setIdentityParams(params, identity);
     fetch('/api/admin/window/thread?' + params.toString(), { credentials: 'same-origin' })
       .then(function (r) {
         if (r.status === 404) { window.location.hash = ''; return null; }
@@ -192,16 +222,16 @@
       })
       .then(function (j) {
         if (!j || !j.ok) return;
-        if (els.threadEmail) els.threadEmail.textContent = (j.thread && j.thread.email) || sub.slice(0, 20);
+        if (els.threadEmail) els.threadEmail.textContent = identityLabel(identity, j.thread && j.thread.email);
         renderThreadMsgs(j.messages || []);
         renderQuickReplies();
       });
   }
 
-  function showThreadView(threadId, sub) {
+  function showThreadView(threadId, identity) {
     if (els.listView) els.listView.hidden = true;
     if (els.threadView) els.threadView.hidden = false;
-    loadThread(threadId, sub);
+    loadThread(threadId, identity);
   }
 
   function showListView() {
@@ -210,19 +240,24 @@
     loadList();
   }
 
+  // Hash format: `#thread=<id>&sub=<sub>` (identified) OR
+  // `#thread=<id>&anonId=<aid>` (anonymous). Returns null on
+  // missing threadId or both sub/anonId blank.
   function parseHash() {
     var h = window.location.hash.replace(/^#/, '');
     if (!h) return null;
     var params = new URLSearchParams(h);
     var threadId = params.get('thread');
-    var sub = params.get('sub');
-    if (!threadId || !sub) return null;
-    return { threadId: threadId, sub: sub };
+    var sub = params.get('sub') || null;
+    var anonId = params.get('anonId') || null;
+    if (!threadId) return null;
+    if (!sub && !anonId) return null;
+    return { threadId: threadId, sub: sub, anonId: anonId };
   }
 
   function route() {
     var hashed = parseHash();
-    if (hashed) showThreadView(hashed.threadId, hashed.sub);
+    if (hashed) showThreadView(hashed.threadId, hashed);
     else showListView();
   }
 
@@ -240,7 +275,7 @@
 
       var params = new URLSearchParams();
       params.set('threadId', hashed.threadId);
-      params.set('sub', hashed.sub);
+      setIdentityParams(params, hashed);
       params.set('body', body);
       params.set('locale', locale);
 
@@ -254,7 +289,7 @@
       }).then(function (res) {
         if (res.status === 200 && res.body.ok) {
           els.threadBody.value = '';
-          loadThread(hashed.threadId, hashed.sub);
+          loadThread(hashed.threadId, hashed);
           return;
         }
         alert(copy.error + ' (' + (res.body && res.body.error || 'unknown') + ')');
@@ -274,7 +309,7 @@
       if (!confirm(copy.closeConfirm)) return;
       var params = new URLSearchParams();
       params.set('threadId', hashed.threadId);
-      params.set('sub', hashed.sub);
+      setIdentityParams(params, hashed);
       fetch('/api/admin/window/close', {
         method: 'POST',
         credentials: 'same-origin',
