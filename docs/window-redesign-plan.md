@@ -167,7 +167,11 @@ One cron `*/5 * * * *` with multi-step dispatcher:
 - Cloudflare threat-score gate (`isHighThreatIP`, 403 at >=30) — already
   in codebase, must be invoked. *Phase 1b.*
 - Turnstile on first anon POST per IP; managed mode invisible 99% of the
-  time. *Phase 1b.*
+  time. *Phase 2 (deferred from 1b — threat-score gate +
+  per-IP / per-anon throttles + 5/day cap give a defensible spam floor
+  for the initial WINDOW_ANON_ENABLED flip; Turnstile lands as part of
+  the Phase 2 composer redesign so the challenge UI can be styled to
+  match the muntin posture rather than the stock Cloudflare widget.)*
 - **PII pre-write gate (NEW):** regex sweep for credit-card (PAN with
   Luhn), SSN, password-keyword-near-string. On match: do not store body;
   reply *"I don't take card numbers or passwords through the Window —
@@ -650,7 +654,7 @@ deferred).
 | **0 (week 0)** | Enable cron trigger; uncomment `triggers.crons` in `wrangler.jsonc:305-307`; confirm budget contracts hold under `*/5` cadence; deploy + observe one cycle. **Also:** measure /window/ baseline send-rate for 14 days before shipping anything (per §9.6). | None | Low. Prerequisite. |
 | **1a (week 1)** | Anon plumbing: cookie + new KV prefix + `handleWindowAppend` accepts no-session + magic-link token shape (32-byte, base64url, 10-min TTL, anonId-bound) + DMARC/SPF/DKIM posture + Resend quota partition. | `WINDOW_ANON_ENABLED` | Medium. Auth is load-bearing. |
 | **1b (week 2)** | Reply-time canon edits in `_includes/footer.html:66` + `window/index.html:88,166` + ES mirrors + CI guard + sign-in CTA rewrite at `window/index.html:182-184` + `/sign-in/?claim=&t=` claim branch + Cloudflare threat-score gate + PII pre-write gate (CC/SSN/password regex) + crisis Tier-1 + Tier-2 keyword allowlist (server-side scan only, admin red/yellow bar; SMS dispatch deferred to Phase 2). | `WINDOW_ANON_ENABLED` | Medium. Polish on top of 1a. |
-| **2 (week 3-4)** | Composer redesign (named panes, corrected geometry at 50% + 35% transom, hostess line above textarea, six chips with empathy promoted, "Don sometimes says no" tell, static placeholder, mic with keyboard-aware reposition, thumb-only `MIN_MSG_LENGTH=0` override, success state with artifact + contextual link, no email-ask, crisis allowlist UI line debounced 600ms) + footer-pulse propagation + tool-result + sheets handoff aside + axe-core CI + measurement (custom Plausible events) + textContent rendering audit (lint rule + grep CI) + Twilio SMS dispatch for crisis Tier-1 + email-bounce webhook (Resend → KV → admin flag). | None (template change) | Medium. Visible UI shift + Twilio vendor onboarding. |
+| **2 (week 3-4)** | Composer redesign (named panes, corrected geometry at 50% + 35% transom, hostess line above textarea, six chips with empathy promoted, "Don sometimes says no" tell, static placeholder, mic with keyboard-aware reposition, thumb-only `MIN_MSG_LENGTH=0` override, success state with artifact + contextual link, no email-ask, crisis allowlist UI line debounced 600ms) + footer-pulse propagation + tool-result + sheets handoff aside + axe-core CI + measurement (custom Plausible events) + textContent rendering audit (lint rule + grep CI) + Twilio SMS dispatch for crisis Tier-1 + email-bounce webhook (Resend → KV → admin flag) + **Turnstile on first anon POST per IP** (deferred from 1b per §2.6 reconciliation). | None (template change) | Medium. Visible UI shift + Twilio + Turnstile vendor onboarding. |
 | **3 (week 5-6)** | Multimodal: photo first (server+client EXIF strip, default-blur admin), voice second (60s default, BIPA 30d retention, delete-transcript affordance, behind flag pending legal sign-off), async-voicenote-pickup-time as the callback shim. | `WINDOW_PHOTO_ENABLED`, `WINDOW_VOICE_ENABLED` | Medium. New R2 binding. Workers AI quota. |
 | **4 (deferred — month 2+)** | `window:now` widget on `/window/` ONLY, three-tier privacy (fuzz default, precise blackout 21:00-06:00). Skip /about/ + homepage. | `WINDOW_NOW_ENABLED` | Low. Additive. |
 | **5+ (deferred — when volume/data justifies)** | Live callbacks for Care-Plan clients only with Twilio masking + curated slots. Glossary asides, KnitRail nudges, in-article asides, /about/ presence, homepage muntin strip. Site-wide nav + sticky bar pulse. | Various | Defer until Phase 1-3 conversion data confirms ROI. |
@@ -860,7 +864,7 @@ already cover visible-Don.
 reveal, (2) server-side scan on send that drives the SMS + admin flag.
 Narrow allowlists. No logging of the match content (only the tier).
 
-- **Tier 1** (urgent surface): `suicide`, `kill myself`, `end it`,
+- **Tier 1** (urgent surface): `suicide`, `kill myself`, `end my life`, `end it all`,
   `can't go on`, `hurt myself`, `suicidio`, `quitarme la vida`,
   `acabar con todo`. Tier-1 hits at send time trigger an immediate SMS
   to Don's phone (Twilio, separate from Resend) + admin queue red bar.

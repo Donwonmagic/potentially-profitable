@@ -36,15 +36,33 @@ import process from 'node:process';
 
 const ROOT = process.cwd();
 
-// Files to scan. Recursive walk under these roots; everything else
-// is skipped to keep the script fast and not paw at brand assets.
-const SCAN_ROOTS = ['_includes', 'window', 'es/window', 'about', 'es/about'];
+// Files to scan. Walks the repo from the working directory, but skips
+// directories that won't carry user-facing reply-time copy. The Phase
+// 1b initial scope (just _includes/window/about) missed real legacy
+// strings in privacy.html, services/audit/index.html, and ES mirrors;
+// expanding to whole-repo with a curated skip list catches them.
+const SCAN_ROOT = '.';
+const SKIP_DIRS = new Set([
+  '.git', 'node_modules', '_site', 'dist',
+  // Brand / static assets that don't carry copy strings.
+  'brand', 'assets',
+  // Generated feeds + sitemap.
+  // (sitemap.xml + feed.xml live at repo root and are .xml, filtered below)
+]);
 
 // Path prefixes that are exempt from the rule (script itself, the
-// plan doc that explicitly cites legacy strings, build artifacts).
+// plan doc that explicitly cites legacy strings, llms feeds that
+// dump previously-shipped page content, build artifacts).
 const ALLOWLIST = new Set([
   'docs/window-redesign-plan.md',
+  'docs/DEPLOY-CHECKPOINTS.md',
   'scripts/check-reply-time-canon.mjs',
+  // The llms feeds carry a snapshot of all shipped article bodies;
+  // canon-line drift inside an LLM index is a separate fix and
+  // would otherwise fight every commit.
+  'llms.txt',
+  'llms-full.txt',
+  'feed-llm.json',
 ]);
 
 // The forbidden substrings. Matched case-insensitively. Each entry is
@@ -74,7 +92,7 @@ function* walk(dir) {
   }
   for (const name of entries) {
     if (name.startsWith('.')) continue;
-    if (name === 'node_modules') continue;
+    if (SKIP_DIRS.has(name)) continue;
     const full = join(dir, name);
     let st;
     try { st = statSync(full); } catch (_) { continue; }
@@ -87,8 +105,8 @@ function* walk(dir) {
 }
 
 let failures = 0;
-for (const scanRoot of SCAN_ROOTS) {
-  const absRoot = join(ROOT, scanRoot);
+{
+  const absRoot = join(ROOT, SCAN_ROOT);
   for (const file of walk(absRoot)) {
     const rel = relative(ROOT, file);
     if (ALLOWLIST.has(rel)) continue;

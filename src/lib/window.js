@@ -845,11 +845,11 @@ export function detectCrisisTier(body) {
     'bankruptcy', 'bankrupt',
     'closing tomorrow', 'closing next week',
     'domestic violence', 'domestic abuse',
+    // 'crisis' is the same word in EN + ES — listed once.
     'crisis',
     // ES
     'quiebra', 'me quiebro',
     'desahucio', 'desalojo',
-    'crisis',
     'violencia doméstica', 'violencia domestica',
   ];
   for (const k of tier2Keywords) {

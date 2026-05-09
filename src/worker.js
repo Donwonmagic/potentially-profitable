@@ -990,6 +990,10 @@ export default {
               anonId: kind === 'anon' ? anonId : null,
               kind,
               threadId: thread.id,
+              // Phase 1b — crisis tier surfaces in Don's digest
+              // (subject [urgent]/[heads up] prefix + body banner)
+              // before Phase 2's Twilio SMS dispatcher ships.
+              crisisTier: thread.crisisTier || null,
             });
             await sendEmail({
               from: env.FROM_EMAIL || 'Muntin Digital <hi@muntin.digital>',
@@ -6099,7 +6103,10 @@ async function handleWindowAppend(request, env, ctx) {
     // Phase 1b — pre-stamp crisis tier on the thread so the
     // appendMessageToThread → upsertAdminIndex path persists both
     // the thread row and the index entry with the tier in one pass.
-    if (crisisTier) {
+    // Audit Bug 1 fix: tier1 is sticky — once Don has been alerted
+    // ("urgent surface"), a later tier2 keyword on the same thread
+    // must not silently downgrade the flag.
+    if (crisisTier && (crisisTier === 'tier1' || thread.crisisTier !== 'tier1')) {
       thread.crisisTier = crisisTier;
       thread.crisisFlaggedAt = Date.now();
     }
@@ -6201,8 +6208,9 @@ async function handleWindowAppend(request, env, ctx) {
 
   // Pre-stamp crisis tier on the anon thread so appendMessageToAnonThread
   // → upsertAdminIndex carries the flag in one pass (mirrors the
-  // identified path).
-  if (crisisTier) {
+  // identified path). Audit Bug 1 fix: tier1 sticks; tier2 cannot
+  // overwrite an existing tier1.
+  if (crisisTier && (crisisTier === 'tier1' || thread.crisisTier !== 'tier1')) {
     thread.crisisTier = crisisTier;
     thread.crisisFlaggedAt = Date.now();
   }
