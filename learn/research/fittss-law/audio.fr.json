@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:23:16.986Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "ff_siwis",
+  "language": "fr",
+  "total": 142.23,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Résultats clés.",
+      "start": 0,
+      "end": 0.94
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Formalisés par Paul Fitts en 1954 sur la base d'expériences d'acquisition rapide d'objectifs. La découverte : le temps pour atteindre un objectif est une fonction prévisible de la distance qui le sépare et de sa taille.",
+      "start": 1.64,
+      "end": 15.01
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La formule classique : T = a + b · log₂(1 + D/W) où D est la distance à l'objectif, W est sa largeur, et a/b sont des constantes pour l'utilisateur + le dispositif. Les objectifs plus grands sont plus rapides à acquérir ; les objectifs plus proches sont plus rapides à acquérir.",
+      "start": 15.33,
+      "end": 31.89
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Les boutons plus petits sont plus souvent manqués. La taille minimale de 44 x 44 points pour les cibles de tap dans les directives d'interface humaine d'iOS n'est pas une préférence de style — c'est un accommodement de la loi de Fitts.",
+      "start": 32.21,
+      "end": 46.03
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Les bords et les coins de l'écran sont \"infinis\" en étendue. Vous pouvez les dépasser sans pénalité, c'est pourquoi macOS maintient la barre de menu collée au bord supérieur. Les CTA mobiles qui restent au bas exploitent la même propriété.",
+      "start": 46.35,
+      "end": 59.57
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Chaque tap supplémentaire aggrave la perte. Un flux de réservation qui ouvre une navigation → sélectionne \"Réserver\" → ouvre un élément intégré comporte trois pénalités de la loi de Fitts empilées. La compression gagne toujours.",
+      "start": 59.89,
+      "end": 72.51
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Comment Muntin utilise cela.",
+      "start": 73.61,
+      "end": 75.02
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Pourquoi votre restaurant perd des réservations chaque nuit La fuite n° 4 — \"le bouton de réservation est enfoui ou manquant\" — est où la loi de Fitts fait le plus d'effet dans la bibliothèque. La recommandation de bouton de réservation collé en bas est la loi de Fitts en pratique.",
+      "start": 75.72,
+      "end": 90.67
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Wix versus personnalisé pour les restaurants : ce qui casse en premier La rupture n° 4 (\"frottement du flux de réservation\") s'appuie sur Fitts pour expliquer pourquoi les modèles de navigation par défaut de Wix coûtent des conversions de manière mesurable par rapport à un layout personnalisé de bouton de réservation collé.",
+      "start": 90.99,
+      "end": 108.36
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Citation complète.",
+      "start": 109.46,
+      "end": 110.64
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Budiu, R. La loi de Fitts et ses applications en U X . Nielsen Norman Group. nngroup.com . (Basé sur : Fitts, P. M. (1954). La capacité d'information du système moteur humain dans le contrôle de l'amplitude du mouvement. Journal of Experimental Psychology, 47 (6), 381–391.)",
+      "start": 111.34,
+      "end": 130.29
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Dernière révision : avril vingt vingt-six — La loi de Fitts est fondamentale pour l'U X et n'est pas sujette à révision ; ses applications continuent d'être renforcées par chaque étude d'interaction mobile depuis.",
+      "start": 130.64,
+      "end": 142.23
+    }
+  ]
+}
