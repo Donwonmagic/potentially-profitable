@@ -112,4 +112,39 @@ sees Don's reply on next /window/ poll.
 `wrangler secret delete RESEND_WEBHOOK_SECRET` (endpoint then 503's
 on every POST). Existing bounce KV rows expire on their 90-day TTL.
 
+## ⏳ PENDING — Phase 2.7 Turnstile gate on anon POST
+
+**Status:** server gate shipped; widget UI in /window/ not yet shipped.
+Until `WINDOW_TURNSTILE_ANON_ENABLED` flips on, anon POSTs proceed
+without Turnstile (per-IP + per-anonId throttles + threat-score gate
+carry the spam floor).
+
+**Pre-flip prerequisites:**
+
+1. `TURNSTILE_SECRET_KEY` already exists site-wide for newsletter +
+   magic-link. No new secret needed for the server side.
+2. `TURNSTILE_SITE_KEY` exists in env vars for the newsletter widget
+   render; the same key works for the Window widget.
+3. /window/ composer must add the Turnstile widget element +
+   include the script + ensure `cf-turnstile-response` is submitted
+   with the form. (Pattern: see `_includes/footer.html` newsletter
+   form.) **Not yet shipped — separate commit.**
+
+**To enable (after widget UI lands):**
+
+```bash
+wrangler secret put WINDOW_TURNSTILE_ANON_ENABLED   # value: true
+wrangler deploy
+```
+
+Or via Cloudflare dashboard → Settings → Variables.
+
+**Behavior:** when on, the cookie-minting path (first anon POST per
+device) requires a valid Turnstile token. Subsequent POSTs reuse
+the cookie and skip Turnstile. Managed mode is invisible 99% of
+the time per Cloudflare's own claim.
+
+**Rollback:** flip the flag back to `"false"` and `wrangler deploy`.
+Server gate falls back to the existing throttle floor.
+
 ## (No other checkpoints currently pending)

@@ -220,6 +220,14 @@
     // legacy 401 unauthenticated response is returned for unsigned
     // requests. See docs/window-redesign-plan.md §2.1, §7 Phase 1a.
     "WINDOW_ANON_ENABLED": "false",
+    // Phase 2.7 — Turnstile gate on the cookie-minting (first-POST)
+    // anon path. When "true", the request must carry a valid
+    // cf-turnstile-response token; the /window/ composer must render
+    // the Turnstile widget. When "false" (default), anon POST proceeds
+    // without Turnstile — the per-IP and per-anonId throttles + threat-
+    // score gate carry the spam floor. Flip ONLY after the widget UI
+    // ships in /window/. See docs/window-redesign-plan.md §2.6.
+    "WINDOW_TURNSTILE_ANON_ENABLED": "false",
     // Phase G.11 (Growth) — lifecycle email dispatcher feature flag.
     // When "true", the cron tick iterates sub:<hash> records and
     // dispatches welcome/nudge/digest emails per state machine.

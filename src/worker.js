@@ -5957,6 +5957,20 @@ function _windowAnonGate(env) {
   return env && (env.WINDOW_ANON_ENABLED === 'true' || env.WINDOW_ANON_ENABLED === true);
 }
 
+// Phase 2.7 — Turnstile gate on anon POST. When this flag is on AND
+// no anon cookie is yet present (i.e., first POST from this device),
+// the request must carry a valid cf-turnstile-response token.
+// Subsequent POSTs trust the cookie. Plan §2.6.
+//
+// Two-flag design (vs piggybacking on TURNSTILE_SECRET_KEY's
+// presence): the secret is shared with /api/auth/magic-link and
+// the newsletter form, so its mere presence shouldn't activate
+// Window-side Turnstile until the /window/ composer has shipped
+// the widget UI.
+function _windowTurnstileAnonGate(env) {
+  return env && (env.WINDOW_TURNSTILE_ANON_ENABLED === 'true' || env.WINDOW_TURNSTILE_ANON_ENABLED === true);
+}
+
 const WINDOW_ANON_COOKIE_NAME = 'md_anon_thread_id';
 const WINDOW_ANON_COOKIE_MAX_AGE = 90 * 24 * 60 * 60; // 90 days in seconds
 
@@ -6184,6 +6198,19 @@ async function handleWindowAppend(request, env, ctx) {
   let anonId = _readWindowAnonCookie(request);
   let mintedNewCookie = false;
   if (!anonId) {
+    // Phase 2.7 — Turnstile gate on the cookie-minting path. Only
+    // first POSTs from this device hit this; subsequent POSTs trust
+    // the cookie. checkTurnstile returns { skipped:true } if
+    // TURNSTILE_SECRET_KEY isn't bound; we treat skipped as a hard
+    // no-go when the gate is on so a misconfigured deploy can't
+    // bypass.
+    if (_windowTurnstileAnonGate(env)) {
+      const turnstile = await checkTurnstile(body, env, request);
+      if (!turnstile.ok) {
+        const reason = turnstile.skipped ? 'turnstile-not-configured' : ('turnstile-' + (turnstile.error || 'failed'));
+        return jsonResponse({ ok: false, error: reason }, 403);
+      }
+    }
     anonId = mintAnonId();
     mintedNewCookie = true;
   }
