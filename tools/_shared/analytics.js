@@ -335,6 +335,14 @@
       'Window Callback Request',
       'Window Now Edit',
     ],
+    // Micro-offer funnel — productized offers below the $499 floor.
+    // Phase 0 fires view_micro_offer on landing-page load. Phase 1
+    // (paid checkout) adds start_checkout, complete_checkout,
+    // intake_submitted, delivered, upgrade_credit_used. Props are
+    // capped at { sku, locale } so the cardinality guard stays calm.
+    micro_offers: [
+      'view_micro_offer',
+    ],
   };
 
   // Flat allowlist used by the CI checker.
