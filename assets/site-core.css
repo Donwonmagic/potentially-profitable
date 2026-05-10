@@ -2911,6 +2911,33 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-thread__close{font-size:12px;color:var(--stone);background:transparent;border:0;cursor:pointer;text-decoration:underline}
 .admin-thread__close:hover{color:var(--rust)}
 
+/* Phase 3.6b — admin attachment display. Mirrors the visitor-side
+   styles but with a tighter image cap (admin scrolls many threads;
+   smaller is friendlier). Voice tombstones use the same muted-italic
+   treatment as visitor side. */
+.admin-msg__attachments{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.admin-msg__attachment{border-radius:var(--r-input);overflow:hidden}
+.admin-msg__attachment--photo img{display:block;max-width:100%;max-height:320px;border-radius:var(--r-input)}
+.admin-msg__attachment-caption{font-size:13px;color:var(--ink-soft);font-style:italic;margin:6px 0 0}
+.admin-msg__attachment--voice audio{width:100%;display:block}
+.admin-msg__attachment-transcript{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0;padding:8px 12px;background:var(--cream-2);border-left:2px solid var(--teal);border-radius:0 var(--r-input) var(--r-input) 0}
+.admin-msg__attachment-transcript--deleted{color:var(--stone);font-style:italic;border-left-color:var(--stone)}
+
+/* Phase 3.6b — admin callbacks panel (callback requests bubble to
+   the top of the thread view). Phone is masked-by-default with
+   tap-to-reveal — keeps cleartext numbers off screenshots and out
+   of casual shoulder-surf range. */
+.admin-callbacks{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.admin-callbacks__card{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--rust);border-radius:var(--r-input)}
+.admin-callbacks__heading{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:0.02em;text-transform:uppercase}
+.admin-callbacks__phone{margin:0 0 8px}
+.admin-callbacks__phone-btn{font-family:var(--font-mono,Menlo,monospace);font-size:15px;color:var(--ink);background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-input);padding:8px 14px;cursor:pointer;width:100%;text-align:left}
+.admin-callbacks__phone-btn:hover{border-color:var(--teal)}
+.admin-callbacks__phone-link{color:var(--teal);text-decoration:none;font-family:var(--font-mono,Menlo,monospace)}
+.admin-callbacks__phone-link:hover{text-decoration:underline}
+.admin-callbacks__voice-label{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 4px}
+.admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
+
 /* Phase G.1 (Growth) — TL;DR + Key Takeaways blocks for AI-citation
    optimization. Visually quiet, editorial. The TL;DR is a 2-3 line
    prose summary at the top of an article (LLMs lift verbatim). Key

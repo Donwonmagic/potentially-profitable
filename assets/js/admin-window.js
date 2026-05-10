@@ -24,6 +24,11 @@
       error: "Couldn't send. Try again.",
       youStamp: 'Visitor',
       donStamp: 'Don',
+      voiceDeleted: 'Voice note deleted.',
+      callbackHeading: 'Callback requested',
+      callbackTapReveal: 'Tap to reveal phone',
+      callbackVoiceLabel: 'Voice memo attached',
+      callbackRequestedAt: 'Requested',
     },
     es: {
       sending: 'Enviando…',
@@ -34,6 +39,11 @@
       error: 'No se pudo enviar. Inténtalo de nuevo.',
       youStamp: 'Visitante',
       donStamp: 'Don',
+      voiceDeleted: 'Nota de voz borrada.',
+      callbackHeading: 'Llamada solicitada',
+      callbackTapReveal: 'Toca para revelar el número',
+      callbackVoiceLabel: 'Nota de voz adjunta',
+      callbackRequestedAt: 'Solicitada',
     },
   };
   var copy = COPY[locale];
@@ -161,16 +171,153 @@
       .catch(function () { showEmptyState(els.error); });
   }
 
-  function renderThreadMsgs(messages) {
+  // Phase 3.6b — admin-side attachment renderer. Mirrors the visitor
+  // renderer in window.js but without the "Delete voice note"
+  // affordance (admin doesn't delete the visitor's voice notes;
+  // tombstones surface via the deleted flag on reload). Photos and
+  // voice are rendered inline; tombstoned voice notes show only
+  // the "Voice note deleted." marker (R2 object is gone — would
+  // 404 if we tried to play it).
+  function renderAttachment(att) {
+    var div = document.createElement('div');
+    div.className = 'admin-msg__attachment admin-msg__attachment--' + att.kind;
+    div.dataset.attachId = att.id;
+    if (att.kind === 'photo') {
+      var img = document.createElement('img');
+      img.src = '/api/window/attach/' + encodeURIComponent(att.id);
+      img.alt = att.altText || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      div.appendChild(img);
+      if (att.altText) {
+        var altCap = document.createElement('p');
+        altCap.className = 'admin-msg__attachment-caption';
+        altCap.textContent = att.altText;
+        div.appendChild(altCap);
+      }
+    } else if (att.kind === 'voice') {
+      if (att.deleted || att.transcriptDeleted) {
+        var marker = document.createElement('p');
+        marker.className = 'admin-msg__attachment-transcript admin-msg__attachment-transcript--deleted';
+        marker.textContent = copy.voiceDeleted;
+        div.appendChild(marker);
+        return div;
+      }
+      var audio = document.createElement('audio');
+      audio.src = '/api/window/attach/' + encodeURIComponent(att.id);
+      audio.controls = true;
+      audio.preload = 'none';
+      div.appendChild(audio);
+      if (att.transcript) {
+        var trans = document.createElement('p');
+        trans.className = 'admin-msg__attachment-transcript';
+        trans.textContent = att.transcript;
+        div.appendChild(trans);
+      }
+    }
+    return div;
+  }
+
+  // Phase 3.6b — callbacks panel. Renders at the top of the thread,
+  // above messages, so Don sees actionable callbacks before
+  // scrolling the conversation. Phone is masked-by-default (***-***-1234)
+  // with a tap-to-reveal affordance — keeps cleartext phone numbers
+  // out of casual shoulder-surf range while still being one tap away
+  // when Don's ready to dial. Plan §11.6.
+  function renderCallbacks(callbacks) {
+    if (!callbacks || !callbacks.length) return null;
+    var wrap = document.createElement('div');
+    wrap.className = 'admin-callbacks';
+    callbacks.forEach(function (cb) {
+      var card = document.createElement('div');
+      card.className = 'admin-callbacks__card';
+
+      var heading = document.createElement('p');
+      heading.className = 'admin-callbacks__heading';
+      heading.textContent = copy.callbackHeading + ' · ' + (cb.slotLabel || cb.slotKey || '');
+      card.appendChild(heading);
+
+      // Phone — masked by default. Tap reveals the full E.164.
+      var phoneRow = document.createElement('p');
+      phoneRow.className = 'admin-callbacks__phone';
+      var phoneBtn = document.createElement('button');
+      phoneBtn.type = 'button';
+      phoneBtn.className = 'admin-callbacks__phone-btn';
+      phoneBtn.textContent = (cb.phoneMasked || '***') + ' · ' + copy.callbackTapReveal;
+      var revealed = false;
+      phoneBtn.addEventListener('click', function () {
+        if (revealed) return;
+        revealed = true;
+        // Replace masked text with a tel: link so Don can tap to dial
+        // on mobile. The full phone is fetched lazily — the API only
+        // ever returns the masked form to avoid casual log leakage.
+        if (cb.phoneE164) {
+          phoneBtn.textContent = '';
+          var link = document.createElement('a');
+          link.href = 'tel:' + cb.phoneE164;
+          link.textContent = cb.phoneE164;
+          link.className = 'admin-callbacks__phone-link';
+          phoneBtn.appendChild(link);
+        } else {
+          phoneBtn.textContent = cb.phoneMasked || '***';
+        }
+      });
+      phoneRow.appendChild(phoneBtn);
+      card.appendChild(phoneRow);
+
+      // Optional voice memo attached to the callback.
+      if (cb.voiceAttachId) {
+        var voiceLabel = document.createElement('p');
+        voiceLabel.className = 'admin-callbacks__voice-label';
+        voiceLabel.textContent = copy.callbackVoiceLabel;
+        card.appendChild(voiceLabel);
+        var voiceAudio = document.createElement('audio');
+        voiceAudio.src = '/api/window/attach/' + encodeURIComponent(cb.voiceAttachId);
+        voiceAudio.controls = true;
+        voiceAudio.preload = 'none';
+        card.appendChild(voiceAudio);
+      }
+
+      var meta = document.createElement('p');
+      meta.className = 'admin-callbacks__meta';
+      meta.textContent = copy.callbackRequestedAt + ' ' + fmtTime(cb.requestedAt);
+      card.appendChild(meta);
+
+      wrap.appendChild(card);
+    });
+    return wrap;
+  }
+
+  function renderThreadMsgs(messages, attachmentsByMsgId, callbacks) {
     if (!els.threadMsgs) return;
     els.threadMsgs.innerHTML = '';
+
+    // Callbacks panel (when present) renders above the message log.
+    var cbPanel = renderCallbacks(callbacks);
+    if (cbPanel) els.threadMsgs.appendChild(cbPanel);
+
     messages.forEach(function (m) {
       var div = document.createElement('div');
       div.className = 'admin-msg admin-msg--' + (m.from === 'don' ? 'don' : 'user');
       var stamp = (m.from === 'don' ? copy.donStamp : copy.youStamp) + ' · ' + fmtTime(m.createdAt);
+      // Plan §5.6 rule 11: operator-derived strings (transcript,
+      // altText, message body) MUST NOT pass through innerHTML.
+      // The static frame uses innerHTML; attachments build via DOM
+      // (textContent inside renderAttachment).
       div.innerHTML =
         '<p class="admin-msg__stamp">' + escHtml(stamp) + '</p>' +
         '<p class="admin-msg__body">' + escHtml(m.body).replace(/\n/g, '<br>') + '</p>';
+
+      var attaches = attachmentsByMsgId && attachmentsByMsgId[m.id] ? attachmentsByMsgId[m.id] : null;
+      if (attaches && attaches.length) {
+        var attachWrap = document.createElement('div');
+        attachWrap.className = 'admin-msg__attachments';
+        attaches.forEach(function (a) {
+          attachWrap.appendChild(renderAttachment(a));
+        });
+        div.appendChild(attachWrap);
+      }
+
       els.threadMsgs.appendChild(div);
     });
     els.threadMsgs.scrollTop = els.threadMsgs.scrollHeight;
@@ -223,7 +370,7 @@
       .then(function (j) {
         if (!j || !j.ok) return;
         if (els.threadEmail) els.threadEmail.textContent = identityLabel(identity, j.thread && j.thread.email);
-        renderThreadMsgs(j.messages || []);
+        renderThreadMsgs(j.messages || [], j.attachmentsByMsgId || {}, j.callbacks || []);
         renderQuickReplies();
       });
   }

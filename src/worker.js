@@ -287,6 +287,8 @@ import {
   listAttachmentsForThread,
   // Phase 3.6 — voice hard-delete (replaces transcript-only soft-delete).
   deleteVoiceAttachment,
+  // Phase 3.6b — admin attachment display.
+  listCallbacksForThread,
 } from './lib/window-attachments.js';
 import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
@@ -7470,7 +7472,35 @@ async function handleAdminWindowThread(request, env, ctx) {
     return jsonResponse({ ok: false, error: resolved.error }, resolved.status);
   }
   const messages = await listThreadMessages(env, resolved.threadId, 100);
-  return jsonResponse({ ok: true, thread: resolved.thread, messages, kind: resolved.kind }, 200);
+  // Phase 3.6b — admin attachment + callback display. Attachments
+  // are returned grouped by msgId so the operator-side renderer can
+  // hang them off the message they belong to. Callbacks are a flat
+  // list (rendered as a separate panel — they're per-thread, not
+  // per-message). Phone numbers ride E.164 but the renderer masks
+  // them by default and reveals on tap (plan §11.6 — admin shoulder-
+  // surf privacy).
+  const attachmentsByMsgId = await _loadAttachmentsByMsgId(env, resolved.threadId);
+  const rawCallbacks = await listCallbacksForThread(env, resolved.threadId);
+  const callbacks = rawCallbacks.map((cb) => ({
+    id: cb.id,
+    msgId: cb.msgId || null,
+    phoneE164: cb.phoneE164,
+    phoneMasked: maskPhone(cb.phoneE164),
+    slotKey: cb.slotKey,
+    slotLabel: getCallbackSlotLabel(cb.slotKey, cb.locale || 'en') || cb.slotKey,
+    voiceAttachId: cb.voiceAttachId || null,
+    locale: cb.locale || 'en',
+    status: cb.status || 'requested',
+    requestedAt: cb.requestedAt,
+  }));
+  return jsonResponse({
+    ok: true,
+    thread: resolved.thread,
+    messages,
+    kind: resolved.kind,
+    attachmentsByMsgId,
+    callbacks,
+  }, 200);
 }
 
 async function handleAdminWindowReply(request, env, ctx) {
