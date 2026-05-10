@@ -1,0 +1,307 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:42:35.581Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 452.34,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Nota de investigación &middot; 2 de mayo, veintiséis &middot; 9 min de lectura &middot; Por Don Goldstein",
+      "start": 0,
+      "end": 8.1
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Calificamos el Google Business Profile de los 100 restaurantes independientes mejor valorados en el área metropolitana de DC, Maryland y Virginia, en ocho dimensiones. La puntuación media fue 5,4 de 8. El campo más saltado es el que cuesta más clics. Metodología, datos completos y qué vale cada campo perdido en tu paquete local.",
+      "start": 8.45,
+      "end": 27.73
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "100 restaurantes DMV auditados",
+      "start": 28.25,
+      "end": 30.5
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "5,4 Puntuación media G B P (de 8)",
+      "start": 30.82,
+      "end": 33.57
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "71% Faltan uno o más campos &ldquo;esenciales&rdquo;",
+      "start": 33.89,
+      "end": 40.03
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "34% No enlazaron un sitio web a G B P",
+      "start": 40.35,
+      "end": 43.85
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Lo que medimos.",
+      "start": 44.95,
+      "end": 45.78
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Ocho dimensiones, con igual peso. El conjunto se elaboró para coincidir con lo que un operador puede arreglar en una tarde — sin señales de propiedad, sin herramientas de terceros requeridas. Cada verificación es algo que puedes verificar en tu propio panel de G B P dentro del administrador de Google Business Profile.",
+      "start": 46.48,
+      "end": 64.27
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "El hallazgo principal: las horas de festivos faltan en el 81% de las listas. Eso es el campo más saltado por un amplio margen, y también es el que provoca el peor resultado para el cliente — llegar a un restaurante cerrado en un festivo que el sitio web decía que estaba abierto.",
+      "start": 64.79,
+      "end": 81.05
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Los campos más saltados, clasificados.",
+      "start": 82.15,
+      "end": 84.52
+    },
+    {
+      "id": 10,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Seis campos Google Business Profile más saltados en 100 restaurantes DMV auditados. Horas de festivos: 81 por ciento faltan. Actividad de Preguntas y Respuestas: 71 por ciento faltan. Enlace de menú: 62 por ciento faltan o están incorrectos. Reserva deeplink: 59 por ciento faltan o están incorrectos. Respuestas a reseñas: 56 por ciento por debajo del umbral. Enlace de sitio web: 34 por ciento faltan.",
+      "start": 85.32,
+      "end": 111.87
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Horas de festivos (81% faltan). Este es el error más barato de prevenir y el que nadie previene. La solución lleva diez minutos por festivo, cuatro veces al año. Care Plan Light maneja esto en un horario.",
+      "start": 112.62,
+      "end": 125.07
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Actividad de Preguntas y Respuestas (71% faltan). Los clientes publican preguntas en tu lista de G B P si respondes o no. Las preguntas sin respuesta se convierten en la respuesta de facto que muestra Google. Los operadores que responden a sus Preguntas y Respuestas ven un aumento medible en clics de &ldquo;direcciones&rdquo;. (Fuente: la encuesta de Factores de clasificación de búsqueda local de Whitespark de veinticuatro).",
+      "start": 125.39,
+      "end": 151.57
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Enlace de menú (62% faltan o están incorrectos). De los 38% que tenían un enlace de menú, 23 de ellos apuntaban a un P D F o una página de agregador en lugar de un menú H T M L. Una página de menú H T M L real (o un menu drop-in) es lo que los parsers de Google realmente indexan.",
+      "start": 151.89,
+      "end": 170.3
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Reserva deeplink (59% faltan o están incorrectos). O bien no hay enlace de reserva, o un enlace a la página de inicio de OpenTable. Ambos filtran la intención — el patrón correcto es un deeplink a tu página de establecimiento en la plataforma.",
+      "start": 170.62,
+      "end": 185.03
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Respuestas a reseñas (56% por debajo del umbral). La mayoría de los operadores responden a reseñas de una estrella y ignoran las de cuatro y cinco estrellas. El algoritmo de clasificación de Google también lee la participación en reseñas positivas. Un &ldquo;Gracias — vuelve pronto&rdquo; de 30 segundos cuenta.",
+      "start": 185.35,
+      "end": 205.4
+    },
+    {
+      "id": 16,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Enlace de sitio web (34% faltan). El modo de fallo más fácil de arreglar. Un tercio de las listas no tienen enlace de sitio web, o el enlace da un error 404. Esfuerzo del operador: 30 segundos en el panel de G B P.",
+      "start": 205.72,
+      "end": 219.78
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Qué vale cada campo perdido en clic a través.",
+      "start": 220.88,
+      "end": 223.46
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Whitespark y BrightLocal han publicado estimaciones de clic a través para cada elemento de G B P en múltiples tamaños de muestra. Aplicando sus cifras de aumento publicadas a un restaurante DMV independiente típico que hace 8,000 impresiones de G B P al mes:",
+      "start": 224.16,
+      "end": 240.32
+    },
+    {
+      "id": 19,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Agregando los seis campos se recuperan aproximadamente 456 clics incrementales por mes. Con una conversión conservadora del 4% a una acción real del cliente (reserva, llamada, toque de direcciones que termina en una visita), eso es 18 clientes incrementales por mes a partir de una limpieza de G B P de una tarde — antes de que cambie algo en el sitio web en sí.",
+      "start": 240.67,
+      "end": 262.35
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Metodología.",
+      "start": 263.45,
+      "end": 264.44
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Selección de muestra: 100 restaurantes de propiedad independiente (no cadenas nacionales, no marcas propiedad de capital privado) en el DC + MD + VA metro, clasificados por Google rating × recuento de reseñas entre listados con ≥200 reseñas. Auditados marzo-abril veinte veintiséis. Cada listado fue calificado a mano contra las ocho dimensiones; no se utilizaron herramientas automatizadas porque la actividad de Q&A de G B P y las tasas de respuesta a reseñas requieren lecturas manuales.",
+      "start": 265.14,
+      "end": 293.78
+    },
+    {
+      "id": 22,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Desglose de la cocina de la muestra: 22 American/New American, 18 Italian, 12 Mexican, 10 Asian (pan-Asian / Vietnamese / Thai / Korean), 9 Mediterranean / Middle Eastern, 8 French, 6 Indian, 5 Latin American, 4 mariscos, 6 otros. Desglose geográfico: 31 DC, 24 NoVA (Arlington / Alexandria / Fairfax), 45 MD suburbs (Bethesda / Silver Spring / Takoma Park / Rockville).",
+      "start": 294.3,
+      "end": 320.76
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Fuentes para las cifras de aumento de clics: Whitespark veinte veinticuatro Local Search Ranking Factors (n=149 profesionales de S E O locales) y BrightLocal veinte veinticuatro Local Consumer Review Survey (n=1,062 consumidores estadounidenses). Cifras fechadas a esas publicaciones y aplicadas al volumen típico de impresiones de G B P independientes mensuales de DMV.",
+      "start": 321.28,
+      "end": 344.61
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Lo que puedes hacer esta tarde.",
+      "start": 345.71,
+      "end": 347.53
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Tres comprobaciones, en orden. Hazlas en tu propio listado de G B P ahora mismo — o ejecuta la herramienta gratuita G B P Grader y el resultado te dice qué dos de las ocho te faltan.",
+      "start": 348.23,
+      "end": 358.9
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Abre business.google.com, inicia sesión. Verifica que los horarios estén actualizados, que los horarios de festivos estén establecidos para los próximos cuatro días festivos de restaurantes, que el enlace del sitio web sea tu propio U R L, y que el enlace de reserva sea el de tu local (no la página de inicio de la plataforma).",
+      "start": 359.42,
+      "end": 377.7
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Lee tus últimas 90 días de reseñas. Responde a cualquier cosa que no hayas respondido. Agradece los cinco. Aborda los unos con especificidad (\"lo siento, tu filete estaba pasado — eso es culpa nuestra\" suena mejor que los templates preestablecidos). 30 segundos cada uno.",
+      "start": 378.02,
+      "end": 394.14
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Lee tu pestaña de Preguntas y Respuestas. Responde a las que no han sido respondidas. Si la pregunta es \"¿aceptas visitas sin reserva\", responde \"sí / no, aquí está cómo funcionan las reservas\". Esa respuesta ahora está indexada.",
+      "start": 394.46,
+      "end": 407.7
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Care Plan Light maneja los tres, todos los meses, por $99. Ver qué está incluido &rarr;",
+      "start": 408.22,
+      "end": 414.51
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Don Goldstein gestiona dos restaurantes DMV y ejecuta Muntin Digital. Es miembro de RAMW y está certificado por ServSafe. Metodología fechada mayo veinte veintiséis; la muestra de 100 restaurantes está disponible a petición en don@muntin.digital.",
+      "start": 414.86,
+      "end": 431.02
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Continúa",
+      "start": 431.54,
+      "end": 432.21
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Herramienta G B P Grader — ejecuta la misma auditoría en tu listado",
+      "start": 432.56,
+      "end": 436.36
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Cómo configurar Google Business Profile para tu restaurante",
+      "start": 436.68,
+      "end": 440.03
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Cómo obtener más reseñas Google",
+      "start": 440.35,
+      "end": 442.33
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Care Plan Light ($99/mes) — higiene mensual de G B P",
+      "start": 442.65,
+      "end": 446.72
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Una matemática honesta de DoorDash, veinte veintiséis — la compañera de margen de caminata",
+      "start": 447.04,
+      "end": 452.34
+    }
+  ]
+}

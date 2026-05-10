@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:22:06.745Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 145.87,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Hallazgos clave.",
+      "start": 0,
+      "end": 0.97
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Formalizados por Paul Fitts en 1954 basándose en experimentos de adquisición de objetivos rápidos. El hallazgo: el tiempo hasta el objetivo es una función predecible de la distancia hasta él y su tamaño.",
+      "start": 1.67,
+      "end": 14.9
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La fórmula clásica: T = a + b · log₂(1 + D/W), donde D es la distancia al objetivo, W es su ancho, y a/b son constantes para el usuario + dispositivo. Los objetivos más grandes se adquieren más rápido; los objetivos más cercanos se adquieren más rápido.",
+      "start": 15.22,
+      "end": 32.3
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Los botones más pequeños se pierden con más frecuencia. La guía de interfaz humana de iOS de 44 x 44 pt de tamaño mínimo de objetivo de toque no es una preferencia de estilo — es un ajuste a la ley de Fitts.",
+      "start": 32.62,
+      "end": 45.91
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Los bordes y esquinas de la pantalla son \"infinitos\" en extensión. Puedes deslizarlos sin penalización, lo que explica por qué macOS mantiene la barra de menú pegada al borde superior. Los CTA de mobile que se pegan al fondo explotan la misma propiedad.",
+      "start": 46.23,
+      "end": 60.79
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Cada toque adicional compone la pérdida. Un flujo de reserva que abre una navegación → selecciona \"Reservar\" → abre un elemento incrustado es tres penalizaciones de la ley de Fitts apiladas. La compresión siempre gana.",
+      "start": 61.11,
+      "end": 73.41
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Cómo Muntin utiliza esto.",
+      "start": 74.51,
+      "end": 76.18
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Por qué tu restaurante pierde reservas cada noche La fuga número 4 — \"el botón de reserva está enterrado o falta\" — es donde la ley de Fitts hace más trabajo en la biblioteca. La recomendación de CTA (llamada a la acción) pegajosa en la parte inferior es la ley de Fitts en la práctica.",
+      "start": 76.88,
+      "end": 92.66
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Wix versus personalizado para restaurantes: qué se rompe primero La rotura número 4 (\"fricción en el flujo de reserva\") se basa en Fitts para explicar por qué los patrones de navegación predeterminados de Wix cuestan conversiones medibles en comparación con un diseño personalizado de CTA pegajosa.",
+      "start": 92.98,
+      "end": 110.37
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Citación completa.",
+      "start": 111.47,
+      "end": 112.63
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Budiu, R. La ley de Fitts y sus aplicaciones en UX. Nielsen Norman Group. nngroup.com. (Basado en: Fitts, P. M. (1954). La capacidad de información del sistema motor humano en el control de la amplitud del movimiento. Journal of Experimental Psychology, 47 (6), 381–391.)",
+      "start": 113.33,
+      "end": 132.83
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Última revisión: abril de 2026 — La ley de Fitts es fundamental en UX y no está sujeta a revisión; sus aplicaciones continúan siendo reforzadas por cada estudio de interacción móvil desde entonces.",
+      "start": 133.18,
+      "end": 145.87
+    }
+  ]
+}

@@ -1,0 +1,363 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:17:20.423Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 660.39,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Nota di ricerca &middot; 2 maggio, ventisei &middot; 11 min di lettura &middot; Di Don Goldstein",
+      "start": 0,
+      "end": 6.89
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Uno studio piccolo, con nome, datato. Cinquanta siti web di ristoranti indipendenti nella DMV e nella regione nord-est tri-statale, verificati per le sei perdite di prenotazione e conversione più comuni: pulsanti di prenotazione deeplink non funzionanti, orari nascosti, LCP lento, link di ordinazione diretta CTA mancanti, spagnolo non funzionante e ordinazione solo tramite aggregator. Ogni perdita misurata in dollari al mese rispetto al fatturato dichiarato dall'operatore. L'operatore mediano lascia sul tavolo lo 0,94% del fatturato. Il quartile peggiore perde il 2,3%.",
+      "start": 7.24,
+      "end": 44.71
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "50 Ristoranti indipendenti verificati",
+      "start": 45.23,
+      "end": 48.25
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "0,94% Perdita di fatturato mediana attraverso l'attrito del sito",
+      "start": 48.57,
+      "end": 54.44
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "3.128 dollari Perdita di dollari mensili mediana per operatore",
+      "start": 54.76,
+      "end": 59.46
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "43/50 Hanno almeno 3 perdite su 6 attive in questo momento",
+      "start": 59.78,
+      "end": 64.92
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Da dove proviene l'1%.",
+      "start": 66.02,
+      "end": 68.48
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Il numero dell'1% non è un'intuizione. È una somma di sei perdite misurate, ciascuna con un aumento di figura pubblicata dalla ricerca primaria, applicata al fatturato dichiarato dall'operatore. La metodologia è qui sotto; il risultato principale è in questa tabella.",
+      "start": 69.18,
+      "end": 87.06
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "La perdita più grande è quella che colpisce il minor numero di operatori: ordinazione solo tramite aggregator senza percorso diretto. Quando è presente, l'impatto è grande — quasi mezzo punto di fatturato — perché ogni ordine passa attraverso una commissione del 30% invece di una tariffa di elaborazione del 3,6%. Le due perdite che colpiscono il maggior numero di operatori (LCP mobile e link di ordinazione diretta C T A mancanti) sono più piccole per incidente, ma si sommano su più ordini.",
+      "start": 87.58,
+      "end": 120.46
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Distribuzione della perdita.",
+      "start": 121.56,
+      "end": 123.67
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "La distribuzione non è piatta. Si raggruppa: la maggior parte degli operatori si trova nella fascia dell'0,5%–1,5%, ma una lunga coda di operatori perde più del 2% — di solito perché hanno tutte e sei le perdite attive contemporaneamente.",
+      "start": 124.37,
+      "end": 141.7
+    },
+    {
+      "id": 11,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Distribuzione della perdita in tutti i 50 ristoranti. Il cluster più grande è la fascia dello 0,5 al 1%, con 17 operatori su 50. 15 si trovano nella fascia dell'1 al 1,5%. 7 sono al di sotto dello 0,5% e 7 si trovano tra l'1,5 e il 2%. La coda peggiore del quartile superiore al 2% ha 4 operatori.",
+      "start": 142.5,
+      "end": 165.18
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Gli operatori nella fascia al di sotto dello 0,5% condividono tre cose: sono tutti su siti personalizzati o ospitati da BentoBox (nessun Wix), hanno tutti uno specchio reale /es/ o si trovano in quartieri non bilingui, e hanno tutti un pulsante di ordinazione diretta posizionato sopra i link di terze parti. Sono anche sovrarappresentati nella categoria \"di proprietà familiare da oltre 20 anni\" — non perché gli operatori vecchi sono tecnologicamente avanzati, ma perché hanno risolto silenziosamente una perdita per trimestre da molto tempo.",
+      "start": 165.93,
+      "end": 201.53
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Cosa significa lo 0,94% in dollari.",
+      "start": 202.63,
+      "end": 206.66
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Applicato al fatturato dichiarato mediano dell'operatore (~1,6 milioni di dollari all'anno, 133.000 dollari al mese), lo 0,94% è di 1.250 dollari al mese, o 15.012 dollari all'anno. Per un operatore del quartile peggiore alla stessa fascia di fatturato ma con una perdita del 2,3%, ciò significa 3.069 dollari al mese, o 36.830 dollari all'anno. Per confronto, un riavvio di livello Full Service in questo studio è di 5.000–9.000 dollari — il riavvio si paga da solo in 2–7 mesi con una perdita mediana, e in meno di due mesi con una perdita del quartile peggiore.",
+      "start": 207.36,
+      "end": 250.5
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Difficoltà di riparazione per perdita.",
+      "start": 251.6,
+      "end": 254.22
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Non ogni perdita richiede lo stesso sforzo per essere riparata. Classificati per difficoltà (più facile per primo):",
+      "start": 254.92,
+      "end": 262.72
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Pulsante di prenotazione non deeplink (5 minuti). Sostituisci https://opentable.com con https://www.opentable.com/restref/client/?rid=YOUR_VENUE_ID . Stessa correzione su Resy e Tock. Testa su mobile.",
+      "start": 263.07,
+      "end": 280.59
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Orari sepolti (15 minuti). Sposta il blocco \"Orari\" sopra l'immagine principale. Aggiungi gli orari dello stesso giorno in testo semplice, non solo come parte di una grafica. La grafica può rimanere; il testo deve esserci anche.",
+      "start": 280.91,
+      "end": 296.13
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "CTA di ordine diretto mancante (30 minuti). Aggiungi un pulsante \"Ordina direttamente\" di colore primario sopra qualsiasi link di ordine di terze parti. Collegalo all'URL di ordinazione online del tuo P O S (Toast, Square Online, Olo, ChowNow). Mantieni o supera il prezzo del menu di terze parti.",
+      "start": 296.45,
+      "end": 315.55
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Mobile LCP > 3,0 s (1-3 ore). Comprimi l'immagine principale, passa ad AVIF + WebP fallback, elimina il JS non utilizzato, carica le immagini al di sotto della piega in modalità ritardata. Testa con Lighthouse su Slow 4G + 4× CPU prima di dichiarare la vittoria.",
+      "start": 315.87,
+      "end": 334.35
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Ordinazione solo tramite aggregatori (4-8 ore di setup, poi manutenzione). Attiva un flusso di ordinazione online Toast o Square se non ne hai già uno. Mantieni i prezzi del menu. Menziona i risparmi sulla ricevuta dell'ordine e sull'inserzione della busta da asporto. La parte più difficile non è la tecnologia — è il cambiamento operativo di eseguire due flussi di ordinazione in parallelo per il primo mese.",
+      "start": 334.67,
+      "end": 357.34
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "Specchio reale /es/ (una settimana). Il più difficile dei sei, e quello con il secondo impatto più grande. Uno specchio localizzato reale, non un plugin Google Translate. Il menu drop-in copre questo per la pagina con il maggior impatto; uno specchio del sito completo è un progetto di Full Service tier.",
+      "start": 357.66,
+      "end": 376.46
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "I primi tre fix — sotto un'ora combinati, nessun sviluppatore richiesto — recuperano grossomodo la metà della perdita mediana. Sono un pomeriggio di sabato, non un progetto.",
+      "start": 376.98,
+      "end": 388.43
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Quello che mi aspettavo di trovare e che non c'era.",
+      "start": 389.53,
+      "end": 392.46
+    },
+    {
+      "id": 25,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "La qualità della fotografia non si correlava con la perdita. I ristoranti con foto fenomenali e i ristoranti con snapshot dell'operatore iPhone perdevano alla stessa velocità. La fotografia guida la considerazione, non la conversione. Riordina le tue priorità di conseguenza.",
+      "start": 393.16,
+      "end": 411.18
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "I siti più vecchi non perdevano più di quelli più nuovi. Alcuni dei siti con la perdita più bassa erano stati costruiti nel 2018 e non erano stati toccati di nuovo. Le funzionalità che causano perdite (JS pesante, widget di prenotazione di terze parti che non deeplink, foto principale che blocca gli orari) sono modelli del 2022-2024.",
+      "start": 411.5,
+      "end": 433.5
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix non è universalmente cattivo. Di 11 siti Wix nel campione, 4 erano nella fascia inferiore all'1%. Erano quelli i cui proprietari avevano speso del tempo per sistemare il modello, non accettando i valori predefiniti.",
+      "start": 433.82,
+      "end": 449.22
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "La ristorazione fine dining non perdeva più della ristorazione informale. La perdita di prenotazione deeplink colpisce entrambe allo stesso modo; entrambe perdono grossomodo la stessa percentuale di entrate quando ne sono dotate.",
+      "start": 449.54,
+      "end": 464.74
+    },
+    {
+      "id": 29,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Metodologia.",
+      "start": 465.84,
+      "end": 467.09
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Campione: 50 ristoranti indipendenti di proprietà, nessuna catena nazionale, nessun marchio di proprietà PE. Miscela geografica: 60% DMV (DC + MD + VA), 40% area tri-statale NY-NJ-CT. Fascia di entrate: 800 dollariK-3 dollariM annuali (la mediana DMV indipendente). Miscela di cucina che corrisponde grossomodo alla distribuzione del corridoio RAMW del 2025.",
+      "start": 467.79,
+      "end": 497.17
+    },
+    {
+      "id": 31,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Periodo di audit: febbraio–aprile duemilaventisei. Ogni ristorante valutato a mano sui sei leak - perdite di entrate. L'impatto sulle entrate per ogni leak applicato utilizzando le figure di conversion-lift pubblicate: Whitespark duemilaventiquattro Local Search Ranking Factors , Baymard Institute's duemilaventiquattro mobile-conversion benchmarks, Toast's duemilaventacinque Restaurant Industry Report, e i dati operativi diretti di Don da Tacombi Bethesda e il Irish Inn at Glen Echo (campione di 2 ristoranti per la calibrazione dell'operatore).",
+      "start": 497.69,
+      "end": 530.23
+    },
+    {
+      "id": 32,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Le cifre di ricavo sono state autopubblicate dagli operatori, verificate contro le stime pubblicate disponibili (Yelp volume di prenotazioni, OpenTable Sales Index, registri pubblici di licenze per liquori). Dove il ricavo non poteva essere verificato, la cifra dell'operatore è stata utilizzata così com'era; un valore anomalo è stato escluso per aver rifiutato di confermare una fascia di prezzo.",
+      "start": 530.75,
+      "end": 553.85
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Cosa questo studio non è: un campione randomizzato (gli operatori sono stati reclutati dai gruppi di slack dei ristoranti RAMW + DMV), uno studio controllato (non sono state prese misure prima/dopo), o un elenco esaustivo delle perdite (se ne sono state scelte sei perché ognuna è ben pubblicata). È uno snapshot direzionale, deliberatamente piccolo, nominato e datato.",
+      "start": 554.37,
+      "end": 575.93
+    },
+    {
+      "id": 34,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "Esegui il tuo.",
+      "start": 577.03,
+      "end": 578.19
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "L'audit tool gratuito per ristoranti valuta il tuo sito sulle stesse sei perdite, in 30 secondi, nel tuo browser. Il risultato ti dice quali perdite hai e quanto probabilmente ti stanno costando al mese.",
+      "start": 578.89,
+      "end": 592.91
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Se preferisci che io esegua un audit approfondito da 499 dollari e ti guidi attraverso le soluzioni su un Loom — /services/audit/ . L'audit può essere utilizzato per un build entro 60 giorni.",
+      "start": 593.43,
+      "end": 608.67
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Don Goldstein gestisce due ristoranti DMV e gestisce Muntin Digital . È un membro di RAMW e certificato ServSafe. Il campione di 50 siti (anonimizzato) e la rubrica di valutazione per ogni leak sono disponibili su richiesta a don@muntin.digital .",
+      "start": 609.19,
+      "end": 627.64
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Articoli complementari",
+      "start": 628.16,
+      "end": 629.7
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Una matematica onesta di DoorDash, duemilaventisei — la matematica per ordine dietro la perdita numero 6",
+      "start": 630.05,
+      "end": 636.2
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Audit GBP del ristorante DMV, duemilaventisei — il lato di scoperta dello stesso problema",
+      "start": 636.52,
+      "end": 642.65
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Perché il tuo ristorante perde prenotazioni ogni notte — l'articolo complementare a lungo forma",
+      "start": 642.97,
+      "end": 649.02
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Cinque modifiche al sito web che recuperano il 1% di margine — l'elenco delle soluzioni, classificato",
+      "start": 649.34,
+      "end": 656.29
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Esegui l'audit gratuito da 30 secondi sul tuo sito web",
+      "start": 656.61,
+      "end": 660.39
+    }
+  ]
+}

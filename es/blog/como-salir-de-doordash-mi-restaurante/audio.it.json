@@ -1,0 +1,283 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:10:52.959Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 293.91,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Se DoorDash rappresenta più del 25% delle tue vendite e la commissione ti sta stretta, uscire è la decisione giusta — ma farlo male costa caro. Ho visto ristoranti \"uscire\" da DoorDash e perdere il 40% delle vendite totali in una settimana. Ho anche visto ristoranti farlo bene e spostare l'80% di quei clienti all'ordine diretto.",
+      "start": 0,
+      "end": 21.7
+    },
+    {
+      "id": 1,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "La differenza è la preparazione. 90 giorni, cinque fasi.",
+      "start": 22.22,
+      "end": 26.45
+    },
+    {
+      "id": 2,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Fase 1: Analisi del margine (giorni 1-7).",
+      "start": 27.55,
+      "end": 30.73
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Prima di prendere qualsiasi decisione, controlla i numeri reali. Apri Margin Math e inserisci:",
+      "start": 31.43,
+      "end": 37.62
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Il tuo biglietto medio su DoorDash (non quello del servizio in loco).",
+      "start": 37.97,
+      "end": 42.18
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La commissione che ti addebitano (varia in base al tuo livello — tra il 15% e il 30%).",
+      "start": 42.5,
+      "end": 49.63
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Il costo di confezionamento per ordine.",
+      "start": 49.95,
+      "end": 52.63
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "I minuti extra che ci vogliono per preparare l'ordine di consegna rispetto al servizio in loco.",
+      "start": 52.95,
+      "end": 59.15
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Il numero che esce è ciò che realmente rimane di ogni 100 dollari di DoorDash. L'articolo di DoorDash ha il calcolo completo. Se ti rimangono meno di 40 dollari di ogni 100 dollari, uscire è matematicamente ovvio.",
+      "start": 59.67,
+      "end": 73.6
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Fase 2: Ordine diretto funzionante (giorni 8-30).",
+      "start": 74.7,
+      "end": 78.57
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Non puoi uscire da DoorDash senza un ordine diretto che funzioni. Tre opzioni:",
+      "start": 79.27,
+      "end": 84.3
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Toast / Square / Clover ordine: Se il tuo P O S è già uno di questi, hai l'ordine integrato in 1-2 giorni, commissione 0-5%.",
+      "start": 84.65,
+      "end": 94.73
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "ChowNow / Olo: Servizi dedicati, 99 dollari-300/mese, commissione 0%, due settimane di setup.",
+      "start": 95.05,
+      "end": 103.74
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Personalizzato sul tuo sito: Giustificato solo se fai 100.000 dollari+/mese in consegna.",
+      "start": 104.06,
+      "end": 112.06
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Ciò che è critico: il pulsante \"Ordina\" deve essere in alto sul sito, perfetto per dispositivi mobili, con il menu HTML completo. Esegui Storefront Health prima di lanciare — se la pagina di ordine è sotto l'80%, i clienti non completano.",
+      "start": 112.58,
+      "end": 129.75
+    },
+    {
+      "id": 15,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Fase 3: Comunicazione con i clienti abituali (giorni 30-45).",
+      "start": 130.85,
+      "end": 136.2
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "I tuoi migliori clienti su DoorDash sono a un ordine di non tornare. Quando esci, devono sapere dove trovarti:",
+      "start": 136.9,
+      "end": 143.7
+    },
+    {
+      "id": 17,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Stampa biglietti da 4 x 6 con il tuo URL di ordine diretto. \"10% di sconto se ordini sul nostro sito.\" Metti uno in ogni sacchetto di consegna.",
+      "start": 144.05,
+      "end": 155.02
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Se il tuo P O S memorizza gli indirizzi email dei clienti (Toast lo fa), invia UN email che avvisa che stai aprendo l'ordine diretto con sconto permanente.",
+      "start": 155.34,
+      "end": 165.74
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Metti un annuncio fisico nel ristorante — i clienti che vengono a ritirare DoorDash a volte sono gli stessi che mangiano lì.",
+      "start": 166.06,
+      "end": 174.23
+    },
+    {
+      "id": 20,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Fase 4: Transizione graduale (giorni 45-75).",
+      "start": 175.33,
+      "end": 180.41
+    },
+    {
+      "id": 21,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "NON spegnere DoorDash da un giorno all'altro. Fallo in tre passaggi:",
+      "start": 181.11,
+      "end": 185.75
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Settimana 1-2: Aumenta i prezzi su DoorDash dell'8-12% (la maggior parte non si accorge perché i clienti si aspettano che la consegna costi di più). Ciò non influenza i clienti nuovi, ma aumenta il tuo margine mentre transizioni.",
+      "start": 186.1,
+      "end": 202.07
+    },
+    {
+      "id": 23,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Settimana 3-4: Riduci il menu su DoorDash. Rimuovi i piatti che hanno il peggior margine di consegna (insalate che arrivano tristi, fritti che si ammorbidiscono).",
+      "start": 202.39,
+      "end": 213.25
+    },
+    {
+      "id": 24,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Settimana 5-6: Pausa gli orari. Chiudi la consegna nei giorni lenti per primi (lunedì, martedì), poi gli altri.",
+      "start": 213.57,
+      "end": 220.89
+    },
+    {
+      "id": 25,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Fase 5: La conversazione onesta (giorni 75-90).",
+      "start": 221.99,
+      "end": 226.59
+    },
+    {
+      "id": 26,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Quando chiami DoorDash per cancellare, ti offriranno una commissione più bassa per restare. Se decidi di accettare, fallo solo se ti danno qualcosa per iscritto e per almeno 12 mesi. Se no — e la matematica della Fase 1 dice uscire — ringrazia, cancella e concentrati su scalare il tuo ordine diretto.",
+      "start": 227.29,
+      "end": 246.28
+    },
+    {
+      "id": 27,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Cosa aspettarsi dopo.",
+      "start": 247.38,
+      "end": 249.14
+    },
+    {
+      "id": 28,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Il primo mese dopo l'uscita, puoi aspettarti di perdere il 30-40% degli ordini che avevi su DoorDash. Per il terzo mese, se la transizione è stata gestita bene, puoi recuperare il 60-80% - ma ora con il margine completo. L'economia migliora anche se il volume cala un po'. Questo è il punto.",
+      "start": 249.84,
+      "end": 269.35
+    },
+    {
+      "id": 29,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Salva il tuo scenario in Margin Math e riavvialo ogni 30 giorni dopo l'uscita. Se il margine non migliora come ti aspettavi, scrivimi su La Ventana. Leggo ogni messaggio.",
+      "start": 269.87,
+      "end": 281.12
+    },
+    {
+      "id": 30,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Cosa fare adesso",
+      "start": 281.64,
+      "end": 282.92
+    },
+    {
+      "id": 31,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Leggi: il termine del glossario relativo →",
+      "start": 283.27,
+      "end": 286.7
+    },
+    {
+      "id": 32,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Prova: lo strumento che accompagna questo articolo →",
+      "start": 287.02,
+      "end": 290.97
+    },
+    {
+      "id": 33,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O scrivi a Don: La Ventana →",
+      "start": 291.29,
+      "end": 293.91
+    }
+  ]
+}

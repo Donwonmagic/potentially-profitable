@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T20:35:25.563Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "zm_yunxi",
+  "language": "zh",
+  "total": 140.7,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "三个样本 Lighthouse 得分环，每个频带一个。35 分处于 Poor 频带（0 到 49），漆成锈色。65 分处于 Needs work 频带（50 到 89），漆成金色。95 分处于 Good 频带（90 到 100），漆成绿色。任何 PageSpeed Insights 或 Lighthouse 报告中的彩色表盘都映射到这些相同的阈值。",
+      "start": 0,
+      "end": 22.76
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "主要发现。",
+      "start": 23.86,
+      "end": 24.77
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Lighthouse 性能评分是五个指标的加权平均（截至当前主要版本）：First Contentful Paint、Speed Index、Largest Contentful Paint、Total Blocking Time 和 Cumulative Layout Shift。",
+      "start": 25.47,
+      "end": 38.52
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "当前权重：FCP 10%、SI 10%、LCP 25%、TBT 30%、CLS 25%。TBT 和 LCP 共同占据了最终数字的一半以上；优化它们会使评分有最大变化。",
+      "start": 38.84,
+      "end": 55.26
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "每个指标都根据从 HTTP Archive 中的顶级网站（约 10%）构建的对数正态曲线进行评分。因此，“100”并不意味着完美 —— 它意味着你处于最快的桶中。",
+      "start": 55.58,
+      "end": 66.98
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "评分超过 90 为 “Good”，50–89 为 “Needs improvement”，低于 50 为 “Poor”。报告中的彩色表盘映射到这些阈值。",
+      "start": 67.3,
+      "end": 77.23
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Lighthouse 默认模拟中档移动设备在受限网络上，这是故意保守的 —— 比平均实际条件快会对餐厅受众产生误导。",
+      "start": 77.55,
+      "end": 86.81
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Muntin 如何使用它。",
+      "start": 87.91,
+      "end": 89.63
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Wix 与自定义网站的比较：什么会先破裂。断点 2 引用 Lighthouse 性能方法论，当比较平台构建网站和自定义网站时。Wix 网站和运行相同 Lighthouse 测试的自定义网站以相同的方式进行测量；唯一的区别是底层代码。",
+      "start": 90.33,
+      "end": 105.81
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "餐厅网站审计（交互工具）Muntin 的审计运行在您的 U R L 的真实 PageSpeed Insights 数据上，并报告组成 Lighthouse 评分的组件指标，而不仅仅是最终数字。",
+      "start": 106.13,
+      "end": 118.43
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "完整引用。",
+      "start": 119.53,
+      "end": 120.43
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Chrome DevTools。Lighthouse 性能评分。Chrome for Developers 文档。developer.chrome.com",
+      "start": 121.13,
+      "end": 128.22
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "上次审查：2026 年 4 月 —— Lighthouse 指标权重在主要版本之间略有变化；Muntin 在每次新 Lighthouse 主要版本发布时都会审查此页面。",
+      "start": 128.57,
+      "end": 140.7
+    }
+  ]
+}

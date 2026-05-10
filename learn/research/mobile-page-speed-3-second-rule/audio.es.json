@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:08:54.185Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 155.58,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "La probabilidad de abandono según el tiempo de carga de la página móvil, indexada con respecto a una referencia de un segundo. A 1 segundo: referencia de base. A 3 segundos: un 32 por ciento más de probabilidad de abandono. A 6 segundos: un 106 por ciento más. A 10 segundos: un 123 por ciento más.",
+      "start": 0,
+      "end": 18.64
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Hallazgos clave.",
+      "start": 19.74,
+      "end": 20.71
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "El 53% de las visitas a sitios web móviles se abandonan si una página tarda más de tres segundos en cargar.",
+      "start": 21.41,
+      "end": 28.58
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "El sitio web móvil promedio en el estudio tardó 22 segundos en cargar completamente — aproximadamente siete veces el umbral.",
+      "start": 28.9,
+      "end": 36.46
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La probabilidad de abandono aumenta bruscamente en el rango de 3-10 segundos: una carga de 3s tiene una probabilidad de abandono un 32% más alta que una carga de 1s; a 6s es un 106% más alta; a 10s es un 123% más alta.",
+      "start": 36.78,
+      "end": 53.76
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "El estudio midió 11,8 millones de páginas móviles en los sectores de retail, viajes y publicación, lo que le da un peso estadístico real.",
+      "start": 54.08,
+      "end": 62.3
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "El marco de trabajo posterior de Google (a partir de veinte veinte) codificó el umbral de tres segundos en la métrica de Largest Contentful Paint, donde el \"bucket\" de \"bueno\" termina a 2,5 segundos.",
+      "start": 62.62,
+      "end": 73.71
+    },
+    {
+      "id": 7,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Cómo Muntin utiliza esto.",
+      "start": 74.81,
+      "end": 76.48
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Este es el estudio ancla detrás de toda la afirmación de que \"la velocidad móvil importa\" en la biblioteca. Aparece en:",
+      "start": 77.18,
+      "end": 83.95
+    },
+    {
+      "id": 9,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Por qué tu restaurante pierde reservas todas las noches La fuga número 1 — carga móvil lenta — se basa en este estudio. La tasa de abandono del 53% es lo que hace que el marco de \"perder la mitad del tráfico antes del menú\" sea real en lugar de retórico.",
+      "start": 84.3,
+      "end": 99.45
+    },
+    {
+      "id": 10,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "¿Cuánto cuesta un sitio web personalizado de restaurante en veinte veintiséis? La sección de presupuesto de rendimiento del artículo de precios se refiere a este estudio para explicar por qué una carga móvil de menos de dos segundos se considera un entregable de base, no una mejora.",
+      "start": 99.77,
+      "end": 115.26
+    },
+    {
+      "id": 11,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Wix versus personalizado para restaurantes: qué se rompe primero La ruptura número 2 — el techo de rendimiento de la plataforma — se refiere a este estudio para explicar por qué el umbral de tres segundos no es alcanzable en la mayoría de los constructores de plantillas sin una reconstrucción.",
+      "start": 115.58,
+      "end": 131.77
+    },
+    {
+      "id": 12,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Cita completa.",
+      "start": 132.87,
+      "end": 133.81
+    },
+    {
+      "id": 13,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "An, D. (veinte diecisiete, febrero). Descubre cómo te comparas con las nuevas metas de la industria para la velocidad de página móvil. Piensa con Google. thinkwithgoogle.com",
+      "start": 134.51,
+      "end": 143.62
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Última revisión: abril veinte veintiséis — el hallazgo subyacente se refuerza con los datos actuales de Core Web Vitals de Google y sigue siendo ampliamente citado en la investigación de UX móvil.",
+      "start": 143.97,
+      "end": 155.58
+    }
+  ]
+}

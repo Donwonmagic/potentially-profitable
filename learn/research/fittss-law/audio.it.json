@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T21:24:31.985Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "im_nicola",
+  "language": "it",
+  "total": 170.71,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Risultati chiave.",
+      "start": 0,
+      "end": 1.46
+    },
+    {
+      "id": 1,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Formalizzato da Paul Fitts nel 1954 sulla base di esperimenti di acquisizione rapida di bersagli. La scoperta: il tempo di raggiungimento di un bersaglio è una funzione prevedibile della distanza da esso e della sua dimensione.",
+      "start": 2.16,
+      "end": 18.65
+    },
+    {
+      "id": 2,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La formula classica: T = a + b · log₂(1 + D/W), dove D è la distanza al bersaglio, W è la sua larghezza e a/b sono costanti per l'utente + dispositivo. I bersagli più grandi sono più veloci da acquisire; i bersagli più vicini sono più veloci da acquisire.",
+      "start": 18.97,
+      "end": 37.29
+    },
+    {
+      "id": 3,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "I pulsanti più piccoli vengono selezionati meno frequentemente. La dimensione minima di 44 x 44 punti per i bersagli tattili nelle linee guida dell'interfaccia umana di iOS non è una preferenza di stile — è un adattamento della legge di Fitts.",
+      "start": 37.61,
+      "end": 54.65
+    },
+    {
+      "id": 4,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "I bordi e gli angoli dello schermo sono \"infiniti\" per estensione. Puoi scorrere oltre senza penalità, ed è per questo che macOS mantiene la barra dei menu incollata al bordo superiore. I CTA mobile che aderiscono al fondo sfruttano la stessa proprietà.",
+      "start": 54.97,
+      "end": 71.58
+    },
+    {
+      "id": 5,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Ogni tap aggiuntivo aumenta la perdita. Un flusso di prenotazione che apre una nav → seleziona \"Prenota\" → apre un embed è tre penalità della legge di Fitts accumulate. La compressione vince sempre.",
+      "start": 71.9,
+      "end": 86.6
+    },
+    {
+      "id": 6,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Come Muntin utilizza questo.",
+      "start": 87.7,
+      "end": 89.75
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Perché il tuo ristorante perde prenotazioni ogni notte La perdita numero 4 — \"il pulsante di prenotazione è sepolto o mancante\" — è dove la legge di Fitts fa più lavoro nella libreria. La raccomandazione di un pulsante di prenotazione sticky-bottom-C T A è la legge di Fitts nella pratica.",
+      "start": 90.45,
+      "end": 108.94
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Wix versus personalizzato per i ristoranti: cosa si rompe per primo La rottura numero 4 (\"attrito del flusso di prenotazione\") si basa sulla legge di Fitts per spiegare perché i modelli di navigazione predefiniti di Wix costano conversioni misurabili rispetto a un layout personalizzato con pulsante di prenotazione sticky-C T A.",
+      "start": 109.26,
+      "end": 130.1
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Citazione completa.",
+      "start": 131.2,
+      "end": 132.91
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Budiu, R. La legge di Fitts e le sue applicazioni in U X . Nielsen Norman Group. nngroup.com . (Basato su: Fitts, P. M. (1954). La capacità di informazione del sistema motorio umano nel controllare l'ampiezza del movimento. Journal of Experimental Psychology, 47 (6), 381–391.)",
+      "start": 133.61,
+      "end": 154.72
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Ultima revisione: aprile ventisei — La legge di Fitts è fondamentale per l'U X e non è soggetta a revisione; le sue applicazioni continuano a essere rafforzate da ogni studio di interazione mobile dal 1954.",
+      "start": 155.07,
+      "end": 170.71
+    }
+  ]
+}

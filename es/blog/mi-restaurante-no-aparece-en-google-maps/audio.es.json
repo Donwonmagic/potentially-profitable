@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:45:35.183Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 269.63,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Esta es una de las llamadas más frecuentes que recibo — \"Don, mi restaurante no sale en Google Maps. Mi competencia sí. ¿Qué pasa?\" La buena noticia: el 90% de las veces es uno de cuatro problemas, y todos se arreglan en menos de 4 horas — o al menos, eso es lo que he visto (y he oído, una y otra vez).",
+      "start": 0,
+      "end": 16.34
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Causa 1 — No has reclamado el listing (40% de los casos).",
+      "start": 17.44,
+      "end": 21.41
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Google crea automáticamente un listing para tu restaurante cuando suficientes personas lo buscan. Si nunca lo reclamaste, existe pero está \"huérfano\" — sin fotos, sin horarios actualizados, ranqueando bajo.",
+      "start": 22.11,
+      "end": 33.85
+    },
+    {
+      "id": 3,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Cómo verificar: busca tu restaurante en Google. Si ves un panel con tu nombre pero NO ves el botón \"Soy el dueño de este negocio,\" entonces ya está reclamado por alguien. Si lo ves, hazle clic.",
+      "start": 34.37,
+      "end": 45.25
+    },
+    {
+      "id": 4,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Cómo arreglarlo: sigue los 7 pasos para configurar GBP - la verificación tarda 5-14 días por correo postal (aunque, francamente, eso puede parecer una eternidad en este negocio).",
+      "start": 45.77,
+      "end": 57.06
+    },
+    {
+      "id": 5,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Causa 2 — La categoría primaria está mal (30%).",
+      "start": 58.16,
+      "end": 61.73
+    },
+    {
+      "id": 6,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Tu categoría primaria controla para qué búsquedas Google te muestra - si elegiste \"Restaurant\" en general en vez de \"Mexican Restaurant\" específico, no compites en las búsquedas que realmente importan (y eso es un problema).",
+      "start": 62.43,
+      "end": 75.16
+    },
+    {
+      "id": 7,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Cómo verificar: corre G B P Grader sobre tu lista - te dice qué categoría primaria tienes y cuáles deberías considerar (por cierto, es una buena idea hacer esto cada 6 meses).",
+      "start": 75.68,
+      "end": 86.02
+    },
+    {
+      "id": 8,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Cómo arreglarlo: en GBP, ve a Edit profile → Business information → Category → Primary category - cambia la categoría principal a la opción más específica para la que tu restaurante realmente califica (siempre que sea posible, para mejorar la precisión).",
+      "start": 86.54,
+      "end": 101.18
+    },
+    {
+      "id": 9,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Causa 3 — El listing está suspendido (15%).",
+      "start": 102.28,
+      "end": 105.62
+    },
+    {
+      "id": 10,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Google suspende listings cuando detecta inconsistencias entre tu dirección, tu nombre legal, y la información en tu sitio web. Síntoma: el listing existe pero no aparece en búsquedas, ni siquiera para tu propio nombre.",
+      "start": 106.32,
+      "end": 118.51
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Cómo verificar: busca tu restaurante por nombre + ciudad. Si no aparece pero sí aparecen otros restaurantes que NO mencionaste, está suspendido.",
+      "start": 119.03,
+      "end": 127.82
+    },
+    {
+      "id": 12,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Cómo arreglarlo: necesitas reinstaurarlo — hazlo desde tu cuenta GBP (no te preocupes, es un proceso bastante estándar) — Settings → Reinstate. Te piden documentación: una foto del frontis con tu nombre visible, una factura de servicios públicos a tu nombre comercial, y a veces (dependiendo de la situación) una licencia de funcionamiento. Tarda 5-21 días — lo que puede parecer mucho, pero es el tiempo que necesitan para verificar todo.",
+      "start": 128.34,
+      "end": 152.88
+    },
+    {
+      "id": 13,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Causa 4 — Listing duplicado (15%).",
+      "start": 153.98,
+      "end": 156.83
+    },
+    {
+      "id": 14,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Si Google detecta dos listings para la misma dirección (porque cambiaste de nombre, te mudaste 3 cuadras, o un agregador creó uno automáticamente) - suprime ambos hasta que uno se \"gane\" - síntoma: aparece a veces, otras no, dependiendo del día.",
+      "start": 157.53,
+      "end": 170.79
+    },
+    {
+      "id": 15,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Cómo verificar: busca tu dirección en Google Maps. Si ves dos pines del mismo establecimiento (o nombres similares), tienes duplicado.",
+      "start": 171.31,
+      "end": 178.92
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Cómo arreglarlo: marca el lugar como \"permanently closed\" (permanentemente cerrado) desde tu cuenta GBP. Tarda 7-14 días para que Google se fusione.",
+      "start": 179.44,
+      "end": 188.53
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "El plan de 10 minutos.",
+      "start": 189.63,
+      "end": 191.12
+    },
+    {
+      "id": 18,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Busca tu restaurante en Google + Maps. ¿Aparece el panel?",
+      "start": 191.82,
+      "end": 195.21
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Si no, ¿hay un listing huérfano para reclamar? — esto suele ser la causa 1 (la más común, por cierto).",
+      "start": 195.53,
+      "end": 201
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Sí, la categoría primaria es la específica - causa 2.",
+      "start": 201.32,
+      "end": 204.49
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "No hay un mensaje \"suspended\" - causa 3 es simplemente un error interno (o al menos eso es lo que dicen).",
+      "start": 204.81,
+      "end": 210.69
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "No, veo dos pines —uno que apunta hacia arriba, otro hacia abajo— en direcciones opuestas, lo que me hace pensar en la forma en que los restaurantes manejan sus costos: por un lado, el costo primario (prime cost) de los ingredientes y la mano de obra —alrededor de $42 por plato—, y por otro, el costo de mantener un local en una zona céntrica, que puede llegar a $15,000 al mes. (Y sí, eso es un problema).",
+      "start": 211.01,
+      "end": 232.89
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Si después de revisar los cuatro no encuentras la causa, es posible que estés en un mercado super-competitivo y simplemente no ranquees lo suficientemente alto — tal vez no estás generando suficientes cubiertas (covers) como para destacarte. Restaurant Audit compara tu lista (listing) contra el promedio de tu zona y te dice qué falta (o qué puedes mejorar) para aumentar tus posibilidades de atraer a más clientes.",
+      "start": 233.41,
+      "end": 255.45
+    },
+    {
+      "id": 24,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Si quieres que mire tu caso específico, escríbeme por La Ventana — leo cada mensaje.",
+      "start": 255.97,
+      "end": 260.78
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "Qué hacer ahora —",
+      "start": 261.3,
+      "end": 262.17
+    },
+    {
+      "id": 26,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado →",
+      "start": 262.52,
+      "end": 264.87
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo →",
+      "start": 265.19,
+      "end": 267.65
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana →",
+      "start": 267.97,
+      "end": 269.63
+    }
+  ]
+}

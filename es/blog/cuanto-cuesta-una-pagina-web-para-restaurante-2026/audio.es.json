@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-09T19:26:59.259Z",
+  "engine": "kokoro",
+  "model": "kokoro-v1.0.onnx",
+  "voice": "em_alex",
+  "language": "es",
+  "total": 296.87,
+  "chunks": [
+    {
+      "id": 0,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "\"¿Cuánto me cobrarías por una página web?\" es la primera pregunta que me hace casi todo restaurantero, y siempre quiero responder con otra: \"¿una página de qué tipo?\" - porque no hay un solo precio, hay cuatro opciones reales que cuestan cosas distintas y resuelven problemas distintos.",
+      "start": 0,
+      "end": 15.29
+    },
+    {
+      "id": 1,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "La respuesta corta.",
+      "start": 16.39,
+      "end": 17.68
+    },
+    {
+      "id": 2,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "Para un restaurante independiente en 2026: de $2,500 a $25,000+, con la mayoría aterrizando entre $6,000 y $12,000. La diferencia entre el extremo bajo y el extremo alto - no es \"más diseño\" - es plataforma, integraciones, y si tienes el código fuente al final.",
+      "start": 18.38,
+      "end": 37.64
+    },
+    {
+      "id": 3,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Las cuatro opciones reales.",
+      "start": 38.74,
+      "end": 40.29
+    },
+    {
+      "id": 4,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "Opción 1: Plataforma D I Y ($25-$50/mes, $0 en setup).",
+      "start": 41.39,
+      "end": 46.78
+    },
+    {
+      "id": 5,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Wix, Squarespace, GoDaddy. Te haces el sitio tú con templates. Te alcanza si tu restaurante es:",
+      "start": 47.48,
+      "end": 53.17
+    },
+    {
+      "id": 6,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Pop-up o ghost kitchen.",
+      "start": 53.52,
+      "end": 54.89
+    },
+    {
+      "id": 7,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Menos de un año abierto, sin presupuesto.",
+      "start": 55.21,
+      "end": 57.46
+    },
+    {
+      "id": 8,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Genuinamente desechable - un placeholder que reemplazarás cuando crezcas.",
+      "start": 57.78,
+      "end": 61.87
+    },
+    {
+      "id": 9,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Cuándo NO funciona: cualquier restaurante con menú extenso, integraciones específicas, o más de un año abierto. Wix se rompe en 6 lugares que cuestan más al final.",
+      "start": 62.39,
+      "end": 72.15
+    },
+    {
+      "id": 10,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "Opción 2: Estudio de templates ($2,500-$6,000).",
+      "start": 73.25,
+      "end": 77.81
+    },
+    {
+      "id": 11,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Un estudio toma una plantilla decente, la viste con tu marca, y publica en 2-4 semanas. Resultado predecible. Lo que recibes:",
+      "start": 78.51,
+      "end": 86.2
+    },
+    {
+      "id": 12,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Diseño consistente con tu marca.",
+      "start": 86.55,
+      "end": 88.52
+    },
+    {
+      "id": 13,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "5-7 páginas (home, menú, reservas, historia, contacto, ubicación).",
+      "start": 88.84,
+      "end": 93.1
+    },
+    {
+      "id": 14,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Integración con un sistema de reservas.",
+      "start": 93.42,
+      "end": 95.64
+    },
+    {
+      "id": 15,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Hosting incluido el primer año.",
+      "start": 95.96,
+      "end": 97.86
+    },
+    {
+      "id": 16,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Lo que NO recibes: schema custom, integraciones complejas, dueño del código.",
+      "start": 98.38,
+      "end": 102.92
+    },
+    {
+      "id": 17,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "Opción 3: Custom completo ($6,000-$20,000).",
+      "start": 104.02,
+      "end": 108.83
+    },
+    {
+      "id": 18,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Diseño + código a medida. Lo que la mayoría de restaurantes establecidos eventualmente necesita. Recibes:",
+      "start": 109.53,
+      "end": 115.95
+    },
+    {
+      "id": 19,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Sitio rápido, móvil-first, schema completo.",
+      "start": 116.3,
+      "end": 118.87
+    },
+    {
+      "id": 20,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Menú HTML real (no PDF), reservas integradas, ordering directo.",
+      "start": 119.19,
+      "end": 123.43
+    },
+    {
+      "id": 21,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Dueño del código - puedes cambiar de proveedor sin volver a empezar.",
+      "start": 123.75,
+      "end": 127.47
+    },
+    {
+      "id": 22,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Lighthouse score garantizado (90+ en mobile).",
+      "start": 127.79,
+      "end": 130.78
+    },
+    {
+      "id": 23,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Plazo: 6-12 semanas. Pago de mantenimiento opcional ($150-$400/mes).",
+      "start": 131.3,
+      "end": 137.47
+    },
+    {
+      "id": 24,
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "Opción 4: Agencia de récord ($25,000+).",
+      "start": 138.57,
+      "end": 142.81
+    },
+    {
+      "id": 25,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Solo justificado para grupos restauranteros (3+ ubicaciones), conceptos high-end con shows en vivo, o requerimientos de e-commerce complejos.",
+      "start": 143.51,
+      "end": 151.75
+    },
+    {
+      "id": 26,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Lo que mueve el precio (de verdad).",
+      "start": 152.85,
+      "end": 154.68
+    },
+    {
+      "id": 27,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Complejidad del menú. Un menú de 30 platos con secciones se hace en 4 horas. Uno de 200 con modificadores y fotos por plato toma 30+ horas.",
+      "start": 155.38,
+      "end": 164.64
+    },
+    {
+      "id": 28,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Integraciones. Reservas + ordering + P O S + loyalty = 4 integraciones. Cada una son ~$500-$1,500 de trabajo.",
+      "start": 164.96,
+      "end": 174.29
+    },
+    {
+      "id": 29,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Idiomas. Bilingüe (EN+ES) duplica el contenido y la complejidad de la estructura. Suele añadir $1,000-$2,500.",
+      "start": 174.61,
+      "end": 182.8
+    },
+    {
+      "id": 30,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Schema markup. El que los 6 tipos que Google usa describe cuesta 2-4 horas si está hecho bien.",
+      "start": 183.12,
+      "end": 188.74
+    },
+    {
+      "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "La cotización barata y la cara muchas veces producen el mismo sitio. La cotización del medio es la que incluye el trabajo que ninguno de los dos extremos cree tener que hacer.",
+      "start": 189.49,
+      "end": 199.61
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Banderas rojas en ambos extremos.",
+      "start": 200.71,
+      "end": 202.86
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Extremo barato (bajo $2,500):",
+      "start": 203.56,
+      "end": 206.01
+    },
+    {
+      "id": 34,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Sin contrato escrito.",
+      "start": 206.36,
+      "end": 207.74
+    },
+    {
+      "id": 35,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Sin garantía de Lighthouse score.",
+      "start": 208.06,
+      "end": 209.78
+    },
+    {
+      "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "\"Te incluyo el hosting\" sin decirte el precio del año 2 — no te dejes engañar.",
+      "start": 210.1,
+      "end": 214.24
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "No te entregan el código fuente (y eso es un problema).",
+      "start": 214.56,
+      "end": 217.57
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Extremo caro (sobre $25K para un solo local) — no es una ganga.",
+      "start": 218.09,
+      "end": 222.36
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "\"Fases de descubrimiento\" antes de mockups — un paso más que cuesta tiempo y dinero.",
+      "start": 222.88,
+      "end": 227.37
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Retainer mensual obligatorio para updates de contenido (otro gasto fijo).",
+      "start": 227.69,
+      "end": 231.83
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "\"Hablamos del SEO en otra cotización aparte\" — como si fuera un lujo.",
+      "start": 232.15,
+      "end": 236.06
+    },
+    {
+      "id": 42,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "El número correcto para tu restaurante — no te conformes con una estimación.",
+      "start": 237.16,
+      "end": 241.23
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "Antes de pedir cotizaciones, corre Tech Stack Detector (una herramienta para analizar la tecnología de tu sitio) en tu sitio actual y Storefront Health (para evaluar la salud de tu tienda en línea) para tener una base — eso te ahorra meses de discusiones sobre el sitio actual.",
+      "start": 241.93,
+      "end": 256.79
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Si tu volumen mensual es sobre $40K, un sitio custom completo se paga en 12-18 meses por la mejora en bookings desde Google — es una inversión que puede valer la pena. Si es bajo $40K, un estudio de templates es la decisión correcta hasta que crezcas.",
+      "start": 257.31,
+      "end": 273.05
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Si quieres una segunda opinión sobre las cotizaciones que recibes, mándamelas por La Ventana — leo cada una (y te doy mi honesta opinión).",
+      "start": 273.57,
+      "end": 281.25
+    },
+    {
+      "id": 46,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Qué hacer ahora — sigue leyendo.",
+      "start": 281.77,
+      "end": 283.49
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Lee: el término del glosario relacionado → (para entender mejor los conceptos).",
+      "start": 284.01,
+      "end": 288.26
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Prueba: la herramienta que acompaña este artículo → (para ver cómo funciona).",
+      "start": 288.58,
+      "end": 292.54
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "O escríbele a Don: La Ventana → (si tienes preguntas o necesitas ayuda).",
+      "start": 292.86,
+      "end": 296.87
+    }
+  ]
+}
