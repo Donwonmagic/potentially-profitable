@@ -2738,7 +2738,7 @@ function compareAddresses(schemaAddr, placesFormattedAddr) {
   };
 }
 
-function normalizePhone(s) {
+function normalizePhoneDigits(s) {
   if (!s) return '';
   // Keep only digits; drop leading '1' if present for US-style
   // numbers so '+1 (212) 555-1212' matches '(212) 555-1212'.
@@ -2748,8 +2748,8 @@ function normalizePhone(s) {
 }
 
 function comparePhones(schemaPhone, placesPhone) {
-  const a = normalizePhone(schemaPhone);
-  const b = normalizePhone(placesPhone);
+  const a = normalizePhoneDigits(schemaPhone);
+  const b = normalizePhoneDigits(placesPhone);
   const checkable = !!(a && b);
   let match = false;
   if (checkable) match = a === b;
