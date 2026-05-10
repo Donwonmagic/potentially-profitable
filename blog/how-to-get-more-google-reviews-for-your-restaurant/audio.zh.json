@@ -1,355 +1,451 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T17:37:16.983Z",
+  "generatedAt": "2026-05-10T06:49:34.633Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 504.02,
+  "total": 605.48,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Why reviews matter more than you think.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "&rarr;",
       "start": 0,
-      "end": 2.13
+      "end": 0.95
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Google reviews are the single most visible trust signal a restaurant has. Before a new customer walks through your door, they have already read what the last thirty people said about you — and they did it on the same screen where they checked your hours, your menu, and your location. Your Google Business Profile is your storefront for people who have not been in yet, and reviews are the window display.",
-      "start": 2.83,
-      "end": 20.52
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 1.3,
+      "end": 2.44
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "But here is the part most restaurant owners miss: reviews are not just social proof. They are a ranking factor. Google's own documentation confirms that review count and review score influence how your business ranks in local search results and Google Maps. S E O industry research also consistently shows that recency matters — restaurants with a steady stream of recent reviews tend to rank above those with stale profiles. A restaurant with 340 reviews and a 4.6 average will consistently appear above an identical restaurant with 28 reviews and a 4.8, because Google weighs volume alongside the star count, and fresh reviews signal an active business.",
-      "start": 21.04,
-      "end": 58.53
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "评论会累积 — 一家餐厅从50条评论增加到200条评论，通常会看到15-25%的包装卡片点击量提升。",
+      "start": 2.79,
+      "end": 12.7
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The math is simple. If you serve 200 covers a day and 1% of them leave a review, you are adding two reviews a day — sixty a month. Most of your competitors are adding two a month, maybe five. Within six months, you are the most-reviewed restaurant in your neighborhood on Google Maps. That is not a marketing campaign. That is a system.",
-      "start": 59.05,
-      "end": 76.41
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "五部分系统：打印的二维码卡片、结账消息、后续短信、网站CTA，以及一位实际阅读评论的经理。",
+      "start": 13.02,
+      "end": 20.72
     },
     {
       "id": 4,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "The system: five pieces that run themselves.",
-      "start": 77.51,
-      "end": 80.17
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "不要购买评论，不要屏蔽，不要过滤 — Google的垃圾评论检测已经大大改善。",
+      "start": 21.04,
+      "end": 26.73
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "I built a review program at Tacombi's Bethesda and Arlington locations that did not depend on any single person remembering to ask. Here is the structure, honestly — it is not complicated, it is just disciplined.",
-      "start": 80.87,
-      "end": 93.34
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "为什么评论比你想象的更重要。",
+      "start": 27.83,
+      "end": 30.46
     },
     {
       "id": 6,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. The QR postcard.",
-      "start": 94.44,
-      "end": 95.81
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Google的评论是餐厅最明显的信任信号。在新顾客走进你的门之前，他们已经在同一个屏幕上阅读了前30个人的评论 — 同时他们还查看了你的营业时间、菜单和位置。你的Google Business Profile是尚未光顾过的顾客的店面，评论是橱窗展示。",
+      "start": 31.16,
+      "end": 49.98
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Print a small card — receipt-sized or postcard-sized — with a QR code that links directly to your Google review page. Not your website. Not your Instagram. The Google review prompt specifically , so the customer scans, taps a star rating, types a sentence, and they are done in under thirty seconds.",
-      "start": 96.51,
-      "end": 112.67
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "但是大多数餐厅老板忽略的部分是：评论不仅仅是社会证明，它们也是排名因素。Google自己的文档确认评论数量和评论评分会影响你的业务在本地搜索结果和Google Maps中的排名。SEO行业研究也一致表明，时效性很重要 — 拥有稳定流入的最近评论的餐厅往往排名高于那些具有陈旧资料的餐厅。拥有340条评论和4.6平均评分的餐厅始终会出现在拥有28条评论和4.8平均评分的相同餐厅之上，因为Google同时考虑了数量和星级评分，新评论表明业务活跃。",
+      "start": 50.33,
+      "end": 86.54
     },
     {
       "id": 8,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "At Tacombi, we printed bilingual postcards (English and Spanish) that said \"Love tacos? Let the world know!\" with a QR code linking straight to the Google review page. The card also had a neighborhood discount on the back — but that discount was a standalone neighbor welcome offer, not conditioned on leaving a review. This distinction matters: Google's policies prohibit offering any incentive in exchange for a review, period. You can ask for reviews and you can run separate promotions, but you cannot tie the two together.",
-      "start": 113.19,
-      "end": 141.85
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "数学很简单。如果你每天服务200位顾客，1%的顾客留下评论，你每天会添加两条评论 — 每月六十条。你的大多数竞争对手每月只会添加两条评论，也许是五条。在六个月内，你将成为Google Maps上你所在社区最受评论的餐厅。这不是一个营销活动，那是一个系统。",
+      "start": 86.89,
+      "end": 107.1
     },
     {
       "id": 9,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "How to get your direct review link: open Google Maps, find your restaurant, click \"Write a review,\" and copy the U R L from your browser. Or go to your Google Business Profile dashboard, click \"Ask for reviews,\" and Google gives you a short link you can paste into any QR code generator.",
-      "start": 142.37,
-      "end": 157.75
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "系统：五个部分，它们可以自行运行。",
+      "start": 108.2,
+      "end": 110.71
     },
     {
       "id": 10,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. The timing.",
-      "start": 158.85,
-      "end": 160.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "我在Tacombi的Bethesda和Arlington地点建立了一个评论程序，它不依赖于任何一个人记得询问。这里是结构，老实说 — 它并不复杂，只是需要纪律。",
+      "start": 111.41,
+      "end": 122.52
     },
     {
       "id": 11,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Do not hand the card out with the check. Hand it out after the meal is paid — when the customer is standing, happy, and about to walk out. The psychology is straightforward: they have already committed to the experience, the transaction is closed, and they are in the highest-satisfaction moment of the visit. If you hand it to them while they are still deciding on dessert, it feels like a survey. If you hand it to them as they are putting on their coat, it feels like a compliment.",
-      "start": 160.82,
-      "end": 183.23
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "五个部分，按顺序。第一：二维码卡片 — 打印一次，手工分发的卡片，包含直接评论链接。第二：时机 — 餐后付款时分发，从不与结账同时进行。第三：员工认同 — 解释原因，使其零努力，从不将其与绩效挂钩。第四：回应习惯 — 每天五分钟，每条评论都简短而人性化。第五：店内可见性 — 在host stand附近展示你的实时评分的小标志。其中三个是一次性设置，两个是几个月内累积的习惯。",
+      "start": 123.32,
+      "end": 151.23
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "At Tacombi, the host or the server would hand the card with a simple \"Thanks for coming in — if you have thirty seconds, we would love a Google review. There is a little thank-you on the back.\" That is it. No script longer than two sentences.",
-      "start": 183.75,
-      "end": 196.79
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. 二维码卡片。",
+      "start": 152.33,
+      "end": 153.4
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. The staff buy-in.",
-      "start": 197.89,
-      "end": 199.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "打印一张小卡片 — 收据大小或明信片大小 — 带有直接链接到你的Google评论页面的二维码。不是你的网站，不是你的Instagram。Google评论提示，具体是这样，顾客扫描，点击星级评分，输入一句话，所有操作都可以在30秒内完成。",
+      "start": 154.1,
+      "end": 170.39
     },
     {
       "id": 14,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "The system dies the moment your staff thinks it is annoying. Here is how to prevent that:",
-      "start": 200.04,
-      "end": 205.19
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "在Tacombi，我们印制了中英文双语的明信片，上面写着“爱吃墨西哥玉米卷吗？让全世界知道！”并附有一个二维码，直接链接到Google的评论页面。明信片背面还有一张社区折扣券——但这张折扣券是一个独立的欢迎邻居优惠，不需要留下评论就可以使用。这一点很重要：Google的政策禁止以任何方式奖励评论，绝对不能把评论和优惠挂钩。你可以请求评论，也可以单独运行促销活动，但不能把两者联系起来。",
+      "start": 170.74,
+      "end": 200.44
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Explain the why. \"Google reviews are how new people find us. More reviews means more covers, which means more hours and better shifts for everyone.\" That is a two-sentence pre-shift briefing, not a training module.",
-      "start": 205.54,
-      "end": 217.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "如何获取直接评论链接：打开Google Maps，找到你的餐厅，点击“写评论”，然后从浏览器中复制URL。或者进入你的Google Business Profile控制面板，点击“请求评论”，Google会给你一个短链接，你可以将其粘贴到任何二维码生成器中。",
+      "start": 200.79,
+      "end": 217.72
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Make it zero-effort. The card does the work. The staff member just hands it over. No speech, no pitch, no \"Would you mind...?\" — just \"Here you go, there is a thank-you on the back.\"",
-      "start": 217.87,
-      "end": 229.08
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. 时机。",
+      "start": 218.82,
+      "end": 219.63
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Never tie it to performance metrics. The moment you say \"I want each server to get three reviews per shift,\" you have turned a genuine ask into a quota, and your staff will resent it. Let the postcards do the volume work.",
-      "start": 229.4,
-      "end": 241.23
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "不要在顾客付账单时递给他们明信片，而应该在他们吃完饭、付完账、准备离开时递给他们。心理学原理很简单：他们已经接受了这次体验，交易已经完成，他们正处于访问的最高满意度时刻。如果你在他们还在决定要不要点甜点时递给他们明信片，就会感觉像是在做调查。如果你在他们穿上外套时递给他们明信片，就会感觉像是在给予赞扬。",
+      "start": 220.33,
+      "end": 246.52
     },
     {
       "id": 18,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "4. The response habit.",
-      "start": 242.33,
-      "end": 243.86
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "在Tacombi，服务员或主持人会递给顾客一张明信片，并简单地说：“谢谢你来我们这里——如果你有30秒的时间，我们很乐意得到你的Google评论。背面有一个小小的感谢。”就这样。没有超过两句话的脚本。",
+      "start": 246.87,
+      "end": 261.42
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Responding to reviews — especially the bad ones — matters more than most owners realize. Google's own help documentation says that responding to reviews improves your local ranking. But the real reason is simpler: a potential customer reading a bad review followed by a thoughtful owner response thinks \"that place cares.\" A bad review with no response says \"they do not read these.\"",
-      "start": 244.56,
-      "end": 262.73
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. 员工的认可。",
+      "start": 262.52,
+      "end": 263.72
     },
     {
       "id": 20,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Keep it short, specific, and human. \"Thanks, Maria — glad you liked the esquites. See you next Tuesday\" beats \"Thank you for your kind words! We look forward to serving you again!\" every time. The first one sounds like a person. The second one sounds like a bot.",
-      "start": 263.08,
-      "end": 282.57
+      "text": "这个系统一旦让你的员工觉得很烦人，就会失败。以下是如何避免这种情况：",
+      "start": 264.42,
+      "end": 271.18
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "5. The in-store visibility.",
-      "start": 283.67,
-      "end": 285.47
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "解释为什么。 “Google的评论是新顾客找到我们的方式。更多的评论意味着更多的顾客，这意味着更多的工作时间和更好的轮班安排，对每个人都有益。”这是一次预先简短的介绍，不是一份培训手册。",
+      "start": 271.53,
+      "end": 285.51
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Put your Google rating where customers can see it. A small sign near the host stand or the register that says \"4.6 stars on Google — 340 reviews\" does two things: it tells happy customers that reviewing is a normal thing to do here (social proof), and it tells unhappy customers that this restaurant takes feedback seriously (which sometimes defuses a complaint before it becomes a 1-star review).",
-      "start": 286.17,
-      "end": 309.69
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "让它变得零努力。明信片已经做了工作，员工只需要递给顾客就行了。没有演讲，没有推销，没有“您介意……？”——只是“给你，这背面有一个感谢。”",
+      "start": 285.83,
+      "end": 296.24
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "Update the number monthly. Watching the count climb is motivating for staff too.",
-      "start": 310.21,
-      "end": 315.38
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "永远不要把它与绩效指标挂钩。一旦你说“我希望每个服务员每班次都能得到三个评论”，你就把真正的请求变成了一个指标，你的员工就会对其产生反感。让明信片来做数量的工作。",
+      "start": 296.56,
+      "end": 310.08
     },
     {
       "id": 24,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "What not to do.",
-      "start": 316.48,
-      "end": 317.86
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. 响应习惯。",
+      "start": 311.18,
+      "end": 312.18
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "I have watched restaurants sabotage their own review programs in a few predictable ways. Avoid these:",
-      "start": 318.56,
-      "end": 324.52
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "响应评论——尤其是负面评论——比大多数老板意识到的更重要。Google自己的帮助文档说，响应评论可以提高本地排名。但真正的原因更简单：潜在顾客阅读了一条负面评论，后面跟着一位老板的深思熟虑的回应，会想“那家店很关心。”一条负面评论没有回应，就会说“他们不读这些。”",
+      "start": 312.88,
+      "end": 334.63
     },
     {
       "id": 26,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Do not buy reviews. Google's detection is better than you think, and the penalty — having your entire review history stripped — is catastrophic. One batch of fake reviews can undo years of real ones.",
-      "start": 324.87,
-      "end": 336.57
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "设置每日闹钟。每天5分钟，响应每条新评论。保持简短、具体、人性化。“谢谢，玛丽亚——很高兴你喜欢玉米粒。下周二见”比“感谢您的好言好语！我们期待再次为您服务！”更好。前者听起来像一个真实的人，后者听起来像一个机器人。",
+      "start": 334.98,
+      "end": 350.94
     },
     {
       "id": 27,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Do not review-gate. Some tools ask \"How was your experience?\" and only show the Google review link if the answer is positive. Google explicitly prohibits this. If you ask for reviews, ask everyone — not just the happy people.",
-      "start": 336.89,
-      "end": 350.46
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "5. 店内可见度。",
+      "start": 352.04,
+      "end": 353.24
     },
     {
       "id": 28,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Do not ignore bad reviews. A 1-star review with a thoughtful owner response is less damaging than a 3-star review with silence. Potential customers read the responses. That is your chance to show character.",
-      "start": 350.78,
-      "end": 363.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "把你的 Google 评分放在顾客可以看到的地方。 在 host stand 附近或收银台附近放置一个小标志，上面写着“4.6 星，340 条评论”——这样做有两个作用：一方面告诉满意的顾客，在这里留下评论是正常的做法（社会证明），另一方面告诉不满意的顾客，这家餐厅重视反馈（有时可以在评论变成 1 星之前化解抱怨）。",
+      "start": 353.94,
+      "end": 378.08
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Do not ask on social media. \"Leave us a Google review!\" as an Instagram post reaches the people who already follow you — not the people who just ate at your restaurant for the first time. The postcard-at-checkout system reaches the right audience at the right moment.",
-      "start": 363.48,
-      "end": 377.45
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "每月更新数字。看着评论数量的增长，也会激励员工。",
+      "start": 378.43,
+      "end": 382.83
     },
     {
       "id": 30,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The compounding effect.",
-      "start": 378.55,
-      "end": 380.08
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "什么不该做。",
+      "start": 383.93,
+      "end": 385.05
     },
     {
       "id": 31,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Here is what most owners do not see because they quit after two weeks: Google reviews compound. A restaurant that gets 60 reviews a month does not just have more reviews — it has more recent reviews. Google weighs recency. A potential customer sees \"2 weeks ago\" on the most recent review and thinks \"this place is active.\" They see \"8 months ago\" and think \"is this place still open?\"",
-      "start": 380.78,
-      "end": 403.09
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "我已经看到一些餐厅通过一些可预测的方式破坏了自己的评论计划。避免这些：",
+      "start": 385.75,
+      "end": 392.24
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "After six months of consistent postcard distribution, the Tacombi locations I worked with had a review velocity that put them among the most-reviewed restaurants in their respective neighborhoods on Google Maps. Not because we ran ads. Not because we begged. Because we built a system and let it run.",
-      "start": 403.44,
-      "end": 418.45
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "不要购买评论。Google 的检测比你想象的更好，惩罚——被剥夺整个评论历史——是灾难性的。一批假评论可以抵消多年真实评论的效果。",
+      "start": 392.59,
+      "end": 403.25
     },
     {
       "id": 33,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Reviews compound. Sixty a month does not just mean more stars — it means more recent stars, which is what Google and customers both care about.",
-      "start": 419.2,
-      "end": 428.07
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "不要做评论门槛。一些工具会问“你的体验如何？”并且只在答案为正面时显示 Google 评论链接。Google 明确禁止这种行为。如果你要求评论，应该要求所有人——不仅仅是满意的顾客。",
+      "start": 403.57,
+      "end": 417.09
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "The ten-minute setup.",
-      "start": 429.17,
-      "end": 430.66
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "不要忽视负面评论。一个 1 星评论，如果有店主的深思熟虑的回应，会比一个 3 星评论伴随着沉默更不具破坏力。潜在顾客会阅读回应，那是你展示性格的机会。",
+      "start": 417.41,
+      "end": 429.21
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "If you want to start this today, here is the punch list:",
-      "start": 431.36,
-      "end": 434.77
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "不要在社交媒体上请求评论。“在 Google 留下评论！”这样的 Instagram 发帖只会触及已经关注你的粉丝——而不是刚刚在你的餐厅用餐的新顾客。结账时发放卡片的系统可以触及正确的受众，在正确的时刻。",
+      "start": 429.53,
+      "end": 444.92
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Get your Google review link. Google Business Profile dashboard → \"Ask for reviews\" → copy the short link.",
-      "start": 435.12,
-      "end": 441.69
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "复合效应。",
+      "start": 446.02,
+      "end": 446.8
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Generate a QR code. Paste the link into any free QR generator (qr-code-generator.com works fine). Download the image.",
-      "start": 442.01,
-      "end": 450.82
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "以下是大多数店主无法看到的东西，因为他们在两周后就放弃了：Google 评论具有复合效应。每月获得 60 条评论的餐厅，不仅拥有更多的评论——还拥有更近期的评论。Google 会考虑近期性。潜在顾客看到最近评论的时间是“2 周前”，就会想“这家店还活跃着。”他们看到“8 个月前”，就会想“这家店还开着吗？”",
+      "start": 447.5,
+      "end": 471.15
     },
     {
       "id": 38,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Design a postcard. Receipt-sized or standard postcard. Your logo, a one-line ask, the QR code, and a small thank-you incentive on the back. Canva, a local print shop, or your designer can do this in an hour.",
-      "start": 451.14,
-      "end": 464.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "在持续发放卡片六个月后，我合作的 Tacombi 地点的评论速度使他们在 Google Maps 上成为各自社区中评论最多的餐厅之一。不是因为我们运行了广告，也不是因为我们乞求——而是因为我们建立了一个系统并让它运行。",
+      "start": 471.5,
+      "end": 486.62
     },
     {
       "id": 39,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Print 500. Costs 30 dollars–60 dollars at most print shops. That is 500 potential reviews for less than the cost of a single Instagram ad.",
-      "start": 464.48,
-      "end": 474.82
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "评论具有复合效应。每月 60 条评论不仅意味着更多的星星——也意味着更多近期的星星，这是 Google 和顾客都关心的。",
+      "start": 487.37,
+      "end": 496.37
     },
     {
       "id": 40,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Brief your team. Two-sentence pre-shift: \"Hand these out after the check is closed. Do not pitch — just hand it over and say thanks.\"",
-      "start": 475.14,
-      "end": 483.47
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "十分钟的设置。",
+      "start": 497.47,
+      "end": 499.2
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Set a daily alarm. Five minutes, once a day, respond to every new review. Short, specific, human.",
-      "start": 483.79,
-      "end": 491.59
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "如果你今天就想开始这里的做法，以下是要点：",
+      "start": 499.9,
+      "end": 503.75
     },
     {
       "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "获取你的 Google 评论链接。Google Business Profile 仪表盘 → “请求评论” → 复制短链接。",
+      "start": 504.1,
+      "end": 511.62
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "生成二维码。将链接粘贴到任何免费的二维码生成器（qr-code-generator.com 可以正常工作）中。下载图像。",
+      "start": 511.94,
+      "end": 521.68
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "设计一张卡片。收据大小或标准明信片大小。你的标志，一行请求，二维码，以及背面的小感谢激励。Canva、当地印刷店或你的设计师可以在一小时内完成。",
+      "start": 522,
+      "end": 533.6
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "打印 500 张。最多印刷店的成本为 30 美元–60 美元。这 500 个潜在的评论所花的费用还不到一个 Instagram 广告的费用。",
+      "start": 533.92,
+      "end": 544.44
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "向你的团队简要介绍。两句预换班话：“结账后发放这些卡片。不要推销——只要递过去并说谢谢。”",
+      "start": 544.76,
+      "end": 552.73
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "设置每日闹钟。每天花5分钟，回复每条新评论。简短、具体、人性化。",
+      "start": 553.05,
+      "end": 558.98
+    },
+    {
+      "id": 48,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "That is it. No software subscription. No marketing agency. No budget approval. The whole system costs about 50 dollars and ten minutes to set up, and it runs indefinitely.",
-      "start": 492.11,
-      "end": 504.02
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "就是这样。无需软件订阅，无需营销机构，无需预算审批。整个系统的成本约为50美元，设置时间为10分钟，可以无限期运行。",
+      "start": 559.33,
+      "end": 568.77
+    },
+    {
+      "id": 49,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "关键要点",
+      "start": 569.12,
+      "end": 570.03
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "账单上的二维码比其他任何请求方法在实地测试中以4比1的比例胜出。",
+      "start": 570.38,
+      "end": 577.01
+    },
+    {
+      "id": 51,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "用餐后发送短信——“希望您享受了晚餐；我们阅读每条评论”——在12小时内发送时会产生效果。",
+      "start": 577.33,
+      "end": 585.79
+    },
+    {
+      "id": 52,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "五星评论相比之下，响应良好的4星和3星评论更重要（Google 读取响应性）。",
+      "start": 586.11,
+      "end": 592.67
+    },
+    {
+      "id": 53,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "负面评论并非致命；被忽视的负面评论才是致命的。",
+      "start": 592.99,
+      "end": 597.49
+    },
+    {
+      "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
+      "text": "复合窗口为90天——运行90天以上的系统比运行30天的系统表现更好。",
+      "start": 597.81,
+      "end": 605.48
     }
   ]
 }

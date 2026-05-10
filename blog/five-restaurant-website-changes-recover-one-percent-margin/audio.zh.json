@@ -1,267 +1,379 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:34:00.676Z",
+  "generatedAt": "2026-05-10T05:36:25.885Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 581.55,
+  "total": 676.12,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Most independent restaurants run somewhere between 4 and 8 points of operating margin in a good year. In a year like this one — food cost up, labor up, rent up, insurance up — that margin has narrowed by two or three points, and the conversation at every operator meetup I go to eventually turns to the same sentence: \"I just need to find another point or two of margin and I will be fine.\"",
+      "text": "&rarr;",
       "start": 0,
-      "end": 24.52
+      "end": 0.95
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Here is the honest news. You probably can. Not by cutting staff, not by shrinking portions, not by switching suppliers to a cheaper sysco line that your regulars will absolutely notice. By fixing five small things on your website. Each one is under an hour of work. Individually, none of them will change your year. Stacked, they return roughly one full point of margin — which, on a typical single-location independent restaurant doing 1.2 dollars–1.5 dollarsM in revenue, works out to 8,000 dollars–15,000 dollars a year . Every year. Compounding.",
-      "start": 24.87,
-      "end": 56.51
+      "text": "TL;DR",
+      "start": 1.3,
+      "end": 2.44
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "The five moves are boring. That is the point. Restaurant owners hear \"website optimization\" and their head goes to a six-month redesign project with a consultant, a pitch deck, and a 30,000 dollars invoice. What I am describing is five fixes you can do with your own hands between Sunday evening and Monday lunch. Your exact numbers will vary — bigger restaurants recover more dollars on the same percentage, higher-trafficked sites compound the wins — but the shape of these five moves shows up on every independent restaurant site I audit.",
-      "start": 57.03,
-      "end": 86.83
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "五个小的网站改动，不需要重新设计，总共可以恢复大约1%的利润率，对于典型的中等规模的餐厅来说。",
+      "start": 2.79,
+      "end": 11.43
     },
     {
       "id": 3,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is the stack. Five website changes, each one contributing a small slice of margin recovery. Move one: make your hours visible above the fold on every page. Recovers about a fifth of a point of margin by converting visitors who currently bounce because they cannot tell if you are open. Move two: put a single primary reservation call to action in one obvious place, not three weaker ones competing for attention. Recovers another quarter point by eliminating decision friction. Move three: add a direct own-ordering link to your homepage, above the fold, in a color that does not blend into the design. Recovers about three tenths of a point by shifting delivery orders off DoorDash. Move four: rewrite descriptions on the three or four menu items with the highest profit margin so they are the ones guests are most likely to pick. Recovers about fifteen hundredths of a point just by steering order mix. Move five: delete every stale discount, expired promo banner, and outdated P D F menu on your site. Recovers another tenth of a point by eliminating price confusion and trust breaks. Five small moves, stacked. Total: roughly one full point of profit margin. On a typical independent restaurant, that is eight to fifteen thousand dollars a year.",
-      "start": 87.63,
-      "end": 155.34
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "每个改动都是独立的——选择最容易实现的改动，并在本周内实施。",
+      "start": 11.75,
+      "end": 17.33
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Here&rsquo;s each move up close, with the actual hour of work it takes.",
-      "start": 156.09,
-      "end": 161.45
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "复利的计算是真实的数学，不是营销宣传：每一个百分点都相当于您当前营业额的$X年收入。",
+      "start": 17.65,
+      "end": 25.74
     },
     {
       "id": 5,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Move 1 — Hours visible above the fold &middot; +0.20%.",
-      "start": 162.55,
-      "end": 168.33
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "大多数独立餐厅在一个好的年份里，营业利润率通常在4-8个百分点之间。在像今年这样的年份里——食品成本上涨，劳动力成本上涨，租金上涨，保险费用上涨——这个利润率已经缩小了两个或三个百分点，每次我参加经营者会议时，谈话最终都会转到同一句话：“我只需要找到另外一个或两个百分点的利润率，我就可以了。”",
+      "start": 26.09,
+      "end": 50.32
     },
     {
       "id": 6,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "The most common question on a restaurant website is \"are you open right now.\" The most common place that question gets answered is the footer , or on a separate Contact page three clicks away. That gap — between what the guest came to find and where you put it — is the single highest-leverage leak on most independent restaurant sites.",
-      "start": 169.03,
-      "end": 185.39
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "这是真实的消息：您可能可以做到。这不是通过裁员，不是通过减少份量，不是通过更换供应商到更便宜的Sysco线路（您的常客绝对会注意到）。而是通过修复您网站上的五个小问题。每一个问题都可以在一小时内解决。单独来说，它们不会改变您的年份。但是，当它们叠加在一起时，大约可以恢复一个完整的利润率百分点——这对于典型的单一地点独立餐厅来说，每年收入在1.2美元-1.5美元M之间，相当于8,000美元-15,000美元的年收入。每年。复利。",
+      "start": 50.67,
+      "end": 81.96
     },
     {
       "id": 7,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "Put your hours in the hero. Or in a sticky bar under the nav. Or as a small \"Open now &middot; until 10 PM\" indicator that updates with a little JavaScript. Any of these work; the specific implementation matters less than the principle: the visitor should see whether you&rsquo;re open within three seconds of the page loading, without scrolling, without clicking.",
-      "start": 185.91,
-      "end": 205.98
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "这五个改动很枯燥。这就是重点。餐厅老板一听到“网站优化”，他们的脑海里就会想到一个六个月的重新设计项目，需要一个顾问、一个推销演示文稿和一张30,000美元的发票。我所描述的是五个您可以用自己的双手在周日晚上到周一午餐之间完成的改动。您的确切数字会有所不同——更大的餐厅可以从相同的百分比中恢复更多的美元，流量更大的网站可以使胜利更加明显——但这五个改动的形状出现在我审计的每一个独立餐厅网站上。",
+      "start": 82.31,
+      "end": 114.17
     },
     {
       "id": 8,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "The hour of work: write today&rsquo;s hours into the hero section of your homepage and every page that has a visible header block. If you&rsquo;re on Wix or Squarespace, this is a 10-minute content edit. If you&rsquo;re on a custom site, it&rsquo;s 30 minutes with a web developer. Either way, one hour tops.",
-      "start": 206.5,
-      "end": 226.65
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "这里是改动的详细列表。五个网站改动，每一个都贡献了一个小的利润率恢复部分。改动一：在每个页面上方可见地显示营业时间。可以恢复大约五分之一的利润率百分点，因为它可以将当前由于无法确定是否营业而跳出的访客转化为客户。改动二：在一个明显的地方放置一个单一的主要预订呼吁行动，而不是三个较弱的呼吁竞争注意力。可以恢复另外四分之一的利润率百分点，因为它消除了决策摩擦。改动三：在首页上添加一个直接的自主订购链接，在上方可见的位置，使用一种不会与设计融合的颜色。可以恢复大约三十分之一的利润率百分点，因为它将送餐订单从DoorDash转移开。改动四：重写三个或四个利润率最高的菜单项描述，使其更有可能被客人选择。可以恢复大约十五百分之二的利润率百分点，只是通过引导订单组合。改动五：删除网站上所有过时的折扣、过期的促销横幅和过时的PDF菜单。可以恢复另外十分之一的利润率百分点，因为它消除了价格混淆和信任破裂。五个小的改动，叠加在一起。总计：大约一个完整的利润率百分点。在典型的独立餐厅来说，这相当于每年8,000美元-15,000美元。",
+      "start": 114.97,
+      "end": 188.19
     },
     {
       "id": 9,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Move 2 — One primary reservation C T A &middot; +0.25%.",
-      "start": 227.75,
-      "end": 234.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "这里是每个改动的详细介绍，以及实际需要的工作时间。",
+      "start": 188.94,
+      "end": 193.91
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Most restaurant sites have the reservation C T A in three places: a button in the nav, a block in the middle of the homepage, and a \"Book now\" callout in the footer. Each one is a different color, a different size, and — critically — sometimes even points to different destinations (OpenTable for the nav, a phone number for the middle, an email for the footer).",
-      "start": 234.97,
-      "end": 253.11
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "改动一——在上方可见地显示营业时间 &middot; +0.20%。",
+      "start": 195.01,
+      "end": 201.8
     },
     {
       "id": 11,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Pick one. Make it prominent. Point all of them at the same place. The neuroscience here is boring and well-documented: when you give a visitor two equal-weighted options for the same action, they pick neither and leave. When you give them one, they pick it.",
-      "start": 253.63,
-      "end": 267.53
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "餐厅网站上最常见的问题是“你们现在开放吗”。这个问题通常在页脚或三个点击之外的单独联系页面上得到回答。这种差距——即客人来寻找的信息和你放置它的位置之间的差距——是大多数独立餐厅网站上最大的漏洞。",
+      "start": 202.5,
+      "end": 218.36
     },
     {
       "id": 12,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "The hour of work: decide which reservation destination is your primary (OpenTable? Resy? Your own form?). Update the three C T A spots to all point there, same label, same visual weight. If you want to keep the phone number as a secondary option, put it in small text next to the main button, not competing with it.",
-      "start": 268.05,
-      "end": 285.15
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "将营业时间放在英雄区（hero）或者导航栏（nav）下面的粘性条（sticky bar）中，或者作为一个小的“现在开放 · 直到10点”指示器，它可以使用一点JavaScript更新。这些方法都有效，具体的实现方式比原则本身更不重要：访客应该在页面加载3秒内，无需滚动，无需点击，就能看到你们是否开放。",
+      "start": 218.71,
+      "end": 242.28
     },
     {
       "id": 13,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Move 3 — Direct own-ordering link up top &middot; +0.30%.",
-      "start": 286.25,
-      "end": 292.34
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "工作时间：在首页和每个有可见头部块的页面的英雄区写入今天的营业时间。如果你使用Wix或Squarespace，这是一个10分钟的内容编辑。如果你使用自定义网站，这需要30分钟的网页开发时间。无论如何，一小时内就可以完成。",
+      "start": 242.63,
+      "end": 260.15
     },
     {
       "id": 14,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "This one&rsquo;s the biggest single win, and it&rsquo;s also the one most restaurants accidentally sabotage. If you use Square or Toast for P O S, you already have an own-ordering page at something like yourrestaurant.square.site or yourrestaurant.toasttab.com . Most restaurants bury that link three clicks deep in a \"Takeout\" page that nobody finds. Meanwhile the DoorDash button on your homepage is huge and yellow.",
-      "start": 293.04,
-      "end": 318.71
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "行动2 — 主要预订CTA · +0.25%。",
+      "start": 261.25,
+      "end": 265.46
     },
     {
       "id": 15,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "Put the own-ordering link in the nav, above the fold, in a visually strong button. If you&rsquo;re going to keep a DoorDash link, put it below your own link, smaller, with something like \"or order via DoorDash &rarr;\" so the guest who wants the DoorDash experience still has it but the default path is your direct site.",
-      "start": 319.23,
-      "end": 335.89
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "大多数餐厅网站在三个地方都有预订CTA：导航栏中的按钮，首页中间的块，页脚中的“立即预订”呼吁。每个CTA都有不同的颜色，大小，甚至指向不同的目的地（OpenTable用于导航，电话号码用于中间，电子邮件用于页脚）。",
+      "start": 266.16,
+      "end": 281.72
     },
     {
       "id": 16,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "The math here is leveraged: every direct order you steal back from DoorDash is roughly 20% more margin on that order. Even shifting 15% of weekly delivery volume to direct ordering recovers real money.",
-      "start": 336.41,
-      "end": 350.01
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "选择一个。使其突出。将所有CTA指向同一个地方。神经科学的研究结果很枯燥，但也很有据可查：当你给访客两个同等重要的选项来执行同一操作时，他们会选择都不选然后离开。当你给他们一个选项时，他们会选择它。",
+      "start": 282.07,
+      "end": 298.44
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "The hour of work: add a single \"Order direct &rarr;\" button to your nav and your homepage hero, link it to your existing Square/Toast/other own-ordering page. Make sure the button is the brightest thing above the fold.",
-      "start": 350.53,
-      "end": 363.84
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "工作时间：决定哪个预订目的地是你的主要目的地（OpenTable？Resy？还是你自己的表单？）。更新三个CTA位置，使它们都指向同一个地方，使用相同的标签，相同的视觉权重。如果你想保留电话号码作为次要选项，将其放在主按钮旁边的小字文中，而不是与其竞争。",
+      "start": 298.79,
+      "end": 320.02
     },
     {
       "id": 18,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "Move 4 — Better descriptions on top-margin items &middot; +0.15%.",
-      "start": 364.94,
-      "end": 371.75
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "行动3 — 直接自己的订购链接放在顶部 · +0.30%。",
+      "start": 321.12,
+      "end": 327.13
     },
     {
       "id": 19,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Look at your last 90 days of item-level sales. Rank every dish by contribution margin per cover — what that dish pays you after food cost. You&rsquo;ll find three or four items that are substantially more profitable than your average. On most menus, those are: the pasta with the cheap-grain base and the expensive-protein garnish, the pizza, the signature cocktail, and one dessert.",
-      "start": 372.45,
-      "end": 394.04
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "这是最大的单一胜利，也是大多数餐厅无意中破坏的东西。如果你使用Square或Toast作为POS系统，你已经在类似yourrestaurant.square.site或yourrestaurant.toasttab.com的地方有了自己的订购页面。大多数餐厅将这个链接深埋在三个点击之外的“外卖”页面中，没人会找到它。同时，DoorDash按钮在首页上又很大很黄。",
+      "start": 327.83,
+      "end": 353.26
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "Those are the items your menu descriptions should work hardest to sell. Most restaurants give their signature steak a three-paragraph description and leave the house pasta with two words. Invert that for the items you actually make money on. \"Orecchiette\" becomes \"Hand-cut orecchiette, slow-cooked lamb rag&ugrave;, pecorino from our supplier in Lazio since twenty nineteen — the dish the kitchen argues about.\" Now it&rsquo;s the dish the guest wants to order.",
-      "start": 394.56,
-      "end": 420.34
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "将自己的订购链接放在导航栏中，放在可视区域内，使用视觉强烈的按钮。如果你要保留DoorDash链接，将其放在自己的链接下面，使用较小的字体，添加类似“或通过DoorDash订购&rarr;”的文字，这样客人可以选择DoorDash体验，但默认路径是你的直接网站。",
+      "start": 353.61,
+      "end": 374.16
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "The hour of work: identify your top 3–4 margin items, write 2 sentences each with specific sourcing / preparation / story detail. Update the menu page on your website.",
-      "start": 420.86,
-      "end": 433.04
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "这里的数学计算是杠杆效应：每个直接订单你从DoorDash那里抢回来的订单，利润率大约会增加20%。即使将15%的每周送货量转移到直接订购，也会恢复真正的金钱。",
+      "start": 374.51,
+      "end": 389.16
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "Move 5 — Delete every stale promo and old P D F &middot; +0.10%.",
-      "start": 434.14,
-      "end": 441.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "工作时间：在导航栏和首页英雄区添加一个单独的“直接订购&rarr;”按钮，链接到你的现有的Square/Toast/其他自己的订购页面。确保按钮是可视区域内最亮的东西。",
+      "start": 389.51,
+      "end": 403.23
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Walk your own website as if you were a first-time visitor with no context. You will find at least one: a happy-hour card that still references twenty twenty-three pricing, a banner promoting a summer special that ended in October, a P D F menu titled &ldquo;Fall twenty twenty-four&rdquo; still linked from a sidebar, a gift-card promo that expired six months ago.",
-      "start": 441.9,
-      "end": 460.4
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "行动4 — 顶部商品的更好描述 · +0.15%。",
+      "start": 404.33,
+      "end": 409.14
     },
     {
       "id": 24,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Each of these is a tiny trust break. The guest sees one stale item and unconsciously starts to wonder what else on the site isn&rsquo;t current. That erodes the tiny moment of confidence that leads to a booking. Kill them all.",
-      "start": 460.92,
-      "end": 474.1
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "查看过去90天的菜品销售数据，按每位客人（cover）的贡献利润（contribution margin）对每道菜进行排名——也就是每道菜在扣除食材成本后为你带来的收入。你会发现3到4道菜的利润远高于平均值。在大多数菜单上，这些菜通常是：以廉价谷物为底料、配以高价蛋白质的意大利面，披萨，特色鸡尾酒和一道甜点。",
+      "start": 409.84,
+      "end": 433.84
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The hour of work: open every page of your site, note every price / promo / seasonal reference that isn&rsquo;t current, remove or update. You&rsquo;ll find 4–8 of these on a typical site. None take more than 5 minutes each to fix.",
-      "start": 474.62,
-      "end": 490.21
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "这些菜品应该是你的菜单描述最努力去推销的对象。大多数餐厅会给他们的招牌牛排写三段描述，却只给家常意大利面留两字。对于你真正能赚钱的菜品，应该反过来做。“奥雷基耶特”变成了“手工切割的奥雷基耶特，慢煮的羊肉酱，来自拉齐奥地区的佩科里诺奶酪——自2019年起，我们的厨房就一直在为这道菜争论。”现在，它变成了客人想点的菜。",
+      "start": 434.19,
+      "end": 460.31
     },
     {
       "id": 26,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Five moves. None of them are redesigns. None of them require a consultant. Done on a slow Sunday, they return one full point of margin — which is more than most restaurants will get from a year of switching suppliers.",
-      "start": 490.96,
-      "end": 502.99
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "工作时间：找出你的顶级3-4个利润菜品，为每个菜品写2句话，包含具体的来源、制作过程和故事细节。更新你的网站菜单页面。",
+      "start": 460.66,
+      "end": 471.03
     },
     {
       "id": 27,
       "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "The honest compounding argument.",
-      "start": 504.09,
-      "end": 506.08
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "第五步——删除所有过期的促销和旧PDF文件，+0.10%。",
+      "start": 472.13,
+      "end": 478.68
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "One percent doesn&rsquo;t sound impressive in a pitch. It&rsquo;s the kind of number a consultant would bury on slide seven. But here&rsquo;s the thing about margin recovery on a restaurant: it compounds with volume. A restaurant doing 1.2 dollarsM/year that gains a point of margin gains 12 dollarsK. A restaurant doing 2.5 dollarsM that gains the same point gains 25 dollarsK. And next year, when you&rsquo;re doing a little more volume, the same stack of five moves returns a little more money — because the percentage is always against the larger revenue number.",
-      "start": 506.78,
-      "end": 539.73
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "像第一次访问你的网站的客人一样，带着没有任何背景知识去浏览你的网站。你会发现至少一个：一个快乐时光卡片仍然引用2023年的价格，一个横幅促销夏季特惠已经在10月结束，一个PDF菜单标题为“2024年秋季”仍然链接在侧边栏，一个六个月前过期的礼品卡促销。",
+      "start": 479.38,
+      "end": 500.58
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Over five years, a single point of margin on a growing independent restaurant is conservatively 60 dollarsK–100 dollarsK back in the business. That&rsquo;s a real thing. That&rsquo;s a year of a line cook&rsquo;s salary. That&rsquo;s a new hood vent. That&rsquo;s the down payment on the patio build-out you&rsquo;ve been putting off.",
-      "start": 540.25,
-      "end": 563.39
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "每一个都是一个小小的信任破裂。客人看到一个过期的项目，就会无意识地开始怀疑网站上还有什么不是最新的。这会侵蚀那一瞬间的信心，从而导致预订。杀死它们。",
+      "start": 500.93,
+      "end": 514.17
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "All five of these moves can be done this Sunday. None of them require hiring anybody. None of them require a redesign. They just require an hour of attention each, and the willingness to treat your website as an operating system for your restaurant, not as a brochure you did once and forgot.",
-      "start": 563.91,
-      "end": 578.3
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "工作时间：打开你网站的每一页，记录每个不是最新的价格、促销和季节性参考，删除或更新。你会在一个典型的网站上找到4-8个这样的项目。没有一个需要超过5分钟来修复。",
+      "start": 514.52,
+      "end": 527.78
     },
     {
       "id": 31,
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "五步。没有一个需要重新设计。没有一个需要咨询师。在一个悠闲的星期天完成，它们会带回一个完整的利润点——这比大多数餐厅从更换供应商中获得的一年利润还要多。",
+      "start": 528.53,
+      "end": 541.87
+    },
+    {
+      "id": 32,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "诚实的复利论证。",
+      "start": 542.97,
+      "end": 544.65
+    },
+    {
+      "id": 33,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "与文书工作配对",
+      "start": 545.35,
+      "end": 546.86
+    },
+    {
+      "id": 34,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(25)",
-      "text": "The margin is already there. Go get it.",
-      "start": 578.82,
-      "end": 581.55
+      "text": "12点检查清单作为本文的可打印伴侣。打开它在一个真实的手机上，带着优先级评分走过每个检查点，并在将其交给开发人员时将其保持为CSV格式。",
+      "start": 547.21,
+      "end": 559.71
+    },
+    {
+      "id": 35,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "网站转化检查清单 · 每行通过或失败，带有开发人员的修复优先级。",
+      "start": 560.06,
+      "end": 566
+    },
+    {
+      "id": 36,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "1%听起来不够令人印象深刻，在一个推销中。这是一种顾问会在第七张幻灯片上埋葬的数字。但是，餐厅的利润回收有一个事实：它随着销售量的增加而复利。每年1.2百万美元的餐厅，如果获得1个百分点的利润，就会获得12,000美元。每年2.5百万美元的餐厅，如果获得同样的1个百分点的利润，就会获得25,000美元。并且，下一年，当你做的销售量稍微多一点时，同样的五步骤会带回稍微多一点的钱——因为百分比始终是针对更大的收入数字。",
+      "start": 566.35,
+      "end": 601.41
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "五年间，独立餐厅增长的单点利润率保守估计可为业务带来 60 dollarsK–100 dollarsK 的收入。这是真实的。这相当于一名厨师助手一年的工资。或者，可以用来购买一个新的厨房排风系统。或者，是你一直延迟的露台装修的首付。",
+      "start": 601.76,
+      "end": 617.65
+    },
+    {
+      "id": 38,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "所有这五个步骤都可以在这个周日完成。它们都不需要雇佣新员工，也都不需要重新设计。它们只需要每个步骤花费一个小时的注意力，以及将你的网站视为餐厅的操作系统，而不是一次性制作然后忘记的宣传册的意愿。",
+      "start": 618,
+      "end": 632.72
+    },
+    {
+      "id": 39,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "利润率已经存在。去获取它。",
+      "start": 633.07,
+      "end": 635.24
+    },
+    {
+      "id": 40,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "关键要点",
+      "start": 635.59,
+      "end": 636.5
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "折叠上方的小时：+0.20% 的利润率，30 分钟的工作。",
+      "start": 636.85,
+      "end": 643.67
+    },
+    {
+      "id": 42,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "一个主要的预订呼吁按钮：+0.25%，替代每个其他的预订链接。",
+      "start": 643.99,
+      "end": 650.36
+    },
+    {
+      "id": 43,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "顶部的直接订购链接：+0.30%，在利润率上超过每个第三方平台。",
+      "start": 650.68,
+      "end": 658.08
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "顶部利润项的更好描述：+0.15%，需要菜单复制检查器（Menu Copy Inspector）。",
+      "start": 658.4,
+      "end": 666.31
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "删除每个过期促销和旧的 PDF 文件：+0.10%，这是每个人都需要但没人安排的清理工作。",
+      "start": 666.63,
+      "end": 676.12
     }
   ]
 }

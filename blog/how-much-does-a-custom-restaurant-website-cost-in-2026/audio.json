@@ -1,747 +1,843 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-22T20:38:44.699Z",
+  "generatedAt": "2026-05-10T05:42:07.630Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
-  "voice": "am_puck",
+  "voice": "am_michael",
   "language": "en",
-  "total": 798.8,
+  "total": 1001.91,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "The short answer.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Leer este art&iacute;culo en espa&ntilde;ol &rarr;",
       "start": 0,
-      "end": 0.86
+      "end": 4.91
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "2,500 dollars to 15,000 dollars, depending on scope. Most independent restaurants land in the 5,000 dollars to 9,000 dollars range. The rest of this post explains why the band is that wide, and where in it you should probably be.",
-      "start": 1.56,
-      "end": 19
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 5.26,
+      "end": 6.24
     },
     {
       "id": 2,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Why there is no single price.",
-      "start": 20.1,
-      "end": 21.44
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Independent-restaurant custom-website pricing in twenty twenty-six ranges from 2,500 dollars to 25,000 dollars+, with most landing 6,000 dollars-12,000 dollars.",
+      "start": 6.59,
+      "end": 24.09
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "\"Restaurant website\" is not one thing. It is a spectrum from \"a single page that exists\" to \"a full hospitality platform.\" The variables that move the final number are:",
-      "start": 22.14,
-      "end": 33.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Four real options: D I Y platform (25 dollars-50/mo), template-driven studio (2.5 dollars-6K), full custom (6 dollars-20K), agency-of-record (25 dollarsK+).",
+      "start": 24.41,
+      "end": 39.94
     },
     {
       "id": 4,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "How many pages you actually need. A three-page neighborhood spot is cheaper than a ten-page restaurant with a separate private events page, a catering flow, and a press room.",
-      "start": 33.55,
-      "end": 44.31
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "What actually drives the price: menu complexity, reservation integration, ordering integration, and how many languages.",
+      "start": 40.26,
+      "end": 48.38
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "How complex your menu and ordering flow is. A static P D F menu costs nothing. A self-serve menu C M S with integrated online ordering wired to your P O S costs real money.",
-      "start": 44.63,
-      "end": 57.46
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "The short answer.",
+      "start": 49.48,
+      "end": 50.45
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Whether you integrate with a P O S, a reservation system, or an online-ordering platform. Each integration is a meaningful chunk of work — and each one saves you real hours every week once it is live.",
-      "start": 57.78,
-      "end": 70.81
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "2,500 dollars to 15,000 dollars, depending on scope. Most independent restaurants land in the 5,000 dollars to 9,000 dollars range. The rest of this post explains why the band is that wide, and where in it you should probably be.",
+      "start": 51.15,
+      "end": 72.21
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "How much photography, copy, and brand work you already have. If you need a photographer, a copywriter, and a new logo, the number doubles.",
-      "start": 71.13,
-      "end": 79.61
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Why there is no single price.",
+      "start": 73.31,
+      "end": 75.01
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Whether the site has to be maintainable by you, or only by a developer. \"You can update the menu in thirty seconds\" costs more to build than \"call the developer when the menu changes\" — but it pays for itself within a year.",
-      "start": 79.93,
-      "end": 93.11
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "\"Restaurant website\" is not one thing. It is a spectrum from \"a single page that exists\" to \"a full hospitality platform.\" The variables that move the final number are:",
+      "start": 75.71,
+      "end": 87.34
     },
     {
       "id": 9,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "How much ongoing care you want after launch. A one-time build is cheaper than a build-plus-care relationship. Most of the time the care relationship is what actually protects your investment.",
-      "start": 93.43,
-      "end": 104.83
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "How many pages you actually need. A three-page neighborhood spot is cheaper than a ten-page restaurant with a separate private events page, a catering flow, and a press room.",
+      "start": 87.69,
+      "end": 98.77
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Each of those variables can push the number by 500 dollars to 3,000 dollars. A site that looks simple on paper can cost more than a site that looks complex, if the simple one has hidden integration work and the complex one is mostly content.",
-      "start": 105.35,
-      "end": 120.94
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "How complex your menu and ordering flow is. A static P D F menu costs nothing. A self-serve menu C M S with integrated online ordering wired to your P O S costs real money.",
+      "start": 99.09,
+      "end": 112.81
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The four real options.",
-      "start": 122.04,
-      "end": 123.17
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Whether you integrate with a P O S, a reservation system, or an online-ordering platform. Each integration is a meaningful chunk of work — and each one saves you real hours every week once it is live.",
+      "start": 113.13,
+      "end": 127.58
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "People talk about restaurant websites like there are a dozen paths, but there are really four. Here they are, honestly:",
-      "start": 123.87,
-      "end": 130.51
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "How much photography, copy, and brand work you already have. If you need a photographer, a copywriter, and a new logo, the number doubles.",
+      "start": 127.9,
+      "end": 136.74
     },
     {
       "id": 13,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Comparison of four restaurant website options: D I Y template at 200 dollars-400 dollars per year, freelancer at 500 dollars-2,500 dollars, small studio at 2,500 dollars-15,000 dollars, and full agency at 15,000 dollars-80,000 dollars+. Small studio is recommended for most independent restaurants.",
-      "start": 131.31,
-      "end": 150.77
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Whether the site has to be maintainable by you, or only by a developer. \"You can update the menu in thirty seconds\" costs more to build than \"call the developer when the menu changes\" — but it pays for itself within a year.",
+      "start": 137.06,
+      "end": 151.51
     },
     {
       "id": 14,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "Option 1 — D I Y on a template (Wix, Squarespace, Weebly).",
-      "start": 151.87,
-      "end": 155.52
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
+      "text": "How much ongoing care you want after launch. A one-time build is cheaper than a build-plus-care relationship. Most of the time the care relationship is what actually protects your investment.",
+      "start": 151.83,
+      "end": 164.08
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(5)",
-      "text": "200 dollars–400 dollars/year including hosting, plus your time. Budget fifteen to forty hours to get it looking decent, and another five to ten hours a month to keep it current.",
-      "start": 156.22,
-      "end": 168.1
+      "text": "Each of those variables can push the number by 500 dollars to 3,000 dollars. A site that looks simple on paper can cost more than a site that looks complex, if the simple one has hidden integration work and the complex one is mostly content.",
+      "start": 164.6,
+      "end": 182.27
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "What you get: a working site that looks like ten thousand other restaurant sites, loads slower than it should on a phone, and hits a ceiling the moment you want to do something the template did not anticipate.",
-      "start": 168.62,
-      "end": 180.32
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "The four real options.",
+      "start": 183.37,
+      "end": 184.8
     },
     {
       "id": 17,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "When this is fine: the restaurant is new, cash is tight, you are planning to replace the site within a year, and you can accept that the site is a placeholder — not a reflection of the room.",
-      "start": 180.84,
-      "end": 191.33
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "People talk about restaurant websites like there are a dozen paths, but there are really four. Here they are, honestly:",
+      "start": 185.5,
+      "end": 192.67
     },
     {
       "id": 18,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "When this is a trap: when you are already established and your site is reflecting badly on the space. The opportunity cost of every diner who bounced because they could not read your menu on their phone dwarfs the template fee you thought you were saving.",
-      "start": 191.85,
-      "end": 205.67
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Comparison of four restaurant website options: D I Y template at 200 dollars-400 dollars per year, freelancer at 500 dollars-2,500 dollars, small studio at 2,500 dollars-15,000 dollars, and full agency at 15,000 dollars-80,000 dollars+. Small studio is recommended for most independent restaurants.",
+      "start": 193.47,
+      "end": 221.53
     },
     {
       "id": 19,
       "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "Option 2 — A freelancer on Upwork or Fiverr.",
-      "start": 206.77,
-      "end": 209.39
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "Option 1 — D I Y on a template (Wix, Squarespace, Weebly).",
+      "start": 222.63,
+      "end": 226.67
     },
     {
       "id": 20,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "500 dollars–2,500 dollars. Quality ranges from \"a miracle\" to \"a disaster,\" and you usually cannot tell which until you have already paid. The good freelancers are booked out and operate at the top of the range anyway.",
-      "start": 210.09,
-      "end": 224.55
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "200 dollars–400 dollars/year including hosting, plus your time. Budget fifteen to forty hours to get it looking decent, and another five to ten hours a month to keep it current.",
+      "start": 227.37,
+      "end": 240.06
     },
     {
       "id": 21,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "When this works: you have clear specs, you have seen the freelancer's portfolio, and they have done restaurant work before.",
-      "start": 225.07,
-      "end": 231.54
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "What you get: a working site that looks like ten thousand other restaurant sites, loads slower than it should on a phone, and hits a ceiling the moment you want to do something the template did not anticipate.",
+      "start": 240.58,
+      "end": 253.25
     },
     {
       "id": 22,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "When it does not: \"just make it look nice\" does not travel well across language barriers and timezones. Revisions take weeks. The handoff at the end leaves you with files you cannot maintain, and if something breaks six months later there is nobody to call.",
-      "start": 232.06,
-      "end": 246.36
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "When this is fine: the restaurant is new, cash is tight, you are planning to replace the site within a year, and you can accept that the site is a placeholder — not a reflection of the room.",
+      "start": 253.77,
+      "end": 265.22
     },
     {
       "id": 23,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "Option 3 — A small studio (where Muntin sits).",
-      "start": 247.46,
-      "end": 250.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "When this is a trap: when you are already established and your site is reflecting badly on the space. The opportunity cost of every diner who bounced because they could not read your menu on their phone dwarfs the template fee you thought you were saving.",
+      "start": 265.74,
+      "end": 281.43
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "2,500 dollars–15,000 dollars. One or two people, specialized in a specific kind of business, usually working on a fixed price with a clear scope. You meet the actual person who will build your site. They have opinions about your menu, and they will not ship a logo they do not believe in.",
-      "start": 250.95,
-      "end": 267.43
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "Option 2 — A freelancer on Upwork or Fiverr.",
+      "start": 282.53,
+      "end": 285.62
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "When this works: you want one person accountable end to end, you value the conversation more than the deliverable, and you want something that looks and works like a studio built it — not like a template did.",
-      "start": 267.95,
-      "end": 278.9
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "500 dollars–2,500 dollars. Quality ranges from \"a miracle\" to \"a disaster,\" and you usually cannot tell which until you have already paid. The good freelancers are booked out and operate at the top of the range anyway.",
+      "start": 286.32,
+      "end": 302.45
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "When it does not: if the scope genuinely requires a team (multi-location rollouts, custom ordering apps, enterprise integrations), a one-person studio is the wrong shape. You would be paying for something they are not built to deliver.",
-      "start": 279.42,
-      "end": 293.32
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "When this works: you have clear specs, you have seen the freelancer's portfolio, and they have done restaurant work before.",
+      "start": 302.97,
+      "end": 310.09
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "Option 4 — A full agency.",
-      "start": 294.42,
-      "end": 296.06
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "When it does not: \"just make it look nice\" does not travel well across language barriers and timezones. Revisions take weeks. The handoff at the end leaves you with files you cannot maintain, and if something breaks six months later there is nobody to call.",
+      "start": 310.61,
+      "end": 327.25
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "15,000 dollars–80,000 dollars+. You will get a project manager, a designer, a developer, an S E O specialist, a copywriter, a content strategist. Timeline: three to nine months. You will get a PowerPoint presentation before you see a wireframe.",
-      "start": 296.76,
-      "end": 313.95
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "Option 3 — A small studio (where Muntin sits).",
+      "start": 328.35,
+      "end": 331.5
     },
     {
       "id": 29,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "When this is right: you are a restaurant group with five or more locations, you have an in-house marketing team, or you are operating in an enterprise context with procurement requirements.",
-      "start": 314.47,
-      "end": 325.1
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "2,500 dollars–15,000 dollars. One or two people, specialized in a specific kind of business, usually working on a fixed price with a clear scope. You meet the actual person who will build your site. They have opinions about your menu, and they will not ship a logo they do not believe in.",
+      "start": 332.2,
+      "end": 352.93
     },
     {
       "id": 30,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "When it is wrong: you are a single-location independent. You are paying for organizational overhead you do not need, and your project will always be the least important one on somebody's roadmap.",
-      "start": 325.62,
-      "end": 337.57
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "When this works: you want one person accountable end to end, you value the conversation more than the deliverable, and you want something that looks and works like a studio built it — not like a template did.",
+      "start": 353.45,
+      "end": 366.09
     },
     {
       "id": 31,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "What actually drives the price.",
-      "start": 338.67,
-      "end": 340.18
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "When it does not: if the scope genuinely requires a team (multi-location rollouts, custom ordering apps, enterprise integrations), a one-person studio is the wrong shape. You would be paying for something they are not built to deliver.",
+      "start": 366.61,
+      "end": 382.17
     },
     {
       "id": 32,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "Inside the Muntin-size band — the 2,500 dollars to 15,000 dollars range where most independent restaurant projects actually live — here is how the line items stack, honestly:",
-      "start": 340.88,
-      "end": 354.42
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "Option 4 — A full agency.",
+      "start": 383.27,
+      "end": 385.1
     },
     {
       "id": 33,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Base build (3–6 page custom site, mobile-first, launched) 2,500 dollars–4,000 dollars",
-      "start": 354.77,
-      "end": 362.78
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "15,000 dollars–80,000 dollars+. You will get a project manager, a designer, a developer, an S E O specialist, a copywriter, a content strategist. Timeline: three to nine months. You will get a PowerPoint presentation before you see a wireframe.",
+      "start": 385.8,
+      "end": 406
     },
     {
       "id": 34,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Menu system you can update yourself, no developer needed +500 dollars–1,200 dollars",
-      "start": 363.1,
-      "end": 369.69
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "When this is right: you are a restaurant group with five or more locations, you have an in-house marketing team, or you are operating in an enterprise context with procurement requirements.",
+      "start": 406.52,
+      "end": 418.44
     },
     {
       "id": 35,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Reservation integration (OpenTable, Resy, Tock, Square) +300 dollars–800 dollars",
-      "start": 370.01,
-      "end": 376.78
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "When it is wrong: you are a single-location independent. You are paying for organizational overhead you do not need, and your project will always be the least important one on somebody's roadmap.",
+      "start": 418.96,
+      "end": 431.71
     },
     {
       "id": 36,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Online ordering handoff (Toast, Square, ChowNow) +400 dollars–1,000 dollars",
-      "start": 377.1,
-      "end": 383.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "What actually drives the price.",
+      "start": 432.81,
+      "end": 434.49
     },
     {
       "id": 37,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "Google Business Profile setup and optimization +200 dollars–500 dollars",
-      "start": 384.27,
-      "end": 389.88
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "Inside the Muntin-size band — the 2,500 dollars to 15,000 dollars range where most independent restaurant projects actually live — here is how the line items stack, honestly:",
+      "start": 435.19,
+      "end": 450.26
     },
     {
       "id": 38,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(6)",
-      "text": "Photography direction (you hire the photographer, we art direct) +300 dollars–800 dollars",
-      "start": 390.2,
-      "end": 396.8
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Base build (3–6 page custom site, mobile-first, launched) 2,500 dollars–4,000 dollars",
+      "start": 450.61,
+      "end": 459.25
     },
     {
       "id": 39,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(7)",
-      "text": "Brand identity (logo, colors, type, brand board) +1,500 dollars–3,000 dollars",
-      "start": 397.12,
-      "end": 404.59
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Menu system you can update yourself, no developer needed +500 dollars–1,200 dollars",
+      "start": 459.57,
+      "end": 466.82
     },
     {
       "id": 40,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(8)",
-      "text": "Multi-location routing and store locator +1,000 dollars–2,500 dollars",
-      "start": 404.91,
-      "end": 412.04
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Reservation integration (OpenTable, Resy, Tock, Square) +300 dollars–800 dollars",
+      "start": 467.14,
+      "end": 474.65
     },
     {
       "id": 41,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(9)",
-      "text": "Direct P O S integration (Toast, Square, Lightspeed A P I) +1,500 dollars–3,500 dollars",
-      "start": 412.36,
-      "end": 420.49
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Online ordering handoff (Toast, Square, ChowNow) +400 dollars–1,000 dollars",
+      "start": 474.97,
+      "end": 482.25
     },
     {
       "id": 42,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(10)",
-      "text": "Custom ordering checkout (your payment processor, your margin) +2,000 dollars–4,500 dollars",
-      "start": 420.81,
-      "end": 428.61
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Google Business Profile setup and optimization +200 dollars–500 dollars",
+      "start": 482.57,
+      "end": 488.64
     },
     {
       "id": 43,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Three real examples, so the ranges feel less abstract:",
-      "start": 428.96,
-      "end": 432.11
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(6)",
+      "text": "Photography direction (you hire the photographer, we art direct) +300 dollars–800 dollars",
+      "start": 488.96,
+      "end": 496.14
     },
     {
       "id": 44,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "A neighborhood Italian spot getting Essentials + reservation integration + photo direction lands around 3,400 dollars .",
-      "start": 432.46,
-      "end": 441.27
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(7)",
+      "text": "Brand identity (logo, colors, type, brand board) +1,500 dollars–3,000 dollars",
+      "start": 496.46,
+      "end": 504
     },
     {
       "id": 45,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "A bistro adding a real self-serve menu C M S, online ordering, and Google Business Profile work lands around 6,500 dollars .",
-      "start": 441.59,
-      "end": 450.94
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(8)",
+      "text": "Multi-location routing and store locator +1,000 dollars–2,500 dollars",
+      "start": 504.32,
+      "end": 511.7
     },
     {
       "id": 46,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "A two-location group adding multi-location routing and direct P O S integration lands around 11,000 dollars .",
-      "start": 451.26,
-      "end": 460.61
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(9)",
+      "text": "Direct P O S integration (Toast, Square, Lightspeed A P I) +1,500 dollars–3,500 dollars",
+      "start": 512.02,
+      "end": 520.29
     },
     {
       "id": 47,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(2)",
-      "text": "Three example restaurant website bundles showing what drives the price: Neighborhood Italian at 3,400 dollars (base build plus reservation integration plus photo direction), Bistro at 6,500 dollars (base build plus menu C M S, online ordering, and Google Business Profile), Two-Location Group at 11,000 dollars (base build plus multi-location routing plus direct P O S integration).",
-      "start": 461.41,
-      "end": 481.43
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(10)",
+      "text": "Custom ordering checkout (your payment processor, your margin ) +2,000 dollars–4,500 dollars",
+      "start": 520.61,
+      "end": 529.07
     },
     {
       "id": 48,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "What you are actually paying for.",
-      "start": 482.53,
-      "end": 484
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Three real examples, so the ranges feel less abstract:",
+      "start": 529.42,
+      "end": 533.15
     },
     {
       "id": 49,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "The line items above are only half the story. The other half is the work that never shows up on an invoice, but shows up in the finished product anyway:",
-      "start": 484.7,
-      "end": 493.58
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "A neighborhood Italian spot getting Essentials + reservation integration + photo direction lands around 3,400 dollars .",
+      "start": 533.5,
+      "end": 542.8
     },
     {
       "id": 50,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "Strategy conversations.",
-      "start": 494.68,
-      "end": 496.02
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "A bistro adding a real self-serve menu C M S, online ordering, and Google Business Profile work lands around 6,500 dollars .",
+      "start": 543.12,
+      "end": 553.35
     },
     {
       "id": 51,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Before any design happens, you need someone asking the uncomfortable questions. Why is your current site not working? Which pages are earning their keep? Which ones are dead weight? A good studio starts with an hour of conversation that exposes what is actually broken before anyone picks a font.",
-      "start": 496.72,
-      "end": 513.03
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "A two-location group adding multi-location routing and direct P O S integration lands around 11,000 dollars .",
+      "start": 553.67,
+      "end": 563.47
     },
     {
       "id": 52,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "Copy.",
-      "start": 514.13,
-      "end": 514.69
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(2)",
+      "text": "Three example restaurant website bundles showing what drives the price: Neighborhood Italian at 3,400 dollars (base build plus reservation integration plus photo direction), Bistro at 6,500 dollars (base build plus menu C M S, online ordering, and Google Business Profile), Two-Location Group at 11,000 dollars (base build plus multi-location routing plus direct P O S integration).",
+      "start": 564.27,
+      "end": 593.15
     },
     {
       "id": 53,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(22)",
-      "text": "Template sites assume you already wrote your copy. You probably did not — and even if you did, it was probably written for the old menu you have since changed. Good studios either write it for you or edit yours into something that actually sells the room.",
-      "start": 515.39,
-      "end": 529.92
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "What you are actually paying for.",
+      "start": 594.25,
+      "end": 595.92
     },
     {
       "id": 54,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(7)",
-      "text": "S E O fundamentals.",
-      "start": 531.02,
-      "end": 532.27
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "The line items above are only half the story. The other half is the work that never shows up on an invoice, but shows up in the finished product anyway:",
+      "start": 596.62,
+      "end": 606.25
     },
     {
       "id": 55,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(23)",
-      "text": "Title tags, meta descriptions, schema markup, a sitemap, H T T P S, alt text, a working contact form, a Google Business Profile that matches the site. None of these show up in a portfolio. All of them take time. All of them are why you show up on Google at all. (If you want to see how many of these your current site is missing, the free Restaurant Website Audit will run through them in about thirty seconds.)",
-      "start": 532.97,
-      "end": 550.6
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "Strategy conversations.",
+      "start": 607.35,
+      "end": 608.9
     },
     {
       "id": 56,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(8)",
-      "text": "Mobile testing.",
-      "start": 551.7,
-      "end": 552.62
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Before any design happens, you need someone asking the uncomfortable questions. Why is your current site not working? Which pages are earning their keep? Which ones are dead weight? A good studio starts with an hour of conversation that exposes what is actually broken before anyone picks a font.",
+      "start": 609.6,
+      "end": 628.96
     },
     {
       "id": 57,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(24)",
-      "text": "Your cousin's Android, your friend's iPhone 12, the cheap tablet at the hostess stand. Real testing on real devices — not the desktop browser's \"responsive view,\" which lies about half the bugs.",
-      "start": 553.32,
-      "end": 566.07
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "Copy.",
+      "start": 630.06,
+      "end": 630.65
     },
     {
       "id": 58,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(9)",
-      "text": "Accessibility.",
-      "start": 567.17,
-      "end": 568.06
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "Template sites assume you already wrote your copy. You probably did not — and even if you did, it was probably written for the old menu you have since changed. Good studios either write it for you or edit yours into something that actually sells the room.",
+      "start": 631.35,
+      "end": 647.41
     },
     {
       "id": 59,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(25)",
-      "text": "Keyboard navigation, screen reader support, sufficient color contrast, proper form labels. Half of this is legally required depending on your state. None of it is optional for a site you want people to actually use — including the people with arthritis, reading glasses, and low-end phones who make up a real slice of your customers.",
-      "start": 568.76,
-      "end": 586.59
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "S E O fundamentals.",
+      "start": 648.51,
+      "end": 649.94
     },
     {
       "id": 60,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(10)",
-      "text": "Care after launch.",
-      "start": 587.69,
-      "end": 588.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Title tags, meta descriptions, schema markup , a sitemap , H T T P S , alt text , a working contact form , a Google Business Profile that matches the site. None of these show up in a portfolio. All of them take time. All of them are why you show up on Google at all. (If you want to see how many of these your current site is missing, the free Restaurant Website Audit will run through them in about thirty seconds.)",
+      "start": 650.64,
+      "end": 677.58
     },
     {
       "id": 61,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(26)",
-      "text": "Updating a menu price in thirty seconds instead of three days. Catching a broken contact form before a customer does. Replacing a dead photo plugin before it takes down the homepage on a Friday night. This is where freelancers disappear and studios earn their retainers.",
-      "start": 589.35,
-      "end": 605.33
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(8)",
+      "text": "Mobile testing.",
+      "start": 678.68,
+      "end": 679.64
     },
     {
       "id": 62,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "Red flags on both ends.",
-      "start": 606.43,
-      "end": 607.78
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "Your cousin's Android, your friend's iPhone 12, the cheap tablet at the hostess stand. Real testing on real devices — not the desktop browser's \"responsive view,\" which lies about half the bugs.",
+      "start": 680.34,
+      "end": 694.3
     },
     {
       "id": 63,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(3)",
-      "text": "Red flags to watch for: five signs a website quote is suspiciously cheap, and four signs it is overpriced.",
-      "start": 608.58,
-      "end": 615.49
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(9)",
+      "text": "Accessibility.",
+      "start": 695.4,
+      "end": 696.3
     },
     {
       "id": 64,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(7)",
-      "text": "The realistic timeline.",
-      "start": 616.59,
-      "end": 617.81
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Keyboard navigation, screen reader support, sufficient color contrast, proper form labels. Half of this is legally required depending on your state. None of it is optional for a site you want people to actually use — including the people with arthritis, reading glasses, and low-end phones who make up a real slice of your customers.",
+      "start": 697,
+      "end": 719.22
     },
     {
       "id": 65,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(27)",
-      "text": "A good 5,000 dollars to 9,000 dollars custom restaurant website launches in four to six weeks . Here is what a real calendar looks like:",
-      "start": 618.51,
-      "end": 629.87
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(10)",
+      "text": "Care after launch.",
+      "start": 720.32,
+      "end": 721.32
     },
     {
       "id": 66,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Week 1 — Kickoff call, brand audit, content gathering, photo review, menu audit, P O S and reservation system inventory.",
-      "start": 630.22,
-      "end": 638.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Updating a menu price in thirty seconds instead of three days. Catching a broken contact form before a customer does. Replacing a dead photo plugin before it takes down the homepage on a Friday night. This is where freelancers disappear and studios earn their retainers.",
+      "start": 722.02,
+      "end": 740.13
     },
     {
       "id": 67,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Week 2 — Sitemap, wireframes, first full design pass.",
-      "start": 639.08,
-      "end": 642.31
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "The cheap quote and the expensive quote often produce the same site. The middle quote is the one that includes the work neither end thinks it has to do.",
+      "start": 740.88,
+      "end": 750.35
     },
     {
       "id": 68,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Week 3 — Design iteration based on feedback, second design pass, content entry starts.",
-      "start": 642.63,
-      "end": 648.34
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Red flags on both ends.",
+      "start": 751.45,
+      "end": 752.96
     },
     {
       "id": 69,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Week 4 — Development, integrations, mobile QA on real devices.",
-      "start": 648.66,
-      "end": 653.25
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(3)",
+      "text": "Red flags to watch for: five signs a website quote is suspiciously cheap, and four signs it is overpriced.",
+      "start": 753.76,
+      "end": 761.26
     },
     {
       "id": 70,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(5)",
-      "text": "Week 5 — Launch prep, final content review, pre-launch accessibility and speed audit.",
-      "start": 653.57,
-      "end": 658.84
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(7)",
+      "text": "The realistic timeline.",
+      "start": 762.36,
+      "end": 763.79
     },
     {
       "id": 71,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(6)",
-      "text": "Week 6 — Launch, Google Business Profile updates, handoff documentation, and the first week of live monitoring.",
-      "start": 659.16,
-      "end": 666.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(29)",
+      "text": "A good 5,000 dollars to 9,000 dollars custom restaurant website launches in four to six weeks . Here is what a real calendar looks like:",
+      "start": 764.49,
+      "end": 776.16
     },
     {
       "id": 72,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(4)",
-      "text": "A six-week project timeline for a custom restaurant website: Week 1 Discovery, Week 2 Design, Week 3 Iteration, Week 4 Build, Week 5 Launch Prep, Week 6 Launch.",
-      "start": 666.82,
-      "end": 677.69
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "Week 1 — Kickoff call, brand audit, content gathering, photo review, menu audit, P O S and reservation system inventory.",
+      "start": 776.51,
+      "end": 785.48
     },
     {
       "id": 73,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(28)",
-      "text": "Anything faster than three weeks is suspicious — nobody can design, build, and launch a good custom site in two weeks unless it is actually a template with a new logo. Anything slower than eight weeks usually means the scope was not clear from day one and the project is bleeding time on revision rounds.",
-      "start": 678.44,
-      "end": 695.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Week 2 — Sitemap, wireframes, first full design pass.",
+      "start": 785.8,
+      "end": 789.5
     },
     {
       "id": 74,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(8)",
-      "text": "What to budget for after launch.",
-      "start": 696.19,
-      "end": 697.72
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Week 3 — Design iteration based on feedback, second design pass, content entry starts.",
+      "start": 789.82,
+      "end": 796.16
     },
     {
       "id": 75,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(29)",
-      "text": "A website is not a one-time purchase. Most independent restaurants should budget 125 dollars to 350 dollars per month for ongoing care, which covers:",
-      "start": 698.42,
-      "end": 709.87
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "Week 4 — Development, integrations, mobile QA on real devices.",
+      "start": 796.48,
+      "end": 801.35
     },
     {
       "id": 76,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
-      "text": "Hosting, SSL, and domain maintenance",
-      "start": 710.22,
-      "end": 712.41
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "Week 5 — Launch prep, final content review, pre-launch accessibility and speed audit.",
+      "start": 801.67,
+      "end": 807.5
     },
     {
       "id": 77,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
-      "text": "Security patches and software updates",
-      "start": 712.73,
-      "end": 714.69
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
+      "text": "Week 6 — Launch, Google Business Profile updates, handoff documentation, and the first week of live monitoring.",
+      "start": 807.82,
+      "end": 815.24
     },
     {
       "id": 78,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
-      "text": "Menu changes, hours updates, new photos, seasonal specials",
-      "start": 715.01,
-      "end": 718.69
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(4)",
+      "text": "A six-week project timeline for a custom restaurant website: Week 1 Discovery, Week 2 Design, Week 3 Iteration, Week 4 Build, Week 5 Launch Prep, Week 6 Launch.",
+      "start": 816.04,
+      "end": 828.1
     },
     {
       "id": 79,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
-      "text": "Broken-link and form monitoring",
-      "start": 719.01,
-      "end": 720.64
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(30)",
+      "text": "Anything faster than three weeks is suspicious — nobody can design, build, and launch a good custom site in two weeks unless it is actually a template with a new logo. Anything slower than eight weeks usually means the scope was not clear from day one and the project is bleeding time on revision rounds.",
+      "start": 828.85,
+      "end": 848.58
     },
     {
       "id": 80,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
-      "text": "Performance and uptime monitoring",
-      "start": 720.96,
-      "end": 722.69
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(8)",
+      "text": "What to budget for after launch.",
+      "start": 849.68,
+      "end": 851.36
     },
     {
       "id": 81,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(6)",
-      "text": "Emergency fixes when something breaks on a Friday night",
-      "start": 723.01,
-      "end": 726.15
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(31)",
+      "text": "A website is not a one-time purchase. Most independent restaurants should budget 125 dollars to 350 dollars per month for ongoing care, which covers:",
+      "start": 852.06,
+      "end": 864.39
     },
     {
       "id": 82,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(30)",
-      "text": "Skipping the care plan and hoping nothing breaks is how most small business sites rot within eighteen months. \"I will call my developer when I need something\" becomes \"my developer stopped responding\" becomes \"I am paying someone new five hundred dollars to fix what should have been a two-minute update.\" The care plan is insurance you actually use.",
-      "start": 726.5,
-      "end": 744.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "Hosting, SSL, and domain maintenance",
+      "start": 864.74,
+      "end": 867.25
     },
     {
       "id": 83,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(31)",
-      "text": "If your developer disappears after launch, the site you paid for starts dying on day one.",
-      "start": 744.95,
-      "end": 750.06
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "Security patches and software updates",
+      "start": 867.57,
+      "end": 869.77
     },
     {
       "id": 84,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(9)",
-      "text": "So what is the right number for your restaurant?",
-      "start": 751.16,
-      "end": 753.32
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "Menu changes, hours updates, new photos, seasonal specials",
+      "start": 870.09,
+      "end": 874.1
     },
     {
       "id": 85,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(32)",
-      "text": "If you are a single-location independent trying to get off Wix and onto something that actually matches the room:",
-      "start": 754.02,
-      "end": 760.61
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
+      "text": "Broken-link and form monitoring",
+      "start": 874.42,
+      "end": 876.25
     },
     {
       "id": 86,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
-      "text": "Your budget floor is 2,500 dollars .",
-      "start": 760.96,
-      "end": 763.42
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
+      "text": "Performance and uptime monitoring",
+      "start": 876.57,
+      "end": 878.43
     },
     {
       "id": 87,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
-      "text": "Your realistic mid-range is 5,000 dollars to 9,000 dollars .",
-      "start": 763.74,
-      "end": 770.2
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(6)",
+      "text": "Emergency fixes when something breaks on a Friday night",
+      "start": 878.75,
+      "end": 882.17
     },
     {
       "id": 88,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
-      "text": "Budget another 125 dollars to 350 dollars a month for ongoing care after launch.",
-      "start": 770.52,
-      "end": 777.31
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(32)",
+      "text": "Skipping the care plan and hoping nothing breaks is how most small business sites rot within eighteen months. \"I will call my developer when I need something\" becomes \"my developer stopped responding\" becomes \"I am paying someone new five hundred dollars to fix what should have been a two-minute update.\" The care plan is insurance you actually use.",
+      "start": 882.52,
+      "end": 903.71
     },
     {
       "id": 89,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
-      "text": "Your timeline should be four to six weeks .",
-      "start": 777.63,
-      "end": 779.66
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(33)",
+      "text": "If your developer disappears after launch, the site you paid for starts dying on day one.",
+      "start": 904.46,
+      "end": 909.86
     },
     {
       "id": 90,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
-      "text": "You should be talking directly to the person who will build it.",
-      "start": 779.98,
-      "end": 782.94
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(9)",
+      "text": "So what is the right number for your restaurant?",
+      "start": 910.96,
+      "end": 913.28
     },
     {
       "id": 91,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(33)",
+      "selector": "#post-body > p:nth-of-type(34)",
+      "text": "If you are a single-location independent trying to get off Wix and onto something that actually matches the room:",
+      "start": 913.98,
+      "end": 920.68
+    },
+    {
+      "id": 92,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(1)",
+      "text": "Your budget floor is 2,500 dollars .",
+      "start": 921.03,
+      "end": 923.92
+    },
+    {
+      "id": 93,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(2)",
+      "text": "Your realistic mid-range is 5,000 dollars to 9,000 dollars .",
+      "start": 924.24,
+      "end": 931.23
+    },
+    {
+      "id": 94,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(3)",
+      "text": "Budget another 125 dollars to 350 dollars a month for ongoing care after launch.",
+      "start": 931.55,
+      "end": 939.13
+    },
+    {
+      "id": 95,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(4)",
+      "text": "Your timeline should be four to six weeks .",
+      "start": 939.45,
+      "end": 941.71
+    },
+    {
+      "id": 96,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(7) > li:nth-of-type(5)",
+      "text": "You should be talking directly to the person who will build it.",
+      "start": 942.03,
+      "end": 945.07
+    },
+    {
+      "id": 97,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(35)",
       "text": "If you want a real number for your own situation, the fastest way to get one is a twenty-minute Zoom call. We will cover your current site, your menu, your P O S, your reservation workflow, and your budget — then you will have a written estimate in your inbox within an hour of hanging up.",
-      "start": 783.46,
-      "end": 798.8
+      "start": 945.59,
+      "end": 964.02
+    },
+    {
+      "id": 98,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(36)",
+      "text": "Key takeaways",
+      "start": 964.54,
+      "end": 965.48
+    },
+    {
+      "id": 99,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(1)",
+      "text": "Pure design polish does not move bookings — load speed, mobile U X, and S E O foundation do.",
+      "start": 965.83,
+      "end": 972.6
+    },
+    {
+      "id": 100,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(2)",
+      "text": "A real custom site usually pays back in 12-18 months at any volume above 40 dollarsK/month.",
+      "start": 972.92,
+      "end": 981.27
+    },
+    {
+      "id": 101,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(3)",
+      "text": "Red flags on the cheap end: no contract, no Lighthouse score guarantee, no source-code handover.",
+      "start": 981.59,
+      "end": 987.92
+    },
+    {
+      "id": 102,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(4)",
+      "text": "Red flags on the expensive end: \"discovery phases\" before mockups, retainer for content updates you should do yourself.",
+      "start": 988.24,
+      "end": 996.47
+    },
+    {
+      "id": 103,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(8) > li:nth-of-type(5)",
+      "text": "Run Tech Stack Detector on your current site before any quote — the baseline matters.",
+      "start": 996.79,
+      "end": 1001.91
     }
   ]
 }

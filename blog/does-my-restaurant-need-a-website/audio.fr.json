@@ -1,307 +1,403 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:07:24.470Z",
+  "generatedAt": "2026-05-10T04:41:26.823Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "ff_siwis",
   "language": "fr",
-  "total": 462.53,
+  "total": 475.63,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "The short answer.",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "Lisez cet article en français",
       "start": 0,
-      "end": 1.21
+      "end": 1.52
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Probably yes. But not for the reason most web designers will tell you, and not in the way you are probably imagining.",
-      "start": 1.91,
-      "end": 11.83
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 1.87,
+      "end": 2.74
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "I manage two restaurants in the DMV. I also build websites for restaurants through my studio, Muntin Digital. That means I have been on both sides of this question — the side that is paying for a site and the side that is selling one. So here is the version I would give a friend who asked me at the bar after a shift: you need a website if your Google Business Profile is not enough to answer the questions a first-time customer has before they walk in. For most restaurants, it is not.",
-      "start": 12.35,
-      "end": 46.12
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Si vous avez un Google Business Profile et que vous êtes satisfait de son fonctionnement, la réponse pourrait être sincèrement non.",
+      "start": 3.09,
+      "end": 10.61
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "What your Google Business Profile already does.",
-      "start": 47.22,
-      "end": 51.06
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Où GBP est limité : il ne peut pas raconter votre histoire, afficher votre menu réel ou tout canal de relation directe.",
+      "start": 10.93,
+      "end": 18.12
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Before we talk about websites, let us be honest about what Google already gives you for free:",
-      "start": 51.76,
-      "end": 59.34
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Le test de cinq minutes qui vous indique si vous en avez besoin — et ce que cela coûterait réellement si vous en aviez besoin.",
+      "start": 18.44,
+      "end": 25.07
     },
     {
       "id": 5,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Hours and location. Google Maps shows your hours, your address, and a one-tap directions button. For \"where are you and when are you open,\" Google handles this better than your website does — because it is where people are already looking.",
-      "start": 59.69,
-      "end": 76.95
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "La réponse courte.",
+      "start": 26.17,
+      "end": 27.28
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Phone number. Tap to call, right from the listing. No extra click needed.",
-      "start": 77.27,
-      "end": 83.2
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Probablement oui. Mais pas pour la raison que la plupart des concepteurs de sites web vous diront, et pas de la façon dont vous l'imaginez probablement.",
+      "start": 27.98,
+      "end": 36.11
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Photos. Customers upload their own. You can add official ones. Google surfaces them prominently.",
-      "start": 83.52,
-      "end": 91.1
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Je gère deux restaurants dans le DMV. Je crée également des sites web pour des restaurants via mon studio, Muntin Digital. Cela signifie que j'ai été des deux côtés de cette question — le côté qui paie pour un site et le côté qui le vend. Alors voici la version que je donnerais à un ami qui me poserait la question au bar après un service : vous avez besoin d'un site web si votre Google Business Profile n'est pas suffisant pour répondre aux questions qu'un client pour la première fois se pose avant de rentrer. Pour la plupart des restaurants, ce n'est pas le cas.",
+      "start": 36.63,
+      "end": 67.27
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Reviews. The most powerful trust signal in local search, and it lives on Google, not on your site.",
-      "start": 91.42,
-      "end": 100.04
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Ce que votre Google Business Profile fait déjà.",
+      "start": 68.37,
+      "end": 71.27
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Reservation links. If you use OpenTable, Resy, or another major platform, Google shows a \"Reserve a table\" button directly in the listing.",
-      "start": 100.36,
-      "end": 112.22
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Avant de parler de sites web, soyons honnêtes sur ce que Google vous offre déjà gratuitement :",
+      "start": 71.97,
+      "end": 78.04
     },
     {
       "id": 10,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "If your restaurant is a taco truck, a pop-up, or a counter-service spot where the entire customer journey is \"see you on Google Maps, drive there, order at the counter\" — a website might genuinely be optional. Google Business Profile handles the essentials, and you could spend that website budget on better signage, a faster P O S, or a neighborhood postcard campaign instead.",
-      "start": 112.74,
-      "end": 138.01
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Heures et localisation. Google Maps affiche vos heures, votre adresse et un bouton de directions en un tap. Pour \"où êtes-vous et quand êtes-vous ouvert\", Google gère cela mieux que votre site web — car c'est où les gens regardent déjà.",
+      "start": 78.39,
+      "end": 92.17
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "Where Google Business Profile falls short.",
-      "start": 139.11,
-      "end": 142.2
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Numéro de téléphone. Appel en un tap, directement depuis la liste. Pas de clic supplémentaire nécessaire.",
+      "start": 92.49,
+      "end": 98.63
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "But here is what Google does not give you — and this is where the website earns its keep:",
-      "start": 142.9,
-      "end": 148.96
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Photos. Les clients téléchargent les leurs. Vous pouvez ajouter des photos officielles. Google les met en avant.",
+      "start": 98.95,
+      "end": 105.2
     },
     {
       "id": 13,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Your full menu, the way you want it. Google's built-in menu editor is plain text — no photos, no seasonal flags, no wine descriptions, no prix fixe formatting. It works for basic dishes-and-prices, but if your menu is part of the experience (tasting notes, pairings, rotating specials), Google's version undersells you.",
-      "start": 149.31,
-      "end": 170.48
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "Avis. Le signal de confiance le plus puissant dans la recherche locale, et il vit sur Google, pas sur votre site.",
+      "start": 105.52,
+      "end": 112.08
     },
     {
       "id": 14,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Your story. Who cooks the food? Where do you source? Why does this restaurant exist? None of that lives on Google. A first-time visitor decides based on vibes, and Google's vibes are \"beige listing with user-uploaded photos.\"",
-      "start": 170.8,
-      "end": 187.19
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "Liens de réservation. Si vous utilisez OpenTable, Resy ou une autre plateforme majeure, Google affiche un bouton \"Réserver une table\" directement dans la liste.",
+      "start": 112.4,
+      "end": 123.41
     },
     {
       "id": 15,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Online ordering you control. Google can link to third-party ordering (DoorDash, Uber Eats), but every order through a third party costs you 15–30% in commission fees. Your own site can route orders through your P O S at a fraction of that cost.",
-      "start": 187.51,
-      "end": 206.07
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Si votre restaurant est un camion de tacos, un pop-up ou un comptoir de service où l'ensemble du parcours client est \"voir vous sur Google Maps, conduire jusqu'à, commander au comptoir\" — un site web pourrait être facultatif. Google Business Profile gère l'essentiel, et vous pourriez dépenser ce budget de site web pour une meilleure signalisation, un P O S plus rapide ou une campagne de cartes postales de quartier à la place.",
+      "start": 123.93,
+      "end": 145.44
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "Private events, catering, and group inquiries. There is no Google Business Profile field for \"we do private buyouts on Mondays.\" That is a page on your website, or it does not exist at all.",
-      "start": 206.39,
-      "end": 222.49
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Où Google Business Profile est limité.",
+      "start": 146.54,
+      "end": 149.06
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
-      "text": "S E O for long-tail discovery. Google Business Profile is already the primary driver of the local map pack — when someone searches \"Italian restaurant near me,\" your G B P listing is what appears. But a website with real content helps you rank in the organic results below the map, and for more specific queries like \"restaurants with private dining Bethesda\" or \"best brunch Silver Spring gluten free.\" Those long-tail searches are where a website earns traffic that G B P alone cannot capture.",
-      "start": 222.81,
-      "end": 258.8
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Mais voici ce que Google ne vous offre pas — et c'est là que le site web gagne sa vie :",
+      "start": 149.76,
+      "end": 155.14
     },
     {
       "id": 18,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "The question is not \"do I need a website?\" It is \"is there anything my customers need to know that Google Business Profile cannot tell them?\"",
-      "start": 259.55,
-      "end": 271.72
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Votre menu complet, comme vous le voulez. L'éditeur de menu intégré de Google est en texte brut — pas de photos, pas de drapeaux saisonniers, pas de descriptions de vin, pas de mise en page de prix fixe. Cela fonctionne pour les plats et les prix de base, mais si votre menu fait partie de l'expérience (notes de dégustation, accords, spécialités tournantes), la version de Google vous sous-estime.",
+      "start": 155.49,
+      "end": 174.36
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The five-minute test.",
-      "start": 272.82,
-      "end": 274.32
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "Votre histoire. Qui cuisine la nourriture ? D'où venez-vous ? Pourquoi ce restaurant existe-t-il ? Rien de tout cela ne vit sur Google. Un visiteur pour la première fois décide en fonction de l'ambiance, et l'ambiance de Google est \"liste beige avec des photos téléchargées par les utilisateurs.\"",
+      "start": 174.68,
+      "end": 190.71
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "Open your Google Business Profile listing on your phone as if you were a first-time customer. Ask yourself:",
-      "start": 275.02,
-      "end": 284.45
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "La commande en ligne que vous contrôlez. Google peut relier à la commande tiers (DoorDash, Uber Eats), mais chaque commande via un tiers coûte 15-30 % de frais de commission. Votre propre site peut acheminer les commandes via votre P O S à une fraction de ce coût.",
+      "start": 191.03,
+      "end": 205.85
     },
     {
       "id": 21,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Can I read the full menu without downloading a P D F?",
-      "start": 284.8,
-      "end": 288.63
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "Événements privés, catering et demandes de groupes. Il n'y a pas de champ Google Business Profile pour \"nous faisons des réservations privées le lundi\". C'est une page sur votre site Web, ou cela n'existe pas du tout.",
+      "start": 206.17,
+      "end": 219.21
     },
     {
       "id": 22,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Can I make a reservation without leaving Google?",
-      "start": 288.95,
-      "end": 292.34
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "S E O pour la découverte de longue traîne. Google Business Profile est déjà le principal moteur du pack de cartes local — lorsque quelqu'un recherche \"restaurant italien près de moi\", c'est votre liste G B P qui apparaît. Mais un site Web avec du contenu réel vous aide à figurer dans les résultats organiques en dessous de la carte, et pour des requêtes plus spécifiques comme \"restaurants avec salle à manger privée Bethesda\" ou \"meilleur brunch Silver Spring sans gluten\". Ces recherches de longue traîne sont là où un site Web gagne du trafic que G B P seul ne peut pas capturer.",
+      "start": 219.53,
+      "end": 248.24
     },
     {
       "id": 23,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Can I order food for pickup without paying a third-party commission?",
-      "start": 292.66,
-      "end": 297.73
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "La question n'est pas \"ai-je besoin d'un site Web ?\" mais \"y a-t-il quelque chose que mes clients ont besoin de savoir que Google Business Profile ne peut pas leur dire ?\"",
+      "start": 248.99,
+      "end": 258.56
     },
     {
       "id": 24,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Can I find out about private dining or catering?",
-      "start": 298.05,
-      "end": 302.92
+      "kind": "quote",
+      "selector": "#post-body > blockquote:nth-of-type(1)",
+      "text": "Vous avez besoin d'un site Web si votre Google Business Profile ne peut pas répondre à la question que un client pour la première fois est sur le point de poser. Pour la plupart des restaurants indépendants, ce n'est pas le cas.",
+      "start": 259.31,
+      "end": 271.94
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Can I understand what makes this restaurant different from the three others on the same block?",
-      "start": 303.24,
-      "end": 309.5
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "Le test des cinq minutes.",
+      "start": 273.04,
+      "end": 274.51
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "If you answered \"no\" to two or more, you need a website. Not because a designer told you so — because your customers have questions that Google cannot answer, and every unanswered question is a diner who went somewhere else.",
-      "start": 310.02,
-      "end": 325.59
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "Ouvrez votre liste Google Business Profile sur votre téléphone comme si vous étiez un client pour la première fois. Demandez-vous :",
+      "start": 275.21,
+      "end": 282.8
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(5)",
-      "text": "When you genuinely do not need one.",
-      "start": 326.69,
-      "end": 329.62
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Puis-je lire le menu complet sans télécharger un P D F ?",
+      "start": 283.15,
+      "end": 286.33
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "I promised honesty, so here it is. You can skip the website if:",
-      "start": 330.32,
-      "end": 335.46
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "Puis-je faire une réservation sans quitter Google ?",
+      "start": 286.65,
+      "end": 289.4
     },
     {
       "id": 29,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "You are a pop-up or seasonal concept that might not exist in six months. Put that budget into signage and a strong Instagram instead.",
-      "start": 335.81,
-      "end": 347.99
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "Puis-je commander de la nourriture pour prendre sans payer de commission à un tiers ?",
+      "start": 289.72,
+      "end": 293.88
     },
     {
       "id": 30,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Your entire model is counter-service with no menu complexity. A taco window, a coffee cart, a single-item concept. Google Maps + a phone number is genuinely all you need.",
-      "start": 348.31,
-      "end": 362.79
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Puis-je obtenir des informations sur les salles à manger privées ou le catering ?",
+      "start": 294.2,
+      "end": 298.87
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "You just opened and the concept is still changing. Wait until the menu settles and you know what Tuesdays look like before investing in a site. A Wix placeholder is fine for the first six to twelve months while you figure out who you are.",
-      "start": 363.11,
-      "end": 380.39
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "Puis-je comprendre ce qui rend ce restaurant différent des trois autres sur le même bloc ?",
+      "start": 299.19,
+      "end": 303.89
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "You are in a food hall. The food hall's website handles discovery. You just need to show up in their vendor list.",
-      "start": 380.71,
-      "end": 389.79
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "Si vous avez répondu \"non\" à deux questions ou plus, vous avez besoin d'un site Web. Non parce qu'un designer vous l'a dit — mais parce que vos clients ont des questions que Google ne peut pas répondre, et chaque question sans réponse est un dîneur qui est allé ailleurs.",
+      "start": 304.41,
+      "end": 318.62
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "For everyone else — full-service restaurants, multi-location groups, places with private dining programs, anyone who wants to rank in discovery searches, anyone paying third-party commission on orders they could route directly — a website pays for itself. The question is just when and how much.",
-      "start": 390.31,
-      "end": 409.14
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(5)",
+      "text": "Lorsque vous n'en avez vraiment pas besoin.",
+      "start": 319.72,
+      "end": 321.73
     },
     {
       "id": 34,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(6)",
-      "text": "What a good restaurant website actually costs.",
-      "start": 410.24,
-      "end": 414.09
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "Je vous ai promis l'honnêteté, alors voici. Vous pouvez sauter le site Web si :",
+      "start": 322.43,
+      "end": 326.96
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "If you have decided you need one, the next question is always about money. The honest range for an independent restaurant: 2,500 dollars to 15,000 dollars depending on scope, with most single-location places landing between 5,000 dollars and 9,000 dollars. I wrote an entire breakdown of what drives the price, what each line item costs, and three real-world example bundles — read the full pricing post here .",
-      "start": 414.79,
-      "end": 443.29
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "Vous êtes un concept éphémère ou saisonnier qui pourrait ne pas exister dans six mois. Mettez ce budget dans des panneaux et un fort Instagram à la place.",
+      "start": 327.31,
+      "end": 335.58
     },
     {
       "id": 36,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "Votre modèle entier est un service au comptoir avec aucune complexité de menu. Une fenêtre de tacos, un chariot de café, un concept à article unique. Google Maps + un numéro de téléphone est vraiment tout ce dont vous avez besoin.",
+      "start": 335.9,
+      "end": 349.78
+    },
+    {
+      "id": 37,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "Vous venez d'ouvrir et le concept est encore en train de changer. Attendez jusqu'à ce que le menu se stabilise et que vous sachiez à quoi ressemblent les mardis avant d'investir dans un site. Un Wix de remplacement est acceptable pour les six premiers mois pendant que vous déterminez qui vous êtes.",
+      "start": 350.1,
+      "end": 366.24
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "Vous êtes dans un hall alimentaire. Le site Web du hall alimentaire gère la découverte. Vous n'avez besoin que de figurer dans leur liste de fournisseurs.",
+      "start": 366.56,
+      "end": 376.88
+    },
+    {
+      "id": 39,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The short version: a good site pays for itself within a few months through recovered reservations, eliminated third-party ordering fees, and discovery traffic that did not exist before. The math almost always works — I show it with real numbers in that post.",
-      "start": 443.81,
-      "end": 462.53
+      "text": "Pour tout le monde d'autre — restaurants à service complet, groupes multi-emplacements, endroits avec des programmes de salles à manger privées, quiconque veut figurer dans les recherches de découverte, quiconque paie une commission à un tiers pour des commandes qu'ils pourraient acheminer directement — un site Web se paie lui-même. La question est juste quand et combien.",
+      "start": 377.4,
+      "end": 394.96
+    },
+    {
+      "id": 40,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(6)",
+      "text": "Ce qu'un bon site Web de restaurant coûte vraiment.",
+      "start": 396.06,
+      "end": 398.97
+    },
+    {
+      "id": 41,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "Si vous avez décidé qu'il vous en fallait un, la prochaine question est toujours à propos de l'argent. La fourchette honnête pour un restaurant indépendant : 2 500 dollars à 15 000 dollars en fonction de la portée, la plupart des endroits à emplacement unique atterrissant entre 5 000 dollars et 9 000 dollars. J'ai écrit une analyse complète de ce qui détermine le prix, de ce que coûte chaque poste, et de trois ensembles d'exemples réels — lisez le post complet sur les prix ici .",
+      "start": 399.67,
+      "end": 421.24
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "La version courte : un bon site se rentabilise en quelques mois grâce aux réservations récupérées, aux frais de commande de tiers éliminés et au trafic de découverte qui n'existait pas avant. Les chiffres fonctionnent presque toujours — je les montre avec des numéros réels dans cet article.",
+      "start": 421.76,
+      "end": 437.41
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Points clés",
+      "start": 437.93,
+      "end": 438.44
+    },
+    {
+      "id": 44,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "G B P vous offre une visibilité et des informations de base ; un site web vous offre la relation.",
+      "start": 438.79,
+      "end": 445.1
+    },
+    {
+      "id": 45,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "Sans site web, vous louez votre audience à Google — cela va jusqu'à ce que l'algorithme de Google change.",
+      "start": 445.42,
+      "end": 453.39
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "Le test de cinq minutes : si tous vos habitués vous ont trouvé d'une autre manière, vous n'avez pas besoin d'un site pour l'instant.",
+      "start": 453.71,
+      "end": 460.46
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "Si vous n'en avez vraiment pas besoin, faites l'audit G B P de 30 minutes et passez à autre chose.",
+      "start": 460.78,
+      "end": 466.17
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(5)",
+      "text": "Lorsque vous en avez besoin, un site web modèle à 2 500 dollars suffit pour commencer ; une création sur mesure arrive lorsque la salle le demande.",
+      "start": 466.49,
+      "end": 475.63
     }
   ]
 }

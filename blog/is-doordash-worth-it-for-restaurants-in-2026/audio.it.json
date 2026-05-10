@@ -1,299 +1,419 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T16:58:04.639Z",
+  "generatedAt": "2026-05-10T09:05:23.173Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "im_nicola",
   "language": "it",
-  "total": 607.84,
+  "total": 807.31,
   "chunks": [
     {
       "id": 0,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Every operator I talk to is asking some version of the same question this year. \"Am I still making money on DoorDash?\" Usually the question comes out after a second glass of wine, usually on a slow Tuesday, usually about six months after the last time they promised themselves they would run the actual math.",
+      "text": "Leggi questo articolo in italiano &rarr;",
       "start": 0,
-      "end": 17.8
+      "end": 2.85
     },
     {
       "id": 1,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(2)",
-      "text": "So let us run it. The honest way. Not the way DoorDash presents it in your dashboard, not the way a consultant presents it with a custom slide, but the way the money actually moves from a guest&rsquo;s phone into your bank account. Your exact numbers will vary — commission tiers, promotional codes, your specific marketplace category — but the shape of the math is universal, and it is what determines whether DoorDash is a revenue source, a marketing channel, or a slow leak.",
-      "start": 18.32,
-      "end": 46.14
+      "text": "TL;DR",
+      "start": 3.2,
+      "end": 4.31
     },
     {
       "id": 2,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "What 100 dollars of DoorDash revenue actually becomes.",
-      "start": 47.24,
-      "end": 50.91
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "100 dollari di ricavi da DoorDash diventano tipicamente 40-50 dollari nel tuo conto dopo la commissione, il confezionamento e il tempo di preparazione.",
+      "start": 4.66,
+      "end": 15.74
     },
     {
       "id": 3,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Here is the thing nobody wants to put on a wall. On a standard DoorDash marketplace arrangement for an independent restaurant in twenty twenty-six, a hundred-dollar order comes with a commission rate somewhere between 15% and 30% depending on your plan. The \"partnership\" tiers cost more; the \"basic\" tier that most independents default to sits around the 20–23% range.",
-      "start": 51.61,
-      "end": 74.23
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "La domanda onesta è se l'ordine esisterebbe senza DoorDash — per la maggior parte degli operatori, meno della metà sì.",
+      "start": 16.06,
+      "end": 23.76
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Then there&rsquo;s payment processing — yes, still — because DoorDash&rsquo;s payment processing isn&rsquo;t free either, even though the platform is already taking a commission. That&rsquo;s another roughly 2% off what&rsquo;s left.",
-      "start": 74.75,
-      "end": 91.34
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "La raccomandazione del ventisei dipende dal tuo volume, dal tuo prime cost e dal fatto che la tua pagina di ordinazione funzioni realmente.",
+      "start": 24.08,
+      "end": 33.01
     },
     {
       "id": 5,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Here&rsquo;s what a hundred bucks looks like on both sides of the decision:",
-      "start": 91.86,
-      "end": 96.51
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "Ogni operatore con cui parlo mi fa una versione della stessa domanda quest'anno. \"Sto ancora guadagnando con DoorDash?\" Di solito la domanda viene fuori dopo un secondo bicchiere di vino, di solito in una lenta martedì, di solito sei mesi dopo l'ultima volta che si sono promessi di fare i conti reali.",
+      "start": 33.53,
+      "end": 51.78
     },
     {
       "id": 6,
-      "kind": "figure",
-      "selector": "#post-body > figure:nth-of-type(1)",
-      "text": "Here is the hundred-dollar comparison, side by side. On DoorDash: food and drink revenue starts at a hundred dollars. DoorDash commission takes somewhere between fifteen and thirty dollars depending on your plan, average around twenty-two. Payment processing takes another two dollars. You keep somewhere between sixty-five and seventy-five dollars, typical average sixty-eight. Then from that sixty-eight you still have to pay for the food itself — about thirty percent of the original hundred, so thirty dollars of cost of goods — plus the labor to make it. Net contribution to your business: often single-digit dollars per hundred of DoorDash gross. On your own ordering page: food and drink revenue also starts at a hundred. Payment processing takes about three dollars. Your own ordering software, if you use something like Square Online or a simple Toast integration, takes about two dollars. You keep ninety-five dollars. Food cost is still thirty. Labor is the same. Net contribution: roughly three times higher per order. Same guest, same food, same labor — the difference is entirely in who gets the order and where the commission goes.",
-      "start": 97.31,
-      "end": 161.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "Quindi analizziamoli. Onestamente. Non nel modo in cui DoorDash li presenta nel tuo cruscotto, non nel modo in cui un consulente li presenta con una diapositiva personalizzata, ma nel modo in cui i soldi si muovono realmente dal telefono di un ospite al tuo conto bancario. I tuoi numeri esatti varieranno — tier di commissione, codici promozionali, la tua categoria di mercato specifica — ma la forma della matematica è universale e determina se DoorDash è una fonte di ricavi, un canale di marketing o una lenta perdita.",
+      "start": 52.3,
+      "end": 84.51
     },
     {
       "id": 7,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "On the same hundred dollars of guest spend, you keep almost 20 additional dollars when it comes through your own site instead of DoorDash's. Over a year, even for a restaurant doing a modest 80 dollarsK in delivery annually, that is around 15,000 dollars staying in the business — roughly one line cook. And this isn&rsquo;t accounting for the fact that your own-site customer has given you their phone number and their email, which means you can bring them back at a marginal cost of zero.",
-      "start": 162.51,
-      "end": 193.52
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "Cosa diventano realmente 100 dollari di ricavi da DoorDash.",
+      "start": 85.61,
+      "end": 89.6
     },
     {
       "id": 8,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "But wait — does the order even exist without DoorDash?",
-      "start": 194.62,
-      "end": 197.9
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "Abbinare con la documentazione",
+      "start": 90.3,
+      "end": 92.4
     },
     {
       "id": 9,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "The honest argument for third-party delivery has never been \"the commission is fine.\" It is always been incrementality : the claim that the customer who ordered through DoorDash wouldn&rsquo;t have ordered from you at all otherwise. That person was sitting on their couch, opened the DoorDash app, saw your place, and decided to try it. Absent the app, they ordered from Sweetgreen instead. You didn&rsquo;t \"lose\" 30% of the order; you gained 100% of an order that didn&rsquo;t exist without the platform.",
-      "start": 198.6,
-      "end": 228.93
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "Se la tua matematica su un tovagliolo è atterrata da qualche parte a disagio, il foglio di calcolo del canale P&L esegue i numeri nel tuo browser — vendite lordo meno commissione, spese di marketing, rimborsi, confezionamento e lavoro incrementale. Niente lascia la pagina.",
+      "start": 92.75,
+      "end": 110.33
     },
     {
       "id": 10,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "That argument was directionally true in twenty nineteen. In twenty twenty-six, it&rsquo;s much weaker than it used to be, for three specific reasons.",
-      "start": 229.45,
-      "end": 239.58
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "Third-Party Channel P&L · Margine reale per canale e markup del menu di pareggio se mantieni il canale.",
+      "start": 110.85,
+      "end": 117.95
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. Guests already know about you from somewhere else.",
-      "start": 240.68,
-      "end": 244
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "Ecco la cosa che nessuno vuole mettere su un muro. In un accordo di mercato standard DoorDash per un ristorante indipendente nel ventisei, un ordine da cento dollari ha un tasso di commissione da qualche parte tra il 15% e il 30% a seconda del tuo piano. I livelli di \"partnership\" costano di più; il livello \"basic\" che la maggior parte degli indipendenti utilizza di default si trova intorno al 20-23% di intervallo.",
+      "start": 118.47,
+      "end": 146.69
     },
     {
       "id": 12,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(9)",
-      "text": "Five years of Google Business Profile dominance mean that when someone thinks \"I want Thai tonight,\" their discovery path is now much more likely to be Google Maps than a delivery app. They search, they see your restaurant with photos, reviews, hours, and — crucially — a \"Website\" link. They&rsquo;ve already found you. The question is just whether they end up on your site or on DoorDash&rsquo;s listing of you.",
-      "start": 244.7,
-      "end": 266.05
+      "text": "Poi c'è l'elaborazione dei pagamenti — sì, ancora — perché l'elaborazione dei pagamenti di DoorDash non è gratuita nemmeno se la piattaforma sta già prendendo una commissione. Questo è un altro 2% circa di ciò che resta.",
+      "start": 147.21,
+      "end": 161.69
     },
     {
       "id": 13,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(10)",
-      "text": "So the incremental-customer claim only holds if DoorDash is the only way they would have encountered your restaurant. For restaurants that run a decent G B P, an Instagram presence, and a functional website, this is increasingly rare.",
-      "start": 266.57,
-      "end": 281.36
+      "text": "Ecco come appare un centinaio di dollari su entrambi i lati della decisione:",
+      "start": 162.21,
+      "end": 167.01
     },
     {
       "id": 14,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. DoorDash&rsquo;s &ldquo;in-app search&rdquo; behaves more like intent than discovery now.",
-      "start": 282.46,
-      "end": 288.68
+      "kind": "figure",
+      "selector": "#post-body > figure:nth-of-type(1)",
+      "text": "Ecco il confronto da cento dollari, affiancato. Su DoorDash: i ricavi da cibo e bevande partono da cento dollari. La commissione di DoorDash prende qualcosa tra i quindici e i trenta dollari a seconda del tuo piano, in media intorno ai ventidue. L'elaborazione dei pagamenti prende altri due dollari. Tu mantieni qualcosa tra i sessantacinque e i settantacinque dollari, media tipica di sessantotto. Poi da quei sessantotto, devi ancora pagare per il cibo stesso — circa il trenta percento del cento originale, quindi trenta dollari di costo dei beni — più il lavoro per prepararlo. Contributo netto al tuo business: spesso solo pochi dollari per cento di DoorDash lordo. Sulla tua pagina di ordinazione: i ricavi da cibo e bevande partono anch'essi da cento dollari. L'elaborazione dei pagamenti prende circa tre dollari. Il tuo software di ordinazione, se usi qualcosa come Square Online o un'integrazione semplice Toast (integrazione di ordinazione), prende circa due dollari. Tu mantieni novantacinque dollari. Il costo del cibo è ancora di trenta dollari. Il lavoro è lo stesso. Contributo netto: grossomodo tre volte più alto per ordine. Stesso ospite, stesso cibo, stesso lavoro — la differenza è interamente in chi riceve l'ordine e dove va la commissione.",
+      "start": 167.81,
+      "end": 238.54
     },
     {
       "id": 15,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(11)",
-      "text": "Most restaurant operators still describe DoorDash traffic as \"new customers finding me in the app.\" A lot of that traffic is actually people who already knew you, opened the app because they knew you, and could&rsquo;ve tapped through to your own ordering page if you&rsquo;d had one and made it obvious. Those guests cost you 22% when they didn&rsquo;t have to.",
-      "start": 289.38,
-      "end": 310.68
+      "text": "Sugli stessi cento dollari di spesa dell'ospite, tu mantieni quasi venti dollari in più quando passa attraverso il tuo sito invece che quello di DoorDash. In un anno, anche per un ristorante che fa una modesta somma di 80.000 dollari in consegna annuale, questo significa circa 15.000 dollari che restano in azienda — grossomodo un cuoco. E questo non tiene conto del fatto che il cliente del tuo sito ti ha dato il suo numero di telefono e la sua email, il che significa che puoi riportarlo indietro a un costo marginale di zero.",
+      "start": 239.29,
+      "end": 273.37
     },
     {
       "id": 16,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "The way to check this for your restaurant specifically: pull the order-source data out of DoorDash&rsquo;s merchant portal and see how many of your orders came from guests whose first touch with your brand was the app versus guests who searched your name directly. Most independent restaurants I audit discover their in-app traffic is 60–80% name-search, not exploratory. That&rsquo;s not incremental. That&rsquo;s a tax.",
-      "start": 311.2,
-      "end": 336.85
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "Ma aspetta — l'ordine esiste anche senza DoorDash?",
+      "start": 274.47,
+      "end": 277.6
     },
     {
       "id": 17,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. Own-ordering infrastructure got 10x easier.",
-      "start": 337.95,
-      "end": 341.36
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "L'argomentazione onesta per la consegna di terze parti non è mai stata \"la commissione va bene\". È sempre stata l'incrementalità: l'affermazione che il cliente che ha ordinato attraverso DoorDash non avrebbe ordinato da te altrimenti. Quella persona era seduta sul divano, ha aperto l'app di DoorDash, ha visto il tuo locale e ha deciso di provarlo. In assenza dell'app, ha ordinato da Sweetgreen invece. Tu non hai \"perso\" il trenta percento dell'ordine; hai guadagnato il cento percento di un ordine che non esisteva senza la piattaforma.",
+      "start": 278.3,
+      "end": 307.87
     },
     {
       "id": 18,
       "kind": "body",
       "selector": "#post-body > p:nth-of-type(13)",
-      "text": "In twenty twenty, setting up a decent own-ordering flow meant either an expensive integrator or a clunky bolt-on widget that looked like it belonged on a different website. In twenty twenty-six, you can have a professional-looking ordering page wired to your P O S for something like 0 dollars–79 dollars/month , depending on your stack. Square Online is free if you already use Square for P O S. Toast Online Ordering is included in their restaurant plan. Even third-party white-labels like Owner.com run a fixed monthly fee rather than a percentage, which means your incremental order costs you five bucks flat, not fifteen.",
-      "start": 342.06,
-      "end": 379.33
+      "text": "Quell'argomentazione era direzionalmente vera nel 2019. Nel 2026, è molto più debole di quanto non fosse in passato, per tre motivi specifici.",
+      "start": 308.39,
+      "end": 319.72
     },
     {
       "id": 19,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "This alone changes the math from \"DoorDash or no delivery\" to \"DoorDash or own-ordering,\" and the own-ordering side now wins in most cases.",
-      "start": 379.85,
-      "end": 388.27
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. Gli ospiti già conoscono te da qualche altra parte.",
+      "start": 320.82,
+      "end": 324.47
     },
     {
       "id": 20,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "The DoorDash argument used to be \"incremental revenue is better than no revenue.\" In twenty twenty-six, the real question is whether that order was ever incremental in the first place — or whether it was just a tax you volunteered to pay.",
-      "start": 389.02,
-      "end": 403.8
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "Cinque anni di dominio di Google Business Profile significano che quando qualcuno pensa \"Voglio mangiare thai stasera\", il suo percorso di scoperta è ora molto più probabile che sia Google Maps (probabilmente un motore di ricerca) piuttosto che un'app di consegna. Cerca, vede il tuo ristorante con foto, recensioni, orari e — crucialmente — un link al \"Sito web\". L'ha già trovato. La domanda è solo se finisce sul tuo sito o sulla lista di DoorDash.",
+      "start": 325.17,
+      "end": 351.03
     },
     {
       "id": 21,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "When DoorDash is still the right answer.",
-      "start": 404.9,
-      "end": 407.43
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "Quindi l'affermazione del cliente incrementale vale solo se DoorDash è l'unico modo in cui avrebbero incontrato il tuo ristorante. Per i ristoranti che eseguono un decente GBP (probabilmente un budget pubblicitario), una presenza Instagram (probabilmente una presenza online) e un sito web funzionale, questo è sempre più raro.",
+      "start": 351.55,
+      "end": 371.32
     },
     {
       "id": 22,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "I&rsquo;m not here to tell you to walk away from DoorDash tomorrow. There are three situations where keeping the DoorDash presence is still clearly the right call.",
-      "start": 408.13,
-      "end": 418.51
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. La \"ricerca all'interno dell'app\" di DoorDash si comporta più come intento che come scoperta adesso.",
+      "start": 372.42,
+      "end": 378.85
     },
     {
       "id": 23,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "You&rsquo;re genuinely discovery-constrained. Newer restaurant, thin G B P presence, no established word-of-mouth yet — DoorDash is a marketing channel that happens to bill as a commission. Pay the tax while you build the audience, then re-evaluate.",
-      "start": 419.03,
-      "end": 434.91
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "La maggior parte degli operatori di ristoranti descrive ancora il traffico di DoorDash come \"nuovi clienti che mi trovano nell'app\". In realtà, gran parte di quel traffico è costituito da persone che già conoscevano il tuo ristorante, hanno aperto l'app perché sapevano che eri presente e avrebbero potuto accedere direttamente alla tua pagina di ordinazione se ne avessi avuta una e l'avessi resa evidente. Quei clienti ti costano il 22% quando non era necessario.",
+      "start": 379.55,
+      "end": 406.44
     },
     {
       "id": 24,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Your own-ordering volume is under 50 orders a week. Below that threshold, the fixed costs of an own-ordering setup (photography, menu maintenance, occasional customer service) eat the margin savings. Wait for volume.",
-      "start": 435.23,
-      "end": 449.55
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "Il modo per verificare questo per il tuo ristorante specifico: estrai i dati sulla fonte degli ordini dal portale merchant di DoorDash e vedere quanti dei tuoi ordini provengono da clienti che hanno avuto il loro primo contatto con il tuo marchio attraverso l'app, rispetto a quelli che hanno cercato direttamente il tuo nome. La maggior parte dei ristoranti indipendenti che analizzo scopre che il loro traffico in-app è del 60-80% di ricerca per nome, non esploratorio. Quello non è incrementale. È una tassa.",
+      "start": 406.96,
+      "end": 439.77
     },
     {
       "id": 25,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "You have a takeout-heavy concept in a high-commute area. Office-worker lunch orders, dinner-on-the-commute pickups — guests in these contexts heavily use delivery apps because that&rsquo;s where their routine already lives. Meet them where they are.",
-      "start": 449.87,
-      "end": 465.91
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. L'infrastruttura di ordinazione proprietaria è diventata 10 volte più facile.",
+      "start": 440.87,
+      "end": 446.56
     },
     {
       "id": 26,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "And there&rsquo;s one situation where the answer isn&rsquo;t \"stop DoorDash\" — it&rsquo;s \" compete with DoorDash.\" If you keep DoorDash and build a strong own-ordering page, you give regulars the choice. Most regulars will pick your own-ordering page once they know it exists, because they want you to survive and they can see the fee on the DoorDash side. You don&rsquo;t need to fire the platform. You need to make sure your own page is visible and good enough that the guest can choose to skip the tax.",
-      "start": 466.43,
-      "end": 494.19
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "Nel 2020, impostare un flusso di ordinazione decente significava avere un integratore costoso o un widget di collegamento goffo che sembrava appartenere a un altro sito web. Nel 2026, puoi avere una pagina di ordinazione professionale collegata al tuo P O S per qualcosa come 0 dollari-79 dollari/mese, a seconda della tua piattaforma. Square Online è gratuito se già utilizzi Square per P O S. Toast Online Ordering è incluso nel loro piano ristorante. Anche i white-label di terze parti come Owner.com addebitano una tariffa mensile fissa invece di una percentuale, il che significa che i tuoi costi di ordinazione incrementali sono di 5 dollari piatti, non 15.",
+      "start": 447.26,
+      "end": 489.46
     },
     {
       "id": 27,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(4)",
-      "text": "The honest recommendation, by volume.",
-      "start": 495.29,
-      "end": 497.74
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "Questo solo fatto cambia la matematica da \"DoorDash o nessun delivery\" a \"DoorDash o ordinazione proprietaria\", e il lato dell'ordinazione proprietaria vince nella maggior parte dei casi.",
+      "start": 489.98,
+      "end": 502.08
     },
     {
       "id": 28,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "If you want the shortcut version of this whole post, here&rsquo;s the framework I use when an operator asks me whether to stay, leave, or compete:",
-      "start": 498.44,
-      "end": 508.17
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "L'argomentazione di DoorDash era \"il ricavo incrementale è meglio di nessun ricavo\". Nel 2026, la vera domanda è se quell'ordine sia mai stato incrementale fin dall'inizio - o se era solo una tassa che hai volontariamente pagato.",
+      "start": 502.83,
+      "end": 517.93
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Under 50 delivery orders a week. Stay on DoorDash, tighten your G B P, don&rsquo;t invest in own-ordering yet.",
-      "start": 508.52,
-      "end": 516.25
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "Quando DoorDash è ancora la risposta giusta.",
+      "start": 519.03,
+      "end": 521.92
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "50–200 delivery orders a week. Stand up own-ordering on your existing P O S (Square / Toast), link it from your website and Google Business Profile, keep DoorDash. Let regulars migrate themselves. Expect 30–50% of DoorDash volume to shift within 6 months.",
-      "start": 516.57,
-      "end": 535.85
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "Non sono qui per dirti di allontanarti da DoorDash domani. Ci sono tre situazioni in cui mantenere la presenza di DoorDash è ancora chiaramente la scelta giusta.",
+      "start": 522.62,
+      "end": 533.02
     },
     {
       "id": 31,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "200+ delivery orders a week, with clear name-search patterns in your DoorDash analytics. Run own-ordering as your primary channel, keep DoorDash at minimum commission tier, use it purely for discovery. The math starts favoring you dramatically here.",
-      "start": 536.17,
-      "end": 552.37
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "Sei realmente limitato dalla scoperta. Nuovo ristorante, presenza GBP sottile, nessuna parola di bocca già stabilita - DoorDash è un canale di marketing che si fa pagare come una commissione. Paga la tassa mentre costruisci il pubblico, poi rivaluta.",
+      "start": 533.54,
+      "end": 549.61
     },
     {
       "id": 32,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Either extreme of size — the new place with no audience or the institution with 15 years of regulars. The new place needs DoorDash as marketing. The institution shouldn&rsquo;t need DoorDash at all.",
-      "start": 552.69,
-      "end": 566.64
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "Il tuo volume di ordinazione proprietaria è inferiore a 50 ordini a settimana. Al di sotto di questo limite, i costi fissi di un'impostazione di ordinazione proprietaria (fotografia, manutenzione del menu, occasionale servizio clienti) mangiano i risparmi di margine. Aspetta il volume.",
+      "start": 549.93,
+      "end": 568.55
     },
     {
       "id": 33,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "None of this is \"fire DoorDash.\" It is \"stop paying them for orders they didn&rsquo;t earn.\" Which is a very different move.",
-      "start": 567.16,
-      "end": 575.14
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "Hai un concetto di takeout pesante in un'area ad alta commutazione. Ordini di pranzo per lavoratori d'ufficio, ritiri di cena durante il pendolarismo - i clienti in questi contesti utilizzano pesantemente le app di delivery perché è lì che già vive la loro routine. Incontra loro dove sono.",
+      "start": 568.87,
+      "end": 586.72
     },
     {
       "id": 34,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Your regulars aren&rsquo;t loyal to DoorDash — they&rsquo;re loyal to you, and they use whichever channel is in front of them. Make your own channel the one in front of them. Put the \"Order online\" button above the fold on your homepage. Put the QR code for your ordering page at the host stand and on the receipt. Have the cashier say \"next time, order direct from our site and we save fifteen percent in fees.\" Every regular who switches is fifteen bucks back in your pocket on a hundred-dollar order.",
-      "start": 575.66,
-      "end": 602.91
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "E c'è una situazione in cui la risposta non è \"ferma DoorDash\" - è \"concorri con DoorDash\". Se mantieni DoorDash e costruisci una solida pagina di ordinazione proprietaria, dai ai clienti abituali la scelta. La maggior parte dei clienti abituali sceglierà la tua pagina di ordinazione proprietaria una volta che sanno che esiste, perché vogliono che tu sopravviva e possono vedere la commissione sul lato di DoorDash. Non devi licenziare la piattaforma. Devi solo assicurarti che la tua pagina sia visibile e sufficientemente buona affinché il cliente possa scegliere di saltare la tassa.",
+      "start": 587.24,
+      "end": 619.62
     },
     {
       "id": 35,
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(4)",
+      "text": "La raccomandazione onesta, per volume.",
+      "start": 620.72,
+      "end": 623.2
+    },
+    {
+      "id": 36,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "That&rsquo;s not rebellion. That&rsquo;s just running the math.",
-      "start": 603.43,
-      "end": 607.84
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "Se vuoi la versione abbreviata di questo intero post, ecco il framework che utilizzo quando un operatore mi chiede se rimanere, lasciare o competere:",
+      "start": 623.9,
+      "end": 633.08
+    },
+    {
+      "id": 37,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "I numeri sopra non includono la differenza di tempo di preparazione — gli ordini DoorDash richiedono 4-6 minuti in più rispetto a quelli da mangiare in loco in media — che è un costo del lavoro reale che la maggior parte degli operatori dimentica di considerare.",
+      "start": 633.43,
+      "end": 649.75
+    },
+    {
+      "id": 38,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "Menos di 50 ordini di consegna a settimana. Rimani su DoorDash, stringi il tuo GBP, non investire ancora nel sistema di ordinazione proprio.",
+      "start": 650.27,
+      "end": 660.2
+    },
+    {
+      "id": 39,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "50–200 ordini di consegna a settimana. Attiva il sistema di ordinazione proprio sul tuo P O S (Square / Toast) esistente, collegalo al tuo sito web e Google Business Profile, mantieni DoorDash. Lascia che i clienti abituali si spostino da soli. Aspettati che il 30–50% del volume di DoorDash si sposti entro 6 mesi.",
+      "start": 660.52,
+      "end": 682.12
+    },
+    {
+      "id": 40,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "200+ ordini di consegna a settimana, con modelli di ricerca del nome chiari nelle tue analisi DoorDash. Esegui il sistema di ordinazione proprio come canale principale, mantieni DoorDash al livello di commissione minimo, utilizzalo solo per la scoperta. La matematica inizia a favorirti in modo drammatico qui.",
+      "start": 682.44,
+      "end": 702.07
+    },
+    {
+      "id": 41,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "Uno degli estremi di dimensione — il nuovo locale senza pubblico o l'istituzione con 15 anni di clienti abituali. Il nuovo locale ha bisogno di DoorDash come marketing. L'istituzione non dovrebbe aver bisogno di DoorDash affatto.",
+      "start": 702.39,
+      "end": 717.43
+    },
+    {
+      "id": 42,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(25)",
+      "text": "Nessuna di queste opzioni è \"licenziare DoorDash\". È \"smettere di pagare loro per gli ordini che non hanno guadagnato\". Che è una mossa molto diversa.",
+      "start": 717.95,
+      "end": 727.63
+    },
+    {
+      "id": 43,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(26)",
+      "text": "I tuoi clienti abituali non sono leali a DoorDash — sono leali a te, e utilizzano il canale che si trova davanti a loro. Fai in modo che il tuo canale sia quello che si trova davanti a loro. Metti il pulsante \"Ordina online\" sopra la piega sulla tua homepage. Metti il codice QR per la tua pagina di ordinazione al host stand e sul ricevuto. Fai in modo che il cassiere dica \"la prossima volta, ordina direttamente dal nostro sito e risparmiamo il 15% in spese\". Ogni cliente abituale che si sposta è 15 dollari in più nel tuo portafoglio su un ordine da 100 dollari.",
+      "start": 728.15,
+      "end": 762.98
+    },
+    {
+      "id": 44,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(27)",
+      "text": "Non è ribellione. È solo fare i conti.",
+      "start": 763.5,
+      "end": 765.92
+    },
+    {
+      "id": 45,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(28)",
+      "text": "Punti chiave",
+      "start": 766.44,
+      "end": 767.35
+    },
+    {
+      "id": 46,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "Esegui i conti sul TUO biglietto, non sulla media — il livello di commissione si sposta con il volume.",
+      "start": 767.7,
+      "end": 774.04
+    },
+    {
+      "id": 47,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "L'ordinazione diretta attraverso il tuo sito mantiene il margine completo E mantiene la relazione con il cliente.",
+      "start": 774.36,
+      "end": 781.71
+    },
+    {
+      "id": 48,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "Il punto di pareggio per una cucina fantasma di sola consegna è diverso da un ristorante da mangiare in loco che testa la consegna.",
+      "start": 782.03,
+      "end": 790.76
+    },
+    {
+      "id": 49,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "DoorDash è ancora la risposta giusta quando non hai tempo per eseguire direttamente + la tua cucina ha capacità di produzione inutilizzata.",
+      "start": 791.08,
+      "end": 800.38
+    },
+    {
+      "id": 50,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(5)",
+      "text": "Salva la tua scenari di DoorDash in Margin Math e ri-eseguilo ogni volta che il tuo livello si sposta.",
+      "start": 800.7,
+      "end": 807.31
     }
   ]
 }

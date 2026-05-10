@@ -1,451 +1,539 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T19:18:18.612Z",
+  "generatedAt": "2026-05-10T09:39:02.895Z",
   "engine": "kokoro",
   "model": "kokoro-v1.0.onnx",
   "voice": "zm_yunxi",
   "language": "zh",
-  "total": 426.62,
+  "total": 467.56,
   "chunks": [
     {
       "id": 0,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(1)",
-      "text": "Why seven?",
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(1)",
+      "text": "",
       "start": 0,
-      "end": 1.22
+      "end": 0
     },
     {
       "id": 1,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(1)",
-      "text": "Most restaurant websites have too many pages. A \"Careers\" page nobody updates. An \"Awards\" page with a list from three years ago. A \"Gallery\" page with forty photos and no captions. Every dead page dilutes the pages that actually convert — and confuses Google about what the site is really about.",
-      "start": 1.92,
-      "end": 19.89
+      "selector": "#post-body > p:nth-of-type(2)",
+      "text": "TL;DR",
+      "start": 0.35,
+      "end": 1.49
     },
     {
       "id": 2,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(2)",
-      "text": "Here are the seven pages I recommend for nearly every independent restaurant. Each one has a job. If a page does not have a job, it does not earn its place on the nav bar.",
-      "start": 20.41,
-      "end": 30.36
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "只有七个页面真正起作用：首页、菜单、营业时间和地址、预订、故事、联系和当前促销。",
+      "start": 1.84,
+      "end": 9.51
     },
     {
       "id": 3,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(1)",
-      "text": "1. Homepage.",
-      "start": 31.46,
-      "end": 32.49
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "你可能不需要的页面：单独的“活动”页面、博客、画廊（网站本身就是画廊）。",
+      "start": 9.83,
+      "end": 15.77
     },
     {
       "id": 4,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(3)",
-      "text": "Job: answer three questions in under five seconds — what kind of food, where, and how to book.",
-      "start": 33.19,
-      "end": 39.55
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "有价值的结构：每个页面都能在3次点击内回答晚上11点饿了的人的疑问。",
+      "start": 16.09,
+      "end": 22.57
     },
     {
       "id": 5,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(4)",
-      "text": "Your homepage is not your autobiography. It is a decision tool. A first-time visitor is standing on the sidewalk, phone in hand, deciding between you and the place next door. They need: cuisine type, neighborhood, vibe, hours, and a reservation button. Everything else is below the fold.",
-      "start": 40.07,
-      "end": 56.84
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(1)",
+      "text": "为什么是七个？",
+      "start": 23.67,
+      "end": 24.91
     },
     {
       "id": 6,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "One-sentence pitch under your name (e.g., \"Neighborhood Italian · Silver Spring · family-run since 1998\")",
-      "start": 57.36,
-      "end": 66.25
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(3)",
+      "text": "大多数餐厅网站的页面太多。一个从不更新的“职业”页面，一个三年前的“奖项”页面，一个没有标题的40张照片的“画廊”页面。每个死页面都会稀释真正转化的页面，并会让 Google 对于网站的真正内容感到困惑。",
+      "start": 25.61,
+      "end": 41.02
     },
     {
       "id": 7,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Today's hours, visible without scrolling",
-      "start": 66.57,
-      "end": 69.63
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(4)",
+      "text": "以下是七个在几乎每个独立餐厅网站上都能发挥作用的页面。每个页面都有一个任务。如果一个页面没有任务，它就不应该出现在导航栏中。",
+      "start": 41.37,
+      "end": 52.24
     },
     {
       "id": 8,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "Reservation or order-online button, visible without scrolling",
-      "start": 69.95,
-      "end": 74.44
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(1)",
+      "text": "1. 首页。",
+      "start": 53.34,
+      "end": 54.02
     },
     {
       "id": 9,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "One hero photo that shows the room or the food — not a stock image, not a logo on black",
-      "start": 74.76,
-      "end": 81.12
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(5)",
+      "text": "任务：在5秒内回答三个问题——什么类型的食物、哪里、如何预订。",
+      "start": 54.72,
+      "end": 59.03
     },
     {
       "id": 10,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "A short social proof signal: a review quote, a press mention, a star rating",
-      "start": 81.44,
-      "end": 87.1
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(6)",
+      "text": "你的首页不是你的自传。它是一个决策工具。第一次访问的用户站在人行道上，手里拿着手机，在决定是否选择你还是旁边的店时，他们需要：菜系类型、社区、氛围、营业时间和预订按钮。其他一切都是次要的。",
+      "start": 59.38,
+      "end": 73.8
     },
     {
       "id": 11,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(2)",
-      "text": "2. Menu.",
-      "start": 88.2,
-      "end": 89.09
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
+      "text": "在你的名字下面有一句简短的宣传语（例如，“社区意大利餐 · Silver Spring · 1998年以来家族经营”）",
+      "start": 74.15,
+      "end": 83.57
     },
     {
       "id": 12,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(5)",
-      "text": "Job: let someone decide what to eat before they arrive.",
-      "start": 89.79,
-      "end": 93.29
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
+      "text": "今天的营业时间，无需滚动即可看到",
+      "start": 83.89,
+      "end": 87.15
     },
     {
       "id": 13,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(6)",
-      "text": "This is the most-visited page on every restaurant site I have ever audited. It is also the one most restaurants get wrong. The menu should be real H T M L text — not a P D F, not a photo of a printed card, not an iframe from a third-party widget. Real text means: Google can crawl it, phones can render it at readable sizes, screen readers can read it, and you can update it in thirty seconds when you change the prix fixe.",
-      "start": 93.81,
-      "end": 117.13
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
+      "text": "预订或在线订购按钮，无需滚动即可看到",
+      "start": 87.47,
+      "end": 90.81
     },
     {
       "id": 14,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(1)",
-      "text": "Dish names, descriptions, and prices in real text",
-      "start": 117.65,
-      "end": 121.47
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
+      "text": "一张展示房间或食物的英雄图片——不是股票图片，不是黑色背景上的标志",
+      "start": 91.13,
+      "end": 98.67
     },
     {
       "id": 15,
       "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(2)",
-      "text": "Organized by course or category with clear headings",
-      "start": 121.79,
-      "end": 125.49
+      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(5)",
+      "text": "一个简短的社会证明信号：评论语、媒体提及、星级评分",
+      "start": 98.99,
+      "end": 103.7
     },
     {
       "id": 16,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(3)",
-      "text": "Dietary markers (V, VG, GF) if you have them",
-      "start": 125.81,
-      "end": 130.9
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(2)",
+      "text": "2. 菜单。",
+      "start": 104.8,
+      "end": 105.52
     },
     {
       "id": 17,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(2) > li:nth-of-type(4)",
-      "text": "A \"last updated\" date so customers know the prices are current",
-      "start": 131.22,
-      "end": 136.06
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(7)",
+      "text": "任务：让人在到达之前决定吃什么。",
+      "start": 106.22,
+      "end": 109.07
     },
     {
       "id": 18,
-      "kind": "quote",
-      "selector": "#post-body > p:nth-of-type(7)",
-      "text": "If your menu is a P D F, you have already lost the customer who is reading it on a phone in direct sunlight.",
-      "start": 136.81,
-      "end": 143.76
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(8)",
+      "text": "这是每个餐厅网站中访问量最大的页面，也是大多数餐厅做错的页面。菜单应该是真正的 HTML 文本——不是 PDF，不是打印卡的照片，不是来自第三方小工具的 iframe。真正的文本意味着：Google 可以爬取它，手机可以以可读的大小渲染它，屏幕阅读器可以读取它，你可以在30秒内更新它，当你更改固定价格菜单时。",
+      "start": 109.42,
+      "end": 133.17
     },
     {
       "id": 19,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(3)",
-      "text": "3. About / Our Story.",
-      "start": 144.86,
-      "end": 146.81
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
+      "text": "菜品名称、描述和价格以真正的文本形式显示",
+      "start": 133.52,
+      "end": 137.91
     },
     {
       "id": 20,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(8)",
-      "text": "Job: give a first-time customer a reason to choose you over the identical-looking restaurant next door.",
-      "start": 147.51,
-      "end": 153.64
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
+      "text": "按课程或类别组织，具有清晰的标题",
+      "start": 138.23,
+      "end": 141.4
     },
     {
       "id": 21,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(9)",
-      "text": "This page is where you differentiate. Not with a wall of text about your \"passion for food\" — every restaurant says that. With specifics: where you source, who cooks, how long you have been here, what the room looks like, why this neighborhood. Two paragraphs and a real photo of the team is worth more than a thousand words of generic \"our philosophy\" copy.",
-      "start": 154.16,
-      "end": 172.14
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
+      "text": "如果有的话，显示饮食标记（V、VG、GF）",
+      "start": 141.72,
+      "end": 146.53
     },
     {
       "id": 22,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(4)",
-      "text": "4. Reservations / Order Online.",
-      "start": 173.24,
-      "end": 175.91
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
+      "text": "一个“最后更新”日期，以便客户知道价格是当前的",
+      "start": 146.85,
+      "end": 151.05
     },
     {
       "id": 23,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(10)",
-      "text": "Job: convert intent into action with the fewest possible clicks.",
-      "start": 176.61,
-      "end": 180.97
+      "kind": "quote",
+      "selector": "#post-body > p:nth-of-type(9)",
+      "text": "如果你的菜单是一个 PDF，你已经失去了在直接阳光下阅读它的客户。",
+      "start": 151.8,
+      "end": 157.92
     },
     {
       "id": 24,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(11)",
-      "text": "This might be a dedicated page or a persistent button that lives on every page — either way, the customer should never be more than one tap away from booking a table or starting an order. If you use OpenTable, Resy, Tock, or another platform, embed the widget directly in your page rather than linking out. Every click away from your site is a chance for the customer to get distracted.",
-      "start": 181.49,
-      "end": 200.96
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(3)",
+      "text": "3. 关于 / 我们的故事。",
+      "start": 159.02,
+      "end": 161.15
     },
     {
       "id": 25,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(12)",
-      "text": "If you do your own takeout or delivery, route orders through your P O S (Toast, Square, ChowNow) rather than through third-party marketplace apps. The commission savings alone — often 15–30% per order — pay for the website within months.",
-      "start": 201.48,
-      "end": 216.93
+      "selector": "#post-body > p:nth-of-type(10)",
+      "text": "任务：给第一次光顾的客户一个理由选择你而不是隔壁看起来一样的餐厅。",
+      "start": 161.85,
+      "end": 167.89
     },
     {
       "id": 26,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(5)",
-      "text": "5. Private Events / Catering.",
-      "start": 218.03,
-      "end": 220.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(11)",
+      "text": "这个页面是你区别于其他餐厅的地方。不是通过一堵关于你对食物的“热情”的文字——每个餐厅都这么说。通过具体的内容：你从哪里采购，谁做饭，你在这里多久了，房间是什么样的，为什么选择这个社区。两个段落和团队的真实照片比一千字的通用“我们的理念”文本更有价值。",
+      "start": 168.24,
+      "end": 189.07
     },
     {
       "id": 27,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(13)",
-      "text": "Job: capture high-value inquiries that have nowhere to live on Google.",
-      "start": 220.86,
-      "end": 225.39
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(4)",
+      "text": "4. 预订 / 在线订购。",
+      "start": 190.17,
+      "end": 192.17
     },
     {
       "id": 28,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(14)",
-      "text": "This is the page most restaurants forget — and it is often the highest-revenue page on the site. Private events, buyouts, catering menus, and group bookings do not have a Google Business Profile field. If someone searches \"private dining Bethesda\" and you do not have a page with those words on it, you are invisible to that search entirely.",
-      "start": 225.91,
-      "end": 243.28
+      "selector": "#post-body > p:nth-of-type(12)",
+      "text": "任务：用尽可能少的点击将意图转化为行动。",
+      "start": 192.87,
+      "end": 196.77
     },
     {
       "id": 29,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(1)",
-      "text": "What spaces you offer (private room, patio buyout, full restaurant)",
-      "start": 243.8,
-      "end": 248.6
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(13)",
+      "text": "这可能是一个专门的页面，也可能是一个在每个页面上都存在的按钮——无论如何，顾客都不应该距离预订一张桌子或开始下单超过一次点击。如果你使用OpenTable、Resy、Tock或其他平台，请直接在你的页面中嵌入小部件，而不是链接到外部页面。每一次离开你的网站的点击都是顾客分心的机会。",
+      "start": 197.12,
+      "end": 219.72
     },
     {
       "id": 30,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(2)",
-      "text": "Capacity ranges",
-      "start": 248.92,
-      "end": 251.03
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(14)",
+      "text": "如果你自己处理外卖或配送，请通过你的POS（Toast、Square、ChowNow）处理订单，而不是通过第三方市场应用。仅仅是佣金的节省——通常每个订单为15–30%——就可以在几个月内支付网站的费用。",
+      "start": 220.07,
+      "end": 234.98
     },
     {
       "id": 31,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(3)",
-      "text": "A sample catering or events menu (even a simplified one)",
-      "start": 251.35,
-      "end": 256.44
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(5)",
+      "text": "5. 私人活动/餐饮服务。",
+      "start": 236.08,
+      "end": 238.4
     },
     {
       "id": 32,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(3) > li:nth-of-type(4)",
-      "text": "A simple inquiry form: name, email, date, party size, and a \"tell us more\" field",
-      "start": 256.76,
-      "end": 264.02
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(15)",
+      "text": "任务：捕获高价值的询问，这些询问在Google上没有地方存放。",
+      "start": 239.1,
+      "end": 244.79
     },
     {
       "id": 33,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(6)",
-      "text": "6. Location & Hours.",
-      "start": 265.12,
-      "end": 266.97
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(16)",
+      "text": "这是大多数餐厅都忽略的页面——而且它通常是网站上收入最高的页面。私人活动、买断、餐饮菜单和团体预订没有Google Business Profile字段。如果有人搜索“私人餐饮Bethesda”，而你没有一个包含这些词的页面，你将完全不可见。",
+      "start": 245.14,
+      "end": 261.01
     },
     {
       "id": 34,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(15)",
-      "text": "Job: remove every possible friction point between \"I want to go\" and \"I am walking in the door.\"",
-      "start": 267.67,
-      "end": 274.21
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
+      "text": "你提供的空间（私人房间、露台买断、全餐厅）",
+      "start": 261.36,
+      "end": 265.29
     },
     {
       "id": 35,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(16)",
-      "text": "This page should have: your full address as copyable text (not an image), an embedded Google Map, today's hours prominently displayed, parking information, public transit directions if applicable, and your phone number as a tap-to-call link. If you have multiple locations, each one gets its own section with its own map and hours.",
-      "start": 274.56,
-      "end": 292.36
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
+      "text": "容纳人数范围",
+      "start": 265.61,
+      "end": 266.91
     },
     {
       "id": 36,
-      "kind": "heading",
-      "selector": "#post-body > h3:nth-of-type(7)",
-      "text": "7. Contact.",
-      "start": 293.46,
-      "end": 294.57
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
+      "text": "一个示例的餐饮或活动菜单（即使是一个简化的）",
+      "start": 267.23,
+      "end": 271.55
     },
     {
       "id": 37,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(17)",
-      "text": "Job: give people a way to reach a human without calling during dinner rush.",
-      "start": 295.27,
-      "end": 299.74
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
+      "text": "一个简单的询问表格：姓名、电子邮件、日期、派对人数和一个“告诉我们更多”的字段",
+      "start": 271.87,
+      "end": 278.73
     },
     {
       "id": 38,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(18)",
-      "text": "A working contact form, your email, your phone, and your social links. Keep it simple. The form should ask for name, email, and message — nothing else. If you want to capture different types of inquiries (press, events, general), a single dropdown is fine. Do not make people fill out a twelve-field form to ask when you open on Sundays.",
-      "start": 300.26,
-      "end": 318.42
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(6)",
+      "text": "6. 地点和营业时间。",
+      "start": 279.83,
+      "end": 281.58
     },
     {
       "id": 39,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(2)",
-      "text": "Pages you probably do not need.",
-      "start": 319.52,
-      "end": 321.82
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(17)",
+      "text": "任务：消除所有可能的阻碍点，从“我想去”到“我正在走进门”。",
+      "start": 282.28,
+      "end": 287.53
     },
     {
       "id": 40,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(19)",
-      "text": "Cut these unless you have a specific, active reason to keep them:",
-      "start": 322.52,
-      "end": 327.09
+      "selector": "#post-body > p:nth-of-type(18)",
+      "text": "这个页面应该包含：你的完整地址作为可复制的文本（而不是图像），一个嵌入的Google地图，今天的营业时间突出显示，停车信息，公共交通方向（如果适用），以及你的电话号码作为点击拨打的链接。如果你有多个地点，每个地点都有自己的部分，自己的地图和营业时间。",
+      "start": 287.88,
+      "end": 308.57
     },
     {
       "id": 41,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(1)",
-      "text": "Gallery. Put your best three photos on the homepage and your menu. A dedicated gallery page with forty unlabeled images is a bounce factory.",
-      "start": 327.44,
-      "end": 336.88
+      "kind": "heading",
+      "selector": "#post-body > h3:nth-of-type(7)",
+      "text": "7. 联系。",
+      "start": 309.67,
+      "end": 310.43
     },
     {
       "id": 42,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(2)",
-      "text": "Blog. Unless you are going to publish at least once a month with real content, an empty blog page with one post from two years ago hurts more than it helps. It tells Google and customers that the site is neglected.",
-      "start": 337.2,
-      "end": 349.65
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(19)",
+      "text": "任务：给人们一个在不打电话到餐厅高峰期的方式来联系一个人。",
+      "start": 311.13,
+      "end": 316.33
     },
     {
       "id": 43,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(3)",
-      "text": "Awards / Press. Fold a short press mention into the homepage or About page. A full page dedicated to awards reads as self-congratulatory unless you are updating it regularly.",
-      "start": 349.97,
-      "end": 361.14
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(20)",
+      "text": "一个工作的联系表格、你的电子邮件、你的电话和你的社交链接。保持简单。表格应该询问姓名、电子邮件和消息——没有其他东西。如果你想捕获不同类型的询问（新闻、活动、一般），一个下拉菜单就足够了。不要让人们填写一个十二个字段的表格来询问周日的营业时间。",
+      "start": 316.68,
+      "end": 335.78
     },
     {
       "id": 44,
-      "kind": "list",
-      "selector": "#post-body > ul:nth-of-type(4) > li:nth-of-type(4)",
-      "text": "Careers. Use your Google Business Profile or a jobs platform instead. A \"Careers\" page with no listings looks like you are either not hiring or not maintaining your site.",
-      "start": 361.46,
-      "end": 372.65
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(2)",
+      "text": "你可能不需要的页面。",
+      "start": 336.88,
+      "end": 338.31
     },
     {
       "id": 45,
-      "kind": "heading",
-      "selector": "#post-body > h2:nth-of-type(3)",
-      "text": "The structure that earns its keep.",
-      "start": 373.75,
-      "end": 375.61
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(21)",
+      "text": "除非你有一个特定的、活跃的理由来保留它们，否则请删除它们：",
+      "start": 339.01,
+      "end": 344.59
     },
     {
       "id": 46,
-      "kind": "body",
-      "selector": "#post-body > p:nth-of-type(20)",
-      "text": "Here is the sitemap I start with for most independent restaurant builds:",
-      "start": 376.31,
-      "end": 380.63
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(1)",
+      "text": "画廊。将你的三张最佳照片放在首页和菜单上。一个专门的画廊页面，包含四十张未标记的图像，是一个跳转工厂。",
+      "start": 344.94,
+      "end": 354.91
     },
     {
       "id": 47,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
-      "text": "Homepage — cuisine, location, vibe, hours, C T A",
-      "start": 380.98,
-      "end": 385.86
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(2)",
+      "text": "博客。除非你每月至少发布一次具有真实内容的文章，否则一个空的博客页面，包含两年前的一篇文章，会比它带来的帮助更多地伤害它。它告诉Google和顾客，网站被忽视了。",
+      "start": 355.23,
+      "end": 368.02
     },
     {
       "id": 48,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
-      "text": "Menu — real H T M L, organized, priced, dated",
-      "start": 386.18,
-      "end": 391.43
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(3)",
+      "text": "奖项/新闻。将一个简短的新闻提及折叠到首页或关于页面中。一个专门用于奖项的页面，除非你定期更新，否则会显得自我吹嘘。",
+      "start": 368.34,
+      "end": 380
     },
     {
       "id": 49,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
-      "text": "About — sourcing, team, story, one good photo",
-      "start": 391.75,
-      "end": 396.03
+      "selector": "#post-body > ul:nth-of-type(5) > li:nth-of-type(4)",
+      "text": "职业。使用你的Google Business Profile或一个招聘平台。一个“职业”页面，没有职位列表，看起来你要么不招聘，要么不维护你的网站。",
+      "start": 380.32,
+      "end": 390.62
     },
     {
       "id": 50,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
-      "text": "Reservations / Order — embedded widget, one-tap",
-      "start": 396.35,
-      "end": 400.24
+      "kind": "heading",
+      "selector": "#post-body > h2:nth-of-type(3)",
+      "text": "赚取它的位置的结构。",
+      "start": 391.72,
+      "end": 393.55
     },
     {
       "id": 51,
-      "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
-      "text": "Private Events — spaces, capacity, inquiry form",
-      "start": 400.56,
-      "end": 405.16
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(22)",
+      "text": "这是我为大多数独立餐厅构建起始的站点地图：",
+      "start": 394.25,
+      "end": 398.85
     },
     {
       "id": 52,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
-      "text": "Location & Hours — map, address, parking, transit",
-      "start": 405.48,
-      "end": 410.17
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(1)",
+      "text": "首页 — 菜系、地点、氛围、营业时间、CTA",
+      "start": 399.2,
+      "end": 402.85
     },
     {
       "id": 53,
       "kind": "list",
-      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
-      "text": "Contact — form, email, phone, social",
-      "start": 410.49,
-      "end": 414.31
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(2)",
+      "text": "菜单 — 真正的 H T M L，组织、价格、日期",
+      "start": 403.17,
+      "end": 406.87
     },
     {
       "id": 54,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(3)",
+      "text": "关于 — 采购、团队、故事、一个好照片",
+      "start": 407.19,
+      "end": 409.86
+    },
+    {
+      "id": 55,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(4)",
+      "text": "预订 / 订购 —嵌入式小部件，一键式",
+      "start": 410.18,
+      "end": 413.68
+    },
+    {
+      "id": 56,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(5)",
+      "text": "私人活动 — 空间、容量、询问表",
+      "start": 414,
+      "end": 416.65
+    },
+    {
+      "id": 57,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(6)",
+      "text": "位置和营业时间 — 地图、地址、停车、交通",
+      "start": 416.97,
+      "end": 420.26
+    },
+    {
+      "id": 58,
+      "kind": "list",
+      "selector": "#post-body > ol:nth-of-type(1) > li:nth-of-type(7)",
+      "text": "联系 — 表格、电子邮件、电话、社交媒体",
+      "start": 420.58,
+      "end": 423.89
+    },
+    {
+      "id": 59,
       "kind": "body",
-      "selector": "#post-body > p:nth-of-type(21)",
-      "text": "Seven pages. Each one has a job. If your site has more than this, ask yourself what each extra page is doing. If the answer is \"nothing,\" cut it. Your visitors and Google will both thank you.",
-      "start": 414.66,
-      "end": 426.62
+      "selector": "#post-body > p:nth-of-type(23)",
+      "text": "七个页面，每个页面都有一个任务。如果你的网站有超过这些页面，问问自己每个额外的页面在做什么。如果答案是“什么都没有”，就删除它。你的访客和 Google 都会感谢你。",
+      "start": 424.24,
+      "end": 436.56
+    },
+    {
+      "id": 60,
+      "kind": "body",
+      "selector": "#post-body > p:nth-of-type(24)",
+      "text": "关键要点",
+      "start": 436.91,
+      "end": 437.82
+    },
+    {
+      "id": 61,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(1)",
+      "text": "首页的存在是为了回答一个问题：“这是我今晚想要的吗？”",
+      "start": 438.17,
+      "end": 443.06
+    },
+    {
+      "id": 62,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(2)",
+      "text": "菜单页面必须是 H T M L，而不是 P D F — PDF 在移动设备和 AI 搜索中已经死了。",
+      "start": 443.38,
+      "end": 451.69
+    },
+    {
+      "id": 63,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(3)",
+      "text": "预订应该在每个页面上方，而不是埋在联系表中。",
+      "start": 452.01,
+      "end": 455.92
+    },
+    {
+      "id": 64,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(4)",
+      "text": "故事页面是菜单之后第二重要的页面 —— 它是客人分享给朋友的东西。",
+      "start": 456.24,
+      "end": 462.29
+    },
+    {
+      "id": 65,
+      "kind": "list",
+      "selector": "#post-body > ul:nth-of-type(6) > li:nth-of-type(5)",
+      "text": "删除“活动”页面；将活动融入首页作为当前促销条。",
+      "start": 462.61,
+      "end": 467.56
     }
   ]
 }
