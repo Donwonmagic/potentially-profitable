@@ -255,7 +255,22 @@ import {
   // Phase 2.6 — email-bounce ledger.
   isEmailBounced,
   recordEmailBounce,
+  // Phase 3.1 — multimodal attachment caps.
+  MAX_ATTACHMENTS_PER_MSG,
+  MAX_PHOTO_SIZE_BYTES,
 } from './lib/window.js';
+import {
+  // Phase 3.2 — photo upload + EXIF strip + attachment KV.
+  mintAttachId,
+  attachKey as windowAttachKey,
+  getAttachmentRow,
+  createAttachmentRow,
+  checkAttachmentLifetime,
+  stampAttachmentLifetime,
+  stripImageExif,
+  r2Key as windowR2Key,
+  r2TtlSeconds,
+} from './lib/window-attachments.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 import { sendCrisisSms } from './lib/sms.js';
 
@@ -347,6 +362,11 @@ const API_ROUTES = {
   '/api/window/email':               handleWindowEmail,
   // Phase 2.6 — Resend webhook for email-bounce events.
   '/api/webhook/resend-bounce':      handleResendBounceWebhook,
+  // Phase 3.2 — multimodal photo upload (POST). Download path
+  // (/api/window/attach/<id>) is dispatched separately from the
+  // path-prefix handler above the exact-match table because of
+  // the dynamic id segment.
+  '/api/window/attach':              handleWindowAttachUpload,
   '/api/admin/window/list':          handleAdminWindowList,
   '/api/admin/window/thread':        handleAdminWindowThread,
   '/api/admin/window/reply':         handleAdminWindowReply,
@@ -398,6 +418,13 @@ export default {
     // through handleShareOg which does its own slug parsing.
     if (request.method === 'GET' && pathname.startsWith('/api/share/og/')) {
       return handleShareOg(request, env, ctx);
+    }
+
+    // Phase 3.2 — attachment download proxy. Dynamic id segment, so
+    // dispatched before the exact-match table. Path:
+    //   GET /api/window/attach/<attachId>
+    if (request.method === 'GET' && pathname.startsWith('/api/window/attach/')) {
+      return handleWindowAttachDownload(request, env, ctx);
     }
 
     // API routes — check the exact-match table first.
@@ -6080,9 +6107,23 @@ async function handleWindowAppend(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'invalid-body' }, 400);
   }
   const sanitized = sanitizeWindowBody(body && body.body);
-  const validated = validateWindowMessageBody({ body: sanitized });
-  if (!validated.ok) {
-    return jsonResponse({ ok: false, ...validated }, 400);
+
+  // Phase 3.2 — parse attach_ids (comma-separated, max 4). Each id
+  // shape-validates and ownership is checked further down once we
+  // know the sub/anonId. The textarea body is allowed to be empty
+  // when at least one attachment is present (plan §3.6, thumb-only
+  // path); otherwise the validateWindowMessageBody check below
+  // catches the empty body.
+  const attachIdsRaw = typeof body.attach_ids === 'string' ? body.attach_ids : '';
+  const attachIds = attachIdsRaw.split(',').map(s => s.trim()).filter(Boolean).slice(0, MAX_ATTACHMENTS_PER_MSG);
+  const hasAttachments = attachIds.length > 0;
+
+  // Allow empty body only when attachments are present.
+  if (!hasAttachments) {
+    const validated = validateWindowMessageBody({ body: sanitized });
+    if (!validated.ok) {
+      return jsonResponse({ ok: false, ...validated }, 400);
+    }
   }
 
   // Phase 1b — PII pre-write gate. Refuses to store credit-card
@@ -6135,6 +6176,11 @@ async function handleWindowAppend(request, env, ctx) {
     if (!result.ok) {
       return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
     }
+    // Phase 3.2 — link pending attachments to the new msg row.
+    if (hasAttachments) {
+      await _linkAttachmentsToMessage(env, attachIds, { sub, anonId: null, threadId: thread.id, msgId: result.msg.id });
+    }
+
     if (crisisTier) {
       console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'identified', tier: crisisTier, sub, threadId: thread.id, msgId: result.msg.id }));
       // Phase 2.5 — Twilio SMS to Don for tier-1. Best-effort: a
@@ -6268,6 +6314,11 @@ async function handleWindowAppend(request, env, ctx) {
   if (!result.ok) {
     return jsonResponse({ ok: false, ...result }, result.error === 'thread-full' ? 409 : 500);
   }
+  // Phase 3.2 — link pending attachments to the new anon msg row.
+  if (hasAttachments) {
+    await _linkAttachmentsToMessage(env, attachIds, { sub: null, anonId, threadId: thread.id, msgId: result.msg.id });
+  }
+
   if (crisisTier) {
     console.log(JSON.stringify({ event: 'window.crisis-flag', kind: 'anon', tier: crisisTier, anonId, threadId: thread.id, msgId: result.msg.id }));
     if (crisisTier === 'tier1') {
@@ -6550,6 +6601,287 @@ async function handleResendBounceWebhook(request, env, ctx) {
   }
   console.log(JSON.stringify({ event: 'window.bounce.recorded', count: recorded, type: eventType, reason }));
   return jsonResponse({ ok: true, recorded }, 200);
+}
+
+// Phase 3.2 — photo upload. POST /api/window/attach (multipart).
+//
+// Visitor (anon or identified) uploads a single photo file in the
+// `file` field of a multipart/form-data body. Worker:
+//   1. Gates on WINDOW_PHOTO_ENABLED + WINDOW_ENABLED + origin +
+//      session-or-anon presence.
+//   2. Validates the size + MIME (jpeg/webp/png only).
+//   3. Server-side EXIF strip (defense-in-depth: client also strips).
+//   4. Lifetime cap check via checkAttachmentLifetime.
+//   5. Mints an attachId + a placeholder threadId/msgId binding
+//      (the operator hasn't sent the message yet — we'll associate
+//      via attachIds on the subsequent /api/window/append POST).
+//   6. PUTs the stripped bytes to R2.
+//   7. Writes the KV metadata row.
+//   8. Returns { ok, attachId, mime, sizeBytes } so the client can
+//      pass the attachId in the form body of the actual send.
+//
+// Per-message validation (the attachId belongs to the same anon/sub
+// that's now sending) lives in handleWindowAppend.
+//
+// Per audit S3 + plan §2.3: per-anon lifetime cap (12) + per-day
+// bytes cap (8 MB) enforced here so abusers can't mint orphan
+// attachments forever.
+// Phase 3.2 — link pending attachments to a freshly-appended msg.
+// Best-effort: a single failed link doesn't fail the message send
+// (the message is already persisted; the visitor sees their note,
+// just minus the failing attachment). Each link verifies that the
+// pending row's sub/anonId matches the caller's identity to defend
+// against attachment-id-stuffing attacks.
+async function _linkAttachmentsToMessage(env, attachIds, identity) {
+  const linked = [];
+  for (const attachId of attachIds) {
+    if (!/^[A-HJ-NP-Z2-9]{10}$/i.test(attachId)) continue;
+    let row;
+    try {
+      const raw = await env.AUTH_SESSIONS.get(windowAttachKey(attachId));
+      if (!raw) continue;
+      row = JSON.parse(raw);
+    } catch (_) { continue; }
+    if (!row.pending) continue;
+    // Ownership check.
+    if (identity.sub && row.sub !== identity.sub) continue;
+    if (identity.anonId && row.anonId !== identity.anonId) continue;
+    if (!identity.sub && !identity.anonId) continue;
+    row.threadId = identity.threadId;
+    row.msgId = identity.msgId;
+    row.pending = false;
+    row.linkedAt = Date.now();
+    try {
+      // Drop the 1h pending TTL — linked rows persist for the
+      // R2 lifecycle window (30d voice / 90d photo).
+      await env.AUTH_SESSIONS.put(windowAttachKey(attachId), JSON.stringify(row));
+      linked.push(attachId);
+    } catch (err) {
+      console.warn('[window] attach link failed', { attachId, err: err && err.message });
+    }
+  }
+  if (linked.length) {
+    console.log(JSON.stringify({
+      event: 'window.attach.linked',
+      count: linked.length,
+      threadId: identity.threadId,
+      msgId: identity.msgId,
+    }));
+  }
+}
+
+async function handleWindowAttachUpload(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (env.WINDOW_PHOTO_ENABLED !== 'true' && env.WINDOW_PHOTO_ENABLED !== true) {
+    return jsonResponse({ ok: false, error: 'not-found' }, 404);
+  }
+  if (!isOriginAllowed(request)) {
+    return jsonResponse({ ok: false, error: 'forbidden-origin' }, 403);
+  }
+  if (!env || !env.AUTH_SESSIONS) {
+    return jsonResponse({ ok: false, error: 'service-unavailable' }, 503);
+  }
+  if (!env.WINDOW_ATTACHMENTS) {
+    return jsonResponse({ ok: false, error: 'attachments-not-configured' }, 503);
+  }
+
+  // Identity: sub OR anonId, never both. (Identified path takes
+  // precedence; anon path requires _windowAnonGate.)
+  const session = await getSessionFromRequest(request, env);
+  let identitySuffix = null;  // for lifetime cap
+  let sub = null;
+  let anonId = null;
+  if (session) {
+    sub = session.payload.sub;
+    identitySuffix = sub;
+  } else if (_windowAnonGate(env)) {
+    anonId = _readWindowAnonCookie(request);
+    if (!anonId) {
+      // No anon cookie yet — visitor must send the first message
+      // through /api/window/append (which mints the cookie) before
+      // they can upload attachments. Defends against attackers who
+      // skip the throttle by uploading directly.
+      return jsonResponse({ ok: false, error: 'send-first' }, 409);
+    }
+    identitySuffix = anonId;
+  } else {
+    return jsonResponse({ ok: false, error: 'unauthenticated' }, 401);
+  }
+
+  // Multipart parse — Workers' Request.formData() handles this.
+  let form;
+  try { form = await request.formData(); } catch (_) {
+    return jsonResponse({ ok: false, error: 'invalid-multipart' }, 400);
+  }
+  const file = form.get('file');
+  if (!file || typeof file.arrayBuffer !== 'function') {
+    return jsonResponse({ ok: false, error: 'no-file' }, 400);
+  }
+  const declaredMime = String(file.type || '').toLowerCase();
+  const allowedMimes = new Set(['image/jpeg', 'image/jpg', 'image/webp', 'image/png']);
+  if (!allowedMimes.has(declaredMime)) {
+    return jsonResponse({ ok: false, error: 'unsupported-mime', mime: declaredMime }, 415);
+  }
+
+  const buf = await file.arrayBuffer();
+  if (buf.byteLength > MAX_PHOTO_SIZE_BYTES) {
+    return jsonResponse({ ok: false, error: 'photo-too-large', max: MAX_PHOTO_SIZE_BYTES }, 413);
+  }
+  if (buf.byteLength < 16) {
+    return jsonResponse({ ok: false, error: 'photo-too-small' }, 400);
+  }
+
+  // Lifetime + per-day-bytes cap.
+  const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
+  if (!lifetimeCheck.ok) {
+    return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+  }
+
+  // Server-side EXIF strip (defense-in-depth — client canvas
+  // re-encode already strips, but a curl uploader bypasses JS).
+  const stripped = stripImageExif(new Uint8Array(buf), declaredMime);
+  if (!stripped.ok) {
+    return jsonResponse({ ok: false, ...stripped }, 400);
+  }
+
+  // The attachment doesn't have a threadId/msgId yet — the operator
+  // hasn't sent the message. We mint a "pending" attachId now; the
+  // subsequent /api/window/append POST will associate it. To make
+  // the R2 key valid before binding, we use 'pending' as a stand-in
+  // for threadId/msgId; the linker rewrites the row + R2 key on
+  // append. Simpler: use the attachId itself as the placeholder
+  // bucket so listing-by-prefix still works for cleanup.
+  const attachId = mintAttachId();
+  const placeholderThread = identitySuffix.slice(0, 10);  // anon/sub prefix
+  const r2KeyStr = 'attach/_pending/' + placeholderThread + '/' + attachId + '.' + (stripped.kind === 'jpeg' ? 'jpg' : stripped.kind);
+
+  try {
+    await env.WINDOW_ATTACHMENTS.put(r2KeyStr, stripped.bytes, {
+      httpMetadata: {
+        contentType: stripped.mime,
+        cacheControl: 'private, max-age=0, must-revalidate',
+      },
+      customMetadata: {
+        attachId,
+        identitySuffix,
+        kind: 'photo',
+      },
+    });
+  } catch (err) {
+    console.warn('[window] r2 put failed', { attachId, err: err && err.message });
+    return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
+  }
+
+  // Pending KV row. threadId + msgId stay 'pending' until the
+  // append-time linker fills them. Per-message ownership is checked
+  // there.
+  const pendingRow = {
+    id: attachId,
+    pending: true,
+    threadId: null,
+    msgId: null,
+    sub: sub || null,
+    anonId: anonId || null,
+    kind: 'photo',
+    mime: stripped.mime,
+    sizeBytes: stripped.bytes.length,
+    r2Key: r2KeyStr,
+    createdAt: Date.now(),
+  };
+  await env.AUTH_SESSIONS.put(windowAttachKey(attachId), JSON.stringify(pendingRow), {
+    // 1h pending TTL — if the operator never finishes the send,
+    // a cron sweep cleans up the orphan.
+    expirationTtl: 3600,
+  });
+  await stampAttachmentLifetime(env, identitySuffix, stripped.bytes.length);
+
+  console.log(JSON.stringify({
+    event: 'window.attach.upload',
+    attachId,
+    kind: 'photo',
+    mime: stripped.mime,
+    sizeBytes: stripped.bytes.length,
+    sub: sub ? sub.slice(0, 8) : null,
+    anonId: anonId ? anonId.slice(0, 8) : null,
+  }));
+  return jsonResponse({
+    ok: true,
+    attachId,
+    kind: 'photo',
+    mime: stripped.mime,
+    sizeBytes: stripped.bytes.length,
+  }, 200);
+}
+
+// Phase 3.2 — proxied attachment download.
+//   GET /api/window/attach/<attachId>
+// Returns the file bytes streamed from R2. Auth: requester must
+// match the attachment's owner (sub or anonId). Admin bypass: a
+// signed-in admin can fetch any attachment (for the admin reply
+// surface in Phase 3.5).
+async function handleWindowAttachDownload(request, env, ctx) {
+  if (!_windowGate(env)) {
+    return new Response(null, { status: 404 });
+  }
+  if (env.WINDOW_PHOTO_ENABLED !== 'true' && env.WINDOW_PHOTO_ENABLED !== true &&
+      env.WINDOW_VOICE_ENABLED !== 'true' && env.WINDOW_VOICE_ENABLED !== true) {
+    return new Response(null, { status: 404 });
+  }
+  if (!env.WINDOW_ATTACHMENTS) {
+    return new Response(null, { status: 503 });
+  }
+  if (!isOriginAllowed(request)) {
+    return new Response(null, { status: 403 });
+  }
+
+  const u = new URL(request.url);
+  const prefix = '/api/window/attach/';
+  if (!u.pathname.startsWith(prefix)) {
+    return new Response(null, { status: 404 });
+  }
+  const attachId = u.pathname.slice(prefix.length);
+  if (!attachId || !/^[A-HJ-NP-Z2-9]{10}$/i.test(attachId)) {
+    return new Response(null, { status: 400 });
+  }
+
+  const row = await getAttachmentRow(env, attachId);
+  if (!row || row.deleted) {
+    return new Response(null, { status: 404 });
+  }
+
+  // Ownership check: caller is the original uploader OR a signed-in
+  // admin. Phase 3.5 admin display uses the admin path.
+  const session = await getSessionFromRequest(request, env);
+  const callerSub = session ? session.payload.sub : null;
+  const callerAnon = _readWindowAnonCookie(request);
+  let allowed = false;
+  if (callerSub && row.sub === callerSub) allowed = true;
+  else if (callerAnon && row.anonId === callerAnon) allowed = true;
+  else if (callerSub && env.ADMIN_SUB_HASH && callerSub === env.ADMIN_SUB_HASH) allowed = true;
+  if (!allowed) {
+    return new Response(null, { status: 403 });
+  }
+
+  let obj;
+  try {
+    obj = await env.WINDOW_ATTACHMENTS.get(row.r2Key);
+  } catch (err) {
+    console.warn('[window] r2 get failed', { attachId, err: err && err.message });
+    return new Response(null, { status: 500 });
+  }
+  if (!obj) return new Response(null, { status: 404 });
+
+  return new Response(obj.body, {
+    status: 200,
+    headers: {
+      'content-type': row.mime || 'application/octet-stream',
+      // Worker-proxied (not R2-public); short-cache. Plan §2.7.
+      'cache-control': 'private, max-age=0, must-revalidate',
+      'x-content-type-options': 'nosniff',
+    },
+  });
 }
 
 async function handleWindowMeUnread(request, env, ctx) {

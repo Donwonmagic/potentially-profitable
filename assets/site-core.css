@@ -2776,6 +2776,22 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    for the absolute "Don —" caption since the caption was removed). */
 .sash--bottom .window-composer__field{padding-left:14px}
 
+/* ===== [core] Window Phase 3.2 — photo attachment row =====
+   Sits between the textarea and the submit row. Hidden by default;
+   revealed by JS when WINDOW_PHOTO_ENABLED is on. */
+.window-composer__attach{margin:10px 0 0;padding:12px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:var(--r-input);transition:border-color 0.15s ease}
+.window-composer__attach.is-dropping{border-color:var(--teal);border-style:solid;background:var(--teal-tint)}
+.window-composer__photo-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
+.window-composer__photo-btn:hover,.window-composer__photo-btn:focus-visible{border-color:var(--teal);color:var(--teal)}
+.window-composer__previews{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.window-composer__preview{position:relative;display:inline-flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);font-size:12px;color:var(--ink-soft);max-width:240px}
+.window-composer__preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0}
+.window-composer__preview-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.window-composer__preview-remove{margin-left:4px;background:transparent;border:0;color:var(--stone);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
+.window-composer__preview-remove:hover,.window-composer__preview-remove:focus-visible{color:var(--rust)}
+.window-composer__preview.is-uploading{opacity:0.6}
+.window-composer__preview.is-error{border-color:var(--rust);color:var(--rust)}
+
 /* ===== [core] Window Phase 2.4 — handoff aside =====
    Drops onto tool-result + sheets pages with the muntin-line eyebrow.
    The CTA prefills a /window/ message with the finding (URL-param

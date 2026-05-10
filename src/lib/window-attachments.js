@@ -200,3 +200,143 @@ function _dayBucket(ts) {
   const dd = String(d.getUTCDate()).padStart(2, '0');
   return y + '-' + m + '-' + dd;
 }
+
+// Phase 3.2 — server-side EXIF strip. Defense-in-depth: the client
+// already canvas-re-encodes which strips EXIF, but a curl/script
+// uploader bypasses JS entirely, so the worker must scrub on
+// ingest before any byte hits R2.
+//
+// Returns { ok, bytes, kind, mime } on success; { ok:false, error }
+// on unrecognized format. Caller passes the raw uploaded bytes
+// (Uint8Array) + the declared MIME.
+//
+// Coverage:
+//   - JPEG: rebuilds without APP1 (Exif/XMP) segments
+//   - WEBP: rebuilds without EXIF + XMP chunks
+//   - PNG: passes through (no EXIF metadata in baseline PNG; rare
+//     iCCP profiles can carry GPS, but the cost of a full chunk
+//     walk for a vanishingly rare risk isn't justified Phase 3.2)
+//
+// Rejects unknown formats — we won't store anything we can't audit.
+export function stripImageExif(bytes, mime) {
+  if (!(bytes instanceof Uint8Array)) {
+    return { ok: false, error: 'invalid-bytes' };
+  }
+  const m = String(mime || '').toLowerCase();
+  if (m === 'image/jpeg' || m === 'image/jpg') {
+    return _stripJpegExif(bytes);
+  }
+  if (m === 'image/webp') {
+    return _stripWebpExif(bytes);
+  }
+  if (m === 'image/png') {
+    return { ok: true, bytes, kind: 'png', mime: 'image/png' };
+  }
+  return { ok: false, error: 'unsupported-mime' };
+}
+
+// JPEG: starts with FFD8 (SOI), then a sequence of segments each
+// beginning with 0xFF + marker byte. APP0 (FFE0) is JFIF basic and
+// stays; APP1 (FFE1) carries Exif/XMP and gets dropped. APP2-APP15
+// carry ICC, MakerNote, etc — we drop APP1-APP15 to be thorough
+// (legitimate JFIF only needs APP0). Quantization tables, Huffman
+// tables, and image data (SOS) all stay.
+function _stripJpegExif(bytes) {
+  if (bytes.length < 4 || bytes[0] !== 0xFF || bytes[1] !== 0xD8) {
+    return { ok: false, error: 'jpeg-bad-soi' };
+  }
+  const out = [0xFF, 0xD8];
+  let i = 2;
+  while (i < bytes.length) {
+    if (bytes[i] !== 0xFF) {
+      return { ok: false, error: 'jpeg-bad-marker' };
+    }
+    // Skip any 0xFF padding bytes (allowed by spec).
+    let j = i + 1;
+    while (j < bytes.length && bytes[j] === 0xFF) j++;
+    const marker = bytes[j];
+    // Standalone markers without length fields: SOI(D8), EOI(D9),
+    // RSTn (D0-D7), TEM(01).
+    if (marker === 0xD9) {
+      // EOI — copy and stop.
+      out.push(0xFF, 0xD9);
+      break;
+    }
+    if (marker === 0x00 || (marker >= 0xD0 && marker <= 0xD7)) {
+      // 0xFF00 (escaped FF) and RSTn — pass through verbatim.
+      out.push(0xFF, marker);
+      i = j + 1;
+      continue;
+    }
+    // SOS marker (DA): the segment header has a length field, then
+    // entropy-coded image data follows until the next non-RST marker.
+    // We copy from here to EOI verbatim.
+    if (marker === 0xDA) {
+      // Push everything from i to end (including FFD9).
+      for (let k = i; k < bytes.length; k++) out.push(bytes[k]);
+      break;
+    }
+    // Length-bearing segment. Length includes the 2 length bytes
+    // but NOT the marker.
+    if (j + 2 >= bytes.length) {
+      return { ok: false, error: 'jpeg-truncated' };
+    }
+    const segLen = (bytes[j + 1] << 8) | bytes[j + 2];
+    if (segLen < 2 || j + 1 + segLen > bytes.length) {
+      return { ok: false, error: 'jpeg-bad-segment-length' };
+    }
+    // Drop APP1-APP15 (E1-EF). Keep APP0 (E0) for JFIF basic.
+    const isApp = marker >= 0xE0 && marker <= 0xEF;
+    const isAppToDrop = marker >= 0xE1 && marker <= 0xEF;
+    // Also drop COM (FE) which can carry arbitrary text.
+    const isComToDrop = marker === 0xFE;
+    if (isAppToDrop || isComToDrop) {
+      // Skip the segment entirely.
+      i = j + 1 + segLen;
+      continue;
+    }
+    // Keep — copy 0xFF + marker + length + data.
+    out.push(0xFF, marker);
+    for (let k = j + 1; k < j + 1 + segLen; k++) out.push(bytes[k]);
+    i = j + 1 + segLen;
+  }
+  return { ok: true, bytes: new Uint8Array(out), kind: 'jpeg', mime: 'image/jpeg' };
+}
+
+// WEBP: RIFF container. After "RIFF" + size32LE + "WEBP", a sequence
+// of chunks each with FourCC + size32LE + data + optional pad byte.
+// Drop the EXIF chunk and the XMP  (note trailing space) chunk.
+function _stripWebpExif(bytes) {
+  if (bytes.length < 12) {
+    return { ok: false, error: 'webp-too-short' };
+  }
+  if (String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]) !== 'RIFF' ||
+      String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11]) !== 'WEBP') {
+    return { ok: false, error: 'webp-bad-header' };
+  }
+  // Walk chunks starting at offset 12.
+  const kept = [];
+  let i = 12;
+  while (i < bytes.length) {
+    if (i + 8 > bytes.length) break;
+    const fourcc = String.fromCharCode(bytes[i], bytes[i + 1], bytes[i + 2], bytes[i + 3]);
+    const size = bytes[i + 4] | (bytes[i + 5] << 8) | (bytes[i + 6] << 16) | (bytes[i + 7] << 24);
+    if (size < 0 || i + 8 + size > bytes.length) {
+      return { ok: false, error: 'webp-bad-chunk-size' };
+    }
+    const chunkLen = 8 + size + (size & 1); // pad to even
+    if (fourcc !== 'EXIF' && fourcc !== 'XMP ') {
+      // Keep this chunk verbatim.
+      for (let k = i; k < i + chunkLen && k < bytes.length; k++) kept.push(bytes[k]);
+    }
+    i += chunkLen;
+  }
+  // Rebuild RIFF/WEBP header with new size.
+  const newSize = 4 + kept.length; // 'WEBP' + chunks
+  const out = [
+    'R'.charCodeAt(0), 'I'.charCodeAt(0), 'F'.charCodeAt(0), 'F'.charCodeAt(0),
+    newSize & 0xFF, (newSize >> 8) & 0xFF, (newSize >> 16) & 0xFF, (newSize >> 24) & 0xFF,
+    'W'.charCodeAt(0), 'E'.charCodeAt(0), 'B'.charCodeAt(0), 'P'.charCodeAt(0),
+  ].concat(kept);
+  return { ok: true, bytes: new Uint8Array(out), kind: 'webp', mime: 'image/webp' };
+}

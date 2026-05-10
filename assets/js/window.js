@@ -388,7 +388,17 @@
     ev.preventDefault();
     if (state.paused) { showMsg(copy.errorPaused, true); return; }
     var rawBody = els.body.value.trim();
-    if (!rawBody) { showMsg(copy.errorBodyEmpty, true); return; }
+    // Phase 3.2 — thumb-only path (plan §3.6): allow empty body when
+    // attachments are present. The server enforces the same rule
+    // (handleWindowAppend), so this is just UX — no point letting the
+    // visitor submit an empty form when no attachment is selected.
+    var attachIds = (window.muntinPhotos && typeof window.muntinPhotos.collectAttachIds === 'function')
+      ? window.muntinPhotos.collectAttachIds()
+      : [];
+    if (!rawBody && attachIds.length === 0) {
+      showMsg(copy.errorBodyEmpty, true);
+      return;
+    }
     var bodyWithContext = buildBodyWithContext(rawBody);
     if (bodyWithContext.length > 4000) { showMsg(copy.errorBodyTooLong, true); return; }
     hideMsg();
@@ -400,6 +410,9 @@
 
     var params = new URLSearchParams();
     params.set('body', bodyWithContext);
+    if (attachIds.length) {
+      params.set('attach_ids', attachIds.join(','));
+    }
 
     fetch('/api/window/append', {
       method: 'POST',
@@ -412,6 +425,12 @@
       if (res.status === 200 && res.body.ok) {
         els.body.value = '';
         updateCounter();
+        // Phase 3.2 — clear photo previews after successful send so a
+        // follow-up message starts clean. Attachments are now linked
+        // to the prior msg server-side; the client state can drop them.
+        if (window.muntinPhotos && typeof window.muntinPhotos.clearAttachments === 'function') {
+          window.muntinPhotos.clearAttachments();
+        }
         // Phase 2.2 — success state with artifact + contextual link
         // (replaces the prior "Sent it. Don has the note." line).
         // Plan §3.7. The crisis line stays visible if it was up

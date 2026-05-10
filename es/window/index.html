@@ -132,6 +132,19 @@ header.nav{min-height:64px}
 
         <p class="window-composer__crisis" id="windowCrisis" hidden role="status">Si esta noche pesa m&aacute;s que el sitio web, voy a leer esto igual &mdash; y estas personas contestan m&aacute;s r&aacute;pido que yo: <a href="tel:988">988</a> (llama o manda texto), <a href="https://chefswithissues.com/" rel="noopener" target="_blank">Chefs With Issues</a>, <a href="https://chowco.org/" rel="noopener" target="_blank">CHOW</a>.</p>
 
+        <div class="window-composer__attach" id="windowAttach" hidden aria-label="Fotos adjuntas a esta nota">
+          <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Agregar una foto">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <circle cx="9" cy="11" r="2"/>
+              <path d="M21 15l-5-5-9 9"/>
+            </svg>
+            Agregar una foto
+          </button>
+          <input type="file" id="windowPhotoInput" accept="image/jpeg,image/png,image/webp" multiple hidden capture="environment">
+          <ul class="window-composer__previews" id="windowPreviews" aria-live="polite"></ul>
+        </div>
+
         <div class="window-composer__row">
           <button type="button" class="window-composer__mic" id="windowMic" hidden aria-label="Mandar nota de voz (pr&oacute;ximamente)" disabled title="Notas de voz en Fase 3">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -182,5 +195,6 @@ header.nav{min-height:64px}
 
 <script src="/assets/site.js?v=20260501-engagement" defer></script>
 <script src="/assets/js/window.js?v=20260501-engagement" defer></script>
+<script src="/assets/js/window-photos.js?v=20260501-engagement" defer></script>
 </body>
 </html>
