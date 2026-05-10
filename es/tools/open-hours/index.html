@@ -63,9 +63,9 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Open Hours tool-scoped styles. Page-prefix .oh-*. === */
 .oh-form{display:flex;flex-direction:column;gap:18px}
@@ -382,6 +382,26 @@ header.nav{min-height:64px}
     document.documentElement.dataset.platform = 'mac';
   }
 </script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <script>/* i18n runtime dictionary — read by assets/site.js via window.__i18n.
              Placed inside <header> so sync-includes replaces it atomically
@@ -503,7 +523,7 @@ header.nav{min-height:64px}
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">Pon bien tu horario en todas partes.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-05-08">8 de mayo de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-05-10">10 de mayo de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">

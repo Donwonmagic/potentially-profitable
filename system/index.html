@@ -101,13 +101,33 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site.css?v=634a88d1662a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site.css?v=634a88d1662a"></noscript>
+<link rel="preload" as="style" href="/assets/site.css?v=c8817cf4dfa3" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site.css?v=c8817cf4dfa3"></noscript>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially

@@ -318,6 +318,23 @@
       'Experiment Exposure',
       'Window Thread Resolved',
     ],
+    // Window redesign — composer, attachments, callback, /now/, asides.
+    // Phase 1a–5+ events fired by /window/ + admin queue + site-wide
+    // aside scripts. See docs/window-redesign-plan.md §G.10.
+    window: [
+      'Window Send',
+      'Window Error',
+      'Window Chip',
+      'Window Crisis Flag',
+      'Window Claimed',
+      'Window Prefill',
+      'Window Aside Shown',
+      'Window Aside Clicked',
+      'Window Attach Photo',
+      'Window Attach Voice',
+      'Window Callback Request',
+      'Window Now Edit',
+    ],
   };
 
   // Flat allowlist used by the CI checker.

@@ -1316,19 +1316,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 /* CTA row */
 .foot-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:40px;margin-bottom:48px;border-bottom:1px solid rgba(250,247,242,0.08)}
-.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-/* Phase 2.3 — site-wide pulse beside the foot-cta. Hidden by default;
-   assets/js/window-state.js reveals when /api/window/active reports
-   Don has been seen in the last 4 hours. The pulse is on a sash, not
-   a muntin (per audit S5: muntins recede, the world beyond moves). */
-.foot-cta-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
-
-/* Phase 5+ — site-wide nav pulse. Sits at the start of the
-   "Email Don" CTA in the top nav, before the label. Reveals via
-   window-state.js when lastSeen <4h. The pulse is on the cream-on-
-   ink button; uses cream so it reads against the dark background.
-   Smaller than the footer pulse (6px) — the nav button is denser. */
-.nav-window-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cream);opacity:0.9;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0;margin-right:2px;vertical-align:middle}
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
@@ -1375,10 +1363,6 @@ body:has(.block.final) .foot-cta{display:none}
   .mobile-cta-bar__btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
   .mobile-cta-bar__btn--ghost:hover,.mobile-cta-bar__btn--ghost:focus-visible{border-color:var(--teal);color:var(--teal)}
   .mobile-cta-bar__btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-  /* Phase 5+ — pulse on the mobile-cta-bar Email Don button.
-     Sits left of the SVG, breathing teal dot. window-state.js
-     reveals when lastSeen <4h. */
-  .mobile-cta-bar__pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
   /* Make sure the rest of the page doesn't sit under the bar. */
   body:not([data-hide-sticky-bar]) main{padding-bottom:96px}
 }
@@ -2697,175 +2681,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-signin a{color:var(--teal);font-weight:500;text-decoration:none;border-bottom:1px solid currentColor}
 .window-signin strong{color:var(--ink)}
 
-/* ===== [core] Window Phase 2.1 — named-pane composer (the sash) =====
-   Real muntins divide a sash into named lights. The CSS class names
-   mirror that vocabulary so the metaphor is structural in source,
-   not just rendered. Geometry: 50% vertical muntin + 35% transom
-   match the brand mark exactly (window/index.html:58-66). The
-   --muntin-weight var is 2px on /window/ specifically (load-bearing
-   here); 1px elsewhere on the site (slender). */
-:root{--muntin-weight:1px}
-.window-canvas{--muntin-weight:2px}
-
-/* The sash — outer frame, holds all panes. */
-.sash{position:relative;max-width:680px;margin:24px auto;background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1);overflow:hidden;display:grid;grid-template-columns:108px 1fr;grid-template-rows:auto 1fr auto;grid-template-areas:'sidelight top' 'sidelight bottom' 'sill sill'}
-
-/* Sidelight — narrow vertical pane on the left. Don's portrait + the
-   pulse. The pulse is OFF the muntin (the muntin is quiet); 6px dot
-   beside the portrait. */
-.sidelight{grid-area:sidelight;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;background:var(--cream-2);border-right:1px solid transparent;min-height:120px}
-.sidelight__portrait{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
-.sidelight__pulse{position:absolute;top:24px;right:18px;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite}
-
-/* The muntin — vertical hairline at exactly 50% of the sash content
-   area (inside the right column, past the sidelight). The literal
-   brand mullion. */
-.sash > .muntin{position:absolute;top:0;bottom:0;left:calc(108px + (100% - 108px) / 2);width:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
-
-/* The transom — horizontal hairline at 38.3% (matches the brand mark
-   at y=49 of viewBox 0 0 128 128 = 49/128 = 0.383). Divides sash--top
-   from sash--bottom inside the right column. */
-.sash > .transom{position:absolute;top:38.3%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
-
-/* Sash—top: above the transom. Calendar-honest presence sentence. */
-.sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
-.sash--top__currents{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink-soft)}
-/* Phase 4 — /now/ presence line. Inherits the sash--top__currents
-   typography but in --ink (not --ink-soft) — when the now widget
-   shows it's the most current presence statement and reads with a
-   touch more authority. data-mode="precise" gets a subtle teal
-   underline-mark to telegraph "this is fresh / location-specific";
-   fuzz mode reads as a plain editorial line. */
-.sash--top__now{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink);font-weight:500}
-.sash--top__now[data-mode="precise"]{border-bottom:1px solid var(--teal);padding-bottom:2px}
-
-/* Phase 5+ — /about/ presence line. Sits inside the about-copy
-   block below Don's signature. Editorial register matching the
-   surrounding hero text but with the same teal underline-mark
-   for precise mode that /window/ uses, so the privacy contract
-   reads consistently across surfaces. */
-.about-now{margin:18px 0 0;font-family:var(--font-display);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:60ch}
-.about-now[data-mode="precise"]{color:var(--ink);border-bottom:1px solid var(--teal);padding-bottom:2px}
-
-/* Sash—bottom: below the transom. The operable light — chips +
-   textarea + crisis line + submit row. */
-.sash--bottom{grid-area:bottom;padding:18px 32px 24px}
-
-/* Sill: where the note rests once written. Reply-time + escape
-   hatches. Spans full width. */
-.sill{grid-area:sill;padding:18px 32px;background:var(--cream-2);border-top:1px solid var(--line)}
-.sill__reassurance{margin:0 0 8px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic}
-.sill__alt-row{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
-.sill__alt-row a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none}
-.sill__alt-row a:hover,.sill__alt-row a:focus-visible{border-bottom-style:solid}
-
-/* Mobile: collapse to single column. The muntin/transom hide on small
-   screens — the metaphor stays in the lexicon (class names) but the
-   visual goes away when there's no horizontal room for a divider. */
-@media (max-width:640px){
-  .sash{grid-template-columns:1fr;grid-template-areas:'top' 'sidelight' 'bottom' 'sill';margin:12px}
-  .sidelight{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 18px;border-right:0;border-bottom:1px solid var(--line);min-height:0}
-  .sidelight__portrait{width:48px;height:48px}
-  .sidelight__pulse{top:14px;right:auto;left:54px}
-  .sash > .muntin,.sash > .transom{display:none}
-  .sash--top{padding:16px 18px 12px}
-  .sash--bottom{padding:12px 18px 18px}
-  .sill{padding:14px 18px}
-  .sash--top__currents{font-size:16px}
-  .sash--top__now{font-size:16px}
-}
-
-/* Composer additions — the new pieces inside .sash--bottom. */
-.window-composer__hostess{margin:14px 0 0;font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.5;color:var(--ink-soft)}
-.window-composer__trust-tell{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--stone);font-style:italic}
-.window-composer__crisis{margin:10px 0 0;padding:10px 14px;background:#FBF1D9;border-left:3px solid #B8861F;font-size:13px;line-height:1.55;color:var(--ink)}
-.window-composer__crisis a{color:var(--teal);font-weight:600}
-
-/* Empathy-chip variant — no price, no productized framing. Soft,
-   secondary-feeling visually so the priced offers below them aren't
-   visually demoted. */
-.window-composer__onramps .window-onramp.window-onramp--soft{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-style:italic}
-.window-composer__onramps .window-onramp.window-onramp--soft:hover,.window-composer__onramps .window-onramp.window-onramp--soft:focus-visible{border-color:var(--teal);color:var(--ink)}
-
-/* Optional context — collapsed by default. */
-.window-composer__context-details{margin:14px 0 0;border-top:1px dashed var(--line);padding-top:12px}
-.window-composer__context-summary{cursor:pointer;font-size:13px;color:var(--ink-soft);list-style:none;padding:4px 0}
-.window-composer__context-summary::-webkit-details-marker{display:none}
-.window-composer__context-summary::before{content:'+ ';color:var(--teal);font-weight:700}
-.window-composer__context-details[open] .window-composer__context-summary::before{content:'\2212 \00a0'}
-
-/* Mic button — Phase 2.1 placeholder; Phase 3.3 wires the recorder
-   and reveals the button when WINDOW_VOICE_ENABLED is on. The
-   `.is-recording` state pulses red so the operator sees recording
-   is live (anti-chatbot rule 5: motion is downward, not bubble-up). */
-.window-composer__mic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);cursor:not-allowed;opacity:0.5;transition:background 0.18s ease,color 0.18s ease,border-color 0.18s ease}
-.window-composer__mic:not([disabled]){cursor:pointer;opacity:1;color:var(--teal)}
-.window-composer__mic:hover:not([disabled]),.window-composer__mic:focus-visible:not([disabled]){border-color:var(--teal);background:var(--teal-tint)}
-.window-composer__mic.is-recording{background:#B83020;border-color:#B83020;color:var(--cream);animation:window-mic-pulse 1.6s ease-in-out infinite}
-@keyframes window-mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,48,32,0.45)}50%{box-shadow:0 0 0 8px rgba(184,48,32,0)}}
-@media (prefers-reduced-motion:reduce){.window-composer__mic.is-recording{animation:none}}
-
-/* Composer field overrides for the new layout (no more left-padding
-   for the absolute "Don —" caption since the caption was removed). */
-.sash--bottom .window-composer__field{padding-left:14px}
-
-/* ===== [core] Window Phase 3.5 — inline attachment display ===== */
-.window-msg__attachments{margin:10px 0 0;display:flex;flex-direction:column;gap:10px}
-.window-msg__attachment{display:flex;flex-direction:column;gap:6px;max-width:100%}
-.window-msg__attachment--photo img{max-width:100%;max-height:280px;border-radius:var(--r-input);border:1px solid var(--line);object-fit:contain;background:var(--cream-2);display:block}
-.window-msg__attachment--voice audio{width:100%;max-width:360px}
-.window-msg__attachment-caption{margin:0;font-size:12px;color:var(--ink-soft);font-style:italic}
-.window-msg__attachment-transcript{margin:0;padding:10px 12px;background:var(--cream-2);border-left:3px solid var(--teal);font-size:14px;line-height:1.55;color:var(--ink);font-style:italic;white-space:pre-wrap}
-.window-msg__attachment-transcript--deleted{border-left-color:var(--stone);color:var(--stone);font-style:italic}
-.window-msg__attachment-delete-transcript{align-self:flex-start;background:transparent;border:0;color:var(--stone);font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
-.window-msg__attachment-delete-transcript:hover,.window-msg__attachment-delete-transcript:focus-visible{color:var(--rust)}
-.window-msg__attachment-delete-transcript:disabled{opacity:0.5;cursor:not-allowed}
-
-/* ===== [core] Window Phase 3.4 — async voicenote callback =====
-   "Want me to call back?" chip + collapsible form. Sits below the
-   crisis line, above the photo-attach row. Hidden by default;
-   revealed by JS when WINDOW_CALLBACK_ENABLED is on. */
-.window-composer__callback{margin:10px 0 0}
-.window-composer__callback-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
-.window-composer__callback-toggle:hover,.window-composer__callback-toggle:focus-visible{border-color:var(--teal);color:var(--teal)}
-.window-composer__callback-toggle[aria-expanded="true"]{background:var(--teal-tint);color:var(--teal);border-color:var(--teal)}
-.window-composer__callback-form{margin:12px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:flex;flex-direction:column;gap:14px}
-.window-composer__callback-windows{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-.window-composer__callback-windows legend{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;padding:0}
-.window-composer__callback-windows label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:4px 0}
-.window-composer__callback-windows label:hover,.window-composer__callback-windows label:focus-within{color:var(--ink)}
-.window-composer__callback-submit{align-self:flex-start}
-
-/* ===== [core] Window Phase 3.2 — photo attachment row =====
-   Sits between the textarea and the submit row. Hidden by default;
-   revealed by JS when WINDOW_PHOTO_ENABLED is on. */
-.window-composer__attach{margin:10px 0 0;padding:12px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:var(--r-input);transition:border-color 0.15s ease}
-.window-composer__attach.is-dropping{border-color:var(--teal);border-style:solid;background:var(--teal-tint)}
-.window-composer__photo-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
-.window-composer__photo-btn:hover,.window-composer__photo-btn:focus-visible{border-color:var(--teal);color:var(--teal)}
-.window-composer__previews{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px}
-.window-composer__preview{position:relative;display:inline-flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);font-size:12px;color:var(--ink-soft);max-width:240px}
-.window-composer__preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0}
-.window-composer__preview-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.window-composer__preview-remove{margin-left:4px;background:transparent;border:0;color:var(--stone);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
-.window-composer__preview-remove:hover,.window-composer__preview-remove:focus-visible{color:var(--rust)}
-.window-composer__preview.is-uploading{opacity:0.6}
-.window-composer__preview.is-error{border-color:var(--rust);color:var(--rust)}
-
-/* ===== [core] Window Phase 2.4 — handoff aside =====
-   Drops onto tool-result + sheets pages with the muntin-line eyebrow.
-   The CTA prefills a /window/ message with the finding (URL-param
-   convention; assets/js/window.js applyPrefill receives). Result-aware
-   copy (set per-tool via the .window-handoff__lead text). Hidden on
-   print so paper exports stay clean. */
-.window-handoff{margin:32px auto;max-width:680px;padding:18px 22px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);position:relative}
-.window-handoff::before{content:'';position:absolute;top:0;left:0;right:0;height:var(--muntin-weight,1px);background:var(--ink);opacity:0.18}
-.window-handoff__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:6px 0 10px}
-.window-handoff__lead{margin:0 0 14px;font-size:15px;line-height:1.55;color:var(--ink)}
-.window-handoff__cta{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--teal);color:var(--cream);border-radius:999px;font-size:14px;font-weight:500;text-decoration:none}
-.window-handoff__cta:hover,.window-handoff__cta:focus-visible{background:var(--teal-dark)}
-@media print{.window-handoff{display:none}}
-
 
 /* ===== [core] Window composer (Phase-2 redesign) (lines 5653-5685) ===== */
 /* ============ WINDOW COMPOSER — Phase-2 redesign ============
@@ -2938,50 +2753,6 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .admin-thread__actions{display:flex;gap:8px;align-items:center}
 .admin-thread__close{font-size:12px;color:var(--stone);background:transparent;border:0;cursor:pointer;text-decoration:underline}
 .admin-thread__close:hover{color:var(--rust)}
-
-/* Phase 4 — /now/ widget admin editor. Sits above the queue list as
-   a collapsed <details> section. Compact but legible — the admin
-   only touches it weekly. */
-.admin-now{margin:14px 0 24px;padding:0 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
-.admin-now__summary{padding:12px 0;font-size:14px;color:var(--ink);cursor:pointer;font-weight:500;letter-spacing:0.01em}
-.admin-now__summary code{font-family:var(--font-mono,Menlo,monospace);font-size:13px;color:var(--teal);background:transparent;padding:0}
-.admin-now__form{padding:12px 0 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line)}
-.admin-now__current{margin:0;font-size:13px;color:var(--ink-soft);font-style:italic;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-input)}
-.admin-now__field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
-.admin-now__field>span{font-weight:500;color:var(--ink)}
-.admin-now__field input,.admin-now__field select{padding:8px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:14px;color:var(--ink);background:var(--white)}
-.admin-now__field input:focus-visible,.admin-now__field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-.admin-now__row{display:flex;align-items:center;gap:12px;margin-top:6px}
-.admin-now__msg{font-size:13px;color:var(--ink-soft);font-style:italic}
-.admin-now .btn-sm{padding:8px 16px;font-size:13px}
-
-/* Phase 3.6b — admin attachment display. Mirrors the visitor-side
-   styles but with a tighter image cap (admin scrolls many threads;
-   smaller is friendlier). Voice tombstones use the same muted-italic
-   treatment as visitor side. */
-.admin-msg__attachments{display:flex;flex-direction:column;gap:12px;margin-top:12px}
-.admin-msg__attachment{border-radius:var(--r-input);overflow:hidden}
-.admin-msg__attachment--photo img{display:block;max-width:100%;max-height:320px;border-radius:var(--r-input)}
-.admin-msg__attachment-caption{font-size:13px;color:var(--ink-soft);font-style:italic;margin:6px 0 0}
-.admin-msg__attachment--voice audio{width:100%;display:block}
-.admin-msg__attachment-transcript{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0;padding:8px 12px;background:var(--cream-2);border-left:2px solid var(--teal);border-radius:0 var(--r-input) var(--r-input) 0}
-.admin-msg__attachment-transcript--deleted{color:var(--stone);font-style:italic;border-left-color:var(--stone)}
-
-/* Phase 3.6b — admin callbacks panel (callback requests bubble to
-   the top of the thread view). Phone is masked-by-default with
-   tap-to-reveal — keeps cleartext numbers off screenshots and out
-   of casual shoulder-surf range. */
-.admin-callbacks{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
-.admin-callbacks__card{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--rust);border-radius:var(--r-input)}
-.admin-callbacks__heading{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:0.02em;text-transform:uppercase}
-.admin-callbacks__phone{margin:0 0 8px}
-.admin-callbacks__phone-btn{font-family:var(--font-mono,Menlo,monospace);font-size:15px;color:var(--ink);background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-input);padding:8px 14px;cursor:pointer;width:100%;text-align:left}
-.admin-callbacks__phone-btn:hover{border-color:var(--teal)}
-.admin-callbacks__phone-link{color:var(--teal);text-decoration:none;font-family:var(--font-mono,Menlo,monospace)}
-.admin-callbacks__phone-link:hover{text-decoration:underline}
-.admin-callbacks__voice-label{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 4px}
-.admin-callbacks__voice-label--deleted{color:var(--stone)}
-.admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}
 
 /* Phase G.1 (Growth) — TL;DR + Key Takeaways blocks for AI-citation
    optimization. Visually quiet, editorial. The TL;DR is a 2-3 line
@@ -3269,3 +3040,242 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
     order: -1;
   }
 }
+
+
+/* ===== [core] Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) (lines 6711-6947) ===== */
+/* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
+   Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach
+   row (Phase 3.2-3.6), now-line widget (Phase 4), site-wide pulse
+   propagation (Phase 5+), admin attachment + callback display +
+   /now/ editor (Phase 3.6b + 4 admin). Belongs in site-core (every
+   shell that loads the Window or admin needs these). */
+.foot-cta-text{color:var(--cream);font-family:var(--font-display);font-size:clamp(22px,2.6vw,30px);line-height:1.2;letter-spacing:-0.01em;max-width:460px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* Phase 2.3 — site-wide pulse beside the foot-cta. Hidden by default;
+   assets/js/window-state.js reveals when /api/window/active reports
+   Don has been seen in the last 4 hours. The pulse is on a sash, not
+   a muntin (per audit S5: muntins recede, the world beyond moves). */
+.foot-cta-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
+
+/* Phase 5+ — site-wide nav pulse. Sits at the start of the
+   "Email Don" CTA in the top nav, before the label. Reveals via
+   window-state.js when lastSeen <4h. The pulse is on the cream-on-
+   ink button; uses cream so it reads against the dark background.
+   Smaller than the footer pulse (6px) — the nav button is denser. */
+.nav-window-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cream);opacity:0.9;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0;margin-right:2px;vertical-align:middle}
+  /* Phase 5+ — pulse on the mobile-cta-bar Email Don button.
+     Sits left of the SVG, breathing teal dot. window-state.js
+     reveals when lastSeen <4h. */
+  .mobile-cta-bar__pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
+/* ===== [core] Window Phase 2.1 — named-pane composer (the sash) =====
+   Real muntins divide a sash into named lights. The CSS class names
+   mirror that vocabulary so the metaphor is structural in source,
+   not just rendered. Geometry: 50% vertical muntin + 35% transom
+   match the brand mark exactly (window/index.html:58-66). The
+   --muntin-weight var is 2px on /window/ specifically (load-bearing
+   here); 1px elsewhere on the site (slender). */
+:root{--muntin-weight:1px}
+.window-canvas{--muntin-weight:2px}
+
+/* The sash — outer frame, holds all panes. */
+.sash{position:relative;max-width:680px;margin:24px auto;background:var(--cream);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--elev-1);overflow:hidden;display:grid;grid-template-columns:108px 1fr;grid-template-rows:auto 1fr auto;grid-template-areas:'sidelight top' 'sidelight bottom' 'sill sill'}
+
+/* Sidelight — narrow vertical pane on the left. Don's portrait + the
+   pulse. The pulse is OFF the muntin (the muntin is quiet); 6px dot
+   beside the portrait. */
+.sidelight{grid-area:sidelight;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;background:var(--cream-2);border-right:1px solid transparent;min-height:120px}
+.sidelight__portrait{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+.sidelight__pulse{position:absolute;top:24px;right:18px;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite}
+
+/* The muntin — vertical hairline at exactly 50% of the sash content
+   area (inside the right column, past the sidelight). The literal
+   brand mullion. */
+.sash > .muntin{position:absolute;top:0;bottom:0;left:calc(108px + (100% - 108px) / 2);width:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
+
+/* The transom — horizontal hairline at 38.3% (matches the brand mark
+   at y=49 of viewBox 0 0 128 128 = 49/128 = 0.383). Divides sash--top
+   from sash--bottom inside the right column. */
+.sash > .transom{position:absolute;top:38.3%;left:108px;right:0;height:var(--muntin-weight);background:var(--ink);opacity:0.18;pointer-events:none}
+
+/* Sash—top: above the transom. Calendar-honest presence sentence. */
+.sash--top{grid-area:top;padding:24px 32px 16px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.sash--top__currents{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink-soft)}
+/* Phase 4 — /now/ presence line. Inherits the sash--top__currents
+   typography but in --ink (not --ink-soft) — when the now widget
+   shows it's the most current presence statement and reads with a
+   touch more authority. data-mode="precise" gets a subtle teal
+   underline-mark to telegraph "this is fresh / location-specific";
+   fuzz mode reads as a plain editorial line. */
+.sash--top__now{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink);font-weight:500}
+.sash--top__now[data-mode="precise"]{border-bottom:1px solid var(--teal);padding-bottom:2px}
+
+/* Phase 5+ — /about/ presence line. Sits inside the about-copy
+   block below Don's signature. Editorial register matching the
+   surrounding hero text but with the same teal underline-mark
+   for precise mode that /window/ uses, so the privacy contract
+   reads consistently across surfaces. */
+.about-now{margin:18px 0 0;font-family:var(--font-display);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:60ch}
+.about-now[data-mode="precise"]{color:var(--ink);border-bottom:1px solid var(--teal);padding-bottom:2px}
+
+/* Sash—bottom: below the transom. The operable light — chips +
+   textarea + crisis line + submit row. */
+.sash--bottom{grid-area:bottom;padding:18px 32px 24px}
+
+/* Sill: where the note rests once written. Reply-time + escape
+   hatches. Spans full width. */
+.sill{grid-area:sill;padding:18px 32px;background:var(--cream-2);border-top:1px solid var(--line)}
+.sill__reassurance{margin:0 0 8px;font-size:13px;line-height:1.55;color:var(--ink-soft);font-style:italic}
+.sill__alt-row{margin:0;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.sill__alt-row a{color:var(--teal);font-weight:500;border-bottom:1px dashed currentColor;text-decoration:none}
+.sill__alt-row a:hover,.sill__alt-row a:focus-visible{border-bottom-style:solid}
+
+/* Mobile: collapse to single column. The muntin/transom hide on small
+   screens — the metaphor stays in the lexicon (class names) but the
+   visual goes away when there's no horizontal room for a divider. */
+@media (max-width:640px){
+  .sash{grid-template-columns:1fr;grid-template-areas:'top' 'sidelight' 'bottom' 'sill';margin:12px}
+  .sidelight{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 18px;border-right:0;border-bottom:1px solid var(--line);min-height:0}
+  .sidelight__portrait{width:48px;height:48px}
+  .sidelight__pulse{top:14px;right:auto;left:54px}
+  .sash > .muntin,.sash > .transom{display:none}
+  .sash--top{padding:16px 18px 12px}
+  .sash--bottom{padding:12px 18px 18px}
+  .sill{padding:14px 18px}
+  .sash--top__currents{font-size:16px}
+  .sash--top__now{font-size:16px}
+}
+
+/* Composer additions — the new pieces inside .sash--bottom. */
+.window-composer__hostess{margin:14px 0 0;font-family:var(--font-display);font-style:italic;font-size:16px;line-height:1.5;color:var(--ink-soft)}
+.window-composer__trust-tell{margin:14px 0 0;font-size:13px;line-height:1.55;color:var(--stone);font-style:italic}
+.window-composer__crisis{margin:10px 0 0;padding:10px 14px;background:#FBF1D9;border-left:3px solid #B8861F;font-size:13px;line-height:1.55;color:var(--ink)}
+.window-composer__crisis a{color:var(--teal);font-weight:600}
+
+/* Empathy-chip variant — no price, no productized framing. Soft,
+   secondary-feeling visually so the priced offers below them aren't
+   visually demoted. */
+.window-composer__onramps .window-onramp.window-onramp--soft{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-style:italic}
+.window-composer__onramps .window-onramp.window-onramp--soft:hover,.window-composer__onramps .window-onramp.window-onramp--soft:focus-visible{border-color:var(--teal);color:var(--ink)}
+
+/* Optional context — collapsed by default. */
+.window-composer__context-details{margin:14px 0 0;border-top:1px dashed var(--line);padding-top:12px}
+.window-composer__context-summary{cursor:pointer;font-size:13px;color:var(--ink-soft);list-style:none;padding:4px 0}
+.window-composer__context-summary::-webkit-details-marker{display:none}
+.window-composer__context-summary::before{content:'+ ';color:var(--teal);font-weight:700}
+.window-composer__context-details[open] .window-composer__context-summary::before{content:'\2212 \00a0'}
+
+/* Mic button — Phase 2.1 placeholder; Phase 3.3 wires the recorder
+   and reveals the button when WINDOW_VOICE_ENABLED is on. The
+   `.is-recording` state pulses red so the operator sees recording
+   is live (anti-chatbot rule 5: motion is downward, not bubble-up). */
+.window-composer__mic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);cursor:not-allowed;opacity:0.5;transition:background 0.18s ease,color 0.18s ease,border-color 0.18s ease}
+.window-composer__mic:not([disabled]){cursor:pointer;opacity:1;color:var(--teal)}
+.window-composer__mic:hover:not([disabled]),.window-composer__mic:focus-visible:not([disabled]){border-color:var(--teal);background:var(--teal-tint)}
+.window-composer__mic.is-recording{background:#B83020;border-color:#B83020;color:var(--cream);animation:window-mic-pulse 1.6s ease-in-out infinite}
+@keyframes window-mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,48,32,0.45)}50%{box-shadow:0 0 0 8px rgba(184,48,32,0)}}
+@media (prefers-reduced-motion:reduce){.window-composer__mic.is-recording{animation:none}}
+
+/* Composer field overrides for the new layout (no more left-padding
+   for the absolute "Don —" caption since the caption was removed). */
+.sash--bottom .window-composer__field{padding-left:14px}
+
+/* ===== [core] Window Phase 3.5 — inline attachment display ===== */
+.window-msg__attachments{margin:10px 0 0;display:flex;flex-direction:column;gap:10px}
+.window-msg__attachment{display:flex;flex-direction:column;gap:6px;max-width:100%}
+.window-msg__attachment--photo img{max-width:100%;max-height:280px;border-radius:var(--r-input);border:1px solid var(--line);object-fit:contain;background:var(--cream-2);display:block}
+.window-msg__attachment--voice audio{width:100%;max-width:360px}
+.window-msg__attachment-caption{margin:0;font-size:12px;color:var(--ink-soft);font-style:italic}
+.window-msg__attachment-transcript{margin:0;padding:10px 12px;background:var(--cream-2);border-left:3px solid var(--teal);font-size:14px;line-height:1.55;color:var(--ink);font-style:italic;white-space:pre-wrap}
+.window-msg__attachment-transcript--deleted{border-left-color:var(--stone);color:var(--stone);font-style:italic}
+.window-msg__attachment-delete-transcript{align-self:flex-start;background:transparent;border:0;color:var(--stone);font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+.window-msg__attachment-delete-transcript:hover,.window-msg__attachment-delete-transcript:focus-visible{color:var(--rust)}
+.window-msg__attachment-delete-transcript:disabled{opacity:0.5;cursor:not-allowed}
+
+/* ===== [core] Window Phase 3.4 — async voicenote callback =====
+   "Want me to call back?" chip + collapsible form. Sits below the
+   crisis line, above the photo-attach row. Hidden by default;
+   revealed by JS when WINDOW_CALLBACK_ENABLED is on. */
+.window-composer__callback{margin:10px 0 0}
+.window-composer__callback-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
+.window-composer__callback-toggle:hover,.window-composer__callback-toggle:focus-visible{border-color:var(--teal);color:var(--teal)}
+.window-composer__callback-toggle[aria-expanded="true"]{background:var(--teal-tint);color:var(--teal);border-color:var(--teal)}
+.window-composer__callback-form{margin:12px 0 0;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-input);display:flex;flex-direction:column;gap:14px}
+.window-composer__callback-windows{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.window-composer__callback-windows legend{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px;padding:0}
+.window-composer__callback-windows label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:4px 0}
+.window-composer__callback-windows label:hover,.window-composer__callback-windows label:focus-within{color:var(--ink)}
+.window-composer__callback-submit{align-self:flex-start}
+
+/* ===== [core] Window Phase 3.2 — photo attachment row =====
+   Sits between the textarea and the submit row. Hidden by default;
+   revealed by JS when WINDOW_PHOTO_ENABLED is on. */
+.window-composer__attach{margin:10px 0 0;padding:12px 14px;background:var(--cream-2);border:1px dashed var(--line-dark);border-radius:var(--r-input);transition:border-color 0.15s ease}
+.window-composer__attach.is-dropping{border-color:var(--teal);border-style:solid;background:var(--teal-tint)}
+.window-composer__photo-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer}
+.window-composer__photo-btn:hover,.window-composer__photo-btn:focus-visible{border-color:var(--teal);color:var(--teal)}
+.window-composer__previews{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.window-composer__preview{position:relative;display:inline-flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-input);font-size:12px;color:var(--ink-soft);max-width:240px}
+.window-composer__preview img{width:32px;height:32px;border-radius:4px;object-fit:cover;flex-shrink:0}
+.window-composer__preview-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.window-composer__preview-remove{margin-left:4px;background:transparent;border:0;color:var(--stone);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
+.window-composer__preview-remove:hover,.window-composer__preview-remove:focus-visible{color:var(--rust)}
+.window-composer__preview.is-uploading{opacity:0.6}
+.window-composer__preview.is-error{border-color:var(--rust);color:var(--rust)}
+
+/* ===== [core] Window Phase 2.4 — handoff aside =====
+   Drops onto tool-result + sheets pages with the muntin-line eyebrow.
+   The CTA prefills a /window/ message with the finding (URL-param
+   convention; assets/js/window.js applyPrefill receives). Result-aware
+   copy (set per-tool via the .window-handoff__lead text). Hidden on
+   print so paper exports stay clean. */
+.window-handoff{margin:32px auto;max-width:680px;padding:18px 22px 22px;background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);position:relative}
+.window-handoff::before{content:'';position:absolute;top:0;left:0;right:0;height:var(--muntin-weight,1px);background:var(--ink);opacity:0.18}
+.window-handoff__eyebrow{font-family:var(--font-body);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin:6px 0 10px}
+.window-handoff__lead{margin:0 0 14px;font-size:15px;line-height:1.55;color:var(--ink)}
+.window-handoff__cta{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--teal);color:var(--cream);border-radius:999px;font-size:14px;font-weight:500;text-decoration:none}
+.window-handoff__cta:hover,.window-handoff__cta:focus-visible{background:var(--teal-dark)}
+@media print{.window-handoff{display:none}}
+
+
+/* Phase 4 — /now/ widget admin editor. Sits above the queue list as
+   a collapsed <details> section. Compact but legible — the admin
+   only touches it weekly. */
+.admin-now{margin:14px 0 24px;padding:0 16px;border:1px solid var(--line);border-radius:var(--r-input);background:var(--white)}
+.admin-now__summary{padding:12px 0;font-size:14px;color:var(--ink);cursor:pointer;font-weight:500;letter-spacing:0.01em}
+.admin-now__summary code{font-family:var(--font-mono,Menlo,monospace);font-size:13px;color:var(--teal);background:transparent;padding:0}
+.admin-now__form{padding:12px 0 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line)}
+.admin-now__current{margin:0;font-size:13px;color:var(--ink-soft);font-style:italic;padding:8px 12px;background:var(--cream-2);border-radius:var(--r-input)}
+.admin-now__field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)}
+.admin-now__field>span{font-weight:500;color:var(--ink)}
+.admin-now__field input,.admin-now__field select{padding:8px 12px;border:1px solid var(--line-dark);border-radius:var(--r-input);font:inherit;font-size:14px;color:var(--ink);background:var(--white)}
+.admin-now__field input:focus-visible,.admin-now__field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.admin-now__row{display:flex;align-items:center;gap:12px;margin-top:6px}
+.admin-now__msg{font-size:13px;color:var(--ink-soft);font-style:italic}
+.admin-now .btn-sm{padding:8px 16px;font-size:13px}
+
+/* Phase 3.6b — admin attachment display. Mirrors the visitor-side
+   styles but with a tighter image cap (admin scrolls many threads;
+   smaller is friendlier). Voice tombstones use the same muted-italic
+   treatment as visitor side. */
+.admin-msg__attachments{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.admin-msg__attachment{border-radius:var(--r-input);overflow:hidden}
+.admin-msg__attachment--photo img{display:block;max-width:100%;max-height:320px;border-radius:var(--r-input)}
+.admin-msg__attachment-caption{font-size:13px;color:var(--ink-soft);font-style:italic;margin:6px 0 0}
+.admin-msg__attachment--voice audio{width:100%;display:block}
+.admin-msg__attachment-transcript{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 0;padding:8px 12px;background:var(--cream-2);border-left:2px solid var(--teal);border-radius:0 var(--r-input) var(--r-input) 0}
+.admin-msg__attachment-transcript--deleted{color:var(--stone);font-style:italic;border-left-color:var(--stone)}
+
+/* Phase 3.6b — admin callbacks panel (callback requests bubble to
+   the top of the thread view). Phone is masked-by-default with
+   tap-to-reveal — keeps cleartext numbers off screenshots and out
+   of casual shoulder-surf range. */
+.admin-callbacks{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.admin-callbacks__card{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:3px solid var(--rust);border-radius:var(--r-input)}
+.admin-callbacks__heading{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px;letter-spacing:0.02em;text-transform:uppercase}
+.admin-callbacks__phone{margin:0 0 8px}
+.admin-callbacks__phone-btn{font-family:var(--font-mono,Menlo,monospace);font-size:15px;color:var(--ink);background:var(--white);border:1px solid var(--line-dark);border-radius:var(--r-input);padding:8px 14px;cursor:pointer;width:100%;text-align:left}
+.admin-callbacks__phone-btn:hover{border-color:var(--teal)}
+.admin-callbacks__phone-link{color:var(--teal);text-decoration:none;font-family:var(--font-mono,Menlo,monospace)}
+.admin-callbacks__phone-link:hover{text-decoration:underline}
+.admin-callbacks__voice-label{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 4px}
+.admin-callbacks__voice-label--deleted{color:var(--stone)}
+.admin-callbacks__meta{font-size:12px;color:var(--ink-soft);font-style:italic;margin:8px 0 0}

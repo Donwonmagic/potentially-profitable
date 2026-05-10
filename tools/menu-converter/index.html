@@ -127,9 +127,9 @@ header.nav{min-height:64px}
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=a2cd3c1adc15" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-core.css?v=a3cc95eb7ac7" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-tool.css?v=5f214b425aa9" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a2cd3c1adc15"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=a3cc95eb7ac7"><link rel="stylesheet" href="/assets/site-tool.css?v=5f214b425aa9"></noscript>
 
 <script src="/assets/p.js?v=20260503" defer></script>
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -138,6 +138,26 @@ header.nav{min-height:64px}
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -358,7 +378,7 @@ header.nav{min-height:64px}
         Paste your menu. <span class="serif-italic">Get clean HTML and schema.</span>
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-05-08">May 8, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-05-10">May 10, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">

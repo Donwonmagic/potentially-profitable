@@ -74,6 +74,8 @@ const ALLOWED_EXCEPTIONS = new Map([
   ['mobile-cta-bar__btn',         'Sticky bottom mobile CTA bar — fixed-position twin-button row, phones only.'],
   ['mobile-cta-bar__btn--primary','Primary variant of the mobile sticky-CTA twin (BEM modifier).'],
   ['mobile-cta-bar__btn--ghost',  'Secondary variant of the mobile sticky-CTA twin (BEM modifier).'],
+  ['window-composer__photo-btn', 'Window composer photo-attach trigger — pill chip inside the attach row, distinct from the .btn family for tighter density.'],
+  ['admin-callbacks__phone-btn', 'Admin callback masked-phone reveal — full-width tap target inside the callback card; uses tap-to-reveal interaction model not in .btn vocabulary.'],
 ]);
 
 // Locate every class definition that looks button-shaped:
