@@ -488,6 +488,11 @@ header.nav{min-height:64px}
       <h1 id="about-heading" class="muntin-title">A muntin is the slender strip that holds a window together.</h1>
       <p style="font-size:19px;color:var(--ink-soft);line-height:1.6;max-width:60ch;">Small, quiet, and the reason the whole thing stands up. The name is the brief: structure brings clarity, and clarity is what gets customers from a Google search into your dining room.</p>
       <p class="signature" style="margin-top:28px;">— Don</p>
+      <!-- Phase 5+ — /now/ presence on /about/. Hidden by default;
+           window-state.js fetches /api/window/now and reveals when the
+           row is fresh + privacy ≠ private. Plan §4.4 deferred this
+           surface from Phase 4 (which scoped to /window/ only) to 5+. -->
+      <p class="about-now" id="aboutNow" aria-live="polite" aria-atomic="true" hidden></p>
     </div>
   </div>
 </section>

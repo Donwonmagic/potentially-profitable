@@ -1322,6 +1322,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
    Don has been seen in the last 4 hours. The pulse is on a sash, not
    a muntin (per audit S5: muntins recede, the world beyond moves). */
 .foot-cta-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
+
+/* Phase 5+ — site-wide nav pulse. Sits at the start of the
+   "Email Don" CTA in the top nav, before the label. Reveals via
+   window-state.js when lastSeen <4h. The pulse is on the cream-on-
+   ink button; uses cream so it reads against the dark background.
+   Smaller than the footer pulse (6px) — the nav button is denser. */
+.nav-window-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cream);opacity:0.9;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0;margin-right:2px;vertical-align:middle}
 .foot-cta .btn-primary{flex:0 0 auto;background:var(--teal);color:var(--cream)}
 .foot-cta .btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 16px 36px -12px rgba(31,78,91,0.55)}
 @media (max-width:640px){.foot-cta{flex-direction:column;align-items:flex-start;gap:20px}}
@@ -1368,6 +1375,10 @@ body:has(.block.final) .foot-cta{display:none}
   .mobile-cta-bar__btn--ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
   .mobile-cta-bar__btn--ghost:hover,.mobile-cta-bar__btn--ghost:focus-visible{border-color:var(--teal);color:var(--teal)}
   .mobile-cta-bar__btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  /* Phase 5+ — pulse on the mobile-cta-bar Email Don button.
+     Sits left of the SVG, breathing teal dot. window-state.js
+     reveals when lastSeen <4h. */
+  .mobile-cta-bar__pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0;margin-right:2px}
   /* Make sure the rest of the page doesn't sit under the bar. */
   body:not([data-hide-sticky-bar]) main{padding-bottom:96px}
 }
@@ -2727,6 +2738,14 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    fuzz mode reads as a plain editorial line. */
 .sash--top__now{margin:0;font-family:var(--font-display);font-style:italic;font-size:18px;line-height:1.45;color:var(--ink);font-weight:500}
 .sash--top__now[data-mode="precise"]{border-bottom:1px solid var(--teal);padding-bottom:2px}
+
+/* Phase 5+ — /about/ presence line. Sits inside the about-copy
+   block below Don's signature. Editorial register matching the
+   surrounding hero text but with the same teal underline-mark
+   for precise mode that /window/ uses, so the privacy contract
+   reads consistently across surfaces. */
+.about-now{margin:18px 0 0;font-family:var(--font-display);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:60ch}
+.about-now[data-mode="precise"]{color:var(--ink);border-bottom:1px solid var(--teal);padding-bottom:2px;display:inline-block}
 
 /* Sash—bottom: below the transom. The operable light — chips +
    textarea + crisis line + submit row. */

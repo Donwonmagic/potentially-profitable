@@ -391,6 +391,10 @@ header.nav{min-height:64px}
       <h1 id="about-heading" class="muntin-title">Un <em lang="en">muntin</em> es la tira fina que sostiene una ventana.</h1>
       <p style="font-size:19px;color:var(--ink-soft);line-height:1.6;max-width:60ch;">Es discreto, callado, y la razón por la que el vidrio no se cae. El nombre es el encargo: la estructura da claridad, y la claridad es lo que mueve a un cliente desde una búsqueda en Google hasta la puerta del restaurante.</p>
       <p class="signature" style="margin-top:28px;">— Don</p>
+      <!-- Fase 5+ — l&iacute;nea /now/ en /about/. Oculta por defecto;
+           window-state.js obtiene /api/window/now y la revela cuando
+           la fila est&aacute; fresca + privacidad &ne; private. -->
+      <p class="about-now" id="aboutNow" aria-live="polite" aria-atomic="true" hidden></p>
     </div>
   </div>
 </section>

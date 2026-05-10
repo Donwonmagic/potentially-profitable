@@ -2682,6 +2682,18 @@ header.nav{min-height:64px}
   </p>
 </aside>
 
+<!-- Phase 5+ — glossary Window aside. data-window-handoff is the
+     site-wide aside contract (assets/js/window-handoff.js); the
+     script auto-renders on DOMContentLoaded with the topic + lead
+     baked in. Operator can copy-paste this block onto any article,
+     swapping topic + data-lead. Plan §6.4. -->
+<aside class="window-handoff container" data-window-handoff
+       data-topic="glossary"
+       data-lead="One of these terms staring you in the face? Tell me which one and I'll send back the next move in plain English."
+       data-cta="Ask Don about a term &rarr;">
+</aside>
+<script src="/assets/js/window-handoff.js" defer></script>
+
 </main>
 
 <footer>
