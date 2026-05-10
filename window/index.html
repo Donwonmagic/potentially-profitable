@@ -127,7 +127,7 @@ header.nav{min-height:64px}
            offers follow with their canonical labels; "Something else"
            closes. Audit-pending: prepend strings are operator-note
            skeletons in plain English (María-tested). -->
-      <div class="window-composer__onramps" id="windowOnramps" aria-label="What brings you in">
+      <div class="window-composer__onramps" id="windowOnramps" role="group" aria-label="What brings you in">
         <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not sure yet. Here's what's going on: ">I&rsquo;m not sure yet &mdash; let me explain</button>
         <button type="button" class="window-onramp window-onramp--soft" data-prepend="I'm not ready to hire — just want eyes on this: ">I&rsquo;m not ready to hire &mdash; just want a second pair of eyes</button>
         <button type="button" class="window-onramp" data-prepend="Your place: . Your website (if you have one): . What I want a new site to fix: ">New website &middot; <em>$2,500&ndash;$15k</em></button>
@@ -182,7 +182,7 @@ header.nav{min-height:64px}
              The form sits inline below the textarea so the operator
              doesn't lose context; submitting posts to the endpoint
              and the auto-confirmation lands in the thread. -->
-        <div class="window-composer__callback" id="windowCallback" hidden aria-label="Ask for a callback">
+        <div class="window-composer__callback" id="windowCallback" hidden role="group" aria-label="Ask for a callback">
           <button type="button" class="window-composer__callback-toggle" id="windowCallbackToggle" aria-expanded="false" aria-controls="windowCallbackForm">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -216,7 +216,7 @@ header.nav{min-height:64px}
              (privacy disclosure + voice preview chips share this
              space); the photo BUTTON has its own [hidden] so a
              voice-only deploy doesn't accidentally reveal it. -->
-        <div class="window-composer__attach" id="windowAttach" hidden aria-label="Attachments to this note">
+        <div class="window-composer__attach" id="windowAttach" hidden role="group" aria-label="Attachments to this note">
           <button type="button" class="window-composer__photo-btn" id="windowPhotoBtn" aria-label="Add a photo" hidden>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="5" width="18" height="14" rx="2"/>
