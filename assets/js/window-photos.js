@@ -274,12 +274,22 @@
   }
 
   // Public API for window.js submit() to grab the attachIds.
+  // Both photo (via attachments array) and voice (via window-voice.js
+  // calling _registerAttachment) flow through the same collector.
   window.muntinPhotos = window.muntinPhotos || {};
   window.muntinPhotos.collectAttachIds = function () {
     var out = [];
     for (var i = 0; i < attachments.length; i++) {
       if (attachments[i].status === 'ok' && attachments[i].attachId) {
         out.push(attachments[i].attachId);
+      }
+    }
+    // Voice items registered via _registerAttachment also count.
+    if (window.muntinVoiceItems) {
+      for (var j = 0; j < window.muntinVoiceItems.length; j++) {
+        if (window.muntinVoiceItems[j].attachId) {
+          out.push(window.muntinVoiceItems[j].attachId);
+        }
       }
     }
     return out;
@@ -289,6 +299,23 @@
       if (attachments[i].thumbUrl) URL.revokeObjectURL(attachments[i].thumbUrl);
     }
     attachments = [];
+    if (window.muntinVoiceItems) window.muntinVoiceItems = [];
+    // Clear voice preview chips too.
+    if (els.previews) {
+      var voiceLis = els.previews.querySelectorAll('li[data-kind="voice"]');
+      for (var k = 0; k < voiceLis.length; k++) {
+        voiceLis[k].parentNode && voiceLis[k].parentNode.removeChild(voiceLis[k]);
+      }
+    }
     renderAll();
+  };
+  window.muntinPhotos._registerAttachment = function (item) {
+    window.muntinVoiceItems = window.muntinVoiceItems || [];
+    window.muntinVoiceItems.push(item);
+  };
+  window.muntinPhotos._unregisterAttachment = function (attachId) {
+    if (window.muntinVoiceItems) {
+      window.muntinVoiceItems = window.muntinVoiceItems.filter(function (v) { return v.attachId !== attachId; });
+    }
   };
 })();

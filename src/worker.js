@@ -270,7 +270,16 @@ import {
   stripImageExif,
   r2Key as windowR2Key,
   r2TtlSeconds,
+  // Phase 3.3 — voice memo + Whisper transcript.
+  markForTranscript,
+  unmarkTranscript,
+  iterateTranscriptQueue,
+  transcribeVoice,
+  setAttachmentTranscript,
+  checkVoiceDailyCap,
+  stampVoiceDaily,
 } from './lib/window-attachments.js';
+import { MAX_VOICE_DURATION_HARD_MS } from './lib/window.js';
 import { sanitizePlaintext as sanitizeWindowBody } from './lib/submissions.js';
 import { sendCrisisSms } from './lib/sms.js';
 
@@ -1044,6 +1053,54 @@ export default {
         }
       } catch (err) {
         console.warn('[cron] iteratePendingDonReady failed', err && err.message);
+      }
+    }
+
+    // Phase 3.3 — voice transcript backfill. Drains up to 5 entries
+    // per tick (each Whisper call ~2-5s; 5×5s = 25s under the 30s
+    // CPU budget). Successes update the attachment row + delete the
+    // queue entry. Failures increment attempts; after 3 attempts
+    // we give up + delete the queue entry (the audio stays in R2,
+    // just transcript-less).
+    let transcriptsAttempted = 0;
+    let transcriptsCompleted = 0;
+    if (_windowGate(env) && env.AI && env.WINDOW_ATTACHMENTS) {
+      try {
+        for await (const { row, key } of iterateTranscriptQueue(env, 5)) {
+          transcriptsAttempted++;
+          try {
+            const attachRow = await getAttachmentRow(env, row.attachId);
+            if (!attachRow || attachRow.transcript || attachRow.deleted) {
+              // Already transcribed by inline path or deleted — drop the queue entry.
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const obj = await env.WINDOW_ATTACHMENTS.get(attachRow.r2Key);
+            if (!obj) {
+              await env.AUTH_SESSIONS.delete(key);
+              continue;
+            }
+            const audioBytes = new Uint8Array(await obj.arrayBuffer());
+            const result = await transcribeVoice(env, audioBytes);
+            if (result.ok) {
+              await setAttachmentTranscript(env, row.attachId, result.text, result.language);
+              await env.AUTH_SESSIONS.delete(key);
+              transcriptsCompleted++;
+            } else {
+              row.attempts = (row.attempts || 0) + 1;
+              if (row.attempts >= 3) {
+                await env.AUTH_SESSIONS.delete(key);
+                console.warn('[cron] transcript gave up after 3 attempts', { attachId: row.attachId, error: result.error });
+              } else {
+                await env.AUTH_SESSIONS.put(key, JSON.stringify(row), { expirationTtl: 24 * 3600 });
+              }
+            }
+          } catch (err) {
+            console.warn('[cron] transcript backfill threw', { attachId: row.attachId, err: err && err.message });
+          }
+        }
+      } catch (err) {
+        console.warn('[cron] iterateTranscriptQueue failed', err && err.message);
       }
     }
 
@@ -6674,7 +6731,12 @@ async function handleWindowAttachUpload(request, env, ctx) {
   if (!_windowGate(env)) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
-  if (env.WINDOW_PHOTO_ENABLED !== 'true' && env.WINDOW_PHOTO_ENABLED !== true) {
+  // Phase 3.2 + 3.3 — gate is per-modality. Photo flag OR voice flag
+  // unlocks the endpoint; the multipart `kind` field (or MIME sniff)
+  // disambiguates further down.
+  const photoOn = env.WINDOW_PHOTO_ENABLED === 'true' || env.WINDOW_PHOTO_ENABLED === true;
+  const voiceOn = env.WINDOW_VOICE_ENABLED === 'true' || env.WINDOW_VOICE_ENABLED === true;
+  if (!photoOn && !voiceOn) {
     return jsonResponse({ ok: false, error: 'not-found' }, 404);
   }
   if (!isOriginAllowed(request)) {
@@ -6720,63 +6782,111 @@ async function handleWindowAttachUpload(request, env, ctx) {
     return jsonResponse({ ok: false, error: 'no-file' }, 400);
   }
   const declaredMime = String(file.type || '').toLowerCase();
-  const allowedMimes = new Set(['image/jpeg', 'image/jpg', 'image/webp', 'image/png']);
-  if (!allowedMimes.has(declaredMime)) {
+  const photoMimes = new Set(['image/jpeg', 'image/jpg', 'image/webp', 'image/png']);
+  const voiceMimes = new Set(['audio/webm', 'audio/webm;codecs=opus', 'audio/mp4', 'audio/mpeg', 'audio/ogg']);
+  // Strip codec suffix for the lookup (Safari sends 'audio/mp4' but
+  // Chrome can send 'audio/webm;codecs=opus').
+  const baseMime = declaredMime.split(';')[0].trim();
+  let kind = null;
+  if (photoMimes.has(declaredMime) || photoMimes.has(baseMime)) kind = 'photo';
+  else if (voiceMimes.has(declaredMime) || voiceMimes.has(baseMime)) kind = 'voice';
+  else {
     return jsonResponse({ ok: false, error: 'unsupported-mime', mime: declaredMime }, 415);
+  }
+  if (kind === 'photo' && !photoOn) {
+    return jsonResponse({ ok: false, error: 'photo-not-enabled' }, 403);
+  }
+  if (kind === 'voice' && !voiceOn) {
+    return jsonResponse({ ok: false, error: 'voice-not-enabled' }, 403);
   }
 
   const buf = await file.arrayBuffer();
-  if (buf.byteLength > MAX_PHOTO_SIZE_BYTES) {
-    return jsonResponse({ ok: false, error: 'photo-too-large', max: MAX_PHOTO_SIZE_BYTES }, 413);
-  }
   if (buf.byteLength < 16) {
-    return jsonResponse({ ok: false, error: 'photo-too-small' }, 400);
+    return jsonResponse({ ok: false, error: 'file-too-small' }, 400);
   }
 
-  // Lifetime + per-day-bytes cap.
-  const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
-  if (!lifetimeCheck.ok) {
-    return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+  let storedBytes;
+  let storedMime;
+  let storedExt;
+  let durationMs = null;
+
+  if (kind === 'photo') {
+    if (buf.byteLength > MAX_PHOTO_SIZE_BYTES) {
+      return jsonResponse({ ok: false, error: 'photo-too-large', max: MAX_PHOTO_SIZE_BYTES }, 413);
+    }
+    // Lifetime + per-day-bytes cap.
+    const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
+    if (!lifetimeCheck.ok) {
+      return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+    }
+    // Server-side EXIF strip (defense-in-depth — client canvas
+    // re-encode already strips, but a curl uploader bypasses JS).
+    const stripped = stripImageExif(new Uint8Array(buf), declaredMime);
+    if (!stripped.ok) {
+      return jsonResponse({ ok: false, ...stripped }, 400);
+    }
+    storedBytes = stripped.bytes;
+    storedMime = stripped.mime;
+    storedExt = stripped.kind === 'jpeg' ? 'jpg' : stripped.kind;
+  } else {
+    // Voice. Per-day cap (voice-daily key tracks count + minutes).
+    // Duration is supplied by the client in the form (durationMs)
+    // — we can't easily decode the audio in a Worker; trust + cap.
+    const declaredDuration = Number(form.get('durationMs') || 0);
+    durationMs = Number.isFinite(declaredDuration) && declaredDuration > 0
+      ? Math.min(declaredDuration, MAX_VOICE_DURATION_HARD_MS)
+      : null;
+    if (!durationMs) {
+      return jsonResponse({ ok: false, error: 'duration-required' }, 400);
+    }
+    // Voice file size cap: 10s of headroom over Opus@64kbps × 90s ≈
+    // 720KB. Cap at 2MB to be generous to lossier codecs.
+    const VOICE_BYTES_HARD_CAP = 2 * 1024 * 1024;
+    if (buf.byteLength > VOICE_BYTES_HARD_CAP) {
+      return jsonResponse({ ok: false, error: 'voice-too-large', max: VOICE_BYTES_HARD_CAP }, 413);
+    }
+    // Voice-daily cap (count + minutes).
+    const dailyCheck = await checkVoiceDailyCap(env, identitySuffix, durationMs);
+    if (!dailyCheck.ok) {
+      return jsonResponse({ ok: false, ...dailyCheck }, 429);
+    }
+    // Lifetime + per-day-bytes cap (shared with photos).
+    const lifetimeCheck = await checkAttachmentLifetime(env, identitySuffix, buf.byteLength);
+    if (!lifetimeCheck.ok) {
+      return jsonResponse({ ok: false, ...lifetimeCheck }, 429);
+    }
+    // No EXIF-equivalent stripping for voice — Opus/AAC don't carry
+    // location metadata. Pass the bytes through.
+    storedBytes = new Uint8Array(buf);
+    storedMime = baseMime;
+    storedExt = baseMime === 'audio/mp4' ? 'm4a' :
+                baseMime === 'audio/mpeg' ? 'mp3' :
+                baseMime === 'audio/ogg' ? 'ogg' : 'webm';
   }
 
-  // Server-side EXIF strip (defense-in-depth — client canvas
-  // re-encode already strips, but a curl uploader bypasses JS).
-  const stripped = stripImageExif(new Uint8Array(buf), declaredMime);
-  if (!stripped.ok) {
-    return jsonResponse({ ok: false, ...stripped }, 400);
-  }
-
-  // R2 key uses the identity prefix from the start (audit B2 fix —
-  // we don't know threadId/msgId at upload time, and rewriting the
-  // R2 object on link would cost a PUT+DELETE per attachment with
-  // its own failure modes). Schema: attach/<identityPrefix>/<id>.<ext>
-  // where identityPrefix is the first 10 chars of sub or anonId.
-  // Cleanup-by-thread uses the KV index, not the R2 prefix.
+  // R2 key uses the identity prefix from the start (audit B2 fix).
   const attachId = mintAttachId();
   const identityPrefix = identitySuffix.slice(0, 10);
-  const ext = stripped.kind === 'jpeg' ? 'jpg' : stripped.kind;
-  const r2KeyStr = 'attach/' + identityPrefix + '/' + attachId + '.' + ext;
+  const r2KeyStr = 'attach/' + identityPrefix + '/' + attachId + '.' + storedExt;
 
   try {
-    await env.WINDOW_ATTACHMENTS.put(r2KeyStr, stripped.bytes, {
+    await env.WINDOW_ATTACHMENTS.put(r2KeyStr, storedBytes, {
       httpMetadata: {
-        contentType: stripped.mime,
+        contentType: storedMime,
         cacheControl: 'private, max-age=0, must-revalidate',
       },
       customMetadata: {
         attachId,
         identitySuffix,
-        kind: 'photo',
+        kind,
       },
     });
   } catch (err) {
-    console.warn('[window] r2 put failed', { attachId, err: err && err.message });
+    console.warn('[window] r2 put failed', { attachId, kind, err: err && err.message });
     return jsonResponse({ ok: false, error: 'storage-failed' }, 500);
   }
 
-  // Pending KV row. threadId + msgId stay 'pending' until the
-  // append-time linker fills them. Per-message ownership is checked
-  // there.
+  // Pending KV row.
   const pendingRow = {
     id: attachId,
     pending: true,
@@ -6784,34 +6894,57 @@ async function handleWindowAttachUpload(request, env, ctx) {
     msgId: null,
     sub: sub || null,
     anonId: anonId || null,
-    kind: 'photo',
-    mime: stripped.mime,
-    sizeBytes: stripped.bytes.length,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
     r2Key: r2KeyStr,
     createdAt: Date.now(),
   };
+  if (durationMs) pendingRow.durationMs = durationMs;
   await env.AUTH_SESSIONS.put(windowAttachKey(attachId), JSON.stringify(pendingRow), {
-    // 1h pending TTL — if the operator never finishes the send,
-    // a cron sweep cleans up the orphan.
     expirationTtl: 3600,
   });
-  await stampAttachmentLifetime(env, identitySuffix, stripped.bytes.length);
+  await stampAttachmentLifetime(env, identitySuffix, storedBytes.length);
+
+  // Voice path: enqueue for transcription + try inline (fire-and-
+  // forget via ctx.waitUntil — don't block the upload response).
+  if (kind === 'voice') {
+    await stampVoiceDaily(env, identitySuffix, durationMs);
+    await markForTranscript(env, attachId);
+    ctx.waitUntil((async () => {
+      try {
+        const result = await transcribeVoice(env, storedBytes);
+        if (result.ok) {
+          await setAttachmentTranscript(env, attachId, result.text, result.language);
+          await unmarkTranscript(env, attachId);
+          console.log(JSON.stringify({ event: 'window.transcribe.inline', attachId, language: result.language || null, len: result.text.length }));
+        } else {
+          // Leave it on the queue — cron will retry.
+          console.warn('[window] inline transcribe deferred to cron', { attachId, error: result.error });
+        }
+      } catch (err) {
+        console.warn('[window] transcribe threw', { attachId, err: err && err.message });
+      }
+    })());
+  }
 
   console.log(JSON.stringify({
     event: 'window.attach.upload',
     attachId,
-    kind: 'photo',
-    mime: stripped.mime,
-    sizeBytes: stripped.bytes.length,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
+    durationMs: durationMs || null,
     sub: sub ? sub.slice(0, 8) : null,
     anonId: anonId ? anonId.slice(0, 8) : null,
   }));
   return jsonResponse({
     ok: true,
     attachId,
-    kind: 'photo',
-    mime: stripped.mime,
-    sizeBytes: stripped.bytes.length,
+    kind,
+    mime: storedMime,
+    sizeBytes: storedBytes.length,
+    durationMs: durationMs || null,
   }, 200);
 }
 

@@ -2766,11 +2766,16 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
 .window-composer__context-summary::before{content:'+ ';color:var(--teal);font-weight:700}
 .window-composer__context-details[open] .window-composer__context-summary::before{content:'\2212 \00a0'}
 
-/* Mic button placeholder — visible only when WINDOW_VOICE_ENABLED.
-   Disabled in Phase 2.1; Phase 3 wires the recorder. */
-.window-composer__mic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);cursor:not-allowed;opacity:0.5}
+/* Mic button — Phase 2.1 placeholder; Phase 3.3 wires the recorder
+   and reveals the button when WINDOW_VOICE_ENABLED is on. The
+   `.is-recording` state pulses red so the operator sees recording
+   is live (anti-chatbot rule 5: motion is downward, not bubble-up). */
+.window-composer__mic{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:var(--white);color:var(--ink-soft);cursor:not-allowed;opacity:0.5;transition:background 0.18s ease,color 0.18s ease,border-color 0.18s ease}
 .window-composer__mic:not([disabled]){cursor:pointer;opacity:1;color:var(--teal)}
 .window-composer__mic:hover:not([disabled]),.window-composer__mic:focus-visible:not([disabled]){border-color:var(--teal);background:var(--teal-tint)}
+.window-composer__mic.is-recording{background:#B83020;border-color:#B83020;color:var(--cream);animation:window-mic-pulse 1.6s ease-in-out infinite}
+@keyframes window-mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,48,32,0.45)}50%{box-shadow:0 0 0 8px rgba(184,48,32,0)}}
+@media (prefers-reduced-motion:reduce){.window-composer__mic.is-recording{animation:none}}
 
 /* Composer field overrides for the new layout (no more left-padding
    for the absolute "Don —" caption since the caption was removed). */

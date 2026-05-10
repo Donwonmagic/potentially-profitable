@@ -49,8 +49,11 @@ import { mintSaveItemId, isValidSaveItemIdShape } from './workbench.js';
 import {
   ATTACH_KEY_PREFIX,
   ATTACH_LIFETIME_KEY_PREFIX,
+  TRANSCRIPT_QUEUE_KEY_PREFIX,
   MAX_ATTACHMENTS_PER_ANON_LIFETIME,
   MAX_ATTACH_BYTES_PER_DAY_PER_ANON,
+  MAX_VOICE_PER_DAY,
+  MAX_VOICE_MINUTES_PER_DAY,
   VOICE_R2_TTL_DAYS,
   PHOTO_R2_TTL_DAYS,
   MSG_KEY_PREFIX,
@@ -374,6 +377,142 @@ function _stripWebpExif(bytes) {
 // Audit B1 — without this, declaring image/png in the multipart
 // upload bypassed signature validation entirely (the prior
 // passthrough wrote any bytes verbatim to R2).
+// ─────────────────────────────────────────────────────────────────
+// Phase 3.3 — voice transcript queue + Whisper wrapper.
+//
+// Each voice attachment stamps a queue row at upload time; the
+// upload handler also tries an inline Whisper call (fast path)
+// and updates the attachment row on success. Failures fall through
+// to the cron drain (slow path) which retries up to 3 times.
+
+export function transcriptQueueKey(attachId) {
+  return TRANSCRIPT_QUEUE_KEY_PREFIX + attachId;
+}
+
+// Enqueue an attachment for transcription. Idempotent — the row
+// just records {attachId, attempts, enqueuedAt}. TTL 24h: if a
+// voice attachment doesn't get transcribed within a day of upload,
+// it's gone (the audio is still in R2 for retention duration; just
+// no transcript).
+export async function markForTranscript(env, attachId) {
+  if (!isValidSaveItemIdShape(attachId)) return false;
+  const raw = await env.AUTH_SESSIONS.get(transcriptQueueKey(attachId));
+  let row;
+  if (raw) {
+    try { row = JSON.parse(raw); } catch (_) { row = null; }
+  }
+  if (!row) {
+    row = { attachId, attempts: 0, enqueuedAt: Date.now() };
+  }
+  await env.AUTH_SESSIONS.put(transcriptQueueKey(attachId), JSON.stringify(row), {
+    expirationTtl: 24 * 3600,
+  });
+  return true;
+}
+
+export async function unmarkTranscript(env, attachId) {
+  if (!isValidSaveItemIdShape(attachId)) return;
+  await env.AUTH_SESSIONS.delete(transcriptQueueKey(attachId));
+}
+
+export async function* iterateTranscriptQueue(env, limit = 5) {
+  const result = await env.AUTH_SESSIONS.list({ prefix: TRANSCRIPT_QUEUE_KEY_PREFIX, limit });
+  for (const k of result.keys) {
+    const raw = await env.AUTH_SESSIONS.get(k.name);
+    if (!raw) continue;
+    let row;
+    try { row = JSON.parse(raw); } catch (_) { continue; }
+    yield { row, key: k.name };
+  }
+}
+
+// Run Whisper on the audio bytes. Returns { ok, text } on success
+// or { ok:false, error } on failure. Workers AI binding is env.AI;
+// the model is @cf/openai/whisper-large-v3-turbo for best speed/
+// quality on short clips. Auto-detects the spoken language —
+// returned text is in the operator's spoken language regardless of
+// the page locale (plan §6.5: a Spanish operator on /window/ EN
+// still gets a Spanish transcript).
+export async function transcribeVoice(env, audioBytes) {
+  if (!env || !env.AI) {
+    return { ok: false, error: 'ai-not-configured' };
+  }
+  if (!(audioBytes instanceof Uint8Array)) {
+    return { ok: false, error: 'invalid-audio' };
+  }
+  // Workers AI accepts a Uint8Array directly. We use the larger
+  // model for the small accuracy bump on short, possibly-noisy
+  // restaurant-floor audio. response_format=verbose_json gives us
+  // detected language as a side benefit.
+  let res;
+  try {
+    res = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {
+      audio: Array.from(audioBytes),
+      response_format: 'verbose_json',
+    });
+  } catch (err) {
+    return { ok: false, error: 'whisper-threw', detail: err && err.message };
+  }
+  // Workers AI Whisper returns { text, ... }.
+  const text = res && typeof res.text === 'string' ? res.text.trim() : '';
+  if (!text) return { ok: false, error: 'empty-transcript' };
+  return {
+    ok: true,
+    text: text.slice(0, 4000),  // cap at MAX_MSG_LENGTH equivalent
+    language: res && res.language ? String(res.language).toLowerCase() : null,
+  };
+}
+
+// Update an attachment row with its transcript. Idempotent — repeats
+// just overwrite. Returns true on success.
+export async function setAttachmentTranscript(env, attachId, transcript, language) {
+  if (!isValidSaveItemIdShape(attachId)) return false;
+  const raw = await env.AUTH_SESSIONS.get(attachKey(attachId));
+  if (!raw) return false;
+  let row;
+  try { row = JSON.parse(raw); } catch { return false; }
+  row.transcript = String(transcript || '').slice(0, 4000);
+  if (language) row.transcriptLanguage = String(language).slice(0, 8);
+  row.transcriptAt = Date.now();
+  await env.AUTH_SESSIONS.put(attachKey(attachId), JSON.stringify(row));
+  return true;
+}
+
+// Per-anon (or per-sub) voice-daily throttle: 5 voice notes/day +
+// 5 minutes total/day. Distinct from the photo lifetime cap because
+// voice is the riskier modality (BIPA-conservative + Workers AI
+// cost). Caller passes additionalMs for THIS upload.
+const VOICE_DAILY_KEY_PREFIX = 'window:voice-daily:';
+function _voiceDailyKey(suffix) { return VOICE_DAILY_KEY_PREFIX + suffix; }
+
+export async function checkVoiceDailyCap(env, suffix, additionalMs) {
+  if (!suffix) return { ok: false, error: 'no-suffix' };
+  const today = _dayBucket(Date.now());
+  const raw = await env.AUTH_SESSIONS.get(_voiceDailyKey(suffix));
+  let row = { day: today, count: 0, ms: 0 };
+  if (raw) { try { row = JSON.parse(raw); } catch (_) { /* reset */ } }
+  if (row.day !== today) { row.day = today; row.count = 0; row.ms = 0; }
+  if (row.count >= MAX_VOICE_PER_DAY) {
+    return { ok: false, error: 'voice-day-cap', max: MAX_VOICE_PER_DAY };
+  }
+  if ((row.ms + Number(additionalMs || 0)) > MAX_VOICE_MINUTES_PER_DAY * 60 * 1000) {
+    return { ok: false, error: 'voice-minutes-cap', max: MAX_VOICE_MINUTES_PER_DAY };
+  }
+  return { ok: true };
+}
+
+export async function stampVoiceDaily(env, suffix, addedMs) {
+  if (!suffix) return;
+  const today = _dayBucket(Date.now());
+  const raw = await env.AUTH_SESSIONS.get(_voiceDailyKey(suffix));
+  let row = { day: today, count: 0, ms: 0 };
+  if (raw) { try { row = JSON.parse(raw); } catch (_) { /* reset */ } }
+  if (row.day !== today) { row.day = today; row.count = 0; row.ms = 0; }
+  row.count += 1;
+  row.ms += Number(addedMs || 0);
+  await env.AUTH_SESSIONS.put(_voiceDailyKey(suffix), JSON.stringify(row), { expirationTtl: 48 * 3600 });
+}
+
 function _stripPngExif(bytes) {
   const SIG = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
   if (bytes.length < 8) return { ok: false, error: 'png-too-short' };
