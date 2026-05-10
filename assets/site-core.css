@@ -1378,7 +1378,7 @@ body:has(.block.final) .foot-cta{display:none}
   /* Phase 5+ — pulse on the mobile-cta-bar Email Don button.
      Sits left of the SVG, breathing teal dot. window-state.js
      reveals when lastSeen <4h. */
-  .mobile-cta-bar__pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0;margin-right:2px}
+  .mobile-cta-bar__pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--teal);opacity:0.85;animation:window-pulse 3.2s ease-in-out infinite;flex-shrink:0}
   /* Make sure the rest of the page doesn't sit under the bar. */
   body:not([data-hide-sticky-bar]) main{padding-bottom:96px}
 }
@@ -2745,7 +2745,7 @@ body.window-canvas{background:var(--cream);color:var(--ink);min-height:100vh;dis
    for precise mode that /window/ uses, so the privacy contract
    reads consistently across surfaces. */
 .about-now{margin:18px 0 0;font-family:var(--font-display);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink-soft);max-width:60ch}
-.about-now[data-mode="precise"]{color:var(--ink);border-bottom:1px solid var(--teal);padding-bottom:2px;display:inline-block}
+.about-now[data-mode="precise"]{color:var(--ink);border-bottom:1px solid var(--teal);padding-bottom:2px}
 
 /* Sash—bottom: below the transom. The operable light — chips +
    textarea + crisis line + submit row. */

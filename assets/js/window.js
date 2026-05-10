@@ -501,9 +501,11 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         if (!j || !j.ok || !j.show || !j.text) return;
-        nowEl.textContent = j.text;
+        // Phase 5+ audit (Issue 3 LOW): unhide the live region before
+        // mutating textContent so the polite announcement fires.
         nowEl.dataset.mode = j.mode || 'fuzz';
         nowEl.hidden = false;
+        nowEl.textContent = j.text;
         if (currentsEl) currentsEl.hidden = true;
       })
       .catch(function () { /* widget off or network blip — fallback stays visible */ });

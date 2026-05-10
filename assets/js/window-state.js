@@ -75,9 +75,14 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         if (!j || !j.ok || !j.show || !j.text) return;
-        aboutNowEl.textContent = j.text;
+        // Phase 5+ audit (Issue 3 LOW): set dataset.mode + unhide
+        // BEFORE assigning textContent so the aria-live="polite"
+        // mutation fires on a region already in the accessibility
+        // tree. Setting textContent on a [hidden] node is generally
+        // not announced.
         aboutNowEl.dataset.mode = j.mode || 'fuzz';
         aboutNowEl.hidden = false;
+        aboutNowEl.textContent = j.text;
       })
       .catch(function () { /* widget off, stale, or network blip — leave hidden */ });
   }
